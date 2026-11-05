@@ -132,6 +132,48 @@ namespace PadForge.Tests
             return io;
         }
 
+        /// <summary>A Static in colors other than the ones the keyboard reported of
+        /// PadForge's last picture is someone else's, after a kill. The colors it reported
+        /// go back.</summary>
+        [Fact]
+        public void TheSagarisAfterAKill_GivesBackItsPicture_AndKeepsAnotherColor()
+        {
+            KeyboardProfileBackups.ResetForTest(persistAtOnce: true);
+            try
+            {
+                string key = KeyboardProfileBackups.DeviceKey(AsusLegacyUsbLighting.SagarisProduct, null);
+                var state = AsusLegacyUsbLighting.ReadSagaris(Keyboard(4, 2, 1, 3));
+                KeyboardProfileBackups.Take(key, 0, state.Contents());
+                var showing = AsusLegacyUsbLighting.ReadSagaris(Keyboard(AsusLegacyUsbLighting.SagarisStatic, AsusLegacyUsbLighting.SagarisBrightness, 0, 0));
+                Assert.True(showing.LooksOurs);
+
+                // Not the first palette entry the keyboard shows now.
+                KeyboardProfileBackups.NoteShown(key, new byte[] { 0x0A, 0x0B, 0x0C });
+                var users = Keyboard(AsusLegacyUsbLighting.SagarisStatic, AsusLegacyUsbLighting.SagarisBrightness, 0, 0);
+                Assert.True(AsusLegacyUsbLighting.RepairSagaris(users));
+                Assert.Null(KeyboardProfileBackups.Get(key));
+                int wrote = users.Calls.Count(c => c.Kind == "out");
+
+                KeyboardProfileBackups.Take(key, 0, state.Contents());
+                KeyboardProfileBackups.NoteShown(key, showing.Palette[0]);
+                var ours = Keyboard(AsusLegacyUsbLighting.SagarisStatic, AsusLegacyUsbLighting.SagarisBrightness, 0, 0);
+                Assert.True(AsusLegacyUsbLighting.RepairSagaris(ours));
+                Assert.True(ours.Calls.Count(c => c.Kind == "out") > wrote, "the state went back");
+
+                // A picture the keyboard reports back, four bits a channel, is kept.
+                var io = Keyboard(AsusLegacyUsbLighting.SagarisStatic, AsusLegacyUsbLighting.SagarisBrightness, 0, 0);
+                var model = Model();
+                var session = model.Begin(io, _ => { });
+                Assert.Equal(HidLightingPaint.Sent, session.Paint(io, _ => { }, model.Map.Lights, new[] { 0x001020 }));
+                Assert.True(KeyboardProfileBackups.MayBePadForges(key, new byte[] { 0, 1, 2 }));
+                Assert.False(KeyboardProfileBackups.MayBePadForges(key, new byte[] { 0x0A, 0x0B, 0x0C }));
+            }
+            finally
+            {
+                KeyboardProfileBackups.ResetForTest();
+            }
+        }
+
         private static HidLightingModel Model()
             => new AsusLegacyUsbLighting().Match(CollectionOf(OpenRgbRegistrations.Of(AsusLegacyUsbLighting.OpenRgbFamily)
                 .Single(r => r.Name == "ASUS Sagaris GK1100")));
@@ -156,9 +198,12 @@ namespace PadForge.Tests
             Assert.Empty(session.CrashFrames);
             Assert.Equal(HidLightingPaint.Sent, session.Paint(io, _ => { }, model.Map.Lights, new[] { 0xFF8010 }));
             outs = Outs(io);
-            Assert.Equal(2, outs.Count);
+            // The picture, then the read of what the keyboard shows now.
+            Assert.Equal(4, outs.Count);
             Starts("06 0B 04 00 00 0F 08 01", outs[0], 65);
             Starts("06 0B 01 01 03", outs[1], 65);
+            Starts("06 0B 03", outs[2], 65);
+            Starts("06 0B 05", outs[3], 65);
             Assert.Equal(8, session.CrashFrames.Length);
             // The backup went into the settings file before the write.
             Assert.Equal(session.State.Contents(), KeyboardProfileBackups.Get(AsusLegacyUsbLighting.SagarisProduct)?.Contents);

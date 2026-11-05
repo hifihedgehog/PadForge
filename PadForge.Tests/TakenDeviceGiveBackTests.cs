@@ -876,6 +876,8 @@ namespace PadForge.Tests
             GiveBackTask.RunSeam = null;
             GiveBackTask.FileExistsSeam = null;
             GiveBackTask.ExePathSeam = null;
+            GiveBackTask.ExeSizeSeam = null;
+            GiveBackTask.ExtractBaseSeam = null;
         }
 
         /// <summary>The action, whole: the wait, the question whether the task
@@ -890,10 +892,24 @@ namespace PadForge.Tests
             string wait = @"C:\Windows\System32\find.exe /v """" < """ + pipe + @""" >nul 2>&1 "
                 + @"& C:\Windows\System32\schtasks.exe /Query /TN """ + name + @""" >nul 2>&1 && ( ";
             string run = @"""" + exe + @""" --give-back-touchpad """ + Touchpad + @""" """ + name + @"""";
+            GiveBackTask.ExeSizeSeam = _ => -1;
+            GiveBackTask.ExtractBaseSeam = () => null;
             Assert.Equal(wait + run + " || ( the fallback ) )",
                 GiveBackTask.Action(name, exe, GiveBackRun.TouchpadSwitch, Touchpad, "the fallback", System32));
             Assert.Equal(wait + run + " )",
                 GiveBackTask.Action(name, exe, GiveBackRun.TouchpadSwitch, Touchpad, null, System32));
+
+            // The run goes only to the exe that registered the task, and it starts from
+            // what that exe already extracted.
+            GiveBackTask.ExeSizeSeam = _ => 12345;
+            GiveBackTask.ExtractBaseSeam = () => @"C:\Users\someone\Temp\.net";
+            string guarded = @"for %I in (""" + exe + @""") do if ""%~zI""==""12345"" ( set ""DOTNET_BUNDLE_EXTRACT_BASE_DIR=C:\Users\someone\Temp\.net"" & " + run;
+            Assert.Equal(wait + guarded + " || ( the fallback ) ) else ( the fallback ) )",
+                GiveBackTask.Action(name, exe, GiveBackRun.TouchpadSwitch, Touchpad, "the fallback", System32));
+            Assert.Equal(wait + guarded + " ) )",
+                GiveBackTask.Action(name, exe, GiveBackRun.TouchpadSwitch, Touchpad, null, System32));
+            GiveBackTask.ExeSizeSeam = _ => -1;
+            GiveBackTask.ExtractBaseSeam = () => null;
             Assert.Equal(wait + "the fallback )",
                 GiveBackTask.Action(name, @"C:\50%\PadForge.exe", GiveBackRun.TouchpadSwitch, Touchpad, "the fallback", System32));
             Assert.Equal(wait + "the fallback )",
@@ -1077,6 +1093,46 @@ namespace PadForge.Tests
                 expected.Add("schtasks /Delete /TN \"" + name + "\" /F");
             }
             Assert.Equal(expected, action.Lines);
+        }
+
+        /// <summary>A task outlives the exe that made it when the exe is replaced. An older
+        /// one has no run mode and would start the whole app as SYSTEM, so any other file
+        /// falls to what stands behind the run, and an exe that is gone does too.</summary>
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void TheAction_RunsOnlyTheExeThatMadeIt(bool replaced)
+        {
+            using var action = new RealAction(schtasksExit: 0, exeExit: 0);
+            string name = GiveBackTask.NameOf(Touchpad);
+            string marker = Path.Combine(Path.GetDirectoryName(action.Log), "fallback ran.txt");
+            string command = GiveBackTask.Action(name, action.Exe, GiveBackRun.TouchpadSwitch, Touchpad,
+                $"echo fallback>\"{marker}\"", System32);
+            if (replaced) File.AppendAllText(action.Exe, "@rem another build\r\n");
+            else File.Delete(action.Exe);
+
+            action.Start(GiveBackTask.TaskXml(command, System32, pipeHeld: false));
+            action.Finished();
+            Assert.DoesNotContain(action.Lines, line => line.StartsWith("exe ", StringComparison.Ordinal));
+            Assert.True(File.Exists(marker), "the fallback ran");
+        }
+
+        /// <summary>The exe that made it runs, with what it extracted named for it.</summary>
+        [Fact]
+        public void TheAction_RunsTheExeThatMadeIt_FromWhatItExtracted()
+        {
+            using var action = new RealAction(schtasksExit: 0, exeExit: 0);
+            string name = GiveBackTask.NameOf(Touchpad);
+            string extract = Path.Combine(Path.GetDirectoryName(action.Log), "extracted");
+            GiveBackTask.ExtractBaseSeam = () => extract;
+            File.AppendAllText(action.Exe, $"\r\n");
+            File.WriteAllText(action.Exe, $"@echo base %DOTNET_BUNDLE_EXTRACT_BASE_DIR%>>\"{action.Log}\"\r\n@echo exe %*>>\"{action.Log}\"\r\n@exit /b 0\r\n");
+            string command = GiveBackTask.Action(name, action.Exe, GiveBackRun.TouchpadSwitch, Touchpad, null, System32);
+
+            action.Start(GiveBackTask.TaskXml(command, System32, pipeHeld: false));
+            action.Finished();
+            Assert.Contains("base " + extract, action.Lines);
+            Assert.Contains(action.Lines, line => line.StartsWith("exe ", StringComparison.Ordinal));
         }
 
         /// <summary>A PC with no CLI has nothing behind a failed run, and its task

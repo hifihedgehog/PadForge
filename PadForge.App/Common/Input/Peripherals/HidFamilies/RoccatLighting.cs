@@ -757,6 +757,15 @@ namespace PadForge.Common.Input.Peripherals
             => (report[KovaFlags] & KovaCustomColors) == KovaCustomColors && (report[KovaFlags] & KovaLightsOn) == KovaLightsOn
                && report[KovaColorFlow] == 0 && report[KovaMode] == KovaStatic && report[KovaSpeed] == 0;
 
+        /// <summary>The bytes of a Kova picture's lighting: the two LEDs' colors.</summary>
+        internal static byte[] KovaLighting(byte[] report)
+        {
+            var lighting = new byte[8];
+            Array.Copy(report, KovaPipe, lighting, 0, 4);
+            Array.Copy(report, KovaWheel, lighting, 4, 4);
+            return lighting;
+        }
+
         /// <summary>The profile the mouse holds now with the lighting of
         /// <paramref name="original"/>: only the bytes a picture moves go back,
         /// so the DPI and the polling rate OpenRGB's header names at bytes 5 to
@@ -815,7 +824,8 @@ namespace PadForge.Common.Input.Peripherals
                 KeyboardProfileBackups.NoteFailure(key);
                 return false;
             }
-            return Repair(io, key, KovaProfileReport, KovaProfileLength, KovaLooksOurs, KovaRestore);
+            return Repair(io, key, KovaProfileReport, KovaProfileLength,
+                report => KovaLooksOurs(report) && KeyboardProfileBackups.MayBePadForges(key, KovaLighting(report)), KovaRestore);
         }
 
         private static bool RepairSenseAimo(IHidReportChannel io, string key)
@@ -843,12 +853,21 @@ namespace PadForge.Common.Input.Peripherals
             io.GetFeature(KovaVersionReport, version);
             var read = ReadReport(io, KovaProfileReport, KovaProfileLength);
             if (read == null) return null;
-            var saved = Original(key, read, KovaLooksOurs);
+            var saved = Original(key, read,
+                report => KovaLooksOurs(report) && KeyboardProfileBackups.MayBePadForges(key, KovaLighting(report)));
             return new StoredSession(key, 0, saved, stored: true,
                 (channel, original, colors) =>
                 {
                     var now = ReadReport(channel, KovaProfileReport, KovaProfileLength);
-                    return now != null && channel.SetFeature(KovaProfile(now, At(colors, 0), At(colors, 1)));
+                    if (now == null) return false;
+                    var written = KovaProfile(now, At(colors, 0), At(colors, 1));
+                    if (!channel.SetFeature(written)) return false;
+                    // Kept when the mouse reports it back. Otherwise the shape decides,
+                    // after a kill, what was PadForge's.
+                    if (ReadReport(channel, KovaProfileReport, KovaProfileLength) is { } shown
+                        && KovaLighting(shown).AsSpan().SequenceEqual(KovaLighting(written)))
+                        KeyboardProfileBackups.NoteShown(key, KovaLighting(written));
+                    return true;
                 },
                 (channel, original) =>
                 {
@@ -938,7 +957,7 @@ namespace PadForge.Common.Input.Peripherals
                 if (KeyboardProfileBackups.Get(_key) is not { } held || held.Profile != _profile
                     || !held.Contents.AsSpan().SequenceEqual(_original))
                     KeyboardProfileBackups.Take(_key, _profile, _original);
-                if (!KeyboardProfileBackups.IsPersisted(_key))
+                if (!KeyboardProfileBackups.IsPersisted(_key) || (Stored && !KeyboardProfileBackups.ClearShown(_key)))
                 {
                     LaterMs = SavingMs;
                     return HidLightingPaint.Later;

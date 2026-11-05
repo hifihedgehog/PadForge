@@ -309,7 +309,7 @@ namespace PadForge.Tests
             Assert.Equal(HidLightingPaint.Sent, session.Paint(io, _ => { }, model.Map.Lights, EmpColors));
             now = RoccatKoneEmpLighting.Written(EmpBytes(dpi: 4), model.Map.Lights, EmpColors);
             Assert.Equal(HidLightingPaint.Sent, session.Paint(io, _ => { }, model.Map.Lights, EmpColors));
-            Assert.Equal(4, Sets(io).Last()[17]);
+            Assert.Equal(4, Sets(io).Last(s => s[0] == 0x06)[17]);
             Assert.True(session.HandBack(io, _ => { }));
             Assert.Equal(4, Sets(io).Last()[17]);
             Assert.Equal(0x44, Sets(io).Last()[24]);
@@ -749,6 +749,203 @@ namespace PadForge.Tests
             Assert.Equal(read, Sets(io).Any(s => s[1] == 0xF2));
         }
 
+        // ── What a device showed of PadForge's picture ──
+
+        private static readonly byte[] Other = { 9, 9, 9 };
+
+        /// <summary>Lighting of the shape PadForge leaves is PadForge's when it is what the
+        /// device reported of PadForge's last picture, and when nothing is on record of
+        /// that. It goes with the backup it stands beside.</summary>
+        [Fact]
+        public void WhatADeviceShowed_SaysWhatIsPadForges_AndGoesWithItsBackup()
+        {
+            const string key = "product|path";
+            byte[] shown = { 1, 2, 3 };
+            Assert.True(KeyboardProfileBackups.MayBePadForges(key, Other));
+            KeyboardProfileBackups.Take(key, 0, new byte[] { 5, 5, 5 });
+            KeyboardProfileBackups.NoteShown(key, shown);
+            KeyboardProfileBackups.NoteShown(key, shown, 2);
+            Assert.True(KeyboardProfileBackups.MayBePadForges(key, shown));
+            Assert.False(KeyboardProfileBackups.MayBePadForges(key, Other));
+            Assert.False(KeyboardProfileBackups.MayBePadForges(key, Other, 2));
+            Assert.True(KeyboardProfileBackups.MayBePadForges(key, Other, 3));
+
+            Assert.True(KeyboardProfileBackups.ClearShown(key));
+            Assert.True(KeyboardProfileBackups.MayBePadForges(key, Other));
+            Assert.False(KeyboardProfileBackups.MayBePadForges(key, Other, 2));
+
+            KeyboardProfileBackups.NoteShown(key, shown);
+            KeyboardProfileBackups.Drop(key);
+            Assert.True(KeyboardProfileBackups.MayBePadForges(key, Other));
+            Assert.True(KeyboardProfileBackups.MayBePadForges(key, Other, 2));
+        }
+
+        /// <summary>No stored picture goes out until the settings file has lost what the
+        /// last one showed: a kill during the write must not leave it naming a picture the
+        /// device no longer holds, whose colors would then read as someone else's.</summary>
+        [Fact]
+        public void ClearingWhatADeviceShowed_WaitsForTheSettingsFile()
+        {
+            KeyboardProfileBackups.ResetForTest();
+            const string key = "product|path";
+            KeyboardProfileBackups.Take(key, 0, new byte[] { 5, 5, 5 });
+            KeyboardProfileBackups.NoteShown(key, new byte[] { 1, 2, 3 });
+            Saved();
+            Assert.False(KeyboardProfileBackups.ClearShown(key));
+            Saved();
+            Assert.True(KeyboardProfileBackups.ClearShown(key));
+        }
+
+        /// <summary>A device on another port takes its backup along, and what it showed
+        /// with it. What it showed is no backup of a device, and moves nowhere alone.</summary>
+        [Fact]
+        public void ADeviceOnAnotherPort_TakesWhatItShowedAlong()
+        {
+            KeyboardProfileBackups.ResetForTest(persistAtOnce: true, pathPresent: _ => false);
+            KeyboardProfileBackups.Take("p|old", 0, new byte[] { 5, 5, 5 });
+            KeyboardProfileBackups.NoteShown("p|old", new byte[] { 1, 2, 3 });
+            Assert.Equal("p|new", KeyboardProfileBackups.SessionKey("p", "new"));
+            Assert.NotNull(KeyboardProfileBackups.Get("p|new"));
+            Assert.Null(KeyboardProfileBackups.Get("p|old"));
+            Assert.False(KeyboardProfileBackups.MayBePadForges("p|new", Other));
+        }
+
+        /// <summary>A Kova that reports its picture back keeps it on record. After a kill,
+        /// the same picture goes back, and a Static of other colors is the user's.</summary>
+        [Fact]
+        public void AKovaAfterAKill_GivesBackItsPicture_AndKeepsAnotherColor()
+        {
+            var stored = KovaBytes(mode: 0x02, wheelRed: 0x33);
+            FakeReportChannel io = null;
+            io = Kova(() => Sets(io).LastOrDefault(s => s[0] == 0x06) ?? stored);
+            var model = Roccat("Roccat Kova");
+            var session = model.Begin(io, _ => { });
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(io, _ => { }, model.Map.Lights, new[] { 0x112233, 0x445566 }));
+
+            var other = RoccatLighting.KovaProfile(stored, 0x998877, 0x665544);
+            var users = Kova(() => other);
+            Assert.True(model.Repair(users, _ => { }));
+            Assert.DoesNotContain(Sets(users), s => s[0] == 0x06);
+            Assert.Null(KeyboardProfileBackups.Get(KovaKey));
+
+            io = Kova(() => Sets(io).LastOrDefault(s => s[0] == 0x06) ?? stored);
+            session = model.Begin(io, _ => { });
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(io, _ => { }, model.Map.Lights, new[] { 0x112233, 0x445566 }));
+            var picture = RoccatLighting.KovaProfile(stored, 0x112233, 0x445566);
+            var ours = Kova(() => picture);
+            Assert.True(model.Repair(ours, _ => { }));
+            Assert.Equal(0x33, Sets(ours).Last(s => s[0] == 0x06)[RoccatLighting.KovaWheel + 1]);
+
+            // The next session goes by the same colors.
+            KeyboardProfileBackups.Take(KovaKey, 0, stored);
+            KeyboardProfileBackups.NoteShown(KovaKey, RoccatLighting.KovaLighting(picture));
+            var next = Assert.IsType<RoccatLighting.StoredSession>(model.Begin(Kova(() => other), _ => { }));
+            Assert.Empty(next.CrashFrames);
+            Assert.Null(KeyboardProfileBackups.Get(KovaKey));
+        }
+
+        /// <summary>A device that does not report the picture back leaves nothing on
+        /// record, and the shape decides, as it did.</summary>
+        [Fact]
+        public void AKovaThatDoesNotReportItsPictureBack_KeepsNothing()
+        {
+            var stored = KovaBytes(mode: 0x02, wheelRed: 0x33);
+            var io = Kova(() => stored);
+            var model = Roccat("Roccat Kova");
+            var session = model.Begin(io, _ => { });
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(io, _ => { }, model.Map.Lights, new[] { 0x112233, 0x445566 }));
+            Assert.True(KeyboardProfileBackups.MayBePadForges(KovaKey, RoccatLighting.KovaLighting(RoccatLighting.KovaProfile(stored, 1, 2))));
+        }
+
+        /// <summary>The same on a Kone EMP, profile by profile.</summary>
+        [Fact]
+        public void AKoneEmpAfterAKill_GivesBackItsPicture_AndKeepsAnotherColor()
+        {
+            var settings = EmpBytes();
+            FakeReportChannel io = null;
+            io = Emp(() => Sets(io).LastOrDefault(s => s[0] == 0x06) ?? settings);
+            var model = EmpModel();
+            var session = model.Begin(io, _ => { });
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(io, _ => { }, model.Map.Lights, EmpColors));
+
+            var other = RoccatKoneEmpLighting.Written(EmpBytes(), model.Map.Lights, new[] { 1, 2, 3, 4 });
+            var users = Emp(() => other);
+            Assert.True(model.Repair(users, _ => { }));
+            Assert.DoesNotContain(Sets(users), s => s[0] == 0x06);
+            Assert.Null(KeyboardProfileBackups.Get(EmpKey));
+
+            KeyboardProfileBackups.Take(EmpKey, 1, EmpBackup(settings));
+            var picture = RoccatKoneEmpLighting.Written(EmpBytes(), model.Map.Lights, EmpColors);
+            KeyboardProfileBackups.NoteShown(EmpKey, RoccatKoneEmpLighting.LightingOf(picture), 2);
+            var ours = Emp(() => picture);
+            Assert.True(model.Repair(ours, _ => { }));
+            Assert.Equal(0x44, Sets(ours).Last(s => s[0] == 0x06)[24]);
+        }
+
+        /// <summary>The same on a mouse of the ZET report.</summary>
+        [Fact]
+        public void AZetAfterAKill_GivesBackItsPicture_AndKeepsAnotherColor()
+        {
+            const string key = "zet|path";
+            var stored = new byte[59];
+            stored[0] = 0x04;
+            stored[21] = 0x22;
+            stored[23] = 0x55;
+            var lights = new[] { new LightInfo(0, LightKind.Zone, 0, LightKeySource.None) { Zone = 1 } };
+            var io = new FakeReportChannel { Path = null, FeatureReportLength = 59 };
+            io.Feature = id => id == 0x04 ? Sets(io).LastOrDefault(s => s[0] == 0x04) ?? stored : null;
+            var session = SinowealthLighting.ZetSession.Begin(io, key);
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(io, _ => { }, lights, new[] { 0x112233 }));
+
+            var other = SinowealthLighting.ZetFrame(stored, lights, new[] { 0x998877 });
+            var users = new FakeReportChannel { Path = null, FeatureReportLength = 59, Feature = id => id == 0x04 ? other : null };
+            Assert.True(SinowealthLighting.ZetSession.Repair(users, key));
+            Assert.Empty(Sets(users));
+            Assert.Null(KeyboardProfileBackups.Get(key));
+
+            io = new FakeReportChannel { Path = null, FeatureReportLength = 59 };
+            var channel = io;
+            io.Feature = id => id == 0x04 ? Sets(channel).LastOrDefault(s => s[0] == 0x04) ?? stored : null;
+            session = SinowealthLighting.ZetSession.Begin(io, key);
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(io, _ => { }, lights, new[] { 0x112233 }));
+            var picture = SinowealthLighting.ZetFrame(stored, lights, new[] { 0x112233 });
+            var ours = new FakeReportChannel { Path = null, FeatureReportLength = 59, Feature = id => id == 0x04 ? picture : null };
+            Assert.True(SinowealthLighting.ZetSession.Repair(ours, key));
+            Assert.Equal(0x22, Assert.Single(Sets(ours))[21]);
+        }
+
+        /// <summary>The same on a Redragon whose records answer.</summary>
+        [Fact]
+        public void ARedragonAfterAKill_GivesBackItsPicture_AndKeepsAnotherColor()
+        {
+            const string key = "redragon|path";
+            byte[] original = { 0xFF, 0, 0, 1, 5, 8 };
+            byte[] ours = { 0x11, 0x22, 0x33, 1, 0, RedragonMouseLighting.StaticMode };
+            byte[] others = { 0x99, 0x88, 0x77, 1, 0, RedragonMouseLighting.StaticMode };
+            KeyboardProfileBackups.Take(key, 1, original);
+            KeyboardProfileBackups.NoteShown(key, ours);
+            var users = Redragon(0x01, others);
+            Assert.True(RedragonMouseLighting.Session.Repair(users, key));
+            Assert.Null(KeyboardProfileBackups.Get(key));
+            var restore = RedragonMouseLighting.RestoreFrames(1, original);
+            Assert.DoesNotContain(Sets(users), s => restore.Any(frame => frame.AsSpan().SequenceEqual(s)));
+
+            KeyboardProfileBackups.Take(key, 1, original);
+            KeyboardProfileBackups.NoteShown(key, ours);
+            var same = Redragon(0x01, ours);
+            Assert.True(RedragonMouseLighting.Session.Repair(same, key));
+            Assert.Contains(Sets(same), s => restore.Any(frame => frame.AsSpan().SequenceEqual(s)));
+
+            // A picture the mouse reports back is kept.
+            var model = RedragonMouseLighting.Model("M711", 0xFC30);
+            var io = Redragon(0x01, ours);
+            var session = model.Begin(io, _ => { });
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(io, _ => { }, model.Map.Lights, new[] { 0x112233 }));
+            string product = KeyboardProfileBackups.DeviceKey(model.Map.Product, null);
+            Assert.True(KeyboardProfileBackups.MayBePadForges(product, ours));
+            Assert.False(KeyboardProfileBackups.MayBePadForges(product, others));
+        }
+
         // ── Sinowealth ──
 
         private static HidCollectionInfo Col(ushort pid, int col, ushort feature, ushort vendor = 0x258A)
@@ -845,12 +1042,14 @@ namespace PadForge.Tests
         /// <summary>A Glorious-report mouse on the worker with no claim on it,
         /// and a backup a killed run left under its key.</summary>
         private static (KeyboardFamilyRig Rig, HidLightingBackend Backend) UnclaimedGlorious(
-            ushort pid, Func<byte[]> read, byte[] backup)
+            ushort pid, Func<byte[]> read, byte[] backup, byte[] shown = null)
         {
             var walk = new[] { Col(pid, 1, 6), Col(pid, 2, 520), Col(pid, 3, 0) };
             var rig = new KeyboardFamilyRig { FeatureLength = 520 };
             rig.Log.FeatureAnswer = (id, last) => id == 0x04 && last != null && last[0] == 0x05 ? read() : null;
             KeyboardProfileBackups.Take(KeyboardProfileBackups.DeviceKey(SinowealthLighting.Product(pid), walk[1].Path), 0, backup);
+            if (shown != null)
+                KeyboardProfileBackups.NoteShown(KeyboardProfileBackups.DeviceKey(SinowealthLighting.Product(pid), walk[1].Path), shown);
             IHidReportChannel Open(string path)
                 => new ReportLogChannel { Path = path, Device = rig.Log, FeatureReportLength = path == walk[0].Path ? 6 : 520 };
             var family = new SinowealthMouseLighting(() => walk, _ => KeyboardFamilyRig.Box, Open, (_, _, _) => true);
@@ -888,6 +1087,36 @@ namespace PadForge.Tests
                 Assert.Equal(0x7B, back[3]);
                 Assert.Equal(0, Held());
             }
+        }
+
+        /// <summary>A Static at PadForge's brightness, in colors other than the ones the
+        /// mouse reported of PadForge's last picture, is someone else's.</summary>
+        [Fact]
+        public void AGloriousMouseSetToAnotherStaticSince_KeepsIt_WithNoClaim()
+        {
+            var backup = GloriousConfig().Take(SinowealthMouseLighting.ConfigSize).ToArray();
+            var ours = GloriousPicture();
+            ours[0x39] = 0x22;
+            var other = GloriousPicture();
+            var (rig, backend) = UnclaimedGlorious(0x0033, () => (byte[])other.Clone(), backup, SinowealthMouseLighting.LightingOf(ours, false));
+            using (rig)
+            using (backend)
+            {
+                Assert.DoesNotContain(rig.Log.Of('F'), f => f[0] == 0x04);
+                Assert.Equal(0, Held());
+            }
+        }
+
+        /// <summary>And the colors it reported go back.</summary>
+        [Fact]
+        public void AGloriousMouseShowingWhatItReported_GoesBack_WithNoClaim()
+        {
+            var backup = GloriousConfig().Take(SinowealthMouseLighting.ConfigSize).ToArray();
+            var ours = GloriousPicture();
+            var (rig, backend) = UnclaimedGlorious(0x0033, () => (byte[])ours.Clone(), backup, SinowealthMouseLighting.LightingOf(ours, false));
+            using (rig)
+            using (backend)
+                Assert.Equal(0x99, Assert.Single(rig.Log.Of('F'), f => f[0] == 0x04)[0x39]);
         }
 
         [Fact]

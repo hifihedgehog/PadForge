@@ -474,6 +474,9 @@ namespace PadForge.Common.Input.Peripherals
         internal static bool ZetLooksOurs(byte[] configuration)
             => configuration[21] == ZetModeCustomDefault && configuration[22] == ZetDirectionRight;
 
+        /// <summary>The bytes of a ZET picture's lighting: the seven colors.</summary>
+        internal static byte[] ZetLighting(byte[] configuration) => configuration.AsSpan(23, 21).ToArray();
+
         /// <summary>The configuration the mouse holds now with the lighting of
         /// <paramref name="original"/>, the bytes <see cref="ZetFrame"/> moves:
         /// the mode, the direction and the seven colors.</summary>
@@ -515,7 +518,8 @@ namespace PadForge.Common.Input.Peripherals
                     // Something else set the mouse since a backup that no
                     // longer matches it, and the mouse's lighting stays.
                     if (backup.Contents.Length == ZetReportLength
-                        && (ZetLooksOurs(read) || backup.Contents.AsSpan().SequenceEqual(read)))
+                        && ((ZetLooksOurs(read) && KeyboardProfileBackups.MayBePadForges(key, ZetLighting(read)))
+                            || backup.Contents.AsSpan().SequenceEqual(read)))
                         original = backup.Contents;
                     else
                         KeyboardProfileBackups.Drop(key);
@@ -528,7 +532,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 if (KeyboardProfileBackups.Get(_key) == null)
                     KeyboardProfileBackups.Take(_key, 0, Original);
-                if (!KeyboardProfileBackups.IsPersisted(_key))
+                if (!KeyboardProfileBackups.IsPersisted(_key) || !KeyboardProfileBackups.ClearShown(_key))
                 {
                     LaterMs = SavingMs;
                     return HidLightingPaint.Later;
@@ -537,7 +541,13 @@ namespace PadForge.Common.Input.Peripherals
                 // (SinowealthController1007.cpp:102).
                 var configuration = ReadZetConfiguration(io);
                 if (configuration == null) return HidLightingPaint.Failed;
-                return io.SetFeature(ZetFrame(configuration, lights, colors)) ? HidLightingPaint.Sent : HidLightingPaint.Failed;
+                var frame = ZetFrame(configuration, lights, colors);
+                if (!io.SetFeature(frame)) return HidLightingPaint.Failed;
+                // Kept when the mouse reports it back. Otherwise the shape decides,
+                // after a kill, what was PadForge's.
+                if (ReadZetConfiguration(io) is { } shown && ZetLighting(shown).AsSpan().SequenceEqual(ZetLighting(frame)))
+                    KeyboardProfileBackups.NoteShown(_key, ZetLighting(frame));
+                return HidLightingPaint.Sent;
             }
 
             public override bool HandBack(IHidReportChannel io, Action<int> wait)
@@ -561,6 +571,7 @@ namespace PadForge.Common.Input.Peripherals
                 var now = ReadZetConfiguration(io);
                 if (now != null
                     && (owed.Value.Contents.Length != ZetReportLength || !ZetLooksOurs(now)
+                        || !KeyboardProfileBackups.MayBePadForges(key, ZetLighting(now))
                         || now.AsSpan().SequenceEqual(owed.Value.Contents)
                         || io.SetFeature(ZetRestore(now, owed.Value.Contents))))
                 {

@@ -423,6 +423,10 @@ namespace PadForge.Common.Input.Peripherals
         internal static bool XenonLooksOurs(byte[] report)
             => report[0x5D] == XenonStatic && report[0x60] == XenonBrightness;
 
+        /// <summary>The bytes of a picture's lighting, in a Glorious configuration or
+        /// a Xenon 200's report: the brightness and the color.</summary>
+        internal static byte[] LightingOf(byte[] report, bool xenon) => report.AsSpan(xenon ? 0x60 : 0x38, 4).ToArray();
+
         /// <summary>A configuration write, SetMode: the first 167 bytes of
         /// <paramref name="configuration"/>, byte 3 the write length, byte 6 =
         /// 0, and for a color the Static mode, the brightness and red, blue
@@ -511,7 +515,8 @@ namespace PadForge.Common.Input.Peripherals
             Array.Copy(read, original, length);
             if (KeyboardProfileBackups.Get(key) is { } backup)
             {
-                bool ours = xenon ? XenonLooksOurs(read) : GloriousLooksOurs(read);
+                bool ours = (xenon ? XenonLooksOurs(read) : GloriousLooksOurs(read))
+                            && KeyboardProfileBackups.MayBePadForges(key, LightingOf(read, xenon));
                 if (backup.Contents.Length == length && (ours || backup.Contents.AsSpan().SequenceEqual(original)))
                     original = backup.Contents;
                 else
@@ -568,6 +573,7 @@ namespace PadForge.Common.Input.Peripherals
                 if (backup.Contents.Length != length
                     || now.AsSpan(0, length).SequenceEqual(backup.Contents)
                     || !(xenon ? XenonLooksOurs(now) : GloriousLooksOurs(now))
+                    || !KeyboardProfileBackups.MayBePadForges(key, LightingOf(now, xenon))
                     || SendRestore(pair, wait, xenon, RestoreOver(now, backup.Contents, xenon, WriteLength(libratbagOnly, count))))
                 {
                     KeyboardProfileBackups.Drop(key);
@@ -617,7 +623,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 if (KeyboardProfileBackups.Get(_key) == null)
                     KeyboardProfileBackups.Take(_key, 0, Original);
-                if (!KeyboardProfileBackups.IsPersisted(_key))
+                if (!KeyboardProfileBackups.IsPersisted(_key) || !KeyboardProfileBackups.ClearShown(_key))
                 {
                     LaterMs = SinowealthLighting.SavingMs;
                     return HidLightingPaint.Later;
@@ -629,14 +635,27 @@ namespace PadForge.Common.Input.Peripherals
                     var read = ReadXenonReport(_pair.Data);
                     if (read == null) return HidLightingPaint.Failed;
                     var written = XenonWrite(read, rgb);
-                    if (!_pair.Data.SetFeature(written)) return HidLightingPaint.Failed;
-                    return XenonCommit(_pair.Command, written) ? HidLightingPaint.Sent : HidLightingPaint.Failed;
+                    if (!_pair.Data.SetFeature(written) || !XenonCommit(_pair.Command, written)) return HidLightingPaint.Failed;
+                    NoteShown(ReadXenonReport(_pair.Data), written);
+                    return HidLightingPaint.Sent;
                 }
                 var configuration = ReadGloriousConfiguration(_pair, _fewest, out _);
                 if (configuration == null) return HidLightingPaint.Failed;
-                if (!_pair.Data.SetFeature(GloriousWrite(configuration, rgb, _rgbOrder, _writeLength))) return HidLightingPaint.Failed;
+                var write = GloriousWrite(configuration, rgb, _rgbOrder, _writeLength);
+                if (!_pair.Data.SetFeature(write)) return HidLightingPaint.Failed;
                 wait(GloriousWaitMs);
+                NoteShown(ReadGloriousConfiguration(_pair, _fewest, out _), write);
                 return HidLightingPaint.Sent;
+            }
+
+            /// <summary>Keeps the picture's lighting when the mouse reports it back. A
+            /// read that fails or says otherwise keeps nothing, and the shape decides,
+            /// after a kill, what was PadForge's.</summary>
+            private void NoteShown(byte[] shown, byte[] written)
+            {
+                byte[] lighting = LightingOf(written, _xenon);
+                if (shown != null && lighting.AsSpan().SequenceEqual(LightingOf(shown, _xenon)))
+                    KeyboardProfileBackups.NoteShown(_key, lighting);
             }
 
             public override bool HandBack(IHidReportChannel io, Action<int> wait)

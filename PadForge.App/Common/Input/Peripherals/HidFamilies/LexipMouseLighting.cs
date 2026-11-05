@@ -23,12 +23,12 @@ namespace PadForge.Common.Input.Peripherals
     /// and output reports do not, by WriteFile or by HidD_SetOutputReport
     /// (measured on a virtual mouse, and hidapi windows/hid.c:1009-1026). The
     /// color goes out as an output report, an interrupt OUT in OpenRGB's capture
-    /// (LexipMouseController.cpp:54-58). Lexip's own program runs on Windows and
-    /// could not send that on the mouse collection, so by inference the mouse
-    /// has a collection that opens for write. No descriptor of the mouse is on
-    /// disk to name it, so any collection of this mouse Windows does not hold,
-    /// with an output report that holds the frame, is the unit in place of the
-    /// mouse collection (<see cref="Lit"/>). A mouse with no such collection
+    /// (LexipMouseController.cpp:54-58). The captures attached to OpenRGB issue
+    /// 2245 name the collection: ReportDescriptor.pcapng has one of page 1 usage
+    /// 0x80 with a 64-byte output report and no report ID, and colors.pcapng has
+    /// the frames on OUT endpoint 0x05. Any collection of this mouse Windows does
+    /// not hold, with an output report that holds the frame, is the unit in place
+    /// of the mouse collection (<see cref="Lit"/>). A mouse with no such collection
     /// keeps the registered one, whose row says Windows holds it, and nothing
     /// is written (<see cref="DirectUnit.WindowsHolds"/>).</para>
     ///

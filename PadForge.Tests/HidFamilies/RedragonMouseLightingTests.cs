@@ -110,7 +110,7 @@ namespace PadForge.Tests
             Assert.NotNull(backup);
             Assert.Equal(0x02, backup.Value.Profile);
             Assert.Equal(new byte[] { 0xFF, 0x00, 0x00, 0x01, 0x05, 0x08 }, backup.Value.Contents);
-            var writes = rig.Log.Of('F').Skip(4).ToList();
+            var writes = rig.Log.Of('F').Skip(4).Take(R.EnterFrames(0x102030).Length).ToList();
             Assert.Equal(R.EnterFrames(0x102030).Select(f => Hex(f)), writes.Select(f => Hex(f)));
             var record = Assert.Single(backend.Recorded);
             Assert.Equal(R.RestoreFrames(0x02, backup.Value.Contents).Select(f => Hex(f)), record.Frames.Select(f => Hex(f)));
@@ -121,7 +121,7 @@ namespace PadForge.Tests
             Assert.Empty(rig.Log.Sent());
             rig.Advance(R.RepaintMs);
             KeyboardFamilyRig.Passes(backend);
-            Assert.Equal(R.ColorFrames(0x405060).Select(f => Hex(f)), rig.Log.Of('F').Select(f => Hex(f)));
+            Assert.Equal(R.ColorFrames(0x405060).Select(f => Hex(f)), rig.Log.Of('F').Take(R.ColorFrames(0x405060).Length).Select(f => Hex(f)));
             rig.Log.Clear();
             rig.Release(backend);
             Assert.Equal(R.RestoreFrames(0x02, new byte[] { 0xFF, 0x00, 0x00, 0x01, 0x05, 0x08 }).Select(f => Hex(f)),

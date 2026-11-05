@@ -876,6 +876,55 @@ namespace PadForge.Tests
         /// stop and then F3, the vendor driver's own last frame. A mouse
         /// it never wrote to gets nothing, and no handle is closed: the
         /// mouse's row closes it afterward.</summary>
+        /// <summary>A worker a stop gave up on sends no last frames when it comes back with a
+        /// later worker running. Its own last frame asked for 300 ms of pulses, over by then,
+        /// and a stop would land between the later worker's frames.</summary>
+        [Fact]
+        public void AWorkerAStopGaveUpOn_SendsNoStopOverALaterWorker()
+        {
+            var (bench, channel, row) = OneMouse(stopJoinMs: 50);
+            using var _ = bench;
+            using var gate = new ManualResetEventSlim(false);
+            using var entered = new ManualResetEventSlim(false);
+            Thread stuck = null;
+            int held = 0;
+            PeripheralOutputs.SetMotors(row, HalfMotor, 0);
+            bench.Pass();
+            int sent = channel.Frames.Length;
+            Assert.True(sent > 0, "the level went out");
+            channel.BeforeSend = () =>
+            {
+                if (Interlocked.Exchange(ref held, 1) == 0)
+                {
+                    stuck = Thread.CurrentThread;
+                    entered.Set();
+                    gate.Wait(30000);
+                }
+            };
+            try
+            {
+                bench.Advance(TouchSenseProtocol.MinGapMs);
+                PeripheralOutputs.SetMotors(row, 39321, 0);
+                Assert.True(SpinWait.SpinUntil(() =>
+                {
+                    bench.Backend.Nudge();
+                    return entered.IsSet;
+                }, 30000), "the worker is inside a frame");
+                bench.Backend.Stop();
+
+                using var later = new Bench(predecessorJoinMs: 50, stopJoinMs: 50);
+                later.Backend.Start();
+                later.Pass();
+            }
+            finally
+            {
+                gate.Set();
+            }
+            Assert.True(stuck.Join(30000), "the first worker ended");
+            Assert.DoesNotContain("13 00 00 00 00 00 00", channel.Frames);
+            Assert.DoesNotContain("F3 00 00 00 00 00 00", channel.Frames);
+        }
+
         [Fact]
         public void Stopping_SendsTheStopThenTheVendorsLastFrame_ToEveryMouseItWroteTo()
         {
@@ -1266,7 +1315,7 @@ namespace PadForge.Tests
 
                 release.Set();
                 Assert.True(Volatile.Read(ref old).Join(30000), "the first worker ended");
-                Assert.Equal(new[] { Half, Stop, StopAll }, channel.Frames);
+                Assert.Equal(new[] { Half }, channel.Frames);
                 Assert.Same(listed, bench.Backend.Snapshot);
             }
             finally

@@ -314,7 +314,8 @@ namespace PadForge.Common.Input.Peripherals
                     // PadForge's picture or those very bytes, takes the backup.
                     // Otherwise something else set it since, and the backup
                     // goes.
-                    if (record == null || LooksOurs(record) || record.AsSpan().SequenceEqual(backup.Contents))
+                    if (record == null || (LooksOurs(record) && KeyboardProfileBackups.MayBePadForges(key, record))
+                        || record.AsSpan().SequenceEqual(backup.Contents))
                         return new Session(key, backup.Profile, backup.Contents);
                     KeyboardProfileBackups.Drop(key);
                 }
@@ -354,7 +355,7 @@ namespace PadForge.Common.Input.Peripherals
                 {
                     if (KeyboardProfileBackups.Get(_key) == null)
                         KeyboardProfileBackups.Take(_key, Profile, Record);
-                    if (!KeyboardProfileBackups.IsPersisted(_key))
+                    if (!KeyboardProfileBackups.IsPersisted(_key) || !KeyboardProfileBackups.ClearShown(_key))
                     {
                         LaterMs = SavingMs;
                         return HidLightingPaint.Later;
@@ -363,6 +364,11 @@ namespace PadForge.Common.Input.Peripherals
                 int rgb = CoolerMasterLighting.ByAddress(lights, colors, 1)[0];
                 if (!SendAll(io, _entered ? ColorFrames(rgb) : EnterFrames(rgb))) return HidLightingPaint.Failed;
                 _entered = true;
+                // A model that answers keeps the record it reports back. Otherwise the
+                // shape decides, after a kill, what was PadForge's.
+                if (Record != null && ReadSettings(io, out _, out byte[] shown) && shown != null && LooksOurs(shown)
+                    && shown[0] == (byte)(rgb >> 16) && shown[1] == (byte)(rgb >> 8) && shown[2] == (byte)rgb)
+                    KeyboardProfileBackups.NoteShown(_key, shown);
                 return HidLightingPaint.Sent;
             }
 
@@ -387,7 +393,8 @@ namespace PadForge.Common.Input.Peripherals
                     byte[] record = null;
                     if (!readable || (ReadSettings(io, out _, out record) && record != null))
                     {
-                        if ((record != null && (!LooksOurs(record) || record.AsSpan().SequenceEqual(owed.Value.Contents)))
+                        if ((record != null && (!LooksOurs(record) || !KeyboardProfileBackups.MayBePadForges(key, record)
+                                                || record.AsSpan().SequenceEqual(owed.Value.Contents)))
                             || SendAll(io, RestoreFrames(owed.Value.Profile, owed.Value.Contents)))
                         {
                             KeyboardProfileBackups.Drop(key);

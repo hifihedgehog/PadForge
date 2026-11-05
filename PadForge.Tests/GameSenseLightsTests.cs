@@ -232,6 +232,50 @@ namespace PadForge.Tests
             Assert.DoesNotContain(server.Posts, p => p.Path == "/bind_game_event" && EventOf(p.Body) == "COLOR_KEYBOARD");
         }
 
+        /// <summary>A worker a stop gave up on says nothing when it comes back. What the tabs
+        /// show is the next run's.</summary>
+        [Fact]
+        public void AWorkerAStopGaveUpOn_SaysNothingOverTheNextRun()
+        {
+            using var server = new HidppHapticsTests.FakeGameSense();
+            using var gate = new ManualResetEventSlim(false);
+            using var entered = new ManualResetEventSlim(false);
+            int held = 0;
+            server.BeforeAnswer = _ =>
+            {
+                if (Interlocked.Exchange(ref held, 1) == 0)
+                {
+                    entered.Set();
+                    gate.Wait(30000);
+                }
+            };
+            PeripheralOutputs.PublishLinks(new LinkTable(new[] { new DeviceLinks { Device = Keyboard, Lighting = new[] { Type("keyboard") } } }));
+            PeripheralOutputs.SetLighting(Keyboard, slot: 0, player: 1, 0x00, 0x00, 0xFF);
+            var first = new GameSenseBackend(() => new GameSenseClient(server.WriteCoreProps(), 30000), _ => 0, 2);
+            GameSenseBackend next = null;
+            try
+            {
+                first.Start();
+                Assert.True(entered.Wait(30000), "the first worker is inside a request");
+                first.Stop();
+
+                next = new GameSenseBackend(() => new GameSenseClient(server.WriteCoreProps(), 30000), _ => 0, 2);
+                next.Start();
+                Assert.True(SpinWait.SpinUntil(
+                    () => PeripheralOutputs.StateOf(OutputFamily.GameSenseColor) == BackendState.Connected, 30000), "the next run connected");
+
+                gate.Set();
+                Assert.True(SpinWait.SpinUntil(() => !first.WorkerAliveForTest, 30000), "the first worker ended");
+                Assert.Equal(BackendState.Connected, PeripheralOutputs.StateOf(OutputFamily.GameSenseColor));
+            }
+            finally
+            {
+                gate.Set();
+                next?.Dispose();
+                first.Dispose();
+            }
+        }
+
         /// <summary>A bind that outlasts the timeout on every connection does
         /// not hold the device dark: the second miss paints one color, and
         /// the log says GG did not answer.</summary>

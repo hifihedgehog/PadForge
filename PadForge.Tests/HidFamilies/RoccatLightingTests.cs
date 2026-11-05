@@ -902,7 +902,7 @@ namespace PadForge.Tests
             Assert.Equal(HidLightingPaint.Sent, session.Paint(io, _ => { }, model.Map.Lights, new[] { 0x102030, 0x405060 }));
             var backup = Assert.IsType<KeyboardProfileBackups.Backup>(KeyboardProfileBackups.Get(product));
             Assert.Equal(stored, backup.Contents);
-            Assert.Equal(RoccatLighting.KovaProfile(stored, 0x102030, 0x405060), io.Calls.Last().Bytes);
+            Assert.Equal(RoccatLighting.KovaProfile(stored, 0x102030, 0x405060), io.Calls.Last(c => c.Kind == "set").Bytes);
             Assert.Equal(stored, Assert.Single(session.CrashFrames));
 
             Assert.True(session.HandBack(io, _ => { }));

@@ -294,7 +294,8 @@ iCUE SDK
   Copyright (c) Corsair Memory, Inc. All rights reserved.
   iCUESDK.x64_2019.dll 4.0.84.0, signed by Corsair Memory, Inc. Lights Corsair
   devices while iCUE runs. Ships unmodified inside the executable.
-  Distributed under the terms of Corsair's SDK, in the SDK's documentation.
+  Corsair's SDK package ships this DLL in its redist folder ("redist contains
+  both 32 and 64 bit .dll files"), under the terms in the SDK's documentation.
 
 Mystic Light SDK
   https://www.msi.com/Landing/mystic-light-rgb-gaming-pc/download

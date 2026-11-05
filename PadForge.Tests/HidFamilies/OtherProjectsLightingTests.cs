@@ -282,7 +282,7 @@ namespace PadForge.Tests
             var lights = RoccatKoneEmpLighting.Instance.Match(Collection(0x1E7D, 0x2E24, feature: 41)).Map.Lights;
             Assert.Equal(4, lights.Count);
             Assert.Equal(HidLightingPaint.Sent, session.Paint(io, _ => { }, lights, new[] { 0x112233, 0x445566, 0x778899, 0xAABBCC }));
-            var written = io.Calls.Where(c => c.Kind == "set").Last().Bytes;
+            var written = io.Calls.Where(c => c.Kind == "set").Last(c => c.Bytes[0] == 0x06).Bytes;
             Assert.Equal(0xFF, written[19]);
             Assert.Equal(0x00, written[20]);
             Assert.Equal(0x01, written[21]);

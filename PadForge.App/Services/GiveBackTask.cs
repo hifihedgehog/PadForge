@@ -65,6 +65,14 @@ namespace PadForge.Services
         /// <summary>Test seam: the wait for a run to finish. Null in production.</summary>
         internal static Action<string> RunFinishSeam;
 
+        /// <summary>Test seam: an exe's size, negative when it cannot be read. Null in
+        /// production.</summary>
+        internal static Func<string, long> ExeSizeSeam;
+
+        /// <summary>Test seam: where a single-file exe's native libraries are extracted.
+        /// Null in production.</summary>
+        internal static Func<string> ExtractBaseSeam;
+
         /// <summary>The pipes this app holds, by task. A registration holds one
         /// for the wait it starts. They go when the task is deleted, and with the
         /// process however it ends.</summary>
@@ -118,16 +126,50 @@ namespace PadForge.Services
         /// sees the app's pipe leaves what it has not done.</summary>
         internal const int RunFinishWaitMs = 3000;
 
+        /// <summary>The size of the exe registering a task. A task left through two
+        /// boots can outlive that exe, and an older one has no run mode: it would start
+        /// the whole app as SYSTEM. So the run goes only to a file of this size, which
+        /// cmd reads with no help (%~z). Any other file falls to what stands behind the
+        /// run, and its next start registers the task for itself.</summary>
+        private static long ExeSize(string exe)
+        {
+            if (ExeSizeSeam != null) return ExeSizeSeam(exe);
+            try { return new FileInfo(exe).Length; }
+            catch { return -1; }
+        }
+
+        /// <summary>Where this process's native libraries are extracted, the default
+        /// the host itself uses (Microsoft, single-file deployment). A run starts from
+        /// the same place, so SYSTEM's profile takes no copy of its own, and the run is
+        /// up at once.</summary>
+        private static string ExtractBase()
+        {
+            if (ExtractBaseSeam != null) return ExtractBaseSeam();
+            return Environment.GetEnvironmentVariable("DOTNET_BUNDLE_EXTRACT_BASE_DIR") is { Length: > 0 } set
+                ? set
+                : Path.Combine(Path.GetTempPath(), ".net");
+        }
+
         /// <summary>A task's whole action. It waits while the app holds the pipe,
         /// then gives the device back only if the task still stands: a device
         /// kept or given back has no task, and a normal exit starts nothing. A
-        /// missing exe or a run that exits 1 falls to
+        /// missing or other exe, or a run that exits 1, falls to
         /// <paramref name="otherwise"/>, when there is one. The reader is
         /// find.exe, since cmd's own type ends at once on a pipe.</summary>
         internal static string Action(string taskName, string exe, string runSwitch, string id, string otherwise, string system32)
         {
-            string run = CanQuote(exe) ? $"\"{exe}\" {runSwitch} \"{id}\" \"{taskName}\"" : null;
+            string run = null;
+            if (CanQuote(exe))
+            {
+                string extract = ExtractBase();
+                run = (CanQuote(extract) ? $"set \"DOTNET_BUNDLE_EXTRACT_BASE_DIR={extract}\" & " : string.Empty)
+                      + $"\"{exe}\" {runSwitch} \"{id}\" \"{taskName}\"";
+            }
             string giveBack = run == null ? otherwise : otherwise == null ? run : $"{run} || ( {otherwise} )";
+            long size = run == null ? -1 : ExeSize(exe);
+            if (size >= 0)
+                giveBack = $"for %I in (\"{exe}\") do if \"%~zI\"==\"{size}\" ( {giveBack} )"
+                           + (otherwise == null ? string.Empty : $" else ( {otherwise} )");
             return $"{Path.Combine(system32, "find.exe")} /v \"\" < \"{PipePath(taskName)}\" >nul 2>&1 "
                 + $"& {Path.Combine(system32, "schtasks.exe")} /Query /TN \"{taskName}\" >nul 2>&1 && ( {giveBack} )";
         }
@@ -186,9 +228,8 @@ namespace PadForge.Services
         /// holds the pipe for it, since with no pipe the wait ends at once. A boot
         /// trigger stands either way. The wait lasts as long as the app, so a
         /// registration's instance has no time limit (Microsoft, ExecutionTimeLimit:
-        /// PT0S), and a boot's has no wait to last, so it has one: an exe older than
-        /// the task, which has no run mode, starts the whole app (Microsoft,
-        /// ExecutionTimeLimit of a trigger).</summary>
+        /// PT0S), and a boot's has no wait to last, so it has one, and nothing is left
+        /// running past it (Microsoft, ExecutionTimeLimit of a trigger).</summary>
         internal static string TaskXml(string command, string system32, bool pipeHeld)
         {
             string program = SecurityElement.Escape(Path.Combine(system32, "cmd.exe"));

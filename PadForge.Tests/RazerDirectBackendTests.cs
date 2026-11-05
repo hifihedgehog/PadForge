@@ -2675,6 +2675,8 @@ namespace PadForge.Tests
             bench.Light(mouse, Blue);
             bench.Passes();
             Assert.False(mouse.Open);
+            // The program's turn comes on the pass after the paint.
+            bench.Passes();
             Assert.False(RazerDirectBackend.HandBackHeldForTest(mouse.Key));
         }
 

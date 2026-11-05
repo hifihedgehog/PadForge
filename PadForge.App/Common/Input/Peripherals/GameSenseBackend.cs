@@ -116,17 +116,26 @@ namespace PadForge.Common.Input.Peripherals
         /// times nothing.</summary>
         internal int WaitMs => Volatile.Read(ref _waitMs);
 
+        /// <summary>The last run started. What the tabs say is that run's.</summary>
+        private static WorkerRun s_latestRun;
+
+        private Thread _lastThread;
+
+        internal bool WorkerAliveForTest => Volatile.Read(ref _lastThread)?.IsAlive == true;
+
         public void Start()
         {
             if (_thread != null) return;
             var run = new WorkerRun();
             _run = run;
+            Volatile.Write(ref s_latestRun, run);
             PeripheralOutputs.HapticsChanged += OnRulerMoved;
             PeripheralOutputs.IdentifyChanged += OnRulerMoved;
             PeripheralOutputs.LightingChanged += Wake;
             foreach (var pair in GameSenseLights.Maps)
                 PeripheralLightMaps.Publish(new OutputPath(OutputFamily.GameSenseColor, pair.Key), pair.Value);
             _thread = new Thread(() => Worker(run)) { IsBackground = true, Name = "PeripheralGameSense" };
+            Volatile.Write(ref _lastThread, _thread);
             _thread.Start();
         }
 
@@ -229,7 +238,7 @@ namespace PadForge.Common.Input.Peripherals
                             client.Close();
                             PadForge.Engine.SdlDiagLog.WriteLine("PERIPHERAL GameSense handed back");
                         }
-                        if (!client.Connected)
+                        if (!client.Connected && !run.Stop)
                         {
                             PeripheralOutputs.SetProgramRefusal(OutputFamily.GameSenseTactile, null);
                             PeripheralOutputs.SetProgramRefusal(OutputFamily.GameSenseColor, null);
@@ -277,14 +286,17 @@ namespace PadForge.Common.Input.Peripherals
                         // GG runs and does not take PadForge's game: the tabs
                         // name that in place of a wait for GG to start.
                         bool refused = !client.Connected && PeripheralOutputs.Presence.SteelSeriesGGRunning;
-                        PeripheralOutputs.SetProgramRefusal(OutputFamily.GameSenseTactile,
-                            refused && ruler != Guid.Empty ? ProgramRefusal.Everything : null);
-                        PeripheralOutputs.SetProgramRefusal(OutputFamily.GameSenseColor,
-                            refused && colors.Count > 0 ? ProgramRefusal.Everything : null);
-                        PeripheralOutputs.SetBackendState(OutputFamily.GameSenseTactile,
-                            ruler == Guid.Empty ? BackendState.Idle : state);
-                        PeripheralOutputs.SetBackendState(OutputFamily.GameSenseColor,
-                            colors.Count == 0 ? BackendState.Idle : state);
+                        if (!run.Stop)
+                        {
+                            PeripheralOutputs.SetProgramRefusal(OutputFamily.GameSenseTactile,
+                                refused && ruler != Guid.Empty ? ProgramRefusal.Everything : null);
+                            PeripheralOutputs.SetProgramRefusal(OutputFamily.GameSenseColor,
+                                refused && colors.Count > 0 ? ProgramRefusal.Everything : null);
+                            PeripheralOutputs.SetBackendState(OutputFamily.GameSenseTactile,
+                                ruler == Guid.Empty ? BackendState.Idle : state);
+                            PeripheralOutputs.SetBackendState(OutputFamily.GameSenseColor,
+                                colors.Count == 0 ? BackendState.Idle : state);
+                        }
                     }
                     // What GG plays now: the level just rendered, or nothing
                     // once the connection is gone.
@@ -311,10 +323,13 @@ namespace PadForge.Common.Input.Peripherals
                 try { client?.Dispose(); } catch { }
                 Volatile.Write(ref _posted, 0);
                 Volatile.Write(ref _posting, 0);
-                PeripheralOutputs.SetProgramRefusal(OutputFamily.GameSenseTactile, null);
-                PeripheralOutputs.SetProgramRefusal(OutputFamily.GameSenseColor, null);
-                PeripheralOutputs.SetBackendState(OutputFamily.GameSenseTactile, BackendState.Idle);
-                PeripheralOutputs.SetBackendState(OutputFamily.GameSenseColor, BackendState.Idle);
+                if (ReferenceEquals(Volatile.Read(ref s_latestRun), run))
+                {
+                    PeripheralOutputs.SetProgramRefusal(OutputFamily.GameSenseTactile, null);
+                    PeripheralOutputs.SetProgramRefusal(OutputFamily.GameSenseColor, null);
+                    PeripheralOutputs.SetBackendState(OutputFamily.GameSenseTactile, BackendState.Idle);
+                    PeripheralOutputs.SetBackendState(OutputFamily.GameSenseColor, BackendState.Idle);
+                }
             }
         }
 

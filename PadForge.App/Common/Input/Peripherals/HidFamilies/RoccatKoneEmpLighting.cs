@@ -138,6 +138,9 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             return true;
         }
 
+        /// <summary>The bytes of a picture's lighting: every LED's color.</summary>
+        internal static byte[] LightingOf(byte[] settings) => settings.AsSpan(LedsAt, Leds * 4).ToArray();
+
         /// <summary>The settings the mouse holds now with the lighting of
         /// <paramref name="original"/>, from the status to the last LED.</summary>
         internal static byte[] Restored(byte[] now, byte[] original)
@@ -240,7 +243,9 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                         if (now == null) return null;
                         // An earlier run's picture, never handed back. A profile that holds
                         // anything else holds its own or another program's, and stays.
-                        if (!now.AsSpan().SequenceEqual(original) && LooksOurs(now)) owed[profile] = original;
+                        if (!now.AsSpan().SequenceEqual(original) && LooksOurs(now)
+                            && KeyboardProfileBackups.MayBePadForges(key, LightingOf(now), profile))
+                            owed[profile] = original;
                     }
                 }
                 if (owed.Count == 0) KeyboardProfileBackups.Drop(key);
@@ -262,6 +267,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                 {
                     var now = ReadSettings(io, wait, profile);
                     if (now != null && (now.AsSpan().SequenceEqual(original) || !LooksOurs(now)
+                                        || !KeyboardProfileBackups.MayBePadForges(key, LightingOf(now), profile)
                                         || (io.SetFeature(Restored(now, original)) && WaitReady(io, wait))))
                         continue;
                     KeyboardProfileBackups.NoteFailure(key);
@@ -329,7 +335,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                     KeyboardProfileBackups.Take(_key, (byte)_originals.Count, BackupOf(_originals));
                     _unsaved = false;
                 }
-                if (!KeyboardProfileBackups.IsPersisted(_key))
+                if (!KeyboardProfileBackups.IsPersisted(_key) || !KeyboardProfileBackups.ClearShown(_key, active))
                 {
                     LaterMs = LenovoLegionLighting.SavingMs;
                     return HidLightingPaint.Later;
@@ -339,8 +345,13 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                 // Marked first: a write that reports a failure may still have landed.
                 _ours.Add(active);
                 Track();
-                return io.SetFeature(Written(now, lights, colors)) && WaitReady(io, wait)
-                    ? HidLightingPaint.Sent : HidLightingPaint.Failed;
+                var written = Written(now, lights, colors);
+                if (!io.SetFeature(written) || !WaitReady(io, wait)) return HidLightingPaint.Failed;
+                // Kept when the mouse reports it back. Otherwise the shape decides, after
+                // a kill, what was PadForge's.
+                if (ReadSettings(io, wait, active) is { } shown && LightingOf(shown).AsSpan().SequenceEqual(LightingOf(written)))
+                    KeyboardProfileBackups.NoteShown(_key, LightingOf(written), active);
+                return HidLightingPaint.Sent;
             }
 
             public override bool HandBack(IHidReportChannel io, Action<int> wait)

@@ -31,6 +31,44 @@ namespace PadForge.Common.Input.Peripherals
         /// path in <see cref="DeviceKey"/>.</summary>
         private const char PathMark = '|';
 
+        /// <summary>What comes ahead of a key for what the device reported of
+        /// PadForge's last picture, kept beside that key's backup and gone with it.</summary>
+        private const string ShownMark = "shown:";
+
+        private static string ShownKey(string key, int part)
+            => part < 0 ? ShownMark + key : ShownMark + key + "#" + part;
+
+        private static bool IsShownOf(string held, string key)
+            => held.Equals(ShownMark + key, StringComparison.OrdinalIgnoreCase)
+               || held.StartsWith(ShownMark + key + "#", StringComparison.OrdinalIgnoreCase);
+
+        /// <summary>Ahead of a write of a stored picture: what is on record of the
+        /// last one goes, so a kill during the write leaves the file saying nothing
+        /// and not naming a picture the device no longer shows. False until the
+        /// settings file holds that, and no write goes out before it does.
+        /// <paramref name="part"/> is the profile, on a device PadForge lights
+        /// several of.</summary>
+        public static bool ClearShown(string key, int part = -1)
+        {
+            if (string.IsNullOrEmpty(key)) return true;
+            Drop(ShownKey(key, part));
+            return Volatile.Read(ref s_version) <= Volatile.Read(ref s_persisted);
+        }
+
+        /// <summary>The device reported <paramref name="lighting"/> right after a
+        /// picture of PadForge's.</summary>
+        public static void NoteShown(string key, byte[] lighting, int part = -1)
+        {
+            if (!string.IsNullOrEmpty(key)) Take(ShownKey(key, part), 0, lighting);
+        }
+
+        /// <summary>Whether lighting of the shape PadForge leaves can be PadForge's
+        /// own: it is what the device reported of PadForge's last picture, or
+        /// nothing is on record of that. Different colors are someone else's, set
+        /// since, and they stay.</summary>
+        public static bool MayBePadForges(string key, ReadOnlySpan<byte> lighting, int part = -1)
+            => Get(ShownKey(key, part)) is not { } shown || shown.Contents.AsSpan().SequenceEqual(lighting);
+
         private sealed record Entry(byte Profile, byte[] Contents, int Version);
 
         private static readonly object s_lock = new();
@@ -113,6 +151,12 @@ namespace PadForge.Common.Input.Peripherals
                 entries.Remove(from);
                 int version = Interlocked.Increment(ref s_version);
                 entries[to] = entry with { Version = version };
+                foreach (string held in s_entries.Keys)
+                {
+                    if (!IsShownOf(held, from)) continue;
+                    entries.Remove(held);
+                    entries[ShownMark + to + held.Substring(ShownMark.Length + from.Length)] = s_entries[held] with { Version = version };
+                }
                 s_entries = entries;
                 s_failures.Remove(from);
                 if (s_persistAtOnce) Volatile.Write(ref s_persisted, version);
@@ -158,6 +202,8 @@ namespace PadForge.Common.Input.Peripherals
                 if (!s_entries.ContainsKey(key)) return;
                 var entries = new Dictionary<string, Entry>(s_entries, StringComparer.OrdinalIgnoreCase);
                 entries.Remove(key);
+                foreach (string held in s_entries.Keys)
+                    if (IsShownOf(held, key)) entries.Remove(held);
                 s_entries = entries;
                 s_failures.Remove(key);
                 int version = Interlocked.Increment(ref s_version);

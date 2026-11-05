@@ -82,6 +82,9 @@ namespace PadForge.Common.Input.Peripherals
         /// land between the buzz frames of the new.</summary>
         internal const int PredecessorJoinMs = 5000;
 
+        /// <summary>The last worker to come out of that wait.</summary>
+        private static Thread s_pastItsWait;
+
         /// <summary>How long Stop waits for the worker's last frames.</summary>
         internal const int StopJoinMs = 3000;
 
@@ -284,6 +287,7 @@ namespace PadForge.Common.Input.Peripherals
                 && !previous.Join(_predecessorJoinMs))
                 PadForge.Engine.SdlDiagLog.WriteLine(
                     $"PERIPHERAL TouchSense previous worker still running after {_predecessorJoinMs} ms, starting anyway");
+            Volatile.Write(ref s_pastItsWait, Thread.CurrentThread);
             var mice = new Dictionary<string, Mouse>(StringComparer.OrdinalIgnoreCase);
             try
             {
@@ -343,7 +347,10 @@ namespace PadForge.Common.Input.Peripherals
             }
             finally
             {
-                HandBack(mice);
+                // A later worker that came out of its wait is playing by now. This
+                // worker's last frame asked for 300 ms of pulses, and a stop would land
+                // between the new frames. One still waiting waits for these.
+                if (ReferenceEquals(Volatile.Read(ref s_pastItsWait), Thread.CurrentThread)) HandBack(mice);
                 // A worker a Stop gave up on can end after the next Start,
                 // once the new worker's wait for it ran out. What the
                 // backend shows then is the new run's to keep.

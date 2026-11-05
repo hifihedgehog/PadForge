@@ -347,7 +347,7 @@ namespace PadForge.Common.Input.Peripherals
                 {
                     state = saved;
                 }
-                else if (saved != null && state.LooksOurs)
+                else if (saved != null && state.LooksOurs && KeyboardProfileBackups.MayBePadForges(key, state.Palette[0]))
                 {
                     // An earlier run's picture, never handed back.
                     state = saved;
@@ -370,7 +370,9 @@ namespace PadForge.Common.Input.Peripherals
             var saved = SagarisState.FromContents(backup.Contents);
             var now = saved == null ? null : ReadSagaris(io);
             bool settled = saved == null
-                           || (now != null && (now.SameAs(saved) || !now.LooksOurs || SendSagaris(io, saved.Restore())));
+                           || (now != null && (now.SameAs(saved) || !now.LooksOurs
+                                               || !KeyboardProfileBackups.MayBePadForges(key, now.Palette[0])
+                                               || SendSagaris(io, saved.Restore())));
             if (settled) KeyboardProfileBackups.Drop(key);
             else KeyboardProfileBackups.NoteFailure(key);
             return settled;
@@ -427,7 +429,7 @@ namespace PadForge.Common.Input.Peripherals
                 if (KeyboardProfileBackups.Get(_key) is not { } held
                     || !held.Contents.AsSpan().SequenceEqual(_contents))
                     KeyboardProfileBackups.Take(_key, 0, _contents);
-                if (!KeyboardProfileBackups.IsPersisted(_key))
+                if (!KeyboardProfileBackups.IsPersisted(_key) || !KeyboardProfileBackups.ClearShown(_key))
                 {
                     LaterMs = LenovoLegionLighting.SavingMs;
                     return HidLightingPaint.Later;
@@ -436,7 +438,14 @@ namespace PadForge.Common.Input.Peripherals
                 // landed.
                 _ours = true;
                 _crash = _restore;
-                return SendSagaris(io, SagarisFrames(colors[0])) ? HidLightingPaint.Sent : HidLightingPaint.Failed;
+                if (!SendSagaris(io, SagarisFrames(colors[0]))) return HidLightingPaint.Failed;
+                // Kept when the keyboard reports it back, four bits a channel.
+                // Otherwise the shape decides, after a kill, what was PadForge's.
+                int rgb = colors[0];
+                var lighting = new[] { (byte)((rgb >> 16 & 0xFF) / 16), (byte)((rgb >> 8 & 0xFF) / 16), (byte)((rgb & 0xFF) / 16) };
+                if (ReadSagaris(io) is { LooksOurs: true } shown && shown.Palette[0].AsSpan().SequenceEqual(lighting))
+                    KeyboardProfileBackups.NoteShown(_key, lighting);
+                return HidLightingPaint.Sent;
             }
 
             public override bool HandBack(IHidReportChannel io, Action<int> wait)

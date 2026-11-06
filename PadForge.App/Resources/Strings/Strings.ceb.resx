@@ -3318,22 +3318,15 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>Ang na-download nga S.T.R.I.K.E. 7 SDK dili motakdo sa nailhan nga SHA-256 niini, busa walay gitipigan gikan niini.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>Wala gihapoy Visual C++ 2008 runtime human midagan ang installer niini.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Ipakita ang screen sa keyboard</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Magpakita og mga hulagway sa matag screen sa keyboard sa gipili nga klase nga nagsuplay niini nga slot, dayon ibalik ang matag screen sa kaugalingong mode niini.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Ipakita ang mga hulagway sa {0}: {1} × {2} ms, ihap sa pagbalik {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Ang mga hulagway gipahaum sa screen: 160 por 43 nga itom ug puti nga pixel sa monochrome nga screen, 320 por 240 sa G19, ug 480 por 320 para sa Arx Control ug sa S.T.R.I.K.E. 7. Ang ikanapulo sa usa ka segundo mao ang pinakamubo nga oras sa frame.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Mode sa screen sa keyboard</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Ibalhin ngadto sa laing mode ang matag screen sa keyboard sa gipili nga klase nga nagsuplay niini nga slot, ug tipigan kini isip setting sa maong screen.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>Ang {0} mopakita sa {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Magpabilin ang mode hangtod usbon kini sa laing macro o sa dialog sa screen.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Stopwatch</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Sugdan o i-pause, o i-reset, ang stopwatch nga gipakita sa mga screen sa keyboard nga naa sa Stopwatch mode.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>Sugdi o i-pause ang stopwatch</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>I-reset ang stopwatch</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Ang i-reset mohunong sa stopwatch ug ibalik kini sa zero. Parehas nga stopwatch ang ipakita sa matag screen sa keyboard nga naa sa Stopwatch mode.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>I-pan ang hulagway sa screen sa keyboard</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Ilihok ang bintana sa matag screen sa keyboard nga nagsuplay niini nga slot ibabaw sa hulagway nga mas dako kaysa screen, para sa mapa.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>I-pan ang mga hulagway {0} por {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Molihok sa matag screen nga nagsuplay niini nga slot ug nagpakita og gipili nga hulagway nga mas dako kaysa niini. Mohunong ang bintana sa mga ngilit sa hulagway.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Screen</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Aksyon</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Direksyon</value></data>

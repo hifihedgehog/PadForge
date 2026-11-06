@@ -4356,22 +4356,15 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>Preuzeti SDK za S.T.R.I.K.E. 7 ne odgovara poznatom SHA-256, pa ništa iz njega nije zadržano.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>Izvršno okruženje Visual C++ 2008 i dalje nedostaje nakon pokretanja njegova instalacijskog programa.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Prikaži zaslon tipkovnice</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Prikazuje slike na svakom zaslonu tipkovnice odabrane vrste koji šalje ulaz ovom utoru, a zatim svaki zaslon vraća u njegov način rada.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Prikaži slike za {0}: {1} × {2} ms, broj ponavljanja {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Slike se prilagođavaju zaslonu: 160 × 43 crno-bijela piksela na monokromatskom zaslonu, 320 × 240 na zaslonu G19 te 480 × 320 za Arx Control i S.T.R.I.K.E. 7. Najkraće trajanje okvira je desetinka sekunde.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Način rada zaslona tipkovnice</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Prebacuje svaki zaslon tipkovnice odabrane vrste koji šalje ulaz ovom utoru na drugi način rada i zadržava ga kao postavku tog zaslona.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} prikazuje {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Način rada ostaje dok ga ne promijeni drugi makro ili dijaloški okvir zaslona.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Štoperica</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Pokreće ili pauzira, odnosno vraća na nulu štopericu koju prikazuju zasloni tipkovnice u načinu rada Štoperica.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>Pokreni ili pauziraj štopericu</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>Vrati štopericu na nulu</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Vraćanje na nulu zaustavlja štopericu i postavlja je na nulu. Svi zasloni tipkovnice u načinu rada Štoperica prikazuju istu štopericu.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Pomicanje slike zaslona tipkovnice</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Pomiče prozor svakog zaslona tipkovnice koji šalje ulaz ovom utoru preko slike veće od zaslona, na primjer za kartu.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Pomicanje slika za {0} i {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Pomiče svaki zaslon koji šalje ulaz ovom utoru i prikazuje odabranu sliku veću od sebe. Prozor se zaustavlja na rubovima slike.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Zaslon</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Radnja</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Smjer</value></data>

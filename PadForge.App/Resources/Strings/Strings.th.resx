@@ -4577,20 +4577,20 @@
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>แสดงหน้าจอคีย์บอร์ด</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>เล่นรูปภาพบนหน้าจอคีย์บอร์ดแต่ละเครื่องของประเภทที่เลือกซึ่งป้อนช่องนี้ แล้วคืนแต่ละหน้าจอสู่โหมดของตัวเอง โอเวอร์เลย์หน้าจอรับรูปภาพจากช่องใดก็ได้</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>แสดงรูปภาพ {0}: {1} × {2} ms จำนวนครั้งที่ทำซ้ำ {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>รูปภาพจะถูกปรับให้พอดีกับหน้าจอ: 160 × 43 พิกเซลขาวดำบนหน้าจอขาวดำ 320 × 240 บนหน้าจอของ G19 และ 480 × 320 สำหรับ Arx Control และ S.T.R.I.K.E. 7 เวลาต่อเฟรมสั้นที่สุดคือ 0.1 วินาที</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>รูปภาพจะถูกปรับให้พอดีกับหน้าจอ: 160 × 43 พิกเซลขาวดำบนหน้าจอขาวดำ 320 × 240 บนหน้าจอของ G19 และ 480 × 320 สำหรับ Arx Control และ S.T.R.I.K.E. 7 โอเวอร์เลย์หน้าจอคงรูปทรงเดิมของแต่ละรูปภาพไว้ โดยด้านที่ยาวกว่าไม่เกิน 800 พิกเซล เวลาต่อเฟรมสั้นที่สุดคือ 0.1 วินาที จำนวนครั้งที่ทำซ้ำเป็น 0 จะเล่นต่อไปจนกว่าจะมีมาโครแสดงหน้าจอคีย์บอร์ดหรือโหมดหน้าจอคีย์บอร์ดอีกอัน</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>โหมดหน้าจอคีย์บอร์ด</value></data>
   <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>สลับหน้าจอคีย์บอร์ดแต่ละเครื่องของประเภทที่เลือกซึ่งป้อนช่องนี้ไปเป็นอีกโหมด และเก็บไว้เป็นการตั้งค่าของหน้าจอนั้น โอเวอร์เลย์หน้าจอรับโหมดจากช่องใดก็ได้</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} แสดง {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>โหมดจะคงอยู่จนกว่าแมโครอื่นหรือกล่องโต้ตอบของหน้าจอจะเปลี่ยน</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>นาฬิกาจับเวลา</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>เริ่มหรือหยุดชั่วคราว หรือรีเซ็ตนาฬิกาจับเวลาที่หน้าจอคีย์บอร์ดในโหมดนาฬิกาจับเวลาแสดงอยู่</value></data>
+  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>เริ่มหรือหยุดชั่วคราว หรือรีเซ็ตนาฬิกาจับเวลาที่หน้าจอคีย์บอร์ดและโอเวอร์เลย์หน้าจอในโหมดนาฬิกาจับเวลาแสดงอยู่</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>เริ่มหรือหยุดนาฬิกาจับเวลาชั่วคราว</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>รีเซ็ตนาฬิกาจับเวลา</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>รีเซ็ตจะหยุดนาฬิกาจับเวลาและตั้งกลับเป็นศูนย์ ทุกหน้าจอคีย์บอร์ดในโหมดนาฬิกาจับเวลาแสดงนาฬิกาจับเวลาเดียวกัน</value></data>
+  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>รีเซ็ตจะหยุดนาฬิกาจับเวลาและตั้งกลับเป็นศูนย์ ทุกหน้าจอคีย์บอร์ดและโอเวอร์เลย์หน้าจอในโหมดนาฬิกาจับเวลาแสดงนาฬิกาจับเวลาเดียวกัน</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>เลื่อนรูปภาพหน้าจอคีย์บอร์ด</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>ย้ายหน้าต่างของแต่ละหน้าจอคีย์บอร์ดที่ป้อนช่องนี้ไปบนรูปภาพที่ใหญ่กว่าหน้าจอ สำหรับแผนที่</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>ย้ายหน้าต่างของแต่ละหน้าจอคีย์บอร์ดที่ป้อนช่องนี้ไปบนรูปภาพที่ใหญ่กว่าหน้าจอ สำหรับแผนที่ โอเวอร์เลย์หน้าจอเลื่อนได้เช่นกันเมื่อซูมเกิน 100 เปอร์เซ็นต์</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>เลื่อนรูปภาพ {0} × {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>ย้ายแต่ละหน้าจอที่ป้อนช่องนี้และแสดงรูปภาพที่เลือกซึ่งใหญ่กว่าตัวเอง หน้าต่างจะหยุดที่ขอบของรูปภาพ</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>ย้ายแต่ละหน้าจอที่ป้อนช่องนี้และแสดงรูปภาพที่เลือกซึ่งใหญ่กว่าตัวเอง หน้าต่างจะหยุดที่ขอบของรูปภาพ โอเวอร์เลย์หน้าจอจะเลื่อนเมื่อซูมเกิน 100 เปอร์เซ็นต์ ไม่ว่าช่องใดจะรันมาโครนั้น</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>หน้าจอ</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>การทำงาน</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>ทิศทาง</value></data>
@@ -4899,7 +4899,17 @@
   <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>โอเวอร์เลย์แสดงรูปภาพของโปรไฟล์ที่ใช้งานอยู่ หรือแสดงชื่อเมื่อโปรไฟล์ไม่มีรูปภาพ แต่ละโปรไฟล์เก็บรูปภาพของตัวเอง</value></data>
   <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>โอเวอร์เลย์แสดงเวลาของวัน</value></data>
   <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>โอเวอร์เลย์แสดงชั่วโมงและนาทีนับจากที่โปรไฟล์ที่ใช้งานอยู่เริ่มทำงาน โปรไฟล์ที่ผูกกับโปรแกรมของเกมจะเริ่มทำงานเมื่อเกมเริ่ม ค่าที่นับจึงเป็นรอบการเล่นนั้น ภายใต้โปรไฟล์ค่าเริ่มต้น จะนับตั้งแต่เอนจินเริ่มทำงาน</value></data>
-  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>โอเวอร์เลย์แสดงรูปภาพที่คุณเลือก โดยปรับขนาดให้เต็มหน้าต่างและคงสัดส่วนเดิมไว้</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>โอเวอร์เลย์แสดงรูปภาพที่คุณเลือก โดยปรับขนาดให้เต็มหน้าต่างและคงสัดส่วนเดิมไว้ เมื่อซูมเกิน 100 เปอร์เซ็นต์ จะแสดงเพียงบางส่วนของรูปภาพ สำหรับแผนที่ มาโครเลื่อนรูปภาพหน้าจอคีย์บอร์ดจะย้ายส่วนนั้น และการลากด้วยปุ่มซ้ายของเมาส์ขณะที่ PadForge อยู่ด้านหน้าก็ทำเช่นกัน</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>โอเวอร์เลย์แสดงนาฬิกาจับเวลา ซึ่งแมโครนาฬิกาจับเวลาใช้เริ่ม หยุดชั่วคราว และรีเซ็ต เป็นนาฬิกาจับเวลาเดียวกับที่หน้าจอคีย์บอร์ดทุกเครื่องแสดง</value></data>
-  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>โอเวอร์เลย์แสดงสีของแถบไฟบน DualShock 4 หรือ DualSense ในช่องที่มีหมายเลขต่ำสุด หากยังไม่มีสีส่งถึงแถบไฟ โอเวอร์เลย์จะไม่แสดงอะไร</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>โอเวอร์เลย์แสดงสีของแถบไฟบน DualShock 4 หรือ DualSense ในช่องที่คุณเลือกที่นี่ หรือในช่องต่ำสุดที่มีสี หากยังไม่มีสีส่งถึงแถบไฟ โอเวอร์เลย์จะไม่แสดงอะไร</value></data>
+  <data name="Dashboard_ScreenOverlay_Number_Format" xml:space="preserve"><value>โอเวอร์เลย์หน้าจอ {0}</value></data>
+  <data name="Dashboard_ScreenOverlayAdd" xml:space="preserve"><value>เพิ่มโอเวอร์เลย์</value></data>
+  <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>ช่องต่ำสุดที่มีสี</value></data>
+  <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>ซูม</value></data>
+  <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>ยังไม่ได้เลือกรูปภาพ</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>กำลังรอสีแถบไฟ</value></data>
+  <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>โอเวอร์เลย์</value></data>
+  <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>ทุกโอเวอร์เลย์</value></data>
+  <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>สลับเปิด/ปิดโอเวอร์เลย์หน้าจอ {0}</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>แสดงรูปภาพ {0}: {1} × {2} ms จนถึงมาโครถัดไป</value></data>
 </root>

@@ -24,6 +24,9 @@ namespace PadForge.Views
         private readonly KeyboardScreenInfo _screen;
         private readonly KeyboardScreenKind _kind;
         private readonly bool _overlay;
+        private readonly Size _overlaySize;
+        private int _zoom;
+        private int _lightbarSlot;
         private readonly string _profileName;
         private KeyboardScreenMode _mode;
         private string _picture;
@@ -44,11 +47,13 @@ namespace PadForge.Views
             _picture = current?.Picture;
             _panX = current?.PanX ?? 0;
             _panY = current?.PanY ?? 0;
+            _zoom = current?.Zoom ?? KeyboardScreenData.DefaultZoom;
+            _lightbarSlot = current?.LightbarSlot ?? KeyboardScreenData.LowestSlot;
             _profilePicture = profilePicture;
 
             var s = Strings.Instance;
             var culture = CultureInfo.CurrentCulture;
-            Title = screen.Name;
+            Title = KeyboardScreenService.ScreenName(screen);
             TitleText.Text = Title;
             DetailText.Text = detail ?? string.Empty;
             DetailText.Visibility = string.IsNullOrEmpty(detail) ? Visibility.Collapsed : Visibility.Visible;
@@ -61,12 +66,17 @@ namespace PadForge.Views
             {
                 // The overlay has no size of its own, so the preview takes the
                 // shape of its window, in a box the dialog holds.
-                var window = overlaySize ?? new Size(320, 240);
+                var window = _overlaySize = overlaySize ?? new Size(320, 240);
                 double fit = Math.Min(480.0 / window.Width, 270.0 / window.Height);
                 OverlayPreview.Width = window.Width * fit;
                 OverlayPreview.Height = window.Height * fit;
                 OverlayPreview.Visibility = Visibility.Visible;
                 PreviewImage.Visibility = Visibility.Collapsed;
+                // The index is the slot, one past the lowest-slot line.
+                LightbarSlotBox.Items.Add(new ComboBoxItem { Content = s.KeyboardScreen_LightbarSlot_Lowest });
+                for (int slot = 1; slot <= PadForge.Common.Input.InputManager.MaxPads; slot++)
+                    LightbarSlotBox.Items.Add(new ComboBoxItem { Content = slot.ToString(culture) });
+                LightbarSlotBox.SelectedIndex = _lightbarSlot + 1;
             }
             else
             {
@@ -89,7 +99,7 @@ namespace PadForge.Views
         }
 
         /// <summary>The choices the user saved, or null when canceled.</summary>
-        public sealed record Result(KeyboardScreenMode Mode, string Picture, int PanX, int PanY, string ProfilePicture);
+        public sealed record Result(KeyboardScreenMode Mode, string Picture, int PanX, int PanY, string ProfilePicture, int Zoom, int LightbarSlot);
 
         internal static Result Show(Window owner, KeyboardScreenService service, KeyboardScreenInfo screen,
             KeyboardScreenData current, string profileName, string profilePicture, string detail, Size? overlaySize = null)
@@ -98,7 +108,7 @@ namespace PadForge.Views
             if (owner != null) dialog.Owner = owner;
             else dialog.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             dialog.ShowDialog();
-            return dialog._saved ? new Result(dialog._mode, dialog._picture, dialog._panX, dialog._panY, dialog._profilePicture) : null;
+            return dialog._saved ? new Result(dialog._mode, dialog._picture, dialog._panX, dialog._panY, dialog._profilePicture, dialog._zoom, dialog._lightbarSlot) : null;
         }
 
         private static string ModeHint(KeyboardScreenMode mode)
@@ -149,8 +159,13 @@ namespace PadForge.Views
             HintText.Text = _overlay ? OverlayHint(_mode) : ModeHint(_mode);
             bool picture = _mode == KeyboardScreenMode.Picture;
             ChoosePictureButton.Visibility = picture ? Visibility.Visible : Visibility.Collapsed;
-            // All of the overlay's picture shows, so it has no window to pan.
-            PanRow.Visibility = !_overlay && picture && !string.IsNullOrEmpty(_picture) ? Visibility.Visible : Visibility.Collapsed;
+            // At 100 percent all of the overlay's picture shows, so it has no window
+            // to pan until the zoom gives it one.
+            bool hasPicture = picture && !string.IsNullOrEmpty(_picture);
+            ZoomRow.Visibility = _overlay && hasPicture ? Visibility.Visible : Visibility.Collapsed;
+            PanRow.Visibility = hasPicture && (!_overlay || _zoom > KeyboardScreenData.DefaultZoom) ? Visibility.Visible : Visibility.Collapsed;
+            ZoomBox.Text = _zoom.ToString(CultureInfo.CurrentCulture);
+            LightbarSlotRow.Visibility = _overlay && _mode == KeyboardScreenMode.Lightbar ? Visibility.Visible : Visibility.Collapsed;
             bool profile = _mode == KeyboardScreenMode.ProfilePicture;
             ChooseProfilePictureButton.Visibility = profile ? Visibility.Visible : Visibility.Collapsed;
             RemoveProfilePictureButton.Visibility = profile && !string.IsNullOrEmpty(_profilePicture)
@@ -160,7 +175,9 @@ namespace PadForge.Views
             var loaded = picture ? KeyboardScreenRenderer.LoadPicture(_picture) : null;
             if (loaded != null)
             {
-                var (maxX, maxY) = KeyboardScreenRenderer.PanLimits(loaded, _kind);
+                var (maxX, maxY) = _overlay
+                    ? ScreenOverlayContentView.PanLimits(loaded.PixelWidth, loaded.PixelHeight, _zoom, _overlaySize)
+                    : KeyboardScreenRenderer.PanLimits(loaded, _kind);
                 _panX = Math.Clamp(_panX, 0, maxX);
                 _panY = Math.Clamp(_panY, 0, maxY);
             }
@@ -174,6 +191,8 @@ namespace PadForge.Views
                 Picture = _picture,
                 PanX = _panX,
                 PanY = _panY,
+                Zoom = _zoom,
+                LightbarSlot = _lightbarSlot,
             };
             if (_overlay) OverlayPreview.Show(_service.OverlayPreview(data, _profilePicture, _profileName));
             else PreviewImage.Source = KeyboardScreenRenderer.ToBitmap(_service.Preview(_screen, data, _profilePicture, _profileName), _kind);
@@ -222,8 +241,23 @@ namespace PadForge.Views
             Refresh();
         }
 
+        private void LightbarSlotBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (LightbarSlotBox.SelectedIndex < 0) return;
+            _lightbarSlot = LightbarSlotBox.SelectedIndex - 1;
+            Refresh();
+        }
+
+        private void ZoomBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (int.TryParse(ZoomBox.Text, NumberStyles.Integer, CultureInfo.CurrentCulture, out int zoom))
+                _zoom = Math.Clamp(zoom, KeyboardScreenData.DefaultZoom, KeyboardScreenData.MaxZoom);
+            Refresh();
+        }
+
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
+            ZoomBox_LostFocus(sender, e);
             PanBox_LostFocus(sender, e);
             _saved = true;
             DialogResult = true;

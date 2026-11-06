@@ -4353,22 +4353,15 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>Muat turun SDK S.T.R.I.K.E. 7 tidak sepadan dengan SHA-256 yang diketahui, jadi tiada apa-apa daripadanya disimpan.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>Masa jalan Visual C++ 2008 masih tiada selepas pemasangnya dijalankan.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Tunjukkan Skrin Papan Kekunci</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Memainkan gambar pada setiap skrin papan kekunci jenis yang dipilih yang membekalkan slot ini, kemudian memulangkan setiap skrin kepada modnya sendiri.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Tunjukkan gambar {0}: {1} × {2} ms, bilangan ulangan {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Gambar disesuaikan dengan skrin: 160 kali 43 piksel hitam putih pada skrin monokrom, 320 kali 240 pada skrin G19, dan 480 kali 320 untuk Arx Control dan S.T.R.I.K.E. 7. Satu persepuluh saat ialah masa bingkai terpendek.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Mod Skrin Papan Kekunci</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Menukar setiap skrin papan kekunci jenis yang dipilih yang membekalkan slot ini kepada mod lain, dan menyimpannya sebagai tetapan skrin itu.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} memaparkan {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Mod kekal sehingga makro lain atau dialog skrin mengubahnya.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Jam Randik</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Memulakan atau menjedakan, atau menetapkan semula, jam randik yang dipaparkan oleh skrin papan kekunci dalam mod Jam Randik.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>Mulakan atau Jedakan Jam Randik</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>Tetapkan Semula Jam Randik</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Tetap semula menghentikan jam randik dan menetapkannya kembali kepada sifar. Setiap skrin papan kekunci dalam mod Jam Randik memaparkan jam randik yang sama.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Pan Gambar Skrin Papan Kekunci</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Menggerakkan tetingkap setiap skrin papan kekunci yang membekalkan slot ini di atas gambar yang lebih besar daripada skrin, contohnya peta.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Pan gambar {0} kali {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Menggerakkan setiap skrin yang membekalkan slot ini dan memaparkan gambar pilihan yang lebih besar daripada dirinya. Tetingkap berhenti pada tepi gambar.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Skrin</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Tindakan</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Arah</value></data>

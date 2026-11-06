@@ -4577,20 +4577,20 @@
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>نمایش روی صفحه‌نمایش صفحه‌کلید</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>روی هر صفحه‌نمایش صفحه‌کلید از نوع انتخاب‌شده که به این اسلات ورودی می‌دهد تصاویر را پخش می‌کند، سپس هر صفحه‌نمایش را به حالت خودش برمی‌گرداند. اورلی صفحه‌نمایش آن‌ها را از هر اسلاتی می‌گیرد.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>نمایش تصاویر {0}: {1} × {2} ms، تعداد تکرار {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>تصاویر با صفحه‌نمایش تطبیق داده می‌شوند: 160 در 43 پیکسل سیاه و سفید روی صفحه‌نمایش تک‌رنگ، 320 در 240 روی صفحه‌نمایش G19 و 480 در 320 برای Arx Control و S.T.R.I.K.E. 7. یک‌دهم ثانیه کوتاه‌ترین زمان فریم است.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>تصاویر با صفحه‌نمایش تطبیق داده می‌شوند: 160 در 43 پیکسل سیاه و سفید روی صفحه‌نمایش تک‌رنگ، 320 در 240 روی صفحه‌نمایش G19 و 480 در 320 برای Arx Control و S.T.R.I.K.E. 7. اورلی صفحه‌نمایش شکل خود هر تصویر را حفظ می‌کند، تا 800 پیکسل در ضلع بلندتر. یک‌دهم ثانیه کوتاه‌ترین زمان فریم است. تعداد تکرار 0 تا ماکروی بعدی نمایش روی صفحه‌نمایش صفحه‌کلید یا حالت صفحه‌نمایش صفحه‌کلید به پخش ادامه می‌دهد.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>حالت صفحه‌نمایش صفحه‌کلید</value></data>
   <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>هر صفحه‌نمایش صفحه‌کلید از نوع انتخاب‌شده را که به این اسلات ورودی می‌دهد به حالت دیگری تغییر می‌دهد و آن را به عنوان تنظیم آن صفحه‌نمایش نگه می‌دارد. اورلی صفحه‌نمایش آن را از هر اسلاتی می‌گیرد.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} حالت {1} را نشان می‌دهد</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>حالت تا زمانی که ماکروی دیگر یا پنجره همان صفحه‌نمایش آن را تغییر دهد باقی می‌ماند.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>کرنومتر</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>کرنومتری را که صفحه‌نمایش‌های صفحه‌کلید در حالت کرنومتر نشان می‌دهند شروع، متوقف یا بازنشانی می‌کند.</value></data>
+  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>کرنومتری را که صفحه‌نمایش‌های صفحه‌کلید و اورلی‌های صفحه‌نمایش در حالت کرنومتر نشان می‌دهند شروع، متوقف یا بازنشانی می‌کند.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>شروع یا توقف کرنومتر</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>بازنشانی کرنومتر</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>بازنشانی کرنومتر را متوقف می‌کند و به صفر برمی‌گرداند. همه صفحه‌نمایش‌های صفحه‌کلید در حالت کرنومتر همان کرنومتر را نشان می‌دهند.</value></data>
+  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>بازنشانی کرنومتر را متوقف می‌کند و به صفر برمی‌گرداند. همه صفحه‌نمایش‌های صفحه‌کلید و اورلی‌های صفحه‌نمایش در حالت کرنومتر همان کرنومتر را نشان می‌دهند.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>جابه‌جایی تصویر صفحه‌نمایش صفحه‌کلید</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>پنجره هر صفحه‌نمایش صفحه‌کلید را که به این اسلات ورودی می‌دهد روی تصویری بزرگ‌تر از صفحه‌نمایش جابه‌جا می‌کند، مثلاً برای یک نقشه.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>پنجره هر صفحه‌نمایش صفحه‌کلید را که به این اسلات ورودی می‌دهد روی تصویری بزرگ‌تر از صفحه‌نمایش جابه‌جا می‌کند، مثلاً برای یک نقشه. اورلی صفحه‌نمایش وقتی بزرگ‌نمایی‌اش بیش از 100 درصد باشد به همین شکل جابه‌جا می‌شود.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>جابه‌جایی تصاویر به اندازه {0} و {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>هر صفحه‌نمایشی را که به این اسلات ورودی می‌دهد و تصویر انتخاب‌شده‌ای بزرگ‌تر از خودش نشان می‌دهد جابه‌جا می‌کند. پنجره در لبه‌های تصویر می‌ایستد.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>هر صفحه‌نمایشی را که به این اسلات ورودی می‌دهد و تصویر انتخاب‌شده‌ای بزرگ‌تر از خودش نشان می‌دهد جابه‌جا می‌کند. پنجره در لبه‌های تصویر می‌ایستد. اورلی صفحه‌نمایش وقتی بزرگ‌نمایی‌اش بیش از 100 درصد باشد جابه‌جا می‌شود، هر اسلاتی که ماکرو را اجرا کند.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>صفحه‌نمایش</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>عمل</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>جهت</value></data>
@@ -4899,7 +4899,17 @@
   <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>اورلی تصویر خود پروفایل فعال را نشان می‌دهد، یا اگر تصویری نداشته باشد نامش را. هر پروفایل تصویر خودش را نگه می‌دارد.</value></data>
   <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>اورلی ساعت روز را نشان می‌دهد.</value></data>
   <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>اورلی ساعت‌ها و دقیقه‌های گذشته از زمان فعال شدن پروفایل فعال را نشان می‌دهد. پروفایلی که به برنامه یک بازی وابسته است با شروع بازی فعال می‌شود، پس شمارش همان نشست است. در پروفایل پیش‌فرض شمارش از شروع به کار موتور آغاز می‌شود.</value></data>
-  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>اورلی تصویری را که انتخاب می‌کنید نشان می‌دهد، به‌طوری که با حفظ نسبت ابعاد، پنجره‌اش را پر کند.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>اورلی تصویری را که انتخاب می‌کنید نشان می‌دهد، به‌طوری که با حفظ نسبت ابعاد، پنجره‌اش را پر کند. با بزرگ‌نمایی بیش از 100 درصد، بخشی از تصویر را نشان می‌دهد، مثلاً برای یک نقشه. ماکروی جابه‌جایی تصویر صفحه‌نمایش صفحه‌کلید آن بخش را جابه‌جا می‌کند، و همچنین کشیدن با دکمه چپ ماوس وقتی PadForge در جلو است.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>اورلی کرنومتر را نشان می‌دهد که ماکروی کرنومتر آن را شروع، متوقف و بازنشانی می‌کند. این همان کرنومتری است که همه صفحه‌نمایش‌های صفحه‌کلید نشان می‌دهند.</value></data>
-  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>اورلی رنگ نوار نوری DualShock 4 یا DualSense را در پایین‌ترین اسلات نشان می‌دهد. تا وقتی رنگی به نوار نوری نرسد، چیزی نشان نمی‌دهد.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>اورلی رنگ نوار نوری DualShock 4 یا DualSense را در اسلاتی که اینجا انتخاب می‌کنید، یا در پایین‌ترین اسلات دارای رنگ، نشان می‌دهد. تا وقتی رنگی به نوار نوری نرسد، چیزی نشان نمی‌دهد.</value></data>
+  <data name="Dashboard_ScreenOverlay_Number_Format" xml:space="preserve"><value>اورلی صفحه‌نمایش {0}</value></data>
+  <data name="Dashboard_ScreenOverlayAdd" xml:space="preserve"><value>افزودن اورلی</value></data>
+  <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>پایین‌ترین اسلات دارای رنگ</value></data>
+  <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>بزرگ‌نمایی</value></data>
+  <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>تصویری انتخاب نشده.</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>در انتظار رنگ نوار نوری.</value></data>
+  <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>اورلی</value></data>
+  <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>همه اورلی‌ها</value></data>
+  <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>تغییر وضعیت اورلی صفحه‌نمایش {0}</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>نمایش تصاویر {0}: {1} × {2} ms، تا ماکروی بعدی</value></data>
 </root>

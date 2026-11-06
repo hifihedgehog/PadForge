@@ -80,8 +80,32 @@
         </WrapPanel>
 
         <!-- Where the screen's window sits on a picture larger than the
-             screen, in the picture's pixels. The Pan macro moves it too. -->
-        <StackPanel Grid.Row="6" x:Name="PanRow" Orientation="Horizontal" Margin="0,0,0,6">
+             screen, in the picture's pixels. The Pan macro moves it too. On the
+             Screen Overlay the zoom makes a picture larger than its window. -->
+        <StackPanel Grid.Row="6" Margin="0,0,0,0">
+        <!-- Which slot's lightbar the Screen Overlay follows. A keyboard screen follows
+             the slots its Devices row feeds, and an overlay has no row. -->
+        <StackPanel x:Name="LightbarSlotRow" Orientation="Horizontal" Margin="0,0,0,6" Visibility="Collapsed">
+            <TextBlock VerticalAlignment="Center" Margin="0,0,8,0" MinWidth="60"
+                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                       Text="{Binding Dashboard_Slot, Source={x:Static strings:Strings.Instance}}"/>
+            <ComboBox x:Name="LightbarSlotBox" MinWidth="220" SelectionChanged="LightbarSlotBox_SelectionChanged"
+                      AutomationProperties.AutomationId="ScreenOverlay_LightbarSlotBox"
+                      AutomationProperties.Name="{Binding Dashboard_Slot, Source={x:Static strings:Strings.Instance}}"/>
+            <reset:SettingResetButton Click="ResetLightbarSlot_Click" SettingLabel="{Binding Dashboard_Slot, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_KeyboardScreenLightbarSlot_55711"/>
+        </StackPanel>
+        <StackPanel x:Name="ZoomRow" Orientation="Horizontal" Margin="0,0,0,6" Visibility="Collapsed">
+            <TextBlock VerticalAlignment="Center" Margin="0,0,8,0" MinWidth="60"
+                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                       Text="{Binding KeyboardScreen_Zoom_Label, Source={x:Static strings:Strings.Instance}}"/>
+            <TextBox x:Name="ZoomBox" Width="70" VerticalAlignment="Center" LostFocus="ZoomBox_LostFocus"
+                     AutomationProperties.AutomationId="ScreenOverlay_ZoomBox"
+                     AutomationProperties.Name="{Binding KeyboardScreen_Zoom_Label, Source={x:Static strings:Strings.Instance}}"/>
+            <TextBlock VerticalAlignment="Center" Margin="4,0,0,0" Text="%"
+                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+            <reset:SettingResetButton Click="ResetZoom_Click" SettingLabel="{Binding KeyboardScreen_Zoom_Label, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_KeyboardScreenZoom_55710"/>
+        </StackPanel>
+        <StackPanel x:Name="PanRow" Orientation="Horizontal" Margin="0,0,0,6">
             <TextBlock VerticalAlignment="Center" Margin="0,0,8,0" MinWidth="60"
                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                        Text="{Binding KeyboardScreen_Pan_Label, Source={x:Static strings:Strings.Instance}}"/>
@@ -94,6 +118,7 @@
             <TextBox x:Name="PanYBox" Width="70" VerticalAlignment="Center" LostFocus="PanBox_LostFocus"
                      AutomationProperties.Name="{Binding KeyboardScreen_PanY, Source={x:Static strings:Strings.Instance}}"/>
             <reset:SettingResetButton Click="ResetPan_Click" SettingLabel="{Binding KeyboardScreen_Pan_Label, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_KeyboardScreenPan_13112"/>
+        </StackPanel>
         </StackPanel>
 
         <!-- Footer band (#175 dialog language): Save is the dialog's primary

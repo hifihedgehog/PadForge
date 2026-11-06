@@ -4577,20 +4577,20 @@
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>कीबोर्ड स्क्रीन दिखाएँ</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>इस स्लॉट को इनपुट देने वाली चुने गए प्रकार की हर कीबोर्ड स्क्रीन पर चित्र चलाता है, फिर हर स्क्रीन को उसके अपने मोड में लौटा देता है। स्क्रीन ओवरले उन्हें किसी भी स्लॉट से लेता है।</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>{0} चित्र दिखाएँ: {1} × {2} ms, दोहराव संख्या {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>चित्र स्क्रीन के हिसाब से फ़िट किए जाते हैं: मोनोक्रोम स्क्रीन पर 160 बाय 43 श्वेत-श्याम पिक्सेल, G19 की स्क्रीन पर 320 बाय 240, और Arx Control तथा S.T.R.I.K.E. 7 के लिए 480 बाय 320। सबसे छोटा फ़्रेम समय 0.1 सेकंड है।</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>चित्र स्क्रीन के हिसाब से फ़िट किए जाते हैं: मोनोक्रोम स्क्रीन पर 160 बाय 43 श्वेत-श्याम पिक्सेल, G19 की स्क्रीन पर 320 बाय 240, और Arx Control तथा S.T.R.I.K.E. 7 के लिए 480 बाय 320। स्क्रीन ओवरले हर चित्र का अपना आकार रखता है, लंबी भुजा पर अधिकतम 800 पिक्सेल तक। सबसे छोटा फ़्रेम समय 0.1 सेकंड है। दोहराव संख्या 0 होने पर चित्र तब तक चलते रहते हैं जब तक कोई दूसरा कीबोर्ड स्क्रीन दिखाएँ या कीबोर्ड स्क्रीन मोड मैक्रो नहीं चलता।</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>कीबोर्ड स्क्रीन मोड</value></data>
   <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>इस स्लॉट को इनपुट देने वाली चुने गए प्रकार की हर कीबोर्ड स्क्रीन को दूसरे मोड में बदलता है और उसे उस स्क्रीन की सेटिंग के रूप में रखता है। स्क्रीन ओवरले इसे किसी भी स्लॉट से लेता है।</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} में {1} दिखता है</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>मोड तब तक रहता है जब तक कोई दूसरा मैक्रो या स्क्रीन का डायलॉग उसे नहीं बदलता।</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>स्टॉपवॉच</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>स्टॉपवॉच मोड वाली कीबोर्ड स्क्रीन जो स्टॉपवॉच दिखाती हैं, उसे शुरू या रोकता है, या रीसेट करता है।</value></data>
+  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>स्टॉपवॉच मोड वाली कीबोर्ड स्क्रीन और स्क्रीन ओवरले जो स्टॉपवॉच दिखाते हैं, उसे शुरू या रोकता है, या रीसेट करता है।</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>स्टॉपवॉच शुरू या रोकें</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>स्टॉपवॉच रीसेट करें</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>रीसेट स्टॉपवॉच को रोक देता है और शून्य पर ले आता है। स्टॉपवॉच मोड की हर कीबोर्ड स्क्रीन वही स्टॉपवॉच दिखाती है।</value></data>
+  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>रीसेट स्टॉपवॉच को रोक देता है और शून्य पर ले आता है। स्टॉपवॉच मोड की हर कीबोर्ड स्क्रीन और स्क्रीन ओवरले वही स्टॉपवॉच दिखाते हैं।</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>कीबोर्ड स्क्रीन चित्र पैन करें</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>इस स्लॉट को इनपुट देने वाली हर कीबोर्ड स्क्रीन की विंडो स्क्रीन से बड़े चित्र पर खिसकाता है, जैसे नक्शे के लिए।</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>इस स्लॉट को इनपुट देने वाली हर कीबोर्ड स्क्रीन की विंडो स्क्रीन से बड़े चित्र पर खिसकाता है, जैसे नक्शे के लिए। स्क्रीन ओवरले भी इसी तरह खिसकता है जब उसका ज़ूम 100 प्रतिशत से ऊपर हो।</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>चित्र पैन करें: {0}, {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>इस स्लॉट को इनपुट देने वाली हर उस स्क्रीन को खिसकाता है जो अपने से बड़ा चुना हुआ चित्र दिखा रही हो। विंडो चित्र के किनारों पर रुक जाती है।</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>इस स्लॉट को इनपुट देने वाली हर उस स्क्रीन को खिसकाता है जो अपने से बड़ा चुना हुआ चित्र दिखा रही हो। विंडो चित्र के किनारों पर रुक जाती है। स्क्रीन ओवरले तब खिसकता है जब उसका ज़ूम 100 प्रतिशत से ऊपर हो, चाहे मैक्रो किसी भी स्लॉट में चले।</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>स्क्रीन</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>कार्रवाई</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>दिशा</value></data>
@@ -4899,7 +4899,17 @@
   <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>ओवरले सक्रिय प्रोफ़ाइल का अपना चित्र दिखाता है, या चित्र न हो तो उसका नाम। हर प्रोफ़ाइल का अपना चित्र रहता है।</value></data>
   <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>ओवरले दिन का समय दिखाता है।</value></data>
   <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>ओवरले दिखाता है कि सक्रिय प्रोफ़ाइल के चालू होने के बाद कितने घंटे और मिनट हुए हैं। किसी गेम के प्रोग्राम से जुड़ी प्रोफ़ाइल गेम शुरू होने पर चालू होती है, इसलिए गिनती उसी सत्र की होती है। डिफ़ॉल्ट प्रोफ़ाइल में गिनती इंजन के शुरू होने से होती है।</value></data>
-  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>ओवरले आपका चुना हुआ चित्र दिखाता है, जो अनुपात बनाए रखते हुए उसकी विंडो को भरने के लिए छोटा-बड़ा किया जाता है।</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>ओवरले आपका चुना हुआ चित्र दिखाता है, जो अनुपात बनाए रखते हुए उसकी विंडो को भरने के लिए छोटा-बड़ा किया जाता है। 100 प्रतिशत से ऊपर ज़ूम पर वह चित्र का एक हिस्सा दिखाता है, जैसे नक्शे के लिए। कीबोर्ड स्क्रीन चित्र पैन करें मैक्रो उस हिस्से को खिसकाता है, और PadForge के सामने होने पर बायाँ माउस बटन दबाकर खींचने से भी वह खिसकता है।</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>ओवरले स्टॉपवॉच दिखाता है, जिसे स्टॉपवॉच मैक्रो शुरू करता है, रोकता है और रीसेट करता है। हर कीबोर्ड स्क्रीन वही स्टॉपवॉच दिखाती है।</value></data>
-  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>ओवरले सबसे कम नंबर वाले स्लॉट के DualShock 4 या DualSense के लाइटबार का रंग दिखाता है। जब तक किसी लाइटबार तक रंग नहीं पहुँचता, वह कुछ नहीं दिखाता।</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>ओवरले यहाँ चुने गए स्लॉट के, या रंग वाले सबसे कम नंबर के स्लॉट के DualShock 4 या DualSense के लाइटबार का रंग दिखाता है। जब तक किसी लाइटबार तक रंग नहीं पहुँचता, वह कुछ नहीं दिखाता।</value></data>
+  <data name="Dashboard_ScreenOverlay_Number_Format" xml:space="preserve"><value>स्क्रीन ओवरले {0}</value></data>
+  <data name="Dashboard_ScreenOverlayAdd" xml:space="preserve"><value>ओवरले जोड़ें</value></data>
+  <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>रंग वाला सबसे कम नंबर का स्लॉट</value></data>
+  <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>ज़ूम</value></data>
+  <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>कोई चित्र नहीं चुना गया।</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>लाइटबार के रंग का इंतज़ार है।</value></data>
+  <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>ओवरले</value></data>
+  <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>हर ओवरले</value></data>
+  <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>स्क्रीन ओवरले {0} टॉगल करें</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>{0} चित्र दिखाएँ: {1} × {2} ms, अगले मैक्रो तक</value></data>
 </root>

@@ -2945,6 +2945,18 @@
                                         <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="ScreenKind" SettingLabel="{Binding Macro_KeyboardScreen_Kind, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_ScreenKind_13101"/>
                                     </StackPanel>
 
+                                    <!-- Which Screen Overlay (#560): Show Keyboard Screen and
+                                         Keyboard Screen Mode with that kind, Toggle Screen Overlay,
+                                         and Pan Keyboard Screen Picture. -->
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
+                                                Visibility="{Binding IsScreenOverlayTargetType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_KeyboardScreen_Overlay, Source={x:Static strings:Strings.Instance}}"
+                                                           VerticalAlignment="Center" Width="80" Margin="0,0,8,0" TextWrapping="Wrap"/>
+                                        <ComboBox ItemsSource="{Binding ScreenOverlayChoices}" DisplayMemberPath="Display" SelectedValuePath="Value" SelectedValue="{Binding ScreenOverlayNumber, Mode=TwoWay}" Width="180" VerticalAlignment="Center"
+                                                  AutomationProperties.Name="{Binding Macro_KeyboardScreen_Overlay, Source={x:Static strings:Strings.Instance}}"/>
+                                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="ScreenOverlayNumber" SettingLabel="{Binding Macro_KeyboardScreen_Overlay, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_ScreenOverlayNumber_55709"/>
+                                    </StackPanel>
+
                                     <!-- Show Keyboard Screen card (#519): the Show Dreamcast
                                          Screen card's shape, the pictures drawn as the kind's
                                          screen draws them (click one to remove it). -->

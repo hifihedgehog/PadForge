@@ -4303,22 +4303,15 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>Shkarkimi i SDK-së së S.T.R.I.K.E. 7 nuk përputhet me SHA-256 e saj të njohur, prandaj nuk u ruajt asgjë prej tij.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>Runtime-i Visual C++ 2008 mungon ende pas ekzekutimit të instaluesit të tij.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Shfaq ekranin e tastierës</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Luan imazhe në çdo ekran tastiere të llojit të zgjedhur që ushqen këtë slot, pastaj kthen çdo ekran në mënyrën e vet.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Shfaq {0} imazhe: {1} × {2} ms, numri i përsëritjeve {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Imazhet përshtaten me ekranin: 160 me 43 piksel bardh e zi në një ekran monokrom, 320 me 240 në atë të G19 dhe 480 me 320 për Arx Control dhe S.T.R.I.K.E. 7. Një e dhjeta e sekondës është koha më e shkurtër e kuadrit.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Mënyra e ekranit të tastierës</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Kalon çdo ekran tastiere të llojit të zgjedhur që ushqen këtë slot në një mënyrë tjetër dhe e ruan si cilësim të atij ekrani.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} shfaq {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Mënyra mbetet derisa e ndryshon një makro tjetër ose dialogu i ekranit.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Kronometër</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Nis ose ndalon pak kronometrin, ose e rivendos, që e shfaqin ekranet e tastierës në mënyrën Kronometër.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>Nis ose ndalo kronometrin</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>Rivendos kronometrin</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Rivendosja e ndalon kronometrin dhe e kthen në zero. Çdo ekran tastiere në mënyrën Kronometër shfaq të njëjtin kronometër.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Lëviz imazhin e ekranit të tastierës</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Lëviz dritaren e çdo ekrani tastiere që ushqen këtë slot mbi një imazh më të madh se ekrani, për një hartë.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Lëviz imazhet me {0} dhe {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Lëviz çdo ekran që ushqen këtë slot dhe shfaq një imazh të zgjedhur më të madh se vetja. Dritarja ndalon te skajet e imazhit.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Ekrani</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Veprimi</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Drejtimi</value></data>

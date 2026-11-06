@@ -4577,20 +4577,20 @@
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>顯示鍵盤螢幕</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>在所選類型且供應此插槽的每個鍵盤螢幕上播放圖片，然後讓每個螢幕回到自己的模式。螢幕重疊介面會從任何插槽取得這些圖片。</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>顯示 {0} 圖片：{1} × {2} ms，重複次數 {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>圖片會配合螢幕調整大小：單色螢幕為 160 × 43 黑白像素，G19 為 320 × 240，Arx Control 與 S.T.R.I.K.E. 7 為 480 × 320。每張圖片最短顯示 0.1 秒。</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>圖片會配合螢幕調整大小：單色螢幕為 160 × 43 黑白像素，G19 為 320 × 240，Arx Control 與 S.T.R.I.K.E. 7 為 480 × 320。螢幕重疊介面會保留每張圖片本身的形狀，較長的一邊最多 800 像素。每張圖片最短顯示 0.1 秒。重複次數為 0 時會持續播放，直到出現另一個顯示鍵盤螢幕或鍵盤螢幕模式巨集。</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>鍵盤螢幕模式</value></data>
   <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>將所選類型且供應此插槽的每個鍵盤螢幕切換到另一種模式，並保留為該螢幕的設定。螢幕重疊介面會從任何插槽取得此設定。</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} 顯示{1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>此模式會一直維持，直到其他巨集或該螢幕的對話方塊變更它。</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>碼錶</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>開始或暫停，或重設碼錶，供處於碼錶模式的鍵盤螢幕顯示。</value></data>
+  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>開始或暫停，或重設碼錶，供處於碼錶模式的鍵盤螢幕與螢幕重疊介面顯示。</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>開始或暫停碼錶</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>重設碼錶</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>重設會停止碼錶並歸零。所有處於碼錶模式的鍵盤螢幕顯示的都是同一個碼錶。</value></data>
+  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>重設會停止碼錶並歸零。所有處於碼錶模式的鍵盤螢幕與螢幕重疊介面顯示的都是同一個碼錶。</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>平移鍵盤螢幕圖片</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>在大於螢幕的圖片上移動供應此插槽的每個鍵盤螢幕的視窗，例如用於地圖。</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>在大於螢幕的圖片上移動供應此插槽的每個鍵盤螢幕的視窗，例如用於地圖。縮放比例高於 100% 時，螢幕重疊介面也會以同樣方式移動。</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>平移圖片 {0}、{1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>移動所有供應此插槽、且顯示了所選且大於自身的圖片的螢幕。視窗會停在圖片邊緣。</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>移動所有供應此插槽、且顯示了所選且大於自身的圖片的螢幕。視窗會停在圖片邊緣。縮放比例高於 100% 時，螢幕重疊介面就會移動，無論由哪個插槽執行此巨集。</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>螢幕</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>動作</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>方向</value></data>
@@ -4899,7 +4899,17 @@
   <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>重疊介面會顯示使用中設定檔自己的圖片，沒有圖片時則顯示其名稱。每個設定檔各自保存自己的圖片。</value></data>
   <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>重疊介面會顯示目前的時間。</value></data>
   <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>重疊介面會顯示使用中設定檔啟用後經過的小時與分鐘。綁定遊戲程式的設定檔會在遊戲啟動時啟用，因此計時即為該次遊玩。在預設設定檔下，則從引擎啟動時開始計算。</value></data>
-  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>重疊介面會顯示您選擇的圖片，並在保持比例的情況下縮放至填滿其視窗。</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>重疊介面會顯示您選擇的圖片，並在保持比例的情況下縮放至填滿其視窗。縮放比例高於 100% 時，只會顯示圖片的一部分，例如用於地圖。平移鍵盤螢幕圖片巨集可以移動這一部分，PadForge 位於最前方時，按住滑鼠左鍵拖曳也可以。</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>重疊介面會顯示碼錶，可用「碼錶」巨集來開始、暫停與重設。所有鍵盤螢幕顯示的都是同一個碼錶。</value></data>
-  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>重疊介面會顯示編號最小的插槽中 DualShock 4 或 DualSense 的燈條顏色。在顏色傳到燈條之前，不會顯示任何內容。</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>重疊介面會顯示您在此選擇的插槽中，或編號最小且有顏色的插槽中，DualShock 4 或 DualSense 的燈條顏色。在顏色傳到燈條之前，不會顯示任何內容。</value></data>
+  <data name="Dashboard_ScreenOverlay_Number_Format" xml:space="preserve"><value>螢幕重疊介面 {0}</value></data>
+  <data name="Dashboard_ScreenOverlayAdd" xml:space="preserve"><value>新增重疊介面</value></data>
+  <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>編號最小且有顏色的插槽</value></data>
+  <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>縮放</value></data>
+  <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>尚未選擇圖片。</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>正在等待燈條顏色。</value></data>
+  <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>重疊介面</value></data>
+  <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>所有重疊介面</value></data>
+  <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>切換螢幕重疊介面 {0}</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>顯示 {0} 圖片：{1} × {2} ms，直到下一個巨集</value></data>
 </root>

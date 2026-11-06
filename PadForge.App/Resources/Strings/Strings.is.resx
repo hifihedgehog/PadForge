@@ -4577,20 +4577,20 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Sýna skjá lyklaborðs</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Spilar myndir á hverjum lyklaborðsskjá af völdu tagi sem tengist þessari rauf og skilar síðan hverjum skjá í sinn eigin ham. Yfirlag skjás tekur þær úr hverri rauf.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Sýna {0} myndir: {1} × {2} ms, fjöldi endurtekninga {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Myndir eru lagaðar að skjánum: 160 × 43 svarthvítir punktar á einlitum skjá, 320 × 240 á skjá G19 og 480 × 320 fyrir Arx Control og S.T.R.I.K.E. 7. Stysti rammatími er tíundi hluti úr sekúndu.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Myndir eru lagaðar að skjánum: 160 × 43 svarthvítir punktar á einlitum skjá, 320 × 240 á skjá G19 og 480 × 320 fyrir Arx Control og S.T.R.I.K.E. 7. Yfirlag skjás heldur lögun hverrar myndar, allt að 800 punktum á lengri hliðinni. Stysti rammatími er tíundi hluti úr sekúndu. Endurtekningarfjöldinn 0 heldur áfram að spila þar til annað fjölvi, Sýna skjá lyklaborðs eða Ham skjás lyklaborðs, tekur við.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Ham skjás lyklaborðs</value></data>
   <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Skiptir hverjum lyklaborðsskjá af völdu tagi sem tengist þessari rauf yfir í annan ham og vistar hann sem stillingu þess skjás. Yfirlag skjás tekur hann úr hverri rauf.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} sýnir {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Hamurinn helst þar til annar fjölvi eða gluggi skjásins breytir honum.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Skeiðklukka</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Ræsir eða setur á bið, eða endurstillir, skeiðklukkuna sem lyklaborðsskjáir í skeiðklukkuham sýna.</value></data>
+  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Ræsir eða setur á bið, eða endurstillir, skeiðklukkuna sem lyklaborðsskjáir og yfirlög skjás í skeiðklukkuham sýna.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>Ræsa eða setja skeiðklukku á bið</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>Endurstilla skeiðklukku</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Endurstilling stöðvar skeiðklukkuna og setur hana á núll. Allir lyklaborðsskjáir í skeiðklukkuham sýna sömu skeiðklukku.</value></data>
+  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Endurstilling stöðvar skeiðklukkuna og setur hana á núll. Allir lyklaborðsskjáir og öll yfirlög skjás í skeiðklukkuham sýna sömu skeiðklukku.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Færa mynd á skjá lyklaborðs</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Færir glugga hvers lyklaborðsskjás sem tengist þessari rauf yfir mynd sem er stærri en skjárinn, fyrir kort.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Færir glugga hvers lyklaborðsskjás sem tengist þessari rauf yfir mynd sem er stærri en skjárinn, fyrir kort. Yfirlag skjás færist á sama hátt þegar aðdrátturinn er yfir 100 prósentum.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Færa myndir um {0} og {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Færir hvern skjá sem tengist þessari rauf og sýnir valda mynd sem er stærri en hann sjálfur. Glugginn stöðvast við brúnir myndarinnar.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Færir hvern skjá sem tengist þessari rauf og sýnir valda mynd sem er stærri en hann sjálfur. Glugginn stöðvast við brúnir myndarinnar. Yfirlag skjás færist þegar aðdrátturinn er yfir 100 prósentum, sama hvaða rauf keyrir fjölvann.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Skjár</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Aðgerð</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Stefna</value></data>
@@ -4899,7 +4899,17 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>Yfirlagið sýnir eigin mynd virka sniðsins, eða heiti þess ef það hefur enga. Hvert snið geymir sína eigin mynd.</value></data>
   <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>Yfirlagið sýnir tíma dags.</value></data>
   <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>Yfirlagið sýnir klukkustundir og mínútur frá því að virka sniðið tók gildi. Snið sem er tengt forriti leiks tekur gildi þegar leikurinn ræsist, svo talningin nær yfir þá lotu. Undir sjálfgefna sniðinu telur það frá ræsingu vélarinnar.</value></data>
-  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Yfirlagið sýnir mynd að eigin vali, stækkaða eða minnkaða til að fylla gluggann með hlutföllum sínum óbreyttum.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Yfirlagið sýnir mynd að eigin vali, stækkaða eða minnkaða til að fylla gluggann með hlutföllum sínum óbreyttum. Yfir 100 prósenta aðdrætti sýnir það hluta myndarinnar, fyrir kort. Fjölvinn Færa mynd á skjá lyklaborðs færir þann hluta, og það gerir líka að draga með vinstri músarhnappi meðan PadForge er í forgrunni.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>Yfirlagið sýnir skeiðklukkuna, sem skeiðklukkufjölvinn ræsir, setur á bið og endurstillir. Það er sama skeiðklukka og allir lyklaborðsskjáir sýna.</value></data>
-  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Yfirlagið sýnir lit ljósrandarinnar á DualShock 4 eða DualSense í lægstu raufinni. Þar til litur berst ljósrönd sýnir það ekkert.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Yfirlagið sýnir lit ljósrandarinnar á DualShock 4 eða DualSense í raufinni sem þú velur hér, eða í lægstu raufinni með lit. Þar til litur berst ljósrönd sýnir það ekkert.</value></data>
+  <data name="Dashboard_ScreenOverlay_Number_Format" xml:space="preserve"><value>Yfirlag skjás {0}</value></data>
+  <data name="Dashboard_ScreenOverlayAdd" xml:space="preserve"><value>Bæta við yfirlagi</value></data>
+  <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Lægsta rauf með lit</value></data>
+  <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>Aðdráttur</value></data>
+  <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>Engin mynd valin.</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Bíður eftir lit ljósrandar.</value></data>
+  <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Yfirlag</value></data>
+  <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Öll yfirlög</value></data>
+  <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Víxla yfirlagi skjás {0}</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Sýna {0} myndir: {1} × {2} ms, þar til næsta fjölvi tekur við</value></data>
 </root>

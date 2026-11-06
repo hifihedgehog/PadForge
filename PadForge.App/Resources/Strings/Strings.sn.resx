@@ -1219,10 +1219,6 @@
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>Zvakadhaunirodhwa zveS.T.R.I.K.E. 7 SDK hazvienderane ne-SHA-256 yazvo inozivikanwa, saka hapana chakachengetwa.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>Visual C++ 2008 runtime ichiri kushaikwa kunyange mushure mekunge installer yayo yashanda.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Ratidza sikirini yekibhodhi</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Inoratidza mifananidzo pasikirini yega yega yekibhodhi yerudzi rwakasarudzwa yakaiswa pasloti iyi, yobva yadzorera sikirini imwe neimwe kune zvayaimboratidza.</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Inochinja zvinoratidzwa nesikirini yega yega yekibhodhi yerudzi rwakasarudzwa yakaiswa pasloti iyi, uye inozvichengeta semasetingi esikirini iyoyo.</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Inofambisa hwindo resikirini yega yega yekibhodhi yakaiswa pasloti iyi pamusoro pemufananidzo mukuru kupfuura sikirini, semepu.</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Inofambisa sikirini imwe neimwe yakaiswa pasloti iyi inoratidza mufananidzo wakasarudzwa mukuru kupfuura iyo pachayo. Hwindo rinomira pamipendero yemufananidzo.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Sikirini</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Chiito</value></data>
   <data name="Common_Pixels" xml:space="preserve"><value>px</value></data>

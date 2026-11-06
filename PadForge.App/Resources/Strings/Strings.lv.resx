@@ -4577,20 +4577,20 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Rādīt tastatūras ekrānu</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Atskaņo attēlus katrā izvēlētā veida tastatūras ekrānā, kas padod datus šim slotam, pēc tam katram ekrānam atgriež tā paša režīmu. Ekrāna pārklājums tos ņem no jebkura slota.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Rādīt {0} attēlus: {1} × {2} ms, atkārtojumu skaits {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Attēli tiek pielāgoti ekrānam: 160 × 43 melnbalti pikseļi melnbaltajā ekrānā, 320 × 240 G19 ekrānā un 480 × 320 Arx Control un S.T.R.I.K.E. 7. Īsākais kadra ilgums ir desmitdaļa sekundes.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Attēli tiek pielāgoti ekrānam: 160 × 43 melnbalti pikseļi melnbaltajā ekrānā, 320 × 240 G19 ekrānā un 480 × 320 Arx Control un S.T.R.I.K.E. 7. Ekrāna pārklājums saglabā katra attēla paša formu, līdz 800 pikseļiem garākajā malā. Īsākais kadra ilgums ir desmitdaļa sekundes. Atkārtojumu skaits 0 turpina atskaņošanu, līdz cits makro Rādīt tastatūras ekrānu vai Tastatūras ekrāna režīms.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Tastatūras ekrāna režīms</value></data>
   <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Pārslēdz katru izvēlētā veida tastatūras ekrānu, kas padod datus šim slotam, uz citu režīmu un saglabā to kā šī ekrāna iestatījumu. Ekrāna pārklājums to ņem no jebkura slota.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} rāda: {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Režīms paliek, līdz to maina cits makross vai ekrāna dialoglodziņš.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Hronometrs</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Startē vai pauzē, vai atiestata hronometru, ko rāda tastatūras ekrāni Hronometra režīmā.</value></data>
+  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Startē vai pauzē, vai atiestata hronometru, ko rāda tastatūras ekrāni un ekrāna pārklājumi Hronometra režīmā.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>Startēt vai pauzēt hronometru</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>Atiestatīt hronometru</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Atiestatīšana aptur hronometru un iestata to atpakaļ uz nulli. Visi tastatūras ekrāni Hronometra režīmā rāda vienu un to pašu hronometru.</value></data>
+  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Atiestatīšana aptur hronometru un iestata to atpakaļ uz nulli. Visi tastatūras ekrāni un ekrāna pārklājumi Hronometra režīmā rāda vienu un to pašu hronometru.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Pārvietot tastatūras ekrāna attēlu</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Pārvieto katra tastatūras ekrāna, kas padod datus šim slotam, logu pa attēlu, kas ir lielāks par ekrānu, piemēram, kartei.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Pārvieto katra tastatūras ekrāna, kas padod datus šim slotam, logu pa attēlu, kas ir lielāks par ekrānu, piemēram, kartei. Ekrāna pārklājums pārvietojas tāpat, kad tā tālummaiņa ir virs 100 procentiem.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Pārvietot attēlus: {0} × {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Pārvieto katru ekrānu, kas padod datus šim slotam un rāda izvēlētu attēlu, lielāku par pašu ekrānu. Logs apstājas pie attēla malām.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Pārvieto katru ekrānu, kas padod datus šim slotam un rāda izvēlētu attēlu, lielāku par pašu ekrānu. Logs apstājas pie attēla malām. Ekrāna pārklājums pārvietojas, kad tā tālummaiņa ir virs 100 procentiem, neatkarīgi no tā, kurš slots palaiž makro.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Ekrāns</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Darbība</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Virziens</value></data>
@@ -4899,7 +4899,17 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>Pārklājums rāda aktīvā profila attēlu vai tā nosaukumu, ja attēla nav. Katram profilam ir savs attēls.</value></data>
   <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>Pārklājums rāda diennakts laiku.</value></data>
   <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>Pārklājums rāda stundas un minūtes kopš aktīvā profila ieslēgšanās. Ar spēles programmu saistīts profils ieslēdzas, kad spēle startē, tāpēc skaitītājs rāda šo sesiju. Noklusējuma profilā tas skaita no dzinēja startēšanas.</value></data>
-  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Pārklājums rāda jūsu izvēlēto attēlu, mērogotu, lai aizpildītu savu logu, saglabājot tā proporcijas.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Pārklājums rāda jūsu izvēlēto attēlu, mērogotu, lai aizpildītu savu logu, saglabājot tā proporcijas. Virs 100 procentiem tālummaiņas tas rāda attēla daļu, piemēram, kartei. Šo daļu pārvieto makro Pārvietot tastatūras ekrāna attēlu, kā arī vilkšana ar kreiso peles pogu, kamēr PadForge ir priekšplānā.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>Pārklājums rāda hronometru, ko startē, pauzē un atiestata makross Hronometrs. Tas ir tas pats hronometrs, ko rāda ikviens tastatūras ekrāns.</value></data>
-  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Pārklājums rāda gaismas joslas krāsu uz DualShock 4 vai DualSense zemākajā slotā. Kamēr krāsa nav sasniegusi gaismas joslu, tas neko nerāda.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Pārklājums rāda gaismas joslas krāsu uz DualShock 4 vai DualSense slotā, ko izvēlaties šeit, vai zemākajā slotā ar krāsu. Kamēr krāsa nav sasniegusi gaismas joslu, tas neko nerāda.</value></data>
+  <data name="Dashboard_ScreenOverlay_Number_Format" xml:space="preserve"><value>Ekrāna pārklājums {0}</value></data>
+  <data name="Dashboard_ScreenOverlayAdd" xml:space="preserve"><value>Pievienot pārklājumu</value></data>
+  <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Zemākais slots ar krāsu</value></data>
+  <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>Tālummaiņa</value></data>
+  <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>Attēls nav izvēlēts.</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Gaida gaismas joslas krāsu.</value></data>
+  <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Pārklājums</value></data>
+  <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Katrs pārklājums</value></data>
+  <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Pārslēgt ekrāna pārklājumu {0}</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Rādīt {0} attēlus: {1} × {2} ms, līdz nākamajam makro</value></data>
 </root>

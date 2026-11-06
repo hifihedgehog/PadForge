@@ -4528,20 +4528,20 @@
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>キーボード画面を表示</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>このスロットに入力する、選んだ種類の各キーボード画面で画像を再生し、その後、各画面を元のモードに戻します。画面オーバーレイは、どのスロットからでも画像を受け取ります。</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>{0} の画像 {1} 枚を各 {2} ms で {3} 回表示</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>画像は画面に合わせて調整されます。モノクロ画面は 160 × 43 の白黒ピクセル、G19 は 320 × 240、Arx Control と S.T.R.I.K.E. 7 は 480 × 320 です。フレーム時間は最短で 0.1 秒です。</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>画像は画面に合わせて調整されます。モノクロ画面は 160 × 43 の白黒ピクセル、G19 は 320 × 240、Arx Control と S.T.R.I.K.E. 7 は 480 × 320 です。画面オーバーレイは各画像の縦横比を保ち、長辺は最大 800 ピクセルです。フレーム時間は最短で 0.1 秒です。繰り返し回数が 0 の場合は、別のキーボード画面を表示またはキーボード画面のモードのマクロが実行されるまで再生を続けます。</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>キーボード画面のモード</value></data>
   <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>このスロットに入力する、選んだ種類の各キーボード画面を別のモードに切り替え、その画面の設定として保持します。画面オーバーレイは、どのスロットからでも切り替えを受け付けます。</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} に {1} を表示</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>モードは、別のマクロまたは画面のダイアログで変更するまで維持されます。</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>ストップウォッチ</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>ストップウォッチモードのキーボード画面に表示されるストップウォッチを、開始または一時停止、あるいはリセットします。</value></data>
+  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>ストップウォッチモードのキーボード画面と画面オーバーレイに表示されるストップウォッチを、開始または一時停止、あるいはリセットします。</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>ストップウォッチを開始または一時停止</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>ストップウォッチをリセット</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>リセットするとストップウォッチが止まり、ゼロに戻ります。ストップウォッチモードのすべてのキーボード画面で、同じストップウォッチが表示されます。</value></data>
+  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>リセットするとストップウォッチが止まり、ゼロに戻ります。ストップウォッチモードのすべてのキーボード画面と画面オーバーレイで、同じストップウォッチが表示されます。</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>キーボード画面の画像をパン</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>このスロットに入力する各キーボード画面の表示範囲を、画面より大きい画像上で動かします。地図などに使えます。</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>このスロットに入力する各キーボード画面の表示範囲を、画面より大きい画像上で動かします。地図などに使えます。画面オーバーレイも、ズームが 100% を超えていれば同じように動きます。</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>画像を横 {0} px、縦 {1} px パン</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>このスロットに入力する画面のうち、自分より大きい選択画像を表示しているものを動かします。表示範囲は画像の端で止まります。</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>このスロットに入力する画面のうち、自分より大きい選択画像を表示しているものを動かします。表示範囲は画像の端で止まります。画面オーバーレイは、どのスロットがマクロを実行しても、ズームが 100% を超えていれば動きます。</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>画面</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>操作</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>方向</value></data>
@@ -4850,7 +4850,17 @@
   <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>オーバーレイにアクティブなプロファイル自身の画像を表示し、画像がない場合は名前を表示します。画像はプロファイルごとに保存されます。</value></data>
   <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>オーバーレイに現在の時刻を表示します。</value></data>
   <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>オーバーレイにアクティブなプロファイルが切り替わってからの経過時間 (時間と分) を表示します。ゲームのプログラムに関連付けたプロファイルはゲームの開始時に切り替わるため、そのセッションの時間になります。デフォルトのプロファイルでは、エンジンの開始から数えます。</value></data>
-  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>オーバーレイに選んだ画像を、縦横比を保ったままウィンドウいっぱいに拡大縮小して表示します。</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>オーバーレイに選んだ画像を、縦横比を保ったままウィンドウいっぱいに拡大縮小して表示します。ズームが 100% を超えると画像の一部を表示し、地図などに使えます。その部分は、キーボード画面の画像をパンするマクロで動かせるほか、PadForge が前面にあるときは左マウスボタンでドラッグしても動かせます。</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>オーバーレイにストップウォッチを表示します。ストップウォッチは、ストップウォッチのマクロで開始、一時停止、リセットします。すべてのキーボード画面で表示されるものと同じストップウォッチです。</value></data>
-  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>オーバーレイに、最も小さいスロットの DualShock 4 または DualSense のライトバーの色を表示します。ライトバーに色が届くまで、何も表示しません。</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>オーバーレイに、ここで選んだスロット、または色のある最小のスロットの DualShock 4 または DualSense のライトバーの色を表示します。ライトバーに色が届くまで、何も表示しません。</value></data>
+  <data name="Dashboard_ScreenOverlay_Number_Format" xml:space="preserve"><value>画面オーバーレイ {0}</value></data>
+  <data name="Dashboard_ScreenOverlayAdd" xml:space="preserve"><value>オーバーレイを追加</value></data>
+  <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>色のある最小のスロット</value></data>
+  <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>ズーム</value></data>
+  <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>画像が選択されていません。</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>ライトバーの色を待機中です。</value></data>
+  <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>オーバーレイ</value></data>
+  <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>すべてのオーバーレイ</value></data>
+  <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>画面オーバーレイ {0} の切り替え</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>{0} の画像を表示: {1} × {2} ms、次のマクロまで</value></data>
 </root>

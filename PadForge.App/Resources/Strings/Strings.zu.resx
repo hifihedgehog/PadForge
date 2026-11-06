@@ -2204,22 +2204,15 @@
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>Okulandiwe kwe-SDK ye-S.T.R.I.K.E. 7 akuhambisani ne-SHA-256 yayo eyaziwayo, ngakho akukho lutho olugciniwe kukho.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>I-Visual C++ 2008 runtime isalokhu ingekho ngemva kokuthi isifaki sayo sisebenze.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Bonisa isikrini sekhibhodi</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Idlala izithombe esikrinini sekhibhodi ngasinye sohlobo olukhethiwe esondla lesi sikhala, bese ibuyisela isikrini ngasinye kumodi yaso.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Bonisa izithombe ezi-{0}: {1} × {2} ms, inani lokuphinda {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Izithombe zilungiswa ukuze zilingane nesikrini: amaphikseli angu-160 ngo-43 amnyama namhlophe esikrinini sombala owodwa, angu-320 ngo-240 ku-G19, futhi angu-480 ngo-320 ku-Arx Control naku-S.T.R.I.K.E. 7. Isikhathi esifushane kakhulu sefreyimu yingxenye yeshumi yomzuzwana.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Imodi yesikrini sekhibhodi</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Ishintshela isikrini sekhibhodi ngasinye sohlobo olukhethiwe esondla lesi sikhala kwenye imodi, futhi isigcine njengesilungiselelo saleso sikrini.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>Ku-{0} kuboniswa {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Imodi ihlala injalo kuze kube enye i-macro noma ibhokisi lezingxoxo lesikrini liyayishintsha.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>I-stopwatch</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Iqala noma imisa isikhashana, noma isetha kabusha, i-stopwatch eboniswa yizikrini zekhibhodi ezikumodi ye-stopwatch.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>Qala noma misa isikhashana i-stopwatch</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>Setha kabusha i-stopwatch</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Ukusetha kabusha kumisa i-stopwatch futhi kuyibuyisele kuqanda. Zonke izikrini zekhibhodi ezikumodi ye-stopwatch zibonisa i-stopwatch efanayo.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Hambisa isithombe sesikrini sekhibhodi</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Ihambisa iwindi lesikrini sekhibhodi ngasinye esondla lesi sikhala phezu kwesithombe esikhulu kunesikrini, njengemephu.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Hambisa izithombe ngo-{0} ngo-{1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Ihambisa isikrini ngasinye esondla lesi sikhala futhi esibonisa isithombe esikhethiwe esikhulu kunaso. Iwindi lima emaphethelweni esithombe.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Isikrini</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Isenzo</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Isiqondiso</value></data>

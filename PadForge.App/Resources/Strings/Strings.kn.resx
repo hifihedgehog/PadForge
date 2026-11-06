@@ -4326,22 +4326,15 @@ PadForge ಅವುಗಳನ್ನು ಈಗ ಅನ್‌ಇನ್‌ಸ್ಟಾ
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>S.T.R.I.K.E. 7 SDK ಡೌನ್‌ಲೋಡ್ ಅದರ ತಿಳಿದ SHA-256 ಗೆ ಹೊಂದಿಕೆಯಾಗುವುದಿಲ್ಲ, ಆದ್ದರಿಂದ ಅದರಿಂದ ಏನನ್ನೂ ಉಳಿಸಿಕೊಂಡಿಲ್ಲ.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>ಇನ್‌ಸ್ಟಾಲರ್ ಚಲಿಸಿದ ನಂತರವೂ Visual C++ 2008 ರನ್‌ಟೈಮ್ ಕಾಣೆಯಾಗಿದೆ.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>ಕೀಬೋರ್ಡ್ ಪರದೆ ತೋರಿಸಿ</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>ಈ ಸ್ಲಾಟ್‌ಗೆ ಇನ್ಪುಟ್ ನೀಡುವ, ಆರಿಸಿದ ಬಗೆಯ ಪ್ರತಿ ಕೀಬೋರ್ಡ್ ಪರದೆಯಲ್ಲಿ ಚಿತ್ರಗಳನ್ನು ಪ್ಲೇ ಮಾಡುತ್ತದೆ, ನಂತರ ಪ್ರತಿ ಪರದೆಯನ್ನು ಅದರ ಸ್ವಂತ ಮೋಡ್‌ಗೆ ಹಿಂತಿರುಗಿಸುತ್ತದೆ.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>{0} ಚಿತ್ರಗಳನ್ನು ತೋರಿಸಿ: {1} × {2} ms, ಪುನರಾವರ್ತನೆ ಎಣಿಕೆ {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>ಚಿತ್ರಗಳನ್ನು ಪರದೆಗೆ ಹೊಂದಿಸಲಾಗುತ್ತದೆ: ಏಕವರ್ಣ ಪರದೆಯಲ್ಲಿ 160 ಬೈ 43 ಕಪ್ಪು-ಬಿಳುಪು ಪಿಕ್ಸೆಲ್‌ಗಳು, G19 ಪರದೆಯಲ್ಲಿ 320 ಬೈ 240, ಮತ್ತು Arx Control ಹಾಗೂ S.T.R.I.K.E. 7 ಗೆ 480 ಬೈ 320. ಫ್ರೇಮ್ ಸಮಯ ಕನಿಷ್ಠ ಒಂದು ಸೆಕೆಂಡಿನ ಹತ್ತನೇ ಒಂದು ಭಾಗ.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>ಕೀಬೋರ್ಡ್ ಪರದೆ ಮೋಡ್</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>ಈ ಸ್ಲಾಟ್‌ಗೆ ಇನ್ಪುಟ್ ನೀಡುವ, ಆರಿಸಿದ ಬಗೆಯ ಪ್ರತಿ ಕೀಬೋರ್ಡ್ ಪರದೆಯನ್ನು ಬೇರೆ ಮೋಡ್‌ಗೆ ಬದಲಿಸಿ, ಅದನ್ನು ಆ ಪರದೆಯ ಸೆಟ್ಟಿಂಗ್ ಆಗಿ ಉಳಿಸಿಕೊಳ್ಳುತ್ತದೆ.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} {1} ತೋರಿಸುತ್ತದೆ</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>ಇನ್ನೊಂದು ಮ್ಯಾಕ್ರೋ ಅಥವಾ ಪರದೆಯ ಡೈಲಾಗ್ ಅದನ್ನು ಬದಲಿಸುವವರೆಗೆ ಮೋಡ್ ಹಾಗೆಯೇ ಇರುತ್ತದೆ.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>ಸ್ಟಾಪ್‌ವಾಚ್</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>ಕೀಬೋರ್ಡ್ ಪರದೆಗಳು ಸ್ಟಾಪ್‌ವಾಚ್ ಮೋಡ್‌ನಲ್ಲಿ ತೋರಿಸುವ ಸ್ಟಾಪ್‌ವಾಚ್ ಅನ್ನು ಪ್ರಾರಂಭಿಸುತ್ತದೆ ಅಥವಾ ವಿರಾಮಗೊಳಿಸುತ್ತದೆ, ಅಥವಾ ಮರುಹೊಂದಿಸುತ್ತದೆ.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>ಸ್ಟಾಪ್‌ವಾಚ್ ಪ್ರಾರಂಭಿಸಿ ಅಥವಾ ವಿರಾಮಗೊಳಿಸಿ</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>ಸ್ಟಾಪ್‌ವಾಚ್ ಮರುಹೊಂದಿಸಿ</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>ಮರುಹೊಂದಿಸುವುದು ಸ್ಟಾಪ್‌ವಾಚ್ ಅನ್ನು ನಿಲ್ಲಿಸಿ ಸೊನ್ನೆಗೆ ಹಿಂತಿರುಗಿಸುತ್ತದೆ. ಸ್ಟಾಪ್‌ವಾಚ್ ಮೋಡ್‌ನಲ್ಲಿರುವ ಪ್ರತಿ ಕೀಬೋರ್ಡ್ ಪರದೆ ಒಂದೇ ಸ್ಟಾಪ್‌ವಾಚ್ ಅನ್ನು ತೋರಿಸುತ್ತದೆ.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>ಕೀಬೋರ್ಡ್ ಪರದೆ ಚಿತ್ರವನ್ನು ಪ್ಯಾನ್ ಮಾಡಿ</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>ಈ ಸ್ಲಾಟ್‌ಗೆ ಇನ್ಪುಟ್ ನೀಡುವ ಪ್ರತಿ ಕೀಬೋರ್ಡ್ ಪರದೆಯ ಕಿಟಕಿಯನ್ನು ಪರದೆಗಿಂತ ದೊಡ್ಡ ಚಿತ್ರದ ಮೇಲೆ ಚಲಿಸುತ್ತದೆ, ಉದಾಹರಣೆಗೆ ನಕ್ಷೆಗಾಗಿ.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>ಚಿತ್ರಗಳನ್ನು {0} ಬೈ {1} px ಪ್ಯಾನ್ ಮಾಡಿ</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>ಈ ಸ್ಲಾಟ್‌ಗೆ ಇನ್ಪುಟ್ ನೀಡುವ ಮತ್ತು ತನಗಿಂತ ದೊಡ್ಡದಾದ ಆರಿಸಿದ ಚಿತ್ರವನ್ನು ತೋರಿಸುವ ಪ್ರತಿ ಪರದೆಯನ್ನು ಚಲಿಸುತ್ತದೆ. ಕಿಟಕಿ ಚಿತ್ರದ ಅಂಚುಗಳಲ್ಲಿ ನಿಲ್ಲುತ್ತದೆ.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>ಪರದೆ</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>ಕ್ರಿಯೆ</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>ದಿಕ್ಕು</value></data>

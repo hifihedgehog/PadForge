@@ -4329,22 +4329,15 @@ Hoffech chi i PadForge eu dadosod nawr? Mae hyn angen caniatâd gweinyddwr ac ef
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>Nid yw lawrlwythiad SDK S.T.R.I.K.E. 7 yn cyfateb i'w SHA-256 hysbys, felly ni chadwyd dim ohono.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>Mae amser rhedeg Visual C++ 2008 yn dal ar goll ar ôl i'w osodwr redeg.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Dangos Sgrin Bysellfwrdd</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Yn chwarae lluniau ar bob sgrin bysellfwrdd o'r math a ddewiswyd sy'n bwydo'r slot hwn, yna'n dychwelyd pob sgrin i'w modd ei hun.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Dangos lluniau {0}: {1} × {2} ms, cyfrif ailadrodd {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Caiff lluniau eu ffitio i'r sgrin: 160 wrth 43 picsel du a gwyn ar sgrin unlliw, 320 wrth 240 ar un y G19, a 480 wrth 320 ar gyfer Arx Control a'r S.T.R.I.K.E. 7. Un rhan o ddeg o eiliad yw'r amser ffrâm byrraf.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Modd Sgrin Bysellfwrdd</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Yn newid pob sgrin bysellfwrdd o'r math a ddewiswyd sy'n bwydo'r slot hwn i fodd arall, ac yn ei chadw fel gosodiad y sgrin honno.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>Mae {0} yn dangos {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Mae'r modd yn aros nes i facro arall neu ddeialog y sgrin ei newid.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Stopwats</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Yn cychwyn neu'n oedi, neu'n ailosod, y stopwats y mae sgriniau bysellfwrdd yn y modd Stopwats yn ei ddangos.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>Cychwyn neu Oedi'r Stopwats</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>Ailosod y Stopwats</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Mae ailosod yn atal y stopwats ac yn ei osod yn ôl i sero. Mae pob sgrin bysellfwrdd yn y modd Stopwats yn dangos yr un stopwats.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Panio Llun Sgrin Bysellfwrdd</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Yn symud ffenestr pob sgrin bysellfwrdd sy'n bwydo'r slot hwn dros lun sy'n fwy na'r sgrin, ar gyfer map.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Panio lluniau {0} wrth {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Yn symud pob sgrin sy'n bwydo'r slot hwn ac yn dangos llun a ddewiswyd sy'n fwy na hi ei hun. Mae'r ffenestr yn stopio ar ymylon y llun.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Sgrin</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Gweithred</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Cyfeiriad</value></data>

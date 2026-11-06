@@ -4577,20 +4577,20 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Klavye ekranını göster</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Seçilen türdeki, bu yuvayı besleyen her klavye ekranında resimleri oynatır, sonra her ekranı kendi moduna döndürür. Ekran kaplaması bunları herhangi bir yuvadan alır.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>{0} resimlerini göster: {1} × {2} ms, yineleme sayısı {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Resimler ekrana sığdırılır: tek renkli ekranda 160 × 43 siyah beyaz piksel, G19'unkinde 320 × 240, Arx Control ve S.T.R.I.K.E. 7 için 480 × 320. En kısa kare süresi saniyenin onda biridir.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Resimler ekrana sığdırılır: tek renkli ekranda 160 × 43 siyah beyaz piksel, G19'unkinde 320 × 240, Arx Control ve S.T.R.I.K.E. 7 için 480 × 320. Ekran kaplaması her resmin kendi şeklini korur, uzun kenarı en fazla 800 piksel olur. En kısa kare süresi saniyenin onda biridir. Yineleme sayısı 0 ise, başka bir Klavye ekranını göster veya Klavye ekranı modu makrosu çalışana kadar oynatmaya devam eder.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Klavye ekranı modu</value></data>
   <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Seçilen türdeki, bu yuvayı besleyen her klavye ekranını başka bir moda geçirir ve bunu o ekranın ayarı olarak saklar. Ekran kaplaması bunu herhangi bir yuvadan alır.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} şunu gösterir: {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Mod, başka bir makro ya da ekranın iletişim kutusu değiştirene kadar kalır.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Kronometre</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Kronometre modundaki klavye ekranlarının gösterdiği kronometreyi başlatır, duraklatır ya da sıfırlar.</value></data>
+  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Kronometre modundaki klavye ekranlarının ve ekran kaplamalarının gösterdiği kronometreyi başlatır, duraklatır ya da sıfırlar.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>Kronometreyi başlat veya duraklat</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>Kronometreyi sıfırla</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Sıfırlama kronometreyi durdurur ve sıfıra getirir. Kronometre modundaki her klavye ekranı aynı kronometreyi gösterir.</value></data>
+  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Sıfırlama kronometreyi durdurur ve sıfıra getirir. Kronometre modundaki her klavye ekranı ve ekran kaplaması aynı kronometreyi gösterir.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Klavye ekranı resmini kaydır</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Bu yuvayı besleyen her klavye ekranının penceresini, ekrandan büyük bir resmin (örneğin bir haritanın) üzerinde hareket ettirir.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Bu yuvayı besleyen her klavye ekranının penceresini, ekrandan büyük bir resmin (örneğin bir haritanın) üzerinde hareket ettirir. Ekran kaplaması, yakınlaştırması yüzde 100'ün üzerindeyse aynı şekilde hareket eder.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Resimleri {0}, {1} px kaydır</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Bu yuvayı besleyen ve kendisinden büyük seçili bir resim gösteren her ekranı hareket ettirir. Pencere resmin kenarlarında durur.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Bu yuvayı besleyen ve kendisinden büyük seçili bir resim gösteren her ekranı hareket ettirir. Pencere resmin kenarlarında durur. Ekran kaplaması, makroyu hangi yuva çalıştırırsa çalıştırsın, yakınlaştırması yüzde 100'ün üzerindeyse hareket eder.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Ekran</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Eylem</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Yön</value></data>
@@ -4899,7 +4899,17 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>Kaplama etkin profilin kendi resmini, resmi yoksa adını gösterir. Her profil kendi resmini saklar.</value></data>
   <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>Kaplama günün saatini gösterir.</value></data>
   <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>Kaplama, etkin profilin devreye girmesinden bu yana geçen saat ve dakikayı gösterir. Bir oyunun programına bağlı profil oyun başlayınca devreye girer, yani sayaç o oturumu sayar. Varsayılan profilde sayaç altyapının başlangıcından itibaren işler.</value></data>
-  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Kaplama, seçtiğiniz bir resmi, oranlarını koruyarak penceresini dolduracak şekilde ölçeklenmiş olarak gösterir.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Kaplama, seçtiğiniz bir resmi, oranlarını koruyarak penceresini dolduracak şekilde ölçeklenmiş olarak gösterir. Yüzde 100'ün üzerindeki yakınlaştırmada resmin bir bölümünü gösterir, örneğin bir harita için. Bu bölümü Klavye ekranı resmini kaydır makrosu hareket ettirir, PadForge öndeyken sol fare düğmesiyle sürüklemek de aynı işi yapar.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>Kaplama, Kronometre makrosunun başlattığı, duraklattığı ve sıfırladığı kronometreyi gösterir. Bu, her klavye ekranının gösterdiği kronometrenin aynısıdır.</value></data>
-  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Kaplama, en düşük yuvadaki DualShock 4 veya DualSense'in ışık çubuğunun rengini gösterir. Bir ışık çubuğuna renk ulaşana kadar hiçbir şey göstermez.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Kaplama, burada seçtiğiniz yuvadaki ya da rengi olan en düşük yuvadaki DualShock 4 veya DualSense'in ışık çubuğunun rengini gösterir. Bir ışık çubuğuna renk ulaşana kadar hiçbir şey göstermez.</value></data>
+  <data name="Dashboard_ScreenOverlay_Number_Format" xml:space="preserve"><value>Ekran kaplaması {0}</value></data>
+  <data name="Dashboard_ScreenOverlayAdd" xml:space="preserve"><value>Kaplama ekle</value></data>
+  <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Rengi olan en düşük yuva</value></data>
+  <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>Yakınlaştırma</value></data>
+  <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>Resim seçilmedi.</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Işık çubuğu rengi bekleniyor.</value></data>
+  <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Kaplama</value></data>
+  <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Her kaplama</value></data>
+  <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Ekran kaplaması {0} aç/kapat</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>{0} resimlerini göster: {1} × {2} ms, sonraki makroya kadar</value></data>
 </root>

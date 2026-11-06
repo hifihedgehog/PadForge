@@ -31,11 +31,6 @@ namespace PadForge.Common.Input
             }
         }
 
-        /// <summary>The Screen Overlay is on (#560). Its macros run with no
-        /// keyboard screen in the picture, so this opens the macro queue and
-        /// leaves the device sweep and the screen engines alone.</summary>
-        public static volatile bool OverlayEnabled;
-
         /// <summary>Bumps when the rows must reopen to pick up a change.</summary>
         public static int Version => _version;
 

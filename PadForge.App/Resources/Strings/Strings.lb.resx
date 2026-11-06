@@ -4333,22 +4333,15 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>Den Download vum S.T.R.I.K.E. 7-SDK entsprécht net sengem bekannte SHA-256, dofir gouf näischt dovun behalen.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>D'Visual C++ 2008-Runtime feelt nach ëmmer, nodeems hiren Installateur gelaf ass.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Tastatur-Écran weisen</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Weist Biller op all Tastatur-Écran vun der gewielter Aart, deen dëse Slot fiddert, a setzt dono all Écran zréck op säin eegene Modus.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>{0}-Biller weisen: {1} × {2} ms, Unzuel Widderhuelungen {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>D'Biller ginn un den Écran ugepasst: 160 op 43 schwaarz-wäiss Pixel op engem monochromen Écran, 320 op 240 op deem vum G19 an 480 op 320 fir Arx Control an d'S.T.R.I.K.E. 7. En Zéngtel vun enger Sekonn ass déi kierzste Bildzäit.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Tastatur-Écran-Modus</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Schalt all Tastatur-Écran vun der gewielter Aart, deen dëse Slot fiddert, op en anere Modus a behält dee Modus als Astellung vun deem Écran.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} weist {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>De Modus bleift, bis en anere Makro oder den Dialog vum Écran en ännert.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Stoppauer</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Start, pauséiert oder setzt d'Stoppauer zréck, déi d'Tastatur-Écranen am Modus „Stoppauer“ weisen.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>Stoppauer starten oder pauséieren</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>Stoppauer zrécksetzen</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Zrécksetzen stoppt d'Stoppauer a setzt se op null zréck. All Tastatur-Écran am Modus „Stoppauer“ weist déiselwecht Stoppauer.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Bild um Tastatur-Écran verschieben</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Beweegt d'Fënster vun all Tastatur-Écran, deen dëse Slot fiddert, iwwer e Bild, dat méi grouss ass wéi den Écran, zum Beispill fir eng Kaart.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Biller verschieben: {0} op {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Beweegt all Écran, deen dëse Slot fiddert an e gewielt Bild weist, dat méi grouss ass wéi en selwer. D'Fënster bleift un de Kante vum Bild stoen.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Écran</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Aktioun</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Richtung</value></data>

@@ -4577,20 +4577,20 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Hiện màn hình bàn phím</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Phát các hình trên từng màn hình bàn phím thuộc loại đã chọn đang cấp cho khe này, rồi đưa mỗi màn hình về chế độ riêng của nó. Lớp phủ màn hình lấy các hình đó từ bất kỳ khe nào.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Hiện hình {0}: {1} × {2} ms, số lần lặp {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Hình được vừa khít với màn hình: 160 × 43 pixel đen trắng trên màn hình đơn sắc, 320 × 240 trên màn hình của G19, và 480 × 320 cho Arx Control và S.T.R.I.K.E. 7. Thời gian khung hình ngắn nhất là một phần mười giây.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Hình được vừa khít với màn hình: 160 × 43 pixel đen trắng trên màn hình đơn sắc, 320 × 240 trên màn hình của G19, và 480 × 320 cho Arx Control và S.T.R.I.K.E. 7. Lớp phủ màn hình giữ nguyên hình dạng riêng của từng hình, tối đa 800 pixel ở cạnh dài hơn. Thời gian khung hình ngắn nhất là một phần mười giây. Số lần lặp bằng 0 sẽ phát liên tục cho đến khi có macro Hiện màn hình bàn phím hoặc Chế độ màn hình bàn phím khác.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Chế độ màn hình bàn phím</value></data>
   <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Chuyển từng màn hình bàn phím thuộc loại đã chọn đang cấp cho khe này sang chế độ khác, và giữ nó làm thiết lập của màn hình đó. Lớp phủ màn hình lấy chế độ đó từ bất kỳ khe nào.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} hiển thị {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Chế độ được giữ cho đến khi một macro khác hoặc hộp thoại của màn hình thay đổi nó.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Đồng hồ bấm giờ</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Bắt đầu hoặc tạm dừng, hoặc đặt lại đồng hồ bấm giờ mà các màn hình bàn phím ở chế độ Đồng hồ bấm giờ hiển thị.</value></data>
+  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Bắt đầu hoặc tạm dừng, hoặc đặt lại đồng hồ bấm giờ mà các màn hình bàn phím và lớp phủ màn hình ở chế độ Đồng hồ bấm giờ hiển thị.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>Bắt đầu hoặc tạm dừng đồng hồ bấm giờ</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>Đặt lại đồng hồ bấm giờ</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Đặt lại sẽ dừng đồng hồ bấm giờ và đưa về không. Mọi màn hình bàn phím ở chế độ Đồng hồ bấm giờ đều hiển thị cùng một đồng hồ bấm giờ.</value></data>
+  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Đặt lại sẽ dừng đồng hồ bấm giờ và đưa về không. Mọi màn hình bàn phím và lớp phủ màn hình ở chế độ Đồng hồ bấm giờ đều hiển thị cùng một đồng hồ bấm giờ.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Dịch hình màn hình bàn phím</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Di chuyển khung của từng màn hình bàn phím đang cấp cho khe này trên một hình lớn hơn màn hình, chẳng hạn một bản đồ.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Di chuyển khung của từng màn hình bàn phím đang cấp cho khe này trên một hình lớn hơn màn hình, chẳng hạn một bản đồ. Lớp phủ màn hình cũng di chuyển theo cách đó khi mức thu phóng trên 100 phần trăm.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Dịch hình theo {0} và {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Di chuyển từng màn hình đang cấp cho khe này và hiển thị một hình đã chọn lớn hơn chính nó. Khung dừng ở mép hình.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Di chuyển từng màn hình đang cấp cho khe này và hiển thị một hình đã chọn lớn hơn chính nó. Khung dừng ở mép hình. Lớp phủ màn hình di chuyển khi mức thu phóng trên 100 phần trăm, bất kể khe nào chạy macro.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Màn hình</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Hành động</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Hướng</value></data>
@@ -4899,7 +4899,17 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>Lớp phủ hiển thị hình riêng của hồ sơ đang hoạt động, hoặc tên của nó nếu không có hình. Mỗi hồ sơ giữ hình riêng của mình.</value></data>
   <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>Lớp phủ hiển thị giờ trong ngày.</value></data>
   <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>Lớp phủ hiển thị số giờ và phút kể từ khi hồ sơ đang hoạt động được chuyển sang. Hồ sơ gắn với chương trình của một trò chơi sẽ được chuyển sang khi trò chơi bắt đầu, nên số đếm là của phiên đó. Với hồ sơ Mặc định, số đếm tính từ lúc engine khởi động.</value></data>
-  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Lớp phủ hiển thị một hình bạn chọn, được co giãn để lấp đầy cửa sổ của nó và giữ nguyên tỷ lệ.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Lớp phủ hiển thị một hình bạn chọn, được co giãn để lấp đầy cửa sổ của nó và giữ nguyên tỷ lệ. Khi thu phóng trên 100 phần trăm, lớp phủ chỉ hiển thị một phần của hình, chẳng hạn một bản đồ. Macro Dịch hình màn hình bàn phím di chuyển phần đó, kéo bằng nút chuột trái khi PadForge đang ở phía trước cũng vậy.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>Lớp phủ hiển thị đồng hồ bấm giờ, do macro Đồng hồ bấm giờ bắt đầu, tạm dừng và đặt lại. Đó là cùng một đồng hồ bấm giờ mà mọi màn hình bàn phím hiển thị.</value></data>
-  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Lớp phủ hiển thị màu thanh đèn của DualShock 4 hoặc DualSense ở khe thấp nhất. Cho đến khi có màu truyền đến thanh đèn, lớp phủ không hiển thị gì.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Lớp phủ hiển thị màu thanh đèn của DualShock 4 hoặc DualSense ở khe bạn chọn tại đây, hoặc ở khe thấp nhất có màu. Cho đến khi có màu truyền đến thanh đèn, lớp phủ không hiển thị gì.</value></data>
+  <data name="Dashboard_ScreenOverlay_Number_Format" xml:space="preserve"><value>Lớp phủ màn hình {0}</value></data>
+  <data name="Dashboard_ScreenOverlayAdd" xml:space="preserve"><value>Thêm lớp phủ</value></data>
+  <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Khe thấp nhất có màu</value></data>
+  <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>Thu phóng</value></data>
+  <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>Chưa chọn hình.</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Đang chờ màu thanh đèn.</value></data>
+  <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Lớp phủ</value></data>
+  <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Mọi lớp phủ</value></data>
+  <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Bật/tắt lớp phủ màn hình {0}</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Hiện hình {0}: {1} × {2} ms, cho đến macro tiếp theo</value></data>
 </root>

@@ -4364,22 +4364,15 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>La baixada del SDK del S.T.R.I.K.E. 7 no coincideix amb el seu SHA-256 conegut, així que no se n'ha conservat res.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>L'entorn d'execució de Visual C++ 2008 continua sense estar instal·lat després d'executar-se el seu instal·lador.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Mostra la pantalla del teclat</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Reprodueix imatges a cada pantalla del teclat del tipus triat que alimenta aquesta ranura i després retorna cada pantalla al seu propi mode.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Mostra imatges de {0}: {1} × {2} ms, repeticions {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Les imatges s'ajusten a la pantalla: 160 per 43 píxels en blanc i negre en una pantalla monocroma, 320 per 240 a la de la G19 i 480 per 320 per a Arx Control i el S.T.R.I.K.E. 7. Una dècima de segon és el temps mínim per imatge.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Mode de la pantalla del teclat</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Canvia a un altre mode cada pantalla del teclat del tipus triat que alimenta aquesta ranura, i el conserva com a configuració d'aquella pantalla.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} mostra {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>El mode es manté fins que una altra macro o el diàleg de la pantalla el canviï.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Cronòmetre</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Posa en marxa o en pausa, o restableix, el cronòmetre que mostren les pantalles del teclat en mode Cronòmetre.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>Inicia o posa en pausa el cronòmetre</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>Restableix el cronòmetre</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Restablir atura el cronòmetre i el torna a zero. Totes les pantalles del teclat en mode Cronòmetre mostren el mateix cronòmetre.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Desplaça la imatge de la pantalla del teclat</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Mou la finestra de cada pantalla del teclat que alimenta aquesta ranura sobre una imatge més gran que la pantalla, per a un mapa.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Desplaça les imatges {0} per {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Mou cada pantalla que alimenta aquesta ranura i mostra una imatge triada més gran que ella mateixa. La finestra s'atura als límits de la imatge.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Pantalla</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Acció</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Direcció</value></data>

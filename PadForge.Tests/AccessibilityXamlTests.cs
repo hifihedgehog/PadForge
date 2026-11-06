@@ -96,6 +96,8 @@ namespace PadForge.Tests
                 "The grip resizes the on-screen touchpad, a surface for the mouse, a pen or a finger."),
             ("PadForge.App/Views/ScreenOverlay.xaml", XamlA11yAudit.MouseOnly, "Path|ResizeGrip",
                 "The grip sizes an overlay that shows a picture over a game. Reset Position on the Dashboard brings it back from the keyboard."),
+            ("PadForge.App/Views/ScreenOverlay.xaml", XamlA11yAudit.MouseOnly, "Border|Surface",
+                "Dragging moves a zoomed picture in its window. The Pan boxes in the overlay's dialog set the same place from the keyboard."),
         };
 
         private static bool Allowed(XamlA11yAudit.Finding f)

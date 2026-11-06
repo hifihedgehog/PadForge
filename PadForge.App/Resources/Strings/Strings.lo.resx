@@ -4337,22 +4337,15 @@
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>ໄຟລ໌ດາວໂຫຼດ SDK S.T.R.I.K.E. 7 ບໍ່ກົງກັບ SHA-256 ທີ່ຮູ້ຈັກ, ສະນັ້ນຈຶ່ງບໍ່ໄດ້ເກັບຫຍັງຈາກມັນໄວ້.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>ຍັງບໍ່ມີຣັນທາມ Visual C++ 2008 ຫຼັງຈາກຕົວຕິດຕັ້ງຂອງມັນເຮັດວຽກແລ້ວ.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>ສະແດງໜ້າຈໍແປ້ນພິມ</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>ຫຼິ້ນຮູບເທິງແຕ່ລະໜ້າຈໍແປ້ນພິມຂອງປະເພດທີ່ເລືອກ ທີ່ສົ່ງຂໍ້ມູນເຂົ້າຊ່ອງນີ້, ແລ້ວສົ່ງແຕ່ລະໜ້າຈໍກັບຄືນສູ່ໂໝດຂອງມັນເອງ.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>ສະແດງຮູບ {0}: {1} × {2} ms, ຈຳນວນເທື່ອຊ້ຳ {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>ຮູບຈະຖືກປັບໃຫ້ພໍດີກັບໜ້າຈໍ: 160 × 43 ພິກເຊລຂາວດຳ ເທິງໜ້າຈໍຂາວດຳ, 320 × 240 ເທິງໜ້າຈໍຂອງ G19, ແລະ 480 × 320 ສຳລັບ Arx Control ແລະ S.T.R.I.K.E. 7. ໜຶ່ງສ່ວນສິບວິນາທີແມ່ນເວລາຕໍ່ເຟຣມທີ່ສັ້ນທີ່ສຸດ.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>ໂໝດໜ້າຈໍແປ້ນພິມ</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>ສະຫຼັບແຕ່ລະໜ້າຈໍແປ້ນພິມຂອງປະເພດທີ່ເລືອກ ທີ່ສົ່ງຂໍ້ມູນເຂົ້າຊ່ອງນີ້ ໄປເປັນໂໝດອື່ນ, ແລະ ເກັບມັນໄວ້ເປັນການຕັ້ງຄ່າຂອງໜ້າຈໍນັ້ນ.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} ສະແດງ {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>ໂໝດຈະຄົງຢູ່ຈົນກວ່າມາໂຄຣອື່ນ ຫຼື ກ່ອງໂຕ້ຕອບຂອງໜ້າຈໍຈະປ່ຽນມັນ.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>ໂມງຈັບເວລາ</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>ເລີ່ມ ຫຼື ຢຸດຊົ່ວຄາວ, ຫຼື ຄືນຄ່າ, ໂມງຈັບເວລາທີ່ໜ້າຈໍແປ້ນພິມໃນໂໝດ ໂມງຈັບເວລາ ສະແດງ.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>ເລີ່ມ ຫຼື ຢຸດຊົ່ວຄາວໂມງຈັບເວລາ</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>ຄືນຄ່າໂມງຈັບເວລາ</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>ຄືນຄ່າຈະຢຸດໂມງຈັບເວລາ ແລະ ຕັ້ງມັນກັບເປັນສູນ. ທຸກໜ້າຈໍແປ້ນພິມໃນໂໝດ ໂມງຈັບເວລາ ສະແດງໂມງຈັບເວລາດຽວກັນ.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>ເລື່ອນຮູບໜ້າຈໍແປ້ນພິມ</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>ຍ້າຍໜ້າຕ່າງຂອງແຕ່ລະໜ້າຈໍແປ້ນພິມທີ່ສົ່ງຂໍ້ມູນເຂົ້າຊ່ອງນີ້ ໄປທົ່ວຮູບທີ່ໃຫຍ່ກວ່າໜ້າຈໍ, ສຳລັບແຜນທີ່.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>ເລື່ອນຮູບ {0}, {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>ຍ້າຍແຕ່ລະໜ້າຈໍທີ່ສົ່ງຂໍ້ມູນເຂົ້າຊ່ອງນີ້ ແລະ ສະແດງຮູບທີ່ເລືອກ ທີ່ໃຫຍ່ກວ່າຕົວມັນເອງ. ໜ້າຕ່າງຈະຢຸດຢູ່ທີ່ຂອບຂອງຮູບ.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>ໜ້າຈໍ</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>ການກະທຳ</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>ທິດທາງ</value></data>

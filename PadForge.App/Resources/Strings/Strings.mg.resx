@@ -1831,15 +1831,10 @@
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>Tsy mifanaraka amin'ny SHA-256 fantatra ny SDK S.T.R.I.K.E. 7 nosintonina, koa tsy nisy notehirizina tamin'izany.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>Mbola tsy eo ihany ny runtime Visual C++ 2008 na dia efa nandeha aza ny mpametraka azy.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Asehoy ny efijerin'ny fitendry</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Mampiseho sary amin'ny efijerin'ny fitendry tsirairay amin'ilay karazana nofidiana izay mifandray amin'ity slot ity, avy eo mamerina ny efijery tsirairay amin'ny mode-ny.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Asehoy ny sary amin'ny {0}: {1} × {2} ms, isan'ny famerenana {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Ampifanarahina amin'ny efijery ny sary: piksely mainty sy fotsy 160 amin'ny 43 amin'ny efijery mainty sy fotsy, 320 amin'ny 240 amin'ny an'ny G19, ary 480 amin'ny 320 ho an'ny Arx Control sy ny S.T.R.I.K.E. 7. Ampahafolon'ny segondra no fotoana fohy indrindra isaky ny sary.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Mode an'ny efijerin'ny fitendry</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Manova ho amin'ny mode hafa ny efijerin'ny fitendry tsirairay amin'ilay karazana nofidiana izay mifandray amin'ity slot ity, ary mitahiry izany ho fikirakirana an'io efijery io.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>Mampiseho {1} ny {0}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Mijanona ny mode mandra-panovan'ny macro hafa na ny varavarankelin'ny efijery azy.</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Mampihetsika ny varavarankelin'ny efijerin'ny fitendry tsirairay mifandray amin'ity slot ity eo amin'ny sary lehibe noho ny efijery, ho an'ny sarintany.</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Mampihetsika ny efijery tsirairay mifandray amin'ity slot ity sady mampiseho sary nofidiana lehibe noho izy. Mijanona eo amin'ny sisin'ilay sary ny varavarankely.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Efijery</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Hetsika</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Lalana</value></data>

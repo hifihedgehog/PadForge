@@ -17,6 +17,7 @@ using System.Xml.Serialization;
 using PadForge.Common;
 using PadForge.Common.Input;
 using PadForge.Common.Input.KeyboardScreens;
+using PadForge.Engine;
 using PadForge.Engine.Data;
 using PadForge.Resources.Strings;
 using PadForge.Services;
@@ -155,8 +156,11 @@ namespace PadForge.Tests
             Assert.Equal(KeyboardScreenKind.Overlay, Enum.GetValues<KeyboardScreenKind>()[^1]);
             Assert.DoesNotContain(KeyboardScreenKind.Overlay, KeyboardScreenFormats.Kinds);
             Assert.Equal((800, 800), KeyboardScreenFormats.SizeOf(KeyboardScreenKind.Overlay));
-            Assert.Equal(KeyboardScreenInfo.OverlayRow, KeyboardScreenInfo.Overlay("Screen Overlay").RowGuid);
-            Assert.Equal(KeyboardScreenKind.Overlay, KeyboardScreenInfo.Overlay("Screen Overlay").Kind);
+            Assert.Equal(KeyboardScreenInfo.OverlayRow(2), KeyboardScreenInfo.Overlay(2).RowGuid);
+            Assert.NotEqual(KeyboardScreenInfo.OverlayRow(1), KeyboardScreenInfo.OverlayRow(2));
+            Assert.Equal(KeyboardScreenKind.Overlay, KeyboardScreenInfo.Overlay(2).Kind);
+            Assert.Equal(2, KeyboardScreenInfo.Overlay(2).OverlayNumber);
+            Assert.Equal(0, KeyboardScreenInfo.Arx().OverlayNumber);
         }
 
         /// <summary>The picker lists the kinds in their own order, since its index
@@ -174,6 +178,100 @@ namespace PadForge.Tests
             Assert.Equal(KeyboardScreenKind.Overlay, action.ScreenKind);
         }
 
+        /// <summary>An overlay is a window and no device. Nothing makes a row of it on
+        /// the Devices page, and a macro reaches it from any slot, with nothing fed.</summary>
+        [Fact]
+        public void AnOverlay_IsNoDevice()
+        {
+            Assert.DoesNotContain("Overlay", RepoText("PadForge.App", "Common", "Input", "KeyboardScreenDevice.cs"));
+            string rows = RepoText("PadForge.App", "Common", "Input", "InputManager.KeyboardScreens.cs");
+            Assert.Contains("KeyboardScreensRuntime.Screens", rows);
+            Assert.DoesNotContain("KeyboardScreenInfo.Overlay(", rows);
+            Assert.DoesNotContain("OverlayRow", rows);
+            string service = RepoText("PadForge.App", "Services", "KeyboardScreenService.cs");
+            int at = service.IndexOf("private List<OverlayScreen> OverlaysFor", StringComparison.Ordinal);
+            Assert.True(at > 0);
+            Assert.DoesNotContain("SlotsFed", service.Substring(at, 300));
+        }
+
+        /// <summary>A language switch makes a new list of overlays, which clears a
+        /// list box's selection. The macro keeps the overlay it names, and the box goes
+        /// back to it.</summary>
+        [Fact]
+        public void ALanguageSwitch_KeepsTheOverlayAMacroNames()
+            => OnSta(() =>
+            {
+                var action = new MacroAction { Type = MacroActionType.ToggleScreenOverlay, ScreenOverlayNumber = 3 };
+                var box = new System.Windows.Controls.ComboBox
+                {
+                    DataContext = action,
+                    ItemsSource = action.ScreenOverlayChoices,
+                    DisplayMemberPath = nameof(ScreenOverlayChoice.Display),
+                    SelectedValuePath = nameof(ScreenOverlayChoice.Value),
+                };
+                box.SetBinding(System.Windows.Controls.Primitives.Selector.SelectedValueProperty,
+                    new System.Windows.Data.Binding(nameof(MacroAction.ScreenOverlayNumber)) { Mode = System.Windows.Data.BindingMode.TwoWay });
+                Assert.Equal(3, box.SelectedIndex);
+                var raised = new List<string>();
+                action.PropertyChanged += (_, e) => raised.Add(e.PropertyName);
+
+                // The new language's lines differ, which clears the selection.
+                box.ItemsSource = action.ScreenOverlayChoices.Select(line => line with { Display = "x" + line.Display }).ToList();
+                Assert.Null(box.SelectedItem);
+                Assert.Equal(3, action.ScreenOverlayNumber);
+
+                typeof(MacroAction).GetMethod("OnCultureChanged", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(action, null);
+
+                Assert.True(raised.IndexOf(nameof(MacroAction.ScreenOverlayChoices)) >= 0);
+                Assert.True(raised.IndexOf(nameof(MacroAction.ScreenOverlayNumber)) > raised.IndexOf(nameof(MacroAction.ScreenOverlayChoices)));
+                Assert.Equal(3, action.ScreenOverlayNumber);
+                Assert.Equal(3, box.SelectedIndex);
+                Assert.Equal("x" + KeyboardScreenService.OverlayName(3), ((ScreenOverlayChoice)box.SelectedItem).Display);
+            });
+
+        /// <summary>The picker for which overlay shows on the actions that name one,
+        /// and its list runs from every overlay to the last number.</summary>
+        [Fact]
+        public void AnAction_CanNameItsOverlay()
+        {
+            var show = new MacroAction { Type = MacroActionType.ShowKeyboardScreen, ScreenKind = KeyboardScreenKind.Color };
+            Assert.False(show.IsScreenOverlayTargetType);
+            show.ScreenKind = KeyboardScreenKind.Overlay;
+            Assert.True(show.IsScreenOverlayTargetType);
+            Assert.True(new MacroAction { Type = MacroActionType.ToggleScreenOverlay }.IsScreenOverlayTargetType);
+            Assert.True(new MacroAction { Type = MacroActionType.PanKeyboardScreen }.IsScreenOverlayTargetType);
+            Assert.True(new MacroAction { Type = MacroActionType.KeyboardScreenMode, ScreenKind = KeyboardScreenKind.Overlay }.IsScreenOverlayTargetType);
+            Assert.False(new MacroAction { Type = MacroActionType.Stopwatch, ScreenKind = KeyboardScreenKind.Overlay }.IsScreenOverlayTargetType);
+
+            Assert.Equal(KeyboardScreenInfo.MaxOverlays + 1, show.ScreenOverlayChoices.Count);
+            Assert.Equal(new ScreenOverlayChoice(Strings.Instance.Macro_KeyboardScreen_EveryOverlay, 0), show.ScreenOverlayChoices[0]);
+            Assert.Equal(new ScreenOverlayChoice(KeyboardScreenService.OverlayName(3), 3), show.ScreenOverlayChoices[3]);
+            show.ScreenOverlayNumber = 99;
+            Assert.Equal(KeyboardScreenInfo.MaxOverlays, show.ScreenOverlayNumber);
+            show.ScreenOverlayNumber = -4;
+            Assert.Equal(0, show.ScreenOverlayNumber);
+
+            show.ScreenOverlayNumber = 2;
+            Assert.Contains(KeyboardScreenService.OverlayName(2), show.DisplayText);
+            show.ScreenOverlayNumber = 0;
+            Assert.Contains(Strings.Instance.KeyboardScreens_Kind_Overlay, show.DisplayText);
+
+            var pan = new MacroAction { Type = MacroActionType.PanKeyboardScreen };
+            Assert.DoesNotContain(KeyboardScreenService.OverlayName(2), pan.DisplayText);
+            string everyOverlay = pan.DisplayText;
+            pan.ScreenOverlayNumber = 2;
+            Assert.Contains(KeyboardScreenService.OverlayName(2), pan.DisplayText);
+            Assert.Contains(everyOverlay, pan.DisplayText);
+
+            // Through the settings file's record, with the repeat that holds.
+            var item = new MacroItem { Name = "icon" };
+            item.Actions.Add(new MacroAction { Type = MacroActionType.ShowKeyboardScreen, ScreenKind = KeyboardScreenKind.Overlay, ScreenOverlayNumber = 5, ScreenRepeat = 0 });
+            var back = SettingsService.LoadMacroFromData(RoundTrip(SettingsService.BuildMacroDataForMacro(item, 0)), VirtualControllerType.Xbox, null).Actions[0];
+            Assert.Equal(5, back.ScreenOverlayNumber);
+            Assert.Equal(0, back.ScreenRepeat);
+            Assert.Equal(KeyboardScreenKind.Overlay, back.ScreenKind);
+        }
+
         // ── The macro ──
 
         [Fact]
@@ -183,9 +281,11 @@ namespace PadForge.Tests
             Assert.Equal(MacroActionType.ToggleScreenOverlay, Enum.GetValues<MacroActionType>()[^1]);
             string source = RepoText("PadForge.App", "Common", "Input", "InputManager.Step4b.EvaluateMacros.cs");
             Assert.Equal(2, CountOf(source, "case MacroActionType.ToggleScreenOverlay:"));
-            Assert.Equal(2, CountOf(source, "ToggleScreenOverlayRequested = true;"));
+            Assert.Equal(2, CountOf(source, "RequestScreenOverlayToggle(action.ScreenOverlayNumber);"));
             Assert.Equal(Strings.Instance.MacroAction_ToggleScreenOverlay,
                 new MacroAction { Type = MacroActionType.ToggleScreenOverlay }.DisplayText);
+            Assert.Equal(string.Format(Strings.Instance.MacroAction_ToggleScreenOverlay_Format, 3),
+                new MacroAction { Type = MacroActionType.ToggleScreenOverlay, ScreenOverlayNumber = 3 }.DisplayText);
             Assert.Contains("ToggleScreenOverlay, S.Macro_ToggleScreenOverlay", RepoText("PadForge.App", "ViewModels", "MacroTypeCatalog.cs"));
         }
 
@@ -193,44 +293,192 @@ namespace PadForge.Tests
         public void TheToggle_RaisesItsRequest_AndTheServiceClearsIt()
         {
             string service = RepoText("PadForge.App", "Services", "InputService.cs");
-            int at = service.IndexOf("if (_inputManager.ToggleScreenOverlayRequested)", StringComparison.Ordinal);
+            int at = service.IndexOf("if (Volatile.Read(ref _inputManager.ToggleScreenOverlayMask) != 0)", StringComparison.Ordinal);
             Assert.True(at > 0);
-            string body = service.Substring(at, 200);
-            Assert.Contains("_inputManager.ToggleScreenOverlayRequested = false;", body);
-            Assert.Contains("ToggleScreenOverlay();", body);
+            Assert.Contains("ToggleScreenOverlays(Interlocked.Exchange(ref _inputManager.ToggleScreenOverlayMask, 0));", service.Substring(at, 200));
         }
 
         // ── The queue ──
 
+        private static readonly Size AnyWindow = new(320, 240);
+
+        private static List<ScreenOverlayContent> Attach(KeyboardScreenService service, int number, Size? bounds = null)
+        {
+            var shown = new List<ScreenOverlayContent>();
+            var size = bounds ?? AnyWindow;
+            service.AttachOverlay(number, shown.Add, () => size);
+            return shown;
+        }
+
+        /// <summary>Runs a body with the macro queue empty, and leaves it empty.</summary>
+        private static void WithQueue(Action body)
+        {
+            KeyboardScreenService.DropRequests();
+            try { body(); }
+            finally { KeyboardScreenService.DropRequests(); }
+        }
+
+        /// <summary>A macro for a keyboard's screen waits on the Keyboard Screens
+        /// switch. One for an overlay needs no switch and no window up.</summary>
         [Fact]
-        public void TheOverlaySwitch_OpensTheQueue_WithTheKeyboardScreensSwitchOff()
+        public void AnOverlaysMacro_NeedsNoSwitch()
         {
             KeyboardScreenService.DropRequests();
             bool hardware = KeyboardScreensRuntime.Enabled;
             KeyboardScreensRuntime.Enabled = false;
-            var vm = new DashboardViewModel();
             try
             {
-                KeyboardScreenService.RequestStopwatch(KeyboardScreenStopwatchAction.Reset);
+                KeyboardScreenService.RequestShow(0, KeyboardScreenKind.Color, 0, "", 1000, 1);
+                KeyboardScreenService.RequestMode(0, KeyboardScreenKind.Arx, 0, KeyboardScreenMode.Clock);
                 Assert.Equal(0, KeyboardScreenService.PendingRequests);
 
-                vm.EnableScreenOverlay = true;
-                Assert.True(KeyboardScreensRuntime.OverlayEnabled);
+                KeyboardScreenService.RequestShow(0, KeyboardScreenKind.Overlay, 1, "", 1000, 1);
+                KeyboardScreenService.RequestMode(0, KeyboardScreenKind.Overlay, 1, KeyboardScreenMode.Clock);
                 KeyboardScreenService.RequestStopwatch(KeyboardScreenStopwatchAction.Reset);
-                Assert.Equal(1, KeyboardScreenService.PendingRequests);
+                KeyboardScreenService.RequestPan(0, 1, KeyboardScreenPanDirection.Right, 8);
+                Assert.Equal(4, KeyboardScreenService.PendingRequests);
 
-                vm.ResetSettingCommand.Execute(nameof(DashboardViewModel.EnableScreenOverlay));
-                Assert.False(vm.EnableScreenOverlay);
-                Assert.False(KeyboardScreensRuntime.OverlayEnabled);
+                KeyboardScreensRuntime.Enabled = true;
+                KeyboardScreenService.DropRequests();
+                KeyboardScreenService.RequestMode(0, KeyboardScreenKind.Arx, 0, KeyboardScreenMode.Clock);
+                Assert.Equal(1, KeyboardScreenService.PendingRequests);
             }
             finally
             {
-                vm.EnableScreenOverlay = false;
-                KeyboardScreensRuntime.OverlayEnabled = false;
                 KeyboardScreensRuntime.Enabled = hardware;
                 KeyboardScreenService.DropRequests();
             }
         }
+
+        /// <summary>With every window down, a macro's mode is kept, and its show waits
+        /// for the window: "set the picture, then bring up the panel" works in that
+        /// order too. A timed show that ran out while the window was down is gone.</summary>
+        [Fact]
+        public void AMacro_LandsWithEveryWindowDown()
+            => OnSta(() => WithQueue(() =>
+            {
+                string frame = Convert.ToBase64String(Png(Bitmap(4, 2, Opaque)));
+                var service = new KeyboardScreenService(new SettingsViewModel(), null);
+
+                KeyboardScreenService.RequestMode(0, KeyboardScreenKind.Overlay, 3, KeyboardScreenMode.Clock);
+                KeyboardScreenService.RequestShow(0, KeyboardScreenKind.Overlay, 1, frame, 60000, 0);
+                service.TickWithNothingUp();
+                Assert.Equal(0, KeyboardScreenService.PendingRequests);
+                Assert.Equal(KeyboardScreenMode.Clock, service.Get(KeyboardScreenInfo.OverlayRow(3)).Mode);
+
+                var shown = Attach(service, 1);
+                service.Tick(hardware: false);
+                Assert.Equal(4, shown[^1].Picture.PixelWidth);
+                service.DetachOverlay(1);
+
+                KeyboardScreenService.RequestShow(0, KeyboardScreenKind.Overlay, 2, frame, KeyboardScreenService.MinFrameMs, 1);
+                service.TickWithNothingUp();
+                Thread.Sleep(KeyboardScreenService.MinFrameMs * 2);
+                service.TickWithNothingUp();
+                var two = Attach(service, 2);
+                service.Tick(hardware: false);
+                Assert.Null(two[^1].Picture);
+            }));
+
+        /// <summary>A picture held until the next macro is still there after the hotkey
+        /// hides the panel and shows it again, through the idle pass that lets go of
+        /// the screens. A mode macro with the window down ends it. The engine stopping
+        /// ends it too.</summary>
+        [Fact]
+        public void AHeldShow_ComesBackWithItsWindow()
+            => OnSta(() => WithQueue(() =>
+            {
+                string frame = Convert.ToBase64String(Png(Bitmap(4, 2, Opaque)));
+                var service = new KeyboardScreenService(new SettingsViewModel(), null);
+                var shown = Attach(service, 1);
+                KeyboardScreenService.RequestShow(0, KeyboardScreenKind.Overlay, 1, frame, 60000, 0);
+                service.Tick(hardware: false);
+                Assert.NotNull(shown[^1].Picture);
+
+                // Nothing is drawn while the window is down.
+                service.DetachOverlay(1);
+                int drawn = shown.Count;
+                Thread.Sleep(300);
+                service.Tick(hardware: false);
+                Assert.Equal(drawn, shown.Count);
+
+                service.TickWithNothingUp();
+                service.ReleaseWhileIdle();
+                Assert.False(service.Active);
+                shown = Attach(service, 1);
+                service.Tick(hardware: false);
+                Assert.NotNull(shown[^1].Picture);
+
+                service.DetachOverlay(1);
+                KeyboardScreenService.RequestMode(0, KeyboardScreenKind.Overlay, 1, KeyboardScreenMode.Clock);
+                service.TickWithNothingUp();
+                shown = Attach(service, 1);
+                service.Tick(hardware: false);
+                Assert.Null(shown[^1].Picture);
+                Assert.NotNull(shown[^1].Text);
+
+                Thread.Sleep(300);
+                KeyboardScreenService.RequestShow(0, KeyboardScreenKind.Overlay, 1, frame, 60000, 0);
+                service.Tick(hardware: false);
+                service.DetachOverlay(1);
+                service.Reset();
+                shown = Attach(service, 1);
+                service.Tick(hardware: false);
+                Assert.Null(shown[^1].Picture);
+            }));
+
+        /// <summary>A macro for every overlay reaches each one on the card, its window
+        /// up or down, and none that is not on it.</summary>
+        [Fact]
+        public void EveryOverlay_MeansEveryOneOnTheCard()
+            => OnSta(() => WithQueue(() =>
+            {
+                string frame = Convert.ToBase64String(Png(Bitmap(4, 2, Opaque)));
+                var service = new KeyboardScreenService(new SettingsViewModel(), null) { OverlayNumbers = () => new[] { 1, 2 } };
+                var one = Attach(service, 1);
+
+                KeyboardScreenService.RequestMode(0, KeyboardScreenKind.Overlay, 0, KeyboardScreenMode.Clock);
+                service.Tick(hardware: false);
+                Assert.Equal(KeyboardScreenMode.Clock, service.Get(KeyboardScreenInfo.OverlayRow(1)).Mode);
+                Assert.Equal(KeyboardScreenMode.Clock, service.Get(KeyboardScreenInfo.OverlayRow(2)).Mode);
+                Assert.Null(service.Get(KeyboardScreenInfo.OverlayRow(3)));
+
+                Thread.Sleep(300);
+                KeyboardScreenService.RequestShow(0, KeyboardScreenKind.Overlay, 0, frame, 60000, 0);
+                service.Tick(hardware: false);
+                var two = Attach(service, 2);
+                service.Tick(hardware: false);
+                Assert.NotNull(one[^1].Picture);
+                Assert.NotNull(two[^1].Picture);
+            }));
+
+        /// <summary>One picture held needs no timing, so the tick goes back to four
+        /// passes a second. Two pictures held take turns, so they keep it at the frame
+        /// rate.</summary>
+        [Fact]
+        public void AHeldPicture_DoesNotKeepTheFastTick()
+            => OnSta(() => WithQueue(() =>
+            {
+                Assert.True(new FrameShow<string>(new List<string> { "a" }, 1000, 0, 0).IsStill);
+                Assert.False(new FrameShow<string>(new List<string> { "a", "b" }, 1000, 0, 0).IsStill);
+                Assert.False(new FrameShow<string>(new List<string> { "a" }, 1000, 1, 0).IsStill);
+
+                string frame = Convert.ToBase64String(Png(Bitmap(4, 2, Opaque)));
+                var service = new KeyboardScreenService(new SettingsViewModel(), null);
+                var shown = Attach(service, 1);
+                KeyboardScreenService.RequestShow(0, KeyboardScreenKind.Overlay, 1, frame, 60000, 0);
+                service.Tick(hardware: false);
+                int passes = shown.Count;
+                service.Tick(hardware: false);
+                Assert.Equal(passes, shown.Count);
+
+                Thread.Sleep(300);
+                KeyboardScreenService.RequestShow(0, KeyboardScreenKind.Overlay, 1, frame + "," + frame, 60000, 0);
+                service.Tick(hardware: false);
+                passes = shown.Count;
+                service.Tick(hardware: false);
+                Assert.True(shown.Count > passes);
+            }));
 
         /// <summary>A PC with no such keyboard never opens one: the overlay runs
         /// with no host, so no device is opened, no vendor library loads and no
@@ -240,9 +488,9 @@ namespace PadForge.Tests
             => OnSta(() =>
             {
                 var service = new KeyboardScreenService(new SettingsViewModel(), null);
-                var shown = new List<ScreenOverlayContent>();
-                service.OverlaySink = shown.Add;
-                service.Tick(hardware: false, overlay: true);
+                Assert.False(service.Active);
+                var shown = Attach(service, 1);
+                service.Tick(hardware: false);
                 Assert.False(service.Running);
                 Assert.True(service.Active);
                 Assert.Empty(service.Screens);
@@ -251,86 +499,176 @@ namespace PadForge.Tests
                 service.CloseHost();
                 Assert.True(service.Active);
 
+                // Down, it stays active until a reset ends what it held.
+                service.DetachOverlay(1);
+                Assert.True(service.Active);
                 service.Reset();
                 Assert.False(service.Active);
             });
 
         [Fact]
         public void TheOverlay_TakesMacrosFromAnySlot_AndAShowHandsBackToTheMode()
-            => OnSta(() =>
+            => OnSta(() => WithQueue(() =>
             {
-                KeyboardScreenService.DropRequests();
-                KeyboardScreensRuntime.OverlayEnabled = true;
-                try
-                {
-                    string frame = Convert.ToBase64String(Png(Bitmap(4, 2, Opaque)));
-                    var service = new KeyboardScreenService(new SettingsViewModel(), null);
-                    var shown = new List<ScreenOverlayContent>();
-                    service.OverlaySink = shown.Add;
+                string frame = Convert.ToBase64String(Png(Bitmap(4, 2, Opaque)));
+                var service = new KeyboardScreenService(new SettingsViewModel(), null);
+                var shown = Attach(service, 1);
 
-                    // Slot 7 has nothing assigned, and the overlay has no row.
-                    KeyboardScreenService.RequestMode(7, KeyboardScreenKind.Overlay, KeyboardScreenMode.ProfileNumber);
-                    service.Tick(hardware: false, overlay: true);
-                    Assert.Equal(KeyboardScreenMode.ProfileNumber, service.Get(KeyboardScreenInfo.OverlayRow).Mode);
-                    Assert.NotNull(shown[^1].Text);
+                // Slot 7 has nothing assigned, and the overlay feeds no slot.
+                KeyboardScreenService.RequestMode(7, KeyboardScreenKind.Overlay, 1, KeyboardScreenMode.ProfileNumber);
+                service.Tick(hardware: false);
+                Assert.Equal(KeyboardScreenMode.ProfileNumber, service.Get(KeyboardScreenInfo.OverlayRow(1)).Mode);
+                Assert.NotNull(shown[^1].Text);
 
-                    Thread.Sleep(300);
-                    KeyboardScreenService.RequestShow(3, KeyboardScreenKind.Overlay, frame, KeyboardScreenService.MinFrameMs, 1);
-                    service.Tick(hardware: false, overlay: true);
-                    Assert.NotNull(shown[^1].Picture);
-                    Assert.Equal(4, shown[^1].Picture.PixelWidth);
+                Thread.Sleep(300);
+                KeyboardScreenService.RequestShow(3, KeyboardScreenKind.Overlay, 1, frame, KeyboardScreenService.MinFrameMs, 1);
+                service.Tick(hardware: false);
+                Assert.NotNull(shown[^1].Picture);
+                Assert.Equal(4, shown[^1].Picture.PixelWidth);
 
-                    Thread.Sleep(KeyboardScreenService.MinFrameMs + 50);
-                    service.Tick(hardware: false, overlay: true);
-                    Assert.Null(shown[^1].Picture);
-                    Assert.NotNull(shown[^1].Text);
+                Thread.Sleep(KeyboardScreenService.MinFrameMs + 50);
+                service.Tick(hardware: false);
+                Assert.Null(shown[^1].Picture);
+                Assert.NotNull(shown[^1].Text);
 
-                    // A hardware kind's macro does not reach the overlay.
-                    Thread.Sleep(300);
-                    KeyboardScreenService.RequestMode(0, KeyboardScreenKind.Color, KeyboardScreenMode.Clock);
-                    KeyboardScreenService.RequestShow(0, KeyboardScreenKind.Color, frame, KeyboardScreenService.MinFrameMs, 1);
-                    service.Tick(hardware: false, overlay: true);
-                    Assert.Equal(KeyboardScreenMode.ProfileNumber, service.Get(KeyboardScreenInfo.OverlayRow).Mode);
-                    Assert.Null(shown[^1].Picture);
-                }
-                finally
-                {
-                    KeyboardScreensRuntime.OverlayEnabled = false;
-                    KeyboardScreenService.DropRequests();
-                }
-            });
+                // A hardware kind's macro does not reach the overlay.
+                Thread.Sleep(300);
+                KeyboardScreenService.RequestMode(0, KeyboardScreenKind.Color, 0, KeyboardScreenMode.Clock);
+                KeyboardScreenService.RequestShow(0, KeyboardScreenKind.Color, 0, frame, KeyboardScreenService.MinFrameMs, 1);
+                service.Tick(hardware: false);
+                Assert.Equal(KeyboardScreenMode.ProfileNumber, service.Get(KeyboardScreenInfo.OverlayRow(1)).Mode);
+                Assert.Null(shown[^1].Picture);
+            }));
 
-        /// <summary>The window is down: nothing is drawn, and a show does not wait
-        /// to play when it comes back. A mode macro still lands, since it is a
-        /// setting.</summary>
+        /// <summary>The window is down: nothing is drawn, and a show keeps its clock,
+        /// so a window that comes up part way through shows what it has reached. A mode
+        /// macro that names it lands, since it is a setting, and leaves a timed show
+        /// playing.</summary>
         [Fact]
-        public void WhileTheWindowIsDown_AShowIsDropped()
-            => OnSta(() =>
+        public void WhileTheWindowIsDown_AShowKeepsItsClock()
+            => OnSta(() => WithQueue(() =>
             {
-                KeyboardScreenService.DropRequests();
-                KeyboardScreensRuntime.OverlayEnabled = true;
-                try
-                {
-                    string frame = Convert.ToBase64String(Png(Bitmap(4, 2, Opaque)));
-                    var service = new KeyboardScreenService(new SettingsViewModel(), null);
-                    var shown = new List<ScreenOverlayContent>();
-                    service.OverlaySink = shown.Add;
-                    KeyboardScreenService.RequestShow(0, KeyboardScreenKind.Overlay, frame, 60000, 1);
-                    KeyboardScreenService.RequestMode(0, KeyboardScreenKind.Overlay, KeyboardScreenMode.Clock);
-                    service.Tick(hardware: false, overlay: false);
-                    Assert.Empty(shown);
-                    Assert.Equal(KeyboardScreenMode.Clock, service.Get(KeyboardScreenInfo.OverlayRow).Mode);
+                string frame = Convert.ToBase64String(Png(Bitmap(4, 2, Opaque)));
+                var service = new KeyboardScreenService(new SettingsViewModel(), null);
+                KeyboardScreenService.RequestShow(0, KeyboardScreenKind.Overlay, 1, frame, 60000, 1);
+                KeyboardScreenService.RequestMode(0, KeyboardScreenKind.Overlay, 1, KeyboardScreenMode.Clock);
+                service.Tick(hardware: false);
+                Assert.Equal(KeyboardScreenMode.Clock, service.Get(KeyboardScreenInfo.OverlayRow(1)).Mode);
 
-                    Thread.Sleep(300);
-                    service.Tick(hardware: false, overlay: true);
-                    Assert.NotNull(Assert.Single(shown).Text);
-                }
-                finally
-                {
-                    KeyboardScreensRuntime.OverlayEnabled = false;
-                    KeyboardScreenService.DropRequests();
-                }
-            });
+                var shown = Attach(service, 1);
+                service.Tick(hardware: false);
+                Assert.NotNull(Assert.Single(shown).Picture);
+            }));
+
+        /// <summary>A macro's request does not wait out the quarter second between
+        /// passes, so a press changes the picture on the next tick.</summary>
+        [Fact]
+        public void AMacro_DoesNotWaitForTheNextPass()
+            => OnSta(() => WithQueue(() =>
+            {
+                string frame = Convert.ToBase64String(Png(Bitmap(4, 2, Opaque)));
+                var service = new KeyboardScreenService(new SettingsViewModel(), null);
+                var shown = Attach(service, 1);
+                service.Tick(hardware: false);
+                int passes = shown.Count;
+                service.Tick(hardware: false);
+                Assert.Equal(passes, shown.Count);
+
+                KeyboardScreenService.RequestShow(0, KeyboardScreenKind.Overlay, 1, frame, 60000, 1);
+                service.Tick(hardware: false);
+                Assert.NotNull(shown[^1].Picture);
+            }));
+
+        /// <summary>Several overlays show different things at once, a macro can name
+        /// one, and at 0 it reaches them all.</summary>
+        [Fact]
+        public void AMacro_NamesItsOverlay_OrReachesThemAll()
+            => OnSta(() => WithQueue(() =>
+            {
+                string frame = Convert.ToBase64String(Png(Bitmap(4, 2, Opaque)));
+                var service = new KeyboardScreenService(new SettingsViewModel(), null);
+                service.Update(KeyboardScreenInfo.OverlayRow(1), d => d.Mode = KeyboardScreenMode.Clock);
+                service.Update(KeyboardScreenInfo.OverlayRow(2), d => d.Mode = KeyboardScreenMode.Stopwatch);
+                var one = Attach(service, 1);
+                var two = Attach(service, 2);
+                service.Tick(hardware: false);
+                Assert.Matches("^\\d\\d:\\d\\d$", one[^1].Text);
+                Assert.Equal(KeyboardScreenService.FormatStopwatch(KeyboardScreenService.StopwatchTime(Environment.TickCount64)), two[^1].Text);
+
+                Thread.Sleep(300);
+                KeyboardScreenService.RequestShow(0, KeyboardScreenKind.Overlay, 2, frame, 60000, 1);
+                service.Tick(hardware: false);
+                Assert.NotNull(one[^1].Text);
+                Assert.NotNull(two[^1].Picture);
+
+                KeyboardScreenService.RequestShow(5, KeyboardScreenKind.Overlay, 0, frame, 60000, 1);
+                service.Tick(hardware: false);
+                Assert.NotNull(one[^1].Picture);
+                Assert.NotNull(two[^1].Picture);
+            }));
+
+        /// <summary>A repeat count of 0 stays until the next macro, for a weapon icon
+        /// that stays until the next press. Another show replaces it, a mode macro ends
+        /// it, and a mode macro leaves a timed show playing.</summary>
+        [Fact]
+        public void AHeldShow_StaysUntilTheNextMacro()
+            => OnSta(() => WithQueue(() =>
+            {
+                string first = Convert.ToBase64String(Png(Bitmap(4, 2, Opaque)));
+                string second = Convert.ToBase64String(Png(Bitmap(6, 2, Opaque)));
+                var service = new KeyboardScreenService(new SettingsViewModel(), null);
+                var shown = Attach(service, 1);
+
+                KeyboardScreenService.RequestShow(0, KeyboardScreenKind.Overlay, 1, first, KeyboardScreenService.MinFrameMs, 0);
+                service.Tick(hardware: false);
+                Assert.Equal(4, shown[^1].Picture.PixelWidth);
+
+                Thread.Sleep(KeyboardScreenService.MinFrameMs * 3);
+                service.Tick(hardware: false);
+                Assert.Equal(4, shown[^1].Picture.PixelWidth);
+
+                KeyboardScreenService.RequestShow(1, KeyboardScreenKind.Overlay, 1, second, KeyboardScreenService.MinFrameMs, 0);
+                service.Tick(hardware: false);
+                Assert.Equal(6, shown[^1].Picture.PixelWidth);
+
+                KeyboardScreenService.RequestMode(2, KeyboardScreenKind.Overlay, 1, KeyboardScreenMode.Clock);
+                service.Tick(hardware: false);
+                Assert.Null(shown[^1].Picture);
+                Assert.NotNull(shown[^1].Text);
+
+                Thread.Sleep(300);
+                KeyboardScreenService.RequestShow(0, KeyboardScreenKind.Overlay, 1, first, 60000, 1);
+                service.Tick(hardware: false);
+                KeyboardScreenService.RequestMode(0, KeyboardScreenKind.Overlay, 1, KeyboardScreenMode.Stopwatch);
+                service.Tick(hardware: false);
+                Assert.NotNull(shown[^1].Picture);
+                Assert.Equal(KeyboardScreenMode.Stopwatch, service.Get(KeyboardScreenInfo.OverlayRow(1)).Mode);
+            }));
+
+        [Fact]
+        public void AShow_HoldsAtARepeatOfZero_AndEndsOtherwise()
+        {
+            var frames = new List<byte[]> { new byte[1], new byte[2] };
+            var held = new KeyboardScreenShow(frames, 100, 0, 0);
+            Assert.True(held.Held);
+            Assert.Same(frames[0], held.Frame(0));
+            Assert.Same(frames[1], held.Frame(100));
+            Assert.Same(frames[0], held.Frame(100 * 1000));
+
+            var timed = new KeyboardScreenShow(frames, 100, 1, 0);
+            Assert.False(timed.Held);
+            Assert.Same(frames[1], timed.Frame(199));
+            Assert.Null(timed.Frame(200));
+
+            var action = new MacroAction { Type = MacroActionType.ShowKeyboardScreen, ScreenRepeat = 0 };
+            Assert.Equal(0, action.ScreenRepeat);
+            Assert.Equal(string.Format(Strings.Instance.MacroAction_ShowKeyboardScreen_Hold_Format,
+                Strings.Instance.KeyboardScreens_Kind_Monochrome, 0, 1000, 0), action.DisplayText);
+            action.ScreenRepeat = -5;
+            Assert.Equal(0, action.ScreenRepeat);
+            action.ScreenRepeat = 5000;
+            Assert.Equal(1000, action.ScreenRepeat);
+        }
 
         // ── What a mode shows ──
 
@@ -362,18 +700,91 @@ namespace PadForge.Tests
             });
 
         [Fact]
-        public void TheLightbarColor_FillsTheOverlay_WhileItsPadIsOnItsSlot()
+        public void TheLightbarColor_FillsTheOverlay_FromTheSlotItsDialogChose()
             => OnSta(() =>
             {
                 LightbarColors.Clear();
                 try
                 {
                     LightbarColors.Record(2, Guid.NewGuid(), 10, 20, 30);
-                    Assert.Equal(Color.FromRgb(10, 20, 30), KeyboardScreenService.LightbarContent((_, _) => true).Fill);
-                    Assert.True(KeyboardScreenService.LightbarContent((_, _) => false).IsEmpty);
+                    LightbarColors.Record(5, Guid.NewGuid(), 40, 50, 60);
+                    Assert.Equal(Color.FromRgb(10, 20, 30), KeyboardScreenService.LightbarContent((_, _) => true, null).Fill);
+                    Assert.Equal(Color.FromRgb(40, 50, 60), KeyboardScreenService.LightbarContent((_, _) => true, s => s == 5).Fill);
+                    Assert.Equal(KeyboardScreenService.Blank.NoLightbar, KeyboardScreenService.LightbarContent((_, _) => true, s => s == 9).Blank);
+                    Assert.Equal(KeyboardScreenService.Blank.NoLightbar, KeyboardScreenService.LightbarContent((_, _) => false, null).Blank);
                 }
                 finally { LightbarColors.Clear(); }
             });
+
+        /// <summary>The real path, from the saved slot through the pad's slot check.</summary>
+        [Fact]
+        public void TheLightbarMode_ReadsTheSavedSlot()
+            => OnSta(() =>
+            {
+                using var statics = new SavedStatics();
+                LightbarColors.Clear();
+                try
+                {
+                    Guid first = Guid.NewGuid(), second = Guid.NewGuid();
+                    foreach (var (device, slot) in new[] { (first, 1), (second, 4) })
+                    {
+                        SettingsManager.UserDevices.Items.Add(new UserDevice { InstanceGuid = device, ProductGuid = device, IsOnline = true });
+                        SettingsManager.UserSettings.Items.Add(new UserSetting { InstanceGuid = device, ProductGuid = device, MapTo = slot });
+                    }
+                    LightbarColors.Record(1, first, 1, 2, 3);
+                    LightbarColors.Record(4, second, 4, 5, 6);
+                    var service = new KeyboardScreenService(new SettingsViewModel(), null);
+                    long now = Environment.TickCount64;
+                    Assert.Equal(Color.FromRgb(1, 2, 3), service.OverlayContent(new KeyboardScreenData { Mode = KeyboardScreenMode.Lightbar }, now).Fill);
+                    Assert.Equal(Color.FromRgb(4, 5, 6), service.OverlayContent(new KeyboardScreenData { Mode = KeyboardScreenMode.Lightbar, LightbarSlot = 4 }, now).Fill);
+                    Assert.Equal(KeyboardScreenService.Blank.NoLightbar, service.OverlayContent(new KeyboardScreenData { Mode = KeyboardScreenMode.Lightbar, LightbarSlot = 7 }, now).Blank);
+                }
+                finally { LightbarColors.Clear(); }
+            });
+
+        [Fact]
+        public void AMode_SaysWhyItShowsNothing()
+            => OnSta(() =>
+            {
+                LightbarColors.Clear();
+                var service = new KeyboardScreenService(new SettingsViewModel(), null);
+                long now = Environment.TickCount64;
+                Assert.Equal(KeyboardScreenService.Blank.Off, service.OverlayContent(new KeyboardScreenData { Mode = KeyboardScreenMode.Off }, now).Blank);
+                Assert.Equal(KeyboardScreenService.Blank.NoPicture, service.OverlayContent(new KeyboardScreenData { Mode = KeyboardScreenMode.Picture }, now).Blank);
+                Assert.Equal(KeyboardScreenService.Blank.NoLightbar, service.OverlayContent(new KeyboardScreenData { Mode = KeyboardScreenMode.Lightbar }, now).Blank);
+                Assert.Equal(KeyboardScreenService.Blank.None, service.OverlayContent(new KeyboardScreenData { Mode = KeyboardScreenMode.Clock }, now).Blank);
+                Assert.Equal(KeyboardScreenService.Blank.NoPicture, service.OverlayPreview(new KeyboardScreenData { Mode = KeyboardScreenMode.Picture }, null, "A Game").Blank);
+            });
+
+        [Fact]
+        public void TheSavedChoices_RoundTripAndNormalize()
+        {
+            var data = new KeyboardScreenData { Device = Guid.NewGuid().ToString("D"), Mode = KeyboardScreenMode.Picture, Zoom = 350, LightbarSlot = 6, PanX = 9 };
+            var serializer = new XmlSerializer(typeof(KeyboardScreenData));
+            using var writer = new StringWriter();
+            serializer.Serialize(writer, data);
+            var back = (KeyboardScreenData)serializer.Deserialize(new StringReader(writer.ToString()));
+            Assert.Equal(350, back.Zoom);
+            Assert.Equal(6, back.LightbarSlot);
+
+            var old = (KeyboardScreenData)serializer.Deserialize(new StringReader("<KeyboardScreenData Device=\"x\"><Mode>Clock</Mode></KeyboardScreenData>"));
+            Assert.Equal(KeyboardScreenData.DefaultZoom, old.Zoom);
+            Assert.Equal(KeyboardScreenData.LowestSlot, old.LightbarSlot);
+
+            Assert.True(new KeyboardScreenData().IsDefault);
+            Assert.False(new KeyboardScreenData { Zoom = 200 }.IsDefault);
+            Assert.False(new KeyboardScreenData { LightbarSlot = 0 }.IsDefault);
+
+            var normal = KeyboardScreenData.Normalize(new[]
+            {
+                new KeyboardScreenData { Device = Guid.NewGuid().ToString("D"), Mode = KeyboardScreenMode.Clock, Zoom = 5, LightbarSlot = 999 },
+                new KeyboardScreenData { Device = Guid.NewGuid().ToString("D"), Mode = KeyboardScreenMode.Clock, Zoom = 99999, LightbarSlot = -7 },
+            });
+            Assert.Equal(KeyboardScreenData.DefaultZoom, normal[0].Zoom);
+            Assert.Equal(KeyboardScreenData.LowestSlot, normal[0].LightbarSlot);
+            Assert.Equal(KeyboardScreenData.MaxZoom, normal[1].Zoom);
+            Assert.Equal(KeyboardScreenData.LowestSlot, normal[1].LightbarSlot);
+        }
 
         [Fact]
         public void APicture_KeepsItsOwnSizeAndItsTransparency()
@@ -574,6 +985,162 @@ namespace PadForge.Tests
                 Assert.Equal(image.DesiredSize.Width, at.Width, 6);
                 Assert.Equal(image.DesiredSize.Height, at.Height, 6);
             });
+
+        [Theory]
+        // Twice the size that fits, in a window of the same shape: half shows in
+        // each direction, and the pan moves it, held to the picture's far edge.
+        [InlineData(400, 400, 100, 100, 200, 0, 0, 0, 0, 200, 200)]
+        [InlineData(400, 400, 100, 100, 200, 100, 50, -50, -25, 200, 200)]
+        [InlineData(400, 400, 100, 100, 200, 9999, 9999, -100, -100, 200, 200)]
+        // A wide picture overflows across and still fits down, so it stays centered
+        // down, RenderWindow's rule for a keyboard screen.
+        [InlineData(400, 100, 100, 100, 200, 100, 50, -50, 25, 200, 50)]
+        public void AZoomedPicture_RunsPastTheBounds_AndThePanMovesIt(int pw, int ph, double bw, double bh, int zoom, int panX, int panY, double x, double y, double w, double h)
+        {
+            var at = ScreenOverlayContentView.FitPicture(pw, ph, new Size(bw, bh), zoom, panX, panY);
+            Assert.Equal(x, at.X, 6);
+            Assert.Equal(y, at.Y, 6);
+            Assert.Equal(w, at.Width, 6);
+            Assert.Equal(h, at.Height, 6);
+            Assert.Equal((double)pw / ph, at.Width / at.Height, 6);
+        }
+
+        [Fact]
+        public void ThePanStops_AtThePicturesEdges()
+        {
+            var bounds = new Size(100, 100);
+            Assert.Equal((0, 0), ScreenOverlayContentView.PanLimits(400, 300, 100, bounds));
+            Assert.Equal((200, 100), ScreenOverlayContentView.PanLimits(400, 300, 200, bounds));
+            Assert.Equal((300, 200), ScreenOverlayContentView.PanLimits(400, 300, 400, bounds));
+            // Below 100 percent reads as 100, and a window with no size has no limits.
+            Assert.Equal((0, 0), ScreenOverlayContentView.PanLimits(400, 300, 10, bounds));
+            Assert.Equal((0, 0), ScreenOverlayContentView.PanLimits(400, 300, 200, new Size(0, 0)));
+            Assert.Equal(0, ScreenOverlayContentView.PictureScale(0, 300, 200, bounds));
+        }
+
+        /// <summary>The map's two halves, one at a time, with the rest cut off at the
+        /// window's edge.</summary>
+        [Fact]
+        public void AZoomedPictureDrawn_ShowsWhereThePanIs()
+            => OnSta(() =>
+            {
+                var picture = Bitmap(200, 100, (x, _) => x < 100 ? ((byte)0, (byte)0, (byte)255, (byte)255) : ((byte)255, (byte)0, (byte)0, (byte)255));
+                picture.Freeze();
+                var view = new ScreenOverlayContentView();
+                view.Show(new ScreenOverlayContent(Picture: picture, Zoom: 200));
+                var left = Rendered(view, 100, 100);
+                Assert.Equal(255, PixelOf(left, 50, 50).R);
+                Assert.Equal(0, PixelOf(left, 50, 50).B);
+                Assert.Equal(255, PixelOf(left, 99, 99).A);
+
+                view.Show(new ScreenOverlayContent(Picture: picture, Zoom: 200, PanX: 100));
+                var right = Rendered(view, 101, 100);
+                Assert.Equal(255, PixelOf(right, 50, 50).B);
+                Assert.Equal(0, PixelOf(right, 50, 50).R);
+            });
+
+        /// <summary>The Pan macro moves a zoomed picture from any slot, stopping at its
+        /// edges, and leaves a picture that shows whole alone.</summary>
+        [Fact]
+        public void ThePanMacro_MovesAZoomedPicture()
+            => OnSta(() => WithQueue(() => WithPicture(400, 300, Opaque, path =>
+            {
+                var service = new KeyboardScreenService(new SettingsViewModel(), null);
+                var row = KeyboardScreenInfo.OverlayRow(1);
+                service.Update(row, d =>
+                {
+                    d.Mode = KeyboardScreenMode.Picture;
+                    d.Picture = path;
+                });
+                var shown = Attach(service, 1, new Size(100, 100));
+
+                KeyboardScreenService.RequestPan(6, 0, KeyboardScreenPanDirection.Right, 64);
+                service.Tick(hardware: false);
+                Assert.Equal(0, service.Get(row).PanX);
+
+                service.Update(row, d => d.Zoom = 200);
+                KeyboardScreenService.RequestPan(6, 0, KeyboardScreenPanDirection.Right, 64);
+                KeyboardScreenService.RequestPan(6, 0, KeyboardScreenPanDirection.Down, 5000);
+                Thread.Sleep(300);
+                service.Tick(hardware: false);
+                Assert.Equal(64, service.Get(row).PanX);
+                Assert.Equal(100, service.Get(row).PanY);
+                Assert.Equal(200, shown[^1].Zoom);
+                Assert.Equal(64, shown[^1].PanX);
+                Assert.Equal(100, shown[^1].PanY);
+            })));
+
+        /// <summary>The pan macro names one overlay, or moves every one at 0. A window
+        /// that is down stays where it was, since a pan's limits come from its size.</summary>
+        [Fact]
+        public void ThePanMacro_NamesItsOverlay()
+            => OnSta(() => WithPicture(400, 300, Opaque, path => WithQueue(() =>
+            {
+                var service = new KeyboardScreenService(new SettingsViewModel(), null);
+                var one = KeyboardScreenInfo.OverlayRow(1);
+                var two = KeyboardScreenInfo.OverlayRow(2);
+                foreach (var row in new[] { one, two })
+                    service.Update(row, d =>
+                    {
+                        d.Mode = KeyboardScreenMode.Picture;
+                        d.Picture = path;
+                        d.Zoom = 200;
+                    });
+                Attach(service, 1, new Size(100, 100));
+                Attach(service, 2, new Size(100, 100));
+
+                KeyboardScreenService.RequestPan(0, 2, KeyboardScreenPanDirection.Right, 8);
+                Thread.Sleep(300);
+                service.Tick(hardware: false);
+                Assert.Equal(0, service.Get(one).PanX);
+                Assert.Equal(8, service.Get(two).PanX);
+
+                KeyboardScreenService.RequestPan(0, 0, KeyboardScreenPanDirection.Right, 8);
+                Thread.Sleep(300);
+                service.Tick(hardware: false);
+                Assert.Equal(8, service.Get(one).PanX);
+                Assert.Equal(16, service.Get(two).PanX);
+
+                service.DetachOverlay(2);
+                KeyboardScreenService.RequestPan(0, 2, KeyboardScreenPanDirection.Right, 8);
+                Thread.Sleep(300);
+                service.Tick(hardware: false);
+                Assert.Equal(16, service.Get(two).PanX);
+            })));
+
+        /// <summary>The left button drags the picture with the pointer, the
+        /// S.T.R.I.K.E. 7's finger, held to the same edges.</summary>
+        [Fact]
+        public void ADrag_MovesAZoomedPicture()
+            => OnSta(() => WithPicture(400, 300, Opaque, path =>
+            {
+                var service = new KeyboardScreenService(new SettingsViewModel(), null);
+                var row = KeyboardScreenInfo.OverlayRow(1);
+                service.Update(row, d =>
+                {
+                    d.Mode = KeyboardScreenMode.Picture;
+                    d.Picture = path;
+                    d.Zoom = 200;
+                    d.PanX = 10;
+                });
+                Attach(service, 1, new Size(100, 100));
+
+                // At this zoom a window unit is two of the picture's pixels.
+                service.DragOverlayPan(1, default, true);
+                service.DragOverlayPan(1, new Vector(-20, 0), false);
+                Assert.Equal(50, service.Get(row).PanX);
+                service.DragOverlayPan(1, new Vector(-30, -10), false);
+                Assert.Equal(70, service.Get(row).PanX);
+                Assert.Equal(20, service.Get(row).PanY);
+                service.DragOverlayPan(1, new Vector(-9000, 9000), false);
+                Assert.Equal(200, service.Get(row).PanX);
+                Assert.Equal(0, service.Get(row).PanY);
+
+                // An overlay whose window is down is left as it was.
+                service.DetachOverlay(1);
+                service.DragOverlayPan(1, new Vector(5, 5), false);
+                Assert.Equal(200, service.Get(row).PanX);
+            }));
 
         [Fact]
         public void APictureDrawn_FillsTheBoundsAndNothingBeyondIt()
@@ -799,6 +1366,12 @@ namespace PadForge.Tests
                     window.SetArranging(false);
                     Assert.True(window.Arranging);
                     SetPrivate(window, "_dragTouchId", null);
+                    SetPrivate(window, "_isPanning", true);
+                    Assert.True(window.InGesture);
+                    window.SetArranging(false);
+                    Assert.True(window.Arranging);
+                    SetPrivate(window, "_isPanning", false);
+                    Assert.False(window.InGesture);
                     window.SetArranging(false);
                     Assert.False(window.Arranging);
                 }
@@ -951,6 +1524,12 @@ namespace PadForge.Tests
                     Assert.False((bool)GetPrivate(screen, "_isResizing"));
                     Assert.Equal(2, screenSaves);
 
+                    // A pan saves no place, and it ends with its capture too.
+                    SetPrivate(screen, "_isPanning", true);
+                    LoseCapture(screen.Surface);
+                    Assert.False((bool)GetPrivate(screen, "_isPanning"));
+                    Assert.Equal(2, screenSaves);
+
                     SetPrivate(touchpad, "_isMouseDragging", true);
                     LoseCapture(touchpad.Surface);
                     Assert.False((bool)GetPrivate(touchpad, "_isMouseDragging"));
@@ -966,6 +1545,28 @@ namespace PadForge.Tests
                     screen.Close();
                     touchpad.Close();
                 }
+            });
+
+        /// <summary>The hint says why it shows nothing, while PadForge is in front.</summary>
+        [Fact]
+        public void TheEmptyHint_SaysWhy()
+            => OnSta(() =>
+            {
+                var window = new ScreenOverlay();
+                try
+                {
+                    window.SetArranging(true);
+                    window.ShowContent(new ScreenOverlayContent(Blank: KeyboardScreenService.Blank.NoPicture));
+                    Assert.Equal(Strings.Instance.ScreenOverlay_Blank_NoPicture, window.EmptyHint.Text);
+                    Assert.Equal(Visibility.Visible, window.EmptyHint.Visibility);
+                    window.ShowContent(new ScreenOverlayContent(Blank: KeyboardScreenService.Blank.NoLightbar));
+                    Assert.Equal(Strings.Instance.ScreenOverlay_Blank_NoLightbar, window.EmptyHint.Text);
+                    window.ShowContent(ScreenOverlayContent.Nothing);
+                    Assert.Equal(Strings.Instance.ScreenOverlay_Empty, window.EmptyHint.Text);
+                    window.ShowContent(new ScreenOverlayContent("12:34"));
+                    Assert.Equal(Visibility.Collapsed, window.EmptyHint.Visibility);
+                }
+                finally { window.Close(); }
             });
 
         /// <summary>Show activates a window by default, and the Touchpad Overlay's
@@ -1031,82 +1632,143 @@ namespace PadForge.Tests
         // ── The view model ──
 
         [Fact]
-        public void TheViewModel_HoldsTheOverlaysValuesInRange()
+        public void TheCard_StartsWithOneOverlay_WithItsValuesInRange()
         {
             var vm = new DashboardViewModel();
-            Assert.False(vm.EnableScreenOverlay);
-            Assert.Equal(0.8, vm.ScreenOverlayOpacity);
-            Assert.Equal(80, vm.ScreenOverlayOpacityPercent);
-            Assert.Equal(OverlayPlacement.NoPlace, vm.ScreenOverlayLeft);
-            Assert.Equal(OverlayPlacement.NoPlace, vm.ScreenOverlayTop);
-            Assert.Equal(320, vm.ScreenOverlayWidth);
-            Assert.Equal(240, vm.ScreenOverlayHeight);
+            var one = Assert.Single(vm.ScreenOverlays);
+            Assert.Equal(1, one.Number);
+            Assert.False(one.OneOfSeveral);
+            Assert.False(one.Enabled);
+            Assert.Equal(0.8, one.Opacity);
+            Assert.Equal(80, one.OpacityPercent);
+            Assert.Equal(OverlayPlacement.NoPlace, one.Left);
+            Assert.Equal(OverlayPlacement.NoPlace, one.Top);
+            Assert.Equal(320, one.Width);
+            Assert.Equal(240, one.Height);
 
-            vm.ScreenOverlayOpacityPercent = 35;
-            Assert.Equal(0.35, vm.ScreenOverlayOpacity, 6);
-            vm.ScreenOverlayOpacity = 4;
-            Assert.Equal(1.0, vm.ScreenOverlayOpacity);
-            Assert.Equal(100, vm.ScreenOverlayOpacityPercent);
-            vm.ScreenOverlayOpacity = -1;
-            Assert.Equal(0.0, vm.ScreenOverlayOpacity);
-            vm.ResetScreenOverlayOpacityCommand.Execute(null);
-            Assert.Equal(0.8, vm.ScreenOverlayOpacity);
+            one.OpacityPercent = 35;
+            Assert.Equal(0.35, one.Opacity, 6);
+            one.Opacity = 4;
+            Assert.Equal(1.0, one.Opacity);
+            Assert.Equal(100, one.OpacityPercent);
+            one.Opacity = -1;
+            Assert.Equal(0.0, one.Opacity);
+            one.ResetOpacityCommand.Execute(null);
+            Assert.Equal(0.8, one.Opacity);
 
-            vm.ScreenOverlayWidth = 5;
-            vm.ScreenOverlayHeight = 5;
-            Assert.Equal(80, vm.ScreenOverlayWidth);
-            Assert.Equal(60, vm.ScreenOverlayHeight);
+            one.Width = 5;
+            one.Height = 5;
+            Assert.Equal(80, one.Width);
+            Assert.Equal(60, one.Height);
 
-            vm.ScreenOverlayLeft = -1920;
-            Assert.Equal(-1920, vm.ScreenOverlayLeft);
-            vm.ScreenOverlayLeft = OverlayPlacement.NoPlace;
-            Assert.Equal(OverlayPlacement.NoPlace, vm.ScreenOverlayLeft);
+            one.Left = -1920;
+            Assert.Equal(-1920, one.Left);
+            one.Left = OverlayPlacement.NoPlace;
+            Assert.Equal(OverlayPlacement.NoPlace, one.Left);
 
-            Assert.Equal(Strings.Instance.Common_Stopped, vm.ScreenOverlayStatus);
-            var changed = new List<string>();
-            vm.PropertyChanged += (_, e) => changed.Add(e.PropertyName);
-            vm.IsScreenOverlayRunning = true;
-            Assert.Equal(Strings.Instance.Common_Running, vm.ScreenOverlayStatus);
-            Assert.Contains(nameof(DashboardViewModel.ScreenOverlayStatus), changed);
+            var running = new List<string>();
+            one.PropertyChanged += (_, e) => running.Add(e.PropertyName);
+            Assert.Equal(Strings.Instance.Common_Stopped, one.Status);
+            one.IsRunning = true;
+            Assert.Equal(Strings.Instance.Common_Running, one.Status);
+            Assert.Contains(nameof(ScreenOverlayItem.Status), running);
 
-            int resets = 0, chooses = 0;
-            vm.ResetScreenOverlayPositionRequested += (_, _) => resets++;
-            vm.ChooseScreenOverlayContentRequested += (_, _) => chooses++;
-            vm.ResetScreenOverlayPositionCommand.Execute(null);
-            vm.ChooseScreenOverlayContentCommand.Execute(null);
-            Assert.Equal(1, resets);
-            Assert.Equal(1, chooses);
+            one.Blank = KeyboardScreenService.Blank.NoPicture;
+            Assert.Equal(string.Format(Strings.Instance.KeyboardScreens_Status_NoPicture_Format, Strings.Instance.Common_Running), one.Status);
+            one.Blank = KeyboardScreenService.Blank.NoLightbar;
+            Assert.Equal(string.Format(Strings.Instance.KeyboardScreens_Status_NoLightbar_Format, Strings.Instance.Common_Running), one.Status);
+            one.Blank = KeyboardScreenService.Blank.Off;
+            Assert.Equal(Strings.Instance.Common_Running, one.Status);
+
+            ScreenOverlayItem reset = null, chosen = null;
+            vm.ResetScreenOverlayPositionRequested += (_, item) => reset = item;
+            vm.ChooseScreenOverlayContentRequested += (_, item) => chosen = item;
+            one.ResetPositionCommand.Execute(null);
+            one.ChooseCommand.Execute(null);
+            Assert.Same(one, reset);
+            Assert.Same(one, chosen);
+        }
+
+        /// <summary>A number stays with its overlay, so a macro that names overlay 3
+        /// keeps meaning the same window after overlay 2 goes. There is always one.</summary>
+        [Fact]
+        public void TheCard_AddsAndRemovesOverlays_AndNumbersStay()
+        {
+            var vm = new DashboardViewModel();
+            int[] Numbers() => vm.ScreenOverlays.Select(o => o.Number).ToArray();
+
+            vm.AddScreenOverlayCommand.Execute(null);
+            vm.AddScreenOverlayCommand.Execute(null);
+            Assert.Equal(new[] { 1, 2, 3 }, Numbers());
+            Assert.All(vm.ScreenOverlays, o => Assert.True(o.OneOfSeveral));
+
+            vm.ScreenOverlays[1].RemoveCommand.Execute(null);
+            Assert.Equal(new[] { 1, 3 }, Numbers());
+
+            // The lowest free number, in its place in the list.
+            vm.AddScreenOverlay();
+            Assert.Equal(new[] { 1, 2, 3 }, Numbers());
+
+            for (int i = 0; i < KeyboardScreenInfo.MaxOverlays + 5; i++) vm.AddScreenOverlay();
+            Assert.Equal(KeyboardScreenInfo.MaxOverlays, vm.ScreenOverlays.Count);
+            Assert.False(vm.CanAddScreenOverlay);
+
+            while (vm.ScreenOverlays.Count > 1) vm.RemoveScreenOverlay(vm.ScreenOverlays[0]);
+            Assert.Equal(new[] { KeyboardScreenInfo.MaxOverlays }, Numbers());
+            Assert.False(vm.ScreenOverlays[0].OneOfSeveral);
+            Assert.True(vm.CanAddScreenOverlay);
+            vm.RemoveScreenOverlay(vm.ScreenOverlays[0]);
+            Assert.Single(vm.ScreenOverlays);
+        }
+
+        /// <summary>A saved value's change marks the settings dirty and brings the
+        /// windows into line. Whether the window is running is neither.</summary>
+        [Fact]
+        public void TheCard_ReportsSavedChanges_AndOnlyThose()
+        {
+            var vm = new DashboardViewModel();
+            var one = vm.ScreenOverlays[0];
+            int changes = 0;
+            vm.PropertyChanged += (_, e) => { if (e.PropertyName == nameof(DashboardViewModel.ScreenOverlays)) changes++; };
+
+            one.Opacity = 0.5;
+            Assert.Equal(1, changes);
+            one.Left = 10;
+            one.Top = 20;
+            one.Width = 200;
+            one.Height = 100;
+            one.Monitor = 1;
+            Assert.Equal(6, changes);
+            one.Left = 10;
+            Assert.Equal(6, changes);
+
+            one.IsRunning = true;
+            one.Blank = KeyboardScreenService.Blank.NoPicture;
+            Assert.Equal(6, changes);
+
+            vm.AddScreenOverlay();
+            Assert.Equal(7, changes);
+            vm.RemoveScreenOverlay(vm.ScreenOverlays[1]);
+            Assert.Equal(8, changes);
         }
 
         // ── Settings ──
 
-        private static readonly (string Touchpad, string Screen)[] SettingNames =
-        {
-            ("EnableTouchpadOverlay", "EnableScreenOverlay"),
-            ("TouchpadOverlayOpacity", "ScreenOverlayOpacity"),
-            ("TouchpadOverlayMonitor", "ScreenOverlayMonitor"),
-            ("TouchpadOverlayLeft", "ScreenOverlayLeft"),
-            ("TouchpadOverlayTop", "ScreenOverlayTop"),
-            ("TouchpadOverlayWidth", "ScreenOverlayWidth"),
-            ("TouchpadOverlayHeight", "ScreenOverlayHeight"),
-        };
-
-        /// <summary>Every place a Touchpad Overlay value is read or written has its
-        /// Screen Overlay value beside it.</summary>
+        /// <summary>Every place the settings are read or written carries the list.</summary>
         [Fact]
-        public void EverySettingSite_HasItsSibling()
+        public void EverySettingSite_CarriesTheList()
         {
             string settings = RepoText("PadForge.App", "Services", "SettingsService.cs");
             string window = RepoText("PadForge.App", "MainWindow.xaml.cs");
             string service = RepoText("PadForge.App", "Services", "InputService.cs");
-            foreach (var (touchpad, screen) in SettingNames)
-            {
-                Assert.Equal(CountOf(settings, touchpad), CountOf(settings, screen));
-                Assert.Equal(CountOf(window, touchpad), CountOf(window, screen));
-                Assert.Equal(1, CountOf(service, screen + " = _mainVm.Dashboard." + screen + ","));
-                Assert.Equal(1, CountOf(service, "profile." + screen + " = snapshot." + screen + ";"));
-                Assert.Equal(1, CountOf(service, "_mainVm.Dashboard." + screen + " = profile." + screen));
-            }
+            Assert.Equal(2, CountOf(settings, "public ScreenOverlayData[] ScreenOverlays { get; set; }"));
+            Assert.Equal(1, CountOf(settings, "_mainVm.Dashboard.LoadScreenOverlays(appSettings.ScreenOverlays);"));
+            Assert.Equal(1, CountOf(settings, "_mainVm.Dashboard.LoadScreenOverlays(active.ScreenOverlays);"));
+            Assert.Equal(2, CountOf(settings, "ScreenOverlays = _mainVm.Dashboard.SnapshotScreenOverlays()"));
+            Assert.Equal(1, CountOf(window, "nameof(DashboardViewModel.ScreenOverlays)"));
+            Assert.Equal(1, CountOf(service, "ScreenOverlays = _mainVm.Dashboard.SnapshotScreenOverlays(),"));
+            Assert.Equal(1, CountOf(service, "_mainVm.Dashboard.LoadScreenOverlays(profile.ScreenOverlays);"));
+            Assert.Equal(1, CountOf(service, "profile.ScreenOverlays = snapshot.ScreenOverlays;"));
         }
 
         private static T RoundTrip<T>(T data)
@@ -1120,39 +1782,86 @@ namespace PadForge.Tests
         [Fact]
         public void TheSettings_RoundTrip_AndNoSavedPlaceStaysNoSavedPlace()
         {
-            var app = RoundTrip(new AppSettingsData());
-            Assert.False(app.EnableScreenOverlay);
-            Assert.Equal(0.8, app.ScreenOverlayOpacity);
-            Assert.Equal(OverlayPlacement.NoPlace, app.ScreenOverlayLeft);
-            Assert.Equal(OverlayPlacement.NoPlace, app.ScreenOverlayTop);
-            Assert.Equal(320, app.ScreenOverlayWidth);
-            Assert.Equal(240, app.ScreenOverlayHeight);
+            Assert.Null(RoundTrip(new AppSettingsData()).ScreenOverlays);
 
-            var placed = RoundTrip(new AppSettingsData
+            var plain = new ScreenOverlayData();
+            Assert.Equal(1, plain.Number);
+            Assert.False(plain.Enabled);
+            Assert.Equal(0.8, plain.Opacity);
+            Assert.Equal(OverlayPlacement.NoPlace, plain.Left);
+            Assert.Equal(OverlayPlacement.NoPlace, plain.Top);
+            Assert.Equal(320, plain.Width);
+            Assert.Equal(240, plain.Height);
+
+            var app = RoundTrip(new AppSettingsData
             {
-                EnableScreenOverlay = true, ScreenOverlayOpacity = 0.4, ScreenOverlayMonitor = 2,
-                ScreenOverlayLeft = -1500.5, ScreenOverlayTop = -20, ScreenOverlayWidth = 640, ScreenOverlayHeight = 480,
+                ScreenOverlays = new[]
+                {
+                    new ScreenOverlayData { Number = 2, Enabled = true, Opacity = 0.4, Monitor = 2, Left = -1500.5, Top = -20, Width = 640, Height = 480 },
+                    new ScreenOverlayData { Number = 5 },
+                },
             });
-            Assert.True(placed.EnableScreenOverlay);
-            Assert.Equal(0.4, placed.ScreenOverlayOpacity);
-            Assert.Equal(2, placed.ScreenOverlayMonitor);
-            Assert.Equal(-1500.5, placed.ScreenOverlayLeft);
-            Assert.Equal(-20, placed.ScreenOverlayTop);
-            Assert.Equal(640, placed.ScreenOverlayWidth);
-            Assert.Equal(480, placed.ScreenOverlayHeight);
+            Assert.Equal(2, app.ScreenOverlays.Length);
+            var placed = app.ScreenOverlays[0];
+            Assert.Equal(2, placed.Number);
+            Assert.True(placed.Enabled);
+            Assert.Equal(0.4, placed.Opacity);
+            Assert.Equal(2, placed.Monitor);
+            Assert.Equal(-1500.5, placed.Left);
+            Assert.Equal(-20, placed.Top);
+            Assert.Equal(640, placed.Width);
+            Assert.Equal(480, placed.Height);
+            Assert.Equal(5, app.ScreenOverlays[1].Number);
+            Assert.Equal(OverlayPlacement.NoPlace, app.ScreenOverlays[1].Left);
 
-            var profile = RoundTrip(new ProfileData { Id = "p", EnableScreenOverlay = true, ScreenOverlayLeft = -3, ScreenOverlayHeight = 90 });
-            Assert.True(profile.EnableScreenOverlay);
-            Assert.Equal(-3, profile.ScreenOverlayLeft);
-            Assert.Equal(OverlayPlacement.NoPlace, profile.ScreenOverlayTop);
-            Assert.Equal(90, profile.ScreenOverlayHeight);
+            var profile = RoundTrip(new ProfileData { Id = "p", ScreenOverlays = new[] { new ScreenOverlayData { Number = 3, Height = 90 } } });
+            Assert.Equal(3, profile.ScreenOverlays[0].Number);
+            Assert.Equal(90, profile.ScreenOverlays[0].Height);
 
-            // A file saved before these fields existed.
+            // A file saved before these existed.
             var old = (ProfileData)new XmlSerializer(typeof(ProfileData)).Deserialize(new StringReader("<ProfileData Id=\"old\"><Name>Old</Name></ProfileData>"));
-            Assert.False(old.EnableScreenOverlay);
-            Assert.Equal(0.8, old.ScreenOverlayOpacity);
-            Assert.Equal(OverlayPlacement.NoPlace, old.ScreenOverlayLeft);
-            Assert.Equal(320, old.ScreenOverlayWidth);
+            Assert.Null(old.ScreenOverlays);
+        }
+
+        /// <summary>What a file holds comes through the setters' bounds. Nothing in it
+        /// leaves the card with no overlay, a number out of range or a number twice.</summary>
+        [Fact]
+        public void TheCard_LoadsAList_AndDropsWhatCannotBe()
+        {
+            var vm = new DashboardViewModel();
+            vm.LoadScreenOverlays(null);
+            var one = Assert.Single(vm.ScreenOverlays);
+            Assert.Equal(1, one.Number);
+            Assert.False(one.Enabled);
+
+            vm.LoadScreenOverlays(Array.Empty<ScreenOverlayData>());
+            Assert.Single(vm.ScreenOverlays);
+
+            vm.LoadScreenOverlays(new[]
+            {
+                new ScreenOverlayData { Number = 4, Opacity = 9, Width = 0, Height = -3, Left = -640, Top = 12, Monitor = 2 },
+                null,
+                new ScreenOverlayData { Number = 0 },
+                new ScreenOverlayData { Number = KeyboardScreenInfo.MaxOverlays + 1 },
+                new ScreenOverlayData { Number = 4, Left = 999 },
+                new ScreenOverlayData { Number = 2, Width = 5, Height = 5 },
+            });
+            Assert.Equal(new[] { 2, 4 }, vm.ScreenOverlays.Select(o => o.Number));
+            var four = vm.FindScreenOverlay(4);
+            Assert.Equal(1.0, four.Opacity);
+            Assert.Equal(320, four.Width);
+            Assert.Equal(240, four.Height);
+            Assert.Equal(-640, four.Left);
+            Assert.Equal(12, four.Top);
+            Assert.Equal(2, four.Monitor);
+            Assert.Equal(80, vm.FindScreenOverlay(2).Width);
+            Assert.Equal(60, vm.FindScreenOverlay(2).Height);
+            Assert.All(vm.ScreenOverlays, o => Assert.True(o.OneOfSeveral));
+            Assert.Null(vm.FindScreenOverlay(1));
+
+            var back = vm.SnapshotScreenOverlays();
+            Assert.Equal(new[] { 2, 4 }, back.Select(o => o.Number));
+            Assert.Equal(-640, back[1].Left);
         }
 
         private sealed class SavedStatics : IDisposable
@@ -1204,30 +1913,34 @@ namespace PadForge.Tests
                 SettingsManager.ExtendedSlotOrder = _extended;
                 SettingsManager.KeyboardMouseSlotOrder = _kbm;
                 SettingsManager.MidiSlotOrder = _midi;
-                KeyboardScreensRuntime.OverlayEnabled = false;
             }
         }
 
         private static void SetOverlayValues(DashboardViewModel dash)
         {
-            dash.EnableScreenOverlay = true;
-            dash.ScreenOverlayOpacity = 0.4;
-            dash.ScreenOverlayMonitor = 1;
-            dash.ScreenOverlayLeft = -1500;
-            dash.ScreenOverlayTop = 30;
-            dash.ScreenOverlayWidth = 640;
-            dash.ScreenOverlayHeight = 480;
+            dash.LoadScreenOverlays(new[]
+            {
+                new ScreenOverlayData { Number = 1, Enabled = true, Opacity = 0.4, Monitor = 1, Left = -1500, Top = 30, Width = 640, Height = 480 },
+                new ScreenOverlayData { Number = 3, Opacity = 0.6, Left = 70, Top = 80, Width = 100, Height = 90 },
+            });
         }
 
         private static void AssertOverlayValues(DashboardViewModel dash)
         {
-            Assert.True(dash.EnableScreenOverlay);
-            Assert.Equal(0.4, dash.ScreenOverlayOpacity);
-            Assert.Equal(1, dash.ScreenOverlayMonitor);
-            Assert.Equal(-1500, dash.ScreenOverlayLeft);
-            Assert.Equal(30, dash.ScreenOverlayTop);
-            Assert.Equal(640, dash.ScreenOverlayWidth);
-            Assert.Equal(480, dash.ScreenOverlayHeight);
+            Assert.Equal(new[] { 1, 3 }, dash.ScreenOverlays.Select(o => o.Number));
+            var one = dash.FindScreenOverlay(1);
+            Assert.True(one.Enabled);
+            Assert.Equal(0.4, one.Opacity);
+            Assert.Equal(1, one.Monitor);
+            Assert.Equal(-1500, one.Left);
+            Assert.Equal(30, one.Top);
+            Assert.Equal(640, one.Width);
+            Assert.Equal(480, one.Height);
+            var three = dash.FindScreenOverlay(3);
+            Assert.False(three.Enabled);
+            Assert.Equal(0.6, three.Opacity);
+            Assert.Equal(70, three.Left);
+            Assert.Equal(90, three.Height);
         }
 
         [Fact]
@@ -1248,7 +1961,7 @@ namespace PadForge.Tests
             });
 
         [Fact]
-        public void AProfile_CarriesTheOverlay_ThroughBothServices()
+        public void AProfile_CarriesTheOverlays_ThroughBothServices()
             => OnSta(() =>
             {
                 using var statics = new SavedStatics();
@@ -1258,32 +1971,27 @@ namespace PadForge.Tests
                 SetOverlayValues(vm.Dashboard);
 
                 var snapshot = input.SnapshotCurrentProfile();
-                Assert.True(snapshot.EnableScreenOverlay);
-                Assert.Equal(-1500, snapshot.ScreenOverlayLeft);
-                Assert.Equal(480, snapshot.ScreenOverlayHeight);
+                Assert.Equal(new[] { 1, 3 }, snapshot.ScreenOverlays.Select(o => o.Number));
 
                 var fresh = new MainViewModel();
                 var freshInput = new InputService(fresh) { SettingsService = new SettingsService(fresh) };
                 freshInput.ApplyProfile(snapshot);
                 AssertOverlayValues(fresh.Dashboard);
-                Assert.True(KeyboardScreensRuntime.OverlayEnabled);
 
-                // A profile from before the overlay has no place and turns it off.
+                // A profile from before the overlay has one, off, with no place.
                 freshInput.ApplyProfile(new ProfileData { Id = "old", Name = "Old" });
-                Assert.False(fresh.Dashboard.EnableScreenOverlay);
-                Assert.Equal(OverlayPlacement.NoPlace, fresh.Dashboard.ScreenOverlayLeft);
-                Assert.Equal(320, fresh.Dashboard.ScreenOverlayWidth);
-                Assert.Equal(240, fresh.Dashboard.ScreenOverlayHeight);
+                var one = Assert.Single(fresh.Dashboard.ScreenOverlays);
+                Assert.False(one.Enabled);
+                Assert.Equal(OverlayPlacement.NoPlace, one.Left);
+                Assert.Equal(320, one.Width);
 
                 // The active profile keeps what the Dashboard holds.
                 var active = new ProfileData { Id = "p1", Name = "Game" };
                 SettingsManager.Profiles.Add(active);
                 SettingsManager.ActiveProfileId = "p1";
                 settings.UpdateActiveProfileSnapshot();
-                Assert.True(active.EnableScreenOverlay);
-                Assert.Equal(0.4, active.ScreenOverlayOpacity);
-                Assert.Equal(-1500, active.ScreenOverlayLeft);
-                Assert.Equal(640, active.ScreenOverlayWidth);
+                Assert.Equal(new[] { 1, 3 }, active.ScreenOverlays.Select(o => o.Number));
+                Assert.Equal(-1500, active.ScreenOverlays[0].Left);
 
                 // And the running profile's save does too.
                 SetOverlayValues(fresh.Dashboard);
@@ -1292,44 +2000,53 @@ namespace PadForge.Tests
                 SettingsManager.Profiles.Add(running);
                 SettingsManager.ActiveProfileId = "p2";
                 freshInput.SaveActiveProfileState();
-                Assert.True(running.EnableScreenOverlay);
-                Assert.Equal(-1500, running.ScreenOverlayLeft);
-                Assert.Equal(480, running.ScreenOverlayHeight);
+                Assert.Equal(new[] { 1, 3 }, running.ScreenOverlays.Select(o => o.Number));
+                Assert.Equal(480, running.ScreenOverlays[0].Height);
             });
 
         // ── The lifecycle on the real service ──
 
         private static T Invoke<T>(object target, string method, params object[] args)
-            => (T)target.GetType().GetMethod(method, BindingFlags.Instance | BindingFlags.NonPublic).Invoke(target, args);
+            => (T)target.GetType().GetMethod(method, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Static).Invoke(target, args);
 
         [Fact]
-        public void TheService_ShowsPlacesTicksAndClosesTheWindow()
+        public void TheService_BringsTheWindowsIntoLineWithTheList()
             => OnSta(() =>
             {
                 using var statics = new SavedStatics();
                 var vm = new MainViewModel();
                 var input = new InputService(vm) { SettingsService = new SettingsService(vm) };
                 var dash = vm.Dashboard;
-                dash.ScreenOverlayOpacity = 0.5;
-                dash.ScreenOverlayWidth = 200;
-                dash.ScreenOverlayHeight = 120;
-
-                Invoke<object>(input, "ShowScreenOverlay");
-                Pump(50);
-                var window = (ScreenOverlay)GetPrivate(input, "_screenOverlay");
+                var windows = (Dictionary<int, ScreenOverlay>)GetPrivate(input, "_screenOverlays");
+                var one = dash.ScreenOverlays[0];
+                one.Opacity = 0.5;
+                one.Width = 200;
+                one.Height = 120;
                 try
                 {
+                    // Off: no window.
+                    Invoke<object>(input, "SyncScreenOverlays");
+                    Assert.Empty(windows);
+
+                    one.Enabled = true;
+                    Invoke<object>(input, "SyncScreenOverlays");
+                    var window = windows[1];
                     Assert.True(window.IsVisible);
-                    Assert.True(dash.IsScreenOverlayRunning);
+                    Assert.True(one.IsRunning);
                     Assert.Equal(0.5, window.ContentView.Opacity);
                     Assert.Equal(200, window.Width);
                     Assert.Equal(120, window.Height);
                     // No saved place: centered, on a monitor.
                     Assert.Equal(0, OverlayPlacement.GetCurrentMonitor(window));
 
-                    // The tick feeds the window with the Keyboard Screens switch off, and no host opens.
-                    KeyboardScreensRuntime.OverlayEnabled = true;
-                    KeyboardScreenService.RequestMode(5, KeyboardScreenKind.Overlay, KeyboardScreenMode.Clock);
+                    // Running it again changes nothing.
+                    double left = window.Left;
+                    Invoke<object>(input, "SyncScreenOverlays");
+                    Assert.Same(window, windows[1]);
+                    Assert.Equal(left, window.Left);
+
+                    // The tick feeds it with the Keyboard Screens switch off, and no host opens.
+                    KeyboardScreenService.RequestMode(5, KeyboardScreenKind.Overlay, 1, KeyboardScreenMode.Clock);
                     Invoke<object>(input, "TickKeyboardScreens");
                     Assert.False(input.KeyboardScreens.Running);
                     Assert.Matches("^\\d\\d:\\d\\d$", window.ContentView.Shown.Text);
@@ -1337,79 +2054,155 @@ namespace PadForge.Tests
                     // Another program is in front of the test host, so clicks pass through.
                     Assert.False(window.Arranging);
 
+                    // The content's reason reaches the card's status line.
+                    input.KeyboardScreens.Update(KeyboardScreenInfo.OverlayRow(1), d => d.Mode = KeyboardScreenMode.Picture);
+                    Invoke<object>(input, "TickKeyboardScreens");
+                    Assert.Equal(KeyboardScreenService.Blank.NoPicture, one.Blank);
+                    Assert.Contains(Strings.Instance.Common_Running, one.Status);
+                    Assert.NotEqual(Strings.Instance.Common_Running, one.Status);
+
                     // A drag lands in the settings, and the window stays where the drag put it.
-                    double left = window.Left + 7, top = window.Top + 5;
-                    window.Left = left;
-                    window.Top = top;
+                    double movedLeft = window.Left + 7, movedTop = window.Top + 5;
+                    window.Left = movedLeft;
+                    window.Top = movedTop;
                     window.Width = 300;
                     window.Height = 150;
-                    Invoke<object>(input, "OnScreenOverlayPositionChanged");
-                    Pump(50);
-                    AssertNear(left, dash.ScreenOverlayLeft);
-                    AssertNear(top, dash.ScreenOverlayTop);
-                    Assert.Equal(300, dash.ScreenOverlayWidth);
-                    Assert.Equal(150, dash.ScreenOverlayHeight);
-                    AssertNear(left, window.Left);
-                    AssertNear(top, window.Top);
+                    Invoke<object>(input, "OnScreenOverlayPositionChanged", 1);
+                    Invoke<object>(input, "SyncScreenOverlays");
+                    AssertNear(movedLeft, one.Left);
+                    AssertNear(movedTop, one.Top);
+                    Assert.Equal(300, one.Width);
+                    Assert.Equal(150, one.Height);
+                    AssertNear(movedLeft, window.Left);
+                    AssertNear(movedTop, window.Top);
 
                     // A saved place with negative coordinates is a place.
-                    dash.ScreenOverlayLeft = -640;
-                    dash.ScreenOverlayTop = -20;
-                    Invoke<object>(input, "PlaceScreenOverlay");
+                    one.Left = -640;
+                    one.Top = -20;
+                    typeof(InputService).GetMethod("PlaceScreenOverlay", BindingFlags.Static | BindingFlags.NonPublic).Invoke(null, new object[] { window, one });
                     AssertNear(-640, window.Left);
                     AssertNear(-20, window.Top);
 
-                    // A profile switch moves a window that is up.
-                    dash.ScreenOverlayLeft = left + 1;
-                    dash.ScreenOverlayTop = top + 1;
-                    Invoke<object>(input, "ScreenOverlayPlaceChanged");
-                    Pump(50);
-                    AssertNear(left + 1, window.Left);
-                    AssertNear(top + 1, window.Top);
+                    // Moved on the list, as a profile switch does, it follows.
+                    one.Left = movedLeft + 1;
+                    one.Top = movedTop + 1;
+                    Invoke<object>(input, "SyncScreenOverlays");
+                    AssertNear(movedLeft + 1, window.Left);
+                    AssertNear(movedTop + 1, window.Top);
+
+                    // A place in the middle of a drag is the drag's until it ends.
+                    SetPrivate(window, "_isMouseDragging", true);
+                    double dragging = window.Left;
+                    one.Left = dragging + 40;
+                    Invoke<object>(input, "SyncScreenOverlays");
+                    Assert.Equal(dragging, window.Left);
+                    SetPrivate(window, "_isMouseDragging", false);
+                    Invoke<object>(input, "SyncScreenOverlays");
+                    AssertNear(dragging + 40, window.Left);
+
+                    // A second overlay is a second window, with its own place and opacity.
+                    dash.AddScreenOverlay();
+                    var two = dash.FindScreenOverlay(2);
+                    two.Enabled = true;
+                    two.Opacity = 0.3;
+                    Invoke<object>(input, "SyncScreenOverlays");
+                    Assert.True(windows[2].IsVisible);
+                    Assert.NotSame(window, windows[2]);
+                    Assert.Equal(0.3, windows[2].ContentView.Opacity);
+                    Assert.Equal(0.5, window.ContentView.Opacity);
 
                     // Reset Position recenters a window that is up, and saves the place.
                     object sender = null;
-                    Invoke<object>(input, "OnResetScreenOverlayPosition", sender, EventArgs.Empty);
+                    double before = window.Left;
+                    Invoke<object>(input, "OnResetScreenOverlayPosition", sender, one);
                     Pump(50);
-                    Assert.Equal(window.Left, dash.ScreenOverlayLeft);
-                    Assert.True(Math.Abs(window.Left - (left + 1)) > 3);
+                    Assert.Equal(window.Left, one.Left);
+                    Assert.True(Math.Abs(window.Left - before) > 3);
 
-                    Invoke<object>(input, "HideScreenOverlay");
-                    Pump(50);
-                    Assert.False(window.IsVisible);
-                    Assert.False(dash.IsScreenOverlayRunning);
+                    // Toggles: a bit per number, and bit 0 for all of them.
+                    input.ToggleScreenOverlays(1 << 2);
+                    Assert.False(two.Enabled);
+                    Assert.True(one.Enabled);
+                    Invoke<object>(input, "SyncScreenOverlays");
+                    Assert.False(windows[2].IsVisible);
+                    Assert.False(two.IsRunning);
+                    input.ToggleScreenOverlays(1);
+                    Assert.False(one.Enabled);
+                    Assert.False(two.Enabled);
+                    input.ToggleScreenOverlays(1);
+                    Assert.True(one.Enabled);
+                    Assert.True(two.Enabled);
+                    input.ToggleScreenOverlays(1 << 2);
+                    input.ToggleScreenOverlays(1 << 7);
+                    Assert.False(two.Enabled);
+
+                    // A toggle opens the window at once, so a macro that opens an
+                    // overlay and shows a picture in one press has the picture up in
+                    // the same tick.
+                    Assert.False(windows[2].IsVisible);
+                    KeyboardScreenService.RequestShow(0, KeyboardScreenKind.Overlay, 2,
+                        Convert.ToBase64String(Png(Bitmap(4, 2, Opaque))), 60000, 0);
+                    input.ToggleScreenOverlays(1 << 2);
+                    Assert.True(windows[2].IsVisible);
+                    Invoke<object>(input, "TickKeyboardScreens");
+                    Assert.NotNull(windows[2].ContentView.Shown.Picture);
+                    input.ToggleScreenOverlays(1 << 2);
+                    Assert.False(windows[2].IsVisible);
+
+                    // A new overlay with no place opens clear of the one before it.
+                    dash.AddScreenOverlay();
+                    var three = dash.FindScreenOverlay(3);
+                    three.Enabled = true;
+                    three.Width = one.Width;
+                    double oneAtReset = window.Left;
+                    Invoke<object>(input, "SyncScreenOverlays");
+                    AssertNear(oneAtReset + 64, windows[3].Left);
+                    three.Enabled = false;
+                    Invoke<object>(input, "SyncScreenOverlays");
+                    dash.RemoveScreenOverlay(three);
+                    Invoke<object>(input, "SyncScreenOverlays");
 
                     // Hidden, Reset Position clears the place for the next show.
-                    Invoke<object>(input, "OnResetScreenOverlayPosition", sender, EventArgs.Empty);
+                    Invoke<object>(input, "OnResetScreenOverlayPosition", sender, two);
                     Pump(50);
-                    Assert.Equal(OverlayPlacement.NoPlace, dash.ScreenOverlayLeft);
-                    Assert.Equal(OverlayPlacement.NoPlace, dash.ScreenOverlayTop);
+                    Assert.Equal(OverlayPlacement.NoPlace, two.Left);
+                    Assert.Equal(OverlayPlacement.NoPlace, two.Top);
 
-                    // With both off, a tick ends what the overlay held.
+                    // Removed, its window closes.
+                    dash.RemoveScreenOverlay(two);
+                    Invoke<object>(input, "SyncScreenOverlays");
+                    Assert.False(windows.ContainsKey(2));
+
+                    // The Keyboard Screens switch going off leaves a window that is up
+                    // with what it holds.
+                    Invoke<object>(input, "LetGoOfScreens");
+                    Assert.True(input.KeyboardScreens.Active);
+
+                    // With all of them off, a tick ends what they held.
+                    one.Enabled = false;
+                    Invoke<object>(input, "SyncScreenOverlays");
+                    Assert.False(window.IsVisible);
+                    Assert.False(one.IsRunning);
                     Assert.True(input.KeyboardScreens.Active);
                     Invoke<object>(input, "TickKeyboardScreens");
                     Assert.False(input.KeyboardScreens.Active);
 
-                    // The macro's toggle flips the Dashboard's switch.
-                    input.ToggleScreenOverlay();
-                    Pump(50);
-                    Assert.True(dash.EnableScreenOverlay);
-                    input.ToggleScreenOverlay();
-                    Pump(50);
-                    Assert.False(dash.EnableScreenOverlay);
-
-                    Invoke<object>(input, "ShowScreenOverlay");
-                    Pump(50);
+                    // Back on, the same window comes up.
+                    one.Enabled = true;
+                    Invoke<object>(input, "SyncScreenOverlays");
+                    Assert.Same(window, windows[1]);
                     Assert.True(window.IsVisible);
-                    Assert.NotNull(input.KeyboardScreens.OverlaySink);
                 }
                 finally
                 {
-                    Invoke<object>(input, "CloseScreenOverlay");
+                    Invoke<object>(input, "CloseScreenOverlays");
                 }
-                Assert.Null(GetPrivate(input, "_screenOverlay"));
-                Assert.False(dash.IsScreenOverlayRunning);
-                Assert.Null(input.KeyboardScreens.OverlaySink);
+                Assert.Empty(windows);
+                Assert.All(dash.ScreenOverlays, o => Assert.False(o.IsRunning));
+
+                // A sync queued as the engine stopped opens nothing.
+                Invoke<object>(input, "SyncScreenOverlays");
+                Assert.Empty(windows);
                 KeyboardScreenService.DropRequests();
             });
 

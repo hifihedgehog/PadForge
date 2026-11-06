@@ -1573,14 +1573,10 @@
   <data name="KeyboardScreen_PictureFilter" xml:space="preserve"><value>Amafoto (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Dosiye zose (*.*)|*.*</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} yashyizwe kuri {1}.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Erekana mugaragaza ya mwandikisho</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Yerekana amafoto kuri buri mugaragaza ya mwandikisho y'ubwoko bwahiswemo ihujwe n'uyu mwanya, hanyuma igasubiza buri mugaragaza ku buryo bwayo.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Erekana amafoto {0}: {1} × {2} ms, inshuro zo gusubiramo {3}</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Uburyo bwa mugaragaza ya mwandikisho</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Ihindurira buri mugaragaza ya mwandikisho y'ubwoko bwahiswemo ihujwe n'uyu mwanya ku bundi buryo, kandi ikabubika nk'igenamiterere ry'iyo mugaragaza.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} yerekana {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Uburyo buguma uko buri kugeza indi macro cyangwa idirishya rya mugaragaza ribuhinduye.</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Yimura idirishya rya buri mugaragaza ya mwandikisho ihujwe n'uyu mwanya hejuru y'ifoto nini kuruta mugaragaza, nko ku ikarita.</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Yimura buri mugaragaza ihujwe n'uyu mwanya kandi yerekana ifoto yahiswemo nini kuruta yo ubwayo. Idirishya rihagarara ku mpera z'ifoto.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Mugaragaza</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Igikorwa</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Icyerekezo</value></data>

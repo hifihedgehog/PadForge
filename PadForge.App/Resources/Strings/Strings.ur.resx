@@ -4577,20 +4577,20 @@
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>کی بورڈ اسکرین دکھائیں</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>منتخب قسم کی ہر اس کی بورڈ اسکرین پر تصاویر چلاتا ہے جو اس سلاٹ کو ان پٹ دیتی ہو، پھر ہر اسکرین کو اس کے اپنے موڈ پر واپس لے آتا ہے۔ اسکرین اوورلے انہیں کسی بھی سلاٹ سے لیتا ہے۔</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>{0} تصاویر دکھائیں: {1} × {2} ملی سیکنڈ، تکرار کی تعداد {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>تصاویر اسکرین کے مطابق ڈھالی جاتی ہیں: مونوکروم اسکرین پر 160 بائی 43 سیاہ و سفید پکسل، G19 کی اسکرین پر 320 بائی 240، اور Arx Control اور S.T.R.I.K.E. 7 کے لیے 480 بائی 320۔ فریم کا کم از کم وقت ایک سیکنڈ کا دسواں حصہ ہے۔</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>تصاویر اسکرین کے مطابق ڈھالی جاتی ہیں: مونوکروم اسکرین پر 160 بائی 43 سیاہ و سفید پکسل، G19 کی اسکرین پر 320 بائی 240، اور Arx Control اور S.T.R.I.K.E. 7 کے لیے 480 بائی 320۔ اسکرین اوورلے ہر تصویر کی اپنی شکل برقرار رکھتا ہے، اس کے لمبے رخ پر زیادہ سے زیادہ 800 پکسل تک۔ فریم کا کم از کم وقت ایک سیکنڈ کا دسواں حصہ ہے۔ تکرار کی تعداد 0 ہو تو یہ اس وقت تک چلتا رہتا ہے جب تک کوئی دوسرا کی بورڈ اسکرین دکھائیں یا کی بورڈ اسکرین موڈ میکرو نہ چلے۔</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>کی بورڈ اسکرین موڈ</value></data>
   <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>منتخب قسم کی ہر اس کی بورڈ اسکرین کو جو اس سلاٹ کو ان پٹ دیتی ہو دوسرے موڈ پر بدلتا ہے، اور اسے اس اسکرین کی ترتیب کے طور پر رکھتا ہے۔ اسکرین اوورلے اسے کسی بھی سلاٹ سے لیتا ہے۔</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} پر {1} دکھائیں</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>موڈ تب تک رہتا ہے جب تک کوئی دوسرا میکرو یا اسکرین کا ڈائیلاگ اسے نہ بدل دے۔</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>اسٹاپ واچ</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>اسٹاپ واچ موڈ والی کی بورڈ اسکرینز جو اسٹاپ واچ دکھاتی ہیں، اسے شروع یا موقوف کرتا ہے، یا ری سیٹ کرتا ہے۔</value></data>
+  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>اسٹاپ واچ موڈ والی کی بورڈ اسکرینز اور اسکرین اوورلے جو اسٹاپ واچ دکھاتے ہیں، اسے شروع یا موقوف کرتا ہے، یا ری سیٹ کرتا ہے۔</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>اسٹاپ واچ شروع یا موقوف کریں</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>اسٹاپ واچ ری سیٹ کریں</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>ری سیٹ اسٹاپ واچ کو روک دیتا ہے اور صفر پر واپس لے آتا ہے۔ اسٹاپ واچ موڈ میں ہر کی بورڈ اسکرین ایک ہی اسٹاپ واچ دکھاتی ہے۔</value></data>
+  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>ری سیٹ اسٹاپ واچ کو روک دیتا ہے اور صفر پر واپس لے آتا ہے۔ اسٹاپ واچ موڈ میں ہر کی بورڈ اسکرین اور اسکرین اوورلے ایک ہی اسٹاپ واچ دکھاتا ہے۔</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>کی بورڈ اسکرین کی تصویر پین کریں</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>اس سلاٹ کو ان پٹ دینے والی ہر کی بورڈ اسکرین کی کھڑکی کو اسکرین سے بڑی تصویر پر حرکت دیتا ہے، مثلاً نقشے کے لیے۔</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>اس سلاٹ کو ان پٹ دینے والی ہر کی بورڈ اسکرین کی کھڑکی کو اسکرین سے بڑی تصویر پر حرکت دیتا ہے، مثلاً نقشے کے لیے۔ اسکرین اوورلے بھی اسی طرح حرکت کرتا ہے جب اس کا زوم 100 فیصد سے اوپر ہو۔</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>تصاویر پین کریں {0} بائی {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>اس سلاٹ کو ان پٹ دینے والی ہر اس اسکرین کو حرکت دیتا ہے جو خود سے بڑی منتخب تصویر دکھا رہی ہو۔ کھڑکی تصویر کے کناروں پر رک جاتی ہے۔</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>اس سلاٹ کو ان پٹ دینے والی ہر اس اسکرین کو حرکت دیتا ہے جو خود سے بڑی منتخب تصویر دکھا رہی ہو۔ کھڑکی تصویر کے کناروں پر رک جاتی ہے۔ اسکرین اوورلے اس وقت حرکت کرتا ہے جب اس کا زوم 100 فیصد سے اوپر ہو، چاہے میکرو کوئی بھی سلاٹ چلائے۔</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>اسکرین</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>عمل</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>سمت</value></data>
@@ -4899,7 +4899,17 @@
   <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>اوورلے فعال پروفائل کی اپنی تصویر دکھاتا ہے، یا تصویر نہ ہو تو اس کا نام۔ ہر پروفائل کی اپنی الگ تصویر ہوتی ہے۔</value></data>
   <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>اوورلے دن کا وقت دکھاتا ہے۔</value></data>
   <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>اوورلے فعال پروفائل کے لاگو ہونے کے بعد سے گزرے گھنٹے اور منٹ دکھاتا ہے۔ کسی گیم کے پروگرام سے جڑا پروفائل گیم شروع ہونے پر لاگو ہوتا ہے، اس لیے گنتی اسی سیشن کی ہوتی ہے۔ ڈیفالٹ پروفائل میں گنتی انجن کے شروع ہونے سے ہوتی ہے۔</value></data>
-  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>اوورلے آپ کی منتخب کردہ تصویر دکھاتا ہے، جو اپنے تناسب کو برقرار رکھتے ہوئے اس کی ونڈو کو بھرنے کے لیے پھیلائی جاتی ہے۔</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>اوورلے آپ کی منتخب کردہ تصویر دکھاتا ہے، جو اپنے تناسب کو برقرار رکھتے ہوئے اس کی ونڈو کو بھرنے کے لیے پھیلائی جاتی ہے۔ 100 فیصد سے اوپر زوم پر یہ تصویر کا ایک حصہ دکھاتا ہے، مثلاً نقشے کے لیے۔ اس حصے کو کی بورڈ اسکرین کی تصویر پین کریں میکرو حرکت دیتا ہے، اور PadForge سامنے ہونے پر ماؤس کے بائیں بٹن سے گھسیٹنا بھی۔</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>اوورلے اسٹاپ واچ دکھاتا ہے، جسے اسٹاپ واچ میکرو شروع کرتا ہے، موقوف کرتا ہے اور ری سیٹ کرتا ہے۔ یہ وہی اسٹاپ واچ ہے جو ہر کی بورڈ اسکرین دکھاتی ہے۔</value></data>
-  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>اوورلے سب سے کم نمبر والے سلاٹ میں موجود DualShock 4 یا DualSense کے لائٹ بار کا رنگ دکھاتا ہے۔ جب تک کسی لائٹ بار تک رنگ نہ پہنچے، یہ کچھ نہیں دکھاتا۔</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>اوورلے یہاں آپ کے منتخب کردہ سلاٹ میں، یا رنگ والے سب سے کم نمبر کے سلاٹ میں، موجود DualShock 4 یا DualSense کے لائٹ بار کا رنگ دکھاتا ہے۔ جب تک کسی لائٹ بار تک رنگ نہ پہنچے، یہ کچھ نہیں دکھاتا۔</value></data>
+  <data name="Dashboard_ScreenOverlay_Number_Format" xml:space="preserve"><value>اسکرین اوورلے {0}</value></data>
+  <data name="Dashboard_ScreenOverlayAdd" xml:space="preserve"><value>اوورلے شامل کریں</value></data>
+  <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>رنگ والا سب سے کم نمبر کا سلاٹ</value></data>
+  <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>زوم</value></data>
+  <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>کوئی تصویر منتخب نہیں کی گئی۔</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>لائٹ بار کے رنگ کا انتظار ہے۔</value></data>
+  <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>اوورلے</value></data>
+  <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>ہر اوورلے</value></data>
+  <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>اسکرین اوورلے {0} ٹوگل کریں</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>{0} تصاویر دکھائیں: {1} × {2} ملی سیکنڈ، اگلے میکرو تک</value></data>
 </root>

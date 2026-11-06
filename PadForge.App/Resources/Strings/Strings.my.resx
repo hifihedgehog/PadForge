@@ -4347,22 +4347,15 @@ PadForge က ၎င်းတို့ကို ယခုပင် ဖြုတ�
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>S.T.R.I.K.E. 7 SDK ဒေါင်းလုဒ်သည် သိရှိထားသော SHA-256 နှင့် မကိုက်ညီသဖြင့် ၎င်းမှ မည်သည့်အရာကိုမျှ မသိမ်းထားပါ။</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>Visual C++ 2008 ရန်တိုင်း၏ ထည့်သွင်းစနစ် လည်ပတ်ပြီးနောက်တွင်လည်း ရန်တိုင်း မရှိသေးပါ။</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>ကီးဘုတ် မျက်နှာပြင် ပြရန်</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>ဤဆလော့ကို ထောက်ပံ့သည့် ရွေးထားသော အမျိုးအစား၏ ကီးဘုတ် မျက်နှာပြင်တစ်ခုစီတွင် ပုံများကို ပြပြီးနောက် မျက်နှာပြင်တစ်ခုစီကို ၎င်း၏ ကိုယ်ပိုင် မုဒ်သို့ ပြန်ထားသည်။</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>{0} ပုံများ ပြရန်- {1} × {2} ms၊ ထပ်ခါအကြိမ်ရေ {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>ပုံများကို မျက်နှာပြင်နှင့် အံကိုက်ဖြစ်အောင် ချိန်ညှိသည်- အဖြူအမည်း မျက်နှာပြင်တွင် 160 × 43 အဖြူအမည်း ပစ်ဇယ်၊ G19 တွင် 320 × 240၊ Arx Control နှင့် S.T.R.I.K.E. 7 အတွက် 480 × 320။ အတိုဆုံး ဖရိမ်အချိန်သည် စက္ကန့်၏ ဆယ်ပုံတစ်ပုံ ဖြစ်သည်။</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>ကီးဘုတ် မျက်နှာပြင် မုဒ်</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>ဤဆလော့ကို ထောက်ပံ့သည့် ရွေးထားသော အမျိုးအစား၏ ကီးဘုတ် မျက်နှာပြင်တစ်ခုစီကို အခြား မုဒ်သို့ ပြောင်းပြီး ၎င်းကို ထိုမျက်နှာပြင်၏ ဆက်တင်အဖြစ် သိမ်းထားသည်။</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} တွင် {1} ကို ပြသည်</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>အခြား မက်ခရို သို့မဟုတ် မျက်နှာပြင်၏ ဒိုင်ယာလော့က မပြောင်းမချင်း မုဒ်သည် ဆက်ရှိနေသည်။</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>စက္ကန့်တိုင်းနာရီ</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>စက္ကန့်တိုင်းနာရီ မုဒ်ရှိ ကီးဘုတ် မျက်နှာပြင်များ ပြသော စက္ကန့်တိုင်းနာရီကို စတင် သို့မဟုတ် ခေတ္တရပ်သည်၊ သို့မဟုတ် ပြန်လည်သတ်မှတ်သည်။</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>စက္ကန့်တိုင်းနာရီကို စတင် သို့မဟုတ် ခေတ္တရပ်ရန်</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>စက္ကန့်တိုင်းနာရီကို ပြန်လည်သတ်မှတ်ရန်</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>ပြန်လည်သတ်မှတ်ခြင်းသည် စက္ကန့်တိုင်းနာရီကို ရပ်ပြီး သုညသို့ ပြန်ထားသည်။ စက္ကန့်တိုင်းနာရီ မုဒ်ရှိ ကီးဘုတ် မျက်နှာပြင်တိုင်းသည် တူညီသော စက္ကန့်တိုင်းနာရီကို ပြသည်။</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>ကီးဘုတ် မျက်နှာပြင် ပုံကို ရွှေ့ကြည့်ရန်</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>မြေပုံကဲ့သို့ မျက်နှာပြင်ထက် ကြီးသော ပုံပေါ်တွင် ဤဆလော့ကို ထောက်ပံ့သည့် ကီးဘုတ် မျက်နှာပြင်တစ်ခုစီ၏ ဝင်းဒိုးကို ရွှေ့သည်။</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>ပုံများကို {0}၊ {1} px ရွှေ့ကြည့်ရန်</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>ဤဆလော့ကို ထောက်ပံ့ပြီး မိမိထက် ကြီးသော ရွေးထားသည့် ပုံကို ပြနေသည့် မျက်နှာပြင်တစ်ခုစီကို ရွှေ့သည်။ ဝင်းဒိုးသည် ပုံ၏ အစွန်းများတွင် ရပ်သည်။</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>မျက်နှာပြင်</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>လုပ်ဆောင်ချက်</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>ဦးတည်ရာ</value></data>

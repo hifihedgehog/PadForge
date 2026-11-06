@@ -4287,22 +4287,15 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>Upakuaji wa SDK ya S.T.R.I.K.E. 7 haulingani na SHA-256 yake inayojulikana, kwa hivyo hakuna kilichohifadhiwa kutoka kwake.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>Runtime ya Visual C++ 2008 bado haipo baada ya kisakinishi chake kuendeshwa.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Onyesha Skrini ya Kibodi</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Huonyesha picha kwenye kila skrini ya kibodi ya aina iliyochaguliwa inayolisha nafasi hii, kisha hurudisha kila skrini kwenye hali yake yenyewe.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Onyesha picha za {0}: {1} × {2} ms, idadi ya marudio {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Picha hurekebishwa ili ziingie kwenye skrini: pikseli 160 kwa 43 nyeusi na nyeupe kwenye skrini ya monochrome, 320 kwa 240 kwenye ya G19, na 480 kwa 320 kwa Arx Control na S.T.R.I.K.E. 7. Moja ya kumi ya sekunde ndiyo muda mfupi zaidi wa fremu.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Hali ya Skrini ya Kibodi</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Hubadilisha kila skrini ya kibodi ya aina iliyochaguliwa inayolisha nafasi hii kuwa hali nyingine, na kuiweka kama mpangilio wa skrini hiyo.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} inaonyesha {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Hali hubaki hadi makro nyingine au kidirisha cha skrini kiibadilishe.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Stopwatch</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Huanzisha au husitisha, au huweka upya, stopwatch ambayo skrini za kibodi katika hali ya Stopwatch huonyesha.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>Anzisha au Sitisha Stopwatch</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>Weka Upya Stopwatch</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Kuweka upya husimamisha stopwatch na kuirudisha kuwa sifuri. Kila skrini ya kibodi katika hali ya Stopwatch huonyesha stopwatch ile ile.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Sogeza Picha ya Skrini ya Kibodi</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Husogeza dirisha la kila skrini ya kibodi inayolisha nafasi hii juu ya picha kubwa kuliko skrini, kwa ajili ya ramani.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Sogeza picha {0} kwa {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Husogeza kila skrini inayolisha nafasi hii na kuonyesha picha iliyochaguliwa kubwa kuliko yenyewe. Dirisha husimama kwenye kingo za picha.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Skrini</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Kitendo</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Mwelekeo</value></data>

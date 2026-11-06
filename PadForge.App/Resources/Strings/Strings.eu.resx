@@ -4349,22 +4349,15 @@ PadForge-k orain desinstalatzea nahi duzu? Horrek administratzaile-baimenak beha
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>S.T.R.I.K.E. 7 SDK deskargak ez dator bat ezagutzen duen SHA-256 balioarekin, beraz ez da ezer gorde.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>Visual C++ 2008 exekuzio-ingurunea falta da oraindik instalatzailea exekutatu ondoren.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Erakutsi teklatuko pantaila</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Aukeratutako motako eta zirrikitu hau elikatzen duen teklatuko pantaila bakoitzean irudiak erreproduzitzen ditu, eta gero pantaila bakoitza bere modura itzultzen du.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Erakutsi {0} irudiak: {1} × {2} ms, errepikapenak: {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Irudiak pantailara egokitzen dira: 160 × 43 pixel zuri-beltzak pantaila monokromoan, 320 × 240 G19renean eta 480 × 320 Arx Control-en eta S.T.R.I.K.E. 7-n. Segundo-hamarren bat da irudi-denbora txikiena.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Teklatuko pantailaren modua</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Aukeratutako motako eta zirrikitu hau elikatzen duen teklatuko pantaila bakoitza beste modu batera aldatzen du, eta pantaila horren ezarpen gisa gordetzen du.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} hau erakusten du: {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Modua beste makro batek edo pantailaren elkarrizketa-koadroak aldatu arte irauten du.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Kronometroa</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Kronometro moduko teklatuko pantailek erakusten duten kronometroa abiarazi edo pausatzen du, edo berrezartzen du.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>Abiarazi edo pausatu kronometroa</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>Berrezarri kronometroa</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Berrezartzeak kronometroa gelditzen du eta zerora itzultzen du. Kronometro moduko teklatuko pantaila guztiek kronometro bera erakusten dute.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Mugitu teklatuko pantailaren irudia</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Zirrikitu hau elikatzen duen teklatuko pantaila bakoitzaren leihoa pantaila baino handiagoa den irudi baten gainean mugitzen du, esaterako mapa bat ikusteko.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Mugitu irudiak {0} × {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Zirrikitu hau elikatzen duen eta bera baino handiagoa den aukeratutako irudi bat erakusten duen pantaila bakoitza mugitzen du. Leihoa irudiaren ertzetan gelditzen da.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Pantaila</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Ekintza</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Norabidea</value></data>

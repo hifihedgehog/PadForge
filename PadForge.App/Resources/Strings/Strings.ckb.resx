@@ -4350,22 +4350,15 @@
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>داگرتنی SDK ی S.T.R.I.K.E. 7 لەگەڵ SHA-256 ناسراوەکەی ناگونجێت، بۆیە هیچ شتێکی لێ هەڵنەگیرا.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>ڕەنتایمی Visual C++ 2008 هێشتا بوونی نییە دوای ئەوەی دامەزرێنەرەکەی کاری کرد.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>نیشاندانی شاشەی تەختەکلیل</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>وێنەکان لەسەر هەر شاشەیەکی تەختەکلیلی جۆری هەڵبژێردراو کە ئەم شوێنە پڕ دەکاتەوە پیشان دەدات، پاشان هەر شاشەیەک دەگەڕێنێتەوە بۆ دۆخی خۆی.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>نیشاندانی وێنەکانی {0}: {1} × {2} ms، ژمارەی دووبارەکردنەوە {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>وێنەکان لەگەڵ شاشەکە دەگونجێنرێن: 160 لە 43 پیکسڵی ڕەش و سپی لەسەر شاشەی یەکڕەنگ، 320 لە 240 لەسەر شاشەی G19، و 480 لە 320 بۆ Arx Control و S.T.R.I.K.E. 7. کورتترین ماوەی چوارچێوە یەک لە دەی چرکەیەکە.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>دۆخی شاشەی تەختەکلیل</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>هەر شاشەیەکی تەختەکلیلی جۆری هەڵبژێردراو کە ئەم شوێنە پڕ دەکاتەوە دەگۆڕێت بۆ دۆخێکی تر، و وەک ڕێکخستنی ئەو شاشەیە دەیهێڵێتەوە.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} {1} پیشان دەدات</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>دۆخەکە دەمێنێتەوە تا ماکرۆیەکی تر یان دیالۆگی شاشەکە بیگۆڕێت.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>کاتپێو</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>ئەو کاتپێوە دەست پێدەکات یان ڕادەگرێت، یان سفری دەکاتەوە، کە شاشەکانی تەختەکلیل لە دۆخی کاتپێودا پیشانی دەدەن.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>دەستپێکردن یان ڕاگرتنی کاتپێو</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>سفرکردنەوەی کاتپێو</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>سفرکردنەوە کاتپێوەکە دەوەستێنێت و دەیگەڕێنێتەوە بۆ سفر. هەموو شاشەیەکی تەختەکلیل لە دۆخی کاتپێودا هەمان کاتپێو پیشان دەدات.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>جووڵاندنی وێنەی شاشەی تەختەکلیل</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>پەنجەرەی هەر شاشەیەکی تەختەکلیل کە ئەم شوێنە پڕ دەکاتەوە بەسەر وێنەیەکی گەورەتر لە شاشەکەدا دەجووڵێنێت، بۆ نەخشە.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>جووڵاندنی وێنەکان بە {0} و {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>هەر شاشەیەک دەجووڵێنێت کە ئەم شوێنە پڕ دەکاتەوە و وێنەیەکی هەڵبژێردراوی گەورەتر لە خۆی پیشان دەدات. پەنجەرەکە لە لێوارەکانی وێنەکەدا دەوەستێت.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>شاشە</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>کردار</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>ئاراستە</value></data>

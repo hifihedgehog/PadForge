@@ -4337,22 +4337,15 @@ PadForge ने ते आता अनइन्स्टॉल करावे�
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>S.T.R.I.K.E. 7 SDK डाउनलोड ज्ञात SHA-256 शी जुळत नाही, म्हणून त्यातील काहीही ठेवले नाही.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>इन्स्टॉलर चालल्यानंतरही Visual C++ 2008 रनटाइम अजून नाही.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>कीबोर्ड स्क्रीन दाखवा</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>या स्लॉटला जोडणाऱ्या, निवडलेल्या प्रकारच्या प्रत्येक कीबोर्ड स्क्रीनवर चित्रे चालवते, मग प्रत्येक स्क्रीनला तिच्या स्वतःच्या मोडवर परत आणते.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>{0} चित्रे दाखवा: {1} × {2} ms, पुनरावृत्ती संख्या {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>चित्रे स्क्रीनला बसवली जातात: मोनोक्रोम स्क्रीनवर 160 बाय 43 कृष्णधवल पिक्सेल, G19 च्या स्क्रीनवर 320 बाय 240, आणि Arx Control व S.T.R.I.K.E. 7 साठी 480 बाय 320. फ्रेमचा सर्वात कमी वेळ एक दशांश सेकंद आहे.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>कीबोर्ड स्क्रीन मोड</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>या स्लॉटला जोडणाऱ्या, निवडलेल्या प्रकारच्या प्रत्येक कीबोर्ड स्क्रीनला दुसऱ्या मोडवर बदलते आणि ती त्या स्क्रीनची सेटिंग म्हणून ठेवते.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} {1} दाखवते</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>दुसरा मॅक्रो किंवा स्क्रीनचा डायलॉग तो बदलेपर्यंत मोड तसाच राहतो.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>स्टॉपवॉच</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>स्टॉपवॉच मोडमधील कीबोर्ड स्क्रीन दाखवतात ते स्टॉपवॉच सुरू किंवा थांबवते, अथवा रीसेट करते.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>स्टॉपवॉच सुरू करा किंवा थांबवा</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>स्टॉपवॉच रीसेट करा</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>रीसेट स्टॉपवॉच थांबवते आणि शून्यावर आणते. स्टॉपवॉच मोडमधील प्रत्येक कीबोर्ड स्क्रीन तेच स्टॉपवॉच दाखवते.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>कीबोर्ड स्क्रीन चित्र पॅन करा</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>या स्लॉटला जोडणाऱ्या प्रत्येक कीबोर्ड स्क्रीनची खिडकी स्क्रीनपेक्षा मोठ्या चित्रावर, उदाहरणार्थ नकाशासाठी, हलवते.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>चित्रे {0} बाय {1} px पॅन करा</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>या स्लॉटला जोडणारी आणि निवडलेले, स्वतःपेक्षा मोठे चित्र दाखवणारी प्रत्येक स्क्रीन हलवते. खिडकी चित्राच्या कडांवर थांबते.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>स्क्रीन</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>क्रिया</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>दिशा</value></data>

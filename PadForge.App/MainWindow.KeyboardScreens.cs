@@ -6,6 +6,7 @@ using PadForge.Common.Input;
 using PadForge.Common.Input.KeyboardScreens;
 using PadForge.Resources.Strings;
 using PadForge.Services;
+using PadForge.ViewModels;
 using PadForge.Views;
 
 namespace PadForge
@@ -24,7 +25,7 @@ namespace PadForge
             {
                 if (_viewModel.Devices.SelectedDevice is { } row) ConfigureKeyboardScreen(row.InstanceGuid);
             };
-            _viewModel.Dashboard.ChooseScreenOverlayContentRequested += (_, _) => ConfigureScreenOverlay();
+            _viewModel.Dashboard.ChooseScreenOverlayContentRequested += (_, item) => ConfigureScreenOverlay(item);
 
             // A download that lands is the library from now on, in place of a
             // copy picked before. A failed one leaves the pick alone.
@@ -61,26 +62,24 @@ namespace PadForge
             if (screen != null) ConfigureScreen(service, screen, service.StatusLine(screen));
         }
 
-        /// <summary>The Screen Overlay's dialog (#560), from its Dashboard card.
-        /// The overlay has no row and no device, so the dialog opens with or
-        /// without the Keyboard Screens switch, and previews at the shape of the
-        /// overlay's window.</summary>
-        private void ConfigureScreenOverlay()
+        /// <summary>A Screen Overlay's dialog (#560), from its Dashboard card, whether
+        /// or not its window is up.</summary>
+        private void ConfigureScreenOverlay(ScreenOverlayItem item)
         {
             var service = _inputService?.KeyboardScreens;
-            if (service == null) return;
-            var dashboard = _viewModel.Dashboard;
-            ConfigureScreen(service, KeyboardScreenInfo.Overlay(Strings.Instance.Dashboard_ScreenOverlay), null,
-                new System.Windows.Size(dashboard.ScreenOverlayWidth, dashboard.ScreenOverlayHeight));
+            if (service != null) ConfigureScreen(service, KeyboardScreenInfo.Overlay(item.Number), null);
         }
 
         /// <summary>Opens one screen's dialog and keeps what was saved: the
         /// screen's mode, picture and pan, kept by its row, and the active
         /// profile's picture.</summary>
-        private void ConfigureScreen(KeyboardScreenService service, KeyboardScreenInfo screen, string detail,
-            System.Windows.Size? overlaySize = null)
+        private void ConfigureScreen(KeyboardScreenService service, KeyboardScreenInfo screen, string detail)
         {
             Guid row = screen.RowGuid;
+            // The overlay has no size of its own, so the preview takes its window's.
+            System.Windows.Size? overlaySize = null;
+            if (_viewModel.Dashboard.FindScreenOverlay(screen.OverlayNumber) is { } overlay)
+                overlaySize = new System.Windows.Size(overlay.Width, overlay.Height);
             string profileId = SettingsManager.ActiveProfileId;
             var profile = string.IsNullOrEmpty(profileId) ? null : SettingsManager.Profiles.Find(p => p.Id == profileId);
             string profilePicture = profile != null ? profile.KeyboardScreenPicture : _viewModel.Settings.DefaultProfileKeyboardScreenPicture;
@@ -95,9 +94,11 @@ namespace PadForge
                 d.Picture = choice.Picture;
                 d.PanX = choice.PanX;
                 d.PanY = choice.PanY;
+                d.Zoom = choice.Zoom;
+                d.LightbarSlot = choice.LightbarSlot;
             });
             _viewModel.SetStatus(string.Format(CultureInfo.CurrentCulture, Strings.Instance.Status_KeyboardScreen_Format,
-                screen.Name, KeyboardScreenService.ModeName(choice.Mode)));
+                KeyboardScreenService.ScreenName(screen), KeyboardScreenService.ModeName(choice.Mode)));
         }
     }
 }

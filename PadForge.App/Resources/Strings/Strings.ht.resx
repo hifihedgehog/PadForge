@@ -3709,22 +3709,15 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>Telechajman SDK S.T.R.I.K.E. 7 la pa koresponn ak SHA-256 li konnen an, kidonk pa gen anyen ladan l ki te kenbe.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>Runtime Visual C++ 2008 la toujou manke apre enstalatè li a fin mache.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Montre ekran klavye</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Jwe imaj sou chak ekran klavye ki nan kalite ou chwazi a epi ki alimante plas sa a, epi apre sa li remèt chak ekran nan pwòp mòd li.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Montre imaj {0}: {1} × {2} ms, kantite repetisyon {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Imaj yo ajiste pou ekran an: 160 sou 43 piksèl nwa ak blan sou yon ekran monokwom, 320 sou 240 sou ekran G19 la, ak 480 sou 320 pou Arx Control ak S.T.R.I.K.E. 7 la. Yon dizyèm segonn se tan ki pi kout pou chak imaj.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Mòd ekran klavye</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Chanje chak ekran klavye ki nan kalite ou chwazi a epi ki alimante plas sa a nan yon lòt mòd, epi kenbe l kòm paramèt ekran sa a.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} montre {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Mòd la rete jiskaske yon lòt makwo oswa dyalòg ekran an chanje l.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Kwonomèt</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Kòmanse oswa mete an poz, oswa reyinisyalize, kwonomèt ke ekran klavye ki nan mòd Kwonomèt yo montre.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>Kòmanse oswa mete kwonomèt an poz</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>Reyinisyalize kwonomèt</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Reyinisyalize kanpe kwonomèt la epi remete l a zewo. Chak ekran klavye ki nan mòd Kwonomèt montre menm kwonomèt la.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Deplase imaj ekran klavye</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Deplase fenèt chak ekran klavye ki alimante plas sa a sou yon imaj ki pi gran pase ekran an, pou yon kat.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Deplase imaj yo {0} sou {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Deplase chak ekran ki alimante plas sa a epi ki montre yon imaj ou chwazi ki pi gran pase li. Fenèt la kanpe nan bò imaj la.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Ekran</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Aksyon</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Direksyon</value></data>

@@ -2873,6 +2873,10 @@ namespace PadForge.ViewModels
             // x:Static binding never re-reads it; the instance accessor +
             // this raise are what reach open views.
             OnPropertyChanged(nameof(VirtualKeyChoices));
+            // A new list clears the box's selection, so the number goes back to it
+            // after, by value.
+            OnPropertyChanged(nameof(ScreenOverlayChoices));
+            OnPropertyChanged(nameof(ScreenOverlayNumber));
             // The trigger effect rows outlive a language change (they are
             // rebuilt only with the effect), so each row's caption is raised.
             foreach (var row in _triggerEffectRows) row.RaiseLabelChanged();
@@ -2944,6 +2948,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsStopwatchType));
                     OnPropertyChanged(nameof(IsPanKeyboardScreenType));
                     OnPropertyChanged(nameof(IsKeyboardScreenKindType));
+                    OnPropertyChanged(nameof(IsScreenOverlayTargetType));
                     OnPropertyChanged(nameof(IsGuideLedBrightnessType));
                     OnPropertyChanged(nameof(IsAnyLightbarType));
                     OnPropertyChanged(nameof(IsLightbarReactiveHold));
@@ -3424,6 +3429,12 @@ namespace PadForge.ViewModels
         /// screen (#519), which share the kind row.</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool IsKeyboardScreenKindType => IsShowKeyboardScreenType || IsKeyboardScreenModeType;
+
+        /// <summary>True when the action can name a Screen Overlay (#560).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsScreenOverlayTargetType => _type == MacroActionType.ToggleScreenOverlay
+            || _type == MacroActionType.PanKeyboardScreen
+            || (IsKeyboardScreenKindType && _screenKind == PadForge.Common.Input.KeyboardScreens.KeyboardScreenKind.Overlay);
 
         /// <summary>True when Type is PointerModeSet (issue #203 follow-up).</summary>
         [System.Xml.Serialization.XmlIgnore]
@@ -4964,10 +4975,38 @@ namespace PadForge.ViewModels
                     value = PadForge.Common.Input.KeyboardScreens.KeyboardScreenKind.Monochrome;
                 if (!SetProperty(ref _screenKind, value)) return;
                 OnPropertyChanged(nameof(ScreenKindIndex));
+                OnPropertyChanged(nameof(IsScreenOverlayTargetType));
                 OnPropertyChanged(nameof(ScreenFrameImages));
                 OnPropertyChanged(nameof(DisplayText));
             }
         }
+
+        private int _screenOverlayNumber;
+
+        /// <summary>The Screen Overlay the action acts on (#560): its number, or 0 for
+        /// every overlay. A macro on any slot reaches it.</summary>
+        public int ScreenOverlayNumber
+        {
+            get => _screenOverlayNumber;
+            set
+            {
+                if (SetProperty(ref _screenOverlayNumber, Math.Clamp(value, 0, PadForge.Common.Input.KeyboardScreens.KeyboardScreenInfo.MaxOverlays)))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
+        /// <summary>The direction and the distance, with the overlay it names.</summary>
+        private string PanDisplayText()
+        {
+            string pan = string.Format(Strings.Instance.MacroAction_PanKeyboardScreen_Format,
+                PadForge.Services.KeyboardScreenService.DirectionName(_panDirection), _panStep);
+            return _screenOverlayNumber == 0 ? pan : string.Format(Strings.Instance.KeyboardScreens_Status_Line_Format,
+                PadForge.Services.KeyboardScreenService.OverlayName(_screenOverlayNumber), pan);
+        }
+
+        /// <summary>The editor's list of overlays, by number.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public IReadOnlyList<PadForge.Services.ScreenOverlayChoice> ScreenOverlayChoices => PadForge.Services.KeyboardScreenService.OverlayChoices();
 
         /// <summary>The kind as the editor's list index, the kinds' own
         /// order.</summary>
@@ -5011,13 +5050,15 @@ namespace PadForge.ViewModels
 
         private int _screenRepeat = 1;
         /// <summary>How many times the pictures play before the screen returns
-        /// to its mode.</summary>
+        /// to its mode. 0 keeps them playing until another Show Keyboard Screen or a
+        /// Keyboard Screen Mode macro, for a picture that stays until the next
+        /// press.</summary>
         public int ScreenRepeat
         {
             get => _screenRepeat;
             set
             {
-                if (SetProperty(ref _screenRepeat, Math.Clamp(value, 1, 1000)))
+                if (SetProperty(ref _screenRepeat, Math.Clamp(value, 0, 1000)))
                     OnPropertyChanged(nameof(DisplayText));
             }
         }
@@ -6295,7 +6336,9 @@ namespace PadForge.ViewModels
                     MacroActionType.MouseButtonRelease => string.Format(Strings.Instance.MacroAction_MouseRelease_Format, MacroMouseButtonDisplayName(_mouseButton)),
                     MacroActionType.MouseScroll => string.Format(Strings.Instance.MacroAction_Scroll_Format, axisLabel, _mouseSensitivity),
                     MacroActionType.ToggleTouchpadOverlay => Strings.Instance.MacroAction_ToggleTouchpadOverlay,
-                    MacroActionType.ToggleScreenOverlay => Strings.Instance.MacroAction_ToggleScreenOverlay,
+                    MacroActionType.ToggleScreenOverlay => _screenOverlayNumber == 0
+                        ? Strings.Instance.MacroAction_ToggleScreenOverlay
+                        : string.Format(Strings.Instance.MacroAction_ToggleScreenOverlay_Format, _screenOverlayNumber),
                     MacroActionType.VoiceListenWhileHeld => Strings.Instance.MacroAction_Type_VoiceListenWhileHeld,
                     MacroActionType.LightbarColor => FormatLightbarColorSummary(),
                     MacroActionType.LightbarColorClear => Strings.Instance.MacroAction_LightbarColorClear,
@@ -6321,18 +6364,16 @@ namespace PadForge.ViewModels
                         Strings.Instance.MacroAction_ShowDreamcastScreen_Format,
                         DreamcastFrameCount, _dreamcastFrameMs, _dreamcastRepeat),
                     MacroActionType.ShowKeyboardScreen => string.Format(
-                        Strings.Instance.MacroAction_ShowKeyboardScreen_Format,
-                        PadForge.Services.KeyboardScreenService.KindName(_screenKind), ScreenFrameCount, _screenFrameMs, _screenRepeat),
+                        _screenRepeat == 0 ? Strings.Instance.MacroAction_ShowKeyboardScreen_Hold_Format : Strings.Instance.MacroAction_ShowKeyboardScreen_Format,
+                        PadForge.Services.KeyboardScreenService.TargetName(_screenKind, _screenOverlayNumber), ScreenFrameCount, _screenFrameMs, _screenRepeat),
                     MacroActionType.KeyboardScreenMode => string.Format(
                         Strings.Instance.MacroAction_KeyboardScreenMode_Format,
-                        PadForge.Services.KeyboardScreenService.KindName(_screenKind),
+                        PadForge.Services.KeyboardScreenService.TargetName(_screenKind, _screenOverlayNumber),
                         PadForge.Services.KeyboardScreenService.ModeName(_screenMode)),
                     MacroActionType.Stopwatch => _stopwatchAction == PadForge.Services.KeyboardScreenStopwatchAction.Reset
                         ? Strings.Instance.MacroAction_Stopwatch_Reset
                         : Strings.Instance.MacroAction_Stopwatch_StartPause,
-                    MacroActionType.PanKeyboardScreen => string.Format(
-                        Strings.Instance.MacroAction_PanKeyboardScreen_Format,
-                        PadForge.Services.KeyboardScreenService.DirectionName(_panDirection), _panStep),
+                    MacroActionType.PanKeyboardScreen => PanDisplayText(),
                     MacroActionType.GuideLedBrightness => string.Format(
                         Strings.Instance.MacroAction_GuideLedBrightness_Format,
                         _guideLedPercent),
@@ -7317,7 +7358,8 @@ namespace PadForge.ViewModels
         /// slot (issue #519, asked in discussion #507): each for
         /// <see cref="MacroAction.ScreenFrameMs"/>, the whole set
         /// <see cref="MacroAction.ScreenRepeat"/> times, over whatever that
-        /// screen's mode shows, which returns when the pictures end. One-shot,
+        /// screen's mode shows, which returns when the pictures end, or at 0
+        /// until another such macro or a Keyboard Screen Mode macro. One-shot,
         /// the <see cref="ShowDreamcastScreen"/> shape and slot rule. Ordinal
         /// pinned.</summary>
         ShowKeyboardScreen = 58,

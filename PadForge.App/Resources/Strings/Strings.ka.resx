@@ -4343,22 +4343,15 @@
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>S.T.R.I.K.E. 7 SDK-ს ჩამოტვირთვა არ ემთხვევა ცნობილ SHA-256-ს, ამიტომ მისგან არაფერი შენახულა.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>Visual C++ 2008 გაშვების გარემო ინსტალერის გაშვების შემდეგაც აკლია.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>კლავიატურის ეკრანის ჩვენება</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>აჩვენებს სურათებს არჩეული ტიპის თითოეულ კლავიატურის ეკრანზე, რომელიც ამ სლოტს კვებავს, შემდეგ კი თითოეულ ეკრანს თავის რეჟიმს უბრუნებს.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>{0} სურათების ჩვენება: {1} × {2} მწ, გამეორება {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>სურათები ეკრანს ერგება: 160 × 43 შავ-თეთრი პიქსელი მონოქრომულ ეკრანზე, 320 × 240 G19-ის ეკრანზე და 480 × 320 Arx Control-სა და S.T.R.I.K.E. 7-ზე. კადრის უმოკლესი დრო წამის მეათედია.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>კლავიატურის ეკრანის რეჟიმი</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>არჩეული ტიპის თითოეულ კლავიატურის ეკრანს, რომელიც ამ სლოტს კვებავს, სხვა რეჟიმზე ცვლის და ამ ეკრანის პარამეტრად ინახავს.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} აჩვენებს: {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>რეჟიმი რჩება, სანამ სხვა მაკრო ან ეკრანის დიალოგი არ შეცვლის.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>წამზომი</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>იწყებს ან აპაუზებს, ან ნულზე აბრუნებს წამზომს, რომელსაც წამზომის რეჟიმში მყოფი კლავიატურის ეკრანები აჩვენებს.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>წამზომის დაწყება ან პაუზა</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>წამზომის განულება</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>განულება წამზომს აჩერებს და ნულზე აბრუნებს. წამზომის რეჟიმში მყოფი ყველა კლავიატურის ეკრანი ერთსა და იმავე წამზომს აჩვენებს.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>კლავიატურის ეკრანის სურათის გადაადგილება</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>ამ სლოტს მკვებავი კლავიატურის თითოეული ეკრანის ფანჯარას ეკრანზე დიდ სურათზე ამოძრავებს, მაგალითად რუკისთვის.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>სურათების გადაადგილება: {0} და {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>ამოძრავებს ამ სლოტის მკვებავ თითოეულ ეკრანს, რომელიც საკუთარ ზომაზე დიდ არჩეულ სურათს აჩვენებს. ფანჯარა სურათის კიდეებთან ჩერდება.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>ეკრანი</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>მოქმედება</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>მიმართულება</value></data>

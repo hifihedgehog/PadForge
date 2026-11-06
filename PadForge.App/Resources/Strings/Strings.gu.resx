@@ -4347,22 +4347,15 @@
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>S.T.R.I.K.E. 7 SDK ડાઉનલોડ તેના જાણીતા SHA-256 સાથે મેળ ખાતું નથી, તેથી તેમાંથી કંઈ રાખ્યું નથી.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>ઇન્સ્ટોલર ચાલ્યા પછી પણ Visual C++ 2008 રનટાઇમ ગુમ છે.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>કીબોર્ડ સ્ક્રીન બતાવો</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>પસંદ કરેલા પ્રકારની, આ સ્લોટને ફીડ કરતી દરેક કીબોર્ડ સ્ક્રીન પર ચિત્રો ચલાવે છે, પછી દરેક સ્ક્રીનને તેના પોતાના મોડ પર પાછી લાવે છે.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>{0} ચિત્રો બતાવો: {1} × {2} ms, પુનરાવર્તન સંખ્યા {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>ચિત્રો સ્ક્રીનને બંધબેસે તેમ ગોઠવાય છે: મોનોક્રોમ સ્ક્રીન પર 160 બાય 43 કાળા-સફેદ પિક્સેલ, G19 ની સ્ક્રીન પર 320 બાય 240, અને Arx Control તથા S.T.R.I.K.E. 7 માટે 480 બાય 320. ફ્રેમ સમય ઓછામાં ઓછો સેકન્ડનો દસમો ભાગ હોઈ શકે.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>કીબોર્ડ સ્ક્રીન મોડ</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>પસંદ કરેલા પ્રકારની, આ સ્લોટને ફીડ કરતી દરેક કીબોર્ડ સ્ક્રીનને બીજા મોડ પર બદલે છે અને તેને તે સ્ક્રીનના સેટિંગ તરીકે રાખે છે.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} {1} બતાવે છે</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>બીજો મેક્રો અથવા સ્ક્રીનનું ડાયલૉગ તેને બદલે ત્યાં સુધી મોડ રહે છે.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>સ્ટોપવૉચ</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>સ્ટોપવૉચ મોડમાંની કીબોર્ડ સ્ક્રીન જે સ્ટોપવૉચ બતાવે છે તેને શરૂ કરે અથવા થોભાવે, કે રીસેટ કરે છે.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>સ્ટોપવૉચ શરૂ કરો અથવા થોભાવો</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>સ્ટોપવૉચ રીસેટ કરો</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>રીસેટ સ્ટોપવૉચને અટકાવે છે અને તેને પાછી શૂન્ય પર લાવે છે. સ્ટોપવૉચ મોડમાંની દરેક કીબોર્ડ સ્ક્રીન એ જ સ્ટોપવૉચ બતાવે છે.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>કીબોર્ડ સ્ક્રીન ચિત્ર પૅન કરો</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>નકશા માટે, આ સ્લોટને ફીડ કરતી દરેક કીબોર્ડ સ્ક્રીનની વિન્ડો સ્ક્રીન કરતાં મોટા ચિત્ર પર ખસેડે છે.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>ચિત્રો {0} બાય {1} px પૅન કરો</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>આ સ્લોટને ફીડ કરતી અને પસંદ કરેલું, પોતાના કરતાં મોટું ચિત્ર બતાવતી દરેક સ્ક્રીનને ખસેડે છે. વિન્ડો ચિત્રની કિનારીઓ પર અટકે છે.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>સ્ક્રીન</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>ક્રિયા</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>દિશા</value></data>

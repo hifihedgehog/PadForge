@@ -269,7 +269,6 @@ namespace PadForge.ViewModels
             nameof(EnableRemoteLink) or
             nameof(AutoReconnect) or
             nameof(EnableTouchpadOverlay) or
-            nameof(EnableScreenOverlay) or
             nameof(EnableMenuOverlay) or
             nameof(EnableShiftLayerFlyout) or
             nameof(EnableProfileOverlay);
@@ -336,11 +335,6 @@ namespace PadForge.ViewModels
                 case nameof(EnableTouchpadOverlay):
                 {
                     EnableTouchpadOverlay = false;
-                    break;
-                }
-                case nameof(EnableScreenOverlay):
-                {
-                    EnableScreenOverlay = false;
                     break;
                 }
                 case nameof(EnableMenuOverlay):
@@ -1234,6 +1228,7 @@ namespace PadForge.ViewModels
             nameof(DreamcastFrameMs) or
             nameof(DreamcastRepeat) or
             nameof(ScreenKind) or
+            nameof(ScreenOverlayNumber) or
             nameof(ScreenFrames) or
             nameof(ScreenFrameMs) or
             nameof(ScreenRepeat) or
@@ -1574,6 +1569,11 @@ namespace PadForge.ViewModels
                 case nameof(DreamcastRepeat):
                 {
                     DreamcastRepeat = 1;
+                    break;
+                }
+                case nameof(ScreenOverlayNumber):
+                {
+                    ScreenOverlayNumber = 0;
                     break;
                 }
                 case nameof(ScreenKind):

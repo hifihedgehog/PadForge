@@ -4254,22 +4254,15 @@ Yào ràng PadForge xiànzài xièzài tāmen ma? Cǐ cāozuò xūyào tíshēng
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>S.T.R.I.K.E. 7 SDK de xiàzài nèiróng yǔ yǐzhī de SHA-256 bù fú, yīncǐ wèi bǎoliú qízhōng de rènhé nèiróng.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>Ānzhuāng chéngxù yùnxíng hòu, réng quēshǎo Visual C++ 2008 yùnxíngshí.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Xiǎnshì jiànpán píngmù</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Zài wèi cǐ cáowèi tígōng shūrù de suǒ xuǎn lèixíng de měi gè jiànpán píngmù shàng bōfàng túpiàn, ránhòu shǐ měi gè píngmù huīfù dào gèzì de móshì.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Xiǎnshì {0} túpiàn: {1} × {2} ms, chóngfù cìshù {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Túpiàn huì shìyìng píngmù: dānsè píngmù wèi 160 × 43 hēibái xiàngsù, G19 de píngmù wèi 320 × 240, Arx Control hé S.T.R.I.K.E. 7 wèi 480 × 320. Zuì duǎn de zhēn shíjiān shì shí fēn zhī yī miǎo.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Jiànpán píngmù móshì</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Bǎ wèi cǐ cáowèi tígōng shūrù de suǒ xuǎn lèixíng de měi gè jiànpán píngmù qiēhuàn dào lìng yī zhǒng móshì, bìng bǎ tā bǎocún wèi gāi píngmù de shèzhì.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} xiǎnshì {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Gāi móshì yīzhí bǎochí, zhídào lìng yī gè hóng huò gāi píngmù de duìhuàkuāng gēnggǎi tā.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Miǎobiǎo</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Qǐdòng huò zàntíng, huò chóngzhì jiànpán píngmù zài miǎobiǎo móshì xià xiǎnshì de miǎobiǎo.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>Qǐdòng huò zàntíng miǎobiǎo</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>Chóngzhì miǎobiǎo</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Chóngzhì huì tíngzhǐ miǎobiǎo bìng bǎ tā guīlíng. Suǒyǒu zài miǎobiǎo móshì xià de jiànpán píngmù xiǎnshì tóng yī gè miǎobiǎo.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Píngyí jiànpán píngmù túpiàn</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Zài bǐ píngmù dà de túpiàn shàng yídòng wèi cǐ cáowèi tígōng shūrù de měi gè jiànpán píngmù de chuāngkǒu, kěyòng yú dìtú.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Píngyí túpiàn {0}, {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Yídòng wèi cǐ cáowèi tígōng shūrù, qiě xiǎnshì bǐ zìshēn dà de suǒ xuǎn túpiàn de měi gè píngmù. Chuāngkǒu zài túpiàn biānyuán tíngzhǐ.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Píngmù</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Dòngzuò</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Fāngxiàng</value></data>

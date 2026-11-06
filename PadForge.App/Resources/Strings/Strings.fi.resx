@@ -4577,20 +4577,20 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Näytä näppäimistön näytöllä</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Toistaa kuvia jokaisella valitun tyyppisellä näppäimistön näytöllä, joka syöttää tähän paikkaan, ja palauttaa sitten kunkin näytön omaan tilaansa. Näytön peittokuva ottaa ne mistä tahansa paikasta.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Näytä kuvat, {0}: {1} × {2} ms, toistokertoja {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Kuvat sovitetaan näyttöön: yksivärisellä näytöllä 160 × 43 mustavalkoista pikseliä, G19:n näytöllä 320 × 240 sekä Arx Controlilla ja S.T.R.I.K.E. 7:llä 480 × 320. Lyhin kuvan kesto on kymmenesosasekunti.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Kuvat sovitetaan näyttöön: yksivärisellä näytöllä 160 × 43 mustavalkoista pikseliä, G19:n näytöllä 320 × 240 sekä Arx Controlilla ja S.T.R.I.K.E. 7:llä 480 × 320. Näytön peittokuva säilyttää jokaisen kuvan oman muodon, enintään 800 pikseliä pidemmällä sivulla. Lyhin kuvan kesto on kymmenesosasekunti. Toistokertojen määrä 0 jatkaa toistoa, kunnes toinen Näytä näppäimistön näytöllä- tai Näppäimistön näytön tila -makro keskeyttää sen.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Näppäimistön näytön tila</value></data>
   <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Vaihtaa jokaisen valitun tyyppisen näppäimistön näytön, joka syöttää tähän paikkaan, toiseen tilaan ja säilyttää sen kyseisen näytön asetuksena. Näytön peittokuva ottaa sen mistä tahansa paikasta.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} näyttää: {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Tila pysyy, kunnes toinen makro tai näytön valintaikkuna muuttaa sitä.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Sekuntikello</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Käynnistää, keskeyttää tai nollaa sekuntikellon, jota Sekuntikello-tilassa olevat näppäimistön näytöt näyttävät.</value></data>
+  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Käynnistää, keskeyttää tai nollaa sekuntikellon, jota Sekuntikello-tilassa olevat näppäimistön näytöt ja näytön peittokuvat näyttävät.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>Käynnistä tai keskeytä sekuntikello</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>Nollaa sekuntikello</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Nollaus pysäyttää sekuntikellon ja palauttaa sen nollaan. Kaikki Sekuntikello-tilassa olevat näppäimistön näytöt näyttävät saman sekuntikellon.</value></data>
+  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Nollaus pysäyttää sekuntikellon ja palauttaa sen nollaan. Kaikki Sekuntikello-tilassa olevat näppäimistön näytöt ja näytön peittokuvat näyttävät saman sekuntikellon.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Panoroi näppäimistön näytön kuvaa</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Siirtää jokaisen tähän paikkaan syöttävän näppäimistön näytön ikkunaa näyttöä suuremman kuvan päällä, esimerkiksi karttaa varten.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Siirtää jokaisen tähän paikkaan syöttävän näppäimistön näytön ikkunaa näyttöä suuremman kuvan päällä, esimerkiksi karttaa varten. Näytön peittokuva siirtyy samalla tavalla, kun sen zoomaus on yli 100 prosenttia.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Panoroi kuvia: X {0}, Y {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Siirtää jokaista tähän paikkaan syöttävää näyttöä, jolla näkyy valittu itseään suurempi kuva. Ikkuna pysähtyy kuvan reunoihin.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Siirtää jokaista tähän paikkaan syöttävää näyttöä, jolla näkyy valittu itseään suurempi kuva. Ikkuna pysähtyy kuvan reunoihin. Näytön peittokuva siirtyy, kun sen zoomaus on yli 100 prosenttia, riippumatta siitä, mikä paikka suorittaa makron.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Näyttö</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Toiminto</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Suunta</value></data>
@@ -4899,7 +4899,17 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>Peittokuva näyttää aktiivisen profiilin oman kuvan tai sen nimen, jos kuvaa ei ole. Jokaisella profiililla on oma kuvansa.</value></data>
   <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>Peittokuva näyttää kellonajan.</value></data>
   <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>Peittokuva näyttää tunnit ja minuutit siitä, kun aktiivinen profiili otettiin käyttöön. Pelin ohjelmaan sidottu profiili otetaan käyttöön, kun peli käynnistyy, joten laskuri kattaa kyseisen istunnon. Profiilissa Oletus laskenta alkaa ohjelmamoottorin käynnistyksestä.</value></data>
-  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Peittokuva näyttää valitsemasi kuvan skaalattuna täyttämään ikkunansa kuvasuhde säilyttäen.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Peittokuva näyttää valitsemasi kuvan skaalattuna täyttämään ikkunansa kuvasuhde säilyttäen. Yli 100 prosentin zoomauksella siinä näkyy osa kuvasta, esimerkiksi karttaa varten. Panoroi näppäimistön näytön kuvaa -makro siirtää tätä osaa, samoin vetäminen hiiren vasemmalla painikkeella, kun PadForge on etualalla.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>Peittokuva näyttää sekuntikellon, jonka Sekuntikello-makro käynnistää, keskeyttää ja nollaa. Se on sama sekuntikello, jonka kaikki näppäimistön näytöt näyttävät.</value></data>
-  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Peittokuva näyttää DualShock 4- tai DualSense-ohjaimen valopalkin värin alimmassa paikassa. Kunnes valopalkille on tullut väri, se ei näytä mitään.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Peittokuva näyttää DualShock 4- tai DualSense-ohjaimen valopalkin värin tässä valitsemassasi paikassa tai alimmassa paikassa, jossa on väri. Kunnes valopalkille on tullut väri, se ei näytä mitään.</value></data>
+  <data name="Dashboard_ScreenOverlay_Number_Format" xml:space="preserve"><value>Näytön peittokuva {0}</value></data>
+  <data name="Dashboard_ScreenOverlayAdd" xml:space="preserve"><value>Lisää peittokuva</value></data>
+  <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Alin paikka, jossa on väri</value></data>
+  <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>Zoomaus</value></data>
+  <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>Kuvaa ei ole valittu.</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Odotetaan valopalkin väriä.</value></data>
+  <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Peittokuva</value></data>
+  <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Kaikki peittokuvat</value></data>
+  <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Näytä/piilota näytön peittokuva {0}</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Näytä kuvat, {0}: {1} × {2} ms, kunnes seuraava makro</value></data>
 </root>

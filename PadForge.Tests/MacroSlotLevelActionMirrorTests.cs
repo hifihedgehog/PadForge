@@ -126,16 +126,17 @@ namespace PadForge.Tests
                 RawTriggerMacro("overlay", new MacroAction
                 {
                     Type = MacroActionType.ToggleScreenOverlay,
+                    ScreenOverlayNumber = 3,
                 }),
             };
 
-            Assert.False(im.ToggleScreenOverlayRequested);
+            Assert.Equal(0, im.ToggleScreenOverlayMask);
 
             var raw = RawHidState.Create(8, 32, 1);
             raw.Buttons[0] = 1;
             im.EvaluateSlotMacrosExtended(ref raw, macros);
 
-            Assert.True(im.ToggleScreenOverlayRequested);
+            Assert.Equal(1 << 3, im.ToggleScreenOverlayMask);
             Assert.False(im.ToggleTouchpadOverlayRequested);
         }
 

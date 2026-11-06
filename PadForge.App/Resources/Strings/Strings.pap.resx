@@ -2290,12 +2290,8 @@
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>Ta deskargá i instalá e runtime di Visual C++ 2008 di Microsoft…</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>E runtime di Visual C++ 2008 ainda ta falta despues ku su instaladó a kore.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Mustra pantaya di teklado</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Ta mustra potrètnan riba kada pantaya di teklado di e tipo skohí ku ta alimentá e slot aki, despues ta bolbe kada pantaya na su mes modo.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Modo di pantaya di teklado</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Ta kambia kada pantaya di teklado di e tipo skohí ku ta alimentá e slot aki na otro modo, i ta wardé komo e konfigurashon di e pantaya ei.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} ta mustra {1}</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Ta move e bentana di kada pantaya di teklado ku ta alimentá e slot aki riba un potrèt mas grandi ku e pantaya, pa un mapa.</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Ta move kada pantaya ku ta alimentá e slot aki i ta mustra un potrèt skohí mas grandi ku e pantaya mes. E bentana ta para ora e yega na fin di e potrèt.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Pantaya</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Akshon</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Direkshon</value></data>

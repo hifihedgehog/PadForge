@@ -4353,22 +4353,15 @@
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>Завантажений SDK для S.T.R.I.K.E. 7 не збігається з відомою контрольною сумою SHA-256, тому нічого з нього не збережено.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>Середовище виконання Visual C++ 2008 досі відсутнє після роботи його інсталятора.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Показати на екрані клавіатури</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Показує зображення на кожному екрані клавіатури вибраного типу, що подає дані в цей слот, а потім повертає кожен екран до його режиму.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Показати зображення ({0}): {1} × {2} мс, повторень: {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Зображення підганяються під екран: 160 на 43 чорно-білих пікселі на монохромному екрані, 320 на 240 на екрані G19 і 480 на 320 для Arx Control та S.T.R.I.K.E. 7. Найкоротший час кадру становить одну десяту секунди.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Режим екрана клавіатури</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Перемикає кожен екран клавіатури вибраного типу, що подає дані в цей слот, на інший режим і зберігає його як налаштування цього екрана.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} показує: {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Режим діє, доки його не змінить інший макрос або діалог екрана.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Секундомір</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Запускає чи ставить на паузу або скидає секундомір, який показують екрани клавіатур у режимі «Секундомір».</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>Запустити або призупинити секундомір</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>Скинути секундомір</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Скидання зупиняє секундомір і повертає його до нуля. Усі екрани клавіатур у режимі «Секундомір» показують той самий секундомір.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Зсунути зображення на екрані клавіатури</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Переміщує вікно кожного екрана клавіатури, що подає дані в цей слот, по зображенню, більшому за екран, наприклад по карті.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Зсув зображень: {0} і {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Переміщує кожен екран, що подає дані в цей слот і показує вибране зображення, більше за себе. Вікно зупиняється на краях зображення.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Екран</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Дія</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Напрямок</value></data>

@@ -1167,10 +1167,10 @@ namespace PadForge.Tests
             string source = File.ReadAllText(RepoFile("PadForge.App", "Common", "Input", "InputManager.Step4b.EvaluateMacros.cs"));
             foreach (string call in new[]
             {
-                "MacroKeyboardScreenShowSink(macro.PadIndex, action.ScreenKind, action.ScreenFrames,",
-                "MacroKeyboardScreenModeSink(macro.PadIndex, action.ScreenKind, action.ScreenMode);",
+                "MacroKeyboardScreenShowSink(macro.PadIndex, action.ScreenKind, action.ScreenOverlayNumber, action.ScreenFrames,",
+                "MacroKeyboardScreenModeSink(macro.PadIndex, action.ScreenKind, action.ScreenOverlayNumber, action.ScreenMode);",
                 "MacroStopwatchSink(action.StopwatchAction);",
-                "MacroKeyboardScreenPanSink(macro.PadIndex, action.PanDirection, action.PanStep);",
+                "MacroKeyboardScreenPanSink(macro.PadIndex, action.ScreenOverlayNumber, action.PanDirection, action.PanStep);",
             })
                 Assert.Equal(2, CountOf(source, call));
         }

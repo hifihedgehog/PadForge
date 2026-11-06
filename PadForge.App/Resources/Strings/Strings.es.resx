@@ -4528,20 +4528,20 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Mostrar pantalla del teclado</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Reproduce imágenes en cada pantalla de teclado del tipo elegido que alimenta esta ranura y después devuelve cada pantalla a su propio modo. La superposición de pantalla las toma de cualquier ranura.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Mostrar imágenes de {0}: {1} × {2} ms, repeticiones {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Las imágenes se ajustan a la pantalla: 160 por 43 píxeles en blanco y negro en una pantalla monocroma, 320 por 240 en la del G19 y 480 por 320 en Arx Control y el S.T.R.I.K.E. 7. Una décima de segundo es el tiempo mínimo por imagen.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Las imágenes se ajustan a la pantalla: 160 por 43 píxeles en blanco y negro en una pantalla monocroma, 320 por 240 en la del G19 y 480 por 320 en Arx Control y el S.T.R.I.K.E. 7. Una superposición de pantalla conserva la forma propia de cada imagen, hasta 800 píxeles en su lado más largo. Una décima de segundo es el tiempo mínimo por imagen. Un número de repeticiones de 0 sigue reproduciendo hasta otra macro Mostrar pantalla del teclado o Modo de pantalla del teclado.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Modo de pantalla del teclado</value></data>
   <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Cambia a otro modo cada pantalla de teclado del tipo elegido que alimenta esta ranura y lo conserva como configuración de esa pantalla. La superposición de pantalla lo toma de cualquier ranura.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} muestra {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>El modo se mantiene hasta que otra macro o el cuadro de diálogo de la pantalla lo cambie.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Cronómetro</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Inicia o pausa, o restablece, el cronómetro que muestran las pantallas de teclado en modo Cronómetro.</value></data>
+  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Inicia o pausa, o restablece, el cronómetro que muestran las pantallas de teclado y las superposiciones de pantalla en modo Cronómetro.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>Iniciar o pausar cronómetro</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>Restablecer cronómetro</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Restablecer detiene el cronómetro y lo vuelve a cero. Todas las pantallas de teclado en modo Cronómetro muestran el mismo cronómetro.</value></data>
+  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Restablecer detiene el cronómetro y lo vuelve a cero. Todas las pantallas de teclado y superposiciones de pantalla en modo Cronómetro muestran el mismo cronómetro.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Desplazar imagen de la pantalla del teclado</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Mueve la ventana de cada pantalla de teclado que alimenta esta ranura sobre una imagen mayor que la pantalla, por ejemplo un mapa.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Mueve la ventana de cada pantalla de teclado que alimenta esta ranura sobre una imagen mayor que la pantalla, por ejemplo un mapa. Una superposición de pantalla se mueve del mismo modo cuando su zoom supera el 100 por ciento.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Desplazar imágenes {0} por {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Mueve cada pantalla que alimenta esta ranura y muestra una imagen elegida mayor que ella. La ventana se detiene en los bordes de la imagen.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Mueve cada pantalla que alimenta esta ranura y muestra una imagen elegida mayor que ella. La ventana se detiene en los bordes de la imagen. Una superposición de pantalla se mueve cuando su zoom supera el 100 por ciento, sea cual sea la ranura que ejecute la macro.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Pantalla</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Acción</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Dirección</value></data>
@@ -4850,7 +4850,17 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>La superposición muestra la imagen propia del perfil activo, o su nombre si no tiene ninguna. Cada perfil guarda su propia imagen.</value></data>
   <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>La superposición muestra la hora del día.</value></data>
   <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>La superposición muestra las horas y los minutos desde que se activó el perfil actual. Un perfil vinculado al programa de un juego se activa cuando el juego se inicia, así que la cuenta corresponde a esa sesión. Con el perfil Predeterminado, la cuenta empieza al iniciarse el motor.</value></data>
-  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>La superposición muestra una imagen que usted elige, escalada para llenar su ventana manteniendo sus proporciones.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>La superposición muestra una imagen que usted elige, escalada para llenar su ventana manteniendo sus proporciones. Con un zoom superior al 100 por ciento muestra una parte de la imagen, por ejemplo un mapa. La macro Desplazar imagen de la pantalla del teclado mueve esa parte, y también arrastrar con el botón izquierdo del ratón mientras PadForge está en primer plano.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>La superposición muestra el cronómetro, que la macro Cronómetro inicia, pausa y restablece. Es el mismo cronómetro que muestran todas las pantallas de teclado.</value></data>
-  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>La superposición muestra el color de la barra de luz del DualShock 4 o DualSense de la ranura más baja. Hasta que un color llegue a una barra de luz, no muestra nada.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>La superposición muestra el color de la barra de luz del DualShock 4 o DualSense de la ranura que elija aquí, o de la ranura más baja con un color. Hasta que un color llegue a una barra de luz, no muestra nada.</value></data>
+  <data name="Dashboard_ScreenOverlay_Number_Format" xml:space="preserve"><value>Superposición de pantalla {0}</value></data>
+  <data name="Dashboard_ScreenOverlayAdd" xml:space="preserve"><value>Agregar superposición</value></data>
+  <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Ranura más baja con un color</value></data>
+  <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>Zoom</value></data>
+  <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>Ninguna imagen elegida.</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Esperando un color de la barra de luz.</value></data>
+  <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Superposición</value></data>
+  <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Todas las superposiciones</value></data>
+  <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Alternar superposición de pantalla {0}</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Mostrar imágenes de {0}: {1} × {2} ms, hasta la siguiente macro</value></data>
 </root>

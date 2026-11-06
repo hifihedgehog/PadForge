@@ -4322,22 +4322,15 @@ PadForge ഇവ ഇപ്പോൾ അൺഇൻസ്റ്റാൾ ചെയ�
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>S.T.R.I.K.E. 7 SDK ഡൗൺലോഡ് അറിയപ്പെടുന്ന SHA-256-മായി പൊരുത്തപ്പെടുന്നില്ല, അതിനാൽ അതിൽ നിന്ന് ഒന്നും സൂക്ഷിച്ചില്ല.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>ഇൻസ്റ്റാളർ പ്രവർത്തിച്ച ശേഷവും Visual C++ 2008 റൺടൈം ഇല്ല.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>കീബോർഡ് സ്ക്രീൻ കാണിക്കുക</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>ഈ സ്ലോട്ടിലേക്ക് നൽകുന്ന, തിരഞ്ഞെടുത്ത തരത്തിലെ ഓരോ കീബോർഡ് സ്ക്രീനിലും ചിത്രങ്ങൾ പ്ലേ ചെയ്യുന്നു, തുടർന്ന് ഓരോ സ്ക്രീനിനെയും അതിന്റെ സ്വന്തം മോഡിലേക്ക് തിരികെ കൊണ്ടുവരുന്നു.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>{0} ചിത്രങ്ങൾ കാണിക്കുക: {1} × {2} ms, ആവർത്തനം {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>ചിത്രങ്ങൾ സ്ക്രീനിന് ഒതുങ്ങുംവിധം ക്രമീകരിക്കുന്നു: മോണോക്രോം സ്ക്രീനിൽ 160 × 43 ബ്ലാക്ക് ആൻഡ് വൈറ്റ് പിക്സൽ, G19-ൽ 320 × 240, Arx Control-നും S.T.R.I.K.E. 7-നും 480 × 320. ഒരു സെക്കൻഡിന്റെ പത്തിലൊന്നാണ് ഏറ്റവും കുറഞ്ഞ ഫ്രെയിം സമയം.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>കീബോർഡ് സ്ക്രീൻ മോഡ്</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>ഈ സ്ലോട്ടിലേക്ക് നൽകുന്ന, തിരഞ്ഞെടുത്ത തരത്തിലെ ഓരോ കീബോർഡ് സ്ക്രീനിനെയും മറ്റൊരു മോഡിലേക്ക് മാറ്റുകയും അത് ആ സ്ക്രീനിന്റെ ക്രമീകരണമായി സൂക്ഷിക്കുകയും ചെയ്യുന്നു.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} {1} കാണിക്കുന്നു</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>മറ്റൊരു മാക്രോയോ സ്ക്രീനിന്റെ ഡയലോഗോ മാറ്റുന്നതുവരെ മോഡ് അങ്ങനെ തുടരും.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>സ്റ്റോപ്പ് വാച്ച്</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>കീബോർഡ് സ്ക്രീനുകൾ സ്റ്റോപ്പ് വാച്ച് മോഡിൽ കാണിക്കുന്ന സ്റ്റോപ്പ് വാച്ച് ആരംഭിക്കുകയോ താൽക്കാലികമായി നിർത്തുകയോ പുനഃസജ്ജമാക്കുകയോ ചെയ്യുന്നു.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>സ്റ്റോപ്പ് വാച്ച് ആരംഭിക്കുക അല്ലെങ്കിൽ നിർത്തുക</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>സ്റ്റോപ്പ് വാച്ച് പുനഃസജ്ജമാക്കുക</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>പുനഃസജ്ജമാക്കൽ സ്റ്റോപ്പ് വാച്ച് നിർത്തി പൂജ്യത്തിലേക്ക് മടക്കുന്നു. സ്റ്റോപ്പ് വാച്ച് മോഡിലുള്ള എല്ലാ കീബോർഡ് സ്ക്രീനും ഒരേ സ്റ്റോപ്പ് വാച്ച് കാണിക്കുന്നു.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>കീബോർഡ് സ്ക്രീൻ ചിത്രം പാൻ ചെയ്യുക</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>ഈ സ്ലോട്ടിലേക്ക് നൽകുന്ന ഓരോ കീബോർഡ് സ്ക്രീനിന്റെയും ജാലകം, ഒരു മാപ്പിനായി, സ്ക്രീനേക്കാൾ വലിയ ചിത്രത്തിനു മുകളിലൂടെ നീക്കുന്നു.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>ചിത്രങ്ങൾ {0} × {1} px പാൻ ചെയ്യുക</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>ഈ സ്ലോട്ടിലേക്ക് നൽകുന്നതും തിരഞ്ഞെടുത്ത, തന്നെക്കാൾ വലിയ ചിത്രം കാണിക്കുന്നതുമായ ഓരോ സ്ക്രീനിനെയും നീക്കുന്നു. ജാലകം ചിത്രത്തിന്റെ അരികുകളിൽ നിൽക്കും.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>സ്ക്രീൻ</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>പ്രവർത്തനം</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>ദിശ</value></data>

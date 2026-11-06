@@ -17,11 +17,20 @@ namespace PadForge.Common.Input.KeyboardScreens
     {
         public const string ArxId = "arx";
         public const string Strike7Id = "strike7";
-        public const string OverlayId = "overlay";
+        /// <summary>The most Screen Overlays a PC runs at once (#560).</summary>
+        public const int MaxOverlays = 8;
 
-        /// <summary>The Screen Overlay's identity for its settings (#560). It has
-        /// no device and no row on the Devices page.</summary>
-        public static readonly Guid OverlayRow = RowGuidOf(OverlayId);
+        private const string OverlayIdPrefix = "overlay";
+
+        /// <summary>The key a Screen Overlay's choices are kept under (#560), by its
+        /// number, beside the keyboard screens'. An overlay is a window and no device,
+        /// so nothing makes a row of it on the Devices page and it feeds no slot.</summary>
+        public static Guid OverlayRow(int number) => RowGuidOf(OverlayIdPrefix + number.ToString(System.Globalization.CultureInfo.InvariantCulture));
+
+        /// <summary>The overlay's number, or 0 for any other screen.</summary>
+        public int OverlayNumber => Kind == KeyboardScreenKind.Overlay
+            && int.TryParse(Id.AsSpan(OverlayIdPrefix.Length), System.Globalization.NumberStyles.None, System.Globalization.CultureInfo.InvariantCulture, out int number)
+                ? number : 0;
 
         /// <summary>The row's identity, the same for the screen every time
         /// it is found.</summary>
@@ -31,7 +40,11 @@ namespace PadForge.Common.Input.KeyboardScreens
 
         public static KeyboardScreenInfo Arx() => new(ArxId, KeyboardScreenKind.Arx, "Logitech Arx Control", "Arx Control");
 
-        public static KeyboardScreenInfo Overlay(string name) => new(OverlayId, KeyboardScreenKind.Overlay, name, name);
+        public static KeyboardScreenInfo Overlay(int number)
+        {
+            string text = number.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            return new(OverlayIdPrefix + text, KeyboardScreenKind.Overlay, "Screen Overlay " + text, "Screen Overlay");
+        }
 
         public static KeyboardScreenInfo Strike7() => new(Strike7Id, KeyboardScreenKind.Strike7, "Mad Catz S.T.R.I.K.E. 7 Screen", "S.T.R.I.K.E. 7");
 

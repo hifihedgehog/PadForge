@@ -4577,20 +4577,20 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Afișare ecran de tastatură</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Redă imagini pe fiecare ecran de tastatură de tipul ales care alimentează acest slot, apoi readuce fiecare ecran la modul propriu. Suprapunerea ecran le preia din orice slot.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Afișare imagini {0}: {1} × {2} ms, număr de repetări {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Imaginile se adaptează la ecran: 160 pe 43 de pixeli alb-negru pe un ecran monocrom, 320 pe 240 pe cel al lui G19 și 480 pe 320 pentru Arx Control și S.T.R.I.K.E. 7. O zecime de secundă este cea mai scurtă durată a cadrului.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Imaginile se adaptează la ecran: 160 pe 43 de pixeli alb-negru pe un ecran monocrom, 320 pe 240 pe cel al lui G19 și 480 pe 320 pentru Arx Control și S.T.R.I.K.E. 7. O suprapunere ecran păstrează forma fiecărei imagini, până la 800 de pixeli pe latura mai lungă. O zecime de secundă este cea mai scurtă durată a cadrului. Un număr de repetări de 0 continuă redarea până la următorul macro Afișare ecran de tastatură sau Mod ecran de tastatură.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Mod ecran de tastatură</value></data>
   <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Comută fiecare ecran de tastatură de tipul ales care alimentează acest slot în alt mod și îl păstrează ca setare a acelui ecran. Suprapunerea ecran îl preia din orice slot.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} afișează {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Modul rămâne până când îl schimbă o altă macrocomandă sau dialogul ecranului.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Cronometru</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Pornește sau întrerupe, ori resetează, cronometrul afișat de ecranele de tastatură în modul Cronometru.</value></data>
+  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Pornește sau întrerupe, ori resetează, cronometrul afișat de ecranele de tastatură și de suprapunerile ecran în modul Cronometru.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>Pornire sau întrerupere cronometru</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>Resetare cronometru</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Resetarea oprește cronometrul și îl readuce la zero. Fiecare ecran de tastatură în modul Cronometru afișează același cronometru.</value></data>
+  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Resetarea oprește cronometrul și îl readuce la zero. Fiecare ecran de tastatură și fiecare suprapunere ecran în modul Cronometru afișează același cronometru.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Panoramare imagine pe ecranul tastaturii</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Deplasează fereastra fiecărui ecran de tastatură care alimentează acest slot peste o imagine mai mare decât ecranul, de exemplu pentru o hartă.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Deplasează fereastra fiecărui ecran de tastatură care alimentează acest slot peste o imagine mai mare decât ecranul, de exemplu pentru o hartă. O suprapunere ecran se deplasează la fel când zoomul ei depășește 100 la sută.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Panoramare imagini cu {0} pe {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Deplasează fiecare ecran care alimentează acest slot și afișează o imagine aleasă mai mare decât el. Fereastra se oprește la marginile imaginii.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Deplasează fiecare ecran care alimentează acest slot și afișează o imagine aleasă mai mare decât el. Fereastra se oprește la marginile imaginii. O suprapunere ecran se deplasează când zoomul ei depășește 100 la sută, indiferent de slotul care rulează macroul.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Ecran</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Acțiune</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Direcție</value></data>
@@ -4899,7 +4899,17 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>Suprapunerea afișează imaginea proprie a profilului activ sau numele acestuia când nu are imagine. Fiecare profil își păstrează propria imagine.</value></data>
   <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>Suprapunerea afișează ora.</value></data>
   <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>Suprapunerea afișează orele și minutele de când s-a activat profilul activ. Un profil legat de programul unui joc se activează când pornește jocul, deci contorul măsoară acea sesiune. Sub profilul implicit, contorul pornește de la începutul motorului.</value></data>
-  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Suprapunerea afișează o imagine pe care o alegeți, scalată pentru a umple fereastra suprapunerii, cu proporțiile păstrate.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Suprapunerea afișează o imagine pe care o alegeți, scalată pentru a umple fereastra suprapunerii, cu proporțiile păstrate. Peste 100 la sută zoom, afișează o parte din imagine, de exemplu pentru o hartă. Macroul Panoramare imagine pe ecranul tastaturii deplasează acea parte, la fel ca trasul cu butonul stâng al mouse-ului cât timp PadForge este în prim-plan.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>Suprapunerea afișează cronometrul, pe care macrocomanda Cronometru îl pornește, îl întrerupe și îl resetează. Este același cronometru pe care îl afișează fiecare ecran de tastatură.</value></data>
-  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Suprapunerea afișează culoarea barei luminoase a DualShock 4 sau DualSense din cel mai mic slot. Până când o culoare ajunge la o bară luminoasă, nu afișează nimic.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Suprapunerea afișează culoarea barei luminoase a DualShock 4 sau DualSense din slotul ales aici sau din cel mai mic slot cu o culoare. Până când o culoare ajunge la o bară luminoasă, nu afișează nimic.</value></data>
+  <data name="Dashboard_ScreenOverlay_Number_Format" xml:space="preserve"><value>Suprapunere ecran {0}</value></data>
+  <data name="Dashboard_ScreenOverlayAdd" xml:space="preserve"><value>Adăugare suprapunere</value></data>
+  <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Cel mai mic slot cu o culoare</value></data>
+  <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>Zoom</value></data>
+  <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>Nicio imagine aleasă.</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Se așteaptă o culoare a barei luminoase.</value></data>
+  <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Suprapunere</value></data>
+  <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Toate suprapunerile</value></data>
+  <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Comutare suprapunere ecran {0}</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Afișare imagini {0}: {1} × {2} ms, până la următorul macro</value></data>
 </root>

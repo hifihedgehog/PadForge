@@ -4548,20 +4548,20 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Toetsenbordscherm tonen</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Speelt afbeeldingen af op elk toetsenbordscherm van het gekozen type dat dit slot voedt, en zet daarna elk scherm terug naar zijn eigen modus. De schermoverlay neemt ze van elk slot over.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Afbeeldingen tonen op {0}: {1} × {2} ms, aantal herhalingen {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Afbeeldingen worden aangepast aan het scherm: 160 bij 43 zwart-witpixels op een monochroom scherm, 320 bij 240 op dat van de G19 en 480 bij 320 voor Arx Control en de S.T.R.I.K.E. 7. Een tiende seconde is de kortste tijd per afbeelding.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Afbeeldingen worden aangepast aan het scherm: 160 bij 43 zwart-witpixels op een monochroom scherm, 320 bij 240 op dat van de G19 en 480 bij 320 voor Arx Control en de S.T.R.I.K.E. 7. Een schermoverlay behoudt de eigen vorm van elke afbeelding, tot 800 pixels op de langste zijde. Een tiende seconde is de kortste tijd per afbeelding. Bij aantal herhalingen 0 blijft het afspelen doorgaan tot een andere macro Toetsenbordscherm tonen of Modus van toetsenbordscherm.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Modus van toetsenbordscherm</value></data>
   <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Schakelt elk toetsenbordscherm van het gekozen type dat dit slot voedt over naar een andere modus en bewaart die als instelling van dat scherm. De schermoverlay neemt die van elk slot over.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} toont {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>De modus blijft staan tot een andere macro of het dialoogvenster van het scherm hem wijzigt.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Stopwatch</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Start of pauzeert, of reset, de stopwatch die toetsenbordschermen in de modus Stopwatch tonen.</value></data>
+  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Start of pauzeert, of reset, de stopwatch die toetsenbordschermen en schermoverlays in de modus Stopwatch tonen.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>Stopwatch starten of pauzeren</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>Stopwatch resetten</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Resetten stopt de stopwatch en zet hem terug op nul. Elk toetsenbordscherm in de modus Stopwatch toont dezelfde stopwatch.</value></data>
+  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Resetten stopt de stopwatch en zet hem terug op nul. Elk toetsenbordscherm en elke schermoverlay in de modus Stopwatch toont dezelfde stopwatch.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Afbeelding op toetsenbordscherm verschuiven</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Verschuift het venster van elk toetsenbordscherm dat dit slot voedt over een afbeelding die groter is dan het scherm, bijvoorbeeld voor een kaart.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Verschuift het venster van elk toetsenbordscherm dat dit slot voedt over een afbeelding die groter is dan het scherm, bijvoorbeeld voor een kaart. Een schermoverlay verschuift op dezelfde manier als de zoom boven 100 procent ligt.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Afbeeldingen verschuiven met {0} bij {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Verschuift elk scherm dat dit slot voedt en een gekozen afbeelding toont die groter is dan het scherm zelf. Het venster stopt aan de randen van de afbeelding.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Verschuift elk scherm dat dit slot voedt en een gekozen afbeelding toont die groter is dan het scherm zelf. Het venster stopt aan de randen van de afbeelding. Een schermoverlay verschuift als de zoom boven 100 procent ligt, ongeacht welk slot de macro uitvoert.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Scherm</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Actie</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Richting</value></data>
@@ -4870,7 +4870,17 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>De overlay toont de eigen afbeelding van het actieve profiel, of de naam als het er geen heeft. Elk profiel bewaart zijn eigen afbeelding.</value></data>
   <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>De overlay toont de tijd van de dag.</value></data>
   <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>De overlay toont de uren en minuten sinds het actieve profiel is ingeschakeld. Een profiel dat aan het programma van een spel is gekoppeld, wordt ingeschakeld wanneer het spel start, dus de teller geldt voor die sessie. Onder het profiel Standaard telt de teller vanaf de start van de engine.</value></data>
-  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>De overlay toont een gekozen afbeelding, geschaald om het venster te vullen met behoud van de verhoudingen.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>De overlay toont een gekozen afbeelding, geschaald om het venster te vullen met behoud van de verhoudingen. Boven 100 procent zoom toont hij een deel van de afbeelding, bijvoorbeeld voor een kaart. De macro Afbeelding op toetsenbordscherm verschuiven verplaatst dat deel, en slepen met de linkermuisknop terwijl PadForge op de voorgrond staat doet hetzelfde.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>De overlay toont de stopwatch, die de macro Stopwatch start, pauzeert en reset. Het is dezelfde stopwatch die elk toetsenbordscherm toont.</value></data>
-  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>De overlay toont de kleur van de lightbar van de DualShock 4 of DualSense in het laagste slot. Zolang er geen kleur bij een lightbar is aangekomen, toont de overlay niets.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>De overlay toont de kleur van de lightbar van de DualShock 4 of DualSense in het slot dat je hier kiest, of in het laagste slot met een kleur. Zolang er geen kleur bij een lightbar is aangekomen, toont de overlay niets.</value></data>
+  <data name="Dashboard_ScreenOverlay_Number_Format" xml:space="preserve"><value>Schermoverlay {0}</value></data>
+  <data name="Dashboard_ScreenOverlayAdd" xml:space="preserve"><value>Overlay toevoegen</value></data>
+  <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Laagste slot met een kleur</value></data>
+  <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>Zoom</value></data>
+  <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>Geen afbeelding gekozen.</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Wacht op een lightbarkleur.</value></data>
+  <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Overlay</value></data>
+  <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Elke overlay</value></data>
+  <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Schermoverlay {0} in-/uitschakelen</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Afbeeldingen tonen op {0}: {1} × {2} ms, tot de volgende macro</value></data>
 </root>

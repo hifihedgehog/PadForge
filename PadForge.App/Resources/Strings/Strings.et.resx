@@ -4355,22 +4355,15 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>S.T.R.I.K.E. 7 SDK allalaadimine ei vasta teadaolevale SHA-256-le, seega midagi sellest ei säilitatud.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>Visual C++ 2008 käituskeskkond puudub ka pärast selle installeri käivitamist.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Kuva klaviatuuri ekraan</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Esitab pilte igal valitud liiki klaviatuuri ekraanil, mis annab andmeid sellele pesale, ja viib seejärel iga ekraani tagasi selle enda režiimi.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Kuva {0} pilte: {1} × {2} ms, korduste arv {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Pildid sobitatakse ekraanile: monokroomsel ekraanil 160 × 43 mustvalget pikslit, G19 ekraanil 320 × 240 ning rakenduse Arx Control ja S.T.R.I.K.E. 7 puhul 480 × 320. Lühim kaadri aeg on kümnendiksekund.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Klaviatuuri ekraani režiim</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Lülitab iga valitud liiki klaviatuuri ekraani, mis annab andmeid sellele pesale, teise režiimi ja jätab selle ekraani sättena meelde.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} näitab: {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Režiim kehtib, kuni teine makro või ekraani dialoog seda muudab.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Stopper</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Käivitab või peatab või lähtestab stopperi, mida Stopper-režiimis klaviatuuri ekraanid näitavad.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>Käivita või peata stopper</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>Lähtesta stopper</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Lähtestamine peatab stopperi ja nullib selle. Kõik Stopper-režiimis klaviatuuri ekraanid näitavad sama stopperit.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Nihuta klaviatuuri ekraani pilti</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Liigutab iga sellele pesale andmeid andva klaviatuuri ekraani akent ekraanist suuremal pildil, näiteks kaardil.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Nihuta pilte: X {0}, Y {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Liigutab iga sellele pesale andmeid andvat ekraani, mis näitab valitud, endast suuremat pilti. Aken peatub pildi servades.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Ekraan</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Tegevus</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Suund</value></data>

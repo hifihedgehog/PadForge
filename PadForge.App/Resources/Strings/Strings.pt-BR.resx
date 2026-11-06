@@ -4522,20 +4522,20 @@ Deseja que o PadForge os desinstale agora? Isso exige elevação e pode levar um
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Mostrar Tela do Teclado</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Exibe imagens em cada tela de teclado do tipo escolhido que alimenta este slot e depois devolve cada tela ao seu próprio modo. A Sobreposição de Tela as recebe de qualquer slot.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Mostrar imagens de {0}: {1} × {2} ms, repetições {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>As imagens são ajustadas à tela: 160 por 43 pixels em preto e branco na tela monocromática, 320 por 240 na do G19 e 480 por 320 no Arx Control e no S.T.R.I.K.E. 7. O menor tempo por imagem é um décimo de segundo.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>As imagens são ajustadas à tela: 160 por 43 pixels em preto e branco na tela monocromática, 320 por 240 na do G19 e 480 por 320 no Arx Control e no S.T.R.I.K.E. 7. Uma Sobreposição de Tela mantém o formato de cada imagem, com até 800 pixels no lado maior. O menor tempo por imagem é um décimo de segundo. Uma contagem de repetições igual a 0 continua a exibição até outra macro Mostrar Tela do Teclado ou Modo da Tela do Teclado.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Modo da Tela do Teclado</value></data>
   <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Muda cada tela de teclado do tipo escolhido que alimenta este slot para outro modo e o mantém como configuração dessa tela. A Sobreposição de Tela o recebe de qualquer slot.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} mostra {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>O modo permanece até que outra macro ou a caixa de diálogo da tela o altere.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Cronômetro</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Inicia ou pausa, ou redefine, o cronômetro mostrado pelas telas de teclado no modo Cronômetro.</value></data>
+  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Inicia ou pausa, ou redefine, o cronômetro mostrado pelas telas de teclado e pelas Sobreposições de Tela no modo Cronômetro.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>Iniciar ou Pausar o Cronômetro</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>Redefinir o Cronômetro</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>A redefinição interrompe o cronômetro e o zera. Todas as telas de teclado no modo Cronômetro mostram o mesmo cronômetro.</value></data>
+  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>A redefinição interrompe o cronômetro e o zera. Todas as telas de teclado e Sobreposições de Tela no modo Cronômetro mostram o mesmo cronômetro.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Deslocar Imagem da Tela do Teclado</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Move a janela de cada tela de teclado que alimenta este slot sobre uma imagem maior que a tela, como em um mapa.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Move a janela de cada tela de teclado que alimenta este slot sobre uma imagem maior que a tela, como em um mapa. Uma Sobreposição de Tela se move da mesma forma quando o zoom está acima de 100 por cento.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Deslocar imagens {0} por {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Move cada tela que alimenta este slot e mostra uma imagem escolhida maior que a própria tela. A janela para nas bordas da imagem.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Move cada tela que alimenta este slot e mostra uma imagem escolhida maior que a própria tela. A janela para nas bordas da imagem. Uma Sobreposição de Tela se move quando o zoom está acima de 100 por cento, seja qual for o slot que executa a macro.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Tela</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Ação</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Direção</value></data>
@@ -4844,7 +4844,17 @@ Deseja que o PadForge os desinstale agora? Isso exige elevação e pode levar um
   <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>A sobreposição mostra a imagem do próprio perfil ativo, ou o nome dele quando não tem nenhuma. Cada perfil guarda a própria imagem.</value></data>
   <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>A sobreposição mostra a hora do dia.</value></data>
   <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>A sobreposição mostra as horas e os minutos desde que o perfil ativo entrou em uso. Um perfil vinculado ao programa de um jogo entra em uso quando o jogo inicia, então a contagem é daquela sessão. No perfil Padrão, a contagem começa na inicialização do mecanismo.</value></data>
-  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>A sobreposição mostra uma imagem que você escolhe, dimensionada para preencher a janela, com as proporções mantidas.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>A sobreposição mostra uma imagem que você escolhe, dimensionada para preencher a janela, com as proporções mantidas. Com zoom acima de 100 por cento, ela mostra parte da imagem, como em um mapa. A macro Deslocar Imagem da Tela do Teclado move essa parte, e arrastar com o botão esquerdo do mouse enquanto o PadForge está em primeiro plano também.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>A sobreposição mostra o cronômetro, que a macro Cronômetro inicia, pausa e redefine. É o mesmo cronômetro que toda tela de teclado mostra.</value></data>
-  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>A sobreposição mostra a cor da barra de luz do DualShock 4 ou DualSense no menor slot. Até que uma cor chegue a uma barra de luz, ela não mostra nada.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>A sobreposição mostra a cor da barra de luz do DualShock 4 ou DualSense no slot que você escolher aqui, ou no menor slot com uma cor. Até que uma cor chegue a uma barra de luz, ela não mostra nada.</value></data>
+  <data name="Dashboard_ScreenOverlay_Number_Format" xml:space="preserve"><value>Sobreposição de Tela {0}</value></data>
+  <data name="Dashboard_ScreenOverlayAdd" xml:space="preserve"><value>Adicionar Sobreposição</value></data>
+  <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Menor Slot com uma Cor</value></data>
+  <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>Zoom</value></data>
+  <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>Nenhuma imagem escolhida.</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Aguardando a cor da barra de luz.</value></data>
+  <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Sobreposição</value></data>
+  <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Todas as Sobreposições</value></data>
+  <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Alternar Sobreposição de Tela {0}</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Mostrar imagens de {0}: {1} × {2} ms, até a próxima macro</value></data>
 </root>

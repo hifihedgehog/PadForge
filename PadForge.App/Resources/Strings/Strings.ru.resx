@@ -4577,20 +4577,20 @@
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Показать на экране клавиатуры</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Воспроизводит картинки на каждом экране клавиатуры выбранного вида, который подает ввод в этот слот, затем возвращает каждый экран в его собственный режим. Оверлей экрана берет их из любого слота.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Показать картинки {0}: {1} × {2} мс, число повторов {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Картинки подгоняются под экран: 160 на 43 черно-белых пикселя на монохромном экране, 320 на 240 на экране G19 и 480 на 320 для Arx Control и S.T.R.I.K.E. 7. Время кадра не может быть короче одной десятой секунды.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Картинки подгоняются под экран: 160 на 43 черно-белых пикселя на монохромном экране, 320 на 240 на экране G19 и 480 на 320 для Arx Control и S.T.R.I.K.E. 7. Оверлей экрана сохраняет собственную форму каждой картинки, до 800 пикселей по длинной стороне. Время кадра не может быть короче одной десятой секунды. Число повторов 0 означает, что показ продолжается до следующего макроса «Показать на экране клавиатуры» или «Режим экрана клавиатуры».</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Режим экрана клавиатуры</value></data>
   <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Переключает на другой режим каждый экран клавиатуры выбранного вида, который подает ввод в этот слот, и сохраняет его как настройку этого экрана. Оверлей экрана берет режим из любого слота.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} показывает: {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Режим сохраняется, пока его не изменит другой макрос или диалог экрана.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Секундомер</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Запускает или приостанавливает, либо сбрасывает секундомер, который показывают экраны клавиатуры в режиме «Секундомер».</value></data>
+  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Запускает или приостанавливает, либо сбрасывает секундомер, который показывают экраны клавиатуры и оверлеи экрана в режиме «Секундомер».</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>Запустить или приостановить секундомер</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>Сбросить секундомер</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Сброс останавливает секундомер и обнуляет его. Все экраны клавиатуры в режиме «Секундомер» показывают один и тот же секундомер.</value></data>
+  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Сброс останавливает секундомер и обнуляет его. Все экраны клавиатуры и оверлеи экрана в режиме «Секундомер» показывают один и тот же секундомер.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Сдвинуть картинку экрана клавиатуры</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Сдвигает окно каждого экрана клавиатуры, который подает ввод в этот слот, над картинкой, которая больше экрана, например над картой.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Сдвигает окно каждого экрана клавиатуры, который подает ввод в этот слот, над картинкой, которая больше экрана, например над картой. Оверлей экрана сдвигается так же, когда его масштаб больше 100 процентов.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Сдвинуть картинки на {0} и {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Сдвигает каждый экран, который подает ввод в этот слот и показывает выбранную картинку больше самого экрана. Окно останавливается у краев картинки.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Сдвигает каждый экран, который подает ввод в этот слот и показывает выбранную картинку больше самого экрана. Окно останавливается у краев картинки. Оверлей экрана сдвигается, когда его масштаб больше 100 процентов, в каком бы слоте ни выполнялся макрос.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Экран</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Действие</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Направление</value></data>
@@ -4899,7 +4899,17 @@
   <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>Оверлей показывает собственную картинку активного профиля, а если ее нет, то его название. У каждого профиля своя картинка.</value></data>
   <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>Оверлей показывает время суток.</value></data>
   <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>Оверлей показывает часы и минуты с момента, когда включился активный профиль. Профиль, привязанный к программе игры, включается при запуске игры, поэтому отсчет идет за этот сеанс. В профиле «По умолчанию» отсчет идет с запуска движка.</value></data>
-  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Оверлей показывает выбранную вами картинку, масштабированную так, чтобы заполнить его окно с сохранением пропорций.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Оверлей показывает выбранную вами картинку, масштабированную так, чтобы заполнить его окно с сохранением пропорций. При масштабе больше 100 процентов он показывает часть картинки, например карты. Эту часть сдвигает макрос «Сдвинуть картинку экрана клавиатуры», а также перетаскивание левой кнопкой мыши, пока PadForge находится на переднем плане.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>Оверлей показывает секундомер, который запускает, приостанавливает и сбрасывает макрос «Секундомер». Это тот же секундомер, который показывает каждый экран клавиатуры.</value></data>
-  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Оверлей показывает цвет световой панели DualShock 4 или DualSense в самом младшем слоте. Пока цвет не дойдет до световой панели, он ничего не показывает.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Оверлей показывает цвет световой панели DualShock 4 или DualSense в выбранном здесь слоте или в младшем слоте с цветом. Пока цвет не дойдет до световой панели, он ничего не показывает.</value></data>
+  <data name="Dashboard_ScreenOverlay_Number_Format" xml:space="preserve"><value>Оверлей экрана {0}</value></data>
+  <data name="Dashboard_ScreenOverlayAdd" xml:space="preserve"><value>Добавить оверлей</value></data>
+  <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Младший слот с цветом</value></data>
+  <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>Масштаб</value></data>
+  <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>Картинка не выбрана.</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Ожидание цвета световой панели.</value></data>
+  <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Оверлей</value></data>
+  <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Все оверлеи</value></data>
+  <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Переключить оверлей экрана {0}</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Показать картинки {0}: {1} × {2} мс, до следующего макроса</value></data>
 </root>

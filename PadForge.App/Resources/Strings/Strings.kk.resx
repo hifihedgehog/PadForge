@@ -4352,22 +4352,15 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>S.T.R.I.K.E. 7 SDK жүктемесі белгілі SHA-256 мәніне сәйкес келмейді, сондықтан одан ештеңе сақталмады.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>Орнатушы жұмыс істегеннен кейін де Visual C++ 2008 орындау ортасы әлі жоқ.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Пернетақта экранын көрсету</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Таңдалған түрдегі осы ұяшыққа кіріс беретін әр пернетақта экранында суреттерді ойнатады, содан кейін әр экранды өз режиміне қайтарады.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>{0} суреттерін көрсету: {1} × {2} мс, қайталау саны {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Суреттер экранға сәйкестендіріледі: монохромды экранда 160 × 43 ақ-қара пиксель, G19 экранында 320 × 240, Arx Control және S.T.R.I.K.E. 7 үшін 480 × 320. Кадр уақытының ең қысқа мәні секундтың оннан бірі.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Пернетақта экранының режимі</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Осы ұяшыққа кіріс беретін таңдалған түрдегі әр пернетақта экранын басқа режимге ауыстырады және оны сол экранның параметрі ретінде сақтайды.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} {1} көрсетеді</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Режим басқа макрос немесе экранның диалогы өзгертпейінше сақталады.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Секундомер</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Пернетақта экрандары Секундомер режимінде көрсететін секундомерді іске қосады немесе кідіртеді, не қалпына келтіреді.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>Секундомерді іске қосу немесе кідірту</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>Секундомерді қалпына келтіру</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Қалпына келтіру секундомерді тоқтатып, нөлге қайтарады. Секундомер режимі бар барлық пернетақта экраны бір секундомерді көрсетеді.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Пернетақта экранының суретін жылжыту</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Осы ұяшыққа кіріс беретін әр пернетақта экранының терезесін экраннан үлкен сурет үстінде жылжытады, мысалы, карта үшін.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Суреттерді {0}, {1} px жылжыту</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Осы ұяшыққа кіріс беретін және өзінен үлкен таңдалған суретті көрсететін әр экранды жылжытады. Терезе сурет шетінде тоқтайды.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Экран</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Әрекет</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Бағыт</value></data>

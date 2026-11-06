@@ -491,6 +491,16 @@ public class Strings : INotifyPropertyChanged
     public string RemoteLink_PasswordTitle => Get("RemoteLink_PasswordTitle");
     public string RemoteLink_PasswordConfirm => Get("RemoteLink_PasswordConfirm");
     public string Dashboard_TouchpadOverlayWindowTitle => Get("Dashboard_TouchpadOverlayWindowTitle");
+    public string Dashboard_ScreenOverlay_Number_Format => Get("Dashboard_ScreenOverlay_Number_Format");
+    public string Dashboard_ScreenOverlayAdd => Get("Dashboard_ScreenOverlayAdd");
+    public string KeyboardScreen_LightbarSlot_Lowest => Get("KeyboardScreen_LightbarSlot_Lowest");
+    public string KeyboardScreen_Zoom_Label => Get("KeyboardScreen_Zoom_Label");
+    public string ScreenOverlay_Blank_NoPicture => Get("ScreenOverlay_Blank_NoPicture");
+    public string ScreenOverlay_Blank_NoLightbar => Get("ScreenOverlay_Blank_NoLightbar");
+    public string Macro_KeyboardScreen_Overlay => Get("Macro_KeyboardScreen_Overlay");
+    public string Macro_KeyboardScreen_EveryOverlay => Get("Macro_KeyboardScreen_EveryOverlay");
+    public string MacroAction_ToggleScreenOverlay_Format => Get("MacroAction_ToggleScreenOverlay_Format");
+    public string MacroAction_ShowKeyboardScreen_Hold_Format => Get("MacroAction_ShowKeyboardScreen_Hold_Format");
     public string Dashboard_ScreenOverlay => Get("Dashboard_ScreenOverlay");
     public string Dashboard_ScreenOverlayDescription => Get("Dashboard_ScreenOverlayDescription");
     public string Dashboard_EnableScreenOverlay => Get("Dashboard_EnableScreenOverlay");

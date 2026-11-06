@@ -4577,20 +4577,20 @@
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Паказаць экран клавіятуры</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Прайгравае выявы на кожным экране клавіятуры выбранага віду, які падае даныя ў гэты слот, затым вяртае кожны экран у яго ўласны рэжым. Накладка экрана бярэ іх з любога слота.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Паказаць выявы {0}: {1} × {2} мс, колькасць паўтораў {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Выявы падганяюцца пад экран: 160 на 43 чорна-белыя пікселі на манахромным экране, 320 на 240 на экране G19 і 480 на 320 для Arx Control і S.T.R.I.K.E. 7. Найменшы час кадра складае адну дзясятую секунды.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Выявы падганяюцца пад экран: 160 на 43 чорна-белыя пікселі на манахромным экране, 320 на 240 на экране G19 і 480 на 320 для Arx Control і S.T.R.I.K.E. 7. Накладка экрана захоўвае прапорцыі кожнай выявы, да 800 пікселяў па даўжэйшым баку. Найменшы час кадра складае адну дзясятую секунды. Колькасць паўтораў 0 азначае, што паказ доўжыцца, пакуль не запусціцца іншы макрас «Паказаць экран клавіятуры» або «Рэжым экрана клавіятуры».</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Рэжым экрана клавіятуры</value></data>
   <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Пераключае кожны экран клавіятуры выбранага віду, які падае даныя ў гэты слот, на іншы рэжым і захоўвае яго як налады гэтага экрана. Накладка экрана бярэ яго з любога слота.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} паказвае {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Рэжым застаецца, пакуль яго не зменіць іншы макрас або дыялог экрана.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Секундамер</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Запускае, прыпыняе або скідае секундамер, які паказваюць экраны клавіятуры ў рэжыме секундамера.</value></data>
+  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Запускае, прыпыняе або скідае секундамер, які паказваюць экраны клавіятуры і накладкі экрана ў рэжыме секундамера.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>Запусціць або прыпыніць секундамер</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>Скінуць секундамер</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Скід спыняе секундамер і вяртае яго да нуля. Усе экраны клавіятуры ў рэжыме секундамера паказваюць адзін і той жа секундамер.</value></data>
+  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Скід спыняе секундамер і вяртае яго да нуля. Усе экраны клавіятуры і накладкі экрана ў рэжыме секундамера паказваюць адзін і той жа секундамер.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Зрух выявы экрана клавіятуры</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Перасоўвае акно кожнага экрана клавіятуры, які падае даныя ў гэты слот, па выяве, большай за экран, напрыклад па карце.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Перасоўвае акно кожнага экрана клавіятуры, які падае даныя ў гэты слот, па выяве, большай за экран, напрыклад па карце. Накладка экрана перасоўваецца гэтак жа, калі яе маштаб вышэйшы за 100 працэнтаў.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Зрушыць выявы на {0} і {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Перасоўвае кожны экран, які падае даныя ў гэты слот і паказвае выбраную выяву, большую за сам экран. Акно спыняецца на краях выявы.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Перасоўвае кожны экран, які падае даныя ў гэты слот і паказвае выбраную выяву, большую за сам экран. Акно спыняецца на краях выявы. Накладка экрана перасоўваецца, калі яе маштаб вышэйшы за 100 працэнтаў, незалежна ад таго, які слот выконвае макрас.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Экран</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Дзеянне</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Кірунак</value></data>
@@ -4899,7 +4899,17 @@
   <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>Накладка паказвае ўласную выяву актыўнага профілю або яго назву, калі выявы няма. Кожны профіль захоўвае сваю выяву.</value></data>
   <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>Накладка паказвае час сутак.</value></data>
   <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>Накладка паказвае гадзіны і хвіліны з моманту, калі актыўны профіль уключыўся. Профіль, звязаны з праграмай гульні, уключаецца пры яе запуску, таму лічыцца час гэтага сеанса. Пры профілі «Па змаўчанні» лік ідзе з запуску рухавіка.</value></data>
-  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Накладка паказвае выбраную вамі выяву, якая запаўняе яе акно з захаваннем прапорцый.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Накладка паказвае выбраную вамі выяву, якая запаўняе яе акно з захаваннем прапорцый. Пры маштабе вышэй за 100 працэнтаў паказваецца частка выявы, напрыклад карты. Гэтую частку перасоўвае макрас «Зрух выявы экрана клавіятуры», а таксама перацягванне левай кнопкай мышы, пакуль PadForge знаходзіцца на пярэднім плане.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>Накладка паказвае секундамер, які макрас «Секундамер» запускае, прыпыняе і скідае. Гэта той жа секундамер, што паказваюць усе экраны клавіятуры.</value></data>
-  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Накладка паказвае колер светлавой панэлі DualShock 4 або DualSense ў слоце з найменшым нумарам. Пакуль колер не дасягнуў светлавой панэлі, яна нічога не паказвае.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Накладка паказвае колер светлавой панэлі DualShock 4 або DualSense ў слоце, які вы тут выбралі, або ў слоце з найменшым нумарам, у якога ёсць колер. Пакуль колер не дасягнуў светлавой панэлі, яна нічога не паказвае.</value></data>
+  <data name="Dashboard_ScreenOverlay_Number_Format" xml:space="preserve"><value>Накладка экрана {0}</value></data>
+  <data name="Dashboard_ScreenOverlayAdd" xml:space="preserve"><value>Дадаць накладку</value></data>
+  <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Слот з найменшым нумарам, у якога ёсць колер</value></data>
+  <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>Маштаб</value></data>
+  <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>Выява не выбрана.</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Чаканне колеру светлавой панэлі.</value></data>
+  <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Накладка</value></data>
+  <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Кожная накладка</value></data>
+  <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Паказаць/схаваць накладку экрана {0}</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Паказаць выявы {0}: {1} × {2} мс, да наступнага макраса</value></data>
 </root>

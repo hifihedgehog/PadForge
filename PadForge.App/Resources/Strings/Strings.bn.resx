@@ -4577,20 +4577,20 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>কীবোর্ড স্ক্রিন দেখান</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>এই স্লটে ইনপুট দেয় এমন বাছা ধরনের প্রতিটি কীবোর্ড স্ক্রিনে ছবি চালায়, তারপর প্রতিটি স্ক্রিনকে তার নিজের মোডে ফিরিয়ে দেয়। স্ক্রিন ওভারলে ছবিগুলো যেকোনো স্লট থেকে নেয়।</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>{0} ছবি দেখান: {1} × {2} ms, পুনরাবৃত্তির সংখ্যা {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>ছবি স্ক্রিনের মাপে বসানো হয়: মনোক্রোম স্ক্রিনে 160 বাই 43 সাদা-কালো পিক্সেল, G19-এ 320 বাই 240, আর Arx Control ও S.T.R.I.K.E. 7-এ 480 বাই 320। ফ্রেমের সময় সবচেয়ে কম এক সেকেন্ডের দশ ভাগের এক ভাগ।</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>ছবি স্ক্রিনের মাপে বসানো হয়: মনোক্রোম স্ক্রিনে 160 বাই 43 সাদা-কালো পিক্সেল, G19-এ 320 বাই 240, আর Arx Control ও S.T.R.I.K.E. 7-এ 480 বাই 320। স্ক্রিন ওভারলে প্রতিটি ছবির নিজের আকার রাখে, লম্বা দিকে সর্বোচ্চ 800 পিক্সেল পর্যন্ত। ফ্রেমের সময় সবচেয়ে কম এক সেকেন্ডের দশ ভাগের এক ভাগ। পুনরাবৃত্তির সংখ্যা 0 হলে অন্য কোনো কীবোর্ড স্ক্রিন দেখান বা কীবোর্ড স্ক্রিনের মোড ম্যাক্রো না আসা পর্যন্ত চলতে থাকে।</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>কীবোর্ড স্ক্রিনের মোড</value></data>
   <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>এই স্লটে ইনপুট দেয় এমন বাছা ধরনের প্রতিটি কীবোর্ড স্ক্রিনকে অন্য মোডে বদলায় এবং সেটিকে ওই স্ক্রিনের সেটিং হিসেবে রাখে। স্ক্রিন ওভারলে এটি যেকোনো স্লট থেকে নেয়।</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} দেখায়: {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>অন্য কোনো ম্যাক্রো বা স্ক্রিনের ডায়ালগ না বদলানো পর্যন্ত মোড একই থাকে।</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>স্টপওয়াচ</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>স্টপওয়াচ মোডে থাকা কীবোর্ড স্ক্রিন যে স্টপওয়াচ দেখায়, তা চালু করে বা থামায়, অথবা রিসেট করে।</value></data>
+  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>স্টপওয়াচ মোডে থাকা কীবোর্ড স্ক্রিন ও স্ক্রিন ওভারলে যে স্টপওয়াচ দেখায়, তা চালু করে বা থামায়, অথবা রিসেট করে।</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>স্টপওয়াচ চালু বা বন্ধ করুন</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>স্টপওয়াচ রিসেট করুন</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>রিসেট করলে স্টপওয়াচ থেমে যায় এবং শূন্যে ফিরে আসে। স্টপওয়াচ মোডে থাকা প্রতিটি কীবোর্ড স্ক্রিন একই স্টপওয়াচ দেখায়।</value></data>
+  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>রিসেট করলে স্টপওয়াচ থেমে যায় এবং শূন্যে ফিরে আসে। স্টপওয়াচ মোডে থাকা প্রতিটি কীবোর্ড স্ক্রিন ও স্ক্রিন ওভারলে একই স্টপওয়াচ দেখায়।</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>কীবোর্ড স্ক্রিনের ছবি প্যান করুন</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>এই স্লটে ইনপুট দেয় এমন প্রতিটি কীবোর্ড স্ক্রিনের জানালা স্ক্রিনের চেয়ে বড় ছবির ওপর সরায়, যেমন মানচিত্রের জন্য।</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>এই স্লটে ইনপুট দেয় এমন প্রতিটি কীবোর্ড স্ক্রিনের জানালা স্ক্রিনের চেয়ে বড় ছবির ওপর সরায়, যেমন মানচিত্রের জন্য। জুম 100 শতাংশের বেশি হলে স্ক্রিন ওভারলেও একইভাবে সরে।</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>ছবি প্যান করুন {0}, {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>এই স্লটে ইনপুট দেয় এবং নিজের চেয়ে বড় বাছা ছবি দেখায় এমন প্রতিটি স্ক্রিন সরায়। জানালা ছবির কিনারায় থেমে যায়।</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>এই স্লটে ইনপুট দেয় এবং নিজের চেয়ে বড় বাছা ছবি দেখায় এমন প্রতিটি স্ক্রিন সরায়। জানালা ছবির কিনারায় থেমে যায়। জুম 100 শতাংশের বেশি হলে স্ক্রিন ওভারলে সরে, ম্যাক্রোটি যে স্লটেই চলুক।</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>স্ক্রিন</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>কাজ</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>দিক</value></data>
@@ -4899,7 +4899,17 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>ওভারলে সক্রিয় প্রোফাইলের নিজস্ব ছবি দেখায়, ছবি না থাকলে তার নাম। প্রতিটি প্রোফাইলের নিজস্ব ছবি থাকে।</value></data>
   <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>ওভারলে দিনের সময় দেখায়।</value></data>
   <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>সক্রিয় প্রোফাইল চালু হওয়ার পর থেকে কত ঘণ্টা ও মিনিট কেটেছে, ওভারলে তা দেখায়। কোনো গেমের প্রোগ্রামের সঙ্গে বাঁধা প্রোফাইল গেম শুরু হলে চালু হয়, তাই গোনা হয় সেই সেশনের। ডিফল্ট প্রোফাইলে ইঞ্জিন শুরু হওয়ার সময় থেকে গোনা হয়।</value></data>
-  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>ওভারলে আপনার বাছা একটি ছবি দেখায়, যা অনুপাত ঠিক রেখে তার উইন্ডো ভরে মাপে বসানো হয়।</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>ওভারলে আপনার বাছা একটি ছবি দেখায়, যা অনুপাত ঠিক রেখে তার উইন্ডো ভরে মাপে বসানো হয়। জুম 100 শতাংশের বেশি হলে এটি ছবির একটি অংশ দেখায়, যেমন মানচিত্রের জন্য। কীবোর্ড স্ক্রিনের ছবি প্যান করুন ম্যাক্রো সেই অংশ সরায়, PadForge সামনে থাকলে মাউসের বাঁ বোতাম চেপে টানলেও সরে।</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>ওভারলে স্টপওয়াচ দেখায়, যা স্টপওয়াচ ম্যাক্রো চালু করে, থামায় ও রিসেট করে। প্রতিটি কীবোর্ড স্ক্রিন যে স্টপওয়াচ দেখায়, এটি সেটিই।</value></data>
-  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>সবচেয়ে নিচের স্লটের DualShock 4 বা DualSense-এর লাইটবারের রং ওভারলে দেখায়। লাইটবারে কোনো রং না পৌঁছানো পর্যন্ত এটি কিছু দেখায় না।</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>এখানে আপনার বাছা স্লটের, অথবা রং আছে এমন সবচেয়ে নিচের স্লটের, DualShock 4 বা DualSense-এর লাইটবারের রং ওভারলে দেখায়। লাইটবারে কোনো রং না পৌঁছানো পর্যন্ত এটি কিছু দেখায় না।</value></data>
+  <data name="Dashboard_ScreenOverlay_Number_Format" xml:space="preserve"><value>স্ক্রিন ওভারলে {0}</value></data>
+  <data name="Dashboard_ScreenOverlayAdd" xml:space="preserve"><value>ওভারলে যোগ করুন</value></data>
+  <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>রং আছে এমন সবচেয়ে নিচের স্লট</value></data>
+  <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>জুম</value></data>
+  <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>কোনো ছবি বাছা হয়নি।</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>লাইটবারের রঙের অপেক্ষায়।</value></data>
+  <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>ওভারলে</value></data>
+  <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>প্রতিটি ওভারলে</value></data>
+  <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>স্ক্রিন ওভারলে {0} টগল করুন</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>{0} ছবি দেখান: {1} × {2} ms, পরের ম্যাক্রো পর্যন্ত</value></data>
 </root>

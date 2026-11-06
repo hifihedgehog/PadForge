@@ -1619,22 +1619,15 @@
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>SDK bilong S.T.R.I.K.E. 7 yu daunlodim i no stret wantaim SHA-256 ol i save long en, olsem na PadForge i no holim wanpela samting bilong en.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>Runtime bilong Visual C++ 2008 i no stap yet bihain long instola bilong en i ran pinis.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Soim skrin bilong kibod</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Em i soim ol piksa long olgeta skrin bilong kibod bilong kain yu makim i givim input long dispela slot, na bihain em i bringim olgeta skrin i go bek long pasin bilong en yet.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Soim ol piksa bilong {0}: {1} × {2} ms, namba bilong mekim gen {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Ol piksa i fit long skrin: 160 long 43 piksel blak na wait long skrin blak na wait, 320 long 240 long skrin bilong G19, na 480 long 320 long Arx Control na S.T.R.I.K.E. 7. Wan long ten bilong sekon em i taim i sotpela tru bilong wanpela piksa.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Pasin bilong skrin bilong kibod</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Em i senisim olgeta skrin bilong kibod bilong kain yu makim i givim input long dispela slot i go long narapela pasin, na i holim olsem seting bilong dispela skrin.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} i soim {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Pasin i stap inap long taim narapela makro o windo bilong skrin i senisim.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Stopwatch</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Em i statim o stopim liklik, o resetim, stopwatch ol skrin bilong kibod long pasin Stopwatch i soim.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>Statim o stopim liklik stopwatch</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>Resetim stopwatch</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Reset i stopim stopwatch na i putim i go bek long 0. Olgeta skrin bilong kibod long pasin Stopwatch i soim wankain stopwatch.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Muvim piksa bilong skrin bilong kibod</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Em i muvim windo bilong olgeta skrin bilong kibod i givim input long dispela slot antap long piksa i bikpela long skrin, olsem long map.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Muvim ol piksa {0} long {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Em i muvim olgeta skrin i givim input long dispela slot na i soim piksa yu makim i bikpela long skrin. Windo i stop long arere bilong piksa.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Skrin</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Wok</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Rot</value></data>

@@ -4312,22 +4312,15 @@
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>S.T.R.I.K.E. 7 SDK-ի ներբեռնումը չի համապատասխաներ իր ծանօթ SHA-256-ին, ուստի անկէ ոչինչ պահուեցաւ։</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>Visual C++ 2008 գործարկման միջավայրը տակաւին կը պակսի, թէեւ անոր տեղադրիչը աշխատեցաւ։</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Ցուցադրել ստեղնաշարի պաստառ</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Նկարներ կը ցուցադրէ այս խցիկը սնուցող՝ ընտրուած տեսակի իւրաքանչիւր ստեղնաշարի պաստառին վրայ, ապա իւրաքանչիւր պաստառ կը վերադարձնէ իր եղանակին։</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Ցուցադրել {0} նկարներ՝ {1} × {2} ms, կրկնութիւններու թիւ՝ {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Նկարները կը յարմարցուին պաստառին։ Միագոյն պաստառի վրայ անոնք 160 × 43 սեւ ու ճերմակ փիքսէլ են, G19-ի պաստառին վրայ՝ 320 × 240, իսկ Arx Control-ի եւ S.T.R.I.K.E. 7-ի համար՝ 480 × 320։ Պատկերի ամենակարճ տեւողութիւնը երկվայրկեանի մէկ տասներորդն է։</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Ստեղնաշարի պաստառի եղանակ</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Այս խցիկը սնուցող՝ ընտրուած տեսակի իւրաքանչիւր ստեղնաշարի պաստառ կ'անցընէ ուրիշ եղանակի եւ զայն կը պահէ իբրեւ այդ պաստառին կարգաւորումը։</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} կը ցուցադրէ՝ {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Եղանակը կը մնայ, մինչեւ որ ուրիշ մաքրօ մը կամ պաստառին պատուհանը զայն փոխէ։</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Վայրկենաչափ</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Կը գործարկէ կամ կը դադրեցնէ, կամ կը վերակայէ վայրկենաչափը, որ կը ցուցադրեն «Վայրկենաչափ» եղանակին մէջ գտնուող ստեղնաշարի պաստառները։</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>Գործարկել կամ դադրեցնել վայրկենաչափը</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>Վերակայել վայրկենաչափը</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Վերակայելը կը կեցնէ վայրկենաչափը եւ զայն կը դարձնէ զրոյի։ «Վայրկենաչափ» եղանակին մէջ գտնուող բոլոր ստեղնաշարի պաստառները նոյն վայրկենաչափը կը ցուցադրեն։</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Տեղաշարժել ստեղնաշարի պաստառի պատկերը</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Այս խցիկը սնուցող իւրաքանչիւր ստեղնաշարի պաստառի պատուհանը կը տեղաշարժէ պաստառէն մեծ պատկերի մը վրայով, օրինակ՝ քարտէսի մը համար։</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Տեղաշարժել նկարները՝ {0}, {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Կը տեղաշարժէ իւրաքանչիւր պաստառ, որ այս խցիկը կը սնուցէ եւ իրմէ մեծ ընտրուած պատկեր մը կը ցուցադրէ։ Պատուհանը կը կենայ պատկերին եզրերուն վրայ։</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Պաստառ</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Գործողութիւն</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Ուղղութիւն</value></data>

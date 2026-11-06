@@ -4603,20 +4603,20 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Show Keyboard Screen</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Plays pictures on each keyboard screen of the chosen kind that feeds this slot, then returns each screen to its own mode. The Screen Overlay takes them from any slot.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Show {0} pictures: {1} × {2} ms, repeat count {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Pictures are fitted to the screen: 160 by 43 black and white pixels on a monochrome screen, 320 by 240 on the G19's, and 480 by 320 for Arx Control and the S.T.R.I.K.E. 7. A tenth of a second is the shortest frame time.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Pictures are fitted to the screen: 160 by 43 black and white pixels on a monochrome screen, 320 by 240 on the G19's, and 480 by 320 for Arx Control and the S.T.R.I.K.E. 7. A Screen Overlay keeps each picture's own shape, up to 800 pixels on its longer side. A tenth of a second is the shortest frame time. A repeat count of 0 keeps playing until another Show Keyboard Screen or Keyboard Screen Mode macro.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Keyboard Screen Mode</value></data>
   <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Switches each keyboard screen of the chosen kind that feeds this slot to another mode, and keeps it as that screen's setting. The Screen Overlay takes it from any slot.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} shows {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>The mode stays until another macro or the screen's dialog changes it.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Stopwatch</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Starts or pauses, or resets, the stopwatch that keyboard screens in Stopwatch mode show.</value></data>
+  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Starts or pauses, or resets, the stopwatch that keyboard screens and Screen Overlays in Stopwatch mode show.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>Start or Pause Stopwatch</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>Reset Stopwatch</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Reset stops the stopwatch and sets it back to zero. Every keyboard screen in Stopwatch mode shows the same stopwatch.</value></data>
+  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Reset stops the stopwatch and sets it back to zero. Every keyboard screen and Screen Overlay in Stopwatch mode shows the same stopwatch.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Pan Keyboard Screen Picture</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Moves the window of each keyboard screen that feeds this slot over a picture larger than the screen, for a map.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Moves the window of each keyboard screen that feeds this slot over a picture larger than the screen, for a map. A Screen Overlay moves the same way when its zoom is above 100 percent.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Pan pictures {0} by {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Moves each screen that feeds this slot and shows a chosen picture larger than itself. The window stops at the picture's edges.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Moves each screen that feeds this slot and shows a chosen picture larger than itself. The window stops at the picture's edges. A Screen Overlay moves when its zoom is above 100 percent, whichever slot runs the macro.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Screen</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Action</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Direction</value></data>
@@ -4925,7 +4925,17 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>The overlay shows the active profile's own picture, or its name when it has none. Each profile keeps its own picture.</value></data>
   <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>The overlay shows the time of day.</value></data>
   <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>The overlay shows the hours and minutes since the active profile switched in. A profile tied to a game's program switches in when the game starts, so the count is that session. Under the Default profile it counts from the engine's start.</value></data>
-  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>The overlay shows a picture you choose, scaled to fill its window with its proportions kept.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>The overlay shows a picture you choose, scaled to fill its window with its proportions kept. Above 100 percent zoom it shows part of the picture, for a map. The Pan Keyboard Screen Picture macro moves that part, and so does dragging with the left mouse button while PadForge is in front.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>The overlay shows the stopwatch, which the Stopwatch macro starts, pauses, and resets. It is the same stopwatch every keyboard screen shows.</value></data>
-  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>The overlay shows the color of the lightbar on the DualShock 4 or DualSense in the lowest slot. Until a color reaches a lightbar, it shows nothing.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>The overlay shows the color of the lightbar on the DualShock 4 or DualSense in the slot you choose here, or in the lowest slot with a color. Until a color reaches a lightbar, it shows nothing.</value></data>
+  <data name="Dashboard_ScreenOverlay_Number_Format" xml:space="preserve"><value>Screen Overlay {0}</value></data>
+  <data name="Dashboard_ScreenOverlayAdd" xml:space="preserve"><value>Add Overlay</value></data>
+  <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Lowest Slot with a Color</value></data>
+  <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>Zoom</value></data>
+  <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>No picture chosen.</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Waiting for a lightbar color.</value></data>
+  <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Overlay</value></data>
+  <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Every Overlay</value></data>
+  <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Toggle Screen Overlay {0}</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Show {0} pictures: {1} × {2} ms, until the next macro</value></data>
 </root>

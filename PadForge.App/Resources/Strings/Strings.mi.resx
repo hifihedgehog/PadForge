@@ -1651,12 +1651,8 @@
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>Ka uta te S.T.R.I.K.E. 7 i a {0} ināianei.</value></data>
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>Kāore te tikiake SDK S.T.R.I.K.E. 7 e ōrite ki tōna SHA-256 e mōhiotia ana, nō reira kāore tētahi mea i puritia.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Whakaatu mata papapātuhi</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Ka whakaatu i ngā pikitia ki ia mata papapātuhi o te momo kua kōwhiria e whāngai ana i tēnei slot, kātahi ka whakahoki i ia mata ki tōna ake aratau.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Aratau mata papapātuhi</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Ka huri i ia mata papapātuhi o te momo kua kōwhiria e whāngai ana i tēnei slot ki tētahi atu aratau, ā, ka pupuri i taua aratau hei tautuhinga mō taua mata.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>Ka whakaatu a {0} i {1}</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Ka nekehia te matapihi o ia mata papapātuhi e whāngai ana i tēnei slot ki runga i tētahi pikitia nui ake i te mata, mō tētahi mahere.</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Ka nekehia ia mata e whāngai ana i tēnei slot, e whakaatu ana hoki i tētahi pikitia kua kōwhiria e nui ake ana i a ia anō. Ka tū te matapihi ki ngā tapa o te pikitia.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Mata</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Mahi</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Ahunga</value></data>

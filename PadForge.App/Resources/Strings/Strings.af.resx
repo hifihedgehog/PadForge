@@ -4161,22 +4161,15 @@ Wil jy hê PadForge moet dit nou deïnstalleer? Dit vereis verhoogde regte en ka
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>Die S.T.R.I.K.E. 7 SDK-aflaai stem nie ooreen met sy bekende SHA-256 nie, so niks daarvan is behou nie.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>Die Visual C++ 2008-looptyd ontbreek steeds nadat sy installeerder gehardloop het.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Wys sleutelbordskerm</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Speel prente op elke sleutelbordskerm van die gekose soort wat hierdie gleuf voed, en stel dan elke skerm terug na sy eie modus.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Wys {0}-prente: {1} × {2} ms, herhaaltelling {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Prente word by die skerm aangepas: 160 by 43 swart-en-wit piksels op 'n monochroomskerm, 320 by 240 op die G19 s'n, en 480 by 320 vir Arx Control en die S.T.R.I.K.E. 7. 'n Tiende van 'n sekonde is die kortste raamtyd.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Sleutelbordskermmodus</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Skakel elke sleutelbordskerm van die gekose soort wat hierdie gleuf voed na 'n ander modus, en hou dit as daardie skerm se instelling.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} wys {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Die modus bly totdat 'n ander makro of die skerm se dialoog dit verander.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Stophorlosie</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Begin of onderbreek, of stel terug, die stophorlosie wat sleutelbordskerms in Stophorlosie-modus wys.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>Begin of onderbreek stophorlosie</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>Stel stophorlosie terug</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Terugstelling stop die stophorlosie en stel dit terug na nul. Elke sleutelbordskerm in Stophorlosie-modus wys dieselfde stophorlosie.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Skuif sleutelbordskermprent</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Skuif die venster van elke sleutelbordskerm wat hierdie gleuf voed oor 'n prent groter as die skerm, vir 'n kaart.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Skuif prente {0} by {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Skuif elke skerm wat hierdie gleuf voed en 'n gekose prent groter as homself wys. Die venster stop by die prent se rande.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Skerm</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Aksie</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Rigting</value></data>

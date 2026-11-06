@@ -17,28 +17,41 @@ namespace PadForge.Services
         internal KeyboardScreenService KeyboardScreens
             => _keyboardScreens ??= new KeyboardScreenService(_mainVm.Settings,
                 () => _settingsService?.MarkDirty(),
-                m => PadForge.Engine.SdlDiagLog.WriteLine(m));
+                m => PadForge.Engine.SdlDiagLog.WriteLine(m))
+            {
+                OverlayNumbers = () => _mainVm.Dashboard.ScreenOverlayNumbers(),
+            };
 
         /// <summary>Every UI tick while the engine runs, ungated by focus: a
         /// clock or a show on a keyboard screen keeps running while PadForge
         /// sits behind a game, the Dreamcast screens' rule. The service holds
-        /// itself to four passes a second. With the Keyboard Screens switch and
-        /// the Screen Overlay both off, a service that ran is reset, which closes
-        /// every screen's session. The switch off with the overlay up closes the
-        /// sessions and leaves the overlay running.</summary>
+        /// itself to four passes a second. With the Keyboard Screens switch off and
+        /// no Screen Overlay up, a service that ran lets go of what it held, which
+        /// closes every screen's session, and a macro's work still lands. The switch
+        /// off with an overlay up closes the sessions and leaves the overlay
+        /// running.</summary>
         private void TickKeyboardScreens()
         {
             bool hardware = _mainVm.Settings.KeyboardScreensEnabled;
-            var overlay = _screenOverlay?.IsVisible == true ? _screenOverlay : null;
-            if (!hardware && overlay == null)
+            bool anyUp = false;
+            foreach (var window in _screenOverlays.Values)
             {
-                if (_keyboardScreens?.Active == true) _keyboardScreens.Reset();
-                else KeyboardScreenService.DropRequests();
+                if (!window.IsVisible) continue;
+                anyUp = true;
+                TendScreenOverlay(window);
+            }
+            if (!hardware && !anyUp)
+            {
+                try
+                {
+                    if (_keyboardScreens != null || KeyboardScreenService.PendingRequests > 0) KeyboardScreens.TickWithNothingUp();
+                }
+                catch (Exception ex) { PadForge.Engine.SdlDiagLog.WriteLine("Keyboard screens: tick failed: " + ex.Message); }
+                if (_keyboardScreens?.Active == true) _keyboardScreens.ReleaseWhileIdle();
                 return;
             }
             if (!hardware && _keyboardScreens?.Running == true) _keyboardScreens.CloseHost();
-            if (overlay != null) TendScreenOverlay(overlay);
-            try { KeyboardScreens.Tick(hardware, overlay != null); }
+            try { KeyboardScreens.Tick(hardware); }
             catch (Exception ex) { PadForge.Engine.SdlDiagLog.WriteLine("Keyboard screens: tick failed: " + ex.Message); }
         }
 
@@ -46,133 +59,193 @@ namespace PadForge.Services
         //  Screen Overlay lifecycle (#560)
         // ─────────────────────────────────────────────
 
-        private Views.ScreenOverlay _screenOverlay;
+        /// <summary>The windows by overlay number, up or hidden.</summary>
+        private readonly System.Collections.Generic.Dictionary<int, Views.ScreenOverlay> _screenOverlays = new();
+        private bool _screenOverlaySyncPending;
+        private bool _screenOverlaysStopped;
         private long _screenOverlayOnTopAt;
 
-        /// <summary>While PadForge is in front the overlay takes the mouse so it
-        /// can be moved and sized. While another program is, clicks pass through
-        /// it, and once a second it goes back above a game that made itself
-        /// topmost after it.</summary>
+        /// <summary>While PadForge is in front an overlay takes the mouse so it can be
+        /// moved and sized. While another program is, clicks pass through it, and
+        /// once a second it goes back above a game that made itself topmost after
+        /// it.</summary>
         private void TendScreenOverlay(Views.ScreenOverlay overlay)
         {
             overlay.SetArranging(IsPadForgeForeground());
             long now = Environment.TickCount64;
             if (now - _screenOverlayOnTopAt < 1000) return;
             _screenOverlayOnTopAt = now;
-            overlay.KeepOnTop();
+            foreach (var window in _screenOverlays.Values)
+                if (window.IsVisible) window.KeepOnTop();
         }
 
-        private void ShowScreenOverlay()
+        private bool AnyScreenOverlayUp()
         {
-            _dispatcher.BeginInvoke(() =>
+            foreach (var window in _screenOverlays.Values)
+                if (window.IsVisible) return true;
+            return false;
+        }
+
+        /// <summary>The Keyboard Screens switch went off: a window that is up keeps
+        /// its pictures and its play time.</summary>
+        private void LetGoOfScreens()
+        {
+            if (AnyScreenOverlayUp()) _keyboardScreens?.CloseHost();
+            else _keyboardScreens?.ReleaseWhileIdle();
+        }
+
+        private void ScheduleScreenOverlaySync()
+        {
+            if (_screenOverlaySyncPending) return;
+            _screenOverlaySyncPending = true;
+            _dispatcher.BeginInvoke(SyncScreenOverlays);
+        }
+
+        /// <summary>Brings the windows into line with the Dashboard's list, whatever
+        /// changed: a switch, an opacity, a place, a profile switch, an overlay added
+        /// or removed. It changes only what differs, so running it again does
+        /// nothing, and an overlay in the middle of a drag keeps its place until the
+        /// drag ends.</summary>
+        private void SyncScreenOverlays()
+        {
+            _screenOverlaySyncPending = false;
+            // One queued as the engine stopped would open a window nothing ticks.
+            if (_screenOverlaysStopped) return;
+            var dash = _mainVm.Dashboard;
+
+            var gone = new System.Collections.Generic.List<int>();
+            foreach (int number in _screenOverlays.Keys)
+                if (dash.FindScreenOverlay(number) == null) gone.Add(number);
+            foreach (int number in gone) CloseScreenOverlay(number);
+
+            foreach (var item in dash.ScreenOverlays)
             {
-                if (_screenOverlay == null)
+                _screenOverlays.TryGetValue(item.Number, out var window);
+                if (!item.Enabled)
                 {
-                    _screenOverlay = new Views.ScreenOverlay();
-                    _screenOverlay.PositionChanged += OnScreenOverlayPositionChanged;
+                    if (window?.IsVisible == true)
+                    {
+                        window.Hide();
+                        _keyboardScreens?.DetachOverlay(item.Number);
+                    }
+                    item.IsRunning = false;
+                    continue;
                 }
 
-                var dash = _mainVm.Dashboard;
-                _screenOverlay.SetContentOpacity(dash.ScreenOverlayOpacity);
-                _screenOverlay.SetArranging(IsPadForgeForeground());
-                KeyboardScreens.OverlaySink = _screenOverlay.ShowContent;
-                PlaceScreenOverlay();
-                _screenOverlay.Show();
+                if (window == null)
+                {
+                    int number = item.Number;
+                    window = new Views.ScreenOverlay();
+                    window.PositionChanged += () => OnScreenOverlayPositionChanged(number);
+                    window.PanDragged += (moved, begin) => KeyboardScreens.DragOverlayPan(number, moved, begin);
+                    _screenOverlays[number] = window;
+                }
+                window.SetContentOpacity(item.Opacity);
+                if (!window.InGesture) PlaceScreenOverlay(window, item);
+                if (!window.IsVisible)
+                {
+                    window.SetArranging(IsPadForgeForeground());
+                    var shown = window;
+                    int shownNumber = item.Number;
+                    KeyboardScreens.AttachOverlay(shownNumber, content =>
+                    {
+                        shown.ShowContent(content);
+                        if (_mainVm.Dashboard.FindScreenOverlay(shownNumber) is { } showing) showing.Blank = content.Blank;
+                    }, () => new System.Windows.Size(shown.ActualWidth, shown.ActualHeight));
+                    window.Show();
+                }
                 // Self-heal a saved place no monitor shows, e.g. a now-detached
                 // display.
-                Views.OverlayPlacement.EnsureOnScreen(_screenOverlay, dash.ScreenOverlayMonitor);
-                dash.IsScreenOverlayRunning = true;
-            });
-        }
-
-        private void HideScreenOverlay()
-        {
-            _dispatcher.BeginInvoke(() =>
-            {
-                if (_screenOverlay == null) return;
-                _screenOverlay.Hide();
-                _mainVm.Dashboard.IsScreenOverlayRunning = false;
-            });
-        }
-
-        /// <summary>The engine stopped: the window closes rather than hides, which
-        /// prevents a shutdown hang.</summary>
-        private void CloseScreenOverlay()
-        {
-            if (_screenOverlay == null) return;
-            _screenOverlay.PositionChanged -= OnScreenOverlayPositionChanged;
-            _screenOverlay.Close();
-            _screenOverlay = null;
-            if (_keyboardScreens != null) _keyboardScreens.OverlaySink = null;
-            _mainVm.Dashboard.IsScreenOverlayRunning = false;
-        }
-
-        /// <summary>Shows or hides the Screen Overlay (for the macro action).</summary>
-        internal void ToggleScreenOverlay()
-        {
-            _dispatcher.BeginInvoke(() =>
-            {
-                var dash = _mainVm.Dashboard;
-                dash.EnableScreenOverlay = !dash.EnableScreenOverlay;
-            });
-        }
-
-        private void PlaceScreenOverlay()
-        {
-            var overlay = _screenOverlay;
-            if (overlay == null) return;
-            var dash = _mainVm.Dashboard;
-            overlay.Width = dash.ScreenOverlayWidth;
-            overlay.Height = dash.ScreenOverlayHeight;
-            if (Views.OverlayPlacement.HasPlace(dash.ScreenOverlayLeft, dash.ScreenOverlayTop))
-            {
-                overlay.Left = dash.ScreenOverlayLeft;
-                overlay.Top = dash.ScreenOverlayTop;
+                if (!window.InGesture) Views.OverlayPlacement.EnsureOnScreen(window, item.Monitor);
+                item.IsRunning = true;
             }
-            else Views.OverlayPlacement.MoveToMonitor(overlay, dash.ScreenOverlayMonitor);
         }
 
-        /// <summary>A profile switch brings the profile's own place, and the window
-        /// goes there, once all of the place's values have landed. The window's own
-        /// drag writes these values too, which places it where it already is.</summary>
-        private void ScreenOverlayPlaceChanged()
+        private static void PlaceScreenOverlay(Views.ScreenOverlay overlay, ScreenOverlayItem item)
         {
-            if (_screenOverlay == null) return;
-            _dispatcher.BeginInvoke(() =>
+            overlay.Width = item.Width;
+            overlay.Height = item.Height;
+            if (Views.OverlayPlacement.HasPlace(item.Left, item.Top))
             {
-                PlaceScreenOverlay();
-                if (_screenOverlay?.IsVisible == true)
-                    Views.OverlayPlacement.EnsureOnScreen(_screenOverlay, _mainVm.Dashboard.ScreenOverlayMonitor);
-            });
+                overlay.Left = item.Left;
+                overlay.Top = item.Top;
+            }
+            else if (!overlay.IsVisible) CenterScreenOverlay(overlay, item);
         }
 
-        private void OnScreenOverlayPositionChanged()
+        /// <summary>Centered on its monitor, and stepped down and across by its number,
+        /// so a new overlay does not open exactly over the one before it.</summary>
+        private static void CenterScreenOverlay(Views.ScreenOverlay overlay, ScreenOverlayItem item)
         {
-            if (_screenOverlay == null) return;
+            const double step = 32;
+            Views.OverlayPlacement.MoveToMonitor(overlay, item.Monitor);
+            overlay.Left += (item.Number - 1) * step;
+            overlay.Top += (item.Number - 1) * step;
+        }
+
+        private void CloseScreenOverlay(int number)
+        {
+            if (!_screenOverlays.Remove(number, out var window)) return;
+            window.Close();
+            _keyboardScreens?.DetachOverlay(number);
+        }
+
+        /// <summary>The engine stopped: the windows close rather than hide, which
+        /// prevents a shutdown hang.</summary>
+        private void CloseScreenOverlays()
+        {
+            _screenOverlaysStopped = true;
+            foreach (int number in new System.Collections.Generic.List<int>(_screenOverlays.Keys))
+                CloseScreenOverlay(number);
+            foreach (var item in _mainVm.Dashboard.ScreenOverlays) item.IsRunning = false;
+        }
+
+        /// <summary>Toggle Screen Overlay macros since the last tick: a bit per
+        /// overlay's number. Bit 0 is every overlay: any that is on, and they all go
+        /// off. None on, and they all come on. The windows follow at once rather than
+        /// on the next pass: the keyboard screens' tick comes next, and a macro that
+        /// goes on to show a picture finds its window up.</summary>
+        internal void ToggleScreenOverlays(int mask)
+        {
             var dash = _mainVm.Dashboard;
-            dash.ScreenOverlayLeft = _screenOverlay.Left;
-            dash.ScreenOverlayTop = _screenOverlay.Top;
-            dash.ScreenOverlayWidth = _screenOverlay.Width;
-            dash.ScreenOverlayHeight = _screenOverlay.Height;
-            dash.ScreenOverlayMonitor = Views.OverlayPlacement.GetCurrentMonitor(_screenOverlay);
+            if ((mask & 1) != 0)
+            {
+                bool anyOn = false;
+                foreach (var item in dash.ScreenOverlays) anyOn |= item.Enabled;
+                foreach (var item in dash.ScreenOverlays) item.Enabled = !anyOn;
+            }
+            foreach (var item in dash.ScreenOverlays)
+                if ((mask & (1 << item.Number)) != 0) item.Enabled = !item.Enabled;
+            SyncScreenOverlays();
         }
 
-        private void OnResetScreenOverlayPosition(object sender, EventArgs e)
+        private void OnScreenOverlayPositionChanged(int number)
+        {
+            if (!_screenOverlays.TryGetValue(number, out var window)) return;
+            var item = _mainVm.Dashboard.FindScreenOverlay(number);
+            if (item == null) return;
+            item.Left = window.Left;
+            item.Top = window.Top;
+            item.Width = window.Width;
+            item.Height = window.Height;
+            item.Monitor = Views.OverlayPlacement.GetCurrentMonitor(window);
+        }
+
+        private void OnResetScreenOverlayPosition(object sender, ScreenOverlayItem item)
         {
             _dispatcher.BeginInvoke(() =>
             {
-                var dash = _mainVm.Dashboard;
-                if (_screenOverlay != null && _screenOverlay.IsVisible)
+                if (_screenOverlays.TryGetValue(item.Number, out var window) && window.IsVisible)
                 {
                     // Recenter live, then capture the new DIPs into settings.
-                    Views.OverlayPlacement.MoveToMonitor(_screenOverlay, dash.ScreenOverlayMonitor);
-                    OnScreenOverlayPositionChanged();
+                    CenterScreenOverlay(window, item);
+                    OnScreenOverlayPositionChanged(item.Number);
                 }
                 else
                 {
                     // No saved place: the next show centers on the monitor.
-                    dash.ScreenOverlayLeft = Views.OverlayPlacement.NoPlace;
-                    dash.ScreenOverlayTop = Views.OverlayPlacement.NoPlace;
+                    item.Left = Views.OverlayPlacement.NoPlace;
+                    item.Top = Views.OverlayPlacement.NoPlace;
                 }
             });
         }
@@ -183,12 +256,7 @@ namespace PadForge.Services
         internal void KeyboardScreensSwitched(bool on)
         {
             if (on) return;
-            if (_mainVm.Dashboard.EnableScreenOverlay) _keyboardScreens?.CloseHost();
-            else
-            {
-                _keyboardScreens?.Reset();
-                KeyboardScreenService.DropRequests();
-            }
+            LetGoOfScreens();
             Task.Run(() =>
             {
                 try { G19UsbScreen.Restore(m => PadForge.Engine.SdlDiagLog.WriteLine(m)); }

@@ -26,8 +26,7 @@
         <TextBlock x:Name="EmptyHint" Visibility="Collapsed" IsHitTestVisible="False"
                    HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8" Padding="6,3"
                    TextWrapping="Wrap" TextAlignment="Center" FontSize="12"
-                   Foreground="White" Background="#A0000000"
-                   Text="{Binding ScreenOverlay_Empty, Source={x:Static strings:Strings.Instance}}"/>
+                   Foreground="White" Background="#A0000000"/>
 
         <!-- The drag region. It has a background and an outline only while
              PadForge is in front: Windows routes a layered window's input to
@@ -39,6 +38,8 @@
                 MouseRightButtonDown="Surface_MouseRightButtonDown"
                 MouseMove="Surface_MouseMove"
                 MouseRightButtonUp="Surface_MouseRightButtonUp"
+                MouseLeftButtonDown="Surface_MouseLeftButtonDown"
+                MouseLeftButtonUp="Surface_MouseLeftButtonUp"
                 LostMouseCapture="Surface_LostMouseCapture"/>
 
         <!-- Resize grip (bottom-right corner) -->

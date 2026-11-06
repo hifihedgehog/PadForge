@@ -4170,22 +4170,15 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>Hindi tugma ang na-download na SDK ng S.T.R.I.K.E. 7 sa kilalang SHA-256 nito, kaya walang itinago mula rito.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>Nawawala pa rin ang Visual C++ 2008 runtime pagkatapos tumakbo ang installer nito.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Ipakita ang Screen ng Keyboard</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Nagpapalabas ng mga larawan sa bawat screen ng keyboard na may napiling uri na nagpapakain sa slot na ito, pagkatapos ay ibinabalik ang bawat screen sa sarili nitong mode.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Ipakita ang {0} na larawan: {1} × {2} ms, bilang ng ulit {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Iniaangkop ang mga larawan sa screen: 160 by 43 na black and white na pixel sa monochrome na screen, 320 by 240 sa G19, at 480 by 320 para sa Arx Control at sa S.T.R.I.K.E. 7. Ang ikasampung bahagi ng segundo ang pinakamaikling frame time.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Mode ng Screen ng Keyboard</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Inililipat sa ibang mode ang bawat screen ng keyboard na may napiling uri na nagpapakain sa slot na ito, at itinatago ito bilang setting ng screen na iyon.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>Ipinapakita ng {0} ang {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Mananatili ang mode hanggang baguhin ito ng ibang macro o ng dialog ng screen.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Stopwatch</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Sinisimulan o ipinapause, o nire-reset, ang stopwatch na ipinapakita ng mga screen ng keyboard na nasa mode na Stopwatch.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>Simulan o I-pause ang Stopwatch</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>I-reset ang Stopwatch</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Itinitigil ng reset ang stopwatch at ibinabalik ito sa zero. Iisang stopwatch ang ipinapakita ng bawat screen ng keyboard na nasa mode na Stopwatch.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>I-pan ang Larawan ng Screen ng Keyboard</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Inililipat ang bintana ng bawat screen ng keyboard na nagpapakain sa slot na ito sa isang larawang mas malaki kaysa sa screen, para sa mapa.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>I-pan ang mga larawan nang {0} by {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Inililipat ang bawat screen na nagpapakain sa slot na ito at nagpapakita ng piniling larawang mas malaki rito. Humihinto ang bintana sa mga gilid ng larawan.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Screen</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Aksyon</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Direksyon</value></data>

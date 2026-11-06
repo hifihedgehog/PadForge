@@ -4288,22 +4288,15 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>Id-download tal-SDK tas-S.T.R.I.K.E. 7 ma jaqbilx mas-SHA-256 magħruf tiegħu, għalhekk ma nżamm xejn minnu.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>Ir-runtime Visual C++ 2008 għadu nieqes wara li ħadem l-installer tiegħu.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Uri l-iskrin tat-tastiera</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Juri stampi fuq kull skrin tat-tastiera tat-tip magħżul li jitma' dan is-slot, imbagħad jerġa' jpoġġi kull skrin fil-mod tiegħu.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Uri stampi ta' {0}: {1} × {2} ms, għadd ta' ripetizzjonijiet {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>L-istampi jiġu adattati għall-iskrin: 160 × 43 pixel iswed u abjad fuq skrin monokromatiku, 320 × 240 fuq dak tal-G19, u 480 × 320 għal Arx Control u s-S.T.R.I.K.E. 7. L-iqsar ħin tal-frejm huwa għaxar ta' sekonda.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Mod tal-iskrin tat-tastiera</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Jaqleb kull skrin tat-tastiera tat-tip magħżul li jitma' dan is-slot għal mod ieħor, u jżommu bħala s-setting ta' dak l-iskrin.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} juri {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Il-mod jibqa' sakemm makro ieħor jew id-djalogu tal-iskrin ibiddlu.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Kronometru</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Jibda jew jagħmel pawsa, jew jirrisettja, il-kronometru li juru l-iskrins tat-tastiera fil-mod Kronometru.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>Ibda jew agħmel pawsa lill-kronometru</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>Irrisettja l-kronometru</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>“Irrisettja” jwaqqaf il-kronometru u jerġa' jpoġġih fuq żero. Kull skrin tat-tastiera fil-mod Kronometru juri l-istess kronometru.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Ċaqlaq l-istampa tal-iskrin tat-tastiera</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Iċaqlaq it-tieqa ta' kull skrin tat-tastiera li jitma' dan is-slot fuq stampa akbar mill-iskrin, bħal għal mappa.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Ċaqlaq l-istampi b'{0} u {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Iċaqlaq kull skrin li jitma' dan is-slot u juri stampa magħżula akbar minnu nnifsu. It-tieqa tieqaf fit-truf tal-istampa.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Skrin</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Azzjoni</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Direzzjoni</value></data>

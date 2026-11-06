@@ -4577,20 +4577,20 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Tampilkan Layar Keyboard</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Memutar gambar pada setiap layar keyboard dari jenis yang dipilih yang memasok slot ini, lalu mengembalikan setiap layar ke modenya sendiri. Overlay layar mengambilnya dari slot mana pun.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Tampilkan gambar {0}: {1} × {2} ms, jumlah pengulangan {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Gambar disesuaikan dengan layar: 160 kali 43 piksel hitam putih pada layar monokrom, 320 kali 240 pada layar G19, dan 480 kali 320 untuk Arx Control dan S.T.R.I.K.E. 7. Sepersepuluh detik adalah waktu frame terpendek.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Gambar disesuaikan dengan layar: 160 kali 43 piksel hitam putih pada layar monokrom, 320 kali 240 pada layar G19, dan 480 kali 320 untuk Arx Control dan S.T.R.I.K.E. 7. Overlay layar mempertahankan bentuk asli setiap gambar, hingga 800 piksel pada sisi terpanjangnya. Sepersepuluh detik adalah waktu frame terpendek. Jumlah pengulangan 0 terus memutar hingga makro Tampilkan Layar Keyboard atau Mode Layar Keyboard berikutnya.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Mode Layar Keyboard</value></data>
   <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Mengalihkan setiap layar keyboard dari jenis yang dipilih yang memasok slot ini ke mode lain, dan menyimpannya sebagai pengaturan layar itu. Overlay layar mengambilnya dari slot mana pun.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} menampilkan {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Mode bertahan sampai makro lain atau dialog layar mengubahnya.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Stopwatch</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Memulai atau menjeda, atau mengatur ulang, stopwatch yang ditampilkan layar keyboard dalam mode Stopwatch.</value></data>
+  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Memulai atau menjeda, atau mengatur ulang, stopwatch yang ditampilkan layar keyboard dan overlay layar dalam mode Stopwatch.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>Mulai atau Jeda Stopwatch</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>Atur Ulang Stopwatch</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Atur ulang menghentikan stopwatch dan mengembalikannya ke nol. Setiap layar keyboard dalam mode Stopwatch menampilkan stopwatch yang sama.</value></data>
+  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Atur ulang menghentikan stopwatch dan mengembalikannya ke nol. Setiap layar keyboard dan overlay layar dalam mode Stopwatch menampilkan stopwatch yang sama.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Geser Gambar Layar Keyboard</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Menggeser jendela setiap layar keyboard yang memasok slot ini di atas gambar yang lebih besar dari layar, misalnya untuk peta.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Menggeser jendela setiap layar keyboard yang memasok slot ini di atas gambar yang lebih besar dari layar, misalnya untuk peta. Overlay layar bergeser dengan cara yang sama saat zoom-nya di atas 100 persen.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Geser gambar {0} kali {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Menggeser setiap layar yang memasok slot ini dan menampilkan gambar pilihan yang lebih besar dari layarnya. Jendela berhenti di tepi gambar.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Menggeser setiap layar yang memasok slot ini dan menampilkan gambar pilihan yang lebih besar dari layarnya. Jendela berhenti di tepi gambar. Overlay layar bergeser saat zoom-nya di atas 100 persen, slot mana pun yang menjalankan makro.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Layar</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Aksi</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Arah</value></data>
@@ -4899,7 +4899,17 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>Overlay menampilkan gambar milik profil aktif, atau namanya jika profil itu tidak memiliki gambar. Setiap profil menyimpan gambarnya sendiri.</value></data>
   <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>Overlay menampilkan waktu saat ini.</value></data>
   <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>Overlay menampilkan jam dan menit sejak profil aktif diterapkan. Profil yang terikat pada program sebuah game diterapkan saat game dimulai, sehingga hitungannya adalah sesi itu. Di bawah profil Default, hitungan dimulai sejak engine dijalankan.</value></data>
-  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Overlay menampilkan gambar pilihan Anda, diskalakan hingga memenuhi jendelanya dengan proporsi tetap terjaga.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Overlay menampilkan gambar pilihan Anda, diskalakan hingga memenuhi jendelanya dengan proporsi tetap terjaga. Di atas zoom 100 persen, overlay menampilkan sebagian gambar, misalnya untuk peta. Makro Geser Gambar Layar Keyboard menggeser bagian itu, begitu juga menyeret dengan tombol kiri mouse saat PadForge berada di depan.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>Overlay menampilkan stopwatch, yang dimulai, dijeda, dan diatur ulang oleh makro Stopwatch. Ini adalah stopwatch yang sama dengan yang ditampilkan setiap layar keyboard.</value></data>
-  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Overlay menampilkan warna bilah lampu pada DualShock 4 atau DualSense di slot terendah. Sebelum ada warna yang sampai ke bilah lampu, overlay tidak menampilkan apa pun.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Overlay menampilkan warna bilah lampu pada DualShock 4 atau DualSense di slot yang Anda pilih di sini, atau di slot terendah yang punya warna. Sebelum ada warna yang sampai ke bilah lampu, overlay tidak menampilkan apa pun.</value></data>
+  <data name="Dashboard_ScreenOverlay_Number_Format" xml:space="preserve"><value>Overlay layar {0}</value></data>
+  <data name="Dashboard_ScreenOverlayAdd" xml:space="preserve"><value>Tambah overlay</value></data>
+  <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Slot terendah yang punya warna</value></data>
+  <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>Zoom</value></data>
+  <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>Belum ada gambar yang dipilih.</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Menunggu warna bilah lampu.</value></data>
+  <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Overlay</value></data>
+  <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Semua overlay</value></data>
+  <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Alihkan overlay layar {0}</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Tampilkan gambar {0}: {1} × {2} ms, hingga makro berikutnya</value></data>
 </root>

@@ -22,6 +22,9 @@ namespace PadForge.Views
     /// takes input and shows its outline and grip, so it can be found, moved and
     /// sized even with nothing to show. g-helper's HardwareOverlay and
     /// Forza-Telemetry-Splitter's OverlayForm run the same two states.</para>
+    ///
+    /// <para>Each overlay is its own window with its own place, size, opacity and
+    /// content, as each keyboard's screen is its own panel.</para>
     /// </summary>
     public partial class ScreenOverlay : Window
     {
@@ -75,15 +78,23 @@ namespace PadForge.Views
         private bool _isResizing;
         private Point _resizeStart;
         private double _resizeStartW, _resizeStartH;
+        private bool _isPanning;
+        private Point _panStart;
 
         /// <summary>Fired when the user finishes dragging or resizing (position/size changed).</summary>
         public event Action PositionChanged;
+
+        /// <summary>The left button dragging across the window: how far the pointer
+        /// is from where the drag began, in the window's units, and true when it
+        /// begins. A zoomed picture follows it.</summary>
+        public event Action<Vector, bool> PanDragged;
 
         public ScreenOverlay()
         {
             InitializeComponent();
             // The grip stays in the bottom-right corner in every language.
             PadForge.Common.UiLanguage.KeepLeftToRight(this);
+            EmptyHint.Text = PadForge.Resources.Strings.Strings.Instance.ScreenOverlay_Empty;
             ApplyArranging();
             IsVisibleChanged += OnIsVisibleChanged;
         }
@@ -113,6 +124,7 @@ namespace PadForge.Views
             // A drag cut short by a hide never gets its release.
             _isMouseDragging = false;
             _isResizing = false;
+            _isPanning = false;
             _dragTouchId = null;
         }
 
@@ -123,6 +135,13 @@ namespace PadForge.Views
         internal void ShowContent(ScreenOverlayContent content)
         {
             ContentView.Show(content);
+            var s = PadForge.Resources.Strings.Strings.Instance;
+            EmptyHint.Text = ContentView.Shown.Blank switch
+            {
+                KeyboardScreenService.Blank.NoPicture => s.ScreenOverlay_Blank_NoPicture,
+                KeyboardScreenService.Blank.NoLightbar => s.ScreenOverlay_Blank_NoLightbar,
+                _ => s.ScreenOverlay_Empty,
+            };
             UpdateEmptyHint();
         }
 
@@ -136,13 +155,17 @@ namespace PadForge.Views
 
         internal bool Arranging => _arranging;
 
+        /// <summary>A drag or a resize is under way, and the window keeps its place
+        /// and its state until it ends.</summary>
+        internal bool InGesture => _isMouseDragging || _isResizing || _isPanning || _dragTouchId != null;
+
         /// <summary>True while PadForge is in front: the window takes the mouse
         /// and shows its outline and grip. False: clicks pass through it and only
         /// its content shows. A drag in progress finishes in the state it began
         /// in, as g-helper's overlay holds its drag mode.</summary>
         internal void SetArranging(bool arranging)
         {
-            if (arranging == _arranging || _isMouseDragging || _isResizing || _dragTouchId != null) return;
+            if (arranging == _arranging || InGesture) return;
             _arranging = arranging;
             ApplyArranging();
             var hwnd = new WindowInteropHelper(this).Handle;
@@ -220,6 +243,30 @@ namespace PadForge.Views
         private void Surface_MouseMove(object sender, MouseEventArgs e)
         {
             if (_isMouseDragging) DragTo(e.GetPosition(this));
+            else if (_isPanning) PanDragged?.Invoke(MovedSincePanStart(e.GetPosition(this)), false);
+        }
+
+        private Vector MovedSincePanStart(Point inWindow)
+        {
+            var current = PointToScreen(inWindow);
+            var dpi = VisualTreeHelper.GetDpi(this);
+            return new Vector((current.X - _panStart.X) / dpi.DpiScaleX, (current.Y - _panStart.Y) / dpi.DpiScaleY);
+        }
+
+        private void Surface_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            _isPanning = true;
+            _panStart = PointToScreen(e.GetPosition(this));
+            Surface.CaptureMouse();
+            PanDragged?.Invoke(default, true);
+            e.Handled = true;
+        }
+
+        private void Surface_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (!_isPanning) return;
+            _isPanning = false;
+            Surface.ReleaseMouseCapture();
         }
 
         private void Surface_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
@@ -232,7 +279,11 @@ namespace PadForge.Views
         /// <summary>A capture taken away mid-drag never delivers the button's
         /// release, and the window would follow the pointer until the next
         /// click.</summary>
-        private void Surface_LostMouseCapture(object sender, MouseEventArgs e) => EndMouseDrag();
+        private void Surface_LostMouseCapture(object sender, MouseEventArgs e)
+        {
+            _isPanning = false;
+            EndMouseDrag();
+        }
 
         private void EndMouseDrag()
         {

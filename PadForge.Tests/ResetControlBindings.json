@@ -108,12 +108,6 @@
     "Property": "EnableTouchpadOverlay"
   },
   {
-    "File": "PadForge.App/Views/DashboardPage.xaml",
-    "Id": "Reset_DashboardViewModel_EnableScreenOverlay_55708",
-    "Owner": "PadForge.ViewModels.DashboardViewModel",
-    "Property": "EnableScreenOverlay"
-  },
-  {
     "File": "PadForge.App/Views/PadPage.xaml",
     "Id": "Reset_PadViewModel_ProfileId_490",
     "Owner": "PadForge.ViewModels.PadViewModel",
@@ -1342,6 +1336,12 @@
     "Id": "Reset_MacroAction_ScreenKind_13101",
     "Owner": "PadForge.ViewModels.MacroAction",
     "Property": "ScreenKind"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_ScreenOverlayNumber_55709",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "ScreenOverlayNumber"
   },
   {
     "File": "PadForge.App/Views/PadPage.xaml",

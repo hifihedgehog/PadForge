@@ -4577,20 +4577,20 @@ Vill du att PadForge avinstallerar dem nu? Detta kräver förhöjd behörighet o
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Visa tangentbordsskärm</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Spelar upp bilder på varje tangentbordsskärm av den valda typen som matar den här platsen och återställer sedan varje skärm till dess eget läge. Skärmöverlägget tar dem från vilken plats som helst.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Visa bilder på {0}: {1} × {2} ms, antal upprepningar {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Bilder anpassas till skärmen: 160 gånger 43 svartvita pixlar på en monokrom skärm, 320 gånger 240 på skärmen på G19 och 480 gånger 320 för Arx Control och S.T.R.I.K.E. 7. En tiondels sekund är den kortaste bildtiden.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Bilder anpassas till skärmen: 160 gånger 43 svartvita pixlar på en monokrom skärm, 320 gånger 240 på skärmen på G19 och 480 gånger 320 för Arx Control och S.T.R.I.K.E. 7. Ett skärmöverlägg behåller varje bilds egen form, upp till 800 pixlar på den längre sidan. En tiondels sekund är den kortaste bildtiden. Ett antal upprepningar på 0 fortsätter spela tills ett annat makro av typen Visa tangentbordsskärm eller Tangentbordsskärmens läge körs.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Tangentbordsskärmens läge</value></data>
   <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Växlar varje tangentbordsskärm av den valda typen som matar den här platsen till ett annat läge och behåller det som skärmens inställning. Skärmöverlägget tar det från vilken plats som helst.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} visar {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Läget gäller tills ett annat makro eller skärmens dialogruta ändrar det.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Stoppur</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Startar eller pausar, eller återställer, stoppuret som tangentbordsskärmar i läget Stoppur visar.</value></data>
+  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Startar eller pausar, eller återställer, stoppuret som tangentbordsskärmar och skärmöverlägg i läget Stoppur visar.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>Starta eller pausa stoppur</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>Återställ stoppur</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Återställ stoppar stoppuret och sätter det tillbaka på noll. Alla tangentbordsskärmar i läget Stoppur visar samma stoppur.</value></data>
+  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Återställ stoppar stoppuret och sätter det tillbaka på noll. Alla tangentbordsskärmar och skärmöverlägg i läget Stoppur visar samma stoppur.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Panorera tangentbordsskärmens bild</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Flyttar fönstret på varje tangentbordsskärm som matar den här platsen över en bild som är större än skärmen, till exempel för en karta.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Flyttar fönstret på varje tangentbordsskärm som matar den här platsen över en bild som är större än skärmen, till exempel för en karta. Ett skärmöverlägg flyttas på samma sätt när dess zoom är över 100 procent.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Panorera bilder {0}, {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Flyttar varje skärm som matar den här platsen och visar en vald bild som är större än skärmen själv. Fönstret stannar vid bildens kanter.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Flyttar varje skärm som matar den här platsen och visar en vald bild som är större än skärmen själv. Fönstret stannar vid bildens kanter. Ett skärmöverlägg flyttas när dess zoom är över 100 procent, oavsett vilken plats som kör makrot.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Skärm</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Åtgärd</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Riktning</value></data>
@@ -4899,7 +4899,17 @@ Vill du att PadForge avinstallerar dem nu? Detta kräver förhöjd behörighet o
   <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>Överlägget visar den aktiva profilens egen bild, eller dess namn om den inte har någon. Varje profil har sin egen bild.</value></data>
   <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>Överlägget visar klockslaget.</value></data>
   <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>Överlägget visar timmar och minuter sedan den aktiva profilen aktiverades. En profil som är knuten till ett spelprogram aktiveras när spelet startar, så räkningen gäller den spelsessionen. Under profilen Standard räknar den från att PadForge startade.</value></data>
-  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Överlägget visar en bild som du väljer, skalad så att den fyller fönstret med bibehållna proportioner.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Överlägget visar en bild som du väljer, skalad så att den fyller fönstret med bibehållna proportioner. Över 100 procents zoom visar det en del av bilden, till exempel för en karta. Makrot Panorera tangentbordsskärmens bild flyttar den delen, och det gör även dragning med vänster musknapp medan PadForge ligger överst.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>Överlägget visar stoppuret, som makrot Stoppur startar, pausar och återställer. Det är samma stoppur som alla tangentbordsskärmar visar.</value></data>
-  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Överlägget visar färgen på ljusfältet på DualShock 4 eller DualSense på den lägsta platsen. Tills en färg når ett ljusfält visar det ingenting.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Överlägget visar färgen på ljusfältet på DualShock 4 eller DualSense på den plats du väljer här, eller på den lägsta platsen med en färg. Tills en färg når ett ljusfält visar det ingenting.</value></data>
+  <data name="Dashboard_ScreenOverlay_Number_Format" xml:space="preserve"><value>Skärmöverlägg {0}</value></data>
+  <data name="Dashboard_ScreenOverlayAdd" xml:space="preserve"><value>Lägg till överlägg</value></data>
+  <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Lägsta plats med en färg</value></data>
+  <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>Zoom</value></data>
+  <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>Ingen bild vald.</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Väntar på en ljusfältsfärg.</value></data>
+  <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Överlägg</value></data>
+  <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Alla överlägg</value></data>
+  <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Visa/dölj skärmöverlägg {0}</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Visa bilder på {0}: {1} × {2} ms, tills nästa makro</value></data>
 </root>

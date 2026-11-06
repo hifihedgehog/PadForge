@@ -42,13 +42,35 @@ namespace PadForge.Views
             InvalidateVisual();
         }
 
-        /// <summary>Where a picture lands in the bounds: as large as fits, with
-        /// its proportions kept, centered.</summary>
-        internal static Rect FitPicture(int pictureWidth, int pictureHeight, Size bounds)
+        /// <summary>How large a picture's pixel draws: the size that fits the bounds
+        /// with its proportions kept, times the zoom.</summary>
+        internal static double PictureScale(int pictureWidth, int pictureHeight, int zoomPercent, Size bounds)
         {
-            double scale = Math.Min(bounds.Width / pictureWidth, bounds.Height / pictureHeight);
+            if (pictureWidth <= 0 || pictureHeight <= 0 || bounds.Width <= 0 || bounds.Height <= 0) return 0;
+            return Math.Min(bounds.Width / pictureWidth, bounds.Height / pictureHeight) * Math.Max(100, zoomPercent) / 100.0;
+        }
+
+        /// <summary>Where a picture lands in the bounds. At 100 percent it is as large
+        /// as fits, centered. Above that, a direction it overflows starts at the pan,
+        /// held to the picture's edges, and a direction it still fits stays
+        /// centered, RenderWindow's rule for a keyboard screen.</summary>
+        internal static Rect FitPicture(int pictureWidth, int pictureHeight, Size bounds, int zoomPercent = 100, int panX = 0, int panY = 0)
+        {
+            double scale = PictureScale(pictureWidth, pictureHeight, zoomPercent, bounds);
             double width = pictureWidth * scale, height = pictureHeight * scale;
-            return new Rect((bounds.Width - width) / 2, (bounds.Height - height) / 2, width, height);
+            double x = width > bounds.Width ? -Math.Min(Math.Max(0, panX) * scale, width - bounds.Width) : (bounds.Width - width) / 2;
+            double y = height > bounds.Height ? -Math.Min(Math.Max(0, panY) * scale, height - bounds.Height) : (bounds.Height - height) / 2;
+            return new Rect(x, y, width, height);
+        }
+
+        /// <summary>How far a zoomed picture can pan, in the picture's pixels: what
+        /// the window cannot hold of it, in each direction.</summary>
+        internal static (int X, int Y) PanLimits(int pictureWidth, int pictureHeight, int zoomPercent, Size bounds)
+        {
+            double scale = PictureScale(pictureWidth, pictureHeight, zoomPercent, bounds);
+            if (scale <= 0) return (0, 0);
+            return ((int)Math.Ceiling(Math.Max(0, pictureWidth - bounds.Width / scale)),
+                (int)Math.Ceiling(Math.Max(0, pictureHeight - bounds.Height / scale)));
         }
 
         /// <summary>The text at the largest size that fits inside a margin of a
@@ -90,7 +112,12 @@ namespace PadForge.Views
             if (_content.Fill is Color fill)
                 dc.DrawRectangle(new SolidColorBrush(fill), null, whole);
             else if (_content.Picture is { } picture)
-                dc.DrawImage(picture, FitPicture(picture.PixelWidth, picture.PixelHeight, bounds));
+            {
+                // A zoomed picture runs past the bounds.
+                dc.PushClip(new RectangleGeometry(whole));
+                dc.DrawImage(picture, FitPicture(picture.PixelWidth, picture.PixelHeight, bounds, _content.Zoom, _content.PanX, _content.PanY));
+                dc.Pop();
+            }
             else if (_content.Text is { } text)
             {
                 dc.DrawRectangle(Brushes.Black, null, whole);

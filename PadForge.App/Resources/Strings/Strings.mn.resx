@@ -4337,22 +4337,15 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>S.T.R.I.K.E. 7 SDK татац мэдэгдэж буй SHA-256-тай таарахгүй тул түүнээс юу ч хадгалсангүй.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>Суулгагч ажилласны дараа ч Visual C++ 2008 ажиллах орчин байхгүй хэвээр байна.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Гарын дэлгэц харуулах</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Энэ слотыг тэжээдэг сонгосон төрлийн гарын дэлгэц бүр дээр зургуудыг тоглуулаад, дэлгэц бүрийг өөрийн горимд нь буцаана.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>{0} зураг харуулах: {1} × {2} мс, давталтын тоо {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Зургуудыг дэлгэцэнд тааруулна: хар цагаан дэлгэц дээр 160 × 43 хар цагаан пиксел, G19-ийнх дээр 320 × 240, Arx Control болон S.T.R.I.K.E. 7 дээр 480 × 320. Кадрын хамгийн богино хугацаа нь секундын аравны нэг.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Гарын дэлгэцийн горим</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Энэ слотыг тэжээдэг сонгосон төрлийн гарын дэлгэц бүрийг өөр горимд шилжүүлж, тухайн дэлгэцийн тохиргоо болгон хадгална.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} дээр {1} харуулна</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Өөр макро эсвэл дэлгэцийн харилцах цонх өөрчлөх хүртэл горим хэвээр үлдэнэ.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Секундомер</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Секундомер горимтой гарын дэлгэцүүдийн харуулдаг секундомерыг эхлүүлж эсвэл түр зогсооно, эсвэл тэглэнэ.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>Секундомерыг эхлүүлэх эсвэл түр зогсоох</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>Секундомерыг тэглэх</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Тэглэх нь секундомерыг зогсоож, тэг рүү буцаана. Секундомер горимтой бүх гарын дэлгэц ижил секундомерыг харуулна.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Гарын дэлгэцийн зургийг гүйлгэх</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Энэ слотыг тэжээдэг гарын дэлгэц бүрийн цонхыг дэлгэцээс том зураг, жишээ нь газрын зураг дээгүүр хөдөлгөнө.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Зургийг {0}, {1} px-ээр гүйлгэх</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Энэ слотыг тэжээдэг бөгөөд өөрөөсөө том сонгосон зураг харуулж буй дэлгэц бүрийг хөдөлгөнө. Цонх зургийн ирмэгт зогсоно.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Дэлгэц</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Үйлдэл</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Чиглэл</value></data>

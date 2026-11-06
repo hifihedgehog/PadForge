@@ -4528,20 +4528,20 @@ Sollen sie jetzt deinstalliert werden? Dies erfordert erhöhte Rechte und kann e
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Tastatur-Bildschirm anzeigen</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Spielt Bilder auf jedem Tastatur-Bildschirm der gewählten Art ab, der diesen Slot speist, und setzt danach jeden Bildschirm auf seinen eigenen Modus zurück. Das Bildschirm-Overlay übernimmt sie von jedem Slot.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>{0}-Bilder zeigen: {1} × {2} ms, Durchläufe {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Bilder werden an den Bildschirm angepasst: 160 mal 43 Schwarzweißpixel auf einem einfarbigen Bildschirm, 320 mal 240 auf dem der G19 und 480 mal 320 für Arx Control und die S.T.R.I.K.E. 7. Eine Zehntelsekunde ist die kürzeste Bilddauer.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Bilder werden an den Bildschirm angepasst: 160 mal 43 Schwarzweißpixel auf einem einfarbigen Bildschirm, 320 mal 240 auf dem der G19 und 480 mal 320 für Arx Control und die S.T.R.I.K.E. 7. Ein Bildschirm-Overlay behält die eigene Form jedes Bildes, bis zu 800 Pixel auf der längeren Seite. Eine Zehntelsekunde ist die kürzeste Bilddauer. Bei einer Durchläuferzahl von 0 läuft die Anzeige weiter, bis ein weiteres Makro Tastatur-Bildschirm anzeigen oder Tastatur-Bildschirmmodus folgt.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Tastatur-Bildschirmmodus</value></data>
   <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Schaltet jeden Tastatur-Bildschirm der gewählten Art, der diesen Slot speist, auf einen anderen Modus um und behält ihn als Einstellung dieses Bildschirms. Das Bildschirm-Overlay übernimmt ihn von jedem Slot.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} zeigt {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Der Modus bleibt, bis ein anderes Makro oder der Dialog des Bildschirms ihn ändert.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Stoppuhr</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Startet oder pausiert die Stoppuhr, die Tastatur-Bildschirme im Modus „Stoppuhr“ anzeigen, oder setzt sie zurück.</value></data>
+  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Startet oder pausiert die Stoppuhr, die Tastatur-Bildschirme und Bildschirm-Overlays im Modus „Stoppuhr“ anzeigen, oder setzt sie zurück.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>Stoppuhr starten oder pausieren</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>Stoppuhr zurücksetzen</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Zurücksetzen hält die Stoppuhr an und stellt sie auf null. Alle Tastatur-Bildschirme im Modus „Stoppuhr“ zeigen dieselbe Stoppuhr.</value></data>
+  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Zurücksetzen hält die Stoppuhr an und stellt sie auf null. Alle Tastatur-Bildschirme und Bildschirm-Overlays im Modus „Stoppuhr“ zeigen dieselbe Stoppuhr.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Tastatur-Bildschirmbild verschieben</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Verschiebt den Ausschnitt jedes Tastatur-Bildschirms, der diesen Slot speist, über einem Bild, das größer als der Bildschirm ist, etwa für eine Karte.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Verschiebt den Ausschnitt jedes Tastatur-Bildschirms, der diesen Slot speist, über einem Bild, das größer als der Bildschirm ist, etwa für eine Karte. Ein Bildschirm-Overlay bewegt sich genauso, wenn sein Zoom über 100 Prozent liegt.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Bilder verschieben: {0} × {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Bewegt jeden Bildschirm, der diesen Slot speist und ein gewähltes, größeres Bild zeigt. Der Ausschnitt stoppt an den Rändern des Bildes.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Bewegt jeden Bildschirm, der diesen Slot speist und ein gewähltes, größeres Bild zeigt. Der Ausschnitt stoppt an den Rändern des Bildes. Ein Bildschirm-Overlay bewegt sich, wenn sein Zoom über 100 Prozent liegt, unabhängig davon, welcher Slot das Makro ausführt.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Bildschirm</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Aktion</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Richtung</value></data>
@@ -4850,7 +4850,17 @@ Sollen sie jetzt deinstalliert werden? Dies erfordert erhöhte Rechte und kann e
   <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>Das Overlay zeigt das eigene Bild des aktiven Profils oder seinen Namen, wenn es keines hat. Jedes Profil behält sein eigenes Bild.</value></data>
   <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>Das Overlay zeigt die Uhrzeit.</value></data>
   <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>Das Overlay zeigt die Stunden und Minuten seit dem Wechsel zum aktiven Profil. Ein Profil, das an das Programm eines Spiels gebunden ist, wird beim Start des Spiels aktiv, die Zählung gilt also für diese Sitzung. Unter dem Profil Standard zählt es ab dem Start der Engine.</value></data>
-  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Das Overlay zeigt ein von Ihnen gewähltes Bild, skaliert, um sein Fenster zu füllen, mit beibehaltenen Proportionen.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Das Overlay zeigt ein von Ihnen gewähltes Bild, skaliert, um sein Fenster zu füllen, mit beibehaltenen Proportionen. Bei einem Zoom über 100 Prozent zeigt es einen Teil des Bildes, etwa für eine Karte. Das Makro Tastatur-Bildschirmbild verschieben bewegt diesen Teil, ebenso das Ziehen mit der linken Maustaste, solange PadForge im Vordergrund ist.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>Das Overlay zeigt die Stoppuhr, die das Makro Stoppuhr startet, pausiert und zurücksetzt. Es ist dieselbe Stoppuhr, die jeder Tastatur-Bildschirm zeigt.</value></data>
-  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Das Overlay zeigt die Farbe der Lightbar des DualShock 4 oder DualSense im niedrigsten Slot. Solange keine Farbe bei einer Lightbar ankommt, zeigt es nichts an.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Das Overlay zeigt die Farbe der Lightbar des DualShock 4 oder DualSense im hier gewählten Slot oder im niedrigsten Slot mit einer Farbe. Solange keine Farbe bei einer Lightbar ankommt, zeigt es nichts an.</value></data>
+  <data name="Dashboard_ScreenOverlay_Number_Format" xml:space="preserve"><value>Bildschirm-Overlay {0}</value></data>
+  <data name="Dashboard_ScreenOverlayAdd" xml:space="preserve"><value>Overlay hinzufügen</value></data>
+  <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Niedrigster Slot mit einer Farbe</value></data>
+  <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>Zoom</value></data>
+  <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>Kein Bild gewählt.</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Wartet auf eine Lightbar-Farbe.</value></data>
+  <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Overlay</value></data>
+  <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Jedes Overlay</value></data>
+  <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Bildschirm-Overlay {0} umschalten</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>{0}-Bilder zeigen: {1} × {2} ms, bis zum nächsten Makro</value></data>
 </root>

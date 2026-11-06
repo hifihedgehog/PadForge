@@ -1770,13 +1770,9 @@
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>SDK S.T.R.I.K.E. 7 kan Mad Catz buufachaa jira…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 amma {0} fe'a.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Iskiriinii kiiboordii agarsiisi</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Iskiriinii kiiboordii gosa filatame kan iddoo kanaaf galtee kennu hunda irratti suuraawwan agarsiisa, achiis iskiriinii tokkoon tokkoon gara haala mataa isaatti deebisa.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>{0} suuraa agarsiisi: {1} × {2} ms, lakkoofsa irra deebii {3}</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Haala iskiriinii kiiboordii</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Iskiriinii kiiboordii gosa filatame kan iddoo kanaaf galtee kennu hunda gara haala biraatti jijjiira, haala sanas akka qindaa'ina iskiriinii sanaatti olkaa'a.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} {1} agarsiisa</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Foddaa iskiriinii kiiboordii iddoo kanaaf galtee kennu hundaa suuraa iskiriinicha caalaa guddaa irra socho'sa, kaartaadhaaf.</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Iskiriinii iddoo kanaaf galtee kennuu fi suuraa filatame kan isa caalaa guddaa agarsiisu hunda socho'sa. Foddaan qarqara suuraa irratti dhaabata.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Iskiriinii</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Gocha</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Kallattii</value></data>

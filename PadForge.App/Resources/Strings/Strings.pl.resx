@@ -4577,20 +4577,20 @@ Czy PadForge ma je teraz odinstalować? Wymaga to uprawnień administratora i mo
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Pokaż ekran klawiatury</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Odtwarza obrazy na każdym ekranie klawiatury wybranego rodzaju, który zasila ten slot, a potem przywraca każdemu ekranowi jego własny tryb. Nakładka ekranowa pobiera je z dowolnego slotu.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Pokaż obrazy {0}: {1} × {2} ms, liczba powtórzeń {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Obrazy są dopasowywane do ekranu: 160 na 43 czarno-białe piksele na ekranie monochromatycznym, 320 na 240 na ekranie G19 oraz 480 na 320 dla Arx Control i S.T.R.I.K.E. 7. Najkrótszy czas klatki to jedna dziesiąta sekundy.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Obrazy są dopasowywane do ekranu: 160 na 43 czarno-białe piksele na ekranie monochromatycznym, 320 na 240 na ekranie G19 oraz 480 na 320 dla Arx Control i S.T.R.I.K.E. 7. Nakładka ekranowa zachowuje kształt każdego obrazu, do 800 pikseli po dłuższym boku. Najkrótszy czas klatki to jedna dziesiąta sekundy. Liczba powtórzeń 0 oznacza odtwarzanie do czasu kolejnego makra Pokaż ekran klawiatury lub Tryb ekranu klawiatury.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Tryb ekranu klawiatury</value></data>
   <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Przełącza na inny tryb każdy ekran klawiatury wybranego rodzaju, który zasila ten slot, i zapamiętuje go jako ustawienie tego ekranu. Nakładka ekranowa pobiera go z dowolnego slotu.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} pokazuje: {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Tryb obowiązuje, dopóki inne makro lub okno dialogowe ekranu go nie zmieni.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Stoper</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Uruchamia lub wstrzymuje albo zeruje stoper, który pokazują ekrany klawiatury w trybie Stoper.</value></data>
+  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Uruchamia lub wstrzymuje albo zeruje stoper, który pokazują ekrany klawiatury i nakładki ekranowe w trybie Stoper.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>Uruchom lub wstrzymaj stoper</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>Resetuj stoper</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Reset zatrzymuje stoper i ustawia go z powrotem na zero. Każdy ekran klawiatury w trybie Stoper pokazuje ten sam stoper.</value></data>
+  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Reset zatrzymuje stoper i ustawia go z powrotem na zero. Każdy ekran klawiatury i każda nakładka ekranowa w trybie Stoper pokazuje ten sam stoper.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Przesuń obraz ekranu klawiatury</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Przesuwa okno każdego ekranu klawiatury, który zasila ten slot, po obrazie większym niż ekran, na przykład po mapie.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Przesuwa okno każdego ekranu klawiatury, który zasila ten slot, po obrazie większym niż ekran, na przykład po mapie. Nakładka ekranowa przesuwa się tak samo, gdy jej powiększenie przekracza 100 procent.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Przesuń obrazy o {0} i {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Przesuwa każdy ekran, który zasila ten slot i pokazuje wybrany obraz większy od niego. Okno zatrzymuje się na krawędziach obrazu.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Przesuwa każdy ekran, który zasila ten slot i pokazuje wybrany obraz większy od niego. Okno zatrzymuje się na krawędziach obrazu. Nakładka ekranowa przesuwa się, gdy jej powiększenie przekracza 100 procent, niezależnie od tego, który slot uruchamia makro.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Ekran</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Akcja</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Kierunek</value></data>
@@ -4899,7 +4899,17 @@ Czy PadForge ma je teraz odinstalować? Wymaga to uprawnień administratora i mo
   <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>Nakładka pokazuje własny obraz aktywnego profilu albo jego nazwę, jeśli profil nie ma obrazu. Każdy profil ma własny obraz.</value></data>
   <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>Nakładka pokazuje aktualną godzinę.</value></data>
   <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>Nakładka pokazuje godziny i minuty od przełączenia na aktywny profil. Profil powiązany z programem gry włącza się przy uruchomieniu gry, więc licznik obejmuje tę sesję. W profilu „Domyślny” licznik liczy od uruchomienia silnika.</value></data>
-  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Nakładka pokazuje wybrany obraz, skalowany tak, by wypełnił jej okno z zachowaniem proporcji.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Nakładka pokazuje wybrany obraz, skalowany tak, by wypełnił jej okno z zachowaniem proporcji. Przy powiększeniu powyżej 100 procent pokazuje część obrazu, na przykład mapy. Tę część przesuwa makro Przesuń obraz ekranu klawiatury, a także przeciąganie lewym przyciskiem myszy, gdy PadForge jest na wierzchu.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>Nakładka pokazuje stoper, który makro Stoper uruchamia, wstrzymuje i zeruje. Jest to ten sam stoper, który pokazuje każdy ekran klawiatury.</value></data>
-  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Nakładka pokazuje kolor paska świetlnego w DualShock 4 lub DualSense w najniższym slocie. Dopóki kolor nie dotrze do paska świetlnego, niczego nie pokazuje.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Nakładka pokazuje kolor paska świetlnego w DualShock 4 lub DualSense w slocie wybranym tutaj albo w najniższym slocie z kolorem. Dopóki kolor nie dotrze do paska świetlnego, niczego nie pokazuje.</value></data>
+  <data name="Dashboard_ScreenOverlay_Number_Format" xml:space="preserve"><value>Nakładka ekranowa {0}</value></data>
+  <data name="Dashboard_ScreenOverlayAdd" xml:space="preserve"><value>Dodaj nakładkę</value></data>
+  <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Najniższy slot z kolorem</value></data>
+  <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>Powiększenie</value></data>
+  <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>Nie wybrano obrazu.</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Oczekiwanie na kolor paska świetlnego.</value></data>
+  <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Nakładka</value></data>
+  <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Każda nakładka</value></data>
+  <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Przełącz nakładkę ekranową {0}</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Pokaż obrazy {0}: {1} × {2} ms, do następnego makra</value></data>
 </root>

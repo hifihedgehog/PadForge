@@ -4577,20 +4577,20 @@ PadForge ले तिनलाई अहिले अनइन्स्टल �
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>किबोर्ड स्क्रिन देखाउनुहोस्</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>यस स्लटलाई इनपुट दिने, छानिएको प्रकारका प्रत्येक किबोर्ड स्क्रिनमा तस्बिरहरू चलाउँछ, त्यसपछि प्रत्येक स्क्रिनलाई यसको आफ्नै मोडमा फर्काउँछ। स्क्रिन ओभरलेले तिनलाई जुनसुकै स्लटबाट लिन्छ।</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>{0} तस्बिरहरू देखाउनुहोस्: {1} × {2} ms, दोहोराइ संख्या {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>तस्बिरहरू स्क्रिनअनुसार मिलाइन्छन्: मोनोक्रोम स्क्रिनमा 160 × 43 कालो-सेतो पिक्सेल, G19 मा 320 × 240, र Arx Control तथा S.T.R.I.K.E. 7 मा 480 × 320। सेकेन्डको दशौँ भाग सबैभन्दा छोटो फ्रेम समय हो।</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>तस्बिरहरू स्क्रिनअनुसार मिलाइन्छन्: मोनोक्रोम स्क्रिनमा 160 × 43 कालो-सेतो पिक्सेल, G19 मा 320 × 240, र Arx Control तथा S.T.R.I.K.E. 7 मा 480 × 320। स्क्रिन ओभरलेले प्रत्येक तस्बिरको आफ्नै आकृति कायम राख्छ, लामो छेउमा 800 पिक्सेलसम्म। सेकेन्डको दशौँ भाग सबैभन्दा छोटो फ्रेम समय हो। दोहोराइ संख्या 0 भए अर्को किबोर्ड स्क्रिन देखाउनुहोस् वा किबोर्ड स्क्रिन मोड म्याक्रो नआएसम्म चलिरहन्छ।</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>किबोर्ड स्क्रिन मोड</value></data>
   <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>यस स्लटलाई इनपुट दिने, छानिएको प्रकारका प्रत्येक किबोर्ड स्क्रिनलाई अर्को मोडमा बदल्छ, र त्यसलाई त्यो स्क्रिनको सेटिङका रूपमा राख्छ। स्क्रिन ओभरलेले यसलाई जुनसुकै स्लटबाट लिन्छ।</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} ले {1} देखाउँछ</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>अर्को म्याक्रो वा स्क्रिनको संवादले नबदलेसम्म मोड यस्तै रहन्छ।</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>स्टपवाच</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>स्टपवाच मोडका किबोर्ड स्क्रिनहरूले देखाउने स्टपवाच सुरु गर्छ वा रोक्छ, वा रिसेट गर्छ।</value></data>
+  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>स्टपवाच मोडका किबोर्ड स्क्रिनहरू र स्क्रिन ओभरलेहरूले देखाउने स्टपवाच सुरु गर्छ वा रोक्छ, वा रिसेट गर्छ।</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>स्टपवाच सुरु वा रोक्नुहोस्</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>स्टपवाच रिसेट गर्नुहोस्</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>रिसेटले स्टपवाच रोक्छ र शून्यमा फर्काउँछ। स्टपवाच मोडका सबै किबोर्ड स्क्रिनले एउटै स्टपवाच देखाउँछन्।</value></data>
+  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>रिसेटले स्टपवाच रोक्छ र शून्यमा फर्काउँछ। स्टपवाच मोडका सबै किबोर्ड स्क्रिन र स्क्रिन ओभरलेले एउटै स्टपवाच देखाउँछन्।</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>किबोर्ड स्क्रिन चित्र सार्नुहोस्</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>यस स्लटलाई इनपुट दिने प्रत्येक किबोर्ड स्क्रिनको झ्याल स्क्रिनभन्दा ठूलो चित्रमाथि सार्छ, जस्तै नक्साका लागि।</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>यस स्लटलाई इनपुट दिने प्रत्येक किबोर्ड स्क्रिनको झ्याल स्क्रिनभन्दा ठूलो चित्रमाथि सार्छ, जस्तै नक्साका लागि। जुम 100 प्रतिशतभन्दा माथि हुँदा स्क्रिन ओभरले पनि त्यसै गरी सर्छ।</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>तस्बिरहरू {0}, {1} px सार्नुहोस्</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>यस स्लटलाई इनपुट दिने र आफूभन्दा ठूलो छानिएको चित्र देखाउने प्रत्येक स्क्रिनलाई सार्छ। झ्याल चित्रको किनारमा रोकिन्छ।</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>यस स्लटलाई इनपुट दिने र आफूभन्दा ठूलो छानिएको चित्र देखाउने प्रत्येक स्क्रिनलाई सार्छ। झ्याल चित्रको किनारमा रोकिन्छ। जुम 100 प्रतिशतभन्दा माथि हुँदा स्क्रिन ओभरले सर्छ, जुनसुकै स्लटले म्याक्रो चलाए पनि।</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>स्क्रिन</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>कार्य</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>दिशा</value></data>
@@ -4899,7 +4899,17 @@ PadForge ले तिनलाई अहिले अनइन्स्टल �
   <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>ओभरलेले सक्रिय प्रोफाइलको आफ्नै चित्र देखाउँछ, चित्र नभए यसको नाम। प्रत्येक प्रोफाइलले आफ्नै चित्र राख्छ।</value></data>
   <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>ओभरलेले दिनको समय देखाउँछ।</value></data>
   <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>ओभरलेले सक्रिय प्रोफाइल लागू भएदेखिका घण्टा र मिनेट देखाउँछ। कुनै खेलको प्रोग्रामसँग जोडिएको प्रोफाइल खेल सुरु हुँदा लागू हुन्छ, त्यसैले गणना त्यही सत्रको हुन्छ। पूर्वनिर्धारित प्रोफाइलमा यो इन्जिन सुरु भएदेखि गनिन्छ।</value></data>
-  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>ओभरलेले तपाईंले छानेको चित्र अनुपात कायम राख्दै आफ्नो झ्याल भरिने गरी मिलाएर देखाउँछ।</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>ओभरलेले तपाईंले छानेको चित्र अनुपात कायम राख्दै आफ्नो झ्याल भरिने गरी मिलाएर देखाउँछ। 100 प्रतिशतभन्दा माथिको जुममा यसले चित्रको केही भाग देखाउँछ, जस्तै नक्साका लागि। किबोर्ड स्क्रिन चित्र सार्नुहोस् म्याक्रोले त्यो भाग सार्छ, र PadForge अगाडि हुँदा बायाँ माउस बटनले तान्दा पनि त्यो भाग सर्छ।</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>ओभरलेले स्टपवाच देखाउँछ, जसलाई स्टपवाच म्याक्रोले सुरु गर्छ, रोक्छ र रिसेट गर्छ। हरेक किबोर्ड स्क्रिनले देखाउने स्टपवाच पनि यही हो।</value></data>
-  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>ओभरलेले सबैभन्दा सानो नम्बरको स्लटमा रहेको DualShock 4 वा DualSense को लाइटबारको रङ देखाउँछ। लाइटबारमा कुनै रङ नपुगेसम्म यसले केही देखाउँदैन।</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>ओभरलेले तपाईंले यहाँ छानेको स्लटमा, वा रङ भएको सबैभन्दा सानो नम्बरको स्लटमा रहेको DualShock 4 वा DualSense को लाइटबारको रङ देखाउँछ। लाइटबारमा कुनै रङ नपुगेसम्म यसले केही देखाउँदैन।</value></data>
+  <data name="Dashboard_ScreenOverlay_Number_Format" xml:space="preserve"><value>स्क्रिन ओभरले {0}</value></data>
+  <data name="Dashboard_ScreenOverlayAdd" xml:space="preserve"><value>ओभरले थप्नुहोस्</value></data>
+  <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>रङ भएको सबैभन्दा सानो नम्बरको स्लट</value></data>
+  <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>जुम</value></data>
+  <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>कुनै चित्र छानिएको छैन।</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>लाइटबारको रङको प्रतीक्षा गर्दै।</value></data>
+  <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>ओभरले</value></data>
+  <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>सबै ओभरले</value></data>
+  <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>स्क्रिन ओभरले {0} टगल गर्नुहोस्</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>{0} तस्बिरहरू देखाउनुहोस्: {1} × {2} ms, अर्को म्याक्रोसम्म</value></data>
 </root>

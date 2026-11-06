@@ -4577,20 +4577,20 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Zobrazit na obrazovce klávesnice</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Přehraje obrázky na každé obrazovce klávesnice vybraného druhu, která napájí tento slot, a poté vrátí každou obrazovku do jejího režimu. Překryvná obrazovka je přebírá z libovolného slotu.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Zobrazit obrázky ({0}): {1} × {2} ms, počet opakování {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Obrázky se přizpůsobí obrazovce: 160 × 43 černobílých pixelů na monochromatické obrazovce, 320 × 240 na obrazovce G19 a 480 × 320 pro Arx Control a S.T.R.I.K.E. 7. Nejkratší doba snímku je desetina sekundy.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Obrázky se přizpůsobí obrazovce: 160 × 43 černobílých pixelů na monochromatické obrazovce, 320 × 240 na obrazovce G19 a 480 × 320 pro Arx Control a S.T.R.I.K.E. 7. Překryvná obrazovka zachovává tvar každého obrázku, nejvýše 800 pixelů na delší straně. Nejkratší doba snímku je desetina sekundy. Počet opakování 0 přehrává, dokud nepřijde další makro Zobrazit na obrazovce klávesnice nebo Režim obrazovky klávesnice.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Režim obrazovky klávesnice</value></data>
   <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Přepne každou obrazovku klávesnice vybraného druhu, která napájí tento slot, do jiného režimu a uloží ho jako nastavení této obrazovky. Překryvná obrazovka ho přebírá z libovolného slotu.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} zobrazuje: {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Režim zůstane, dokud ho nezmění jiné makro nebo dialog obrazovky.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Stopky</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Spustí nebo pozastaví, případně resetuje stopky, které zobrazují obrazovky klávesnice v režimu Stopky.</value></data>
+  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Spustí nebo pozastaví, případně resetuje stopky, které zobrazují obrazovky klávesnice a překryvné obrazovky v režimu Stopky.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>Spustit nebo pozastavit stopky</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>Resetovat stopky</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Reset zastaví stopky a nastaví je zpět na nulu. Všechny obrazovky klávesnice v režimu Stopky zobrazují stejné stopky.</value></data>
+  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Reset zastaví stopky a nastaví je zpět na nulu. Všechny obrazovky klávesnice a překryvné obrazovky v režimu Stopky zobrazují stejné stopky.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Posunout obrázek na obrazovce klávesnice</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Posune výřez každé obrazovky klávesnice, která napájí tento slot, po obrázku větším než obrazovka, například po mapě.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Posune výřez každé obrazovky klávesnice, která napájí tento slot, po obrázku větším než obrazovka, například po mapě. Překryvná obrazovka se posouvá stejně, pokud je zvětšení nad 100 procent.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Posunout obrázky o {0} × {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Posune každou obrazovku, která napájí tento slot a zobrazuje vybraný obrázek větší než ona sama. Výřez se zastaví na okrajích obrázku.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Posune každou obrazovku, která napájí tento slot a zobrazuje vybraný obrázek větší než ona sama. Výřez se zastaví na okrajích obrázku. Překryvná obrazovka se posouvá, pokud je zvětšení nad 100 procent, bez ohledu na to, který slot makro spouští.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Obrazovka</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Akce</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Směr</value></data>
@@ -4899,7 +4899,17 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>Překryvná obrazovka zobrazuje vlastní obrázek aktivního profilu, případně jeho název, pokud žádný obrázek nemá. Každý profil má svůj obrázek.</value></data>
   <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>Překryvná obrazovka zobrazuje čas.</value></data>
   <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>Překryvná obrazovka zobrazuje hodiny a minuty od přepnutí na aktivní profil. Profil svázaný s programem hry se přepne při spuštění hry, takže se počítá doba této relace. U výchozího profilu se počítá od spuštění enginu.</value></data>
-  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Překryvná obrazovka zobrazuje obrázek, který vyberete, zvětšený tak, aby vyplnil okno při zachování poměru stran.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Překryvná obrazovka zobrazuje obrázek, který vyberete, zvětšený tak, aby vyplnil okno při zachování poměru stran. Při zvětšení nad 100 procent zobrazuje jen část obrázku, například mapy. Tuto část posouvá makro Posunout obrázek na obrazovce klávesnice a také tažení levým tlačítkem myši, když je PadForge v popředí.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>Překryvná obrazovka zobrazuje stopky, které makro Stopky spouští, pozastavuje a resetuje. Jsou to stejné stopky, jaké zobrazují všechny obrazovky klávesnice.</value></data>
-  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Překryvná obrazovka zobrazuje barvu světelného panelu ovladače DualShock 4 nebo DualSense v nejnižším slotu. Dokud barva nedorazí na světelný panel, nezobrazuje nic.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Překryvná obrazovka zobrazuje barvu světelného panelu ovladače DualShock 4 nebo DualSense ve slotu, který zde vyberete, nebo v nejnižším slotu s barvou. Dokud barva nedorazí na světelný panel, nezobrazuje nic.</value></data>
+  <data name="Dashboard_ScreenOverlay_Number_Format" xml:space="preserve"><value>Překryvná obrazovka {0}</value></data>
+  <data name="Dashboard_ScreenOverlayAdd" xml:space="preserve"><value>Přidat překryv</value></data>
+  <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Nejnižší slot s barvou</value></data>
+  <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>Zvětšení</value></data>
+  <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>Nebyl vybrán žádný obrázek.</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Čeká se na barvu světelného panelu.</value></data>
+  <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Překryv</value></data>
+  <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Každý překryv</value></data>
+  <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Přepnout překryvnou obrazovku {0}</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Zobrazit obrázky ({0}): {1} × {2} ms, do dalšího makra</value></data>
 </root>

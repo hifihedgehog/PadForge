@@ -4577,20 +4577,20 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>కీబోర్డ్ స్క్రీన్ చూపు</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>ఈ స్లాట్‌కు ఇన్‌పుట్ ఇచ్చే, ఎంచుకున్న రకంలోని ప్రతి కీబోర్డ్ స్క్రీన్ మీద చిత్రాలను ప్లే చేసి, తర్వాత ప్రతి స్క్రీన్‌ను దాని స్వంత మోడ్‌కు తిరిగి పంపుతుంది. స్క్రీన్ ఓవర్లే వాటిని ఏ స్లాట్ నుండైనా తీసుకుంటుంది.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>{0} చిత్రాలు చూపు: {1} × {2} ms, పునరావృత సంఖ్య {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>చిత్రాలు స్క్రీన్కు సరిపోయేలా మార్చబడతాయి: మోనోక్రోమ్ స్క్రీన్లో 160 × 43 నలుపు-తెలుపు పిక్సెల్లు, G19 స్క్రీన్లో 320 × 240, Arx Control మరియు S.T.R.I.K.E. 7 కు 480 × 320. ఫ్రేమ్ సమయం కనీసం సెకనులో పదో వంతు.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>చిత్రాలు స్క్రీన్‌కు సరిపోయేలా మార్చబడతాయి: మోనోక్రోమ్ స్క్రీన్‌లో 160 × 43 నలుపు-తెలుపు పిక్సెల్‌లు, G19 స్క్రీన్‌లో 320 × 240, Arx Control మరియు S.T.R.I.K.E. 7 కు 480 × 320. స్క్రీన్ ఓవర్లే ప్రతి చిత్రం స్వంత ఆకారాన్ని ఉంచుతుంది, పొడవైన వైపు గరిష్ఠంగా 800 పిక్సెల్‌ల వరకు. ఫ్రేమ్ సమయం కనీసం సెకనులో పదో వంతు. పునరావృత సంఖ్య 0 అయితే, మరొక కీబోర్డ్ స్క్రీన్ చూపు లేదా కీబోర్డ్ స్క్రీన్ మోడ్ మాక్రో వచ్చే వరకు ప్లే అవుతూనే ఉంటుంది.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>కీబోర్డ్ స్క్రీన్ మోడ్</value></data>
   <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>ఈ స్లాట్‌కు ఇన్‌పుట్ ఇచ్చే, ఎంచుకున్న రకంలోని ప్రతి కీబోర్డ్ స్క్రీన్‌ను మరో మోడ్‌కు మారుస్తుంది మరియు దాన్ని ఆ స్క్రీన్ సెట్టింగ్‌గా ఉంచుతుంది. స్క్రీన్ ఓవర్లే దాన్ని ఏ స్లాట్ నుండైనా తీసుకుంటుంది.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} {1} చూపుతుంది</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>మరో మాక్రో లేదా స్క్రీన్ డైలాగ్ మార్చే వరకు మోడ్ అలాగే ఉంటుంది.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>స్టాప్వాచ్</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>కీబోర్డ్ స్క్రీన్లు స్టాప్వాచ్ మోడ్లో చూపే స్టాప్వాచ్ను ప్రారంభిస్తుంది లేదా పాజ్ చేస్తుంది, లేదా రీసెట్ చేస్తుంది.</value></data>
+  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>కీబోర్డ్ స్క్రీన్లు మరియు స్క్రీన్ ఓవర్లేలు స్టాప్‌వాచ్ మోడ్‌లో చూపే స్టాప్‌వాచ్‌ను ప్రారంభిస్తుంది లేదా పాజ్ చేస్తుంది, లేదా రీసెట్ చేస్తుంది.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>స్టాప్వాచ్ ప్రారంభించు లేదా పాజ్ చేయి</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>స్టాప్వాచ్ రీసెట్ చేయి</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>రీసెట్ స్టాప్వాచ్ను ఆపి సున్నాకు తిరిగి పెడుతుంది. స్టాప్వాచ్ మోడ్లోని ప్రతి కీబోర్డ్ స్క్రీన్ ఒకే స్టాప్వాచ్ను చూపుతుంది.</value></data>
+  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>రీసెట్ స్టాప్‌వాచ్‌ను ఆపి సున్నాకు తిరిగి పెడుతుంది. స్టాప్‌వాచ్ మోడ్‌లోని ప్రతి కీబోర్డ్ స్క్రీన్ మరియు స్క్రీన్ ఓవర్లే ఒకే స్టాప్‌వాచ్‌ను చూపుతాయి.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>కీబోర్డ్ స్క్రీన్ చిత్రాన్ని పాన్ చేయి</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>స్క్రీన్ కంటే పెద్ద చిత్రం మీద, ఈ స్లాట్కు ఇన్పుట్ ఇచ్చే ప్రతి కీబోర్డ్ స్క్రీన్ విండోను కదిలిస్తుంది, ఉదాహరణకు మ్యాప్ కోసం.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>స్క్రీన్ కంటే పెద్ద చిత్రం మీద, ఈ స్లాట్‌కు ఇన్‌పుట్ ఇచ్చే ప్రతి కీబోర్డ్ స్క్రీన్ విండోను కదిలిస్తుంది, ఉదాహరణకు మ్యాప్ కోసం. జూమ్ 100 శాతం కంటే ఎక్కువ ఉంటే స్క్రీన్ ఓవర్లే కూడా అదే విధంగా కదులుతుంది.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>చిత్రాలను {0} బై {1} px పాన్ చేయి</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>ఈ స్లాట్కు ఇన్పుట్ ఇచ్చే, తన కంటే పెద్ద ఎంచుకున్న చిత్రాన్ని చూపే ప్రతి స్క్రీన్ను కదిలిస్తుంది. విండో చిత్రం అంచుల వద్ద ఆగుతుంది.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>ఈ స్లాట్‌కు ఇన్‌పుట్ ఇచ్చే, తన కంటే పెద్ద ఎంచుకున్న చిత్రాన్ని చూపే ప్రతి స్క్రీన్‌ను కదిలిస్తుంది. విండో చిత్రం అంచుల వద్ద ఆగుతుంది. మాక్రోను ఏ స్లాట్ నడిపినా, జూమ్ 100 శాతం కంటే ఎక్కువ ఉంటే స్క్రీన్ ఓవర్లే కదులుతుంది.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>స్క్రీన్</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>చర్య</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>దిశ</value></data>
@@ -4899,7 +4899,17 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>ఓవర్లే చురుకైన ప్రొఫైల్ స్వంత చిత్రాన్ని చూపుతుంది, అది లేకపోతే దాని పేరును చూపుతుంది. ప్రతి ప్రొఫైల్ తన స్వంత చిత్రాన్ని ఉంచుకుంటుంది.</value></data>
   <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>ఓవర్లే రోజులోని సమయాన్ని చూపుతుంది.</value></data>
   <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>చురుకైన ప్రొఫైల్ మారినప్పటి నుండి గడిచిన గంటలు, నిమిషాలను ఓవర్లే చూపుతుంది. ఆటకు చెందిన ప్రోగ్రామ్‌తో ముడిపడిన ప్రొఫైల్ ఆట మొదలైనప్పుడు అమల్లోకి వస్తుంది, కాబట్టి లెక్క ఆ సెషన్‌దే. డిఫాల్ట్ ప్రొఫైల్‌లో ఇంజిన్ ప్రారంభం నుండి లెక్కిస్తుంది.</value></data>
-  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>ఓవర్లే మీరు ఎంచుకున్న చిత్రాన్ని చూపుతుంది; అది దాని నిష్పత్తులు మారకుండా విండోను నింపేలా సరిచేయబడుతుంది.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>ఓవర్లే మీరు ఎంచుకున్న చిత్రాన్ని చూపుతుంది; అది దాని నిష్పత్తులు మారకుండా విండోను నింపేలా సరిచేయబడుతుంది. జూమ్ 100 శాతం కంటే ఎక్కువ ఉంటే చిత్రంలో కొంత భాగాన్ని చూపుతుంది, ఉదాహరణకు మ్యాప్ కోసం. కీబోర్డ్ స్క్రీన్ చిత్రాన్ని పాన్ చేయి మాక్రో ఆ భాగాన్ని కదిలిస్తుంది, PadForge ముందు ఉన్నప్పుడు ఎడమ మౌస్ బటన్‌తో లాగినా కదులుతుంది.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>స్టాప్‌వాచ్ మాక్రో ప్రారంభించే, పాజ్ చేసే, రీసెట్ చేసే స్టాప్‌వాచ్‌ను ఓవర్లే చూపుతుంది. ప్రతి కీబోర్డ్ స్క్రీన్ చూపేది ఇదే స్టాప్‌వాచ్.</value></data>
-  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>అతి తక్కువ స్లాట్‌లోని DualShock 4 లేదా DualSense లైట్ బార్ రంగును ఓవర్లే చూపుతుంది. లైట్ బార్‌కు రంగు చేరే వరకు ఏమీ చూపదు.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>ఇక్కడ మీరు ఎంచుకున్న స్లాట్‌లోని, లేదా రంగు ఉన్న అతి తక్కువ స్లాట్‌లోని DualShock 4 లేదా DualSense లైట్ బార్ రంగును ఓవర్లే చూపుతుంది. లైట్ బార్‌కు రంగు చేరే వరకు ఏమీ చూపదు.</value></data>
+  <data name="Dashboard_ScreenOverlay_Number_Format" xml:space="preserve"><value>స్క్రీన్ ఓవర్లే {0}</value></data>
+  <data name="Dashboard_ScreenOverlayAdd" xml:space="preserve"><value>ఓవర్లే జోడించు</value></data>
+  <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>రంగు ఉన్న అతి తక్కువ స్లాట్</value></data>
+  <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>జూమ్</value></data>
+  <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>చిత్రం ఎంచుకోలేదు.</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>లైట్ బార్ రంగు కోసం వేచి ఉంది.</value></data>
+  <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>ఓవర్లే</value></data>
+  <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>ప్రతి ఓవర్లే</value></data>
+  <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>స్క్రీన్ ఓవర్లే {0}ను టోగుల్ చేయి</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>{0} చిత్రాలు చూపు: {1} × {2} ms, తదుపరి మాక్రో వరకు</value></data>
 </root>

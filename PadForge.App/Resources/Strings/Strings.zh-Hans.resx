@@ -4528,20 +4528,20 @@
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>显示键盘屏幕</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>在所选类型中为此槽位提供输入的每个键盘屏幕上播放图片，然后让每个屏幕回到各自的模式。屏幕叠加层可从任意槽位获取这些图片。</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>显示 {0} 图片：{1} × {2} 毫秒，重复 {3} 次</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>图片会适配屏幕：单色屏幕为 160 × 43 黑白像素，G19 的屏幕为 320 × 240，Arx Control 和 S.T.R.I.K.E. 7 为 480 × 320。每张最短时长为十分之一秒。</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>图片会适配屏幕：单色屏幕为 160 × 43 黑白像素，G19 的屏幕为 320 × 240，Arx Control 和 S.T.R.I.K.E. 7 为 480 × 320。屏幕叠加层保持每张图片自身的形状，长边最多 800 像素。每张最短时长为十分之一秒。重复次数为 0 时会一直播放，直到出现另一个“显示键盘屏幕”或“键盘屏幕模式”宏。</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>键盘屏幕模式</value></data>
   <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>将所选类型中为此槽位提供输入的每个键盘屏幕切换到另一种模式，并保存为该屏幕的设置。屏幕叠加层可从任意槽位获取该设置。</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} 显示 {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>该模式会一直保持，直到其他宏或该屏幕的对话框更改它。</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>秒表</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>启动或暂停，或重置处于“秒表”模式的键盘屏幕所显示的秒表。</value></data>
+  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>启动或暂停，或重置处于“秒表”模式的键盘屏幕和屏幕叠加层所显示的秒表。</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>启动或暂停秒表</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>重置秒表</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>重置会停止秒表并将其归零。处于“秒表”模式的所有键盘屏幕显示的是同一个秒表。</value></data>
+  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>重置会停止秒表并将其归零。处于“秒表”模式的所有键盘屏幕和屏幕叠加层显示的是同一个秒表。</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>平移键盘屏幕图片</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>让为此槽位提供输入的每个键盘屏幕的窗口在比屏幕大的图片上移动，例如用于地图。</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>让为此槽位提供输入的每个键盘屏幕的窗口在比屏幕大的图片上移动，例如用于地图。缩放高于 100% 时，屏幕叠加层的移动方式相同。</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>平移图片 {0}，{1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>移动为此槽位提供输入、且显示了比自身更大的所选图片的每个屏幕。窗口会停在图片的边缘。</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>移动为此槽位提供输入、且显示了比自身更大的所选图片的每个屏幕。窗口会停在图片的边缘。缩放高于 100% 时，屏幕叠加层会移动，无论由哪个槽位运行该宏。</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>屏幕</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>操作</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>方向</value></data>
@@ -4850,7 +4850,17 @@
   <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>叠加层显示当前配置文件自己的图片，没有图片时显示其名称。每个配置文件保存各自的图片。</value></data>
   <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>叠加层显示当前时间。</value></data>
   <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>叠加层显示自当前配置文件切入以来的小时和分钟数。绑定到某个游戏程序的配置文件会在游戏启动时切入，因此计时就是这一次游戏。在默认配置文件下，则从引擎启动时开始计时。</value></data>
-  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>叠加层显示你选择的图片，按比例缩放以填满其窗口。</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>叠加层显示你选择的图片，按比例缩放以填满其窗口。缩放高于 100% 时，它只显示图片的一部分，例如用于地图。“平移键盘屏幕图片”宏可移动该部分，在 PadForge 位于前台时按住鼠标左键拖动也可以。</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>叠加层显示秒表，秒表由“秒表”宏启动、暂停和重置。所有键盘屏幕显示的是同一个秒表。</value></data>
-  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>叠加层显示最低编号插槽中 DualShock 4 或 DualSense 灯条的颜色。在颜色传到灯条之前，它不显示任何内容。</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>叠加层显示你在此处选择的槽位中 DualShock 4 或 DualSense 灯条的颜色，或有颜色的最低槽位中的灯条颜色。在颜色传到灯条之前，它不显示任何内容。</value></data>
+  <data name="Dashboard_ScreenOverlay_Number_Format" xml:space="preserve"><value>屏幕叠加层 {0}</value></data>
+  <data name="Dashboard_ScreenOverlayAdd" xml:space="preserve"><value>添加叠加层</value></data>
+  <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>有颜色的最低槽位</value></data>
+  <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>缩放</value></data>
+  <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>未选择图片。</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>正在等待灯条颜色。</value></data>
+  <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>叠加层</value></data>
+  <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>所有叠加层</value></data>
+  <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>切换屏幕叠加层 {0}</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>显示 {0} 图片：{1} × {2} 毫秒，直到下一个宏</value></data>
 </root>

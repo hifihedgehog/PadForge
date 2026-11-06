@@ -4352,22 +4352,15 @@
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>ការទាញយក SDK S.T.R.I.K.E. 7 មិនត្រូវគ្នានឹង SHA-256 ដែលគេស្គាល់ទេ ដូច្នេះមិនបានរក្សាទុកអ្វីពីវាឡើយ។</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>កម្មវិធីដំណើរការ Visual C++ 2008 នៅតែខ្វះ បន្ទាប់ពីកម្មវិធីដំឡើងរបស់វាបានដំណើរការរួច។</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>បង្ហាញអេក្រង់ក្ដារចុច</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>ចាក់រូបភាពលើអេក្រង់ក្ដារចុចនីមួយៗនៃប្រភេទដែលបានជ្រើស ដែលផ្ដល់ទិន្នន័យដល់រន្ធនេះ បន្ទាប់មកប្រគល់អេក្រង់នីមួយៗទៅរបៀបរបស់វាវិញ។</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>បង្ហាញរូបភាព {0}៖ {1} × {2} ms ចំនួនដងធ្វើម្ដងទៀត {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>រូបភាពត្រូវបានធ្វើឲ្យសមនឹងអេក្រង់៖ 160 គុណ 43 ភីកសែលខ្មៅស លើអេក្រង់ខ្មៅស 320 គុណ 240 លើអេក្រង់របស់ G19 និង 480 គុណ 320 សម្រាប់ Arx Control និង S.T.R.I.K.E. 7។ មួយភាគដប់នៃវិនាទី គឺជារយៈពេលស៊ុមខ្លីបំផុត។</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>របៀបអេក្រង់ក្ដារចុច</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>ប្ដូរអេក្រង់ក្ដារចុចនីមួយៗនៃប្រភេទដែលបានជ្រើស ដែលផ្ដល់ទិន្នន័យដល់រន្ធនេះ ទៅរបៀបផ្សេង ហើយរក្សាវាទុកជាការកំណត់របស់អេក្រង់នោះ។</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} បង្ហាញ {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>របៀបនេះនៅដដែល រហូតដល់ម៉ាក្រូផ្សេង ឬប្រអប់សន្ទនារបស់អេក្រង់ប្ដូរវា។</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>នាឡិកាវាស់ពេល</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>ចាប់ផ្ដើម ឬផ្អាក ឬកំណត់ឡើងវិញ នូវនាឡិកាវាស់ពេលដែលអេក្រង់ក្ដារចុចក្នុងរបៀប «នាឡិកាវាស់ពេល» បង្ហាញ។</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>ចាប់ផ្ដើម ឬផ្អាកនាឡិកាវាស់ពេល</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>កំណត់នាឡិកាវាស់ពេលឡើងវិញ</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>«កំណត់ឡើងវិញ» បញ្ឈប់នាឡិកាវាស់ពេល ហើយកំណត់វាត្រឡប់ទៅសូន្យវិញ។ អេក្រង់ក្ដារចុចទាំងអស់ក្នុងរបៀប «នាឡិកាវាស់ពេល» បង្ហាញនាឡិកាវាស់ពេលតែមួយ។</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>រំកិលរូបភាពអេក្រង់ក្ដារចុច</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>ផ្លាស់ទីផ្ទាំងរបស់អេក្រង់ក្ដារចុចនីមួយៗដែលផ្ដល់ទិន្នន័យដល់រន្ធនេះ លើរូបភាពដែលធំជាងអេក្រង់ ដូចជាផែនទី។</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>រំកិលរូបភាព {0} និង {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>ផ្លាស់ទីអេក្រង់នីមួយៗដែលផ្ដល់ទិន្នន័យដល់រន្ធនេះ ហើយបង្ហាញរូបភាពដែលបានជ្រើសដែលធំជាងខ្លួន។ ផ្ទាំងឈប់នៅគែមរូបភាព។</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>អេក្រង់</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>សកម្មភាព</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>ទិសដៅ</value></data>

@@ -4313,22 +4313,15 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>S.T.R.I.K.E. 7 SDK බාගැනීම එහි දන්නා SHA-256 සමඟ නොගැළපේ, එබැවින් එයින් කිසිවක් තබා ගත්තේ නැත.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>Visual C++ 2008 ධාවන කාලය එහි ස්ථාපකය ධාවනය වූ පසුත් තවමත් නොමැත.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>යතුරුපුවරු තිරය පෙන්වන්න</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>මෙම ස්ලොට් එකට ආදානය සපයන, තෝරාගත් වර්ගයේ සෑම යතුරුපුවරු තිරයක් මතම පින්තූර පෙන්වා, පසුව සෑම තිරයක්ම එහිම ප්‍රකාරයට ආපසු හරවයි.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>{0} පින්තූර පෙන්වන්න: {1} × {2} ms, පුනරාවර්තන ගණන {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>පින්තූර තිරයට ගැළපෙන සේ සකසනු ලැබේ: ඒකවර්ණ තිරයක කළු සහ සුදු පික්සල 160 × 43, G19 හි 320 × 240, සහ Arx Control සහ S.T.R.I.K.E. 7 සඳහා 480 × 320. කෙටිම රාමු කාලය තත්පරයෙන් දහයෙන් පංගුවකි.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>යතුරුපුවරු තිර ප්‍රකාරය</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>මෙම ස්ලොට් එකට ආදානය සපයන, තෝරාගත් වර්ගයේ සෑම යතුරුපුවරු තිරයක්ම වෙනත් ප්‍රකාරයකට මාරු කර, එය එම තිරයේ සැකසුම ලෙස තබා ගනී.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} {1} පෙන්වයි</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>වෙනත් මැක්‍රෝවක් හෝ තිරයේ සංවාද කොටුව එය වෙනස් කරන තුරු ප්‍රකාරය එලෙසම පවතී.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>විරාම ඔරලෝසුව</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>විරාම ඔරලෝසුව ප්‍රකාරයේ ඇති යතුරුපුවරු තිර පෙන්වන විරාම ඔරලෝසුව ආරම්භ කරයි හෝ විරාම කරයි, නැතහොත් යළි සකසයි.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>විරාම ඔරලෝසුව ආරම්භ හෝ විරාම කරන්න</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>විරාම ඔරලෝසුව යළි සකසන්න</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>යළි සැකසීම විරාම ඔරලෝසුව නවත්වා එය නැවත බිංදුවට සකසයි. විරාම ඔරලෝසුව ප්‍රකාරයේ ඇති සෑම යතුරුපුවරු තිරයක්ම එකම විරාම ඔරලෝසුව පෙන්වයි.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>යතුරුපුවරු තිර පින්තූරය ගෙනයන්න</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>සිතියමක් සඳහා මෙන්, මෙම ස්ලොට් එකට ආදානය සපයන සෑම යතුරුපුවරු තිරයකම කවුළුව, තිරයට වඩා විශාල පින්තූරයක් මත චලනය කරයි.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>පින්තූර {0} සහ {1} px කින් ගෙනයන්න</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>මෙම ස්ලොට් එකට ආදානය සපයන, තමාට වඩා විශාල තෝරාගත් පින්තූරයක් පෙන්වන සෑම තිරයක්ම චලනය කරයි. කවුළුව පින්තූරයේ දාරවලදී නතර වේ.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>තිරය</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>ක්‍රියාව</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>දිශාව</value></data>

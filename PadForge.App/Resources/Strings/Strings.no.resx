@@ -4577,20 +4577,20 @@ Vil du at PadForge skal avinstallere dem nå? Dette krever administratorrettighe
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Vis tastaturskjerm</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Spiller av bilder på hver tastaturskjerm av den valgte typen som forsyner dette sporet, og setter deretter hver skjerm tilbake til sin egen modus. Skjermoverlegget henter dem fra alle spor.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Vis bilder på {0}: {1} × {2} ms, gjentakelser {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Bilder tilpasses skjermen: 160 × 43 svart-hvite piksler på en monokrom skjerm, 320 × 240 på G19, og 480 × 320 for Arx Control og S.T.R.I.K.E. 7. Et tidels sekund er korteste bildetid.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Bilder tilpasses skjermen: 160 × 43 svart-hvite piksler på en monokrom skjerm, 320 × 240 på G19, og 480 × 320 for Arx Control og S.T.R.I.K.E. 7. Et skjermoverlegg beholder hvert bildes egen form, opptil 800 piksler på den lengste siden. Et tidels sekund er korteste bildetid. Antall gjentakelser på 0 fortsetter å spille til en ny Vis tastaturskjerm- eller Tastaturskjermmodus-makro.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Tastaturskjermmodus</value></data>
   <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Bytter hver tastaturskjerm av den valgte typen som forsyner dette sporet, til en annen modus, og beholder den som skjermens innstilling. Skjermoverlegget henter den fra alle spor.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} viser {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Modusen blir stående til en annen makro eller skjermens dialog endrer den.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Stoppeklokke</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Starter eller setter på pause, eller nullstiller, stoppeklokken som tastaturskjermer i stoppeklokkemodus viser.</value></data>
+  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Starter eller setter på pause, eller nullstiller, stoppeklokken som tastaturskjermer og skjermoverlegg i stoppeklokkemodus viser.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>Start eller pause stoppeklokken</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>Nullstill stoppeklokken</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Nullstilling stopper stoppeklokken og setter den tilbake til null. Alle tastaturskjermer i stoppeklokkemodus viser den samme stoppeklokken.</value></data>
+  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Nullstilling stopper stoppeklokken og setter den tilbake til null. Alle tastaturskjermer og skjermoverlegg i stoppeklokkemodus viser den samme stoppeklokken.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Panorer bilde på tastaturskjerm</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Flytter utsnittet til hver tastaturskjerm som forsyner dette sporet, over et bilde som er større enn skjermen, for eksempel et kart.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Flytter utsnittet til hver tastaturskjerm som forsyner dette sporet, over et bilde som er større enn skjermen, for eksempel et kart. Et skjermoverlegg flyttes på samme måte når zoomen er over 100 prosent.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Panorer bilder med {0} × {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Flytter hver skjerm som forsyner dette sporet og viser et valgt bilde som er større enn skjermen. Utsnittet stopper ved kanten av bildet.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Flytter hver skjerm som forsyner dette sporet og viser et valgt bilde som er større enn skjermen. Utsnittet stopper ved kanten av bildet. Et skjermoverlegg flyttes når zoomen er over 100 prosent, uansett hvilket spor som kjører makroen.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Skjerm</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Handling</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Retning</value></data>
@@ -4899,7 +4899,17 @@ Vil du at PadForge skal avinstallere dem nå? Dette krever administratorrettighe
   <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>Overlegget viser bildet til den aktive profilen, eller navnet når profilen ikke har noe bilde. Hver profil har sitt eget bilde.</value></data>
   <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>Overlegget viser klokkeslettet.</value></data>
   <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>Overlegget viser timer og minutter siden den aktive profilen ble byttet inn. En profil som er knyttet til et spillprogram, byttes inn når spillet starter, så telleren viser den økten. Under standardprofilen teller den fra programmets oppstart.</value></data>
-  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Overlegget viser et bilde du velger, skalert til å fylle vinduet med bevarte proporsjoner.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Overlegget viser et bilde du velger, skalert til å fylle vinduet med bevarte proporsjoner. Over 100 prosent zoom viser det en del av bildet, for eksempel et kart. Makroen Panorer bilde på tastaturskjerm flytter denne delen, og det gjør også å dra med venstre museknapp mens PadForge er i forgrunnen.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>Overlegget viser stoppeklokken, som makroen Stoppeklokke starter, setter på pause og nullstiller. Det er den samme stoppeklokken som alle tastaturskjermer viser.</value></data>
-  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Overlegget viser fargen på lyslisten til DualShock 4- eller DualSense-kontrolleren i det laveste sporet. Inntil en farge når en lyslist, viser det ingenting.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Overlegget viser fargen på lyslisten til DualShock 4- eller DualSense-kontrolleren i sporet du velger her, eller i det laveste sporet med en farge. Inntil en farge når en lyslist, viser det ingenting.</value></data>
+  <data name="Dashboard_ScreenOverlay_Number_Format" xml:space="preserve"><value>Skjermoverlegg {0}</value></data>
+  <data name="Dashboard_ScreenOverlayAdd" xml:space="preserve"><value>Legg til overlegg</value></data>
+  <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Laveste spor med en farge</value></data>
+  <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>Zoom</value></data>
+  <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>Ingen bilde valgt.</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Venter på en lyslistfarge.</value></data>
+  <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Overlegg</value></data>
+  <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Alle overlegg</value></data>
+  <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Vis/skjul skjermoverlegg {0}</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Vis bilder på {0}: {1} × {2} ms, til neste makro</value></data>
 </root>

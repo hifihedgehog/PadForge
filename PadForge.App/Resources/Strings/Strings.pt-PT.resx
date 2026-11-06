@@ -4357,22 +4357,15 @@ Pretende que o PadForge os desinstale agora? Esta operação requer elevação e
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>A transferência do SDK do S.T.R.I.K.E. 7 não corresponde ao SHA-256 conhecido, pelo que nada dela foi guardado.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>O runtime do Visual C++ 2008 continua em falta depois de o instalador ser executado.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Mostrar ecrã do teclado</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Reproduz imagens em cada ecrã do teclado do tipo escolhido que alimente este slot e depois devolve cada ecrã ao seu próprio modo.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Mostrar imagens de {0}: {1} × {2} ms, número de repetições {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>As imagens são ajustadas ao ecrã: 160 por 43 píxeis a preto e branco num ecrã monocromático, 320 por 240 no do G19 e 480 por 320 no Arx Control e no S.T.R.I.K.E. 7. Um décimo de segundo é o tempo mínimo por imagem.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Modo do ecrã do teclado</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Muda para outro modo cada ecrã do teclado do tipo escolhido que alimente este slot e guarda-o como definição desse ecrã.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} mostra {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>O modo mantém-se até outra macro ou a caixa de diálogo do ecrã o alterar.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Cronómetro</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Inicia ou pausa, ou repõe, o cronómetro que os ecrãs do teclado no modo Cronómetro mostram.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>Iniciar ou pausar cronómetro</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>Repor cronómetro</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Repor para o cronómetro e põe-no a zero. Todos os ecrãs do teclado no modo Cronómetro mostram o mesmo cronómetro.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Deslocar imagem do ecrã do teclado</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Move a janela de cada ecrã do teclado que alimente este slot sobre uma imagem maior do que o ecrã, por exemplo um mapa.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Deslocar imagens {0} por {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Move cada ecrã que alimente este slot e mostre uma imagem escolhida maior do que o próprio ecrã. A janela não passa dos limites da imagem.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Ecrã</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Ação</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Direção</value></data>

@@ -4317,22 +4317,15 @@
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>S.T.R.I.K.E. 7 SDK-ի ներբեռնումը չի համապատասխանում հայտնի SHA-256-ին, ուստի դրանից ոչինչ չպահվեց։</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>Visual C++ 2008 runtime-ը դեռ բացակայում է տեղադրիչի աշխատելուց հետո։</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Ցուցադրել ստեղնաշարի էկրանը</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Նկարներ է ցուցադրում այս սլոթը սնուցող՝ ընտրված տեսակի յուրաքանչյուր ստեղնաշարի էկրանի վրա, ապա յուրաքանչյուր էկրանին վերադարձնում է իր ռեժիմը։</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Ցուցադրել {0} պատկերներ՝ {1} × {2} մվ, կրկնությունների քանակ՝ {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Պատկերները հարմարեցվում են էկրանին՝ 160 × 43 սև-սպիտակ պիքսել միագույն էկրանի վրա, 320 × 240 G19-ի վրա և 480 × 320 Arx Control-ի ու S.T.R.I.K.E. 7-ի համար։ Կադրի ամենակարճ տևողությունը մեկ տասներորդ վայրկյանն է։</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Ստեղնաշարի էկրանի ռեժիմ</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Այս սլոթը սնուցող՝ ընտրված տեսակի յուրաքանչյուր ստեղնաշարի էկրան փոխարկում է այլ ռեժիմի և պահում այն որպես այդ էկրանի կարգավորում։</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0}-ը ցույց է տալիս {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Ռեժիմը մնում է, մինչև մեկ այլ մակրո կամ էկրանի երկխոսությունը այն փոխի։</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Վայրկենաչափ</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Մեկնարկում կամ դադարեցնում է, կամ զրոյացնում է այն վայրկենաչափը, որը ցույց են տալիս «Վայրկենաչափ» ռեժիմի ստեղնաշարի էկրանները։</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>Մեկնարկել կամ դադարեցնել վայրկենաչափը</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>Զրոյացնել վայրկենաչափը</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Զրոյացումը կանգնեցնում է վայրկենաչափը և վերադարձնում զրոյի։ «Վայրկենաչափ» ռեժիմի բոլոր ստեղնաշարի էկրանները ցույց են տալիս նույն վայրկենաչափը։</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Տեղաշարժել ստեղնաշարի էկրանի պատկերը</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Տեղաշարժում է այս սլոթը սնուցող յուրաքանչյուր ստեղնաշարի էկրանի պատուհանը էկրանից մեծ պատկերի վրա, օրինակ՝ քարտեզի համար։</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Տեղաշարժել պատկերները {0} × {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Տեղաշարժում է այս սլոթը սնուցող և իրենից մեծ ընտրված պատկեր ցույց տվող յուրաքանչյուր էկրան։ Պատուհանը կանգ է առնում պատկերի եզրերին։</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Էկրան</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Գործողություն</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Ուղղություն</value></data>

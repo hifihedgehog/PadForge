@@ -17,6 +17,7 @@ namespace PadForge.ViewModels
         public DashboardViewModel()
         {
             Title = Strings.Instance.Dashboard_Title;
+            ScreenOverlays.Add(new ScreenOverlayItem(this, 1));
             // SlotSummaries starts empty; populated dynamically by RefreshActiveSlots().
         }
 
@@ -25,7 +26,7 @@ namespace PadForge.ViewModels
             Title = Strings.Instance.Dashboard_Title;
             OnPropertyChanged(nameof(PollingFrequencyText));
             OnPropertyChanged(nameof(TouchpadOverlayStatus));
-            OnPropertyChanged(nameof(ScreenOverlayStatus));
+            foreach (var overlay in ScreenOverlays) overlay.RefreshText();
             // The runtime picker's System Default row kept the previous
             // language's word, the audio mirror picker's old defect. A list
             // nobody has read yet is built in the new language anyway.
@@ -1695,130 +1696,122 @@ namespace PadForge.ViewModels
             _isTouchpadOverlayRunning ? Strings.Instance.Common_Running : Strings.Instance.Common_Stopped;
 
         // ─────────────────────────────────────────────
-        //  Screen Overlay (#560)
+        //  Screen Overlays (#560)
         // ─────────────────────────────────────────────
 
-        private bool _enableScreenOverlay;
+        /// <summary>The overlays on the card. There is always at least one, so the
+        /// card reads like the Touchpad Overlay's until someone adds another.</summary>
+        public ObservableCollection<ScreenOverlayItem> ScreenOverlays { get; } = new();
 
-        /// <summary>Whether the Screen Overlay is enabled (visible). Its macros
-        /// run with no keyboard screen in the picture, so this opens the macro
-        /// queue as the Keyboard Screens switch does.</summary>
-        public bool EnableScreenOverlay
+        /// <summary>Raised when the user clicks an overlay's Reset Position. The
+        /// handler in InputService recenters a live overlay, or clears the saved
+        /// place when it is not showing.</summary>
+        public event EventHandler<ScreenOverlayItem> ResetScreenOverlayPositionRequested;
+
+        /// <summary>Raised when the user clicks an overlay's Choose What It Shows.</summary>
+        public event EventHandler<ScreenOverlayItem> ChooseScreenOverlayContentRequested;
+
+        internal void RequestScreenOverlayResetPosition(ScreenOverlayItem item)
+            => ResetScreenOverlayPositionRequested?.Invoke(this, item);
+
+        internal void RequestScreenOverlayChoose(ScreenOverlayItem item)
+            => ChooseScreenOverlayContentRequested?.Invoke(this, item);
+
+        private RelayCommand _addScreenOverlayCommand;
+        public RelayCommand AddScreenOverlayCommand =>
+            _addScreenOverlayCommand ??= new RelayCommand(AddScreenOverlay);
+
+        public bool CanAddScreenOverlay
+            => ScreenOverlays.Count < PadForge.Common.Input.KeyboardScreens.KeyboardScreenInfo.MaxOverlays;
+
+        /// <summary>A new overlay takes the lowest free number, so a macro that names
+        /// a number finds the overlay that took it.</summary>
+        internal void AddScreenOverlay()
         {
-            get => _enableScreenOverlay;
-            set
+            if (!CanAddScreenOverlay) return;
+            int number = 1;
+            while (FindScreenOverlay(number) != null) number++;
+            int at = 0;
+            while (at < ScreenOverlays.Count && ScreenOverlays[at].Number < number) at++;
+            ScreenOverlays.Insert(at, new ScreenOverlayItem(this, number));
+            ScreenOverlayListChanged();
+        }
+
+        internal void RemoveScreenOverlay(ScreenOverlayItem item)
+        {
+            if (ScreenOverlays.Count <= 1) return;
+            ScreenOverlays.Remove(item);
+            ScreenOverlayListChanged();
+        }
+
+        internal ScreenOverlayItem FindScreenOverlay(int number)
+        {
+            foreach (var item in ScreenOverlays)
+                if (item.Number == number) return item;
+            return null;
+        }
+
+        /// <summary>The numbers on the card, for a macro that names every overlay.</summary>
+        internal int[] ScreenOverlayNumbers()
+        {
+            var numbers = new int[ScreenOverlays.Count];
+            for (int i = 0; i < numbers.Length; i++) numbers[i] = ScreenOverlays[i].Number;
+            return numbers;
+        }
+
+        /// <summary>The list for the settings file.</summary>
+        internal PadForge.Services.ScreenOverlayData[] SnapshotScreenOverlays()
+        {
+            var data = new PadForge.Services.ScreenOverlayData[ScreenOverlays.Count];
+            for (int i = 0; i < data.Length; i++) data[i] = ScreenOverlays[i].ToData();
+            return data;
+        }
+
+        /// <summary>Takes a list from the settings file. A file or profile from before
+        /// these existed has none, which is one overlay, off. An entry whose number
+        /// is out of range or already taken is dropped.</summary>
+        internal void LoadScreenOverlays(PadForge.Services.ScreenOverlayData[] data)
+        {
+            _loadingScreenOverlays = true;
+            try
             {
-                if (SetProperty(ref _enableScreenOverlay, value))
-                    PadForge.Common.Input.KeyboardScreensRuntime.OverlayEnabled = value;
+                ScreenOverlays.Clear();
+                if (data != null)
+                {
+                    foreach (var entry in data)
+                    {
+                        if (entry == null || entry.Number < 1
+                            || entry.Number > PadForge.Common.Input.KeyboardScreens.KeyboardScreenInfo.MaxOverlays
+                            || FindScreenOverlay(entry.Number) != null) continue;
+                        int at = 0;
+                        while (at < ScreenOverlays.Count && ScreenOverlays[at].Number < entry.Number) at++;
+                        var item = new ScreenOverlayItem(this, entry.Number);
+                        ScreenOverlays.Insert(at, item);
+                        item.Load(entry);
+                    }
+                }
+                if (ScreenOverlays.Count == 0) ScreenOverlays.Add(new ScreenOverlayItem(this, 1));
             }
+            finally { _loadingScreenOverlays = false; }
+            ScreenOverlayListChanged();
         }
 
-        /// <summary>The opacity a new Screen Overlay starts at.</summary>
-        public const double DefaultScreenOverlayOpacity = 0.8;
+        private bool _loadingScreenOverlays;
 
-        private double _screenOverlayOpacity = DefaultScreenOverlayOpacity;
-
-        /// <summary>Opacity of what the Screen Overlay shows (0.0–1.0).</summary>
-        public double ScreenOverlayOpacity
+        private void ScreenOverlayListChanged()
         {
-            get => _screenOverlayOpacity;
-            set
-            {
-                if (SetProperty(ref _screenOverlayOpacity, Math.Clamp(value, 0.0, 1.0)))
-                    OnPropertyChanged(nameof(ScreenOverlayOpacityPercent));
-            }
+            foreach (var item in ScreenOverlays) item.RefreshOneOfSeveral();
+            OnPropertyChanged(nameof(CanAddScreenOverlay));
+            ScreenOverlayEdited();
         }
 
-        /// <summary>Opacity as 0–100 integer percentage for NumberBox binding.</summary>
-        public int ScreenOverlayOpacityPercent
+        /// <summary>A saved value of an overlay changed. The property change marks the
+        /// settings dirty and tells InputService to bring the windows into
+        /// line.</summary>
+        internal void ScreenOverlayEdited()
         {
-            get => (int)Math.Round(_screenOverlayOpacity * 100);
-            set => ScreenOverlayOpacity = value / 100.0;
+            if (!_loadingScreenOverlays) OnPropertyChanged(nameof(ScreenOverlays));
         }
-
-        private RelayCommand _resetScreenOverlayOpacityCommand;
-        public RelayCommand ResetScreenOverlayOpacityCommand =>
-            _resetScreenOverlayOpacityCommand ??= new RelayCommand(() => ScreenOverlayOpacity = DefaultScreenOverlayOpacity);
-
-        /// <summary>Raised when the user clicks Reset Position. Handler in
-        /// InputService recenters the live overlay, or clears the saved place
-        /// when it is not showing.</summary>
-        public event EventHandler ResetScreenOverlayPositionRequested;
-
-        private RelayCommand _resetScreenOverlayPositionCommand;
-        public RelayCommand ResetScreenOverlayPositionCommand =>
-            _resetScreenOverlayPositionCommand ??= new RelayCommand(() =>
-                ResetScreenOverlayPositionRequested?.Invoke(this, EventArgs.Empty));
-
-        /// <summary>Raised when the user clicks Choose What It Shows.</summary>
-        public event EventHandler ChooseScreenOverlayContentRequested;
-
-        private RelayCommand _chooseScreenOverlayContentCommand;
-        public RelayCommand ChooseScreenOverlayContentCommand =>
-            _chooseScreenOverlayContentCommand ??= new RelayCommand(() =>
-                ChooseScreenOverlayContentRequested?.Invoke(this, EventArgs.Empty));
-
-        private int _screenOverlayMonitor;
-
-        /// <summary>Monitor index for the Screen Overlay (0 = primary).</summary>
-        public int ScreenOverlayMonitor
-        {
-            get => _screenOverlayMonitor;
-            set => SetProperty(ref _screenOverlayMonitor, value);
-        }
-
-        private double _screenOverlayLeft = PadForge.Views.OverlayPlacement.NoPlace;
-
-        /// <summary>The window's left edge, or
-        /// <see cref="PadForge.Views.OverlayPlacement.NoPlace"/> with no saved place
-        /// yet.</summary>
-        public double ScreenOverlayLeft
-        {
-            get => _screenOverlayLeft;
-            set => SetProperty(ref _screenOverlayLeft, value);
-        }
-
-        private double _screenOverlayTop = PadForge.Views.OverlayPlacement.NoPlace;
-
-        /// <summary>The window's top edge, or
-        /// <see cref="PadForge.Views.OverlayPlacement.NoPlace"/> with no saved place
-        /// yet.</summary>
-        public double ScreenOverlayTop
-        {
-            get => _screenOverlayTop;
-            set => SetProperty(ref _screenOverlayTop, value);
-        }
-
-        private double _screenOverlayWidth = 320;
-        public double ScreenOverlayWidth
-        {
-            get => _screenOverlayWidth;
-            set => SetProperty(ref _screenOverlayWidth, Math.Max(80, value));
-        }
-
-        private double _screenOverlayHeight = 240;
-        public double ScreenOverlayHeight
-        {
-            get => _screenOverlayHeight;
-            set => SetProperty(ref _screenOverlayHeight, Math.Max(60, value));
-        }
-
-        private bool _isScreenOverlayRunning;
-
-        /// <summary>True when the overlay window is currently shown. Drives
-        /// the localized ScreenOverlayStatus text below.</summary>
-        public bool IsScreenOverlayRunning
-        {
-            get => _isScreenOverlayRunning;
-            set
-            {
-                if (SetProperty(ref _isScreenOverlayRunning, value))
-                    OnPropertyChanged(nameof(ScreenOverlayStatus));
-            }
-        }
-
-        public string ScreenOverlayStatus =>
-            _isScreenOverlayRunning ? Strings.Instance.Common_Running : Strings.Instance.Common_Stopped;
 
     }
 

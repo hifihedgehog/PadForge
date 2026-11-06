@@ -18,6 +18,11 @@ namespace PadForge.Common.Input
         private KeyboardScreenInfo[] _keyboardScreensSeen = Array.Empty<KeyboardScreenInfo>();
         private int _keyboardScreenVersion;
 
+        /// <summary>A Toggle Screen Overlay macro, for the UI thread to carry out:
+        /// a bit per overlay's number, and bit 0 for every overlay.</summary>
+        private void RequestScreenOverlayToggle(int number)
+            => System.Threading.Interlocked.Or(ref ToggleScreenOverlayMask, 1 << Math.Clamp(number, 0, KeyboardScreenInfo.MaxOverlays));
+
         /// <summary>The open screen rows, for the Devices page.</summary>
         internal KeyboardScreenDevice[] KeyboardScreenRows
         {

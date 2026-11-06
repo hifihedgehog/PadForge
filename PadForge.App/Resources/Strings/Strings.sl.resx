@@ -4577,20 +4577,20 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Prikaži zaslon tipkovnice</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Predvaja slike na vsakem zaslonu tipkovnice izbrane vrste, ki napaja to režo, nato vrne vsak zaslon v njegov način. Prekrivni prikaz zaslona jih prevzame iz katere koli reže.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Prikaži slike {0}: {1} × {2} ms, število ponovitev {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Slike se prilagodijo zaslonu: 160 × 43 črno-belih pik na enobarvnem zaslonu, 320 × 240 na zaslonu G19 ter 480 × 320 za Arx Control in S.T.R.I.K.E. 7. Najkrajši čas sličice je desetinka sekunde.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Slike se prilagodijo zaslonu: 160 × 43 črno-belih pik na enobarvnem zaslonu, 320 × 240 na zaslonu G19 ter 480 × 320 za Arx Control in S.T.R.I.K.E. 7. Prekrivni prikaz zaslona ohrani obliko vsake slike, do 800 pik na daljši stranici. Najkrajši čas sličice je desetinka sekunde. Število ponovitev 0 predvaja, dokler ne pride drug makro Prikaži zaslon tipkovnice ali Način zaslona tipkovnice.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Način zaslona tipkovnice</value></data>
   <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Preklopi vsak zaslon tipkovnice izbrane vrste, ki napaja to režo, v drug način in ga shrani kot nastavitev tega zaslona. Prekrivni prikaz zaslona ga prevzame iz katere koli reže.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} prikazuje {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Način ostane, dokler ga ne spremeni drug makro ali pogovorno okno zaslona.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Štoparica</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Zažene ali začasno ustavi oziroma ponastavi štoparico, ki jo prikazujejo zasloni tipkovnice v načinu Štoparica.</value></data>
+  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Zažene ali začasno ustavi oziroma ponastavi štoparico, ki jo prikazujejo zasloni tipkovnice in prekrivni prikazi zaslona v načinu Štoparica.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>Zaženi ali začasno ustavi štoparico</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>Ponastavi štoparico</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Ponastavitev ustavi štoparico in jo nastavi nazaj na nič. Vsi zasloni tipkovnice v načinu Štoparica prikazujejo isto štoparico.</value></data>
+  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Ponastavitev ustavi štoparico in jo nastavi nazaj na nič. Vsi zasloni tipkovnice in prekrivni prikazi zaslona v načinu Štoparica prikazujejo isto štoparico.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Premakni sliko zaslona tipkovnice</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Premakne okno vsakega zaslona tipkovnice, ki napaja to režo, po sliki, večji od zaslona, na primer po zemljevidu.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Premakne okno vsakega zaslona tipkovnice, ki napaja to režo, po sliki, večji od zaslona, na primer po zemljevidu. Prekrivni prikaz zaslona se premika enako, kadar je povečava nad 100 odstotki.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Premakni slike za {0} in {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Premakne vsak zaslon, ki napaja to režo in prikazuje izbrano sliko, večjo od njega. Okno se ustavi na robovih slike.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Premakne vsak zaslon, ki napaja to režo in prikazuje izbrano sliko, večjo od njega. Okno se ustavi na robovih slike. Prekrivni prikaz zaslona se premakne, kadar je povečava nad 100 odstotki, ne glede na to, katera reža izvede makro.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Zaslon</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Dejanje</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Smer</value></data>
@@ -4899,7 +4899,17 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>Prekrivni prikaz prikazuje sliko aktivnega profila ali njegovo ime, če slike nima. Vsak profil ima svojo sliko.</value></data>
   <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>Prekrivni prikaz prikazuje trenutni čas.</value></data>
   <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>Prekrivni prikaz prikazuje ure in minute od vklopa aktivnega profila. Profil, vezan na program igre, se vklopi ob zagonu igre, zato štetje velja za to sejo. Pri privzetem profilu šteje od zagona pogona.</value></data>
-  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Prekrivni prikaz prikazuje izbrano sliko, prilagojeno tako, da zapolni njegovo okno, pri čemer ohrani razmerja.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Prekrivni prikaz prikazuje izbrano sliko, prilagojeno tako, da zapolni njegovo okno, pri čemer ohrani razmerja. Pri povečavi nad 100 odstotki prikaže del slike, na primer zemljevida. Ta del premakne makro Premakni sliko zaslona tipkovnice, premakne pa ga tudi vlečenje z levim miškinim gumbom, medtem ko je PadForge v ospredju.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>Prekrivni prikaz prikazuje štoparico, ki jo makro Štoparica zažene, začasno ustavi in ponastavi. To je ista štoparica, kot jo prikazuje vsak tipkovnični zaslon.</value></data>
-  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Prekrivni prikaz prikazuje barvo svetlobnega traku na krmilniku DualShock 4 ali DualSense v najnižji reži. Dokler barva ne doseže svetlobnega traku, ne prikaže ničesar.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Prekrivni prikaz prikazuje barvo svetlobnega traku na krmilniku DualShock 4 ali DualSense v reži, ki jo izberete tukaj, ali v najnižji reži z barvo. Dokler barva ne doseže svetlobnega traku, ne prikaže ničesar.</value></data>
+  <data name="Dashboard_ScreenOverlay_Number_Format" xml:space="preserve"><value>Prekrivni prikaz zaslona {0}</value></data>
+  <data name="Dashboard_ScreenOverlayAdd" xml:space="preserve"><value>Dodaj prekrivni prikaz</value></data>
+  <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Najnižja reža z barvo</value></data>
+  <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>Povečava</value></data>
+  <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>Slika ni izbrana.</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Čakanje na barvo svetlobnega traku.</value></data>
+  <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Prekrivni prikaz</value></data>
+  <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Vsi prekrivni prikazi</value></data>
+  <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Preklopi prekrivni prikaz zaslona {0}</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Prikaži slike {0}: {1} × {2} ms, do naslednjega makra</value></data>
 </root>

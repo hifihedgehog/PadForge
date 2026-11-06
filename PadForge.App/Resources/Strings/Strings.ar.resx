@@ -4365,22 +4365,15 @@
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>لا يطابق تنزيل SDK الخاص بـ S.T.R.I.K.E. 7 قيمة SHA-256 المعروفة له، لذا لم يتم الاحتفاظ بأي شيء منه.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>لا يزال وقت تشغيل Visual C++ 2008 مفقودا بعد تشغيل برنامج التثبيت الخاص به.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>عرض شاشة لوحة المفاتيح</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>يشغّل صورا على كل شاشة لوحة مفاتيح من النوع المختار تغذي هذه الخانة، ثم يعيد كل شاشة إلى وضعها الخاص.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>عرض صور {0}: {1} × {2} مللي ثانية، عدد التكرار {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>تُلاءم الصور مع الشاشة: 160 في 43 بكسل بالأبيض والأسود على الشاشة أحادية اللون، و320 في 240 على شاشة G19، و480 في 320 لـ Arx Control وS.T.R.I.K.E. 7. أقصر مدة للإطار هي عُشر الثانية.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>وضع شاشة لوحة المفاتيح</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>يبدّل كل شاشة لوحة مفاتيح من النوع المختار تغذي هذه الخانة إلى وضع آخر، ويحفظه كإعداد لتلك الشاشة.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>تعرض {0}: {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>يبقى الوضع حتى يغيّره ماكرو آخر أو مربع حوار الشاشة.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>ساعة إيقاف</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>يبدأ ساعة الإيقاف أو يوقفها مؤقتا، أو يعيد ضبطها، وهي الساعة التي تعرضها شاشات لوحة المفاتيح في وضع ساعة الإيقاف.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>بدء ساعة الإيقاف أو إيقافها مؤقتا</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>إعادة ضبط ساعة الإيقاف</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>تعيد إعادة الضبط ساعة الإيقاف إلى الصفر وتوقفها. تعرض كل شاشة لوحة مفاتيح في وضع ساعة الإيقاف الساعة نفسها.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>تحريك صورة شاشة لوحة المفاتيح</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>يحرك نافذة كل شاشة لوحة مفاتيح تغذي هذه الخانة فوق صورة أكبر من الشاشة، لعرض خريطة مثلا.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>تحريك الصور بمقدار {0} × {1} بكسل</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>يحرك كل شاشة تغذي هذه الخانة وتعرض صورة مختارة أكبر منها. تتوقف النافذة عند حواف الصورة.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>الشاشة</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>الإجراء</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>الاتجاه</value></data>

@@ -4577,20 +4577,20 @@
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Показване на екран на клавиатурата</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Показва картинки на всеки екран на клавиатурата от избрания вид, който подава към този слот, след което връща всеки екран в собствения му режим. Наслагването на екрана ги взема от всеки слот.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Показване на картинки на {0}: {1} × {2} мс, брой повторения {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Картинките се напасват към екрана: 160 на 43 черно-бели пиксела на монохромен екран, 320 на 240 на екрана на G19 и 480 на 320 за Arx Control и S.T.R.I.K.E. 7. Една десета от секундата е най-краткото време на кадър.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Картинките се напасват към екрана: 160 на 43 черно-бели пиксела на монохромен екран, 320 на 240 на екрана на G19 и 480 на 320 за Arx Control и S.T.R.I.K.E. 7. Наслагването на екрана запазва формата на всяка картинка, до 800 пиксела по по-дългата ѝ страна. Една десета от секундата е най-краткото време на кадър. Брой повторения 0 продължава възпроизвеждането, докато не се изпълни друг макрос Показване на екран на клавиатурата или Режим на екрана на клавиатурата.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Режим на екрана на клавиатурата</value></data>
   <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Превключва на друг режим всеки екран на клавиатурата от избрания вид, който подава към този слот, и го запазва като настройка на този екран. Наслагването на екрана го взема от всеки слот.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} показва {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Режимът остава, докато друг макрос или диалогът на екрана не го промени.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Хронометър</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Стартира или паузира, или нулира хронометъра, който екраните на клавиатурата в режим „Хронометър“ показват.</value></data>
+  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Стартира или паузира, или нулира хронометъра, който екраните на клавиатурата и наслагванията на екрана в режим „Хронометър“ показват.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>Старт или пауза на хронометъра</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>Нулиране на хронометъра</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Нулирането спира хронометъра и го връща на нула. Всички екрани на клавиатурата в режим „Хронометър“ показват един и същ хронометър.</value></data>
+  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Нулирането спира хронометъра и го връща на нула. Всички екрани на клавиатурата и всички наслагвания на екрана в режим „Хронометър“ показват един и същ хронометър.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Панорамиране на картинката на екрана на клавиатурата</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Мести прозореца на всеки екран на клавиатурата, който подава към този слот, върху картинка, по-голяма от екрана, например за карта.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Мести прозореца на всеки екран на клавиатурата, който подава към този слот, върху картинка, по-голяма от екрана, например за карта. Наслагване на екрана се движи по същия начин, когато мащабът му е над 100 процента.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Панорамиране на картинките с {0} на {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Мести всеки екран, който подава към този слот и показва избрана картинка, по-голяма от самия него. Прозорецът спира при краищата на картинката.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Мести всеки екран, който подава към този слот и показва избрана картинка, по-голяма от самия него. Прозорецът спира при краищата на картинката. Наслагване на екрана се движи, когато мащабът му е над 100 процента, независимо кой слот изпълнява макроса.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Екран</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Действие</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Посока</value></data>
@@ -4899,7 +4899,17 @@
   <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>Наслагването показва собствената картинка на активния профил или името му, ако няма картинка. Всеки профил пази своя картинка.</value></data>
   <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>Наслагването показва часа от денонощието.</value></data>
   <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>Наслагването показва часовете и минутите от включването на активния профил. Профил, свързан с програмата на дадена игра, се включва при стартиране на играта, така че броят е за тази сесия. При профила „По подразбиране“ броенето започва от стартирането на PadForge.</value></data>
-  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Наслагването показва избрана от вас картинка, мащабирана да запълни прозореца му със запазени пропорции.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Наслагването показва избрана от вас картинка, мащабирана да запълни прозореца му със запазени пропорции. При мащаб над 100 процента показва част от картинката, например за карта. Макросът Панорамиране на картинката на екрана на клавиатурата мести тази част, както и влаченето с левия бутон на мишката, докато PadForge е на преден план.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>Наслагването показва хронометъра, който макросът „Хронометър“ стартира, паузира и нулира. Това е същият хронометър, който показват всички екрани на клавиатури.</value></data>
-  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Наслагването показва цвета на светлинната лента на DualShock 4 или DualSense в най-ниския слот. Докато цвят не стигне до светлинната лента, не показва нищо.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Наслагването показва цвета на светлинната лента на DualShock 4 или DualSense в слота, който изберете тук, или в най-ниския слот с цвят. Докато цвят не стигне до светлинната лента, не показва нищо.</value></data>
+  <data name="Dashboard_ScreenOverlay_Number_Format" xml:space="preserve"><value>Наслагване на екрана {0}</value></data>
+  <data name="Dashboard_ScreenOverlayAdd" xml:space="preserve"><value>Добавяне на наслагване</value></data>
+  <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Най-ниският слот с цвят</value></data>
+  <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>Мащаб</value></data>
+  <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>Не е избрана картинка.</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Изчакване на цвят на светлинната лента.</value></data>
+  <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Наслагване</value></data>
+  <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Всяко наслагване</value></data>
+  <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Превключване на наслагването на екрана {0}</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Показване на картинки на {0}: {1} × {2} мс, до следващия макрос</value></data>
 </root>

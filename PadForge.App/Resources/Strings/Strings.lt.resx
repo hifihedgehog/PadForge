@@ -4352,22 +4352,15 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>Atsisiųstas S.T.R.I.K.E. 7 SDK neatitinka žinomo SHA-256, todėl nieko iš jo neišsaugota.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>Paleidus diegimo programą, „Visual C++ 2008“ vykdymo aplinkos vis dar nėra.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Rodyti klaviatūros ekraną</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Rodo paveikslėlius kiekviename pasirinkto tipo klaviatūros ekrane, kuris teikia duomenis šiam lizdui, paskui grąžina kiekvieną ekraną į jo paties režimą.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Rodyti {0} paveikslėlius: {1} × {2} ms, kartojimų skaičius {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Paveikslėliai pritaikomi ekranui: 160 × 43 nespalvotų taškų vienspalviame ekrane, 320 × 240 G19 ekrane ir 480 × 320 Arx Control bei S.T.R.I.K.E. 7 ekranuose. Trumpiausia kadro trukmė yra viena dešimtoji sekundės.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Klaviatūros ekrano režimas</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Perjungia kiekvieną pasirinkto tipo klaviatūros ekraną, kuris teikia duomenis šiam lizdui, į kitą režimą ir išsaugo jį kaip to ekrano nustatymą.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0}: rodoma {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Režimas išlieka, kol jį pakeičia kita makrokomanda arba ekrano dialogas.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Chronometras</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Paleidžia, pristabdo arba nustato iš naujo chronometrą, kurį rodo chronometro režimu veikiantys klaviatūros ekranai.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>Paleisti arba pristabdyti chronometrą</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>Nustatyti chronometrą iš naujo</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Nustatymas iš naujo sustabdo chronometrą ir grąžina jį į nulį. Visi chronometro režimu veikiantys klaviatūros ekranai rodo tą patį chronometrą.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Klaviatūros ekrano paveikslėlio panoravimas</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Perkelia kiekvieno šiam lizdui duomenis teikiančio klaviatūros ekrano langą per paveikslėlį, didesnį už ekraną, pavyzdžiui, žemėlapį.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Panoruoti paveikslėlius {0} × {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Perkelia kiekvieną šiam lizdui duomenis teikiantį ekraną, kuriame rodomas už jį didesnis pasirinktas paveikslėlis. Langas sustoja paveikslėlio kraštuose.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Ekranas</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Veiksmas</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Kryptis</value></data>

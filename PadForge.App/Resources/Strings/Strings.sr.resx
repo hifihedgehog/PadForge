@@ -4577,20 +4577,20 @@
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Прикажи екран тастатуре</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Приказује слике на сваком екрану тастатуре изабране врсте који шаље улаз овом слоту, а затим враћа сваки екран у његов режим. Оверлеј екрана их преузима са сваког слота.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Прикажи {0} слике: {1} × {2} мс, број понављања {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Слике се прилагођавају екрану: 160 са 43 црно-бела пиксела на једнобојном екрану, 320 са 240 на екрану G19 и 480 са 320 за Arx Control и S.T.R.I.K.E. 7. Најкраће трајање кадра је десетина секунде.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Слике се прилагођавају екрану: 160 са 43 црно-бела пиксела на једнобојном екрану, 320 са 240 на екрану G19 и 480 са 320 за Arx Control и S.T.R.I.K.E. 7. Оверлеј екрана чува облик сваке слике, до 800 пиксела на дужој страни. Најкраће трајање кадра је десетина секунде. Број понављања 0 наставља репродукцију све до следећег макроа Прикажи екран тастатуре или Режим екрана тастатуре.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Режим екрана тастатуре</value></data>
   <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Пребацује сваки екран тастатуре изабране врсте који шаље улаз овом слоту у други режим и памти га као подешавање тог екрана. Оверлеј екрана га преузима са сваког слота.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} приказује {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Режим остаје док га други макро или дијалог екрана не промени.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Штоперица</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Покреће или паузира, или ресетује штоперицу коју приказују екрани тастатуре у режиму Штоперица.</value></data>
+  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>Покреће или паузира, или ресетује штоперицу коју приказују екрани тастатуре и оверлеји екрана у режиму Штоперица.</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>Покрени или паузирај штоперицу</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>Ресетуј штоперицу</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Ресетовање зауставља штоперицу и враћа је на нулу. Сваки екран тастатуре у режиму Штоперица приказује исту штоперицу.</value></data>
+  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>Ресетовање зауставља штоперицу и враћа је на нулу. Сваки екран тастатуре и оверлеј екрана у режиму Штоперица приказује исту штоперицу.</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Помери слику на екрану тастатуре</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Помера прозор сваког екрана тастатуре који шаље улаз овом слоту преко слике веће од екрана, на пример за мапу.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Помера прозор сваког екрана тастатуре који шаље улаз овом слоту преко слике веће од екрана, на пример за мапу. Оверлеј екрана се помера на исти начин када је зум изнад 100 процената.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Помери слике за {0} × {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Помера сваки екран који шаље улаз овом слоту и приказује изабрану слику већу од себе. Прозор се зауставља на ивицама слике.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Помера сваки екран који шаље улаз овом слоту и приказује изабрану слику већу од себе. Прозор се зауставља на ивицама слике. Оверлеј екрана се помера када је зум изнад 100 процената, без обзира на то који слот покреће макро.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Екран</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Радња</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Смер</value></data>
@@ -4899,7 +4899,17 @@
   <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>Оверлеј приказује сопствену слику активног профила, или његов назив ако слику нема. Сваки профил чува сопствену слику.</value></data>
   <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>Оверлеј приказује време у току дана.</value></data>
   <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>Оверлеј приказује сате и минуте откако је активни профил постао активан. Профил везан за програм неке игре постаје активан када се игра покрене, па је бројање за ту сесију. Под подразумеваним профилом броји се од покретања механизма.</value></data>
-  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Оверлеј приказује слику коју изаберете, прилагођену да испуни свој прозор уз очуване пропорције.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Оверлеј приказује слику коју изаберете, прилагођену да испуни свој прозор уз очуване пропорције. Изнад зума од 100 процената приказује део слике, на пример за мапу. Тај део помера макро Помери слику на екрану тастатуре, а такође и превлачење левим тастером миша док је PadForge у првом плану.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>Оверлеј приказује штоперицу, коју макро Штоперица покреће, паузира и ресетује. То је иста штоперица коју приказује сваки екран тастатуре.</value></data>
-  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Оверлеј приказује боју светлосне траке на DualShock 4 или DualSense контролеру у најнижем слоту. Док боја не стигне до светлосне траке, не приказује ништа.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Оверлеј приказује боју светлосне траке на DualShock 4 или DualSense контролеру у слоту који овде изаберете, или у најнижем слоту са бојом. Док боја не стигне до светлосне траке, не приказује ништа.</value></data>
+  <data name="Dashboard_ScreenOverlay_Number_Format" xml:space="preserve"><value>Оверлеј екрана {0}</value></data>
+  <data name="Dashboard_ScreenOverlayAdd" xml:space="preserve"><value>Додај оверлеј</value></data>
+  <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Најнижи слот са бојом</value></data>
+  <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>Зум</value></data>
+  <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>Слика није изабрана.</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Чека се боја светлосне траке.</value></data>
+  <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Оверлеј</value></data>
+  <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Сваки оверлеј</value></data>
+  <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Прикажи/сакриј оверлеј екрана {0}</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Прикажи {0} слике: {1} × {2} мс, до следећег макроа</value></data>
 </root>

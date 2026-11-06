@@ -4327,22 +4327,15 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>የS.T.R.I.K.E. 7 SDK ማውረጃው ከሚታወቀው SHA-256 ጋር አይዛመድም፣ ስለዚህ ከእሱ ምንም አልተቀመጠም።</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>ጫኚው ከሠራ በኋላም የVisual C++ 2008 ራንታይም አሁንም የለም።</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>የቁልፍ ሰሌዳ ማያ ገጽ አሳይ</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>ይህን ቦታ በሚመግብ፣ የተመረጠው ዓይነት በሆነ እያንዳንዱ የቁልፍ ሰሌዳ ማያ ገጽ ላይ ስዕሎችን ያጫውታል፣ ከዚያም እያንዳንዱን ማያ ገጽ ወደ ራሱ ሁነታ ይመልሳል።</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>የ{0} ስዕሎችን አሳይ፦ {1} × {2} ms፣ የድግግሞሽ ብዛት {3}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>ስዕሎች ከማያ ገጹ ጋር እንዲገጥሙ ይደረጋሉ፦ በባለአንድ ቀለም ማያ ገጽ 160 በ43 ጥቁርና ነጭ ፒክሰሎች፣ በG19 ላይ 320 በ240፣ ለArx Control እና ለS.T.R.I.K.E. 7 ደግሞ 480 በ320። አጭሩ የፍሬም ጊዜ የሰከንድ አንድ አስረኛ ነው።</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>የቁልፍ ሰሌዳ ማያ ገጽ ሁነታ</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>ይህን ቦታ የሚመግብ፣ የተመረጠው ዓይነት የሆነ እያንዳንዱን የቁልፍ ሰሌዳ ማያ ገጽ ወደ ሌላ ሁነታ ይቀይራል፣ እንደ የዚያ ማያ ገጽ ቅንብርም ያስቀምጠዋል።</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} {1} ያሳያል</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>ሁነታው ሌላ ማክሮ ወይም የማያ ገጹ መገናኛ ሳጥን እስኪቀይረው ድረስ ይቆያል።</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>የሩጫ ሰዓት</value></data>
-  <data name="MacroAction_Stopwatch_Tooltip" xml:space="preserve"><value>በሩጫ ሰዓት ሁነታ ላይ ያሉ የቁልፍ ሰሌዳ ማያ ገጾች የሚያሳዩትን የሩጫ ሰዓት ያስጀምራል ወይም ለአፍታ ያቆማል፣ ወይም ዳግም ያስጀምራል።</value></data>
   <data name="MacroAction_Stopwatch_StartPause" xml:space="preserve"><value>የሩጫ ሰዓትን አስጀምር ወይም ለአፍታ አቁም</value></data>
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>የሩጫ ሰዓትን ዳግም አስጀምር</value></data>
-  <data name="MacroAction_Stopwatch_Hint" xml:space="preserve"><value>ዳግም ማስጀመር የሩጫ ሰዓቱን ያቆምና ወደ ዜሮ ይመልሰዋል። በሩጫ ሰዓት ሁነታ ላይ ያሉ ሁሉም የቁልፍ ሰሌዳ ማያ ገጾች አንድ አይነት የሩጫ ሰዓት ያሳያሉ።</value></data>
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>የቁልፍ ሰሌዳ ማያ ገጽ ምስልን አንቀሳቅስ</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>ከማያ ገጹ በሚበልጥ ምስል ላይ ይህን ቦታ የሚመግብ የእያንዳንዱን የቁልፍ ሰሌዳ ማያ ገጽ መስኮት ያንቀሳቅሳል፣ ለምሳሌ ለካርታ።</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>ስዕሎችን {0} በ{1} px አንቀሳቅስ</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>ይህን ቦታ የሚመግብና ከራሱ የሚበልጥ የተመረጠ ምስል የሚያሳይ እያንዳንዱን ማያ ገጽ ያንቀሳቅሳል። መስኮቱ በምስሉ ጠርዞች ላይ ይቆማል።</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>ማያ ገጽ</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>እርምጃ</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>አቅጣጫ</value></data>

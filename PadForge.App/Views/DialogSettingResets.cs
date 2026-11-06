@@ -78,6 +78,19 @@ namespace PadForge.Views
             _panX = _panY = 0;
             Refresh();
         }
+
+        /// <summary>The lowest slot with a color, the default (#560).</summary>
+        private void ResetLightbarSlot_Click(object sender, RoutedEventArgs e)
+            => LightbarSlotBox.SelectedIndex = PadForge.Services.KeyboardScreenData.LowestSlot + 1;
+
+        /// <summary>All of the picture in the Screen Overlay's window, the default
+        /// (#560).</summary>
+        private void ResetZoom_Click(object sender, RoutedEventArgs e)
+        {
+            _zoom = PadForge.Services.KeyboardScreenData.DefaultZoom;
+            _panX = _panY = 0;
+            Refresh();
+        }
     }
 
     public partial class BlissBoxPlayerDialog

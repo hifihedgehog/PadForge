@@ -2259,6 +2259,10 @@ namespace PadForge.ViewModels
     /// two lists compare by what they say.</summary>
     public sealed record ScreenDisplayChoice(string Id, string Label)
     {
+        /// <summary>What a screen reader says for the line: a ComboBox names a
+        /// data item by its ToString, whatever DisplayMemberPath draws.</summary>
+        public override string ToString() => Label;
+
         /// <summary>Test seam: the displays as (GDI name, width, height). Null
         /// in production.</summary>
         internal static Func<IReadOnlyList<(string Name, int Width, int Height)>> DisplaysSeam;

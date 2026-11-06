@@ -175,6 +175,16 @@ public static class W {
     [DllImport("user32.dll")] public static extern bool SetForegroundWindow(IntPtr h);
     [DllImport("user32.dll")] public static extern bool ShowWindow(IntPtr h, int c);
     [DllImport("user32.dll")] public static extern IntPtr GetForegroundWindow();
+    [DllImport("kernel32.dll")] public static extern uint GetCurrentThreadId();
+    [DllImport("user32.dll")] public static extern bool AttachThreadInput(uint a, uint b, bool f);
+    public static void TakeForeground(IntPtr hwnd) {
+        uint fgPid;
+        uint fgTid = GetWindowThreadProcessId(GetForegroundWindow(), out fgPid);
+        uint myTid = GetCurrentThreadId();
+        if (fgTid != myTid) AttachThreadInput(myTid, fgTid, true);
+        SetForegroundWindow(hwnd);
+        if (fgTid != myTid) AttachThreadInput(myTid, fgTid, false);
+    }
     public static List<IntPtr> ForPid(uint want) {
         var r = new List<IntPtr>();
         EnumWindows((h, l) => { uint p; GetWindowThreadProcessId(h, out p); if (p == want) r.Add(h); return true; }, IntPtr.Zero);
@@ -188,13 +198,16 @@ public static class W {
     # Foreground is a precondition for every synthetic click: a click that
     # lands while another window holds focus goes to that window. Retry the
     # restore/maximize/SetForegroundWindow trio until GetForegroundWindow
-    # confirms the handle (SetForegroundWindow is allowed to refuse).
+    # confirms the handle. Windows refuses SetForegroundWindow to a background
+    # process while another window holds the focus, unless the two threads share
+    # input for the call, which is what TakeForeground does, as capture_all.ps1's
+    # ForceFG does.
     function ForceFG([IntPtr]$h) {
         for ($i = 0; $i -lt 5; $i++) {
             [W]::ShowWindow($h, 9) | Out-Null   # SW_RESTORE (a minimized window defeats clicks)
             Start-Sleep -Milliseconds 250
             [W]::ShowWindow($h, 3) | Out-Null   # SW_MAXIMIZE for stable layout
-            [W]::SetForegroundWindow($h) | Out-Null
+            [W]::TakeForeground($h)
             Start-Sleep -Milliseconds 450
             if ([W]::GetForegroundWindow() -eq $h) { return $true }
         }
@@ -306,7 +319,7 @@ public static class W {
             [W]::GetWindowText($dlgHwnd, $sb, 256) | Out-Null
             Note "workshop dialog hwnd=$dlgHwnd title='$($sb.ToString())'"
             $dlg = [System.Windows.Automation.AutomationElement]::FromHandle($dlgHwnd)
-            [W]::SetForegroundWindow($dlgHwnd) | Out-Null
+            [W]::TakeForeground($dlgHwnd)
             Start-Sleep 1
             $edit = $dlg.FindFirst($TS::Descendants,
                 (New-Object System.Windows.Automation.PropertyCondition($ae::ControlTypeProperty, $CT::Edit)))

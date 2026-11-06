@@ -1302,6 +1302,14 @@ namespace PadForge.Tests
             Assert.Equal(string.Format(Strings.Instance.Pad_Lighting_ScreenDisplayGone, "7"), list[^1].Label);
         }
 
+        /// <summary>A ComboBox names a data item for a screen reader by its
+        /// ToString. A record's own ToString reads out its field names.</summary>
+        [Fact]
+        public void ALineReadsAsItsWords()
+        {
+            Assert.Equal(Strings.Instance.Pad_Lighting_ScreenDisplayPrimary, ScreenDisplayChoice.ListFor(string.Empty)[0].ToString());
+        }
+
         [Fact]
         public void ASavedSpellingThatDiffersOnlyInCase_IsThatDisplay()
         {

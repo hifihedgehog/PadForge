@@ -9670,6 +9670,7 @@
                                          text. Re-measure if these strings change. -->
                                     <ComboBox SelectedValue="{Binding DeviceConfig.LightbarMode, Mode=TwoWay}"
                                               SelectedValuePath="Tag"
+                                              AutomationProperties.AutomationId="LightingModeBox"
                                               Width="444" VerticalAlignment="Center">
                                         <ComboBoxItem Content="{Binding Pad_Lighting_Mode_PlayerNumber, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.PlayerNumber}"/>
                                         <ComboBoxItem Content="{Binding Pad_Lighting_Mode_Off, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.Off}"/>
@@ -9746,6 +9747,7 @@
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                         <TextBlock Text="{Binding Pad_Lighting_ScreenArea, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                         <ComboBox SelectedValue="{Binding DeviceConfig.ScreenColorArea, Mode=TwoWay}" SelectedValuePath="Tag"
+                                                  AutomationProperties.AutomationId="ScreenColorAreaBox"
                                                   Width="444" VerticalAlignment="Center">
                                             <ComboBoxItem Content="{Binding Pad_Lighting_ScreenArea_WholeScreen, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:ScreenColorArea.WholeScreen}"/>
                                             <ComboBoxItem Content="{Binding Pad_Lighting_ScreenArea_TopLeft, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:ScreenColorArea.TopLeft}"/>

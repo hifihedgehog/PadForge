@@ -159,7 +159,10 @@ namespace PadForge.Engine
         public bool SetRumble(ushort low, ushort high, uint durationMs = uint.MaxValue) => false;
         public bool StopRumble() => false;
 
-        private static Guid BuildGuid(string identifier)
+        /// <summary>A device's stable guid from its path, or a product's from
+        /// its kind. The merged rows' paths never change, so their guids are
+        /// the same on every PC.</summary>
+        public static Guid BuildGuid(string identifier)
         {
             using var md5 = MD5.Create();
             byte[] hash = md5.ComputeHash(Encoding.UTF8.GetBytes(identifier));

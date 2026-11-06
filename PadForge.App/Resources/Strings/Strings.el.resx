@@ -4912,4 +4912,58 @@
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Κάθε επικάλυψη</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Εναλλαγή επικάλυψης οθόνης {0}</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Εμφάνιση εικόνων {0}: {1} × {2} ms, μέχρι την επόμενη μακροεντολή</value></data>
+  <data name="Import_DialogTitle" xml:space="preserve"><value>Εισαγωγή προφίλ</value></data>
+  <data name="Import_Source_Format" xml:space="preserve"><value>{0}, αρχείο {1}</value></data>
+  <data name="Import_ProfileName_Format" xml:space="preserve"><value>Θα γίνει το προφίλ «{0}».</value></data>
+  <data name="Import_Confirm" xml:space="preserve"><value>Εισαγωγή</value></data>
+  <data name="Import_NothingToImport" xml:space="preserve"><value>Αυτό το αρχείο δεν αντιστοιχίζει τίποτα που να μπορεί να χρησιμοποιήσει το PadForge.</value></data>
+  <data name="Import_NoteController" xml:space="preserve"><value>Αφού φορτώσετε αυτό το προφίλ, αντιστοιχίστε το χειριστήριό σας στις θέσεις του από τη σελίδα Συσκευές.</value></data>
+  <data name="Import_NoteAssignsOne_Format" xml:space="preserve"><value>Αντιστοιχίζει το {0} στις θέσεις του όταν φορτωθεί.</value></data>
+  <data name="Import_NoteAssignsTwo_Format" xml:space="preserve"><value>Αντιστοιχίζει τα {0} και {1} στις θέσεις του όταν φορτωθεί.</value></data>
+  <data name="Profiles_ImportFilterAll" xml:space="preserve"><value>Προφίλ</value></data>
+  <data name="Import_LayerName_Format" xml:space="preserve"><value>Επίπεδο {0}</value></data>
+  <data name="Import_ShiftLayerName_Format" xml:space="preserve"><value>Shift {0}</value></data>
+  <data name="Import_MenuItem_Format" xml:space="preserve"><value>Στοιχείο {0}</value></data>
+  <data name="Import_Line_Controller" xml:space="preserve"><value>Χειριστήριο</value></data>
+  <data name="Import_Line_Native" xml:space="preserve"><value>Κρατά τις δικές του εξόδους</value></data>
+  <data name="Import_Line_ToLayer_Format" xml:space="preserve"><value>Προς {0}</value></data>
+  <data name="Import_Tr_FileUnreadable" xml:space="preserve"><value>Το PadForge δεν μπόρεσε να διαβάσει αυτό το αρχείο.</value></data>
+  <data name="Import_Tr_FileTooLarge" xml:space="preserve"><value>Αυτό το αρχείο είναι πολύ μεγάλο για να είναι προφίλ.</value></data>
+  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>Αυτό το αρχείο δεν είναι προφίλ PadForge, reWASD ή DS4Windows.</value></data>
+  <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>Αυτό το αρχείο δηλώνει τύπο εγγράφου, κάτι που ένα προφίλ δεν χρειάζεται ποτέ, γι' αυτό το PadForge δεν το διάβασε.</value></data>
+  <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>Αυτό το αρχείο δεν είναι στη μορφή reWASD που διαβάζει το PadForge, σχήμα 3.</value></data>
+  <data name="Import_Tr_ProgramNotRun" xml:space="preserve"><value>Παραλείφθηκε ώστε ένα κοινόχρηστο αρχείο ρυθμίσεων να μην μπορεί να εκκινήσει πρόγραμμα: {0}</value></data>
+  <data name="Import_Tr_SystemCommand" xml:space="preserve"><value>Παραλείφθηκε ώστε ένα κοινόχρηστο αρχείο ρυθμίσεων να μην μπορεί να το κάνει αυτό στον υπολογιστή σας: {0}</value></data>
+  <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>Το PadForge δεν αναγνωρίζει αυτήν την είσοδο: {0}</value></data>
+  <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>Το PadForge δεν αναγνωρίζει αυτήν την έξοδο: {0}</value></data>
+  <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>Το PadForge δεν έχει τέτοια εντολή: {0}</value></data>
+  <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>Το εικονικό χειριστήριο δεν έχει τέτοιο κουμπί: {0}</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>Το σταυρόνημα υπάρχει μόνο μέσα στο reWASD. Εμφανίστε τη δική σας εικόνα με μια Επικάλυψη οθόνης.</value></data>
+  <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>Το τρέμουλο και ο κραδασμός του μοχλού δεν μεταφέρθηκαν.</value></data>
+  <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Τα αναλογικά σημεία ενεργοποίησης πλήκτρων δεν μεταφέρθηκαν.</value></data>
+  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>Η αποστολή σε άλλον υπολογιστή δεν μεταφέρθηκε. Ρυθμίστε την με την Απομακρυσμένη σύνδεση.</value></data>
+  <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>Το PadForge διαβάζει δύο μοχλούς, και εδώ αναφέρεται τρίτος.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Η εξομοίωση τιμονιού δεν μεταφέρθηκε. Αντιστοιχίστε το τιμόνι στην καρτέλα Αντιστοιχίσεις.</value></data>
+  <data name="Import_Tr_ProfileSwitch" xml:space="preserve"><value>Μια ειδική ενέργεια που φορτώνει άλλο προφίλ δεν μεταφέρθηκε: {0}</value></data>
+  <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Αυτό το προφίλ αναφέρει μια ειδική ενέργεια που λείπει από το Actions.xml δίπλα στον φάκελο Profiles: {0}</value></data>
+  <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Αυτή η ρύθμιση δεν μεταφέρθηκε: {0}</value></data>
+  <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>Το reWASD εμπόδιζε αυτές τις εισόδους να φτάνουν στα Windows. Ενεργοποιήστε την Κατακράτηση αντιστοιχισμένων εισόδων για τη συσκευή {0} στη σελίδα Συσκευές, ώστε να σταματούν αυτές που αντιστοιχίζει το προφίλ.</value></data>
+  <data name="Import_Tr_HeldAsTap" xml:space="preserve"><value>Πατιέται στιγμιαία αντί να κρατιέται, επειδή άλλη χειρονομία μοιράζεται το κουμπί.</value></data>
+  <data name="Import_Tr_CurveFitted" xml:space="preserve"><value>Η καμπύλη {0} σημείων μεταφέρθηκε ως η πλησιέστερη καμπύλη δύναμης.</value></data>
+  <data name="Import_Tr_CurveApproximated" xml:space="preserve"><value>Η καμπύλη {0} μεταφέρθηκε ως η πλησιέστερη καμπύλη δύναμης.</value></data>
+  <data name="Import_Tr_ZoneOutward" xml:space="preserve"><value>Ενεργοποιείται από αυτήν τη ζώνη προς τα έξω, όχι μόνο μέσα σε αυτήν.</value></data>
+  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>Εισήχθη ως συνηθισμένο επίπεδο.</value></data>
+  <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>Τα υπομενού του έγιναν επιπλέον θέσεις στον ίδιο κύκλο.</value></data>
+  <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Επιβεβαιώνεται όταν ο μοχλός επανέρχεται στο κέντρο ή τελειώνει το επίπεδο. Το κουμπί Εφαρμογή του reWASD δεν χρησιμοποιείται.</value></data>
+  <data name="Import_Tr_RegionCentered" xml:space="preserve"><value>Ο δρομέας μένει σε περιοχή ίδιου μεγέθους στο κέντρο της οθόνης.</value></data>
+  <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Αυτό το αρχείο κρατά δύο χειριστήρια χωριστά. Στο PadForge, οποιοδήποτε χειριστήριο στη θέση ενεργοποιεί αυτές τις αντιστοιχίσεις.</value></data>
+  <data name="Import_Tr_ToggleSameGesture" xml:space="preserve"><value>Η ίδια χειρονομία το απενεργοποιεί. Το reWASD το απενεργοποιούσε με ένα πάτημα.</value></data>
+  <data name="Import_Tr_LedShownAs" xml:space="preserve"><value>Ο φωτισμός {0} μεταφέρθηκε ως η πλησιέστερη λειτουργία φωτεινής ράβδου.</value></data>
+  <data name="Import_Tr_LoweredToKeys" xml:space="preserve"><value>Στέλνει αντί γι' αυτό {0}.</value></data>
+  <data name="Import_Tr_StickAdded" xml:space="preserve"><value>Ορίζει τον μοχλό σε αυτή την τιμή αντί να την προσθέτει στη δική του θέση.</value></data>
+  <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>Η ταχύτητα κίνησης ή το απότομο τίναγμα δεν μεταφέρθηκε.</value></data>
+  <data name="Import_Tr_HipFire" xml:space="preserve"><value>Το ελαφρύ και το πλήρες πάτημα λειτουργούν, χωρίς την αναμονή {0} ms πριν από το ελαφρύ πάτημα.</value></data>
+  <data name="Import_Tr_MaxOutput" xml:space="preserve"><value>Κλιμακώνει την έξοδο στο {0} τοις εκατό αντί να την περιορίζει.</value></data>
+  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Αυτά δεν μεταφέρθηκαν. Ορίστε τα στην καρτέλα Επιφάνεια αφής.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Τίποτα σε αυτό το αρχείο δεν ανοίγει αυτό το επίπεδο. Δώστε του ένα κουμπί στην καρτέλα Αντιστοιχίσεις.</value></data>
 </root>

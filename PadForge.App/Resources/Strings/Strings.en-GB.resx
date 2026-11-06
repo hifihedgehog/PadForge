@@ -584,4 +584,9 @@
   <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>The overlay shows the colour of the lightbar on the DualShock 4 or DualSense in the slot you choose here, or in the lowest slot with a colour. Until a colour reaches a lightbar, it shows nothing.</value></data>
   <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Lowest Slot with a Colour</value></data>
   <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Waiting for a lightbar colour.</value></data>
+  <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>PadForge does not recognise this input: {0}</value></data>
+  <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge does not recognise this output: {0}</value></data>
+  <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Commits when the stick re-centres or the layer ends. reWASD's Apply button is not used.</value></data>
+  <data name="Import_Tr_RegionCentered" xml:space="preserve"><value>The cursor stays in an area of the same size at the centre of the screen.</value></data>
+  <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Analogue key actuation points did not come across.</value></data>
 </root>

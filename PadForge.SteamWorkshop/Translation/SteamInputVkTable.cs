@@ -42,6 +42,10 @@ namespace PadForge.SteamWorkshop.Translation
         /// (<c>"KbmKey{vk:X2}"</c>, the PadViewModel/InputManager form).</summary>
         public static string KbmKeyTarget(byte vk) => $"KbmKey{vk:X2}";
 
+        /// <summary>True when the KbM row engine has a row for this virtual
+        /// key. Any other key rides a macro.</summary>
+        public static bool IsRowKey(byte vk) => SupportedVks.Contains(vk);
+
         /// <summary>Awkward spellings, where mechanically un-underscoring
         /// the token reads worse than the name the key actually goes by.
         /// Everything not listed spells fine on its own.</summary>

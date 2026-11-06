@@ -4912,4 +4912,58 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Toate suprapunerile</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Comutare suprapunere ecran {0}</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Afișare imagini {0}: {1} × {2} ms, până la următorul macro</value></data>
+  <data name="Import_DialogTitle" xml:space="preserve"><value>Importare profil</value></data>
+  <data name="Import_Source_Format" xml:space="preserve"><value>{0}, un fișier {1}</value></data>
+  <data name="Import_ProfileName_Format" xml:space="preserve"><value>Devine profilul „{0}”.</value></data>
+  <data name="Import_Confirm" xml:space="preserve"><value>Importare</value></data>
+  <data name="Import_NothingToImport" xml:space="preserve"><value>Acest fișier nu mapează nimic ce poate folosi PadForge.</value></data>
+  <data name="Import_NoteController" xml:space="preserve"><value>După încărcarea acestui profil, atribuiți controllerul sloturilor sale în pagina Dispozitive.</value></data>
+  <data name="Import_NoteAssignsOne_Format" xml:space="preserve"><value>Atribuie {0} sloturilor sale la încărcare.</value></data>
+  <data name="Import_NoteAssignsTwo_Format" xml:space="preserve"><value>Atribuie {0} și {1} sloturilor sale la încărcare.</value></data>
+  <data name="Profiles_ImportFilterAll" xml:space="preserve"><value>Profiluri</value></data>
+  <data name="Import_LayerName_Format" xml:space="preserve"><value>Strat {0}</value></data>
+  <data name="Import_ShiftLayerName_Format" xml:space="preserve"><value>Shift {0}</value></data>
+  <data name="Import_MenuItem_Format" xml:space="preserve"><value>Element {0}</value></data>
+  <data name="Import_Line_Controller" xml:space="preserve"><value>Controller</value></data>
+  <data name="Import_Line_Native" xml:space="preserve"><value>Își păstrează ieșirile proprii</value></data>
+  <data name="Import_Line_ToLayer_Format" xml:space="preserve"><value>Către {0}</value></data>
+  <data name="Import_Tr_FileUnreadable" xml:space="preserve"><value>PadForge nu a putut citi acel fișier.</value></data>
+  <data name="Import_Tr_FileTooLarge" xml:space="preserve"><value>Acel fișier este prea mare pentru a fi un profil.</value></data>
+  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>Acel fișier nu este un profil PadForge, reWASD sau DS4Windows.</value></data>
+  <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>Acel fișier declară un tip de document, de care un profil nu are nevoie, așa că PadForge nu l-a citit.</value></data>
+  <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>Acel fișier nu este în formatul reWASD pe care îl citește PadForge, schema 3.</value></data>
+  <data name="Import_Tr_ProgramNotRun" xml:space="preserve"><value>Omis pentru ca o configurație primită de la altcineva să nu poată porni un program: {0}</value></data>
+  <data name="Import_Tr_SystemCommand" xml:space="preserve"><value>Omis pentru ca o configurație primită de la altcineva să nu poată face asta PC-ului dumneavoastră: {0}</value></data>
+  <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>PadForge nu recunoaște această intrare: {0}</value></data>
+  <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge nu recunoaște această ieșire: {0}</value></data>
+  <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge nu are o astfel de comandă: {0}</value></data>
+  <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>Controllerul virtual nu are un astfel de buton: {0}</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>Un reticul există doar în reWASD. Afișați propria imagine cu o Suprapunere ecran.</value></data>
+  <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>Tremurul și scuturarea manetei nu au fost preluate.</value></data>
+  <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Punctele de acționare analogică ale tastelor nu au fost preluate.</value></data>
+  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>Trimiterea către alt PC nu a fost preluată. Configurați-o cu Legătură la distanță.</value></data>
+  <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge citește două manete, iar aici este numită a treia.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Emularea volanului nu a fost preluată. Mapați volanul în fila Mapări.</value></data>
+  <data name="Import_Tr_ProfileSwitch" xml:space="preserve"><value>O acțiune specială care încarcă alt profil nu a fost preluată: {0}</value></data>
+  <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Acest profil numește o acțiune specială care lipsește din Actions.xml de lângă dosarul său Profiles: {0}</value></data>
+  <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Această setare nu a fost preluată: {0}</value></data>
+  <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD a împiedicat aceste intrări să ajungă în Windows. Activați Blocare intrări mapate pentru {0} în pagina Dispozitive, care le blochează pe cele mapate de acest profil.</value></data>
+  <data name="Import_Tr_HeldAsTap" xml:space="preserve"><value>Apăsare scurtă în loc de apăsare prelungită, deoarece alt gest folosește același buton.</value></data>
+  <data name="Import_Tr_CurveFitted" xml:space="preserve"><value>Curba cu {0} puncte a fost preluată ca cea mai apropiată curbă de putere.</value></data>
+  <data name="Import_Tr_CurveApproximated" xml:space="preserve"><value>Curba {0} a fost preluată ca cea mai apropiată curbă de putere.</value></data>
+  <data name="Import_Tr_ZoneOutward" xml:space="preserve"><value>Se activează din această zonă spre exterior, nu doar în interiorul ei.</value></data>
+  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>Importat ca strat obișnuit.</value></data>
+  <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>Submeniurile sale au devenit sloturi suplimentare pe un singur inel.</value></data>
+  <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Se confirmă când maneta revine în centru sau când stratul se încheie. Butonul Apply din reWASD nu este folosit.</value></data>
+  <data name="Import_Tr_RegionCentered" xml:space="preserve"><value>Cursorul rămâne într-o zonă de aceeași dimensiune, în centrul ecranului.</value></data>
+  <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Acest fișier ține separate două controllere. În PadForge, orice controller de pe slot activează aceste mapări.</value></data>
+  <data name="Import_Tr_ToggleSameGesture" xml:space="preserve"><value>Același gest îl oprește. În reWASD se oprea cu o singură apăsare.</value></data>
+  <data name="Import_Tr_LedShownAs" xml:space="preserve"><value>Iluminarea {0} a fost preluată ca cel mai apropiat mod de bară luminoasă.</value></data>
+  <data name="Import_Tr_LoweredToKeys" xml:space="preserve"><value>Trimite {0} în schimb.</value></data>
+  <data name="Import_Tr_StickAdded" xml:space="preserve"><value>Setează maneta la această valoare în loc să o adauge la poziția proprie a manetei.</value></data>
+  <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>Viteza de mișcare sau flick-ul nu au fost preluate.</value></data>
+  <data name="Import_Tr_HipFire" xml:space="preserve"><value>Apăsarea ușoară și cea completă funcționează, fără așteptarea de {0} ms dinaintea apăsării ușoare.</value></data>
+  <data name="Import_Tr_MaxOutput" xml:space="preserve"><value>Scalează ieșirea la {0} la sută în loc să o limiteze.</value></data>
+  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Acestea nu au fost preluate. Setați-le în fila Touchpad.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Nimic din acest fișier nu deschide acest strat. Atribuiți-i un buton în fila Mapări.</value></data>
 </root>

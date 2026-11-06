@@ -4912,4 +4912,58 @@
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Сваки оверлеј</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Прикажи/сакриј оверлеј екрана {0}</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Прикажи {0} слике: {1} × {2} мс, до следећег макроа</value></data>
+  <data name="Import_DialogTitle" xml:space="preserve"><value>Увоз профила</value></data>
+  <data name="Import_Source_Format" xml:space="preserve"><value>{0}, {1} датотека</value></data>
+  <data name="Import_ProfileName_Format" xml:space="preserve"><value>Постаје профил „{0}“.</value></data>
+  <data name="Import_Confirm" xml:space="preserve"><value>Увези</value></data>
+  <data name="Import_NothingToImport" xml:space="preserve"><value>Ова датотека не мапира ништа што PadForge може да користи.</value></data>
+  <data name="Import_NoteController" xml:space="preserve"><value>Након учитавања овог профила доделите свој контролер његовим слотовима на страници Уређаји.</value></data>
+  <data name="Import_NoteAssignsOne_Format" xml:space="preserve"><value>Приликом учитавања додељује {0} својим слотовима.</value></data>
+  <data name="Import_NoteAssignsTwo_Format" xml:space="preserve"><value>Приликом учитавања додељује {0} и {1} својим слотовима.</value></data>
+  <data name="Profiles_ImportFilterAll" xml:space="preserve"><value>Профили</value></data>
+  <data name="Import_LayerName_Format" xml:space="preserve"><value>Слој {0}</value></data>
+  <data name="Import_ShiftLayerName_Format" xml:space="preserve"><value>Шифт {0}</value></data>
+  <data name="Import_MenuItem_Format" xml:space="preserve"><value>Ставка {0}</value></data>
+  <data name="Import_Line_Controller" xml:space="preserve"><value>Контролер</value></data>
+  <data name="Import_Line_Native" xml:space="preserve"><value>Задржава своје излазе</value></data>
+  <data name="Import_Line_ToLayer_Format" xml:space="preserve"><value>На {0}</value></data>
+  <data name="Import_Tr_FileUnreadable" xml:space="preserve"><value>PadForge није могао да прочита ту датотеку.</value></data>
+  <data name="Import_Tr_FileTooLarge" xml:space="preserve"><value>Та датотека је превелика да би била профил.</value></data>
+  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>Та датотека није PadForge, reWASD или DS4Windows профил.</value></data>
+  <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>Та датотека садржи декларацију типа документа, која профилу никада није потребна, па је PadForge није прочитао.</value></data>
+  <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>Та датотека није у reWASD формату који PadForge чита, шема 3.</value></data>
+  <data name="Import_Tr_ProgramNotRun" xml:space="preserve"><value>Изостављено да подељена конфигурација не би могла да покрене програм: {0}</value></data>
+  <data name="Import_Tr_SystemCommand" xml:space="preserve"><value>Изостављено да подељена конфигурација не би могла да учини ово вашем рачунару: {0}</value></data>
+  <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>PadForge не препознаје овај улаз: {0}</value></data>
+  <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge не препознаје овај излаз: {0}</value></data>
+  <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge нема такву команду: {0}</value></data>
+  <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>Виртуелни контролер нема такво дугме: {0}</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>Нишан постоји само унутар reWASD-а. Своју слику прикажите помоћу Оверлеја екрана.</value></data>
+  <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>Подрхтавање и тресење штапића није пренето.</value></data>
+  <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Аналогне тачке активирања тастера нису пренете.</value></data>
+  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>Слање на други рачунар није пренето. Подесите га помоћу Удаљене везе.</value></data>
+  <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge чита два штапића, а овде се помиње трећи.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Емулација управљача није пренета. Мапирајте управљач на картици Мапирања.</value></data>
+  <data name="Import_Tr_ProfileSwitch" xml:space="preserve"><value>Посебна радња која учитава други профил није пренета: {0}</value></data>
+  <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Овај профил помиње посебну радњу која недостаје у датотеци Actions.xml поред његове фасцикле Profiles: {0}</value></data>
+  <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Ово подешавање није пренето: {0}</value></data>
+  <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD је спречавао да ови улази стигну до система Windows. Укључите Блокирај мапиране улазе за {0} на страници Уређаји, што блокира оне које овај профил мапира.</value></data>
+  <data name="Import_Tr_HeldAsTap" xml:space="preserve"><value>Кратко куцне уместо држања, јер други гест дели исто дугме.</value></data>
+  <data name="Import_Tr_CurveFitted" xml:space="preserve"><value>Крива од {0} тачака пренета је као најближа степена крива.</value></data>
+  <data name="Import_Tr_CurveApproximated" xml:space="preserve"><value>Крива {0} пренета је као најближа степена крива.</value></data>
+  <data name="Import_Tr_ZoneOutward" xml:space="preserve"><value>Активира се од ове зоне нагоре, а не само унутар ње.</value></data>
+  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>Увезено као обичан слој.</value></data>
+  <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>Његови подмени постали су додатни слотови на једном прстену.</value></data>
+  <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Потврђује се када се штапић врати у центар или када слој заврши. reWASD-ово дугме Примени се не користи.</value></data>
+  <data name="Import_Tr_RegionCentered" xml:space="preserve"><value>Показивач остаје у подручју исте величине у центру екрана.</value></data>
+  <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Ова датотека раздваја два контролера. У PadForge-у ова мапирања активира било који контролер на слоту.</value></data>
+  <data name="Import_Tr_ToggleSameGesture" xml:space="preserve"><value>Исти гест га искључује. reWASD га је искључивао једним притиском.</value></data>
+  <data name="Import_Tr_LedShownAs" xml:space="preserve"><value>Осветљење {0} пренето је као најближи режим светлосне траке.</value></data>
+  <data name="Import_Tr_LoweredToKeys" xml:space="preserve"><value>Уместо тога шаље {0}.</value></data>
+  <data name="Import_Tr_StickAdded" xml:space="preserve"><value>Поставља штапић на ову вредност уместо да је додаје властитом положају штапића.</value></data>
+  <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>Брзина кретања или брзи покрет нису пренети.</value></data>
+  <data name="Import_Tr_HipFire" xml:space="preserve"><value>Лаки и пуни притисак раде, без чекања од {0} ms пре лаког притиска.</value></data>
+  <data name="Import_Tr_MaxOutput" xml:space="preserve"><value>Скалира излаз на {0} процената уместо да га ограничи.</value></data>
+  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Ово није пренето. Подесите то на картици Тачпед.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Ништа у овој датотеци не отвара овај слој. Доделите му дугме на картици Мапирања.</value></data>
 </root>

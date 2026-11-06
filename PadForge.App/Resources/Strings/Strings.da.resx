@@ -4912,4 +4912,58 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Alle overlays</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Slå skærmoverlay {0} til/fra</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Vis {0}-billeder: {1} × {2} ms, indtil næste makro</value></data>
+  <data name="Import_DialogTitle" xml:space="preserve"><value>Importer profil</value></data>
+  <data name="Import_Source_Format" xml:space="preserve"><value>{0}, en {1}-fil</value></data>
+  <data name="Import_ProfileName_Format" xml:space="preserve"><value>Bliver til profilen ”{0}”.</value></data>
+  <data name="Import_Confirm" xml:space="preserve"><value>Importer</value></data>
+  <data name="Import_NothingToImport" xml:space="preserve"><value>Denne fil tildeler intet, som PadForge kan bruge.</value></data>
+  <data name="Import_NoteController" xml:space="preserve"><value>Når du har indlæst denne profil, skal du tildele din controller til dens slots på siden Enheder.</value></data>
+  <data name="Import_NoteAssignsOne_Format" xml:space="preserve"><value>Den tildeler {0} til sine slots, når den indlæses.</value></data>
+  <data name="Import_NoteAssignsTwo_Format" xml:space="preserve"><value>Den tildeler {0} og {1} til sine slots, når den indlæses.</value></data>
+  <data name="Profiles_ImportFilterAll" xml:space="preserve"><value>Profiler</value></data>
+  <data name="Import_LayerName_Format" xml:space="preserve"><value>Lag {0}</value></data>
+  <data name="Import_ShiftLayerName_Format" xml:space="preserve"><value>Shift {0}</value></data>
+  <data name="Import_MenuItem_Format" xml:space="preserve"><value>Punkt {0}</value></data>
+  <data name="Import_Line_Controller" xml:space="preserve"><value>Controller</value></data>
+  <data name="Import_Line_Native" xml:space="preserve"><value>Beholder egne outputs</value></data>
+  <data name="Import_Line_ToLayer_Format" xml:space="preserve"><value>Til {0}</value></data>
+  <data name="Import_Tr_FileUnreadable" xml:space="preserve"><value>PadForge kunne ikke læse den fil.</value></data>
+  <data name="Import_Tr_FileTooLarge" xml:space="preserve"><value>Den fil er for stor til at være en profil.</value></data>
+  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>Den fil er ikke en PadForge-, reWASD- eller DS4Windows-profil.</value></data>
+  <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>Den fil erklærer en dokumenttype, som en profil aldrig har brug for, så PadForge læste den ikke.</value></data>
+  <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>Den fil er ikke i det reWASD-format, PadForge læser, skema 3.</value></data>
+  <data name="Import_Tr_ProgramNotRun" xml:space="preserve"><value>Udeladt, så en delt konfiguration ikke kan starte et program: {0}</value></data>
+  <data name="Import_Tr_SystemCommand" xml:space="preserve"><value>Udeladt, så en delt konfiguration ikke kan gøre dette ved din pc: {0}</value></data>
+  <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>PadForge genkender ikke dette input: {0}</value></data>
+  <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge genkender ikke dette output: {0}</value></data>
+  <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge har ingen sådan kommando: {0}</value></data>
+  <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>Den virtuelle controller har ingen sådan knap: {0}</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>Et trådkors findes inde i reWASD. Vis dit eget billede med et Skærmoverlay.</value></data>
+  <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>Stick-rystelser og -rysten blev ikke overført.</value></data>
+  <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Aktiveringspunkter for analoge taster blev ikke overført.</value></data>
+  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>Afsendelse til en anden pc blev ikke overført. Opsæt det med Fjernlink.</value></data>
+  <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge læser to sticks, og dette nævner en tredje.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Efterligning af rat blev ikke overført. Tildel ratten på fanen Tildelinger.</value></data>
+  <data name="Import_Tr_ProfileSwitch" xml:space="preserve"><value>En specialhandling, der indlæser en anden profil, blev ikke overført: {0}</value></data>
+  <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Denne profil nævner en specialhandling, der mangler i Actions.xml ved siden af dens Profiles-mappe: {0}</value></data>
+  <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Denne indstilling blev ikke overført: {0}</value></data>
+  <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD forhindrede disse input i at nå Windows. Slå Bloker tildelte input til for {0} på siden Enheder, som blokerer dem, som denne profil tildeler.</value></data>
+  <data name="Import_Tr_HeldAsTap" xml:space="preserve"><value>Trykker i stedet for at holde nede, fordi en anden gestus deler knappen.</value></data>
+  <data name="Import_Tr_CurveFitted" xml:space="preserve"><value>Kurven med {0} punkter blev overført som den nærmeste potenskurve.</value></data>
+  <data name="Import_Tr_CurveApproximated" xml:space="preserve"><value>Kurven {0} blev overført som den nærmeste potenskurve.</value></data>
+  <data name="Import_Tr_ZoneOutward" xml:space="preserve"><value>Udløses fra denne zone og udad, ikke kun inden i den.</value></data>
+  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>Importeret som et almindeligt lag.</value></data>
+  <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>Dens undermenuer blev til flere slots på én ring.</value></data>
+  <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Bekræfter, når stikken vender tilbage til midten, eller laget slutter. reWASDs knap Anvend bruges ikke.</value></data>
+  <data name="Import_Tr_RegionCentered" xml:space="preserve"><value>Markøren bliver i et område af samme størrelse midt på skærmen.</value></data>
+  <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Denne fil holder to controllere adskilt. I PadForge udløser enhver controller på sloten disse tildelinger.</value></data>
+  <data name="Import_Tr_ToggleSameGesture" xml:space="preserve"><value>Den samme gestus slår det fra. reWASD slog det fra med ét tryk.</value></data>
+  <data name="Import_Tr_LedShownAs" xml:space="preserve"><value>Lyset {0} blev overført som den nærmeste lightbar-tilstand.</value></data>
+  <data name="Import_Tr_LoweredToKeys" xml:space="preserve"><value>Sender {0} i stedet.</value></data>
+  <data name="Import_Tr_StickAdded" xml:space="preserve"><value>Sætter sticken til denne værdi i stedet for at lægge den til stickens egen position.</value></data>
+  <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>Bevægelseshastigheden eller flicket blev ikke overført.</value></data>
+  <data name="Import_Tr_HipFire" xml:space="preserve"><value>Det bløde og det fulde træk virker, uden de {0} ms ventetid før det bløde træk.</value></data>
+  <data name="Import_Tr_MaxOutput" xml:space="preserve"><value>Skalerer outputtet til {0} procent i stedet for at begrænse det.</value></data>
+  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Disse blev ikke overført. Indstil dem på fanen Touchpad.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Intet i denne fil åbner dette lag. Giv det en knap på fanen Tildelinger.</value></data>
 </root>

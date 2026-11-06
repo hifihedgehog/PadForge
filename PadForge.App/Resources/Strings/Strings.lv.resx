@@ -4912,4 +4912,58 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Katrs pārklājums</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Pārslēgt ekrāna pārklājumu {0}</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Rādīt {0} attēlus: {1} × {2} ms, līdz nākamajam makro</value></data>
+  <data name="Import_DialogTitle" xml:space="preserve"><value>Profila importēšana</value></data>
+  <data name="Import_Source_Format" xml:space="preserve"><value>{0}, {1} fails</value></data>
+  <data name="Import_ProfileName_Format" xml:space="preserve"><value>Kļūs par profilu "{0}".</value></data>
+  <data name="Import_Confirm" xml:space="preserve"><value>Importēt</value></data>
+  <data name="Import_NothingToImport" xml:space="preserve"><value>Šis fails nepiesaista neko, ko PadForge varētu izmantot.</value></data>
+  <data name="Import_NoteController" xml:space="preserve"><value>Pēc šī profila ielādes piešķiriet savu kontrolieri tā slotiem lapā Ierīces.</value></data>
+  <data name="Import_NoteAssignsOne_Format" xml:space="preserve"><value>Ielādējot tas piešķir {0} saviem slotiem.</value></data>
+  <data name="Import_NoteAssignsTwo_Format" xml:space="preserve"><value>Ielādējot tas piešķir {0} un {1} saviem slotiem.</value></data>
+  <data name="Profiles_ImportFilterAll" xml:space="preserve"><value>Profili</value></data>
+  <data name="Import_LayerName_Format" xml:space="preserve"><value>Slānis {0}</value></data>
+  <data name="Import_ShiftLayerName_Format" xml:space="preserve"><value>Shift {0}</value></data>
+  <data name="Import_MenuItem_Format" xml:space="preserve"><value>Vienums {0}</value></data>
+  <data name="Import_Line_Controller" xml:space="preserve"><value>Kontrolieris</value></data>
+  <data name="Import_Line_Native" xml:space="preserve"><value>Saglabā savas izvades</value></data>
+  <data name="Import_Line_ToLayer_Format" xml:space="preserve"><value>Uz {0}</value></data>
+  <data name="Import_Tr_FileUnreadable" xml:space="preserve"><value>PadForge nevarēja nolasīt šo failu.</value></data>
+  <data name="Import_Tr_FileTooLarge" xml:space="preserve"><value>Šis fails ir pārāk liels, lai būtu profils.</value></data>
+  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>Šis fails nav PadForge, reWASD vai DS4Windows profils.</value></data>
+  <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>Šis fails deklarē dokumenta tipu, kas profilam nekad nav vajadzīgs, tāpēc PadForge to nenolasīja.</value></data>
+  <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>Šis fails nav reWASD formātā, ko PadForge nolasa (shēma 3).</value></data>
+  <data name="Import_Tr_ProgramNotRun" xml:space="preserve"><value>Izlaists, lai koplietots konfigurācijas fails nevarētu palaist programmu: {0}</value></data>
+  <data name="Import_Tr_SystemCommand" xml:space="preserve"><value>Izlaists, lai koplietots konfigurācijas fails nevarētu to darīt ar jūsu datoru: {0}</value></data>
+  <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>PadForge neatpazīst šo ievadi: {0}</value></data>
+  <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge neatpazīst šo izvadi: {0}</value></data>
+  <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge nepazīst šādu komandu: {0}</value></data>
+  <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>Virtuālajam kontrolierim nav šādas pogas: {0}</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>Mērķa krustiņš pastāv tikai reWASD iekšienē. Parādiet savu attēlu, izmantojot ekrāna pārklājumu.</value></data>
+  <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>Kursorsviras trīcēšana un kratīšana netika pārnesta.</value></data>
+  <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Analogo taustiņu aktivizācijas punkti netika pārnesti.</value></data>
+  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>Sūtīšana uz citu datoru netika pārnesta. Iestatiet to, izmantojot Attālā savienojuma funkciju.</value></data>
+  <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge nolasa divas kursorsviras, bet šeit minēta trešā.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Stūres emulācija netika pārnesta. Piesaistiet stūri cilnē Piesaistes.</value></data>
+  <data name="Import_Tr_ProfileSwitch" xml:space="preserve"><value>Īpašā darbība, kas ielādē citu profilu, netika pārnesta: {0}</value></data>
+  <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Šis profils min īpašu darbību, kuras nav failā Actions.xml blakus tā mapei Profiles: {0}</value></data>
+  <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Šis iestatījums netika pārnests: {0}</value></data>
+  <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD neļāva šiem ievades signāliem nonākt līdz Windows. Ieslēdziet Pārtvert piesaistīto ievadi ierīcei {0} lapā Ierīces, un tas apturēs tos, ko piesaista šis profils.</value></data>
+  <data name="Import_Tr_HeldAsTap" xml:space="preserve"><value>Īsi piespiež, nevis tur nospiestu, jo šo pogu izmanto arī cits žests.</value></data>
+  <data name="Import_Tr_CurveFitted" xml:space="preserve"><value>{0} punktu līkne tika pārnesta kā tuvākā pakāpes līkne.</value></data>
+  <data name="Import_Tr_CurveApproximated" xml:space="preserve"><value>Līkne {0} tika pārnesta kā tuvākā pakāpes līkne.</value></data>
+  <data name="Import_Tr_ZoneOutward" xml:space="preserve"><value>Aktivizējas no šīs zonas uz āru, ne tikai tās iekšpusē.</value></data>
+  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>Importēts kā parasts slānis.</value></data>
+  <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>Tās apakšizvēlnes kļuva par papildu slotiem vienā lokā.</value></data>
+  <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Apstiprina, kad kursorsvira atgriežas centrā vai slānis beidzas. reWASD poga Apply netiek izmantota.</value></data>
+  <data name="Import_Tr_RegionCentered" xml:space="preserve"><value>Kursors paliek tāda paša izmēra apgabalā ekrāna centrā.</value></data>
+  <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Šajā failā abi kontrolieri ir nošķirti. PadForge šīs piesaistes aktivizē jebkurš slotā esošs kontrolieris.</value></data>
+  <data name="Import_Tr_ToggleSameGesture" xml:space="preserve"><value>Izslēdz to tas pats žests. reWASD to izslēdza ar vienu piespiešanu.</value></data>
+  <data name="Import_Tr_LedShownAs" xml:space="preserve"><value>{0} apgaismojums tika pārnests kā tuvākais gaismas joslas režīms.</value></data>
+  <data name="Import_Tr_LoweredToKeys" xml:space="preserve"><value>Tā vietā sūta {0}.</value></data>
+  <data name="Import_Tr_StickAdded" xml:space="preserve"><value>Iestata kursorsviru uz šo vērtību, nevis pieskaita to kursorsviras pašas pozīcijai.</value></data>
+  <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>Kustības ātrums vai grūdiens netika pārnests.</value></data>
+  <data name="Import_Tr_HipFire" xml:space="preserve"><value>Vieglā un pilnā nospiešana darbojas bez {0} ms gaidīšanas pirms vieglās nospiešanas.</value></data>
+  <data name="Import_Tr_MaxOutput" xml:space="preserve"><value>Mērogo izvadi līdz {0} procentiem, nevis ierobežo to.</value></data>
+  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Tie netika pārnesti. Iestatiet tos cilnē Skārienpaliktnis.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Nekas šajā failā neatver šo slāni. Piešķiriet tam pogu cilnē Piesaistes.</value></data>
 </root>

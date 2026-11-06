@@ -4912,4 +4912,58 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Minden átfedés</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Képernyő-átfedés {0} be/ki</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>{0} képeinek megjelenítése: {1} × {2} ms, a következő makróig</value></data>
+  <data name="Import_DialogTitle" xml:space="preserve"><value>Profil importálása</value></data>
+  <data name="Import_Source_Format" xml:space="preserve"><value>{0}, {1}-fájl</value></data>
+  <data name="Import_ProfileName_Format" xml:space="preserve"><value>A neve „{0}” profil lesz.</value></data>
+  <data name="Import_Confirm" xml:space="preserve"><value>Importálás</value></data>
+  <data name="Import_NothingToImport" xml:space="preserve"><value>Ez a fájl semmit nem rendel hozzá, amit a PadForge fel tudna használni.</value></data>
+  <data name="Import_NoteController" xml:space="preserve"><value>A profil betöltése után rendelje hozzá a vezérlőt a profil szlotjaihoz az Eszközök oldalon.</value></data>
+  <data name="Import_NoteAssignsOne_Format" xml:space="preserve"><value>Betöltéskor hozzárendeli a(z) {0} eszközt a szlotjaihoz.</value></data>
+  <data name="Import_NoteAssignsTwo_Format" xml:space="preserve"><value>Betöltéskor hozzárendeli a(z) {0} és a(z) {1} eszközt a szlotjaihoz.</value></data>
+  <data name="Profiles_ImportFilterAll" xml:space="preserve"><value>Profilok</value></data>
+  <data name="Import_LayerName_Format" xml:space="preserve"><value>{0}. réteg</value></data>
+  <data name="Import_ShiftLayerName_Format" xml:space="preserve"><value>Shift {0}</value></data>
+  <data name="Import_MenuItem_Format" xml:space="preserve"><value>{0}. elem</value></data>
+  <data name="Import_Line_Controller" xml:space="preserve"><value>Vezérlő</value></data>
+  <data name="Import_Line_Native" xml:space="preserve"><value>Megtartja a saját kimeneteit</value></data>
+  <data name="Import_Line_ToLayer_Format" xml:space="preserve"><value>Ide: {0}</value></data>
+  <data name="Import_Tr_FileUnreadable" xml:space="preserve"><value>A PadForge nem tudta beolvasni a fájlt.</value></data>
+  <data name="Import_Tr_FileTooLarge" xml:space="preserve"><value>A fájl túl nagy ahhoz, hogy profil legyen.</value></data>
+  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>A fájl nem PadForge-, reWASD- vagy DS4Windows-profil.</value></data>
+  <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>A fájl dokumentumtípust deklarál, amelyre egy profilnak sosem lenne szüksége, ezért a PadForge nem olvasta be.</value></data>
+  <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>A fájl nem abban a reWASD-formátumban van, amelyet a PadForge olvas, azaz a 3-as sémában.</value></data>
+  <data name="Import_Tr_ProgramNotRun" xml:space="preserve"><value>Kihagyva, hogy egy megosztott konfiguráció ne indíthasson programot: {0}</value></data>
+  <data name="Import_Tr_SystemCommand" xml:space="preserve"><value>Kihagyva, hogy egy megosztott konfiguráció ne tehesse ezt a számítógéppel: {0}</value></data>
+  <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>A PadForge nem ismeri fel ezt a bemenetet: {0}</value></data>
+  <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>A PadForge nem ismeri fel ezt a kimenetet: {0}</value></data>
+  <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>A PadForge-ban nincs ilyen parancs: {0}</value></data>
+  <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>A virtuális vezérlőn nincs ilyen gomb: {0}</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>A célkereszt a reWASD-on belül él. Saját képet a Képernyő-átfedéssel jeleníthet meg.</value></data>
+  <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>A kar remegése és rázása nem került át.</value></data>
+  <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Az analóg billentyűk aktiválási pontjai nem kerültek át.</value></data>
+  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>A másik számítógépre küldés nem került át. Állítsa be a Távoli kapcsolattal.</value></data>
+  <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>A PadForge két kart olvas, ez pedig egy harmadikat nevez meg.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>A kormány emulálása nem került át. Rendelje hozzá a kormányt a Hozzárendelések fülön.</value></data>
+  <data name="Import_Tr_ProfileSwitch" xml:space="preserve"><value>Egy másik profilt betöltő különleges művelet nem került át: {0}</value></data>
+  <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Ez a profil olyan különleges műveletet nevez meg, amely hiányzik a Profiles mappa melletti Actions.xml fájlból: {0}</value></data>
+  <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Ez a beállítás nem került át: {0}</value></data>
+  <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>A reWASD megakadályozta, hogy ezek a bemenetek eljussanak a Windowsig. Kapcsolja be a Hozzárendelt bemenetek elnyelése beállítást a(z) {0} eszközhöz az Eszközök oldalon, amely elnyeli a profil által hozzárendelteket.</value></data>
+  <data name="Import_Tr_HeldAsTap" xml:space="preserve"><value>Nyomvatartás helyett koppintás, mert egy másik gesztus ugyanazt a gombot használja.</value></data>
+  <data name="Import_Tr_CurveFitted" xml:space="preserve"><value>A(z) {0} pontos görbe a legközelebbi hatványgörbeként került át.</value></data>
+  <data name="Import_Tr_CurveApproximated" xml:space="preserve"><value>A(z) {0} görbe a legközelebbi hatványgörbeként került át.</value></data>
+  <data name="Import_Tr_ZoneOutward" xml:space="preserve"><value>Ettől a zónától kifelé aktiválódik, nem csak a zónán belül.</value></data>
+  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>Hétköznapi rétegként importálva.</value></data>
+  <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>Az almenüi további szlotok lettek egyetlen gyűrűn.</value></data>
+  <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Akkor érvényesít, amikor a kar visszaáll középre, vagy a réteg véget ér. A reWASD Alkalmaz gombját nem használja.</value></data>
+  <data name="Import_Tr_RegionCentered" xml:space="preserve"><value>A kurzor a képernyő közepén, egy azonos méretű területen marad.</value></data>
+  <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Ez a fájl két vezérlőt tart külön. A PadForge-ban a szlot bármely vezérlője kiváltja ezeket a hozzárendeléseket.</value></data>
+  <data name="Import_Tr_ToggleSameGesture" xml:space="preserve"><value>Ugyanaz a gesztus kapcsolja ki. A reWASD-ban egyetlen lenyomás kikapcsolta.</value></data>
+  <data name="Import_Tr_LedShownAs" xml:space="preserve"><value>A(z) {0} világítás a legközelebbi fénycsík-módként került át.</value></data>
+  <data name="Import_Tr_LoweredToKeys" xml:space="preserve"><value>Helyette ezt küldi: {0}.</value></data>
+  <data name="Import_Tr_StickAdded" xml:space="preserve"><value>A kart erre az értékre állítja, ahelyett hogy hozzáadná a kar saját helyzetéhez.</value></data>
+  <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>A mozgás sebessége vagy a gyors elhúzás nem került át.</value></data>
+  <data name="Import_Tr_HipFire" xml:space="preserve"><value>A könnyű és a teljes húzás működik, a könnyű húzás előtti {0} ms várakozás nélkül.</value></data>
+  <data name="Import_Tr_MaxOutput" xml:space="preserve"><value>A kimenetet {0} százalékra skálázza, ahelyett hogy korlátozná.</value></data>
+  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Ezek nem kerültek át. Állítsa be őket az Érintőpad fülön.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>A fájlban semmi nem nyitja meg ezt a réteget. Adjon neki gombot a Hozzárendelések fülön.</value></data>
 </root>

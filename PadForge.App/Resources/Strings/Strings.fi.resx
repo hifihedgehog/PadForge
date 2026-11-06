@@ -4912,4 +4912,58 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Kaikki peittokuvat</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Näytä/piilota näytön peittokuva {0}</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Näytä kuvat, {0}: {1} × {2} ms, kunnes seuraava makro</value></data>
+  <data name="Import_DialogTitle" xml:space="preserve"><value>Tuo profiili</value></data>
+  <data name="Import_Source_Format" xml:space="preserve"><value>{0}, {1}-tiedosto</value></data>
+  <data name="Import_ProfileName_Format" xml:space="preserve"><value>Tulee profiiliksi "{0}".</value></data>
+  <data name="Import_Confirm" xml:space="preserve"><value>Tuo</value></data>
+  <data name="Import_NothingToImport" xml:space="preserve"><value>Tämä tiedosto ei määritä mitään, mitä PadForge voi käyttää.</value></data>
+  <data name="Import_NoteController" xml:space="preserve"><value>Kun olet ladannut tämän profiilin, liitä ohjain sen paikkoihin Laitteet-sivulla.</value></data>
+  <data name="Import_NoteAssignsOne_Format" xml:space="preserve"><value>Se liittää laitteen {0} paikkoihinsa latautuessaan.</value></data>
+  <data name="Import_NoteAssignsTwo_Format" xml:space="preserve"><value>Se liittää laitteet {0} ja {1} paikkoihinsa latautuessaan.</value></data>
+  <data name="Profiles_ImportFilterAll" xml:space="preserve"><value>Profiilit</value></data>
+  <data name="Import_LayerName_Format" xml:space="preserve"><value>Taso {0}</value></data>
+  <data name="Import_ShiftLayerName_Format" xml:space="preserve"><value>Vaihto {0}</value></data>
+  <data name="Import_MenuItem_Format" xml:space="preserve"><value>Kohta {0}</value></data>
+  <data name="Import_Line_Controller" xml:space="preserve"><value>Ohjain</value></data>
+  <data name="Import_Line_Native" xml:space="preserve"><value>Säilyttää omat tulosteensa</value></data>
+  <data name="Import_Line_ToLayer_Format" xml:space="preserve"><value>Tasolle {0}</value></data>
+  <data name="Import_Tr_FileUnreadable" xml:space="preserve"><value>PadForge ei voinut lukea tuota tiedostoa.</value></data>
+  <data name="Import_Tr_FileTooLarge" xml:space="preserve"><value>Tuo tiedosto on liian suuri ollakseen profiili.</value></data>
+  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>Tuo tiedosto ei ole PadForge-, reWASD- tai DS4Windows-profiili.</value></data>
+  <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>Tuo tiedosto ilmoittaa asiakirjatyypin, jota profiili ei koskaan tarvitse, joten PadForge ei lukenut sitä.</value></data>
+  <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>Tuo tiedosto ei ole siinä reWASD-muodossa, jota PadForge lukee, skeema 3.</value></data>
+  <data name="Import_Tr_ProgramNotRun" xml:space="preserve"><value>Jätetty pois, jottei jaettu määritystiedosto voi käynnistää ohjelmaa: {0}</value></data>
+  <data name="Import_Tr_SystemCommand" xml:space="preserve"><value>Jätetty pois, jottei jaettu määritystiedosto voi tehdä tätä tietokoneellesi: {0}</value></data>
+  <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>PadForge ei tunnista tätä syötettä: {0}</value></data>
+  <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge ei tunnista tätä tulostetta: {0}</value></data>
+  <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge-ssa ei ole tällaista komentoa: {0}</value></data>
+  <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>Virtuaaliohjaimessa ei ole tällaista painiketta: {0}</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>Tähtäin on reWASDin sisäinen ominaisuus. Näytä oma kuvasi Näytön peittokuvalla.</value></data>
+  <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>Sauvan tärinää ja ravistusta ei saatu mukaan.</value></data>
+  <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Analogisten näppäinten aktivointipisteitä ei saatu mukaan.</value></data>
+  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>Lähettämistä toiselle tietokoneelle ei saatu mukaan. Määritä se Etälinkillä.</value></data>
+  <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge lukee kaksi sauvaa, ja tämä nimeää kolmannen.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Ohjauspyörän emulointia ei saatu mukaan. Määritä pyörä Määritykset-välilehdellä.</value></data>
+  <data name="Import_Tr_ProfileSwitch" xml:space="preserve"><value>Toista profiilia lataavaa erikoistoimintoa ei saatu mukaan: {0}</value></data>
+  <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Tämä profiili viittaa erikoistoimintoon, jota ei löydy Actions.xml-tiedostosta Profiles-kansion vierestä: {0}</value></data>
+  <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Tätä asetusta ei saatu mukaan: {0}</value></data>
+  <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD esti nämä syötteet pääsemästä Windowsiin. Ota Estä määritetyt syötteet käyttöön laitteelle {0} Laitteet-sivulla, jolloin tämän profiilin määrittämät syötteet estetään.</value></data>
+  <data name="Import_Tr_HeldAsTap" xml:space="preserve"><value>Napautus pitämisen sijaan, koska toinen ele käyttää samaa painiketta.</value></data>
+  <data name="Import_Tr_CurveFitted" xml:space="preserve"><value>{0}-pisteinen käyrä tuli lähimpänä potenssikäyränä.</value></data>
+  <data name="Import_Tr_CurveApproximated" xml:space="preserve"><value>Käyrä {0} tuli lähimpänä potenssikäyränä.</value></data>
+  <data name="Import_Tr_ZoneOutward" xml:space="preserve"><value>Laukeaa tältä alueelta ulospäin, ei vain sen sisällä.</value></data>
+  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>Tuotu tavallisena tasona.</value></data>
+  <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>Sen alivalikoista tuli lisää paikkoja samalle renkaalle.</value></data>
+  <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Vahvistuu, kun sauva palaa keskelle tai taso päättyy. reWASDin Apply-painiketta ei käytetä.</value></data>
+  <data name="Import_Tr_RegionCentered" xml:space="preserve"><value>Osoitin pysyy samankokoisella alueella näytön keskellä.</value></data>
+  <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Tämä tiedosto pitää kaksi ohjainta erillään. PadForge-ssa mikä tahansa paikan ohjain laukaisee nämä määritykset.</value></data>
+  <data name="Import_Tr_ToggleSameGesture" xml:space="preserve"><value>Sama ele kytkee sen pois. reWASD kytki sen pois yhdellä painalluksella.</value></data>
+  <data name="Import_Tr_LedShownAs" xml:space="preserve"><value>{0}-valaistus tuli lähimpänä valopalkin tilana.</value></data>
+  <data name="Import_Tr_LoweredToKeys" xml:space="preserve"><value>Lähettää sen sijaan: {0}.</value></data>
+  <data name="Import_Tr_StickAdded" xml:space="preserve"><value>Asettaa sauvan tähän arvoon sen sijaan, että lisäisi sen sauvan omaan asentoon.</value></data>
+  <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>Liikenopeutta tai pyyhkäisyä ei saatu mukaan.</value></data>
+  <data name="Import_Tr_HipFire" xml:space="preserve"><value>Kevyt ja täysi veto toimivat ilman {0} ms:n odotusta ennen kevyttä vetoa.</value></data>
+  <data name="Import_Tr_MaxOutput" xml:space="preserve"><value>Skaalaa tulosteen {0} prosenttiin sen rajaamisen sijaan.</value></data>
+  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Näitä ei saatu mukaan. Määritä ne Kosketuslevy-välilehdellä.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Mikään tämän tiedoston kohta ei avaa tätä tasoa. Anna sille painike Määritykset-välilehdellä.</value></data>
 </root>

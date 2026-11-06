@@ -4912,4 +4912,58 @@ Vill du att PadForge avinstallerar dem nu? Detta kräver förhöjd behörighet o
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Alla överlägg</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Visa/dölj skärmöverlägg {0}</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Visa bilder på {0}: {1} × {2} ms, tills nästa makro</value></data>
+  <data name="Import_DialogTitle" xml:space="preserve"><value>Importera profil</value></data>
+  <data name="Import_Source_Format" xml:space="preserve"><value>{0}, en {1}-fil</value></data>
+  <data name="Import_ProfileName_Format" xml:space="preserve"><value>Blir profilen ”{0}”.</value></data>
+  <data name="Import_Confirm" xml:space="preserve"><value>Importera</value></data>
+  <data name="Import_NothingToImport" xml:space="preserve"><value>Den här filen mappar inget som PadForge kan använda.</value></data>
+  <data name="Import_NoteController" xml:space="preserve"><value>När du har läst in profilen tilldelar du din handkontroll till dess platser på sidan Enheter.</value></data>
+  <data name="Import_NoteAssignsOne_Format" xml:space="preserve"><value>Den tilldelar {0} till sina platser när den läses in.</value></data>
+  <data name="Import_NoteAssignsTwo_Format" xml:space="preserve"><value>Den tilldelar {0} och {1} till sina platser när den läses in.</value></data>
+  <data name="Profiles_ImportFilterAll" xml:space="preserve"><value>Profiler</value></data>
+  <data name="Import_LayerName_Format" xml:space="preserve"><value>Lager {0}</value></data>
+  <data name="Import_ShiftLayerName_Format" xml:space="preserve"><value>Skift {0}</value></data>
+  <data name="Import_MenuItem_Format" xml:space="preserve"><value>Post {0}</value></data>
+  <data name="Import_Line_Controller" xml:space="preserve"><value>Handkontroll</value></data>
+  <data name="Import_Line_Native" xml:space="preserve"><value>Behåller sina egna utsignaler</value></data>
+  <data name="Import_Line_ToLayer_Format" xml:space="preserve"><value>Till {0}</value></data>
+  <data name="Import_Tr_FileUnreadable" xml:space="preserve"><value>PadForge kunde inte läsa filen.</value></data>
+  <data name="Import_Tr_FileTooLarge" xml:space="preserve"><value>Filen är för stor för att vara en profil.</value></data>
+  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>Filen är ingen profil för PadForge, reWASD eller DS4Windows.</value></data>
+  <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>Filen deklarerar en dokumenttyp, vilket en profil aldrig behöver, så PadForge läste den inte.</value></data>
+  <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>Filen är inte i det reWASD-format som PadForge läser, schema 3.</value></data>
+  <data name="Import_Tr_ProgramNotRun" xml:space="preserve"><value>Utelämnat så att en delad konfiguration inte kan starta ett program: {0}</value></data>
+  <data name="Import_Tr_SystemCommand" xml:space="preserve"><value>Utelämnat så att en delad konfiguration inte kan göra det här med din dator: {0}</value></data>
+  <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>PadForge känner inte igen den här insignalen: {0}</value></data>
+  <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge känner inte igen den här utsignalen: {0}</value></data>
+  <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge har inget sådant kommando: {0}</value></data>
+  <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>Den virtuella handkontrollen har ingen sådan knapp: {0}</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>Ett hårkors finns bara inuti reWASD. Visa din egen bild med Skärmöverlägg.</value></data>
+  <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>Darrning och skakning hos spakar fördes inte över.</value></data>
+  <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Analoga aktiveringspunkter för tangenter fördes inte över.</value></data>
+  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>Sändning till en annan dator fördes inte över. Ställ in det med Fjärrlänk.</value></data>
+  <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge läser två spakar, och här nämns en tredje.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Emulering av ratt fördes inte över. Mappa ratten på fliken Mappningar.</value></data>
+  <data name="Import_Tr_ProfileSwitch" xml:space="preserve"><value>En särskild åtgärd som läser in en annan profil fördes inte över: {0}</value></data>
+  <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Profilen nämner en särskild åtgärd som saknas i Actions.xml bredvid mappen Profiles: {0}</value></data>
+  <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Den här inställningen fördes inte över: {0}</value></data>
+  <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD hindrade de här insignalerna från att nå Windows. Aktivera Fånga upp mappade inmatningar för {0} på sidan Enheter, vilket stoppar dem som profilen mappar.</value></data>
+  <data name="Import_Tr_HeldAsTap" xml:space="preserve"><value>Trycker kort i stället för att hålla ned, eftersom en annan gest delar knappen.</value></data>
+  <data name="Import_Tr_CurveFitted" xml:space="preserve"><value>Kurvan med {0} punkter fördes över som den närmaste potenskurvan.</value></data>
+  <data name="Import_Tr_CurveApproximated" xml:space="preserve"><value>Kurvan {0} fördes över som den närmaste potenskurvan.</value></data>
+  <data name="Import_Tr_ZoneOutward" xml:space="preserve"><value>Utlöses från den här zonen och utåt, inte bara inuti den.</value></data>
+  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>Importerades som ett vanligt lager.</value></data>
+  <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>Dess undermenyer blev fler platser på en ring.</value></data>
+  <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Bekräftas när spaken centreras igen eller lagret slutar. reWASD:s knapp Tillämpa används inte.</value></data>
+  <data name="Import_Tr_RegionCentered" xml:space="preserve"><value>Markören stannar inom ett område av samma storlek i mitten av skärmen.</value></data>
+  <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Filen håller två handkontroller isär. I PadForge utlöser vilken handkontroll som helst på platsen de här mappningarna.</value></data>
+  <data name="Import_Tr_ToggleSameGesture" xml:space="preserve"><value>Samma gest stänger av det. I reWASD stängdes det av med ett enda tryck.</value></data>
+  <data name="Import_Tr_LedShownAs" xml:space="preserve"><value>Belysningen {0} fördes över som det närmaste ljusstapelläget.</value></data>
+  <data name="Import_Tr_LoweredToKeys" xml:space="preserve"><value>Skickar {0} i stället.</value></data>
+  <data name="Import_Tr_StickAdded" xml:space="preserve"><value>Sätter spaken till det här värdet i stället för att lägga till det på spakens egen position.</value></data>
+  <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>Rörelsehastigheten eller snärten fördes inte över.</value></data>
+  <data name="Import_Tr_HipFire" xml:space="preserve"><value>Det lätta och det fulla draget fungerar, utan väntetiden på {0} ms före det lätta draget.</value></data>
+  <data name="Import_Tr_MaxOutput" xml:space="preserve"><value>Skalar utsignalen till {0} procent i stället för att begränsa den.</value></data>
+  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Dessa fördes inte över. Ställ in dem på fliken Styrplatta.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Ingenting i filen öppnar det här lagret. Ge det en knapp på fliken Mappningar.</value></data>
 </root>

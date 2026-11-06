@@ -4912,4 +4912,58 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Každý překryv</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Přepnout překryvnou obrazovku {0}</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Zobrazit obrázky ({0}): {1} × {2} ms, do dalšího makra</value></data>
+  <data name="Import_DialogTitle" xml:space="preserve"><value>Importovat profil</value></data>
+  <data name="Import_Source_Format" xml:space="preserve"><value>{0}, soubor {1}</value></data>
+  <data name="Import_ProfileName_Format" xml:space="preserve"><value>Stane se z toho profil „{0}“.</value></data>
+  <data name="Import_Confirm" xml:space="preserve"><value>Importovat</value></data>
+  <data name="Import_NothingToImport" xml:space="preserve"><value>Tento soubor nemapuje nic, co by program PadForge dokázal použít.</value></data>
+  <data name="Import_NoteController" xml:space="preserve"><value>Po načtení tohoto profilu přiřaďte svůj ovladač k jeho slotům na stránce Zařízení.</value></data>
+  <data name="Import_NoteAssignsOne_Format" xml:space="preserve"><value>Při načtení přiřadí k jeho slotům {0}.</value></data>
+  <data name="Import_NoteAssignsTwo_Format" xml:space="preserve"><value>Při načtení přiřadí k jeho slotům {0} a {1}.</value></data>
+  <data name="Profiles_ImportFilterAll" xml:space="preserve"><value>Profily</value></data>
+  <data name="Import_LayerName_Format" xml:space="preserve"><value>Vrstva {0}</value></data>
+  <data name="Import_ShiftLayerName_Format" xml:space="preserve"><value>Shift {0}</value></data>
+  <data name="Import_MenuItem_Format" xml:space="preserve"><value>Položka {0}</value></data>
+  <data name="Import_Line_Controller" xml:space="preserve"><value>Ovladač</value></data>
+  <data name="Import_Line_Native" xml:space="preserve"><value>Zachovává vlastní výstupy</value></data>
+  <data name="Import_Line_ToLayer_Format" xml:space="preserve"><value>Do: {0}</value></data>
+  <data name="Import_Tr_FileUnreadable" xml:space="preserve"><value>Program PadForge tento soubor nedokázal přečíst.</value></data>
+  <data name="Import_Tr_FileTooLarge" xml:space="preserve"><value>Tento soubor je příliš velký na to, aby byl profilem.</value></data>
+  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>Tento soubor není profil programu PadForge, reWASD ani DS4Windows.</value></data>
+  <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>Tento soubor deklaruje typ dokumentu, který profil nikdy nepotřebuje, a proto ho program PadForge nepřečetl.</value></data>
+  <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>Tento soubor není ve formátu reWASD, který program PadForge čte, schéma 3.</value></data>
+  <data name="Import_Tr_ProgramNotRun" xml:space="preserve"><value>Vynecháno, aby sdílená konfigurace nemohla spustit program: {0}</value></data>
+  <data name="Import_Tr_SystemCommand" xml:space="preserve"><value>Vynecháno, aby to sdílená konfigurace nemohla provést s vaším počítačem: {0}</value></data>
+  <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>Program PadForge tento vstup nezná: {0}</value></data>
+  <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>Program PadForge tento výstup nezná: {0}</value></data>
+  <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>Program PadForge takový příkaz nemá: {0}</value></data>
+  <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>Virtuální ovladač takové tlačítko nemá: {0}</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>Zaměřovač existuje jen uvnitř reWASD. Vlastní obrázek zobrazíte pomocí funkce Překryvná obrazovka.</value></data>
+  <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>Chvění a třesení páček se nepřeneslo.</value></data>
+  <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Body aktivace analogových kláves se nepřenesly.</value></data>
+  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>Odesílání do jiného počítače se nepřeneslo. Nastavte ho pomocí funkce Vzdálené propojení.</value></data>
+  <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>Program PadForge čte dvě páčky a tady je uvedena třetí.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Emulace volantu se nepřenesla. Volant namapujte na kartě Mapování.</value></data>
+  <data name="Import_Tr_ProfileSwitch" xml:space="preserve"><value>Zvláštní akce, která načítá jiný profil, se nepřenesla: {0}</value></data>
+  <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Tento profil uvádí zvláštní akci, která chybí v souboru Actions.xml vedle složky Profiles: {0}</value></data>
+  <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Toto nastavení se nepřeneslo: {0}</value></data>
+  <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD bránil těmto vstupům v dosažení Windows. Zapněte pro {0} na stránce Zařízení volbu Pohlcovat namapované vstupy, která zastaví ty vstupy, jež tento profil mapuje.</value></data>
+  <data name="Import_Tr_HeldAsTap" xml:space="preserve"><value>Klepne místo podržení, protože tlačítko sdílí jiné gesto.</value></data>
+  <data name="Import_Tr_CurveFitted" xml:space="preserve"><value>Křivka s {0} body se přenesla jako nejbližší mocninná křivka.</value></data>
+  <data name="Import_Tr_CurveApproximated" xml:space="preserve"><value>Křivka {0} se přenesla jako nejbližší mocninná křivka.</value></data>
+  <data name="Import_Tr_ZoneOutward" xml:space="preserve"><value>Spouští se od této zóny směrem ven, ne jen uvnitř ní.</value></data>
+  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>Importováno jako běžná vrstva.</value></data>
+  <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>Jeho podnabídky se staly dalšími sloty na jednom kruhu.</value></data>
+  <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Potvrdí se, když se páčka vrátí do středu nebo když vrstva skončí. Tlačítko Použít z reWASD se nepoužívá.</value></data>
+  <data name="Import_Tr_RegionCentered" xml:space="preserve"><value>Kurzor zůstává v oblasti stejné velikosti uprostřed obrazovky.</value></data>
+  <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Tento soubor drží dva ovladače odděleně. V programu PadForge tato mapování spouští libovolný ovladač na daném slotu.</value></data>
+  <data name="Import_Tr_ToggleSameGesture" xml:space="preserve"><value>Vypíná se stejným gestem. reWASD to vypínal jedním stisknutím.</value></data>
+  <data name="Import_Tr_LedShownAs" xml:space="preserve"><value>Osvětlení {0} se přeneslo jako nejbližší režim světelné lišty.</value></data>
+  <data name="Import_Tr_LoweredToKeys" xml:space="preserve"><value>Místo toho odešle {0}.</value></data>
+  <data name="Import_Tr_StickAdded" xml:space="preserve"><value>Nastaví páčku na tuto hodnotu místo přičtení k její vlastní poloze.</value></data>
+  <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>Rychlost pohybu ani švih se nepřenesly.</value></data>
+  <data name="Import_Tr_HipFire" xml:space="preserve"><value>Lehký i plný stisk fungují, bez čekání {0} ms před lehkým stiskem.</value></data>
+  <data name="Import_Tr_MaxOutput" xml:space="preserve"><value>Výstup se přeškáluje na {0} procent místo ořezání.</value></data>
+  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Tyto se nepřenesly. Nastavte je na kartě Touchpad.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Nic v tomto souboru tuto vrstvu neotevírá. Přiřaďte jí tlačítko na kartě Mapování.</value></data>
 </root>

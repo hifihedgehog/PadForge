@@ -1,0 +1,171 @@
+<ui:FluentWindow AutomationProperties.IsDialog="True" x:Class="PadForge.Views.ImportConfigDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+        xmlns:strings="clr-namespace:PadForge.Resources.Strings"
+        xmlns:controls="clr-namespace:PadForge.Controls"
+        xmlns:common="clr-namespace:PadForge.Common"
+        ExtendsContentIntoTitleBar="True"
+        WindowBackdropType="Mica"
+        Title="{Binding Import_DialogTitle, Source={x:Static strings:Strings.Instance}}"
+        Height="660" Width="760"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="CanResize" MinHeight="480" MinWidth="600">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Padding="14"
+                BorderBrush="{DynamicResource SteelLineSoftBrush}"
+                BorderThickness="0,0,0,1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Rectangle Width="3" Height="14" RadiusX="1.5" RadiusY="1.5"
+                           Fill="{DynamicResource EmberBrush}"
+                           VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <TextBlock Grid.Column="1"
+                           Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"
+                           FontFamily="{StaticResource DisplayFontFamily}"
+                           FontWeight="SemiBold" FontSize="15"
+                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                           VerticalAlignment="Center" Margin="0,0,8,0"
+                           TextTrimming="CharacterEllipsis"/>
+                <ui:Button Grid.Column="2" Style="{StaticResource EmberIconButton}"
+                           VerticalAlignment="Center" Click="HeaderClose_Click"
+                           ToolTip="{Binding Common_Close, Source={x:Static strings:Strings.Instance}}">
+                    <controls:GlyphText Text="&#xE8BB;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
+                </ui:Button>
+            </Grid>
+        </Border>
+
+        <Grid common:InitialFocus.First="True" Grid.Row="1" Margin="16">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- What was read and what it becomes. -->
+            <StackPanel Margin="0,0,0,12">
+                <TextBlock x:Name="SourceText" FontWeight="SemiBold" FontSize="14"
+                           TextTrimming="CharacterEllipsis"/>
+                <TextBlock x:Name="ProfileNameText" Margin="0,3,0,0" TextWrapping="Wrap"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+            </StackPanel>
+
+            <!-- The Workshop manifest's stat blocks. -->
+            <Grid Grid.Row="1" Margin="0,0,0,12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Border CornerRadius="7" BorderThickness="1"
+                        Background="{DynamicResource SteelGroundBrush}"
+                        BorderBrush="{DynamicResource SteelLineSoftBrush}">
+                    <Grid>
+                        <Rectangle Height="2" VerticalAlignment="Top" Fill="#57C784" RadiusX="1" RadiusY="1"/>
+                        <StackPanel Margin="14,10">
+                            <TextBlock x:Name="StatCleanNum" Text="0" Foreground="#57C784"
+                                       FontFamily="{StaticResource TelemetryFontFamily}" FontSize="22"/>
+                            <TextBlock Text="{Binding Workshop_StatClean, Source={x:Static strings:Strings.Instance}}"
+                                       FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10"
+                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+                <Border Grid.Column="2" CornerRadius="7" BorderThickness="1"
+                        Background="{DynamicResource SteelGroundBrush}"
+                        BorderBrush="{DynamicResource SteelLineSoftBrush}">
+                    <Grid>
+                        <Rectangle Height="2" VerticalAlignment="Top" Fill="#E3B341" RadiusX="1" RadiusY="1"/>
+                        <StackPanel Margin="14,10">
+                            <TextBlock x:Name="StatPartialNum" Text="0" Foreground="#E3B341"
+                                       FontFamily="{StaticResource TelemetryFontFamily}" FontSize="22"/>
+                            <TextBlock Text="{Binding Workshop_StatPartial, Source={x:Static strings:Strings.Instance}}"
+                                       FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10"
+                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+                <Border Grid.Column="4" CornerRadius="7" BorderThickness="1"
+                        Background="{DynamicResource SteelGroundBrush}"
+                        BorderBrush="{DynamicResource SteelLineSoftBrush}">
+                    <Grid>
+                        <Rectangle Height="2" VerticalAlignment="Top" Fill="#8B95A3" RadiusX="1" RadiusY="1"/>
+                        <StackPanel Margin="14,10">
+                            <TextBlock x:Name="StatSkippedNum" Text="0" Foreground="#8B95A3"
+                                       FontFamily="{StaticResource TelemetryFontFamily}" FontSize="22"/>
+                            <TextBlock Text="{Binding Workshop_StatSkipped, Source={x:Static strings:Strings.Instance}}"
+                                       FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10"
+                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <!-- What the user has to do after loading it. -->
+            <TextBlock Grid.Row="2" x:Name="NoteText" Margin="0,0,0,10" TextWrapping="Wrap"
+                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+
+            <!-- One line per binding, what came across with a difference or
+                 not at all first, each with its reason in full. -->
+            <Border Grid.Row="3" CornerRadius="7" BorderThickness="1"
+                    Background="{DynamicResource SteelGroundBrush}"
+                    BorderBrush="{DynamicResource SteelLineSoftBrush}">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
+                              Padding="6">
+                    <ItemsControl x:Name="ReportList">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="6,4">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Ellipse Width="7" Height="7" Fill="{Binding DotBrush}"
+                                             VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                    <TextBlock Grid.Column="1" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
+                                               TextWrapping="Wrap">
+                                        <Run Text="{Binding Source, Mode=OneWay}" Foreground="{DynamicResource ColdBrush}"/>
+                                        <Run Text="{Binding Arrow, Mode=OneWay}" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                        <Run Text="{Binding Target, Mode=OneWay}" Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                    </TextBlock>
+                                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Reason}"
+                                               Margin="0,2,0,0" FontSize="11.5" TextWrapping="Wrap"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                               Visibility="{Binding ReasonVisibility}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Border>
+
+            <DockPanel Grid.Row="4" Margin="0,16,0,0" LastChildFill="False">
+                <Button x:Name="ImportButton" DockPanel.Dock="Right"
+                        Content="{Binding Import_Confirm, Source={x:Static strings:Strings.Instance}}"
+                        Style="{StaticResource EmberAccentButton}"
+                        MinWidth="120" Click="Import_Click"/>
+                <Button DockPanel.Dock="Right"
+                        Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}"
+                        MinWidth="100" Margin="0,0,8,0" IsCancel="True" Click="Cancel_Click"/>
+            </DockPanel>
+        </Grid>
+    </Grid>
+</ui:FluentWindow>

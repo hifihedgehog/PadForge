@@ -4863,4 +4863,58 @@
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>すべてのオーバーレイ</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>画面オーバーレイ {0} の切り替え</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>{0} の画像を表示: {1} × {2} ms、次のマクロまで</value></data>
+  <data name="Import_DialogTitle" xml:space="preserve"><value>プロファイルをインポート</value></data>
+  <data name="Import_Source_Format" xml:space="preserve"><value>{0}、{1}ファイル</value></data>
+  <data name="Import_ProfileName_Format" xml:space="preserve"><value>プロファイル「{0}」として追加されます。</value></data>
+  <data name="Import_Confirm" xml:space="preserve"><value>インポート</value></data>
+  <data name="Import_NothingToImport" xml:space="preserve"><value>このファイルには、PadForgeで使えるマッピングがありません。</value></data>
+  <data name="Import_NoteController" xml:space="preserve"><value>このプロファイルを読み込んだら、デバイスページでコントローラーをスロットに割り当ててください。</value></data>
+  <data name="Import_NoteAssignsOne_Format" xml:space="preserve"><value>読み込み時に、{0}をスロットに割り当てます。</value></data>
+  <data name="Import_NoteAssignsTwo_Format" xml:space="preserve"><value>読み込み時に、{0}と{1}をスロットに割り当てます。</value></data>
+  <data name="Profiles_ImportFilterAll" xml:space="preserve"><value>プロファイル</value></data>
+  <data name="Import_LayerName_Format" xml:space="preserve"><value>レイヤー {0}</value></data>
+  <data name="Import_ShiftLayerName_Format" xml:space="preserve"><value>シフト {0}</value></data>
+  <data name="Import_MenuItem_Format" xml:space="preserve"><value>項目 {0}</value></data>
+  <data name="Import_Line_Controller" xml:space="preserve"><value>コントローラー</value></data>
+  <data name="Import_Line_Native" xml:space="preserve"><value>独自の出力を維持</value></data>
+  <data name="Import_Line_ToLayer_Format" xml:space="preserve"><value>{0}へ</value></data>
+  <data name="Import_Tr_FileUnreadable" xml:space="preserve"><value>PadForgeはそのファイルを読み取れませんでした。</value></data>
+  <data name="Import_Tr_FileTooLarge" xml:space="preserve"><value>そのファイルはプロファイルとしては大きすぎます。</value></data>
+  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>そのファイルはPadForge、reWASD、DS4Windowsのいずれのプロファイルでもありません。</value></data>
+  <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>そのファイルには文書型宣言が含まれています。プロファイルには不要なため、PadForgeは読み込みませんでした。</value></data>
+  <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>そのファイルは、PadForgeが読み取れるreWASD形式（スキーマ3）ではありません。</value></data>
+  <data name="Import_Tr_ProgramNotRun" xml:space="preserve"><value>共有された設定ファイルがプログラムを起動できないよう除外しました: {0}</value></data>
+  <data name="Import_Tr_SystemCommand" xml:space="preserve"><value>共有された設定ファイルがPCに対してこの操作を行えないよう除外しました: {0}</value></data>
+  <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>PadForgeはこの入力を認識できません: {0}</value></data>
+  <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForgeはこの出力を認識できません: {0}</value></data>
+  <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForgeにそのようなコマンドはありません: {0}</value></data>
+  <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>仮想コントローラーにそのようなボタンはありません: {0}</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>照準はreWASDの内部で表示されます。独自の画像を表示するには、画面オーバーレイを使ってください。</value></data>
+  <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>スティックのジッターとシェイクは引き継がれませんでした。</value></data>
+  <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>アナログキーのアクチュエーションポイントは引き継がれませんでした。</value></data>
+  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>他のPCへの送信は引き継がれませんでした。Remote Linkで設定してください。</value></data>
+  <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForgeが読み取るスティックは2本ですが、ここには3本目が指定されています。</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>ステアリングホイールのエミュレーションは引き継がれませんでした。マッピングタブでホイールをマッピングしてください。</value></data>
+  <data name="Import_Tr_ProfileSwitch" xml:space="preserve"><value>別のプロファイルを読み込む特殊アクションは引き継がれませんでした: {0}</value></data>
+  <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>このプロファイルは、Profilesフォルダーと同じ場所にあるActions.xmlに存在しない特殊アクションを指定しています: {0}</value></data>
+  <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>この設定は引き継がれませんでした: {0}</value></data>
+  <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASDはこれらの入力がWindowsに届かないようにしていました。デバイスページで{0}のマッピング済み入力を消費するをオンにすると、このプロファイルがマッピングしている入力が届かなくなります。</value></data>
+  <data name="Import_Tr_HeldAsTap" xml:space="preserve"><value>別のジェスチャーがこのボタンを共有しているため、長押しではなくタップになります。</value></data>
+  <data name="Import_Tr_CurveFitted" xml:space="preserve"><value>{0}点のカーブは、最も近いべき乗カーブに置き換えられました。</value></data>
+  <data name="Import_Tr_CurveApproximated" xml:space="preserve"><value>{0}カーブは、最も近いべき乗カーブに置き換えられました。</value></data>
+  <data name="Import_Tr_ZoneOutward" xml:space="preserve"><value>このゾーン内だけでなく、外側に向かっても発動します。</value></data>
+  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>通常のレイヤーとしてインポートされました。</value></data>
+  <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>サブメニューは、1つのリング上の追加スロットになりました。</value></data>
+  <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>スティックが中央に戻るか、レイヤーが終了した時点で確定します。reWASDの適用ボタンは使いません。</value></data>
+  <data name="Import_Tr_RegionCentered" xml:space="preserve"><value>カーソルは、画面中央にある同じ大きさの領域内にとどまります。</value></data>
+  <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>このファイルは2つのコントローラーを区別して扱います。PadForgeでは、そのスロット上のどのコントローラーでもこれらのマッピングが働きます。</value></data>
+  <data name="Import_Tr_ToggleSameGesture" xml:space="preserve"><value>オフにするのも同じジェスチャーです。reWASDでは1回の押下でオフになりました。</value></data>
+  <data name="Import_Tr_LedShownAs" xml:space="preserve"><value>{0}のライティングは、最も近いライトバーモードに置き換えられました。</value></data>
+  <data name="Import_Tr_LoweredToKeys" xml:space="preserve"><value>代わりに{0}を送信します。</value></data>
+  <data name="Import_Tr_StickAdded" xml:space="preserve"><value>スティック自体の位置に加算するのではなく、スティックをこの値に設定します。</value></data>
+  <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>移動速度とフリックは引き継がれませんでした。</value></data>
+  <data name="Import_Tr_HipFire" xml:space="preserve"><value>浅い引きと深い引きは動作しますが、浅い引きの前の{0}ミリ秒の待機はありません。</value></data>
+  <data name="Import_Tr_MaxOutput" xml:space="preserve"><value>出力を上限で止めるのではなく、{0}パーセントにスケーリングします。</value></data>
+  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>これらは引き継がれませんでした。タッチパッドタブで設定してください。</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>このファイルには、このレイヤーを開くものがありません。マッピングタブでボタンを割り当ててください。</value></data>
 </root>

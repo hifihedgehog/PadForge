@@ -2204,6 +2204,26 @@ namespace PadForge.ViewModels
         [System.Xml.Serialization.XmlIgnore]
         internal bool TriggerHoldFired { get; set; }
 
+        /// <summary>The Hold For macro on this Single Press macro's trigger,
+        /// found at the press (#561). Never serialized.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        internal MacroItem HoldForBeside { get; set; }
+
+        /// <summary>True when the other macro reads exactly the trigger this
+        /// one does.</summary>
+        internal bool HasSameTrigger(MacroItem other)
+            => TriggerSource == other.TriggerSource
+               && TriggerButtons == other.TriggerButtons
+               && TriggerCustomButtons == other.TriggerCustomButtons
+               && TriggerDeviceGuid == other.TriggerDeviceGuid
+               && (TriggerRawButtons ?? Array.Empty<int>()).SequenceEqual(other.TriggerRawButtons ?? Array.Empty<int>())
+               && (TriggerPovs ?? Array.Empty<string>()).SequenceEqual(other.TriggerPovs ?? Array.Empty<string>())
+               && TriggerInputs == other.TriggerInputs
+               && TriggerAxisTargetList == other.TriggerAxisTargetList
+               && TriggerAxisDirectionList == other.TriggerAxisDirectionList
+               && TriggerAxisThreshold == other.TriggerAxisThreshold
+               && TriggerExpression == other.TriggerExpression;
+
         /// <summary>Set when a deferred SinglePress fired with the button
         /// already released (audit 2026-07-18): the activation runs its
         /// sequence ONE full pass, with the UntilRelease release-stop
@@ -5700,9 +5720,9 @@ namespace PadForge.ViewModels
         }
 
         private MacroLatchDirection _latchDirection;
-        /// <summary>How a ToggleKey / ToggleMouseButton fire writes the
-        /// volatile latch (audit #2 M4): Toggle flips (the classic
-        /// behavior and the serialized default), On sets, Off clears.
+        /// <summary>How a ToggleKey / ToggleMouseButton / ToggleVcButton fire
+        /// writes the volatile latch (audit #2 M4, #561): Toggle flips (the
+        /// classic behavior and the serialized default), On sets, Off clears.
         /// The Workshop materializer lowers HoldKey / HoldMouseButton
         /// pairs to On on the press leg and Off on the release leg, so
         /// the held key rides the per-frame reconcile and its

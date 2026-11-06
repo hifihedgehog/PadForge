@@ -4912,4 +4912,58 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>ஒவ்வொரு மேலடுக்கும்</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>திரை மேலடுக்கு {0}-ஐ நிலைமாற்று</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>{0} படங்களைக் காட்டு: {1} × {2} ms, அடுத்த மேக்ரோ வரை</value></data>
+  <data name="Import_DialogTitle" xml:space="preserve"><value>சுயவிவரத்தை இறக்குமதி செய்</value></data>
+  <data name="Import_Source_Format" xml:space="preserve"><value>{0}, ஒரு {1} கோப்பு</value></data>
+  <data name="Import_ProfileName_Format" xml:space="preserve"><value>இது "{0}" என்ற சுயவிவரமாக மாறும்.</value></data>
+  <data name="Import_Confirm" xml:space="preserve"><value>இறக்குமதி</value></data>
+  <data name="Import_NothingToImport" xml:space="preserve"><value>இந்தக் கோப்பில் PadForge பயன்படுத்தக்கூடிய மேப்பிங் எதுவும் இல்லை.</value></data>
+  <data name="Import_NoteController" xml:space="preserve"><value>இந்தச் சுயவிவரத்தை ஏற்றிய பிறகு, சாதனங்கள் பக்கத்தில் உங்கள் கண்ட்ரோலரை அதன் ஸ்லாட்டுகளுக்கு ஒதுக்குங்கள்.</value></data>
+  <data name="Import_NoteAssignsOne_Format" xml:space="preserve"><value>ஏற்றப்படும்போது இது {0} ஐ அதன் ஸ்லாட்டுகளுக்கு ஒதுக்கும்.</value></data>
+  <data name="Import_NoteAssignsTwo_Format" xml:space="preserve"><value>ஏற்றப்படும்போது இது {0} மற்றும் {1} ஐ அதன் ஸ்லாட்டுகளுக்கு ஒதுக்கும்.</value></data>
+  <data name="Profiles_ImportFilterAll" xml:space="preserve"><value>சுயவிவரங்கள்</value></data>
+  <data name="Import_LayerName_Format" xml:space="preserve"><value>அடுக்கு {0}</value></data>
+  <data name="Import_ShiftLayerName_Format" xml:space="preserve"><value>ஷிப்ட் {0}</value></data>
+  <data name="Import_MenuItem_Format" xml:space="preserve"><value>உருப்படி {0}</value></data>
+  <data name="Import_Line_Controller" xml:space="preserve"><value>கண்ட்ரோலர்</value></data>
+  <data name="Import_Line_Native" xml:space="preserve"><value>தனது சொந்த வெளியீடுகளை வைத்திருக்கும்</value></data>
+  <data name="Import_Line_ToLayer_Format" xml:space="preserve"><value>{0} க்கு</value></data>
+  <data name="Import_Tr_FileUnreadable" xml:space="preserve"><value>PadForge-ஆல் அந்தக் கோப்பைப் படிக்க முடியவில்லை.</value></data>
+  <data name="Import_Tr_FileTooLarge" xml:space="preserve"><value>அந்தக் கோப்பு சுயவிவரமாக இருக்க முடியாத அளவுக்குப் பெரியது.</value></data>
+  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>அந்தக் கோப்பு PadForge, reWASD அல்லது DS4Windows சுயவிவரம் அல்ல.</value></data>
+  <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>அந்தக் கோப்பு ஆவண வகையை அறிவிக்கிறது. சுயவிவரத்துக்கு அது தேவையில்லை, எனவே PadForge அதைப் படிக்கவில்லை.</value></data>
+  <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>அந்தக் கோப்பு PadForge படிக்கும் reWASD வடிவத்தில் இல்லை (திட்டம் 3).</value></data>
+  <data name="Import_Tr_ProgramNotRun" xml:space="preserve"><value>பகிரப்பட்ட கட்டமைப்பு நிரலைத் தொடங்கக்கூடாது என்பதற்காக விலக்கப்பட்டது: {0}</value></data>
+  <data name="Import_Tr_SystemCommand" xml:space="preserve"><value>பகிரப்பட்ட கட்டமைப்பு உங்கள் கணினியில் இதைச் செய்யக்கூடாது என்பதற்காக விலக்கப்பட்டது: {0}</value></data>
+  <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>இந்த உள்ளீட்டை PadForge அறியவில்லை: {0}</value></data>
+  <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>இந்த வெளியீட்டை PadForge அறியவில்லை: {0}</value></data>
+  <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge-இல் அப்படி ஒரு கட்டளை இல்லை: {0}</value></data>
+  <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>மெய்நிகர் கண்ட்ரோலரில் அப்படி ஒரு பொத்தான் இல்லை: {0}</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>குறுக்குக்கோடு reWASD-க்குள்ளேயே இருக்கும். உங்கள் சொந்தப் படத்தைத் திரை மேலடுக்கு மூலம் காட்டுங்கள்.</value></data>
+  <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>ஸ்டிக் நடுக்கமும் அதிர்வும் இறக்குமதியாகவில்லை.</value></data>
+  <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>அனலாக் விசை இயக்கப் புள்ளிகள் இறக்குமதியாகவில்லை.</value></data>
+  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>மற்றொரு கணினிக்கு அனுப்பும் வசதி இறக்குமதியாகவில்லை. தொலை இணைப்பு மூலம் அமைக்கவும்.</value></data>
+  <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge இரண்டு ஸ்டிக்குகளைப் படிக்கும், இது மூன்றாவதைக் குறிப்பிடுகிறது.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>ஸ்டீயரிங் வீல் எமுலேஷன் இறக்குமதியாகவில்லை. வீலை மேப்பிங்குகள் தாவலில் மேப் செய்யுங்கள்.</value></data>
+  <data name="Import_Tr_ProfileSwitch" xml:space="preserve"><value>மற்றொரு சுயவிவரத்தை ஏற்றும் சிறப்புச் செயல் இறக்குமதியாகவில்லை: {0}</value></data>
+  <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>இந்தச் சுயவிவரம் குறிப்பிடும் சிறப்புச் செயல், அதன் Profiles கோப்புறைக்கு அருகிலுள்ள Actions.xml இல் இல்லை: {0}</value></data>
+  <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>இந்த அமைப்பு இறக்குமதியாகவில்லை: {0}</value></data>
+  <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD இந்த உள்ளீடுகள் Windows-ஐ அடைவதைத் தடுத்தது. சாதனங்கள் பக்கத்தில் {0} க்கு மேப் செய்யப்பட்ட உள்ளீடுகளைத் தடு என்பதை இயக்குங்கள். இது இந்தச் சுயவிவரம் மேப் செய்தவற்றைத் தடுக்கும்.</value></data>
+  <data name="Import_Tr_HeldAsTap" xml:space="preserve"><value>மற்றொரு சைகை அதே பொத்தானைப் பகிர்வதால், அழுத்திப் பிடிப்பதற்குப் பதிலாகத் தட்டுகிறது.</value></data>
+  <data name="Import_Tr_CurveFitted" xml:space="preserve"><value>{0}-புள்ளி வளைவு மிக நெருங்கிய அடுக்கு வளைவாக இறக்குமதியானது.</value></data>
+  <data name="Import_Tr_CurveApproximated" xml:space="preserve"><value>{0} வளைவு மிக நெருங்கிய அடுக்கு வளைவாக இறக்குமதியானது.</value></data>
+  <data name="Import_Tr_ZoneOutward" xml:space="preserve"><value>இந்த மண்டலத்திலிருந்து வெளிப்புறமாகவும் செயல்படும், உள்ளே மட்டுமல்ல.</value></data>
+  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>சாதாரண அடுக்காக இறக்குமதியானது.</value></data>
+  <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>அதன் துணை மெனுக்கள் ஒரே வளையத்தில் கூடுதல் ஸ்லாட்டுகளாக மாறின.</value></data>
+  <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>ஸ்டிக் மீண்டும் மையத்துக்கு வரும்போது அல்லது அடுக்கு முடியும்போது உறுதிசெய்யும். reWASD-இன் பயன்படுத்து பொத்தான் பயன்படுத்தப்படுவதில்லை.</value></data>
+  <data name="Import_Tr_RegionCentered" xml:space="preserve"><value>கர்சர் திரையின் மையத்தில் அதே அளவுள்ள பகுதிக்குள் இருக்கும்.</value></data>
+  <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>இந்தக் கோப்பு இரண்டு கண்ட்ரோலர்களைத் தனித்தனியாக வைத்திருக்கிறது. PadForge-இல், அந்த ஸ்லாட்டில் உள்ள எந்தக் கண்ட்ரோலரும் இந்த மேப்பிங்குகளைச் செயல்படுத்தும்.</value></data>
+  <data name="Import_Tr_ToggleSameGesture" xml:space="preserve"><value>அதே சைகை அதை அணைக்கும். reWASD ஒரே அழுத்தத்தில் அணைத்தது.</value></data>
+  <data name="Import_Tr_LedShownAs" xml:space="preserve"><value>{0} விளக்கு அமைப்பு மிக நெருங்கிய லைட்பார் பயன்முறையாக இறக்குமதியானது.</value></data>
+  <data name="Import_Tr_LoweredToKeys" xml:space="preserve"><value>அதற்குப் பதிலாக {0} ஐ அனுப்பும்.</value></data>
+  <data name="Import_Tr_StickAdded" xml:space="preserve"><value>ஸ்டிக்கின் சொந்த நிலையுடன் கூட்டுவதற்குப் பதிலாக, ஸ்டிக்கை இந்த மதிப்பில் அமைக்கும்.</value></data>
+  <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>நகர்வு வேகம் அல்லது ஃபிளிக் இறக்குமதியாகவில்லை.</value></data>
+  <data name="Import_Tr_HipFire" xml:space="preserve"><value>மென்மையான மற்றும் முழு அழுத்தம் செயல்படும், ஆனால் மென்மையான அழுத்தத்துக்கு முன் {0} ms காத்திருப்பு இல்லை.</value></data>
+  <data name="Import_Tr_MaxOutput" xml:space="preserve"><value>வெளியீட்டைக் கட்டுப்படுத்துவதற்குப் பதிலாக {0} சதவீதத்துக்கு அளவிடும்.</value></data>
+  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>இவை இறக்குமதியாகவில்லை. டச்பேட் தாவலில் அமைக்கவும்.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>இந்தக் கோப்பில் எதுவும் இந்த அடுக்கைத் திறப்பதில்லை. மேப்பிங்குகள் தாவலில் இதற்கு ஒரு பொத்தானை ஒதுக்குங்கள்.</value></data>
 </root>

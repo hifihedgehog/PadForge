@@ -7550,9 +7550,13 @@ namespace PadForge
             var dlg = new Microsoft.Win32.OpenFileDialog
             {
                 Title = Strings.Instance.Profiles_Import,
-                Filter = $"PadForge profile (*{PadForge.Common.ProfileTransfer.FileExtension})|*{PadForge.Common.ProfileTransfer.FileExtension}|All files|*.*",
+                Filter = $"{Strings.Instance.Profiles_ImportFilterAll} (*{PadForge.Common.ProfileTransfer.FileExtension};*.rewasd;*.xml)|*{PadForge.Common.ProfileTransfer.FileExtension};*.rewasd;*.xml"
+                    + $"|PadForge profile (*{PadForge.Common.ProfileTransfer.FileExtension})|*{PadForge.Common.ProfileTransfer.FileExtension}"
+                    + "|reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml|All files|*.*",
                 CheckFileExists = true,
             };
+            foreach (string folder in PadForge.Common.ConfigImport.ForeignConfigImporter.ProfileFolders())
+                dlg.CustomPlaces.Add(new Microsoft.Win32.FileDialogCustomPlace(folder));
             if (dlg.ShowDialog() != true) return;
 
             ImportProfileFromFile(dlg.FileName);
@@ -7562,6 +7566,12 @@ namespace PadForge
         /// Import button's dialog and the Profiles page drop zone (#175).</summary>
         private void ImportProfileFromFile(string filePath)
         {
+            if (!filePath.EndsWith(PadForge.Common.ProfileTransfer.FileExtension, StringComparison.OrdinalIgnoreCase))
+            {
+                ImportForeignConfig(filePath);
+                return;
+            }
+
             var profile = PadForge.Common.ProfileTransfer.Import(filePath, out var packages);
             if (profile == null)
             {
@@ -7589,6 +7599,29 @@ namespace PadForge
             _viewModel.Settings.ProfileItems.Add(listItem);
             _settingsService.MarkDirty();
             _viewModel.StatusText = string.Format(Strings.Instance.Status_ProfileImported_Format, profile.Name, packages.Count);
+        }
+
+        /// <summary>Reads another tool's config and shows what it comes to
+        /// (#561). The profile lands through the Workshop's sink when the user
+        /// accepts, and the active profile stays as it was, as a .pfprofile
+        /// import leaves it.</summary>
+        private void ImportForeignConfig(string filePath)
+        {
+            var result = PadForge.Common.ConfigImport.ForeignConfigImporter.Translate(filePath);
+            if (result.Refused)
+            {
+                _viewModel.SetStatus(Strings.Get(result.RefusedKey), persist: true);
+                return;
+            }
+
+            var dlg = new Views.ImportConfigDialog(filePath, result) { Owner = this };
+            dlg.ImportSink = AddWorkshopProfile;
+            dlg.ShowDialog();
+            if (dlg.ImportedProfileName != null)
+            {
+                _viewModel.StatusText = string.Format(Strings.Instance.Status_WorkshopImported_Format,
+                    dlg.ImportedProfileName, result.Report.CleanCount, result.Report.PartialCount, result.Report.SkippedCount);
+            }
         }
 
         /// <summary>Opens the Steam Workshop browse dialog (#9). Always opens:

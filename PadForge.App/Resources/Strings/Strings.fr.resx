@@ -4863,4 +4863,58 @@ Voulez-vous que PadForge les désinstalle maintenant ? Cette opération nécessi
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Toutes les superpositions</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Basculer la superposition d'écran {0}</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Afficher des images {0} : {1} × {2} ms, jusqu'à la prochaine macro</value></data>
+  <data name="Import_DialogTitle" xml:space="preserve"><value>Importer un profil</value></data>
+  <data name="Import_Source_Format" xml:space="preserve"><value>{0}, un fichier {1}</value></data>
+  <data name="Import_ProfileName_Format" xml:space="preserve"><value>Devient le profil « {0} ».</value></data>
+  <data name="Import_Confirm" xml:space="preserve"><value>Importer</value></data>
+  <data name="Import_NothingToImport" xml:space="preserve"><value>Ce fichier n'assigne rien que PadForge puisse utiliser.</value></data>
+  <data name="Import_NoteController" xml:space="preserve"><value>Après le chargement de ce profil, assignez votre manette à ses slots dans la page Appareils.</value></data>
+  <data name="Import_NoteAssignsOne_Format" xml:space="preserve"><value>Il assigne {0} à ses slots au chargement.</value></data>
+  <data name="Import_NoteAssignsTwo_Format" xml:space="preserve"><value>Il assigne {0} et {1} à ses slots au chargement.</value></data>
+  <data name="Profiles_ImportFilterAll" xml:space="preserve"><value>Profils</value></data>
+  <data name="Import_LayerName_Format" xml:space="preserve"><value>Couche {0}</value></data>
+  <data name="Import_ShiftLayerName_Format" xml:space="preserve"><value>Maj {0}</value></data>
+  <data name="Import_MenuItem_Format" xml:space="preserve"><value>Élément {0}</value></data>
+  <data name="Import_Line_Controller" xml:space="preserve"><value>Manette</value></data>
+  <data name="Import_Line_Native" xml:space="preserve"><value>Garde ses propres sorties</value></data>
+  <data name="Import_Line_ToLayer_Format" xml:space="preserve"><value>Vers {0}</value></data>
+  <data name="Import_Tr_FileUnreadable" xml:space="preserve"><value>PadForge n'a pas pu lire ce fichier.</value></data>
+  <data name="Import_Tr_FileTooLarge" xml:space="preserve"><value>Ce fichier est trop volumineux pour être un profil.</value></data>
+  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>Ce fichier n'est pas un profil PadForge, reWASD ou DS4Windows.</value></data>
+  <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>Ce fichier déclare un type de document, dont un profil n'a jamais besoin, donc PadForge ne l'a pas lu.</value></data>
+  <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>Ce fichier n'est pas au format reWASD que PadForge lit, le schéma 3.</value></data>
+  <data name="Import_Tr_ProgramNotRun" xml:space="preserve"><value>Ignoré pour qu'une config partagée ne puisse pas lancer de programme : {0}</value></data>
+  <data name="Import_Tr_SystemCommand" xml:space="preserve"><value>Ignoré pour qu'une config partagée ne puisse pas faire cela à votre PC : {0}</value></data>
+  <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>PadForge ne reconnaît pas cette entrée : {0}</value></data>
+  <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge ne reconnaît pas cette sortie : {0}</value></data>
+  <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge n'a pas de commande de ce nom : {0}</value></data>
+  <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>La manette virtuelle n'a pas ce bouton : {0}</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>Un réticule existe uniquement dans reWASD. Affichez votre propre image avec une Superposition d'écran.</value></data>
+  <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>Le tremblement et la secousse du stick n'ont pas été repris.</value></data>
+  <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Les points d'actionnement analogique des touches n'ont pas été repris.</value></data>
+  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>L'envoi vers un autre PC n'a pas été repris. Configurez-le avec Remote Link.</value></data>
+  <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge lit deux sticks, et ceci en désigne un troisième.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>L'émulation de volant n'a pas été reprise. Assignez le volant dans l'onglet Mappings.</value></data>
+  <data name="Import_Tr_ProfileSwitch" xml:space="preserve"><value>Une action spéciale qui charge un autre profil n'a pas été reprise : {0}</value></data>
+  <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Ce profil désigne une action spéciale absente d'Actions.xml, situé à côté de son dossier Profiles : {0}</value></data>
+  <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Ce réglage n'a pas été repris : {0}</value></data>
+  <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD empêchait ces entrées d'atteindre Windows. Activez Consommer les entrées assignées pour {0} dans la page Appareils, ce qui bloque celles que ce profil assigne.</value></data>
+  <data name="Import_Tr_HeldAsTap" xml:space="preserve"><value>Appui bref au lieu d'un maintien, car un autre geste partage le bouton.</value></data>
+  <data name="Import_Tr_CurveFitted" xml:space="preserve"><value>La courbe à {0} points a été reprise sous la forme de la courbe de puissance la plus proche.</value></data>
+  <data name="Import_Tr_CurveApproximated" xml:space="preserve"><value>La courbe {0} a été reprise sous la forme de la courbe de puissance la plus proche.</value></data>
+  <data name="Import_Tr_ZoneOutward" xml:space="preserve"><value>Se déclenche depuis cette zone vers l'extérieur, et pas seulement à l'intérieur.</value></data>
+  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>Importé comme une couche ordinaire.</value></data>
+  <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>Ses sous-menus sont devenus des slots supplémentaires sur un seul anneau.</value></data>
+  <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Valide quand le stick revient au centre ou quand la couche se termine. Le bouton Appliquer de reWASD n'est pas utilisé.</value></data>
+  <data name="Import_Tr_RegionCentered" xml:space="preserve"><value>Le curseur reste dans une zone de même taille au centre de l'écran.</value></data>
+  <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Ce fichier sépare deux manettes. Dans PadForge, n'importe quelle manette du slot déclenche ces assignations.</value></data>
+  <data name="Import_Tr_ToggleSameGesture" xml:space="preserve"><value>Le même geste le désactive. reWASD le désactivait d'une seule pression.</value></data>
+  <data name="Import_Tr_LedShownAs" xml:space="preserve"><value>L'éclairage {0} a été repris sous la forme du mode de barre lumineuse le plus proche.</value></data>
+  <data name="Import_Tr_LoweredToKeys" xml:space="preserve"><value>Envoie {0} à la place.</value></data>
+  <data name="Import_Tr_StickAdded" xml:space="preserve"><value>Règle le stick sur cette valeur au lieu de l'ajouter à la position propre du stick.</value></data>
+  <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>La vitesse de déplacement ou le coup sec n'a pas été repris.</value></data>
+  <data name="Import_Tr_HipFire" xml:space="preserve"><value>La pression légère et la pression complète fonctionnent, sans l'attente de {0} ms avant la pression légère.</value></data>
+  <data name="Import_Tr_MaxOutput" xml:space="preserve"><value>Met la sortie à l'échelle de {0} pour cent au lieu de la plafonner.</value></data>
+  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Ceux-ci n'ont pas été repris. Réglez-les dans l'onglet Pavé tactile.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Rien dans ce fichier n'ouvre cette couche. Donnez-lui un bouton dans l'onglet Mappings.</value></data>
 </root>

@@ -4938,4 +4938,58 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Every Overlay</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Toggle Screen Overlay {0}</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Show {0} pictures: {1} × {2} ms, until the next macro</value></data>
+  <data name="Import_DialogTitle" xml:space="preserve"><value>Import Profile</value></data>
+  <data name="Import_Source_Format" xml:space="preserve"><value>{0}, a {1} file</value></data>
+  <data name="Import_ProfileName_Format" xml:space="preserve"><value>Becomes the profile "{0}".</value></data>
+  <data name="Import_Confirm" xml:space="preserve"><value>Import</value></data>
+  <data name="Import_NothingToImport" xml:space="preserve"><value>This file maps nothing PadForge can use.</value></data>
+  <data name="Import_NoteController" xml:space="preserve"><value>After you load this profile, assign your controller to its slots on the Devices page.</value></data>
+  <data name="Profiles_ImportFilterAll" xml:space="preserve"><value>Profiles</value></data>
+  <data name="Import_Tr_FileUnreadable" xml:space="preserve"><value>PadForge could not read that file.</value></data>
+  <data name="Import_Tr_FileTooLarge" xml:space="preserve"><value>That file is too large to be a profile.</value></data>
+  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>That file is not a PadForge, reWASD or DS4Windows profile.</value></data>
+  <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>That file declares a document type, which a profile never needs, so PadForge did not read it.</value></data>
+  <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>That file is not in the reWASD format PadForge reads, schema 3.</value></data>
+  <data name="Import_Tr_ProgramNotRun" xml:space="preserve"><value>Left out so a shared config cannot start a program: {0}</value></data>
+  <data name="Import_Tr_SystemCommand" xml:space="preserve"><value>Left out so a shared config cannot do this to your PC: {0}</value></data>
+  <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>PadForge does not recognize this input: {0}</value></data>
+  <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge does not recognize this output: {0}</value></data>
+  <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge has no such command: {0}</value></data>
+  <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>The virtual controller has no such button: {0}</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>A crosshair lives inside reWASD. Show your own picture with a Screen Overlay.</value></data>
+  <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>Stick jitter and shaking did not come across.</value></data>
+  <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Analog key actuation points did not come across.</value></data>
+  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>Sending to another PC did not come across. Set it up with Remote Link.</value></data>
+  <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge reads two sticks, and this names a third.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Steering wheel emulation did not come across. Map the wheel on the Mappings tab.</value></data>
+  <data name="Import_Tr_ProfileSwitch" xml:space="preserve"><value>A special action that loads another profile did not come across: {0}</value></data>
+  <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>This profile names a special action missing from Actions.xml beside its Profiles folder: {0}</value></data>
+  <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>This setting did not come across: {0}</value></data>
+  <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD stopped these inputs reaching Windows. Turn on Consume Mapped Inputs for {0} on the Devices page, which stops the ones this profile maps.</value></data>
+  <data name="Import_Tr_HeldAsTap" xml:space="preserve"><value>Taps instead of holding, because another gesture shares the button.</value></data>
+  <data name="Import_Tr_CurveFitted" xml:space="preserve"><value>The {0}-point curve came across as the nearest power curve.</value></data>
+  <data name="Import_Tr_CurveApproximated" xml:space="preserve"><value>The {0} curve came across as the nearest power curve.</value></data>
+  <data name="Import_Tr_ZoneOutward" xml:space="preserve"><value>Fires from this zone outward, not only inside it.</value></data>
+  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>Imported as an ordinary layer.</value></data>
+  <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>Its sub-menus became more slots on one ring.</value></data>
+  <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Commits when the stick re-centers or the layer ends. reWASD's Apply button is not used.</value></data>
+  <data name="Import_Tr_RegionCentered" xml:space="preserve"><value>The cursor stays in an area of the same size at the center of the screen.</value></data>
+  <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>This file keeps two controllers apart. In PadForge, any controller on the slot fires these mappings.</value></data>
+  <data name="Import_Tr_ToggleSameGesture" xml:space="preserve"><value>The same gesture turns it off. reWASD turned it off with one press.</value></data>
+  <data name="Import_Tr_LedShownAs" xml:space="preserve"><value>The {0} lighting came across as the closest lightbar mode.</value></data>
+  <data name="Import_Tr_LoweredToKeys" xml:space="preserve"><value>Sends {0} instead.</value></data>
+  <data name="Import_Tr_StickAdded" xml:space="preserve"><value>Sets the stick to this value instead of adding it to the stick's own position.</value></data>
+  <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>The movement speed or flick did not come across.</value></data>
+  <data name="Import_Tr_HipFire" xml:space="preserve"><value>The soft and full pull work, without the {0} ms wait before the soft pull.</value></data>
+  <data name="Import_Tr_MaxOutput" xml:space="preserve"><value>Scales the output to {0} percent instead of capping it.</value></data>
+  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>These did not come across. Set them on the Touchpad tab.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Nothing in this file opens this layer. Give it a button on the Mappings tab.</value></data>
+  <data name="Import_LayerName_Format" xml:space="preserve"><value>Layer {0}</value></data>
+  <data name="Import_ShiftLayerName_Format" xml:space="preserve"><value>Shift {0}</value></data>
+  <data name="Import_MenuItem_Format" xml:space="preserve"><value>Item {0}</value></data>
+  <data name="Import_Line_Controller" xml:space="preserve"><value>Controller</value></data>
+  <data name="Import_Line_Native" xml:space="preserve"><value>Keeps its own outputs</value></data>
+  <data name="Import_Line_ToLayer_Format" xml:space="preserve"><value>To {0}</value></data>
+  <data name="Import_NoteAssignsOne_Format" xml:space="preserve"><value>It assigns {0} to its slots when it loads.</value></data>
+  <data name="Import_NoteAssignsTwo_Format" xml:space="preserve"><value>It assigns {0} and {1} to its slots when it loads.</value></data>
 </root>

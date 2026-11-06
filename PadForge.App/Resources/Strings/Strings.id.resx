@@ -4912,4 +4912,58 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Semua overlay</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Alihkan overlay layar {0}</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Tampilkan gambar {0}: {1} × {2} ms, hingga makro berikutnya</value></data>
+  <data name="Import_DialogTitle" xml:space="preserve"><value>Impor profil</value></data>
+  <data name="Import_Source_Format" xml:space="preserve"><value>{0}, file {1}</value></data>
+  <data name="Import_ProfileName_Format" xml:space="preserve"><value>Menjadi profil "{0}".</value></data>
+  <data name="Import_Confirm" xml:space="preserve"><value>Impor</value></data>
+  <data name="Import_NothingToImport" xml:space="preserve"><value>File ini tidak memetakan apa pun yang dapat digunakan PadForge.</value></data>
+  <data name="Import_NoteController" xml:space="preserve"><value>Setelah memuat profil ini, tetapkan kontroler Anda ke slotnya di halaman Perangkat.</value></data>
+  <data name="Import_NoteAssignsOne_Format" xml:space="preserve"><value>Profil ini menetapkan {0} ke slotnya saat dimuat.</value></data>
+  <data name="Import_NoteAssignsTwo_Format" xml:space="preserve"><value>Profil ini menetapkan {0} dan {1} ke slotnya saat dimuat.</value></data>
+  <data name="Profiles_ImportFilterAll" xml:space="preserve"><value>Profil</value></data>
+  <data name="Import_LayerName_Format" xml:space="preserve"><value>Lapisan {0}</value></data>
+  <data name="Import_ShiftLayerName_Format" xml:space="preserve"><value>Shift {0}</value></data>
+  <data name="Import_MenuItem_Format" xml:space="preserve"><value>Item {0}</value></data>
+  <data name="Import_Line_Controller" xml:space="preserve"><value>Kontroler</value></data>
+  <data name="Import_Line_Native" xml:space="preserve"><value>Mempertahankan output sendiri</value></data>
+  <data name="Import_Line_ToLayer_Format" xml:space="preserve"><value>Ke {0}</value></data>
+  <data name="Import_Tr_FileUnreadable" xml:space="preserve"><value>PadForge tidak dapat membaca file itu.</value></data>
+  <data name="Import_Tr_FileTooLarge" xml:space="preserve"><value>File itu terlalu besar untuk menjadi profil.</value></data>
+  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>File itu bukan profil PadForge, reWASD, atau DS4Windows.</value></data>
+  <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>File itu mendeklarasikan tipe dokumen, yang tidak pernah dibutuhkan profil, sehingga PadForge tidak membacanya.</value></data>
+  <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>File itu bukan dalam format reWASD yang dibaca PadForge, yaitu skema 3.</value></data>
+  <data name="Import_Tr_ProgramNotRun" xml:space="preserve"><value>Dilewati agar config bersama tidak dapat menjalankan program: {0}</value></data>
+  <data name="Import_Tr_SystemCommand" xml:space="preserve"><value>Dilewati agar config bersama tidak dapat melakukan ini pada PC Anda: {0}</value></data>
+  <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>PadForge tidak mengenali input ini: {0}</value></data>
+  <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge tidak mengenali output ini: {0}</value></data>
+  <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge tidak memiliki perintah seperti itu: {0}</value></data>
+  <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>Kontroler virtual tidak memiliki tombol seperti itu: {0}</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>Crosshair hanya ada di dalam reWASD. Tampilkan gambar Anda sendiri dengan Overlay layar.</value></data>
+  <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>Jitter dan guncangan stik tidak terbawa.</value></data>
+  <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Titik aktuasi tombol analog tidak terbawa.</value></data>
+  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>Pengiriman ke PC lain tidak terbawa. Atur dengan Tautan Jarak Jauh.</value></data>
+  <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge membaca dua stik, dan ini menyebut stik ketiga.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Emulasi setir tidak terbawa. Petakan setir di tab Pemetaan.</value></data>
+  <data name="Import_Tr_ProfileSwitch" xml:space="preserve"><value>Aksi khusus yang memuat profil lain tidak terbawa: {0}</value></data>
+  <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Profil ini menyebut aksi khusus yang tidak ada di Actions.xml di samping folder Profiles-nya: {0}</value></data>
+  <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Pengaturan ini tidak terbawa: {0}</value></data>
+  <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD mencegah input ini mencapai Windows. Aktifkan Serap input yang dipetakan untuk {0} di halaman Perangkat, yang mencegah input yang dipetakan profil ini.</value></data>
+  <data name="Import_Tr_HeldAsTap" xml:space="preserve"><value>Mengetuk, bukan menahan, karena gestur lain memakai tombol yang sama.</value></data>
+  <data name="Import_Tr_CurveFitted" xml:space="preserve"><value>Kurva {0} titik terbawa sebagai kurva pangkat terdekat.</value></data>
+  <data name="Import_Tr_CurveApproximated" xml:space="preserve"><value>Kurva {0} terbawa sebagai kurva pangkat terdekat.</value></data>
+  <data name="Import_Tr_ZoneOutward" xml:space="preserve"><value>Aktif dari zona ini ke luar, tidak hanya di dalamnya.</value></data>
+  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>Diimpor sebagai lapisan biasa.</value></data>
+  <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>Submenunya menjadi slot tambahan pada satu cincin.</value></data>
+  <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Dikonfirmasi saat stik kembali ke tengah atau lapisan berakhir. Tombol Terapkan milik reWASD tidak digunakan.</value></data>
+  <data name="Import_Tr_RegionCentered" xml:space="preserve"><value>Kursor tetap berada di area berukuran sama di tengah layar.</value></data>
+  <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>File ini memisahkan dua kontroler. Di PadForge, kontroler mana pun pada slot memicu pemetaan ini.</value></data>
+  <data name="Import_Tr_ToggleSameGesture" xml:space="preserve"><value>Gestur yang sama mematikannya. reWASD mematikannya dengan satu kali tekan.</value></data>
+  <data name="Import_Tr_LedShownAs" xml:space="preserve"><value>Pencahayaan {0} terbawa sebagai mode lightbar terdekat.</value></data>
+  <data name="Import_Tr_LoweredToKeys" xml:space="preserve"><value>Mengirim {0} sebagai gantinya.</value></data>
+  <data name="Import_Tr_StickAdded" xml:space="preserve"><value>Mengatur stik ke nilai ini, bukan menambahkannya ke posisi stik itu sendiri.</value></data>
+  <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>Kecepatan gerak atau flick tidak terbawa.</value></data>
+  <data name="Import_Tr_HipFire" xml:space="preserve"><value>Tarikan ringan dan penuh berfungsi, tanpa jeda {0} md sebelum tarikan ringan.</value></data>
+  <data name="Import_Tr_MaxOutput" xml:space="preserve"><value>Menskalakan output ke {0} persen, bukan membatasinya.</value></data>
+  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Ini tidak terbawa. Atur di tab Panel sentuh.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Tidak ada apa pun di file ini yang membuka lapisan ini. Beri tombol di tab Pemetaan.</value></data>
 </root>

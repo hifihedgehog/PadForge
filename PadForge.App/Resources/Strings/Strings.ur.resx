@@ -4912,4 +4912,58 @@
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>ہر اوورلے</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>اسکرین اوورلے {0} ٹوگل کریں</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>{0} تصاویر دکھائیں: {1} × {2} ملی سیکنڈ، اگلے میکرو تک</value></data>
+  <data name="Import_DialogTitle" xml:space="preserve"><value>پروفائل درآمد کریں</value></data>
+  <data name="Import_Source_Format" xml:space="preserve"><value>{0}، ایک {1} فائل</value></data>
+  <data name="Import_ProfileName_Format" xml:space="preserve"><value>یہ پروفائل "{0}" بن جائے گی۔</value></data>
+  <data name="Import_Confirm" xml:space="preserve"><value>درآمد کریں</value></data>
+  <data name="Import_NothingToImport" xml:space="preserve"><value>یہ فائل ایسا کچھ میپ نہیں کرتی جو PadForge استعمال کر سکے۔</value></data>
+  <data name="Import_NoteController" xml:space="preserve"><value>یہ پروفائل لوڈ کرنے کے بعد، آلات کے صفحے پر اپنا کنٹرولر اس کے سلاٹس کو تفویض کریں۔</value></data>
+  <data name="Import_NoteAssignsOne_Format" xml:space="preserve"><value>یہ لوڈ ہونے پر {0} کو اپنے سلاٹس کو تفویض کرتی ہے۔</value></data>
+  <data name="Import_NoteAssignsTwo_Format" xml:space="preserve"><value>یہ لوڈ ہونے پر {0} اور {1} کو اپنے سلاٹس کو تفویض کرتی ہے۔</value></data>
+  <data name="Profiles_ImportFilterAll" xml:space="preserve"><value>پروفائلز</value></data>
+  <data name="Import_LayerName_Format" xml:space="preserve"><value>لیئر {0}</value></data>
+  <data name="Import_ShiftLayerName_Format" xml:space="preserve"><value>شفٹ {0}</value></data>
+  <data name="Import_MenuItem_Format" xml:space="preserve"><value>آئٹم {0}</value></data>
+  <data name="Import_Line_Controller" xml:space="preserve"><value>کنٹرولر</value></data>
+  <data name="Import_Line_Native" xml:space="preserve"><value>اپنے آؤٹ پٹ برقرار رکھتا ہے</value></data>
+  <data name="Import_Line_ToLayer_Format" xml:space="preserve"><value>{0} کی طرف</value></data>
+  <data name="Import_Tr_FileUnreadable" xml:space="preserve"><value>PadForge وہ فائل نہیں پڑھ سکا۔</value></data>
+  <data name="Import_Tr_FileTooLarge" xml:space="preserve"><value>وہ فائل پروفائل ہونے کے لیے بہت بڑی ہے۔</value></data>
+  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>وہ فائل PadForge، reWASD یا DS4Windows کا پروفائل نہیں ہے۔</value></data>
+  <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>اس فائل میں دستاویز کی قسم کا اعلان ہے، جس کی پروفائل کو کبھی ضرورت نہیں ہوتی، اس لیے PadForge نے اسے نہیں پڑھا۔</value></data>
+  <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>یہ فائل اس reWASD فارمیٹ میں نہیں ہے جسے PadForge پڑھتا ہے، یعنی اسکیما 3۔</value></data>
+  <data name="Import_Tr_ProgramNotRun" xml:space="preserve"><value>چھوڑ دیا گیا تاکہ شیئر کی گئی کنفیگ کوئی پروگرام نہ چلا سکے: {0}</value></data>
+  <data name="Import_Tr_SystemCommand" xml:space="preserve"><value>چھوڑ دیا گیا تاکہ شیئر کی گئی کنفیگ آپ کے پی سی کے ساتھ ایسا نہ کر سکے: {0}</value></data>
+  <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>PadForge اس ان پٹ کو نہیں پہچانتا: {0}</value></data>
+  <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge اس آؤٹ پٹ کو نہیں پہچانتا: {0}</value></data>
+  <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge میں ایسی کوئی کمانڈ نہیں: {0}</value></data>
+  <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>ورچوئل کنٹرولر میں ایسا کوئی بٹن نہیں: {0}</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>کراس ہیئر reWASD کے اندر ہی رہتا ہے۔ اپنی تصویر اسکرین اوورلے سے دکھائیں۔</value></data>
+  <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>اسٹک کی تھرتھراہٹ اور ہلنا منتقل نہیں ہوئے۔</value></data>
+  <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>اینالاگ کی ایکچویشن پوائنٹس منتقل نہیں ہوئے۔</value></data>
+  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>دوسرے پی سی کو بھیجنا منتقل نہیں ہوا۔ اسے ریموٹ لنک سے سیٹ کریں۔</value></data>
+  <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge دو اسٹکس پڑھتا ہے، اور اس میں تیسری کا ذکر ہے۔</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>اسٹیئرنگ وہیل ایمولیشن منتقل نہیں ہوئی۔ وہیل کو میپنگز ٹیب میں میپ کریں۔</value></data>
+  <data name="Import_Tr_ProfileSwitch" xml:space="preserve"><value>دوسرا پروفائل لوڈ کرنے والا خصوصی ایکشن منتقل نہیں ہوا: {0}</value></data>
+  <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>یہ پروفائل ایک ایسے خصوصی ایکشن کا ذکر کرتا ہے جو اس کے Profiles فولڈر کے ساتھ موجود Actions.xml میں نہیں ہے: {0}</value></data>
+  <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>یہ سیٹنگ منتقل نہیں ہوئی: {0}</value></data>
+  <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD ان ان پٹس کو Windows تک پہنچنے سے روکتا تھا۔ آلات کے صفحے پر {0} کے لیے میپ شدہ ان پٹ روک لیں آن کریں، جو اس پروفائل میں میپ کیے گئے ان پٹس کو روکتی ہے۔</value></data>
+  <data name="Import_Tr_HeldAsTap" xml:space="preserve"><value>دبائے رکھنے کی بجائے ٹیپ ہوتا ہے، کیونکہ بٹن پر ایک اور اشارہ بھی شریک ہے۔</value></data>
+  <data name="Import_Tr_CurveFitted" xml:space="preserve"><value>{0} پوائنٹ والا منحنی قریب ترین پاور کرو کی صورت میں منتقل ہوا۔</value></data>
+  <data name="Import_Tr_CurveApproximated" xml:space="preserve"><value>{0} منحنی قریب ترین پاور کرو کی صورت میں منتقل ہوا۔</value></data>
+  <data name="Import_Tr_ZoneOutward" xml:space="preserve"><value>صرف اس زون کے اندر نہیں، بلکہ اس زون سے باہر کی طرف بھی فائر ہوتا ہے۔</value></data>
+  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>عام لیئر کے طور پر درآمد ہوئی۔</value></data>
+  <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>اس کے ذیلی مینیو ایک ہی حلقے میں مزید سلاٹس بن گئے۔</value></data>
+  <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>جب اسٹک دوبارہ مرکز پر آتی ہے یا لیئر ختم ہوتی ہے تو انتخاب طے ہو جاتا ہے۔ reWASD کا لاگو کریں بٹن استعمال نہیں ہوتا۔</value></data>
+  <data name="Import_Tr_RegionCentered" xml:space="preserve"><value>کرسر اسکرین کے مرکز میں اسی سائز کے ایک علاقے میں رہتا ہے۔</value></data>
+  <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>یہ فائل دو کنٹرولرز کو الگ رکھتی ہے۔ PadForge میں سلاٹ پر موجود کوئی بھی کنٹرولر ان میپنگز کو فائر کرتا ہے۔</value></data>
+  <data name="Import_Tr_ToggleSameGesture" xml:space="preserve"><value>اسی اشارے سے یہ بند ہوتا ہے۔ reWASD اسے ایک دبانے سے بند کرتا تھا۔</value></data>
+  <data name="Import_Tr_LedShownAs" xml:space="preserve"><value>{0} لائٹنگ قریب ترین لائٹ بار موڈ کی صورت میں منتقل ہوئی۔</value></data>
+  <data name="Import_Tr_LoweredToKeys" xml:space="preserve"><value>اس کی بجائے {0} بھیجتا ہے۔</value></data>
+  <data name="Import_Tr_StickAdded" xml:space="preserve"><value>اسٹک کو اس قدر پر سیٹ کرتا ہے، بجائے اس کے کہ اسے اسٹک کی اپنی پوزیشن میں جمع کرے۔</value></data>
+  <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>حرکت کی رفتار یا جھٹکا منتقل نہیں ہوا۔</value></data>
+  <data name="Import_Tr_HipFire" xml:space="preserve"><value>ہلکا اور مکمل دباؤ کام کرتے ہیں، البتہ ہلکے دباؤ سے پہلے {0} ms کا انتظار نہیں ہے۔</value></data>
+  <data name="Import_Tr_MaxOutput" xml:space="preserve"><value>آؤٹ پٹ کو حد میں رکھنے کی بجائے {0} فیصد تک اسکیل کرتا ہے۔</value></data>
+  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>یہ منتقل نہیں ہوئے۔ انہیں ٹچ پیڈ ٹیب میں سیٹ کریں۔</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>اس فائل میں کچھ بھی اس لیئر کو نہیں کھولتا۔ میپنگز ٹیب میں اسے ایک بٹن دیں۔</value></data>
 </root>

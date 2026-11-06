@@ -4912,4 +4912,58 @@
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>ทุกโอเวอร์เลย์</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>สลับเปิด/ปิดโอเวอร์เลย์หน้าจอ {0}</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>แสดงรูปภาพ {0}: {1} × {2} ms จนถึงมาโครถัดไป</value></data>
+  <data name="Import_DialogTitle" xml:space="preserve"><value>นำเข้าโปรไฟล์</value></data>
+  <data name="Import_Source_Format" xml:space="preserve"><value>{0} ไฟล์ {1}</value></data>
+  <data name="Import_ProfileName_Format" xml:space="preserve"><value>จะกลายเป็นโปรไฟล์ "{0}"</value></data>
+  <data name="Import_Confirm" xml:space="preserve"><value>นำเข้า</value></data>
+  <data name="Import_NothingToImport" xml:space="preserve"><value>ไฟล์นี้ไม่มีการแมปที่ PadForge ใช้ได้</value></data>
+  <data name="Import_NoteController" xml:space="preserve"><value>หลังโหลดโปรไฟล์นี้ ให้กำหนดคอนโทรลเลอร์ของคุณให้กับสล็อตของโปรไฟล์ในหน้าอุปกรณ์</value></data>
+  <data name="Import_NoteAssignsOne_Format" xml:space="preserve"><value>โปรไฟล์จะกำหนด {0} ให้กับสล็อตของมันเมื่อโหลด</value></data>
+  <data name="Import_NoteAssignsTwo_Format" xml:space="preserve"><value>โปรไฟล์จะกำหนด {0} และ {1} ให้กับสล็อตของมันเมื่อโหลด</value></data>
+  <data name="Profiles_ImportFilterAll" xml:space="preserve"><value>โปรไฟล์</value></data>
+  <data name="Import_LayerName_Format" xml:space="preserve"><value>เลเยอร์ {0}</value></data>
+  <data name="Import_ShiftLayerName_Format" xml:space="preserve"><value>Shift {0}</value></data>
+  <data name="Import_MenuItem_Format" xml:space="preserve"><value>รายการ {0}</value></data>
+  <data name="Import_Line_Controller" xml:space="preserve"><value>คอนโทรลเลอร์</value></data>
+  <data name="Import_Line_Native" xml:space="preserve"><value>คงเอาต์พุตของตัวเองไว้</value></data>
+  <data name="Import_Line_ToLayer_Format" xml:space="preserve"><value>ไปยัง {0}</value></data>
+  <data name="Import_Tr_FileUnreadable" xml:space="preserve"><value>PadForge อ่านไฟล์นั้นไม่ได้</value></data>
+  <data name="Import_Tr_FileTooLarge" xml:space="preserve"><value>ไฟล์นั้นใหญ่เกินกว่าจะเป็นโปรไฟล์</value></data>
+  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>ไฟล์นั้นไม่ใช่โปรไฟล์ของ PadForge, reWASD หรือ DS4Windows</value></data>
+  <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>ไฟล์นั้นประกาศประเภทเอกสาร ซึ่งโปรไฟล์ไม่เคยต้องใช้ PadForge จึงไม่อ่านไฟล์นี้</value></data>
+  <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>ไฟล์นั้นไม่ใช่รูปแบบ reWASD ที่ PadForge อ่านได้ คือสคีมา 3</value></data>
+  <data name="Import_Tr_ProgramNotRun" xml:space="preserve"><value>ตัดออกเพื่อไม่ให้คอนฟิกที่แชร์กันสั่งเริ่มโปรแกรมได้: {0}</value></data>
+  <data name="Import_Tr_SystemCommand" xml:space="preserve"><value>ตัดออกเพื่อไม่ให้คอนฟิกที่แชร์กันทำสิ่งนี้กับพีซีของคุณได้: {0}</value></data>
+  <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>PadForge ไม่รู้จักอินพุตนี้: {0}</value></data>
+  <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge ไม่รู้จักเอาต์พุตนี้: {0}</value></data>
+  <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge ไม่มีคำสั่งนี้: {0}</value></data>
+  <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>คอนโทรลเลอร์เสมือนไม่มีปุ่มนี้: {0}</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>เป้าเล็งอยู่ภายใน reWASD แสดงภาพของคุณเองได้ด้วยโอเวอร์เลย์หน้าจอ</value></data>
+  <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>การสั่นและการเขย่าของสติ๊กไม่ถูกนำมาด้วย</value></data>
+  <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>จุดสั่งการของปุ่มอนาล็อกไม่ถูกนำมาด้วย</value></data>
+  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>การส่งไปยังพีซีเครื่องอื่นไม่ถูกนำมาด้วย ตั้งค่าได้ด้วยลิงก์ระยะไกล</value></data>
+  <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge อ่านสติ๊กสองอัน แต่ไฟล์นี้อ้างถึงอันที่สาม</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>การจำลองพวงมาลัยไม่ถูกนำมาด้วย ให้แมปพวงมาลัยในแท็บการแมป</value></data>
+  <data name="Import_Tr_ProfileSwitch" xml:space="preserve"><value>การกระทำพิเศษที่โหลดโปรไฟล์อื่นไม่ถูกนำมาด้วย: {0}</value></data>
+  <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>โปรไฟล์นี้อ้างถึงการกระทำพิเศษที่ไม่มีใน Actions.xml ข้างโฟลเดอร์ Profiles ของมัน: {0}</value></data>
+  <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>การตั้งค่านี้ไม่ถูกนำมาด้วย: {0}</value></data>
+  <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD เคยกันอินพุตเหล่านี้ไม่ให้ไปถึง Windows เปิด ดักอินพุตที่แมปไว้ สำหรับ {0} ในหน้าอุปกรณ์ ซึ่งจะกันอินพุตที่โปรไฟล์นี้แมปไว้</value></data>
+  <data name="Import_Tr_HeldAsTap" xml:space="preserve"><value>กดแตะแทนการกดค้าง เพราะมีท่าทางอื่นใช้ปุ่มเดียวกัน</value></data>
+  <data name="Import_Tr_CurveFitted" xml:space="preserve"><value>เส้นโค้ง {0} จุดถูกนำมาเป็นเส้นโค้งกำลังที่ใกล้เคียงที่สุด</value></data>
+  <data name="Import_Tr_CurveApproximated" xml:space="preserve"><value>เส้นโค้ง {0} ถูกนำมาเป็นเส้นโค้งกำลังที่ใกล้เคียงที่สุด</value></data>
+  <data name="Import_Tr_ZoneOutward" xml:space="preserve"><value>ทำงานจากโซนนี้ออกไปด้านนอก ไม่ใช่เฉพาะภายในโซน</value></data>
+  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>นำเข้าเป็นเลเยอร์ธรรมดา</value></data>
+  <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>เมนูย่อยของมันกลายเป็นช่องเพิ่มเติมบนวงแหวนเดียว</value></data>
+  <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>ยืนยันเมื่อสติ๊กกลับสู่ศูนย์กลางหรือเมื่อเลเยอร์สิ้นสุด ไม่ใช้ปุ่ม Apply ของ reWASD</value></data>
+  <data name="Import_Tr_RegionCentered" xml:space="preserve"><value>เคอร์เซอร์อยู่ในพื้นที่ขนาดเท่าเดิมที่กลางหน้าจอ</value></data>
+  <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>ไฟล์นี้แยกคอนโทรลเลอร์สองตัวออกจากกัน ใน PadForge คอนโทรลเลอร์ใดก็ตามบนสล็อตจะเรียกใช้การแมปเหล่านี้</value></data>
+  <data name="Import_Tr_ToggleSameGesture" xml:space="preserve"><value>ท่าทางเดิมจะปิดมัน ส่วน reWASD ปิดด้วยการกดครั้งเดียว</value></data>
+  <data name="Import_Tr_LedShownAs" xml:space="preserve"><value>แสง {0} ถูกนำมาเป็นโหมดไลต์บาร์ที่ใกล้เคียงที่สุด</value></data>
+  <data name="Import_Tr_LoweredToKeys" xml:space="preserve"><value>ส่ง {0} แทน</value></data>
+  <data name="Import_Tr_StickAdded" xml:space="preserve"><value>ตั้งสติ๊กเป็นค่านี้ แทนที่จะบวกเข้ากับตำแหน่งของสติ๊กเอง</value></data>
+  <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>ความเร็วการเคลื่อนที่หรือการสะบัดไม่ถูกนำมาด้วย</value></data>
+  <data name="Import_Tr_HipFire" xml:space="preserve"><value>การเหนี่ยวเบาและเหนี่ยวสุดใช้งานได้ โดยไม่มีการรอ {0} มิลลิวินาทีก่อนการเหนี่ยวเบา</value></data>
+  <data name="Import_Tr_MaxOutput" xml:space="preserve"><value>ย่อเอาต์พุตเหลือ {0} เปอร์เซ็นต์ แทนที่จะจำกัดเพดาน</value></data>
+  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>รายการเหล่านี้ไม่ถูกนำมาด้วย ตั้งค่าได้ในแท็บทัชแพด</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>ไม่มีสิ่งใดในไฟล์นี้เปิดเลเยอร์นี้ ให้กำหนดปุ่มให้ในแท็บการแมป</value></data>
 </root>

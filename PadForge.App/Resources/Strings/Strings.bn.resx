@@ -4912,4 +4912,58 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>প্রতিটি ওভারলে</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>স্ক্রিন ওভারলে {0} টগল করুন</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>{0} ছবি দেখান: {1} × {2} ms, পরের ম্যাক্রো পর্যন্ত</value></data>
+  <data name="Import_DialogTitle" xml:space="preserve"><value>প্রোফাইল ইমপোর্ট</value></data>
+  <data name="Import_Source_Format" xml:space="preserve"><value>{0}, একটি {1} ফাইল</value></data>
+  <data name="Import_ProfileName_Format" xml:space="preserve"><value>এটি "{0}" প্রোফাইল হবে।</value></data>
+  <data name="Import_Confirm" xml:space="preserve"><value>ইমপোর্ট করুন</value></data>
+  <data name="Import_NothingToImport" xml:space="preserve"><value>এই ফাইলে PadForge-এর ব্যবহারযোগ্য কোনো ম্যাপিং নেই।</value></data>
+  <data name="Import_NoteController" xml:space="preserve"><value>এই প্রোফাইল লোড করার পর ডিভাইস পেজে আপনার কন্ট্রোলারটি এর স্লটগুলিতে বরাদ্দ করুন।</value></data>
+  <data name="Import_NoteAssignsOne_Format" xml:space="preserve"><value>লোড হওয়ার সময় এটি এর স্লটগুলিতে {0} বরাদ্দ করে।</value></data>
+  <data name="Import_NoteAssignsTwo_Format" xml:space="preserve"><value>লোড হওয়ার সময় এটি এর স্লটগুলিতে {0} ও {1} বরাদ্দ করে।</value></data>
+  <data name="Profiles_ImportFilterAll" xml:space="preserve"><value>প্রোফাইল</value></data>
+  <data name="Import_LayerName_Format" xml:space="preserve"><value>লেয়ার {0}</value></data>
+  <data name="Import_ShiftLayerName_Format" xml:space="preserve"><value>শিফট {0}</value></data>
+  <data name="Import_MenuItem_Format" xml:space="preserve"><value>আইটেম {0}</value></data>
+  <data name="Import_Line_Controller" xml:space="preserve"><value>কন্ট্রোলার</value></data>
+  <data name="Import_Line_Native" xml:space="preserve"><value>নিজস্ব আউটপুট রাখে</value></data>
+  <data name="Import_Line_ToLayer_Format" xml:space="preserve"><value>{0}-এ</value></data>
+  <data name="Import_Tr_FileUnreadable" xml:space="preserve"><value>PadForge ওই ফাইলটি পড়তে পারেনি।</value></data>
+  <data name="Import_Tr_FileTooLarge" xml:space="preserve"><value>ওই ফাইলটি প্রোফাইল হওয়ার জন্য অতিরিক্ত বড়।</value></data>
+  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>ওই ফাইলটি PadForge, reWASD বা DS4Windows প্রোফাইল নয়।</value></data>
+  <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>ওই ফাইলে একটি ডকুমেন্ট টাইপ ঘোষণা আছে, যা প্রোফাইলে কখনও লাগে না, তাই PadForge সেটি পড়েনি।</value></data>
+  <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>ওই ফাইলটি PadForge-এর পড়তে পারা reWASD ফরম্যাটে (স্কিমা 3) নেই।</value></data>
+  <data name="Import_Tr_ProgramNotRun" xml:space="preserve"><value>শেয়ার করা কনফিগ যাতে কোনো প্রোগ্রাম চালু করতে না পারে, তাই বাদ দেওয়া হয়েছে: {0}</value></data>
+  <data name="Import_Tr_SystemCommand" xml:space="preserve"><value>শেয়ার করা কনফিগ যাতে আপনার পিসিতে এটি করতে না পারে, তাই বাদ দেওয়া হয়েছে: {0}</value></data>
+  <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>PadForge এই ইনপুটটি চিনতে পারে না: {0}</value></data>
+  <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge এই আউটপুটটি চিনতে পারে না: {0}</value></data>
+  <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge-এ এমন কোনো কমান্ড নেই: {0}</value></data>
+  <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>ভার্চুয়াল কন্ট্রোলারে এমন কোনো বোতাম নেই: {0}</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>ক্রসহেয়ার reWASD-এর ভেতরেই থাকে। নিজের ছবি দেখাতে স্ক্রিন ওভারলে ব্যবহার করুন।</value></data>
+  <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>স্টিকের কাঁপুনি ও ঝাঁকুনি আনা যায়নি।</value></data>
+  <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>অ্যানালগ কী অ্যাকচুয়েশন পয়েন্ট আনা যায়নি।</value></data>
+  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>অন্য পিসিতে পাঠানো আনা যায়নি। রিমোট লিংক দিয়ে এটি সেট আপ করুন।</value></data>
+  <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge দুটি স্টিক পড়ে, কিন্তু এখানে তৃতীয় একটির নাম আছে।</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>স্টিয়ারিং হুইল ইমুলেশন আনা যায়নি। হুইলটি ম্যাপিং ট্যাবে ম্যাপ করুন।</value></data>
+  <data name="Import_Tr_ProfileSwitch" xml:space="preserve"><value>অন্য প্রোফাইল লোড করার একটি বিশেষ অ্যাকশন আনা যায়নি: {0}</value></data>
+  <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>এই প্রোফাইলে এমন একটি বিশেষ অ্যাকশনের নাম আছে যা এর Profiles ফোল্ডারের পাশের Actions.xml-এ নেই: {0}</value></data>
+  <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>এই সেটিংটি আনা যায়নি: {0}</value></data>
+  <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD এই ইনপুটগুলিকে Windows-এ পৌঁছাতে দিত না। ডিভাইস পেজে {0}-এর জন্য ম্যাপ করা ইনপুট আটকে দিন চালু করুন, এটি এই প্রোফাইলে ম্যাপ করা ইনপুটগুলিকে আটকায়।</value></data>
+  <data name="Import_Tr_HeldAsTap" xml:space="preserve"><value>ধরে রাখার বদলে ট্যাপ হয়, কারণ বোতামটি অন্য একটি জেসচারের সঙ্গে ভাগ করা।</value></data>
+  <data name="Import_Tr_CurveFitted" xml:space="preserve"><value>{0}-পয়েন্ট কার্ভটি সবচেয়ে কাছের পাওয়ার কার্ভ হিসেবে আনা হয়েছে।</value></data>
+  <data name="Import_Tr_CurveApproximated" xml:space="preserve"><value>{0} কার্ভটি সবচেয়ে কাছের পাওয়ার কার্ভ হিসেবে আনা হয়েছে।</value></data>
+  <data name="Import_Tr_ZoneOutward" xml:space="preserve"><value>শুধু এই অঞ্চলের ভেতরে নয়, এখান থেকে বাইরের দিকেও চালু হয়।</value></data>
+  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>সাধারণ লেয়ার হিসেবে ইমপোর্ট হয়েছে।</value></data>
+  <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>এর সাব-মেনুগুলি একটি রিংয়ের আরও স্লটে পরিণত হয়েছে।</value></data>
+  <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>স্টিক আবার মাঝখানে এলে বা লেয়ার শেষ হলে নির্বাচন চূড়ান্ত হয়। reWASD-এর প্রয়োগ বোতাম ব্যবহার করা হয় না।</value></data>
+  <data name="Import_Tr_RegionCentered" xml:space="preserve"><value>কার্সর স্ক্রিনের মাঝখানে একই আকারের একটি এলাকার ভেতরে থাকে।</value></data>
+  <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>এই ফাইলে দুটি কন্ট্রোলার আলাদা রাখা হয়েছে। PadForge-এ স্লটের যেকোনো কন্ট্রোলার এই ম্যাপিংগুলি চালু করে।</value></data>
+  <data name="Import_Tr_ToggleSameGesture" xml:space="preserve"><value>একই জেসচার এটি বন্ধ করে। reWASD একবার চাপেই এটি বন্ধ করত।</value></data>
+  <data name="Import_Tr_LedShownAs" xml:space="preserve"><value>{0} লাইটিং সবচেয়ে কাছের লাইটবার মোড হিসেবে আনা হয়েছে।</value></data>
+  <data name="Import_Tr_LoweredToKeys" xml:space="preserve"><value>এর বদলে {0} পাঠায়।</value></data>
+  <data name="Import_Tr_StickAdded" xml:space="preserve"><value>স্টিকের নিজের অবস্থানের সঙ্গে যোগ না করে স্টিককে এই মানে সেট করে।</value></data>
+  <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>নড়াচড়ার গতি বা ফ্লিক আনা যায়নি।</value></data>
+  <data name="Import_Tr_HipFire" xml:space="preserve"><value>হালকা ও পুরো টান কাজ করে, তবে হালকা টানের আগের {0} মিলিসেকেন্ডের অপেক্ষা ছাড়া।</value></data>
+  <data name="Import_Tr_MaxOutput" xml:space="preserve"><value>আউটপুট সীমিত না করে {0} শতাংশে স্কেল করে।</value></data>
+  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>এগুলি আনা যায়নি। টাচপ্যাড ট্যাবে সেট করুন।</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>এই ফাইলের কোনো কিছুই এই লেয়ার খোলে না। ম্যাপিং ট্যাবে এটিকে একটি বোতাম দিন।</value></data>
 </root>

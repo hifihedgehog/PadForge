@@ -1365,7 +1365,10 @@ namespace PadForge.Common.Input
         /// fires once when its window expires with no follow-up (held or
         /// released), and a chain of two or more fires nothing here and
         /// resets once quiet. Lets one button carry Single + Double +
-        /// Triple macros without the single firing on the chains.</summary>
+        /// Triple macros without the single firing on the chains. With a Hold
+        /// For macro on the same trigger and layer (#561), a press still down
+        /// is not a single yet and one the hold has fired on never was, so the
+        /// button carries Hold too.</summary>
         private bool EvaluateSinglePressTrigger(MacroItem macro, bool triggerActive, bool wasTriggerActive)
         {
             var now = SinglePressUtcNow?.Invoke() ?? DateTime.UtcNow;
@@ -1375,6 +1378,7 @@ namespace PadForge.Common.Input
                     && (now - macro.TriggerLastPressUtc).TotalMilliseconds <= macro.TriggerDoublePressMs;
                 macro.TriggerPressStreak = chained ? macro.TriggerPressStreak + 1 : 1;
                 macro.TriggerLastPressUtc = now;
+                macro.HoldForBeside = FindHoldForBeside(macro);
                 return false;
             }
             if (macro.TriggerLastPressUtc == DateTime.MinValue) return false;
@@ -1382,14 +1386,18 @@ namespace PadForge.Common.Input
             if (elapsedMs <= macro.TriggerDoublePressMs) return false;
             if (macro.TriggerPressStreak == 1)
             {
+                var hold = macro.HoldForBeside;
+                bool heldLong = hold != null && hold.TriggerHoldFired;
+                if (hold != null && !heldLong && triggerActive) return false;
                 macro.TriggerPressStreak = 0;
                 macro.TriggerLastPressUtc = DateTime.MinValue;
+                if (heldLong) return false;
                 // Stale-fire guard: a live pipeline detects expiry within
                 // a few ticks (idle mode within ~50 ms). A press whose
                 // window expired long ago means the engine was stopped or
                 // the process suspended mid-window; firing now would be a
                 // ghost action with no input. Reset instead.
-                return elapsedMs <= macro.TriggerDoublePressMs + SinglePressStaleGraceMs;
+                return elapsedMs <= Math.Max(macro.TriggerDoublePressMs, hold?.TriggerHoldMs ?? 0) + SinglePressStaleGraceMs;
             }
             // Chain of 2+: reset without firing once the chain is quiet
             // (window expired) and the button is up, so a held third
@@ -1400,6 +1408,27 @@ namespace PadForge.Common.Input
                 macro.TriggerLastPressUtc = DateTime.MinValue;
             }
             return false;
+        }
+
+        /// <summary>The Hold For macro a single press yields to, read once per
+        /// press, or null.</summary>
+        private MacroItem FindHoldForBeside(MacroItem macro)
+        {
+            var all = _evalMacros;
+            if (all == null) return null;
+            for (int i = 0; i < all.Length; i++)
+            {
+                var m = all[i];
+                if (m != null && !ReferenceEquals(m, macro) && m.IsEnabled
+                    && m.TriggerMode == MacroTriggerMode.HoldForMs
+                    && m.PadIndex == macro.PadIndex
+                    && string.Equals(m.LayerMask, macro.LayerMask, StringComparison.Ordinal)
+                    && m.HasSameTrigger(macro))
+                {
+                    return m;
+                }
+            }
+            return null;
         }
 
         /// <summary>Shared HoldForMs trigger evaluation (issue #9 wave 1b,
@@ -3443,13 +3472,13 @@ namespace PadForge.Common.Input
                     break;
 
                 case MacroActionType.ToggleVcButton:
-                    // Flip the volatile latch (issue #9 wave 1b). The
-                    // per-frame latch application in EvaluateSlotMacros
-                    // writes the target button while latched, independent of
-                    // the macro's execution state, so the button stays down
-                    // across trigger releases until the next fire unlatches.
-                    action.VcToggleLatched = !action.VcToggleLatched;
-                    if (action.VcToggleLatched) ResetLatchPulsePhase(action);
+                    // Write the volatile latch (issue #9 wave 1b, direction
+                    // #561). The per-frame latch application in
+                    // EvaluateSlotMacros writes the target button while
+                    // latched, independent of the macro's execution state, so
+                    // the button stays down across trigger releases until a
+                    // later fire unlatches.
+                    ApplyVcButtonLatchWrite(macro, action);
                     AdvanceAction(macro);
                     break;
 
@@ -3650,6 +3679,7 @@ namespace PadForge.Common.Input
                 case MacroLatchDirection.Off:
                     action.KeyToggleLatched = false;
                     ClearPairTwinLatches(macro, MacroActionType.ToggleKey);
+                    ClearMatchingLatches(macro, action);
                     break;
                 default:
                     action.KeyToggleLatched = !action.KeyToggleLatched;
@@ -3676,6 +3706,7 @@ namespace PadForge.Common.Input
                 case MacroLatchDirection.Off:
                     action.MouseToggleLatched = false;
                     ClearPairTwinLatches(macro, MacroActionType.ToggleMouseButton);
+                    ClearMatchingLatches(macro, action);
                     break;
                 default:
                     action.MouseToggleLatched = !action.MouseToggleLatched;
@@ -3683,6 +3714,76 @@ namespace PadForge.Common.Input
                     // fresh latch must start its pulse train on the ON half.
                     if (action.MouseToggleLatched) ResetLatchPulsePhase(action);
                     break;
+            }
+        }
+
+        /// <summary>ToggleVcButton twin of <see cref="ApplyKeyLatchWrite"/>
+        /// (#561), shared by both dispatch switches. A sequence that holds a
+        /// virtual button across other steps sets it here and clears it later,
+        /// where flipping would leave each action's own latch set.</summary>
+        private void ApplyVcButtonLatchWrite(MacroItem macro, MacroAction action)
+        {
+            switch (action.LatchDirection)
+            {
+                case MacroLatchDirection.On:
+                    if (!action.VcToggleLatched)
+                    {
+                        action.VcToggleLatched = true;
+                        ResetLatchPulsePhase(action);
+                    }
+                    break;
+                case MacroLatchDirection.Off:
+                    action.VcToggleLatched = false;
+                    ClearPairTwinLatches(macro, MacroActionType.ToggleVcButton);
+                    ClearMatchingLatches(macro, action);
+                    break;
+                default:
+                    action.VcToggleLatched = !action.VcToggleLatched;
+                    if (action.VcToggleLatched) ResetLatchPulsePhase(action);
+                    break;
+            }
+        }
+
+        /// <summary>An Off that names the same output as an On elsewhere
+        /// (#561). Each action keeps its own latch, so "key down, wait, key up"
+        /// as two actions never released, and neither did a release written as
+        /// its own macro. A hold pair's legs reach only their own macro here,
+        /// because two pairs holding one key must not release each other. A
+        /// macro outside a pair reaches the slot's whole set, as Release Axis
+        /// Latches does.</summary>
+        private void ClearMatchingLatches(MacroItem macro, MacroAction off)
+        {
+            var all = _evalMacros;
+            if (macro.PairId != 0 || all == null)
+            {
+                ClearMatchingLatchesIn(macro, off);
+                return;
+            }
+            for (int m = 0; m < all.Length; m++)
+            {
+                if (all[m] != null) ClearMatchingLatchesIn(all[m], off);
+            }
+        }
+
+        private static void ClearMatchingLatchesIn(MacroItem macro, MacroAction off)
+        {
+            var actions = macro.Actions;
+            for (int i = 0; i < actions.Count; i++)
+            {
+                var a = actions[i];
+                if (a == null || ReferenceEquals(a, off) || a.Type != off.Type) continue;
+                switch (off.Type)
+                {
+                    case MacroActionType.ToggleKey:
+                        if (a.KeyCode == off.KeyCode) a.KeyToggleLatched = false;
+                        break;
+                    case MacroActionType.ToggleMouseButton:
+                        if (a.MouseButton == off.MouseButton) a.MouseToggleLatched = false;
+                        break;
+                    case MacroActionType.ToggleVcButton:
+                        if (a.ButtonFlags == off.ButtonFlags) a.VcToggleLatched = false;
+                        break;
+                }
             }
         }
 
@@ -3710,6 +3811,8 @@ namespace PadForge.Common.Input
                     if (act == null || act.Type != type) continue;
                     if (type == MacroActionType.ToggleKey)
                         act.KeyToggleLatched = false;
+                    else if (type == MacroActionType.ToggleVcButton)
+                        act.VcToggleLatched = false;
                     else
                         act.MouseToggleLatched = false;
                 }
@@ -5946,11 +6049,10 @@ namespace PadForge.Common.Input
                     break;
 
                 case MacroActionType.ToggleVcButton:
-                    // Extended twin of the Gamepad-path latch flip (issue #9
-                    // wave 1b). Application happens per frame in
-                    // EvaluateSlotMacrosExtended via the wide button words.
-                    action.VcToggleLatched = !action.VcToggleLatched;
-                    if (action.VcToggleLatched) ResetLatchPulsePhase(action);
+                    // Extended twin of the Gamepad-path latch write (issue #9
+                    // wave 1b, direction #561). Application happens per frame
+                    // in EvaluateSlotMacrosExtended via the wide button words.
+                    ApplyVcButtonLatchWrite(macro, action);
                     AdvanceAction(macro);
                     break;
 

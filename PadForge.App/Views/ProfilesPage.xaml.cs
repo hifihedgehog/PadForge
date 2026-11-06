@@ -34,18 +34,23 @@ namespace PadForge.Views
         //  Drop-zone import (#175)
         // ─────────────────────────────────────────────
 
-        /// <summary>Set by MainWindow: consumes a dropped .pfprofile through
+        /// <summary>Set by MainWindow: consumes a dropped profile file through
         /// the same code path as the Import button.</summary>
         internal Action<string> ImportProfileFile { get; set; }
 
-        /// <summary>True when the drag carries at least one .pfprofile.</summary>
+        /// <summary>A file the Import button takes: a .pfprofile, or another
+        /// tool's config (#561), whose content then decides.</summary>
+        private static bool IsImportableFile(string file)
+            => file != null
+               && (file.EndsWith(PadForge.Common.ProfileTransfer.FileExtension, StringComparison.OrdinalIgnoreCase)
+                   || PadForge.Common.ConfigImport.ForeignConfigImporter.HandlesFile(file));
+
+        /// <summary>True when the drag carries at least one importable file.</summary>
         private static bool IsProfileFileDrag(DragEventArgs e)
         {
             if (!e.Data.GetDataPresent(DataFormats.FileDrop)) return false;
             return e.Data.GetData(DataFormats.FileDrop) is string[] files &&
-                   files.Any(f => f != null && f.EndsWith(
-                       PadForge.Common.ProfileTransfer.FileExtension,
-                       StringComparison.OrdinalIgnoreCase));
+                   files.Any(IsImportableFile);
         }
 
         private void ProfileList_DragEnter(object sender, DragEventArgs e)
@@ -73,9 +78,7 @@ namespace PadForge.Views
             if (e.Data.GetData(DataFormats.FileDrop) is not string[] files) return;
             foreach (var file in files)
             {
-                if (file != null && file.EndsWith(
-                        PadForge.Common.ProfileTransfer.FileExtension,
-                        StringComparison.OrdinalIgnoreCase))
+                if (IsImportableFile(file))
                     ImportProfileFile?.Invoke(file);
             }
             e.Handled = true;

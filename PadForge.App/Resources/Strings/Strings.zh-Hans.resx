@@ -4863,4 +4863,58 @@
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>所有叠加层</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>切换屏幕叠加层 {0}</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>显示 {0} 图片：{1} × {2} 毫秒，直到下一个宏</value></data>
+  <data name="Import_DialogTitle" xml:space="preserve"><value>导入配置文件</value></data>
+  <data name="Import_Source_Format" xml:space="preserve"><value>{0}，{1} 文件</value></data>
+  <data name="Import_ProfileName_Format" xml:space="preserve"><value>将成为配置文件“{0}”。</value></data>
+  <data name="Import_Confirm" xml:space="preserve"><value>导入</value></data>
+  <data name="Import_NothingToImport" xml:space="preserve"><value>该文件中没有 PadForge 可用的映射。</value></data>
+  <data name="Import_NoteController" xml:space="preserve"><value>加载此配置文件后，请在设备页面将你的控制器分配到其插槽。</value></data>
+  <data name="Import_NoteAssignsOne_Format" xml:space="preserve"><value>加载时会将 {0} 分配到其插槽。</value></data>
+  <data name="Import_NoteAssignsTwo_Format" xml:space="preserve"><value>加载时会将 {0} 和 {1} 分配到其插槽。</value></data>
+  <data name="Profiles_ImportFilterAll" xml:space="preserve"><value>配置文件</value></data>
+  <data name="Import_LayerName_Format" xml:space="preserve"><value>层 {0}</value></data>
+  <data name="Import_ShiftLayerName_Format" xml:space="preserve"><value>Shift {0}</value></data>
+  <data name="Import_MenuItem_Format" xml:space="preserve"><value>项目 {0}</value></data>
+  <data name="Import_Line_Controller" xml:space="preserve"><value>控制器</value></data>
+  <data name="Import_Line_Native" xml:space="preserve"><value>保留自身输出</value></data>
+  <data name="Import_Line_ToLayer_Format" xml:space="preserve"><value>至 {0}</value></data>
+  <data name="Import_Tr_FileUnreadable" xml:space="preserve"><value>PadForge 无法读取该文件。</value></data>
+  <data name="Import_Tr_FileTooLarge" xml:space="preserve"><value>该文件过大，不可能是配置文件。</value></data>
+  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>该文件不是 PadForge、reWASD 或 DS4Windows 的配置文件。</value></data>
+  <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>该文件声明了文档类型，而配置文件从不需要它，因此 PadForge 未读取该文件。</value></data>
+  <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>该文件不是 PadForge 可读取的 reWASD 格式（架构 3）。</value></data>
+  <data name="Import_Tr_ProgramNotRun" xml:space="preserve"><value>已省略，以免他人分享的配置启动程序：{0}</value></data>
+  <data name="Import_Tr_SystemCommand" xml:space="preserve"><value>已省略，以免他人分享的配置对你的电脑执行此操作：{0}</value></data>
+  <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>PadForge 无法识别此输入：{0}</value></data>
+  <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge 无法识别此输出：{0}</value></data>
+  <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge 没有这个命令：{0}</value></data>
+  <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>虚拟控制器没有这个按钮：{0}</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>准星只存在于 reWASD 内部。请用屏幕叠加层显示你自己的图片。</value></data>
+  <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>摇杆抖动和晃动设置未导入。</value></data>
+  <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>模拟按键触发点未导入。</value></data>
+  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>发送到另一台电脑的设置未导入。请使用 Remote Link 进行设置。</value></data>
+  <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge 只读取两个摇杆，而此处指定了第三个。</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>方向盘模拟未导入。请在映射标签页中映射方向盘。</value></data>
+  <data name="Import_Tr_ProfileSwitch" xml:space="preserve"><value>加载另一个配置文件的特殊动作未导入：{0}</value></data>
+  <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>此配置文件指定了一个特殊动作，但其 Profiles 文件夹旁的 Actions.xml 中没有它：{0}</value></data>
+  <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>此设置未导入：{0}</value></data>
+  <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD 会阻止这些输入传到 Windows。请在设备页面为 {0} 开启拦截已映射的输入，这会拦截此配置文件映射的输入。</value></data>
+  <data name="Import_Tr_HeldAsTap" xml:space="preserve"><value>改为轻按而不是按住，因为另一个手势共用该按钮。</value></data>
+  <data name="Import_Tr_CurveFitted" xml:space="preserve"><value>{0} 点曲线已转换为最接近的幂曲线。</value></data>
+  <data name="Import_Tr_CurveApproximated" xml:space="preserve"><value>{0} 曲线已转换为最接近的幂曲线。</value></data>
+  <data name="Import_Tr_ZoneOutward" xml:space="preserve"><value>从此区域向外触发，而不只在区域内触发。</value></data>
+  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>已作为普通层导入。</value></data>
+  <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>其子菜单变成了同一圆环上的更多插槽。</value></data>
+  <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>在摇杆回中或层结束时确认。不使用 reWASD 的应用按钮。</value></data>
+  <data name="Import_Tr_RegionCentered" xml:space="preserve"><value>光标停留在屏幕中央、大小相同的区域内。</value></data>
+  <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>该文件将两个控制器分开处理。在 PadForge 中，插槽上的任何控制器都会触发这些映射。</value></data>
+  <data name="Import_Tr_ToggleSameGesture" xml:space="preserve"><value>用同一手势将其关闭。reWASD 只需按一次即可关闭。</value></data>
+  <data name="Import_Tr_LedShownAs" xml:space="preserve"><value>{0} 灯光已转换为最接近的灯条模式。</value></data>
+  <data name="Import_Tr_LoweredToKeys" xml:space="preserve"><value>改为发送 {0}。</value></data>
+  <data name="Import_Tr_StickAdded" xml:space="preserve"><value>将摇杆设为此值，而不是叠加到摇杆自身的位置上。</value></data>
+  <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>移动速度或快速甩动未导入。</value></data>
+  <data name="Import_Tr_HipFire" xml:space="preserve"><value>轻扣和全扣可用，但没有轻扣前的 {0} 毫秒等待。</value></data>
+  <data name="Import_Tr_MaxOutput" xml:space="preserve"><value>将输出缩放到 {0}%，而不是限制其上限。</value></data>
+  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>这些未导入。请在触控板标签页中设置。</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>此文件中没有任何内容可打开此层。请在映射标签页中为它指定一个按钮。</value></data>
 </root>

@@ -4912,4 +4912,58 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Öll yfirlög</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Víxla yfirlagi skjás {0}</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Sýna {0} myndir: {1} × {2} ms, þar til næsta fjölvi tekur við</value></data>
+  <data name="Import_DialogTitle" xml:space="preserve"><value>Flytja inn snið</value></data>
+  <data name="Import_Source_Format" xml:space="preserve"><value>{0}, {1}-skrá</value></data>
+  <data name="Import_ProfileName_Format" xml:space="preserve"><value>Verður sniðið „{0}“.</value></data>
+  <data name="Import_Confirm" xml:space="preserve"><value>Flytja inn</value></data>
+  <data name="Import_NothingToImport" xml:space="preserve"><value>Þessi skrá varpar engu sem PadForge getur notað.</value></data>
+  <data name="Import_NoteController" xml:space="preserve"><value>Eftir að þú hleður þessu sniði skaltu úthluta stýripinnanum þínum á raufar þess á Tækjasíðunni.</value></data>
+  <data name="Import_NoteAssignsOne_Format" xml:space="preserve"><value>Það úthlutar {0} á raufar sínar þegar það hleðst.</value></data>
+  <data name="Import_NoteAssignsTwo_Format" xml:space="preserve"><value>Það úthlutar {0} og {1} á raufar sínar þegar það hleðst.</value></data>
+  <data name="Profiles_ImportFilterAll" xml:space="preserve"><value>Snið</value></data>
+  <data name="Import_LayerName_Format" xml:space="preserve"><value>Lag {0}</value></data>
+  <data name="Import_ShiftLayerName_Format" xml:space="preserve"><value>Shift {0}</value></data>
+  <data name="Import_MenuItem_Format" xml:space="preserve"><value>Atriði {0}</value></data>
+  <data name="Import_Line_Controller" xml:space="preserve"><value>Stýripinni</value></data>
+  <data name="Import_Line_Native" xml:space="preserve"><value>Heldur eigin úttökum</value></data>
+  <data name="Import_Line_ToLayer_Format" xml:space="preserve"><value>Í {0}</value></data>
+  <data name="Import_Tr_FileUnreadable" xml:space="preserve"><value>PadForge gat ekki lesið þessa skrá.</value></data>
+  <data name="Import_Tr_FileTooLarge" xml:space="preserve"><value>Þessi skrá er of stór til að vera snið.</value></data>
+  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>Þessi skrá er ekki PadForge-, reWASD- eða DS4Windows-snið.</value></data>
+  <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>Þessi skrá lýsir skjalagerð, sem snið þarf aldrei, svo PadForge las hana ekki.</value></data>
+  <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>Þessi skrá er ekki á reWASD-sniðinu sem PadForge les, skema 3.</value></data>
+  <data name="Import_Tr_ProgramNotRun" xml:space="preserve"><value>Sleppt svo að sameiginleg stilling geti ekki ræst forrit: {0}</value></data>
+  <data name="Import_Tr_SystemCommand" xml:space="preserve"><value>Sleppt svo að sameiginleg stilling geti ekki gert þetta við tölvuna þína: {0}</value></data>
+  <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>PadForge þekkir ekki þetta inntak: {0}</value></data>
+  <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge þekkir ekki þetta úttak: {0}</value></data>
+  <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge hefur enga slíka skipun: {0}</value></data>
+  <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>Sýndarstýripinninn hefur engan slíkan hnapp: {0}</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>Miðunarkross er hluti af reWASD. Sýndu þína eigin mynd með Yfirlagi skjás.</value></data>
+  <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>Skjálfti og hristingur stýripinna fluttist ekki með.</value></data>
+  <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Greiningarpunktar hliðrænna lykla fluttust ekki með.</value></data>
+  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>Sending í aðra tölvu fluttist ekki með. Settu hana upp með Fjartengingu.</value></data>
+  <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge les tvo stýripinna og hér er nefndur sá þriðji.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Hermun stýris fluttist ekki með. Varpaðu stýrinu á Varpanir-flipanum.</value></data>
+  <data name="Import_Tr_ProfileSwitch" xml:space="preserve"><value>Sérstök aðgerð sem hleður öðru sniði fluttist ekki með: {0}</value></data>
+  <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Þetta snið nefnir sérstaka aðgerð sem vantar í Actions.xml við hlið Profiles-möppunnar: {0}</value></data>
+  <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Þessi stilling fluttist ekki með: {0}</value></data>
+  <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD kom í veg fyrir að þessi inntök næðu til Windows. Kveiktu á Gleypa varpað inntak fyrir {0} á Tækjasíðunni, sem stöðvar þau inntök sem þetta snið varpar.</value></data>
+  <data name="Import_Tr_HeldAsTap" xml:space="preserve"><value>Smellir í stað þess að halda, því önnur bending deilir hnappnum.</value></data>
+  <data name="Import_Tr_CurveFitted" xml:space="preserve"><value>Ferillinn með {0} punktum fluttist sem næsti veldisferill.</value></data>
+  <data name="Import_Tr_CurveApproximated" xml:space="preserve"><value>Ferillinn {0} fluttist sem næsti veldisferill.</value></data>
+  <data name="Import_Tr_ZoneOutward" xml:space="preserve"><value>Kveikir frá þessu svæði og út á við, ekki aðeins innan þess.</value></data>
+  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>Flutt inn sem venjulegt lag.</value></data>
+  <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>Undirvalmyndir þess urðu að fleiri raufum á einum hring.</value></data>
+  <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Staðfestir þegar stýripinninn miðjast aftur eða lagið endar. Apply-hnappur reWASD er ekki notaður.</value></data>
+  <data name="Import_Tr_RegionCentered" xml:space="preserve"><value>Bendillinn helst á svæði af sömu stærð í miðju skjásins.</value></data>
+  <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Þessi skrá heldur tveimur stýripinnum aðskildum. Í PadForge kveikir hvaða stýripinni sem er á raufinni á þessum varpunum.</value></data>
+  <data name="Import_Tr_ToggleSameGesture" xml:space="preserve"><value>Sama bending slekkur á því. reWASD slökkti á því með einum smelli.</value></data>
+  <data name="Import_Tr_LedShownAs" xml:space="preserve"><value>Lýsingin {0} fluttist sem næsti ljósastikuhamur.</value></data>
+  <data name="Import_Tr_LoweredToKeys" xml:space="preserve"><value>Sendir {0} í staðinn.</value></data>
+  <data name="Import_Tr_StickAdded" xml:space="preserve"><value>Stillir stýripinnann á þetta gildi í stað þess að bæta því við eigin stöðu stýripinnans.</value></data>
+  <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>Hreyfihraðinn eða rykkurinn fluttist ekki með.</value></data>
+  <data name="Import_Tr_HipFire" xml:space="preserve"><value>Létta og fulla togið virka, án þess að bíða í {0} ms áður en létta togið byrjar.</value></data>
+  <data name="Import_Tr_MaxOutput" xml:space="preserve"><value>Skalar úttakið í {0} prósent í stað þess að takmarka það.</value></data>
+  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Þetta fluttist ekki með. Stilltu það á Snertiflötur-flipanum.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Ekkert í þessari skrá opnar þetta lag. Gefðu því hnapp á Varpanir-flipanum.</value></data>
 </root>

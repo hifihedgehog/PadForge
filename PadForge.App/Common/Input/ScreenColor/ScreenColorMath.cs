@@ -44,8 +44,10 @@ namespace PadForge.Common.Input.ScreenColor
         private const int HueBuckets = 12;
 
         /// <summary>How long smoothing takes per percent of its setting, as the
-        /// time constant of a fade: 100 percent is half a second.</summary>
-        internal const float SmoothingMsPerPercent = 5f;
+        /// time constant of a fade: 100 percent is 100 ms, so the default of 30
+        /// percent settles within about 100 ms, a few pictures, and a light still
+        /// keeps up with what is on the screen.</summary>
+        internal const float SmoothingMsPerPercent = 1f;
 
         /// <summary>The part of a display an area covers. The eight zones and
         /// the center are each a third of the display on a side, as the

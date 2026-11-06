@@ -3625,6 +3625,131 @@ namespace PadForge.Tests
             return "set " + string.Join(" ", report.Select(b => b.ToString("X2")));
         }
 
+        /// <summary>A board of many key lamps that all differ, as a screen picture
+        /// makes them. Its lamps answer to the keys from 0x04 up.</summary>
+        private static void ManyLamps(LampBoard board, int lamps)
+        {
+            board.Layout = board.Layout with { MultiId = 4, MultiLink = 4, InputBindingBits = 8, DescribesLamps = true, MultiUpdateSlots = 8 };
+            board.Lamps = Enumerable.Repeat(LampBoard.OneLevel, lamps).ToArray();
+            board.LampCount = lamps;
+            board.Purposes = Enumerable.Repeat(1u, lamps).ToArray();
+            board.Bindings = Enumerable.Range(0, lamps).Select(i => (byte)(0x04 + i)).ToArray();
+        }
+
+        private static KeyFrame EachLamp(int lamps, int color)
+            => new(Enumerable.Range(0, lamps).ToDictionary(i => (ushort)(0x04 + i), i => color + i), null, null, null);
+
+        /// <summary>A whole picture is shown as it goes, one update per interval,
+        /// where one close at its end held every lamp back behind the slowest
+        /// report: 119 ms on a Lenovo Legion keyboard. Here each report takes 20 ms
+        /// and the interval is 33, so the third closes an update, and the last waits
+        /// out the interval before it closes the next.</summary>
+        [Fact]
+        public void AWholePicture_ClosesAnUpdateEachInterval_AndNeverCloseTwoInOne()
+        {
+            var (backend, board) = Found(b => ManyLamps(b, 40));
+            Color(board, 0x010101, EachLamp(40, 0x100000));
+            Passes(backend);
+            Advance(40);
+            Passes(backend);
+            board.Take();
+
+            Advance(100);
+            board.OnCall = () => Advance(20);
+            Color(board, 0x010101, EachLamp(40, 0x200000));
+            Passes(backend);
+            board.OnCall = null;
+            var first = board.Take();
+            Assert.Equal(new[] { "00", "00", "01", "00" }, first.Select(text => text.Split(' ')[3]));
+            Assert.All(first, text => Assert.StartsWith("set 04 08", text));
+
+            // Inside the interval nothing more goes, however many passes run.
+            Passes(backend);
+            Assert.Empty(board.Take());
+
+            Advance(40);
+            Passes(backend);
+            Assert.Equal(new[] { "01" }, board.Take().Select(text => text.Split(' ')[3]));
+            Assert.True(backend.PassCount > 0);
+        }
+
+        /// <summary>The reports after a close carry the colors of that moment, from
+        /// the lamp the last pass reached, and every lamp gets its turn.</summary>
+        [Fact]
+        public void TheReportsAfterAClose_CarryTheNewestColors_FromWhereTheyLeftOff()
+        {
+            var (backend, board) = Found(b => ManyLamps(b, 40));
+            Color(board, 0x010101, EachLamp(40, 0x100000));
+            Passes(backend);
+            Advance(40);
+            Passes(backend);
+            board.Take();
+
+            Advance(100);
+            board.OnCall = () => Advance(20);
+            Color(board, 0x010101, EachLamp(40, 0x200000));
+            Passes(backend);
+            board.OnCall = null;
+            board.Take();
+
+            // Lamps 0 to 31 have gone, the last eight wait to close.
+            Color(board, 0x010101, EachLamp(40, 0x300000));
+            Advance(40);
+            Passes(backend);
+            var next = board.Take();
+            var firstLamp = next[0].Split(' ');
+            // Report ID, then lamp count and flags, then the first lamp's ID: 32.
+            Assert.Equal(new[] { "04", "08", "00", "20", "00" }, firstLamp.Skip(1).Take(5));
+            Assert.Contains(next, text => text.Split(' ')[3] == "01");
+        }
+
+        /// <summary>Colors that return to what the device holds leave nothing due
+        /// but reports waiting for a close. One goes again, so they show.</summary>
+        [Fact]
+        public void ColorsThatComeBack_StillCloseWhatWasSent()
+        {
+            var (backend, board) = Found(b => ManyLamps(b, 16));
+            Color(board, 0x010101, EachLamp(16, 0x100000));
+            Passes(backend);
+            Advance(40);
+            Passes(backend);
+            board.Take();
+
+            // A slow paint that closes, and then the next right behind it: its first
+            // report goes, and its last cannot close yet.
+            Advance(100);
+            board.OnCall = () => Advance(20);
+            Color(board, 0x010101, EachLamp(16, 0x200000));
+            Passes(backend);
+            Assert.Equal(new[] { "00", "01" }, board.Take().Select(text => text.Split(' ')[3]));
+            Color(board, 0x010101, EachLamp(16, 0x300000));
+            Passes(backend);
+            board.OnCall = null;
+            Assert.Equal(new[] { "00" }, board.Take().Select(text => text.Split(' ')[3]));
+
+            // What is left to send now equals what the board holds: nothing is due.
+            var sent = Enumerable.Range(0, 16).ToDictionary(i => (ushort)(0x04 + i), i => (i < 8 ? 0x300000 : 0x200000) + i);
+            Color(board, 0x010101, new KeyFrame(sent, null, null, null));
+            Advance(40);
+            Passes(backend);
+            Assert.Equal(new[] { "01" }, board.Take().Select(text => text.Split(' ')[3]));
+            Passes(backend);
+            Assert.Empty(board.Take());
+        }
+
+        /// <summary>A frame that gives every lamp one color takes one report.</summary>
+        [Fact]
+        public void AWholeFrameOfOneColor_TakesOneReport()
+        {
+            var (backend, board) = Found(b => ManyLamps(b, 40));
+            var same = Enumerable.Range(0, 40).ToDictionary(i => (ushort)(0x04 + i), _ => 0x445566);
+            Color(board, 0x010101, new KeyFrame(same, null, null, null));
+            Passes(backend);
+            Advance(40);
+            Passes(backend);
+            Assert.Equal("set 05 01 00 00 27 00 44 55 66 01", board.Take().Last());
+        }
+
         /// <summary>A key frame paints the board lamp by lamp, one multi
         /// update for its four lamps: each key in its own color, a key no
         /// source named and every key the frame leaves out in the claim's

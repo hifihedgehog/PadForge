@@ -970,44 +970,72 @@ namespace PadForge.Tests
             };
 
         [Fact]
-        public void LampFramesSendEveryDueLampByMultiUpdate_InSlotSizedReports_TheLastComplete()
+        public void LampReportsSendEveryDueLampByMultiUpdate_InSlotSizedReports_NoneClosed()
         {
             var unit = Unit(10, 0x04, 4);
             var colors = Enumerable.Range(0, 10).Select(i => i * 0x010101).ToArray();
             var due = new[] { 0, 1, 2, 3, 4, 9 };
-            var frames = LampArrayProtocol.LampFrames(unit, colors, due, out int covered);
-            Assert.Equal(6, covered);
-            Assert.Equal(2, frames.Count);
-            Assert.Equal("04 04 00 00 00 01 00 02 00 03 00", LampArrayProtocol.Hex(frames[0], 11));
-            Assert.Equal("04 02 01 04 00 09 00 00 00 00 00", LampArrayProtocol.Hex(frames[1], 11));
-            Assert.Equal("04 04 04 01 09 09 09 01", LampArrayProtocol.Hex(frames[1][11..], 8));
+            var reports = LampArrayProtocol.LampReports(unit, colors, due);
+            Assert.Equal(new[] { 4, 2 }, reports.Select(r => r.Lamps));
+            Assert.Equal("04 04 00 00 00 01 00 02 00 03 00", LampArrayProtocol.Hex(reports[0].Frame, 11));
+            Assert.Equal("04 02 00 04 00 09 00 00 00 00 00", LampArrayProtocol.Hex(reports[1].Frame, 11));
+            Assert.Equal("04 04 04 01 09 09 09 01", LampArrayProtocol.Hex(reports[1].Frame[11..], 8));
         }
 
         [Fact]
-        public void WithoutAMultiUpdate_LampFramesSendRuns_AsManyAsTheDeviceTakes_TheRestLater()
+        public void WithoutAMultiUpdate_EveryRunIsOneReport_NoneClosed()
         {
-            // No multi update at all: one report per update.
             var unit = Unit(6, 0, 0);
             var colors = new[] { 0xFF0000, 0xFF0000, 0x00FF00, 0x00FF00, 0x00FF00, 0x0000FF };
-            var frames = LampArrayProtocol.LampFrames(unit, colors, new[] { 0, 1, 2, 3, 4, 5 }, out int covered);
-            Assert.Equal(2, covered);
-            Assert.Equal(new[] { "05 01 00 00 01 00 FF 00 00 01" }, frames.Select(f => LampArrayProtocol.Hex(f, f.Length)));
-
-            // A multi update PadForge cannot send still says how many
-            // reports the device takes: here two, so two runs go.
-            unit = Unit(6, 0, 4);
-            frames = LampArrayProtocol.LampFrames(unit, colors, new[] { 0, 1, 2, 3, 4, 5 }, out covered);
-            Assert.Equal(5, covered);
-            Assert.Equal(new[] { "05 00 00 00 01 00 FF 00 00 01", "05 01 02 00 04 00 00 FF 00 01" },
-                frames.Select(f => LampArrayProtocol.Hex(f, f.Length)));
+            var reports = LampArrayProtocol.LampReports(unit, colors, new[] { 0, 1, 2, 3, 4, 5 });
+            Assert.Equal(new[] { 2, 3, 1 }, reports.Select(r => r.Lamps));
+            Assert.Equal(new[]
+            {
+                "05 00 00 00 01 00 FF 00 00 01",
+                "05 00 02 00 04 00 00 FF 00 01",
+                "05 00 05 00 05 00 00 00 FF 01",
+            }, reports.Select(r => LampArrayProtocol.Hex(r.Frame, r.Frame.Length)));
 
             // A gap in the due lamps ends a run.
-            frames = LampArrayProtocol.LampFrames(Unit(6, 0, 1), colors, new[] { 0, 2, 3 }, out covered);
-            Assert.Equal(3, covered);
-            Assert.Equal(new[] { "05 00 00 00 00 00 FF 00 00 01", "05 01 02 00 03 00 00 FF 00 01" },
-                frames.Select(f => LampArrayProtocol.Hex(f, f.Length)));
-            Assert.Empty(LampArrayProtocol.LampFrames(unit, colors, Array.Empty<int>(), out covered));
-            Assert.Equal(0, covered);
+            reports = LampArrayProtocol.LampReports(unit, colors, new[] { 0, 2, 3 });
+            Assert.Equal(new[] { 1, 2 }, reports.Select(r => r.Lamps));
+            Assert.Empty(LampArrayProtocol.LampReports(unit, colors, Array.Empty<int>()));
+        }
+
+        /// <summary>A whole keyboard in one color takes one report where it took 40,
+        /// which is what a dark or plain part of a screen is.</summary>
+        [Fact]
+        public void LampsThatShareAColor_ShareAReport_WhenThatSavesOne()
+        {
+            var unit = Unit(318, 0x04, 8);
+            var one = Enumerable.Repeat(0x102030, 318).ToArray();
+            var all = Enumerable.Range(0, 318).ToArray();
+            var report = Assert.Single(LampArrayProtocol.LampReports(unit, one, all));
+            Assert.Equal(318, report.Lamps);
+            Assert.Equal("05 00 00 00 3D 01 10 20 30 01", LampArrayProtocol.Hex(report.Frame, report.Frame.Length));
+
+            // A run no longer than a report stays with its neighbors in the multi
+            // update. A longer one gets its own range, in place.
+            var mixed = new int[20];
+            for (int i = 0; i < 20; i++) mixed[i] = i is >= 3 and < 12 ? 0xAA0000 : i + 1;
+            var reports = LampArrayProtocol.LampReports(Unit(20, 0x04, 8), mixed, Enumerable.Range(0, 20).ToArray());
+            Assert.Equal(new[] { 3, 9, 8 }, reports.Select(r => r.Lamps));
+            Assert.Equal(new byte[] { 0x04, 0x05, 0x04 }, reports.Select(r => r.Frame[0]));
+            Assert.Equal(20, reports.Sum(r => r.Lamps));
+        }
+
+        [Fact]
+        public void MarkComplete_FlagsEachReportKindInItsOwnPlace()
+        {
+            var unit = Unit(10, 0x04, 4);
+            var multi = LampArrayProtocol.MultiUpdate(0x04, 4, complete: false, new[] { new LampValues(0, 1, 2, 3, 1) });
+            LampArrayProtocol.MarkComplete(unit, multi);
+            Assert.Equal(1, multi[2]);
+            Assert.Equal(1, multi[1]);
+            var range = LampArrayProtocol.RangeUpdate(0x05, complete: false, 0, 9, 1, 2, 3, 1);
+            LampArrayProtocol.MarkComplete(unit, range);
+            Assert.Equal(1, range[1]);
+            Assert.Equal(0, range[2]);
         }
 
         [Fact]
@@ -1082,6 +1110,66 @@ namespace PadForge.Tests
             Assert.False(LampArrayProtocol.CheckMulti(layout, caps, (id, link, fields) => ParserLike(id, fields, swapGreenBlue: true)));
             Assert.False(LampArrayProtocol.CheckMulti(layout, caps, (id, link, fields) => null));
             Assert.False(LampArrayProtocol.CheckMulti(layout with { MultiId = 0 }, caps, (id, link, fields) => ParserLike(id, fields)));
+        }
+
+        /// <summary>The numbering Windows gives a Lenovo Legion keyboard (048D:C193),
+        /// read from its parser: every channel sits under one main item, and the
+        /// indexes run from the last value, so the first slot's red is the highest.
+        /// The check turned that keyboard down and left it to range updates, about 50
+        /// of its 318 lamps per paint.</summary>
+        private static List<LampValueCap> BackwardIndexedCaps()
+        {
+            var result = new List<LampValueCap>();
+            var counts = new Dictionary<ushort, int>();
+            foreach (var cap in BenchCaps())
+            {
+                if (cap.LinkUsage == 0x50 && cap.UsageMin is >= 0x51 and <= 0x54)
+                {
+                    counts.TryGetValue(cap.UsageMin, out int slot);
+                    counts[cap.UsageMin] = slot + 1;
+                    result.Add(cap with { DataIndex = (ushort)(153 - slot * 4 - (cap.UsageMin - 0x51)) });
+                }
+                else result.Add(cap);
+            }
+            return result;
+        }
+
+        private static byte[] BackwardParserLike(byte id, IReadOnlyList<LampArrayProtocol.ParserField> fields)
+        {
+            var report = new byte[51];
+            report[0] = id;
+            foreach (var field in fields)
+            {
+                if (field.Usage == 0x03) report[1] = (byte)field.Value;
+                else if (field.Usage == 0x55) report[2] = (byte)field.Value;
+                else if (field.Usage == 0x21 && field.Array != null) field.Array.CopyTo(report, 3);
+                else if (field.DataIndex >= 100) report[19 + 153 - field.DataIndex] = (byte)field.Value;
+                else return null;
+            }
+            return report;
+        }
+
+        [Fact]
+        public void TheMultiUpdateCheck_TakesDataIndexesThatRunBackward()
+        {
+            var caps = BackwardIndexedCaps();
+            var layout = LampArrayProtocol.CheckShape(caps, 51, out _);
+            Assert.True(LampArrayProtocol.CheckMulti(layout, caps, (id, link, fields) => BackwardParserLike(id, fields)));
+        }
+
+        /// <summary>Either direction still has to land every byte where the report
+        /// is built: a parser that puts the fields anywhere else fails both.</summary>
+        [Fact]
+        public void TheMultiUpdateCheck_StillRefusesAReportLaidOutOtherwise_InBothDirections()
+        {
+            var caps = BackwardIndexedCaps();
+            var layout = LampArrayProtocol.CheckShape(caps, 51, out _);
+            Assert.False(LampArrayProtocol.CheckMulti(layout, caps, (id, link, fields) =>
+            {
+                var built = BackwardParserLike(id, fields);
+                if (built != null) (built[19], built[20]) = (built[20], built[19]);
+                return built;
+            }));
         }
 
         [Fact]

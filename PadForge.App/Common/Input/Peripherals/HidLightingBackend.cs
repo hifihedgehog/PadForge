@@ -62,7 +62,10 @@ namespace PadForge.Common.Input.Peripherals
     /// the session cannot send yet is tried again after the time it names.
     /// A model with a hold stores each picture, so a color that never holds,
     /// a rainbow or a light that follows the sound, goes out not at all and
-    /// the row's line says so, and its pictures after the first are also held
+    /// the row's line says so. A color whose mode keeps changing it goes out
+    /// not at all either, where it pauses long enough to hold, since a picture
+    /// takes a few hundred milliseconds to reach the lights (#559). Its pictures
+    /// of any other color after the first are also held
     /// to a burst and a rate (<see cref="StoredWriteBurst"/>,
     /// <see cref="StoredWriteRefillMs"/>), whatever the hold let through.
     /// The session reads the device's state
@@ -1157,7 +1160,7 @@ namespace PadForge.Common.Input.Peripherals
             }
             // Map Key Lights asking about one light has no claim behind it,
             // so the strips stay as the claims sized them.
-            if ((ruler.Device != Guid.Empty && !SizeStrips(unit, ruler.Strips)) || !Paint(unit, rgb, ruler.Keys, ref due))
+            if ((ruler.Device != Guid.Empty && !SizeStrips(unit, ruler.Strips)) || !Paint(unit, rgb, ruler.Keys, ruler.KeepsChanging, ref due))
             {
                 Fail(unit, "write failed", ref changed, ref failed, ref due);
                 return;
@@ -1266,7 +1269,7 @@ namespace PadForge.Common.Input.Peripherals
             if (!PeripheralOutputs.Links.ByPath.ContainsKey(path)
                 || !PeripheralOutputs.TryResolveColor(path, out int rgb, out var ruler))
                 return KeepAlive(unit, ref due);
-            return (ruler.Device == Guid.Empty || SizeStrips(unit, ruler.Strips)) && Paint(unit, rgb, ruler.Keys, ref due);
+            return (ruler.Device == Guid.Empty || SizeStrips(unit, ruler.Strips)) && Paint(unit, rgb, ruler.Keys, ruler.KeepsChanging, ref due);
         }
 
         /// <summary>Whether an asleep unit can be opened for read and write
@@ -1491,7 +1494,7 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>One pass over an open, wanted unit, with the claim's
         /// color and key frame as the pass resolved them. False when a
         /// write or a read failed.</summary>
-        private bool Paint(Unit unit, int rgb, KeyFrame keys, ref long due)
+        private bool Paint(Unit unit, int rgb, KeyFrame keys, bool keepsChanging, ref long due)
         {
             // The clock after the claim resolved: a picture is never taken
             // to have held from before it was seen.
@@ -1544,6 +1547,14 @@ namespace PadForge.Common.Input.Peripherals
             {
                 holdMs = model.HoldMs;
                 repaintMs = model.RepaintMs;
+            }
+            if (holdMs > 0 && keepsChanging)
+            {
+                // A stored picture cannot follow it, and each one written costs
+                // the device's memory a write. The device keeps what it shows.
+                unit.Pending = null;
+                unit.PendingMap = null;
+                return KeepAlive(unit, ref due);
             }
             long at = unit.PendingAt + holdMs;
             if (unit.Shown != null)

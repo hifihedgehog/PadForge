@@ -767,6 +767,20 @@ namespace PadForge.Common.Input.Peripherals
             public int SentRgb;
             public long SentAt;
 
+            /// <summary>A lamp-by-lamp paint's place: the lamp its next reports
+            /// start from, so every lamp gets its turn on a screen that keeps
+            /// changing.</summary>
+            public int PaintFrom;
+
+            /// <summary>Reports have gone out since the last that closed an
+            /// update, and the device shows none of them yet.</summary>
+            public bool Unclosed;
+
+            /// <summary>When the current interval began, and how many reports it
+            /// has carried (<see cref="LampArrayProtocol.BackToBack"/>).</summary>
+            public long WindowAt;
+            public int WindowReports;
+
             public bool Claimed => Phase == Phase.Settling || Phase == Phase.Lit;
 
             /// <summary>A hand-back is owed: the unit fell asleep while it
@@ -1561,6 +1575,9 @@ namespace PadForge.Common.Input.Peripherals
                 lamp.ClaimedAt = _ticks();
                 lamp.SettleUntil = lamp.ClaimedAt + unit.SettleMs;
                 lamp.Sent = false;
+                lamp.PaintFrom = 0;
+                lamp.Unclosed = false;
+                lamp.WindowReports = 0;
                 lamp.Phase = Phase.Settling;
                 // This claim's own end hands the device back from here on.
                 lamp.Owed = false;
@@ -1590,15 +1607,17 @@ namespace PadForge.Common.Input.Peripherals
             // may ignore a report that comes sooner (HID Usage Tables 1.6,
             // 26.7). The claim keeps a clock of its own, so a color that
             // changes faster than the re-assert never holds it back for
-            // longer than one interval.
+            // longer than one interval. A lamp-by-lamp paint keeps that
+            // promise report by report, since only the report that closes an
+            // update counts, so its reports go on at once.
             long spaced = lamp.SentAt + unit.PaintIntervalMs;
             bool reassert = pass.Now - lamp.ClaimedAt >= ReassertMs;
-            if (!reassert && Showing(lamp, rgb, ruler.Keys))
+            if (!reassert && !lamp.Unclosed && Showing(lamp, rgb, ruler.Keys))
             {
                 pass.DueAt(lamp.ClaimedAt + ReassertMs);
                 return;
             }
-            if (pass.Now < spaced)
+            if (pass.Now < spaced && (reassert || LampColors(unit, rgb, ruler.Keys) == null))
             {
                 pass.DueAt(spaced);
                 return;
@@ -1613,11 +1632,8 @@ namespace PadForge.Common.Input.Peripherals
                 lamp.ClaimedAt = _ticks();
             }
             if (!Paint(lamp, rgb, ruler.Keys, full: reassert, ref pass)) return;
-            // Lamps a range-only device could not take in one update go out
-            // after the next interval.
-            pass.DueAt(lamp.Shown != null && !Showing(lamp, rgb, ruler.Keys)
-                ? lamp.SentAt + unit.PaintIntervalMs
-                : lamp.ClaimedAt + ReassertMs);
+            // Lamps still to go have named when they are due.
+            if (!lamp.Unclosed && Showing(lamp, rgb, ruler.Keys)) pass.DueAt(lamp.ClaimedAt + ReassertMs);
         }
 
         /// <summary>The color of every lamp for a claim (#557): its key
@@ -1640,49 +1656,107 @@ namespace PadForge.Common.Input.Peripherals
                 : LightRenderer.Same(colors, lamp.Shown);
         }
 
-        /// <summary>Paints the claim: one color the way <see cref="Send"/>
-        /// does, or lamp by lamp where the claim carries a key frame the
-        /// unit's map can show (#557). <paramref name="full"/> sends every
-        /// lamp, as the first paint and a re-assert do. Otherwise only the
-        /// lamps whose color changed go out. False when a write failed, and
-        /// the unit is asleep then.</summary>
+        /// <summary>
+        /// Paints the claim: one color the way <see cref="Send"/> does, or lamp
+        /// by lamp where the claim carries a key frame the unit's map can show
+        /// (#557). <paramref name="full"/> owes every lamp again, as a re-assert
+        /// does. Otherwise only the lamps whose color changed go out. False when
+        /// a write failed, and the unit is asleep then.
+        ///
+        /// <para>A lamp-by-lamp paint can take many reports: 40 at about 3 ms each
+        /// on a Lenovo Legion keyboard's 318 lamps. So it never holds a whole
+        /// picture back behind one report that closes it, with colors as old as
+        /// the paint is long. An update closes as soon as the device's interval
+        /// allows, the pass ends there, and the next pass starts from the newest
+        /// colors at the lamp this one reached. A device shows each update when
+        /// its last report says so, at most one flag per interval (HID Usage Tables
+        /// 1.6, 26.11), and takes <see cref="LampArrayProtocol.BackToBack"/>
+        /// reports in an interval (26.7). A report that would break either waits
+        /// for its next pass, and no step sleeps.</para>
+        /// </summary>
         private bool Paint(Lamp lamp, int rgb, KeyFrame keys, bool full, ref Pass pass)
         {
-            var colors = LampColors(lamp.Unit, rgb, keys);
+            var unit = lamp.Unit;
+            var colors = LampColors(unit, rgb, keys);
             if (colors == null)
             {
                 if (!Send(lamp, rgb, ref pass)) return false;
                 lamp.Shown = null;
+                lamp.Unclosed = false;
                 return true;
             }
+            int count = colors.Length;
             var shown = lamp.Shown;
-            var due = new List<int>(colors.Length);
-            for (int i = 0; i < colors.Length; i++)
-                if (full || shown == null || shown[i] != colors[i]) due.Add(i);
-            if (due.Count == 0) return true;
-            var frames = LampArrayProtocol.LampFrames(lamp.Unit, colors, due, out int covered);
-            foreach (var frame in frames)
-            {
-                if (Set(lamp, frame)) continue;
-                Sleep(lamp, "a color write failed", ref pass);
-                return false;
-            }
-            // Lamps the update did not reach keep what they showed. From a
-            // one-color paint that is the color sent then.
             if (shown == null)
             {
-                shown = new int[colors.Length];
-                Array.Fill(shown, lamp.Sent ? lamp.SentRgb : -1);
+                shown = new int[count];
+                full = true;
+                lamp.Shown = shown;
             }
-            else shown = (int[])shown.Clone();
-            for (int i = 0; i < covered; i++) shown[due[i]] = colors[due[i]];
-            lamp.Shown = shown;
-            lamp.SentRgb = -1;
-            lamp.SentAt = _ticks();
-            lamp.Sent = true;
+            if (full) Array.Fill(shown, -1);
+            var due = new List<int>(count);
+            for (int i = 0; i < count; i++)
+            {
+                int lampId = (lamp.PaintFrom + i) % count;
+                if (shown[lampId] != colors[lampId]) due.Add(lampId);
+            }
+            // Colors that came back to what the device holds can leave reports
+            // waiting for a close with nothing left to send. The lamp sent last
+            // goes again to close them.
+            if (due.Count == 0)
+            {
+                if (!lamp.Unclosed) return true;
+                due.Add((lamp.PaintFrom + count - 1) % count);
+            }
+            var reports = LampArrayProtocol.LampReports(unit, colors, due);
+            int interval = unit.PaintIntervalMs;
+            int backToBack = LampArrayProtocol.BackToBack(unit);
+            long began = _ticks();
+            int at = 0;
+            for (int r = 0; r < reports.Count; r++)
+            {
+                long now = _ticks();
+                if (now - lamp.WindowAt >= interval)
+                {
+                    lamp.WindowAt = now;
+                    lamp.WindowReports = 0;
+                }
+                if (lamp.WindowReports >= backToBack)
+                {
+                    pass.DueAt(lamp.WindowAt + interval);
+                    return true;
+                }
+                bool open = now - lamp.SentAt >= interval;
+                bool last = r == reports.Count - 1;
+                if (last && !open)
+                {
+                    pass.DueAt(lamp.SentAt + interval);
+                    return true;
+                }
+                bool close = open && (last || now - began >= interval || lamp.WindowReports + 1 >= backToBack);
+                var report = reports[r];
+                if (close) LampArrayProtocol.MarkComplete(unit, report.Frame);
+                if (!Set(lamp, report.Frame))
+                {
+                    Sleep(lamp, "a color write failed", ref pass);
+                    return false;
+                }
+                lamp.WindowReports++;
+                lamp.Sent = true;
+                lamp.SentRgb = -1;
+                lamp.Unclosed = !close;
+                for (int k = 0; k < report.Lamps; k++) shown[due[at + k]] = colors[due[at + k]];
+                at += report.Lamps;
+                lamp.PaintFrom = (due[at - 1] + 1) % count;
+                if (close)
+                {
+                    lamp.SentAt = _ticks();
+                    if (!last) pass.DueAt(pass.Now);
+                    return true;
+                }
+            }
             return true;
         }
-
 
         /// <summary>
         /// Reads the lamps of a unit that is open, from where the last pass
@@ -1944,6 +2018,8 @@ namespace PadForge.Common.Input.Peripherals
             lamp.Descriptions = null;
             lamp.Shown = null;
             lamp.Sent = false;
+            lamp.Unclosed = false;
+            lamp.PaintFrom = 0;
         }
 
         /// <summary>

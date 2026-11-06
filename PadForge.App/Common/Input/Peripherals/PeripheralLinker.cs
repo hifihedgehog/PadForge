@@ -1095,7 +1095,9 @@ namespace PadForge.Common.Input.Peripherals
         /// With Dynamic Lighting off, the interface takes no colors and the
         /// stored picture shows. Nothing the keyboard reports tells the two
         /// apart, so both carry the row's colors, and each shows them where
-        /// the firmware lets it. OpenRGB drives both as well: its LampArray
+        /// the firmware lets it, but for a color that keeps changing, which
+        /// the LampArray interface alone carries
+        /// (<see cref="PeripheralOutputs.SetLighting"/>). OpenRGB drives both as well: its LampArray
         /// detector takes every collection on page 0x59, usage 0x01, with
         /// no vendor left out
         /// (Controllers/HIDLampArrayController/HIDLampArrayControllerDetect.cpp:50).

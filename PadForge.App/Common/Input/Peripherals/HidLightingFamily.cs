@@ -131,8 +131,9 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>How long a changed picture has to stay the same before
         /// it goes out. 0: at once. Above 0 says the device stores each picture,
-        /// so a color that never holds sends nothing, the row's line says so,
-        /// and the worker also bounds how many go out
+        /// so a color that never holds sends nothing, a color whose mode keeps
+        /// changing it sends nothing where it pauses either, the row's line says
+        /// so, and the worker also bounds how many go out
         /// (<see cref="HidLightingBackend.StoredWriteBurst"/>).</summary>
         public int HoldMs { get; init; }
 

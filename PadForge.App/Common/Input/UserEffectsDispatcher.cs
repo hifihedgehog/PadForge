@@ -2180,6 +2180,12 @@ namespace PadForge.Common.Input
         // and Static) only dispatch on config changes, so the timer
         // stays parked.
 
+        /// <summary>Whether the color a device shows comes from a mode that
+        /// keeps changing it (#559). A game's color, a macro's or a pulse over the
+        /// mode is the color of its moment, and no such mode's.</summary>
+        internal static bool ColorKeepsChanging(LightbarMode mode, bool baseModeShows)
+            => baseModeShows && IsAnimated(mode);
+
         private static bool IsAnimated(LightbarMode mode) =>
             mode is LightbarMode.Breathing
                   or LightbarMode.Strobe
@@ -2864,14 +2870,14 @@ namespace PadForge.Common.Input
             // Screen Color's spread (#559) is the base mode's color light by
             // light, so whatever covers the base mode covers it too: a game's
             // lightbar, a game mod's color, a macro color, the overlay.
-            if (devCfg.LightbarMode == LightbarMode.ScreenColor && devCfg.ScreenColorSpread && fresh == null
-                && devCfg.ComputeMacroOverrideIntensity() <= 0f && pulseIntensity <= 0f)
+            bool baseModeShows = fresh == null && devCfg.ComputeMacroOverrideIntensity() <= 0f && pulseIntensity <= 0f;
+            if (devCfg.LightbarMode == LightbarMode.ScreenColor && devCfg.ScreenColorSpread && baseModeShows)
             {
                 var picture = ScreenColor.ScreenColorSource.PictureFor(devCfg);
                 if (picture != null) keys = (keys ?? Common.Input.Peripherals.KeyFrame.Empty).WithPicture(picture);
             }
             Common.Input.Peripherals.PeripheralOutputs.SetLighting(guid, _padIndex, slotNumber, r, g, b, level, keys,
-                devCfg.LedStripCountsParsed);
+                devCfg.LedStripCountsParsed, ColorKeepsChanging(devCfg.LightbarMode, baseModeShows));
             return true;
         }
 

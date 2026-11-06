@@ -754,7 +754,7 @@ namespace PadForge.Common.Input.Peripherals
                     return;
                 }
             }
-            if (!Paint(run, unit, rgb, ruler.Keys, now, ref due))
+            if (!Paint(run, unit, rgb, ruler.Keys, ruler.KeepsChanging, now, ref due))
                 Fail(unit, now, "write failed", ref changed, ref failed, ref due);
         }
 
@@ -853,7 +853,7 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>One pass over an open, wanted unit. False when a write
         /// or a read failed.</summary>
-        private bool Paint(WorkerRun run, Unit unit, int rgb, KeyFrame keys, long now, ref long due)
+        private bool Paint(WorkerRun run, Unit unit, int rgb, KeyFrame keys, bool keepsChanging, long now, ref long due)
         {
             var info = unit.Plan.Info;
 
@@ -927,7 +927,7 @@ namespace PadForge.Common.Input.Peripherals
                 // The color is read when its first report can go, so the
                 // one that goes is the newest.
                 NoteHeld(unit, info, rgb, map, colors, fill, now);
-                long startAt = StartAt(unit, info, rgb, map, colors, fill, now);
+                long startAt = StartAt(unit, info, rgb, map, colors, fill, keepsChanging, now);
                 if (now < startAt)
                 {
                     Soonest(ref due, startAt);
@@ -1018,7 +1018,7 @@ namespace PadForge.Common.Input.Peripherals
             if (now < unit.QuietUntil) Soonest(ref due, unit.QuietUntil);
             else if (unit.Awaiting) Soonest(ref due, now + _activeTickMs);
             else if (unit.Queue != null) Soonest(ref due, unit.NextAt);
-            else Soonest(ref due, StartAt(unit, info, rgb, map, colors, fill, now));
+            else Soonest(ref due, StartAt(unit, info, rgb, map, colors, fill, keepsChanging, now));
             return true;
         }
 
@@ -1029,10 +1029,13 @@ namespace PadForge.Common.Input.Peripherals
         /// out the family's fastest repaint, and an unchanged one its
         /// re-assert, where the family has one. None starts inside the gap
         /// after the report before. A family with a hold also waits until the
-        /// new picture has stood that long (<see cref="NoteHeld"/>).</summary>
+        /// new picture has stood that long (<see cref="NoteHeld"/>), and is sent
+        /// no color whose mode keeps changing it, which a stored picture cannot
+        /// follow (#559).</summary>
         private static long StartAt(Unit unit, SteelSeriesFamilyInfo info, int rgb, LightMap map, int[] colors, int fill,
-            long now)
+            bool keepsChanging, long now)
         {
+            if (info.HoldMs > 0 && keepsChanging) return long.MaxValue;
             long at = unit.SentRgb == NoColor || unit.Reassert ? now
                 : !Showing(unit, rgb, map, colors, fill)
                     ? Math.Max(unit.PaintAt + info.RepaintMs, unit.Holding ? unit.HeldSince + info.HoldMs : 0)

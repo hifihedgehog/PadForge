@@ -144,9 +144,11 @@ namespace PadForge.Tests
         {
             var port = new ChatteringPort();
             var read = Task.Run(() => DygmaRaiseLighting.ReadAnswer(port, _ => { }));
-            bool ended = await Task.WhenAny(read, Task.Delay(5000)) == read;
+            // Well past the read's own wait, or the two race on a loaded machine.
+            int limitMs = DygmaRaiseLighting.AnswerWaitMs + 10_000;
+            bool ended = await Task.WhenAny(read, Task.Delay(limitMs)) == read;
             port.Stop = true;
-            Assert.True(ended, "the read was still going after 5 s");
+            Assert.True(ended, $"the read was still going after {limitMs} ms");
             Assert.Null(await read);
         }
 

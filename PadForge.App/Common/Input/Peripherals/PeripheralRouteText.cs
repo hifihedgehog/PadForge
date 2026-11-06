@@ -329,10 +329,14 @@ namespace PadForge.Common.Input.Peripherals
                 // shows changing colors through its LampArray interface,
                 // which an option in the laptop's BIOS turns on and off and
                 // which Windows may hold (HidLightingModel.LiveThroughLampArray).
+                // Nothing PadForge reads tells whether that option is on, so
+                // the line states the condition. It holds with the interface
+                // linked or not: a unit asleep for a moment or not found yet
+                // says nothing about the BIOS.
                 var direct = PeripheralOutputs.Direct.Find(path);
                 if (direct is { LiveThroughLampArray: true } && links.WindowsLightsLampArray)
                     line = s.Pad_Lighting_RouteDirectBesideWindows;
-                else if (direct is { LiveThroughLampArray: true } && Array.Exists(links.Lighting, p => p.Family == OutputFamily.LampArrayUnit))
+                else if (direct is { LiveThroughLampArray: true, StoresPictures: true })
                     line = s.Pad_Lighting_RouteDirectChangingNeedsBios;
                 // A device that stores each picture is sent no color that
                 // keeps changing (HidLightingModel.HoldMs), and one whose

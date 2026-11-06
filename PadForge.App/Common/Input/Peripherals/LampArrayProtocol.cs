@@ -541,67 +541,72 @@ namespace PadForge.Common.Input.Peripherals
         public static int BackToBack(LampArrayUnit unit)
             => unit.MultiUpdateSlots > 0 ? Math.Max(1, (unit.LampCount + unit.MultiUpdateSlots - 1) / unit.MultiUpdateSlots) : 1;
 
+        /// <summary>One report of a lamp-by-lamp paint, and how many of the due
+        /// lamps it covers, counted in their order.</summary>
+        public readonly record struct LampReport(byte[] Frame, int Lamps);
+
         /// <summary>
-        /// The reports that bring the lamps in <paramref name="due"/>, by
-        /// index in lamp order, to their colors in <paramref name="colors"/>
-        /// (#557), each lamp at its own level counts
-        /// (<see cref="ChannelValues"/>), and how many of the due lamps they
-        /// cover.
+        /// The reports that bring the lamps in <paramref name="due"/>, in that
+        /// order, to their colors in <paramref name="colors"/> (#557), each lamp
+        /// at its own level counts (<see cref="ChannelValues"/>). None is flagged
+        /// complete: the backend closes an update when the device's interval
+        /// allows it (<see cref="MarkComplete"/>).
         ///
-        /// <para>With the multi update, every due lamp, in reports of the
-        /// device's slot count. A device takes as many of those back to back
-        /// as it needs to set every lamp (HID Usage Tables 1.6, 26.7), and
-        /// the due lamps are never more than every lamp. Without it, range
-        /// updates over runs of neighboring due lamps that take the same
-        /// values, as many runs as <see cref="BackToBack"/> allows, so the
-        /// rest wait for the next update. Either way the last report is
-        /// flagged complete, and the device shows them as one update.</para>
+        /// <para>With the multi update, the lamps go out in reports of the
+        /// device's slot count, and a run of neighbors with one value longer than
+        /// a report holds goes out as one range update, which saves reports. The
+        /// range update is the one report a device with no usable multi update
+        /// has, so there every run is one report.</para>
         /// </summary>
-        public static List<byte[]> LampFrames(LampArrayUnit unit, IReadOnlyList<int> colors, IReadOnlyList<int> due, out int covered)
+        public static List<LampReport> LampReports(LampArrayUnit unit, IReadOnlyList<int> colors, IReadOnlyList<int> due)
         {
-            covered = 0;
-            var frames = new List<byte[]>();
+            var reports = new List<LampReport>();
             var levels = unit?.LampLevels;
-            if (levels == null || colors == null || due == null || due.Count == 0) return frames;
-
-            if (unit.MultiId != 0 && unit.MultiUpdateSlots > 0)
-            {
-                int slots = unit.MultiUpdateSlots;
-                var chunk = new LampValues[Math.Min(slots, due.Count)];
-                for (int start = 0; start < due.Count; start += slots)
-                {
-                    int count = Math.Min(slots, due.Count - start);
-                    for (int i = 0; i < count; i++)
-                    {
-                        int lamp = due[start + i];
-                        var (r, g, b, intensity) = ChannelValues(levels[lamp], colors[lamp]);
-                        chunk[i] = new LampValues((ushort)lamp, r, g, b, intensity);
-                    }
-                    frames.Add(MultiUpdate(unit.MultiId, slots, complete: start + count >= due.Count, chunk.AsSpan(0, count)));
-                }
-                covered = due.Count;
-                return frames;
-            }
-
-            int budget = BackToBack(unit);
+            if (levels == null || colors == null || due == null) return reports;
+            bool multi = unit.MultiId != 0 && unit.MultiUpdateSlots > 0;
+            int slots = unit.MultiUpdateSlots;
             int at = 0;
-            while (at < due.Count && frames.Count < budget)
+            while (at < due.Count)
             {
-                int first = due[at];
-                var values = ChannelValues(levels[first], colors[first]);
-                int end = at;
-                while (end + 1 < due.Count && due[end + 1] == due[end] + 1
-                       && ChannelValues(levels[due[end + 1]], colors[due[end + 1]]) == values)
-                    end++;
-                frames.Add(RangeUpdate(unit.RangeId, complete: false, first, due[end],
-                    values.Red, values.Green, values.Blue, values.Intensity));
-                at = end + 1;
+                int end = RunEnd(levels, colors, due, at);
+                if (!multi || end - at + 1 > slots)
+                {
+                    var values = ChannelValues(levels[due[at]], colors[due[at]]);
+                    reports.Add(new LampReport(RangeUpdate(unit.RangeId, complete: false, due[at], due[end],
+                        values.Red, values.Green, values.Blue, values.Intensity), end - at + 1));
+                    at = end + 1;
+                    continue;
+                }
+                var chunk = new LampValues[slots];
+                int count = 0;
+                while (at + count < due.Count && count < slots)
+                {
+                    int next = at + count;
+                    if (count > 0 && RunEnd(levels, colors, due, next) - next + 1 > slots) break;
+                    var (r, g, b, intensity) = ChannelValues(levels[due[next]], colors[due[next]]);
+                    chunk[count++] = new LampValues((ushort)due[next], r, g, b, intensity);
+                }
+                reports.Add(new LampReport(MultiUpdate(unit.MultiId, slots, complete: false, chunk.AsSpan(0, count)), count));
+                at += count;
             }
-            // The last report sent closes the update.
-            frames[^1][1] = LampUpdateComplete;
-            covered = at;
-            return frames;
+            return reports;
         }
+
+        /// <summary>Where the run of neighboring lamps with one value that starts
+        /// at <paramref name="at"/> in <paramref name="due"/> ends.</summary>
+        private static int RunEnd(IReadOnlyList<LampLevels> levels, IReadOnlyList<int> colors, IReadOnlyList<int> due, int at)
+        {
+            var values = ChannelValues(levels[due[at]], colors[due[at]]);
+            int end = at;
+            while (end + 1 < due.Count && due[end + 1] == due[end] + 1 && ChannelValues(levels[due[end + 1]], colors[due[end + 1]]) == values)
+                end++;
+            return end;
+        }
+
+        /// <summary>Flags a report built by <see cref="LampReports"/> as the one
+        /// that closes an update, so the device shows what it has taken.</summary>
+        public static void MarkComplete(LampArrayUnit unit, byte[] frame)
+            => frame[unit.MultiId != 0 && frame[0] == unit.MultiId ? 2 : 1] = LampUpdateComplete;
 
         // ─────────────────────────────────────────────
         //  Timing a device declares
@@ -833,8 +838,12 @@ namespace PadForge.Common.Input.Peripherals
         /// Whether Windows' parser lays the multi update out the way
         /// <see cref="MultiUpdate"/> builds it (#557): the parser builds a
         /// full report of known values, an array field with all its values
-        /// at once and separate fields of one usage by data index, in the
-        /// order the descriptor declares them, and the bytes must match.
+        /// at once and separate fields of one usage by data index, and the
+        /// bytes must match. Data indexes can run either way: a descriptor
+        /// that declares every channel under one main item is numbered from
+        /// its last value, measured on a Lenovo Legion keyboard (048D:C193),
+        /// where the first slot's red holds the highest index. So the check
+        /// takes the slots in both directions, and the bytes decide.
         /// </summary>
         internal static bool CheckMulti(LampArrayLayout layout, IReadOnlyList<LampValueCap> caps, ParserBuildFields build)
         {
@@ -843,27 +852,33 @@ namespace PadForge.Common.Input.Peripherals
             var lamps = new LampValues[slots];
             for (int i = 0; i < slots; i++)
                 lamps[i] = new LampValues((ushort)(0x1100 + i), (byte)(0x10 + i), (byte)(0x40 + i), (byte)(0x70 + i), (byte)(0xA0 + i));
-            var fields = new List<ParserField>
-            {
-                new(LampCountUsage, (uint)slots),
-                new(LampUpdateFlagsUsage, LampUpdateComplete),
-            };
-            if (!AddSlots(fields, caps, layout, LampIdUsage, 2, i => lamps[i].LampId)
-                || !AddSlots(fields, caps, layout, RedUpdateChannelUsage, 1, i => lamps[i].Red)
-                || !AddSlots(fields, caps, layout, GreenUpdateChannelUsage, 1, i => lamps[i].Green)
-                || !AddSlots(fields, caps, layout, BlueUpdateChannelUsage, 1, i => lamps[i].Blue)
-                || !AddSlots(fields, caps, layout, IntensityUpdateChannelUsage, 1, i => lamps[i].Intensity))
-                return false;
-            byte[] built = build(layout.MultiId, layout.MultiLink, fields);
             byte[] expected = MultiUpdate(layout.MultiId, slots, complete: true, lamps);
-            return built != null && built.Length >= expected.Length && built.AsSpan(0, expected.Length).SequenceEqual(expected);
+            foreach (bool backward in new[] { false, true })
+            {
+                var fields = new List<ParserField>
+                {
+                    new(LampCountUsage, (uint)slots),
+                    new(LampUpdateFlagsUsage, LampUpdateComplete),
+                };
+                if (!AddSlots(fields, caps, layout, LampIdUsage, 2, backward, i => lamps[i].LampId)
+                    || !AddSlots(fields, caps, layout, RedUpdateChannelUsage, 1, backward, i => lamps[i].Red)
+                    || !AddSlots(fields, caps, layout, GreenUpdateChannelUsage, 1, backward, i => lamps[i].Green)
+                    || !AddSlots(fields, caps, layout, BlueUpdateChannelUsage, 1, backward, i => lamps[i].Blue)
+                    || !AddSlots(fields, caps, layout, IntensityUpdateChannelUsage, 1, backward, i => lamps[i].Intensity))
+                    return false;
+                byte[] built = build(layout.MultiId, layout.MultiLink, fields);
+                if (built != null && built.Length >= expected.Length && built.AsSpan(0, expected.Length).SequenceEqual(expected))
+                    return true;
+            }
+            return false;
         }
 
         /// <summary>The fields that set one usage's slot values: the whole
         /// array when one field holds every slot, else each field by its
-        /// data index in declared order.</summary>
+        /// data index, first slot lowest or, <paramref name="backward"/>,
+        /// first slot highest.</summary>
         private static bool AddSlots(List<ParserField> fields, IReadOnlyList<LampValueCap> caps, LampArrayLayout layout,
-            ushort usage, int bytes, Func<int, int> value)
+            ushort usage, int bytes, bool backward, Func<int, int> value)
         {
             var holding = caps.Where(cap => !cap.Output && cap.UsagePage == UsagePage && cap.LinkUsage == MultiUpdateReport
                     && cap.ReportId == layout.MultiId && usage >= cap.UsageMin && usage <= cap.UsageMax)
@@ -881,6 +896,7 @@ namespace PadForge.Common.Input.Peripherals
                 fields.Add(new ParserField(usage, 0, array));
                 return true;
             }
+            if (backward) holding.Reverse();
             int slot = 0;
             foreach (var cap in holding)
             {

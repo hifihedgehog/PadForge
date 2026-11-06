@@ -207,6 +207,9 @@ namespace PadForge.Tests
         private static void Light(int rgb) => PeripheralOutputs.SetLighting(Device, slot: 0, player: 1,
             (byte)(rgb >> 16), (byte)(rgb >> 8), (byte)rgb);
 
+        private static void LightChanging(int rgb) => PeripheralOutputs.SetLighting(Device, slot: 0, player: 1,
+            (byte)(rgb >> 16), (byte)(rgb >> 8), (byte)rgb, keepsChanging: true);
+
         private static void Unlight() => PeripheralOutputs.ReleaseLighting(Device, 0);
 
         private HidLightingBackend Lit(HidCollectionInfo unit, int rgb = 0x112233)
@@ -808,6 +811,52 @@ namespace PadForge.Tests
             Advance(1);
             Passes(backend);
             Assert.Equal(1, Count("paint 445566,445566"));
+        }
+
+        /// <summary>A color whose mode keeps changing it goes into no stored
+        /// picture (#559), however long it stands, and the device keeps what it
+        /// shows. The same color from a steady mode goes out by the hold.</summary>
+        [Fact]
+        public void AColorThatKeepsChanging_GoesIntoNoStoredPicture_AndASteadyOneDoes()
+        {
+            _family.With(m => new HidLightingModel
+            {
+                Family = m.Family, Name = m.Name, Map = m.Map, Begin = m.Begin, HoldMs = 150, RepaintMs = 500,
+            });
+            var unit = Collection();
+            using var backend = Started(unit);
+            Link(unit);
+            LightChanging(0x112233);
+            Passes(backend);
+            Advance(60_000);
+            Passes(backend);
+            Assert.DoesNotContain(_family.Calls(), c => c.StartsWith("paint", StringComparison.Ordinal));
+
+            Light(0x112233);
+            Passes(backend);
+            Advance(150);
+            Passes(backend);
+            Assert.Equal(1, Count("paint 112233,112233"));
+
+            LightChanging(0x445566);
+            Passes(backend);
+            Advance(60_000);
+            Passes(backend);
+            Assert.Equal(0, Count("paint 445566,445566"));
+        }
+
+        /// <summary>A model that shows a stream takes such a color like any
+        /// other.</summary>
+        [Fact]
+        public void AModelWithNoHold_TakesAColorThatKeepsChanging()
+        {
+            _family.With();
+            var unit = Collection();
+            using var backend = Started(unit);
+            Link(unit);
+            LightChanging(0x112233);
+            Passes(backend);
+            Assert.Equal(1, Count("paint 112233,112233"));
         }
 
         /// <summary>A session that names none keeps the model's.</summary>

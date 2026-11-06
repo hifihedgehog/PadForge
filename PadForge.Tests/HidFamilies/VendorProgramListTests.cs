@@ -319,10 +319,10 @@ namespace PadForge.Tests
         }
 
         /// <summary>A keyboard that shows changing colors through its LampArray
-        /// has no such path here, so the line says its own controller keeps
-        /// still pictures.</summary>
+        /// has no such path right now. That says nothing of the BIOS option behind
+        /// it, so the line states the condition and not that they do not show.</summary>
         [Fact]
-        public void AKeyboardWithNoLampArrayPath_SaysItsControllerKeepsAStillPicture()
+        public void AKeyboardWithNoLampArrayPathRightNow_StillStatesTheCondition()
         {
             var s = Strings.Instance;
             var unit = new DirectUnit(OutputFamily.HidLightingUnit, "unit", Box, 0x048D, 0xC197)
@@ -331,7 +331,7 @@ namespace PadForge.Tests
             };
             PeripheralOutputs.PublishLinks(new LinkTable(new[] { new DeviceLinks { Device = A, Lighting = new[] { unit.Path } } }));
             PeripheralOutputs.Direct = Found(unit);
-            Assert.Equal(string.Format(s.Pad_Lighting_RouteDirectStored, "Spectrum"), PeripheralRouteText.Lighting(Row(0x048D, 0xC197), 0));
+            Assert.Equal(string.Format(s.Pad_Lighting_RouteDirectChangingNeedsBios, "Spectrum"), PeripheralRouteText.Lighting(Row(0x048D, 0xC197), 0));
         }
     }
 

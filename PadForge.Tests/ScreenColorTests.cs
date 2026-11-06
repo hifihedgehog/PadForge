@@ -148,13 +148,37 @@ namespace PadForge.Tests
         {
             Assert.Equal(1f, ScreenColorMath.SmoothingStep(16, 0));
             Assert.Equal(0f, ScreenColorMath.SmoothingStep(0, 30));
-            // 30 percent is 150 ms, and one time constant covers 1 - 1/e.
-            Assert.Equal(1f - MathF.Exp(-1f), ScreenColorMath.SmoothingStep(150, 30), 5);
+            // 30 percent is 30 ms, and one time constant covers 1 - 1/e.
+            Assert.Equal(1f - MathF.Exp(-1f), ScreenColorMath.SmoothingStep(30, 30), 5);
 
-            // Two passes of 75 ms end where one pass of 150 ms does.
-            float half = ScreenColorMath.SmoothingStep(75, 30);
+            // Two passes of 25 ms end where one pass of 50 ms does.
+            float half = ScreenColorMath.SmoothingStep(25, 30);
             float twoSteps = 1f - (1f - half) * (1f - half);
-            Assert.Equal(ScreenColorMath.SmoothingStep(150, 30), twoSteps, 5);
+            Assert.Equal(ScreenColorMath.SmoothingStep(50, 30), twoSteps, 5);
+        }
+
+        /// <summary>The modes that keep changing a color tell a device that
+        /// stores each picture to take none of it, unless a game's color, a
+        /// macro's or a pulse covers the mode.</summary>
+        [Theory]
+        [InlineData(LightbarMode.ScreenColor, true, true)]
+        [InlineData(LightbarMode.ColorCycle, true, true)]
+        [InlineData(LightbarMode.AudioPulse, true, true)]
+        [InlineData(LightbarMode.Static, true, false)]
+        [InlineData(LightbarMode.Off, true, false)]
+        [InlineData(LightbarMode.ScreenColor, false, false)]
+        public void AColorKeepsChanging_ByTheModeThatMakesIt(LightbarMode mode, bool baseModeShows, bool expected)
+            => Assert.Equal(expected, UserEffectsDispatcher.ColorKeepsChanging(mode, baseModeShows));
+
+        /// <summary>A fade held a light half a second behind the screen at the
+        /// old default. The default now settles to within 3 percent in about
+        /// 100 ms, three pictures.</summary>
+        [Fact]
+        public void TheDefaultSmoothingSettlesQuickly()
+        {
+            int defaultPercent = new DeviceSlotConfig().ScreenColorSmoothing;
+            float left = 1f - ScreenColorMath.SmoothingStep(110, defaultPercent);
+            Assert.InRange(left, 0f, 0.03f);
         }
 
         private static readonly int[] Surface = { 1, 2, 3, 4, 5, 6 };
@@ -520,8 +544,8 @@ namespace PadForge.Tests
             for (int i = 0; i < 5; i++)
                 Assert.Equal(((byte)0, (byte)0, (byte)0), ScreenColorSource.ColorFor(cfg));
 
-            // 20 percent is 100 ms, and one time constant is 1 - 1/e of the way.
-            _now += 100;
+            // 20 percent is 20 ms, and one time constant is 1 - 1/e of the way.
+            _now += 20;
             Assert.Equal(((byte)161, (byte)0, (byte)0), ScreenColorSource.ColorFor(cfg));
             _now += 2000;
             Assert.Equal(((byte)255, (byte)0, (byte)0), ScreenColorSource.ColorFor(cfg));
@@ -725,7 +749,7 @@ namespace PadForge.Tests
             Assert.Equal(0x000000, first.At(0f, 0f));
             Assert.Equal(0xFF0000, first.At(0.9f, 0f));
             Show(new ScreenFrame(2, 1, new[] { 0xFF0000, 0x000000 }));
-            _now += 100;
+            _now += 20;
             var fading = ScreenColorSource.PictureFor(cfg);
             Assert.Equal(0xA10000, fading.At(0f, 0f));
             Assert.Equal(0x5E0000, fading.At(0.9f, 0f));
@@ -1022,6 +1046,30 @@ namespace PadForge.Tests
             Assert.Equal(0x200000, rgb);
             Assert.Equal(0x100000, claim.Keys.Picture.At(0f, 0f));
             Assert.Equal(0x300000, claim.Keys.Picture.At(0.9f, 0f));
+        }
+
+        /// <summary>The claim says the color keeps changing while the mode shows,
+        /// with its spread on or off, so a device that stores each picture takes
+        /// none of it. A game's color over the mode, or a steady mode, does not.</summary>
+        [Fact]
+        public void TheClaim_SaysTheColorKeepsChanging_WhileTheModeShows()
+        {
+            Lit(out _);
+            Show(0x100000, 0x300000);
+            Assert.True(Lit(out _).KeepsChanging);
+            _cfg.ScreenColorSpread = false;
+            Assert.True(Lit(out _).KeepsChanging);
+            _cfg.ScreenColorSpread = true;
+
+            var bar = new GameLightbar();
+            GameLightbarCapture.Publish(15, bar);
+            bar.Capture(0xAB, 0xCD, 0xEF, Environment.TickCount64);
+            Assert.False(Lit(out _).KeepsChanging);
+            GameLightbarCapture.ResetForTest();
+            Assert.True(Lit(out _).KeepsChanging);
+
+            _cfg.LightbarMode = LightbarMode.Static;
+            Assert.False(Lit(out _).KeepsChanging);
         }
 
         [Fact]

@@ -598,6 +598,30 @@ namespace PadForge.Tests
             Assert.Equal(shown, Writes(Channel()).Count);
         }
 
+        /// <summary>The same two headsets are sent nothing of a color whose
+        /// mode keeps changing it (#559), however long it stands, and a steady
+        /// color still goes out.</summary>
+        [Theory]
+        [InlineData(0x12EC, 4)]
+        [InlineData(0x1229, 3)]
+        public void AStoredHeadset_IsSentNoColorThatKeepsChanging(int productId, int iface)
+        {
+            var headset = Control((ushort)productId, iface, output: 521);
+            using var backend = Started(headset);
+            Link(PathOf(headset));
+            PeripheralOutputs.SetLighting(Device, slot: 0, player: 1, 0, 0, 1, keepsChanging: true);
+            Passes(backend);
+            Advance(60_000);
+            Passes(backend);
+            Assert.Empty(Writes(Channel()));
+
+            Light(0x000001);
+            Passes(backend);
+            Advance(1000);
+            Passes(backend);
+            Assert.NotEmpty(Writes(Channel()));
+        }
+
         /// <summary>A wired family gets its color again on its interval
         /// too: a Sensei 310 that lost power while its collection stayed
         /// listed, over a PC's sleep or a fast replug, shows its stored

@@ -2185,6 +2185,7 @@ namespace PadForge.Common.Input
                   or LightbarMode.Strobe
                   or LightbarMode.Rainbow
                   or LightbarMode.ColorCycle
+                  or LightbarMode.ScreenColor
                   or LightbarMode.AudioPulse
                   or LightbarMode.AudioPulseRandom
                   or LightbarMode.AudioPulseRainbow
@@ -2860,6 +2861,15 @@ namespace PadForge.Common.Input
             // (#557), with the slot's macro key colors over them, over the
             // color above.
             var keys = KeyFrameFor(devCfg, nowMs);
+            // Screen Color's spread (#559) is the base mode's color light by
+            // light, so whatever covers the base mode covers it too: a game's
+            // lightbar, a game mod's color, a macro color, the overlay.
+            if (devCfg.LightbarMode == LightbarMode.ScreenColor && devCfg.ScreenColorSpread && fresh == null
+                && devCfg.ComputeMacroOverrideIntensity() <= 0f && pulseIntensity <= 0f)
+            {
+                var picture = ScreenColor.ScreenColorSource.PictureFor(devCfg);
+                if (picture != null) keys = (keys ?? Common.Input.Peripherals.KeyFrame.Empty).WithPicture(picture);
+            }
             Common.Input.Peripherals.PeripheralOutputs.SetLighting(guid, _padIndex, slotNumber, r, g, b, level, keys,
                 devCfg.LedStripCountsParsed);
             return true;

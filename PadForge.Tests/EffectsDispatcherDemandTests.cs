@@ -107,6 +107,7 @@ public sealed class EffectsDispatcherDemandTests
     [InlineData(LightbarMode.Breathing, 2)]
     [InlineData(LightbarMode.Strobe, 2)]
     [InlineData(LightbarMode.ColorCycle, 2)]
+    [InlineData(LightbarMode.ScreenColor, 2)]
     [InlineData(LightbarMode.InputReactive, 2)]
     [InlineData(LightbarMode.InputReactiveCycle, 2)]
     [InlineData(LightbarMode.InputReactiveFixed, 2)]

@@ -40,6 +40,14 @@ namespace PadForge.Tests
         internal static void Set() => ShellLaunch.OffLimitsForTest = true;
     }
 
+    /// <summary>The screen is not read: no capture of a display starts
+    /// without a test's own grabber (#559).</summary>
+    internal static class ScreenCaptureOffLimits
+    {
+        [ModuleInitializer]
+        internal static void Set() => PadForge.Common.Input.ScreenColor.ScreenColorSource.OffLimitsForTest = true;
+    }
+
     /// <summary>No socket or listener is bound beyond loopback.</summary>
     internal static class ListenerOffLimits
     {

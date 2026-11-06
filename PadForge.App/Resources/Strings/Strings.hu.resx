@@ -1107,6 +1107,45 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
 
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>Periódus</value></data>
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>Fényerő</value></data>
+  <data name="Pad_Lighting_Mode_ScreenColor" xml:space="preserve"><value>Képernyőszín</value></data>
+  <data name="Pad_Lighting_ScreenHint" xml:space="preserve"><value>A képernyőn látható színeket követi. Amíg egy eszköz ezt a módot használja, a PadForge a Windows által adott kész képet olvassa be. Semmit nem tárol belőle, és egyetlen játékon sem változtat.</value></data>
+  <data name="Pad_Lighting_ScreenDisplay" xml:space="preserve"><value>Kijelző</value></data>
+  <data name="Pad_Lighting_ScreenDisplayPrimary" xml:space="preserve"><value>Fő kijelző</value></data>
+  <data name="Pad_Lighting_ScreenDisplayItem" xml:space="preserve"><value>{0}. kijelző ({1} x {2})</value></data>
+  <data name="Pad_Lighting_ScreenDisplayGone" xml:space="preserve"><value>{0}. kijelző (nincs csatlakoztatva)</value></data>
+  <data name="Pad_Lighting_ScreenArea" xml:space="preserve"><value>Képernyőterület</value></data>
+  <data name="Pad_Lighting_ScreenArea_WholeScreen" xml:space="preserve"><value>Teljes képernyő</value></data>
+  <data name="Pad_Lighting_ScreenArea_TopLeft" xml:space="preserve"><value>Bal felső</value></data>
+  <data name="Pad_Lighting_ScreenArea_Top" xml:space="preserve"><value>Felül</value></data>
+  <data name="Pad_Lighting_ScreenArea_TopRight" xml:space="preserve"><value>Jobb felső</value></data>
+  <data name="Pad_Lighting_ScreenArea_Left" xml:space="preserve"><value>Balra</value></data>
+  <data name="Pad_Lighting_ScreenArea_Center" xml:space="preserve"><value>Közép</value></data>
+  <data name="Pad_Lighting_ScreenArea_Right" xml:space="preserve"><value>Jobbra</value></data>
+  <data name="Pad_Lighting_ScreenArea_BottomLeft" xml:space="preserve"><value>Bal alsó</value></data>
+  <data name="Pad_Lighting_ScreenArea_Bottom" xml:space="preserve"><value>Alul</value></data>
+  <data name="Pad_Lighting_ScreenArea_BottomRight" xml:space="preserve"><value>Jobb alsó</value></data>
+  <data name="Pad_Lighting_ScreenArea_Custom" xml:space="preserve"><value>Egyéni</value></data>
+  <data name="Pad_Lighting_ScreenLeft" xml:space="preserve"><value>Bal szél</value></data>
+  <data name="Pad_Lighting_ScreenTop" xml:space="preserve"><value>Felső szél</value></data>
+  <data name="Pad_Lighting_ScreenWidth" xml:space="preserve"><value>Szélesség</value></data>
+  <data name="Pad_Lighting_ScreenHeight" xml:space="preserve"><value>Magasság</value></data>
+  <data name="Pad_Lighting_ScreenMethod" xml:space="preserve"><value>Szín</value></data>
+  <data name="Pad_Lighting_ScreenMethod_MostCommon" xml:space="preserve"><value>Leggyakoribb szín</value></data>
+  <data name="Pad_Lighting_ScreenMethod_Average" xml:space="preserve"><value>Átlagszín</value></data>
+  <data name="Pad_Lighting_ScreenSaturation" xml:space="preserve"><value>Telítettség</value></data>
+  <data name="Pad_Lighting_ScreenSmoothing" xml:space="preserve"><value>Simítás</value></data>
+  <data name="Pad_Lighting_ScreenSpread" xml:space="preserve"><value>A képernyő szétosztása az eszköz fényei között</value></data>
+  <data name="Pad_Lighting_ScreenWaiting" xml:space="preserve"><value>A Windows egyelőre zárolja a képernyőt, ezért a fény megtartja az utolsó színét.</value></data>
+  <data name="Pad_Lighting_ScreenUnavailable" xml:space="preserve"><value>A PadForge jelenleg nem tudja beolvasni a képernyőt ezen a számítógépen, és tovább próbálkozik. A Beállítások oldalon a Pillanatkép mentése rögzíti az okot.</value></data>
+  <data name="Pad_ResetScreenColorDisplay" xml:space="preserve"><value>Kijelző visszaállítása</value></data>
+  <data name="Pad_ResetScreenColorArea" xml:space="preserve"><value>Képernyőterület visszaállítása</value></data>
+  <data name="Pad_ResetScreenColorLeft" xml:space="preserve"><value>Bal szél visszaállítása</value></data>
+  <data name="Pad_ResetScreenColorTop" xml:space="preserve"><value>Felső szél visszaállítása</value></data>
+  <data name="Pad_ResetScreenColorWidth" xml:space="preserve"><value>Szélesség visszaállítása</value></data>
+  <data name="Pad_ResetScreenColorHeight" xml:space="preserve"><value>Magasság visszaállítása</value></data>
+  <data name="Pad_ResetScreenColorMethod" xml:space="preserve"><value>Szín visszaállítása</value></data>
+  <data name="Pad_ResetScreenColorSaturation" xml:space="preserve"><value>Telítettség visszaállítása</value></data>
+  <data name="Pad_ResetScreenColorSmoothing" xml:space="preserve"><value>Simítás visszaállítása</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>Paletta</value></data>
   <data name="Pad_Lighting_ColorCycleSmooth" xml:space="preserve"><value>Sima átmenet a paletta színei között</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Szín hozzáadása</value></data>

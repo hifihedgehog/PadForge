@@ -89,7 +89,7 @@ internal static class Program
         "Pad_Lighting_Mode_PlayerNumber", "Pad_Lighting_Mode_Off",
         "Pad_Lighting_Mode_Static", "Pad_Lighting_Mode_Breathing",
         "Pad_Lighting_Mode_Strobe", "Pad_Lighting_Mode_Rainbow",
-        "Pad_Lighting_Mode_ColorCycle", "Pad_Lighting_Mode_Battery",
+        "Pad_Lighting_Mode_ColorCycle", "Pad_Lighting_Mode_Battery", "Pad_Lighting_Mode_ScreenColor",
         "Pad_Lighting_Mode_AudioPulse", "Pad_Lighting_Mode_AudioPulseRandom",
         "Pad_Lighting_Mode_AudioPulseRainbow", "Pad_Lighting_Mode_AudioThresholds",
         "Pad_Lighting_Mode_AudioGradient", "Pad_Lighting_Mode_AudioCrossFade",

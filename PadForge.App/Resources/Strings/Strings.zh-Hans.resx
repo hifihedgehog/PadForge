@@ -1920,6 +1920,45 @@
   <data name="Pad_Lighting_Mode_InputReactiveCycle" xml:space="preserve"><value>输入响应：循环调色板</value></data>
   <data name="Pad_Lighting_Mode_InputReactiveFixed" xml:space="preserve"><value>输入响应：每次按下单一颜色</value></data>
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>亮度</value></data>
+  <data name="Pad_Lighting_Mode_ScreenColor" xml:space="preserve"><value>屏幕颜色</value></data>
+  <data name="Pad_Lighting_ScreenHint" xml:space="preserve"><value>跟随屏幕上的颜色。设备使用此模式期间，PadForge 会从 Windows 读取已合成的画面。不会保存任何内容，也不会更改任何游戏。</value></data>
+  <data name="Pad_Lighting_ScreenDisplay" xml:space="preserve"><value>显示器</value></data>
+  <data name="Pad_Lighting_ScreenDisplayPrimary" xml:space="preserve"><value>主显示器</value></data>
+  <data name="Pad_Lighting_ScreenDisplayItem" xml:space="preserve"><value>显示器 {0}（{1} x {2}）</value></data>
+  <data name="Pad_Lighting_ScreenDisplayGone" xml:space="preserve"><value>显示器 {0}（未连接）</value></data>
+  <data name="Pad_Lighting_ScreenArea" xml:space="preserve"><value>屏幕区域</value></data>
+  <data name="Pad_Lighting_ScreenArea_WholeScreen" xml:space="preserve"><value>整个屏幕</value></data>
+  <data name="Pad_Lighting_ScreenArea_TopLeft" xml:space="preserve"><value>左上</value></data>
+  <data name="Pad_Lighting_ScreenArea_Top" xml:space="preserve"><value>上方</value></data>
+  <data name="Pad_Lighting_ScreenArea_TopRight" xml:space="preserve"><value>右上</value></data>
+  <data name="Pad_Lighting_ScreenArea_Left" xml:space="preserve"><value>左侧</value></data>
+  <data name="Pad_Lighting_ScreenArea_Center" xml:space="preserve"><value>中心</value></data>
+  <data name="Pad_Lighting_ScreenArea_Right" xml:space="preserve"><value>右侧</value></data>
+  <data name="Pad_Lighting_ScreenArea_BottomLeft" xml:space="preserve"><value>左下</value></data>
+  <data name="Pad_Lighting_ScreenArea_Bottom" xml:space="preserve"><value>下方</value></data>
+  <data name="Pad_Lighting_ScreenArea_BottomRight" xml:space="preserve"><value>右下</value></data>
+  <data name="Pad_Lighting_ScreenArea_Custom" xml:space="preserve"><value>自定义</value></data>
+  <data name="Pad_Lighting_ScreenLeft" xml:space="preserve"><value>左边缘</value></data>
+  <data name="Pad_Lighting_ScreenTop" xml:space="preserve"><value>上边缘</value></data>
+  <data name="Pad_Lighting_ScreenWidth" xml:space="preserve"><value>宽度</value></data>
+  <data name="Pad_Lighting_ScreenHeight" xml:space="preserve"><value>高度</value></data>
+  <data name="Pad_Lighting_ScreenMethod" xml:space="preserve"><value>颜色</value></data>
+  <data name="Pad_Lighting_ScreenMethod_MostCommon" xml:space="preserve"><value>最常见的颜色</value></data>
+  <data name="Pad_Lighting_ScreenMethod_Average" xml:space="preserve"><value>平均颜色</value></data>
+  <data name="Pad_Lighting_ScreenSaturation" xml:space="preserve"><value>饱和度</value></data>
+  <data name="Pad_Lighting_ScreenSmoothing" xml:space="preserve"><value>平滑</value></data>
+  <data name="Pad_Lighting_ScreenSpread" xml:space="preserve"><value>将屏幕铺展到此设备的各个灯上</value></data>
+  <data name="Pad_Lighting_ScreenWaiting" xml:space="preserve"><value>Windows 暂时占用了屏幕，灯光保持最后的颜色。</value></data>
+  <data name="Pad_Lighting_ScreenUnavailable" xml:space="preserve"><value>PadForge 目前无法读取这台电脑的屏幕，正在持续重试。设置中的“保存快照”会记录原因。</value></data>
+  <data name="Pad_ResetScreenColorDisplay" xml:space="preserve"><value>重置显示器</value></data>
+  <data name="Pad_ResetScreenColorArea" xml:space="preserve"><value>重置屏幕区域</value></data>
+  <data name="Pad_ResetScreenColorLeft" xml:space="preserve"><value>重置左边缘</value></data>
+  <data name="Pad_ResetScreenColorTop" xml:space="preserve"><value>重置上边缘</value></data>
+  <data name="Pad_ResetScreenColorWidth" xml:space="preserve"><value>重置宽度</value></data>
+  <data name="Pad_ResetScreenColorHeight" xml:space="preserve"><value>重置高度</value></data>
+  <data name="Pad_ResetScreenColorMethod" xml:space="preserve"><value>重置颜色</value></data>
+  <data name="Pad_ResetScreenColorSaturation" xml:space="preserve"><value>重置饱和度</value></data>
+  <data name="Pad_ResetScreenColorSmoothing" xml:space="preserve"><value>重置平滑</value></data>
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>周期</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>调色板</value></data>
   <data name="Pad_Lighting_ColorCycleSmooth" xml:space="preserve"><value>在调色板颜色之间平滑过渡</value></data>

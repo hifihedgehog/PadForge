@@ -3672,7 +3672,7 @@ namespace PadForge.ViewModels
                     var modes = new[] {
                         LightbarMode.PlayerNumber, LightbarMode.Off,
                         LightbarMode.Static, LightbarMode.Breathing, LightbarMode.Strobe,
-                        LightbarMode.Rainbow, LightbarMode.ColorCycle, LightbarMode.Battery,
+                        LightbarMode.Rainbow, LightbarMode.ColorCycle, LightbarMode.Battery, LightbarMode.ScreenColor,
                         LightbarMode.AudioPulse, LightbarMode.AudioPulseRandom, LightbarMode.AudioPulseRainbow,
                         LightbarMode.AudioThresholds, LightbarMode.AudioGradient, LightbarMode.AudioCrossFade,
                         LightbarMode.InputReactive, LightbarMode.InputReactiveCycle, LightbarMode.InputReactiveFixed,
@@ -6627,6 +6627,7 @@ namespace PadForge.ViewModels
                 LightbarMode.AudioGradient      => s.Pad_Lighting_Mode_AudioGradient,
                 LightbarMode.AudioCrossFade     => s.Pad_Lighting_Mode_AudioCrossFade,
                 LightbarMode.Battery            => s.Pad_Lighting_Mode_Battery,
+                LightbarMode.ScreenColor        => s.Pad_Lighting_Mode_ScreenColor,
                 LightbarMode.Strobe             => s.Pad_Lighting_Mode_Strobe,
                 LightbarMode.InputReactive      => s.Pad_Lighting_Mode_InputReactive,
                 LightbarMode.InputReactiveCycle => s.Pad_Lighting_Mode_InputReactiveCycle,

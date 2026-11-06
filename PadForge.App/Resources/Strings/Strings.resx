@@ -1107,6 +1107,45 @@ A copy of the previous version is in this folder: {1}</value></data>
 
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>Period</value></data>
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>Brightness</value></data>
+  <data name="Pad_Lighting_Mode_ScreenColor" xml:space="preserve"><value>Screen Color</value></data>
+  <data name="Pad_Lighting_ScreenHint" xml:space="preserve"><value>Follows the colors on your screen. While a device uses this mode, PadForge reads the finished picture from Windows. It stores none of it and changes nothing in any game.</value></data>
+  <data name="Pad_Lighting_ScreenDisplay" xml:space="preserve"><value>Display</value></data>
+  <data name="Pad_Lighting_ScreenDisplayPrimary" xml:space="preserve"><value>Primary Display</value></data>
+  <data name="Pad_Lighting_ScreenDisplayItem" xml:space="preserve"><value>Display {0} ({1} x {2})</value></data>
+  <data name="Pad_Lighting_ScreenDisplayGone" xml:space="preserve"><value>Display {0} (not connected)</value></data>
+  <data name="Pad_Lighting_ScreenArea" xml:space="preserve"><value>Screen Area</value></data>
+  <data name="Pad_Lighting_ScreenArea_WholeScreen" xml:space="preserve"><value>Whole Screen</value></data>
+  <data name="Pad_Lighting_ScreenArea_TopLeft" xml:space="preserve"><value>Top Left</value></data>
+  <data name="Pad_Lighting_ScreenArea_Top" xml:space="preserve"><value>Top</value></data>
+  <data name="Pad_Lighting_ScreenArea_TopRight" xml:space="preserve"><value>Top Right</value></data>
+  <data name="Pad_Lighting_ScreenArea_Left" xml:space="preserve"><value>Left</value></data>
+  <data name="Pad_Lighting_ScreenArea_Center" xml:space="preserve"><value>Center</value></data>
+  <data name="Pad_Lighting_ScreenArea_Right" xml:space="preserve"><value>Right</value></data>
+  <data name="Pad_Lighting_ScreenArea_BottomLeft" xml:space="preserve"><value>Bottom Left</value></data>
+  <data name="Pad_Lighting_ScreenArea_Bottom" xml:space="preserve"><value>Bottom</value></data>
+  <data name="Pad_Lighting_ScreenArea_BottomRight" xml:space="preserve"><value>Bottom Right</value></data>
+  <data name="Pad_Lighting_ScreenArea_Custom" xml:space="preserve"><value>Custom</value></data>
+  <data name="Pad_Lighting_ScreenLeft" xml:space="preserve"><value>Left Edge</value></data>
+  <data name="Pad_Lighting_ScreenTop" xml:space="preserve"><value>Top Edge</value></data>
+  <data name="Pad_Lighting_ScreenWidth" xml:space="preserve"><value>Width</value></data>
+  <data name="Pad_Lighting_ScreenHeight" xml:space="preserve"><value>Height</value></data>
+  <data name="Pad_Lighting_ScreenMethod" xml:space="preserve"><value>Color</value></data>
+  <data name="Pad_Lighting_ScreenMethod_MostCommon" xml:space="preserve"><value>Most Common Color</value></data>
+  <data name="Pad_Lighting_ScreenMethod_Average" xml:space="preserve"><value>Average Color</value></data>
+  <data name="Pad_Lighting_ScreenSaturation" xml:space="preserve"><value>Saturation</value></data>
+  <data name="Pad_Lighting_ScreenSmoothing" xml:space="preserve"><value>Smoothing</value></data>
+  <data name="Pad_Lighting_ScreenSpread" xml:space="preserve"><value>Spread the Screen Across This Device's Lights</value></data>
+  <data name="Pad_Lighting_ScreenWaiting" xml:space="preserve"><value>Windows is holding the screen for now, so the light keeps its last color.</value></data>
+  <data name="Pad_Lighting_ScreenUnavailable" xml:space="preserve"><value>PadForge can't read the screen on this PC right now and keeps trying. Save Snapshot in Settings records the reason.</value></data>
+  <data name="Pad_ResetScreenColorDisplay" xml:space="preserve"><value>Reset Display</value></data>
+  <data name="Pad_ResetScreenColorArea" xml:space="preserve"><value>Reset Screen Area</value></data>
+  <data name="Pad_ResetScreenColorLeft" xml:space="preserve"><value>Reset Left Edge</value></data>
+  <data name="Pad_ResetScreenColorTop" xml:space="preserve"><value>Reset Top Edge</value></data>
+  <data name="Pad_ResetScreenColorWidth" xml:space="preserve"><value>Reset Width</value></data>
+  <data name="Pad_ResetScreenColorHeight" xml:space="preserve"><value>Reset Height</value></data>
+  <data name="Pad_ResetScreenColorMethod" xml:space="preserve"><value>Reset Color</value></data>
+  <data name="Pad_ResetScreenColorSaturation" xml:space="preserve"><value>Reset Saturation</value></data>
+  <data name="Pad_ResetScreenColorSmoothing" xml:space="preserve"><value>Reset Smoothing</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>Palette</value></data>
   <data name="Pad_Lighting_ColorCycleSmooth" xml:space="preserve"><value>Blend Smoothly Between Palette Colors</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Add Color</value></data>

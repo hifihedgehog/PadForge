@@ -1010,6 +1010,12 @@ namespace PadForge.Common.Input
                         (byte)Math.Round(cfg.LightbarBatteryLowB  + (cfg.LightbarBatteryHighB - cfg.LightbarBatteryLowB) * t));
                 }
 
+                case LightbarMode.ScreenColor:
+                {
+                    var screen = ScreenColor.ScreenColorSource.ColorFor(cfg);
+                    return (screen.R, screen.G, screen.B);
+                }
+
                 case LightbarMode.Strobe:
                 {
                     // Square wave at LightbarPeriodMs cadence: first half

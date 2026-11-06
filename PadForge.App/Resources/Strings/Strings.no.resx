@@ -1107,6 +1107,45 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
 
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>Periode</value></data>
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>Lysstyrke</value></data>
+  <data name="Pad_Lighting_Mode_ScreenColor" xml:space="preserve"><value>Skjermfarge</value></data>
+  <data name="Pad_Lighting_ScreenHint" xml:space="preserve"><value>Følger fargene på skjermen din. Mens en enhet bruker denne modusen, leser PadForge det ferdige bildet fra Windows. Ingenting lagres, og ingenting endres i noe spill.</value></data>
+  <data name="Pad_Lighting_ScreenDisplay" xml:space="preserve"><value>Skjerm</value></data>
+  <data name="Pad_Lighting_ScreenDisplayPrimary" xml:space="preserve"><value>Hovedskjerm</value></data>
+  <data name="Pad_Lighting_ScreenDisplayItem" xml:space="preserve"><value>Skjerm {0} ({1} x {2})</value></data>
+  <data name="Pad_Lighting_ScreenDisplayGone" xml:space="preserve"><value>Skjerm {0} (ikke tilkoblet)</value></data>
+  <data name="Pad_Lighting_ScreenArea" xml:space="preserve"><value>Skjermområde</value></data>
+  <data name="Pad_Lighting_ScreenArea_WholeScreen" xml:space="preserve"><value>Hele skjermen</value></data>
+  <data name="Pad_Lighting_ScreenArea_TopLeft" xml:space="preserve"><value>Øverst til venstre</value></data>
+  <data name="Pad_Lighting_ScreenArea_Top" xml:space="preserve"><value>Øverst</value></data>
+  <data name="Pad_Lighting_ScreenArea_TopRight" xml:space="preserve"><value>Øverst til høyre</value></data>
+  <data name="Pad_Lighting_ScreenArea_Left" xml:space="preserve"><value>Venstre</value></data>
+  <data name="Pad_Lighting_ScreenArea_Center" xml:space="preserve"><value>Midten</value></data>
+  <data name="Pad_Lighting_ScreenArea_Right" xml:space="preserve"><value>Høyre</value></data>
+  <data name="Pad_Lighting_ScreenArea_BottomLeft" xml:space="preserve"><value>Nederst til venstre</value></data>
+  <data name="Pad_Lighting_ScreenArea_Bottom" xml:space="preserve"><value>Nederst</value></data>
+  <data name="Pad_Lighting_ScreenArea_BottomRight" xml:space="preserve"><value>Nederst til høyre</value></data>
+  <data name="Pad_Lighting_ScreenArea_Custom" xml:space="preserve"><value>Egendefinert</value></data>
+  <data name="Pad_Lighting_ScreenLeft" xml:space="preserve"><value>Venstre kant</value></data>
+  <data name="Pad_Lighting_ScreenTop" xml:space="preserve"><value>Øvre kant</value></data>
+  <data name="Pad_Lighting_ScreenWidth" xml:space="preserve"><value>Bredde</value></data>
+  <data name="Pad_Lighting_ScreenHeight" xml:space="preserve"><value>Høyde</value></data>
+  <data name="Pad_Lighting_ScreenMethod" xml:space="preserve"><value>Farge</value></data>
+  <data name="Pad_Lighting_ScreenMethod_MostCommon" xml:space="preserve"><value>Vanligste farge</value></data>
+  <data name="Pad_Lighting_ScreenMethod_Average" xml:space="preserve"><value>Gjennomsnittsfarge</value></data>
+  <data name="Pad_Lighting_ScreenSaturation" xml:space="preserve"><value>Metning</value></data>
+  <data name="Pad_Lighting_ScreenSmoothing" xml:space="preserve"><value>Utjevning</value></data>
+  <data name="Pad_Lighting_ScreenSpread" xml:space="preserve"><value>Fordel skjermen over enhetens lys</value></data>
+  <data name="Pad_Lighting_ScreenWaiting" xml:space="preserve"><value>Windows holder skjermen tilbake for øyeblikket, så lyset beholder siste farge.</value></data>
+  <data name="Pad_Lighting_ScreenUnavailable" xml:space="preserve"><value>PadForge kan ikke lese skjermen på denne PC-en akkurat nå og prøver videre. Lagre øyeblikksbilde under Innstillinger registrerer årsaken.</value></data>
+  <data name="Pad_ResetScreenColorDisplay" xml:space="preserve"><value>Tilbakestill skjerm</value></data>
+  <data name="Pad_ResetScreenColorArea" xml:space="preserve"><value>Tilbakestill skjermområde</value></data>
+  <data name="Pad_ResetScreenColorLeft" xml:space="preserve"><value>Tilbakestill venstre kant</value></data>
+  <data name="Pad_ResetScreenColorTop" xml:space="preserve"><value>Tilbakestill øvre kant</value></data>
+  <data name="Pad_ResetScreenColorWidth" xml:space="preserve"><value>Tilbakestill bredde</value></data>
+  <data name="Pad_ResetScreenColorHeight" xml:space="preserve"><value>Tilbakestill høyde</value></data>
+  <data name="Pad_ResetScreenColorMethod" xml:space="preserve"><value>Tilbakestill farge</value></data>
+  <data name="Pad_ResetScreenColorSaturation" xml:space="preserve"><value>Tilbakestill metning</value></data>
+  <data name="Pad_ResetScreenColorSmoothing" xml:space="preserve"><value>Tilbakestill utjevning</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>Palett</value></data>
   <data name="Pad_Lighting_ColorCycleSmooth" xml:space="preserve"><value>Tone jevnt mellom palettfargene</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Legg til farge</value></data>

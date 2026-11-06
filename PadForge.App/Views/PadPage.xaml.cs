@@ -99,6 +99,7 @@ namespace PadForge.Views
             SyncMidiConfigBar();
             SyncLightbarHexBox();
             SyncLightbarPreview();
+            SyncScreenColorStatus();
             SyncAudioHexBoxes();
             // Loaded can fire again without a paired Unloaded when the
             // element re-enters the tree — unsubscribe first so handlers
@@ -127,6 +128,7 @@ namespace PadForge.Views
 
         private void PadPage_Unloaded(object sender, RoutedEventArgs e)
         {
+            _screenColorStatusTimer?.Stop();
             PadForge.Common.SoundPackageManager.RegistryChanged -= OnSoundPackageRegistryChanged;
             _bassShakerMeterTimer?.Stop();
             PadForge.Common.IconPackageManager.RegistryChanged -= OnIconPackageRegistryChanged;
@@ -276,6 +278,7 @@ namespace PadForge.Views
             SyncMidiConfigBar();
             SyncLightbarHexBox();
             SyncLightbarPreview();
+            SyncScreenColorStatus();
             SyncAudioHexBoxes();
             // Slot switch: the meter timer follows the NEW slot's selected
             // tab (a different slot may sit on a different tab).
@@ -2964,6 +2967,7 @@ namespace PadForge.Views
                 // the value-synced controls against the new instance.
                 SyncLightbarHexBox();
                 SyncLightbarPreview();
+                SyncScreenColorStatus();
                 SyncAudioHexBoxes();
                 // The route line reads the selected device's Control This
                 // Device's Lighting switch, which the anchor now carries.
@@ -3270,6 +3274,12 @@ namespace PadForge.Views
                 // Rainbow brightness, and the Battery endpoint colors. Slider
                 // drags land here so the running animation retimes live.
                 case nameof(ViewModels.DeviceSlotConfig.LightbarMode):
+                    SyncScreenColorStatus();
+                    SyncLightbarPreview();
+                    break;
+                case nameof(ViewModels.DeviceSlotConfig.ScreenColorDisplay):
+                    SyncScreenColorStatus();
+                    break;
                 case nameof(ViewModels.DeviceSlotConfig.LightbarPeriodMs):
                 case nameof(ViewModels.DeviceSlotConfig.LightbarRainbowBrightness):
                 case nameof(ViewModels.DeviceSlotConfig.LightbarBatteryLowR):
@@ -3811,6 +3821,13 @@ namespace PadForge.Views
                     bloomColor = mix;
                     break;
                 }
+
+                case ViewModels.LightbarMode.ScreenColor:
+                    // A preview reads nothing, so it never keeps a capture
+                    // running: a cold-to-warm wash stands for the screen.
+                    fill = new LinearGradientBrush(
+                        Color.FromRgb(0x58, 0xB6, 0xE4), Color.FromRgb(0xE4, 0x8A, 0x58), 0);
+                    break;
 
                 case ViewModels.LightbarMode.AudioPulse:
                 case ViewModels.LightbarMode.AudioPulseRandom:
@@ -4572,6 +4589,72 @@ namespace PadForge.Views
                 MidiOutputPortBox.SelectedIndex = selected;
             }
             finally { _syncingMidiPort = false; }
+        }
+
+        // The Screen Color Display box follows the port picker above, for the
+        // same reason: a list swapped under a two-way binding clears the
+        // selection, and the clearing writes through to the setting, of the
+        // device being left when the swap comes from a change of device. So the
+        // box has no bindings, and only a pick writes the setting.
+
+        private bool _syncingScreenDisplay;
+
+        /// <summary>Shows the displays in <paramref name="box"/>, with
+        /// <paramref name="saved"/> selected. Leaves a box alone that already says
+        /// all that, and one the user has open. True when it changed the box.</summary>
+        internal static bool ShowScreenDisplays(ComboBox box, string saved)
+        {
+            if (box.IsDropDownOpen) return false;
+            var items = ViewModels.ScreenDisplayChoice.ListFor(saved);
+            int selected = items.FindIndex(c => c.Id == saved);
+            if (box.ItemsSource is List<ViewModels.ScreenDisplayChoice> shown
+                && shown.SequenceEqual(items) && box.SelectedIndex == selected)
+                return false;
+            box.ItemsSource = items;
+            box.SelectedIndex = selected;
+            return true;
+        }
+
+        private void ScreenColorDisplayBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_syncingScreenDisplay || DataContext is not PadViewModel vm || vm.DeviceConfig == null) return;
+            if (ScreenColorDisplayBox.SelectedItem is ViewModels.ScreenDisplayChoice picked)
+                vm.DeviceConfig.ScreenColorDisplay = picked.Id;
+        }
+
+        private System.Windows.Threading.DispatcherTimer _screenColorStatusTimer;
+
+        /// <summary>Keeps the Screen Color status line and the Display box current
+        /// while the Lighting tab shows that mode (#559): what Windows is doing
+        /// with the screen, a display plugged in or out, a change of language. A
+        /// second is soon enough for all three.</summary>
+        private void SyncScreenColorStatus()
+        {
+            var cfg = (DataContext as PadViewModel)?.DeviceConfig;
+            bool show = IsLoaded && cfg?.LightbarMode == ViewModels.LightbarMode.ScreenColor;
+            if (!show)
+            {
+                _screenColorStatusTimer?.Stop();
+                if (ScreenColorStatus != null) ScreenColorStatus.Visibility = Visibility.Collapsed;
+                return;
+            }
+            if (_screenColorStatusTimer == null)
+            {
+                _screenColorStatusTimer = new System.Windows.Threading.DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
+                _screenColorStatusTimer.Tick += (_, _) => SyncScreenColorStatus();
+            }
+            _screenColorStatusTimer.Start();
+            _syncingScreenDisplay = true;
+            try { ShowScreenDisplays(ScreenColorDisplayBox, cfg.ScreenColorDisplay); }
+            finally { _syncingScreenDisplay = false; }
+            string text = PadForge.Common.Input.ScreenColor.ScreenColorSource.StateOf(cfg.ScreenColorDisplay) switch
+            {
+                PadForge.Common.Input.ScreenColor.ScreenCaptureState.Waiting => Strings.Instance.Pad_Lighting_ScreenWaiting,
+                PadForge.Common.Input.ScreenColor.ScreenCaptureState.Unavailable => Strings.Instance.Pad_Lighting_ScreenUnavailable,
+                _ => null,
+            };
+            ScreenColorStatus.Text = text ?? string.Empty;
+            ScreenColorStatus.Visibility = text == null ? Visibility.Collapsed : Visibility.Visible;
         }
 
         private void MidiOutputPortBox_DropDownOpened(object sender, EventArgs e)

@@ -1107,6 +1107,45 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
 
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>Perióda</value></data>
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>Jas</value></data>
+  <data name="Pad_Lighting_Mode_ScreenColor" xml:space="preserve"><value>Farba obrazovky</value></data>
+  <data name="Pad_Lighting_ScreenHint" xml:space="preserve"><value>Sleduje farby na vašej obrazovke. Kým zariadenie používa tento režim, PadForge číta hotový obraz z Windowsu. Nič z neho neukladá a v žiadnej hre nič nemení.</value></data>
+  <data name="Pad_Lighting_ScreenDisplay" xml:space="preserve"><value>Displej</value></data>
+  <data name="Pad_Lighting_ScreenDisplayPrimary" xml:space="preserve"><value>Hlavný displej</value></data>
+  <data name="Pad_Lighting_ScreenDisplayItem" xml:space="preserve"><value>Displej {0} ({1} x {2})</value></data>
+  <data name="Pad_Lighting_ScreenDisplayGone" xml:space="preserve"><value>Displej {0} (nepripojený)</value></data>
+  <data name="Pad_Lighting_ScreenArea" xml:space="preserve"><value>Oblasť obrazovky</value></data>
+  <data name="Pad_Lighting_ScreenArea_WholeScreen" xml:space="preserve"><value>Celá obrazovka</value></data>
+  <data name="Pad_Lighting_ScreenArea_TopLeft" xml:space="preserve"><value>Vľavo hore</value></data>
+  <data name="Pad_Lighting_ScreenArea_Top" xml:space="preserve"><value>Hore</value></data>
+  <data name="Pad_Lighting_ScreenArea_TopRight" xml:space="preserve"><value>Vpravo hore</value></data>
+  <data name="Pad_Lighting_ScreenArea_Left" xml:space="preserve"><value>Vľavo</value></data>
+  <data name="Pad_Lighting_ScreenArea_Center" xml:space="preserve"><value>Stred</value></data>
+  <data name="Pad_Lighting_ScreenArea_Right" xml:space="preserve"><value>Vpravo</value></data>
+  <data name="Pad_Lighting_ScreenArea_BottomLeft" xml:space="preserve"><value>Vľavo dole</value></data>
+  <data name="Pad_Lighting_ScreenArea_Bottom" xml:space="preserve"><value>Dole</value></data>
+  <data name="Pad_Lighting_ScreenArea_BottomRight" xml:space="preserve"><value>Vpravo dole</value></data>
+  <data name="Pad_Lighting_ScreenArea_Custom" xml:space="preserve"><value>Vlastná</value></data>
+  <data name="Pad_Lighting_ScreenLeft" xml:space="preserve"><value>Ľavý okraj</value></data>
+  <data name="Pad_Lighting_ScreenTop" xml:space="preserve"><value>Horný okraj</value></data>
+  <data name="Pad_Lighting_ScreenWidth" xml:space="preserve"><value>Šírka</value></data>
+  <data name="Pad_Lighting_ScreenHeight" xml:space="preserve"><value>Výška</value></data>
+  <data name="Pad_Lighting_ScreenMethod" xml:space="preserve"><value>Farba</value></data>
+  <data name="Pad_Lighting_ScreenMethod_MostCommon" xml:space="preserve"><value>Najčastejšia farba</value></data>
+  <data name="Pad_Lighting_ScreenMethod_Average" xml:space="preserve"><value>Priemerná farba</value></data>
+  <data name="Pad_Lighting_ScreenSaturation" xml:space="preserve"><value>Sýtosť</value></data>
+  <data name="Pad_Lighting_ScreenSmoothing" xml:space="preserve"><value>Vyhladzovanie</value></data>
+  <data name="Pad_Lighting_ScreenSpread" xml:space="preserve"><value>Rozložiť obrazovku na svetlá tohto zariadenia</value></data>
+  <data name="Pad_Lighting_ScreenWaiting" xml:space="preserve"><value>Windows momentálne drží obrazovku, preto svetlo zachová poslednú farbu.</value></data>
+  <data name="Pad_Lighting_ScreenUnavailable" xml:space="preserve"><value>PadForge teraz nemôže čítať obrazovku tohto počítača a stále to skúša. Dôvod zaznamená Uložiť snímku v Nastaveniach.</value></data>
+  <data name="Pad_ResetScreenColorDisplay" xml:space="preserve"><value>Resetovať displej</value></data>
+  <data name="Pad_ResetScreenColorArea" xml:space="preserve"><value>Resetovať oblasť obrazovky</value></data>
+  <data name="Pad_ResetScreenColorLeft" xml:space="preserve"><value>Resetovať ľavý okraj</value></data>
+  <data name="Pad_ResetScreenColorTop" xml:space="preserve"><value>Resetovať horný okraj</value></data>
+  <data name="Pad_ResetScreenColorWidth" xml:space="preserve"><value>Resetovať šírku</value></data>
+  <data name="Pad_ResetScreenColorHeight" xml:space="preserve"><value>Resetovať výšku</value></data>
+  <data name="Pad_ResetScreenColorMethod" xml:space="preserve"><value>Resetovať farbu</value></data>
+  <data name="Pad_ResetScreenColorSaturation" xml:space="preserve"><value>Resetovať sýtosť</value></data>
+  <data name="Pad_ResetScreenColorSmoothing" xml:space="preserve"><value>Resetovať vyhladzovanie</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>Paleta</value></data>
   <data name="Pad_Lighting_ColorCycleSmooth" xml:space="preserve"><value>Plynulo prelínať farby palety</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Pridať farbu</value></data>

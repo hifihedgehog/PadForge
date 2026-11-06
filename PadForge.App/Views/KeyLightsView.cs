@@ -386,19 +386,7 @@ namespace PadForge.Views
         internal static List<(int Index, Rect Box)> PlaceByLayout(LightMap map)
         {
             var placed = new List<(int, Rect)>();
-            if (map.KeyCount == 0) return placed;
-            var usages = new HashSet<ushort>(map.Usages);
-            LayoutKey[] best = null;
-            int bestHits = 0;
-            foreach (var layout in Layouts)
-            {
-                int hits = layout.Count(k => k.Page == 0x07 && usages.Contains(k.Id));
-                if (hits > bestHits || (hits == bestHits && hits > 0 && layout.Length < best.Length))
-                {
-                    best = layout;
-                    bestHits = hits;
-                }
-            }
+            var best = LightPlacement.BestLayout(map);
             if (best == null) return placed;
             var drawn = new HashSet<ushort>();
             foreach (var key in best)
@@ -412,14 +400,6 @@ namespace PadForge.Views
             }
             return placed;
         }
-
-        private static readonly LayoutKey[][] Layouts =
-        {
-            KeyboardFamilies.FullsizeAnsi, KeyboardFamilies.FullsizeIso, KeyboardFamilies.FullsizeExtended,
-            KeyboardFamilies.Tkl, KeyboardFamilies.SeventyFive, KeyboardFamilies.SixtyFive,
-            KeyboardFamilies.SixtyFiveBlocker, KeyboardFamilies.Sixty, KeyboardFamilies.Hhkb, KeyboardFamilies.HhkbJis,
-            KeyboardFamilies.KeychronQ6,
-        };
 
         private void AddLight(int index, LightInfo light, int edgeNumber, Rect box, bool chip, IntPtr layout)
         {

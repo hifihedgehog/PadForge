@@ -1107,6 +1107,45 @@
 
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>Перыяд</value></data>
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>Яркасць</value></data>
+  <data name="Pad_Lighting_Mode_ScreenColor" xml:space="preserve"><value>Колер экрана</value></data>
+  <data name="Pad_Lighting_ScreenHint" xml:space="preserve"><value>Паўтарае колеры вашага экрана. Пакуль прылада выкарыстоўвае гэты рэжым, PadForge чытае гатовы малюнак з Windows. Ён нічога не захоўвае і нічога не змяняе ў гульнях.</value></data>
+  <data name="Pad_Lighting_ScreenDisplay" xml:space="preserve"><value>Дысплэй</value></data>
+  <data name="Pad_Lighting_ScreenDisplayPrimary" xml:space="preserve"><value>Асноўны дысплэй</value></data>
+  <data name="Pad_Lighting_ScreenDisplayItem" xml:space="preserve"><value>Дысплэй {0} ({1} x {2})</value></data>
+  <data name="Pad_Lighting_ScreenDisplayGone" xml:space="preserve"><value>Дысплэй {0} (не падключаны)</value></data>
+  <data name="Pad_Lighting_ScreenArea" xml:space="preserve"><value>Вобласць экрана</value></data>
+  <data name="Pad_Lighting_ScreenArea_WholeScreen" xml:space="preserve"><value>Увесь экран</value></data>
+  <data name="Pad_Lighting_ScreenArea_TopLeft" xml:space="preserve"><value>Зверху злева</value></data>
+  <data name="Pad_Lighting_ScreenArea_Top" xml:space="preserve"><value>Зверху</value></data>
+  <data name="Pad_Lighting_ScreenArea_TopRight" xml:space="preserve"><value>Зверху справа</value></data>
+  <data name="Pad_Lighting_ScreenArea_Left" xml:space="preserve"><value>Злева</value></data>
+  <data name="Pad_Lighting_ScreenArea_Center" xml:space="preserve"><value>Цэнтр</value></data>
+  <data name="Pad_Lighting_ScreenArea_Right" xml:space="preserve"><value>Справа</value></data>
+  <data name="Pad_Lighting_ScreenArea_BottomLeft" xml:space="preserve"><value>Знізу злева</value></data>
+  <data name="Pad_Lighting_ScreenArea_Bottom" xml:space="preserve"><value>Знізу</value></data>
+  <data name="Pad_Lighting_ScreenArea_BottomRight" xml:space="preserve"><value>Знізу справа</value></data>
+  <data name="Pad_Lighting_ScreenArea_Custom" xml:space="preserve"><value>Свая</value></data>
+  <data name="Pad_Lighting_ScreenLeft" xml:space="preserve"><value>Левы край</value></data>
+  <data name="Pad_Lighting_ScreenTop" xml:space="preserve"><value>Верхні край</value></data>
+  <data name="Pad_Lighting_ScreenWidth" xml:space="preserve"><value>Шырыня</value></data>
+  <data name="Pad_Lighting_ScreenHeight" xml:space="preserve"><value>Вышыня</value></data>
+  <data name="Pad_Lighting_ScreenMethod" xml:space="preserve"><value>Колер</value></data>
+  <data name="Pad_Lighting_ScreenMethod_MostCommon" xml:space="preserve"><value>Найчасцейшы колер</value></data>
+  <data name="Pad_Lighting_ScreenMethod_Average" xml:space="preserve"><value>Сярэдні колер</value></data>
+  <data name="Pad_Lighting_ScreenSaturation" xml:space="preserve"><value>Насычанасць</value></data>
+  <data name="Pad_Lighting_ScreenSmoothing" xml:space="preserve"><value>Згладжванне</value></data>
+  <data name="Pad_Lighting_ScreenSpread" xml:space="preserve"><value>Разгарнуць экран па святле гэтай прылады</value></data>
+  <data name="Pad_Lighting_ScreenWaiting" xml:space="preserve"><value>Windows пакуль утрымлівае экран, таму святло захоўвае апошні колер.</value></data>
+  <data name="Pad_Lighting_ScreenUnavailable" xml:space="preserve"><value>PadForge зараз не можа прачытаць экран на гэтым ПК і працягвае спробы. Прычыну запісвае «Захаваць здымак» у наладах.</value></data>
+  <data name="Pad_ResetScreenColorDisplay" xml:space="preserve"><value>Скінуць дысплэй</value></data>
+  <data name="Pad_ResetScreenColorArea" xml:space="preserve"><value>Скінуць вобласць экрана</value></data>
+  <data name="Pad_ResetScreenColorLeft" xml:space="preserve"><value>Скінуць левы край</value></data>
+  <data name="Pad_ResetScreenColorTop" xml:space="preserve"><value>Скінуць верхні край</value></data>
+  <data name="Pad_ResetScreenColorWidth" xml:space="preserve"><value>Скінуць шырыню</value></data>
+  <data name="Pad_ResetScreenColorHeight" xml:space="preserve"><value>Скінуць вышыню</value></data>
+  <data name="Pad_ResetScreenColorMethod" xml:space="preserve"><value>Скінуць колер</value></data>
+  <data name="Pad_ResetScreenColorSaturation" xml:space="preserve"><value>Скінуць насычанасць</value></data>
+  <data name="Pad_ResetScreenColorSmoothing" xml:space="preserve"><value>Скінуць згладжванне</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>Палітра</value></data>
   <data name="Pad_Lighting_ColorCycleSmooth" xml:space="preserve"><value>Плаўна пераходзіць паміж колерамі палітры</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Дадаць колер</value></data>

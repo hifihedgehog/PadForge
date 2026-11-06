@@ -1941,6 +1941,45 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_Lighting_Mode_InputReactiveCycle" xml:space="preserve"><value>Invoerreactief: door palet bladeren</value></data>
   <data name="Pad_Lighting_Mode_InputReactiveFixed" xml:space="preserve"><value>Invoerreactief: één kleur per druk</value></data>
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>Helderheid</value></data>
+  <data name="Pad_Lighting_Mode_ScreenColor" xml:space="preserve"><value>Schermkleur</value></data>
+  <data name="Pad_Lighting_ScreenHint" xml:space="preserve"><value>Volgt de kleuren op je scherm. Zolang een apparaat deze modus gebruikt, leest PadForge het afgewerkte beeld van Windows. Er wordt niets van opgeslagen en in geen enkele game wordt iets gewijzigd.</value></data>
+  <data name="Pad_Lighting_ScreenDisplay" xml:space="preserve"><value>Beeldscherm</value></data>
+  <data name="Pad_Lighting_ScreenDisplayPrimary" xml:space="preserve"><value>Primair beeldscherm</value></data>
+  <data name="Pad_Lighting_ScreenDisplayItem" xml:space="preserve"><value>Beeldscherm {0} ({1} x {2})</value></data>
+  <data name="Pad_Lighting_ScreenDisplayGone" xml:space="preserve"><value>Beeldscherm {0} (niet aangesloten)</value></data>
+  <data name="Pad_Lighting_ScreenArea" xml:space="preserve"><value>Schermgebied</value></data>
+  <data name="Pad_Lighting_ScreenArea_WholeScreen" xml:space="preserve"><value>Hele scherm</value></data>
+  <data name="Pad_Lighting_ScreenArea_TopLeft" xml:space="preserve"><value>Linksboven</value></data>
+  <data name="Pad_Lighting_ScreenArea_Top" xml:space="preserve"><value>Boven</value></data>
+  <data name="Pad_Lighting_ScreenArea_TopRight" xml:space="preserve"><value>Rechtsboven</value></data>
+  <data name="Pad_Lighting_ScreenArea_Left" xml:space="preserve"><value>Links</value></data>
+  <data name="Pad_Lighting_ScreenArea_Center" xml:space="preserve"><value>Midden</value></data>
+  <data name="Pad_Lighting_ScreenArea_Right" xml:space="preserve"><value>Rechts</value></data>
+  <data name="Pad_Lighting_ScreenArea_BottomLeft" xml:space="preserve"><value>Linksonder</value></data>
+  <data name="Pad_Lighting_ScreenArea_Bottom" xml:space="preserve"><value>Onder</value></data>
+  <data name="Pad_Lighting_ScreenArea_BottomRight" xml:space="preserve"><value>Rechtsonder</value></data>
+  <data name="Pad_Lighting_ScreenArea_Custom" xml:space="preserve"><value>Aangepast</value></data>
+  <data name="Pad_Lighting_ScreenLeft" xml:space="preserve"><value>Linkerrand</value></data>
+  <data name="Pad_Lighting_ScreenTop" xml:space="preserve"><value>Bovenrand</value></data>
+  <data name="Pad_Lighting_ScreenWidth" xml:space="preserve"><value>Breedte</value></data>
+  <data name="Pad_Lighting_ScreenHeight" xml:space="preserve"><value>Hoogte</value></data>
+  <data name="Pad_Lighting_ScreenMethod" xml:space="preserve"><value>Kleur</value></data>
+  <data name="Pad_Lighting_ScreenMethod_MostCommon" xml:space="preserve"><value>Meest voorkomende kleur</value></data>
+  <data name="Pad_Lighting_ScreenMethod_Average" xml:space="preserve"><value>Gemiddelde kleur</value></data>
+  <data name="Pad_Lighting_ScreenSaturation" xml:space="preserve"><value>Verzadiging</value></data>
+  <data name="Pad_Lighting_ScreenSmoothing" xml:space="preserve"><value>Vloeiend maken</value></data>
+  <data name="Pad_Lighting_ScreenSpread" xml:space="preserve"><value>Scherm verspreiden over de lampjes van dit apparaat</value></data>
+  <data name="Pad_Lighting_ScreenWaiting" xml:space="preserve"><value>Windows houdt het scherm even vast, dus het licht behoudt zijn laatste kleur.</value></data>
+  <data name="Pad_Lighting_ScreenUnavailable" xml:space="preserve"><value>PadForge kan het scherm op deze pc nu niet lezen en blijft het proberen. Momentopname opslaan in Instellingen legt de reden vast.</value></data>
+  <data name="Pad_ResetScreenColorDisplay" xml:space="preserve"><value>Beeldscherm herstellen</value></data>
+  <data name="Pad_ResetScreenColorArea" xml:space="preserve"><value>Schermgebied herstellen</value></data>
+  <data name="Pad_ResetScreenColorLeft" xml:space="preserve"><value>Linkerrand herstellen</value></data>
+  <data name="Pad_ResetScreenColorTop" xml:space="preserve"><value>Bovenrand herstellen</value></data>
+  <data name="Pad_ResetScreenColorWidth" xml:space="preserve"><value>Breedte herstellen</value></data>
+  <data name="Pad_ResetScreenColorHeight" xml:space="preserve"><value>Hoogte herstellen</value></data>
+  <data name="Pad_ResetScreenColorMethod" xml:space="preserve"><value>Kleur herstellen</value></data>
+  <data name="Pad_ResetScreenColorSaturation" xml:space="preserve"><value>Verzadiging herstellen</value></data>
+  <data name="Pad_ResetScreenColorSmoothing" xml:space="preserve"><value>Vloeiend maken herstellen</value></data>
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>Periode</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>Palet</value></data>
   <data name="Pad_Lighting_ColorCycleSmooth" xml:space="preserve"><value>Vloeiend overgaan tussen palelekleuren</value></data>

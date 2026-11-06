@@ -1107,6 +1107,45 @@
 
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>دوره</value></data>
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>روشنایی</value></data>
+  <data name="Pad_Lighting_Mode_ScreenColor" xml:space="preserve"><value>رنگ صفحه‌نمایش</value></data>
+  <data name="Pad_Lighting_ScreenHint" xml:space="preserve"><value>رنگ‌های صفحه‌نمایش شما را دنبال می‌کند. تا وقتی دستگاهی از این حالت استفاده کند، PadForge تصویر نهایی را از Windows می‌خواند. چیزی از آن را ذخیره نمی‌کند و هیچ بازی‌ای را تغییر نمی‌دهد.</value></data>
+  <data name="Pad_Lighting_ScreenDisplay" xml:space="preserve"><value>نمایشگر</value></data>
+  <data name="Pad_Lighting_ScreenDisplayPrimary" xml:space="preserve"><value>نمایشگر اصلی</value></data>
+  <data name="Pad_Lighting_ScreenDisplayItem" xml:space="preserve"><value>نمایشگر {0} ({1} x {2})</value></data>
+  <data name="Pad_Lighting_ScreenDisplayGone" xml:space="preserve"><value>نمایشگر {0} (متصل نیست)</value></data>
+  <data name="Pad_Lighting_ScreenArea" xml:space="preserve"><value>ناحیه صفحه‌نمایش</value></data>
+  <data name="Pad_Lighting_ScreenArea_WholeScreen" xml:space="preserve"><value>کل صفحه‌نمایش</value></data>
+  <data name="Pad_Lighting_ScreenArea_TopLeft" xml:space="preserve"><value>بالا چپ</value></data>
+  <data name="Pad_Lighting_ScreenArea_Top" xml:space="preserve"><value>بالا</value></data>
+  <data name="Pad_Lighting_ScreenArea_TopRight" xml:space="preserve"><value>بالا راست</value></data>
+  <data name="Pad_Lighting_ScreenArea_Left" xml:space="preserve"><value>چپ</value></data>
+  <data name="Pad_Lighting_ScreenArea_Center" xml:space="preserve"><value>مرکز</value></data>
+  <data name="Pad_Lighting_ScreenArea_Right" xml:space="preserve"><value>راست</value></data>
+  <data name="Pad_Lighting_ScreenArea_BottomLeft" xml:space="preserve"><value>پایین چپ</value></data>
+  <data name="Pad_Lighting_ScreenArea_Bottom" xml:space="preserve"><value>پایین</value></data>
+  <data name="Pad_Lighting_ScreenArea_BottomRight" xml:space="preserve"><value>پایین راست</value></data>
+  <data name="Pad_Lighting_ScreenArea_Custom" xml:space="preserve"><value>سفارشی</value></data>
+  <data name="Pad_Lighting_ScreenLeft" xml:space="preserve"><value>لبه چپ</value></data>
+  <data name="Pad_Lighting_ScreenTop" xml:space="preserve"><value>لبه بالا</value></data>
+  <data name="Pad_Lighting_ScreenWidth" xml:space="preserve"><value>پهنا</value></data>
+  <data name="Pad_Lighting_ScreenHeight" xml:space="preserve"><value>ارتفاع</value></data>
+  <data name="Pad_Lighting_ScreenMethod" xml:space="preserve"><value>رنگ</value></data>
+  <data name="Pad_Lighting_ScreenMethod_MostCommon" xml:space="preserve"><value>پرتکرارترین رنگ</value></data>
+  <data name="Pad_Lighting_ScreenMethod_Average" xml:space="preserve"><value>رنگ میانگین</value></data>
+  <data name="Pad_Lighting_ScreenSaturation" xml:space="preserve"><value>اشباع</value></data>
+  <data name="Pad_Lighting_ScreenSmoothing" xml:space="preserve"><value>هموارسازی</value></data>
+  <data name="Pad_Lighting_ScreenSpread" xml:space="preserve"><value>پخش صفحه‌نمایش روی چراغ‌های این دستگاه</value></data>
+  <data name="Pad_Lighting_ScreenWaiting" xml:space="preserve"><value>Windows فعلاً صفحه‌نمایش را در اختیار گرفته است، پس چراغ آخرین رنگش را نگه می‌دارد.</value></data>
+  <data name="Pad_Lighting_ScreenUnavailable" xml:space="preserve"><value>PadForge اکنون نمی‌تواند صفحه‌نمایش این رایانه را بخواند و تلاش را ادامه می‌دهد. «ذخیره تصویر لحظه‌ای» در «تنظیمات» دلیل را ثبت می‌کند.</value></data>
+  <data name="Pad_ResetScreenColorDisplay" xml:space="preserve"><value>بازنشانی نمایشگر</value></data>
+  <data name="Pad_ResetScreenColorArea" xml:space="preserve"><value>بازنشانی ناحیه صفحه‌نمایش</value></data>
+  <data name="Pad_ResetScreenColorLeft" xml:space="preserve"><value>بازنشانی لبه چپ</value></data>
+  <data name="Pad_ResetScreenColorTop" xml:space="preserve"><value>بازنشانی لبه بالا</value></data>
+  <data name="Pad_ResetScreenColorWidth" xml:space="preserve"><value>بازنشانی پهنا</value></data>
+  <data name="Pad_ResetScreenColorHeight" xml:space="preserve"><value>بازنشانی ارتفاع</value></data>
+  <data name="Pad_ResetScreenColorMethod" xml:space="preserve"><value>بازنشانی رنگ</value></data>
+  <data name="Pad_ResetScreenColorSaturation" xml:space="preserve"><value>بازنشانی اشباع</value></data>
+  <data name="Pad_ResetScreenColorSmoothing" xml:space="preserve"><value>بازنشانی هموارسازی</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>پالت</value></data>
   <data name="Pad_Lighting_ColorCycleSmooth" xml:space="preserve"><value>آمیختن نرم بین رنگ‌های پالت</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>افزودن رنگ</value></data>

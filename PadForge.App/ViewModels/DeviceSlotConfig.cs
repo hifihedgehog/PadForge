@@ -1137,6 +1137,90 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _lightbarRainbowBrightness, Math.Clamp(value, 0, 100));
         }
 
+        // Screen Color (#559): which part of which display, and what to do
+        // with its colors.
+        private string _screenColorDisplay = string.Empty;
+        /// <summary>The GDI name of the display Screen Color reads, or empty
+        /// for the primary display. A name no longer attached reads the
+        /// primary.</summary>
+        public string ScreenColorDisplay
+        {
+            get => _screenColorDisplay;
+            set => SetProperty(ref _screenColorDisplay, value ?? string.Empty);
+        }
+
+        private ScreenColorArea _screenColorArea = ScreenColorArea.WholeScreen;
+        public ScreenColorArea ScreenColorArea
+        {
+            get => _screenColorArea;
+            set => SetProperty(ref _screenColorArea, value);
+        }
+
+        private int _screenColorLeft = 25;
+        public int ScreenColorLeft
+        {
+            get => _screenColorLeft;
+            set => SetProperty(ref _screenColorLeft, Math.Clamp(value, 0, 99));
+        }
+
+        private int _screenColorTop = 25;
+        public int ScreenColorTop
+        {
+            get => _screenColorTop;
+            set => SetProperty(ref _screenColorTop, Math.Clamp(value, 0, 99));
+        }
+
+        private int _screenColorWidth = 50;
+        public int ScreenColorWidth
+        {
+            get => _screenColorWidth;
+            set => SetProperty(ref _screenColorWidth, Math.Clamp(value, 1, 100));
+        }
+
+        private int _screenColorHeight = 50;
+        public int ScreenColorHeight
+        {
+            get => _screenColorHeight;
+            set => SetProperty(ref _screenColorHeight, Math.Clamp(value, 1, 100));
+        }
+
+        private ScreenColorMethod _screenColorMethod = ScreenColorMethod.MostCommon;
+        public ScreenColorMethod ScreenColorMethod
+        {
+            get => _screenColorMethod;
+            set => SetProperty(ref _screenColorMethod, value);
+        }
+
+        private int _screenColorSaturation = 100;
+        public int ScreenColorSaturation
+        {
+            get => _screenColorSaturation;
+            set => SetProperty(ref _screenColorSaturation, Math.Clamp(value, 0, 200));
+        }
+
+        private int _screenColorBrightness = 100;
+        public int ScreenColorBrightness
+        {
+            get => _screenColorBrightness;
+            set => SetProperty(ref _screenColorBrightness, Math.Clamp(value, 0, 100));
+        }
+
+        private int _screenColorSmoothing = 30;
+        public int ScreenColorSmoothing
+        {
+            get => _screenColorSmoothing;
+            set => SetProperty(ref _screenColorSmoothing, Math.Clamp(value, 0, 100));
+        }
+
+        private bool _screenColorSpread = true;
+        /// <summary>On a device with more than one light, each light shows its
+        /// own spot of the area. Off, the device shows one color.</summary>
+        public bool ScreenColorSpread
+        {
+            get => _screenColorSpread;
+            set => SetProperty(ref _screenColorSpread, value);
+        }
+
         // Battery-mode endpoint colors. Defaults to red @ 0% → green @ 100%
         // matching the canonical "low fuel = red, full = green" convention.
         // The synthesizer linearly interpolates between Low and High using
@@ -1660,6 +1744,17 @@ namespace PadForge.ViewModels
                 LightbarPeriodMs = 3000;
                 LightbarColorCycleSmooth = true;
                 LightbarRainbowBrightness = 100;
+                ScreenColorDisplay = string.Empty;
+                ScreenColorArea = ScreenColorArea.WholeScreen;
+                ScreenColorLeft = 25;
+                ScreenColorTop = 25;
+                ScreenColorWidth = 50;
+                ScreenColorHeight = 50;
+                ScreenColorMethod = ScreenColorMethod.MostCommon;
+                ScreenColorSaturation = 100;
+                ScreenColorBrightness = 100;
+                ScreenColorSmoothing = 30;
+                ScreenColorSpread = true;
                 LightbarBatteryLowR = 0xFF; LightbarBatteryLowG = 0; LightbarBatteryLowB = 0;
                 LightbarBatteryHighR = 0; LightbarBatteryHighG = 0xFF; LightbarBatteryHighB = 0;
                 LightbarInputHoldMs = 0;
@@ -1806,6 +1901,50 @@ namespace PadForge.ViewModels
         public RelayCommand ResetLightbarRainbowBrightnessCommand =>
             _resetLightbarRainbowBrightness ??= new RelayCommand(() => LightbarRainbowBrightness = 100);
         private RelayCommand _resetLightbarRainbowBrightness;
+
+        public RelayCommand ResetScreenColorDisplayCommand =>
+            _resetScreenColorDisplay ??= new RelayCommand(() => ScreenColorDisplay = string.Empty);
+        private RelayCommand _resetScreenColorDisplay;
+
+        public RelayCommand ResetScreenColorAreaCommand =>
+            _resetScreenColorArea ??= new RelayCommand(() => ScreenColorArea = ScreenColorArea.WholeScreen);
+        private RelayCommand _resetScreenColorArea;
+
+        public RelayCommand ResetScreenColorLeftCommand =>
+            _resetScreenColorLeft ??= new RelayCommand(() => ScreenColorLeft = 25);
+        private RelayCommand _resetScreenColorLeft;
+
+        public RelayCommand ResetScreenColorTopCommand =>
+            _resetScreenColorTop ??= new RelayCommand(() => ScreenColorTop = 25);
+        private RelayCommand _resetScreenColorTop;
+
+        public RelayCommand ResetScreenColorWidthCommand =>
+            _resetScreenColorWidth ??= new RelayCommand(() => ScreenColorWidth = 50);
+        private RelayCommand _resetScreenColorWidth;
+
+        public RelayCommand ResetScreenColorHeightCommand =>
+            _resetScreenColorHeight ??= new RelayCommand(() => ScreenColorHeight = 50);
+        private RelayCommand _resetScreenColorHeight;
+
+        public RelayCommand ResetScreenColorSpreadCommand =>
+            _resetScreenColorSpread ??= new RelayCommand(() => ScreenColorSpread = true);
+        private RelayCommand _resetScreenColorSpread;
+
+        public RelayCommand ResetScreenColorMethodCommand =>
+            _resetScreenColorMethod ??= new RelayCommand(() => ScreenColorMethod = ScreenColorMethod.MostCommon);
+        private RelayCommand _resetScreenColorMethod;
+
+        public RelayCommand ResetScreenColorSaturationCommand =>
+            _resetScreenColorSaturation ??= new RelayCommand(() => ScreenColorSaturation = 100);
+        private RelayCommand _resetScreenColorSaturation;
+
+        public RelayCommand ResetScreenColorBrightnessCommand =>
+            _resetScreenColorBrightness ??= new RelayCommand(() => ScreenColorBrightness = 100);
+        private RelayCommand _resetScreenColorBrightness;
+
+        public RelayCommand ResetScreenColorSmoothingCommand =>
+            _resetScreenColorSmoothing ??= new RelayCommand(() => ScreenColorSmoothing = 30);
+        private RelayCommand _resetScreenColorSmoothing;
 
         // Per-channel resets for the Battery low/high picker — matches
         // the inline ResetButtonTight layout used by the Static base
@@ -2111,6 +2250,75 @@ namespace PadForge.ViewModels
         /// Appended after Strobe. Macro cycle CSVs persist enum ints,
         /// so existing values never renumber.</summary>
         PlayerNumber = 16,
+        /// <summary>The colors on the screen, from one area of one display
+        /// (#559). Appended after PlayerNumber.</summary>
+        ScreenColor = 17,
+    }
+
+    /// <summary>One line of the Lighting tab's Display box (#559). A record, so
+    /// two lists compare by what they say.</summary>
+    public sealed record ScreenDisplayChoice(string Id, string Label)
+    {
+        /// <summary>Test seam: the displays as (GDI name, width, height). Null
+        /// in production.</summary>
+        internal static Func<IReadOnlyList<(string Name, int Width, int Height)>> DisplaysSeam;
+
+        private static IReadOnlyList<(string Name, int Width, int Height)> Displays()
+        {
+            if (DisplaysSeam != null) return DisplaysSeam();
+            return System.Windows.Forms.Screen.AllScreens
+                .Select(s => (s.DeviceName, s.Bounds.Width, s.Bounds.Height))
+                .ToList();
+        }
+
+        /// <summary>The primary display first, then every display by its number,
+        /// then <paramref name="saved"/> when it is not connected.</summary>
+        internal static List<ScreenDisplayChoice> ListFor(string saved)
+        {
+            var s = Resources.Strings.Strings.Instance;
+            var list = new List<ScreenDisplayChoice> { new(string.Empty, s.Pad_Lighting_ScreenDisplayPrimary) };
+            var displays = Displays();
+            foreach (var d in displays.OrderBy(d => NumberOf(d.Name).Length).ThenBy(d => NumberOf(d.Name), StringComparer.Ordinal))
+            {
+                // The saved spelling, as the box looks its line up by exact text.
+                string id = string.Equals(d.Name, saved, StringComparison.OrdinalIgnoreCase) ? saved : d.Name;
+                list.Add(new ScreenDisplayChoice(id, string.Format(s.Pad_Lighting_ScreenDisplayItem, NumberOf(d.Name), d.Width, d.Height)));
+            }
+            if (!string.IsNullOrEmpty(saved) && !displays.Any(d => string.Equals(d.Name, saved, StringComparison.OrdinalIgnoreCase)))
+                list.Add(new ScreenDisplayChoice(saved, string.Format(s.Pad_Lighting_ScreenDisplayGone, NumberOf(saved))));
+            return list;
+        }
+
+        private static string NumberOf(string name) => name.StartsWith(@"\\.\DISPLAY", StringComparison.OrdinalIgnoreCase)
+            ? name.Substring(@"\\.\DISPLAY".Length)
+            : name;
+    }
+
+    /// <summary>The part of a display Screen Color reads (#559). Saved as
+    /// names, and new ones go at the end.</summary>
+    public enum ScreenColorArea
+    {
+        WholeScreen = 0,
+        TopLeft = 1,
+        Top = 2,
+        TopRight = 3,
+        Left = 4,
+        Center = 5,
+        Right = 6,
+        BottomLeft = 7,
+        Bottom = 8,
+        BottomRight = 9,
+        Custom = 10,
+    }
+
+    /// <summary>How Screen Color turns an area into one color (#559).</summary>
+    public enum ScreenColorMethod
+    {
+        /// <summary>The color most of the area has, weighed by how colorful it
+        /// is.</summary>
+        MostCommon = 0,
+        /// <summary>The mean of the area.</summary>
+        Average = 1,
     }
 
     /// <summary>Input-reactive overlay variant. Independent of the
@@ -2301,6 +2509,18 @@ namespace PadForge.ViewModels
         /// setting loads as no count on any strip.</summary>
         [XmlAttribute] public string LedStripCounts { get; set; } = string.Empty;
         [XmlAttribute] public int LightbarRainbowBrightness { get; set; } = 100;
+        // Screen Color (#559). A save from before it loads these defaults.
+        [XmlAttribute] public string ScreenColorDisplay { get; set; } = string.Empty;
+        [XmlAttribute] public ScreenColorArea ScreenColorArea { get; set; } = ScreenColorArea.WholeScreen;
+        [XmlAttribute] public int ScreenColorLeft { get; set; } = 25;
+        [XmlAttribute] public int ScreenColorTop { get; set; } = 25;
+        [XmlAttribute] public int ScreenColorWidth { get; set; } = 50;
+        [XmlAttribute] public int ScreenColorHeight { get; set; } = 50;
+        [XmlAttribute] public ScreenColorMethod ScreenColorMethod { get; set; } = ScreenColorMethod.MostCommon;
+        [XmlAttribute] public int ScreenColorSaturation { get; set; } = 100;
+        [XmlAttribute] public int ScreenColorBrightness { get; set; } = 100;
+        [XmlAttribute] public int ScreenColorSmoothing { get; set; } = 30;
+        [XmlAttribute] public bool ScreenColorSpread { get; set; } = true;
         [XmlAttribute] public byte LightbarBatteryLowR  { get; set; } = 0xFF;
         [XmlAttribute] public byte LightbarBatteryLowG  { get; set; } = 0x00;
         [XmlAttribute] public byte LightbarBatteryLowB  { get; set; } = 0x00;

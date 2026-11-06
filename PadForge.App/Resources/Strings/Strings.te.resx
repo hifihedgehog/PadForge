@@ -1107,6 +1107,45 @@
 
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>వ్యవధి</value></data>
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>ప్రకాశం</value></data>
+  <data name="Pad_Lighting_Mode_ScreenColor" xml:space="preserve"><value>స్క్రీన్ రంగు</value></data>
+  <data name="Pad_Lighting_ScreenHint" xml:space="preserve"><value>మీ స్క్రీన్‌పై ఉన్న రంగులను అనుసరిస్తుంది. పరికరం ఈ మోడ్‌ను ఉపయోగిస్తున్నంత సేపు, PadForge Windows నుండి పూర్తయిన చిత్రాన్ని చదువుతుంది. అందులో దేన్నీ నిల్వ చేయదు, ఏ గేమ్‌లోనూ ఏమీ మార్చదు.</value></data>
+  <data name="Pad_Lighting_ScreenDisplay" xml:space="preserve"><value>డిస్‌ప్లే</value></data>
+  <data name="Pad_Lighting_ScreenDisplayPrimary" xml:space="preserve"><value>ప్రాథమిక డిస్‌ప్లే</value></data>
+  <data name="Pad_Lighting_ScreenDisplayItem" xml:space="preserve"><value>డిస్‌ప్లే {0} ({1} x {2})</value></data>
+  <data name="Pad_Lighting_ScreenDisplayGone" xml:space="preserve"><value>డిస్‌ప్లే {0} (కనెక్ట్ కాలేదు)</value></data>
+  <data name="Pad_Lighting_ScreenArea" xml:space="preserve"><value>స్క్రీన్ ప్రాంతం</value></data>
+  <data name="Pad_Lighting_ScreenArea_WholeScreen" xml:space="preserve"><value>మొత్తం స్క్రీన్</value></data>
+  <data name="Pad_Lighting_ScreenArea_TopLeft" xml:space="preserve"><value>పైన ఎడమ</value></data>
+  <data name="Pad_Lighting_ScreenArea_Top" xml:space="preserve"><value>పైన</value></data>
+  <data name="Pad_Lighting_ScreenArea_TopRight" xml:space="preserve"><value>పైన కుడి</value></data>
+  <data name="Pad_Lighting_ScreenArea_Left" xml:space="preserve"><value>ఎడమ</value></data>
+  <data name="Pad_Lighting_ScreenArea_Center" xml:space="preserve"><value>మధ్య</value></data>
+  <data name="Pad_Lighting_ScreenArea_Right" xml:space="preserve"><value>కుడి</value></data>
+  <data name="Pad_Lighting_ScreenArea_BottomLeft" xml:space="preserve"><value>కింద ఎడమ</value></data>
+  <data name="Pad_Lighting_ScreenArea_Bottom" xml:space="preserve"><value>కింద</value></data>
+  <data name="Pad_Lighting_ScreenArea_BottomRight" xml:space="preserve"><value>కింద కుడి</value></data>
+  <data name="Pad_Lighting_ScreenArea_Custom" xml:space="preserve"><value>అనుకూలం</value></data>
+  <data name="Pad_Lighting_ScreenLeft" xml:space="preserve"><value>ఎడమ అంచు</value></data>
+  <data name="Pad_Lighting_ScreenTop" xml:space="preserve"><value>పై అంచు</value></data>
+  <data name="Pad_Lighting_ScreenWidth" xml:space="preserve"><value>వెడల్పు</value></data>
+  <data name="Pad_Lighting_ScreenHeight" xml:space="preserve"><value>ఎత్తు</value></data>
+  <data name="Pad_Lighting_ScreenMethod" xml:space="preserve"><value>రంగు</value></data>
+  <data name="Pad_Lighting_ScreenMethod_MostCommon" xml:space="preserve"><value>అత్యంత సాధారణ రంగు</value></data>
+  <data name="Pad_Lighting_ScreenMethod_Average" xml:space="preserve"><value>సగటు రంగు</value></data>
+  <data name="Pad_Lighting_ScreenSaturation" xml:space="preserve"><value>సంతృప్తత</value></data>
+  <data name="Pad_Lighting_ScreenSmoothing" xml:space="preserve"><value>స్మూతింగ్</value></data>
+  <data name="Pad_Lighting_ScreenSpread" xml:space="preserve"><value>స్క్రీన్‌ను ఈ పరికరం లైట్లన్నింటిపై విస్తరించు</value></data>
+  <data name="Pad_Lighting_ScreenWaiting" xml:space="preserve"><value>Windows ప్రస్తుతానికి స్క్రీన్‌ను నిలిపి ఉంచింది, కాబట్టి లైట్ చివరి రంగునే ఉంచుతుంది.</value></data>
+  <data name="Pad_Lighting_ScreenUnavailable" xml:space="preserve"><value>ఈ PCలో ప్రస్తుతం PadForge స్క్రీన్‌ను చదవలేకపోతోంది, ప్రయత్నిస్తూనే ఉంటుంది. కారణాన్ని సెట్టింగులు పేజీలోని స్నాప్‌షాట్ సేవ్ చేయి నమోదు చేస్తుంది.</value></data>
+  <data name="Pad_ResetScreenColorDisplay" xml:space="preserve"><value>డిస్‌ప్లే రీసెట్ చేయి</value></data>
+  <data name="Pad_ResetScreenColorArea" xml:space="preserve"><value>స్క్రీన్ ప్రాంతం రీసెట్ చేయి</value></data>
+  <data name="Pad_ResetScreenColorLeft" xml:space="preserve"><value>ఎడమ అంచు రీసెట్ చేయి</value></data>
+  <data name="Pad_ResetScreenColorTop" xml:space="preserve"><value>పై అంచు రీసెట్ చేయి</value></data>
+  <data name="Pad_ResetScreenColorWidth" xml:space="preserve"><value>వెడల్పు రీసెట్ చేయి</value></data>
+  <data name="Pad_ResetScreenColorHeight" xml:space="preserve"><value>ఎత్తు రీసెట్ చేయి</value></data>
+  <data name="Pad_ResetScreenColorMethod" xml:space="preserve"><value>రంగు రీసెట్ చేయి</value></data>
+  <data name="Pad_ResetScreenColorSaturation" xml:space="preserve"><value>సంతృప్తత రీసెట్ చేయి</value></data>
+  <data name="Pad_ResetScreenColorSmoothing" xml:space="preserve"><value>స్మూతింగ్ రీసెట్ చేయి</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>పాలెట్</value></data>
   <data name="Pad_Lighting_ColorCycleSmooth" xml:space="preserve"><value>పాలెట్ రంగుల మధ్య మృదువుగా కలుపు</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>రంగును జోడించు</value></data>

@@ -1107,6 +1107,45 @@
 
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>சுழற்சிக் காலம்</value></data>
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>ஒளிர்வு</value></data>
+  <data name="Pad_Lighting_Mode_ScreenColor" xml:space="preserve"><value>திரை நிறம்</value></data>
+  <data name="Pad_Lighting_ScreenHint" xml:space="preserve"><value>உங்கள் திரையில் உள்ள நிறங்களைப் பின்தொடரும். ஒரு சாதனம் இந்த முறையைப் பயன்படுத்தும்போது, PadForge-உம் Windows வழங்கும் முழுமையான படத்தைப் படிக்கும். எதையும் சேமிக்காது, எந்த கேமிலும் எதையும் மாற்றாது.</value></data>
+  <data name="Pad_Lighting_ScreenDisplay" xml:space="preserve"><value>காட்சி</value></data>
+  <data name="Pad_Lighting_ScreenDisplayPrimary" xml:space="preserve"><value>முதன்மைக் காட்சி</value></data>
+  <data name="Pad_Lighting_ScreenDisplayItem" xml:space="preserve"><value>காட்சி {0} ({1} x {2})</value></data>
+  <data name="Pad_Lighting_ScreenDisplayGone" xml:space="preserve"><value>காட்சி {0} (இணைக்கப்படவில்லை)</value></data>
+  <data name="Pad_Lighting_ScreenArea" xml:space="preserve"><value>திரைப் பகுதி</value></data>
+  <data name="Pad_Lighting_ScreenArea_WholeScreen" xml:space="preserve"><value>முழுத் திரை</value></data>
+  <data name="Pad_Lighting_ScreenArea_TopLeft" xml:space="preserve"><value>மேல் இடது</value></data>
+  <data name="Pad_Lighting_ScreenArea_Top" xml:space="preserve"><value>மேலே</value></data>
+  <data name="Pad_Lighting_ScreenArea_TopRight" xml:space="preserve"><value>மேல் வலது</value></data>
+  <data name="Pad_Lighting_ScreenArea_Left" xml:space="preserve"><value>இடது</value></data>
+  <data name="Pad_Lighting_ScreenArea_Center" xml:space="preserve"><value>மையம்</value></data>
+  <data name="Pad_Lighting_ScreenArea_Right" xml:space="preserve"><value>வலது</value></data>
+  <data name="Pad_Lighting_ScreenArea_BottomLeft" xml:space="preserve"><value>கீழ் இடது</value></data>
+  <data name="Pad_Lighting_ScreenArea_Bottom" xml:space="preserve"><value>கீழே</value></data>
+  <data name="Pad_Lighting_ScreenArea_BottomRight" xml:space="preserve"><value>கீழ் வலது</value></data>
+  <data name="Pad_Lighting_ScreenArea_Custom" xml:space="preserve"><value>தனிப்பயன்</value></data>
+  <data name="Pad_Lighting_ScreenLeft" xml:space="preserve"><value>இடது விளிம்பு</value></data>
+  <data name="Pad_Lighting_ScreenTop" xml:space="preserve"><value>மேல் விளிம்பு</value></data>
+  <data name="Pad_Lighting_ScreenWidth" xml:space="preserve"><value>அகலம்</value></data>
+  <data name="Pad_Lighting_ScreenHeight" xml:space="preserve"><value>உயரம்</value></data>
+  <data name="Pad_Lighting_ScreenMethod" xml:space="preserve"><value>நிறம்</value></data>
+  <data name="Pad_Lighting_ScreenMethod_MostCommon" xml:space="preserve"><value>அதிகம் வரும் நிறம்</value></data>
+  <data name="Pad_Lighting_ScreenMethod_Average" xml:space="preserve"><value>சராசரி நிறம்</value></data>
+  <data name="Pad_Lighting_ScreenSaturation" xml:space="preserve"><value>நிறச்செறிவு</value></data>
+  <data name="Pad_Lighting_ScreenSmoothing" xml:space="preserve"><value>மென்மையாக்கம்</value></data>
+  <data name="Pad_Lighting_ScreenSpread" xml:space="preserve"><value>திரையை இந்தச் சாதனத்தின் விளக்குகளில் பரப்பு</value></data>
+  <data name="Pad_Lighting_ScreenWaiting" xml:space="preserve"><value>Windows தற்போது திரையைத் தடுத்து வைத்துள்ளது, எனவே விளக்கு தனது கடைசி நிறத்தை வைத்திருக்கும்.</value></data>
+  <data name="Pad_Lighting_ScreenUnavailable" xml:space="preserve"><value>இந்த PC-யில் திரையை PadForge-ஆல் இப்போது படிக்க முடியவில்லை, தொடர்ந்து முயல்கிறது. அமைப்புகளில் ஸ்னாப்ஷாட்டைச் சேமி என்பது காரணத்தைப் பதிவு செய்யும்.</value></data>
+  <data name="Pad_ResetScreenColorDisplay" xml:space="preserve"><value>காட்சியை மீட்டமை</value></data>
+  <data name="Pad_ResetScreenColorArea" xml:space="preserve"><value>திரைப் பகுதியை மீட்டமை</value></data>
+  <data name="Pad_ResetScreenColorLeft" xml:space="preserve"><value>இடது விளிம்பை மீட்டமை</value></data>
+  <data name="Pad_ResetScreenColorTop" xml:space="preserve"><value>மேல் விளிம்பை மீட்டமை</value></data>
+  <data name="Pad_ResetScreenColorWidth" xml:space="preserve"><value>அகலத்தை மீட்டமை</value></data>
+  <data name="Pad_ResetScreenColorHeight" xml:space="preserve"><value>உயரத்தை மீட்டமை</value></data>
+  <data name="Pad_ResetScreenColorMethod" xml:space="preserve"><value>நிறத்தை மீட்டமை</value></data>
+  <data name="Pad_ResetScreenColorSaturation" xml:space="preserve"><value>நிறச்செறிவை மீட்டமை</value></data>
+  <data name="Pad_ResetScreenColorSmoothing" xml:space="preserve"><value>மென்மையாக்கத்தை மீட்டமை</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>வண்ணத்தட்டு</value></data>
   <data name="Pad_Lighting_ColorCycleSmooth" xml:space="preserve"><value>வண்ணத்தட்டு நிறங்களுக்கு இடையே மென்மையாகக் கலக்கு</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>நிறத்தைச் சேர்</value></data>

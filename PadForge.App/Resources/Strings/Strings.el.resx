@@ -1107,6 +1107,45 @@
 
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>Περίοδος</value></data>
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>Φωτεινότητα</value></data>
+  <data name="Pad_Lighting_Mode_ScreenColor" xml:space="preserve"><value>Χρώμα οθόνης</value></data>
+  <data name="Pad_Lighting_ScreenHint" xml:space="preserve"><value>Ακολουθεί τα χρώματα της οθόνης σας. Όσο μια συσκευή χρησιμοποιεί αυτή τη λειτουργία, το PadForge διαβάζει την τελική εικόνα από τα Windows. Δεν αποθηκεύει τίποτα από αυτήν και δεν αλλάζει τίποτα σε κανένα παιχνίδι.</value></data>
+  <data name="Pad_Lighting_ScreenDisplay" xml:space="preserve"><value>Οθόνη</value></data>
+  <data name="Pad_Lighting_ScreenDisplayPrimary" xml:space="preserve"><value>Κύρια οθόνη</value></data>
+  <data name="Pad_Lighting_ScreenDisplayItem" xml:space="preserve"><value>Οθόνη {0} ({1} x {2})</value></data>
+  <data name="Pad_Lighting_ScreenDisplayGone" xml:space="preserve"><value>Οθόνη {0} (μη συνδεδεμένη)</value></data>
+  <data name="Pad_Lighting_ScreenArea" xml:space="preserve"><value>Περιοχή οθόνης</value></data>
+  <data name="Pad_Lighting_ScreenArea_WholeScreen" xml:space="preserve"><value>Ολόκληρη η οθόνη</value></data>
+  <data name="Pad_Lighting_ScreenArea_TopLeft" xml:space="preserve"><value>Πάνω αριστερά</value></data>
+  <data name="Pad_Lighting_ScreenArea_Top" xml:space="preserve"><value>Πάνω</value></data>
+  <data name="Pad_Lighting_ScreenArea_TopRight" xml:space="preserve"><value>Πάνω δεξιά</value></data>
+  <data name="Pad_Lighting_ScreenArea_Left" xml:space="preserve"><value>Αριστερά</value></data>
+  <data name="Pad_Lighting_ScreenArea_Center" xml:space="preserve"><value>Κέντρο</value></data>
+  <data name="Pad_Lighting_ScreenArea_Right" xml:space="preserve"><value>Δεξιά</value></data>
+  <data name="Pad_Lighting_ScreenArea_BottomLeft" xml:space="preserve"><value>Κάτω αριστερά</value></data>
+  <data name="Pad_Lighting_ScreenArea_Bottom" xml:space="preserve"><value>Κάτω</value></data>
+  <data name="Pad_Lighting_ScreenArea_BottomRight" xml:space="preserve"><value>Κάτω δεξιά</value></data>
+  <data name="Pad_Lighting_ScreenArea_Custom" xml:space="preserve"><value>Προσαρμοσμένη</value></data>
+  <data name="Pad_Lighting_ScreenLeft" xml:space="preserve"><value>Αριστερό άκρο</value></data>
+  <data name="Pad_Lighting_ScreenTop" xml:space="preserve"><value>Πάνω άκρο</value></data>
+  <data name="Pad_Lighting_ScreenWidth" xml:space="preserve"><value>Πλάτος</value></data>
+  <data name="Pad_Lighting_ScreenHeight" xml:space="preserve"><value>Ύψος</value></data>
+  <data name="Pad_Lighting_ScreenMethod" xml:space="preserve"><value>Χρώμα</value></data>
+  <data name="Pad_Lighting_ScreenMethod_MostCommon" xml:space="preserve"><value>Συνηθέστερο χρώμα</value></data>
+  <data name="Pad_Lighting_ScreenMethod_Average" xml:space="preserve"><value>Μέσο χρώμα</value></data>
+  <data name="Pad_Lighting_ScreenSaturation" xml:space="preserve"><value>Κορεσμός</value></data>
+  <data name="Pad_Lighting_ScreenSmoothing" xml:space="preserve"><value>Εξομάλυνση</value></data>
+  <data name="Pad_Lighting_ScreenSpread" xml:space="preserve"><value>Απλωμα της οθόνης στα φώτα αυτής της συσκευής</value></data>
+  <data name="Pad_Lighting_ScreenWaiting" xml:space="preserve"><value>Τα Windows κρατούν προς το παρόν την οθόνη, οπότε το φως διατηρεί το τελευταίο του χρώμα.</value></data>
+  <data name="Pad_Lighting_ScreenUnavailable" xml:space="preserve"><value>Το PadForge δεν μπορεί να διαβάσει την οθόνη σε αυτόν τον υπολογιστή αυτή τη στιγμή και συνεχίζει να προσπαθεί. Η «Αποθήκευση στιγμιότυπου» στις Ρυθμίσεις καταγράφει την αιτία.</value></data>
+  <data name="Pad_ResetScreenColorDisplay" xml:space="preserve"><value>Επαναφορά οθόνης</value></data>
+  <data name="Pad_ResetScreenColorArea" xml:space="preserve"><value>Επαναφορά περιοχής οθόνης</value></data>
+  <data name="Pad_ResetScreenColorLeft" xml:space="preserve"><value>Επαναφορά αριστερού άκρου</value></data>
+  <data name="Pad_ResetScreenColorTop" xml:space="preserve"><value>Επαναφορά πάνω άκρου</value></data>
+  <data name="Pad_ResetScreenColorWidth" xml:space="preserve"><value>Επαναφορά πλάτους</value></data>
+  <data name="Pad_ResetScreenColorHeight" xml:space="preserve"><value>Επαναφορά ύψους</value></data>
+  <data name="Pad_ResetScreenColorMethod" xml:space="preserve"><value>Επαναφορά χρώματος</value></data>
+  <data name="Pad_ResetScreenColorSaturation" xml:space="preserve"><value>Επαναφορά κορεσμού</value></data>
+  <data name="Pad_ResetScreenColorSmoothing" xml:space="preserve"><value>Επαναφορά εξομάλυνσης</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>Παλέτα</value></data>
   <data name="Pad_Lighting_ColorCycleSmooth" xml:space="preserve"><value>Ομαλή μετάβαση μεταξύ των χρωμάτων της παλέτας</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Προσθήκη χρώματος</value></data>

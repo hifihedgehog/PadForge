@@ -1107,6 +1107,45 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
 
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>Periode</value></data>
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>Kecerahan</value></data>
+  <data name="Pad_Lighting_Mode_ScreenColor" xml:space="preserve"><value>Warna layar</value></data>
+  <data name="Pad_Lighting_ScreenHint" xml:space="preserve"><value>Mengikuti warna di layar Anda. Selama perangkat memakai mode ini, PadForge membaca gambar akhir dari Windows. PadForge tidak menyimpannya dan tidak mengubah apa pun di game mana pun.</value></data>
+  <data name="Pad_Lighting_ScreenDisplay" xml:space="preserve"><value>Layar</value></data>
+  <data name="Pad_Lighting_ScreenDisplayPrimary" xml:space="preserve"><value>Layar utama</value></data>
+  <data name="Pad_Lighting_ScreenDisplayItem" xml:space="preserve"><value>Layar {0} ({1} x {2})</value></data>
+  <data name="Pad_Lighting_ScreenDisplayGone" xml:space="preserve"><value>Layar {0} (tidak terhubung)</value></data>
+  <data name="Pad_Lighting_ScreenArea" xml:space="preserve"><value>Area layar</value></data>
+  <data name="Pad_Lighting_ScreenArea_WholeScreen" xml:space="preserve"><value>Seluruh layar</value></data>
+  <data name="Pad_Lighting_ScreenArea_TopLeft" xml:space="preserve"><value>Kiri atas</value></data>
+  <data name="Pad_Lighting_ScreenArea_Top" xml:space="preserve"><value>Atas</value></data>
+  <data name="Pad_Lighting_ScreenArea_TopRight" xml:space="preserve"><value>Kanan atas</value></data>
+  <data name="Pad_Lighting_ScreenArea_Left" xml:space="preserve"><value>Kiri</value></data>
+  <data name="Pad_Lighting_ScreenArea_Center" xml:space="preserve"><value>Tengah</value></data>
+  <data name="Pad_Lighting_ScreenArea_Right" xml:space="preserve"><value>Kanan</value></data>
+  <data name="Pad_Lighting_ScreenArea_BottomLeft" xml:space="preserve"><value>Kiri bawah</value></data>
+  <data name="Pad_Lighting_ScreenArea_Bottom" xml:space="preserve"><value>Bawah</value></data>
+  <data name="Pad_Lighting_ScreenArea_BottomRight" xml:space="preserve"><value>Kanan bawah</value></data>
+  <data name="Pad_Lighting_ScreenArea_Custom" xml:space="preserve"><value>Kustom</value></data>
+  <data name="Pad_Lighting_ScreenLeft" xml:space="preserve"><value>Tepi kiri</value></data>
+  <data name="Pad_Lighting_ScreenTop" xml:space="preserve"><value>Tepi atas</value></data>
+  <data name="Pad_Lighting_ScreenWidth" xml:space="preserve"><value>Lebar</value></data>
+  <data name="Pad_Lighting_ScreenHeight" xml:space="preserve"><value>Tinggi</value></data>
+  <data name="Pad_Lighting_ScreenMethod" xml:space="preserve"><value>Warna</value></data>
+  <data name="Pad_Lighting_ScreenMethod_MostCommon" xml:space="preserve"><value>Warna terbanyak</value></data>
+  <data name="Pad_Lighting_ScreenMethod_Average" xml:space="preserve"><value>Warna rata-rata</value></data>
+  <data name="Pad_Lighting_ScreenSaturation" xml:space="preserve"><value>Saturasi</value></data>
+  <data name="Pad_Lighting_ScreenSmoothing" xml:space="preserve"><value>Penghalusan</value></data>
+  <data name="Pad_Lighting_ScreenSpread" xml:space="preserve"><value>Bagi layar ke seluruh lampu perangkat ini</value></data>
+  <data name="Pad_Lighting_ScreenWaiting" xml:space="preserve"><value>Windows sedang menahan layar, jadi lampu tetap pada warna terakhirnya.</value></data>
+  <data name="Pad_Lighting_ScreenUnavailable" xml:space="preserve"><value>PadForge tidak dapat membaca layar di PC ini saat ini dan terus mencoba. Simpan cuplikan di Pengaturan merekam alasannya.</value></data>
+  <data name="Pad_ResetScreenColorDisplay" xml:space="preserve"><value>Atur ulang layar</value></data>
+  <data name="Pad_ResetScreenColorArea" xml:space="preserve"><value>Atur ulang area layar</value></data>
+  <data name="Pad_ResetScreenColorLeft" xml:space="preserve"><value>Atur ulang tepi kiri</value></data>
+  <data name="Pad_ResetScreenColorTop" xml:space="preserve"><value>Atur ulang tepi atas</value></data>
+  <data name="Pad_ResetScreenColorWidth" xml:space="preserve"><value>Atur ulang lebar</value></data>
+  <data name="Pad_ResetScreenColorHeight" xml:space="preserve"><value>Atur ulang tinggi</value></data>
+  <data name="Pad_ResetScreenColorMethod" xml:space="preserve"><value>Atur ulang warna</value></data>
+  <data name="Pad_ResetScreenColorSaturation" xml:space="preserve"><value>Atur ulang saturasi</value></data>
+  <data name="Pad_ResetScreenColorSmoothing" xml:space="preserve"><value>Atur ulang penghalusan</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>Palet</value></data>
   <data name="Pad_Lighting_ColorCycleSmooth" xml:space="preserve"><value>Baurkan secara halus antarwarna palet</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Tambah warna</value></data>

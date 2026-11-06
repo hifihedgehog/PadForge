@@ -177,6 +177,14 @@
   <data name="Pad_Lighting_InputReactive_Random" xml:space="preserve"><value>Random Colour per Press</value></data>
   <data name="Pad_Lighting_InputReactive_Fixed" xml:space="preserve"><value>Base Colour per Press</value></data>
   <data name="Pad_Lighting_InputReactive_FixedColor" xml:space="preserve"><value>Per-Press Flash Colour</value></data>
+  <data name="Pad_Lighting_Mode_ScreenColor" xml:space="preserve"><value>Screen Colour</value></data>
+  <data name="Pad_Lighting_ScreenHint" xml:space="preserve"><value>Follows the colours on your screen. While a device uses this mode, PadForge reads the finished picture from Windows. It stores none of it and changes nothing in any game.</value></data>
+  <data name="Pad_Lighting_ScreenArea_Center" xml:space="preserve"><value>Centre</value></data>
+  <data name="Pad_Lighting_ScreenMethod" xml:space="preserve"><value>Colour</value></data>
+  <data name="Pad_Lighting_ScreenMethod_MostCommon" xml:space="preserve"><value>Most Common Colour</value></data>
+  <data name="Pad_Lighting_ScreenMethod_Average" xml:space="preserve"><value>Average Colour</value></data>
+  <data name="Pad_Lighting_ScreenWaiting" xml:space="preserve"><value>Windows is holding the screen for now, so the light keeps its last colour.</value></data>
+  <data name="Pad_ResetScreenColorMethod" xml:space="preserve"><value>Reset Colour</value></data>
 
   <data name="Pad_Lighting_ColorCycleSmooth" xml:space="preserve"><value>Blend Smoothly Between Palette Colours</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Add Colour</value></data>

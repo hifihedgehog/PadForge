@@ -1107,6 +1107,45 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
 
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>Jakso</value></data>
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>Kirkkaus</value></data>
+  <data name="Pad_Lighting_Mode_ScreenColor" xml:space="preserve"><value>Näytön väri</value></data>
+  <data name="Pad_Lighting_ScreenHint" xml:space="preserve"><value>Seuraa näytön värejä. Kun laite käyttää tätä tilaa, PadForge lukee valmiin kuvan Windowsilta. Se ei tallenna siitä mitään eikä muuta mitään missään pelissä.</value></data>
+  <data name="Pad_Lighting_ScreenDisplay" xml:space="preserve"><value>Näyttö</value></data>
+  <data name="Pad_Lighting_ScreenDisplayPrimary" xml:space="preserve"><value>Ensisijainen näyttö</value></data>
+  <data name="Pad_Lighting_ScreenDisplayItem" xml:space="preserve"><value>Näyttö {0} ({1} x {2})</value></data>
+  <data name="Pad_Lighting_ScreenDisplayGone" xml:space="preserve"><value>Näyttö {0} (ei yhdistetty)</value></data>
+  <data name="Pad_Lighting_ScreenArea" xml:space="preserve"><value>Näytön alue</value></data>
+  <data name="Pad_Lighting_ScreenArea_WholeScreen" xml:space="preserve"><value>Koko näyttö</value></data>
+  <data name="Pad_Lighting_ScreenArea_TopLeft" xml:space="preserve"><value>Vasen yläkulma</value></data>
+  <data name="Pad_Lighting_ScreenArea_Top" xml:space="preserve"><value>Ylhäällä</value></data>
+  <data name="Pad_Lighting_ScreenArea_TopRight" xml:space="preserve"><value>Oikea yläkulma</value></data>
+  <data name="Pad_Lighting_ScreenArea_Left" xml:space="preserve"><value>Vasemmalla</value></data>
+  <data name="Pad_Lighting_ScreenArea_Center" xml:space="preserve"><value>Keskellä</value></data>
+  <data name="Pad_Lighting_ScreenArea_Right" xml:space="preserve"><value>Oikealla</value></data>
+  <data name="Pad_Lighting_ScreenArea_BottomLeft" xml:space="preserve"><value>Vasen alakulma</value></data>
+  <data name="Pad_Lighting_ScreenArea_Bottom" xml:space="preserve"><value>Alhaalla</value></data>
+  <data name="Pad_Lighting_ScreenArea_BottomRight" xml:space="preserve"><value>Oikea alakulma</value></data>
+  <data name="Pad_Lighting_ScreenArea_Custom" xml:space="preserve"><value>Mukautettu</value></data>
+  <data name="Pad_Lighting_ScreenLeft" xml:space="preserve"><value>Vasen reuna</value></data>
+  <data name="Pad_Lighting_ScreenTop" xml:space="preserve"><value>Yläreuna</value></data>
+  <data name="Pad_Lighting_ScreenWidth" xml:space="preserve"><value>Leveys</value></data>
+  <data name="Pad_Lighting_ScreenHeight" xml:space="preserve"><value>Korkeus</value></data>
+  <data name="Pad_Lighting_ScreenMethod" xml:space="preserve"><value>Väri</value></data>
+  <data name="Pad_Lighting_ScreenMethod_MostCommon" xml:space="preserve"><value>Yleisin väri</value></data>
+  <data name="Pad_Lighting_ScreenMethod_Average" xml:space="preserve"><value>Keskiväri</value></data>
+  <data name="Pad_Lighting_ScreenSaturation" xml:space="preserve"><value>Värikylläisyys</value></data>
+  <data name="Pad_Lighting_ScreenSmoothing" xml:space="preserve"><value>Tasoitus</value></data>
+  <data name="Pad_Lighting_ScreenSpread" xml:space="preserve"><value>Jaa näyttö tämän laitteen valoille</value></data>
+  <data name="Pad_Lighting_ScreenWaiting" xml:space="preserve"><value>Windows pitää näyttöä toistaiseksi lukittuna, joten valo säilyttää viimeisen värinsä.</value></data>
+  <data name="Pad_Lighting_ScreenUnavailable" xml:space="preserve"><value>PadForge ei voi nyt lukea tämän tietokoneen näyttöä ja yrittää edelleen. Asetukset-sivun Tallenna tilannevedos kirjaa syyn.</value></data>
+  <data name="Pad_ResetScreenColorDisplay" xml:space="preserve"><value>Palauta näyttö</value></data>
+  <data name="Pad_ResetScreenColorArea" xml:space="preserve"><value>Palauta näytön alue</value></data>
+  <data name="Pad_ResetScreenColorLeft" xml:space="preserve"><value>Palauta vasen reuna</value></data>
+  <data name="Pad_ResetScreenColorTop" xml:space="preserve"><value>Palauta yläreuna</value></data>
+  <data name="Pad_ResetScreenColorWidth" xml:space="preserve"><value>Palauta leveys</value></data>
+  <data name="Pad_ResetScreenColorHeight" xml:space="preserve"><value>Palauta korkeus</value></data>
+  <data name="Pad_ResetScreenColorMethod" xml:space="preserve"><value>Palauta väri</value></data>
+  <data name="Pad_ResetScreenColorSaturation" xml:space="preserve"><value>Palauta värikylläisyys</value></data>
+  <data name="Pad_ResetScreenColorSmoothing" xml:space="preserve"><value>Palauta tasoitus</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>Paletti</value></data>
   <data name="Pad_Lighting_ColorCycleSmooth" xml:space="preserve"><value>Sekoita paletin värejä pehmeästi</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Lisää väri</value></data>

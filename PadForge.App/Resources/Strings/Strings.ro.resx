@@ -1107,6 +1107,45 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
 
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>Perioadă</value></data>
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>Luminozitate</value></data>
+  <data name="Pad_Lighting_Mode_ScreenColor" xml:space="preserve"><value>Culoarea ecranului</value></data>
+  <data name="Pad_Lighting_ScreenHint" xml:space="preserve"><value>Urmărește culorile de pe ecran. Cât timp un dispozitiv folosește acest mod, PadForge citește imaginea finală de la Windows. Nu stochează nimic din ea și nu modifică nimic în vreun joc.</value></data>
+  <data name="Pad_Lighting_ScreenDisplay" xml:space="preserve"><value>Afișaj</value></data>
+  <data name="Pad_Lighting_ScreenDisplayPrimary" xml:space="preserve"><value>Afișaj principal</value></data>
+  <data name="Pad_Lighting_ScreenDisplayItem" xml:space="preserve"><value>Afișaj {0} ({1} x {2})</value></data>
+  <data name="Pad_Lighting_ScreenDisplayGone" xml:space="preserve"><value>Afișaj {0} (neconectat)</value></data>
+  <data name="Pad_Lighting_ScreenArea" xml:space="preserve"><value>Zona ecranului</value></data>
+  <data name="Pad_Lighting_ScreenArea_WholeScreen" xml:space="preserve"><value>Tot ecranul</value></data>
+  <data name="Pad_Lighting_ScreenArea_TopLeft" xml:space="preserve"><value>Stânga sus</value></data>
+  <data name="Pad_Lighting_ScreenArea_Top" xml:space="preserve"><value>Sus</value></data>
+  <data name="Pad_Lighting_ScreenArea_TopRight" xml:space="preserve"><value>Dreapta sus</value></data>
+  <data name="Pad_Lighting_ScreenArea_Left" xml:space="preserve"><value>Stânga</value></data>
+  <data name="Pad_Lighting_ScreenArea_Center" xml:space="preserve"><value>Centru</value></data>
+  <data name="Pad_Lighting_ScreenArea_Right" xml:space="preserve"><value>Dreapta</value></data>
+  <data name="Pad_Lighting_ScreenArea_BottomLeft" xml:space="preserve"><value>Stânga jos</value></data>
+  <data name="Pad_Lighting_ScreenArea_Bottom" xml:space="preserve"><value>Jos</value></data>
+  <data name="Pad_Lighting_ScreenArea_BottomRight" xml:space="preserve"><value>Dreapta jos</value></data>
+  <data name="Pad_Lighting_ScreenArea_Custom" xml:space="preserve"><value>Personalizat</value></data>
+  <data name="Pad_Lighting_ScreenLeft" xml:space="preserve"><value>Margine stângă</value></data>
+  <data name="Pad_Lighting_ScreenTop" xml:space="preserve"><value>Margine superioară</value></data>
+  <data name="Pad_Lighting_ScreenWidth" xml:space="preserve"><value>Lățime</value></data>
+  <data name="Pad_Lighting_ScreenHeight" xml:space="preserve"><value>Înălțime</value></data>
+  <data name="Pad_Lighting_ScreenMethod" xml:space="preserve"><value>Culoare</value></data>
+  <data name="Pad_Lighting_ScreenMethod_MostCommon" xml:space="preserve"><value>Cea mai frecventă culoare</value></data>
+  <data name="Pad_Lighting_ScreenMethod_Average" xml:space="preserve"><value>Culoare medie</value></data>
+  <data name="Pad_Lighting_ScreenSaturation" xml:space="preserve"><value>Saturație</value></data>
+  <data name="Pad_Lighting_ScreenSmoothing" xml:space="preserve"><value>Netezire</value></data>
+  <data name="Pad_Lighting_ScreenSpread" xml:space="preserve"><value>Distribuie ecranul pe luminile acestui dispozitiv</value></data>
+  <data name="Pad_Lighting_ScreenWaiting" xml:space="preserve"><value>Windows reține ecranul deocamdată, așa că lumina păstrează ultima culoare.</value></data>
+  <data name="Pad_Lighting_ScreenUnavailable" xml:space="preserve"><value>PadForge nu poate citi acum ecranul de pe acest PC și continuă să încerce. Salvare instantaneu din Setări înregistrează motivul.</value></data>
+  <data name="Pad_ResetScreenColorDisplay" xml:space="preserve"><value>Resetare afișaj</value></data>
+  <data name="Pad_ResetScreenColorArea" xml:space="preserve"><value>Resetare zonă ecran</value></data>
+  <data name="Pad_ResetScreenColorLeft" xml:space="preserve"><value>Resetare margine stângă</value></data>
+  <data name="Pad_ResetScreenColorTop" xml:space="preserve"><value>Resetare margine superioară</value></data>
+  <data name="Pad_ResetScreenColorWidth" xml:space="preserve"><value>Resetare lățime</value></data>
+  <data name="Pad_ResetScreenColorHeight" xml:space="preserve"><value>Resetare înălțime</value></data>
+  <data name="Pad_ResetScreenColorMethod" xml:space="preserve"><value>Resetare culoare</value></data>
+  <data name="Pad_ResetScreenColorSaturation" xml:space="preserve"><value>Resetare saturație</value></data>
+  <data name="Pad_ResetScreenColorSmoothing" xml:space="preserve"><value>Resetare netezire</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>Paletă</value></data>
   <data name="Pad_Lighting_ColorCycleSmooth" xml:space="preserve"><value>Tranziție lină între culorile paletei</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Adăugare culoare</value></data>

@@ -1107,6 +1107,45 @@
 
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>अवधि</value></data>
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>चमक</value></data>
+  <data name="Pad_Lighting_Mode_ScreenColor" xml:space="preserve"><value>स्क्रिन रङ</value></data>
+  <data name="Pad_Lighting_ScreenHint" xml:space="preserve"><value>तपाईंको स्क्रिनका रङहरू पछ्याउँछ। कुनै यन्त्रले यो मोड प्रयोग गर्दा, PadForge ले Windows बाट तयार चित्र पढ्छ। यसले त्यसको केही पनि भण्डारण गर्दैन र कुनै पनि गेममा केही परिवर्तन गर्दैन।</value></data>
+  <data name="Pad_Lighting_ScreenDisplay" xml:space="preserve"><value>डिस्प्ले</value></data>
+  <data name="Pad_Lighting_ScreenDisplayPrimary" xml:space="preserve"><value>प्राथमिक डिस्प्ले</value></data>
+  <data name="Pad_Lighting_ScreenDisplayItem" xml:space="preserve"><value>डिस्प्ले {0} ({1} x {2})</value></data>
+  <data name="Pad_Lighting_ScreenDisplayGone" xml:space="preserve"><value>डिस्प्ले {0} (जडान छैन)</value></data>
+  <data name="Pad_Lighting_ScreenArea" xml:space="preserve"><value>स्क्रिन क्षेत्र</value></data>
+  <data name="Pad_Lighting_ScreenArea_WholeScreen" xml:space="preserve"><value>पूरा स्क्रिन</value></data>
+  <data name="Pad_Lighting_ScreenArea_TopLeft" xml:space="preserve"><value>माथि बायाँ</value></data>
+  <data name="Pad_Lighting_ScreenArea_Top" xml:space="preserve"><value>माथि</value></data>
+  <data name="Pad_Lighting_ScreenArea_TopRight" xml:space="preserve"><value>माथि दायाँ</value></data>
+  <data name="Pad_Lighting_ScreenArea_Left" xml:space="preserve"><value>बायाँ</value></data>
+  <data name="Pad_Lighting_ScreenArea_Center" xml:space="preserve"><value>केन्द्र</value></data>
+  <data name="Pad_Lighting_ScreenArea_Right" xml:space="preserve"><value>दायाँ</value></data>
+  <data name="Pad_Lighting_ScreenArea_BottomLeft" xml:space="preserve"><value>तल बायाँ</value></data>
+  <data name="Pad_Lighting_ScreenArea_Bottom" xml:space="preserve"><value>तल</value></data>
+  <data name="Pad_Lighting_ScreenArea_BottomRight" xml:space="preserve"><value>तल दायाँ</value></data>
+  <data name="Pad_Lighting_ScreenArea_Custom" xml:space="preserve"><value>अनुकूलन</value></data>
+  <data name="Pad_Lighting_ScreenLeft" xml:space="preserve"><value>बायाँ किनारा</value></data>
+  <data name="Pad_Lighting_ScreenTop" xml:space="preserve"><value>माथिल्लो किनारा</value></data>
+  <data name="Pad_Lighting_ScreenWidth" xml:space="preserve"><value>चौडाइ</value></data>
+  <data name="Pad_Lighting_ScreenHeight" xml:space="preserve"><value>उचाइ</value></data>
+  <data name="Pad_Lighting_ScreenMethod" xml:space="preserve"><value>रङ</value></data>
+  <data name="Pad_Lighting_ScreenMethod_MostCommon" xml:space="preserve"><value>सबैभन्दा बढी देखिने रङ</value></data>
+  <data name="Pad_Lighting_ScreenMethod_Average" xml:space="preserve"><value>औसत रङ</value></data>
+  <data name="Pad_Lighting_ScreenSaturation" xml:space="preserve"><value>संतृप्ति</value></data>
+  <data name="Pad_Lighting_ScreenSmoothing" xml:space="preserve"><value>स्मूदिङ</value></data>
+  <data name="Pad_Lighting_ScreenSpread" xml:space="preserve"><value>स्क्रिनलाई यस यन्त्रका बत्तीहरूमा फैलाउनुहोस्</value></data>
+  <data name="Pad_Lighting_ScreenWaiting" xml:space="preserve"><value>Windows ले अहिलेलाई स्क्रिन रोकेको छ, त्यसैले बत्तीले आफ्नो अन्तिम रङ कायम राख्छ।</value></data>
+  <data name="Pad_Lighting_ScreenUnavailable" xml:space="preserve"><value>PadForge ले अहिले यो PC मा स्क्रिन पढ्न सक्दैन र प्रयास गरिरहन्छ। सेटिङहरूमा रहेको “स्न्यापसट सेभ गर्नुहोस्” ले कारण रेकर्ड गर्छ।</value></data>
+  <data name="Pad_ResetScreenColorDisplay" xml:space="preserve"><value>डिस्प्ले रिसेट गर्नुहोस्</value></data>
+  <data name="Pad_ResetScreenColorArea" xml:space="preserve"><value>स्क्रिन क्षेत्र रिसेट गर्नुहोस्</value></data>
+  <data name="Pad_ResetScreenColorLeft" xml:space="preserve"><value>बायाँ किनारा रिसेट गर्नुहोस्</value></data>
+  <data name="Pad_ResetScreenColorTop" xml:space="preserve"><value>माथिल्लो किनारा रिसेट गर्नुहोस्</value></data>
+  <data name="Pad_ResetScreenColorWidth" xml:space="preserve"><value>चौडाइ रिसेट गर्नुहोस्</value></data>
+  <data name="Pad_ResetScreenColorHeight" xml:space="preserve"><value>उचाइ रिसेट गर्नुहोस्</value></data>
+  <data name="Pad_ResetScreenColorMethod" xml:space="preserve"><value>रङ रिसेट गर्नुहोस्</value></data>
+  <data name="Pad_ResetScreenColorSaturation" xml:space="preserve"><value>संतृप्ति रिसेट गर्नुहोस्</value></data>
+  <data name="Pad_ResetScreenColorSmoothing" xml:space="preserve"><value>स्मूदिङ रिसेट गर्नुहोस्</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>प्यालेट</value></data>
   <data name="Pad_Lighting_ColorCycleSmooth" xml:space="preserve"><value>प्यालेटका रङहरूबीच सहज रूपमा मिसाउनुहोस्</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>रङ थप्नुहोस्</value></data>

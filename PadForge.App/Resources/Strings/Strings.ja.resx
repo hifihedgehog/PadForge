@@ -1921,6 +1921,45 @@
   <data name="Pad_Lighting_Mode_InputReactiveCycle" xml:space="preserve"><value>インプットリアクティブ：パレットを巡回</value></data>
   <data name="Pad_Lighting_Mode_InputReactiveFixed" xml:space="preserve"><value>インプットリアクティブ：押下ごとに単色</value></data>
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>明るさ</value></data>
+  <data name="Pad_Lighting_Mode_ScreenColor" xml:space="preserve"><value>画面の色</value></data>
+  <data name="Pad_Lighting_ScreenHint" xml:space="preserve"><value>画面の色に追従します。デバイスがこのモードを使用している間、PadForge は Windows から完成した映像を読み取ります。保存はせず、ゲームには一切変更を加えません。</value></data>
+  <data name="Pad_Lighting_ScreenDisplay" xml:space="preserve"><value>ディスプレイ</value></data>
+  <data name="Pad_Lighting_ScreenDisplayPrimary" xml:space="preserve"><value>プライマリディスプレイ</value></data>
+  <data name="Pad_Lighting_ScreenDisplayItem" xml:space="preserve"><value>ディスプレイ {0} ({1} x {2})</value></data>
+  <data name="Pad_Lighting_ScreenDisplayGone" xml:space="preserve"><value>ディスプレイ {0} (未接続)</value></data>
+  <data name="Pad_Lighting_ScreenArea" xml:space="preserve"><value>画面領域</value></data>
+  <data name="Pad_Lighting_ScreenArea_WholeScreen" xml:space="preserve"><value>画面全体</value></data>
+  <data name="Pad_Lighting_ScreenArea_TopLeft" xml:space="preserve"><value>左上</value></data>
+  <data name="Pad_Lighting_ScreenArea_Top" xml:space="preserve"><value>上</value></data>
+  <data name="Pad_Lighting_ScreenArea_TopRight" xml:space="preserve"><value>右上</value></data>
+  <data name="Pad_Lighting_ScreenArea_Left" xml:space="preserve"><value>左</value></data>
+  <data name="Pad_Lighting_ScreenArea_Center" xml:space="preserve"><value>中央</value></data>
+  <data name="Pad_Lighting_ScreenArea_Right" xml:space="preserve"><value>右</value></data>
+  <data name="Pad_Lighting_ScreenArea_BottomLeft" xml:space="preserve"><value>左下</value></data>
+  <data name="Pad_Lighting_ScreenArea_Bottom" xml:space="preserve"><value>下</value></data>
+  <data name="Pad_Lighting_ScreenArea_BottomRight" xml:space="preserve"><value>右下</value></data>
+  <data name="Pad_Lighting_ScreenArea_Custom" xml:space="preserve"><value>カスタム</value></data>
+  <data name="Pad_Lighting_ScreenLeft" xml:space="preserve"><value>左端</value></data>
+  <data name="Pad_Lighting_ScreenTop" xml:space="preserve"><value>上端</value></data>
+  <data name="Pad_Lighting_ScreenWidth" xml:space="preserve"><value>幅</value></data>
+  <data name="Pad_Lighting_ScreenHeight" xml:space="preserve"><value>高さ</value></data>
+  <data name="Pad_Lighting_ScreenMethod" xml:space="preserve"><value>色</value></data>
+  <data name="Pad_Lighting_ScreenMethod_MostCommon" xml:space="preserve"><value>最も多い色</value></data>
+  <data name="Pad_Lighting_ScreenMethod_Average" xml:space="preserve"><value>平均色</value></data>
+  <data name="Pad_Lighting_ScreenSaturation" xml:space="preserve"><value>彩度</value></data>
+  <data name="Pad_Lighting_ScreenSmoothing" xml:space="preserve"><value>スムージング</value></data>
+  <data name="Pad_Lighting_ScreenSpread" xml:space="preserve"><value>画面をこのデバイスのライト全体に広げる</value></data>
+  <data name="Pad_Lighting_ScreenWaiting" xml:space="preserve"><value>Windows が一時的に画面を保護しているため、ライトは最後の色を保持します。</value></data>
+  <data name="Pad_Lighting_ScreenUnavailable" xml:space="preserve"><value>PadForge はこの PC の画面を現在読み取れず、再試行を続けています。設定の「スナップショットを保存」で原因を記録できます。</value></data>
+  <data name="Pad_ResetScreenColorDisplay" xml:space="preserve"><value>ディスプレイをリセット</value></data>
+  <data name="Pad_ResetScreenColorArea" xml:space="preserve"><value>画面領域をリセット</value></data>
+  <data name="Pad_ResetScreenColorLeft" xml:space="preserve"><value>左端をリセット</value></data>
+  <data name="Pad_ResetScreenColorTop" xml:space="preserve"><value>上端をリセット</value></data>
+  <data name="Pad_ResetScreenColorWidth" xml:space="preserve"><value>幅をリセット</value></data>
+  <data name="Pad_ResetScreenColorHeight" xml:space="preserve"><value>高さをリセット</value></data>
+  <data name="Pad_ResetScreenColorMethod" xml:space="preserve"><value>色をリセット</value></data>
+  <data name="Pad_ResetScreenColorSaturation" xml:space="preserve"><value>彩度をリセット</value></data>
+  <data name="Pad_ResetScreenColorSmoothing" xml:space="preserve"><value>スムージングをリセット</value></data>
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>周期</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>パレット</value></data>
   <data name="Pad_Lighting_ColorCycleSmooth" xml:space="preserve"><value>パレットの色をスムーズにブレンド</value></data>

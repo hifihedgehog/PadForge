@@ -202,6 +202,7 @@ namespace PadForge.Tests
         private const string OpenRgb = Input + "Peripherals/OpenRgbClient.cs";
         private const string OpenRgbPort = Input + "Peripherals/OpenRgbServerPort.cs";
         private const string Icue = Services + "IcueSdkNative.cs";
+        private const string ScreenCapture = Input + "ScreenColor/ScreenColorSource.cs";
 
         private const string RefusesHost = "if (PadForge.Engine.Common.OutboundNetworkGate.RefusesHost(host))";
         private const string VendorRefuses = "if (PadForge.Engine.Common.VendorProgramGate.Refuses";
@@ -238,6 +239,7 @@ namespace PadForge.Tests
             (OpenRgb, "OpenRgbTcpLink"),
             (OpenRgbPort, "OpenRgbServerPort"),
             (Icue, "IcueSdkNative"),
+            (ScreenCapture, "ScreenColorSource"),
         };
 
         private const string Flag = "OffLimitsForTest";
@@ -282,6 +284,7 @@ namespace PadForge.Tests
             Assert.True(OpenRgbTcpLink.OffLimitsForTest);
             Assert.True(OpenRgbServerPort.OffLimitsForTest);
             Assert.True(IcueSdkNative.OffLimitsForTest);
+            Assert.True(PadForge.Common.Input.ScreenColor.ScreenColorSource.OffLimitsForTest);
         }
 
         /// <summary>Each flag is a plain field that starts false, and no

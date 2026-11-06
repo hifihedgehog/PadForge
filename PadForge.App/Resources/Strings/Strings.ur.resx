@@ -1107,6 +1107,45 @@
 
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>چکر کا وقت</value></data>
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>چمک</value></data>
+  <data name="Pad_Lighting_Mode_ScreenColor" xml:space="preserve"><value>اسکرین کا رنگ</value></data>
+  <data name="Pad_Lighting_ScreenHint" xml:space="preserve"><value>آپ کی اسکرین کے رنگوں کی پیروی کرتا ہے۔ جب کوئی آلہ اس موڈ میں ہو تو PadForge، Windows سے تیار شدہ تصویر پڑھتا ہے۔ وہ اس میں سے کچھ بھی محفوظ نہیں کرتا اور کسی گیم میں کچھ نہیں بدلتا۔</value></data>
+  <data name="Pad_Lighting_ScreenDisplay" xml:space="preserve"><value>ڈسپلے</value></data>
+  <data name="Pad_Lighting_ScreenDisplayPrimary" xml:space="preserve"><value>مرکزی ڈسپلے</value></data>
+  <data name="Pad_Lighting_ScreenDisplayItem" xml:space="preserve"><value>ڈسپلے {0} ({1} x {2})</value></data>
+  <data name="Pad_Lighting_ScreenDisplayGone" xml:space="preserve"><value>ڈسپلے {0} (منسلک نہیں)</value></data>
+  <data name="Pad_Lighting_ScreenArea" xml:space="preserve"><value>اسکرین کا حصہ</value></data>
+  <data name="Pad_Lighting_ScreenArea_WholeScreen" xml:space="preserve"><value>پوری اسکرین</value></data>
+  <data name="Pad_Lighting_ScreenArea_TopLeft" xml:space="preserve"><value>اوپر بائیں</value></data>
+  <data name="Pad_Lighting_ScreenArea_Top" xml:space="preserve"><value>اوپر</value></data>
+  <data name="Pad_Lighting_ScreenArea_TopRight" xml:space="preserve"><value>اوپر دائیں</value></data>
+  <data name="Pad_Lighting_ScreenArea_Left" xml:space="preserve"><value>بائیں</value></data>
+  <data name="Pad_Lighting_ScreenArea_Center" xml:space="preserve"><value>مرکز</value></data>
+  <data name="Pad_Lighting_ScreenArea_Right" xml:space="preserve"><value>دائیں</value></data>
+  <data name="Pad_Lighting_ScreenArea_BottomLeft" xml:space="preserve"><value>نیچے بائیں</value></data>
+  <data name="Pad_Lighting_ScreenArea_Bottom" xml:space="preserve"><value>نیچے</value></data>
+  <data name="Pad_Lighting_ScreenArea_BottomRight" xml:space="preserve"><value>نیچے دائیں</value></data>
+  <data name="Pad_Lighting_ScreenArea_Custom" xml:space="preserve"><value>حسبِ ضرورت</value></data>
+  <data name="Pad_Lighting_ScreenLeft" xml:space="preserve"><value>بایاں کنارہ</value></data>
+  <data name="Pad_Lighting_ScreenTop" xml:space="preserve"><value>اوپری کنارہ</value></data>
+  <data name="Pad_Lighting_ScreenWidth" xml:space="preserve"><value>چوڑائی</value></data>
+  <data name="Pad_Lighting_ScreenHeight" xml:space="preserve"><value>اونچائی</value></data>
+  <data name="Pad_Lighting_ScreenMethod" xml:space="preserve"><value>رنگ</value></data>
+  <data name="Pad_Lighting_ScreenMethod_MostCommon" xml:space="preserve"><value>سب سے عام رنگ</value></data>
+  <data name="Pad_Lighting_ScreenMethod_Average" xml:space="preserve"><value>اوسط رنگ</value></data>
+  <data name="Pad_Lighting_ScreenSaturation" xml:space="preserve"><value>سیچوریشن</value></data>
+  <data name="Pad_Lighting_ScreenSmoothing" xml:space="preserve"><value>ہموار کاری</value></data>
+  <data name="Pad_Lighting_ScreenSpread" xml:space="preserve"><value>اسکرین کو اس آلے کی لائٹس پر پھیلائیں</value></data>
+  <data name="Pad_Lighting_ScreenWaiting" xml:space="preserve"><value>Windows فی الحال اسکرین روکے ہوئے ہے، اس لیے لائٹ اپنا آخری رنگ برقرار رکھتی ہے۔</value></data>
+  <data name="Pad_Lighting_ScreenUnavailable" xml:space="preserve"><value>PadForge اس PC پر اس وقت اسکرین نہیں پڑھ سکتا اور کوشش جاری رکھتا ہے۔ ترتیبات میں "اسنیپ شاٹ محفوظ کریں" وجہ درج کرتا ہے۔</value></data>
+  <data name="Pad_ResetScreenColorDisplay" xml:space="preserve"><value>ڈسپلے ری سیٹ کریں</value></data>
+  <data name="Pad_ResetScreenColorArea" xml:space="preserve"><value>اسکرین کا حصہ ری سیٹ کریں</value></data>
+  <data name="Pad_ResetScreenColorLeft" xml:space="preserve"><value>بایاں کنارہ ری سیٹ کریں</value></data>
+  <data name="Pad_ResetScreenColorTop" xml:space="preserve"><value>اوپری کنارہ ری سیٹ کریں</value></data>
+  <data name="Pad_ResetScreenColorWidth" xml:space="preserve"><value>چوڑائی ری سیٹ کریں</value></data>
+  <data name="Pad_ResetScreenColorHeight" xml:space="preserve"><value>اونچائی ری سیٹ کریں</value></data>
+  <data name="Pad_ResetScreenColorMethod" xml:space="preserve"><value>رنگ ری سیٹ کریں</value></data>
+  <data name="Pad_ResetScreenColorSaturation" xml:space="preserve"><value>سیچوریشن ری سیٹ کریں</value></data>
+  <data name="Pad_ResetScreenColorSmoothing" xml:space="preserve"><value>ہموار کاری ری سیٹ کریں</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>پیلیٹ</value></data>
   <data name="Pad_Lighting_ColorCycleSmooth" xml:space="preserve"><value>پیلیٹ کے رنگوں کے درمیان ہمواری سے بدلیں</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>رنگ شامل کریں</value></data>

@@ -43,10 +43,15 @@ namespace PadForge.Common.Input.Peripherals
         /// none, and never an empty frame.</summary>
         public KeyFrame Under { get; }
 
+        /// <summary>A picture the device's lights spread across (#559): what a
+        /// light shows when no frame gives it a color and no frame sets a
+        /// background. Read from the top frame.</summary>
+        public ScreenPicture Picture { get; }
+
         /// <summary>True when the frame changes nothing: no light color and
         /// the claim's own background.</summary>
         public bool IsEmpty => Keys.Count == 0 && Groups.Count == 0 && Lights.Count == 0 && Background == null
-            && Under == null;
+            && Under == null && Picture == null;
 
         /// <summary>True when this frame or one beneath it colors a single
         /// light by its address.</summary>
@@ -60,22 +65,28 @@ namespace PadForge.Common.Input.Peripherals
         /// none.</summary>
         public KeyFrame WithoutLights
             => !HasLights ? this
-                : _withoutLights ??= new KeyFrame(Keys, Groups, null, Background, Under?.WithoutLights);
+                : _withoutLights ??= new KeyFrame(Keys, Groups, null, Background, Under?.WithoutLights, Picture);
+
+        /// <summary>The same frame with a picture under its colors.</summary>
+        public KeyFrame WithPicture(ScreenPicture picture)
+            => new(Keys, Groups, Lights, Background, Under, picture);
 
         public KeyFrame(IReadOnlyDictionary<ushort, int> keys, IReadOnlyDictionary<string, int> groups,
-            IReadOnlyDictionary<int, int> lights, int? background, KeyFrame under = null)
+            IReadOnlyDictionary<int, int> lights, int? background, KeyFrame under = null, ScreenPicture picture = null)
         {
             Keys = Copy(keys, NoKeys);
             Groups = Copy(groups, NoGroups, StringComparer.Ordinal);
             Lights = Copy(lights, NoLights);
             Background = background.HasValue ? background.Value & 0xFFFFFF : null;
             Under = under is { IsEmpty: false } ? under : null;
+            Picture = picture;
             var hash = new HashCode();
             foreach (var pair in Keys.OrderBy(p => p.Key)) { hash.Add(pair.Key); hash.Add(pair.Value); }
             foreach (var pair in Groups.OrderBy(p => p.Key, StringComparer.Ordinal)) { hash.Add(pair.Key); hash.Add(pair.Value); }
             foreach (var pair in Lights.OrderBy(p => p.Key)) { hash.Add(pair.Key); hash.Add(pair.Value); }
             hash.Add(Background);
             hash.Add(Under?.GetHashCode() ?? 0);
+            hash.Add(Picture?.GetHashCode() ?? 0);
             _hash = hash.ToHashCode();
         }
 
@@ -93,7 +104,8 @@ namespace PadForge.Common.Input.Peripherals
             if (ReferenceEquals(this, other)) return true;
             if (other is null || other._hash != _hash || other.Background != Background) return false;
             return Same(Keys, other.Keys) && Same(Groups, other.Groups) && Same(Lights, other.Lights)
-                && (Under is null ? other.Under is null : Under.Equals(other.Under));
+                && (Under is null ? other.Under is null : Under.Equals(other.Under))
+                && (Picture is null ? other.Picture is null : Picture.Equals(other.Picture));
         }
 
         private static bool Same<TKey>(IReadOnlyDictionary<TKey, int> a, IReadOnlyDictionary<TKey, int> b)
@@ -127,7 +139,10 @@ namespace PadForge.Common.Input.Peripherals
         /// that the background: the first a frame sets, from the top, and
         /// <paramref name="background"/> otherwise. A key light whose key
         /// no source named takes the background, as a key no frame names
-        /// does.
+        /// does. A picture (<see cref="KeyFrame.Picture"/>) stands in for
+        /// <paramref name="background"/> on a light with a place on the device
+        /// (<see cref="LightPlacement"/>), and a background a frame sets still
+        /// covers it.
         /// </summary>
         public static int[] Render(LightMap map, int background, KeyFrame frame)
         {
@@ -135,9 +150,22 @@ namespace PadForge.Common.Input.Peripherals
             var colors = new int[lights.Count];
             frame ??= KeyFrame.Empty;
             int fill = Fill(background, frame);
+            var picture = lights.Count > 0 && !SetsBackground(frame) ? frame.Picture : null;
+            var places = picture != null ? LightPlacement.Of(map) : null;
             for (int i = 0; i < lights.Count; i++)
-                colors[i] = ColorOf(frame, lights[i]) ?? fill;
+            {
+                if (ColorOf(frame, lights[i]) is int own) colors[i] = own;
+                else if (picture != null && !float.IsNaN(places[i * 2])) colors[i] = picture.At(places[i * 2], places[i * 2 + 1]);
+                else colors[i] = fill;
+            }
             return colors;
+        }
+
+        private static bool SetsBackground(KeyFrame frame)
+        {
+            for (var f = frame; f != null; f = f.Under)
+                if (f.Background != null) return true;
+            return false;
         }
 
         /// <summary>The color a light the frames give none takes: the

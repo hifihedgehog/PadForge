@@ -1107,6 +1107,45 @@
 
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>คาบเวลา</value></data>
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>ความสว่าง</value></data>
+  <data name="Pad_Lighting_Mode_ScreenColor" xml:space="preserve"><value>สีหน้าจอ</value></data>
+  <data name="Pad_Lighting_ScreenHint" xml:space="preserve"><value>ไฟตามสีบนหน้าจอของคุณ ขณะที่อุปกรณ์ใช้โหมดนี้ PadForge จะอ่านภาพสำเร็จรูปจาก Windows โดยไม่เก็บอะไรไว้เลยและไม่เปลี่ยนแปลงสิ่งใดในเกม</value></data>
+  <data name="Pad_Lighting_ScreenDisplay" xml:space="preserve"><value>จอภาพ</value></data>
+  <data name="Pad_Lighting_ScreenDisplayPrimary" xml:space="preserve"><value>จอภาพหลัก</value></data>
+  <data name="Pad_Lighting_ScreenDisplayItem" xml:space="preserve"><value>จอภาพ {0} ({1} x {2})</value></data>
+  <data name="Pad_Lighting_ScreenDisplayGone" xml:space="preserve"><value>จอภาพ {0} (ไม่ได้เชื่อมต่อ)</value></data>
+  <data name="Pad_Lighting_ScreenArea" xml:space="preserve"><value>พื้นที่หน้าจอ</value></data>
+  <data name="Pad_Lighting_ScreenArea_WholeScreen" xml:space="preserve"><value>ทั้งหน้าจอ</value></data>
+  <data name="Pad_Lighting_ScreenArea_TopLeft" xml:space="preserve"><value>บนซ้าย</value></data>
+  <data name="Pad_Lighting_ScreenArea_Top" xml:space="preserve"><value>บน</value></data>
+  <data name="Pad_Lighting_ScreenArea_TopRight" xml:space="preserve"><value>บนขวา</value></data>
+  <data name="Pad_Lighting_ScreenArea_Left" xml:space="preserve"><value>ซ้าย</value></data>
+  <data name="Pad_Lighting_ScreenArea_Center" xml:space="preserve"><value>กึ่งกลาง</value></data>
+  <data name="Pad_Lighting_ScreenArea_Right" xml:space="preserve"><value>ขวา</value></data>
+  <data name="Pad_Lighting_ScreenArea_BottomLeft" xml:space="preserve"><value>ล่างซ้าย</value></data>
+  <data name="Pad_Lighting_ScreenArea_Bottom" xml:space="preserve"><value>ล่าง</value></data>
+  <data name="Pad_Lighting_ScreenArea_BottomRight" xml:space="preserve"><value>ล่างขวา</value></data>
+  <data name="Pad_Lighting_ScreenArea_Custom" xml:space="preserve"><value>กำหนดเอง</value></data>
+  <data name="Pad_Lighting_ScreenLeft" xml:space="preserve"><value>ขอบซ้าย</value></data>
+  <data name="Pad_Lighting_ScreenTop" xml:space="preserve"><value>ขอบบน</value></data>
+  <data name="Pad_Lighting_ScreenWidth" xml:space="preserve"><value>ความกว้าง</value></data>
+  <data name="Pad_Lighting_ScreenHeight" xml:space="preserve"><value>ความสูง</value></data>
+  <data name="Pad_Lighting_ScreenMethod" xml:space="preserve"><value>สี</value></data>
+  <data name="Pad_Lighting_ScreenMethod_MostCommon" xml:space="preserve"><value>สีที่พบมากที่สุด</value></data>
+  <data name="Pad_Lighting_ScreenMethod_Average" xml:space="preserve"><value>สีเฉลี่ย</value></data>
+  <data name="Pad_Lighting_ScreenSaturation" xml:space="preserve"><value>ความอิ่มสี</value></data>
+  <data name="Pad_Lighting_ScreenSmoothing" xml:space="preserve"><value>การปรับเรียบ</value></data>
+  <data name="Pad_Lighting_ScreenSpread" xml:space="preserve"><value>กระจายหน้าจอไปทั่วไฟของอุปกรณ์นี้</value></data>
+  <data name="Pad_Lighting_ScreenWaiting" xml:space="preserve"><value>Windows กำลังกันหน้าจอไว้ชั่วคราว ไฟจึงคงสีล่าสุดไว้</value></data>
+  <data name="Pad_Lighting_ScreenUnavailable" xml:space="preserve"><value>ตอนนี้ PadForge อ่านหน้าจอบนพีซีเครื่องนี้ไม่ได้ และจะลองต่อไป “บันทึกสแนปช็อต” ในการตั้งค่าจะบันทึกสาเหตุไว้</value></data>
+  <data name="Pad_ResetScreenColorDisplay" xml:space="preserve"><value>รีเซ็ตจอภาพ</value></data>
+  <data name="Pad_ResetScreenColorArea" xml:space="preserve"><value>รีเซ็ตพื้นที่หน้าจอ</value></data>
+  <data name="Pad_ResetScreenColorLeft" xml:space="preserve"><value>รีเซ็ตขอบซ้าย</value></data>
+  <data name="Pad_ResetScreenColorTop" xml:space="preserve"><value>รีเซ็ตขอบบน</value></data>
+  <data name="Pad_ResetScreenColorWidth" xml:space="preserve"><value>รีเซ็ตความกว้าง</value></data>
+  <data name="Pad_ResetScreenColorHeight" xml:space="preserve"><value>รีเซ็ตความสูง</value></data>
+  <data name="Pad_ResetScreenColorMethod" xml:space="preserve"><value>รีเซ็ตสี</value></data>
+  <data name="Pad_ResetScreenColorSaturation" xml:space="preserve"><value>รีเซ็ตความอิ่มสี</value></data>
+  <data name="Pad_ResetScreenColorSmoothing" xml:space="preserve"><value>รีเซ็ตการปรับเรียบ</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>จานสี</value></data>
   <data name="Pad_Lighting_ColorCycleSmooth" xml:space="preserve"><value>ไล่สีระหว่างสีในจานสีอย่างนุ่มนวล</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>เพิ่มสี</value></data>

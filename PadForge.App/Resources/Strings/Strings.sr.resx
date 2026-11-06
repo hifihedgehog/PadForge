@@ -1107,6 +1107,45 @@
 
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>Период</value></data>
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>Осветљеност</value></data>
+  <data name="Pad_Lighting_Mode_ScreenColor" xml:space="preserve"><value>Боја екрана</value></data>
+  <data name="Pad_Lighting_ScreenHint" xml:space="preserve"><value>Прати боје на вашем екрану. Док уређај користи овај режим, PadForge чита готову слику из система Windows. Ништа од тога не чува и не мења ништа ни у једној игри.</value></data>
+  <data name="Pad_Lighting_ScreenDisplay" xml:space="preserve"><value>Екран</value></data>
+  <data name="Pad_Lighting_ScreenDisplayPrimary" xml:space="preserve"><value>Главни екран</value></data>
+  <data name="Pad_Lighting_ScreenDisplayItem" xml:space="preserve"><value>Екран {0} ({1} x {2})</value></data>
+  <data name="Pad_Lighting_ScreenDisplayGone" xml:space="preserve"><value>Екран {0} (није повезан)</value></data>
+  <data name="Pad_Lighting_ScreenArea" xml:space="preserve"><value>Област екрана</value></data>
+  <data name="Pad_Lighting_ScreenArea_WholeScreen" xml:space="preserve"><value>Цео екран</value></data>
+  <data name="Pad_Lighting_ScreenArea_TopLeft" xml:space="preserve"><value>Горе лево</value></data>
+  <data name="Pad_Lighting_ScreenArea_Top" xml:space="preserve"><value>Горе</value></data>
+  <data name="Pad_Lighting_ScreenArea_TopRight" xml:space="preserve"><value>Горе десно</value></data>
+  <data name="Pad_Lighting_ScreenArea_Left" xml:space="preserve"><value>Лево</value></data>
+  <data name="Pad_Lighting_ScreenArea_Center" xml:space="preserve"><value>Центар</value></data>
+  <data name="Pad_Lighting_ScreenArea_Right" xml:space="preserve"><value>Десно</value></data>
+  <data name="Pad_Lighting_ScreenArea_BottomLeft" xml:space="preserve"><value>Доле лево</value></data>
+  <data name="Pad_Lighting_ScreenArea_Bottom" xml:space="preserve"><value>Доле</value></data>
+  <data name="Pad_Lighting_ScreenArea_BottomRight" xml:space="preserve"><value>Доле десно</value></data>
+  <data name="Pad_Lighting_ScreenArea_Custom" xml:space="preserve"><value>Прилагођено</value></data>
+  <data name="Pad_Lighting_ScreenLeft" xml:space="preserve"><value>Леви руб</value></data>
+  <data name="Pad_Lighting_ScreenTop" xml:space="preserve"><value>Горњи руб</value></data>
+  <data name="Pad_Lighting_ScreenWidth" xml:space="preserve"><value>Ширина</value></data>
+  <data name="Pad_Lighting_ScreenHeight" xml:space="preserve"><value>Висина</value></data>
+  <data name="Pad_Lighting_ScreenMethod" xml:space="preserve"><value>Боја</value></data>
+  <data name="Pad_Lighting_ScreenMethod_MostCommon" xml:space="preserve"><value>Најчешћа боја</value></data>
+  <data name="Pad_Lighting_ScreenMethod_Average" xml:space="preserve"><value>Просечна боја</value></data>
+  <data name="Pad_Lighting_ScreenSaturation" xml:space="preserve"><value>Засићеност</value></data>
+  <data name="Pad_Lighting_ScreenSmoothing" xml:space="preserve"><value>Изглађивање</value></data>
+  <data name="Pad_Lighting_ScreenSpread" xml:space="preserve"><value>Распореди екран по светлима овог уређаја</value></data>
+  <data name="Pad_Lighting_ScreenWaiting" xml:space="preserve"><value>Windows тренутно држи екран, па светло задржава последњу боју.</value></data>
+  <data name="Pad_Lighting_ScreenUnavailable" xml:space="preserve"><value>PadForge тренутно не може да чита екран на овом рачунару и наставља да покушава. „Сачувај снимак стања“ у Подешавањима бележи разлог.</value></data>
+  <data name="Pad_ResetScreenColorDisplay" xml:space="preserve"><value>Ресетуј екран</value></data>
+  <data name="Pad_ResetScreenColorArea" xml:space="preserve"><value>Ресетуј област екрана</value></data>
+  <data name="Pad_ResetScreenColorLeft" xml:space="preserve"><value>Ресетуј леви руб</value></data>
+  <data name="Pad_ResetScreenColorTop" xml:space="preserve"><value>Ресетуј горњи руб</value></data>
+  <data name="Pad_ResetScreenColorWidth" xml:space="preserve"><value>Ресетуј ширину</value></data>
+  <data name="Pad_ResetScreenColorHeight" xml:space="preserve"><value>Ресетуј висину</value></data>
+  <data name="Pad_ResetScreenColorMethod" xml:space="preserve"><value>Ресетуј боју</value></data>
+  <data name="Pad_ResetScreenColorSaturation" xml:space="preserve"><value>Ресетуј засићеност</value></data>
+  <data name="Pad_ResetScreenColorSmoothing" xml:space="preserve"><value>Ресетуј изглађивање</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>Палета</value></data>
   <data name="Pad_Lighting_ColorCycleSmooth" xml:space="preserve"><value>Глатко претапај боје палете</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Додај боју</value></data>

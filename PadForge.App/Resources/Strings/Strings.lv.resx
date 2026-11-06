@@ -1107,6 +1107,45 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
 
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>Periods</value></data>
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>Spilgtums</value></data>
+  <data name="Pad_Lighting_Mode_ScreenColor" xml:space="preserve"><value>Ekrāna krāsa</value></data>
+  <data name="Pad_Lighting_ScreenHint" xml:space="preserve"><value>Seko krāsām jūsu ekrānā. Kamēr ierīce izmanto šo režīmu, PadForge nolasa gatavo attēlu no Windows. Tas neko neglabā un nemaina nevienā spēlē.</value></data>
+  <data name="Pad_Lighting_ScreenDisplay" xml:space="preserve"><value>Displejs</value></data>
+  <data name="Pad_Lighting_ScreenDisplayPrimary" xml:space="preserve"><value>Galvenais displejs</value></data>
+  <data name="Pad_Lighting_ScreenDisplayItem" xml:space="preserve"><value>Displejs {0} ({1} x {2})</value></data>
+  <data name="Pad_Lighting_ScreenDisplayGone" xml:space="preserve"><value>Displejs {0} (nav pievienots)</value></data>
+  <data name="Pad_Lighting_ScreenArea" xml:space="preserve"><value>Ekrāna apgabals</value></data>
+  <data name="Pad_Lighting_ScreenArea_WholeScreen" xml:space="preserve"><value>Viss ekrāns</value></data>
+  <data name="Pad_Lighting_ScreenArea_TopLeft" xml:space="preserve"><value>Augšā pa kreisi</value></data>
+  <data name="Pad_Lighting_ScreenArea_Top" xml:space="preserve"><value>Augšā</value></data>
+  <data name="Pad_Lighting_ScreenArea_TopRight" xml:space="preserve"><value>Augšā pa labi</value></data>
+  <data name="Pad_Lighting_ScreenArea_Left" xml:space="preserve"><value>Pa kreisi</value></data>
+  <data name="Pad_Lighting_ScreenArea_Center" xml:space="preserve"><value>Centrs</value></data>
+  <data name="Pad_Lighting_ScreenArea_Right" xml:space="preserve"><value>Pa labi</value></data>
+  <data name="Pad_Lighting_ScreenArea_BottomLeft" xml:space="preserve"><value>Apakšā pa kreisi</value></data>
+  <data name="Pad_Lighting_ScreenArea_Bottom" xml:space="preserve"><value>Apakšā</value></data>
+  <data name="Pad_Lighting_ScreenArea_BottomRight" xml:space="preserve"><value>Apakšā pa labi</value></data>
+  <data name="Pad_Lighting_ScreenArea_Custom" xml:space="preserve"><value>Pielāgots</value></data>
+  <data name="Pad_Lighting_ScreenLeft" xml:space="preserve"><value>Kreisā mala</value></data>
+  <data name="Pad_Lighting_ScreenTop" xml:space="preserve"><value>Augšējā mala</value></data>
+  <data name="Pad_Lighting_ScreenWidth" xml:space="preserve"><value>Platums</value></data>
+  <data name="Pad_Lighting_ScreenHeight" xml:space="preserve"><value>Augstums</value></data>
+  <data name="Pad_Lighting_ScreenMethod" xml:space="preserve"><value>Krāsa</value></data>
+  <data name="Pad_Lighting_ScreenMethod_MostCommon" xml:space="preserve"><value>Visbiežākā krāsa</value></data>
+  <data name="Pad_Lighting_ScreenMethod_Average" xml:space="preserve"><value>Vidējā krāsa</value></data>
+  <data name="Pad_Lighting_ScreenSaturation" xml:space="preserve"><value>Piesātinājums</value></data>
+  <data name="Pad_Lighting_ScreenSmoothing" xml:space="preserve"><value>Izlīdzināšana</value></data>
+  <data name="Pad_Lighting_ScreenSpread" xml:space="preserve"><value>Izklāt ekrānu pa šīs ierīces gaismām</value></data>
+  <data name="Pad_Lighting_ScreenWaiting" xml:space="preserve"><value>Windows pagaidām aiztur ekrānu, tāpēc gaisma saglabā pēdējo krāsu.</value></data>
+  <data name="Pad_Lighting_ScreenUnavailable" xml:space="preserve"><value>PadForge šobrīd nevar nolasīt ekrānu šajā datorā un turpina mēģināt. Iestatījumos poga „Saglabāt momentuzņēmumu” ieraksta iemeslu.</value></data>
+  <data name="Pad_ResetScreenColorDisplay" xml:space="preserve"><value>Atiestatīt displeju</value></data>
+  <data name="Pad_ResetScreenColorArea" xml:space="preserve"><value>Atiestatīt ekrāna apgabalu</value></data>
+  <data name="Pad_ResetScreenColorLeft" xml:space="preserve"><value>Atiestatīt kreiso malu</value></data>
+  <data name="Pad_ResetScreenColorTop" xml:space="preserve"><value>Atiestatīt augšējo malu</value></data>
+  <data name="Pad_ResetScreenColorWidth" xml:space="preserve"><value>Atiestatīt platumu</value></data>
+  <data name="Pad_ResetScreenColorHeight" xml:space="preserve"><value>Atiestatīt augstumu</value></data>
+  <data name="Pad_ResetScreenColorMethod" xml:space="preserve"><value>Atiestatīt krāsu</value></data>
+  <data name="Pad_ResetScreenColorSaturation" xml:space="preserve"><value>Atiestatīt piesātinājumu</value></data>
+  <data name="Pad_ResetScreenColorSmoothing" xml:space="preserve"><value>Atiestatīt izlīdzināšanu</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>Palete</value></data>
   <data name="Pad_Lighting_ColorCycleSmooth" xml:space="preserve"><value>Vienmērīgi pāriet starp paletes krāsām</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Pievienot krāsu</value></data>

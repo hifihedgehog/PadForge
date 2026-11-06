@@ -1921,6 +1921,45 @@
   <data name="Pad_Lighting_Mode_InputReactiveCycle" xml:space="preserve"><value>입력 반응: 팔레트 순회</value></data>
   <data name="Pad_Lighting_Mode_InputReactiveFixed" xml:space="preserve"><value>입력 반응: 누름마다 단일 색상</value></data>
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>밝기</value></data>
+  <data name="Pad_Lighting_Mode_ScreenColor" xml:space="preserve"><value>화면 색상</value></data>
+  <data name="Pad_Lighting_ScreenHint" xml:space="preserve"><value>화면의 색상을 따라갑니다. 장치가 이 모드를 쓰는 동안 PadForge 앱은 Windows에서 완성된 화면 이미지를 읽습니다. 아무것도 저장하지 않으며 어떤 게임도 변경하지 않습니다.</value></data>
+  <data name="Pad_Lighting_ScreenDisplay" xml:space="preserve"><value>디스플레이</value></data>
+  <data name="Pad_Lighting_ScreenDisplayPrimary" xml:space="preserve"><value>기본 디스플레이</value></data>
+  <data name="Pad_Lighting_ScreenDisplayItem" xml:space="preserve"><value>디스플레이 {0} ({1} x {2})</value></data>
+  <data name="Pad_Lighting_ScreenDisplayGone" xml:space="preserve"><value>디스플레이 {0} (연결 안 됨)</value></data>
+  <data name="Pad_Lighting_ScreenArea" xml:space="preserve"><value>화면 영역</value></data>
+  <data name="Pad_Lighting_ScreenArea_WholeScreen" xml:space="preserve"><value>전체 화면</value></data>
+  <data name="Pad_Lighting_ScreenArea_TopLeft" xml:space="preserve"><value>왼쪽 위</value></data>
+  <data name="Pad_Lighting_ScreenArea_Top" xml:space="preserve"><value>위</value></data>
+  <data name="Pad_Lighting_ScreenArea_TopRight" xml:space="preserve"><value>오른쪽 위</value></data>
+  <data name="Pad_Lighting_ScreenArea_Left" xml:space="preserve"><value>왼쪽</value></data>
+  <data name="Pad_Lighting_ScreenArea_Center" xml:space="preserve"><value>중앙</value></data>
+  <data name="Pad_Lighting_ScreenArea_Right" xml:space="preserve"><value>오른쪽</value></data>
+  <data name="Pad_Lighting_ScreenArea_BottomLeft" xml:space="preserve"><value>왼쪽 아래</value></data>
+  <data name="Pad_Lighting_ScreenArea_Bottom" xml:space="preserve"><value>아래</value></data>
+  <data name="Pad_Lighting_ScreenArea_BottomRight" xml:space="preserve"><value>오른쪽 아래</value></data>
+  <data name="Pad_Lighting_ScreenArea_Custom" xml:space="preserve"><value>사용자 지정</value></data>
+  <data name="Pad_Lighting_ScreenLeft" xml:space="preserve"><value>왼쪽 가장자리</value></data>
+  <data name="Pad_Lighting_ScreenTop" xml:space="preserve"><value>위쪽 가장자리</value></data>
+  <data name="Pad_Lighting_ScreenWidth" xml:space="preserve"><value>너비</value></data>
+  <data name="Pad_Lighting_ScreenHeight" xml:space="preserve"><value>높이</value></data>
+  <data name="Pad_Lighting_ScreenMethod" xml:space="preserve"><value>색상</value></data>
+  <data name="Pad_Lighting_ScreenMethod_MostCommon" xml:space="preserve"><value>가장 많은 색상</value></data>
+  <data name="Pad_Lighting_ScreenMethod_Average" xml:space="preserve"><value>평균 색상</value></data>
+  <data name="Pad_Lighting_ScreenSaturation" xml:space="preserve"><value>채도</value></data>
+  <data name="Pad_Lighting_ScreenSmoothing" xml:space="preserve"><value>부드럽게</value></data>
+  <data name="Pad_Lighting_ScreenSpread" xml:space="preserve"><value>화면을 이 장치의 조명 전체에 펼치기</value></data>
+  <data name="Pad_Lighting_ScreenWaiting" xml:space="preserve"><value>Windows가 지금 화면을 잡고 있어 조명이 마지막 색상을 유지합니다.</value></data>
+  <data name="Pad_Lighting_ScreenUnavailable" xml:space="preserve"><value>PadForge 앱이 지금 이 PC에서 화면을 읽을 수 없어 계속 시도하는 중입니다. 설정의 스냅샷 저장에 원인이 기록됩니다.</value></data>
+  <data name="Pad_ResetScreenColorDisplay" xml:space="preserve"><value>디스플레이 초기화</value></data>
+  <data name="Pad_ResetScreenColorArea" xml:space="preserve"><value>화면 영역 초기화</value></data>
+  <data name="Pad_ResetScreenColorLeft" xml:space="preserve"><value>왼쪽 가장자리 초기화</value></data>
+  <data name="Pad_ResetScreenColorTop" xml:space="preserve"><value>위쪽 가장자리 초기화</value></data>
+  <data name="Pad_ResetScreenColorWidth" xml:space="preserve"><value>너비 초기화</value></data>
+  <data name="Pad_ResetScreenColorHeight" xml:space="preserve"><value>높이 초기화</value></data>
+  <data name="Pad_ResetScreenColorMethod" xml:space="preserve"><value>색상 초기화</value></data>
+  <data name="Pad_ResetScreenColorSaturation" xml:space="preserve"><value>채도 초기화</value></data>
+  <data name="Pad_ResetScreenColorSmoothing" xml:space="preserve"><value>부드럽게 초기화</value></data>
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>주기</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>팔레트</value></data>
   <data name="Pad_Lighting_ColorCycleSmooth" xml:space="preserve"><value>팔레트 색상 간 부드럽게 블렌드</value></data>

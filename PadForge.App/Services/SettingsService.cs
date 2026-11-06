@@ -3498,6 +3498,17 @@ namespace PadForge.Services
                     cfg.KeyLighting = cfgData.KeyLighting ?? string.Empty;
                     cfg.LedStripCounts = cfgData.LedStripCounts ?? string.Empty;
                     cfg.LightbarRainbowBrightness = cfgData.LightbarRainbowBrightness;
+                    cfg.ScreenColorDisplay = cfgData.ScreenColorDisplay ?? string.Empty;
+                    cfg.ScreenColorArea = cfgData.ScreenColorArea;
+                    cfg.ScreenColorLeft = cfgData.ScreenColorLeft;
+                    cfg.ScreenColorTop = cfgData.ScreenColorTop;
+                    cfg.ScreenColorWidth = cfgData.ScreenColorWidth;
+                    cfg.ScreenColorHeight = cfgData.ScreenColorHeight;
+                    cfg.ScreenColorMethod = cfgData.ScreenColorMethod;
+                    cfg.ScreenColorSaturation = cfgData.ScreenColorSaturation;
+                    cfg.ScreenColorBrightness = cfgData.ScreenColorBrightness;
+                    cfg.ScreenColorSmoothing = cfgData.ScreenColorSmoothing;
+                    cfg.ScreenColorSpread = cfgData.ScreenColorSpread;
                     cfg.LightbarBatteryLowR  = cfgData.LightbarBatteryLowR;
                     cfg.LightbarBatteryLowG  = cfgData.LightbarBatteryLowG;
                     cfg.LightbarBatteryLowB  = cfgData.LightbarBatteryLowB;
@@ -5331,7 +5342,7 @@ namespace PadForge.Services
         /// into a <see cref="ViewModels.DeviceSlotConfigData"/> tagged with
         /// the (slot index, device GUID) pair. Empty <paramref name="deviceGuid"/>
         /// produces a legacy slot-level entry.</summary>
-        private static ViewModels.DeviceSlotConfigData BuildDeviceSlotConfigData(
+        internal static ViewModels.DeviceSlotConfigData BuildDeviceSlotConfigData(
             ViewModels.DeviceSlotConfig cfg, int slotIndex, Guid deviceGuid)
         {
             return new ViewModels.DeviceSlotConfigData
@@ -5409,6 +5420,17 @@ namespace PadForge.Services
                 KeyLighting = cfg.KeyLighting,
                 LedStripCounts = cfg.LedStripCounts,
                 LightbarRainbowBrightness = cfg.LightbarRainbowBrightness,
+                ScreenColorDisplay = cfg.ScreenColorDisplay,
+                ScreenColorArea = cfg.ScreenColorArea,
+                ScreenColorLeft = cfg.ScreenColorLeft,
+                ScreenColorTop = cfg.ScreenColorTop,
+                ScreenColorWidth = cfg.ScreenColorWidth,
+                ScreenColorHeight = cfg.ScreenColorHeight,
+                ScreenColorMethod = cfg.ScreenColorMethod,
+                ScreenColorSaturation = cfg.ScreenColorSaturation,
+                ScreenColorBrightness = cfg.ScreenColorBrightness,
+                ScreenColorSmoothing = cfg.ScreenColorSmoothing,
+                ScreenColorSpread = cfg.ScreenColorSpread,
                 LightbarBatteryLowR  = cfg.LightbarBatteryLowR,
                 LightbarBatteryLowG  = cfg.LightbarBatteryLowG,
                 LightbarBatteryLowB  = cfg.LightbarBatteryLowB,

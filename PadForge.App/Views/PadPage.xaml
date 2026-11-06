@@ -3224,6 +3224,7 @@
                                                     <ComboBoxItem Content="{Binding Pad_Lighting_Mode_Rainbow, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.Rainbow}"/>
                                                     <ComboBoxItem Content="{Binding Pad_Lighting_Mode_ColorCycle, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.ColorCycle}"/>
                                                     <ComboBoxItem Content="{Binding Pad_Lighting_Mode_Battery, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.Battery}"/>
+                                                    <ComboBoxItem Content="{Binding Pad_Lighting_Mode_ScreenColor, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.ScreenColor}"/>
                                                     <ComboBoxItem Content="{Binding Pad_Lighting_Mode_AudioPulse, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.AudioPulse}"/>
                                                     <ComboBoxItem Content="{Binding Pad_Lighting_Mode_AudioPulseRandom, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.AudioPulseRandom}"/>
                                                     <ComboBoxItem Content="{Binding Pad_Lighting_Mode_AudioPulseRainbow, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.AudioPulseRainbow}"/>
@@ -9678,6 +9679,7 @@
                                         <ComboBoxItem Content="{Binding Pad_Lighting_Mode_Rainbow, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.Rainbow}"/>
                                         <ComboBoxItem Content="{Binding Pad_Lighting_Mode_ColorCycle, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.ColorCycle}"/>
                                         <ComboBoxItem Content="{Binding Pad_Lighting_Mode_Battery, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.Battery}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_Mode_ScreenColor, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.ScreenColor}"/>
                                         <ComboBoxItem Content="{Binding Pad_Lighting_Mode_AudioPulse, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.AudioPulse}"/>
                                         <ComboBoxItem Content="{Binding Pad_Lighting_Mode_AudioPulseRandom, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.AudioPulseRandom}"/>
                                         <ComboBoxItem Content="{Binding Pad_Lighting_Mode_AudioPulseRainbow, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.AudioPulseRainbow}"/>
@@ -9722,6 +9724,131 @@
                                              Style="{StaticResource DzValueEdit}"/>
                                     <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                     <ui:Button Command="{Binding DeviceConfig.ResetLightbarRainbowBrightnessCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetLightbarRainbowBrightness, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+
+                                <!-- Screen Color (#559): which part of which display, and what
+                                     to do with its colors. Reads through one lease per display
+                                     (ScreenColorSource), so these controls start nothing. -->
+                                <StackPanel Visibility="{Binding DeviceConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=ScreenColor}">
+                                    <TextBlock Text="{Binding Pad_Lighting_ScreenHint, Source={x:Static strings:Strings.Instance}}"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                               TextWrapping="Wrap" Margin="0,0,0,8"/>
+                                    <TextBlock x:Name="ScreenColorStatus" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                               TextWrapping="Wrap" Margin="0,0,0,8" Visibility="Collapsed"/>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="{Binding Pad_Lighting_ScreenDisplay, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <ComboBox x:Name="ScreenColorDisplayBox" DisplayMemberPath="Label"
+                                                  SelectionChanged="ScreenColorDisplayBox_SelectionChanged"
+                                                  AutomationProperties.AutomationId="ScreenColorDisplayBox"
+                                                  Width="444" VerticalAlignment="Center"/>
+                                        <ui:Button Command="{Binding DeviceConfig.ResetScreenColorDisplayCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetScreenColorDisplay, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="{Binding Pad_Lighting_ScreenArea, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <ComboBox SelectedValue="{Binding DeviceConfig.ScreenColorArea, Mode=TwoWay}" SelectedValuePath="Tag"
+                                                  Width="444" VerticalAlignment="Center">
+                                            <ComboBoxItem Content="{Binding Pad_Lighting_ScreenArea_WholeScreen, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:ScreenColorArea.WholeScreen}"/>
+                                            <ComboBoxItem Content="{Binding Pad_Lighting_ScreenArea_TopLeft, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:ScreenColorArea.TopLeft}"/>
+                                            <ComboBoxItem Content="{Binding Pad_Lighting_ScreenArea_Top, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:ScreenColorArea.Top}"/>
+                                            <ComboBoxItem Content="{Binding Pad_Lighting_ScreenArea_TopRight, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:ScreenColorArea.TopRight}"/>
+                                            <ComboBoxItem Content="{Binding Pad_Lighting_ScreenArea_Left, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:ScreenColorArea.Left}"/>
+                                            <ComboBoxItem Content="{Binding Pad_Lighting_ScreenArea_Center, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:ScreenColorArea.Center}"/>
+                                            <ComboBoxItem Content="{Binding Pad_Lighting_ScreenArea_Right, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:ScreenColorArea.Right}"/>
+                                            <ComboBoxItem Content="{Binding Pad_Lighting_ScreenArea_BottomLeft, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:ScreenColorArea.BottomLeft}"/>
+                                            <ComboBoxItem Content="{Binding Pad_Lighting_ScreenArea_Bottom, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:ScreenColorArea.Bottom}"/>
+                                            <ComboBoxItem Content="{Binding Pad_Lighting_ScreenArea_BottomRight, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:ScreenColorArea.BottomRight}"/>
+                                            <ComboBoxItem Content="{Binding Pad_Lighting_ScreenArea_Custom, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:ScreenColorArea.Custom}"/>
+                                        </ComboBox>
+                                        <ui:Button Command="{Binding DeviceConfig.ResetScreenColorAreaCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetScreenColorArea, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+                                    <StackPanel Visibility="{Binding DeviceConfig.ScreenColorArea, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=Custom}">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="{Binding Pad_Lighting_ScreenLeft, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <Slider Value="{Binding DeviceConfig.ScreenColorLeft, Mode=TwoWay}"
+                                                Style="{StaticResource DzSlider}"
+                                                Minimum="0" Maximum="99" TickFrequency="1"/>
+                                        <TextBox Text="{Binding DeviceConfig.ScreenColorLeft, Mode=TwoWay, StringFormat=F0, UpdateSourceTrigger=LostFocus}"
+                                                 Style="{StaticResource DzValueEdit}"/>
+                                        <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                        <ui:Button Command="{Binding DeviceConfig.ResetScreenColorLeftCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetScreenColorLeft, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="{Binding Pad_Lighting_ScreenTop, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <Slider Value="{Binding DeviceConfig.ScreenColorTop, Mode=TwoWay}"
+                                                Style="{StaticResource DzSlider}"
+                                                Minimum="0" Maximum="99" TickFrequency="1"/>
+                                        <TextBox Text="{Binding DeviceConfig.ScreenColorTop, Mode=TwoWay, StringFormat=F0, UpdateSourceTrigger=LostFocus}"
+                                                 Style="{StaticResource DzValueEdit}"/>
+                                        <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                        <ui:Button Command="{Binding DeviceConfig.ResetScreenColorTopCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetScreenColorTop, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="{Binding Pad_Lighting_ScreenWidth, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <Slider Value="{Binding DeviceConfig.ScreenColorWidth, Mode=TwoWay}"
+                                                Style="{StaticResource DzSlider}"
+                                                Minimum="1" Maximum="100" TickFrequency="1"/>
+                                        <TextBox Text="{Binding DeviceConfig.ScreenColorWidth, Mode=TwoWay, StringFormat=F0, UpdateSourceTrigger=LostFocus}"
+                                                 Style="{StaticResource DzValueEdit}"/>
+                                        <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                        <ui:Button Command="{Binding DeviceConfig.ResetScreenColorWidthCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetScreenColorWidth, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="{Binding Pad_Lighting_ScreenHeight, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <Slider Value="{Binding DeviceConfig.ScreenColorHeight, Mode=TwoWay}"
+                                                Style="{StaticResource DzSlider}"
+                                                Minimum="1" Maximum="100" TickFrequency="1"/>
+                                        <TextBox Text="{Binding DeviceConfig.ScreenColorHeight, Mode=TwoWay, StringFormat=F0, UpdateSourceTrigger=LostFocus}"
+                                                 Style="{StaticResource DzValueEdit}"/>
+                                        <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                        <ui:Button Command="{Binding DeviceConfig.ResetScreenColorHeightCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetScreenColorHeight, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="{Binding Pad_Lighting_ScreenMethod, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <ComboBox SelectedValue="{Binding DeviceConfig.ScreenColorMethod, Mode=TwoWay}" SelectedValuePath="Tag"
+                                                  Width="444" VerticalAlignment="Center">
+                                            <ComboBoxItem Content="{Binding Pad_Lighting_ScreenMethod_MostCommon, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:ScreenColorMethod.MostCommon}"/>
+                                            <ComboBoxItem Content="{Binding Pad_Lighting_ScreenMethod_Average, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:ScreenColorMethod.Average}"/>
+                                        </ComboBox>
+                                        <ui:Button Command="{Binding DeviceConfig.ResetScreenColorMethodCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetScreenColorMethod, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="{Binding Pad_Lighting_ScreenSaturation, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <Slider Value="{Binding DeviceConfig.ScreenColorSaturation, Mode=TwoWay}"
+                                                Style="{StaticResource DzSlider}"
+                                                Minimum="0" Maximum="200" TickFrequency="1"/>
+                                        <TextBox Text="{Binding DeviceConfig.ScreenColorSaturation, Mode=TwoWay, StringFormat=F0, UpdateSourceTrigger=LostFocus}"
+                                                 Style="{StaticResource DzValueEdit}"/>
+                                        <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                        <ui:Button Command="{Binding DeviceConfig.ResetScreenColorSaturationCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetScreenColorSaturation, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="{Binding Pad_Lighting_RainbowBrightness, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <Slider Value="{Binding DeviceConfig.ScreenColorBrightness, Mode=TwoWay}"
+                                                Style="{StaticResource DzSlider}"
+                                                Minimum="0" Maximum="100" TickFrequency="1"/>
+                                        <TextBox Text="{Binding DeviceConfig.ScreenColorBrightness, Mode=TwoWay, StringFormat=F0, UpdateSourceTrigger=LostFocus}"
+                                                 Style="{StaticResource DzValueEdit}"/>
+                                        <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                        <ui:Button Command="{Binding DeviceConfig.ResetScreenColorBrightnessCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetLightbarRainbowBrightness, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="{Binding Pad_Lighting_ScreenSmoothing, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <Slider Value="{Binding DeviceConfig.ScreenColorSmoothing, Mode=TwoWay}"
+                                                Style="{StaticResource DzSlider}"
+                                                Minimum="0" Maximum="100" TickFrequency="1"/>
+                                        <TextBox Text="{Binding DeviceConfig.ScreenColorSmoothing, Mode=TwoWay, StringFormat=F0, UpdateSourceTrigger=LostFocus}"
+                                                 Style="{StaticResource DzValueEdit}"/>
+                                        <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                        <ui:Button Command="{Binding DeviceConfig.ResetScreenColorSmoothingCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetScreenColorSmoothing, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+                                    <!-- Only a device with more than one light has anything to spread across. -->
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8"
+                                                Visibility="{Binding KeyColors.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <CheckBox VerticalAlignment="Center" Foreground="{DynamicResource TextFillColorSecondaryBrush}" IsChecked="{Binding DeviceConfig.ScreenColorSpread, Mode=TwoWay}"
+                                                  Content="{Binding Pad_Lighting_ScreenSpread, Source={x:Static strings:Strings.Instance}}"/>
+                                        <reset:SettingResetButton Command="{Binding DeviceConfig.ResetScreenColorSpreadCommand}" SettingLabel="{Binding Pad_Lighting_ScreenSpread, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DeviceSlotConfig_ScreenColorSpread_8402"/>
+                                    </StackPanel>
                                 </StackPanel>
 
                                 <!-- Smooth toggle (ColorCycle): blend or hop between palette colors -->

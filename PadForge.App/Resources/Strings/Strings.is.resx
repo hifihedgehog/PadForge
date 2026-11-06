@@ -1107,6 +1107,45 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
 
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>Lotutími</value></data>
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>Birtustig</value></data>
+  <data name="Pad_Lighting_Mode_ScreenColor" xml:space="preserve"><value>Skjálitur</value></data>
+  <data name="Pad_Lighting_ScreenHint" xml:space="preserve"><value>Fylgir litunum á skjánum þínum. Meðan tæki notar þessa stillingu les PadForge fullunna mynd frá Windows. Það vistar ekkert af henni og breytir engu í neinum leik.</value></data>
+  <data name="Pad_Lighting_ScreenDisplay" xml:space="preserve"><value>Skjár</value></data>
+  <data name="Pad_Lighting_ScreenDisplayPrimary" xml:space="preserve"><value>Aðalskjár</value></data>
+  <data name="Pad_Lighting_ScreenDisplayItem" xml:space="preserve"><value>Skjár {0} ({1} x {2})</value></data>
+  <data name="Pad_Lighting_ScreenDisplayGone" xml:space="preserve"><value>Skjár {0} (ekki tengdur)</value></data>
+  <data name="Pad_Lighting_ScreenArea" xml:space="preserve"><value>Skjásvæði</value></data>
+  <data name="Pad_Lighting_ScreenArea_WholeScreen" xml:space="preserve"><value>Allur skjárinn</value></data>
+  <data name="Pad_Lighting_ScreenArea_TopLeft" xml:space="preserve"><value>Efst til vinstri</value></data>
+  <data name="Pad_Lighting_ScreenArea_Top" xml:space="preserve"><value>Efst</value></data>
+  <data name="Pad_Lighting_ScreenArea_TopRight" xml:space="preserve"><value>Efst til hægri</value></data>
+  <data name="Pad_Lighting_ScreenArea_Left" xml:space="preserve"><value>Vinstri</value></data>
+  <data name="Pad_Lighting_ScreenArea_Center" xml:space="preserve"><value>Miðja</value></data>
+  <data name="Pad_Lighting_ScreenArea_Right" xml:space="preserve"><value>Hægri</value></data>
+  <data name="Pad_Lighting_ScreenArea_BottomLeft" xml:space="preserve"><value>Neðst til vinstri</value></data>
+  <data name="Pad_Lighting_ScreenArea_Bottom" xml:space="preserve"><value>Neðst</value></data>
+  <data name="Pad_Lighting_ScreenArea_BottomRight" xml:space="preserve"><value>Neðst til hægri</value></data>
+  <data name="Pad_Lighting_ScreenArea_Custom" xml:space="preserve"><value>Sérsniðið</value></data>
+  <data name="Pad_Lighting_ScreenLeft" xml:space="preserve"><value>Vinstri brún</value></data>
+  <data name="Pad_Lighting_ScreenTop" xml:space="preserve"><value>Efri brún</value></data>
+  <data name="Pad_Lighting_ScreenWidth" xml:space="preserve"><value>Breidd</value></data>
+  <data name="Pad_Lighting_ScreenHeight" xml:space="preserve"><value>Hæð</value></data>
+  <data name="Pad_Lighting_ScreenMethod" xml:space="preserve"><value>Litur</value></data>
+  <data name="Pad_Lighting_ScreenMethod_MostCommon" xml:space="preserve"><value>Algengasti liturinn</value></data>
+  <data name="Pad_Lighting_ScreenMethod_Average" xml:space="preserve"><value>Meðallitur</value></data>
+  <data name="Pad_Lighting_ScreenSaturation" xml:space="preserve"><value>Litmettun</value></data>
+  <data name="Pad_Lighting_ScreenSmoothing" xml:space="preserve"><value>Sléttun</value></data>
+  <data name="Pad_Lighting_ScreenSpread" xml:space="preserve"><value>Dreifa skjánum yfir ljós tækisins</value></data>
+  <data name="Pad_Lighting_ScreenWaiting" xml:space="preserve"><value>Windows heldur skjánum í bili og því heldur ljósið síðasta lit sínum.</value></data>
+  <data name="Pad_Lighting_ScreenUnavailable" xml:space="preserve"><value>PadForge getur ekki lesið skjáinn á þessari tölvu núna og reynir áfram. „Vista skyndimynd“ í Stillingum skráir ástæðuna.</value></data>
+  <data name="Pad_ResetScreenColorDisplay" xml:space="preserve"><value>Endurstilla skjá</value></data>
+  <data name="Pad_ResetScreenColorArea" xml:space="preserve"><value>Endurstilla skjásvæði</value></data>
+  <data name="Pad_ResetScreenColorLeft" xml:space="preserve"><value>Endurstilla vinstri brún</value></data>
+  <data name="Pad_ResetScreenColorTop" xml:space="preserve"><value>Endurstilla efri brún</value></data>
+  <data name="Pad_ResetScreenColorWidth" xml:space="preserve"><value>Endurstilla breidd</value></data>
+  <data name="Pad_ResetScreenColorHeight" xml:space="preserve"><value>Endurstilla hæð</value></data>
+  <data name="Pad_ResetScreenColorMethod" xml:space="preserve"><value>Endurstilla lit</value></data>
+  <data name="Pad_ResetScreenColorSaturation" xml:space="preserve"><value>Endurstilla litmettun</value></data>
+  <data name="Pad_ResetScreenColorSmoothing" xml:space="preserve"><value>Endurstilla sléttun</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>Litaspjald</value></data>
   <data name="Pad_Lighting_ColorCycleSmooth" xml:space="preserve"><value>Blanda mjúklega milli lita í litaspjaldinu</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Bæta við lit</value></data>

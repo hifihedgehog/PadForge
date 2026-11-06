@@ -4575,11 +4575,11 @@
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>Η λήψη του SDK του S.T.R.I.K.E. 7 δεν ταιριάζει με το γνωστό SHA-256, οπότε δεν κρατήθηκε τίποτα από αυτήν.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>Το περιβάλλον εκτέλεσης Visual C++ 2008 εξακολουθεί να λείπει μετά την εκτέλεση του προγράμματος εγκατάστασής του.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Εμφάνιση οθόνης πληκτρολογίου</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Αναπαράγει εικόνες σε κάθε οθόνη πληκτρολογίου του επιλεγμένου είδους που τροφοδοτεί αυτή την υποδοχή και έπειτα επαναφέρει κάθε οθόνη στη δική της λειτουργία.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Αναπαράγει εικόνες σε κάθε οθόνη πληκτρολογίου του επιλεγμένου είδους που τροφοδοτεί αυτή την υποδοχή και έπειτα επαναφέρει κάθε οθόνη στη δική της λειτουργία. Η επικάλυψη οθόνης τις παίρνει από οποιαδήποτε υποδοχή.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Εμφάνιση εικόνων {0}: {1} × {2} ms, πλήθος επαναλήψεων {3}</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Οι εικόνες προσαρμόζονται στην οθόνη: 160 επί 43 ασπρόμαυρα εικονοστοιχεία σε μονόχρωμη οθόνη, 320 επί 240 στο G19 και 480 επί 320 για το Arx Control και το S.T.R.I.K.E. 7. Το ένα δέκατο του δευτερολέπτου είναι ο μικρότερος χρόνος καρέ.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Λειτουργία οθόνης πληκτρολογίου</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Αλλάζει σε άλλη λειτουργία κάθε οθόνη πληκτρολογίου του επιλεγμένου είδους που τροφοδοτεί αυτή την υποδοχή και την κρατά ως ρύθμιση αυτής της οθόνης.</value></data>
+  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Αλλάζει σε άλλη λειτουργία κάθε οθόνη πληκτρολογίου του επιλεγμένου είδους που τροφοδοτεί αυτή την υποδοχή και την κρατά ως ρύθμιση αυτής της οθόνης. Η επικάλυψη οθόνης την παίρνει από οποιαδήποτε υποδοχή.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} δείχνει {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Η λειτουργία μένει μέχρι να την αλλάξει άλλη μακροεντολή ή το παράθυρο διαλόγου της οθόνης.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Χρονόμετρο</value></data>
@@ -4884,4 +4884,22 @@
   <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>Η ενέργεια ανάβει τα ίδια πλήκτρα σε κάθε πληκτρολόγιο που φωτίζει αυτός ο εικονικός ελεγκτής, πάνω από τα χρώματα που τους δίνει η καρτέλα Φωτισμός. Οι αριθμοί δείχνουν τη σειρά επιλογής. Η αντίστροφη μέτρηση σβήνει τα πλήκτρα ένα προς ένα, ξεκινώντας από το τελευταίο που επιλέχθηκε, οπότε επιλέξτε 1 έως 0 για χρονόμετρο αναμονής στη σειρά αριθμών. Ένα πληκτρολόγιο ή ποντίκι ανάβει μόνο όσο είναι ενεργό το Έλεγχος του φωτισμού αυτής της συσκευής.</value></data>
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>Άλλα</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, αριθμός {1}</value></data>
+  <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>Επικάλυψη οθόνης</value></data>
+  <data name="Dashboard_ScreenOverlayDescription" xml:space="preserve"><value>Δείχνει μια εικόνα, ένα χρονόμετρο, την ώρα ή το χρώμα μιας φωτεινής μπάρας πάνω από άλλα παράθυρα, χωρίς να χρειάζεται οθόνη πληκτρολογίου. Όσο άλλο πρόγραμμα βρίσκεται μπροστά, τα κλικ περνούν μέσα από αυτήν. Όσο το PadForge βρίσκεται μπροστά, σύρετέ την με το δεξί κουμπί του ποντικιού και αλλάξτε το μέγεθός της από τη γωνία της.</value></data>
+  <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>Ενεργοποίηση επικάλυψης οθόνης</value></data>
+  <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Επιλογή του τι δείχνει…</value></data>
+  <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>Επικάλυψη οθόνης PadForge</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Δεν υπάρχει ακόμα τίποτα για εμφάνιση. Επιλέξτε τι δείχνει στον Πίνακα ελέγχου.</value></data>
+  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Εναλλαγή επικάλυψης οθόνης</value></data>
+  <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Εναλλαγή επικάλυψης οθόνης</value></data>
+  <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Επικάλυψη οθόνης</value></data>
+  <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>Η επικάλυψη δεν δείχνει τίποτα.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileName_Overlay" xml:space="preserve"><value>Η επικάλυψη δείχνει το όνομα του ενεργού προφίλ και ακολουθεί κάθε αλλαγή προφίλ.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileNumber_Overlay" xml:space="preserve"><value>Η επικάλυψη δείχνει τη θέση του ενεργού προφίλ στη λίστα προφίλ. Το προφίλ «Προεπιλεγμένο» είναι το 0.</value></data>
+  <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>Η επικάλυψη δείχνει την εικόνα του ενεργού προφίλ ή το όνομά του, όταν δεν έχει εικόνα. Κάθε προφίλ διατηρεί τη δική του εικόνα.</value></data>
+  <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>Η επικάλυψη δείχνει την ώρα της ημέρας.</value></data>
+  <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>Η επικάλυψη δείχνει τις ώρες και τα λεπτά από τη στιγμή που ενεργοποιήθηκε το ενεργό προφίλ. Ένα προφίλ συνδεδεμένο με το πρόγραμμα ενός παιχνιδιού ενεργοποιείται όταν ξεκινά το παιχνίδι, οπότε η μέτρηση αφορά εκείνη τη συνεδρία. Στο προφίλ «Προεπιλεγμένο» η μέτρηση ξεκινά από την εκκίνηση της μηχανής.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Η επικάλυψη δείχνει μια εικόνα της επιλογής σας, κλιμακωμένη ώστε να γεμίζει το παράθυρό της με διατήρηση των αναλογιών της.</value></data>
+  <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>Η επικάλυψη δείχνει το χρονόμετρο, το οποίο η μακροεντολή «Χρονόμετρο» ξεκινά, διακόπτει και μηδενίζει. Είναι το ίδιο χρονόμετρο που δείχνει κάθε οθόνη πληκτρολογίου.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Η επικάλυψη δείχνει το χρώμα της φωτεινής μπάρας του DualShock 4 ή DualSense στη χαμηλότερη υποδοχή. Μέχρι να φτάσει χρώμα σε φωτεινή μπάρα, δεν δείχνει τίποτα.</value></data>
 </root>

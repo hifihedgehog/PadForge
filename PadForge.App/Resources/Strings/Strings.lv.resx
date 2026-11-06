@@ -4575,11 +4575,11 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>S.T.R.I.K.E. 7 SDK lejupielāde neatbilst zināmajam SHA-256, tāpēc nekas no tās netika saglabāts.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>Pēc instalētāja darbības Visual C++ 2008 izpildlaika joprojām nav.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Rādīt tastatūras ekrānu</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Atskaņo attēlus katrā izvēlētā veida tastatūras ekrānā, kas padod datus šim slotam, pēc tam katram ekrānam atgriež tā paša režīmu.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Atskaņo attēlus katrā izvēlētā veida tastatūras ekrānā, kas padod datus šim slotam, pēc tam katram ekrānam atgriež tā paša režīmu. Ekrāna pārklājums tos ņem no jebkura slota.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Rādīt {0} attēlus: {1} × {2} ms, atkārtojumu skaits {3}</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Attēli tiek pielāgoti ekrānam: 160 × 43 melnbalti pikseļi melnbaltajā ekrānā, 320 × 240 G19 ekrānā un 480 × 320 Arx Control un S.T.R.I.K.E. 7. Īsākais kadra ilgums ir desmitdaļa sekundes.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Tastatūras ekrāna režīms</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Pārslēdz katru izvēlētā veida tastatūras ekrānu, kas padod datus šim slotam, uz citu režīmu un saglabā to kā šī ekrāna iestatījumu.</value></data>
+  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Pārslēdz katru izvēlētā veida tastatūras ekrānu, kas padod datus šim slotam, uz citu režīmu un saglabā to kā šī ekrāna iestatījumu. Ekrāna pārklājums to ņem no jebkura slota.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} rāda: {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Režīms paliek, līdz to maina cits makross vai ekrāna dialoglodziņš.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Hronometrs</value></data>
@@ -4884,4 +4884,22 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>Darbība izgaismo vienus un tos pašus taustiņus visās tastatūrās, ko apgaismo šis virtuālais kontrolieris, virs krāsām, ko tām piešķir cilne Apgaismojums. Cipari rāda izvēles secību. Atskaite izslēdz taustiņus pa vienam, sākot ar pēdējo izvēlēto, tāpēc ciparu rindā izvēlieties no 1 līdz 0, lai iegūtu atkārtotas izmantošanas taimeri. Tastatūra vai pele izgaismojas tikai tad, ja ir ieslēgts Vadīt šīs ierīces apgaismojumu.</value></data>
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>Citi</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, numurs {1}</value></data>
+  <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>Ekrāna pārklājums</value></data>
+  <data name="Dashboard_ScreenOverlayDescription" xml:space="preserve"><value>Rāda attēlu, taimeri, laiku vai gaismas joslas krāsu virs citiem logiem, un tastatūras ekrāns nav vajadzīgs. Kamēr priekšplānā ir cita programma, klikšķi iet tam cauri. Kamēr priekšplānā ir PadForge, velciet to ar peles labo pogu un mainiet izmēru no tā stūra.</value></data>
+  <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>Iespējot ekrāna pārklājumu</value></data>
+  <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Izvēlēties, ko tas rāda…</value></data>
+  <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge ekrāna pārklājums</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Pagaidām nav ko rādīt. Izvēlieties, ko tas rāda, pārskatā.</value></data>
+  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Pārslēgt ekrāna pārklājumu</value></data>
+  <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Pārslēgt ekrāna pārklājumu</value></data>
+  <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Ekrāna pārklājums</value></data>
+  <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>Pārklājums neko nerāda.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileName_Overlay" xml:space="preserve"><value>Pārklājums rāda aktīvā profila nosaukumu un mainās līdz ar katru profila pārslēgšanu.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileNumber_Overlay" xml:space="preserve"><value>Pārklājums rāda aktīvā profila vietu profilu sarakstā. Noklusējuma profila numurs ir 0.</value></data>
+  <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>Pārklājums rāda aktīvā profila attēlu vai tā nosaukumu, ja attēla nav. Katram profilam ir savs attēls.</value></data>
+  <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>Pārklājums rāda diennakts laiku.</value></data>
+  <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>Pārklājums rāda stundas un minūtes kopš aktīvā profila ieslēgšanās. Ar spēles programmu saistīts profils ieslēdzas, kad spēle startē, tāpēc skaitītājs rāda šo sesiju. Noklusējuma profilā tas skaita no dzinēja startēšanas.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Pārklājums rāda jūsu izvēlēto attēlu, mērogotu, lai aizpildītu savu logu, saglabājot tā proporcijas.</value></data>
+  <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>Pārklājums rāda hronometru, ko startē, pauzē un atiestata makross Hronometrs. Tas ir tas pats hronometrs, ko rāda ikviens tastatūras ekrāns.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Pārklājums rāda gaismas joslas krāsu uz DualShock 4 vai DualSense zemākajā slotā. Kamēr krāsa nav sasniegusi gaismas joslu, tas neko nerāda.</value></data>
 </root>

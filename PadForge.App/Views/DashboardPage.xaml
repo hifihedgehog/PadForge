@@ -2500,6 +2500,88 @@
                     </StackPanel>
                 </StackPanel>
             </Border>
+
+            <!-- ═══ Screen Overlay ═══ -->
+            <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
+                <reset:GlyphText Text="&#xE7F4;" Style="{StaticResource SectionGlyph}"/>
+                <TextBlock Text="{Binding Dashboard_ScreenOverlay, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}" Style="{StaticResource SectionTitle}"/>
+            </StackPanel>
+
+            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,0">
+                <StackPanel>
+                    <TextBlock Text="{Binding Dashboard_ScreenOverlayDescription, Source={x:Static strings:Strings.Instance}}"
+                               Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <CheckBox VerticalAlignment="Center" Content="{Binding Dashboard_EnableScreenOverlay, Source={x:Static strings:Strings.Instance}}"
+                                  AutomationProperties.AutomationId="ScreenOverlay_Enable"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  IsChecked="{Binding EnableScreenOverlay}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="EnableScreenOverlay" SettingLabel="{Binding Dashboard_EnableScreenOverlay, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DashboardViewModel_EnableScreenOverlay_55708"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <TextBlock Text="{Binding Dashboard_TouchpadOverlayOpacity, Source={x:Static strings:Strings.Instance}}"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                   VerticalAlignment="Center" Margin="0,0,8,0" Width="80"/>
+                        <Slider Value="{Binding ScreenOverlayOpacity, Mode=TwoWay}"
+                                AutomationProperties.AutomationId="ScreenOverlay_Opacity"
+                                Minimum="0.0" Maximum="1.0"
+                                SmallChange="0.05" LargeChange="0.1"
+                                Width="160" VerticalAlignment="Center">
+                            <Slider.Style>
+                                <Style TargetType="Slider" BasedOn="{StaticResource {x:Type Slider}}">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Effect" Value="{StaticResource EmberHoverGlow}"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Slider.Style>
+                        </Slider>
+                        <ui:NumberBox Value="{Binding ScreenOverlayOpacityPercent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      Minimum="0" Maximum="100"
+                                      SpinButtonPlacementMode="Inline" Width="200"
+                                      Margin="8,0,0,0"/>
+                        <TextBlock Text="%" VerticalAlignment="Center" Margin="4,0,0,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        <reset:SettingResetButton Command="{Binding ResetScreenOverlayOpacityCommand}" SettingLabel="{Binding Dashboard_TouchpadOverlayOpacity, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <Button Command="{Binding ChooseScreenOverlayContentCommand}"
+                                AutomationProperties.AutomationId="ScreenOverlay_Choose"
+                                Margin="0,0,8,0"
+                                Content="{Binding Dashboard_ScreenOverlayChoose, Source={x:Static strings:Strings.Instance}}"/>
+                        <Button Command="{Binding ResetScreenOverlayPositionCommand}"
+                                AutomationProperties.AutomationId="ScreenOverlay_ResetPosition"
+                                Content="{Binding Dashboard_TouchpadOverlayResetPosition, Source={x:Static strings:Strings.Instance}}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                        <Path FlowDirection="LeftToRight" Data="{StaticResource FlameOuterGeometry}"
+                              Width="11" Height="11" Stretch="Uniform"
+                              VerticalAlignment="Center" Margin="0,0,6,0">
+                            <Path.Style>
+                                <Style TargetType="Path">
+                                    <Setter Property="Fill" Value="Transparent"/>
+                                    <Setter Property="Stroke" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                    <Setter Property="StrokeThickness" Value="1.1"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsScreenOverlayRunning}" Value="True">
+                                            <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
+                                            <Setter Property="Stroke" Value="{x:Null}"/>
+                                            <Setter Property="Effect">
+                                                <Setter.Value>
+                                                    <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Path.Style>
+                        </Path>
+                        <TextBlock common:LiveText.Polite="True" Text="{Binding ScreenOverlayStatus}" FontSize="12"
+                                   FontFamily="{StaticResource TelemetryFontFamily}"
+                                   Foreground="{DynamicResource ColdBrush}"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
             </StackPanel>
 
         </StackPanel>

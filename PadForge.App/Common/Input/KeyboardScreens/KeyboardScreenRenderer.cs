@@ -76,8 +76,10 @@ namespace PadForge.Common.Input.KeyboardScreens
             if (string.IsNullOrWhiteSpace(storedPath)) return null;
             try
             {
+                // At its own size: Picture mode shows a window of its own pixels,
+                // and Profile Picture never scales one up.
                 return BoundedBitmap.FromBytes(MenuIconResolver.ReadCapped(IconPackageManager.ResolvePath(storedPath)),
-                    MaxPictureSide, MaxPictureSide);
+                    MaxPictureSide, MaxPictureSide, scaleUp: false);
             }
             catch (Exception ex) when (ex is IOException or UnauthorizedAccessException
                 or NotSupportedException or ArgumentException or System.Security.SecurityException

@@ -4575,11 +4575,11 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>Stiahnuté SDK pre S.T.R.I.K.E. 7 nezodpovedá známemu SHA-256, preto sa nič z neho neponechalo.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>Visual C++ 2008 runtime stále chýba aj po spustení jeho inštalátora.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Zobraziť obrazovku klávesnice</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Prehráva obrázky na každej obrazovke klávesnice vybratého druhu, ktorá napája tento slot, a potom vráti každú obrazovku do jej vlastného režimu.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Prehráva obrázky na každej obrazovke klávesnice vybratého druhu, ktorá napája tento slot, a potom vráti každú obrazovku do jej vlastného režimu. Prekrytie obrazovky ich preberá z ktoréhokoľvek slotu.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Zobraziť obrázky {0}: {1} × {2} ms, počet opakovaní {3}</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Obrázky sa prispôsobia obrazovke: 160 × 43 čiernobielych pixelov na monochromatickej obrazovke, 320 × 240 na obrazovke G19 a 480 × 320 pre Arx Control a S.T.R.I.K.E. 7. Najkratší čas snímky je desatina sekundy.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Režim obrazovky klávesnice</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Prepne každú obrazovku klávesnice vybratého druhu, ktorá napája tento slot, na iný režim a uloží ho ako nastavenie tejto obrazovky.</value></data>
+  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Prepne každú obrazovku klávesnice vybratého druhu, ktorá napája tento slot, na iný režim a uloží ho ako nastavenie tejto obrazovky. Prekrytie obrazovky ho preberá z ktoréhokoľvek slotu.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} zobrazuje {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Režim zostane, kým ho nezmení iné makro alebo dialóg obrazovky.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Stopky</value></data>
@@ -4884,4 +4884,22 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>Akcia rozsvieti rovnaké klávesy na každej klávesnici, ktorú tento virtuálny ovládač osvetľuje, nad farbami z karty Osvetlenie. Čísla ukazujú poradie výberu. Odpočet vypína klávesy po jednom, naposledy vybraný ako prvý, takže na cooldown na číselnom rade vyberte 1 až 0. Klávesnica alebo myš svieti len vtedy, keď je zapnuté Ovládať osvetlenie tohto zariadenia.</value></data>
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>Iné</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, poradie {1}</value></data>
+  <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>Prekrytie obrazovky</value></data>
+  <data name="Dashboard_ScreenOverlayDescription" xml:space="preserve"><value>Zobrazuje obrázok, časovač, čas alebo farbu svetelnej lišty nad ostatnými oknami, bez potreby obrazovky klávesnice. Kým je vpredu iný program, kliknutia ním prechádzajú. Kým je vpredu PadForge, presúvajte ho pravým tlačidlom myši a veľkosť meňte z jeho rohu.</value></data>
+  <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>Povoliť prekrytie obrazovky</value></data>
+  <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Vybrať, čo zobrazuje…</value></data>
+  <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>Prekrytie obrazovky PadForge</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Zatiaľ nie je čo zobraziť. Na Prehľade vyberte, čo sa má zobrazovať.</value></data>
+  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Prepnúť prekrytie obrazovky</value></data>
+  <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Prepnúť prekrytie obrazovky</value></data>
+  <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Prekrytie obrazovky</value></data>
+  <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>Prekrytie nezobrazuje nič.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileName_Overlay" xml:space="preserve"><value>Prekrytie zobrazuje názov aktívneho profilu a mení sa pri každom prepnutí profilu.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileNumber_Overlay" xml:space="preserve"><value>Prekrytie zobrazuje poradie aktívneho profilu v zozname profilov. Predvolený profil má číslo 0.</value></data>
+  <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>Prekrytie zobrazuje vlastný obrázok aktívneho profilu, alebo jeho názov, ak obrázok nemá. Každý profil má vlastný obrázok.</value></data>
+  <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>Prekrytie zobrazuje aktuálny čas.</value></data>
+  <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>Prekrytie zobrazuje hodiny a minúty od prepnutia aktívneho profilu. Profil viazaný na program hry sa prepne pri spustení hry, takže ide o čas tejto relácie. Pri predvolenom profile sa počíta od spustenia enginu.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Prekrytie zobrazuje vami vybratý obrázok, zväčšený alebo zmenšený tak, aby vyplnil jeho okno pri zachovaní pomeru strán.</value></data>
+  <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>Prekrytie zobrazuje stopky, ktoré makro Stopky spúšťa, pozastavuje a resetuje. Sú to tie isté stopky, aké zobrazuje každá obrazovka klávesnice.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Prekrytie zobrazuje farbu svetelnej lišty na ovládači DualShock 4 alebo DualSense v najnižšom slote. Kým farba nedorazí k svetelnej lište, nezobrazuje nič.</value></data>
 </root>

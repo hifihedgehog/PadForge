@@ -163,6 +163,7 @@ namespace PadForge.ViewModels
                 Add(MacroActionType.PointerModeCycle, S.MacroAction_Type_PointerModeCycle, S.Macro_Cat_Motion, S.MacroAction_PointerModeCycle_Tooltip);
                 Add(MacroActionType.SwitchLayer, S.MacroAction_Type_SwitchLayer, S.Macro_Cat_Layers, S.Macro_SwitchLayer_Hint);
                 Add(MacroActionType.ToggleTouchpadOverlay, S.Macro_ToggleTouchpadOverlay, S.Macro_Cat_Layers, null);
+                Add(MacroActionType.ToggleScreenOverlay, S.Macro_ToggleScreenOverlay, S.Macro_Cat_Layers, null);
                 Add(MacroActionType.RunProgram, S.MacroAction_Type_RunProgram, S.Macro_Cat_System, S.MacroAction_RunProgram_Tooltip);
                 Add(MacroActionType.VoiceListenWhileHeld, S.MacroAction_Type_VoiceListenWhileHeld, S.Macro_Cat_System, S.MacroAction_VoiceListenWhileHeld_Tooltip);
                 Add(MacroActionType.DisconnectController, S.MacroAction_Type_DisconnectController, S.Macro_Cat_System, S.MacroAction_DisconnectController_Tooltip);

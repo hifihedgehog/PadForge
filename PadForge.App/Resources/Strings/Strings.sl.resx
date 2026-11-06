@@ -4575,11 +4575,11 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>Prenos SDK za S.T.R.I.K.E. 7 se ne ujema z znanim SHA-256, zato ni bilo ohranjeno nič.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>Izvajalnega okolja Visual C++ 2008 po zagonu namestitvenega programa še vedno ni.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Prikaži zaslon tipkovnice</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Predvaja slike na vsakem zaslonu tipkovnice izbrane vrste, ki napaja to režo, nato vrne vsak zaslon v njegov način.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Predvaja slike na vsakem zaslonu tipkovnice izbrane vrste, ki napaja to režo, nato vrne vsak zaslon v njegov način. Prekrivni prikaz zaslona jih prevzame iz katere koli reže.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Prikaži slike {0}: {1} × {2} ms, število ponovitev {3}</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Slike se prilagodijo zaslonu: 160 × 43 črno-belih pik na enobarvnem zaslonu, 320 × 240 na zaslonu G19 ter 480 × 320 za Arx Control in S.T.R.I.K.E. 7. Najkrajši čas sličice je desetinka sekunde.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Način zaslona tipkovnice</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Preklopi vsak zaslon tipkovnice izbrane vrste, ki napaja to režo, v drug način in ga shrani kot nastavitev tega zaslona.</value></data>
+  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Preklopi vsak zaslon tipkovnice izbrane vrste, ki napaja to režo, v drug način in ga shrani kot nastavitev tega zaslona. Prekrivni prikaz zaslona ga prevzame iz katere koli reže.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} prikazuje {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Način ostane, dokler ga ne spremeni drug makro ali pogovorno okno zaslona.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Štoparica</value></data>
@@ -4884,4 +4884,22 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>Dejanje osvetli enake tipke na vsaki tipkovnici, ki jo osvetljuje ta virtualni krmilnik, čez barve, ki jih določa zavihek Osvetlitev. Številke kažejo vrstni red izbire. Odštevanje izklaplja tipke eno za drugo, zadnjo izbrano najprej, zato za odštevanje na vrstici številk izberi od 1 do 0. Tipkovnica ali miška se osvetli samo, če je vključeno Upravljaj osvetlitev te naprave.</value></data>
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>Drugo</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, številka {1}</value></data>
+  <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>Prekrivni prikaz zaslona</value></data>
+  <data name="Dashboard_ScreenOverlayDescription" xml:space="preserve"><value>Prikazuje sliko, časovnik, uro ali barvo svetlobnega traku nad drugimi okni, tipkovnični zaslon pa ni potreben. Medtem ko je v ospredju drug program, kliki potekajo skozenj. Medtem ko je v ospredju PadForge, ga povlecite z desnim gumbom miške in mu spremenite velikost za kot.</value></data>
+  <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>Omogoči prekrivni prikaz zaslona</value></data>
+  <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Izberi, kaj prikazuje …</value></data>
+  <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>Prekrivni prikaz zaslona PadForge</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Še ni ničesar za prikaz. Na nadzorni plošči izberite, kaj prikazuje.</value></data>
+  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Preklopi prekrivni prikaz zaslona</value></data>
+  <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Preklopi prekrivni prikaz zaslona</value></data>
+  <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Prekrivni prikaz zaslona</value></data>
+  <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>Prekrivni prikaz ne prikazuje ničesar.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileName_Overlay" xml:space="preserve"><value>Prekrivni prikaz prikazuje ime aktivnega profila in sledi vsaki zamenjavi profila.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileNumber_Overlay" xml:space="preserve"><value>Prekrivni prikaz prikazuje mesto aktivnega profila na seznamu profilov. Privzeti profil je 0.</value></data>
+  <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>Prekrivni prikaz prikazuje sliko aktivnega profila ali njegovo ime, če slike nima. Vsak profil ima svojo sliko.</value></data>
+  <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>Prekrivni prikaz prikazuje trenutni čas.</value></data>
+  <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>Prekrivni prikaz prikazuje ure in minute od vklopa aktivnega profila. Profil, vezan na program igre, se vklopi ob zagonu igre, zato štetje velja za to sejo. Pri privzetem profilu šteje od zagona pogona.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Prekrivni prikaz prikazuje izbrano sliko, prilagojeno tako, da zapolni njegovo okno, pri čemer ohrani razmerja.</value></data>
+  <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>Prekrivni prikaz prikazuje štoparico, ki jo makro Štoparica zažene, začasno ustavi in ponastavi. To je ista štoparica, kot jo prikazuje vsak tipkovnični zaslon.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Prekrivni prikaz prikazuje barvo svetlobnega traku na krmilniku DualShock 4 ali DualSense v najnižji reži. Dokler barva ne doseže svetlobnega traku, ne prikaže ničesar.</value></data>
 </root>

@@ -3149,6 +3149,11 @@ namespace PadForge.Common.Input
                     AdvanceAction(macro);
                     break;
 
+                case MacroActionType.ToggleScreenOverlay:
+                    ToggleScreenOverlayRequested = true;
+                    AdvanceAction(macro);
+                    break;
+
                 case MacroActionType.LightbarColor:
                 {
                     // Single-frame fire — write the override into PSConfig
@@ -6014,6 +6019,11 @@ namespace PadForge.Common.Input
                 // every tick with CurrentActionIndex frozen.
                 case MacroActionType.ToggleTouchpadOverlay:
                     ToggleTouchpadOverlayRequested = true;
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.ToggleScreenOverlay:
+                    ToggleScreenOverlayRequested = true;
                     AdvanceAction(macro);
                     break;
 

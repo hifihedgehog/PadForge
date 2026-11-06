@@ -4575,11 +4575,11 @@ Vil du at PadForge skal avinstallere dem nå? Dette krever administratorrettighe
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>Nedlastingen av S.T.R.I.K.E. 7 SDK stemmer ikke med den kjente SHA-256-verdien, så ingenting fra den ble beholdt.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>Visual C++ 2008-kjøretidsmiljøet mangler fortsatt etter at installasjonsprogrammet kjørte.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Vis tastaturskjerm</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Spiller av bilder på hver tastaturskjerm av den valgte typen som forsyner dette sporet, og setter deretter hver skjerm tilbake til sin egen modus.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Spiller av bilder på hver tastaturskjerm av den valgte typen som forsyner dette sporet, og setter deretter hver skjerm tilbake til sin egen modus. Skjermoverlegget henter dem fra alle spor.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Vis bilder på {0}: {1} × {2} ms, gjentakelser {3}</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Bilder tilpasses skjermen: 160 × 43 svart-hvite piksler på en monokrom skjerm, 320 × 240 på G19, og 480 × 320 for Arx Control og S.T.R.I.K.E. 7. Et tidels sekund er korteste bildetid.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Tastaturskjermmodus</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Bytter hver tastaturskjerm av den valgte typen som forsyner dette sporet, til en annen modus, og beholder den som skjermens innstilling.</value></data>
+  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Bytter hver tastaturskjerm av den valgte typen som forsyner dette sporet, til en annen modus, og beholder den som skjermens innstilling. Skjermoverlegget henter den fra alle spor.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} viser {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Modusen blir stående til en annen makro eller skjermens dialog endrer den.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Stoppeklokke</value></data>
@@ -4884,4 +4884,22 @@ Vil du at PadForge skal avinstallere dem nå? Dette krever administratorrettighe
   <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>Handlingen lyser opp de samme tastene på hvert tastatur denne virtuelle kontrolleren styrer belysningen på, oppå fargene fra Belysning-fanen. Tallene viser rekkefølgen tastene ble valgt i. Nedtelling slår av tastene én om gangen, med den sist valgte først, så velg 1 til 0 for en nedkjøling på tallrekken. Et tastatur eller en mus lyser bare mens Styr belysningen på denne enheten er på.</value></data>
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>Annet</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, nummer {1}</value></data>
+  <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>Skjermoverlegg</value></data>
+  <data name="Dashboard_ScreenOverlayDescription" xml:space="preserve"><value>Viser et bilde, en tidtaker, klokkeslettet eller fargen på en lysliste oppå andre vinduer, uten at du trenger en tastaturskjerm. Mens et annet program er foran, går klikk rett gjennom det. Mens PadForge er foran, drar du det med høyre museknapp og endrer størrelsen fra hjørnet.</value></data>
+  <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>Aktiver skjermoverlegg</value></data>
+  <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Velg hva det viser…</value></data>
+  <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge-skjermoverlegg</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Ingenting å vise ennå. Velg hva det viser på Oversikt.</value></data>
+  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Vis/skjul skjermoverlegg</value></data>
+  <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Vis/skjul skjermoverlegg</value></data>
+  <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Skjermoverlegg</value></data>
+  <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>Overlegget viser ingenting.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileName_Overlay" xml:space="preserve"><value>Overlegget viser navnet på den aktive profilen og følger hvert profilbytte.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileNumber_Overlay" xml:space="preserve"><value>Overlegget viser plasseringen til den aktive profilen i profillisten. Standardprofilen er 0.</value></data>
+  <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>Overlegget viser bildet til den aktive profilen, eller navnet når profilen ikke har noe bilde. Hver profil har sitt eget bilde.</value></data>
+  <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>Overlegget viser klokkeslettet.</value></data>
+  <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>Overlegget viser timer og minutter siden den aktive profilen ble byttet inn. En profil som er knyttet til et spillprogram, byttes inn når spillet starter, så telleren viser den økten. Under standardprofilen teller den fra programmets oppstart.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Overlegget viser et bilde du velger, skalert til å fylle vinduet med bevarte proporsjoner.</value></data>
+  <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>Overlegget viser stoppeklokken, som makroen Stoppeklokke starter, setter på pause og nullstiller. Det er den samme stoppeklokken som alle tastaturskjermer viser.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Overlegget viser fargen på lyslisten til DualShock 4- eller DualSense-kontrolleren i det laveste sporet. Inntil en farge når en lyslist, viser det ingenting.</value></data>
 </root>

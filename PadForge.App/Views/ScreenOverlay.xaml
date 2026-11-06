@@ -1,0 +1,58 @@
+<Window x:Class="PadForge.Views.ScreenOverlay"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:strings="clr-namespace:PadForge.Resources.Strings"
+        xmlns:views="clr-namespace:PadForge.Views"
+        Title="{Binding Dashboard_ScreenOverlayWindowTitle, Source={x:Static strings:Strings.Instance}}"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        Topmost="True"
+        ShowInTaskbar="False"
+        ShowActivated="False"
+        Focusable="False"
+        Stylus.IsPressAndHoldEnabled="False"
+        Stylus.IsTapFeedbackEnabled="False"
+        Stylus.IsTouchFeedbackEnabled="False"
+        MinWidth="80" MinHeight="60"
+        Width="320" Height="240"
+        WindowStartupLocation="Manual">
+
+    <Grid>
+        <!-- Opacity lands on this alone, so the outline and the grip stay
+             findable at any setting. -->
+        <views:ScreenOverlayContentView x:Name="ContentView"/>
+
+        <TextBlock x:Name="EmptyHint" Visibility="Collapsed" IsHitTestVisible="False"
+                   HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8" Padding="6,3"
+                   TextWrapping="Wrap" TextAlignment="Center" FontSize="12"
+                   Foreground="White" Background="#A0000000"
+                   Text="{Binding ScreenOverlay_Empty, Source={x:Static strings:Strings.Instance}}"/>
+
+        <!-- The drag region. It has a background and an outline only while
+             PadForge is in front: Windows routes a layered window's input to
+             pixels with alpha above zero, so alpha 1 takes the mouse with
+             nothing to see. -->
+        <Border x:Name="Surface"
+                BorderThickness="1"
+                ToolTip="{Binding TouchpadOverlay_DragTooltip, Source={x:Static strings:Strings.Instance}}"
+                MouseRightButtonDown="Surface_MouseRightButtonDown"
+                MouseMove="Surface_MouseMove"
+                MouseRightButtonUp="Surface_MouseRightButtonUp"
+                LostMouseCapture="Surface_LostMouseCapture"/>
+
+        <!-- Resize grip (bottom-right corner) -->
+        <Path FlowDirection="LeftToRight" x:Name="ResizeGrip"
+              Data="M 0,12 L 12,0 L 12,12 Z"
+              Fill="{DynamicResource EmberBrush}"
+              Visibility="Collapsed"
+              HorizontalAlignment="Right"
+              VerticalAlignment="Bottom"
+              Margin="0,0,3,3"
+              Cursor="SizeNWSE"
+              MouseLeftButtonDown="ResizeGrip_MouseLeftButtonDown"
+              MouseMove="ResizeGrip_MouseMove"
+              MouseLeftButtonUp="ResizeGrip_MouseLeftButtonUp"
+              LostMouseCapture="ResizeGrip_LostMouseCapture"/>
+    </Grid>
+</Window>

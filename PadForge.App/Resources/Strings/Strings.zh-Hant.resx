@@ -4575,11 +4575,11 @@
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>下載的 S.T.R.I.K.E. 7 SDK 與已知的 SHA-256 不符，因此沒有保留其中任何內容。</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>安裝程式執行後，仍然缺少 Visual C++ 2008 執行階段。</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>顯示鍵盤螢幕</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>在所選類型且供應此插槽的每個鍵盤螢幕上播放圖片，然後讓每個螢幕回到自己的模式。</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>在所選類型且供應此插槽的每個鍵盤螢幕上播放圖片，然後讓每個螢幕回到自己的模式。螢幕重疊介面會從任何插槽取得這些圖片。</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>顯示 {0} 圖片：{1} × {2} ms，重複次數 {3}</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>圖片會配合螢幕調整大小：單色螢幕為 160 × 43 黑白像素，G19 為 320 × 240，Arx Control 與 S.T.R.I.K.E. 7 為 480 × 320。每張圖片最短顯示 0.1 秒。</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>鍵盤螢幕模式</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>將所選類型且供應此插槽的每個鍵盤螢幕切換到另一種模式，並保留為該螢幕的設定。</value></data>
+  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>將所選類型且供應此插槽的每個鍵盤螢幕切換到另一種模式，並保留為該螢幕的設定。螢幕重疊介面會從任何插槽取得此設定。</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} 顯示{1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>此模式會一直維持，直到其他巨集或該螢幕的對話方塊變更它。</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>碼錶</value></data>
@@ -4884,4 +4884,22 @@
   <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>此動作會在此虛擬控制器控制燈光的每個鍵盤上點亮相同的按鍵，並覆蓋在其「燈光」分頁指定的顏色上。數字表示選取的順序。倒數會逐一熄滅按鍵，最後選取的最先熄滅，因此若要在數字列做出冷卻效果，請依序選取 1 到 0。鍵盤或滑鼠必須開啟「控制此裝置的燈光」，才會亮起。</value></data>
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>其他</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}，第 {1} 個</value></data>
+  <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>螢幕重疊介面</value></data>
+  <data name="Dashboard_ScreenOverlayDescription" xml:space="preserve"><value>在其他視窗上方顯示圖片、計時器、時間或燈條顏色，無需鍵盤螢幕。其他程式位於前景時，點擊會穿透此介面；PadForge 位於前景時，可用滑鼠右鍵拖曳，並從角落調整大小。</value></data>
+  <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>啟用螢幕重疊介面</value></data>
+  <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>選擇顯示內容…</value></data>
+  <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge 螢幕重疊介面</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>尚無內容可顯示。請在儀表板上選擇顯示內容。</value></data>
+  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>切換螢幕重疊介面</value></data>
+  <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>切換螢幕重疊介面</value></data>
+  <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>螢幕重疊介面</value></data>
+  <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>重疊介面不顯示任何內容。</value></data>
+  <data name="KeyboardScreen_Hint_ProfileName_Overlay" xml:space="preserve"><value>重疊介面會顯示使用中設定檔的名稱，並隨著每次切換設定檔而更新。</value></data>
+  <data name="KeyboardScreen_Hint_ProfileNumber_Overlay" xml:space="preserve"><value>重疊介面會顯示使用中設定檔在設定檔清單中的位置。預設設定檔為 0。</value></data>
+  <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>重疊介面會顯示使用中設定檔自己的圖片，沒有圖片時則顯示其名稱。每個設定檔各自保存自己的圖片。</value></data>
+  <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>重疊介面會顯示目前的時間。</value></data>
+  <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>重疊介面會顯示使用中設定檔啟用後經過的小時與分鐘。綁定遊戲程式的設定檔會在遊戲啟動時啟用，因此計時即為該次遊玩。在預設設定檔下，則從引擎啟動時開始計算。</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>重疊介面會顯示您選擇的圖片，並在保持比例的情況下縮放至填滿其視窗。</value></data>
+  <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>重疊介面會顯示碼錶，可用「碼錶」巨集來開始、暫停與重設。所有鍵盤螢幕顯示的都是同一個碼錶。</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>重疊介面會顯示編號最小的插槽中 DualShock 4 或 DualSense 的燈條顏色。在顏色傳到燈條之前，不會顯示任何內容。</value></data>
 </root>

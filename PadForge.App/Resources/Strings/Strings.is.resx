@@ -4575,11 +4575,11 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>Niðurhal S.T.R.I.K.E. 7 SDK samsvarar ekki þekktu SHA-256, svo engu úr því var haldið.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>Visual C++ 2008 keyrsluumhverfið vantar enn eftir að uppsetningarforritið keyrði.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Sýna skjá lyklaborðs</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Spilar myndir á hverjum lyklaborðsskjá af völdu tagi sem tengist þessari rauf og skilar síðan hverjum skjá í sinn eigin ham.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Spilar myndir á hverjum lyklaborðsskjá af völdu tagi sem tengist þessari rauf og skilar síðan hverjum skjá í sinn eigin ham. Yfirlag skjás tekur þær úr hverri rauf.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Sýna {0} myndir: {1} × {2} ms, fjöldi endurtekninga {3}</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Myndir eru lagaðar að skjánum: 160 × 43 svarthvítir punktar á einlitum skjá, 320 × 240 á skjá G19 og 480 × 320 fyrir Arx Control og S.T.R.I.K.E. 7. Stysti rammatími er tíundi hluti úr sekúndu.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Ham skjás lyklaborðs</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Skiptir hverjum lyklaborðsskjá af völdu tagi sem tengist þessari rauf yfir í annan ham og vistar hann sem stillingu þess skjás.</value></data>
+  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Skiptir hverjum lyklaborðsskjá af völdu tagi sem tengist þessari rauf yfir í annan ham og vistar hann sem stillingu þess skjás. Yfirlag skjás tekur hann úr hverri rauf.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} sýnir {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Hamurinn helst þar til annar fjölvi eða gluggi skjásins breytir honum.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Skeiðklukka</value></data>
@@ -4884,4 +4884,22 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>Aðgerðin lýsir sömu tökkum á hverju lyklaborði sem þessi sýndarstýripinni lýsir, yfir litunum sem Lýsing flipinn gefur þeim. Tölurnar sýna röðina sem valið var í. Niðurtalning slekkur á tökkum einum í einu, þeim síðasta valda fyrst, svo veldu 1 til 0 fyrir endurhleðslutíma á talnaröðinni. Lyklaborð eða mús lýsist aðeins meðan kveikt er á Stjórna lýsingu þessa tækis.</value></data>
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>Annað</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, númer {1}</value></data>
+  <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>Yfirlag skjás</value></data>
+  <data name="Dashboard_ScreenOverlayDescription" xml:space="preserve"><value>Sýnir mynd, tímamæli, klukkuna eða lit ljósrandar ofan á öðrum gluggum, án þess að lyklaborðsskjár þurfi til. Á meðan annað forrit er fremst fara smellir í gegnum það. Á meðan PadForge er fremst skaltu draga það með hægri músarhnappi og breyta stærð þess frá horninu.</value></data>
+  <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>Virkja yfirlag skjás</value></data>
+  <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Velja hvað það sýnir…</value></data>
+  <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge-yfirlag skjás</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Ekkert að sýna enn. Veldu hvað það sýnir á mælaborðinu.</value></data>
+  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Víxla yfirlagi skjás</value></data>
+  <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Víxla yfirlagi skjás</value></data>
+  <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Yfirlag skjás</value></data>
+  <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>Yfirlagið sýnir ekkert.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileName_Overlay" xml:space="preserve"><value>Yfirlagið sýnir heiti virka sniðsins og uppfærist við hver sniðaskipti.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileNumber_Overlay" xml:space="preserve"><value>Yfirlagið sýnir stöðu virka sniðsins á sniðalistanum. Sjálfgefna sniðið er 0.</value></data>
+  <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>Yfirlagið sýnir eigin mynd virka sniðsins, eða heiti þess ef það hefur enga. Hvert snið geymir sína eigin mynd.</value></data>
+  <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>Yfirlagið sýnir tíma dags.</value></data>
+  <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>Yfirlagið sýnir klukkustundir og mínútur frá því að virka sniðið tók gildi. Snið sem er tengt forriti leiks tekur gildi þegar leikurinn ræsist, svo talningin nær yfir þá lotu. Undir sjálfgefna sniðinu telur það frá ræsingu vélarinnar.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Yfirlagið sýnir mynd að eigin vali, stækkaða eða minnkaða til að fylla gluggann með hlutföllum sínum óbreyttum.</value></data>
+  <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>Yfirlagið sýnir skeiðklukkuna, sem skeiðklukkufjölvinn ræsir, setur á bið og endurstillir. Það er sama skeiðklukka og allir lyklaborðsskjáir sýna.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Yfirlagið sýnir lit ljósrandarinnar á DualShock 4 eða DualSense í lægstu raufinni. Þar til litur berst ljósrönd sýnir það ekkert.</value></data>
 </root>

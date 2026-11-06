@@ -4526,11 +4526,11 @@
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>ダウンロードした S.T.R.I.K.E. 7 SDK が既知の SHA-256 と一致しないため、そこから何も保存しませんでした。</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>インストーラーの実行後も、Visual C++ 2008 ランタイムがまだありません。</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>キーボード画面を表示</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>このスロットに入力する、選んだ種類の各キーボード画面で画像を再生し、その後、各画面を元のモードに戻します。</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>このスロットに入力する、選んだ種類の各キーボード画面で画像を再生し、その後、各画面を元のモードに戻します。画面オーバーレイは、どのスロットからでも画像を受け取ります。</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>{0} の画像 {1} 枚を各 {2} ms で {3} 回表示</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>画像は画面に合わせて調整されます。モノクロ画面は 160 × 43 の白黒ピクセル、G19 は 320 × 240、Arx Control と S.T.R.I.K.E. 7 は 480 × 320 です。フレーム時間は最短で 0.1 秒です。</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>キーボード画面のモード</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>このスロットに入力する、選んだ種類の各キーボード画面を別のモードに切り替え、その画面の設定として保持します。</value></data>
+  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>このスロットに入力する、選んだ種類の各キーボード画面を別のモードに切り替え、その画面の設定として保持します。画面オーバーレイは、どのスロットからでも切り替えを受け付けます。</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} に {1} を表示</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>モードは、別のマクロまたは画面のダイアログで変更するまで維持されます。</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>ストップウォッチ</value></data>
@@ -4835,4 +4835,22 @@
   <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>このアクションは、この仮想コントローラーがライティングするすべてのキーボードで同じキーを、ライティングタブで設定したカラーの上に点灯します。数字は選んだ順番です。カウントダウンは最後に選んだキーから1つずつ消灯するので、数字キー列の1から0を選ぶとクールダウン表示になります。キーボードやマウスは「このデバイスのライティングを制御」がオンの間だけ点灯します。</value></data>
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>その他</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}、{1}番目</value></data>
+  <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>画面オーバーレイ</value></data>
+  <data name="Dashboard_ScreenOverlayDescription" xml:space="preserve"><value>画像、タイマー、時刻、またはライトバーの色を他のウィンドウの前面に表示します。キーボード画面は不要です。他のプログラムが前面にある間は、クリックが通り抜けます。PadForge が前面にある間は、マウスの右ボタンでドラッグして移動し、角でサイズを変更できます。</value></data>
+  <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>画面オーバーレイを有効にする</value></data>
+  <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>表示内容を選択…</value></data>
+  <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge 画面オーバーレイ</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>表示する内容がまだありません。ダッシュボードで表示内容を選択してください。</value></data>
+  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>画面オーバーレイの切り替え</value></data>
+  <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>画面オーバーレイの切り替え</value></data>
+  <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>画面オーバーレイ</value></data>
+  <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>オーバーレイには何も表示しません。</value></data>
+  <data name="KeyboardScreen_Hint_ProfileName_Overlay" xml:space="preserve"><value>オーバーレイにアクティブなプロファイルの名前を表示し、プロファイルの切り替えに追従します。</value></data>
+  <data name="KeyboardScreen_Hint_ProfileNumber_Overlay" xml:space="preserve"><value>オーバーレイにアクティブなプロファイルのプロファイル一覧での位置を表示します。デフォルトのプロファイルは 0 です。</value></data>
+  <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>オーバーレイにアクティブなプロファイル自身の画像を表示し、画像がない場合は名前を表示します。画像はプロファイルごとに保存されます。</value></data>
+  <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>オーバーレイに現在の時刻を表示します。</value></data>
+  <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>オーバーレイにアクティブなプロファイルが切り替わってからの経過時間 (時間と分) を表示します。ゲームのプログラムに関連付けたプロファイルはゲームの開始時に切り替わるため、そのセッションの時間になります。デフォルトのプロファイルでは、エンジンの開始から数えます。</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>オーバーレイに選んだ画像を、縦横比を保ったままウィンドウいっぱいに拡大縮小して表示します。</value></data>
+  <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>オーバーレイにストップウォッチを表示します。ストップウォッチは、ストップウォッチのマクロで開始、一時停止、リセットします。すべてのキーボード画面で表示されるものと同じストップウォッチです。</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>オーバーレイに、最も小さいスロットの DualShock 4 または DualSense のライトバーの色を表示します。ライトバーに色が届くまで、何も表示しません。</value></data>
 </root>

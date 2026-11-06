@@ -4575,11 +4575,11 @@
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>Преземениот SDK за S.T.R.I.K.E. 7 не одговара на познатиот SHA-256, затоа ништо од него не е зачувано.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>Извршната околина Visual C++ 2008 сè уште недостасува откако работеше нејзиниот инсталатор.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Прикажи на екранот на тастатурата</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Пушта слики на секој екран на тастатурата од избраниот вид што го напојува овој слот, па го враќа секој екран на неговиот режим.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Пушта слики на секој екран на тастатурата од избраниот вид што го напојува овој слот, па го враќа секој екран на неговиот режим. Оверлејот на екранот ги зема од кој било слот.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Прикажи слики на {0}: {1} × {2} ms, број на повторувања {3}</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Сликите се прилагодуваат на екранот: 160 на 43 црно-бели пиксели на монохроматски екран, 320 на 240 на екранот на G19 и 480 на 320 за Arx Control и S.T.R.I.K.E. 7. Една десетинка секунда е најкраткото време по слика.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Режим на екранот на тастатурата</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Го префрла секој екран на тастатурата од избраниот вид што го напојува овој слот на друг режим и го задржува како поставка на тој екран.</value></data>
+  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Го префрла секој екран на тастатурата од избраниот вид што го напојува овој слот на друг режим и го задржува како поставка на тој екран. Оверлејот на екранот го зема од кој било слот.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} прикажува {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Режимот останува додека друго макро или дијалогот на екранот не го промени.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Штоперица</value></data>
@@ -4884,4 +4884,22 @@
   <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>Дејствието ги осветлува истите копчиња на секоја тастатура што ја осветлува овој виртуелен контролер, врз боите што им ги дава јазичето Осветлување. Броевите го покажуваат редоследот на избирање. Одбројувањето ги гаси копчињата едно по едно, почнувајќи од последното избрано, па изберете 1 до 0 за одбројување на редот со бројки. Тастатурата или глушецот светат само додека е вклучено Управувај со осветлувањето на овој уред.</value></data>
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>Друго</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, број {1}</value></data>
+  <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>Оверлеј на екранот</value></data>
+  <data name="Dashboard_ScreenOverlayDescription" xml:space="preserve"><value>Прикажува слика, тајмер, времето или бојата на светлосна лента над другите прозорци, без да е потребен екран на тастатурата. Додека пред него е друга програма, кликовите минуваат низ него. Додека PadForge е напред, повлечете го со десното копче на глушецот и сменете му ја големината од аголот.</value></data>
+  <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>Овозможи оверлеј на екранот</value></data>
+  <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Избери што прикажува…</value></data>
+  <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge оверлеј на екранот</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Сè уште нема што да се прикаже. Изберете што прикажува на контролната табла.</value></data>
+  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Прикажи/скриј оверлеј на екранот</value></data>
+  <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Прикажи/скриј оверлеј на екранот</value></data>
+  <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Оверлеј на екранот</value></data>
+  <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>Оверлејот не прикажува ништо.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileName_Overlay" xml:space="preserve"><value>Оверлејот го прикажува името на активниот профил и го следи секое менување на профилот.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileNumber_Overlay" xml:space="preserve"><value>Оверлејот го прикажува местото на активниот профил во списокот со профили. Стандардниот профил е 0.</value></data>
+  <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>Оверлејот ја прикажува сопствената слика на активниот профил или неговото име кога нема слика. Секој профил ја чува својата слика.</value></data>
+  <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>Оверлејот го прикажува времето од денот.</value></data>
+  <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>Оверлејот ги прикажува часовите и минутите откако се префрли активниот профил. Профилот врзан за програмата на една игра се префрла кога играта ќе се стартува, па бројачот ја мери таа сесија. Под стандардниот профил брои од стартот на механизмот.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Оверлејот прикажува слика што ја избираш, зголемена или намалена за да го исполни својот прозорец, со зачувани пропорции.</value></data>
+  <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>Оверлејот ја прикажува штоперицата, која макрото Штоперица ја стартува, паузира и ресетира. Тоа е истата штоперица што ја прикажува секој екран на тастатурата.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Оверлејот ја прикажува бојата на светлосната лента на DualShock 4 или DualSense во најнискиот слот. Додека боја не стигне до светлосна лента, не прикажува ништо.</value></data>
 </root>

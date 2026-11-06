@@ -25,6 +25,7 @@ namespace PadForge.ViewModels
             Title = Strings.Instance.Dashboard_Title;
             OnPropertyChanged(nameof(PollingFrequencyText));
             OnPropertyChanged(nameof(TouchpadOverlayStatus));
+            OnPropertyChanged(nameof(ScreenOverlayStatus));
             // The runtime picker's System Default row kept the previous
             // language's word, the audio mirror picker's old defect. A list
             // nobody has read yet is built in the new language anyway.
@@ -1692,6 +1693,132 @@ namespace PadForge.ViewModels
 
         public string TouchpadOverlayStatus =>
             _isTouchpadOverlayRunning ? Strings.Instance.Common_Running : Strings.Instance.Common_Stopped;
+
+        // ─────────────────────────────────────────────
+        //  Screen Overlay (#560)
+        // ─────────────────────────────────────────────
+
+        private bool _enableScreenOverlay;
+
+        /// <summary>Whether the Screen Overlay is enabled (visible). Its macros
+        /// run with no keyboard screen in the picture, so this opens the macro
+        /// queue as the Keyboard Screens switch does.</summary>
+        public bool EnableScreenOverlay
+        {
+            get => _enableScreenOverlay;
+            set
+            {
+                if (SetProperty(ref _enableScreenOverlay, value))
+                    PadForge.Common.Input.KeyboardScreensRuntime.OverlayEnabled = value;
+            }
+        }
+
+        /// <summary>The opacity a new Screen Overlay starts at.</summary>
+        public const double DefaultScreenOverlayOpacity = 0.8;
+
+        private double _screenOverlayOpacity = DefaultScreenOverlayOpacity;
+
+        /// <summary>Opacity of what the Screen Overlay shows (0.0–1.0).</summary>
+        public double ScreenOverlayOpacity
+        {
+            get => _screenOverlayOpacity;
+            set
+            {
+                if (SetProperty(ref _screenOverlayOpacity, Math.Clamp(value, 0.0, 1.0)))
+                    OnPropertyChanged(nameof(ScreenOverlayOpacityPercent));
+            }
+        }
+
+        /// <summary>Opacity as 0–100 integer percentage for NumberBox binding.</summary>
+        public int ScreenOverlayOpacityPercent
+        {
+            get => (int)Math.Round(_screenOverlayOpacity * 100);
+            set => ScreenOverlayOpacity = value / 100.0;
+        }
+
+        private RelayCommand _resetScreenOverlayOpacityCommand;
+        public RelayCommand ResetScreenOverlayOpacityCommand =>
+            _resetScreenOverlayOpacityCommand ??= new RelayCommand(() => ScreenOverlayOpacity = DefaultScreenOverlayOpacity);
+
+        /// <summary>Raised when the user clicks Reset Position. Handler in
+        /// InputService recenters the live overlay, or clears the saved place
+        /// when it is not showing.</summary>
+        public event EventHandler ResetScreenOverlayPositionRequested;
+
+        private RelayCommand _resetScreenOverlayPositionCommand;
+        public RelayCommand ResetScreenOverlayPositionCommand =>
+            _resetScreenOverlayPositionCommand ??= new RelayCommand(() =>
+                ResetScreenOverlayPositionRequested?.Invoke(this, EventArgs.Empty));
+
+        /// <summary>Raised when the user clicks Choose What It Shows.</summary>
+        public event EventHandler ChooseScreenOverlayContentRequested;
+
+        private RelayCommand _chooseScreenOverlayContentCommand;
+        public RelayCommand ChooseScreenOverlayContentCommand =>
+            _chooseScreenOverlayContentCommand ??= new RelayCommand(() =>
+                ChooseScreenOverlayContentRequested?.Invoke(this, EventArgs.Empty));
+
+        private int _screenOverlayMonitor;
+
+        /// <summary>Monitor index for the Screen Overlay (0 = primary).</summary>
+        public int ScreenOverlayMonitor
+        {
+            get => _screenOverlayMonitor;
+            set => SetProperty(ref _screenOverlayMonitor, value);
+        }
+
+        private double _screenOverlayLeft = PadForge.Views.OverlayPlacement.NoPlace;
+
+        /// <summary>The window's left edge, or
+        /// <see cref="PadForge.Views.OverlayPlacement.NoPlace"/> with no saved place
+        /// yet.</summary>
+        public double ScreenOverlayLeft
+        {
+            get => _screenOverlayLeft;
+            set => SetProperty(ref _screenOverlayLeft, value);
+        }
+
+        private double _screenOverlayTop = PadForge.Views.OverlayPlacement.NoPlace;
+
+        /// <summary>The window's top edge, or
+        /// <see cref="PadForge.Views.OverlayPlacement.NoPlace"/> with no saved place
+        /// yet.</summary>
+        public double ScreenOverlayTop
+        {
+            get => _screenOverlayTop;
+            set => SetProperty(ref _screenOverlayTop, value);
+        }
+
+        private double _screenOverlayWidth = 320;
+        public double ScreenOverlayWidth
+        {
+            get => _screenOverlayWidth;
+            set => SetProperty(ref _screenOverlayWidth, Math.Max(80, value));
+        }
+
+        private double _screenOverlayHeight = 240;
+        public double ScreenOverlayHeight
+        {
+            get => _screenOverlayHeight;
+            set => SetProperty(ref _screenOverlayHeight, Math.Max(60, value));
+        }
+
+        private bool _isScreenOverlayRunning;
+
+        /// <summary>True when the overlay window is currently shown. Drives
+        /// the localized ScreenOverlayStatus text below.</summary>
+        public bool IsScreenOverlayRunning
+        {
+            get => _isScreenOverlayRunning;
+            set
+            {
+                if (SetProperty(ref _isScreenOverlayRunning, value))
+                    OnPropertyChanged(nameof(ScreenOverlayStatus));
+            }
+        }
+
+        public string ScreenOverlayStatus =>
+            _isScreenOverlayRunning ? Strings.Instance.Common_Running : Strings.Instance.Common_Stopped;
 
     }
 

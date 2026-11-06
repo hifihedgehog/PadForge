@@ -2363,6 +2363,7 @@ namespace PadForge.Services
             _mainVm.Settings.PropertyChanged += OnSettingsPropertyChanged;
             _mainVm.Dashboard.PropertyChanged += OnDashboardPropertyChanged;
             _mainVm.Dashboard.ResetTouchpadOverlayPositionRequested += OnResetTouchpadOverlayPosition;
+            _mainVm.Dashboard.ResetScreenOverlayPositionRequested += OnResetScreenOverlayPosition;
 
             // Bridge between InputService's _activeTouchpadGestures
             // working list and SettingsService's save / load paths.
@@ -2469,6 +2470,10 @@ namespace PadForge.Services
             // Show touchpad overlay if enabled.
             if (_mainVm.Dashboard.EnableTouchpadOverlay)
                 ShowTouchpadOverlay();
+
+            // Show the Screen Overlay if enabled.
+            if (_mainVm.Dashboard.EnableScreenOverlay)
+                ShowScreenOverlay();
 
             // Start audio bass rumble detector if any slot has it enabled.
             SyncAudioBassDetector();
@@ -2585,6 +2590,7 @@ namespace PadForge.Services
                 _mainVm.Settings.PropertyChanged -= OnSettingsPropertyChanged;
                 _mainVm.Dashboard.PropertyChanged -= OnDashboardPropertyChanged;
                 _mainVm.Dashboard.ResetTouchpadOverlayPositionRequested -= OnResetTouchpadOverlayPosition;
+                _mainVm.Dashboard.ResetScreenOverlayPositionRequested -= OnResetScreenOverlayPosition;
 
                 // NOTE: do NOT unsubscribe the constructor-only handlers here
                 // (Devices.PropertyChanged, and per-pad SelectedDeviceChanged /
@@ -2600,7 +2606,9 @@ namespace PadForge.Services
                     _touchpadOverlay.PositionChanged -= OnTouchpadOverlayPositionChanged;
                     _touchpadOverlay.Close();
                     _touchpadOverlay = null;
+                    _mainVm.Dashboard.IsTouchpadOverlayRunning = false;
                 }
+                CloseScreenOverlay();
                 if (_switchOverlay != null)
                 {
                     _switchOverlay.StopTimers();
@@ -2921,6 +2929,13 @@ namespace PadForge.Services
             {
                 _inputManager.ToggleTouchpadOverlayRequested = false;
                 ToggleTouchpadOverlay();
+            }
+
+            // ── Handle macro-requested Screen Overlay toggle ──
+            if (_inputManager.ToggleScreenOverlayRequested)
+            {
+                _inputManager.ToggleScreenOverlayRequested = false;
+                ToggleScreenOverlay();
             }
 
             // ── Bliss-Box Dreamcast screens (#469): ungated, like the
@@ -11008,6 +11023,24 @@ namespace PadForge.Services
             {
                 _touchpadOverlay?.SetSurfaceOpacity(_mainVm.Dashboard.TouchpadOverlayOpacity);
             }
+            else if (e.PropertyName == nameof(DashboardViewModel.EnableScreenOverlay))
+            {
+                if (_mainVm.Dashboard.EnableScreenOverlay)
+                    ShowScreenOverlay();
+                else
+                    HideScreenOverlay();
+            }
+            else if (e.PropertyName == nameof(DashboardViewModel.ScreenOverlayOpacity))
+            {
+                _screenOverlay?.SetContentOpacity(_mainVm.Dashboard.ScreenOverlayOpacity);
+            }
+            else if (e.PropertyName is nameof(DashboardViewModel.ScreenOverlayLeft)
+                     or nameof(DashboardViewModel.ScreenOverlayTop)
+                     or nameof(DashboardViewModel.ScreenOverlayWidth)
+                     or nameof(DashboardViewModel.ScreenOverlayHeight))
+            {
+                ScreenOverlayPlaceChanged();
+            }
         }
 
         // ─────────────────────────────────────────────
@@ -13525,8 +13558,11 @@ namespace PadForge.Services
                 _touchpadOverlay.Width = dash.TouchpadOverlayWidth;
                 _touchpadOverlay.Height = dash.TouchpadOverlayHeight;
 
-                // Restore persisted position or center on monitor.
-                if (dash.TouchpadOverlayLeft >= 0 && dash.TouchpadOverlayTop >= 0)
+                // Restore persisted position or center on monitor. Only (-1, -1)
+                // means no saved place: a monitor left of or above the primary
+                // has negative coordinates, and EnsureOnScreen below heals one
+                // that no monitor shows.
+                if (dash.TouchpadOverlayLeft != -1 || dash.TouchpadOverlayTop != -1)
                 {
                     _touchpadOverlay.Left = dash.TouchpadOverlayLeft;
                     _touchpadOverlay.Top = dash.TouchpadOverlayTop;
@@ -19291,6 +19327,13 @@ namespace PadForge.Services
                 TouchpadOverlayTop = _mainVm.Dashboard.TouchpadOverlayTop,
                 TouchpadOverlayWidth = _mainVm.Dashboard.TouchpadOverlayWidth,
                 TouchpadOverlayHeight = _mainVm.Dashboard.TouchpadOverlayHeight,
+                EnableScreenOverlay = _mainVm.Dashboard.EnableScreenOverlay,
+                ScreenOverlayOpacity = _mainVm.Dashboard.ScreenOverlayOpacity,
+                ScreenOverlayMonitor = _mainVm.Dashboard.ScreenOverlayMonitor,
+                ScreenOverlayLeft = _mainVm.Dashboard.ScreenOverlayLeft,
+                ScreenOverlayTop = _mainVm.Dashboard.ScreenOverlayTop,
+                ScreenOverlayWidth = _mainVm.Dashboard.ScreenOverlayWidth,
+                ScreenOverlayHeight = _mainVm.Dashboard.ScreenOverlayHeight,
                 TouchpadGestures = _activeTouchpadGestures.Count > 0
                     ? _activeTouchpadGestures.ToArray()
                     : null
@@ -20321,6 +20364,17 @@ namespace PadForge.Services
             _mainVm.Dashboard.TouchpadOverlayHeight = profile.TouchpadOverlayHeight > 0
                 ? profile.TouchpadOverlayHeight : 250;
 
+            // ── Apply Screen Overlay settings ──
+            _mainVm.Dashboard.EnableScreenOverlay = profile.EnableScreenOverlay;
+            _mainVm.Dashboard.ScreenOverlayOpacity = profile.ScreenOverlayOpacity;
+            _mainVm.Dashboard.ScreenOverlayMonitor = profile.ScreenOverlayMonitor;
+            _mainVm.Dashboard.ScreenOverlayLeft = profile.ScreenOverlayLeft;
+            _mainVm.Dashboard.ScreenOverlayTop = profile.ScreenOverlayTop;
+            _mainVm.Dashboard.ScreenOverlayWidth = profile.ScreenOverlayWidth > 0
+                ? profile.ScreenOverlayWidth : 320;
+            _mainVm.Dashboard.ScreenOverlayHeight = profile.ScreenOverlayHeight > 0
+                ? profile.ScreenOverlayHeight : 240;
+
             // Rebuild pad device lists based on new MapTo values.
             //
             // The ViewModels are KNOWN STALE across this call (round
@@ -20675,6 +20729,13 @@ namespace PadForge.Services
                     profile.TouchpadOverlayTop = snapshot.TouchpadOverlayTop;
                     profile.TouchpadOverlayWidth = snapshot.TouchpadOverlayWidth;
                     profile.TouchpadOverlayHeight = snapshot.TouchpadOverlayHeight;
+                    profile.EnableScreenOverlay = snapshot.EnableScreenOverlay;
+                    profile.ScreenOverlayOpacity = snapshot.ScreenOverlayOpacity;
+                    profile.ScreenOverlayMonitor = snapshot.ScreenOverlayMonitor;
+                    profile.ScreenOverlayLeft = snapshot.ScreenOverlayLeft;
+                    profile.ScreenOverlayTop = snapshot.ScreenOverlayTop;
+                    profile.ScreenOverlayWidth = snapshot.ScreenOverlayWidth;
+                    profile.ScreenOverlayHeight = snapshot.ScreenOverlayHeight;
                     profile.TouchpadGestures = snapshot.TouchpadGestures;
                     // Identity members (Id, Name, ExecutableNames, WorkshopSource)
                     // are intentionally NOT copied. SnapshotCurrentProfile never

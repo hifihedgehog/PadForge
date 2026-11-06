@@ -269,6 +269,7 @@ namespace PadForge.ViewModels
             nameof(EnableRemoteLink) or
             nameof(AutoReconnect) or
             nameof(EnableTouchpadOverlay) or
+            nameof(EnableScreenOverlay) or
             nameof(EnableMenuOverlay) or
             nameof(EnableShiftLayerFlyout) or
             nameof(EnableProfileOverlay);
@@ -335,6 +336,11 @@ namespace PadForge.ViewModels
                 case nameof(EnableTouchpadOverlay):
                 {
                     EnableTouchpadOverlay = false;
+                    break;
+                }
+                case nameof(EnableScreenOverlay):
+                {
+                    EnableScreenOverlay = false;
                     break;
                 }
                 case nameof(EnableMenuOverlay):

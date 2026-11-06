@@ -525,9 +525,10 @@ namespace PadForge.Tests
             // #377 switch layer, 56 for #468 Set Chroma Color, 57 for #469
             // Show Dreamcast Screen, 58 to 61 for #519's keyboard screen
             // actions, 62 and 63 for #531's Adaptive Trigger Effect pair,
-            // 64 and 65 for #557's key colors pair).
+            // 64 and 65 for #557's key colors pair, 66 for #560's Toggle
+            // Screen Overlay).
             // The pins above are what this test protects.
-            Assert.Equal(MacroActionType.AxisScale, values[^15]);
+            Assert.Equal(MacroActionType.AxisScale, values[^16]);
         }
     }
 

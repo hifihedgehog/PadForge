@@ -4575,11 +4575,11 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>S.T.R.I.K.E. 7 SDK డౌన్లోడ్ తెలిసిన SHA-256 తో సరిపోలలేదు, కాబట్టి దాని నుండి ఏదీ ఉంచబడలేదు.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>ఇన్స్టాలర్ నడిచిన తర్వాత కూడా Visual C++ 2008 రన్టైమ్ ఇంకా లేదు.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>కీబోర్డ్ స్క్రీన్ చూపు</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>ఈ స్లాట్కు ఇన్పుట్ ఇచ్చే, ఎంచుకున్న రకంలోని ప్రతి కీబోర్డ్ స్క్రీన్ మీద చిత్రాలను ప్లే చేసి, తర్వాత ప్రతి స్క్రీన్ను దాని స్వంత మోడ్కు తిరిగి పంపుతుంది.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>ఈ స్లాట్‌కు ఇన్‌పుట్ ఇచ్చే, ఎంచుకున్న రకంలోని ప్రతి కీబోర్డ్ స్క్రీన్ మీద చిత్రాలను ప్లే చేసి, తర్వాత ప్రతి స్క్రీన్‌ను దాని స్వంత మోడ్‌కు తిరిగి పంపుతుంది. స్క్రీన్ ఓవర్లే వాటిని ఏ స్లాట్ నుండైనా తీసుకుంటుంది.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>{0} చిత్రాలు చూపు: {1} × {2} ms, పునరావృత సంఖ్య {3}</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>చిత్రాలు స్క్రీన్కు సరిపోయేలా మార్చబడతాయి: మోనోక్రోమ్ స్క్రీన్లో 160 × 43 నలుపు-తెలుపు పిక్సెల్లు, G19 స్క్రీన్లో 320 × 240, Arx Control మరియు S.T.R.I.K.E. 7 కు 480 × 320. ఫ్రేమ్ సమయం కనీసం సెకనులో పదో వంతు.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>కీబోర్డ్ స్క్రీన్ మోడ్</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>ఈ స్లాట్కు ఇన్పుట్ ఇచ్చే, ఎంచుకున్న రకంలోని ప్రతి కీబోర్డ్ స్క్రీన్ను మరో మోడ్కు మారుస్తుంది మరియు దాన్ని ఆ స్క్రీన్ సెట్టింగ్గా ఉంచుతుంది.</value></data>
+  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>ఈ స్లాట్‌కు ఇన్‌పుట్ ఇచ్చే, ఎంచుకున్న రకంలోని ప్రతి కీబోర్డ్ స్క్రీన్‌ను మరో మోడ్‌కు మారుస్తుంది మరియు దాన్ని ఆ స్క్రీన్ సెట్టింగ్‌గా ఉంచుతుంది. స్క్రీన్ ఓవర్లే దాన్ని ఏ స్లాట్ నుండైనా తీసుకుంటుంది.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} {1} చూపుతుంది</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>మరో మాక్రో లేదా స్క్రీన్ డైలాగ్ మార్చే వరకు మోడ్ అలాగే ఉంటుంది.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>స్టాప్వాచ్</value></data>
@@ -4884,4 +4884,22 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>ఈ చర్య, ఈ వర్చువల్ కంట్రోలర్ లైటింగ్ నియంత్రించే ప్రతి కీబోర్డ్‌లో ఒకే కీలను, లైటింగ్ ట్యాబ్ ఇచ్చిన రంగుల పైన వెలిగిస్తుంది. సంఖ్యలు ఎంచుకున్న క్రమాన్ని చూపుతాయి. కౌంట్‌డౌన్ కీలను ఒక్కొక్కటిగా ఆపుతుంది, చివరగా ఎంచుకున్నది మొదట, కాబట్టి నంబర్ వరుసలో కూల్‌డౌన్ కోసం 1 నుండి 0 వరకు ఎంచుకో. కీబోర్డ్ లేదా మౌస్ ఈ పరికర లైటింగ్ను నియంత్రించు ఆన్‌లో ఉన్నప్పుడు మాత్రమే వెలుగుతుంది.</value></data>
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>ఇతర</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, సంఖ్య {1}</value></data>
+  <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>స్క్రీన్ ఓవర్లే</value></data>
+  <data name="Dashboard_ScreenOverlayDescription" xml:space="preserve"><value>కీబోర్డ్ స్క్రీన్ అవసరం లేకుండా, ఇతర విండోల పైన ఒక చిత్రాన్ని, టైమర్‌ను, సమయాన్ని లేదా లైట్ బార్ రంగును చూపుతుంది. మరో ప్రోగ్రామ్ ముందున్నప్పుడు, క్లిక్‌లు దీని గుండా వెళ్తాయి. PadForge ముందున్నప్పుడు, కుడి మౌస్ బటన్‌తో దీన్ని లాగండి, దాని మూల నుండి పరిమాణం మార్చండి.</value></data>
+  <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>స్క్రీన్ ఓవర్లేను ప్రారంభించు</value></data>
+  <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>ఏమి చూపాలో ఎంచుకోండి…</value></data>
+  <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge స్క్రీన్ ఓవర్లే</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>ఇంకా చూపడానికి ఏమీ లేదు. ఏమి చూపాలో డాష్‌బోర్డ్‌లో ఎంచుకోండి.</value></data>
+  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>స్క్రీన్ ఓవర్లేను టోగుల్ చేయి</value></data>
+  <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>స్క్రీన్ ఓవర్లేను టోగుల్ చేయి</value></data>
+  <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>స్క్రీన్ ఓవర్లే</value></data>
+  <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>ఓవర్లే ఏమీ చూపదు.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileName_Overlay" xml:space="preserve"><value>ఓవర్లే చురుకైన ప్రొఫైల్ పేరును చూపుతుంది మరియు ప్రతి ప్రొఫైల్ మార్పును అనుసరిస్తుంది.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileNumber_Overlay" xml:space="preserve"><value>ఓవర్లే ప్రొఫైల్ జాబితాలో చురుకైన ప్రొఫైల్ స్థానాన్ని చూపుతుంది. డిఫాల్ట్ ప్రొఫైల్ 0.</value></data>
+  <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>ఓవర్లే చురుకైన ప్రొఫైల్ స్వంత చిత్రాన్ని చూపుతుంది, అది లేకపోతే దాని పేరును చూపుతుంది. ప్రతి ప్రొఫైల్ తన స్వంత చిత్రాన్ని ఉంచుకుంటుంది.</value></data>
+  <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>ఓవర్లే రోజులోని సమయాన్ని చూపుతుంది.</value></data>
+  <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>చురుకైన ప్రొఫైల్ మారినప్పటి నుండి గడిచిన గంటలు, నిమిషాలను ఓవర్లే చూపుతుంది. ఆటకు చెందిన ప్రోగ్రామ్‌తో ముడిపడిన ప్రొఫైల్ ఆట మొదలైనప్పుడు అమల్లోకి వస్తుంది, కాబట్టి లెక్క ఆ సెషన్‌దే. డిఫాల్ట్ ప్రొఫైల్‌లో ఇంజిన్ ప్రారంభం నుండి లెక్కిస్తుంది.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>ఓవర్లే మీరు ఎంచుకున్న చిత్రాన్ని చూపుతుంది; అది దాని నిష్పత్తులు మారకుండా విండోను నింపేలా సరిచేయబడుతుంది.</value></data>
+  <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>స్టాప్‌వాచ్ మాక్రో ప్రారంభించే, పాజ్ చేసే, రీసెట్ చేసే స్టాప్‌వాచ్‌ను ఓవర్లే చూపుతుంది. ప్రతి కీబోర్డ్ స్క్రీన్ చూపేది ఇదే స్టాప్‌వాచ్.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>అతి తక్కువ స్లాట్‌లోని DualShock 4 లేదా DualSense లైట్ బార్ రంగును ఓవర్లే చూపుతుంది. లైట్ బార్‌కు రంగు చేరే వరకు ఏమీ చూపదు.</value></data>
 </root>

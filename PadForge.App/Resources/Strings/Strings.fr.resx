@@ -4526,11 +4526,11 @@ Voulez-vous que PadForge les désinstalle maintenant ? Cette opération nécessi
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>Le SDK S.T.R.I.K.E. 7 téléchargé ne correspond pas à son SHA-256 connu : rien n'en a été conservé.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>Le runtime Visual C++ 2008 est toujours absent après l'exécution de son programme d'installation.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Afficher l'écran du clavier</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Lit des images sur chaque écran de clavier du type choisi qui alimente cet emplacement, puis ramène chaque écran à son propre mode.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Lit des images sur chaque écran de clavier du type choisi qui alimente cet emplacement, puis ramène chaque écran à son propre mode. La superposition d'écran les reçoit de n'importe quel emplacement.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Afficher des images {0} : {1} × {2} ms, répétitions {3}</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Les images sont ajustées à l'écran : 160 par 43 pixels en noir et blanc sur un écran monochrome, 320 par 240 sur celui du G19, et 480 par 320 pour Arx Control et le S.T.R.I.K.E. 7. Un dixième de seconde est la durée par image minimale.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Mode de l'écran du clavier</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Fait passer chaque écran de clavier du type choisi qui alimente cet emplacement à un autre mode, et le conserve comme réglage de cet écran.</value></data>
+  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Fait passer chaque écran de clavier du type choisi qui alimente cet emplacement à un autre mode, et le conserve comme réglage de cet écran. La superposition d'écran le reçoit de n'importe quel emplacement.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} affiche {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Le mode reste actif jusqu'à ce qu'une autre macro ou la boîte de dialogue de l'écran le modifie.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Chronomètre</value></data>
@@ -4835,4 +4835,22 @@ Voulez-vous que PadForge les désinstalle maintenant ? Cette opération nécessi
   <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>L’action éclaire les mêmes touches sur chaque clavier que cette manette virtuelle éclaire, par-dessus les couleurs de son onglet Éclairage. Les numéros indiquent l’ordre de sélection. Le compte à rebours éteint les touches une à une, la dernière choisie en premier : choisissez de 1 à 0 pour un temps de recharge sur la rangée de chiffres. Un clavier ou une souris ne s’éclaire que si Contrôler l’éclairage de cet appareil est activé.</value></data>
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>Autre</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, numéro {1}</value></data>
+  <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>Superposition d'écran</value></data>
+  <data name="Dashboard_ScreenOverlayDescription" xml:space="preserve"><value>Affiche une image, un minuteur, l'heure ou la couleur d'une barre lumineuse au-dessus des autres fenêtres, sans écran de clavier. Tant qu'un autre programme est au premier plan, les clics la traversent. Tant que PadForge est au premier plan, faites-la glisser avec le bouton droit de la souris et redimensionnez-la par son coin.</value></data>
+  <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>Activer la superposition d'écran</value></data>
+  <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Choisir ce qu'elle affiche…</value></data>
+  <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>Superposition d'écran PadForge</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Rien à afficher pour l'instant. Choisissez ce qu'elle affiche dans le tableau de bord.</value></data>
+  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Basculer la superposition d'écran</value></data>
+  <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Basculer la superposition d'écran</value></data>
+  <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Superposition d'écran</value></data>
+  <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>La superposition n'affiche rien.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileName_Overlay" xml:space="preserve"><value>La superposition affiche le nom du profil actif et suit chaque changement de profil.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileNumber_Overlay" xml:space="preserve"><value>La superposition affiche la place du profil actif dans la liste des profils. Le profil Par défaut porte le numéro 0.</value></data>
+  <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>La superposition affiche l'image propre au profil actif, ou son nom s'il n'en a pas. Chaque profil garde sa propre image.</value></data>
+  <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>La superposition affiche l'heure.</value></data>
+  <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>La superposition affiche les heures et les minutes écoulées depuis l'activation du profil actif. Un profil lié au programme d'un jeu s'active au lancement du jeu : le décompte correspond donc à cette session. Sous le profil Par défaut, il part du démarrage du moteur.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>La superposition affiche une image de votre choix, mise à l'échelle pour remplir sa fenêtre en conservant ses proportions.</value></data>
+  <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>La superposition affiche le chronomètre, que la macro Chronomètre démarre, met en pause et réinitialise. C'est le même chronomètre que celui de tous les écrans de clavier.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>La superposition affiche la couleur de la barre lumineuse de la DualShock 4 ou de la DualSense située dans l'emplacement le plus bas. Tant qu'aucune couleur n'a atteint une barre lumineuse, elle n'affiche rien.</value></data>
 </root>

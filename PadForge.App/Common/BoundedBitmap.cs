@@ -34,8 +34,10 @@ namespace PadForge.Common
         /// <summary>The picture in <paramref name="bytes"/>, decoded no wider
         /// than <paramref name="maxWidth"/> and no taller than
         /// <paramref name="maxHeight"/>, and frozen. Null when the bytes hold
-        /// no picture WPF decodes. Never throws for a bad picture.</summary>
-        internal static BitmapSource FromBytes(byte[] bytes, int maxWidth, int maxHeight)
+        /// no picture WPF decodes. Never throws for a bad picture. A picture
+        /// smaller than the box scales up to it, unless
+        /// <paramref name="scaleUp"/> is false, which keeps its own size.</summary>
+        internal static BitmapSource FromBytes(byte[] bytes, int maxWidth, int maxHeight, bool scaleUp = true)
         {
             if (bytes == null || bytes.Length == 0 || maxWidth <= 0 || maxHeight <= 0) return null;
             try
@@ -50,6 +52,11 @@ namespace PadForge.Common
                     height = frames[0].PixelHeight;
                 }
                 if (width <= 0 || height <= 0) return null;
+                if (!scaleUp && width <= maxWidth && height <= maxHeight)
+                {
+                    maxWidth = (int)width;
+                    maxHeight = (int)height;
+                }
 
                 // Taller than the box's shape: the height binds and the width
                 // follows. Otherwise the width binds, as it always did.

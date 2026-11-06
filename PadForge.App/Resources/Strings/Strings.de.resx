@@ -4526,11 +4526,11 @@ Sollen sie jetzt deinstalliert werden? Dies erfordert erhöhte Rechte und kann e
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>Der Download des S.T.R.I.K.E. 7 SDK stimmt nicht mit dem bekannten SHA-256 überein, daher wurde nichts davon behalten.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>Die Visual C++ 2008 Runtime fehlt nach der Ausführung ihres Installationsprogramms weiterhin.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Tastatur-Bildschirm anzeigen</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Spielt Bilder auf jedem Tastatur-Bildschirm der gewählten Art ab, der diesen Slot speist, und setzt danach jeden Bildschirm auf seinen eigenen Modus zurück.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Spielt Bilder auf jedem Tastatur-Bildschirm der gewählten Art ab, der diesen Slot speist, und setzt danach jeden Bildschirm auf seinen eigenen Modus zurück. Das Bildschirm-Overlay übernimmt sie von jedem Slot.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>{0}-Bilder zeigen: {1} × {2} ms, Durchläufe {3}</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Bilder werden an den Bildschirm angepasst: 160 mal 43 Schwarzweißpixel auf einem einfarbigen Bildschirm, 320 mal 240 auf dem der G19 und 480 mal 320 für Arx Control und die S.T.R.I.K.E. 7. Eine Zehntelsekunde ist die kürzeste Bilddauer.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Tastatur-Bildschirmmodus</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Schaltet jeden Tastatur-Bildschirm der gewählten Art, der diesen Slot speist, auf einen anderen Modus um und behält ihn als Einstellung dieses Bildschirms.</value></data>
+  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Schaltet jeden Tastatur-Bildschirm der gewählten Art, der diesen Slot speist, auf einen anderen Modus um und behält ihn als Einstellung dieses Bildschirms. Das Bildschirm-Overlay übernimmt ihn von jedem Slot.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} zeigt {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Der Modus bleibt, bis ein anderes Makro oder der Dialog des Bildschirms ihn ändert.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Stoppuhr</value></data>
@@ -4835,4 +4835,22 @@ Sollen sie jetzt deinstalliert werden? Dies erfordert erhöhte Rechte und kann e
   <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>Die Aktion beleuchtet dieselben Tasten auf jeder Tastatur, die dieser virtuelle Controller beleuchtet, über den Farben, die ihr Reiter Beleuchtung vorgibt. Die Zahlen zeigen die Reihenfolge der Auswahl. Der Countdown schaltet die Tasten nacheinander aus, die zuletzt gewählte zuerst, also 1 bis 0 wählen für einen Cooldown auf der Zahlenreihe. Eine Tastatur oder Maus leuchtet nur, solange Beleuchtung dieses Geräts steuern aktiviert ist.</value></data>
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>Andere</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, Nummer {1}</value></data>
+  <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>Bildschirm-Overlay</value></data>
+  <data name="Dashboard_ScreenOverlayDescription" xml:space="preserve"><value>Zeigt ein Bild, einen Timer, die Uhrzeit oder die Farbe einer Lightbar über anderen Fenstern an, ganz ohne Tastatur-Bildschirm. Solange ein anderes Programm im Vordergrund ist, gehen Klicks durch das Overlay hindurch. Solange PadForge im Vordergrund ist, ziehen Sie es mit der rechten Maustaste und ändern seine Größe an der Ecke.</value></data>
+  <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>Bildschirm-Overlay aktivieren</value></data>
+  <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Anzeige wählen…</value></data>
+  <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge-Bildschirm-Overlay</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Noch nichts anzuzeigen. Wählen Sie in der Übersicht, was es zeigt.</value></data>
+  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Bildschirm-Overlay umschalten</value></data>
+  <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Bildschirm-Overlay umschalten</value></data>
+  <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Bildschirm-Overlay</value></data>
+  <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>Das Overlay zeigt nichts an.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileName_Overlay" xml:space="preserve"><value>Das Overlay zeigt den Namen des aktiven Profils und folgt jedem Profilwechsel.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileNumber_Overlay" xml:space="preserve"><value>Das Overlay zeigt die Position des aktiven Profils in der Profilliste. Das Profil Standard hat die Nummer 0.</value></data>
+  <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>Das Overlay zeigt das eigene Bild des aktiven Profils oder seinen Namen, wenn es keines hat. Jedes Profil behält sein eigenes Bild.</value></data>
+  <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>Das Overlay zeigt die Uhrzeit.</value></data>
+  <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>Das Overlay zeigt die Stunden und Minuten seit dem Wechsel zum aktiven Profil. Ein Profil, das an das Programm eines Spiels gebunden ist, wird beim Start des Spiels aktiv, die Zählung gilt also für diese Sitzung. Unter dem Profil Standard zählt es ab dem Start der Engine.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Das Overlay zeigt ein von Ihnen gewähltes Bild, skaliert, um sein Fenster zu füllen, mit beibehaltenen Proportionen.</value></data>
+  <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>Das Overlay zeigt die Stoppuhr, die das Makro Stoppuhr startet, pausiert und zurücksetzt. Es ist dieselbe Stoppuhr, die jeder Tastatur-Bildschirm zeigt.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Das Overlay zeigt die Farbe der Lightbar des DualShock 4 oder DualSense im niedrigsten Slot. Solange keine Farbe bei einer Lightbar ankommt, zeigt es nichts an.</value></data>
 </root>

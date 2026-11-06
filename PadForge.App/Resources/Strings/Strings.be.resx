@@ -4575,11 +4575,11 @@
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>Спампаваны SDK S.T.R.I.K.E. 7 не супадае з вядомым SHA-256, таму з яго нічога не захавана.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>Асяроддзе выканання Visual C++ 2008 усё яшчэ адсутнічае пасля працы яго ўсталёўшчыка.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Паказаць экран клавіятуры</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Прайгравае выявы на кожным экране клавіятуры выбранага віду, які падае даныя ў гэты слот, затым вяртае кожны экран у яго ўласны рэжым.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Прайгравае выявы на кожным экране клавіятуры выбранага віду, які падае даныя ў гэты слот, затым вяртае кожны экран у яго ўласны рэжым. Накладка экрана бярэ іх з любога слота.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Паказаць выявы {0}: {1} × {2} мс, колькасць паўтораў {3}</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Выявы падганяюцца пад экран: 160 на 43 чорна-белыя пікселі на манахромным экране, 320 на 240 на экране G19 і 480 на 320 для Arx Control і S.T.R.I.K.E. 7. Найменшы час кадра складае адну дзясятую секунды.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Рэжым экрана клавіятуры</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Пераключае кожны экран клавіятуры выбранага віду, які падае даныя ў гэты слот, на іншы рэжым і захоўвае яго як налады гэтага экрана.</value></data>
+  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Пераключае кожны экран клавіятуры выбранага віду, які падае даныя ў гэты слот, на іншы рэжым і захоўвае яго як налады гэтага экрана. Накладка экрана бярэ яго з любога слота.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} паказвае {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Рэжым застаецца, пакуль яго не зменіць іншы макрас або дыялог экрана.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Секундамер</value></data>
@@ -4884,4 +4884,22 @@
   <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>Дзеянне падсвечвае адны і тыя ж клавішы на кожнай клавіятуры, якой кіруе гэты віртуальны кантролер, паверх колераў з яго ўкладкі «Падсветка». Лічбы паказваюць парадак выбару. Зваротны адлік гасіць клавішы па адной, пачынаючы з апошняй выбранай, таму для перазарадкі на лічбавым шэрагу выберыце клавішы ад 1 да 0. Клавіятура або мыш падсвечваюцца, толькі калі ўключана «Кіраваць падсветкай гэтай прылады».</value></data>
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>Іншае</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, нумар {1}</value></data>
+  <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>Накладка экрана</value></data>
+  <data name="Dashboard_ScreenOverlayDescription" xml:space="preserve"><value>Паказвае выяву, таймер, час або колер светлавой панэлі паверх іншых вокнаў, без экрана клавіятуры. Калі наперадзе іншая праграма, пстрычкі праходзяць праз яго. Калі наперадзе PadForge, перацягвайце яго правай кнопкай мышы і змяняйце памер за кут.</value></data>
+  <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>Уключыць накладку экрана</value></data>
+  <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Выбраць, што паказваць…</value></data>
+  <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>Накладка экрана PadForge</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Пакуль няма чаго паказваць. Выберыце, што паказваць, на старонцы «Агляд».</value></data>
+  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Паказаць/схаваць накладку экрана</value></data>
+  <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Паказаць/схаваць накладку экрана</value></data>
+  <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Накладка экрана</value></data>
+  <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>Накладка нічога не паказвае.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileName_Overlay" xml:space="preserve"><value>Накладка паказвае назву актыўнага профілю і абнаўляецца пры кожнай змене профілю.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileNumber_Overlay" xml:space="preserve"><value>Накладка паказвае месца актыўнага профілю ў спісе профіляў. Профіль «Па змаўчанні» мае нумар 0.</value></data>
+  <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>Накладка паказвае ўласную выяву актыўнага профілю або яго назву, калі выявы няма. Кожны профіль захоўвае сваю выяву.</value></data>
+  <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>Накладка паказвае час сутак.</value></data>
+  <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>Накладка паказвае гадзіны і хвіліны з моманту, калі актыўны профіль уключыўся. Профіль, звязаны з праграмай гульні, уключаецца пры яе запуску, таму лічыцца час гэтага сеанса. Пры профілі «Па змаўчанні» лік ідзе з запуску рухавіка.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Накладка паказвае выбраную вамі выяву, якая запаўняе яе акно з захаваннем прапорцый.</value></data>
+  <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>Накладка паказвае секундамер, які макрас «Секундамер» запускае, прыпыняе і скідае. Гэта той жа секундамер, што паказваюць усе экраны клавіятуры.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Накладка паказвае колер светлавой панэлі DualShock 4 або DualSense ў слоце з найменшым нумарам. Пакуль колер не дасягнуў светлавой панэлі, яна нічога не паказвае.</value></data>
 </root>

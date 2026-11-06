@@ -8,6 +8,7 @@
         Background="Transparent"
         Topmost="True"
         ShowInTaskbar="False"
+        ShowActivated="False"
         Focusable="False"
         Stylus.IsPressAndHoldEnabled="False"
         Stylus.IsTapFeedbackEnabled="False"
@@ -36,7 +37,8 @@
                         ToolTip="{Binding TouchpadOverlay_DragTooltip, Source={x:Static strings:Strings.Instance}}"
                         MouseRightButtonDown="Surface_MouseRightButtonDown"
                         MouseMove="Surface_MouseMove"
-                        MouseRightButtonUp="Surface_MouseRightButtonUp"/>
+                        MouseRightButtonUp="Surface_MouseRightButtonUp"
+                        LostMouseCapture="Surface_LostMouseCapture"/>
                 <!-- Finger-dot host. IsHitTestVisible="False" so right-
                      click drag and the surface's drag tooltip pass through
                      to the Surface Border underneath; the Canvas itself is
@@ -80,6 +82,7 @@
               Cursor="SizeNWSE"
               MouseLeftButtonDown="ResizeGrip_MouseLeftButtonDown"
               MouseMove="ResizeGrip_MouseMove"
-              MouseLeftButtonUp="ResizeGrip_MouseLeftButtonUp"/>
+              MouseLeftButtonUp="ResizeGrip_MouseLeftButtonUp"
+              LostMouseCapture="ResizeGrip_LostMouseCapture"/>
     </Grid>
 </Window>

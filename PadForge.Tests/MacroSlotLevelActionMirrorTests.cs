@@ -117,6 +117,28 @@ namespace PadForge.Tests
             Assert.True(im.ToggleTouchpadOverlayRequested);
         }
 
+        [Fact]
+        public void ToggleScreenOverlay_RequestsOverlayOnRawHidSlot()
+        {
+            var im = new InputManager();
+            var macros = new[]
+            {
+                RawTriggerMacro("overlay", new MacroAction
+                {
+                    Type = MacroActionType.ToggleScreenOverlay,
+                }),
+            };
+
+            Assert.False(im.ToggleScreenOverlayRequested);
+
+            var raw = RawHidState.Create(8, 32, 1);
+            raw.Buttons[0] = 1;
+            im.EvaluateSlotMacrosExtended(ref raw, macros);
+
+            Assert.True(im.ToggleScreenOverlayRequested);
+            Assert.False(im.ToggleTouchpadOverlayRequested);
+        }
+
         /// <summary>SwitchLayer (#377) is the third slot-level action, and
         /// its gap was worse than inert: with no case, the raw loop never
         /// advanced the action, so the run re-dispatched the no-op every

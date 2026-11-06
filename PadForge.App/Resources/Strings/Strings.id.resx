@@ -4575,11 +4575,11 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>Unduhan SDK S.T.R.I.K.E. 7 tidak cocok dengan SHA-256 yang diketahui, jadi tidak ada yang disimpan darinya.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>Runtime Visual C++ 2008 masih belum ada setelah penginstalnya dijalankan.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Tampilkan Layar Keyboard</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Memutar gambar pada setiap layar keyboard dari jenis yang dipilih yang memasok slot ini, lalu mengembalikan setiap layar ke modenya sendiri.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Memutar gambar pada setiap layar keyboard dari jenis yang dipilih yang memasok slot ini, lalu mengembalikan setiap layar ke modenya sendiri. Overlay layar mengambilnya dari slot mana pun.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Tampilkan gambar {0}: {1} × {2} ms, jumlah pengulangan {3}</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Gambar disesuaikan dengan layar: 160 kali 43 piksel hitam putih pada layar monokrom, 320 kali 240 pada layar G19, dan 480 kali 320 untuk Arx Control dan S.T.R.I.K.E. 7. Sepersepuluh detik adalah waktu frame terpendek.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Mode Layar Keyboard</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Mengalihkan setiap layar keyboard dari jenis yang dipilih yang memasok slot ini ke mode lain, dan menyimpannya sebagai pengaturan layar itu.</value></data>
+  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Mengalihkan setiap layar keyboard dari jenis yang dipilih yang memasok slot ini ke mode lain, dan menyimpannya sebagai pengaturan layar itu. Overlay layar mengambilnya dari slot mana pun.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} menampilkan {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Mode bertahan sampai makro lain atau dialog layar mengubahnya.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Stopwatch</value></data>
@@ -4884,4 +4884,22 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>Aksi ini menyalakan tombol yang sama pada setiap keyboard yang dikendalikan pencahayaannya oleh kontroler virtual ini, di atas warna yang diberikan tab Pencahayaan. Angka menunjukkan urutan pemilihan. Hitung mundur mematikan tombol satu per satu, dimulai dari yang terakhir dipilih, jadi pilih 1 sampai 0 untuk pendinginan pada baris angka. Keyboard atau mouse hanya menyala saat Kendalikan pencahayaan perangkat ini aktif.</value></data>
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>Lainnya</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, nomor {1}</value></data>
+  <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>Overlay layar</value></data>
+  <data name="Dashboard_ScreenOverlayDescription" xml:space="preserve"><value>Menampilkan gambar, timer, waktu, atau warna bilah lampu di atas jendela lain, tanpa perlu layar keyboard. Saat program lain berada di depan, klik menembus overlay ini. Saat PadForge berada di depan, seret dengan tombol kanan mouse dan ubah ukurannya dari sudutnya.</value></data>
+  <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>Aktifkan overlay layar</value></data>
+  <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Pilih yang ditampilkan…</value></data>
+  <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>Overlay layar PadForge</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Belum ada yang ditampilkan. Pilih yang ditampilkan di Dasbor.</value></data>
+  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Alihkan overlay layar</value></data>
+  <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Alihkan overlay layar</value></data>
+  <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Overlay Layar</value></data>
+  <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>Overlay tidak menampilkan apa pun.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileName_Overlay" xml:space="preserve"><value>Overlay menampilkan nama profil aktif dan mengikuti setiap pergantian profil.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileNumber_Overlay" xml:space="preserve"><value>Overlay menampilkan urutan profil aktif dalam daftar profil. Profil Default adalah 0.</value></data>
+  <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>Overlay menampilkan gambar milik profil aktif, atau namanya jika profil itu tidak memiliki gambar. Setiap profil menyimpan gambarnya sendiri.</value></data>
+  <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>Overlay menampilkan waktu saat ini.</value></data>
+  <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>Overlay menampilkan jam dan menit sejak profil aktif diterapkan. Profil yang terikat pada program sebuah game diterapkan saat game dimulai, sehingga hitungannya adalah sesi itu. Di bawah profil Default, hitungan dimulai sejak engine dijalankan.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Overlay menampilkan gambar pilihan Anda, diskalakan hingga memenuhi jendelanya dengan proporsi tetap terjaga.</value></data>
+  <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>Overlay menampilkan stopwatch, yang dimulai, dijeda, dan diatur ulang oleh makro Stopwatch. Ini adalah stopwatch yang sama dengan yang ditampilkan setiap layar keyboard.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Overlay menampilkan warna bilah lampu pada DualShock 4 atau DualSense di slot terendah. Sebelum ada warna yang sampai ke bilah lampu, overlay tidak menampilkan apa pun.</value></data>
 </root>

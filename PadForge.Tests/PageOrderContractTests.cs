@@ -60,6 +60,7 @@ namespace PadForge.Tests
                     "Dashboard_MotionServer",
                     "Dashboard_Overlays",
                     "Dashboard_TouchpadOverlay",
+                    "Dashboard_ScreenOverlay",
                 });
 
             // The services sit under the Services header, and the header

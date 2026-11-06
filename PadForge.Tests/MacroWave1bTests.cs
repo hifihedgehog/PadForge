@@ -89,51 +89,54 @@ namespace PadForge.Tests
             // 2026-09-28); the four keyboard screen actions appended
             // 58..61 (#519, 2026-10-24); Adaptive Trigger Effect and its
             // Stop appended 62..63 (#531, 2026-10-25); Set Key Colors and
-            // Clear Key Colors appended 64..65 (#557, 2026-11-02).
-            Assert.Equal(MacroActionType.ClearKeyColors, values[^1]);
+            // Clear Key Colors appended 64..65 (#557, 2026-11-02); Toggle
+            // Screen Overlay appended 66 (#560, 2026-11-06).
+            Assert.Equal(MacroActionType.ToggleScreenOverlay, values[^1]);
+            Assert.Equal(66, (int)MacroActionType.ToggleScreenOverlay);
+            Assert.Equal(MacroActionType.ClearKeyColors, values[^2]);
             Assert.Equal(65, (int)MacroActionType.ClearKeyColors);
-            Assert.Equal(MacroActionType.SetKeyColors, values[^2]);
+            Assert.Equal(MacroActionType.SetKeyColors, values[^3]);
             Assert.Equal(64, (int)MacroActionType.SetKeyColors);
-            Assert.Equal(MacroActionType.TriggerEffectStop, values[^3]);
+            Assert.Equal(MacroActionType.TriggerEffectStop, values[^4]);
             Assert.Equal(63, (int)MacroActionType.TriggerEffectStop);
-            Assert.Equal(MacroActionType.TriggerEffect, values[^4]);
+            Assert.Equal(MacroActionType.TriggerEffect, values[^5]);
             Assert.Equal(62, (int)MacroActionType.TriggerEffect);
-            Assert.Equal(MacroActionType.PanKeyboardScreen, values[^5]);
+            Assert.Equal(MacroActionType.PanKeyboardScreen, values[^6]);
             Assert.Equal(61, (int)MacroActionType.PanKeyboardScreen);
-            Assert.Equal(MacroActionType.Stopwatch, values[^6]);
+            Assert.Equal(MacroActionType.Stopwatch, values[^7]);
             Assert.Equal(60, (int)MacroActionType.Stopwatch);
-            Assert.Equal(MacroActionType.KeyboardScreenMode, values[^7]);
+            Assert.Equal(MacroActionType.KeyboardScreenMode, values[^8]);
             Assert.Equal(59, (int)MacroActionType.KeyboardScreenMode);
-            Assert.Equal(MacroActionType.ShowKeyboardScreen, values[^8]);
+            Assert.Equal(MacroActionType.ShowKeyboardScreen, values[^9]);
             Assert.Equal(58, (int)MacroActionType.ShowKeyboardScreen);
-            Assert.Equal(MacroActionType.ShowDreamcastScreen, values[^9]);
+            Assert.Equal(MacroActionType.ShowDreamcastScreen, values[^10]);
             Assert.Equal(57, (int)MacroActionType.ShowDreamcastScreen);
-            Assert.Equal(MacroActionType.SetChromaColor, values[^10]);
+            Assert.Equal(MacroActionType.SetChromaColor, values[^11]);
             Assert.Equal(56, (int)MacroActionType.SetChromaColor);
-            Assert.Equal(MacroActionType.SwitchLayer, values[^11]);
+            Assert.Equal(MacroActionType.SwitchLayer, values[^12]);
             Assert.Equal(55, (int)MacroActionType.SwitchLayer);
-            Assert.Equal(MacroActionType.VoiceListenWhileHeld, values[^12]);
+            Assert.Equal(MacroActionType.VoiceListenWhileHeld, values[^13]);
             Assert.Equal(54, (int)MacroActionType.VoiceListenWhileHeld);
-            Assert.Equal(MacroActionType.HeadphoneVolumeDown, values[^13]);
-            Assert.Equal(MacroActionType.HeadphoneVolumeUp, values[^14]);
+            Assert.Equal(MacroActionType.HeadphoneVolumeDown, values[^14]);
+            Assert.Equal(MacroActionType.HeadphoneVolumeUp, values[^15]);
             Assert.Equal(52, (int)MacroActionType.HeadphoneVolumeUp);
             Assert.Equal(53, (int)MacroActionType.HeadphoneVolumeDown);
-            Assert.Equal(MacroActionType.AxisScale, values[^15]);
-            Assert.Equal(MacroActionType.AxisLatchRelease, values[^16]);
-            Assert.Equal(MacroActionType.AxisSetLatched, values[^17]);
+            Assert.Equal(MacroActionType.AxisScale, values[^16]);
+            Assert.Equal(MacroActionType.AxisLatchRelease, values[^17]);
+            Assert.Equal(MacroActionType.AxisSetLatched, values[^18]);
             Assert.Equal(49, (int)MacroActionType.AxisSetLatched);
             Assert.Equal(50, (int)MacroActionType.AxisLatchRelease);
             Assert.Equal(51, (int)MacroActionType.AxisScale);
-            Assert.Equal(MacroActionType.ComboBreak, values[^18]);
-            Assert.Equal(MacroActionType.AxisAdd, values[^19]);
-            Assert.Equal(MacroActionType.ToggleWheel, values[^20]);
-            Assert.Equal(MacroActionType.RepeatVcAxisWhileHeld, values[^21]);
-            Assert.Equal(MacroActionType.ToggleVcAxis, values[^22]);
-            Assert.Equal(MacroActionType.ToggleMouseButton, values[^23]);
-            Assert.Equal(MacroActionType.CycleTapList, values[^24]);
-            Assert.Equal(MacroActionType.MouseNudge, values[^25]);
-            Assert.Equal(MacroActionType.MouseWheelTap, values[^26]);
-            Assert.Equal(MacroActionType.AxisHold, values[^27]);
+            Assert.Equal(MacroActionType.ComboBreak, values[^19]);
+            Assert.Equal(MacroActionType.AxisAdd, values[^20]);
+            Assert.Equal(MacroActionType.ToggleWheel, values[^21]);
+            Assert.Equal(MacroActionType.RepeatVcAxisWhileHeld, values[^22]);
+            Assert.Equal(MacroActionType.ToggleVcAxis, values[^23]);
+            Assert.Equal(MacroActionType.ToggleMouseButton, values[^24]);
+            Assert.Equal(MacroActionType.CycleTapList, values[^25]);
+            Assert.Equal(MacroActionType.MouseNudge, values[^26]);
+            Assert.Equal(MacroActionType.MouseWheelTap, values[^27]);
+            Assert.Equal(MacroActionType.AxisHold, values[^28]);
 
             Assert.Equal(35, (int)MacroActionType.RepeatVcButtonWhileHeld);
             Assert.Equal(36, (int)MacroActionType.ToggleVcButton);

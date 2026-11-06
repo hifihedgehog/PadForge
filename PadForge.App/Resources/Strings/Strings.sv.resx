@@ -4575,11 +4575,11 @@ Vill du att PadForge avinstallerar dem nu? Detta kräver förhöjd behörighet o
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>Nedladdningen av S.T.R.I.K.E. 7 SDK stämmer inte med dess kända SHA-256, så ingenting från den behölls.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>Visual C++ 2008-körmiljön saknas fortfarande efter att dess installationsprogram har körts.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Visa tangentbordsskärm</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Spelar upp bilder på varje tangentbordsskärm av den valda typen som matar den här platsen och återställer sedan varje skärm till dess eget läge.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Spelar upp bilder på varje tangentbordsskärm av den valda typen som matar den här platsen och återställer sedan varje skärm till dess eget läge. Skärmöverlägget tar dem från vilken plats som helst.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Visa bilder på {0}: {1} × {2} ms, antal upprepningar {3}</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Bilder anpassas till skärmen: 160 gånger 43 svartvita pixlar på en monokrom skärm, 320 gånger 240 på skärmen på G19 och 480 gånger 320 för Arx Control och S.T.R.I.K.E. 7. En tiondels sekund är den kortaste bildtiden.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Tangentbordsskärmens läge</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Växlar varje tangentbordsskärm av den valda typen som matar den här platsen till ett annat läge och behåller det som skärmens inställning.</value></data>
+  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Växlar varje tangentbordsskärm av den valda typen som matar den här platsen till ett annat läge och behåller det som skärmens inställning. Skärmöverlägget tar det från vilken plats som helst.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} visar {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Läget gäller tills ett annat makro eller skärmens dialogruta ändrar det.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Stoppur</value></data>
@@ -4884,4 +4884,22 @@ Vill du att PadForge avinstallerar dem nu? Detta kräver förhöjd behörighet o
   <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>Åtgärden tänder samma tangenter på alla tangentbord som den här virtuella handkontrollen styr belysningen på, ovanpå de färger som fliken Belysning ger dem. Siffrorna visar i vilken ordning tangenterna valdes. Nedräkning släcker tangenterna en i taget, den sist valda först, så välj 1 till 0 för en nedkylningstimer på sifferraden. Ett tangentbord eller en mus tänds bara när Styr den här enhetens belysning är på.</value></data>
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>Övrigt</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, nummer {1}</value></data>
+  <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>Skärmöverlägg</value></data>
+  <data name="Dashboard_ScreenOverlayDescription" xml:space="preserve"><value>Visar en bild, en timer, klockslaget eller ett ljusfälts färg ovanpå andra fönster, utan att någon tangentbordsskärm behövs. Medan ett annat program ligger överst går klick rakt igenom det. Medan PadForge ligger överst drar du det med höger musknapp och ändrar storleken från hörnet.</value></data>
+  <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>Aktivera skärmöverlägg</value></data>
+  <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Välj vad det visar…</value></data>
+  <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge-skärmöverlägg</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Inget att visa ännu. Välj vad det visar på översikten.</value></data>
+  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Visa/dölj skärmöverlägg</value></data>
+  <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Visa/dölj skärmöverlägg</value></data>
+  <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Skärmöverlägg</value></data>
+  <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>Överlägget visar ingenting.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileName_Overlay" xml:space="preserve"><value>Överlägget visar den aktiva profilens namn och följer med vid varje profilbyte.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileNumber_Overlay" xml:space="preserve"><value>Överlägget visar den aktiva profilens plats i profillistan. Profilen Standard är 0.</value></data>
+  <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>Överlägget visar den aktiva profilens egen bild, eller dess namn om den inte har någon. Varje profil har sin egen bild.</value></data>
+  <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>Överlägget visar klockslaget.</value></data>
+  <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>Överlägget visar timmar och minuter sedan den aktiva profilen aktiverades. En profil som är knuten till ett spelprogram aktiveras när spelet startar, så räkningen gäller den spelsessionen. Under profilen Standard räknar den från att PadForge startade.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Överlägget visar en bild som du väljer, skalad så att den fyller fönstret med bibehållna proportioner.</value></data>
+  <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>Överlägget visar stoppuret, som makrot Stoppur startar, pausar och återställer. Det är samma stoppur som alla tangentbordsskärmar visar.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Överlägget visar färgen på ljusfältet på DualShock 4 eller DualSense på den lägsta platsen. Tills en färg når ett ljusfält visar det ingenting.</value></data>
 </root>

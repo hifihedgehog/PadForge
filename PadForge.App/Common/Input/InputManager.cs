@@ -476,6 +476,12 @@ namespace PadForge.Common.Input
         public volatile bool ToggleTouchpadOverlayRequested;
 
         /// <summary>
+        /// Flag set by macro execution to request a Screen Overlay toggle.
+        /// Cleared by InputService on the UI thread after processing.
+        /// </summary>
+        public volatile bool ToggleScreenOverlayRequested;
+
+        /// <summary>
         /// Per-slot vibration states received from games via the active virtual-controller backend.
         /// </summary>
         public Vibration[] VibrationStates { get; } = new Vibration[MaxPads];

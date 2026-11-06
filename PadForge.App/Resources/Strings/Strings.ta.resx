@@ -4575,11 +4575,11 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>S.T.R.I.K.E. 7 SDK பதிவிறக்கம் அறியப்பட்ட SHA-256-உடன் பொருந்தவில்லை, எனவே அதிலிருந்து எதுவும் வைத்துக்கொள்ளப்படவில்லை.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>நிறுவி இயங்கிய பின்னும் Visual C++ 2008 ரன்டைம் இன்னும் இல்லை.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>விசைப்பலகைத் திரையைக் காட்டு</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>இந்த ஸ்லாட்டுக்கு உள்ளீடு தரும், தேர்ந்தெடுத்த வகையின் ஒவ்வொரு விசைப்பலகைத் திரையிலும் படங்களை இயக்கி, பின்னர் ஒவ்வொரு திரையையும் அதன் சொந்தப் பயன்முறைக்குத் திருப்பும்.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>இந்த ஸ்லாட்டுக்கு உள்ளீடு தரும், தேர்ந்தெடுத்த வகையின் ஒவ்வொரு விசைப்பலகைத் திரையிலும் படங்களை இயக்கி, பின்னர் ஒவ்வொரு திரையையும் அதன் சொந்தப் பயன்முறைக்குத் திருப்பும். திரை மேலடுக்கு அவற்றை எந்த ஸ்லாட்டிலிருந்தும் எடுத்துக்கொள்ளும்.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>{0} படங்களைக் காட்டு: {1} × {2} ms, மீள்செயல் எண்ணிக்கை {3}</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>படங்கள் திரைக்குப் பொருந்துமாறு மாற்றப்படும்: ஒற்றை நிறத் திரையில் 160 × 43 கருப்பு வெள்ளைப் பிக்சல்கள், G19-இன் திரையில் 320 × 240, Arx Control மற்றும் S.T.R.I.K.E. 7-க்கு 480 × 320. ஒரு நொடியின் பத்தில் ஒரு பங்கு மிகக் குறைந்த ஃப்ரேம் நேரம்.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>விசைப்பலகைத் திரைப் பயன்முறை</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>இந்த ஸ்லாட்டுக்கு உள்ளீடு தரும், தேர்ந்தெடுத்த வகையின் ஒவ்வொரு விசைப்பலகைத் திரையையும் வேறொரு பயன்முறைக்கு மாற்றி, அதை அந்தத் திரையின் அமைப்பாக வைத்திருக்கும்.</value></data>
+  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>இந்த ஸ்லாட்டுக்கு உள்ளீடு தரும், தேர்ந்தெடுத்த வகையின் ஒவ்வொரு விசைப்பலகைத் திரையையும் வேறொரு பயன்முறைக்கு மாற்றி, அதை அந்தத் திரையின் அமைப்பாக வைத்திருக்கும். திரை மேலடுக்கு அதை எந்த ஸ்லாட்டிலிருந்தும் எடுத்துக்கொள்ளும்.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} {1}-ஐக் காட்டுகிறது</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>வேறொரு மேக்ரோ அல்லது திரையின் உரையாடல் மாற்றும் வரை பயன்முறை அப்படியே இருக்கும்.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>ஸ்டாப்வாட்ச்</value></data>
@@ -4884,4 +4884,22 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>இந்த மெய்நிகர் கன்ட்ரோலர் ஒளியூட்டும் ஒவ்வொரு விசைப்பலகையிலும் செயல் அதே விசைகளை ஒளிரச் செய்யும், ஒளியமைப்பு தாவல் தரும் நிறங்களின் மேல். எண்கள் தேர்ந்தெடுத்த வரிசையைக் காட்டும். எண்ணிக்கை குறைதல் விசைகளை ஒவ்வொன்றாக அணைக்கும், கடைசியாகத் தேர்ந்ததை முதலில். எனவே எண் வரிசையில் கூல்டவுனுக்கு 1 முதல் 0 வரை தேர்ந்தெடுக்கவும். விசைப்பலகை அல்லது மவுஸ், இந்தச் சாதனத்தின் ஒளியமைப்பைக் கட்டுப்படுத்து இயக்கத்தில் இருக்கும்போது மட்டுமே ஒளிரும்.</value></data>
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>மற்றவை</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, எண் {1}</value></data>
+  <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>திரை மேலடுக்கு</value></data>
+  <data name="Dashboard_ScreenOverlayDescription" xml:space="preserve"><value>படம், டைமர், நேரம் அல்லது லைட்பாரின் நிறத்தை மற்ற சாளரங்களுக்கு மேலே காட்டும்; விசைப்பலகைத் திரை தேவையில்லை. வேறொரு நிரல் முன்னணியில் இருக்கும்போது, கிளிக்குகள் இதன் வழியாகச் செல்லும். PadForge முன்னணியில் இருக்கும்போது, வலது சுட்டி பொத்தானால் இதை இழுக்கலாம், அதன் மூலையிலிருந்து அளவை மாற்றலாம்.</value></data>
+  <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>திரை மேலடுக்கை இயக்கு</value></data>
+  <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>எதைக் காட்டுவது என்பதைத் தேர்ந்தெடு…</value></data>
+  <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge திரை மேலடுக்கு</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>இன்னும் காட்ட எதுவும் இல்லை. டாஷ்போர்டில் எதைக் காட்டுவது என்பதைத் தேர்ந்தெடுக்கவும்.</value></data>
+  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>திரை மேலடுக்கை நிலைமாற்று</value></data>
+  <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>திரை மேலடுக்கை நிலைமாற்று</value></data>
+  <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>திரை மேலடுக்கு</value></data>
+  <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>மேலடுக்கு எதையும் காட்டாது.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileName_Overlay" xml:space="preserve"><value>மேலடுக்கு செயலிலுள்ள சுயவிவரத்தின் பெயரைக் காட்டும், ஒவ்வொரு சுயவிவர மாற்றத்தையும் பின்தொடரும்.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileNumber_Overlay" xml:space="preserve"><value>மேலடுக்கு செயலிலுள்ள சுயவிவரம் சுயவிவரப் பட்டியலில் இருக்கும் இடத்தைக் காட்டும். இயல்புநிலை சுயவிவரம் 0 ஆகும்.</value></data>
+  <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>மேலடுக்கு செயலிலுள்ள சுயவிவரத்தின் சொந்தப் படத்தைக் காட்டும், படம் இல்லையெனில் அதன் பெயரைக் காட்டும். ஒவ்வொரு சுயவிவரமும் தனக்கெனப் படத்தை வைத்திருக்கும்.</value></data>
+  <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>மேலடுக்கு நாளின் நேரத்தைக் காட்டும்.</value></data>
+  <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>செயலிலுள்ள சுயவிவரம் மாறியதிலிருந்து கடந்த மணி, நிமிடங்களை மேலடுக்கு காட்டும். ஒரு விளையாட்டின் நிரலுடன் இணைக்கப்பட்ட சுயவிவரம் அந்த விளையாட்டு தொடங்கும்போது செயலுக்கு வரும், எனவே எண்ணிக்கை அந்த அமர்வுக்குரியது. இயல்புநிலை சுயவிவரத்தில் இயந்திரம் தொடங்கியதிலிருந்து எண்ணும்.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>மேலடுக்கு நீங்கள் தேர்ந்தெடுக்கும் படத்தைக் காட்டும்; அதன் விகிதம் மாறாமல், தனது சாளரத்தை நிரப்பும்படி அளவு மாற்றப்படும்.</value></data>
+  <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>மேலடுக்கு ஸ்டாப்வாட்சைக் காட்டும். அதை ஸ்டாப்வாட்ச் மேக்ரோ தொடங்கும், இடைநிறுத்தும், மீட்டமைக்கும். ஒவ்வொரு விசைப்பலகைத் திரையும் காட்டுவது இதே ஸ்டாப்வாட்ச்தான்.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>மேலடுக்கு மிகக் குறைந்த ஸ்லாட்டிலுள்ள DualShock 4 அல்லது DualSense-இன் லைட்பாரின் நிறத்தைக் காட்டும். லைட்பாருக்கு நிறம் வரும் வரை அது எதையும் காட்டாது.</value></data>
 </root>

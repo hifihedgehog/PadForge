@@ -4980,8 +4980,8 @@ namespace PadForge.ViewModels
 
         private string _screenFrames = string.Empty;
         /// <summary>Show Keyboard Screen (#519): the pictures in the order they
-        /// show, each a PNG at the kind's size in base64, joined by commas,
-        /// eight at most.</summary>
+        /// show, each a PNG at the kind's size in base64, or at its own proportions
+        /// for the Screen Overlay, joined by commas, eight at most.</summary>
         public string ScreenFrames
         {
             get => _screenFrames;
@@ -5028,10 +5028,7 @@ namespace PadForge.ViewModels
         {
             get
             {
-                var images = new List<System.Windows.Media.ImageSource>();
-                foreach (var frame in PadForge.Services.KeyboardScreenService.DecodeFrames(_screenKind, _screenFrames))
-                    images.Add(PadForge.Common.Input.KeyboardScreens.KeyboardScreenRenderer.ToBitmap(frame, _screenKind));
-                return images;
+                return PadForge.Services.KeyboardScreenService.FrameImages(_screenKind, _screenFrames);
             }
         }
 
@@ -6298,6 +6295,7 @@ namespace PadForge.ViewModels
                     MacroActionType.MouseButtonRelease => string.Format(Strings.Instance.MacroAction_MouseRelease_Format, MacroMouseButtonDisplayName(_mouseButton)),
                     MacroActionType.MouseScroll => string.Format(Strings.Instance.MacroAction_Scroll_Format, axisLabel, _mouseSensitivity),
                     MacroActionType.ToggleTouchpadOverlay => Strings.Instance.MacroAction_ToggleTouchpadOverlay,
+                    MacroActionType.ToggleScreenOverlay => Strings.Instance.MacroAction_ToggleScreenOverlay,
                     MacroActionType.VoiceListenWhileHeld => Strings.Instance.MacroAction_Type_VoiceListenWhileHeld,
                     MacroActionType.LightbarColor => FormatLightbarColorSummary(),
                     MacroActionType.LightbarColorClear => Strings.Instance.MacroAction_LightbarColorClear,
@@ -7368,7 +7366,11 @@ namespace PadForge.ViewModels
         /// <summary>Ends the <see cref="SetKeyColors"/> actions running on
         /// the slot that light one of the lights it names, or every one when
         /// it names none (#557). One-shot. Ordinal pinned.</summary>
-        ClearKeyColors = 65
+        ClearKeyColors = 65,
+
+        /// <summary>Shows or hides the Screen Overlay (#560), the way
+        /// <see cref="ToggleTouchpadOverlay"/> does the Touchpad Overlay.</summary>
+        ToggleScreenOverlay = 66
     }
 
     /// <summary>One parsed part of a <see cref="MacroActionType.CycleTapList"/>

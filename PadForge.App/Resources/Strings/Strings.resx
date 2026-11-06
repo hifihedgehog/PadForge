@@ -4601,11 +4601,11 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>The S.T.R.I.K.E. 7 SDK download does not match its known SHA-256, so nothing from it was kept.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>The Visual C++ 2008 runtime is still missing after its installer ran.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Show Keyboard Screen</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Plays pictures on each keyboard screen of the chosen kind that feeds this slot, then returns each screen to its own mode.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Plays pictures on each keyboard screen of the chosen kind that feeds this slot, then returns each screen to its own mode. The Screen Overlay takes them from any slot.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Show {0} pictures: {1} × {2} ms, repeat count {3}</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Pictures are fitted to the screen: 160 by 43 black and white pixels on a monochrome screen, 320 by 240 on the G19's, and 480 by 320 for Arx Control and the S.T.R.I.K.E. 7. A tenth of a second is the shortest frame time.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Keyboard Screen Mode</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Switches each keyboard screen of the chosen kind that feeds this slot to another mode, and keeps it as that screen's setting.</value></data>
+  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Switches each keyboard screen of the chosen kind that feeds this slot to another mode, and keeps it as that screen's setting. The Screen Overlay takes it from any slot.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} shows {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>The mode stays until another macro or the screen's dialog changes it.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Stopwatch</value></data>
@@ -4910,4 +4910,22 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>The action lights the same keys on every keyboard this virtual controller lights, over the colors its Lighting tab gives them. The numbers show the order picked. Countdown turns the keys off one at a time, the last one picked first, so pick 1 to 0 for a cooldown on the number row. A keyboard or mouse lights only while its Control This Device’s Lighting is on.</value></data>
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>Other</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, number {1}</value></data>
+  <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>Screen Overlay</value></data>
+  <data name="Dashboard_ScreenOverlayDescription" xml:space="preserve"><value>Shows a picture, a timer, the time or a lightbar's color above other windows, with no keyboard screen needed. While another program is in front, clicks pass through it. While PadForge is in front, drag it with the right mouse button and size it from its corner.</value></data>
+  <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>Enable Screen Overlay</value></data>
+  <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Choose What It Shows…</value></data>
+  <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge Screen Overlay</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Nothing to show yet. Choose what it shows on the Dashboard.</value></data>
+  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Toggle Screen Overlay</value></data>
+  <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Toggle Screen Overlay</value></data>
+  <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Screen Overlay</value></data>
+  <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>The overlay shows nothing.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileName_Overlay" xml:space="preserve"><value>The overlay shows the active profile's name and follows each profile switch.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileNumber_Overlay" xml:space="preserve"><value>The overlay shows the active profile's place in the profile list. The Default profile is 0.</value></data>
+  <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>The overlay shows the active profile's own picture, or its name when it has none. Each profile keeps its own picture.</value></data>
+  <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>The overlay shows the time of day.</value></data>
+  <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>The overlay shows the hours and minutes since the active profile switched in. A profile tied to a game's program switches in when the game starts, so the count is that session. Under the Default profile it counts from the engine's start.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>The overlay shows a picture you choose, scaled to fill its window with its proportions kept.</value></data>
+  <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>The overlay shows the stopwatch, which the Stopwatch macro starts, pauses, and resets. It is the same stopwatch every keyboard screen shows.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>The overlay shows the color of the lightbar on the DualShock 4 or DualSense in the lowest slot. Until a color reaches a lightbar, it shows nothing.</value></data>
 </root>

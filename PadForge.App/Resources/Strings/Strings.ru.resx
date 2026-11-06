@@ -4575,11 +4575,11 @@
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>Загруженный S.T.R.I.K.E. 7 SDK не совпадает с известной SHA-256, поэтому ничего из него не сохранено.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>Среда выполнения Visual C++ 2008 по-прежнему отсутствует после работы ее установщика.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Показать на экране клавиатуры</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Воспроизводит картинки на каждом экране клавиатуры выбранного вида, который подает ввод в этот слот, затем возвращает каждый экран в его собственный режим.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Воспроизводит картинки на каждом экране клавиатуры выбранного вида, который подает ввод в этот слот, затем возвращает каждый экран в его собственный режим. Оверлей экрана берет их из любого слота.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Показать картинки {0}: {1} × {2} мс, число повторов {3}</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Картинки подгоняются под экран: 160 на 43 черно-белых пикселя на монохромном экране, 320 на 240 на экране G19 и 480 на 320 для Arx Control и S.T.R.I.K.E. 7. Время кадра не может быть короче одной десятой секунды.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Режим экрана клавиатуры</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Переключает на другой режим каждый экран клавиатуры выбранного вида, который подает ввод в этот слот, и сохраняет его как настройку этого экрана.</value></data>
+  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Переключает на другой режим каждый экран клавиатуры выбранного вида, который подает ввод в этот слот, и сохраняет его как настройку этого экрана. Оверлей экрана берет режим из любого слота.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} показывает: {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Режим сохраняется, пока его не изменит другой макрос или диалог экрана.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Секундомер</value></data>
@@ -4884,4 +4884,22 @@
   <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>Действие подсвечивает одни и те же клавиши на каждой клавиатуре, подсветкой которой управляет этот виртуальный контроллер, поверх цветов с вкладки «Подсветка». Цифры показывают порядок выбора. Отсчёт гасит клавиши по одной, начиная с последней выбранной, поэтому для кулдауна на цифровом ряду выберите клавиши от 1 до 0. Клавиатура или мышь подсвечивается, только когда включён параметр «Управлять подсветкой этого устройства».</value></data>
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>Прочее</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, номер {1}</value></data>
+  <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>Оверлей экрана</value></data>
+  <data name="Dashboard_ScreenOverlayDescription" xml:space="preserve"><value>Показывает картинку, таймер, время или цвет световой панели поверх других окон, и экран клавиатуры для этого не нужен. Пока впереди другая программа, щелчки проходят сквозь него. Пока впереди PadForge, перетаскивайте его правой кнопкой мыши, а размер меняйте за угол.</value></data>
+  <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>Включить оверлей экрана</value></data>
+  <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Выбрать, что он показывает…</value></data>
+  <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>Оверлей экрана PadForge</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Пока нечего показывать. Выберите, что он показывает, на странице «Сводка».</value></data>
+  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Переключить оверлей экрана</value></data>
+  <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Переключить оверлей экрана</value></data>
+  <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Оверлей экрана</value></data>
+  <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>Оверлей ничего не показывает.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileName_Overlay" xml:space="preserve"><value>Оверлей показывает название активного профиля и меняет его при каждом переключении профиля.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileNumber_Overlay" xml:space="preserve"><value>Оверлей показывает место активного профиля в списке профилей. Профиль «По умолчанию» имеет номер 0.</value></data>
+  <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>Оверлей показывает собственную картинку активного профиля, а если ее нет, то его название. У каждого профиля своя картинка.</value></data>
+  <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>Оверлей показывает время суток.</value></data>
+  <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>Оверлей показывает часы и минуты с момента, когда включился активный профиль. Профиль, привязанный к программе игры, включается при запуске игры, поэтому отсчет идет за этот сеанс. В профиле «По умолчанию» отсчет идет с запуска движка.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Оверлей показывает выбранную вами картинку, масштабированную так, чтобы заполнить его окно с сохранением пропорций.</value></data>
+  <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>Оверлей показывает секундомер, который запускает, приостанавливает и сбрасывает макрос «Секундомер». Это тот же секундомер, который показывает каждый экран клавиатуры.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Оверлей показывает цвет световой панели DualShock 4 или DualSense в самом младшем слоте. Пока цвет не дойдет до световой панели, он ничего не показывает.</value></data>
 </root>

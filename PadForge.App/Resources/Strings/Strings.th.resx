@@ -4575,11 +4575,11 @@
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>ไฟล์ดาวน์โหลด SDK ของ S.T.R.I.K.E. 7 ไม่ตรงกับ SHA-256 ที่ทราบ จึงไม่เก็บสิ่งใดจากไฟล์นั้นไว้</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>รันไทม์ Visual C++ 2008 ยังขาดอยู่หลังจากตัวติดตั้งทำงานแล้ว</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>แสดงหน้าจอคีย์บอร์ด</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>เล่นรูปภาพบนหน้าจอคีย์บอร์ดแต่ละเครื่องของประเภทที่เลือกซึ่งป้อนช่องนี้ แล้วคืนแต่ละหน้าจอสู่โหมดของตัวเอง</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>เล่นรูปภาพบนหน้าจอคีย์บอร์ดแต่ละเครื่องของประเภทที่เลือกซึ่งป้อนช่องนี้ แล้วคืนแต่ละหน้าจอสู่โหมดของตัวเอง โอเวอร์เลย์หน้าจอรับรูปภาพจากช่องใดก็ได้</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>แสดงรูปภาพ {0}: {1} × {2} ms จำนวนครั้งที่ทำซ้ำ {3}</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>รูปภาพจะถูกปรับให้พอดีกับหน้าจอ: 160 × 43 พิกเซลขาวดำบนหน้าจอขาวดำ 320 × 240 บนหน้าจอของ G19 และ 480 × 320 สำหรับ Arx Control และ S.T.R.I.K.E. 7 เวลาต่อเฟรมสั้นที่สุดคือ 0.1 วินาที</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>โหมดหน้าจอคีย์บอร์ด</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>สลับหน้าจอคีย์บอร์ดแต่ละเครื่องของประเภทที่เลือกซึ่งป้อนช่องนี้ไปเป็นอีกโหมด และเก็บไว้เป็นการตั้งค่าของหน้าจอนั้น</value></data>
+  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>สลับหน้าจอคีย์บอร์ดแต่ละเครื่องของประเภทที่เลือกซึ่งป้อนช่องนี้ไปเป็นอีกโหมด และเก็บไว้เป็นการตั้งค่าของหน้าจอนั้น โอเวอร์เลย์หน้าจอรับโหมดจากช่องใดก็ได้</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} แสดง {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>โหมดจะคงอยู่จนกว่าแมโครอื่นหรือกล่องโต้ตอบของหน้าจอจะเปลี่ยน</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>นาฬิกาจับเวลา</value></data>
@@ -4884,4 +4884,22 @@
   <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>การทำงานนี้เปิดไฟแป้นชุดเดียวกันบนทุกคีย์บอร์ดที่คอนโทรลเลอร์เสมือนนี้ควบคุมแสงไฟ ทับสีที่แท็บแสงไฟกำหนดไว้ ตัวเลขแสดงลำดับที่เลือก การนับถอยหลังจะดับไฟทีละแป้น โดยดับแป้นที่เลือกเป็นลำดับสุดท้ายก่อน ดังนั้นให้เลือก 1 ถึง 0 เพื่อทำตัวนับคูลดาวน์บนแถวตัวเลข คีย์บอร์ดหรือเมาส์จะติดไฟก็ต่อเมื่อเปิด ควบคุมแสงไฟของอุปกรณ์นี้ ไว้</value></data>
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>อื่น ๆ</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0} ลำดับที่ {1}</value></data>
+  <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>โอเวอร์เลย์หน้าจอ</value></data>
+  <data name="Dashboard_ScreenOverlayDescription" xml:space="preserve"><value>แสดงรูปภาพ ตัวจับเวลา เวลา หรือสีของแถบไฟเหนือหน้าต่างอื่น โดยไม่ต้องมีหน้าจอคีย์บอร์ด ขณะที่โปรแกรมอื่นอยู่ด้านหน้า การคลิกจะทะลุผ่านไป ขณะที่ PadForge อยู่ด้านหน้า ให้ลากด้วยปุ่มเมาส์ขวาและปรับขนาดจากมุม</value></data>
+  <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>เปิดใช้งานโอเวอร์เลย์หน้าจอ</value></data>
+  <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>เลือกสิ่งที่แสดง…</value></data>
+  <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>โอเวอร์เลย์หน้าจอ PadForge</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>ยังไม่มีสิ่งที่จะแสดง เลือกสิ่งที่แสดงได้ที่แดชบอร์ด</value></data>
+  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>สลับเปิด/ปิดโอเวอร์เลย์หน้าจอ</value></data>
+  <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>สลับเปิด/ปิดโอเวอร์เลย์หน้าจอ</value></data>
+  <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>โอเวอร์เลย์หน้าจอ</value></data>
+  <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>โอเวอร์เลย์ไม่แสดงอะไร</value></data>
+  <data name="KeyboardScreen_Hint_ProfileName_Overlay" xml:space="preserve"><value>โอเวอร์เลย์แสดงชื่อของโปรไฟล์ที่ใช้งานอยู่ และเปลี่ยนตามทุกครั้งที่สลับโปรไฟล์</value></data>
+  <data name="KeyboardScreen_Hint_ProfileNumber_Overlay" xml:space="preserve"><value>โอเวอร์เลย์แสดงลำดับของโปรไฟล์ที่ใช้งานอยู่ในรายการโปรไฟล์ โปรไฟล์ค่าเริ่มต้นคือ 0</value></data>
+  <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>โอเวอร์เลย์แสดงรูปภาพของโปรไฟล์ที่ใช้งานอยู่ หรือแสดงชื่อเมื่อโปรไฟล์ไม่มีรูปภาพ แต่ละโปรไฟล์เก็บรูปภาพของตัวเอง</value></data>
+  <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>โอเวอร์เลย์แสดงเวลาของวัน</value></data>
+  <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>โอเวอร์เลย์แสดงชั่วโมงและนาทีนับจากที่โปรไฟล์ที่ใช้งานอยู่เริ่มทำงาน โปรไฟล์ที่ผูกกับโปรแกรมของเกมจะเริ่มทำงานเมื่อเกมเริ่ม ค่าที่นับจึงเป็นรอบการเล่นนั้น ภายใต้โปรไฟล์ค่าเริ่มต้น จะนับตั้งแต่เอนจินเริ่มทำงาน</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>โอเวอร์เลย์แสดงรูปภาพที่คุณเลือก โดยปรับขนาดให้เต็มหน้าต่างและคงสัดส่วนเดิมไว้</value></data>
+  <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>โอเวอร์เลย์แสดงนาฬิกาจับเวลา ซึ่งแมโครนาฬิกาจับเวลาใช้เริ่ม หยุดชั่วคราว และรีเซ็ต เป็นนาฬิกาจับเวลาเดียวกับที่หน้าจอคีย์บอร์ดทุกเครื่องแสดง</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>โอเวอร์เลย์แสดงสีของแถบไฟบน DualShock 4 หรือ DualSense ในช่องที่มีหมายเลขต่ำสุด หากยังไม่มีสีส่งถึงแถบไฟ โอเวอร์เลย์จะไม่แสดงอะไร</value></data>
 </root>

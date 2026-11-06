@@ -4575,11 +4575,11 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>S.T.R.I.K.E. 7 SDK ডাউনলোড তার জানা SHA-256-এর সঙ্গে মেলেনি, তাই এর কিছুই রাখা হয়নি।</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>ইনস্টলার চালানোর পরও Visual C++ 2008 রানটাইম পাওয়া যাচ্ছে না।</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>কীবোর্ড স্ক্রিন দেখান</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>এই স্লটে ইনপুট দেয় এমন বাছা ধরনের প্রতিটি কীবোর্ড স্ক্রিনে ছবি চালায়, তারপর প্রতিটি স্ক্রিনকে তার নিজের মোডে ফিরিয়ে দেয়।</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>এই স্লটে ইনপুট দেয় এমন বাছা ধরনের প্রতিটি কীবোর্ড স্ক্রিনে ছবি চালায়, তারপর প্রতিটি স্ক্রিনকে তার নিজের মোডে ফিরিয়ে দেয়। স্ক্রিন ওভারলে ছবিগুলো যেকোনো স্লট থেকে নেয়।</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>{0} ছবি দেখান: {1} × {2} ms, পুনরাবৃত্তির সংখ্যা {3}</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>ছবি স্ক্রিনের মাপে বসানো হয়: মনোক্রোম স্ক্রিনে 160 বাই 43 সাদা-কালো পিক্সেল, G19-এ 320 বাই 240, আর Arx Control ও S.T.R.I.K.E. 7-এ 480 বাই 320। ফ্রেমের সময় সবচেয়ে কম এক সেকেন্ডের দশ ভাগের এক ভাগ।</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>কীবোর্ড স্ক্রিনের মোড</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>এই স্লটে ইনপুট দেয় এমন বাছা ধরনের প্রতিটি কীবোর্ড স্ক্রিনকে অন্য মোডে বদলায় এবং সেটিকে ওই স্ক্রিনের সেটিং হিসেবে রাখে।</value></data>
+  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>এই স্লটে ইনপুট দেয় এমন বাছা ধরনের প্রতিটি কীবোর্ড স্ক্রিনকে অন্য মোডে বদলায় এবং সেটিকে ওই স্ক্রিনের সেটিং হিসেবে রাখে। স্ক্রিন ওভারলে এটি যেকোনো স্লট থেকে নেয়।</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} দেখায়: {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>অন্য কোনো ম্যাক্রো বা স্ক্রিনের ডায়ালগ না বদলানো পর্যন্ত মোড একই থাকে।</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>স্টপওয়াচ</value></data>
@@ -4884,4 +4884,22 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>অ্যাকশনটি এই ভার্চুয়াল কন্ট্রোলার যত কিবোর্ডের লাইট নিয়ন্ত্রণ করে, সবগুলোতে একই কী জ্বালায়, লাইটিং ট্যাবের দেওয়া রঙের উপরে। সংখ্যাগুলো বাছাইয়ের ক্রম দেখায়। কাউন্টডাউন একবারে একটি কী নেভায়, শেষে বাছাই করা কী আগে, তাই নম্বর সারিতে কুলডাউন দেখাতে 1 থেকে 0 বাছাই করুন। কিবোর্ড বা মাউসের লাইট কেবল তখনই জ্বলে যখন এই ডিভাইসের লাইটিং নিয়ন্ত্রণ করুন চালু থাকে।</value></data>
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>অন্যান্য</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, নম্বর {1}</value></data>
+  <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>স্ক্রিন ওভারলে</value></data>
+  <data name="Dashboard_ScreenOverlayDescription" xml:space="preserve"><value>কীবোর্ড স্ক্রিন ছাড়াই অন্য উইন্ডোর ওপরে একটি ছবি, টাইমার, সময় বা লাইটবারের রং দেখায়। অন্য কোনো প্রোগ্রাম সামনে থাকলে ক্লিক এর ভেতর দিয়ে চলে যায়। PadForge সামনে থাকলে মাউসের রাইট বোতাম দিয়ে এটি টেনে সরান এবং এর কোণ থেকে মাপ বদলান।</value></data>
+  <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>স্ক্রিন ওভারলে সক্ষম করুন</value></data>
+  <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>কী দেখাবে তা বেছে নিন…</value></data>
+  <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge স্ক্রিন ওভারলে</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>এখনও দেখানোর কিছু নেই। ড্যাশবোর্ডে গিয়ে কী দেখাবে তা বেছে নিন।</value></data>
+  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>স্ক্রিন ওভারলে টগল করুন</value></data>
+  <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>স্ক্রিন ওভারলে টগল করুন</value></data>
+  <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>স্ক্রিন ওভারলে</value></data>
+  <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>ওভারলে কিছু দেখায় না।</value></data>
+  <data name="KeyboardScreen_Hint_ProfileName_Overlay" xml:space="preserve"><value>ওভারলে সক্রিয় প্রোফাইলের নাম দেখায় এবং প্রতিবার প্রোফাইল বদলের সঙ্গে তা বদলায়।</value></data>
+  <data name="KeyboardScreen_Hint_ProfileNumber_Overlay" xml:space="preserve"><value>ওভারলে প্রোফাইল তালিকায় সক্রিয় প্রোফাইলের অবস্থান দেখায়। ডিফল্ট প্রোফাইল হলো 0।</value></data>
+  <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>ওভারলে সক্রিয় প্রোফাইলের নিজস্ব ছবি দেখায়, ছবি না থাকলে তার নাম। প্রতিটি প্রোফাইলের নিজস্ব ছবি থাকে।</value></data>
+  <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>ওভারলে দিনের সময় দেখায়।</value></data>
+  <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>সক্রিয় প্রোফাইল চালু হওয়ার পর থেকে কত ঘণ্টা ও মিনিট কেটেছে, ওভারলে তা দেখায়। কোনো গেমের প্রোগ্রামের সঙ্গে বাঁধা প্রোফাইল গেম শুরু হলে চালু হয়, তাই গোনা হয় সেই সেশনের। ডিফল্ট প্রোফাইলে ইঞ্জিন শুরু হওয়ার সময় থেকে গোনা হয়।</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>ওভারলে আপনার বাছা একটি ছবি দেখায়, যা অনুপাত ঠিক রেখে তার উইন্ডো ভরে মাপে বসানো হয়।</value></data>
+  <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>ওভারলে স্টপওয়াচ দেখায়, যা স্টপওয়াচ ম্যাক্রো চালু করে, থামায় ও রিসেট করে। প্রতিটি কীবোর্ড স্ক্রিন যে স্টপওয়াচ দেখায়, এটি সেটিই।</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>সবচেয়ে নিচের স্লটের DualShock 4 বা DualSense-এর লাইটবারের রং ওভারলে দেখায়। লাইটবারে কোনো রং না পৌঁছানো পর্যন্ত এটি কিছু দেখায় না।</value></data>
 </root>

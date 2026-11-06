@@ -17,6 +17,11 @@ namespace PadForge.Common.Input.KeyboardScreens
     {
         public const string ArxId = "arx";
         public const string Strike7Id = "strike7";
+        public const string OverlayId = "overlay";
+
+        /// <summary>The Screen Overlay's identity for its settings (#560). It has
+        /// no device and no row on the Devices page.</summary>
+        public static readonly Guid OverlayRow = RowGuidOf(OverlayId);
 
         /// <summary>The row's identity, the same for the screen every time
         /// it is found.</summary>
@@ -25,6 +30,8 @@ namespace PadForge.Common.Input.KeyboardScreens
         public static Guid RowGuidOf(string id) => Md5Guid("pfkeyboardscreen|" + id);
 
         public static KeyboardScreenInfo Arx() => new(ArxId, KeyboardScreenKind.Arx, "Logitech Arx Control", "Arx Control");
+
+        public static KeyboardScreenInfo Overlay(string name) => new(OverlayId, KeyboardScreenKind.Overlay, name, name);
 
         public static KeyboardScreenInfo Strike7() => new(Strike7Id, KeyboardScreenKind.Strike7, "Mad Catz S.T.R.I.K.E. 7 Screen", "S.T.R.I.K.E. 7");
 

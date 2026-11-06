@@ -4575,11 +4575,11 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>Ladatun S.T.R.I.K.E. 7 SDK:n SHA-256 ei vastaa tunnettua arvoa, joten mitään siitä ei säilytetty.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>Visual C++ 2008 -ajoympäristö puuttuu edelleen asentajan ajon jälkeen.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Näytä näppäimistön näytöllä</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Toistaa kuvia jokaisella valitun tyyppisellä näppäimistön näytöllä, joka syöttää tähän paikkaan, ja palauttaa sitten kunkin näytön omaan tilaansa.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Toistaa kuvia jokaisella valitun tyyppisellä näppäimistön näytöllä, joka syöttää tähän paikkaan, ja palauttaa sitten kunkin näytön omaan tilaansa. Näytön peittokuva ottaa ne mistä tahansa paikasta.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Näytä kuvat, {0}: {1} × {2} ms, toistokertoja {3}</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Kuvat sovitetaan näyttöön: yksivärisellä näytöllä 160 × 43 mustavalkoista pikseliä, G19:n näytöllä 320 × 240 sekä Arx Controlilla ja S.T.R.I.K.E. 7:llä 480 × 320. Lyhin kuvan kesto on kymmenesosasekunti.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Näppäimistön näytön tila</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Vaihtaa jokaisen valitun tyyppisen näppäimistön näytön, joka syöttää tähän paikkaan, toiseen tilaan ja säilyttää sen kyseisen näytön asetuksena.</value></data>
+  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Vaihtaa jokaisen valitun tyyppisen näppäimistön näytön, joka syöttää tähän paikkaan, toiseen tilaan ja säilyttää sen kyseisen näytön asetuksena. Näytön peittokuva ottaa sen mistä tahansa paikasta.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} näyttää: {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Tila pysyy, kunnes toinen makro tai näytön valintaikkuna muuttaa sitä.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Sekuntikello</value></data>
@@ -4884,4 +4884,22 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>Toiminto valaisee samat näppäimet kaikilla näppäimistöillä, joita tämä virtuaaliohjain valaisee, Valaistus-välilehden värien päälle. Numerot näyttävät valintajärjestyksen. Lasku alas sammuttaa näppäimet yksi kerrallaan viimeksi valitusta alkaen, joten valitse 1–0 numerorivin jäähtymisaikaa varten. Näppäimistö tai hiiri valaistuu vain, kun sen asetus Ohjaa tämän laitteen valaistusta on päällä.</value></data>
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>Muut</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, numero {1}</value></data>
+  <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>Näytön peittokuva</value></data>
+  <data name="Dashboard_ScreenOverlayDescription" xml:space="preserve"><value>Näyttää kuvan, ajastimen, kellonajan tai valopalkin värin muiden ikkunoiden päällä ilman näppäimistön näyttöä. Kun jokin toinen ohjelma on etualalla, napsautukset menevät sen läpi. Kun PadForge on etualalla, sitä voi vetää hiiren oikealla painikkeella ja sen kokoa voi muuttaa kulmasta.</value></data>
+  <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>Ota näytön peittokuva käyttöön</value></data>
+  <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Valitse, mitä se näyttää…</value></data>
+  <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge-näytön peittokuva</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Ei vielä mitään näytettävää. Valitse, mitä se näyttää, koontinäytöllä.</value></data>
+  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Näytä/piilota näytön peittokuva</value></data>
+  <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Näytä/piilota näytön peittokuva</value></data>
+  <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Näytön peittokuva</value></data>
+  <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>Peittokuva ei näytä mitään.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileName_Overlay" xml:space="preserve"><value>Peittokuvassa on aktiivisen profiilin nimi, ja se päivittyy jokaisen profiilinvaihdon yhteydessä.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileNumber_Overlay" xml:space="preserve"><value>Peittokuvassa on aktiivisen profiilin paikka profiililuettelossa. Profiili Oletus on 0.</value></data>
+  <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>Peittokuva näyttää aktiivisen profiilin oman kuvan tai sen nimen, jos kuvaa ei ole. Jokaisella profiililla on oma kuvansa.</value></data>
+  <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>Peittokuva näyttää kellonajan.</value></data>
+  <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>Peittokuva näyttää tunnit ja minuutit siitä, kun aktiivinen profiili otettiin käyttöön. Pelin ohjelmaan sidottu profiili otetaan käyttöön, kun peli käynnistyy, joten laskuri kattaa kyseisen istunnon. Profiilissa Oletus laskenta alkaa ohjelmamoottorin käynnistyksestä.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Peittokuva näyttää valitsemasi kuvan skaalattuna täyttämään ikkunansa kuvasuhde säilyttäen.</value></data>
+  <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>Peittokuva näyttää sekuntikellon, jonka Sekuntikello-makro käynnistää, keskeyttää ja nollaa. Se on sama sekuntikello, jonka kaikki näppäimistön näytöt näyttävät.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Peittokuva näyttää DualShock 4- tai DualSense-ohjaimen valopalkin värin alimmassa paikassa. Kunnes valopalkille on tullut väri, se ei näytä mitään.</value></data>
 </root>

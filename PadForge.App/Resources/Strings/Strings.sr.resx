@@ -4575,11 +4575,11 @@
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>Преузети SDK за S.T.R.I.K.E. 7 не одговара познатом SHA-256, зато ништа из њега није задржано.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>Окружење Visual C++ 2008 и даље недостаје након покретања његовог инсталера.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Прикажи екран тастатуре</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Приказује слике на сваком екрану тастатуре изабране врсте који шаље улаз овом слоту, а затим враћа сваки екран у његов режим.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Приказује слике на сваком екрану тастатуре изабране врсте који шаље улаз овом слоту, а затим враћа сваки екран у његов режим. Оверлеј екрана их преузима са сваког слота.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Прикажи {0} слике: {1} × {2} мс, број понављања {3}</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Слике се прилагођавају екрану: 160 са 43 црно-бела пиксела на једнобојном екрану, 320 са 240 на екрану G19 и 480 са 320 за Arx Control и S.T.R.I.K.E. 7. Најкраће трајање кадра је десетина секунде.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Режим екрана тастатуре</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Пребацује сваки екран тастатуре изабране врсте који шаље улаз овом слоту у други режим и памти га као подешавање тог екрана.</value></data>
+  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Пребацује сваки екран тастатуре изабране врсте који шаље улаз овом слоту у други режим и памти га као подешавање тог екрана. Оверлеј екрана га преузима са сваког слота.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} приказује {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Режим остаје док га други макро или дијалог екрана не промени.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Штоперица</value></data>
@@ -4884,4 +4884,22 @@
   <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>Радња осветљава исте тастере на свакој тастатури коју овај виртуелни контролер осветљава, преко боја које им даје картица Осветљење. Бројеви показују редослед избора. Одбројавање гаси тастере један по један, последњи изабран први, па изаберите од 1 до 0 за одбројавање на реду са бројевима. Тастатура или миш светле само док је укључено Управљај осветљењем овог уређаја.</value></data>
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>Остало</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, број {1}</value></data>
+  <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>Оверлеј екрана</value></data>
+  <data name="Dashboard_ScreenOverlayDescription" xml:space="preserve"><value>Приказује слику, тајмер, време или боју светлосне траке изнад осталих прозора, без потребе за екраном тастатуре. Док је испред други програм, кликови пролазе кроз њега. Док је PadForge испред, превуците га десним тастером миша и промените му величину са угла.</value></data>
+  <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>Омогући оверлеј екрана</value></data>
+  <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Изабери шта приказује…</value></data>
+  <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge оверлеј екрана</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Још нема ничега за приказ. Изаберите шта приказује на контролној табли.</value></data>
+  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Прикажи/сакриј оверлеј екрана</value></data>
+  <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Прикажи/сакриј оверлеј екрана</value></data>
+  <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Оверлеј екрана</value></data>
+  <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>Оверлеј не приказује ништа.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileName_Overlay" xml:space="preserve"><value>Оверлеј приказује назив активног профила и прати сваку промену профила.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileNumber_Overlay" xml:space="preserve"><value>Оверлеј приказује место активног профила на списку профила. Подразумевани профил је 0.</value></data>
+  <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>Оверлеј приказује сопствену слику активног профила, или његов назив ако слику нема. Сваки профил чува сопствену слику.</value></data>
+  <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>Оверлеј приказује време у току дана.</value></data>
+  <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>Оверлеј приказује сате и минуте откако је активни профил постао активан. Профил везан за програм неке игре постаје активан када се игра покрене, па је бројање за ту сесију. Под подразумеваним профилом броји се од покретања механизма.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Оверлеј приказује слику коју изаберете, прилагођену да испуни свој прозор уз очуване пропорције.</value></data>
+  <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>Оверлеј приказује штоперицу, коју макро Штоперица покреће, паузира и ресетује. То је иста штоперица коју приказује сваки екран тастатуре.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Оверлеј приказује боју светлосне траке на DualShock 4 или DualSense контролеру у најнижем слоту. Док боја не стигне до светлосне траке, не приказује ништа.</value></data>
 </root>

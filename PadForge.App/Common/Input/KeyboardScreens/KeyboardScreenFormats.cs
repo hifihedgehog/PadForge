@@ -17,6 +17,9 @@ namespace PadForge.Common.Input.KeyboardScreens
         Arx = 2,
         /// <summary>The Mad Catz S.T.R.I.K.E. 7's V.E.N.O.M. touchscreen.</summary>
         Strike7 = 3,
+        /// <summary>The Screen Overlay (#560): a window on the PC's own display,
+        /// with no device behind it and any size the user gives it.</summary>
+        Overlay = 4,
     }
 
     /// <summary>
@@ -36,7 +39,13 @@ namespace PadForge.Common.Input.KeyboardScreens
         /// <summary>The V.E.N.O.M. screen as both of Mad Catz's examples draw
         /// it (mapApplet.cpp, MapApplet.cs).</summary>
         public const int Strike7Width = 480, Strike7Height = 320;
+        /// <summary>The longest side of a Show Keyboard Screen frame kept for
+        /// the Screen Overlay. Frames live in the settings file as PNG, and the
+        /// overlay scales them to its window.</summary>
+        public const int OverlayFrameSide = 800;
 
+        /// <summary>The kinds an engine draws. The Screen Overlay is drawn by its
+        /// own window.</summary>
         public static readonly KeyboardScreenKind[] Kinds =
         {
             KeyboardScreenKind.Monochrome, KeyboardScreenKind.Color, KeyboardScreenKind.Arx, KeyboardScreenKind.Strike7,
@@ -47,6 +56,7 @@ namespace PadForge.Common.Input.KeyboardScreens
             KeyboardScreenKind.Monochrome => (MonoWidth, MonoHeight),
             KeyboardScreenKind.Color => (ColorWidth, ColorHeight),
             KeyboardScreenKind.Arx => (ArxWidth, ArxHeight),
+            KeyboardScreenKind.Overlay => (OverlayFrameSide, OverlayFrameSide),
             _ => (Strike7Width, Strike7Height),
         };
 

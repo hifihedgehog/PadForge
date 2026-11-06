@@ -5,6 +5,7 @@
         xmlns:strings="clr-namespace:PadForge.Resources.Strings"
         xmlns:reset="clr-namespace:PadForge.Controls"
         xmlns:common="clr-namespace:PadForge.Common"
+        xmlns:views="clr-namespace:PadForge.Views"
         ExtendsContentIntoTitleBar="True"
         WindowBackdropType="Mica"
         Width="540" SizeToContent="Height"
@@ -54,8 +55,13 @@
         <!-- The screen at its own pixels, scaled to fit the dialog. -->
         <Border Grid.Row="3" x:Name="PreviewFrame" HorizontalAlignment="Left" Padding="6" CornerRadius="4" Margin="0,0,0,10"
                 Background="#FF101010" BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="1">
-            <Image AutomationProperties.Name="{Binding Pad_Tab_Preview, Source={x:Static strings:Strings.Instance}}" FlowDirection="LeftToRight"
-                   x:Name="PreviewImage" Stretch="Uniform"/>
+            <Grid>
+                <Image AutomationProperties.Name="{Binding Pad_Tab_Preview, Source={x:Static strings:Strings.Instance}}" FlowDirection="LeftToRight"
+                       x:Name="PreviewImage" Stretch="Uniform"/>
+                <!-- The Screen Overlay, drawn as its window draws it. -->
+                <views:ScreenOverlayContentView x:Name="OverlayPreview" Visibility="Collapsed"
+                                                AutomationProperties.Name="{Binding Pad_Tab_Preview, Source={x:Static strings:Strings.Instance}}"/>
+            </Grid>
         </Border>
 
         <TextBlock Grid.Row="4" x:Name="HintText" TextWrapping="Wrap" FontSize="11" Margin="0,0,0,10"

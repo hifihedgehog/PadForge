@@ -2683,6 +2683,17 @@ namespace PadForge.Services
             _mainVm.Dashboard.TouchpadOverlayHeight = appSettings.TouchpadOverlayHeight > 0
                 ? appSettings.TouchpadOverlayHeight : 250;
 
+            // Load Screen Overlay settings.
+            _mainVm.Dashboard.EnableScreenOverlay = appSettings.EnableScreenOverlay;
+            _mainVm.Dashboard.ScreenOverlayOpacity = appSettings.ScreenOverlayOpacity;
+            _mainVm.Dashboard.ScreenOverlayMonitor = appSettings.ScreenOverlayMonitor;
+            _mainVm.Dashboard.ScreenOverlayLeft = appSettings.ScreenOverlayLeft;
+            _mainVm.Dashboard.ScreenOverlayTop = appSettings.ScreenOverlayTop;
+            _mainVm.Dashboard.ScreenOverlayWidth = appSettings.ScreenOverlayWidth > 0
+                ? appSettings.ScreenOverlayWidth : 320;
+            _mainVm.Dashboard.ScreenOverlayHeight = appSettings.ScreenOverlayHeight > 0
+                ? appSettings.ScreenOverlayHeight : 240;
+
             vm.Use2DControllerView = appSettings.Use2DControllerView;
             vm.LegacyDriverCleanupOffered = appSettings.LegacyDriverCleanupOffered;
             vm.FirstRunTourCompleted = appSettings.FirstRunTourCompleted;
@@ -4461,6 +4472,15 @@ namespace PadForge.Services
                     ? active.TouchpadOverlayWidth : 500;
                 _mainVm.Dashboard.TouchpadOverlayHeight = active.TouchpadOverlayHeight > 0
                     ? active.TouchpadOverlayHeight : 250;
+                _mainVm.Dashboard.EnableScreenOverlay = active.EnableScreenOverlay;
+                _mainVm.Dashboard.ScreenOverlayOpacity = active.ScreenOverlayOpacity;
+                _mainVm.Dashboard.ScreenOverlayMonitor = active.ScreenOverlayMonitor;
+                _mainVm.Dashboard.ScreenOverlayLeft = active.ScreenOverlayLeft;
+                _mainVm.Dashboard.ScreenOverlayTop = active.ScreenOverlayTop;
+                _mainVm.Dashboard.ScreenOverlayWidth = active.ScreenOverlayWidth > 0
+                    ? active.ScreenOverlayWidth : 320;
+                _mainVm.Dashboard.ScreenOverlayHeight = active.ScreenOverlayHeight > 0
+                    ? active.ScreenOverlayHeight : 240;
                 // The service toggles ride profiles too, as nullable
                 // legs: only a profile with an opinion moves the toggle.
                 ApplyProfileServiceToggles(active);
@@ -4648,6 +4668,13 @@ namespace PadForge.Services
             profile.TouchpadOverlayTop = _mainVm.Dashboard.TouchpadOverlayTop;
             profile.TouchpadOverlayWidth = _mainVm.Dashboard.TouchpadOverlayWidth;
             profile.TouchpadOverlayHeight = _mainVm.Dashboard.TouchpadOverlayHeight;
+            profile.EnableScreenOverlay = _mainVm.Dashboard.EnableScreenOverlay;
+            profile.ScreenOverlayOpacity = _mainVm.Dashboard.ScreenOverlayOpacity;
+            profile.ScreenOverlayMonitor = _mainVm.Dashboard.ScreenOverlayMonitor;
+            profile.ScreenOverlayLeft = _mainVm.Dashboard.ScreenOverlayLeft;
+            profile.ScreenOverlayTop = _mainVm.Dashboard.ScreenOverlayTop;
+            profile.ScreenOverlayWidth = _mainVm.Dashboard.ScreenOverlayWidth;
+            profile.ScreenOverlayHeight = _mainVm.Dashboard.ScreenOverlayHeight;
 
             // Custom touchpad gestures live in InputService's working
             // list; pull through the provider hook so the 250 ms
@@ -5206,6 +5233,13 @@ namespace PadForge.Services
                 TouchpadOverlayTop = _mainVm.Dashboard.TouchpadOverlayTop,
                 TouchpadOverlayWidth = _mainVm.Dashboard.TouchpadOverlayWidth,
                 TouchpadOverlayHeight = _mainVm.Dashboard.TouchpadOverlayHeight,
+                EnableScreenOverlay = _mainVm.Dashboard.EnableScreenOverlay,
+                ScreenOverlayOpacity = _mainVm.Dashboard.ScreenOverlayOpacity,
+                ScreenOverlayMonitor = _mainVm.Dashboard.ScreenOverlayMonitor,
+                ScreenOverlayLeft = _mainVm.Dashboard.ScreenOverlayLeft,
+                ScreenOverlayTop = _mainVm.Dashboard.ScreenOverlayTop,
+                ScreenOverlayWidth = _mainVm.Dashboard.ScreenOverlayWidth,
+                ScreenOverlayHeight = _mainVm.Dashboard.ScreenOverlayHeight,
                 MainWindowLeft = vm.MainWindowLeft,
                 MainWindowTop = vm.MainWindowTop,
                 MainWindowWidth = vm.MainWindowWidth,
@@ -7377,6 +7411,30 @@ namespace PadForge.Services
         [XmlElement]
         public double TouchpadOverlayHeight { get; set; } = 250;
 
+        /// <summary>The Screen Overlay's switch and its place (#560). Left and Top
+        /// are <see cref="PadForge.Views.OverlayPlacement.NoPlace"/> with no saved
+        /// place yet.</summary>
+        [XmlElement]
+        public bool EnableScreenOverlay { get; set; }
+
+        [XmlElement]
+        public double ScreenOverlayOpacity { get; set; } = 0.8;
+
+        [XmlElement]
+        public int ScreenOverlayMonitor { get; set; }
+
+        [XmlElement]
+        public double ScreenOverlayLeft { get; set; } = PadForge.Views.OverlayPlacement.NoPlace;
+
+        [XmlElement]
+        public double ScreenOverlayTop { get; set; } = PadForge.Views.OverlayPlacement.NoPlace;
+
+        [XmlElement]
+        public double ScreenOverlayWidth { get; set; } = 320;
+
+        [XmlElement]
+        public double ScreenOverlayHeight { get; set; } = 240;
+
         [XmlElement]
         public double MainWindowLeft { get; set; } = -1;
 
@@ -8389,6 +8447,30 @@ namespace PadForge.Services
 
         [XmlElement]
         public double TouchpadOverlayHeight { get; set; } = 250;
+
+        /// <summary>The Screen Overlay's switch and its place (#560). Left and Top
+        /// are <see cref="PadForge.Views.OverlayPlacement.NoPlace"/> with no saved
+        /// place yet.</summary>
+        [XmlElement]
+        public bool EnableScreenOverlay { get; set; }
+
+        [XmlElement]
+        public double ScreenOverlayOpacity { get; set; } = 0.8;
+
+        [XmlElement]
+        public int ScreenOverlayMonitor { get; set; }
+
+        [XmlElement]
+        public double ScreenOverlayLeft { get; set; } = PadForge.Views.OverlayPlacement.NoPlace;
+
+        [XmlElement]
+        public double ScreenOverlayTop { get; set; } = PadForge.Views.OverlayPlacement.NoPlace;
+
+        [XmlElement]
+        public double ScreenOverlayWidth { get; set; } = 320;
+
+        [XmlElement]
+        public double ScreenOverlayHeight { get; set; } = 240;
 
         /// <summary>Steam Workshop provenance for profiles imported via
         /// Browse Community Configs (#9). Null on every other profile.

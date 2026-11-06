@@ -2940,6 +2940,7 @@
                                             <ComboBoxItem Content="{Binding KeyboardScreens_Kind_Color, Source={x:Static strings:Strings.Instance}}"/>
                                             <ComboBoxItem Content="{Binding KeyboardScreens_Kind_Arx, Source={x:Static strings:Strings.Instance}}"/>
                                             <ComboBoxItem Content="{Binding KeyboardScreens_Kind_Strike7, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding KeyboardScreens_Kind_Overlay, Source={x:Static strings:Strings.Instance}}"/>
                                         </ComboBox>
                                         <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="ScreenKind" SettingLabel="{Binding Macro_KeyboardScreen_Kind, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_ScreenKind_13101"/>
                                     </StackPanel>

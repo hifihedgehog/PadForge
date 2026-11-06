@@ -580,4 +580,6 @@
   <data name="MacroAction_ClearKeyColors_Format" xml:space="preserve"><value>Clear key colours on {0} lights</value></data>
   <data name="MacroAction_KeyColors_RestKeep" xml:space="preserve"><value>Keep Their Colours</value></data>
   <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>The action lights the same keys on every keyboard this virtual controller lights, over the colours its Lighting tab gives them. The numbers show the order picked. Countdown turns the keys off one at a time, the last one picked first, so pick 1 to 0 for a cooldown on the number row. A keyboard or mouse lights only while its Control This Device’s Lighting is on.</value></data>
+  <data name="Dashboard_ScreenOverlayDescription" xml:space="preserve"><value>Shows a picture, a timer, the time or a lightbar's colour above other windows, with no keyboard screen needed. While another program is in front, clicks pass through it. While PadForge is in front, drag it with the right mouse button and size it from its corner.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>The overlay shows the colour of the lightbar on the DualShock 4 or DualSense in the lowest slot. Until a colour reaches a lightbar, it shows nothing.</value></data>
 </root>

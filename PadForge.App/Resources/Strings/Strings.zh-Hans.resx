@@ -4526,11 +4526,11 @@
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>下载的 S.T.R.I.K.E. 7 SDK 与已知的 SHA-256 不符，因此未保留其中任何内容。</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>Visual C++ 2008 运行时的安装程序运行后，该运行时仍然缺失。</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>显示键盘屏幕</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>在所选类型中为此槽位提供输入的每个键盘屏幕上播放图片，然后让每个屏幕回到各自的模式。</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>在所选类型中为此槽位提供输入的每个键盘屏幕上播放图片，然后让每个屏幕回到各自的模式。屏幕叠加层可从任意槽位获取这些图片。</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>显示 {0} 图片：{1} × {2} 毫秒，重复 {3} 次</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>图片会适配屏幕：单色屏幕为 160 × 43 黑白像素，G19 的屏幕为 320 × 240，Arx Control 和 S.T.R.I.K.E. 7 为 480 × 320。每张最短时长为十分之一秒。</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>键盘屏幕模式</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>将所选类型中为此槽位提供输入的每个键盘屏幕切换到另一种模式，并保存为该屏幕的设置。</value></data>
+  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>将所选类型中为此槽位提供输入的每个键盘屏幕切换到另一种模式，并保存为该屏幕的设置。屏幕叠加层可从任意槽位获取该设置。</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} 显示 {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>该模式会一直保持，直到其他宏或该屏幕的对话框更改它。</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>秒表</value></data>
@@ -4835,4 +4835,22 @@
   <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>该动作会在此虚拟控制器点亮的每个键盘上点亮相同的按键，并覆盖其“灯光”选项卡所设定的颜色。数字表示选择的顺序。倒计时会逐个熄灭按键，最后选择的最先熄灭，因此选择 1 到 0 即可在数字行上做出冷却效果。键盘或鼠标仅在其“控制此设备的灯光”开启时才会点亮。</value></data>
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>其他</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}，第 {1} 个</value></data>
+  <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>屏幕叠加层</value></data>
+  <data name="Dashboard_ScreenOverlayDescription" xml:space="preserve"><value>在其他窗口上方显示图片、计时器、时间或灯条颜色，无需键盘屏幕。其他程序位于前台时，点击会穿过它。PadForge 位于前台时，可用鼠标右键拖动它，并从它的角上调整大小。</value></data>
+  <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>启用屏幕叠加层</value></data>
+  <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>选择显示内容…</value></data>
+  <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge 屏幕叠加层</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>暂无可显示的内容。请在仪表盘上选择显示内容。</value></data>
+  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>切换屏幕叠加层</value></data>
+  <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>切换屏幕叠加层</value></data>
+  <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>屏幕叠加层</value></data>
+  <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>叠加层不显示任何内容。</value></data>
+  <data name="KeyboardScreen_Hint_ProfileName_Overlay" xml:space="preserve"><value>叠加层显示当前配置文件的名称，并随每次配置文件切换更新。</value></data>
+  <data name="KeyboardScreen_Hint_ProfileNumber_Overlay" xml:space="preserve"><value>叠加层显示当前配置文件在配置文件列表中的位置。默认配置文件为 0。</value></data>
+  <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>叠加层显示当前配置文件自己的图片，没有图片时显示其名称。每个配置文件保存各自的图片。</value></data>
+  <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>叠加层显示当前时间。</value></data>
+  <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>叠加层显示自当前配置文件切入以来的小时和分钟数。绑定到某个游戏程序的配置文件会在游戏启动时切入，因此计时就是这一次游戏。在默认配置文件下，则从引擎启动时开始计时。</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>叠加层显示你选择的图片，按比例缩放以填满其窗口。</value></data>
+  <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>叠加层显示秒表，秒表由“秒表”宏启动、暂停和重置。所有键盘屏幕显示的是同一个秒表。</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>叠加层显示最低编号插槽中 DualShock 4 或 DualSense 灯条的颜色。在颜色传到灯条之前，它不显示任何内容。</value></data>
 </root>

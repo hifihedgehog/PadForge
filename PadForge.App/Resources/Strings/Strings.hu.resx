@@ -4575,11 +4575,11 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>A S.T.R.I.K.E. 7 SDK letöltése nem egyezik az ismert SHA-256 értékkel, ezért semmi sem maradt meg belőle.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>A Visual C++ 2008 futtatókörnyezet a telepítő lefutása után is hiányzik.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Billentyűzetképernyő megjelenítése</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Képeket játszik le a kiválasztott fajtájú minden olyan billentyűzetképernyőn, amely a foglalatot táplálja, majd minden képernyőt visszaállít a saját módjára.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Képeket játszik le a kiválasztott fajtájú minden olyan billentyűzetképernyőn, amely a foglalatot táplálja, majd minden képernyőt visszaállít a saját módjára. A Képernyő-átfedés bármelyik foglalatból átveszi őket.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>{0} képeinek megjelenítése: {1} × {2} ms, ismétlések száma: {3}</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>A képek a képernyőhöz igazodnak: monokróm képernyőn 160 × 43 fekete-fehér képpont, a G19-én 320 × 240, az Arx Control és az S.T.R.I.K.E. 7 esetén 480 × 320. A legrövidebb képkockaidő egy tizedmásodperc.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Billentyűzetképernyő módja</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>A kiválasztott fajtájú minden olyan billentyűzetképernyőt, amely a foglalatot táplálja, másik módra állít, és megtartja a képernyő beállításaként.</value></data>
+  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>A kiválasztott fajtájú minden olyan billentyűzetképernyőt, amely a foglalatot táplálja, másik módra állít, és megtartja a képernyő beállításaként. A Képernyő-átfedés bármelyik foglalatból átveszi.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} mutatja: {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>A mód addig marad, amíg egy másik makró vagy a képernyő párbeszédpanelje meg nem változtatja.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Stopperóra</value></data>
@@ -4884,4 +4884,22 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>A művelet ugyanazokat a billentyűket világítja meg minden olyan billentyűzeten, amelyet ez a virtuális vezérlő világít, a Világítás lap által megadott színek fölött. A számok a kiválasztás sorrendjét mutatják. A Visszaszámlálás egyesével kapcsolja ki a billentyűket, az utoljára kiválasztottal kezdve, ezért a számsoron 1-től 0-ig válaszd ki őket egy újratöltési számlálóhoz. A billentyűzet vagy az egér csak akkor világít, ha az Az eszköz világításának vezérlése be van kapcsolva.</value></data>
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>Egyéb</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, sorszám: {1}</value></data>
+  <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>Képernyő-átfedés</value></data>
+  <data name="Dashboard_ScreenOverlayDescription" xml:space="preserve"><value>Képet, időzítőt, az időt vagy egy fénysáv színét mutatja a többi ablak felett, billentyűzetképernyő nélkül. Amíg egy másik program van előtérben, a kattintások áthatolnak rajta. Amíg a PadForge van előtérben, a jobb egérgombbal húzhatja, a sarkánál fogva pedig átméretezheti.</value></data>
+  <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>Képernyő-átfedés engedélyezése</value></data>
+  <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>A megjelenített tartalom kiválasztása…</value></data>
+  <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge képernyő-átfedés</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Még nincs mit megjeleníteni. Válassza ki az Irányítópulton, mit mutasson.</value></data>
+  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Képernyő-átfedés be/ki</value></data>
+  <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Képernyő-átfedés be/ki</value></data>
+  <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Képernyő-átfedés</value></data>
+  <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>Az átfedés nem mutat semmit.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileName_Overlay" xml:space="preserve"><value>Az átfedés az aktív profil nevét mutatja, és követ minden profilváltást.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileNumber_Overlay" xml:space="preserve"><value>Az átfedés az aktív profil helyét mutatja a profillistában. Az Alapértelmezett profil száma 0.</value></data>
+  <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>Az átfedés az aktív profil saját képét mutatja, vagy a nevét, ha nincs képe. Minden profilnak saját képe van.</value></data>
+  <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>Az átfedés a napszakot mutatja.</value></data>
+  <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>Az átfedés az aktív profil bekapcsolása óta eltelt órákat és perceket mutatja. A játék programjához kötött profil a játék indulásakor kapcsol be, ezért a számláló az adott munkamenetet méri. Az Alapértelmezett profil alatt a motor indításától számol.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Az átfedés egy Ön által választott képet mutat, az ablakát kitöltő méretre skálázva, az arányait megtartva.</value></data>
+  <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>Az átfedés a stopperórát mutatja, amelyet a Stopperóra makró elindít, szüneteltet és visszaállít. Ez ugyanaz a stopperóra, amelyet minden billentyűzetképernyő mutat.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Az átfedés a legalacsonyabb foglalatban lévő DualShock 4 vagy DualSense fénysávjának színét mutatja. Amíg nem érkezik szín a fénysávhoz, nem mutat semmit.</value></data>
 </root>

@@ -4575,11 +4575,11 @@
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>فایل دانلودشده SDK مربوط به S.T.R.I.K.E. 7 با SHA-256 شناخته‌شده‌اش مطابقت ندارد، پس چیزی از آن نگه داشته نشد.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>محیط اجرای Visual C++ 2008 پس از اجرای نصب‌کننده‌اش هنوز وجود ندارد.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>نمایش روی صفحه‌نمایش صفحه‌کلید</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>روی هر صفحه‌نمایش صفحه‌کلید از نوع انتخاب‌شده که به این اسلات ورودی می‌دهد تصاویر را پخش می‌کند، سپس هر صفحه‌نمایش را به حالت خودش برمی‌گرداند.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>روی هر صفحه‌نمایش صفحه‌کلید از نوع انتخاب‌شده که به این اسلات ورودی می‌دهد تصاویر را پخش می‌کند، سپس هر صفحه‌نمایش را به حالت خودش برمی‌گرداند. اورلی صفحه‌نمایش آن‌ها را از هر اسلاتی می‌گیرد.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>نمایش تصاویر {0}: {1} × {2} ms، تعداد تکرار {3}</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>تصاویر با صفحه‌نمایش تطبیق داده می‌شوند: 160 در 43 پیکسل سیاه و سفید روی صفحه‌نمایش تک‌رنگ، 320 در 240 روی صفحه‌نمایش G19 و 480 در 320 برای Arx Control و S.T.R.I.K.E. 7. یک‌دهم ثانیه کوتاه‌ترین زمان فریم است.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>حالت صفحه‌نمایش صفحه‌کلید</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>هر صفحه‌نمایش صفحه‌کلید از نوع انتخاب‌شده را که به این اسلات ورودی می‌دهد به حالت دیگری تغییر می‌دهد و آن را به عنوان تنظیم آن صفحه‌نمایش نگه می‌دارد.</value></data>
+  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>هر صفحه‌نمایش صفحه‌کلید از نوع انتخاب‌شده را که به این اسلات ورودی می‌دهد به حالت دیگری تغییر می‌دهد و آن را به عنوان تنظیم آن صفحه‌نمایش نگه می‌دارد. اورلی صفحه‌نمایش آن را از هر اسلاتی می‌گیرد.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} حالت {1} را نشان می‌دهد</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>حالت تا زمانی که ماکروی دیگر یا پنجره همان صفحه‌نمایش آن را تغییر دهد باقی می‌ماند.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>کرنومتر</value></data>
@@ -4884,4 +4884,22 @@
   <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>این اقدام همان کلیدها را روی هر صفحه‌کلیدی که این کنترلر مجازی روشن می‌کند، روی رنگ‌هایی که زبانه نورپردازی به آن‌ها می‌دهد، روشن می‌کند. شماره‌ها ترتیب انتخاب را نشان می‌دهند. شمارش معکوس کلیدها را یکی‌یکی خاموش می‌کند و آخرین کلید انتخاب‌شده را اول خاموش می‌کند، پس برای زمان‌سنج بازیابی روی ردیف اعداد، کلیدهای 1 تا 0 را انتخاب کنید. صفحه‌کلید یا ماوس فقط وقتی روشن می‌شود که کنترل نورپردازی این دستگاه برایش روشن باشد.</value></data>
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>سایر</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}، شماره {1}</value></data>
+  <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>اورلی صفحه‌نمایش</value></data>
+  <data name="Dashboard_ScreenOverlayDescription" xml:space="preserve"><value>یک تصویر، یک زمان‌سنج، ساعت یا رنگ نوار نوری را بالای پنجره‌های دیگر نشان می‌دهد، بدون نیاز به صفحه‌نمایش صفحه‌کلید. وقتی برنامه دیگری در جلو باشد، کلیک‌ها از آن عبور می‌کنند. وقتی PadForge در جلو باشد، آن را با دکمه راست ماوس بکشید و از گوشه‌اش اندازه‌اش را تغییر دهید.</value></data>
+  <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>فعال کردن اورلی صفحه‌نمایش</value></data>
+  <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>انتخاب آنچه نشان می‌دهد…</value></data>
+  <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>اورلی صفحه‌نمایش PadForge</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>هنوز چیزی برای نمایش نیست. در داشبورد انتخاب کنید که چه چیزی نشان دهد.</value></data>
+  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>تغییر وضعیت اورلی صفحه‌نمایش</value></data>
+  <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>تغییر وضعیت اورلی صفحه‌نمایش</value></data>
+  <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>اورلی صفحه‌نمایش</value></data>
+  <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>اورلی چیزی نشان نمی‌دهد.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileName_Overlay" xml:space="preserve"><value>اورلی نام پروفایل فعال را نشان می‌دهد و با هر تعویض پروفایل تغییر می‌کند.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileNumber_Overlay" xml:space="preserve"><value>اورلی جایگاه پروفایل فعال را در فهرست پروفایل‌ها نشان می‌دهد. پروفایل پیش‌فرض 0 است.</value></data>
+  <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>اورلی تصویر خود پروفایل فعال را نشان می‌دهد، یا اگر تصویری نداشته باشد نامش را. هر پروفایل تصویر خودش را نگه می‌دارد.</value></data>
+  <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>اورلی ساعت روز را نشان می‌دهد.</value></data>
+  <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>اورلی ساعت‌ها و دقیقه‌های گذشته از زمان فعال شدن پروفایل فعال را نشان می‌دهد. پروفایلی که به برنامه یک بازی وابسته است با شروع بازی فعال می‌شود، پس شمارش همان نشست است. در پروفایل پیش‌فرض شمارش از شروع به کار موتور آغاز می‌شود.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>اورلی تصویری را که انتخاب می‌کنید نشان می‌دهد، به‌طوری که با حفظ نسبت ابعاد، پنجره‌اش را پر کند.</value></data>
+  <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>اورلی کرنومتر را نشان می‌دهد که ماکروی کرنومتر آن را شروع، متوقف و بازنشانی می‌کند. این همان کرنومتری است که همه صفحه‌نمایش‌های صفحه‌کلید نشان می‌دهند.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>اورلی رنگ نوار نوری DualShock 4 یا DualSense را در پایین‌ترین اسلات نشان می‌دهد. تا وقتی رنگی به نوار نوری نرسد، چیزی نشان نمی‌دهد.</value></data>
 </root>

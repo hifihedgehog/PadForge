@@ -4575,11 +4575,11 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>S.T.R.I.K.E. 7 SDK indirmesi bilinen SHA-256 değeriyle eşleşmedi, bu yüzden ondan hiçbir şey saklanmadı.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>Visual C++ 2008 çalışma zamanı, kurucusu çalıştıktan sonra da eksik.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Klavye ekranını göster</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Seçilen türdeki, bu yuvayı besleyen her klavye ekranında resimleri oynatır, sonra her ekranı kendi moduna döndürür.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Seçilen türdeki, bu yuvayı besleyen her klavye ekranında resimleri oynatır, sonra her ekranı kendi moduna döndürür. Ekran kaplaması bunları herhangi bir yuvadan alır.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>{0} resimlerini göster: {1} × {2} ms, yineleme sayısı {3}</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Resimler ekrana sığdırılır: tek renkli ekranda 160 × 43 siyah beyaz piksel, G19'unkinde 320 × 240, Arx Control ve S.T.R.I.K.E. 7 için 480 × 320. En kısa kare süresi saniyenin onda biridir.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Klavye ekranı modu</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Seçilen türdeki, bu yuvayı besleyen her klavye ekranını başka bir moda geçirir ve bunu o ekranın ayarı olarak saklar.</value></data>
+  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Seçilen türdeki, bu yuvayı besleyen her klavye ekranını başka bir moda geçirir ve bunu o ekranın ayarı olarak saklar. Ekran kaplaması bunu herhangi bir yuvadan alır.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} şunu gösterir: {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Mod, başka bir makro ya da ekranın iletişim kutusu değiştirene kadar kalır.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Kronometre</value></data>
@@ -4884,4 +4884,22 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>Eylem, bu sanal denetleyicinin aydınlattığı her klavyede aynı tuşları, Aydınlatma sekmesinin verdiği renklerin üzerine yakar. Sayılar seçim sırasını gösterir. Geri sayım tuşları tek tek söndürür, en son seçilen ilk söner. Bu yüzden sayı sırasında bir bekleme süresi için 1'den 0'a seçin. Klavye veya fare yalnızca Bu cihazın aydınlatmasını denetle açıkken yanar.</value></data>
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>Diğer</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, sıra {1}</value></data>
+  <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>Ekran kaplaması</value></data>
+  <data name="Dashboard_ScreenOverlayDescription" xml:space="preserve"><value>Bir resmi, bir zamanlayıcıyı, saati veya bir ışık çubuğunun rengini diğer pencerelerin üstünde gösterir, klavye ekranı gerekmez. Başka bir program öndeyken tıklamalar içinden geçer. PadForge öndeyken sağ fare düğmesiyle sürükleyin ve köşesinden boyutlandırın.</value></data>
+  <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>Ekran kaplamasını etkinleştir</value></data>
+  <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Gösterilecek şeyi seç…</value></data>
+  <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge ekran kaplaması</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Henüz gösterilecek bir şey yok. Neyin gösterileceğini Gösterge panelinden seçin.</value></data>
+  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Ekran kaplamasını aç/kapat</value></data>
+  <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Ekran kaplamasını aç/kapat</value></data>
+  <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Ekran kaplaması</value></data>
+  <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>Kaplama hiçbir şey göstermez.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileName_Overlay" xml:space="preserve"><value>Kaplama, etkin profilin adını gösterir ve her profil değişimini izler.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileNumber_Overlay" xml:space="preserve"><value>Kaplama, etkin profilin profil listesindeki sırasını gösterir. Varsayılan profil 0'dır.</value></data>
+  <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>Kaplama etkin profilin kendi resmini, resmi yoksa adını gösterir. Her profil kendi resmini saklar.</value></data>
+  <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>Kaplama günün saatini gösterir.</value></data>
+  <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>Kaplama, etkin profilin devreye girmesinden bu yana geçen saat ve dakikayı gösterir. Bir oyunun programına bağlı profil oyun başlayınca devreye girer, yani sayaç o oturumu sayar. Varsayılan profilde sayaç altyapının başlangıcından itibaren işler.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Kaplama, seçtiğiniz bir resmi, oranlarını koruyarak penceresini dolduracak şekilde ölçeklenmiş olarak gösterir.</value></data>
+  <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>Kaplama, Kronometre makrosunun başlattığı, duraklattığı ve sıfırladığı kronometreyi gösterir. Bu, her klavye ekranının gösterdiği kronometrenin aynısıdır.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Kaplama, en düşük yuvadaki DualShock 4 veya DualSense'in ışık çubuğunun rengini gösterir. Bir ışık çubuğuna renk ulaşana kadar hiçbir şey göstermez.</value></data>
 </root>

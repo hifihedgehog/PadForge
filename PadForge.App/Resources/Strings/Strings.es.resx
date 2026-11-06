@@ -4526,11 +4526,11 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>La descarga del SDK del S.T.R.I.K.E. 7 no coincide con su SHA-256 conocido, así que no se conservó nada de ella.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>Visual C++ 2008 Runtime sigue sin estar instalado tras ejecutarse su instalador.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Mostrar pantalla del teclado</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Reproduce imágenes en cada pantalla de teclado del tipo elegido que alimenta esta ranura y después devuelve cada pantalla a su propio modo.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Reproduce imágenes en cada pantalla de teclado del tipo elegido que alimenta esta ranura y después devuelve cada pantalla a su propio modo. La superposición de pantalla las toma de cualquier ranura.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Mostrar imágenes de {0}: {1} × {2} ms, repeticiones {3}</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Las imágenes se ajustan a la pantalla: 160 por 43 píxeles en blanco y negro en una pantalla monocroma, 320 por 240 en la del G19 y 480 por 320 en Arx Control y el S.T.R.I.K.E. 7. Una décima de segundo es el tiempo mínimo por imagen.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Modo de pantalla del teclado</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Cambia a otro modo cada pantalla de teclado del tipo elegido que alimenta esta ranura y lo conserva como configuración de esa pantalla.</value></data>
+  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Cambia a otro modo cada pantalla de teclado del tipo elegido que alimenta esta ranura y lo conserva como configuración de esa pantalla. La superposición de pantalla lo toma de cualquier ranura.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} muestra {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>El modo se mantiene hasta que otra macro o el cuadro de diálogo de la pantalla lo cambie.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Cronómetro</value></data>
@@ -4835,4 +4835,22 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>La acción ilumina las mismas teclas en todos los teclados que ilumina este mando virtual, sobre los colores que les da su pestaña Iluminación. Los números indican el orden de selección. La cuenta atrás apaga las teclas una a una, empezando por la última elegida, así que elige de 1 a 0 para un tiempo de recarga en la fila de números. Un teclado o ratón solo se ilumina mientras está activada la opción Controlar la iluminación de este dispositivo.</value></data>
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>Otras</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, número {1}</value></data>
+  <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>Superposición de pantalla</value></data>
+  <data name="Dashboard_ScreenOverlayDescription" xml:space="preserve"><value>Muestra una imagen, un temporizador, la hora o el color de una barra de luz sobre las demás ventanas, sin necesidad de una pantalla de teclado. Mientras otro programa está al frente, los clics la atraviesan. Mientras PadForge está al frente, arrástrela con el botón derecho del ratón y cambie su tamaño desde una esquina.</value></data>
+  <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>Activar superposición de pantalla</value></data>
+  <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Elegir qué muestra…</value></data>
+  <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>Superposición de pantalla de PadForge</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Aún no hay nada que mostrar. Elija qué muestra en el Panel.</value></data>
+  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Alternar superposición de pantalla</value></data>
+  <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Alternar superposición de pantalla</value></data>
+  <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Superposición de pantalla</value></data>
+  <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>La superposición no muestra nada.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileName_Overlay" xml:space="preserve"><value>La superposición muestra el nombre del perfil activo y sigue cada cambio de perfil.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileNumber_Overlay" xml:space="preserve"><value>La superposición muestra la posición del perfil activo en la lista de perfiles. El perfil Predeterminado es el 0.</value></data>
+  <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>La superposición muestra la imagen propia del perfil activo, o su nombre si no tiene ninguna. Cada perfil guarda su propia imagen.</value></data>
+  <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>La superposición muestra la hora del día.</value></data>
+  <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>La superposición muestra las horas y los minutos desde que se activó el perfil actual. Un perfil vinculado al programa de un juego se activa cuando el juego se inicia, así que la cuenta corresponde a esa sesión. Con el perfil Predeterminado, la cuenta empieza al iniciarse el motor.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>La superposición muestra una imagen que usted elige, escalada para llenar su ventana manteniendo sus proporciones.</value></data>
+  <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>La superposición muestra el cronómetro, que la macro Cronómetro inicia, pausa y restablece. Es el mismo cronómetro que muestran todas las pantallas de teclado.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>La superposición muestra el color de la barra de luz del DualShock 4 o DualSense de la ranura más baja. Hasta que un color llegue a una barra de luz, no muestra nada.</value></data>
 </root>

@@ -22,18 +22,159 @@ namespace PadForge.Services
         /// <summary>Every UI tick while the engine runs, ungated by focus: a
         /// clock or a show on a keyboard screen keeps running while PadForge
         /// sits behind a game, the Dreamcast screens' rule. The service holds
-        /// itself to four passes a second. With the feature off, a service
-        /// that ran is reset, which closes every screen's session.</summary>
+        /// itself to four passes a second. With the Keyboard Screens switch and
+        /// the Screen Overlay both off, a service that ran is reset, which closes
+        /// every screen's session. The switch off with the overlay up closes the
+        /// sessions and leaves the overlay running.</summary>
         private void TickKeyboardScreens()
         {
-            if (!_mainVm.Settings.KeyboardScreensEnabled)
+            bool hardware = _mainVm.Settings.KeyboardScreensEnabled;
+            var overlay = _screenOverlay?.IsVisible == true ? _screenOverlay : null;
+            if (!hardware && overlay == null)
             {
-                if (_keyboardScreens?.Running == true) _keyboardScreens.Reset();
+                if (_keyboardScreens?.Active == true) _keyboardScreens.Reset();
                 else KeyboardScreenService.DropRequests();
                 return;
             }
-            try { KeyboardScreens.Tick(); }
+            if (!hardware && _keyboardScreens?.Running == true) _keyboardScreens.CloseHost();
+            if (overlay != null) TendScreenOverlay(overlay);
+            try { KeyboardScreens.Tick(hardware, overlay != null); }
             catch (Exception ex) { PadForge.Engine.SdlDiagLog.WriteLine("Keyboard screens: tick failed: " + ex.Message); }
+        }
+
+        // ─────────────────────────────────────────────
+        //  Screen Overlay lifecycle (#560)
+        // ─────────────────────────────────────────────
+
+        private Views.ScreenOverlay _screenOverlay;
+        private long _screenOverlayOnTopAt;
+
+        /// <summary>While PadForge is in front the overlay takes the mouse so it
+        /// can be moved and sized. While another program is, clicks pass through
+        /// it, and once a second it goes back above a game that made itself
+        /// topmost after it.</summary>
+        private void TendScreenOverlay(Views.ScreenOverlay overlay)
+        {
+            overlay.SetArranging(IsPadForgeForeground());
+            long now = Environment.TickCount64;
+            if (now - _screenOverlayOnTopAt < 1000) return;
+            _screenOverlayOnTopAt = now;
+            overlay.KeepOnTop();
+        }
+
+        private void ShowScreenOverlay()
+        {
+            _dispatcher.BeginInvoke(() =>
+            {
+                if (_screenOverlay == null)
+                {
+                    _screenOverlay = new Views.ScreenOverlay();
+                    _screenOverlay.PositionChanged += OnScreenOverlayPositionChanged;
+                }
+
+                var dash = _mainVm.Dashboard;
+                _screenOverlay.SetContentOpacity(dash.ScreenOverlayOpacity);
+                _screenOverlay.SetArranging(IsPadForgeForeground());
+                KeyboardScreens.OverlaySink = _screenOverlay.ShowContent;
+                PlaceScreenOverlay();
+                _screenOverlay.Show();
+                // Self-heal a saved place no monitor shows, e.g. a now-detached
+                // display.
+                Views.OverlayPlacement.EnsureOnScreen(_screenOverlay, dash.ScreenOverlayMonitor);
+                dash.IsScreenOverlayRunning = true;
+            });
+        }
+
+        private void HideScreenOverlay()
+        {
+            _dispatcher.BeginInvoke(() =>
+            {
+                if (_screenOverlay == null) return;
+                _screenOverlay.Hide();
+                _mainVm.Dashboard.IsScreenOverlayRunning = false;
+            });
+        }
+
+        /// <summary>The engine stopped: the window closes rather than hides, which
+        /// prevents a shutdown hang.</summary>
+        private void CloseScreenOverlay()
+        {
+            if (_screenOverlay == null) return;
+            _screenOverlay.PositionChanged -= OnScreenOverlayPositionChanged;
+            _screenOverlay.Close();
+            _screenOverlay = null;
+            if (_keyboardScreens != null) _keyboardScreens.OverlaySink = null;
+            _mainVm.Dashboard.IsScreenOverlayRunning = false;
+        }
+
+        /// <summary>Shows or hides the Screen Overlay (for the macro action).</summary>
+        internal void ToggleScreenOverlay()
+        {
+            _dispatcher.BeginInvoke(() =>
+            {
+                var dash = _mainVm.Dashboard;
+                dash.EnableScreenOverlay = !dash.EnableScreenOverlay;
+            });
+        }
+
+        private void PlaceScreenOverlay()
+        {
+            var overlay = _screenOverlay;
+            if (overlay == null) return;
+            var dash = _mainVm.Dashboard;
+            overlay.Width = dash.ScreenOverlayWidth;
+            overlay.Height = dash.ScreenOverlayHeight;
+            if (Views.OverlayPlacement.HasPlace(dash.ScreenOverlayLeft, dash.ScreenOverlayTop))
+            {
+                overlay.Left = dash.ScreenOverlayLeft;
+                overlay.Top = dash.ScreenOverlayTop;
+            }
+            else Views.OverlayPlacement.MoveToMonitor(overlay, dash.ScreenOverlayMonitor);
+        }
+
+        /// <summary>A profile switch brings the profile's own place, and the window
+        /// goes there, once all of the place's values have landed. The window's own
+        /// drag writes these values too, which places it where it already is.</summary>
+        private void ScreenOverlayPlaceChanged()
+        {
+            if (_screenOverlay == null) return;
+            _dispatcher.BeginInvoke(() =>
+            {
+                PlaceScreenOverlay();
+                if (_screenOverlay?.IsVisible == true)
+                    Views.OverlayPlacement.EnsureOnScreen(_screenOverlay, _mainVm.Dashboard.ScreenOverlayMonitor);
+            });
+        }
+
+        private void OnScreenOverlayPositionChanged()
+        {
+            if (_screenOverlay == null) return;
+            var dash = _mainVm.Dashboard;
+            dash.ScreenOverlayLeft = _screenOverlay.Left;
+            dash.ScreenOverlayTop = _screenOverlay.Top;
+            dash.ScreenOverlayWidth = _screenOverlay.Width;
+            dash.ScreenOverlayHeight = _screenOverlay.Height;
+            dash.ScreenOverlayMonitor = Views.OverlayPlacement.GetCurrentMonitor(_screenOverlay);
+        }
+
+        private void OnResetScreenOverlayPosition(object sender, EventArgs e)
+        {
+            _dispatcher.BeginInvoke(() =>
+            {
+                var dash = _mainVm.Dashboard;
+                if (_screenOverlay != null && _screenOverlay.IsVisible)
+                {
+                    // Recenter live, then capture the new DIPs into settings.
+                    Views.OverlayPlacement.MoveToMonitor(_screenOverlay, dash.ScreenOverlayMonitor);
+                    OnScreenOverlayPositionChanged();
+                }
+                else
+                {
+                    // No saved place: the next show centers on the monitor.
+                    dash.ScreenOverlayLeft = Views.OverlayPlacement.NoPlace;
+                    dash.ScreenOverlayTop = Views.OverlayPlacement.NoPlace;
+                }
+            });
         }
 
         /// <summary>The switch went off: the screens' sessions close, and a
@@ -42,8 +183,12 @@ namespace PadForge.Services
         internal void KeyboardScreensSwitched(bool on)
         {
             if (on) return;
-            _keyboardScreens?.Reset();
-            KeyboardScreenService.DropRequests();
+            if (_mainVm.Dashboard.EnableScreenOverlay) _keyboardScreens?.CloseHost();
+            else
+            {
+                _keyboardScreens?.Reset();
+                KeyboardScreenService.DropRequests();
+            }
             Task.Run(() =>
             {
                 try { G19UsbScreen.Restore(m => PadForge.Engine.SdlDiagLog.WriteLine(m)); }

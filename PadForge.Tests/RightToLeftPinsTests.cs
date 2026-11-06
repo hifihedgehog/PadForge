@@ -264,7 +264,7 @@ namespace PadForge.Tests
             });
 
             string views = Path.Combine(AppDirectory(), "Views");
-            foreach (string file in new[] { "TouchpadOverlay.xaml.cs", "MenuOverlayWindow.xaml.cs" })
+            foreach (string file in new[] { "TouchpadOverlay.xaml.cs", "MenuOverlayWindow.xaml.cs", "ScreenOverlay.xaml.cs" })
                 Assert.Contains("PadForge.Common.UiLanguage.KeepLeftToRight(this);", File.ReadAllText(Path.Combine(views, file)));
             Assert.Contains("PadForge.Common.UiLanguage.KeepLeftToRight(Window);",
                 File.ReadAllText(Path.Combine(views, "GunCalibrationScreen.cs")));

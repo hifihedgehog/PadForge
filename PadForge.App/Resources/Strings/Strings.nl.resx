@@ -4546,11 +4546,11 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>De download van de S.T.R.I.K.E. 7-SDK komt niet overeen met de bekende SHA-256, dus er is niets van bewaard.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>De Visual C++ 2008-runtime ontbreekt nog nadat het installatieprogramma is uitgevoerd.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Toetsenbordscherm tonen</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Speelt afbeeldingen af op elk toetsenbordscherm van het gekozen type dat dit slot voedt, en zet daarna elk scherm terug naar zijn eigen modus.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Speelt afbeeldingen af op elk toetsenbordscherm van het gekozen type dat dit slot voedt, en zet daarna elk scherm terug naar zijn eigen modus. De schermoverlay neemt ze van elk slot over.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Afbeeldingen tonen op {0}: {1} × {2} ms, aantal herhalingen {3}</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Afbeeldingen worden aangepast aan het scherm: 160 bij 43 zwart-witpixels op een monochroom scherm, 320 bij 240 op dat van de G19 en 480 bij 320 voor Arx Control en de S.T.R.I.K.E. 7. Een tiende seconde is de kortste tijd per afbeelding.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Modus van toetsenbordscherm</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Schakelt elk toetsenbordscherm van het gekozen type dat dit slot voedt over naar een andere modus en bewaart die als instelling van dat scherm.</value></data>
+  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Schakelt elk toetsenbordscherm van het gekozen type dat dit slot voedt over naar een andere modus en bewaart die als instelling van dat scherm. De schermoverlay neemt die van elk slot over.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} toont {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>De modus blijft staan tot een andere macro of het dialoogvenster van het scherm hem wijzigt.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Stopwatch</value></data>
@@ -4855,4 +4855,22 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>De actie verlicht dezelfde toetsen op elk toetsenbord dat deze virtuele controller verlicht, bovenop de kleuren die het tabblad Verlichting eraan geeft. De cijfers tonen de volgorde van kiezen. Aftellen zet de toetsen één voor één uit, de laatst gekozen toets eerst, dus kies 1 tot 0 voor een afkoeltimer op de cijferrij. Een toetsenbord of muis wordt alleen verlicht als Verlichting van dit apparaat regelen aan staat.</value></data>
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>Overig</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, nummer {1}</value></data>
+  <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>Schermoverlay</value></data>
+  <data name="Dashboard_ScreenOverlayDescription" xml:space="preserve"><value>Toont een afbeelding, een timer, de tijd of de kleur van een lightbar boven andere vensters, zonder dat een toetsenbordscherm nodig is. Zolang een ander programma vooraan staat, gaan klikken erdoorheen. Zolang PadForge vooraan staat, sleept u de overlay met de rechtermuisknop en wijzigt u de grootte vanaf de hoek.</value></data>
+  <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>Schermoverlay inschakelen</value></data>
+  <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Kiezen wat de overlay toont…</value></data>
+  <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge-schermoverlay</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Nog niets om te tonen. Kies op het Dashboard wat de overlay toont.</value></data>
+  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Schermoverlay in-/uitschakelen</value></data>
+  <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Schermoverlay in-/uitschakelen</value></data>
+  <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Schermoverlay</value></data>
+  <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>De overlay toont niets.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileName_Overlay" xml:space="preserve"><value>De overlay toont de naam van het actieve profiel en volgt elke profielwissel.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileNumber_Overlay" xml:space="preserve"><value>De overlay toont de plaats van het actieve profiel in de profiellijst. Het profiel Standaard is 0.</value></data>
+  <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>De overlay toont de eigen afbeelding van het actieve profiel, of de naam als het er geen heeft. Elk profiel bewaart zijn eigen afbeelding.</value></data>
+  <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>De overlay toont de tijd van de dag.</value></data>
+  <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>De overlay toont de uren en minuten sinds het actieve profiel is ingeschakeld. Een profiel dat aan het programma van een spel is gekoppeld, wordt ingeschakeld wanneer het spel start, dus de teller geldt voor die sessie. Onder het profiel Standaard telt de teller vanaf de start van de engine.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>De overlay toont een gekozen afbeelding, geschaald om het venster te vullen met behoud van de verhoudingen.</value></data>
+  <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>De overlay toont de stopwatch, die de macro Stopwatch start, pauzeert en reset. Het is dezelfde stopwatch die elk toetsenbordscherm toont.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>De overlay toont de kleur van de lightbar van de DualShock 4 of DualSense in het laagste slot. Zolang er geen kleur bij een lightbar is aangekomen, toont de overlay niets.</value></data>
 </root>

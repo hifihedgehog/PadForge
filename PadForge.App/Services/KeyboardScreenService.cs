@@ -110,6 +110,17 @@ namespace PadForge.Services
         }
     }
 
+    /// <summary>What the Screen Overlay shows (#560): text, a picture, a color,
+    /// or none of them. The overlay draws it in WPF to the size of its window,
+    /// so text stays sharp and a picture keeps its proportions and its
+    /// transparency at any size.</summary>
+    internal sealed record ScreenOverlayContent(string Text = null, BitmapSource Picture = null, Color? Fill = null)
+    {
+        public static readonly ScreenOverlayContent Nothing = new();
+
+        public bool IsEmpty => Text == null && Picture == null && Fill == null;
+    }
+
     /// <summary>
     /// The keyboard screens (issue #519): a mode per screen, kept by the
     /// screen's row, the macros' shows, stopwatch and pan, and the engine
@@ -162,6 +173,11 @@ namespace PadForge.Services
         /// when to try it again.</summary>
         private readonly Dictionary<string, (BitmapSource Picture, long RetryAt)> _pictures = new(StringComparer.OrdinalIgnoreCase);
         private readonly Dictionary<string, Shown> _shown = new(StringComparer.Ordinal);
+        private FrameShow<BitmapSource> _overlayShow;
+        private bool _overlayOn;
+
+        /// <summary>Takes what the Screen Overlay shows each tick (#560).</summary>
+        internal Action<ScreenOverlayContent> OverlaySink { get; set; }
         private long _nextTick;
         private bool _playStarted;
         private string _playProfile;
@@ -191,7 +207,7 @@ namespace PadForge.Services
 
         private static void Enqueue(Request request)
         {
-            if (!KeyboardScreensRuntime.Enabled) return;
+            if (!KeyboardScreensRuntime.Enabled && !KeyboardScreensRuntime.OverlayEnabled) return;
             if (_requests.Count >= MaxQueuedRequests) _requests.TryDequeue(out _);
             _requests.Enqueue(request);
         }
@@ -281,17 +297,28 @@ namespace PadForge.Services
 
         /// <summary>One pass while the engine runs and the feature is on.
         /// Four a second, every tick while a show plays, and at once after a
-        /// change.</summary>
-        public void Tick()
+        /// change. <paramref name="hardware"/> is the Keyboard Screens switch:
+        /// only that opens devices and vendor libraries (<see cref="EnsureHost"/>).
+        /// <paramref name="overlay"/> is the Screen Overlay's window, up, which
+        /// needs neither.</summary>
+        public void Tick(bool hardware, bool overlay)
         {
             long now = Environment.TickCount64;
             if (now < _nextTick) return;
 
-            EnsureHost();
-            var screens = _host.Screens;
+            _overlayOn = overlay;
+            if (!overlay) _overlayShow = null;
+            if (hardware) EnsureHost();
+            var screens = _host?.Screens ?? Array.Empty<KeyboardScreenInfo>();
             while (_requests.TryDequeue(out var request)) Apply(request, screens, now);
             TrackPlayTime(now);
+            if (hardware) TickScreens(screens, now);
+            if (overlay) TickOverlay(now);
+            _nextTick = now + (_shows.Count > 0 || _overlayShow != null ? 0 : TickMs);
+        }
 
+        private void TickScreens(KeyboardScreenInfo[] screens, long now)
+        {
             while (_host.TryTakeDrag(out int dx, out int dy))
             {
                 var strike7 = Array.Find(screens, s => s.Kind == KeyboardScreenKind.Strike7);
@@ -313,7 +340,77 @@ namespace PadForge.Services
             foreach (string gone in _shows.Keys.Where(id => !present.Contains(id)).ToList()) _shows.Remove(gone);
             foreach (string gone in _composed.Keys.Where(id => !present.Contains(id)).ToList()) _composed.Remove(gone);
             foreach (string gone in _shown.Keys.Where(id => !present.Contains(id)).ToList()) _shown.Remove(gone);
-            _nextTick = now + (_shows.Count > 0 ? 0 : TickMs);
+        }
+
+        private void TickOverlay(long now)
+        {
+            var frame = _overlayShow?.Frame(now);
+            if (frame == null) _overlayShow = null;
+            OverlaySink?.Invoke(frame != null
+                ? new ScreenOverlayContent(Picture: frame)
+                : OverlayContent(Get(KeyboardScreenInfo.OverlayRow), now));
+        }
+
+        /// <summary>The Screen Overlay's mode, as <see cref="Compose"/> gives a
+        /// keyboard screen its picture.</summary>
+        internal ScreenOverlayContent OverlayContent(KeyboardScreenData data, long now)
+        {
+            switch (data?.Mode ?? KeyboardScreenData.DefaultMode)
+            {
+                case KeyboardScreenMode.ProfileName:
+                    return new(DreamcastScreenService.ActiveProfileName());
+                case KeyboardScreenMode.ProfileNumber:
+                    return new(DreamcastScreenService.ActiveProfileNumber().ToString(CultureInfo.InvariantCulture));
+                case KeyboardScreenMode.ProfilePicture:
+                {
+                    var picture = Picture(ActiveProfilePicture(), now);
+                    return picture != null ? new(Picture: picture) : new(DreamcastScreenService.ActiveProfileName());
+                }
+                case KeyboardScreenMode.Clock:
+                    return new(DateTime.Now.ToString("HH:mm", CultureInfo.InvariantCulture));
+                case KeyboardScreenMode.PlayTime:
+                    return new(DreamcastScreenService.FormatPlayTime(
+                        TimeSpan.FromMilliseconds(Math.Max(0, now - (_playStarted ? _playStart : now)))));
+                case KeyboardScreenMode.Picture:
+                {
+                    var picture = Picture(data?.Picture, now);
+                    return picture != null ? new(Picture: picture) : ScreenOverlayContent.Nothing;
+                }
+                case KeyboardScreenMode.Stopwatch:
+                    return new(FormatStopwatch(StopwatchTime(now)));
+                case KeyboardScreenMode.Lightbar:
+                    return LightbarContent(IsOnItsSlot);
+                default:
+                    return ScreenOverlayContent.Nothing;
+            }
+        }
+
+        /// <summary>The overlay has no row and feeds no slot, so it follows the
+        /// lowest slot of all, as a keyboard screen with no slots does.</summary>
+        internal static ScreenOverlayContent LightbarContent(Func<Guid, int, bool> current)
+            => LightbarColors.TryGetLowest(current, null, out var color)
+                ? new(Fill: Color.FromRgb(color.R, color.G, color.B))
+                : ScreenOverlayContent.Nothing;
+
+        /// <summary>What the Screen Overlay's dialog previews for a mode and a
+        /// picture, from the choices not saved yet.</summary>
+        internal ScreenOverlayContent OverlayPreview(KeyboardScreenData data, string profilePicture, string profileName)
+        {
+            switch (data?.Mode)
+            {
+                case KeyboardScreenMode.ProfilePicture:
+                {
+                    var picture = KeyboardScreenRenderer.LoadPicture(profilePicture);
+                    return picture != null ? new(Picture: picture) : new(profileName);
+                }
+                case KeyboardScreenMode.Picture:
+                {
+                    var picture = KeyboardScreenRenderer.LoadPicture(data.Picture);
+                    return picture != null ? new(Picture: picture) : ScreenOverlayContent.Nothing;
+                }
+                default:
+                    return OverlayContent(data, Environment.TickCount64);
+            }
         }
 
         /// <summary>The library the S.T.R.I.K.E. 7 engine loads: the user's
@@ -366,26 +463,52 @@ namespace PadForge.Services
         /// keeps its time.</summary>
         public void Reset()
         {
+            CloseHost();
+            _overlayOn = false;
+            _overlayShow = null;
+            _pictures.Clear();
+            _playStarted = false;
+            DropRequests();
+            LightbarColors.Clear();
+        }
+
+        /// <summary>The Keyboard Screens switch went off while the Screen Overlay
+        /// stays on: the screens' sessions close, and the overlay's picture, its
+        /// play time and its queued macros carry on.</summary>
+        internal void CloseHost()
+        {
             var host = _host;
             _host = null;
             host?.Dispose();
             _shows.Clear();
             _shown.Clear();
             _composed.Clear();
-            _pictures.Clear();
-            _playStarted = false;
-            DropRequests();
             KeyboardScreensRuntime.Screens = Array.Empty<KeyboardScreenInfo>();
             KeyboardScreenKeys.ClearAll();
-            LightbarColors.Clear();
         }
 
         internal bool Running => _host != null;
+
+        /// <summary>Anything for <see cref="Reset"/> to end: the screens' host, or
+        /// the Screen Overlay's show, pictures and play time.</summary>
+        internal bool Active => _host != null || _overlayOn;
 
         private void Apply(Request request, KeyboardScreenInfo[] screens, long now)
         {
             switch (request)
             {
+                case ShowRequest { Kind: KeyboardScreenKind.Overlay } show:
+                {
+                    // The overlay has no row to feed a slot, so any slot's macro
+                    // reaches it.
+                    var frames = OverlayFrames(show.Frames);
+                    if (_overlayOn && frames.Count > 0)
+                        _overlayShow = new FrameShow<BitmapSource>(frames, show.FrameMs, show.Repeat, now);
+                    break;
+                }
+                case ModeRequest { Kind: KeyboardScreenKind.Overlay } mode when Enum.IsDefined(typeof(KeyboardScreenMode), mode.Mode):
+                    Update(KeyboardScreenInfo.OverlayRow, d => d.Mode = mode.Mode);
+                    break;
                 case ShowRequest show:
                 {
                     var frames = DecodeFrames(show.Kind, show.Frames);
@@ -747,6 +870,7 @@ namespace PadForge.Services
                 KeyboardScreenKind.Monochrome => s.KeyboardScreens_Kind_Monochrome,
                 KeyboardScreenKind.Color => s.KeyboardScreens_Kind_Color,
                 KeyboardScreenKind.Arx => s.KeyboardScreens_Kind_Arx,
+                KeyboardScreenKind.Overlay => s.KeyboardScreens_Kind_Overlay,
                 _ => s.KeyboardScreens_Kind_Strike7,
             };
         }
@@ -814,6 +938,35 @@ namespace PadForge.Services
             return list;
         }
 
+        /// <summary>Up to eight pictures from a Show Keyboard Screen action for the
+        /// Screen Overlay, each as it was imported, with its own proportions and
+        /// transparency.</summary>
+        internal static List<BitmapSource> OverlayFrames(string frames)
+        {
+            var list = new List<BitmapSource>();
+            if (string.IsNullOrEmpty(frames)) return list;
+            foreach (var part in frames.Split(','))
+            {
+                if (list.Count == MaxFrames) break;
+                var picture = FramePicture(KeyboardScreenKind.Overlay, part);
+                if (picture != null) list.Add(picture);
+            }
+            return list;
+        }
+
+        /// <summary>A Show Keyboard Screen action's pictures as the macro editor
+        /// lists them, drawn the way the kind's screen draws them.</summary>
+        internal static List<ImageSource> FrameImages(KeyboardScreenKind kind, string frames)
+        {
+            var images = new List<ImageSource>();
+            if (kind == KeyboardScreenKind.Overlay)
+                images.AddRange(OverlayFrames(frames));
+            else
+                foreach (var frame in DecodeFrames(kind, frames))
+                    images.Add(KeyboardScreenRenderer.ToBitmap(frame, kind));
+            return images;
+        }
+
         /// <summary>One entry of a Show Keyboard Screen action's pictures,
         /// decoded no larger than the kind's screen, or null when it holds no
         /// picture. <see cref="DecodeFrames"/> skips such an entry.</summary>
@@ -823,25 +976,39 @@ namespace PadForge.Services
             try { png = Convert.FromBase64String((part ?? string.Empty).Trim()); }
             catch (FormatException) { return null; }
             var (width, height) = KeyboardScreenFormats.SizeOf(kind);
-            return BoundedBitmap.FromBytes(png, width, height);
+            return BoundedBitmap.FromBytes(png, width, height, scaleUp: kind != KeyboardScreenKind.Overlay);
         }
 
         /// <summary>A picture file as one Show Keyboard Screen frame: fitted to
         /// the kind's size, cut to one bit on the monochrome screen, and
-        /// encoded as PNG in base64. Null when the file holds no picture WPF
-        /// decodes.</summary>
+        /// encoded as PNG in base64, or for the Screen Overlay kept at its own
+        /// proportions up to <see cref="KeyboardScreenFormats.OverlayFrameSide"/>.
+        /// Null when the file holds no picture WPF decodes.</summary>
         internal static string ImportFrame(string path, KeyboardScreenKind kind)
         {
-            var picture = BoundedBitmap.FromBytes(MenuIconResolver.ReadCapped(path),
-                KeyboardScreenRenderer.MaxPictureSide, KeyboardScreenRenderer.MaxPictureSide);
-            if (picture == null) return null;
-            return EncodeFrame(KeyboardScreenRenderer.RenderFitted(picture, kind), kind);
+            byte[] file = MenuIconResolver.ReadCapped(path);
+            if (kind == KeyboardScreenKind.Overlay)
+            {
+                // The overlay scales a frame itself, so it keeps the picture's
+                // proportions and transparency, with no field around it, and a
+                // small picture stays small in the settings file.
+                var (side, _) = KeyboardScreenFormats.SizeOf(kind);
+                var own = BoundedBitmap.FromBytes(file, side, side, scaleUp: false);
+                return own == null ? null : EncodePng(new FormatConvertedBitmap(own, PixelFormats.Bgra32, null, 0));
+            }
+            var picture = BoundedBitmap.FromBytes(file, KeyboardScreenRenderer.MaxPictureSide,
+                KeyboardScreenRenderer.MaxPictureSide, scaleUp: false);
+            return picture == null ? null : EncodeFrame(KeyboardScreenRenderer.RenderFitted(picture, kind), kind);
         }
 
         internal static string EncodeFrame(byte[] bgra, KeyboardScreenKind kind)
         {
             var (width, height) = KeyboardScreenFormats.SizeOf(kind);
-            var bitmap = BitmapSource.Create(width, height, 96, 96, PixelFormats.Bgra32, null, bgra, width * 4);
+            return EncodePng(BitmapSource.Create(width, height, 96, 96, PixelFormats.Bgra32, null, bgra, width * 4));
+        }
+
+        private static string EncodePng(BitmapSource bitmap)
+        {
             var encoder = new PngBitmapEncoder();
             encoder.Frames.Add(BitmapFrame.Create(bitmap));
             using var stream = new MemoryStream();
@@ -888,14 +1055,23 @@ namespace PadForge.Services
     /// <summary>A Show Keyboard Screen action playing on one screen (#519):
     /// each frame for its frame time, the frames repeated the given number
     /// of times.</summary>
-    internal sealed class KeyboardScreenShow
+    internal sealed class KeyboardScreenShow : FrameShow<byte[]>
     {
-        private readonly List<byte[]> _frames;
+        public KeyboardScreenShow(List<byte[]> frames, int frameMs, int repeat, long now)
+            : base(frames, frameMs, repeat, now)
+        {
+        }
+    }
+
+    /// <summary>The timing of a show, whatever its frames are.</summary>
+    internal class FrameShow<TFrame> where TFrame : class
+    {
+        private readonly List<TFrame> _frames;
         private readonly int _frameMs;
         private readonly int _total;
         private readonly long _start;
 
-        public KeyboardScreenShow(List<byte[]> frames, int frameMs, int repeat, long now)
+        public FrameShow(List<TFrame> frames, int frameMs, int repeat, long now)
         {
             _frames = frames ?? throw new ArgumentNullException(nameof(frames));
             if (frames.Count == 0) throw new ArgumentException("A show needs a picture.", nameof(frames));
@@ -906,7 +1082,7 @@ namespace PadForge.Services
 
         /// <summary>The frame to show now, or null once every frame has had
         /// its time.</summary>
-        public byte[] Frame(long now)
+        public TFrame Frame(long now)
         {
             long index = Math.Max(0, now - _start) / _frameMs;
             return index >= _total ? null : _frames[(int)(index % _frames.Count)];

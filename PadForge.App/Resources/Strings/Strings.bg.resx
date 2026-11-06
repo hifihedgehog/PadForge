@@ -4575,11 +4575,11 @@
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>Изтегленият SDK на S.T.R.I.K.E. 7 не съвпада с известния си SHA-256, затова нищо от него не беше запазено.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>Visual C++ 2008 runtime все още липсва след изпълнението на инсталатора му.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Показване на екран на клавиатурата</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Показва картинки на всеки екран на клавиатурата от избрания вид, който подава към този слот, след което връща всеки екран в собствения му режим.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Показва картинки на всеки екран на клавиатурата от избрания вид, който подава към този слот, след което връща всеки екран в собствения му режим. Наслагването на екрана ги взема от всеки слот.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Показване на картинки на {0}: {1} × {2} мс, брой повторения {3}</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Картинките се напасват към екрана: 160 на 43 черно-бели пиксела на монохромен екран, 320 на 240 на екрана на G19 и 480 на 320 за Arx Control и S.T.R.I.K.E. 7. Една десета от секундата е най-краткото време на кадър.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Режим на екрана на клавиатурата</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Превключва на друг режим всеки екран на клавиатурата от избрания вид, който подава към този слот, и го запазва като настройка на този екран.</value></data>
+  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Превключва на друг режим всеки екран на клавиатурата от избрания вид, който подава към този слот, и го запазва като настройка на този екран. Наслагването на екрана го взема от всеки слот.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} показва {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Режимът остава, докато друг макрос или диалогът на екрана не го промени.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Хронометър</value></data>
@@ -4884,4 +4884,22 @@
   <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>Действието осветява едни и същи клавиши на всяка клавиатура, която този виртуален контролер осветява, върху цветовете от раздела му „Осветление“. Числата показват реда на избиране. Обратното броене изключва клавишите един по един, като започва от последния избран, затова избери от 1 до 0 за таймер на цифровия ред. Клавиатура или мишка светва само докато е включено „Управление на осветлението на това устройство“.</value></data>
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>Други</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, номер {1}</value></data>
+  <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>Наслагване на екрана</value></data>
+  <data name="Dashboard_ScreenOverlayDescription" xml:space="preserve"><value>Показва картинка, таймер, часа или цвета на светлинна лента над другите прозорци, без да е нужен екран на клавиатурата. Докато отпред е друга програма, щракванията минават през него. Докато PadForge е отпред, го плъзгайте с десния бутон на мишката и променяйте размера му от ъгъла.</value></data>
+  <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>Включи наслагването на екрана</value></data>
+  <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Избор на показваното…</value></data>
+  <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>Наслагване на екрана на PadForge</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Още няма какво да се покаже. Изберете какво да показва от Таблото.</value></data>
+  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Превключване на наслагването на екрана</value></data>
+  <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Превключване на наслагването на екрана</value></data>
+  <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Наслагване на екрана</value></data>
+  <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>Наслагването не показва нищо.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileName_Overlay" xml:space="preserve"><value>Наслагването показва името на активния профил и се обновява при всяка смяна на профила.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileNumber_Overlay" xml:space="preserve"><value>Наслагването показва мястото на активния профил в списъка с профили. Профилът „По подразбиране“ е 0.</value></data>
+  <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>Наслагването показва собствената картинка на активния профил или името му, ако няма картинка. Всеки профил пази своя картинка.</value></data>
+  <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>Наслагването показва часа от денонощието.</value></data>
+  <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>Наслагването показва часовете и минутите от включването на активния профил. Профил, свързан с програмата на дадена игра, се включва при стартиране на играта, така че броят е за тази сесия. При профила „По подразбиране“ броенето започва от стартирането на PadForge.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Наслагването показва избрана от вас картинка, мащабирана да запълни прозореца му със запазени пропорции.</value></data>
+  <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>Наслагването показва хронометъра, който макросът „Хронометър“ стартира, паузира и нулира. Това е същият хронометър, който показват всички екрани на клавиатури.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Наслагването показва цвета на светлинната лента на DualShock 4 или DualSense в най-ниския слот. Докато цвят не стигне до светлинната лента, не показва нищо.</value></data>
 </root>

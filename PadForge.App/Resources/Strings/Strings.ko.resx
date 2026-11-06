@@ -4526,11 +4526,11 @@
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>S.T.R.I.K.E. 7 SDK 다운로드가 알려진 SHA-256과 일치하지 않아 아무것도 보관하지 않았습니다.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>설치 프로그램을 실행한 뒤에도 Visual C++ 2008 런타임이 여전히 없습니다.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>키보드 화면 표시</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>이 슬롯에 입력되는 선택한 종류의 각 키보드 화면에 그림을 재생한 뒤 각 화면을 자신의 모드로 되돌립니다.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>이 슬롯에 입력되는 선택한 종류의 각 키보드 화면에 그림을 재생한 뒤 각 화면을 자신의 모드로 되돌립니다. 화면 오버레이는 모든 슬롯에서 그림을 가져옵니다.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>{0} 그림 {1}장을 각 {2}ms씩 {3}회 표시</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>그림은 화면에 맞게 조정됩니다. 흑백 화면은 흑백 160×43픽셀, G19는 320×240, Arx Control과 S.T.R.I.K.E. 7은 480×320입니다. 프레임 시간은 최소 0.1초입니다.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>키보드 화면 모드</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>이 슬롯에 입력되는 선택한 종류의 각 키보드 화면을 다른 모드로 전환하고 그 화면의 설정으로 유지합니다.</value></data>
+  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>이 슬롯에 입력되는 선택한 종류의 각 키보드 화면을 다른 모드로 전환하고 그 화면의 설정으로 유지합니다. 화면 오버레이는 모든 슬롯에서 전환을 받아들입니다.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0}에 {1} 표시</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>다른 매크로나 화면 대화 상자에서 바꾸기 전까지 이 모드가 유지됩니다.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>스톱워치</value></data>
@@ -4835,4 +4835,22 @@
   <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>이 동작은 이 가상 컨트롤러가 조명을 제어하는 모든 키보드에서 같은 키를 조명 탭에서 지정한 색상 위에 밝힙니다. 숫자는 선택한 순서를 나타냅니다. 카운트다운은 마지막에 선택한 키부터 하나씩 끄므로, 숫자 행에서 쿨다운을 만들려면 1부터 0까지 순서대로 선택하세요. 키보드나 마우스는 이 장치의 조명 제어가 켜져 있을 때만 밝혀집니다.</value></data>
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>기타</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, {1}번째</value></data>
+  <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>화면 오버레이</value></data>
+  <data name="Dashboard_ScreenOverlayDescription" xml:space="preserve"><value>키보드 화면 없이도 그림, 타이머, 시각 또는 라이트바 색을 다른 창 위에 표시합니다. 다른 프로그램이 앞에 있는 동안에는 클릭이 오버레이를 통과합니다. PadForge가 앞에 있는 동안에는 마우스 오른쪽 버튼으로 끌어서 이동하고 모서리를 끌어서 크기를 조절합니다.</value></data>
+  <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>화면 오버레이 활성화</value></data>
+  <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>표시할 내용 선택…</value></data>
+  <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge 화면 오버레이</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>아직 표시할 내용이 없습니다. 대시보드에서 표시할 내용을 선택하세요.</value></data>
+  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>화면 오버레이 전환</value></data>
+  <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>화면 오버레이 전환</value></data>
+  <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>화면 오버레이</value></data>
+  <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>오버레이에 아무것도 표시되지 않습니다.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileName_Overlay" xml:space="preserve"><value>오버레이에 활성 프로필의 이름이 표시되며 프로필을 바꿀 때마다 따라 바뀝니다.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileNumber_Overlay" xml:space="preserve"><value>오버레이에 활성 프로필이 프로필 목록에서 몇 번째인지 표시됩니다. 기본값 프로필은 0입니다.</value></data>
+  <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>오버레이에 활성 프로필 자체의 그림이 표시되며, 그림이 없으면 이름이 표시됩니다. 프로필마다 자기 그림을 따로 보관합니다.</value></data>
+  <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>오버레이에 현재 시각이 표시됩니다.</value></data>
+  <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>오버레이에 활성 프로필로 전환된 뒤 지난 시간과 분이 표시됩니다. 게임 프로그램에 연결된 프로필은 게임이 시작될 때 전환되므로 그 플레이 세션의 시간이 됩니다. 기본값 프로필에서는 엔진이 시작된 때부터 셉니다.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>오버레이에 선택한 그림이 비율을 유지한 채 창을 가득 채우도록 크기가 조정되어 표시됩니다.</value></data>
+  <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>오버레이에 스톱워치가 표시되며, 스톱워치 매크로로 시작, 일시 정지, 초기화할 수 있습니다. 모든 키보드 화면에 표시되는 것과 같은 스톱워치입니다.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>오버레이에 가장 낮은 슬롯의 DualShock 4 또는 DualSense 라이트바 색이 표시됩니다. 라이트바에 색이 전달되기 전에는 아무것도 표시되지 않습니다.</value></data>
 </root>

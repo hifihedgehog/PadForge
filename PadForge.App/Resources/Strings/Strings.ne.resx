@@ -4575,11 +4575,11 @@ PadForge ले तिनलाई अहिले अनइन्स्टल �
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>S.T.R.I.K.E. 7 SDK डाउनलोड यसको ज्ञात SHA-256 सँग मेल खाँदैन, त्यसैले त्यसबाट केही पनि राखिएन।</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>स्थापनाकर्ता चलेपछि पनि Visual C++ 2008 रनटाइम अझै छैन।</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>किबोर्ड स्क्रिन देखाउनुहोस्</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>यस स्लटलाई इनपुट दिने, छानिएको प्रकारका प्रत्येक किबोर्ड स्क्रिनमा तस्बिरहरू चलाउँछ, त्यसपछि प्रत्येक स्क्रिनलाई यसको आफ्नै मोडमा फर्काउँछ।</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>यस स्लटलाई इनपुट दिने, छानिएको प्रकारका प्रत्येक किबोर्ड स्क्रिनमा तस्बिरहरू चलाउँछ, त्यसपछि प्रत्येक स्क्रिनलाई यसको आफ्नै मोडमा फर्काउँछ। स्क्रिन ओभरलेले तिनलाई जुनसुकै स्लटबाट लिन्छ।</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>{0} तस्बिरहरू देखाउनुहोस्: {1} × {2} ms, दोहोराइ संख्या {3}</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>तस्बिरहरू स्क्रिनअनुसार मिलाइन्छन्: मोनोक्रोम स्क्रिनमा 160 × 43 कालो-सेतो पिक्सेल, G19 मा 320 × 240, र Arx Control तथा S.T.R.I.K.E. 7 मा 480 × 320। सेकेन्डको दशौँ भाग सबैभन्दा छोटो फ्रेम समय हो।</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>किबोर्ड स्क्रिन मोड</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>यस स्लटलाई इनपुट दिने, छानिएको प्रकारका प्रत्येक किबोर्ड स्क्रिनलाई अर्को मोडमा बदल्छ, र त्यसलाई त्यो स्क्रिनको सेटिङका रूपमा राख्छ।</value></data>
+  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>यस स्लटलाई इनपुट दिने, छानिएको प्रकारका प्रत्येक किबोर्ड स्क्रिनलाई अर्को मोडमा बदल्छ, र त्यसलाई त्यो स्क्रिनको सेटिङका रूपमा राख्छ। स्क्रिन ओभरलेले यसलाई जुनसुकै स्लटबाट लिन्छ।</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} ले {1} देखाउँछ</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>अर्को म्याक्रो वा स्क्रिनको संवादले नबदलेसम्म मोड यस्तै रहन्छ।</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>स्टपवाच</value></data>
@@ -4884,4 +4884,22 @@ PadForge ले तिनलाई अहिले अनइन्स्टल �
   <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>यो कार्यले यो भर्चुअल कन्ट्रोलरले बाल्ने हरेक किबोर्डमा उही कुञ्जीहरू, तिनको लाइटिङ ट्याबले दिएका रङमाथि बाल्छ। अङ्कहरूले छानिएको क्रम देखाउँछन्। उल्टो गन्तीले कुञ्जीहरू एक-एक गरी निभाउँछ, अन्तिममा छानिएको पहिले, त्यसैले अङ्क पङ्क्तिमा कुलडाउनका लागि 1 देखि 0 सम्म छान्नुहोस्। किबोर्ड वा माउस त्यसको यो यन्त्रको लाइटिङ नियन्त्रण गर्नुहोस् सक्रिय हुँदा मात्र बल्छ।</value></data>
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>अन्य</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, क्रम {1}</value></data>
+  <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>स्क्रिन ओभरले</value></data>
+  <data name="Dashboard_ScreenOverlayDescription" xml:space="preserve"><value>किबोर्ड स्क्रिन नचाहिकन अन्य झ्यालहरूमाथि चित्र, टाइमर, समय वा लाइटबारको रङ देखाउँछ। अर्को प्रोग्राम अगाडि हुँदा क्लिकहरू यसबाट आरपार जान्छन्। PadForge अगाडि हुँदा यसलाई माउसको दायाँ बटनले तान्नुहोस् र यसको कुनाबाट आकार मिलाउनुहोस्।</value></data>
+  <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>स्क्रिन ओभरले सक्षम गर्नुहोस्</value></data>
+  <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>यसले के देखाउने छान्नुहोस्…</value></data>
+  <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge स्क्रिन ओभरले</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>अहिले देखाउन केही छैन। यसले के देखाउने भन्ने ड्यासबोर्डमा छान्नुहोस्।</value></data>
+  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>स्क्रिन ओभरले टगल गर्नुहोस्</value></data>
+  <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>स्क्रिन ओभरले टगल गर्नुहोस्</value></data>
+  <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>स्क्रिन ओभरले</value></data>
+  <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>ओभरलेले केही देखाउँदैन।</value></data>
+  <data name="KeyboardScreen_Hint_ProfileName_Overlay" xml:space="preserve"><value>ओभरलेले सक्रिय प्रोफाइलको नाम देखाउँछ र प्रत्येक प्रोफाइल परिवर्तनलाई पछ्याउँछ।</value></data>
+  <data name="KeyboardScreen_Hint_ProfileNumber_Overlay" xml:space="preserve"><value>ओभरलेले प्रोफाइल सूचीमा सक्रिय प्रोफाइलको स्थान देखाउँछ। पूर्वनिर्धारित प्रोफाइल 0 हो।</value></data>
+  <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>ओभरलेले सक्रिय प्रोफाइलको आफ्नै चित्र देखाउँछ, चित्र नभए यसको नाम। प्रत्येक प्रोफाइलले आफ्नै चित्र राख्छ।</value></data>
+  <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>ओभरलेले दिनको समय देखाउँछ।</value></data>
+  <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>ओभरलेले सक्रिय प्रोफाइल लागू भएदेखिका घण्टा र मिनेट देखाउँछ। कुनै खेलको प्रोग्रामसँग जोडिएको प्रोफाइल खेल सुरु हुँदा लागू हुन्छ, त्यसैले गणना त्यही सत्रको हुन्छ। पूर्वनिर्धारित प्रोफाइलमा यो इन्जिन सुरु भएदेखि गनिन्छ।</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>ओभरलेले तपाईंले छानेको चित्र अनुपात कायम राख्दै आफ्नो झ्याल भरिने गरी मिलाएर देखाउँछ।</value></data>
+  <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>ओभरलेले स्टपवाच देखाउँछ, जसलाई स्टपवाच म्याक्रोले सुरु गर्छ, रोक्छ र रिसेट गर्छ। हरेक किबोर्ड स्क्रिनले देखाउने स्टपवाच पनि यही हो।</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>ओभरलेले सबैभन्दा सानो नम्बरको स्लटमा रहेको DualShock 4 वा DualSense को लाइटबारको रङ देखाउँछ। लाइटबारमा कुनै रङ नपुगेसम्म यसले केही देखाउँदैन।</value></data>
 </root>

@@ -4575,11 +4575,11 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>Bản tải xuống SDK S.T.R.I.K.E. 7 không khớp với SHA-256 đã biết, nên không giữ lại gì từ nó.</value></data>
   <data name="Status_Vc2008RuntimeMissing" xml:space="preserve"><value>Runtime Visual C++ 2008 vẫn còn thiếu sau khi trình cài đặt của nó đã chạy.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Hiện màn hình bàn phím</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Phát các hình trên từng màn hình bàn phím thuộc loại đã chọn đang cấp cho khe này, rồi đưa mỗi màn hình về chế độ riêng của nó.</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Tooltip" xml:space="preserve"><value>Phát các hình trên từng màn hình bàn phím thuộc loại đã chọn đang cấp cho khe này, rồi đưa mỗi màn hình về chế độ riêng của nó. Lớp phủ màn hình lấy các hình đó từ bất kỳ khe nào.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Hiện hình {0}: {1} × {2} ms, số lần lặp {3}</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hint" xml:space="preserve"><value>Hình được vừa khít với màn hình: 160 × 43 pixel đen trắng trên màn hình đơn sắc, 320 × 240 trên màn hình của G19, và 480 × 320 cho Arx Control và S.T.R.I.K.E. 7. Thời gian khung hình ngắn nhất là một phần mười giây.</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Chế độ màn hình bàn phím</value></data>
-  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Chuyển từng màn hình bàn phím thuộc loại đã chọn đang cấp cho khe này sang chế độ khác, và giữ nó làm thiết lập của màn hình đó.</value></data>
+  <data name="MacroAction_KeyboardScreenMode_Tooltip" xml:space="preserve"><value>Chuyển từng màn hình bàn phím thuộc loại đã chọn đang cấp cho khe này sang chế độ khác, và giữ nó làm thiết lập của màn hình đó. Lớp phủ màn hình lấy chế độ đó từ bất kỳ khe nào.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} hiển thị {1}</value></data>
   <data name="MacroAction_KeyboardScreenMode_Hint" xml:space="preserve"><value>Chế độ được giữ cho đến khi một macro khác hoặc hộp thoại của màn hình thay đổi nó.</value></data>
   <data name="MacroAction_Type_Stopwatch" xml:space="preserve"><value>Đồng hồ bấm giờ</value></data>
@@ -4884,4 +4884,22 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>Hành động thắp sáng cùng các phím trên mọi bàn phím mà bộ điều khiển ảo này điều khiển đèn, phủ lên các màu mà thẻ Đèn của nó đặt. Các số cho biết thứ tự đã chọn. Đếm ngược tắt từng phím một, phím chọn cuối cùng tắt trước, nên hãy chọn 1 đến 0 để làm bộ đếm hồi chiêu trên hàng số. Bàn phím hoặc chuột chỉ sáng khi Điều khiển đèn của thiết bị này được bật.</value></data>
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>Khác</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, số {1}</value></data>
+  <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>Lớp phủ màn hình</value></data>
+  <data name="Dashboard_ScreenOverlayDescription" xml:space="preserve"><value>Hiển thị một hình, bộ đếm giờ, giờ hiện tại hoặc màu của thanh đèn phía trên các cửa sổ khác, không cần màn hình bàn phím. Khi chương trình khác đang ở phía trước, các cú nhấp chuột xuyên qua lớp phủ. Khi PadForge đang ở phía trước, hãy kéo lớp phủ bằng chuột phải và đổi kích thước từ góc của nó.</value></data>
+  <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>Bật lớp phủ màn hình</value></data>
+  <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Chọn nội dung hiển thị…</value></data>
+  <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>Lớp phủ màn hình PadForge</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Chưa có gì để hiển thị. Hãy chọn nội dung hiển thị trên Bảng điều khiển.</value></data>
+  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Bật/tắt lớp phủ màn hình</value></data>
+  <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Bật/tắt lớp phủ màn hình</value></data>
+  <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Lớp phủ màn hình</value></data>
+  <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>Lớp phủ không hiển thị gì.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileName_Overlay" xml:space="preserve"><value>Lớp phủ hiển thị tên của hồ sơ đang hoạt động và thay đổi theo mỗi lần chuyển hồ sơ.</value></data>
+  <data name="KeyboardScreen_Hint_ProfileNumber_Overlay" xml:space="preserve"><value>Lớp phủ hiển thị vị trí của hồ sơ đang hoạt động trong danh sách hồ sơ. Hồ sơ Mặc định là 0.</value></data>
+  <data name="KeyboardScreen_Hint_ProfilePicture_Overlay" xml:space="preserve"><value>Lớp phủ hiển thị hình riêng của hồ sơ đang hoạt động, hoặc tên của nó nếu không có hình. Mỗi hồ sơ giữ hình riêng của mình.</value></data>
+  <data name="KeyboardScreen_Hint_Clock_Overlay" xml:space="preserve"><value>Lớp phủ hiển thị giờ trong ngày.</value></data>
+  <data name="KeyboardScreen_Hint_PlayTime_Overlay" xml:space="preserve"><value>Lớp phủ hiển thị số giờ và phút kể từ khi hồ sơ đang hoạt động được chuyển sang. Hồ sơ gắn với chương trình của một trò chơi sẽ được chuyển sang khi trò chơi bắt đầu, nên số đếm là của phiên đó. Với hồ sơ Mặc định, số đếm tính từ lúc engine khởi động.</value></data>
+  <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Lớp phủ hiển thị một hình bạn chọn, được co giãn để lấp đầy cửa sổ của nó và giữ nguyên tỷ lệ.</value></data>
+  <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>Lớp phủ hiển thị đồng hồ bấm giờ, do macro Đồng hồ bấm giờ bắt đầu, tạm dừng và đặt lại. Đó là cùng một đồng hồ bấm giờ mà mọi màn hình bàn phím hiển thị.</value></data>
+  <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Lớp phủ hiển thị màu thanh đèn của DualShock 4 hoặc DualSense ở khe thấp nhất. Cho đến khi có màu truyền đến thanh đèn, lớp phủ không hiển thị gì.</value></data>
 </root>

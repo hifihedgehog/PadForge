@@ -267,6 +267,12 @@ namespace PadForge.Common.Input.Peripherals
         /// the tab can say what Windows takes.</summary>
         public bool WindowsLightsLampArray { get; init; }
 
+        /// <summary>The row's device has a LampArray interface, whatever that
+        /// interface is doing right now: asleep for a moment, held by Windows,
+        /// or taking colors. What the device's firmware does with colors sent
+        /// to it is not known from here.</summary>
+        public bool HasLampArray { get; init; }
+
         /// <summary>The shared paths this row's direct path stands in for. A
         /// shared backend does not paint one of them while this row holds a
         /// claim, so a directly lit Razer mouse is never painted by the
@@ -385,6 +391,7 @@ namespace PadForge.Common.Input.Peripherals
                     || theirs.MaxClaimLevel != pair.Value.MaxClaimLevel
                     || theirs.DirectWhenClosed != pair.Value.DirectWhenClosed
                     || theirs.WindowsLightsLampArray != pair.Value.WindowsLightsLampArray
+                    || theirs.HasLampArray != pair.Value.HasLampArray
                     || theirs.HasVendorProgram != pair.Value.HasVendorProgram
                     || !string.Equals(theirs.LeftToProgram, pair.Value.LeftToProgram, StringComparison.Ordinal)
                     || !SamePaths(theirs.Lighting, pair.Value.Lighting)

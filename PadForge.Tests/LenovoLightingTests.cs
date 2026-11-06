@@ -211,7 +211,6 @@ namespace PadForge.Tests
             Assert.Equal(Enumerable.Range(1, 24), model.Map.Lights.Select(l => l.Zone));
             Assert.Equal(150, model.HoldMs);
             Assert.Equal(500, model.RepaintMs);
-            Assert.True(model.LiveThroughLampArray);
         }
 
         [Fact]

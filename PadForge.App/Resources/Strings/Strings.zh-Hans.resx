@@ -1825,8 +1825,8 @@
   <data name="Pad_Lighting_RouteDirect" xml:space="preserve"><value>颜色直接发送到 {0}。</value></data>
   <data name="Pad_Lighting_RouteDirectPower" xml:space="preserve"><value>颜色直接发送到 {0}。点亮期间，设备不会自行调暗灯光。</value></data>
   <data name="Pad_Lighting_RouteDirectHostMode" xml:space="preserve"><value>颜色直接发送到 {0}。点亮期间，设备的板载模式处于关闭状态。</value></data>
-  <data name="Pad_Lighting_RouteDirectChangingNeedsBios" xml:space="preserve"><value>颜色直接发送到 {0}。变化的颜色（如颜色循环或随声音变化的颜色）需要在笔记本电脑的 BIOS 中开启 Dynamic Lighting。未开启时，按键会保持最后的静态颜色。</value></data>
-  <data name="Pad_Lighting_RouteDirectBesideWindows" xml:space="preserve"><value>颜色直接发送到 {0}。如果笔记本电脑的 BIOS 中已开启 Dynamic Lighting，则由 Windows 动态照明点亮按键。在 Windows 设置中为此键盘关闭 Windows 动态照明后，PadForge 即可点亮按键，包括变化的颜色。</value></data>
+  <data name="Pad_Lighting_RouteDirectChangingThroughLampArray" xml:space="preserve"><value>颜色直接发送到 {0}。变化的颜色通过其 Dynamic Lighting 接口发送。如果灯光没有变化，请开启该接口：有些笔记本电脑在 BIOS 中开启，有些在厂商的灯光应用中开启或使用快捷键开启。</value></data>
+  <data name="Pad_Lighting_RouteDirectBesideWindows" xml:space="preserve"><value>颜色直接发送到 {0}。Windows 动态照明占用了其 Dynamic Lighting 接口，因此变化的颜色无法到达。在 Windows 设置中为此设备关闭 Windows 动态照明后，PadForge 即可将颜色发送到该接口。</value></data>
   <data name="Pad_Lighting_RouteDirectStored" xml:space="preserve"><value>颜色直接发送到 {0}。它把每幅图像存储在自己的内存中，因此颜色循环、随声音变化的颜色等动态颜色不会显示。固定不变的颜色可以显示。</value></data>
   <data name="Pad_Lighting_RouteDirectStoredEffects" xml:space="preserve"><value>颜色直接发送到 {0}。它把每幅图像存储在自己的内存中，因此颜色循环、随声音变化的颜色等动态颜色不会显示。固定不变的颜色可以显示。第一幅图像会覆盖键盘上已保存的灯效，旧灯效无法恢复。</value></data>
   <data name="Peripheral_SerialDeviceOnPort" xml:space="preserve"><value>{0} 上的串口设备</value></data>

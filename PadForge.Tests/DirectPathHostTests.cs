@@ -369,13 +369,13 @@ namespace PadForge.Tests
         }
 
         /// <summary>A keyboard whose own controller keeps still pictures
-        /// only, the Lenovo Legion's, shows changing colors through its
-        /// LampArray interface. Its line says so: that changing colors need
-        /// the BIOS option, with the interface linked or not, since PadForge
-        /// reads no such setting, and with Windows holding the interface, what
-        /// Windows takes and how to hand it back. A controller that shows a
-        /// stream keeps the plain line, beside a LampArray interface or
-        /// not.</summary>
+        /// only shows changing colors through a LampArray interface of its
+        /// device, on any brand. Its line says so and how to turn that on, with
+        /// the interface linked or not, since PadForge reads no such setting,
+        /// and with Windows holding the interface, what Windows takes and how to
+        /// hand it back. With no such interface it says changing colors do not
+        /// show. A controller that shows a stream keeps the plain line, beside a
+        /// LampArray interface or not.</summary>
         [Fact]
         public void AControllerThatKeepsStillPicturesOnly_SaysWhatChangingColorsNeed()
         {
@@ -383,41 +383,43 @@ namespace PadForge.Tests
             var pc = PeripheralLinker.LocalMachineContainer;
             var spectrum = new DirectUnit(OutputFamily.HidLightingUnit, "spectrum", pc, 0x048D, 0xC197)
             {
-                Name = "ITE Device(8258)", LitBesideWindows = true, LiveThroughLampArray = true, StoresPictures = true,
+                Name = "ITE Device(8258)", LitBesideWindows = true, StoresPictures = true,
             };
             var lamp = new DirectUnit(OutputFamily.LampArrayUnit, "lamp", pc, 0x048D, 0xC193) { Kind = 1 };
             var keyboard = Device(A, 0x048D, InputDeviceType.Keyboard);
 
-            Link(new DeviceLinks { Device = A, Lighting = new[] { spectrum.Path, lamp.Path } });
+            Link(new DeviceLinks { Device = A, Lighting = new[] { spectrum.Path, lamp.Path }, HasLampArray = true });
             PeripheralOutputs.Direct = Found(spectrum, lamp);
-            Assert.Equal(string.Format(s.Pad_Lighting_RouteDirectChangingNeedsBios, "ITE Device(8258)"),
+            Assert.Equal(string.Format(s.Pad_Lighting_RouteDirectChangingThroughLampArray, "ITE Device(8258)"),
                 PeripheralRouteText.Lighting(keyboard, 0));
             Assert.Null(PeripheralRouteText.Lighting(keyboard, 0, lightsHere: false));
 
-            Link(new DeviceLinks { Device = A, Lighting = new[] { spectrum.Path }, WindowsLightsLampArray = true });
+            Link(new DeviceLinks { Device = A, Lighting = new[] { spectrum.Path }, WindowsLightsLampArray = true, HasLampArray = true });
             PeripheralOutputs.Direct = Found(spectrum, lamp with { WindowsLit = true });
             Assert.Equal(string.Format(s.Pad_Lighting_RouteDirectBesideWindows, "ITE Device(8258)"),
                 PeripheralRouteText.Lighting(keyboard, 0));
 
-            // The interface asleep for a moment, or not found yet: the path is
-            // down and the BIOS is as unknown as before, so the line stays the
-            // condition and never says changing colors do not show.
-            Link(new DeviceLinks { Device = A, Lighting = new[] { spectrum.Path } });
+            // The interface asleep for a moment: the path is down and the firmware
+            // is as unknown as before, so the line stays the same.
+            Link(new DeviceLinks { Device = A, Lighting = new[] { spectrum.Path }, HasLampArray = true });
             PeripheralOutputs.Direct = Found(spectrum, lamp with { Asleep = true });
-            Assert.Equal(string.Format(s.Pad_Lighting_RouteDirectChangingNeedsBios, "ITE Device(8258)"),
+            Assert.Equal(string.Format(s.Pad_Lighting_RouteDirectChangingThroughLampArray, "ITE Device(8258)"),
                 PeripheralRouteText.Lighting(keyboard, 0));
+
+            // No such interface on the device: changing colors have no way there.
+            Link(new DeviceLinks { Device = A, Lighting = new[] { spectrum.Path } });
             PeripheralOutputs.Direct = Found(spectrum);
-            Assert.Equal(string.Format(s.Pad_Lighting_RouteDirectChangingNeedsBios, "ITE Device(8258)"),
+            Assert.Equal(string.Format(s.Pad_Lighting_RouteDirectStored, "ITE Device(8258)"),
                 PeripheralRouteText.Lighting(keyboard, 0));
 
             // A controller that shows a stream reads as any unit does, with
             // a LampArray interface beside it, as on an ASUS laptop, or not.
-            var besideALamp = spectrum with { StoresPictures = false };
-            Link(new DeviceLinks { Device = A, Lighting = new[] { besideALamp.Path, lamp.Path } });
+            var besideALamp = spectrum with { StoresPictures = false, LiveThroughLampArray = true };
+            Link(new DeviceLinks { Device = A, Lighting = new[] { besideALamp.Path, lamp.Path }, HasLampArray = true });
             PeripheralOutputs.Direct = Found(besideALamp, lamp);
             Assert.Equal(string.Format(s.Pad_Lighting_RouteDirect, "ITE Device(8258)"), PeripheralRouteText.Lighting(keyboard, 0));
-            var streams = spectrum with { LiveThroughLampArray = false, StoresPictures = false };
-            Link(new DeviceLinks { Device = A, Lighting = new[] { streams.Path, lamp.Path } });
+            var streams = spectrum with { StoresPictures = false };
+            Link(new DeviceLinks { Device = A, Lighting = new[] { streams.Path, lamp.Path }, HasLampArray = true });
             PeripheralOutputs.Direct = Found(streams, lamp);
             Assert.Equal(string.Format(s.Pad_Lighting_RouteDirect, "ITE Device(8258)"), PeripheralRouteText.Lighting(keyboard, 0));
         }

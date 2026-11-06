@@ -417,9 +417,11 @@ namespace PadForge.Common.Input.Peripherals
         /// of the same device (<see cref="HidLightingModel.LitBesideWindows"/>).</summary>
         public bool LitBesideWindows { get; init; }
 
-        /// <summary>The device's own controller keeps still pictures only,
-        /// and a LampArray interface of the same device carries the colors
-        /// that change (<see cref="HidLightingModel.LiveThroughLampArray"/>).</summary>
+        /// <summary>A LampArray interface of the same device carries colors
+        /// beside a controller that shows a stream
+        /// (<see cref="HidLightingModel.LiveThroughLampArray"/>). A controller
+        /// that keeps still pictures gets that from
+        /// <see cref="StoresPictures"/>.</summary>
         public bool LiveThroughLampArray { get; init; }
 
         /// <summary>The programs that light the unit's device while they
@@ -632,6 +634,7 @@ namespace PadForge.Common.Input.Peripherals
                 int maxLevel = 0;
                 bool directWhenClosed = false;
                 bool windowsLightsLampArray = false;
+                bool hasLampArray = false;
                 // The program a device of the shared worker is left to,
                 // and whether the device's model names any.
                 string leftToProgram = null;
@@ -755,6 +758,7 @@ namespace PadForge.Common.Input.Peripherals
                             {
                                 Asleep = candidate.Asleep,
                             });
+                    hasLampArray = lamps.Count > 0;
 
                     // What the vendor's software would light the row
                     // through, what its own protocol reaches, whether the
@@ -922,6 +926,7 @@ namespace PadForge.Common.Input.Peripherals
                     MaxClaimLevel = maxLevel,
                     DirectWhenClosed = directWhenClosed,
                     WindowsLightsLampArray = windowsLightsLampArray,
+                    HasLampArray = hasLampArray,
                     Shadows = shadows,
                     // An ASUS row's program is Armoury Crate wherever the Aura
                     // SDK is installed, whichever path lights it.
@@ -1008,9 +1013,10 @@ namespace PadForge.Common.Input.Peripherals
             /// LampArray interface (<see cref="DirectUnit.LitBesideWindows"/>).</summary>
             public bool BesideWindows { get; init; }
 
-            /// <summary>A native unit whose controller keeps still pictures
-            /// only, so a LampArray unit of the device lights the row beside
-            /// it (<see cref="DirectUnit.LiveThroughLampArray"/>).</summary>
+            /// <summary>A LampArray unit of the device lights the row beside
+            /// this native unit: its controller keeps still pictures only
+            /// (<see cref="DirectUnit.StoresPictures"/>), or its model asks for
+            /// both (<see cref="DirectUnit.LiveThroughLampArray"/>).</summary>
             public bool LiveThroughLampArray { get; init; }
 
             /// <summary>An OpenRGB controller PadForge does not color
@@ -1083,12 +1089,13 @@ namespace PadForge.Common.Input.Peripherals
         /// controller (<see cref="LenovoLegionLighting"/>). Step 4 then
         /// lights it.</para>
         ///
-        /// <para>3. The device's own controller keeps still pictures only
-        /// (<see cref="Candidate.LiveThroughLampArray"/>), and the device
-        /// has a LampArray unit Windows does not light: both. A Lenovo
+        /// <para>3. The device's own controller keeps still pictures only, on
+        /// any brand (<see cref="DirectUnit.StoresPictures"/>), or its model
+        /// asks for it (<see cref="Candidate.LiveThroughLampArray"/>), and the
+        /// device has a LampArray unit Windows does not light: both. A Lenovo
         /// Legion Gen 10 keyboard stores each picture in a lighting profile
         /// and shows no stream of them (<see cref="LenovoLegionLighting"/>).
-        /// With Dynamic Lighting on in its BIOS, its LampArray interface
+        /// With Dynamic Lighting on in one's BIOS, its LampArray interface
         /// shows every frame, and while a host holds that interface "No
         /// source other than the Host can modify Lamp state" (HID Usage
         /// Tables 1.6, 26.10.1), so the stored picture stays out of sight.
@@ -1156,7 +1163,7 @@ namespace PadForge.Common.Input.Peripherals
                     {
                         Asleep = unit.Asleep,
                         BesideWindows = unit.LitBesideWindows,
-                        LiveThroughLampArray = unit.LiveThroughLampArray,
+                        LiveThroughLampArray = unit.LiveThroughLampArray || unit.StoresPictures,
                     });
         }
 

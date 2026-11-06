@@ -1826,8 +1826,8 @@
   <data name="Pad_Lighting_RouteDirect" xml:space="preserve"><value>색상이 {0}에 직접 전달됩니다.</value></data>
   <data name="Pad_Lighting_RouteDirectPower" xml:space="preserve"><value>색상이 {0}에 직접 전달됩니다. 켜져 있는 동안에는 장치가 스스로 조명을 어둡게 하지 않습니다.</value></data>
   <data name="Pad_Lighting_RouteDirectHostMode" xml:space="preserve"><value>색상이 {0}에 직접 전달됩니다. 켜져 있는 동안에는 장치의 온보드 모드가 꺼집니다.</value></data>
-  <data name="Pad_Lighting_RouteDirectChangingNeedsBios" xml:space="preserve"><value>색상이 {0}에 직접 전달됩니다. 바뀌는 색상(색상 순환이나 소리에 따라 변하는 색상 등)은 노트북 BIOS에서 Dynamic Lighting을 켜야 합니다. 켜지 않으면 키는 마지막 고정 색상을 유지합니다.</value></data>
-  <data name="Pad_Lighting_RouteDirectBesideWindows" xml:space="preserve"><value>색상이 {0}에 직접 전달됩니다. 노트북 BIOS에서 Dynamic Lighting이 켜져 있으면 Windows 동적 조명이 대신 키를 켭니다. Windows 설정에서 이 키보드의 동적 조명을 끄면 PadForge가 키를 켜며, 바뀌는 색상도 포함됩니다.</value></data>
+  <data name="Pad_Lighting_RouteDirectChangingThroughLampArray" xml:space="preserve"><value>색상이 {0}에 직접 전달됩니다. 바뀌는 색상은 해당 기기의 Dynamic Lighting 인터페이스를 통해 전달됩니다. 조명이 바뀌지 않으면 그 인터페이스를 켜세요. 일부 노트북은 BIOS에서, 일부는 제조사의 조명 앱이나 단축키로 켭니다.</value></data>
+  <data name="Pad_Lighting_RouteDirectBesideWindows" xml:space="preserve"><value>색상이 {0}에 직접 전달됩니다. Windows 동적 조명이 해당 Dynamic Lighting 인터페이스를 점유하고 있어 바뀌는 색상이 도달하지 못합니다. Windows 설정에서 이 기기의 Windows 동적 조명을 끄면 PadForge가 색상을 그쪽으로 보냅니다.</value></data>
   <data name="Pad_Lighting_RouteDirectStored" xml:space="preserve"><value>색상이 {0}에 직접 전달됩니다. 이 장치는 각 그림을 자체 메모리에 저장하므로 색상 순환이나 소리를 따라가는 색상처럼 변하는 색상은 표시되지 않습니다. 변하지 않는 색상은 표시됩니다.</value></data>
   <data name="Pad_Lighting_RouteDirectStoredEffects" xml:space="preserve"><value>색상이 {0}에 직접 전달됩니다. 이 장치는 각 그림을 자체 메모리에 저장하므로 색상 순환이나 소리를 따라가는 색상처럼 변하는 색상은 표시되지 않습니다. 변하지 않는 색상은 표시됩니다. 첫 번째 그림은 키보드에 저장된 효과를 덮어쓰며, 이전 효과는 복구되지 않습니다.</value></data>
   <data name="Peripheral_SerialDeviceOnPort" xml:space="preserve"><value>{0}의 시리얼 장치</value></data>

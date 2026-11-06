@@ -388,7 +388,7 @@ namespace PadForge.Tests
             Assert.NotNull(model);
             Assert.Same(LenovoLegionLighting.Instance, model.Family);
             Assert.True(model.LitBesideWindows);
-            Assert.True(model.LiveThroughLampArray);
+            Assert.True(model.HoldMs > 0);
             Assert.Equal("lenovo:048D:C197", model.Map.Product);
             // A picture is written once it has held, at most twice a second.
             Assert.Equal(150, model.HoldMs);
@@ -773,7 +773,7 @@ namespace PadForge.Tests
             // keyboard row reaches it (LenovoUSBControllerDetect.cpp:79).
             Assert.Equal("Lenovo Legion 7 Gen 10", unit.Name);
             Assert.True(unit.LitBesideWindows);
-            Assert.True(unit.LiveThroughLampArray);
+            Assert.True(unit.StoresPictures);
             var map = PeripheralLightMaps.For(PathOf(Spectrum));
             Assert.NotNull(map);
             // OpenRGB's 130 lights and the five keys only ISO and JIS boards
@@ -1611,7 +1611,56 @@ namespace PadForge.Tests
                 PeripheralLinker.ChooseLighting(false, noShared, false, plain, lamp, out _));
         }
 
-        /// <summary>The owner's Legion: the keyboard collection and the
+        /// <summary>Any brand: a controller that stores each picture lights a
+        /// row beside a LampArray interface of its device, with no word from its
+        /// model, and the row says the device has that interface. One with no such
+        /// interface lights alone.</summary>
+        [Fact]
+        public void AnyControllerThatStoresPictures_LightsBesideALampArrayOfItsDevice()
+        {
+            var pc = PeripheralLinker.LocalMachineContainer;
+            var row = new LinkRow(A, InputDeviceType.Keyboard, 0x1234, 0x5678, pc, null);
+            var stores = new DirectUnit(OutputFamily.HidLightingUnit, "another brand", pc, 0x1234, 0x5678) { StoresPictures = true };
+            var lamp = new DirectUnit(OutputFamily.LampArrayUnit, "lamp", pc, 0x1234, 0x5679) { Kind = PeripheralLinker.LampArrayKindKeyboard };
+
+            var both = PeripheralLinker.Build(new[] { row }, Inputs(stores, lamp)).For(A);
+            Assert.Equal(new[] { stores.Path, lamp.Path }, both.Lighting);
+            Assert.True(both.HasLampArray);
+
+            var alone = PeripheralLinker.Build(new[] { row }, Inputs(stores)).For(A);
+            Assert.Equal(new[] { stores.Path }, alone.Lighting);
+            Assert.False(alone.HasLampArray);
+
+            // Asleep for a moment, the interface is still the device's.
+            var asleep = PeripheralLinker.Build(new[] { row }, Inputs(stores, lamp with { Asleep = true })).For(A);
+            Assert.Equal(new[] { stores.Path }, asleep.Lighting);
+            Assert.True(asleep.HasLampArray);
+
+            // A controller that shows a stream keeps the device to itself.
+            var streams = stores with { StoresPictures = false };
+            Assert.Equal(new[] { streams.Path }, PeripheralLinker.Build(new[] { row }, Inputs(streams, lamp)).For(A).Lighting);
+        }
+
+        /// <summary>Lines a user reads name no model and no build. The device's own
+        /// name fills their blank, so any model in the sentence around it would be
+        /// one machine's fact shown on every other.</summary>
+        [Fact]
+        public void TheRouteLines_NameNoModel()
+        {
+            var set = Strings.ResourceManager.GetResourceSet(
+                System.Globalization.CultureInfo.InvariantCulture, true, true);
+            int lines = 0;
+            foreach (System.Collections.DictionaryEntry entry in set)
+            {
+                if (entry.Key is not string key || !key.StartsWith("Pad_Lighting_Route", StringComparison.Ordinal)) continue;
+                lines++;
+                foreach (string model in new[] { "Lenovo", "Legion", "Gen 10", "16AFR10H", "ThinkPad", "Alienware" })
+                    Assert.DoesNotContain(model, (string)entry.Value);
+            }
+            Assert.True(lines > 20);
+        }
+
+        /// <summary>A Lenovo Legion: the keyboard collection and the
         /// lighting controller are 048D:C197, the LampArray interface
         /// 048D:C193, all three in the PC's own container.</summary>
         private static (LinkRow Row, DirectUnit Spectrum, DirectUnit Lamp) Legion(bool windowsLit, bool lampAsleep = false)
@@ -1620,7 +1669,7 @@ namespace PadForge.Tests
             var row = new LinkRow(A, InputDeviceType.Keyboard, 0x048D, 0xC197, pc, null);
             var spectrum = new DirectUnit(OutputFamily.HidLightingUnit, "spectrum", pc, 0x048D, 0xC197)
             {
-                LitBesideWindows = true, LiveThroughLampArray = true,
+                LitBesideWindows = true, StoresPictures = true,
             };
             var lamp = new DirectUnit(OutputFamily.LampArrayUnit, "lamp", pc, 0x048D, 0xC193)
             {
@@ -1693,7 +1742,7 @@ namespace PadForge.Tests
             var row = new LinkRow(A, InputDeviceType.Keyboard, 0x048D, 0xC195, pc, null);
             var spectrum = new DirectUnit(OutputFamily.HidLightingUnit, "spectrum", pc, 0x048D, 0xC195)
             {
-                LitBesideWindows = model.LitBesideWindows, LiveThroughLampArray = model.LiveThroughLampArray,
+                LitBesideWindows = model.LitBesideWindows, StoresPictures = model.HoldMs > 0,
             };
             var lamp = new DirectUnit(OutputFamily.LampArrayUnit, "lamp", pc, 0x048D, 0xC195)
             {

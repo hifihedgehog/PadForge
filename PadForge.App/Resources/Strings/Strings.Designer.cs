@@ -1351,7 +1351,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Lighting_RouteDirect => Get("Pad_Lighting_RouteDirect");
     public string Pad_Lighting_RouteDirectPower => Get("Pad_Lighting_RouteDirectPower");
     public string Pad_Lighting_RouteDirectHostMode => Get("Pad_Lighting_RouteDirectHostMode");
-    public string Pad_Lighting_RouteDirectChangingNeedsBios => Get("Pad_Lighting_RouteDirectChangingNeedsBios");
+    public string Pad_Lighting_RouteDirectChangingThroughLampArray => Get("Pad_Lighting_RouteDirectChangingThroughLampArray");
     public string Pad_Lighting_RouteDirectBesideWindows => Get("Pad_Lighting_RouteDirectBesideWindows");
     public string Pad_Lighting_RouteDirectStored => Get("Pad_Lighting_RouteDirectStored");
     public string Pad_Lighting_RouteDirectStoredEffects => Get("Pad_Lighting_RouteDirectStoredEffects");

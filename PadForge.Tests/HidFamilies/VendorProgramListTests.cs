@@ -318,20 +318,20 @@ namespace PadForge.Tests
                 OpenRgbRegistrations.Of(MintakaKeyboardLighting.OpenRgbFamily).Single(), feature: 65)).ReplacesStoredEffects);
         }
 
-        /// <summary>A keyboard that shows changing colors through its LampArray
-        /// has no such path right now. That says nothing of the BIOS option behind
-        /// it, so the line states the condition and not that they do not show.</summary>
+        /// <summary>A keyboard whose LampArray interface has no path right now
+        /// keeps the line about that interface. That the path is down says nothing
+        /// of the firmware behind it.</summary>
         [Fact]
-        public void AKeyboardWithNoLampArrayPathRightNow_StillStatesTheCondition()
+        public void AKeyboardWithNoLampArrayPathRightNow_KeepsTheLineAboutThatInterface()
         {
             var s = Strings.Instance;
             var unit = new DirectUnit(OutputFamily.HidLightingUnit, "unit", Box, 0x048D, 0xC197)
             {
-                Name = "Spectrum", LiveThroughLampArray = true, StoresPictures = true,
+                Name = "Spectrum", StoresPictures = true,
             };
-            PeripheralOutputs.PublishLinks(new LinkTable(new[] { new DeviceLinks { Device = A, Lighting = new[] { unit.Path } } }));
+            PeripheralOutputs.PublishLinks(new LinkTable(new[] { new DeviceLinks { Device = A, Lighting = new[] { unit.Path }, HasLampArray = true } }));
             PeripheralOutputs.Direct = Found(unit);
-            Assert.Equal(string.Format(s.Pad_Lighting_RouteDirectChangingNeedsBios, "Spectrum"), PeripheralRouteText.Lighting(Row(0x048D, 0xC197), 0));
+            Assert.Equal(string.Format(s.Pad_Lighting_RouteDirectChangingThroughLampArray, "Spectrum"), PeripheralRouteText.Lighting(Row(0x048D, 0xC197), 0));
         }
     }
 

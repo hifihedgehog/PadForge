@@ -113,11 +113,12 @@ namespace PadForge.Common.Input.Peripherals
         /// (<see cref="PeripheralLinker.ChooseLighting"/>).</summary>
         public bool LitBesideWindows { get; init; }
 
-        /// <summary>The device's own controller keeps still pictures only,
-        /// and a LampArray interface of the same device shows colors that
-        /// change wherever the device's firmware lets that interface take
-        /// colors, so the linker lights a row through both
-        /// (<see cref="PeripheralLinker.ChooseLighting"/>).</summary>
+        /// <summary>A controller that shows a stream, and a LampArray interface
+        /// of the same device that shows colors wherever the device's firmware
+        /// lets it, so the linker lights a row through both
+        /// (<see cref="PeripheralLinker.ChooseLighting"/>). A model with a hold
+        /// (<see cref="HoldMs"/>) needs no such word: the linker lights it
+        /// through both wherever its device has that interface.</summary>
         public bool LiveThroughLampArray { get; init; }
 
         /// <summary>The programs that light the model's devices while they

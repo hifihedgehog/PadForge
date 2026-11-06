@@ -152,8 +152,10 @@ namespace PadForge.Common.Input.Peripherals
     /// Every report either collection answers read the same under both
     /// settings, save the one that echoes the last lamp asked about, so a
     /// Gen 10 row lights through both, and colors that change show through
-    /// the interface wherever the BIOS lets it
-    /// (<see cref="HidLightingModel.LiveThroughLampArray"/>). The Legion Pro
+    /// the interface wherever the firmware lets it, as for any controller
+    /// that keeps still pictures (<see cref="PeripheralLinker.ChooseLighting"/>).
+    /// That BIOS option was seen on one laptop, so no line a user reads names
+    /// it as fact. The Legion Pro
     /// 5 16IAX10's interface took colors on Linux while the keyboard's own
     /// effect stayed on top (hid-rgb-ctl issue 10), which is what the owner's
     /// does with the option off. That report did not look at the option, and
@@ -367,7 +369,6 @@ namespace PadForge.Common.Input.Peripherals
                     Product = product,
                 },
                 LitBesideWindows = true,
-                LiveThroughLampArray = !stream,
                 Programs = VendorPrograms.LenovoSpectrum,
                 HoldMs = stream ? 0 : HoldMs,
                 RepaintMs = stream ? StreamRepaintMs : RepaintMs,

@@ -325,19 +325,17 @@ namespace PadForge.Common.Input.Peripherals
                 string line = level >= 2 ? s.Pad_Lighting_RouteDirectHostMode
                     : level == 1 ? s.Pad_Lighting_RouteDirectPower
                     : s.Pad_Lighting_RouteDirect;
-                // A keyboard whose own controller keeps still pictures only
-                // shows changing colors through its LampArray interface,
-                // which an option in the laptop's BIOS turns on and off and
-                // which Windows may hold (HidLightingModel.LiveThroughLampArray).
-                // Nothing PadForge reads tells whether that option is on, so
-                // the line states the condition. It holds with the interface
-                // linked or not: a unit asleep for a moment or not found yet
-                // says nothing about the BIOS.
+                // A controller that keeps still pictures only shows changing
+                // colors through a LampArray interface of the same device, on any
+                // brand. What turns that interface on is the device's own: nothing
+                // PadForge reads tells, so the line gives the remedy and states no
+                // setting as fact. It holds with the interface linked or not, since
+                // a unit asleep for a moment says nothing about the firmware.
                 var direct = PeripheralOutputs.Direct.Find(path);
-                if (direct is { LiveThroughLampArray: true } && links.WindowsLightsLampArray)
+                if (direct is { StoresPictures: true } && links.WindowsLightsLampArray)
                     line = s.Pad_Lighting_RouteDirectBesideWindows;
-                else if (direct is { LiveThroughLampArray: true, StoresPictures: true })
-                    line = s.Pad_Lighting_RouteDirectChangingNeedsBios;
+                else if (direct is { StoresPictures: true } && links.HasLampArray)
+                    line = s.Pad_Lighting_RouteDirectChangingThroughLampArray;
                 // A device that stores each picture is sent no color that
                 // keeps changing (HidLightingModel.HoldMs), and one whose
                 // pictures also write over the effects stored on it says those

@@ -4700,7 +4700,7 @@ namespace PadForge
         /// padding rect widens those bounds to the full blur. The pill's rect is
         /// transformed into NavView coordinates each render, so the glow tracks the pill
         /// through scroll and the hover lift.</summary>
-        private sealed class PillGlowAdorner : System.Windows.Documents.Adorner
+        internal sealed class PillGlowAdorner : System.Windows.Documents.Adorner
         {
             private readonly FrameworkElement _target;
             private readonly Visual _root;
@@ -4711,6 +4711,11 @@ namespace PadForge
             private static T Frozen<T>(T f) where T : System.Windows.Freezable { f.Freeze(); return (T)(object)f; }
             private readonly Func<bool> _shouldRender;
             private EventHandler _onLayout;
+            private System.Windows.Freezable _lift;
+            private Rect? _drawn;
+
+            /// <summary>How many times it has drawn itself.</summary>
+            internal int Renders { get; private set; }
 
             public PillGlowAdorner(UIElement root, FrameworkElement target, System.Windows.Media.Color color,
                 double radius, double borderThickness, double blur, double opacity, Func<bool> shouldRender) : base(root)
@@ -4732,37 +4737,59 @@ namespace PadForge
                 // recomposes a texture. The Effect stays outside the cache by
                 // WPF's rules and keeps blooming.
                 CacheMode = new System.Windows.Media.BitmapCache();
-                _onLayout = (s, e) => InvalidateVisual();
+                // A redraw is itself a layout pass, which raises LayoutUpdated, so
+                // redrawing on every one never stops. Only a pill that moved, or
+                // that came or went, needs one.
+                _onLayout = (s, e) => { if (PillRect() != _drawn) InvalidateVisual(); };
                 _target.LayoutUpdated += _onLayout;
+                // The hover lift moves the pill with no layout pass at all.
+                if (_target.RenderTransform is { IsFrozen: false } lift)
+                {
+                    _lift = lift;
+                    _lift.Changed += _onLayout;
+                }
             }
 
             public void Detach()
             {
                 if (_onLayout == null) return;
                 _target.LayoutUpdated -= _onLayout;
+                if (_lift != null) _lift.Changed -= _onLayout;
+                _lift = null;
                 _onLayout = null;
+            }
+
+            /// <summary>Where the pill sits in the root's coordinates, or null
+            /// while it is not shown and nothing is drawn. Only while the pill is
+            /// actually shown (pane open): when the pane collapses the pill is
+            /// hidden but the adorner survives, and it would draw the pill's
+            /// border at a stale position out in midair.</summary>
+            private Rect? PillRect()
+            {
+                if (_target == null || !_target.IsVisible || _target.ActualWidth <= 0 || _target.ActualHeight <= 0)
+                    return null;
+                if (_shouldRender != null && !_shouldRender()) return null;
+                if (System.Windows.PresentationSource.FromVisual(_target) == null) return null;
+                try
+                {
+                    var tl = _target.TransformToVisual(_root).Transform(new System.Windows.Point(0, 0));
+                    return new Rect(tl.X, tl.Y, _target.ActualWidth, _target.ActualHeight);
+                }
+                catch { return null; }
             }
 
             protected override void OnRender(System.Windows.Media.DrawingContext dc)
             {
-                if (_target == null || !_target.IsVisible || _target.ActualWidth <= 0 || _target.ActualHeight <= 0)
-                    return;
-                // Only while the pill is actually shown (pane open). When the pane
-                // collapses the pill is hidden but the adorner survives; without this
-                // it would draw the pill's border at a stale position out in midair.
-                if (_shouldRender != null && !_shouldRender()) return;
-                if (System.Windows.PresentationSource.FromVisual(_target) == null) return;
-                System.Windows.Point tl;
-                try { tl = _target.TransformToVisual(_root).Transform(new System.Windows.Point(0, 0)); }
-                catch { return; }
-                double w = _target.ActualWidth, h = _target.ActualHeight;
+                Renders++;
+                _drawn = PillRect();
+                if (_drawn is not Rect pill) return;
+                System.Windows.Point tl = pill.TopLeft;
+                double w = pill.Width, h = pill.Height;
 
                 // Near-invisible padding rect (alpha 1): widens the adorner's drawn-content
                 // bounds so the DropShadowEffect's blur is not clipped to the border rect.
                 // It casts a negligible shadow of its own.
-                // Frozen, hoisted resources: color and thickness are
-                // ctor-fixed, and LayoutUpdated re-renders this adorner on
-                // every dispatcher layout pass while a pill wears the glow.
+                // Frozen, hoisted resources: color and thickness are ctor-fixed.
                 _padBrush ??= Frozen(new System.Windows.Media.SolidColorBrush(
                     System.Windows.Media.Color.FromArgb(1, _color.R, _color.G, _color.B)));
                 if (_borderPen == null)

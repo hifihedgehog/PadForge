@@ -3737,6 +3737,38 @@ namespace PadForge.Tests
             Assert.Empty(board.Take());
         }
 
+        /// <summary>A host waits the device's interval before it sends one lamp
+        /// twice (HID Usage Tables 1.6, 26.3). A picture of two flat areas takes two
+        /// reports, and colors that change right after them wait out the interval
+        /// instead of sending the first report again.</summary>
+        [Fact]
+        public void ALampIsNotSentTwiceInsideTheInterval()
+        {
+            static KeyFrame TwoAreas(int left, int right)
+                => new(Enumerable.Range(0, 20).ToDictionary(i => (ushort)(0x04 + i), i => i < 10 ? left : right), null, null, null);
+
+            var (backend, board) = Found(b => ManyLamps(b, 20));
+            Color(board, 0x010101, TwoAreas(0x100000, 0x200000));
+            Passes(backend);
+            Advance(40);
+            Passes(backend);
+            board.Take();
+
+            Advance(100);
+            Color(board, 0x010101, TwoAreas(0x300000, 0x400000));
+            Passes(backend);
+            Assert.Equal(2, board.Take().Count());
+
+            Advance(5);
+            Color(board, 0x010101, TwoAreas(0x500000, 0x600000));
+            Passes(backend);
+            Assert.Empty(board.Take());
+
+            Advance(40);
+            Passes(backend);
+            Assert.NotEmpty(board.Take());
+        }
+
         /// <summary>A frame that gives every lamp one color takes one report.</summary>
         [Fact]
         public void AWholeFrameOfOneColor_TakesOneReport()

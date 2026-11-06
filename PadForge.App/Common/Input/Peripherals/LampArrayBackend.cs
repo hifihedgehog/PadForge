@@ -781,6 +781,10 @@ namespace PadForge.Common.Input.Peripherals
             public long WindowAt;
             public int WindowReports;
 
+            /// <summary>When each lamp last went out. A host waits the device's
+            /// interval before it sends one lamp twice (HID Usage Tables 1.6, 26.3).</summary>
+            public long[] LampSentAt;
+
             public bool Claimed => Phase == Phase.Settling || Phase == Phase.Lit;
 
             /// <summary>A hand-back is owed: the unit fell asleep while it
@@ -1713,6 +1717,11 @@ namespace PadForge.Common.Input.Peripherals
             int backToBack = LampArrayProtocol.BackToBack(unit);
             long began = _ticks();
             int at = 0;
+            if (lamp.LampSentAt?.Length != count)
+            {
+                lamp.LampSentAt = new long[count];
+                Array.Fill(lamp.LampSentAt, long.MinValue / 2);
+            }
             for (int r = 0; r < reports.Count; r++)
             {
                 long now = _ticks();
@@ -1724,6 +1733,14 @@ namespace PadForge.Common.Input.Peripherals
                 if (lamp.WindowReports >= backToBack)
                 {
                     pass.DueAt(lamp.WindowAt + interval);
+                    return true;
+                }
+                long free = long.MinValue;
+                for (int k = 0; k < reports[r].Lamps; k++)
+                    free = Math.Max(free, lamp.LampSentAt[due[at + k]] + interval);
+                if (now < free)
+                {
+                    pass.DueAt(free);
                     return true;
                 }
                 bool open = now - lamp.SentAt >= interval;
@@ -1745,7 +1762,11 @@ namespace PadForge.Common.Input.Peripherals
                 lamp.Sent = true;
                 lamp.SentRgb = -1;
                 lamp.Unclosed = !close;
-                for (int k = 0; k < report.Lamps; k++) shown[due[at + k]] = colors[due[at + k]];
+                for (int k = 0; k < report.Lamps; k++)
+                {
+                    shown[due[at + k]] = colors[due[at + k]];
+                    lamp.LampSentAt[due[at + k]] = now;
+                }
                 at += report.Lamps;
                 lamp.PaintFrom = (due[at - 1] + 1) % count;
                 if (close)
@@ -2020,6 +2041,7 @@ namespace PadForge.Common.Input.Peripherals
             lamp.Sent = false;
             lamp.Unclosed = false;
             lamp.PaintFrom = 0;
+            lamp.LampSentAt = null;
         }
 
         /// <summary>

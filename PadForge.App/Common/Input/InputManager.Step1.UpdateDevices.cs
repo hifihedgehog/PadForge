@@ -205,7 +205,7 @@ namespace PadForge.Common.Input
                     }
 
                     UserDevice ud = FindOrCreateUserDevice(wrapper.InstanceGuid, wrapper.ProductGuid,
-                        currentInstanceIds, wrapper.SerialNumber);
+                        currentInstanceIds, wrapper.SerialNumber, wrapper.PathInstanceGuid);
 
                     // Same-serial twin (owner-approved 2026-07-25): the
                     // resolver bound this connection to a row whose
@@ -921,7 +921,7 @@ namespace PadForge.Common.Input
         // disconnect debounce relies on is untouched. Every non-SDL caller
         // passes null and keeps today's semantics exactly.
         internal UserDevice FindOrCreateUserDevice(Guid instanceGuid, Guid productGuid = default,
-            HashSet<uint> livePresentSdlIds = null, string serialNumber = null)
+            HashSet<uint> livePresentSdlIds = null, string serialNumber = null, Guid pathGuid = default)
         {
 
             var devices = SettingsManager.UserDevices;
@@ -1115,6 +1115,29 @@ namespace PadForge.Common.Input
                     { InstanceGuid = Guid.NewGuid(), ProductGuid = productGuid };
                     devices.Items.Add(twin);
                     return twin;
+                }
+
+                // 1c. The entry this device was saved under before it reported
+                //    a serial (#562). A Wii Remote on a Mayflash DolphinBar had
+                //    none until fork b8afb934a2 gave it one from its
+                //    calibration, so its entry is keyed by the bar slot's path.
+                //    The first time a remote arrives with a serial it takes the
+                //    offline entry of the slot it sits in, with that slot's
+                //    assignments, where the fallback below would hand it the
+                //    first offline entry of its model, another slot's or another
+                //    remote's. From then on its serial finds it in any slot.
+                if (pathGuid != Guid.Empty && pathGuid != instanceGuid)
+                {
+                    for (int i = 0; i < devices.Items.Count; i++)
+                    {
+                        var d = devices.Items[i];
+                        if (d.InstanceGuid != pathGuid || d.IsOnline) continue;
+                        d.InstanceGuid = instanceGuid;
+                        MigrateUserSettingGuid(pathGuid, instanceGuid);
+                        lock (PendingDeviceGuidMigrationsLock)
+                            PendingDeviceGuidMigrations.Add((pathGuid, instanceGuid));
+                        return d;
+                    }
                 }
 
                 // 2. Fallback: find an offline device with the same ProductGuid.

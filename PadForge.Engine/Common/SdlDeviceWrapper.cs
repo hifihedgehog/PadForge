@@ -429,6 +429,29 @@ namespace PadForge.Engine
         /// </summary>
         public Guid InstanceGuid { get; private set; } = Guid.Empty;
 
+        /// <summary>The identity this device would have without its serial:
+        /// its device path with its vendor and product id, the key of an
+        /// entry saved before it reported one. Guid.Empty when it has no
+        /// serial, since then <see cref="InstanceGuid"/> is that key already
+        /// (#562).</summary>
+        public Guid PathInstanceGuid { get; private set; } = Guid.Empty;
+
+        /// <summary>The path identity behind <see cref="PathInstanceGuid"/>:
+        /// what <see cref="BuildInstanceGuid"/> gives the path with no serial,
+        /// or Guid.Empty for a device with no serial, no path, or an SDL
+        /// XInput slot path, which names no device of its own. A Wii Remote
+        /// on a Mayflash DolphinBar had no serial until fork b8afb934a2 gave
+        /// it one from its calibration (hifihedgehog/SDL#47), so its saved
+        /// entry is keyed by the bar slot's path, and this finds it the first
+        /// time the remote arrives with a serial.</summary>
+        public static Guid BuildPathInstanceGuid(string sdlDevicePath, ushort vid, ushort pid, string serial)
+        {
+            if (string.IsNullOrEmpty(serial) || string.IsNullOrEmpty(sdlDevicePath)
+                || sdlDevicePath.StartsWith("XInput#", StringComparison.OrdinalIgnoreCase))
+                return Guid.Empty;
+            return BuildInstanceGuid(sdlDevicePath, vid, pid, 0);
+        }
+
         /// <summary>Replaces this connection's identity GUID with a
         /// session-scoped one. Called by the device resolver ONLY when the
         /// serial-derived identity collided with a DIFFERENT live device
@@ -793,6 +816,7 @@ namespace PadForge.Engine
             // Build stable GUIDs for settings matching.
             ProductGuid = BuildProductGuid(VendorId, ProductId);
             InstanceGuid = BuildInstanceGuid(SdlDevicePath, VendorId, ProductId, instanceId, SerialNumber, SdlGuid);
+            PathInstanceGuid = BuildPathInstanceGuid(SdlDevicePath, VendorId, ProductId, SerialNumber);
 
             // Some bridged devices (the DS3 over BthPS3 / WinUSB) expose no SDL path
             // because they are virtual joysticks, but they DO connect over a real

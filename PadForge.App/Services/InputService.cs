@@ -14362,6 +14362,11 @@ namespace PadForge.Services
         /// trouble. Otherwise one "unchanged" line at most once a minute
         /// keeps the trace showing the path is alive.</summary>
         private HashSet<string> _lastHidHideDesired;
+
+        /// <summary>The entries of HidHide's list that PadForge did not add,
+        /// as the last apply read them, null before the first read (#541).
+        /// A change prints the block with its "others" line.</summary>
+        private HashSet<string> _lastHidHideOthers;
         private long _lastHidHideUnchangedLogTick;
         private long _lastHidHideTroubleLogTick;
 
@@ -15250,6 +15255,30 @@ namespace PadForge.Services
                     + (missing == null ? " readback=FAILED"
                         : missing.Count == 0 ? " readback=ok"
                         : $" readback=MISSING {missing.Count} [{string.Join(" | ", missing)}]"));
+
+                // #541: the entries in HidHide's list that PadForge did not
+                // put there. The read-back above checks only PadForge's own,
+                // so an entry another program or the user added never reached
+                // the trace, and one naming a PadForge virtual controller
+                // hides it from every program HidHide does not list. Printed
+                // when that set changes, and once more when it empties.
+                var listedNow = HidHideController.GetBlacklist();
+                if (listedNow != null)
+                {
+                    var others = HidHideController.OthersIn(listedNow,
+                        id => desiredIds.Contains(id) || HidHideController.IsManagedDevice(id));
+                    bool hadOthers = _lastHidHideOthers != null && _lastHidHideOthers.Count > 0;
+                    if ((others.Count > 0 || hadOthers)
+                        && (_lastHidHideOthers == null || !_lastHidHideOthers.SetEquals(others)))
+                    {
+                        hidLog.Add($"HIDHIDE others n={others.Count}" + (others.Count > 0 ? $" [{string.Join(" | ", others)}]" : ""));
+                        var virtuals = others.Where(HidHideController.IsHidMaestroDeviceInstance).ToList();
+                        if (virtuals.Count > 0)
+                            hidLog.Add($"HIDHIDE others hide PadForge virtual controllers from every program HidHide does not list: [{string.Join(" | ", virtuals)}]");
+                        oneTimeLine = true;
+                    }
+                    _lastHidHideOthers = new HashSet<string>(others, StringComparer.OrdinalIgnoreCase);
+                }
 
                 // Print the block when the desired set moved, when HidHide
                 // refused PadForge in this apply, when the inverse flag

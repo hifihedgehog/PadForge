@@ -41,13 +41,40 @@ namespace PadForge.Common
         /// <summary>Writes the in-memory ring (the last 4,000 engine events,
         /// collected whether or not logging is on) to a timestamped file
         /// and returns its path. Lets a user capture the moments around a
-        /// glitch after the fact without having had logging enabled.</summary>
+        /// glitch after the fact without having had logging enabled.
+        ///
+        /// <para>The state at that moment goes into the history first, so the
+        /// snapshot ends with it and diagnostics.log carries it too
+        /// (#541): HidHide's list, the XInput interfaces Windows lists and
+        /// each virtual controller's node
+        /// (<see cref="HidHideController.DescribeSnapshotState"/>).</para></summary>
         internal static string SaveSnapshot()
         {
+            foreach (string line in SnapshotStateLines())
+                Engine.SdlDiagLog.WriteLine(line);
             string path = Path.Combine(Folder,
                 $"diag-snapshot-{DateTime.Now:yyyyMMdd-HHmmss}.log");
             File.WriteAllText(path, Engine.SdlDiagLog.Snapshot() + Environment.NewLine);
             return path;
+        }
+
+        /// <summary>Test seam for the state lines, null in production, where
+        /// <see cref="HidHideController.DescribeSnapshotState"/> reads them.</summary>
+        internal static Func<IReadOnlyList<string>> StateSeam;
+
+        /// <summary>The state lines, never throwing: a read that failed
+        /// leaves its own line, and the snapshot is written regardless.</summary>
+        internal static IReadOnlyList<string> SnapshotStateLines()
+        {
+            try
+            {
+                var seam = StateSeam;
+                return seam != null ? seam() : HidHideController.DescribeSnapshotState();
+            }
+            catch (Exception ex)
+            {
+                return new[] { "STATE err:" + ex.GetType().Name };
+            }
         }
     }
 }

@@ -516,6 +516,162 @@ namespace PadForge.Common
             return sb.ToString();
         }
 
+        /// <summary>The entries of HidHide's device list that PadForge did
+        /// not put there, in the list's order (#541). The read-back after a
+        /// sync checks only PadForge's own entries, so an entry the user or
+        /// another program added never reached a trace, and an entry naming
+        /// a PadForge virtual controller hides it from every program HidHide
+        /// does not list.</summary>
+        internal static List<string> OthersIn(IEnumerable<string> listed, Func<string, bool> isPadForges)
+        {
+            var others = new List<string>();
+            if (listed == null) return others;
+            foreach (var id in listed)
+                if (!string.IsNullOrEmpty(id) && !isPadForges(id)) others.Add(id);
+            return others;
+        }
+
+        /// <summary>Test seam for <see cref="DescribeSnapshotState"/>: the
+        /// paths of the present XUSB interfaces, the devices XInput opens.
+        /// Null in production, where cfgmgr32 lists them.</summary>
+        internal static Func<IEnumerable<string>> XusbInterfaceListSeam;
+
+        /// <summary>Test seam for <see cref="DescribeSnapshotState"/>: an
+        /// instance id to its devnode's problem code, 0 for none, or null
+        /// for a node that is not present. Null in production, where
+        /// cfgmgr32 answers.</summary>
+        internal static Func<string, int?> ProblemSeam;
+
+        /// <summary>The lines Save Snapshot adds after the event history
+        /// (#541): HidHide's flags and device list with PadForge's entries
+        /// counted apart from the rest, every XInput interface Windows
+        /// lists, and each present PadForge virtual controller's HID node
+        /// with its problem code, whether HidHide lists it and whether it
+        /// carries an XInput interface. They say what other programs can
+        /// open at that moment. A report of virtual controllers missing from
+        /// XInput and Game Controllers while another device was plugged in
+        /// had a log that could show none of it.</summary>
+        internal static List<string> DescribeSnapshotState()
+        {
+            var lines = new List<string>();
+            List<string> listed = null;
+            try
+            {
+                if (!IsAvailable())
+                {
+                    lines.Add("STATE hidhide unavailable");
+                }
+                else
+                {
+                    string active = TryGetActive(out bool on) ? (on ? "true" : "false") : "read-failed";
+                    string inverse = TryGetInverse(out bool inverted) ? (inverted ? "true" : "false") : "read-failed";
+                    listed = GetBlacklist();
+                    if (listed == null)
+                    {
+                        lines.Add($"STATE hidhide active={active} inverse={inverse} list=read-failed");
+                    }
+                    else
+                    {
+                        var others = OthersIn(listed, IsManagedDevice);
+                        lines.Add($"STATE hidhide active={active} inverse={inverse} listed={listed.Count} padforge={listed.Count - others.Count} others={others.Count}"
+                            + (others.Count > 0 ? $" [{string.Join(" | ", others)}]" : ""));
+                        var virtuals = listed.Where(IsHidMaestroDevice).ToList();
+                        if (virtuals.Count > 0)
+                            lines.Add($"STATE hidhide lists PadForge virtual controllers: [{string.Join(" | ", virtuals)}]");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                lines.Add("STATE hidhide err:" + ex.GetType().Name);
+            }
+
+            try
+            {
+                var xusb = PresentXusbInterfaces();
+                lines.Add($"STATE xinput interfaces n={xusb.Count}" + (xusb.Count > 0 ? $" [{string.Join(" | ", xusb)}]" : ""));
+            }
+            catch (Exception ex)
+            {
+                lines.Add("STATE xinput err:" + ex.GetType().Name);
+            }
+
+            try
+            {
+                var hidden = listed == null ? null : new HashSet<string>(listed, StringComparer.OrdinalIgnoreCase);
+                int count = 0;
+                foreach (string id in PresentHidNodes())
+                {
+                    if (!IsHidMaestroDevice(id)) continue;
+                    count++;
+                    int? problem = ProblemOf(id);
+                    lines.Add($"STATE virtual {id} problem={(problem == null ? "not-present" : problem == 0 ? "none" : problem.Value.ToString())}"
+                        + $" hidden={(hidden == null ? "unknown" : hidden.Contains(id) ? "yes" : "no")}"
+                        + $" xinput={(CarriesXusbInterface(id) ? "yes" : "no")}");
+                }
+                if (count == 0) lines.Add("STATE virtual none");
+            }
+            catch (Exception ex)
+            {
+                lines.Add("STATE virtual err:" + ex.GetType().Name);
+            }
+            return lines;
+        }
+
+        /// <summary>The paths of every present XUSB interface, the list
+        /// xinput1_4 opens its controllers from.</summary>
+        private static List<string> PresentXusbInterfaces()
+        {
+            var seam = XusbInterfaceListSeam;
+            if (seam != null)
+                return seam().Where(p => !string.IsNullOrEmpty(p)).ToList();
+
+            var paths = new List<string>();
+            var guid = PadForge.Engine.HidMaestroAncestry.XusbInterfaceGuid;
+            // The list can grow between the size and the read, which the
+            // read answers with CR_BUFFER_SMALL, so it asks again.
+            for (int attempt = 0; attempt < 3; attempt++)
+            {
+                if (CM_Get_Device_Interface_List_SizeW(out uint len, ref guid, null,
+                        CM_GET_DEVICE_INTERFACE_LIST_PRESENT) != CR_SUCCESS || len <= 1)
+                    return paths;
+                var buffer = new char[len];
+                int cr = CM_Get_Device_Interface_ListW(ref guid, null, buffer, len,
+                    CM_GET_DEVICE_INTERFACE_LIST_PRESENT);
+                if (cr == CR_BUFFER_SMALL) continue;
+                if (cr != CR_SUCCESS) return paths;
+
+                // Multi-SZ: each path null-terminated, an empty string ends it.
+                int start = 0;
+                for (int i = 0; i < buffer.Length; i++)
+                {
+                    if (buffer[i] != '\0') continue;
+                    if (i == start) break;
+                    paths.Add(new string(buffer, start, i - start));
+                    start = i + 1;
+                }
+                return paths;
+            }
+            return paths;
+        }
+
+        /// <summary>A devnode's problem code: 0 for none, null when the node
+        /// is not present or its status does not read.</summary>
+        private static int? ProblemOf(string instanceId)
+        {
+            var seam = ProblemSeam;
+            if (seam != null) return seam(instanceId);
+            if (CM_Locate_DevNodeW(out uint devInst, instanceId, 0) != CR_SUCCESS) return null;
+            if (CM_Get_DevNode_Status(out uint status, out uint problem, devInst, 0) != CR_SUCCESS) return null;
+            return (status & DN_HAS_PROBLEM) != 0 ? (int)problem : 0;
+        }
+
+        private const int CR_BUFFER_SMALL = 0x1A;
+        private const uint DN_HAS_PROBLEM = 0x00000400;
+
+        [DllImport("cfgmgr32.dll")]
+        private static extern int CM_Get_DevNode_Status(out uint pulStatus, out uint pulProblemNumber, uint dnDevInst, uint ulFlags);
+
         /// <summary>
         /// Replaces the entire application whitelist. Returns whether the
         /// driver accepted the write.
@@ -895,49 +1051,13 @@ namespace PadForge.Common
         /// </summary>
         public static List<string> FindInstanceIdsByVidPid(ushort vendorId, ushort productId)
         {
-            var result = new List<string>();
-
             // Takes a node of this vendor and product id unless the lookup
             // leaves it out: HIDMaestro's own, or one PadForge reads nothing
             // from (IsOutsideVidPidLookup).
-            void Offer(string instanceId)
-            {
+            var result = new List<string>();
+            foreach (string instanceId in PresentHidNodes())
                 if (NamesVidPid(instanceId, vendorId, productId) && !IsOutsideVidPidLookup(instanceId))
                     result.Add(instanceId);
-            }
-
-            var presentSeam = PresentHidNodesSeam;
-            if (presentSeam != null)
-            {
-                foreach (string instanceId in presentSeam())
-                    if (!string.IsNullOrEmpty(instanceId)) Offer(instanceId);
-                result.Sort(StringComparer.OrdinalIgnoreCase);
-                return result;
-            }
-
-            var guid = GUID_DEVCLASS_HIDCLASS;
-            IntPtr devInfoSet = SetupDiGetClassDevsW(ref guid, IntPtr.Zero, IntPtr.Zero, DIGCF_PRESENT);
-            if (devInfoSet == (IntPtr)(-1)) return result;
-
-            try
-            {
-                var devInfoData = new SetupApiInterop.SP_DEVINFO_DATA();
-                devInfoData.cbSize = Marshal.SizeOf<SetupApiInterop.SP_DEVINFO_DATA>();
-
-                for (uint i = 0; SetupDiEnumDeviceInfo(devInfoSet, i, ref devInfoData); i++)
-                {
-                    char[] buffer = new char[512];
-                    if (SetupDiGetDeviceInstanceIdW(devInfoSet, ref devInfoData, buffer, (uint)buffer.Length, out _))
-                    {
-                        int nullIdx = Array.IndexOf(buffer, '\0');
-                        Offer(nullIdx >= 0 ? new string(buffer, 0, nullIdx) : new string(buffer));
-                    }
-                }
-            }
-            finally
-            {
-                SetupDiDestroyDeviceInfoList(devInfoSet);
-            }
 
             // setupapi hands these back in whatever order it enumerated
             // them, and the Devices page shows element [0] as the device's
@@ -952,6 +1072,46 @@ namespace PadForge.Common
             // StableXInputInstance.FindAll sorts for exactly this reason.
             result.Sort(StringComparer.OrdinalIgnoreCase);
             return result;
+        }
+
+        /// <summary>The instance ids of the present HID-class devnodes, in
+        /// the order setupapi lists them, or from
+        /// <see cref="PresentHidNodesSeam"/> when a test installed one.</summary>
+        private static List<string> PresentHidNodes()
+        {
+            var ids = new List<string>();
+            var presentSeam = PresentHidNodesSeam;
+            if (presentSeam != null)
+            {
+                foreach (string instanceId in presentSeam())
+                    if (!string.IsNullOrEmpty(instanceId)) ids.Add(instanceId);
+                return ids;
+            }
+
+            var guid = GUID_DEVCLASS_HIDCLASS;
+            IntPtr devInfoSet = SetupDiGetClassDevsW(ref guid, IntPtr.Zero, IntPtr.Zero, DIGCF_PRESENT);
+            if (devInfoSet == (IntPtr)(-1)) return ids;
+
+            try
+            {
+                var devInfoData = new SetupApiInterop.SP_DEVINFO_DATA();
+                devInfoData.cbSize = Marshal.SizeOf<SetupApiInterop.SP_DEVINFO_DATA>();
+
+                for (uint i = 0; SetupDiEnumDeviceInfo(devInfoSet, i, ref devInfoData); i++)
+                {
+                    char[] buffer = new char[512];
+                    if (SetupDiGetDeviceInstanceIdW(devInfoSet, ref devInfoData, buffer, (uint)buffer.Length, out _))
+                    {
+                        int nullIdx = Array.IndexOf(buffer, '\0');
+                        ids.Add(nullIdx >= 0 ? new string(buffer, 0, nullIdx) : new string(buffer));
+                    }
+                }
+            }
+            finally
+            {
+                SetupDiDestroyDeviceInfoList(devInfoSet);
+            }
+            return ids;
         }
 
         /// <summary>Public alias so callers scrubbing stale cached entries can filter.</summary>

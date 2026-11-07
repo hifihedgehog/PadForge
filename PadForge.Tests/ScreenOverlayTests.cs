@@ -278,7 +278,7 @@ namespace PadForge.Tests
         public void TheToggle_IsAppended_AndSitsInBothSwitches()
         {
             Assert.Equal(66, (int)MacroActionType.ToggleScreenOverlay);
-            Assert.Equal(MacroActionType.ToggleScreenOverlay, Enum.GetValues<MacroActionType>()[^1]);
+            Assert.Equal(MacroActionType.ToggleScreenOverlay, Enum.GetValues<MacroActionType>()[^2]);
             string source = RepoText("PadForge.App", "Common", "Input", "InputManager.Step4b.EvaluateMacros.cs");
             Assert.Equal(2, CountOf(source, "case MacroActionType.ToggleScreenOverlay:"));
             Assert.Equal(2, CountOf(source, "RequestScreenOverlayToggle(action.ScreenOverlayNumber);"));

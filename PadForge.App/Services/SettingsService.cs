@@ -4193,6 +4193,8 @@ namespace PadForge.Services
                 CursorClampMode = ad.CursorClampMode,
                 CursorClampInsetX = ad.CursorClampInsetX,
                 CursorClampInsetY = ad.CursorClampInsetY,
+                CursorClampOffsetX = ad.CursorClampOffsetX,
+                CursorClampOffsetY = ad.CursorClampOffsetY,
                 DisconnectTarget = ad.DisconnectTarget,
                 DisconnectDeviceGuid = Guid.TryParse(ad.DisconnectDeviceGuid, out Guid dcGuid)
                     ? dcGuid : Guid.Empty,
@@ -4223,7 +4225,9 @@ namespace PadForge.Services
                 KeyColorRest = ad.KeyColorRest,
                 KeyRestR = ad.KeyRestR,
                 KeyRestG = ad.KeyRestG,
-                KeyRestB = ad.KeyRestB
+                KeyRestB = ad.KeyRestB,
+                ProfileShortcutMode = ad.ProfileShortcutMode,
+                ProfileShortcutName = ad.ProfileShortcutName
             };
             // The effect's mode and values together (#531): set apart, the
             // mode's change would start the values over.
@@ -5694,6 +5698,8 @@ namespace PadForge.Services
                 CursorClampMode = a.CursorClampMode,
                 CursorClampInsetX = a.CursorClampInsetX,
                 CursorClampInsetY = a.CursorClampInsetY,
+                CursorClampOffsetX = a.CursorClampOffsetX,
+                CursorClampOffsetY = a.CursorClampOffsetY,
                 DisconnectTarget = a.DisconnectTarget,
                 DisconnectDeviceGuid = a.DisconnectDeviceGuid == Guid.Empty
                     ? null : a.DisconnectDeviceGuid.ToString(),
@@ -5719,6 +5725,8 @@ namespace PadForge.Services
                 TriggerEffectParameters = a.Type == MacroActionType.TriggerEffect ? a.TriggerEffectParameters : null,
                 TriggerEffectHold = a.TriggerEffectHold,
                 TriggerEffectMs = a.TriggerEffectMs,
+                ProfileShortcutMode = a.ProfileShortcutMode,
+                ProfileShortcutName = a.Type == MacroActionType.ProfileShortcut ? a.ProfileShortcutName : null,
                 KeyColorTargets = a.Type is MacroActionType.SetKeyColors or MacroActionType.ClearKeyColors
                     ? a.KeyColorTargets : null,
                 KeyColorStyle = a.KeyColorStyle,
@@ -7959,6 +7967,10 @@ namespace PadForge.Services
         [XmlElement] public int CursorClampInsetX { get; set; } = 50;
         /// <summary>Per-edge Y inset for the region clamp, pixels (issue #110).</summary>
         [XmlElement] public int CursorClampInsetY { get; set; } = 50;
+        /// <summary>Pixels the region sits right of the screen's center.</summary>
+        [XmlElement] public int CursorClampOffsetX { get; set; }
+        /// <summary>Pixels the region sits below the screen's center.</summary>
+        [XmlElement] public int CursorClampOffsetY { get; set; }
 
         /// <summary>Target mode for a DisconnectController action (issue #162).</summary>
         [XmlElement] public ViewModels.MacroDisconnectTarget DisconnectTarget { get; set; } = ViewModels.MacroDisconnectTarget.TriggeringDevice;
@@ -8023,6 +8035,11 @@ namespace PadForge.Services
         [XmlElement] public string TriggerEffectParameters { get; set; }
         [XmlElement] public ViewModels.MacroTriggerEffectHold TriggerEffectHold { get; set; } = ViewModels.MacroTriggerEffectHold.UntilRelease;
         [XmlElement] public int TriggerEffectMs { get; set; } = 500;
+
+        /// <summary>Profile Shortcut (#561): what it does, and the profile's
+        /// name when it names one.</summary>
+        [XmlElement] public SwitchProfileMode ProfileShortcutMode { get; set; }
+        [XmlElement] public string ProfileShortcutName { get; set; }
 
         /// <summary>Set Key Colors and Clear Key Colors (#557): the lights
         /// named, in the order picked ("kUU", "gNAME", "all"), the style,

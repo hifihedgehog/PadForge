@@ -587,6 +587,5 @@
   <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>PadForge does not recognise this input: {0}</value></data>
   <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge does not recognise this output: {0}</value></data>
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Commits when the stick re-centres or the layer ends. reWASD's Apply button is not used.</value></data>
-  <data name="Import_Tr_RegionCentered" xml:space="preserve"><value>The cursor stays in an area of the same size at the centre of the screen.</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Analogue key actuation points did not come across.</value></data>
 </root>

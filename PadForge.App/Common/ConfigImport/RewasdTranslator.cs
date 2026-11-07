@@ -43,7 +43,6 @@ namespace PadForge.Common.ConfigImport
             public double SensX = 1.0;
             public double SensY = 1.0;
             public double RotationDeg;
-            public double Inner;
             public double CurveExponent;
             public int Low = DefaultLowZone;
             public int Med = DefaultMedZone;
@@ -68,6 +67,8 @@ namespace PadForge.Common.ConfigImport
         private bool _twoPads;
         private int _keyboardUnmaps;
         private int _mouseUnmaps;
+        private int _mouseMoves;
+        private readonly List<(JsonElement Pad, int Id)> _virtualPads = new();
         private int _firstVirtualId = 1;
         private bool _noted;
 
@@ -89,6 +90,7 @@ namespace PadForge.Common.ConfigImport
             t.ReadDevices();
             t.ReadShifts();
             t.ReadDeviceTuning();
+            t.ReadVirtualSticks();
             t.BuildPassThrough();
             t.ReadHardwareMappings();
             t.ReadMaskMappings();
@@ -107,6 +109,8 @@ namespace PadForge.Common.ConfigImport
                 ReadsKeyboard = t._b.ReadsKeyboard,
                 ReadsMouse = t._b.ReadsMouse,
                 ReadsController = t._b.ReadsController,
+                Runs = t._b.Runs,
+                Starts = t._b.Starts,
             };
         }
 
@@ -221,12 +225,14 @@ namespace PadForge.Common.ConfigImport
         {
             foreach (var m in Arr(_root, "masks")) _masks[Int(m, "id")] = m;
             foreach (var c in Arr(_root, "commands")) _commands[Int(c, "id")] = c;
-            foreach (var s in Arr(_root, "shifts")) _shiftType[Int(s, "id")] = Str(s, "type") ?? "default";
+            FindPresetAndUnusedLayers();
+            foreach (var s in Arr(_root, "shifts"))
+                if (!_shiftAs.ContainsKey(Int(s, "id"))) _shiftType[Int(s, "id")] = Str(s, "type") ?? "default";
 
             foreach (var mapping in Arr(_root, "mappings"))
             {
                 if (!Has(mapping, "condition", out var c) || !Has(c, "mask", out var mask)) continue;
-                var key = (Int(c, "shiftId"), Int(mask, "id"));
+                var key = (ShiftIdOf(c), Int(mask, "id"));
                 if (!_activatorTypes.TryGetValue(key, out var types))
                     _activatorTypes[key] = types = new HashSet<string>(StringComparer.Ordinal);
                 if (Has(mask, "activator", out var a)) types.Add(Str(a, "type") ?? "single");
@@ -247,8 +253,10 @@ namespace PadForge.Common.ConfigImport
                 {
                     pads++;
                     converts |= Flag(h, "convertToVirtual");
+                    // PadForge hides a device only once its user confirms it on
+                    // the Devices page, never from a file.
                     if (Flag(h, "hidePhysicalGamepad"))
-                        _b.Partial(ImportReasons.ControllerSetting, Strings.Instance.Import_Line_Controller, "", "", "hidePhysicalGamepad");
+                        _b.Partial(ImportReasons.HideController, Strings.Instance.Import_Line_Controller, "", "");
                 }
             }
             _hasPhysicalPad = pads > 0;
@@ -274,30 +282,44 @@ namespace PadForge.Common.ConfigImport
                         var (vcType, profile) = VirtualFor(type);
                         _b.DeclarePad(id, vcType, profile);
                     }
-                    if (Has(g, "external", out _) || Has(g, "udp", out _))
-                        _b.Skipped(ImportReasons.RemoteTarget, type, "");
-                    if (Has(g, "default", out var def))
+                    // reWASD's Use for UDP server sends the virtual pad's
+                    // motion to emulators over cemuhook (help.rewasd.com,
+                    // Servers), which is PadForge's DSU motion server.
+                    if (Flag(g, "udp"))
                     {
-                        foreach (var st in Arr(def, "sticks"))
-                        {
-                            string stick = Str(st, "name") ?? "";
-                            var props = Names(st).ToList();
-                            bool Shakes(string n) => n.StartsWith("jitter", StringComparison.Ordinal)
-                                                     || n.StartsWith("shaking", StringComparison.Ordinal);
-                            if (props.Any(Shakes))
-                                _b.Skipped(ImportReasons.JitterShaking, stick, "");
-                            var left = props.Where(n => n != "name" && !Shakes(n)).ToList();
-                            if (left.Count > 0)
-                                _b.Partial(ImportReasons.ControllerSetting, stick, "", "", string.Join(", ", left));
-                        }
+                        _b.EnableDsu = true;
+                        _b.Clean(type, "UDP server", "DSU motion server");
                     }
+                    // An external device carries the pad through an ESP32 or
+                    // Bluetooth adapter to a console, a phone or another PC.
+                    if (Flag(g, "external"))
+                        _b.Partial(ImportReasons.RemoteTarget, type, "", "");
+                    _virtualPads.Add((g, id));
                 }
             }
             if (usesPad && !_b.HasPad && !keyboardMouseOnly)
                 _b.DeclarePad(1, VirtualControllerType.Xbox, "xbox-360-wired");
 
-            if (_twoPads)
+            if (_twoPads && MappingsTellPadsApart())
                 _b.Partial(ImportReasons.SharedControllers, Strings.Instance.Import_Line_Controller, "", "");
+        }
+
+        /// <summary>True when the file's inputs name more than one physical
+        /// gamepad, which a slot's device-free sources cannot keep apart. Two
+        /// listed controllers that share every mapping lose nothing.</summary>
+        private bool MappingsTellPadsApart()
+        {
+            var named = new HashSet<int>();
+            void Note(JsonElement e)
+            {
+                int device = Int(e, "deviceId");
+                if (ClassOf(device, Str(e, "description")) == "gamepad") named.Add(device);
+            }
+            foreach (var m in Arr(_root, "masks"))
+                foreach (var item in Arr(m, "set")) Note(item);
+            foreach (var mapping in Arr(_root, "mappings"))
+                if (Has(mapping, "condition", out var c) && Has(c, "hardware", out var hw)) Note(hw);
+            return named.Count > 1;
         }
 
         /// <summary>The slot's type and HIDMaestro profile. The profile ids
@@ -346,6 +368,45 @@ namespace PadForge.Common.ConfigImport
         }
 
         private static string LayerOf(int shift) => shift <= 0 ? ImportBuilder.BaseLayer : "Shift" + shift;
+
+        /// <summary>Shift ids read as another: a preset's one layer reads as
+        /// Base, and a layer reWASD never opens reads as -1, which nothing
+        /// imports.</summary>
+        private readonly Dictionary<int, int> _shiftAs = new();
+
+        private int ShiftIdOf(JsonElement e)
+        {
+            int id = Int(e, "shiftId");
+            return _shiftAs.TryGetValue(id, out int s) ? s : id;
+        }
+
+        private void FindPresetAndUnusedLayers()
+        {
+            var shifts = Arr(_root, "shifts").ToList();
+            var jumped = new HashSet<int>();
+            var mapped = new HashSet<int>();
+            foreach (var m in Arr(_root, "mappings"))
+            {
+                if (Has(m, "jumpToLayer", out var j)) jumped.Add(Int(j, "layer"));
+                if (Has(m, "condition", out var c)) mapped.Add(Int(c, "shiftId"));
+            }
+            bool Opens(JsonElement s) => jumped.Contains(Int(s, "id"))
+                || (Has(s, "set", out var set) && set.ValueKind == JsonValueKind.Array && set.GetArrayLength() > 0);
+
+            // reWASD's own presets hold one layer that a user applies to a
+            // layer of a config: the mappings, or the list of what not to
+            // inherit, sit on it, Base holds nothing and nothing opens it.
+            // Read on its own, it is the config.
+            if (shifts.Count == 1 && !mapped.Contains(0) && (Str(shifts[0], "type") ?? "default") == "default" && !Opens(shifts[0])
+                && (mapped.Contains(Int(shifts[0], "id")) || Arr(shifts[0], "unheritableMasks").Any()))
+                _shiftAs[Int(shifts[0], "id")] = 0;
+
+            // Every config carries a Radial Menu shift, and only a jump to it
+            // opens it (reWASD's help, Radial menu). With none it never runs.
+            foreach (var s in shifts)
+                if (Str(s, "type") == "radialMenu" && !Opens(s) && !_shiftAs.ContainsKey(Int(s, "id")))
+                    _shiftAs[Int(s, "id")] = -1;
+        }
 
         private string PathOf(int shift, string label)
             => shift <= 0 ? label : _b.LayerName(LayerOf(shift)) + " / " + label;
@@ -518,27 +579,27 @@ namespace PadForge.Common.ConfigImport
                 34 => Btn("Gamepad DPadDown", "D-pad Down"),
                 35 => Btn("Gamepad DPadLeft", "D-pad Left"),
                 36 => Btn("Gamepad DPadRight", "D-pad Right"),
-                37 => Ring("Gamepad LeftStickRing", l.Low, "Left stick low zone"),
-                38 => Ring("Gamepad LeftStickRing", l.Med, "Left stick medium zone"),
+                37 => Ring("Gamepad LeftStickRing", l.Low, "Left stick low zone").Below(l.Med),
+                38 => Ring("Gamepad LeftStickRing", l.Med, "Left stick medium zone").Below(l.High),
                 39 => Ring("Gamepad LeftStickRing", l.High, "Left stick high zone"),
                 40 => Dir("Gamepad LeftStickY", true, "left", "Left stick Up"),
                 41 => Dir("Gamepad LeftStickY", false, "left", "Left stick Down"),
                 42 => Dir("Gamepad LeftStickX", true, "left", "Left stick Left"),
                 43 => Dir("Gamepad LeftStickX", false, "left", "Left stick Right"),
-                44 => Ring("Gamepad RightStickRing", r.Low, "Right stick low zone"),
-                45 => Ring("Gamepad RightStickRing", r.Med, "Right stick medium zone"),
+                44 => Ring("Gamepad RightStickRing", r.Low, "Right stick low zone").Below(r.Med),
+                45 => Ring("Gamepad RightStickRing", r.Med, "Right stick medium zone").Below(r.High),
                 46 => Ring("Gamepad RightStickRing", r.High, "Right stick high zone"),
                 47 => Dir("Gamepad RightStickY", true, "right", "Right stick Up"),
                 48 => Dir("Gamepad RightStickY", false, "right", "Right stick Down"),
                 49 => Dir("Gamepad RightStickX", true, "right", "Right stick Left"),
                 50 => Dir("Gamepad RightStickX", false, "right", "Right stick Right"),
                 51 => Trig("Gamepad LeftTrigger", TriggerPressPercent, "Left trigger"),
-                52 => Trig("Gamepad LeftTrigger", lt.Low, "Left trigger low zone"),
-                53 => Trig("Gamepad LeftTrigger", lt.Med, "Left trigger medium zone"),
+                52 => Trig("Gamepad LeftTrigger", lt.Low, "Left trigger low zone").Below(lt.Med),
+                53 => Trig("Gamepad LeftTrigger", lt.Med, "Left trigger medium zone").Below(lt.High),
                 54 => Trig("Gamepad LeftTrigger", lt.High, "Left trigger high zone"),
                 55 => Trig("Gamepad RightTrigger", TriggerPressPercent, "Right trigger"),
-                56 => Trig("Gamepad RightTrigger", rt.Low, "Right trigger low zone"),
-                57 => Trig("Gamepad RightTrigger", rt.Med, "Right trigger medium zone"),
+                56 => Trig("Gamepad RightTrigger", rt.Low, "Right trigger low zone").Below(rt.Med),
+                57 => Trig("Gamepad RightTrigger", rt.Med, "Right trigger medium zone").Below(rt.High),
                 58 => Trig("Gamepad RightTrigger", rt.High, "Right trigger high zone"),
                 68 => Half("Gyro Pitch", false, "Gyro Up"),
                 69 => Half("Gyro Pitch", true, "Gyro Down"),
@@ -597,6 +658,7 @@ namespace PadForge.Common.ConfigImport
             foreach (var shift in Arr(_root, "shifts"))
             {
                 int id = Int(shift, "id");
+                if (_shiftAs.ContainsKey(id)) continue;
                 string type = Str(shift, "type") ?? "default";
                 string name = Str(shift, "description");
                 string mask = LayerOf(id);
@@ -604,8 +666,18 @@ namespace PadForge.Common.ConfigImport
                     ? string.Format(CultureInfo.CurrentCulture, Strings.Instance.Import_LayerName_Format, id)
                     : name.Trim());
 
+                // An unlock layer hands the keyboard, the mouse or both back to
+                // Windows while it is on.
                 if (type.StartsWith("unlock", StringComparison.Ordinal))
-                    _b.Partial(ImportReasons.UnlockLayer, _b.LayerName(mask), type, mask);
+                {
+                    bool keyboard = type is "unlock" or "unlockKeyboardOnly";
+                    bool mouse = type is "unlock" or "unlockMouseOnly";
+                    _b.Unlock(mask, keyboard, mouse);
+                    if (keyboard)
+                        _b.Partial(ImportReasons.UnlockLayer, _b.LayerName(mask), type, "", Strings.Instance.Devices_AllKeyboardsMerged);
+                    if (mouse)
+                        _b.Partial(ImportReasons.UnlockLayer, _b.LayerName(mask), type, "", Strings.Instance.Devices_AllMiceMerged);
+                }
 
                 // A layer can name its own input: held for "default", flipped
                 // for "toggle".
@@ -776,11 +848,6 @@ namespace PadForge.Common.ConfigImport
                 double scale = Math.Abs(coeff) * sens;
                 if (scale != 1.0) src.Sensitivity = scale;
                 if (coeff < 0) src.Invert = true;
-                if (t.Inner > 0)
-                {
-                    src.ParamStickDeadZoneShape = 2;
-                    src.ParamStickDeadZoneInner = t.Inner;
-                }
                 if (t.CurveExponent > 0) src.ParamCurveExponent = t.CurveExponent;
                 return src;
             }
@@ -829,7 +896,8 @@ namespace PadForge.Common.ConfigImport
                 if (!Has(mapping, "condition", out var c) || !Has(c, "hardware", out var from)) continue;
                 if (!Has(mapping, "hardware", out var to)) continue;
 
-                int shift = Int(c, "shiftId");
+                int shift = ShiftIdOf(c);
+                if (shift < 0) continue;
                 string layer = LayerOf(shift);
                 int device = Int(from, "deviceId");
                 string description = Str(from, "description");
@@ -840,8 +908,19 @@ namespace PadForge.Common.ConfigImport
                 {
                     if (unmap)
                     {
+                        // Mouse movement has no key or button for the hook to
+                        // hold back.
+                        if (Has(from, "stick", out _))
+                        {
+                            _mouseMoves++;
+                            continue;
+                        }
                         if (cls == "keyboard") _keyboardUnmaps++;
                         else _mouseUnmaps++;
+                        var blocked = Has(from, "buttonId", out _)
+                            ? ResolveInput(device, Int(from, "buttonId"), description, shift)
+                            : null;
+                        if (blocked != null) _b.Block(blocked, "Block " + blocked.Label);
                         continue;
                     }
                     if (Has(from, "stick", out _))
@@ -934,6 +1013,9 @@ namespace PadForge.Common.ConfigImport
                 _b.Partial(ImportReasons.ConsumeKeys, "Mouse",
                     string.Format(CultureInfo.InvariantCulture, "{0} x Unmap", _mouseUnmaps), "",
                     Strings.Instance.Devices_AllMiceMerged);
+            if (_mouseMoves > 0)
+                _b.Partial(ImportReasons.MouseMovement, "Mouse",
+                    string.Format(CultureInfo.InvariantCulture, "{0} x Unmap", _mouseMoves), "");
         }
 
         /// <summary>A stick direction unmapped: the axis keeps its other half,
@@ -972,7 +1054,7 @@ namespace PadForge.Common.ConfigImport
 
             if (stick == "mouse" && unmap)
             {
-                _mouseUnmaps++;
+                _mouseMoves++;
                 return;
             }
             if (stick == "additional")
@@ -1023,6 +1105,13 @@ namespace PadForge.Common.ConfigImport
             {
                 _b.Bind(layer, control, (toStick == "left" ? "Left" : "Right") + "ThumbAxis" + toAxis, src, _firstVirtualId);
             }
+            else if (toStick == "gyro")
+            {
+                // A virtual pad's motion comes from a controller's own sensor
+                // (the Motion Gyro row), never from a stick or the mouse.
+                _b.Skipped(ImportReasons.MotionOutput, PathOf(shift, label), toStick);
+                return;
+            }
             else
             {
                 _b.Skipped(ImportReasons.ThirdStick, PathOf(shift, label), toStick);
@@ -1062,6 +1151,9 @@ namespace PadForge.Common.ConfigImport
                 9 => ImportOutput.Pad("LeftThumbButton"),
                 10 => ImportOutput.Pad("RightThumbButton"),
                 11 => ImportOutput.Pad("ButtonGuide"),
+                // A Switch Pro has the Capture button a row can reach. The
+                // other virtual types here have nothing at this id.
+                12 when DeclaredVirtualType() == "nintendoswitchpro" => ImportOutput.Pad("ButtonShare"),
                 33 => ImportOutput.Pad("DPadUp"),
                 34 => ImportOutput.Pad("DPadDown"),
                 35 => ImportOutput.Pad("DPadLeft"),
@@ -1099,6 +1191,9 @@ namespace PadForge.Common.ConfigImport
             public string Action;
             public bool Pulse;
             public ActionData Raw;
+
+            /// <summary>What a command step is called, for the preview.</summary>
+            public string Label = "";
         }
 
         /// <summary>Reads a mapping's steps, reporting the ones that cannot
@@ -1161,11 +1256,7 @@ namespace PadForge.Common.ConfigImport
                     {
                         int value = Int(g, "value", 32767);
                         if (value is > 0 and < 32767) o.Scale = value / 32767.0;
-                        if (Has(g, "absolute", out var abs) && abs.ValueKind == JsonValueKind.False)
-                        {
-                            _b.Partial(ImportReasons.StickAdded, path, o.Label, o.Target);
-                            notes = true;
-                        }
+                        o.Relative = Has(g, "absolute", out var abs) && abs.ValueKind == JsonValueKind.False;
                     }
                     steps.Add(new Step { Output = o, Action = Str(g, "action"), Pulse = Flag(g, "pulsation") });
                 }
@@ -1191,7 +1282,8 @@ namespace PadForge.Common.ConfigImport
                     _noted = false;
                     var action = CommandAction(Int(cmd, "id"), shift, path, inputs);
                     notes |= _noted;
-                    if (action != null) steps.Add(new Step { Kind = StepKind.Raw, Raw = action });
+                    if (action != null)
+                        steps.Add(new Step { Kind = StepKind.Raw, Raw = action, Label = CommandName(Int(cmd, "id")) });
                 }
                 else
                 {
@@ -1232,10 +1324,13 @@ namespace PadForge.Common.ConfigImport
             }
         }
 
-        /// <summary>A reWASD command as a macro action. The ones that would
-        /// start a program or power off the PC never become one: nothing named
-        /// in a shared config runs. The numbers are the command types the
-        /// public samples and reWASD's schema dump use.</summary>
+        private string CommandName(int id)
+            => _commands.TryGetValue(id, out var cmd) ? Str(cmd, "description") ?? Str(cmd, "name") ?? "" : "";
+
+        /// <summary>A reWASD command as a macro action. Program launches and
+        /// power commands come across, and the preview names each before the
+        /// user accepts the file. The numbers are the command types the public
+        /// samples and reWASD's schema dump use.</summary>
         private ActionData CommandAction(int id, int shift, string path, IReadOnlyList<ImportInput> inputs)
         {
             if (!_commands.TryGetValue(id, out var cmd))
@@ -1249,19 +1344,38 @@ namespace PadForge.Common.ConfigImport
 
             ActionData Gyro(MacroSetGyroEngagedMode mode) => new() { Type = MacroActionType.SetGyroEngaged, SetGyroEngagedMode = mode };
 
-            ActionData Chord(params byte[] vks)
+            ActionData Chord(params byte[] vks) => new()
             {
-                _b.Partial(ImportReasons.LoweredToKeys, path, name, "", string.Join("+", vks.Select(ImportOutput.KeyName)));
-                _noted = true;
-                return new ActionData
-                {
-                    Type = MacroActionType.KeyPress,
-                    KeyString = string.Concat(vks.Select(v => "{" + (VirtualKey)v + "}")),
-                };
-            }
+                Type = MacroActionType.KeyPress,
+                KeyString = string.Concat(vks.Select(v => "{" + (VirtualKey)v + "}")),
+            };
 
+            ActionData Shortcut(SwitchProfileMode mode) => new()
+            {
+                Type = MacroActionType.ProfileShortcut,
+                ProfileShortcutMode = mode,
+            };
+
+            // RewasdUserCommand's numbers, the power commands as Windows' own.
             switch (type)
             {
+                case 1:
+                    return Shortcut(SwitchProfileMode.ToggleVCsDisabled);
+                case 2:
+                    return new ActionData { Type = MacroActionType.DisconnectController, DisconnectTarget = MacroDisconnectTarget.SlotDevices };
+                case 3:
+                    return Shortcut(SwitchProfileMode.ToggleWindow);
+                case 7:
+                    return _b.Run(name, "shutdown.exe", "/l");
+                case 8:
+                    return _b.Run(name, "shutdown.exe", "/s /t 0");
+                case 9:
+                    return _b.Run(name, "powershell.exe",
+                        "-NoProfile -WindowStyle Hidden -Command \"Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.Application]::SetSuspendState('Suspend', $false, $false)\"");
+                case 13:
+                    return _b.Run(name, "shutdown.exe", "/h");
+                case 17:
+                    return _b.Run(name, "shutdown.exe", "/r /t 0");
                 case 4:
                 case 6:
                     return Gyro(MacroSetGyroEngagedMode.Toggle);
@@ -1276,19 +1390,17 @@ namespace PadForge.Common.ConfigImport
                     return Chord(0x5B, 0x2C);   // Win + Print Screen
                 case 12:
                     return Chord(0xA4, 0x73);   // Alt + F4
-                case 7:
-                case 8:
-                case 9:
-                case 13:
-                case 17:
-                    _b.Skipped(ImportReasons.SystemCommand, path, name, name);
-                    _noted = true;
-                    return null;
                 case >= 101 and <= 110:
                 case 120:
-                    _b.Skipped(ImportReasons.Crosshair, path, name);
+                    // The button works: it shows a Screen Overlay, and the
+                    // picture is the user's to give it.
+                    _b.Partial(ImportReasons.Crosshair, path, name, "ToggleScreenOverlay");
                     _noted = true;
-                    return null;
+                    return new ActionData
+                    {
+                        Type = MacroActionType.ToggleScreenOverlay,
+                        ScreenOverlayNumber = type == 120 ? 0 : Math.Min(type - 100, PadForge.Common.Input.KeyboardScreens.KeyboardScreenInfo.MaxOverlays),
+                    };
                 case >= 130 and <= 137:
                     // Radial navigation. PadForge's menu reads its host itself,
                     // and the first direction names which host that is.
@@ -1299,19 +1411,14 @@ namespace PadForge.Common.ConfigImport
                     }
                     return null;
                 case >= 1000 and <= 1999:
-                    string target = Str(cmd, "name") ?? name;
-                    if (Has(cmd, "params", out var ps) && ps.ValueKind == JsonValueKind.Object)
-                    {
-                        foreach (var p in ps.EnumerateObject())
-                            if (p.Value.ValueKind == JsonValueKind.String)
-                            {
-                                target = p.Value.GetString();
-                                break;
-                            }
-                    }
-                    _b.Skipped(ImportReasons.ProgramNotRun, path, target, target);
-                    _noted = true;
-                    return null;
+                {
+                    Has(cmd, "params", out var ps);
+                    string first = Names(ps).Select(n => Str(ps, n)).FirstOrDefault(v => !string.IsNullOrWhiteSpace(v));
+                    string program = Str(ps, "path") ?? first ?? Str(cmd, "name") ?? name;
+                    string args = Str(ps, "args") ?? Str(ps, "arguments") ?? "";
+                    string folder = Str(ps, "workdir") ?? Str(ps, "working_directory") ?? "";
+                    return _b.Run(program, program, args, folder);
+                }
                 default:
                     _b.Skipped(ImportReasons.UnknownCommand, path, name, name);
                     _noted = true;
@@ -1341,7 +1448,8 @@ namespace PadForge.Common.ConfigImport
                 if (!Has(mapping, "condition", out var c) || !Has(c, "mask", out var maskRef)) continue;
 
                 int maskId = Int(maskRef, "id");
-                int shift = Int(c, "shiftId");
+                int shift = ShiftIdOf(c);
+                if (shift < 0) continue;
                 string layer = LayerOf(shift);
                 Has(maskRef, "activator", out var activator);
                 string type = Str(activator, "type") ?? "single";
@@ -1383,9 +1491,10 @@ namespace PadForge.Common.ConfigImport
             }
         }
 
-        /// <summary>A zone activator reads the input past that zone's edge. A
-        /// file's zones are edges, so an input in the low zone also reads in
-        /// medium and high, which the report says.</summary>
+        /// <summary>A zone activator reads the input inside that zone. A file's
+        /// zones are edges, and a zone's mapping is held while the input is
+        /// inside it and released when it leaves, in the words of reWASD's
+        /// administrator (forum threads 228291 and 232253).</summary>
         private void ApplyZone(List<ImportInput> inputs, string type, int shift)
         {
             if (type is not ("zoneLow" or "zoneMed" or "zoneHigh")) return;
@@ -1394,6 +1503,7 @@ namespace PadForge.Common.ConfigImport
                 string side = input.Descriptor.Contains("Left", StringComparison.Ordinal) ? "left" : "right";
                 var t = TuningOf(shift, input.Descriptor.EndsWith("Trigger", StringComparison.Ordinal) ? "trigger:" + side : side);
                 input.DeadZone = type == "zoneLow" ? t.Low : type == "zoneMed" ? t.Med : t.High;
+                input.Below(type == "zoneLow" ? t.Med : type == "zoneMed" ? t.High : 0);
             }
         }
 
@@ -1444,7 +1554,7 @@ namespace PadForge.Common.ConfigImport
             foreach (var mapping in Arr(_root, "mappings"))
             {
                 if (!Has(mapping, "condition", out var c) || !Has(c, "mask", out var m)) continue;
-                if (Int(c, "shiftId") != shift || Int(m, "id") != maskId) continue;
+                if (ShiftIdOf(c) != shift || Int(m, "id") != maskId) continue;
                 if (Has(m, "activator", out var a) && Str(a, "type") == "long")
                     return ParamInt(a, "longwaittime", fallback);
             }
@@ -1473,7 +1583,7 @@ namespace PadForge.Common.ConfigImport
             string control = ControlOf(inputs);
             string label = !string.IsNullOrWhiteSpace(description)
                 ? description.Trim()
-                : string.Join(", ", steps.Where(s => s.Kind == StepKind.Output).Select(s => s.Output.Label));
+                : string.Join(", ", steps.Select(s => s.Kind == StepKind.Output ? s.Output.Label : s.Label).Where(l => !string.IsNullOrEmpty(l)));
             if (string.IsNullOrEmpty(label)) label = LabelOf(inputs);
             int padId = steps.Where(s => s.Kind == StepKind.Output && !s.Output.IsKbm).Select(s => s.Output.PadId).FirstOrDefault();
             if (padId == 0) padId = _firstVirtualId;
@@ -1482,9 +1592,6 @@ namespace PadForge.Common.ConfigImport
             var (trigger, holdMs, doubleMs, deferred) = TriggerFor(type, shift, maskId, activator);
             bool plain = steps.All(s => s.Kind == StepKind.Output && s.Action == null && !s.Pulse);
             bool expertMacro = Has(activator, "params", out var ps) && Flag(ps, "macro");
-
-            if (zone && inputs.Any(i => i.IsAnalog))
-                _b.Partial(ImportReasons.ZoneOutward, path, label, "");
 
             ImportMacro Macro(MacroTriggerMode m, MacroRepeatMode repeat, IReadOnlyList<ActionData> actions) => new()
             {
@@ -1512,12 +1619,17 @@ namespace PadForge.Common.ConfigImport
 
                 // What a row cannot carry takes the hold pair.
                 var macroKeys = steps.Select(s => s.Output).Where(o => !o.HasRow).ToList();
-                if (macroKeys.Count > 0)
+                var added = macroKeys.Where(o => o.Relative).Select(o => o.Add()).ToArray();
+                if (added.Length > 0)
                 {
-                    var held = macroKeys.Select(o => o.Down()).ToArray();
-                    _b.AddHoldPair(Macro(MacroTriggerMode.OnPress, MacroRepeatMode.Once, held), ImportBuilder.ReleaseOf(held));
+                    var adding = Macro(MacroTriggerMode.OnPress, MacroRepeatMode.UntilRelease, added);
+                    adding.RepeatDelayMs = 0;
+                    _b.AddMacro(adding);
                 }
-                if (!zone) _b.Clean(path, label, string.Join(", ", steps.Select(s => s.Output.Target)));
+                var held = macroKeys.Where(o => !o.Relative).Select(o => o.Down()).ToArray();
+                if (held.Length > 0)
+                    _b.AddHoldPair(Macro(MacroTriggerMode.OnPress, MacroRepeatMode.Once, held), ImportBuilder.ReleaseOf(held));
+                _b.Clean(path, label, string.Join(", ", steps.Select(s => s.Output.Target)));
                 return;
             }
 
@@ -1535,17 +1647,9 @@ namespace PadForge.Common.ConfigImport
 
             if (heldMode)
             {
-                if (deferred)
-                {
-                    // A Single or Short press fires after the button has
-                    // already been judged, often after it is released, so it
-                    // can only tap. The hold pair would latch with no release
-                    // left to clear it.
-                    _b.AddMacro(Macro(trigger, MacroRepeatMode.Once, tapSteps));
-                    if (plain) _b.Partial(ImportReasons.HeldAsTap, path, label, trigger.ToString());
-                    else _b.Clean(path, label, trigger.ToString());
-                    return;
-                }
+                // A Single or Short press beside another gesture fires once it
+                // is judged. If the button is still down it holds until the
+                // release, and if it is already up its pass is one tap.
                 LowerHeldSequence(steps, Macro(trigger, MacroRepeatMode.UntilRelease, null));
                 _b.Clean(path, label, trigger.ToString());
                 return;
@@ -1609,7 +1713,7 @@ namespace PadForge.Common.ConfigImport
                         if (up != null) actions.Add(up);
                         break;
                     default:
-                        actions.Add(s.Output.Tap());
+                        actions.Add(s.Output.Relative ? s.Output.Add(50) : s.Output.Tap());
                         break;
                 }
             }
@@ -1635,10 +1739,23 @@ namespace PadForge.Common.ConfigImport
                     if (up != null) down.Add(up);
                     continue;
                 }
-                // A pulsed output repeats on its own while the macro runs.
+                // A pulsed output repeats on its own while the macro runs. A
+                // relative one adds to the stick while its action is current,
+                // so the sequence has to come round again each frame.
+                if (s.Output.Relative)
+                {
+                    down.Add(s.Output.Add());
+                    press.RepeatDelayMs = 0;
+                    continue;
+                }
                 var held = (s.Pulse ? s.Output.Pulse(100) : null) ?? s.Output.Down() ?? s.Output.Tap();
                 down.Add(held);
             }
+            // A deferred press can fire with the button already up: its pass
+            // is then one tap, and this is how long that tap holds. Still
+            // down, it holds until the release.
+            if (press.Mode is MacroTriggerMode.SinglePress or MacroTriggerMode.ShortPress)
+                down.Add(new ActionData { Type = MacroActionType.Delay, DurationMs = 50 });
             press.Actions = down;
             _b.AddHoldPair(press, ImportBuilder.ReleaseOf(down));
         }
@@ -1651,6 +1768,28 @@ namespace PadForge.Common.ConfigImport
         private void LowerToggle(List<Step> steps, List<ActionData> tapSteps, ImportMacro macro, string type, string path, string label)
         {
             bool flips = steps.All(s => s.Kind == StepKind.Output && s.Action == null && s.Output.Flip() != null);
+            if (flips && type is "double" or "triple" or "long")
+            {
+                // reWASD's help: a toggle on these stops after one click. The
+                // click's macro runs ahead of the gesture's, so a gesture that
+                // turns it on is not cleared in the same frame.
+                var on = steps.Select(s => s.Output.Down()).ToArray();
+                _b.AddMacro(new ImportMacro
+                {
+                    Name = macro.Name,
+                    Control = macro.Control,
+                    Layer = macro.Layer,
+                    Inputs = macro.Inputs,
+                    Mode = MacroTriggerMode.OnPress,
+                    PadId = macro.PadId,
+                    Actions = ImportBuilder.ReleaseOf(on),
+                });
+                macro.Actions = on;
+                macro.Repeat = MacroRepeatMode.Once;
+                _b.AddMacro(macro);
+                _b.Clean(path, label, "Toggle");
+                return;
+            }
             if (flips)
             {
                 macro.Actions = steps.Select(s => s.Output.Flip()).ToArray();
@@ -1659,15 +1798,16 @@ namespace PadForge.Common.ConfigImport
             }
             else
             {
+                // reWASD's help again: a sequence toggled on single loops until
+                // the next single press, and on a gesture it stops after one
+                // click.
+                bool gesture = type is "double" or "triple" or "long";
                 if (type == "single") macro.Mode = MacroTriggerMode.Toggle;
-                macro.Repeat = MacroRepeatMode.UntilRelease;
+                macro.Repeat = gesture ? MacroRepeatMode.UntilNextPress : MacroRepeatMode.UntilRelease;
                 macro.Actions = tapSteps;
                 _b.AddMacro(macro);
             }
-            if (type is "double" or "triple" or "long")
-                _b.Partial(ImportReasons.ToggleSameGesture, path, label, "Toggle");
-            else
-                _b.Clean(path, label, "Toggle");
+            _b.Clean(path, label, "Toggle");
         }
 
         // ── Jumps ───────────────────────────────────────────────────────
@@ -1737,16 +1877,20 @@ namespace PadForge.Common.ConfigImport
 
         private void LowerRegion(JsonElement region, string layer, List<ImportInput> inputs, string path, string description)
         {
-            int width = Math.Max(0, Int(region, "x2") - Int(region, "x1"));
-            int height = Math.Max(0, Int(region, "y2") - Int(region, "y1"));
-            int insetX = Math.Max(0, (GetSystemMetrics(0) - width) / 2);
-            int insetY = Math.Max(0, (GetSystemMetrics(1) - height) / 2);
+            int x1 = Int(region, "x1"), x2 = Int(region, "x2"), y1 = Int(region, "y1"), y2 = Int(region, "y2");
+            int screenWidth = GetSystemMetrics(0), screenHeight = GetSystemMetrics(1);
+            int insetX = Math.Max(0, (screenWidth - Math.Max(0, x2 - x1)) / 2);
+            int insetY = Math.Max(0, (screenHeight - Math.Max(0, y2 - y1)) / 2);
+            int offsetX = (x1 + x2 - screenWidth) / 2;
+            int offsetY = (y1 + y2 - screenHeight) / 2;
             ActionData Clamp(MacroLatchDirection d) => new()
             {
                 Type = MacroActionType.MouseLimitRegion,
                 CursorClampMode = CursorClampMode.XAndY,
                 CursorClampInsetX = insetX,
                 CursorClampInsetY = insetY,
+                CursorClampOffsetX = offsetX,
+                CursorClampOffsetY = offsetY,
                 LatchDirection = d,
             };
             string label = string.IsNullOrWhiteSpace(description) ? "Mouse region" : description.Trim();
@@ -1760,7 +1904,7 @@ namespace PadForge.Common.ConfigImport
                 PadId = _firstVirtualId,
                 Actions = new[] { Clamp(MacroLatchDirection.On) },
             }, new[] { Clamp(MacroLatchDirection.Off) });
-            _b.Partial(ImportReasons.RegionCentered, path, label, "MouseLimitRegion");
+            _b.Clean(path, label, "MouseLimitRegion");
         }
 
         // ── Radial menus ────────────────────────────────────────────────
@@ -1814,6 +1958,7 @@ namespace PadForge.Common.ConfigImport
                 if (leaves.Count == 0) continue;
 
                 int shift = RadialShiftOf(leaves);
+                if (shift < 0) continue;
                 string layer = LayerOf(shift);
                 var menu = new MenuDefinitionEntry
                 {
@@ -1846,8 +1991,12 @@ namespace PadForge.Common.ConfigImport
                     LowerSector(circleId, leaves[i], menuId, i + 1, shift);
                 }
                 _b.AddMenu(menu);
-                _b.Partial(flattened ? ImportReasons.RadialFlattened : ImportReasons.RadialMenu,
-                    _b.LayerName(layer), menu.Name, "Menu " + menuId);
+                if (flattened)
+                    _b.Partial(ImportReasons.RadialFlattened, _b.LayerName(layer), menu.Name, "Menu " + menuId);
+                else if (FileNamesRadialApply())
+                    _b.Partial(ImportReasons.RadialMenu, _b.LayerName(layer), menu.Name, "Menu " + menuId);
+                else
+                    _b.Clean(_b.LayerName(layer), menu.Name, "Menu " + menuId);
                 menuId++;
             }
         }
@@ -1879,6 +2028,13 @@ namespace PadForge.Common.ConfigImport
             }
         }
 
+        /// <summary>True when a mapping presses reWASD's Apply command. With
+        /// none, a menu commits the way PadForge's does.</summary>
+        private bool FileNamesRadialApply()
+            => _commands.Values.Any(c => Int(c, "type") == 132)
+               && Arr(_root, "mappings").Any(m => Arr(m, "macros").Any(s => Has(s, "command", out var cmd)
+                   && _commands.TryGetValue(Int(cmd, "id"), out var c) && Int(c, "type") == 132));
+
         private int RadialShiftOf(List<int> sectorIds)
         {
             int firstOrder = int.MaxValue;
@@ -1893,14 +2049,15 @@ namespace PadForge.Common.ConfigImport
                     if (order < firstOrder && Has(mapping, "condition", out var c))
                     {
                         firstOrder = order;
-                        shift = Int(c, "shiftId");
+                        shift = ShiftIdOf(c);
                     }
                 }
             }
             if (firstOrder != int.MaxValue) return shift;
             foreach (var kv in _shiftType)
                 if (kv.Value == "radialMenu") return kv.Key;
-            return 0;
+            // Only an unused radial layer is left, and it is not imported.
+            return _shiftAs.ContainsValue(-1) ? -1 : 0;
         }
 
         /// <summary>A sector's mappings read the menu item's fire. They live
@@ -1939,16 +2096,23 @@ namespace PadForge.Common.ConfigImport
             {
                 if (Str(h, "name") != "gamepad")
                 {
-                    // A mouse's own speed and scroll, a keyboard's analog keys.
-                    if (Has(h, "default", out var own))
-                        foreach (var key in Arr(own, "analogButtons"))
-                            _b.Skipped(ImportReasons.AnalogActuation, Str(key, "name") ?? "", "");
+                    // A mouse's own speed and scroll, a keyboard's analog keys,
+                    // which the schema keeps as actuationButtons.
+                    var keyScopes = Arr(h, "shifts").ToList();
+                    if (Has(h, "default", out var own)) keyScopes.Insert(0, own);
+                    foreach (var keyScope in keyScopes)
+                        foreach (var key in Arr(keyScope, "actuationButtons").Concat(Arr(keyScope, "analogButtons")))
+                            _b.Skipped(ImportReasons.AnalogActuation, KeyLabel(key), "");
                     if (Has(h, "mouse", out _) || (Has(h, "default", out var scope) && (Has(scope, "stick", out _) || Has(scope, "scrolls", out _))))
                         _b.Partial(ImportReasons.ControllerSetting, "Mouse", "", "", "mouse");
                     continue;
                 }
                 if (Has(h, "default", out var def)) ReadTuningScope(def, 0);
-                foreach (var scope in Arr(h, "shifts")) ReadTuningScope(scope, Int(scope, "shiftId"));
+                foreach (var scope in Arr(h, "shifts"))
+                {
+                    int shift = ShiftIdOf(scope);
+                    if (shift >= 0) ReadTuningScope(scope, shift);
+                }
             }
         }
 
@@ -1982,26 +2146,37 @@ namespace PadForge.Common.ConfigImport
                     int percent = (int)Math.Clamp(Math.Round(value * 100.0 / 32767.0), 1, 99);
                     switch (Str(z, "name"))
                     {
-                        case "low":
-                            t.Low = percent;
-                            t.Inner = percent / 100.0;
-                            break;
+                        // Where zone mappings fire. reWASD's help: zones
+                        // change nothing the game reads, and its dead zone
+                        // reaches the game only with "Affect gamepad behavior
+                        // for games", which a stick in this schema cannot set.
+                        case "low": t.Low = percent; break;
                         case "med": t.Med = percent; break;
                         case "high": t.High = percent; break;
                     }
                 }
                 if (Has(st, "curves", out var curves) && Has(curves, "points", out var points))
                 {
-                    double e = FitExponent(points, out int count);
-                    if (e > 0)
+                    string prefix = name == "left" ? "Left" : "Right";
+                    string across = CurvePoints(points, "horizontal"), up = CurvePoints(points, "vertical") ?? across;
+                    across ??= up;
+                    if (across != null && shift == 0)
                     {
-                        t.CurveExponent = e;
-                        _b.Partial(ImportReasons.CurveFitted, Scoped(StickLabel(name)), "Curve",
-                            e.ToString("0.##", CultureInfo.InvariantCulture), count.ToString(CultureInfo.InvariantCulture));
+                        // The file's own points, on the device's curve cards.
+                        _b.Curves[prefix + "ThumbAxisX"] = across;
+                        _b.Curves[prefix + "ThumbAxisY"] = up;
+                        _b.Clean(Scoped(StickLabel(name)), "Curve", "");
+                    }
+                    else if (across != null)
+                    {
+                        // A device has one curve card, and this one belongs to
+                        // a layer, so it rides the layer's rows as a power curve.
+                        t.CurveExponent = FitExponent(points, out _);
+                        _b.Partial(ImportReasons.ControllerSetting, Scoped(StickLabel(name)), "Curve", "", "curves");
                     }
                 }
                 _tuning[(shift, name)] = t;
-                if (Has(st, "sensitivity", out _) || t.RotationDeg != 0 || t.Inner > 0)
+                if (Has(st, "sensitivity", out _) || t.RotationDeg != 0 || Arr(st, "zones").Any())
                     _b.Clean(Scoped(StickLabel(name)), "Tuning", "");
             }
 
@@ -2009,7 +2184,11 @@ namespace PadForge.Common.ConfigImport
             {
                 string name = Str(tr, "name") ?? "";
                 if (name is not ("left" or "right")) continue;
-                NoteLeftovers(tr, Scoped(name == "left" ? "Left trigger" : "Right trigger"), "name", "zones");
+                NoteLeftovers(tr, Scoped(name == "left" ? "Left trigger" : "Right trigger"), "name", "zones", "affectHardware");
+                // reWASD's help: "Affect gamepad behavior for games" puts the
+                // dead zone on the trigger the game reads, and changes nothing
+                // else. Without it the zones only place zone mappings.
+                bool affectsGame = Flag(tr, "affectHardware");
                 var src = new MappingSource();
                 var zones = new StickTuning();
                 foreach (var z in Arr(tr, "zones"))
@@ -2020,15 +2199,17 @@ namespace PadForge.Common.ConfigImport
                     {
                         case "low":
                             zones.Low = percent;
-                            src.ParamStickDeadZoneShape = 1;
-                            src.ParamStickDeadZoneInner = Math.Clamp(value / 32767.0, 0.0, 0.99);
+                            if (affectsGame)
+                            {
+                                src.ParamStickDeadZoneShape = 1;
+                                src.ParamStickDeadZoneInner = Math.Clamp(value / 32767.0, 0.0, 0.99);
+                            }
                             break;
                         case "med":
                             zones.Med = percent;
                             break;
                         case "high":
                             zones.High = percent;
-                            src.ParamRangeOuter = Math.Clamp(value / 32767.0, 0.01, 1.0);
                             break;
                     }
                 }
@@ -2038,7 +2219,7 @@ namespace PadForge.Common.ConfigImport
             }
 
             foreach (var key in Arr(scope, "analogButtons"))
-                _b.Skipped(ImportReasons.AnalogActuation, Scoped(Str(key, "name") ?? ""), "");
+                _b.Skipped(ImportReasons.AnalogActuation, Scoped(KeyLabel(key)), "");
 
             // A touchpad's mode and glide are what nearly every file writes
             // without anyone having set them.
@@ -2050,6 +2231,71 @@ namespace PadForge.Common.ConfigImport
 
         private static string StickLabel(string name) => name == "left" ? "Left stick" : "Right stick";
 
+        /// <summary>An analog key's name: the file's description, else its
+        /// id. The schema has no name field.</summary>
+        private static string KeyLabel(JsonElement key)
+            => Str(key, "description") ?? Int(key, "buttonId").ToString(CultureInfo.InvariantCulture);
+
+        /// <summary>A virtual stick's own settings, per layer.</summary>
+        private void ReadVirtualSticks()
+        {
+            foreach (var (pad, id) in _virtualPads)
+            {
+                if (Has(pad, "default", out var def)) ReadVirtualScope(def, 0, id);
+                foreach (var scope in Arr(pad, "shifts"))
+                {
+                    int shift = ShiftIdOf(scope);
+                    if (shift >= 0) ReadVirtualScope(scope, shift, id);
+                }
+            }
+        }
+
+        /// <summary>Initial and maximum deflection are the range a virtual
+        /// stick's output moves in, in raw axis units of 32767: the public
+        /// samples write 6038 to 32767, and a layer that tops the left stick
+        /// at 17918 is a walk. The Y fields follow X unless the file sets
+        /// them apart, reWASD's "same settings for X and Y". A layer's entry
+        /// stands whole, the fields it leaves out at reWASD's defaults.</summary>
+        private void ReadVirtualScope(JsonElement scope, int shift, int padId)
+        {
+            string layer = LayerOf(shift);
+            if (!_b.HasLayer(layer)) return;
+            foreach (var st in Arr(scope, "sticks"))
+            {
+                string stick = Str(st, "name") ?? "";
+                bool shaped = stick is "left" or "right";
+                string path = PathOf(shift, shaped ? StickLabel(stick) : stick);
+                var props = Names(st).ToList();
+                bool Shakes(string n) => n.StartsWith("jitter", StringComparison.Ordinal)
+                                         || n.StartsWith("shaking", StringComparison.Ordinal);
+                bool Range(string n) => shaped && n is "initialDeflection" or "initialDeflectionY" or "maxDeflection" or "maxDeflectionY";
+                if (props.Any(Shakes))
+                    _b.Skipped(ImportReasons.JitterShaking, path, "");
+                if (props.Any(Range))
+                {
+                    int ix = Int(st, "initialDeflection"), iy = Int(st, "initialDeflectionY", ix);
+                    int mx = Int(st, "maxDeflection", 32767), my = Int(st, "maxDeflectionY", mx);
+                    string prefix = stick == "left" ? "Left" : "Right";
+                    Shape(prefix + "ThumbAxisX", ix, mx);
+                    Shape(prefix + "ThumbAxisY", iy, my);
+                    _b.Clean(path, "Deflection range", "AxisScale");
+                }
+                var left = props.Where(n => n != "name" && !Shakes(n) && !Range(n)).ToList();
+                if (left.Count > 0)
+                    _b.Partial(ImportReasons.ControllerSetting, path, "", "", string.Join(", ", left));
+            }
+
+            void Shape(string target, int initial, int max)
+            {
+                max = Math.Clamp(max, 1, 32767);
+                initial = Math.Clamp(initial, 0, max);
+                // The source's anti-deadzone floors the shaped value, and the
+                // Scale Axis multiplies it, so the floor is initial / max for
+                // the output to start at initial and top out at max.
+                _b.StickShape(layer, target, Math.Min(0.99, initial / (double)max), max / 32767.0, padId);
+            }
+        }
+
         /// <summary>One line naming whatever an element holds past what the
         /// importer reads, so nothing a file set goes unmentioned.</summary>
         private void NoteLeftovers(JsonElement e, string path, params string[] read)
@@ -2057,6 +2303,28 @@ namespace PadForge.Common.ConfigImport
             var left = Names(e).Where(n => !read.Contains(n)).ToList();
             if (left.Count > 0)
                 _b.Partial(ImportReasons.ControllerSetting, path, "", "", string.Join(", ", left));
+        }
+
+        /// <summary>A file's curve points in the card's format, 0 to 1 on both
+        /// sides, from the center out. Null when it names too few.</summary>
+        private static string CurvePoints(JsonElement points, string side)
+        {
+            if (!Has(points, side, out var list) || list.ValueKind != JsonValueKind.Array) return null;
+            var pts = list.EnumerateArray()
+                .Select(p => (Travel: (double)Int(p, "travel"), Value: (double)Int(p, "value")))
+                .Where(p => p.Travel >= 0 && p.Value >= 0)
+                .OrderBy(p => p.Travel)
+                .ToList();
+            if (pts.Count < 2 || pts[^1].Travel <= 0 || pts[^1].Value <= 0) return null;
+            double maxTravel = pts[^1].Travel, maxValue = pts[^1].Value;
+            var parts = new List<string>(pts.Count + 1);
+            if (pts[0].Travel > 0) parts.Add("0,0");
+            foreach (var (travel, value) in pts)
+            {
+                parts.Add((travel / maxTravel).ToString("0.####", CultureInfo.InvariantCulture) + ","
+                        + (value / maxValue).ToString("0.####", CultureInfo.InvariantCulture));
+            }
+            return string.Join(";", parts);
         }
 
         /// <summary>The exponent nearest a curve's points, least squares in log
@@ -2099,7 +2367,11 @@ namespace PadForge.Common.ConfigImport
         {
             if (!Has(_root, "config", out var cfg) || !Has(cfg, "led", out var led)) return;
             if (Has(led, "default", out var def)) LowerLed(def, 0);
-            foreach (var s in Arr(led, "shifts")) LowerLed(s, Int(s, "shiftId"));
+            foreach (var s in Arr(led, "shifts"))
+            {
+                int shift = ShiftIdOf(s);
+                if (shift >= 0) LowerLed(s, shift);
+            }
         }
 
         private void LowerLed(JsonElement led, int shift)
@@ -2116,36 +2388,48 @@ namespace PadForge.Common.ConfigImport
                 break;
             }
 
-            ActionData action;
+            var (r, g, b) = color == null ? ((byte)255, (byte)255, (byte)255) : (color.LightbarR, color.LightbarG, color.LightbarB);
+            var pattern = new List<ActionData>();
             switch (mode)
             {
                 case "rainbow":
-                    action = new ActionData { Type = MacroActionType.LightbarModeSet, LightbarTargetMode = LightbarMode.Rainbow };
+                    pattern = ImportBuilder.RainbowPattern(6000);
                     break;
                 case "breath":
-                    action = new ActionData { Type = MacroActionType.LightbarModeSet, LightbarTargetMode = LightbarMode.Breathing };
+                    // Up through three steps, then a long fade back down.
+                    pattern.AddRange(ImportBuilder.LightStep((byte)(r / 4), (byte)(g / 4), (byte)(b / 4), 700, 0, 500));
+                    pattern.AddRange(ImportBuilder.LightStep((byte)(r / 2), (byte)(g / 2), (byte)(b / 2), 700, 0, 500));
+                    pattern.AddRange(ImportBuilder.LightStep(r, g, b, 200, 1500, 1700));
+                    break;
+                case "heartbeat":
+                    pattern.AddRange(ImportBuilder.LightStep(r, g, b, 60, 140, 200));
+                    pattern.AddRange(ImportBuilder.LightStep(r, g, b, 60, 240, 900));
+                    break;
+                case "stroboscope":
+                    pattern.AddRange(ImportBuilder.LightStep(r, g, b, 150, 0, 100));
+                    pattern.AddRange(ImportBuilder.LightStep(0, 0, 0, 150, 0, 100));
+                    break;
+                case "shimmer":
+                    pattern.AddRange(ImportBuilder.LightStep(r, g, b, 250, 0, 150));
+                    pattern.AddRange(ImportBuilder.LightStep((byte)(r * 3 / 4), (byte)(g * 3 / 4), (byte)(b * 3 / 4), 250, 0, 150));
                     break;
                 default:
-                    action = color;
+                    if (color != null) pattern.Add(color);
                     break;
             }
-            if (action == null) return;
+            if (pattern.Count == 0) return;
 
             _b.AddMacro(new ImportMacro
             {
                 Name = "Lightbar",
                 Control = "lightbar",
-                RunsBesideLayers = true,
+                RunsBesideLayers = pattern.Count == 1,
                 Layer = layer,
                 Mode = MacroTriggerMode.Always,
                 PadId = _firstVirtualId,
-                Actions = new[] { action },
+                Actions = pattern,
             });
-
-            if (mode is "solid" or "rainbow")
-                _b.Clean(path, mode, action.Type.ToString());
-            else
-                _b.Partial(ImportReasons.LedShownAs, path, mode, action.Type.ToString(), mode);
+            _b.Clean(path, mode, "LightbarColor");
         }
 
         // ── What the file has and a profile does not ────────────────────

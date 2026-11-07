@@ -206,6 +206,24 @@ namespace PadForge.Engine.Data
         /// <see cref="WorkshopLeftStickDeadZoneShape"/>.</summary>
         [XmlAttribute] public string WorkshopRightStickDeadZoneShape { get; set; } = "";
 
+        /// <summary>Response curves for the slot's sticks and triggers, the
+        /// card's own point format, written <c>Target=points</c> and joined by
+        /// <c>|</c> (#561). They land on the device's curve cards at
+        /// assignment.</summary>
+        [XmlAttribute] public string WorkshopCurves { get; set; } = "";
+
+        /// <summary>A rumble strength under 100 percent for both motors, as
+        /// text (#561). Empty means none.</summary>
+        [XmlAttribute] public string WorkshopRumblePercent { get; set; } = "";
+
+        /// <summary>Seconds of no input before a Bluetooth controller is let
+        /// go, as text (#561). Empty means none.</summary>
+        [XmlAttribute] public string WorkshopIdleDisconnectSeconds { get; set; } = "";
+
+        /// <summary>The device's battery light colors from an import (#561),
+        /// empty then full, written <c>r,g,b;r,g,b</c>. Empty means none.</summary>
+        [XmlAttribute] public string WorkshopBatteryColors { get; set; } = "";
+
         /// <summary>Steam gyro_button as a device-free engage descriptor
         /// (empty DeviceGuid contract): gyro rows fire only while it is
         /// held. Only read when <see cref="Authoritative"/>.</summary>
@@ -261,6 +279,10 @@ namespace PadForge.Engine.Data
         public void CopyWorkshopStampsTo(MappingSet dst)
         {
             if (dst == null) return;
+            dst.WorkshopCurves = WorkshopCurves ?? "";
+            dst.WorkshopRumblePercent = WorkshopRumblePercent ?? "";
+            dst.WorkshopIdleDisconnectSeconds = WorkshopIdleDisconnectSeconds ?? "";
+            dst.WorkshopBatteryColors = WorkshopBatteryColors ?? "";
             dst.WorkshopLeftStickDeadZoneShape = WorkshopLeftStickDeadZoneShape ?? "";
             dst.WorkshopRightStickDeadZoneShape = WorkshopRightStickDeadZoneShape ?? "";
             dst.WorkshopGyroEngageDescriptor = WorkshopGyroEngageDescriptor ?? "";

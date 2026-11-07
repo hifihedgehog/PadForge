@@ -68,6 +68,21 @@ namespace PadForge.Tests
 
         private static ActionData Only(MacroData m) => Assert.Single(m.Actions);
 
+        private static CustomInputState Centered()
+        {
+            var state = new CustomInputState();
+            for (int i = 0; i < state.Axis.Length; i++) state.Axis[i] = 32768;
+            return state;
+        }
+
+        // A stick pushed this percent of the way up or right.
+        private static int Up(int percent) => 32768 - 32767 * percent / 100;
+        private static int Right(int percent) => 32768 + 32767 * percent / 100;
+
+        // A row's read of one source, its gate included.
+        private static bool ButtonRead(CustomInputState state, MappingSource src)
+            => SourceEvaluator.EvaluateForButtonTarget(state, src, 50, 0, "KbmKey20", 0, null, 0, "");
+
         // ── Which slots a file makes ────────────────────────────────────
 
         [Theory]
@@ -214,6 +229,45 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void AnUnmappedKeyNoRowReads_TakesABlockTheHookHoldsBack()
+        {
+            // No row reads this key, so Consume Mapped Inputs would pass it.
+            // An empty macro that consumes its trigger is what the hook eats.
+            var r = Import(File(mappings: """[{"condition":{"hardware":{"deviceId":11,"buttonId":30,"description":"DIK_A"}},"hardware":{"unmap":true}}]"""));
+            var md = Assert.Single(r.Profile.Macros);
+            Assert.StartsWith("Block ", md.Name);
+            Assert.True(md.ConsumeTriggerButtons);
+            Assert.Empty(md.Actions);
+            var item = SettingsService.LoadMacroFromData(md, VirtualControllerType.Xbox, null);
+            Assert.True(InputService.MacroTriggerConsumesKey(item, Guid.Parse(ImportBuilder.AllKeyboardsGuid), out int vk));
+            Assert.Equal(0x41, vk);
+            // The keyboard lands on the macro's slot, where the hook looks.
+            Assert.Contains(r.Profile.Entries, e => e.InstanceGuid == Guid.Parse(ImportBuilder.AllKeyboardsGuid) && e.MapTo == md.PadIndex);
+        }
+
+        [Fact]
+        public void AnUnmappedKeyARowReads_TakesNoBlock()
+        {
+            // The row's read is held back already, and a block would stop the
+            // row while the key is down.
+            var r = Import(File(masks: "[" + Mask(1, 11, 30) + "]", mappings: "[" + Map(1, "[{\"gamepad\":{\"id\":1,\"buttonId\":1}}]") + ","
+                + """{"condition":{"hardware":{"deviceId":11,"buttonId":30,"description":"DIK_A"}},"hardware":{"unmap":true}}]"""));
+            Assert.NotNull(Row(r.Profile, "ButtonA"));
+            Assert.DoesNotContain(r.Profile.Macros, m => m.ConsumeTriggerButtons);
+            Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.ConsumeKeys);
+        }
+
+        [Fact]
+        public void UnmappedMouseMovement_HasItsOwnLine()
+        {
+            // The hook holds back keys and mouse buttons, never movement.
+            var r = Import(File(mappings: """[{"condition":{"hardware":{"deviceId":23,"stick":"mouse","axis":"x"}},"hardware":{"unmap":true}}]"""));
+            Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.MouseMovement);
+            Assert.DoesNotContain(r.Report.Entries, e => e.ReasonKey == ImportReasons.ConsumeKeys);
+            Assert.DoesNotContain(r.Profile.Macros, m => m.ConsumeTriggerButtons);
+        }
+
+        [Fact]
         public void KeyboardRemap_IsAKeyRow()
         {
             var p = Profile(File(mappings: """[{"condition":{"hardware":{"deviceId":11,"buttonId":30}},"hardware":{"buttonId":31}}]"""));
@@ -223,10 +277,17 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void TwoHardwarePads_SayTheyShareTheSlot()
+        public void TwoHardwarePads_SayTheyShareTheSlot_OnlyWhenTheMappingsTellThemApart()
         {
-            var r = Import(File(hardware: """[{"id":1,"name":"gamepad","convertToVirtual":true},{"id":2,"name":"gamepad","convertToVirtual":true}]"""));
-            Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.SharedControllers);
+            const string TwoPads = """[{"id":1,"name":"gamepad","convertToVirtual":true},{"id":2,"name":"gamepad","convertToVirtual":true}]""";
+            var apart = Import(File(hardware: TwoPads,
+                masks: "[" + Mask(1, 1, 1) + "," + Mask(2, 2, 1) + "]",
+                mappings: "[" + Map(1, "[" + Key(57) + "]") + "," + Map(2, "[" + Key(28) + "]") + "]"));
+            Assert.Contains(apart.Report.Entries, e => e.ReasonKey == ImportReasons.SharedControllers);
+
+            var same = Import(File(hardware: TwoPads, masks: "[" + Mask(1, 1, 1) + "]",
+                mappings: "[" + Map(1, "[" + Key(57) + "]") + "]"));
+            Assert.DoesNotContain(same.Report.Entries, e => e.ReasonKey == ImportReasons.SharedControllers);
         }
 
         // ── Inputs ──────────────────────────────────────────────────────
@@ -439,11 +500,19 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void RelativeStickValue_SaysItSets()
+        public void RelativeStickValue_AddsToTheStickWhileHeld()
         {
             var r = Import(File(masks: "[" + Mask(1, 11, 30) + "]",
                 mappings: "[" + Map(1, """[{"gamepad":{"id":1,"buttonId":43,"absolute":false,"compensation":true,"value":1000}}]""") + "]"));
-            Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.StickAdded);
+            var m = Assert.Single(r.Profile.Macros);
+            Assert.Equal(MacroTriggerMode.OnPress, m.TriggerMode);
+            Assert.Equal(MacroRepeatMode.UntilRelease, m.RepeatMode);
+            Assert.Equal(0, m.RepeatDelayMs);
+            var a = Only(m);
+            Assert.Equal(MacroActionType.AxisAdd, a.Type);
+            Assert.Equal(MacroAxisTarget.LeftStickX, a.AxisTarget);
+            Assert.True(a.AxisValue > 0);
+            Assert.Equal(0, r.Report.PartialCount + r.Report.SkippedCount);
         }
 
         [Theory]
@@ -558,11 +627,11 @@ namespace PadForge.Tests
             var p = Profile(File(masks: "[" + Mask(1, 1, 1) + "]", mappings: "["
                 + Map(1, "[" + Key(57) + "]") + "," + Map(1, "[" + Key(28) + "]", type: "double") + "]"));
             Assert.Null(Row(p, "KbmKey20"));
-            var single = p.Macros.First(m => m.Actions.Any(a => a.KeyCode == 0x20));
-            Assert.Equal(MacroTriggerMode.SinglePress, single.TriggerMode);
-            Assert.Equal(MacroActionType.KeyPress, Only(single).Type);
-            var dbl = p.Macros.First(m => m.Actions.Any(a => a.KeyCode == 0x0D));
-            Assert.Equal(MacroTriggerMode.DoublePress, dbl.TriggerMode);
+            var single = p.Macros.First(m => m.TriggerMode == MacroTriggerMode.SinglePress);
+            Assert.Equal(MacroActionType.ToggleKey, single.Actions[0].Type);
+            Assert.Equal(0x20, single.Actions[0].KeyCode);
+            var dbl = p.Macros.First(m => m.TriggerMode == MacroTriggerMode.DoublePress);
+            Assert.Equal(0x0D, dbl.Actions[0].KeyCode);
         }
 
         [Fact]
@@ -578,11 +647,21 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void HeldSingleBesideAGesture_SaysItTaps()
+        public void HeldSingleBesideAGesture_HoldsUntilTheRelease()
         {
             var r = Import(File(masks: "[" + Mask(1, 1, 1) + "]", mappings: "["
                 + Map(1, "[" + Key(57) + "]") + "," + Map(1, "[" + Key(28) + "]", type: "double") + "]"));
-            Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.HeldAsTap);
+            var press = r.Profile.Macros.First(m => m.TriggerMode == MacroTriggerMode.SinglePress);
+            Assert.Equal(MacroRepeatMode.UntilRelease, press.RepeatMode);
+            Assert.Equal(MacroLatchDirection.On, press.Actions[0].LatchDirection);
+            Assert.Equal(0x20, press.Actions[0].KeyCode);
+            // Fired with the button already up, the pass is one tap this long.
+            Assert.Equal(MacroActionType.Delay, press.Actions[^1].Type);
+            Assert.Equal(50, press.Actions[^1].DurationMs);
+            var twin = r.Profile.Macros.Single(m => m.PairId == press.PairId && !ReferenceEquals(m, press));
+            Assert.Equal(MacroTriggerMode.OnRelease, twin.TriggerMode);
+            Assert.Equal(MacroLatchDirection.Off, Only(twin).LatchDirection);
+            Assert.Equal(0, r.Report.PartialCount + r.Report.SkippedCount);
         }
 
         [Fact]
@@ -626,11 +705,28 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void ToggleOnALongPress_SaysTheSameGestureStopsIt()
+        public void ToggleOnALongPress_TheNextPressTurnsItOff()
         {
             var r = Import(File(masks: "[" + Mask(1, 1, 1) + "]",
                 mappings: "[" + Map(1, "[" + Key(57) + "]", type: "long", mode: "toggle") + "]"));
-            Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.ToggleSameGesture);
+            Assert.Equal(2, r.Profile.Macros.Length);
+            var off = r.Profile.Macros[0];
+            Assert.Equal(MacroTriggerMode.OnPress, off.TriggerMode);
+            Assert.Equal(MacroLatchDirection.Off, Only(off).LatchDirection);
+            var on = r.Profile.Macros[1];
+            Assert.Equal(MacroTriggerMode.HoldForMs, on.TriggerMode);
+            Assert.Equal(MacroLatchDirection.On, Only(on).LatchDirection);
+            Assert.Equal(0, r.Report.PartialCount + r.Report.SkippedCount);
+        }
+
+        [Fact]
+        public void ToggledSequenceOnALongPress_RunsUntilTheNextPress()
+        {
+            var r = Import(File(masks: "[" + Mask(1, 1, 1) + "]",
+                mappings: "[" + Map(1, "[" + Key(57) + """,{"pause":{"value":50}},""" + Key(28) + "]", type: "long", mode: "toggle") + "]"));
+            var m = r.Profile.Macros.Single(x => x.TriggerMode == MacroTriggerMode.HoldForMs);
+            Assert.Equal(MacroRepeatMode.UntilNextPress, m.RepeatMode);
+            Assert.Equal(0, r.Report.PartialCount + r.Report.SkippedCount);
         }
 
         [Fact]
@@ -748,50 +844,97 @@ namespace PadForge.Tests
             => Assert.Equal(MacroActionType.GyroRecenter, Only(Assert.Single(Command(type, "x").Profile.Macros)).Type);
 
         [Theory]
-        [InlineData(7)]
-        [InlineData(8)]
-        [InlineData(9)]
-        [InlineData(13)]
-        [InlineData(17)]
-        public void PowerCommands_NeverBecomeActions(int type)
+        [InlineData(7, "shutdown.exe", "/l")]
+        [InlineData(8, "shutdown.exe", "/s /t 0")]
+        [InlineData(13, "shutdown.exe", "/h")]
+        [InlineData(17, "shutdown.exe", "/r /t 0")]
+        public void PowerCommands_RunWindowsOwnCommand_AndThePreviewNamesThem(int type, string program, string args)
         {
-            var r = Command(type, "COMMAND_SHUTDOWN");
-            Assert.Empty(r.Profile.Macros);
-            Assert.Contains(r.Report.Entries, e => e.Status == TranslationStatus.Skipped && e.ReasonKey == ImportReasons.SystemCommand);
+            var r = Command(type, "COMMAND_POWER");
+            var m = Assert.Single(r.Profile.Macros);
+            var a = Only(m);
+            Assert.Equal(MacroActionType.RunProgram, a.Type);
+            Assert.Equal(program, a.ProgramPath);
+            Assert.Equal(args, a.ProgramArgs);
+            Assert.Contains("COMMAND_POWER", r.Runs);
+            Assert.Equal(0, r.Report.PartialCount + r.Report.SkippedCount);
         }
 
         [Fact]
-        public void AppLaunchCommand_NeverRuns_AndShowsThePath()
+        public void SleepCommand_Suspends()
         {
-            var r = Command(1000, "x", ""","params":{"path":"C:\\evil\\app.exe"}""");
-            Assert.Empty(r.Profile.Macros);
-            var line = Assert.Single(r.Report.Entries, e => e.ReasonKey == ImportReasons.ProgramNotRun);
-            Assert.Contains("C:\\evil\\app.exe", line.ReasonArgs);
-            Assert.DoesNotContain(r.Profile.Macros, m => m.Actions.Any(a => a.Type == MacroActionType.RunProgram));
+            var a = Only(Assert.Single(Command(9, "COMMAND_SLEEP").Profile.Macros));
+            Assert.Equal("powershell.exe", a.ProgramPath);
+            Assert.Contains("SetSuspendState('Suspend'", a.ProgramArgs);
         }
 
         [Fact]
-        public void CloseTaskCommand_SendsAltF4AndSaysSo()
+        public void AppLaunchCommand_RunsItsProgram_OnlyWhenPressed_AndThePreviewNamesIt()
+        {
+            var r = Command(1000, "x", ""","params":{"path":"C:\\Games\\tool.exe"}""");
+            var m = Assert.Single(r.Profile.Macros);
+            var a = Only(m);
+            Assert.Equal(MacroActionType.RunProgram, a.Type);
+            Assert.Equal("C:\\Games\\tool.exe", a.ProgramPath);
+            Assert.Contains("C:\\Games\\tool.exe", r.Runs);
+            Assert.NotEqual(MacroTriggerMode.Always, m.TriggerMode);
+            Assert.False(string.IsNullOrEmpty(m.TriggerInputs));
+            Assert.Equal(0, r.Report.PartialCount + r.Report.SkippedCount);
+        }
+
+        [Fact]
+        public void CloseTaskCommand_SendsAltF4()
         {
             var r = Command(12, "COMMAND_CLOSE_ACTIVE_TASK");
             var a = Only(Assert.Single(r.Profile.Macros));
             Assert.Equal(MacroActionType.KeyPress, a.Type);
             Assert.Equal(new[] { 0xA4, 0x73 }, MacroAction.ParseKeyString(a.KeyString));
-            Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.LoweredToKeys);
+            Assert.Equal(0, r.Report.PartialCount + r.Report.SkippedCount);
+        }
+
+        [Theory]
+        [InlineData(101, 1)]
+        [InlineData(103, 3)]
+        [InlineData(120, 0)]
+        public void CrosshairCommand_TogglesAScreenOverlay_AndSaysThePictureIsYours(int type, int overlay)
+        {
+            var r = Command(type, "x");
+            var a = Only(Assert.Single(r.Profile.Macros));
+            Assert.Equal(MacroActionType.ToggleScreenOverlay, a.Type);
+            Assert.Equal(overlay, a.ScreenOverlayNumber);
+            Assert.Contains(r.Report.Entries, e => e.Status == TranslationStatus.Partial && e.ReasonKey == ImportReasons.Crosshair);
+        }
+
+        [Theory]
+        [InlineData(1, SwitchProfileMode.ToggleVCsDisabled)]
+        [InlineData(3, SwitchProfileMode.ToggleWindow)]
+        public void RemapAndWindowCommands_AreProfileShortcuts(int type, SwitchProfileMode mode)
+        {
+            var a = Only(Assert.Single(Command(type, "x").Profile.Macros));
+            Assert.Equal(MacroActionType.ProfileShortcut, a.Type);
+            Assert.Equal(mode, a.ProfileShortcutMode);
         }
 
         [Fact]
-        public void CrosshairCommand_IsSkippedWithAReason()
+        public void ControllerOffCommand_DisconnectsTheSlotsDevices()
         {
-            var r = Command(101, "x");
-            Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.Crosshair);
+            var a = Only(Assert.Single(Command(2, "x").Profile.Macros));
+            Assert.Equal(MacroActionType.DisconnectController, a.Type);
+            Assert.Equal(MacroDisconnectTarget.SlotDevices, a.DisconnectTarget);
+        }
+
+        [Fact]
+        public void ACommandStep_NamesTheCommandInThePreview()
+        {
+            var r = Command(8, "Shut down");
+            Assert.Contains(r.Report.Entries, e => e.Status == TranslationStatus.Clean && e.Binding.Contains("Shut down"));
         }
 
         [Fact]
         public void UnknownCommand_IsNamed()
         {
-            var r = Command(1, "COMMAND_TURN_REMAP_OFF");
-            Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.UnknownCommand && e.ReasonArgs.Contains("COMMAND_TURN_REMAP_OFF"));
+            var r = Command(10, "COMMAND_ANTIBOSS");
+            Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.UnknownCommand && e.ReasonArgs.Contains("COMMAND_ANTIBOSS"));
         }
 
         // ── Layers ──────────────────────────────────────────────────────
@@ -860,8 +1003,10 @@ namespace PadForge.Tests
         [Fact]
         public void LayerNothingOpens_StaysAsANoButtonLayer_AndSaysSo()
         {
-            var r = Import(File(shifts: OneLayer, masks: "[" + Mask(1, 1, 1) + "]",
-                mappings: "[" + Map(1, "[" + Key(57) + "]", shift: 1) + "]"));
+            // Base has mappings of its own, so this is a config with a layer
+            // it cannot reach, not a preset.
+            var r = Import(File(shifts: OneLayer, masks: "[" + Mask(1, 1, 1) + "," + Mask(2, 1, 2) + "]",
+                mappings: "[" + Map(1, "[" + Key(57) + "]", shift: 1) + "," + Map(2, "[" + Key(28) + "]") + "]"));
             var act = Assert.Single(r.Profile.SlotMappingSets[0].ShiftActivators);
             Assert.Equal("Passive", act.Mode);
             Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.LayerNoInput);
@@ -976,16 +1121,38 @@ namespace PadForge.Tests
         [Fact]
         public void UnmapOnALayer_BlocksOnThatLayerOnly()
         {
-            var p = Profile(File(shifts: OneLayer, mappings: """[{"condition":{"shiftId":1,"hardware":{"deviceId":1,"buttonId":1}},"hardware":{"unmap":true}}]"""));
+            var p = Profile(File(shifts: OneLayer, masks: "[" + Mask(3, 1, 5) + "]",
+                mappings: "[" + Jump(3, 1) + "," + """{"condition":{"shiftId":1,"hardware":{"deviceId":1,"buttonId":1}},"hardware":{"unmap":true}}]"""));
             Assert.NotNull(Row(p, "ButtonA"));
             Assert.True(Row(p, "ButtonA", "Shift1").NoInherit);
         }
 
         [Fact]
-        public void UnlockLayer_ImportsAsNormalAndSaysSo()
+        public void KeyboardUnlockLayer_StopsBasesKeyboardMappings_AndKeepsTheController()
+        {
+            // An unlock layer hands the keyboard back to Windows: Base's
+            // keyboard mappings stop on it, and a controller's carry on.
+            var r = Import(File(shifts: """[{"id":1,"type":"unlockKeyboardOnly"}]""",
+                masks: "[" + Mask(1, 11, 30) + "," + Mask(2, 1, 2) + "," + Mask(3, 1, 5) + "]",
+                mappings: "[" + Jump(3, 1) + ","
+                    + Map(1, "[{\"gamepad\":{\"id\":1,\"buttonId\":1}}]") + ","
+                    + Map(2, "[{\"gamepad\":{\"id\":1,\"buttonId\":3}}]") + "]"));
+            var p = r.Profile;
+            bool Keyboard(MappingSource s) => string.Equals(s.DeviceGuid, ImportBuilder.AllKeyboardsGuid, StringComparison.OrdinalIgnoreCase);
+            Assert.Contains(Row(p, "ButtonA").Sources, Keyboard);
+            // The layer's A row keeps the pad's own A and drops the key.
+            Assert.NotNull(Row(p, "ButtonA", "Shift1"));
+            Assert.DoesNotContain(Row(p, "ButtonA", "Shift1").Sources, Keyboard);
+            Assert.Null(Row(p, "ButtonX", "Shift1"));
+            var line = Assert.Single(r.Report.Entries, e => e.ReasonKey == ImportReasons.UnlockLayer);
+            Assert.Contains(PadForge.Resources.Strings.Strings.Instance.Devices_AllKeyboardsMerged, line.ReasonArgs);
+        }
+
+        [Fact]
+        public void UnlockLayer_ForBoth_NamesEach()
         {
             var r = Import(File(shifts: """[{"id":1,"type":"unlock"}]"""));
-            Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.UnlockLayer);
+            Assert.Equal(2, r.Report.Entries.Count(e => e.ReasonKey == ImportReasons.UnlockLayer));
         }
 
         // ── Tuning ──────────────────────────────────────────────────────
@@ -1002,13 +1169,15 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void LowZone_IsTheDeadZoneAndTheDirectionThreshold()
+        public void LowZone_IsTheDirectionThreshold_AndLeavesTheGamesStickAlone()
         {
+            // reWASD's help: zones change nothing the game reads, and only
+            // "Affect gamepad behavior for games" puts the dead zone there.
             var p = Profile(File(hardware: """[{"id":1,"name":"gamepad","convertToVirtual":true,"default":{"sticks":[{"name":"right","zones":[{"name":"low","x":16384}]}]}}]""",
                 masks: "[" + Mask(1, 1, 47) + "]", mappings: "[" + Map(1, "[" + Key(57) + "]") + "]"));
             var axis = Row(p, "RightThumbAxisX").Sources[0];
-            Assert.Equal(2, axis.ParamStickDeadZoneShape);
-            Assert.InRange(axis.ParamStickDeadZoneInner, 0.49, 0.51);
+            Assert.Equal(0, axis.ParamStickDeadZoneShape);
+            Assert.Equal(0.0, axis.ParamStickDeadZoneInner);
             Assert.Equal(50, Row(p, "KbmKey20").Sources[0].DeadZone);
         }
 
@@ -1042,24 +1211,67 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void Curve_BecomesTheNearestExponent_AndSaysSo()
+        public void Curve_CarriesItsOwnPoints_ToTheDevicesCurveCards()
         {
             var r = Import(File(hardware: Tuned(
                 """{"sticks":[{"name":"left","curves":{"points":{"horizontal":[{"id":1,"value":2293,"travel":2531},{"id":2,"value":5570,"travel":4781},{"id":3,"value":9830,"travel":7594},{"id":4,"value":32768,"travel":10125}]}}}]}""")));
-            double e = Row(r.Profile, "LeftThumbAxisX").Sources[0].ParamCurveExponent;
-            Assert.InRange(e, 1.5, 3.5);
-            Assert.Contains(r.Report.Entries, x => x.ReasonKey == ImportReasons.CurveFitted);
+            string curves = r.Profile.SlotMappingSets[0].WorkshopCurves;
+            Assert.Contains("LeftThumbAxisX=", curves);
+            Assert.Contains("LeftThumbAxisY=", curves);
+            Assert.Equal(0.0, Row(r.Profile, "LeftThumbAxisX").Sources[0].ParamCurveExponent);
+            Assert.Equal(0, r.Report.PartialCount + r.Report.SkippedCount);
         }
 
         [Fact]
-        public void TriggerZones_AreItsDeadZoneAndRange()
+        public void TriggerZones_ReachTheGame_OnlyWithAffectHardware()
         {
-            var p = Profile(File(hardware: Tuned("""{"triggers":[{"name":"left","zones":[{"name":"low","x":3277},{"name":"high","x":29490}]}]}""")));
-            var src = Row(p, "LeftTrigger").Sources[0];
+            var plain = Row(Profile(File(hardware: Tuned("""{"triggers":[{"name":"left","zones":[{"name":"low","x":3277},{"name":"high","x":29490}]}]}"""))), "LeftTrigger").Sources[0];
+            Assert.Equal(0, plain.ParamStickDeadZoneShape);
+            Assert.Equal(0.0, plain.ParamStickDeadZoneInner);
+
+            var r = Import(File(hardware: Tuned("""{"triggers":[{"name":"left","affectHardware":true,"zones":[{"name":"low","x":3277},{"name":"high","x":29490}]}]}""")));
+            var src = Row(r.Profile, "LeftTrigger").Sources[0];
             Assert.Equal("Gamepad LeftTrigger", src.Descriptor);
             Assert.Equal(1, src.ParamStickDeadZoneShape);
             Assert.InRange(src.ParamStickDeadZoneInner, 0.09, 0.11);
-            Assert.InRange(src.ParamRangeOuter, 0.89, 0.91);
+            // The high zone places zone mappings, not the trigger's top.
+            Assert.Equal(new MappingSource().ParamRangeOuter, src.ParamRangeOuter);
+            Assert.DoesNotContain(r.Report.Entries, e => e.Status != TranslationStatus.Clean);
+        }
+
+        [Fact]
+        public void APresetFile_ReadsItsOneLayerAsTheConfig()
+        {
+            // reWASD's presets keep every mapping on one layer that nothing
+            // opens, for a user to apply to a layer of a config.
+            var r = Import(File(shifts: """[{"id":1,"type":"default","description":"Gamepad to Keyboard and Mouse"}]""",
+                masks: "[" + Mask(1, 1, 1) + "]", mappings: "[" + Map(1, "[" + Key(57) + "]", shift: 1) + "]"));
+            Assert.Equal("Gamepad ButtonA", Row(r.Profile, "KbmKey20").Sources[0].Descriptor);
+            Assert.Empty(r.Profile.SlotMappingSets[0].ShiftActivators);
+            Assert.DoesNotContain(r.Report.Entries, e => e.ReasonKey == ImportReasons.LayerNoInput);
+        }
+
+        [Fact]
+        public void ALayerSomethingOpens_StaysALayer()
+        {
+            var r = Import(File(shifts: """[{"id":1,"type":"default"}]""",
+                masks: "[" + Mask(1, 1, 1) + "," + Mask(2, 1, 5) + "]",
+                mappings: "[" + Jump(2, 1) + "," + Map(1, "[" + Key(57) + "]", shift: 1) + "]"));
+            Assert.NotNull(Row(r.Profile, "KbmKey20", "Shift1"));
+            Assert.Null(Row(r.Profile, "KbmKey20"));
+        }
+
+        [Fact]
+        public void ARadialLayerNothingOpens_IsLeftOut()
+        {
+            // Every config carries one, and reWASD opens it only on a jump.
+            var r = Import(File(shifts: """[{"id":2,"type":"radialMenu"}]""",
+                masks: "[" + Mask(1, 1, 1) + "," + Mask(2, 1, 40) + "]",
+                commands: """[{"id":1,"type":134,"name":"OVERLAY_MENU_UP"}]""",
+                mappings: "[" + Map(1, "[" + Key(57) + "]") + "," + Map(2, """[{"command":{"id":1}}]""", shift: 2) + "]"));
+            Assert.All(r.Profile.SlotMappingSets.SelectMany(s => s.Rows), row => Assert.NotEqual("Shift2", row.LayerMask));
+            Assert.DoesNotContain(r.Report.Entries, e => e.ReasonKey == ImportReasons.LayerNoInput);
+            Assert.NotNull(Row(r.Profile, "KbmKey20"));
         }
 
         [Fact]
@@ -1072,15 +1284,54 @@ namespace PadForge.Tests
         }
 
         [Theory]
-        [InlineData("zoneLow", 30)]
-        [InlineData("zoneMed", 66)]
-        [InlineData("zoneHigh", 85)]
-        public void ZoneActivator_ReadsPastThatZone_AndSaysItIsOutward(string type, int threshold)
+        [InlineData("zoneLow", 30, 66)]
+        [InlineData("zoneMed", 66, 85)]
+        [InlineData("zoneHigh", 85, 0)]
+        public void ZoneActivator_ReadsInsideThatZone(string type, int low, int high)
         {
             var r = Import(File(masks: "[" + Mask(1, 1, 40) + "]",
                 mappings: "[" + Map(1, "[" + Key(57) + "]", type: type) + "]"));
-            Assert.Equal(threshold, Row(r.Profile, "KbmKey20").Sources[0].DeadZone);
-            Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.ZoneOutward);
+            var src = Row(r.Profile, "KbmKey20").Sources[0];
+            Assert.Equal(low, src.DeadZone);
+            Assert.Equal(high == 0 ? "" : BoundedReads.Between(low, high, true, true, "Gamepad LeftStickY"), src.GateDescriptor);
+            Assert.Equal(0, r.Report.PartialCount + r.Report.SkippedCount);
+
+            // Up past the zone's edge reads, and past the next zone's edge it
+            // lets go: reWASD's zone mapping is released when the stick
+            // leaves the zone.
+            var state = Centered();
+            state.Axis[1] = Up(low + 5);
+            Assert.True(ButtonRead(state, src));
+            state.Axis[1] = Up(high == 0 ? 100 : high + 5);
+            Assert.Equal(high == 0, ButtonRead(state, src));
+        }
+
+        [Fact]
+        public void LowZoneInput_IsARingBand_ThatLetsGoAtTheMediumZone()
+        {
+            var p = Profile(File(masks: "[" + Mask(1, 1, 37) + "]", mappings: "[" + Map(1, "[" + Key(57) + "]") + "]"));
+            var src = Row(p, "KbmKey20").Sources[0];
+            Assert.Equal("Gamepad LeftStickRing", src.Descriptor);
+            Assert.Equal(30, src.DeadZone);
+            Assert.Equal(BoundedReads.Between(30, 66, false, false, "Gamepad LeftStickRing"), src.GateDescriptor);
+            var state = Centered();
+            state.Axis[0] = Right(40);
+            Assert.True(ButtonRead(state, src));
+            state.Axis[0] = Right(80);
+            Assert.False(ButtonRead(state, src));
+        }
+
+        [Fact]
+        public void MediumTriggerZone_LetsGoAtTheHighZone()
+        {
+            var p = Profile(File(masks: "[" + Mask(1, 1, 53) + "]", mappings: "[" + Map(1, "[" + Key(57) + "]") + "]"));
+            var src = Row(p, "KbmKey20").Sources[0];
+            Assert.Equal("Gamepad LeftTrigger", src.Descriptor);
+            var state = new CustomInputState();
+            state.Axis[2] = 65535 * 70 / 100;
+            Assert.True(ButtonRead(state, src));
+            state.Axis[2] = 65535;
+            Assert.False(ButtonRead(state, src));
         }
 
         [Fact]
@@ -1132,7 +1383,9 @@ namespace PadForge.Tests
             // A sector fires as its layer ends, so its row lives on Base.
             Assert.Equal("Menu 1 Item 1", Row(r.Profile, "KbmKey20").Sources[0].Descriptor);
             Assert.Equal("Menu 1 Item 2", Row(r.Profile, "KbmKey0D").Sources[0].Descriptor);
-            Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.RadialMenu);
+            // The file maps no Apply, so leaving the layer is its only commit,
+            // and that is the menu's own.
+            Assert.DoesNotContain(r.Report.Entries, e => e.ReasonKey == ImportReasons.RadialMenu);
 
             // Navigation is the menu's own job, and it must not read as lost.
             Assert.DoesNotContain(r.Report.Entries, e => e.ReasonKey == ImportReasons.UnknownCommand);
@@ -1143,8 +1396,8 @@ namespace PadForge.Tests
         {
             var json = File(
                 shifts: """[{"id":2,"type":"radialMenu"}]""",
-                masks: """[{"id":3,"radialMenuSet":[{"circleId":2,"sectorId":3}]}]""",
-                mappings: "[" + Map(3, "[" + Key(57) + "]", shift: 2) + "]",
+                masks: "[" + Mask(9, 1, 6) + "," + """{"id":3,"radialMenuSet":[{"circleId":2,"sectorId":3}]}]""",
+                mappings: "[" + Jump(9, 2) + "," + Map(3, "[" + Key(57) + "]", shift: 2) + "]",
                 extra: ""","radialMenuCircles":[{"id":1,"sectors":[1,2]},{"id":2,"parentSectorId":1,"sectors":[3]}],"radialMenuSectors":[{"parentCircleId":1,"id":1,"childCircleId":2},{"parentCircleId":1,"id":2},{"parentCircleId":2,"id":3}]""");
             var r = Import(json);
             var menu = Assert.Single(r.Profile.SlotMappingSets.First(s => s.Menus.Count > 0).Menus);
@@ -1158,7 +1411,7 @@ namespace PadForge.Tests
         public void Led_IsAHeldColorPerLayer_BaseFirst()
         {
             var r = Import(File(shifts: OneLayer, config:
-                """{"appName":"x","led":{"default":{"mode":"solid","colors":[[1,2,3]]},"shifts":[{"shiftId":1,"mode":"shimmer","colors":[[9,8,7]]}]}}"""));
+                """{"appName":"x","led":{"default":{"mode":"solid","colors":[[1,2,3]]},"shifts":[{"shiftId":1,"mode":"solid","colors":[[9,8,7]]}]}}"""));
             var macros = r.Profile.Macros;
             Assert.Equal(2, macros.Length);
             Assert.All(macros, m => Assert.Equal(MacroTriggerMode.Always, m.TriggerMode));
@@ -1173,24 +1426,69 @@ namespace PadForge.Tests
             Assert.Equal((byte)1, a.LightbarR);
             Assert.Equal((byte)3, a.LightbarB);
             Assert.Equal((byte)9, Only(macros[1]).LightbarR);
-            Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.LedShownAs && e.ReasonArgs.Contains("shimmer"));
+            // The one line left says nothing in the file opens the layer.
+            Assert.All(r.Report.Entries.Where(e => e.Status != TranslationStatus.Clean),
+                e => Assert.Equal(ImportReasons.LayerNoInput, e.ReasonKey));
+        }
+
+        [Fact]
+        public void LedPatternOnALayer_StopsItInheritingBasesColor()
+        {
+            // Base writes its color every frame, so a pattern under it would
+            // only show its first step.
+            var r = Import(File(shifts: OneLayer, config:
+                """{"appName":"x","led":{"default":{"mode":"solid","colors":[[1,2,3]]},"shifts":[{"shiftId":1,"mode":"shimmer","colors":[[200,100,40]]}]}}"""));
+            Assert.False(r.Profile.SlotMappingSets[0].ShiftActivators.Single().InheritUnmapped);
+            var layer = r.Profile.Macros.Single(m => m.LayerMask == "Shift1");
+            Assert.Equal(4, layer.Actions.Length);
+            Assert.Equal((byte)200, layer.Actions[0].LightbarR);
+            Assert.Equal((byte)150, layer.Actions[2].LightbarR);
+            Assert.All(r.Report.Entries.Where(e => e.Status != TranslationStatus.Clean),
+                e => Assert.Equal(ImportReasons.LayerNoInput, e.ReasonKey));
         }
 
         [Theory]
-        [InlineData("rainbow", LightbarMode.Rainbow)]
-        [InlineData("breath", LightbarMode.Breathing)]
-        public void LedModes_SetTheLightbarMode(string mode, LightbarMode expected)
+        [InlineData("rainbow", 72)]
+        [InlineData("breath", 6)]
+        [InlineData("heartbeat", 4)]
+        [InlineData("stroboscope", 4)]
+        [InlineData("shimmer", 4)]
+        public void LedModes_PlayAsALoopingPattern(string mode, int actions)
         {
-            var p = Profile(File(config: "{\"appName\":\"x\",\"led\":{\"default\":{\"mode\":\"" + mode + "\"}}}"));
-            var a = Only(Assert.Single(p.Macros));
-            Assert.Equal(MacroActionType.LightbarModeSet, a.Type);
-            Assert.Equal(expected, a.LightbarTargetMode);
+            var r = Import(File(config: "{\"appName\":\"x\",\"led\":{\"default\":{\"mode\":\"" + mode + "\",\"colors\":[[255,0,0]]}}}"));
+            var m = Assert.Single(r.Profile.Macros);
+            Assert.Equal(MacroTriggerMode.Always, m.TriggerMode);
+            Assert.Equal(actions, m.Actions.Length);
+            Assert.Equal(MacroActionType.LightbarColor, m.Actions[0].Type);
+            Assert.Equal(MacroActionType.Delay, m.Actions[1].Type);
+            Assert.Equal(0, r.Report.PartialCount + r.Report.SkippedCount);
+        }
+
+        [Fact]
+        public void RadialMenuWithApplyMapped_SaysWhereItCommits()
+        {
+            var json = File(
+                shifts: """[{"id":2,"type":"radialMenu"}]""",
+                masks: "[" + Mask(1, 1, 6) + "," + Mask(2, 1, 40) + "," + Mask(5, 1, 1) + ","
+                    + """{"id":3,"radialMenuSet":[{"circleId":1,"sectorId":1}]}""" + "]",
+                commands: """[{"id":1,"type":134,"name":"OVERLAY_MENU_UP"},{"id":2,"type":132,"name":"OVERLAY_MENU_APPLY"}]""",
+                mappings: "["
+                    + Jump(1, 2) + ","
+                    + Map(2, """[{"command":{"id":1}}]""", shift: 2) + ","
+                    + Map(5, """[{"command":{"id":2}}]""", shift: 2) + ","
+                    + Map(3, "[" + Key(57) + "]", shift: 2) + "]",
+                extra: ""","radialMenuCircles":[{"id":1,"sectors":[1]}],"radialMenuSectors":[{"parentCircleId":1,"id":1,"description":"Jump"}]""");
+            var r = Import(json);
+            Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.RadialMenu);
         }
 
         // ── What does not come across says so ───────────────────────────
 
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern int GetSystemMetrics(int index);
+
         [Fact]
-        public void MouseRegion_IsAHeldClamp_AndSaysItIsCentered()
+        public void MouseRegion_IsAHeldClamp_OnTheFilesOwnRectangle()
         {
             var r = Import(File(masks: "[" + Mask(1, 1, 1) + "]", mappings: "["
                 + Map(1, "", more: ""","mouseRegion":{"x1":0,"y1":0,"x2":800,"y2":600}""") + "]"));
@@ -1199,7 +1497,19 @@ namespace PadForge.Tests
             Assert.Equal(MacroActionType.MouseLimitRegion, press.Type);
             Assert.Equal(MacroLatchDirection.On, press.LatchDirection);
             Assert.Equal(MacroLatchDirection.Off, Only(r.Profile.Macros[1]).LatchDirection);
-            Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.RegionCentered);
+            Assert.Equal(0, r.Report.PartialCount + r.Report.SkippedCount);
+
+            // The clamp holds the cursor in the file's top-left 800 x 600.
+            int w = GetSystemMetrics(0), h = GetSystemMetrics(1);
+            if (w < 800 || h < 600) return;
+            var far = CursorControlService.ClampPoint(5000, 5000, 0, 0, w, h, CursorClampMode.XAndY,
+                press.CursorClampInsetX, press.CursorClampInsetY, press.CursorClampOffsetX, press.CursorClampOffsetY);
+            Assert.InRange(far.X, 799, 801);
+            Assert.InRange(far.Y, 599, 601);
+            var near = CursorControlService.ClampPoint(-50, -50, 0, 0, w, h, CursorClampMode.XAndY,
+                press.CursorClampInsetX, press.CursorClampInsetY, press.CursorClampOffsetX, press.CursorClampOffsetY);
+            Assert.InRange(near.X, 0, 1);
+            Assert.InRange(near.Y, 0, 1);
         }
 
         [Fact]
@@ -1245,20 +1555,20 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void MouseStickUnmap_NamesConsumeMappedInputs()
+        public void MouseStickUnmap_SaysMovementIsNotHeldBack()
         {
             var r = Import(File(mappings: """[{"condition":{"hardware":{"deviceId":23,"stick":"mouse","axis":"x"}},"hardware":{"unmap":true}}]"""));
-            Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.ConsumeKeys);
+            Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.MouseMovement);
         }
 
         [Fact]
         public void UnmappedDirection_KeepsTheStickTuningOnItsOtherHalf()
         {
-            var p = Profile(File(hardware: """[{"id":1,"name":"gamepad","convertToVirtual":true,"default":{"sticks":[{"name":"left","zones":[{"name":"low","x":16384}]}]}}]""",
+            var p = Profile(File(hardware: """[{"id":1,"name":"gamepad","convertToVirtual":true,"default":{"sticks":[{"name":"left","sensitivity":{"x":16384,"y":16384}}]}}]""",
                 mappings: """[{"condition":{"hardware":{"deviceId":1,"buttonId":40}},"hardware":{"unmap":true}}]"""));
             var src = Assert.Single(Row(p, "LeftThumbAxisY").Sources);
             Assert.True(src.HalfAxis);
-            Assert.InRange(src.ParamStickDeadZoneInner, 0.49, 0.51);
+            Assert.InRange(src.Sensitivity, 0.49, 0.51);
         }
 
         [Fact]
@@ -1350,7 +1660,7 @@ namespace PadForge.Tests
         public void MouseStickUnmap_WithNoDeviceNamed_IsStillTheMouse()
         {
             var r = Import(File(mappings: """[{"condition":{"hardware":{"stick":"mouse","axis":"x"}},"hardware":{"unmap":true}}]"""));
-            Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.ConsumeKeys);
+            Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.MouseMovement);
         }
 
         [Fact]
@@ -1373,6 +1683,7 @@ namespace PadForge.Tests
         public void ACircleThatNamesItself_EndsAndKeepsTheOtherSectors()
         {
             var r = Import(File(shifts: """[{"id":2,"type":"radialMenu"}]""",
+                masks: "[" + Mask(9, 1, 6) + "]", mappings: "[" + Jump(9, 2) + "]",
                 extra: ""","radialMenuCircles":[{"id":1,"sectors":[1,2]}],"radialMenuSectors":[{"id":1,"childCircleId":1},{"id":2},{"id":2}]"""));
             Assert.False(r.Refused);
             Assert.Equal(1, r.Profile.SlotMappingSets[0].Menus.Single().CellCount);
@@ -1472,10 +1783,11 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void HidingThePhysicalController_IsNamed()
+        public void HidingThePhysicalController_SaysWhereToTurnItOn()
         {
+            // PadForge hides a device only once its user confirms it.
             var r = Import(File(hardware: """[{"id":1,"name":"gamepad","hidePhysicalGamepad":true}]"""));
-            Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.ControllerSetting && e.ReasonArgs.Contains("hidePhysicalGamepad"));
+            Assert.Contains(r.Report.Entries, e => e.Status == TranslationStatus.Partial && e.ReasonKey == ImportReasons.HideController);
         }
 
         [Fact]
@@ -1489,26 +1801,94 @@ namespace PadForge.Tests
             Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.AnalogActuation);
         }
 
+
+        private static string WithVirtualPad(string pad, string mappings = "[]", string shifts = "[]", string masks = "[]")
+            => "{\"schemaVersion\":\"3.0\",\"config\":{\"appName\":\"x\"},\"devices\":{\"hardware\":" + PadAndKbm
+             + ",\"virtual\":{\"gamepads\":[" + pad + "]}},\"shifts\":" + shifts + ",\"masks\":" + masks
+             + ",\"mappings\":" + mappings + "}";
+
         [Fact]
-        public void ExternalTargetAndJitter_AreSkippedWithAReason()
+        public void UdpServer_TurnsOnTheMotionServer_AndAnAdapterIsNamed()
         {
-            string json = """
-                {"schemaVersion":"3.0","config":{"appName":"x"},"devices":{"hardware":[{"id":1,"name":"gamepad","convertToVirtual":true}],
-                "virtual":{"gamepads":[{"id":1,"type":"360","udp":{"ip":"1.2.3.4"},"default":{"sticks":[{"name":"left","jitterAmplitude":3}]}}]}},"mappings":[]}
-                """;
-            var r = Import(json);
-            Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.RemoteTarget);
+            // reWASD's Use for UDP server sends the pad's motion to emulators
+            // over cemuhook, the DSU server a PadForge profile turns on as it
+            // loads. An external device is an adapter to a console or a PC.
+            var r = Import(WithVirtualPad("""{"id":1,"type":"ds4","udp":true,"external":true,"default":{"sticks":[{"name":"left","jitter":true}]}}"""));
+            Assert.True(r.Profile.EnableDsuMotionServer);
+            Assert.Contains(r.Report.Entries, e => e.Status == TranslationStatus.Clean && e.Binding == "UDP server");
+            Assert.Contains(r.Report.Entries, e => e.Status == TranslationStatus.Partial && e.ReasonKey == ImportReasons.RemoteTarget);
             Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.JitterShaking);
         }
 
-        // ── Safety ──────────────────────────────────────────────────────
+        [Fact]
+        public void UdpAndExternal_SetFalse_ChangeNothing()
+        {
+            var r = Import(WithVirtualPad("""{"id":1,"type":"ds4","udp":false,"external":false}"""));
+            Assert.False(r.Profile.EnableDsuMotionServer);
+            Assert.DoesNotContain(r.Report.Entries, e => e.ReasonKey == ImportReasons.RemoteTarget);
+        }
 
         [Fact]
-        public void NoImportEverWritesAProgramAction()
+        public void VirtualStickRange_IsAFloorAndAScale_OnEveryLayerThatSetsOne()
         {
-            var r = Command(1500, "x", ""","params":{"path":"calc.exe"}""");
-            Assert.DoesNotContain(r.Profile.Macros.SelectMany(m => m.Actions), a => a.Type == MacroActionType.RunProgram);
+            // Base starts the right stick at 10648 of 32767. Layer 1 tops the
+            // left stick at 17918, a walk, and starts the right at 7165.
+            string pad = """{"id":1,"type":"360","default":{"sticks":[{"name":"right","initialDeflection":10648}]},"shifts":[{"shiftId":1,"sticks":[{"name":"left","maxDeflection":17918},{"name":"right","initialDeflection":7165}]}]}""";
+            string mappings = "[" + Jump(3, 1) + ","
+                + """{"condition":{"hardware":{"deviceId":23,"stick":"mouse","axis":"x"}},"hardware":{"stick":"right","axis":"x"}},"""
+                + Map(1, "[{\"gamepad\":{\"id\":1,\"buttonId\":40}}]") + "]";
+            var r = Import(WithVirtualPad(pad, mappings, OneLayer, "[" + Mask(1, 11, 17) + "," + Mask(3, 1, 5) + "]"));
+            var p = r.Profile;
+
+            // The range is the virtual stick's own, so every input on that
+            // stick takes it: the mouse and the pad's own stick alike.
+            Assert.Contains(Row(p, "RightThumbAxisX").Sources, s => s.DeviceGuid == ImportBuilder.AllMiceGuid);
+            Assert.All(Row(p, "RightThumbAxisX").Sources, s => Assert.Equal(10648 / 32767.0, s.ParamAntiDeadzone, 6));
+            Assert.Contains(Row(p, "RightThumbAxisX", "Shift1").Sources, s => s.DeviceGuid == ImportBuilder.AllMiceGuid);
+            Assert.All(Row(p, "RightThumbAxisX", "Shift1").Sources, s => Assert.Equal(7165 / 32767.0, s.ParamAntiDeadzone, 6));
+            // The walk layer's own entry leaves the floor at reWASD's default.
+            Assert.All(Row(p, "LeftThumbAxisY", "Shift1").Sources, s => Assert.Equal(0.0, s.ParamAntiDeadzone));
+
+            var walk = p.Macros.Where(m => m.LayerMask == "Shift1" && m.TriggerMode == MacroTriggerMode.Always).ToList();
+            Assert.Equal(2, walk.Count);
+            Assert.All(walk, m =>
+            {
+                var a = Assert.Single(m.Actions);
+                Assert.Equal(MacroActionType.AxisScale, a.Type);
+                // The engine multiplies by 1 + value / 32767, so 17918 / 32767.
+                Assert.Equal(17918 - 32767, a.AxisValue);
+            });
+            Assert.Contains(walk, m => m.Actions[0].AxisTarget == MacroAxisTarget.LeftStickX);
+            Assert.Contains(walk, m => m.Actions[0].AxisTarget == MacroAxisTarget.LeftStickY);
+            Assert.DoesNotContain(p.Macros, m => m.LayerMask == "Base" && m.Actions.Any(a => a.Type == MacroActionType.AxisScale));
+            Assert.DoesNotContain(r.Report.Entries, e => e.ReasonKey == ImportReasons.ControllerSetting);
         }
+
+        [Fact]
+        public void VirtualStickFields_PadForgeHasNoNameFor_AreNamed()
+        {
+            var r = Import(WithVirtualPad("""{"id":1,"type":"360","shifts":[{"shiftId":1,"sticks":[{"name":"right","initialSpeed":16,"acceleration":2}]}]}""",
+                shifts: OneLayer));
+            Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.ControllerSetting
+                && e.ReasonArgs.Contains("initialSpeed, acceleration"));
+        }
+
+        [Fact]
+        public void StickSentToMotion_HasItsOwnReason()
+        {
+            var r = Import(File(mappings: """[{"condition":{"hardware":{"deviceId":1,"stick":"right","axis":"x"}},"hardware":{"stick":"gyro","axis":"x"}}]"""));
+            Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.MotionOutput);
+            Assert.DoesNotContain(r.Report.Entries, e => e.ReasonKey == ImportReasons.ThirdStick);
+        }
+
+        [Fact]
+        public void KeyboardActuation_IsReadWhereTheSchemaKeepsIt()
+        {
+            var r = Import(File(hardware: """[{"id":1,"name":"gamepad","convertToVirtual":true},{"id":11,"name":"keyboard","type":"standard","default":{"actuationButtons":[{"buttonId":30,"description":"DIK_A","actuation":{"actuationState":true,"actuationPoint":20}}]}},{"id":23,"name":"mouse"}]"""));
+            Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.AnalogActuation && e.SourcePath == "DIK_A");
+        }
+
+        // ── Safety ──────────────────────────────────────────────────────
 
         [Theory]
         [InlineData("""{"schemaVersion":"2.0"}""")]

@@ -115,6 +115,9 @@ namespace PadForge.Services
                 set.WorkshopGyroEngageInvert = false;
             }
 
+            // ── response curves, rumble and idle time from an import (#561) ──
+            changed |= FoldImportStamps(set, ps, deviceGuid);
+
             // ── per-source response shaping ───────────────────────────────
             changed |= FoldSourceShaping(set, ps);
 
@@ -127,6 +130,95 @@ namespace PadForge.Services
             return changed;
         }
 
+
+        /// <summary>The battery light colors an import set for the slot (#561),
+        /// onto the device's own Lighting card where it still holds the
+        /// defaults, red at empty and green at full. Spent on the first device
+        /// that takes it, as the other stamps are.</summary>
+        public static bool ApplyBatteryColors(int slotIndex, ViewModels.DeviceSlotConfig cfg)
+        {
+            var sets = SettingsManager.SlotMappingSets;
+            if (cfg == null || sets == null || slotIndex < 0 || slotIndex >= sets.Length) return false;
+            var set = sets[slotIndex];
+            if (set == null || string.IsNullOrEmpty(set.WorkshopBatteryColors)) return false;
+
+            bool changed = false;
+            var parts = set.WorkshopBatteryColors.Split(';');
+            if (parts.Length == 2 && TryColor(parts[0], out var low) && TryColor(parts[1], out var high)
+                && cfg.LightbarBatteryLowR == 0xFF && cfg.LightbarBatteryLowG == 0 && cfg.LightbarBatteryLowB == 0
+                && cfg.LightbarBatteryHighR == 0 && cfg.LightbarBatteryHighG == 0xFF && cfg.LightbarBatteryHighB == 0)
+            {
+                cfg.LightbarBatteryLowR = low.R;
+                cfg.LightbarBatteryLowG = low.G;
+                cfg.LightbarBatteryLowB = low.B;
+                cfg.LightbarBatteryHighR = high.R;
+                cfg.LightbarBatteryHighG = high.G;
+                cfg.LightbarBatteryHighB = high.B;
+                changed = true;
+            }
+            set.WorkshopBatteryColors = "";
+            return changed;
+        }
+
+        private static bool TryColor(string text, out (byte R, byte G, byte B) color)
+        {
+            color = default;
+            var c = text.Split(',');
+            if (c.Length != 3
+                || !byte.TryParse(c[0], NumberStyles.Integer, CultureInfo.InvariantCulture, out byte r)
+                || !byte.TryParse(c[1], NumberStyles.Integer, CultureInfo.InvariantCulture, out byte g)
+                || !byte.TryParse(c[2], NumberStyles.Integer, CultureInfo.InvariantCulture, out byte b))
+                return false;
+            color = (r, g, b);
+            return true;
+        }
+
+        /// <summary>What a reWASD or DS4Windows import set for the device (#561),
+        /// each kept where the user has not chosen something.</summary>
+        private static bool FoldImportStamps(MappingSet set, PadSetting ps, string deviceGuid)
+        {
+            bool changed = false;
+            if (!string.IsNullOrEmpty(set.WorkshopCurves))
+            {
+                foreach (string entry in set.WorkshopCurves.Split('|', StringSplitOptions.RemoveEmptyEntries))
+                {
+                    int eq = entry.IndexOf('=');
+                    if (eq <= 0) continue;
+                    var card = ShapingCardFor(entry[..eq], ps);
+                    if (card != null && Common.CurveLut.IsLinear(card.GetCurve()))
+                    {
+                        card.SetCurve(entry[(eq + 1)..]);
+                        changed = true;
+                    }
+                }
+                set.WorkshopCurves = "";
+            }
+            if (!string.IsNullOrEmpty(set.WorkshopRumblePercent))
+            {
+                if (IsPercent(ps.LeftMotorStrength, 100) && IsPercent(ps.RightMotorStrength, 100))
+                {
+                    ps.LeftMotorStrength = set.WorkshopRumblePercent;
+                    ps.RightMotorStrength = set.WorkshopRumblePercent;
+                    changed = true;
+                }
+                set.WorkshopRumblePercent = "";
+            }
+            if (!string.IsNullOrEmpty(set.WorkshopIdleDisconnectSeconds))
+            {
+                if (Guid.TryParse(deviceGuid, out var guid)
+                    && int.TryParse(set.WorkshopIdleDisconnectSeconds, NumberStyles.Integer, CultureInfo.InvariantCulture, out int seconds))
+                {
+                    var device = SettingsManager.FindDeviceByInstanceGuid(guid);
+                    if (device != null && device.IdleDisconnectSeconds <= 0)
+                    {
+                        device.IdleDisconnectSeconds = seconds;
+                        changed = true;
+                    }
+                }
+                set.WorkshopIdleDisconnectSeconds = "";
+            }
+            return changed;
+        }
 
         /// <summary><para>Moves a gyro source's stamped acceleration onto the
         /// Gyro Acceleration card.</para>

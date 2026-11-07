@@ -2821,6 +2821,7 @@ namespace PadForge.Engine.Common.Mapping
         {
             first = second = -1;
             if (string.IsNullOrEmpty(descriptor)) return 0;
+            descriptor = BoundedReads.InnerOf(descriptor);
             // A family member under a device's own placement reads that
             // device's inputs, so it never enters or reads the memo, which
             // holds the SDL layout's answer.
@@ -2937,7 +2938,16 @@ namespace PadForge.Engine.Common.Mapping
         /// (SourceKindRuntime.ReadNormAxis: center 32768, span 32767).</summary>
         internal static float ReadStickRingMagnitude(CustomInputState state, string canonical)
         {
-            if (state == null || !IsStickRingDescriptor(canonical)) return 0f;
+            if (!TryReadRingStick(state, canonical, out float x, out float y)) return 0f;
+            float mag = (float)Math.Sqrt(x * x + y * y);
+            return mag > 1f ? 1f : mag;
+        }
+
+        /// <summary>The ring's stick, -1 to +1 with +Y down.</summary>
+        private static bool TryReadRingStick(CustomInputState state, string canonical, out float x, out float y)
+        {
+            x = y = 0f;
+            if (state == null || !IsStickRingDescriptor(canonical)) return false;
             bool left = canonical.Trim().StartsWith("Gamepad Left", StringComparison.OrdinalIgnoreCase);
             var (xi, yi) = left ? _leftRingAxisIndices : _rightRingAxisIndices;
             // A device that places the family itself puts the stick on its
@@ -2948,11 +2958,26 @@ namespace PadForge.Engine.Common.Mapping
                 xi = PlacedAxisIndex(placement, left ? 0 : 3);
                 yi = PlacedAxisIndex(placement, left ? 1 : 4);
             }
-            if (xi < 0 || yi < 0) return 0f;
-            float x = ReadRingNormAxis(state, xi);
-            float y = ReadRingNormAxis(state, yi);
-            float mag = (float)Math.Sqrt(x * x + y * y);
-            return mag > 1f ? 1f : mag;
+            if (xi < 0 || yi < 0) return false;
+            x = ReadRingNormAxis(state, xi);
+            y = ReadRingNormAxis(state, yi);
+            return true;
+        }
+
+        /// <summary>True while the ring's stick is past
+        /// <paramref name="deadZonePercent"/> and points within
+        /// <paramref name="halfWidth"/> degrees of <paramref name="center"/>.
+        /// Degrees run counterclockwise from right, so 90 is up.</summary>
+        internal static bool ReadStickSector(CustomInputState state, string ring, double center, double halfWidth, int deadZonePercent)
+        {
+            if (!TryReadRingStick(state, ring, out float x, out float y)) return false;
+            double mag = Math.Sqrt(x * x + y * y);
+            if (mag <= Math.Max(deadZonePercent, 1) / 100.0) return false;
+            double angle = Math.Atan2(-y, x) * 180.0 / Math.PI;
+            if (angle < 0) angle += 360.0;
+            double off = Math.Abs(angle - center);
+            if (off > 180.0) off = 360.0 - off;
+            return off <= halfWidth;
         }
 
         /// <summary>The numbered axis <paramref name="placement"/> puts at
@@ -5648,6 +5673,10 @@ namespace PadForge.Engine.Common.Mapping
             // inactive layer are never evaluated) or the macro's layer
             // gate; the read itself is unconditionally on.
             if (s.Equals(AlwaysOnDescriptor, StringComparison.Ordinal)) return true;
+
+            // A zone, a stick sector or a two-stage pull (BoundedReads): two
+            // thresholds or some memory, read on this same device.
+            if (BoundedReads.IsBounded(s)) return BoundedReads.Read(state, s, slotIndex, deviceGuid);
 
             // Touchpad-gesture descriptors route through the per-tick
             // gesture engine's fire set; continuous-axis variants

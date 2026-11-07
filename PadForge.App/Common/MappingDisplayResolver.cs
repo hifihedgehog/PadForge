@@ -312,6 +312,9 @@ namespace PadForge.Common
         /// </summary>
         internal static string ResolveDescriptorText(string descriptor, DeviceObjectItem[] objects, bool padPrefixAlways = false)
         {
+            var bounded = PadForge.Engine.Common.Mapping.BoundedReads.Parse(descriptor);
+            if (bounded != null) return BoundedReadText(bounded, objects, padPrefixAlways);
+
             string s = descriptor;
             string prefix = "";
             if (s.StartsWith("IH", System.StringComparison.OrdinalIgnoreCase))
@@ -1087,6 +1090,53 @@ namespace PadForge.Common
         /// named like its sticks, without the Gamepad prefix ("Left Stick
         /// Ring"). The prefix marks the device-agnostic family of the
         /// "(Any device)" group.</summary>
+        /// <summary>A zone, a stick sector or a two-stage pull, named by the
+        /// input it reads and the numbers it reads it with.</summary>
+        private static string BoundedReadText(PadForge.Engine.Common.Mapping.BoundedRead read, DeviceObjectItem[] objects, bool padPrefixAlways)
+        {
+            var si = Strings.Instance;
+            string inner = ResolveDescriptorText(read.Inner, objects, padPrefixAlways) ?? read.Inner;
+            switch (read.Kind)
+            {
+                case PadForge.Engine.Common.Mapping.BoundedReadKind.Between:
+                    string half = read.HalfAxis ? HalfDirection(read.Inner, read.Invert) : null;
+                    if (half != null) inner = string.Format(si.Mapping_Sector_Format, inner, ResolvePovDirection(half));
+                    return string.Format(si.Mapping_Between_Format, inner, read.Low, read.High);
+                case PadForge.Engine.Common.Mapping.BoundedReadKind.Sector:
+                    string direction = read.Center switch
+                    {
+                        0 => "Right",
+                        90 => "Up",
+                        180 => "Left",
+                        _ => "Down",
+                    };
+                    return string.Format(si.Mapping_Sector_Format, inner, ResolvePovDirection(direction));
+                default:
+                    string mode = read.Mode switch
+                    {
+                        PadForge.Engine.Common.Mapping.TwoStageMode.HairTrigger => si.Mapping_Stage_HairTrigger,
+                        PadForge.Engine.Common.Mapping.TwoStageMode.HipFire => si.Mapping_Stage_HipFire,
+                        _ => si.Mapping_Stage_HipFireExclusive,
+                    };
+                    string stage = read.IsFull ? si.Mapping_Stage_Full : si.Mapping_Stage_Soft;
+                    return read.Mode == PadForge.Engine.Common.Mapping.TwoStageMode.HairTrigger
+                        ? string.Format(si.Mapping_StageNoWait_Format, inner, mode, stage)
+                        : string.Format(si.Mapping_Stage_Format, inner, mode, stage, read.WaitMs);
+            }
+        }
+
+        /// <summary>The way a half-axis read of a stick or the gyro points, in
+        /// the import tables' convention (Invert is up on a stick's Y, and down
+        /// on the gyro's pitch), or null for an input with no named way.</summary>
+        private static string HalfDirection(string inner, bool invert)
+        {
+            if (inner.EndsWith("StickX", System.StringComparison.Ordinal)) return invert ? "Left" : "Right";
+            if (inner.EndsWith("StickY", System.StringComparison.Ordinal)) return invert ? "Up" : "Down";
+            if (inner == "Gyro Pitch") return invert ? "Down" : "Up";
+            if (inner == "Gyro Yaw") return invert ? "Right" : "Left";
+            return null;
+        }
+
         internal static string ResolveGamepadText(string descriptor, bool anyDevice = true)
         {
             if (string.IsNullOrEmpty(descriptor)

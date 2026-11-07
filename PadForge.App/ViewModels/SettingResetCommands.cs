@@ -1229,6 +1229,7 @@ namespace PadForge.ViewModels
             nameof(DreamcastRepeat) or
             nameof(ScreenKind) or
             nameof(ScreenOverlayNumber) or
+            nameof(ProfileShortcutMode) or
             nameof(ScreenFrames) or
             nameof(ScreenFrameMs) or
             nameof(ScreenRepeat) or
@@ -1571,6 +1572,10 @@ namespace PadForge.ViewModels
                     DreamcastRepeat = 1;
                     break;
                 }
+                case nameof(ProfileShortcutMode):
+                    ProfileShortcutMode = PadForge.Services.SwitchProfileMode.Specific;
+                    ProfileShortcutName = string.Empty;
+                    break;
                 case nameof(ScreenOverlayNumber):
                 {
                     ScreenOverlayNumber = 0;

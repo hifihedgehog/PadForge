@@ -1,10 +1,13 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using PadForge.Common;
 using PadForge.Common.ConfigImport;
 using PadForge.Common.Input;
 using PadForge.Engine;
+using PadForge.Engine.Data;
 using PadForge.Services;
 using PadForge.ViewModels;
 using Xunit;
@@ -478,6 +481,231 @@ namespace PadForge.Tests
             }
             Tick(im, macros, false);
             Assert.Equal(0, Tick(im, macros, false) & Gamepad.Y);
+        }
+
+        // ── Until Next Press ─────────────────────────────────────────────
+
+        [Theory]
+        [InlineData(MacroTriggerMode.OnPress)]
+        [InlineData(MacroTriggerMode.WhileHeld)]
+        public void UntilNextPress_RunsPastTheRelease_AndTheNextPressEndsItForGood(MacroTriggerMode mode)
+        {
+            var m = Item(mode, MacroRepeatMode.UntilNextPress, 0, Wait(10000));
+            var macros = new[] { m };
+            var im = Engine(macros);
+
+            Tick(im, macros, true);
+            Assert.True(m.IsExecuting);
+            Tick(im, macros, false);
+            Assert.True(m.IsExecuting);
+            Tick(im, macros, true);
+            Assert.False(m.IsExecuting);
+            // The press that ended it starts nothing while it is held.
+            Tick(im, macros, true);
+            Assert.False(m.IsExecuting);
+            Tick(im, macros, false);
+            Assert.False(m.IsExecuting);
+            Tick(im, macros, true);
+            Assert.True(m.IsExecuting);
+        }
+
+        [Fact]
+        public void UntilNextPress_TheStoppingPressArmsNoDoublePress()
+        {
+            var run = Item(MacroTriggerMode.DoublePress, MacroRepeatMode.UntilNextPress, 0, Wait(10000));
+            run.TriggerDoublePressMs = 5000;
+            var macros = new[] { run };
+            var im = Engine(macros);
+            Tick(im, macros, true);
+            Tick(im, macros, false);
+            Tick(im, macros, true);
+            Assert.True(run.IsExecuting);
+            Tick(im, macros, false);
+            // The stopping press is not the first press of a new double.
+            Tick(im, macros, true);
+            Assert.False(run.IsExecuting);
+            Tick(im, macros, false);
+            Tick(im, macros, true);
+            Assert.False(run.IsExecuting);
+            Tick(im, macros, false);
+            Tick(im, macros, true);
+            Assert.True(run.IsExecuting);
+        }
+
+        // ── A held single beside a double (the B to Enter case) ──────────
+
+        private static MacroItem[] HeldSingleBesideDouble()
+        {
+            string json = """
+                {"schemaVersion":"3.0","config":{"appName":"x"},
+                 "devices":{"hardware":[{"id":1,"name":"gamepad"}]},
+                 "masks":[{"id":1,"set":[{"deviceId":1,"buttonId":2}]}],
+                 "mappings":[{"condition":{"mask":{"id":1,"activator":{"type":"single","mode":"hold_until_release"}}},"macros":[{"keyboard":{"buttonId":28}}]},
+                             {"condition":{"mask":{"id":1,"activator":{"type":"double","mode":"onetime"}}},"macros":[{"keyboard":{"buttonId":57}}]}]}
+                """;
+            var r = ForeignConfigImporter.Translate(Encoding.UTF8.GetBytes(json), "C:/x/T.rewasd");
+            Assert.Equal(0, r.Report.PartialCount + r.Report.SkippedCount);
+            // The double only sets the wait of the single here, and its Space
+            // tap would reach the host, so it stays out. Enter becomes inert.
+            return r.Profile.Macros.Where(md => md.TriggerMode != MacroTriggerMode.DoublePress).Select(md =>
+            {
+                md.TriggerSource = MacroTriggerSource.OutputController;
+                md.TriggerInputs = null;
+                md.TriggerButtons = Gamepad.A;
+                var item = SettingsService.LoadMacroFromData(md, VirtualControllerType.Xbox, null);
+                item.ConsumeTriggerButtons = false;
+                // The latch reads the key string first, so both change.
+                foreach (var a in item.Actions)
+                {
+                    if (a.KeyCode != 0x0D) continue;
+                    a.KeyString = "";
+                    a.KeyCode = InertKey;
+                }
+                return item;
+            }).ToArray();
+        }
+
+        [Fact]
+        public void HeldSingleBesideADouble_HoldsTheKeyWhileTheButtonIsDown()
+        {
+            var macros = HeldSingleBesideDouble();
+            var single = macros.First(m => m.TriggerMode == MacroTriggerMode.SinglePress);
+            var now = DateTime.UtcNow;
+            var im = Engine(macros);
+            im.SinglePressUtcNow = () => now;
+
+            Tick(im, macros, true);
+            Assert.DoesNotContain((ushort)InertKey, im._latchedKeysDown);
+            now = now.AddMilliseconds(single.TriggerDoublePressMs + 20);
+            Tick(im, macros, true);
+            Assert.Contains((ushort)InertKey, im._latchedKeysDown);
+            Thread.Sleep(120);
+            Tick(im, macros, true);
+            Assert.Contains((ushort)InertKey, im._latchedKeysDown);
+            Tick(im, macros, false);
+            Tick(im, macros, false);
+            Assert.DoesNotContain((ushort)InertKey, im._latchedKeysDown);
+        }
+
+        [Fact]
+        public void HeldSingleBesideADouble_ATapIsOneKeyTap()
+        {
+            var macros = HeldSingleBesideDouble();
+            var single = macros.First(m => m.TriggerMode == MacroTriggerMode.SinglePress);
+            var now = DateTime.UtcNow;
+            var im = Engine(macros);
+            im.SinglePressUtcNow = () => now;
+
+            Tick(im, macros, true);
+            Tick(im, macros, false);
+            now = now.AddMilliseconds(single.TriggerDoublePressMs + 20);
+            Tick(im, macros, false);
+            Assert.Contains((ushort)InertKey, im._latchedKeysDown);
+            Thread.Sleep(80);
+            Tick(im, macros, false);
+            Tick(im, macros, false);
+            Assert.DoesNotContain((ushort)InertKey, im._latchedKeysDown);
+        }
+
+        // ── Profile Shortcut ─────────────────────────────────────────────
+
+        [Fact]
+        public void ProfileShortcut_LoadsTheProfileItNames_ByName()
+        {
+            var saved = SettingsManager.Profiles;
+            try
+            {
+                SettingsManager.Profiles = new List<ProfileData>
+                {
+                    new() { Id = "p1", Name = "Racing" },
+                    new() { Id = "p2", Name = "Other" },
+                };
+                var m = Item(MacroTriggerMode.OnPress, MacroRepeatMode.Once, 0, new MacroAction
+                {
+                    Type = MacroActionType.ProfileShortcut,
+                    ProfileShortcutMode = SwitchProfileMode.Specific,
+                    ProfileShortcutName = "other",
+                });
+                var macros = new[] { m };
+                var im = Engine(macros);
+                Tick(im, macros, true);
+                Assert.Equal("p2", im.PendingProfileSwitchId);
+            }
+            finally
+            {
+                SettingsManager.Profiles = saved;
+            }
+        }
+
+        [Fact]
+        public void ProfileShortcut_ControllerMode_IsTheShortcutsOwn()
+        {
+            var m = Item(MacroTriggerMode.OnPress, MacroRepeatMode.Once, 0,
+                new MacroAction { Type = MacroActionType.ProfileShortcut, ProfileShortcutMode = SwitchProfileMode.ToggleVCsDisabled });
+            var macros = new[] { m };
+            var im = Engine(macros);
+            Tick(im, macros, true);
+            Assert.True(im.PendingToggleVCsDisabled);
+        }
+
+        // ── Device stamps ────────────────────────────────────────────────
+
+        [Fact]
+        public void ImportStamps_FoldOntoTheAssignedDevice_WhereTheUserChoseNothing()
+        {
+            var saved = SettingsManager.SlotMappingSets;
+            try
+            {
+                var sets = new MappingSet[4];
+                sets[0] = new MappingSet { WorkshopCurves = "LeftThumbAxisX=0,0;0.5,0.25;1,1", WorkshopRumblePercent = "40" };
+                SettingsManager.SlotMappingSets = sets;
+                var ps = new PadSetting();
+                Assert.True(WorkshopTuningApplier.ApplyToAssignedDevice(0, ps));
+                Assert.Equal("40", ps.LeftMotorStrength);
+                Assert.Equal("40", ps.RightMotorStrength);
+                Assert.Equal("0,0;0.5,0.25;1,1", ps.LeftThumbSensitivityCurveX);
+                // A stamp is spent on the first device that takes it.
+                Assert.Equal("", sets[0].WorkshopCurves);
+                Assert.Equal("", sets[0].WorkshopRumblePercent);
+
+                // A device the user tuned keeps its own values.
+                sets[0].WorkshopRumblePercent = "40";
+                var tuned = new PadSetting { LeftMotorStrength = "70" };
+                WorkshopTuningApplier.ApplyToAssignedDevice(0, tuned);
+                Assert.Equal("70", tuned.LeftMotorStrength);
+            }
+            finally
+            {
+                SettingsManager.SlotMappingSets = saved;
+            }
+        }
+
+        [Fact]
+        public void BatteryColors_FoldOntoTheDevicesLightingCard_OnlyOverItsDefaults()
+        {
+            var saved = SettingsManager.SlotMappingSets;
+            try
+            {
+                var sets = new MappingSet[4];
+                sets[0] = new MappingSet { WorkshopBatteryColors = "4,5,6;1,2,3" };
+                SettingsManager.SlotMappingSets = sets;
+                var cfg = new DeviceSlotConfig();
+                Assert.True(WorkshopTuningApplier.ApplyBatteryColors(0, cfg));
+                Assert.Equal((byte)4, cfg.LightbarBatteryLowR);
+                Assert.Equal((byte)6, cfg.LightbarBatteryLowB);
+                Assert.Equal((byte)1, cfg.LightbarBatteryHighR);
+                Assert.Equal((byte)3, cfg.LightbarBatteryHighB);
+                Assert.Equal("", sets[0].WorkshopBatteryColors);
+
+                sets[0].WorkshopBatteryColors = "4,5,6;1,2,3";
+                var chosen = new DeviceSlotConfig { LightbarBatteryLowR = 9 };
+                Assert.False(WorkshopTuningApplier.ApplyBatteryColors(0, chosen));
+                Assert.Equal((byte)9, chosen.LightbarBatteryLowR);
+            }
+            finally
+            {
+                SettingsManager.SlotMappingSets = saved;
+            }
         }
     }
 }

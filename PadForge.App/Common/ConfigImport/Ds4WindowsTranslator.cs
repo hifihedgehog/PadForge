@@ -6,6 +6,7 @@ using System.Linq;
 using System.Xml.Linq;
 using PadForge.Common.Input;
 using PadForge.Engine;
+using PadForge.Engine.Common.Mapping;
 using PadForge.Engine.Data;
 using PadForge.Resources.Strings;
 using PadForge.Services;
@@ -75,6 +76,8 @@ namespace PadForge.Common.ConfigImport
                 ReadsKeyboard = t._b.ReadsKeyboard,
                 ReadsMouse = t._b.ReadsMouse,
                 ReadsController = t._b.ReadsController,
+                Runs = t._b.Runs,
+                Starts = t._b.Starts,
             };
         }
 
@@ -175,70 +178,65 @@ namespace PadForge.Common.ConfigImport
                 : 1.0;
         }
 
-        /// <summary>DS4Windows' curve names as the exponent of the same shape.
-        /// Quadratic and cubic are exact. The easing and precision curves, and
-        /// a custom curve's bezier sampled at three points, come to the
-        /// nearest exponent, which the report says.</summary>
-        private double CurveExponent(string prefix, string label)
+        /// <summary>A stick or trigger's output curve and its Max Output, in
+        /// the points the device's curve card takes. The named curves are
+        /// Mapping.cs's own formulas, a custom curve its bezier, and Max Output
+        /// the cap it applies ahead of them.</summary>
+        private void SetCurve(string prefix, params string[] targets)
         {
             string mode = Text(prefix + "OutputCurveMode");
-            switch (mode.ToLowerInvariant())
+            Func<double, double> curve = mode.ToLowerInvariant() switch
             {
-                case "":
-                case "linear":
-                    return 0;
-                case "quadratic":
-                    return 2.0;
-                case "cubic":
-                    return 3.0;
-                case "enhanced-precision":
-                    _b.Partial(ImportReasons.CurveApproximated, label, mode, "", mode);
-                    return 1.2;
-                case "easeout-quad":
-                    _b.Partial(ImportReasons.CurveApproximated, label, mode, "", mode);
-                    return 0.6;
-                case "easeout-cubic":
-                    _b.Partial(ImportReasons.CurveApproximated, label, mode, "", mode);
-                    return 0.45;
-                case "custom":
-                    double e = FitBezier(Text(prefix + "OutputCurveCustom"));
-                    _b.Partial(ImportReasons.CurveApproximated, label, mode, "", mode);
-                    return e;
-                default:
-                    _b.Partial(ImportReasons.CurveApproximated, label, mode, "", mode);
-                    return 0;
-            }
+                "quadratic" => x => x * x,
+                "cubic" => x => x * x * x,
+                "enhanced-precision" => x => x <= 0.4 ? 0.8 * x : x <= 0.75 ? x - 0.08 : x * 1.32 - 0.32,
+                "easeout-quad" => x => -x * (x - 2.0),
+                "easeout-cubic" => x => (x - 1.0) * (x - 1.0) * (x - 1.0) + 1.0,
+                "custom" => BezierCurve(Text(prefix + "OutputCurveCustom")),
+                _ => null,
+            };
+            double output = Num(prefix + "MaxOutput", 100);
+            bool capped = output is > 0 and < 100;
+            if (curve == null && !capped) return;
+            curve ??= x => x;
+            double cap = capped ? output / 100.0 : 1.0;
+            string points = ImportBuilder.CurvePoints(x => curve(Math.Min(x, cap)));
+            foreach (string target in targets) _b.Curves[target] = points;
         }
 
-        /// <summary>The exponent nearest a cubic bezier from (0,0) to (1,1),
-        /// written <c>x1, y1, x2, y2</c>.</summary>
-        internal static double FitBezier(string definition)
+        /// <summary>A cubic bezier from (0,0) to (1,1), written <c>x1, y1, x2,
+        /// y2</c>, as y at a given x. Null when the text does not read.</summary>
+        internal static Func<double, double> BezierCurve(string definition)
         {
             var parts = (definition ?? "").Split(',');
-            if (parts.Length < 4) return 0;
-            var values = new double[4];
+            if (parts.Length < 4) return null;
+            var v = new double[4];
             for (int i = 0; i < 4; i++)
             {
                 string token = parts[i].Trim().TrimEnd('%');
-                if (!double.TryParse(token, NumberStyles.Float, CultureInfo.InvariantCulture, out values[i])) return 0;
+                if (!double.TryParse(token, NumberStyles.Float, CultureInfo.InvariantCulture, out v[i])) return null;
+                if (!double.IsFinite(v[i])) return null;
             }
-            double num = 0, den = 0;
-            foreach (double t in new[] { 0.25, 0.5, 0.75 })
+            double Axis(double a, double b, double t)
             {
                 double u = 1 - t;
-                double x = 3 * u * u * t * values[0] + 3 * u * t * t * values[2] + t * t * t;
-                double y = 3 * u * u * t * values[1] + 3 * u * t * t * values[3] + t * t * t;
-                if (x <= 0 || y <= 0 || x >= 1 || y >= 1) continue;
-                double lx = Math.Log(x), ly = Math.Log(y);
-                num += lx * ly;
-                den += lx * lx;
+                return 3 * u * u * t * a + 3 * u * t * t * b + t * t * t;
             }
-            return den > 0 ? Math.Clamp(num / den, 0.2, 8.0) : 0;
+            return x =>
+            {
+                double lo = 0, hi = 1;
+                for (int i = 0; i < 40; i++)
+                {
+                    double mid = (lo + hi) / 2;
+                    if (Axis(v[0], v[2], mid) < x) lo = mid;
+                    else hi = mid;
+                }
+                return Axis(v[1], v[3], (lo + hi) / 2);
+            };
         }
 
         private MappingSource TriggerSource(string prefix, int sensIndex)
         {
-            string label = prefix + " tuning";
             var src = new MappingSource { Descriptor = prefix == "L2" ? "Gamepad LeftTrigger" : "Gamepad RightTrigger" };
             // A trigger's dead zone has no prefix of its own. ProfileDTO calls
             // it LeftTriggerMiddle and RightTriggerMiddle, 0 through 255.
@@ -256,14 +254,9 @@ namespace PadForge.Common.ConfigImport
             if (max > 0 && max < 100) src.ParamRangeOuter = max / 100.0;
             double sens = SensitivityPart(sensIndex);
             if (sens != 1.0) src.Sensitivity = sens;
-            double exponent = CurveExponent(prefix, label);
-            if (exponent > 0) src.ParamCurveExponent = exponent;
-            double output = Num(prefix + "MaxOutput", 100);
-            if (output is > 0 and < 100)
-            {
-                src.Sensitivity *= output / 100.0;
-                _b.Partial(ImportReasons.MaxOutput, label, prefix + "MaxOutput", "", output.ToString("0.#", CultureInfo.InvariantCulture));
-            }
+            SetCurve(prefix, prefix == "L2" ? "LeftTrigger" : "RightTrigger");
+            string stage = StageRead(prefix, false, TriggerPullPercent(prefix));
+            if (stage.Length > 0) src.GateDescriptor = stage;
             return src;
         }
 
@@ -298,10 +291,9 @@ namespace PadForge.Common.ConfigImport
 
             bool axial = string.Equals(Text(prefix + "DeadZoneType"), "Axial", StringComparison.OrdinalIgnoreCase);
             var opts = Element(prefix + "AxialDeadOptions");
-            double exponent = CurveExponent(prefix, label);
+            SetCurve(prefix, tx, ty);
             double rotation = Num(prefix + "Rotation", 0);
-            double output = Num(prefix + "MaxOutput", 100);
-            double sens = SensitivityPart(prefix == "LS" ? 0 : 1) * (output is > 0 and < 100 ? output / 100.0 : 1.0);
+            double sens = SensitivityPart(prefix == "LS" ? 0 : 1);
             double verticalScale = Num(prefix + "VerticalScale", 100) / 100.0;
 
             MappingSource Make(string descriptor, double coeff, bool isX)
@@ -323,7 +315,6 @@ namespace PadForge.Common.ConfigImport
                 }
                 if (anti > 0) src.ParamAntiDeadzone = Math.Clamp(anti / 100.0, 0.0, 0.99);
                 if (max is > 0 and < 100) src.ParamRangeOuter = max / 100.0;
-                if (exponent > 0) src.ParamCurveExponent = exponent;
                 double scale = Math.Abs(coeff) * sens * (isX ? 1.0 : verticalScale);
                 if (scale != 1.0) src.Sensitivity = scale;
                 if (coeff < 0) src.Invert = true;
@@ -355,9 +346,6 @@ namespace PadForge.Common.ConfigImport
                 _b.Bind(layer, cx, tx, _axisSources[cx], PadId);
                 _b.Bind(layer, cy, ty, _axisSources[cy], PadId);
             }
-
-            if (output is > 0 and < 100)
-                _b.Partial(ImportReasons.MaxOutput, label, prefix + "MaxOutput", "", output.ToString("0.#", CultureInfo.InvariantCulture));
         }
 
         // ── Control names ───────────────────────────────────────────────
@@ -400,10 +388,10 @@ namespace PadForge.Common.ConfigImport
                 case "Triangle": return Btn("Gamepad ButtonY");
                 case "L1": return Btn("Gamepad LeftShoulder");
                 case "R1": return Btn("Gamepad RightShoulder");
-                case "L2": return Pull("Gamepad LeftTrigger", TriggerThreshold("L2"));
-                case "R2": return Pull("Gamepad RightTrigger", TriggerThreshold("R2"));
-                case "L2FullPull": return Pull("Gamepad LeftTrigger", 99);
-                case "R2FullPull": return Pull("Gamepad RightTrigger", 99);
+                case "L2": return Pull("Gamepad LeftTrigger", TriggerPress);
+                case "R2": return Pull("Gamepad RightTrigger", TriggerPress);
+                case "L2FullPull": return Pull("Gamepad LeftTrigger", BoundedReads.FullPullPercent);
+                case "R2FullPull": return Pull("Gamepad RightTrigger", BoundedReads.FullPullPercent);
                 case "L3": return Btn("Gamepad LeftStick");
                 case "R3": return Btn("Gamepad RightStick");
                 case "Share": return Btn("Gamepad ButtonBack");
@@ -516,12 +504,102 @@ namespace PadForge.Common.ConfigImport
             _ => false,
         };
 
-        private int TriggerThreshold(string prefix)
+        /// <summary>GetBoolMapping presses a trigger past 100 of 255, for a
+        /// pad button or a macro.</summary>
+        private const int TriggerPress = 39;
+
+        /// <summary>The percent a trigger's value leaves 0 at: past its dead
+        /// zone. A key and a mouse button read it (GetBoolActionMapping), and
+        /// so do the two-stage modes.</summary>
+        private int TriggerPullPercent(string prefix)
         {
-            // Mapping.cs presses a trigger past 100 of 255. A hair trigger reads
-            // the soft pull's first movement.
-            string mode = Text(prefix + "TwoStageMode");
-            return string.Equals(mode, "HairTrigger", StringComparison.OrdinalIgnoreCase) ? 2 : 39;
+            double dead = Num(prefix == "L2" ? "LeftTriggerMiddle" : "RightTriggerMiddle", 0);
+            return (int)Math.Clamp(Math.Ceiling(dead * 100.0 / 255.0), 1.0, 98.0);
+        }
+
+        /// <summary>The read a trigger stage takes on top of its own, in the
+        /// modes where one stage holds the other back. Empty in Disabled and
+        /// Normal, where each fires on its own (ProcessTwoStageTrigger).
+        /// <paramref name="press"/> is the percent this stage's output reads
+        /// as pressed.</summary>
+        private string StageRead(string prefix, bool full, int press)
+        {
+            string input = prefix == "L2" ? "Gamepad LeftTrigger" : "Gamepad RightTrigger";
+            int pull = TriggerPullPercent(prefix);
+            int Wait() => (int)Math.Clamp(Num(prefix + "HipFireTime", 100) + Num("DebouncingMs", 0), 0.0, 60000.0);
+            switch (Text(prefix + "TwoStageMode"))
+            {
+                case "ExclusiveButtons":
+                    return full ? "" : BoundedReads.Between(Math.Max(pull, press), BoundedReads.FullPullPercent, false, false, input);
+                case "HairTrigger":
+                    return BoundedReads.Stage(TwoStageMode.HairTrigger, full, 0, pull, press, input);
+                case "HipFire":
+                    return BoundedReads.Stage(TwoStageMode.HipFire, full, Wait(), pull, press, input);
+                case "HipFireExclusiveButtons":
+                    return BoundedReads.Stage(TwoStageMode.HipFireExclusive, full, Wait(), pull, press, input);
+                default:
+                    return "";
+            }
+        }
+
+        /// <summary>A stick direction, past its dead zone within 67.5 degrees
+        /// of that way, and a trigger, past its dead zone. That is how a key
+        /// and a mouse button read a control (GetBoolActionMapping). A pad
+        /// button and a macro read past a fixed press (GetBoolMapping), which
+        /// is what <see cref="ControlInput"/> gives.</summary>
+        private void ReadAsKeyOrClick(ImportInput input, string name)
+        {
+            const double HalfWidth = 67.5;
+            void Sector(double center, string stick, bool isX)
+            {
+                string prefix = stick == "Left" ? "LS" : "RS";
+                bool axial = string.Equals(Text(prefix + "DeadZoneType"), "Axial", StringComparison.OrdinalIgnoreCase);
+                double dead = axial
+                    ? Num(Element(prefix + "AxialDeadOptions"), isX ? "DeadZoneX" : "DeadZoneY", 0)
+                    : Num(prefix + "DeadZone", 0);
+                // The half-axis read underneath only has to agree on the side.
+                input.DeadZone = 1;
+                input.Band = BoundedReads.Sector(center, HalfWidth,
+                    (int)Math.Clamp(Math.Ceiling(dead * 100.0 / 127.0), 1.0, 99.0), "Gamepad " + stick + "StickRing");
+            }
+            switch (name)
+            {
+                case "L2": input.DeadZone = TriggerPullPercent("L2"); break;
+                case "R2": input.DeadZone = TriggerPullPercent("R2"); break;
+                case "LXNeg": Sector(180, "Left", true); break;
+                case "LXPos": Sector(0, "Left", true); break;
+                case "LYNeg": Sector(90, "Left", false); break;
+                case "LYPos": Sector(270, "Left", false); break;
+                case "RXNeg": Sector(180, "Right", true); break;
+                case "RXPos": Sector(0, "Right", true); break;
+                case "RYNeg": Sector(90, "Right", false); break;
+                case "RYPos": Sector(270, "Right", false); break;
+            }
+        }
+
+        /// <summary>A soft or full pull binding under its trigger's two-stage
+        /// mode. Nothing else on the controller reads a stage.</summary>
+        private void ApplyStage(ImportInput input, string name)
+        {
+            string read = name switch
+            {
+                "L2" => StageRead("L2", false, input.DeadZone),
+                "R2" => StageRead("R2", false, input.DeadZone),
+                "L2FullPull" => StageRead("L2", true, BoundedReads.FullPullPercent),
+                "R2FullPull" => StageRead("R2", true, BoundedReads.FullPullPercent),
+                _ => "",
+            };
+            if (read.Length > 0) input.Band = read;
+        }
+
+        /// <summary>Whether a full pull binding does anything: Mapping.cs
+        /// passes it over while its trigger's two-stage mode is Disabled, the
+        /// default.</summary>
+        private bool FullPullIsOff(string name)
+        {
+            if (name is not ("L2FullPull" or "R2FullPull")) return false;
+            string mode = Text(name.Substring(0, 2) + "TwoStageMode");
+            return mode.Length == 0 || string.Equals(mode, "Disabled", StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>A Button value, by either of the two name lists DS4Windows
@@ -685,7 +763,7 @@ namespace PadForge.Common.ConfigImport
 
         private void LowerControl(ControlSpec spec, string layer)
         {
-            if (GyroControlIsOff(spec.Name)) return;
+            if (GyroControlIsOff(spec.Name) || FullPullIsOff(spec.Name)) return;
             var input = ControlInput(spec.Name);
             string path = layer == ImportBuilder.BaseLayer ? spec.Name : _b.LayerName(layer) + " / " + spec.Name;
             if (input == null)
@@ -700,7 +778,7 @@ namespace PadForge.Common.ConfigImport
             if (!string.IsNullOrEmpty(spec.Macro))
             {
                 ReplaceDefault(layer, spec.Name, input);
-                LowerMacro(input, layer, spec.Macro, spec.KeyType, path);
+                LowerMacro(Staged(spec.Name, false), layer, spec.Macro, spec.KeyType, path);
             }
             else if (!string.IsNullOrEmpty(spec.Key))
             {
@@ -708,7 +786,7 @@ namespace PadForge.Common.ConfigImport
                 if (unboundFlag)
                     _b.Clean(path, "Unbound", "");
                 else
-                    LowerKey(input, layer, spec.Key, toggle, path);
+                    LowerKey(Staged(spec.Name, true), layer, spec.Key, toggle, path);
             }
             else if (spec.Button != null)
             {
@@ -722,14 +800,18 @@ namespace PadForge.Common.ConfigImport
                 {
                     _b.Skipped(ImportReasons.NoSuchPadButton, path, spec.Button, spec.Button);
                 }
-                else if (input.EdgeOnly != null)
-                {
-                    LowerEdgeTap(input, layer, output, path);
-                }
                 else
                 {
-                    _b.Bind(layer, input, output);
-                    _b.Clean(path, output.Label, output.Target);
+                    var read = Staged(spec.Name, output.Kind is ImportOutputKind.MouseButton or ImportOutputKind.Wheel);
+                    if (read.EdgeOnly != null)
+                    {
+                        LowerEdgeTap(read, layer, output, path);
+                    }
+                    else
+                    {
+                        _b.Bind(layer, read, output);
+                        _b.Clean(path, output.Label, output.Target);
+                    }
                 }
             }
 
@@ -738,9 +820,33 @@ namespace PadForge.Common.ConfigImport
                 // Mapping.cs: an active lightbar macro takes precedence over
                 // the Extras color.
                 bool lightbarMacro = (spec.Lightbar ?? "").StartsWith("True", StringComparison.OrdinalIgnoreCase);
-                LowerExtras(input, layer, spec.Extras, path, lightbarMacro);
+                LowerExtras(Staged(spec.Name, true), layer, spec.Extras, path, lightbarMacro);
             }
-            if (!string.IsNullOrEmpty(spec.Lightbar)) LowerLightbarMacro(input, layer, spec.Lightbar, path);
+            // Mapping.cs runs a lightbar macro only for the controls in its
+            // BoolDS4Controls, read from the raw state.
+            if (!string.IsNullOrEmpty(spec.Lightbar) && LightbarMacroControls.Contains(spec.Name))
+                LowerLightbarMacro(ControlInput(spec.Name), layer, spec.Lightbar, path);
+        }
+
+        /// <summary>Mapping.BoolDS4Controls: the controls a lightbar macro
+        /// runs for.</summary>
+        private static readonly HashSet<string> LightbarMacroControls = new(StringComparer.Ordinal)
+        {
+            "Square", "Triangle", "Circle", "Cross", "DpadUp", "DpadDown", "DpadLeft", "DpadRight",
+            "L1", "L3", "R1", "R3", "Share", "Options", "Mute", "TouchRight", "TouchLeft", "Capture",
+            "SideL", "SideR", "FnL", "FnR", "BLP", "BRP",
+        };
+
+        /// <summary>The control as one kind of binding reads it. A key, a
+        /// mouse button and Extras read it as GetBoolActionMapping does, a
+        /// pad button and a macro as GetBoolMapping does, and a trigger's
+        /// two-stage mode holds either back.</summary>
+        private ImportInput Staged(string name, bool asKeyOrClick)
+        {
+            var input = ControlInput(name);
+            if (asKeyOrClick) ReadAsKeyOrClick(input, name);
+            ApplyStage(input, name);
+            return input;
         }
 
         /// <summary>The control stops sending its default output. One half of
@@ -1103,15 +1209,6 @@ namespace PadForge.Common.ConfigImport
 
         private void ReadTwoStage(string prefix)
         {
-            string mode = Text(prefix + "TwoStageMode");
-            if (mode is "HipFire" or "HipFireExclusiveButtons")
-            {
-                string time = Num(prefix + "HipFireTime", 100).ToString("0", CultureInfo.InvariantCulture);
-                _b.Partial(ImportReasons.HipFire, prefix, mode, "", time);
-            }
-            if (mode is "ExclusiveButtons" or "HipFireExclusiveButtons")
-                _b.Partial(ImportReasons.ControllerSetting, prefix, mode, "", mode);
-
             string effect = Text(prefix + "TriggerEffect");
             if (effect.Length == 0 || string.Equals(effect, "None", StringComparison.OrdinalIgnoreCase)) return;
 
@@ -1349,17 +1446,39 @@ namespace PadForge.Common.ConfigImport
             string mode = Text("LightbarMode");
             if (string.Equals(mode, "Passthru", StringComparison.OrdinalIgnoreCase)) return;
 
-            ActionData action;
-            if (Num("Rainbow", 0) > 0)
+            // The Rainbow element is the seconds one trip around takes.
+            // DS4LightBar.updateLightBar tests it before the battery light.
+            double rainbow = Num("Rainbow", 0);
+            IReadOnlyList<ActionData> actions;
+            string shown;
+            var color = ColorOf("Color");
+            if (rainbow > 0)
             {
-                action = new ActionData { Type = MacroActionType.LightbarModeSet, LightbarTargetMode = LightbarMode.Rainbow };
+                // MaxSatRainbow scales every channel (HuetoRGB's C).
+                double brightness = Math.Clamp(Num("MaxSatRainbow", 100), 0, 100) / 100.0;
+                actions = ImportBuilder.RainbowPattern((int)Math.Clamp(rainbow * 1000, 360, 60000), brightness);
+                shown = "Rainbow";
+                // Under the battery light, DS4Windows dims the rainbow as the
+                // battery drains, and a pattern has no battery to read.
+                if (IsTrue("ledAsBatteryIndicator"))
+                    _b.Partial(ImportReasons.ControllerSetting, "Lightbar", "Rainbow", "", "ledAsBatteryIndicator");
+            }
+            else if (IsTrue("ledAsBatteryIndicator"))
+            {
+                // getTransitionedColor runs from LowColor at empty to Color at
+                // full, the device's Battery light from Low to High.
+                actions = new[] { new ActionData { Type = MacroActionType.LightbarModeSet, LightbarTargetMode = LightbarMode.Battery } };
+                var low = ColorOf("LowColor") ?? ((byte)0, (byte)0, (byte)0);
+                var high = color ?? ((byte)0, (byte)0, (byte)255);
+                _b.BatteryColors = string.Create(CultureInfo.InvariantCulture,
+                    $"{low.Item1},{low.Item2},{low.Item3};{high.Item1},{high.Item2},{high.Item3}");
+                shown = "Battery";
             }
             else
             {
-                var parts = Text("Color").Split(',');
-                if (parts.Length != 3) return;
-                byte Part(int i) => byte.TryParse(parts[i].Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out byte v) ? v : (byte)0;
-                action = ImportBuilder.ProfileColor(Part(0), Part(1), Part(2));
+                if (color == null) return;
+                actions = new[] { ImportBuilder.ProfileColor(color.Value.Item1, color.Value.Item2, color.Value.Item3) };
+                shown = "Color";
             }
 
             _b.AddMacro(new ImportMacro
@@ -1369,57 +1488,109 @@ namespace PadForge.Common.ConfigImport
                 RunsBesideLayers = true,
                 Mode = MacroTriggerMode.Always,
                 PadId = PadId,
-                Actions = new[] { action },
+                Actions = actions,
             });
-            if (IsTrue("ledAsBatteryIndicator"))
-                _b.Partial(ImportReasons.LedShownAs, "Lightbar", "Battery", action.Type.ToString(), "Battery");
-            else
-                _b.Clean("Lightbar", "Color", action.Type.ToString());
+            _b.Clean("Lightbar", shown, "LightbarColor");
         }
 
-        // ── What must not run, and what has no place in a profile ───────
+        private (byte, byte, byte)? ColorOf(string element)
+        {
+            var parts = Text(element).Split(',');
+            if (parts.Length != 3) return null;
+            byte Part(int i) => byte.TryParse(parts[i].Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out byte v) ? v : (byte)0;
+            return (Part(0), Part(1), Part(2));
+        }
+
+        // ── A program the profile starts, and what has no place in a profile ──
 
         private void ReadSafetyAndLeftovers()
         {
             string program = Text("LaunchProgram");
-            if (program.Length > 0) _b.Skipped(ImportReasons.ProgramNotRun, "LaunchProgram", program, program);
+            if (program.Length > 0)
+            {
+                // Started when the profile loads: an Always macro that runs it
+                // and then waits for as long as a wait can last.
+                _b.AddMacro(new ImportMacro
+                {
+                    Name = "LaunchProgram",
+                    // Every layer, so a layer that stops inheriting takes no
+                    // copy of it and the program starts once.
+                    Layer = "",
+                    Mode = MacroTriggerMode.Always,
+                    PadId = PadId,
+                    Actions = new[]
+                    {
+                        _b.Run(program, program, onLoad: true),
+                        new ActionData { Type = MacroActionType.Delay, DurationMs = int.MaxValue },
+                    },
+                });
+                _b.Clean("LaunchProgram", program, "RunProgram");
+            }
 
-            string wheel = Text("SASteeringWheelEmulationAxis");
-            if (wheel.Length > 0 && !string.Equals(wheel, "None", StringComparison.OrdinalIgnoreCase))
-                _b.Skipped(ImportReasons.SteeringWheel, "SASteeringWheelEmulationAxis", wheel);
+            ReadSteeringWheel();
 
-            void Note(string element, Func<string, bool> changed)
+            string boost = Text("RumbleBoost");
+            if (boost.Length > 0 && boost != "100")
+            {
+                if (int.TryParse(boost, NumberStyles.Integer, CultureInfo.InvariantCulture, out int percent) && percent is >= 0 and < 100)
+                {
+                    _b.RumblePercent = percent.ToString(CultureInfo.InvariantCulture);
+                    _b.Clean("RumbleBoost", boost, "Motor strength");
+                }
+                else
+                {
+                    _b.Skipped(ImportReasons.ControllerSetting, "RumbleBoost", boost, "RumbleBoost");
+                }
+            }
+
+            string idle = Text("idleDisconnectTimeout");
+            if (idle.Length > 0 && idle != "0")
+            {
+                if (int.TryParse(idle, NumberStyles.Integer, CultureInfo.InvariantCulture, out int seconds) && seconds > 0)
+                {
+                    _b.IdleDisconnectSeconds = seconds.ToString(CultureInfo.InvariantCulture);
+                    _b.Clean("idleDisconnectTimeout", idle, "Idle disconnect");
+                }
+                else
+                {
+                    _b.Skipped(ImportReasons.ControllerSetting, "idleDisconnectTimeout", idle, "idleDisconnectTimeout");
+                }
+            }
+
+            void Note(string element, Func<string, bool> changed, string reason = ImportReasons.ControllerSetting)
             {
                 string value = Text(element);
                 if (value.Length > 0 && changed(value))
-                    _b.Skipped(ImportReasons.ControllerSetting, element, value, element);
+                    _b.Skipped(reason, element, value, element);
             }
-            Note("RumbleBoost", v => v != "100");
-            Note("RumbleAutostopTime", v => v != "0");
-            Note("idleDisconnectTimeout", v => v != "0");
-            Note("StartTouchpadOff", v => v == "True");
+            // PadForge has nothing these could land on: no rumble auto-stop,
+            // no start-with-the-touchpad-off, no button-to-mouse speed, no
+            // stick fuzz, square gate or anti-snapback, no touchpad
+            // trackball, no low-battery flash and no charging light.
+            const string None = ImportReasons.NoSuchSetting;
+            Note("RumbleAutostopTime", v => v != "0", None);
+            Note("StartTouchpadOff", v => v == "True", None);
             Note("MouseAcceleration", v => v == "True");
-            Note("ButtonMouseSensitivity", v => v != "25");
-            Note("LSFuzz", v => v != "0");
-            Note("RSFuzz", v => v != "0");
-            Note("LSSquareStick", v => v == "True");
-            Note("RSSquareStick", v => v == "True");
-            Note("LSAntiSnapback", v => v == "True");
-            Note("RSAntiSnapback", v => v == "True");
+            Note("ButtonMouseSensitivity", v => v != "25", None);
+            Note("LSFuzz", v => v != "0", None);
+            Note("RSFuzz", v => v != "0", None);
+            Note("LSSquareStick", v => v == "True", None);
+            Note("RSSquareStick", v => v == "True", None);
+            Note("LSAntiSnapback", v => v == "True", None);
+            Note("RSAntiSnapback", v => v == "True", None);
             Note("TouchpadButtonMode", v => v != "Click");
             Note("TouchDisInvTriggers", v => v != "-1");
             Note("touchToggle", v => v == "False");
-            Note("TrackballMode", v => v == "True");
+            Note("TrackballMode", v => v == "True", None);
             Note("TouchRelMouseRotation", v => v != "0");
             Note("TouchRelMouseMinThreshold", v => v != "1");
-            Note("ButtonMouseVerticalScale", v => v != "100");
-            Note("MaxSatRainbow", v => v != "100");
-            Note("flashBatteryAt", v => v != "0");
-            Note("ChargingType", v => v != "0");
+            Note("ButtonMouseVerticalScale", v => v != "100", None);
+            Note("flashBatteryAt", v => v != "0", None);
+            Note("ChargingType", v => v != "0", None);
             foreach (string delta in new[] { "LSDeltaAccelSettings", "RSDeltaAccelSettings" })
             {
                 if (IsTrue(Element(delta), "Enabled", false))
-                    _b.Skipped(ImportReasons.ControllerSetting, delta, "Enabled", delta);
+                    _b.Skipped(None, delta, "Enabled", delta);
             }
             if (_gyroMode == "Mouse")
             {
@@ -1436,6 +1607,56 @@ namespace PadForge.Common.ConfigImport
                 Note("GyroMouseStickMaxOutputEnabled", v => v == "True");
                 Note("GyroMouseStickTriggerCond", v => v != "and");
             }
+        }
+
+        /// <summary>The wheel reads the controller's lean, which PadForge calls
+        /// Motion Lean. Mapping.cs writes the wheel over the axis it names. A
+        /// full lock past half a turn each way is beyond what a lean can read.</summary>
+        private void ReadSteeringWheel()
+        {
+            string wheel = Text("SASteeringWheelEmulationAxis");
+            if (wheel.Length == 0 || string.Equals(wheel, "None", StringComparison.OrdinalIgnoreCase)) return;
+
+            double range = Num("SASteeringWheelEmulationRange", 360);
+            MappingSource Lean() => new()
+            {
+                Descriptor = Engine.Common.Mapping.SourceCoercion.MotionLeanDescriptor,
+                ParamMotionInnerDz = 0,
+                ParamMotionOuterDz = Math.Clamp(180.0 - range / 2.0, 0.0, 179.0),
+            };
+            void Axis(string control, string target)
+            {
+                _b.Remove(ImportBuilder.BaseLayer, control);
+                _b.Bind(ImportBuilder.BaseLayer, control, target, Lean(), PadId);
+            }
+            switch (wheel)
+            {
+                case "LX": Axis("ds:LSX", "LeftThumbAxisX"); break;
+                case "LY": Axis("ds:LSY", "LeftThumbAxisY"); break;
+                case "RX": Axis("ds:RSX", "RightThumbAxisX"); break;
+                case "RY": Axis("ds:RSY", "RightThumbAxisY"); break;
+                case "L2R2":
+                {
+                    var left = Lean();
+                    left.HalfAxis = true;
+                    left.Invert = true;
+                    var right = Lean();
+                    right.HalfAxis = true;
+                    _b.Remove(ImportBuilder.BaseLayer, "ds:L2");
+                    _b.Remove(ImportBuilder.BaseLayer, "ds:R2");
+                    _b.Bind(ImportBuilder.BaseLayer, "ds:L2", "LeftTrigger", left, PadId);
+                    _b.Bind(ImportBuilder.BaseLayer, "ds:R2", "RightTrigger", right, PadId);
+                    break;
+                }
+                default:
+                    _b.Skipped(ImportReasons.SteeringWheel, "SASteeringWheelEmulationAxis", wheel);
+                    return;
+            }
+            _b.Clean("SASteeringWheelEmulationAxis", wheel, "Motion Lean");
+            if (range > 360)
+                _b.Partial(ImportReasons.ControllerSetting, "SASteeringWheelEmulationRange", range.ToString("0", CultureInfo.InvariantCulture), "", "SASteeringWheelEmulationRange");
+            if (Num("SASteeringWheelFuzz", 0) > 0)
+                _b.Partial(ImportReasons.NoSuchSetting, "SASteeringWheelFuzz", "", "", "SASteeringWheelFuzz");
         }
 
         // ── Special actions and auto profiles ───────────────────────────
@@ -1455,6 +1676,9 @@ namespace PadForge.Common.ConfigImport
                 string actionName = a.Attribute("Name")?.Value;
                 if (actionName != null) actions.TryAdd(actionName, a);
             }
+            // Actions.xml starts out holding this one, so every DS4Windows the
+            // profile reaches has it, whether or not a file came along.
+            actions.TryAdd("Disconnect Controller", XElement.Parse("<Action Name=\"Disconnect Controller\"><Trigger>PS/Options</Trigger><Type>DisconnectBT</Type><Details>0</Details></Action>"));
             foreach (string name in wanted)
             {
                 if (!actions.TryGetValue(name, out var action))
@@ -1534,11 +1758,50 @@ namespace PadForge.Common.ConfigImport
             switch (type)
             {
                 case "Program":
-                    _b.Skipped(ImportReasons.ProgramNotRun, path, details, details);
+                {
+                    // Mapping.cs takes $hidden out of the arguments and runs
+                    // the program windowless. Run Program starts it as Windows
+                    // would.
+                    string args = Text(action, "Arguements").Replace("$hidden", "", StringComparison.Ordinal).Trim();
+                    double hold = Num(action, "Delay", 0);
+                    _b.AddMacro(new ImportMacro
+                    {
+                        Name = name,
+                        Inputs = inputs,
+                        Mode = hold > 0 ? MacroTriggerMode.HoldForMs : MacroTriggerMode.OnPress,
+                        HoldMs = (int)(hold * 1000),
+                        PadId = PadId,
+                        Actions = new[] { _b.Run(details, details, args) },
+                    });
+                    _b.Clean(path, details, "RunProgram");
                     return;
+                }
                 case "Profile":
-                    _b.Skipped(ImportReasons.ProfileSwitch, path, details, details);
+                {
+                    _b.AddMacro(new ImportMacro
+                    {
+                        Name = name,
+                        Inputs = inputs,
+                        PadId = PadId,
+                        Actions = new[]
+                        {
+                            new ActionData
+                            {
+                                Type = MacroActionType.ProfileShortcut,
+                                ProfileShortcutMode = SwitchProfileMode.Specific,
+                                ProfileShortcutName = details,
+                            },
+                        },
+                    });
+                    // Going back runs while the other profile is loaded, so it
+                    // takes a Profile Shortcut, which reads its buttons from
+                    // any profile.
+                    if (Text(action, "UnloadTrigger").Length > 0)
+                        _b.Partial(ImportReasons.UnloadTrigger, path, details, "ProfileShortcut", details);
+                    else
+                        _b.Clean(path, details, "ProfileShortcut");
                     return;
+                }
                 case "Macro":
                 {
                     bool keep = extras.Contains("KeepKeyState", StringComparison.Ordinal);
@@ -1571,10 +1834,36 @@ namespace PadForge.Common.ConfigImport
                         return;
                     }
                     var output = ImportOutput.Key((byte)vk);
-                    string style = extras.Split('\n')[0].Trim();
-                    bool flips = style is "Press" or "Release";
+                    string style = Text(action, "UnloadStyle");
                     var moment = inputs.FirstOrDefault(i => i.EdgeOnly != null)?.EdgeOnly;
-                    if (moment != null && !flips)
+                    var unload = new List<ImportInput>();
+                    foreach (var control in Text(action, "UnloadTrigger").Split('/', StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        var input = ControlInput(ActionControlName(control.Trim()));
+                        if (input != null) unload.Add(input);
+                    }
+                    if (unload.Count > 0)
+                    {
+                        // Mapping.cs presses the key when the action fires and
+                        // lets it go when the unload trigger is pressed, or
+                        // released under the Release style.
+                        _b.AddMacro(new ImportMacro
+                        {
+                            Name = name,
+                            Inputs = inputs,
+                            PadId = PadId,
+                            Actions = new[] { output.Down() },
+                        });
+                        _b.AddMacro(new ImportMacro
+                        {
+                            Name = name + " (release)",
+                            Inputs = unload,
+                            Mode = style == "Release" ? MacroTriggerMode.OnRelease : MacroTriggerMode.OnPress,
+                            PadId = PadId,
+                            Actions = new[] { output.Up() },
+                        });
+                    }
+                    else if (moment != null)
                     {
                         _b.AddMacro(new ImportMacro
                         {
@@ -1583,17 +1872,6 @@ namespace PadForge.Common.ConfigImport
                             Mode = moment.Value,
                             PadId = PadId,
                             Actions = new[] { output.Tap() },
-                        });
-                    }
-                    else if (flips)
-                    {
-                        _b.AddMacro(new ImportMacro
-                        {
-                            Name = name,
-                            Inputs = inputs,
-                            Mode = style == "Release" ? MacroTriggerMode.OnRelease : MacroTriggerMode.OnPress,
-                            PadId = PadId,
-                            Actions = new[] { output.Flip() },
                         });
                     }
                     else
@@ -1612,7 +1890,7 @@ namespace PadForge.Common.ConfigImport
                 }
                 case "DisconnectBT":
                 {
-                    double hold = double.TryParse(details, NumberStyles.Float, CultureInfo.InvariantCulture, out double h) ? h : 0;
+                    double hold = double.TryParse(details, NumberStyles.Float, CultureInfo.InvariantCulture, out double h) ? h : Num(action, "Delay", 0);
                     _b.AddMacro(new ImportMacro
                     {
                         Name = name,
@@ -1622,7 +1900,9 @@ namespace PadForge.Common.ConfigImport
                         PadId = PadId,
                         Actions = new[]
                         {
-                            new ActionData { Type = MacroActionType.DisconnectController, DisconnectTarget = MacroDisconnectTarget.TriggeringDevice },
+                            // The trigger names no device, so what it would
+                            // call its own is whatever feeds the slot.
+                            new ActionData { Type = MacroActionType.DisconnectController, DisconnectTarget = MacroDisconnectTarget.SlotDevices },
                         },
                     });
                     _b.Clean(path, "Disconnect", "DisconnectController");
@@ -1645,7 +1925,15 @@ namespace PadForge.Common.ConfigImport
                     _b.Clean(path, "Gyro calibration", "GyroRecenter");
                     return;
                 case "SASteeringWheelEmulationCalibrate":
-                    _b.Skipped(ImportReasons.SteeringWheel, path, type);
+                    // Recenter re-captures the lean's neutral too.
+                    _b.AddMacro(new ImportMacro
+                    {
+                        Name = name,
+                        Inputs = inputs,
+                        PadId = PadId,
+                        Actions = new[] { new ActionData { Type = MacroActionType.GyroRecenter } },
+                    });
+                    _b.Clean(path, "Wheel calibration", "GyroRecenter");
                     return;
                 default:
                     _b.Skipped(ImportReasons.ControllerSetting, path, type, type);

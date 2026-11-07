@@ -4883,8 +4883,6 @@
   <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>해당 파일은 PadForge, reWASD 또는 DS4Windows 프로필이 아닙니다.</value></data>
   <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>해당 파일은 프로필에 필요하지 않은 문서 형식을 선언하고 있어 PadForge에서 읽지 않았습니다.</value></data>
   <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>해당 파일은 PadForge가 읽는 reWASD 형식인 스키마 3이 아닙니다.</value></data>
-  <data name="Import_Tr_ProgramNotRun" xml:space="preserve"><value>공유된 설정이 프로그램을 실행하지 못하도록 제외했습니다: {0}</value></data>
-  <data name="Import_Tr_SystemCommand" xml:space="preserve"><value>공유된 설정이 PC에 이런 작업을 하지 못하도록 제외했습니다: {0}</value></data>
   <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>PadForge에서 인식할 수 없는 입력입니다: {0}</value></data>
   <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge에서 인식할 수 없는 출력입니다: {0}</value></data>
   <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge에 해당하는 명령이 없습니다: {0}</value></data>
@@ -4892,29 +4890,41 @@
   <data name="Import_Tr_Crosshair" xml:space="preserve"><value>조준선은 reWASD 안에서만 표시됩니다. 화면 오버레이로 원하는 그림을 표시하세요.</value></data>
   <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>스틱 떨림과 흔들림은 가져오지 못했습니다.</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>아날로그 키 작동 지점은 가져오지 못했습니다.</value></data>
-  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>다른 PC로 보내는 설정은 가져오지 못했습니다. Remote Link로 설정하세요.</value></data>
+  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD는 어댑터를 통해 이 컨트롤러를 다른 장치로 보냈습니다. PadForge는 이 컨트롤러를 이 PC에서 실행하며, Remote Link를 사용하면 PadForge가 실행 중인 다른 PC로 보낼 수 있습니다.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge는 스틱을 두 개까지 읽는데, 여기에는 세 번째 스틱이 지정되어 있습니다.</value></data>
   <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>스티어링 휠 에뮬레이션은 가져오지 못했습니다. 매핑 탭에서 휠을 매핑하세요.</value></data>
-  <data name="Import_Tr_ProfileSwitch" xml:space="preserve"><value>다른 프로필을 불러오는 특수 동작은 가져오지 못했습니다: {0}</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>이 프로필이 지정한 특수 동작이 Profiles 폴더 옆의 Actions.xml에 없습니다: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>이 설정은 가져오지 못했습니다: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD가 이 입력들이 Windows에 전달되지 않게 막았습니다. 장치 페이지에서 {0}의 매핑된 입력 소비를 켜면 이 프로필이 매핑한 입력이 차단됩니다.</value></data>
-  <data name="Import_Tr_HeldAsTap" xml:space="preserve"><value>다른 제스처가 같은 버튼을 공유하므로 누르고 있는 대신 탭으로 동작합니다.</value></data>
-  <data name="Import_Tr_CurveFitted" xml:space="preserve"><value>{0}점 곡선은 가장 가까운 거듭제곱 곡선으로 가져왔습니다.</value></data>
-  <data name="Import_Tr_CurveApproximated" xml:space="preserve"><value>{0} 곡선은 가장 가까운 거듭제곱 곡선으로 가져왔습니다.</value></data>
-  <data name="Import_Tr_ZoneOutward" xml:space="preserve"><value>이 영역 안쪽만이 아니라 바깥쪽까지 동작합니다.</value></data>
-  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>일반 레이어로 가져왔습니다.</value></data>
+  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>{0}에 대한 Base의 매핑은 이 레이어에서 중지됩니다. 매핑된 입력 소비를 켜 두면 해당 장치의 매핑된 입력은 모든 레이어에서 Windows로 전달되지 않습니다.</value></data>
   <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>하위 메뉴는 한 고리의 추가 슬롯이 되었습니다.</value></data>
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>스틱이 중앙으로 돌아오거나 레이어가 끝나면 확정됩니다. reWASD의 적용 버튼은 사용하지 않습니다.</value></data>
-  <data name="Import_Tr_RegionCentered" xml:space="preserve"><value>커서는 화면 중앙의 같은 크기 영역 안에 머뭅니다.</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>이 파일은 컨트롤러 두 개를 따로 취급합니다. PadForge에서는 슬롯에 연결된 어떤 컨트롤러든 이 매핑을 실행합니다.</value></data>
-  <data name="Import_Tr_ToggleSameGesture" xml:space="preserve"><value>같은 제스처로 끕니다. reWASD에서는 한 번만 눌러도 꺼졌습니다.</value></data>
-  <data name="Import_Tr_LedShownAs" xml:space="preserve"><value>{0} 조명은 가장 가까운 라이트바 모드로 가져왔습니다.</value></data>
-  <data name="Import_Tr_LoweredToKeys" xml:space="preserve"><value>대신 {0}을(를) 보냅니다.</value></data>
-  <data name="Import_Tr_StickAdded" xml:space="preserve"><value>스틱 자체 위치에 더하지 않고 스틱을 이 값으로 설정합니다.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>이동 속도와 플릭은 가져오지 못했습니다.</value></data>
-  <data name="Import_Tr_HipFire" xml:space="preserve"><value>약하게 당기기와 끝까지 당기기는 동작하지만, 약하게 당기기 전의 {0}ms 대기는 없습니다.</value></data>
-  <data name="Import_Tr_MaxOutput" xml:space="preserve"><value>출력을 제한하는 대신 {0}퍼센트로 조정합니다.</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>이 항목은 가져오지 못했습니다. 터치패드 탭에서 설정하세요.</value></data>
   <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>이 파일에는 이 레이어를 여는 항목이 없습니다. 매핑 탭에서 버튼을 지정하세요.</value></data>
+  <data name="Import_NoteRuns_Format" xml:space="preserve"><value>이 프로필의 버튼을 누르면 다음이 실행됩니다: {0}.</value></data>
+  <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>프로필 바로 가기</value></data>
+  <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>프로필 바로 가기와 같은 동작을 합니다. 이름을 지정한 프로필, 다음 프로필 또는 이전 프로필을 불러오거나, 창을 표시하거나 숨기거나, 가상 컨트롤러를 끄고 켭니다.</value></data>
+  <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>프로필 바로 가기: {0}</value></data>
+  <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>오프셋 X</value></data>
+  <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>오프셋 Y</value></data>
+  <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>오프셋 X 초기화</value></data>
+  <data name="Macro_Reset_OffsetY" xml:space="preserve"><value>오프셋 Y 초기화</value></data>
+  <data name="Macro_UntilNextPress" xml:space="preserve"><value>다시 누를 때까지</value></data>
+  <data name="Mapping_Between_Format" xml:space="preserve"><value>{0}, {1}~{2}%</value></data>
+  <data name="Mapping_Sector_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Mapping_Stage_Format" xml:space="preserve"><value>{0}: {1}, {2}, {3}ms</value></data>
+  <data name="Mapping_StageNoWait_Format" xml:space="preserve"><value>{0}: {1}, {2}</value></data>
+  <data name="Mapping_Stage_HairTrigger" xml:space="preserve"><value>헤어 트리거</value></data>
+  <data name="Mapping_Stage_HipFire" xml:space="preserve"><value>힙 파이어</value></data>
+  <data name="Mapping_Stage_HipFireExclusive" xml:space="preserve"><value>힙 파이어 단독</value></data>
+  <data name="Mapping_Stage_Soft" xml:space="preserve"><value>살짝 당기기</value></data>
+  <data name="Mapping_Stage_Full" xml:space="preserve"><value>끝까지 당기기</value></data>
+  <data name="Import_NoteStarts_Format" xml:space="preserve"><value>불러올 때 이 프로그램을 시작합니다: {0}.</value></data>
+  <data name="Import_Tr_HideController" xml:space="preserve"><value>reWASD가 이 컨트롤러를 게임에서 숨겼습니다. 장치 페이지에서 이 컨트롤러의 게임에서 숨기기를 켜세요.</value></data>
+  <data name="Import_Tr_NoSuchSetting" xml:space="preserve"><value>PadForge에 해당하는 설정이 없습니다: {0}</value></data>
+  <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD가 마우스 움직임이 Windows에 전달되지 않게 막았습니다. PadForge는 키와 마우스 버튼은 차단하지만 움직임은 차단하지 않으므로 포인터는 계속 움직입니다.</value></data>
+  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>PadForge의 가상 컨트롤러는 컨트롤러의 모션 센서에서만 모션 값을 받습니다.</value></data>
+  <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows는 버튼 하나로 {0}에서 이 프로필로 돌아왔습니다. PadForge에서 같은 동작을 하려면 프로필 페이지에서 이 프로필의 프로필 단축키를 추가하세요.</value></data>
 </root>

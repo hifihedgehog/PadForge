@@ -46,6 +46,16 @@ namespace PadForge.Services
         /// Wires event handlers from the DevicesViewModel and PadViewModels
         /// to this service's handler methods.
         /// </summary>
+        /// <summary>An import's battery light colors (#561) live on the
+        /// device's Lighting card, which only the slot's view model holds.</summary>
+        private void FoldBatteryColors(int slotIndex, Guid deviceGuid)
+        {
+            var sets = SettingsManager.SlotMappingSets;
+            if (sets == null || slotIndex < 0 || slotIndex >= sets.Length || slotIndex >= _mainVm.Pads.Count) return;
+            if (string.IsNullOrEmpty(sets[slotIndex]?.WorkshopBatteryColors)) return;
+            WorkshopTuningApplier.ApplyBatteryColors(slotIndex, _mainVm.Pads[slotIndex].GetOrCreateDeviceConfig(deviceGuid));
+        }
+
         public void WireEvents()
         {
             _mainVm.Devices.AssignToSlotRequested += OnAssignToSlot;
@@ -169,6 +179,7 @@ namespace PadForge.Services
             // one entry point and not the other silently drops the tuning for
             // whichever path the user happens to take.
             WorkshopTuningApplier.ApplyToAssignedDevice(slotIndex, us.GetPadSetting(), us.InstanceGuid.ToString());
+            FoldBatteryColors(slotIndex, us.InstanceGuid);
 
             // Update the row display.
             selectedRow.SetAssignedSlots(SettingsManager.GetAssignedSlots(instanceGuid));
@@ -270,6 +281,7 @@ namespace PadForge.Services
             // the existing cards show and edit them, and the engine has
             // one place to read instead of an invisible override.
             WorkshopTuningApplier.ApplyToAssignedDevice(slotIndex, us.GetPadSetting(), us.InstanceGuid.ToString());
+            FoldBatteryColors(slotIndex, us.InstanceGuid);
 
             row.SetAssignedSlots(SettingsManager.GetAssignedSlots(instanceGuid));
 

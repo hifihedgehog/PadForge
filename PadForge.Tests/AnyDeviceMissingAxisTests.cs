@@ -1175,6 +1175,35 @@ namespace PadForge.Tests
             }
         }
 
+        [Fact]
+        public void AZoneTrigger_ReadsAndConsumesTheInputInsideIt()
+        {
+            // #561: a macro entry that reads a trigger zone tests the
+            // trigger's own axis on each device, and consumes the trigger.
+            var zone = new MappingSource { Descriptor = BoundedReads.Between(30, 66, false, false, "Gamepad LeftTrigger") };
+            var active = typeof(InputManager).GetMethod("AnySlotDeviceDescriptorActive", BindingFlags.NonPublic | BindingFlags.Instance);
+            var consume = typeof(InputManager).GetMethod("AddConsumedDescriptor", BindingFlags.NonPublic | BindingFlags.Instance);
+            var scratch = (HashSet<(string, string)>[])typeof(InputManager)
+                .GetField("_consumedScratchBySlot", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
+            scratch[Slot]?.Clear();
+            try
+            {
+                Touchpad();
+                Assert.False((bool)active.Invoke(new InputManager(), new object[] { Slot, zone }));
+
+                var pad = Pad();
+                pad.InputState.Axis[2] = 65535 / 2;
+                Assert.True((bool)active.Invoke(new InputManager(), new object[] { Slot, zone }));
+                consume.Invoke(new InputManager(), new object[] { Slot, Guid.Empty, zone });
+                Assert.Contains(scratch[Slot], k => k.Item2 == "Axis 2");
+                Assert.DoesNotContain(scratch[Slot], k => k.Item2.StartsWith("Between", StringComparison.Ordinal));
+            }
+            finally
+            {
+                scratch[Slot]?.Clear();
+            }
+        }
+
         // ── Activators ──────────────────────────────────────────────────
 
         [Fact]

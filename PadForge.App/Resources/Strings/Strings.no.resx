@@ -4932,8 +4932,6 @@ Vil du at PadForge skal avinstallere dem nå? Dette krever administratorrettighe
   <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>Den filen er ikke en PadForge-, reWASD- eller DS4Windows-profil.</value></data>
   <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>Den filen erklærer en dokumenttype, noe en profil aldri trenger, så PadForge leste den ikke.</value></data>
   <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>Den filen er ikke i reWASD-formatet PadForge leser, skjema 3.</value></data>
-  <data name="Import_Tr_ProgramNotRun" xml:space="preserve"><value>Utelatt slik at en delt konfigurasjon ikke kan starte et program: {0}</value></data>
-  <data name="Import_Tr_SystemCommand" xml:space="preserve"><value>Utelatt slik at en delt konfigurasjon ikke kan gjøre dette med PC-en din: {0}</value></data>
   <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>PadForge kjenner ikke igjen denne inndataen: {0}</value></data>
   <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge kjenner ikke igjen denne utdataen: {0}</value></data>
   <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge har ingen slik kommando: {0}</value></data>
@@ -4941,29 +4939,41 @@ Vil du at PadForge skal avinstallere dem nå? Dette krever administratorrettighe
   <data name="Import_Tr_Crosshair" xml:space="preserve"><value>Et trådkors finnes bare inne i reWASD. Vis ditt eget bilde med et Skjermoverlegg.</value></data>
   <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>Stikkens risting og risting med kontrolleren kom ikke med.</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Analoge aktiveringspunkter for taster kom ikke med.</value></data>
-  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>Sending til en annen PC kom ikke med. Sett det opp med Fjernkobling.</value></data>
+  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD sendte denne kontrolleren til en annen enhet via en adapter. PadForge spiller den av på denne PC-en, og Fjernkobling sender den til en annen PC som kjører PadForge.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge leser to stikker, og dette navngir en tredje.</value></data>
   <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Rattemulering kom ikke med. Tilordne rattet på Tilordninger-fanen.</value></data>
-  <data name="Import_Tr_ProfileSwitch" xml:space="preserve"><value>En spesialhandling som laster en annen profil kom ikke med: {0}</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Denne profilen navngir en spesialhandling som mangler i Actions.xml ved siden av Profiles-mappen: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Denne innstillingen kom ikke med: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD hindret disse inndataene i å nå Windows. Slå på Blokker tilordnede inndata for {0} på Enheter-siden, som blokkerer de denne profilen tilordner.</value></data>
-  <data name="Import_Tr_HeldAsTap" xml:space="preserve"><value>Trykker kort i stedet for å holde, fordi en annen bevegelse deler knappen.</value></data>
-  <data name="Import_Tr_CurveFitted" xml:space="preserve"><value>Kurven med {0} punkter kom med som den nærmeste potenskurven.</value></data>
-  <data name="Import_Tr_CurveApproximated" xml:space="preserve"><value>Kurven {0} kom med som den nærmeste potenskurven.</value></data>
-  <data name="Import_Tr_ZoneOutward" xml:space="preserve"><value>Utløses fra denne sonen og utover, ikke bare inni den.</value></data>
-  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>Importert som et vanlig lag.</value></data>
+  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>Base-tilordningene for {0} opphører i dette laget. Med Blokker tilordnede inndata på forblir enhetens tilordnede inndata blokkert fra Windows i alle lag.</value></data>
   <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>Undermenyene ble til flere spor på én ring.</value></data>
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Bekrefter når stikken går tilbake til midten eller laget avsluttes. reWASDs Bruk-knapp brukes ikke.</value></data>
-  <data name="Import_Tr_RegionCentered" xml:space="preserve"><value>Markøren blir værende i et område av samme størrelse midt på skjermen.</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Denne filen holder to kontrollere adskilt. I PadForge utløser enhver kontroller på sporet disse tilordningene.</value></data>
-  <data name="Import_Tr_ToggleSameGesture" xml:space="preserve"><value>Den samme bevegelsen slår det av. reWASD slo det av med ett trykk.</value></data>
-  <data name="Import_Tr_LedShownAs" xml:space="preserve"><value>Lyset {0} kom med som den nærmeste lysbar-modusen.</value></data>
-  <data name="Import_Tr_LoweredToKeys" xml:space="preserve"><value>Sender {0} i stedet.</value></data>
-  <data name="Import_Tr_StickAdded" xml:space="preserve"><value>Setter stikken til denne verdien i stedet for å legge den til stikkens egen posisjon.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>Bevegelseshastigheten eller rykket kom ikke med.</value></data>
-  <data name="Import_Tr_HipFire" xml:space="preserve"><value>Det myke og det fulle trekket fungerer, uten ventetiden på {0} ms før det myke trekket.</value></data>
-  <data name="Import_Tr_MaxOutput" xml:space="preserve"><value>Skalerer utdataen til {0} prosent i stedet for å begrense den.</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Disse kom ikke med. Sett dem på Berøringsplate-fanen.</value></data>
   <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Ingenting i denne filen åpner dette laget. Gi det en knapp på Tilordninger-fanen.</value></data>
+  <data name="Import_NoteRuns_Format" xml:space="preserve"><value>Knappene kjører disse når de trykkes: {0}.</value></data>
+  <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Profilsnarvei</value></data>
+  <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Gjør det en profilsnarvei gjør: laster en navngitt profil, den neste eller den forrige, viser eller skjuler vinduet, eller slår de virtuelle kontrollerne av og på.</value></data>
+  <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>Profilsnarvei: {0}</value></data>
+  <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>Forskyvning X</value></data>
+  <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>Forskyvning Y</value></data>
+  <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>Tilbakestill forskyvning X</value></data>
+  <data name="Macro_Reset_OffsetY" xml:space="preserve"><value>Tilbakestill forskyvning Y</value></data>
+  <data name="Macro_UntilNextPress" xml:space="preserve"><value>Til neste trykk</value></data>
+  <data name="Mapping_Between_Format" xml:space="preserve"><value>{0}, {1} til {2} %</value></data>
+  <data name="Mapping_Sector_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Mapping_Stage_Format" xml:space="preserve"><value>{0}: {1}, {2}, {3} ms</value></data>
+  <data name="Mapping_StageNoWait_Format" xml:space="preserve"><value>{0}: {1}, {2}</value></data>
+  <data name="Mapping_Stage_HairTrigger" xml:space="preserve"><value>Hair Trigger</value></data>
+  <data name="Mapping_Stage_HipFire" xml:space="preserve"><value>Hip Fire</value></data>
+  <data name="Mapping_Stage_HipFireExclusive" xml:space="preserve"><value>Hip Fire Exclusive</value></data>
+  <data name="Mapping_Stage_Soft" xml:space="preserve"><value>Lett trekk</value></data>
+  <data name="Mapping_Stage_Full" xml:space="preserve"><value>Fullt trekk</value></data>
+  <data name="Import_NoteStarts_Format" xml:space="preserve"><value>Den starter dette programmet når den lastes: {0}.</value></data>
+  <data name="Import_Tr_HideController" xml:space="preserve"><value>reWASD skjulte denne kontrolleren for spill. Slå på Skjul for spill for den på Enheter-siden.</value></data>
+  <data name="Import_Tr_NoSuchSetting" xml:space="preserve"><value>PadForge har ingen slik innstilling: {0}</value></data>
+  <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD hindret musebevegelse i å nå Windows. PadForge blokkerer taster og museknapper, men ikke bevegelse, så pekeren beveger seg fortsatt.</value></data>
+  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>De virtuelle kontrollerne i PadForge henter bevegelse bare fra en kontrollers bevegelsessensor.</value></data>
+  <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows byttet tilbake til denne profilen fra {0} med en knapp. For å gjøre det i PadForge, legg til en profilsnarvei for denne profilen på Profiler-siden.</value></data>
 </root>

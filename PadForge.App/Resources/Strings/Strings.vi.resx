@@ -4932,8 +4932,6 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>Tệp đó không phải là hồ sơ PadForge, reWASD hay DS4Windows.</value></data>
   <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>Tệp đó khai báo một loại tài liệu, thứ mà hồ sơ không bao giờ cần, nên PadForge đã không đọc nó.</value></data>
   <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>Tệp đó không ở định dạng reWASD mà PadForge đọc được, tức lược đồ 3.</value></data>
-  <data name="Import_Tr_ProgramNotRun" xml:space="preserve"><value>Đã bỏ qua để cấu hình được chia sẻ không thể khởi chạy một chương trình: {0}</value></data>
-  <data name="Import_Tr_SystemCommand" xml:space="preserve"><value>Đã bỏ qua để cấu hình được chia sẻ không thể làm điều này với PC của bạn: {0}</value></data>
   <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>PadForge không nhận ra đầu vào này: {0}</value></data>
   <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge không nhận ra đầu ra này: {0}</value></data>
   <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge không có lệnh như vậy: {0}</value></data>
@@ -4941,29 +4939,41 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Import_Tr_Crosshair" xml:space="preserve"><value>Tâm ngắm nằm bên trong reWASD. Hãy hiển thị hình của riêng bạn bằng Lớp phủ màn hình.</value></data>
   <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>Độ rung và lắc của cần analog đã không được chuyển sang.</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Điểm kích hoạt analog của phím đã không được chuyển sang.</value></data>
-  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>Việc gửi sang PC khác đã không được chuyển sang. Hãy thiết lập bằng Liên kết từ xa.</value></data>
+  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD đã gửi tay cầm này sang một thiết bị khác qua bộ chuyển đổi. PadForge chạy tay cầm đó trên PC này, còn Liên kết từ xa gửi nó sang một PC khác đang chạy PadForge.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge đọc hai cần analog, còn mục này nêu tên một cần thứ ba.</value></data>
   <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Giả lập vô lăng đã không được chuyển sang. Hãy ánh xạ vô lăng trên tab Ánh xạ.</value></data>
-  <data name="Import_Tr_ProfileSwitch" xml:space="preserve"><value>Một hành động đặc biệt tải hồ sơ khác đã không được chuyển sang: {0}</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Hồ sơ này nêu một hành động đặc biệt không có trong Actions.xml cạnh thư mục Profiles của nó: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Thiết lập này đã không được chuyển sang: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD đã chặn các đầu vào này không đến được Windows. Hãy bật Chặn các đầu vào đã ánh xạ cho {0} trên trang Thiết bị, tùy chọn này chặn những đầu vào mà hồ sơ này ánh xạ.</value></data>
-  <data name="Import_Tr_HeldAsTap" xml:space="preserve"><value>Nhấn nhanh thay vì giữ, vì một cử chỉ khác dùng chung nút này.</value></data>
-  <data name="Import_Tr_CurveFitted" xml:space="preserve"><value>Đường cong {0} điểm đã được chuyển thành đường cong lũy thừa gần nhất.</value></data>
-  <data name="Import_Tr_CurveApproximated" xml:space="preserve"><value>Đường cong {0} đã được chuyển thành đường cong lũy thừa gần nhất.</value></data>
-  <data name="Import_Tr_ZoneOutward" xml:space="preserve"><value>Kích hoạt từ vùng này trở ra ngoài, không chỉ bên trong vùng.</value></data>
-  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>Đã nhập như một lớp thông thường.</value></data>
+  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>Các ánh xạ của Base cho {0} dừng lại trong lớp này. Khi bật Chặn các đầu vào đã ánh xạ, các đầu vào đã ánh xạ của thiết bị vẫn bị chặn không đến được Windows ở mọi lớp.</value></data>
   <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>Các menu con của nó đã thành thêm các ô trên một vòng.</value></data>
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Xác nhận khi cần analog về tâm hoặc khi lớp kết thúc. Nút Apply của reWASD không được dùng.</value></data>
-  <data name="Import_Tr_RegionCentered" xml:space="preserve"><value>Con trỏ ở lại trong một vùng cùng kích thước ở giữa màn hình.</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Tệp này tách riêng hai tay cầm. Trong PadForge, bất kỳ tay cầm nào ở ô này đều kích hoạt các ánh xạ này.</value></data>
-  <data name="Import_Tr_ToggleSameGesture" xml:space="preserve"><value>Cùng cử chỉ đó sẽ tắt nó. reWASD tắt nó bằng một lần nhấn.</value></data>
-  <data name="Import_Tr_LedShownAs" xml:space="preserve"><value>Ánh sáng {0} đã được chuyển thành chế độ đèn thanh gần nhất.</value></data>
-  <data name="Import_Tr_LoweredToKeys" xml:space="preserve"><value>Gửi {0} thay thế.</value></data>
-  <data name="Import_Tr_StickAdded" xml:space="preserve"><value>Đặt cần analog về giá trị này thay vì cộng vào vị trí hiện có của cần.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>Tốc độ di chuyển hoặc cú gạt nhanh đã không được chuyển sang.</value></data>
-  <data name="Import_Tr_HipFire" xml:space="preserve"><value>Lực bóp nhẹ và bóp hết đều hoạt động, nhưng không có khoảng chờ {0} ms trước lần bóp nhẹ.</value></data>
-  <data name="Import_Tr_MaxOutput" xml:space="preserve"><value>Co giãn đầu ra về {0} phần trăm thay vì giới hạn nó.</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Những mục này đã không được chuyển sang. Hãy đặt chúng trên tab Bàn cảm ứng.</value></data>
   <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Không có gì trong tệp này mở lớp này. Hãy gán cho nó một nút trên tab Ánh xạ.</value></data>
+  <data name="Import_NoteRuns_Format" xml:space="preserve"><value>Các nút của hồ sơ chạy những lệnh này khi được nhấn: {0}.</value></data>
+  <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Phím tắt hồ sơ</value></data>
+  <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Làm việc mà một phím tắt hồ sơ làm: tải hồ sơ có tên, hồ sơ kế tiếp hoặc hồ sơ trước đó, hiện hoặc ẩn cửa sổ, hoặc tắt và bật các tay cầm ảo.</value></data>
+  <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>Phím tắt hồ sơ: {0}</value></data>
+  <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>Độ lệch X</value></data>
+  <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>Độ lệch Y</value></data>
+  <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>Đặt lại độ lệch X</value></data>
+  <data name="Macro_Reset_OffsetY" xml:space="preserve"><value>Đặt lại độ lệch Y</value></data>
+  <data name="Macro_UntilNextPress" xml:space="preserve"><value>Cho đến lần nhấn kế tiếp</value></data>
+  <data name="Mapping_Between_Format" xml:space="preserve"><value>{0}, {1} đến {2}%</value></data>
+  <data name="Mapping_Sector_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Mapping_Stage_Format" xml:space="preserve"><value>{0}: {1}, {2}, {3} ms</value></data>
+  <data name="Mapping_StageNoWait_Format" xml:space="preserve"><value>{0}: {1}, {2}</value></data>
+  <data name="Mapping_Stage_HairTrigger" xml:space="preserve"><value>Hair Trigger</value></data>
+  <data name="Mapping_Stage_HipFire" xml:space="preserve"><value>Hip Fire</value></data>
+  <data name="Mapping_Stage_HipFireExclusive" xml:space="preserve"><value>Hip Fire Exclusive</value></data>
+  <data name="Mapping_Stage_Soft" xml:space="preserve"><value>Nhấn nhẹ</value></data>
+  <data name="Mapping_Stage_Full" xml:space="preserve"><value>Nhấn hết</value></data>
+  <data name="Import_NoteStarts_Format" xml:space="preserve"><value>Hồ sơ tự khởi chạy chương trình này khi được tải: {0}.</value></data>
+  <data name="Import_Tr_HideController" xml:space="preserve"><value>reWASD đã ẩn tay cầm này khỏi trò chơi. Hãy bật Ẩn khỏi trò chơi cho tay cầm này trên trang Thiết bị.</value></data>
+  <data name="Import_Tr_NoSuchSetting" xml:space="preserve"><value>PadForge không có thiết lập như vậy: {0}</value></data>
+  <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD đã chặn chuyển động chuột không đến được Windows. PadForge chặn phím và nút chuột nhưng không chặn chuyển động, nên con trỏ vẫn di chuyển.</value></data>
+  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>Các tay cầm ảo của PadForge chỉ nhận chuyển động từ cảm biến chuyển động của tay cầm.</value></data>
+  <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows đã quay lại hồ sơ này từ {0} bằng một nút. Để làm điều đó trong PadForge, hãy thêm một Lối tắt hồ sơ cho hồ sơ này trên trang Hồ sơ.</value></data>
 </root>

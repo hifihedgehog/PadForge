@@ -4932,8 +4932,6 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>Ta datoteka ni profil PadForge, reWASD ali DS4Windows.</value></data>
   <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>Ta datoteka vsebuje deklaracijo vrste dokumenta, ki je profil nikoli ne potrebuje, zato je PadForge ni prebral.</value></data>
   <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>Ta datoteka ni v zapisu reWASD, ki ga PadForge bere (shema 3).</value></data>
-  <data name="Import_Tr_ProgramNotRun" xml:space="preserve"><value>Izpuščeno, da deljena konfiguracija ne more zagnati programa: {0}</value></data>
-  <data name="Import_Tr_SystemCommand" xml:space="preserve"><value>Izpuščeno, da deljena konfiguracija ne more tega storiti vašemu računalniku: {0}</value></data>
   <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>PadForge tega vnosa ne prepozna: {0}</value></data>
   <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge tega izhoda ne prepozna: {0}</value></data>
   <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge nima takega ukaza: {0}</value></data>
@@ -4941,29 +4939,41 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="Import_Tr_Crosshair" xml:space="preserve"><value>Merilni križ obstaja samo znotraj reWASD. Svojo sliko prikažite s prekrivnim prikazom zaslona.</value></data>
   <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>Tresenje in drhtenje palčke se ni preneslo.</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Analogne točke aktivacije tipk se niso prenesle.</value></data>
-  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>Pošiljanje na drug računalnik se ni preneslo. Nastavite ga z Oddaljeno povezavo.</value></data>
+  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD je ta krmilnik prek adapterja poslal na drugo napravo. PadForge ga predvaja na tem računalniku, Oddaljena povezava pa ga pošlje na drug računalnik, na katerem teče PadForge.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge bere dve palčki, ta pa omenja tretjo.</value></data>
   <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Posnemanje volana se ni preneslo. Volan preslikajte na zavihku Preslikave.</value></data>
-  <data name="Import_Tr_ProfileSwitch" xml:space="preserve"><value>Posebno dejanje, ki naloži drug profil, se ni preneslo: {0}</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Ta profil omenja posebno dejanje, ki manjka v datoteki Actions.xml poleg mape Profiles: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Ta nastavitev se ni prenesla: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD je tem vnosom preprečil dostop do sistema Windows. Na strani Naprave vklopite Zadrži preslikane vnose za {0}, kar zadrži vnose, ki jih preslika ta profil.</value></data>
-  <data name="Import_Tr_HeldAsTap" xml:space="preserve"><value>Namesto držanja je tapnjenje, ker gumb deli drug gest.</value></data>
-  <data name="Import_Tr_CurveFitted" xml:space="preserve"><value>Krivulja z {0} točkami je bila prenesena kot najbližja potenčna krivulja.</value></data>
-  <data name="Import_Tr_CurveApproximated" xml:space="preserve"><value>Krivulja {0} je bila prenesena kot najbližja potenčna krivulja.</value></data>
-  <data name="Import_Tr_ZoneOutward" xml:space="preserve"><value>Sproži se od tega območja navzven, ne samo znotraj njega.</value></data>
-  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>Uvoženo kot navadna plast.</value></data>
+  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>Preslikave plasti Base za {0} se v tej plasti končajo. Ko je vklopljeno Zadrži preslikane vnose, so njegovi preslikani vnosi v vseh plasteh še naprej zadržani pred sistemom Windows.</value></data>
   <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>Njegovi podmeniji so postali dodatne reže na enem obroču.</value></data>
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Potrdi se, ko se palčka vrne v sredino ali ko se plast konča. Gumb Uveljavi iz reWASD se ne uporablja.</value></data>
-  <data name="Import_Tr_RegionCentered" xml:space="preserve"><value>Kazalec ostane znotraj območja enake velikosti na sredini zaslona.</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Ta datoteka ločuje dva krmilnika. V PadForge te preslikave sproži kateri koli krmilnik na reži.</value></data>
-  <data name="Import_Tr_ToggleSameGesture" xml:space="preserve"><value>Isti gest ga izklopi. reWASD ga je izklopil z enim pritiskom.</value></data>
-  <data name="Import_Tr_LedShownAs" xml:space="preserve"><value>Osvetlitev {0} je bila prenesena kot najbližji način svetlobnega traku.</value></data>
-  <data name="Import_Tr_LoweredToKeys" xml:space="preserve"><value>Namesto tega pošlje {0}.</value></data>
-  <data name="Import_Tr_StickAdded" xml:space="preserve"><value>Palčko nastavi na to vrednost, namesto da bi jo prištela dejanskemu položaju palčke.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>Hitrost premikanja ali sunek se nista prenesla.</value></data>
-  <data name="Import_Tr_HipFire" xml:space="preserve"><value>Rahli in polni poteg delujeta, brez čakanja {0} ms pred rahlim potegom.</value></data>
-  <data name="Import_Tr_MaxOutput" xml:space="preserve"><value>Izhod prilagodi na {0} odstotkov, namesto da bi ga omejil.</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Ti se niso prenesli. Nastavite jih na zavihku Sledilna ploščica.</value></data>
   <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Nič v tej datoteki ne odpre te plasti. Dodelite ji gumb na zavihku Preslikave.</value></data>
+  <data name="Import_NoteRuns_Format" xml:space="preserve"><value>Njegovi gumbi ob pritisku zaženejo: {0}.</value></data>
+  <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Bližnjica profila</value></data>
+  <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Naredi to, kar naredi bližnjica profila: naloži imenovan profil, naslednjega ali prejšnjega, pokaže ali skrije okno ali izklopi in vklopi virtualne krmilnike.</value></data>
+  <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>Bližnjica profila: {0}</value></data>
+  <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>Zamik X</value></data>
+  <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>Zamik Y</value></data>
+  <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>Ponastavi zamik X</value></data>
+  <data name="Macro_Reset_OffsetY" xml:space="preserve"><value>Ponastavi zamik Y</value></data>
+  <data name="Macro_UntilNextPress" xml:space="preserve"><value>Do naslednjega pritiska</value></data>
+  <data name="Mapping_Between_Format" xml:space="preserve"><value>{0}, {1} do {2} %</value></data>
+  <data name="Mapping_Sector_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Mapping_Stage_Format" xml:space="preserve"><value>{0}: {1}, {2}, {3} ms</value></data>
+  <data name="Mapping_StageNoWait_Format" xml:space="preserve"><value>{0}: {1}, {2}</value></data>
+  <data name="Mapping_Stage_HairTrigger" xml:space="preserve"><value>Hair Trigger</value></data>
+  <data name="Mapping_Stage_HipFire" xml:space="preserve"><value>Hip Fire</value></data>
+  <data name="Mapping_Stage_HipFireExclusive" xml:space="preserve"><value>Hip Fire Exclusive</value></data>
+  <data name="Mapping_Stage_Soft" xml:space="preserve"><value>Rahel pritisk</value></data>
+  <data name="Mapping_Stage_Full" xml:space="preserve"><value>Poln pritisk</value></data>
+  <data name="Import_NoteStarts_Format" xml:space="preserve"><value>Ob nalaganju zažene ta program: {0}.</value></data>
+  <data name="Import_Tr_HideController" xml:space="preserve"><value>reWASD je ta krmilnik skril pred igrami. Na strani Naprave zanj vklopite Skrij pred igrami.</value></data>
+  <data name="Import_Tr_NoSuchSetting" xml:space="preserve"><value>PadForge nima take nastavitve: {0}</value></data>
+  <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD je preprečil, da bi gibanje miške doseglo Windows. PadForge zadrži tipke in gumbe miške, ne pa gibanja, zato se kazalec še vedno premika.</value></data>
+  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>Virtualni krmilniki PadForge-a prejemajo gibanje samo iz senzorja gibanja krmilnika.</value></data>
+  <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows se je s profila {0} na gumb vrnil na ta profil. Če želite isto narediti v PadForge-u, dodajte Bližnjico za profil za ta profil na strani Profili.</value></data>
 </root>

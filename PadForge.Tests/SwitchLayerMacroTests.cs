@@ -106,7 +106,7 @@ namespace PadForge.Tests
             // 62 and 63 (#531), the key colors pair 64 and 65 (#557) and
             // Toggle Screen Overlay 66 (#560).
             var values = Enum.GetValues<MacroActionType>();
-            Assert.Equal(MacroActionType.SwitchLayer, values[^12]);
+            Assert.Equal(MacroActionType.SwitchLayer, values[^13]);
             Assert.Equal(55, (int)MacroActionType.SwitchLayer);
             Assert.Equal(54, (int)MacroActionType.VoiceListenWhileHeld);
         }

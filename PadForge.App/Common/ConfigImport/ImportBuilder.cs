@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using PadForge.Common.Input;
 using PadForge.Engine;
+using PadForge.Engine.Common.Mapping;
 using PadForge.Engine.Data;
 using PadForge.Engine.Menus;
 using PadForge.Services;
@@ -31,6 +32,25 @@ namespace PadForge.Common.ConfigImport
         /// device. Empty when it stands alone.</summary>
         public string Gate = "";
 
+        /// <summary>A bounded read of this same input on this same device: a
+        /// zone, a sector or a two-stage pull (BoundedReads). A row keeps its
+        /// own read and takes this as its gate. A macro entry reads this
+        /// alone, because a macro's entries each read any device on the slot
+        /// and the two parts must read the same one. Empty when one threshold
+        /// says it all.</summary>
+        public string Band = "";
+
+        /// <summary>Stops the input reading at <paramref name="next"/>, the
+        /// edge of the zone above. No edge, or one at the top of the travel,
+        /// leaves the read open upward.</summary>
+        public ImportInput Below(int next)
+        {
+            Band = next > DeadZone && next < 100 && DeadZone > 0
+                ? BoundedReads.Between(DeadZone, next, HalfAxis, Invert, Descriptor)
+                : "";
+            return this;
+        }
+
         /// <summary>Set on an input that is one moment and not a state, the
         /// start or the end of a touch. It fires on that edge and has nothing
         /// a row could hold.</summary>
@@ -47,6 +67,7 @@ namespace PadForge.Common.ConfigImport
             };
             if (DeadZone > 0) src.DeadZone = DeadZone;
             if (Gate.Length > 0) src.GateDescriptor = Gate;
+            if (Band.Length > 0) src.GateDescriptor = Band;
             return src;
         }
 
@@ -57,6 +78,8 @@ namespace PadForge.Common.ConfigImport
         public MacroItem.TriggerInputEntry ToTriggerEntry()
         {
             Guid.TryParse(DeviceGuid ?? "", out Guid g);
+            if (Band.Length > 0)
+                return new MacroItem.TriggerInputEntry { DeviceGuid = g, SourceDescriptor = Band };
             if (g != Guid.Empty && !HalfAxis
                 && Descriptor.StartsWith("Button ", StringComparison.Ordinal)
                 && int.TryParse(Descriptor.AsSpan(7), out int raw))
@@ -99,6 +122,9 @@ namespace PadForge.Common.ConfigImport
         public double Scale = 1.0;
         public int PadId = 1;
 
+        /// <summary>Adds to the stick's own position instead of setting it.</summary>
+        public bool Relative;
+
         public bool IsKbm => Kind is ImportOutputKind.Key or ImportOutputKind.MouseButton
             or ImportOutputKind.MouseAxis or ImportOutputKind.Wheel;
 
@@ -110,7 +136,7 @@ namespace PadForge.Common.ConfigImport
         public bool HasRow => Kind switch
         {
             ImportOutputKind.Key => SteamInputVkTable.IsRowKey(Vk),
-            ImportOutputKind.PadStick or ImportOutputKind.PadTrigger => Scale == 1.0,
+            ImportOutputKind.PadStick or ImportOutputKind.PadTrigger => Scale == 1.0 && !Relative,
             _ => true,
         };
 
@@ -263,6 +289,14 @@ namespace PadForge.Common.ConfigImport
             }
         }
 
+        /// <summary>The axis nudged by this output for as long as the action
+        /// is current (reWASD's relative deflection, the action built for it).</summary>
+        public ActionData Add(int ms = 1)
+        {
+            var (axis, value) = AxisPayload();
+            return new ActionData { Type = MacroActionType.AxisAdd, AxisTarget = axis, AxisValue = value, DurationMs = ms };
+        }
+
         /// <summary>Pressed and left down until <see cref="Up"/>. Null for an
         /// output with no held state, a nudge or a wheel detent.</summary>
         public ActionData Down() => Latch(MacroLatchDirection.On);
@@ -365,6 +399,10 @@ namespace PadForge.Common.ConfigImport
         /// <summary>True when the file asks a macro's held keys and color to
         /// stay on after it stops, for a later macro to clear.</summary>
         public bool KeepsWhatItHolds;
+
+        /// <summary>True for a block: an empty macro whose trigger is the
+        /// one key or button it holds back from Windows.</summary>
+        public bool ConsumesTrigger;
     }
 
     /// <summary>
@@ -419,6 +457,12 @@ namespace PadForge.Common.ConfigImport
             public string Name;
             public bool Expand;
             public readonly HashSet<string> Blocked = new(StringComparer.Ordinal);
+
+            /// <summary>reWASD's unlock layers: the keyboard, the mouse or
+            /// both work as they do without the profile, so Base's mappings
+            /// on them stop on this layer.</summary>
+            public bool UnlocksKeyboard;
+            public bool UnlocksMouse;
         }
 
         private sealed class PadSlot
@@ -435,6 +479,8 @@ namespace PadForge.Common.ConfigImport
         private readonly List<MenuDefinitionEntry> _menus = new();
         private readonly List<PadSlot> _pads = new();
         private readonly HashSet<string> _sumRows = new(StringComparer.Ordinal);
+        private readonly List<(ImportInput Input, string Name)> _blocks = new();
+        private readonly Dictionary<(string Layer, string Target), (double Floor, double Scale, int PadId)> _stickShapes = new();
         private int _pairSeq;
 
         public TranslationReport Report { get; } = new();
@@ -451,6 +497,57 @@ namespace PadForge.Common.ConfigImport
         public string GyroEngageDescriptor { get; set; } = "";
         public bool GyroEngageInvert { get; set; }
         public bool GyroEngageToggle { get; set; }
+
+        /// <summary>What the file's buttons start or power off, for the
+        /// preview to say before anything is accepted.</summary>
+        public List<string> Runs { get; } = new();
+
+        /// <summary>A stick or trigger's response curve, in the card's point
+        /// format, for whichever device lands on the slot.</summary>
+        public Dictionary<string, string> Curves { get; } = new(StringComparer.Ordinal);
+
+        public string RumblePercent { get; set; } = "";
+        public string IdleDisconnectSeconds { get; set; } = "";
+
+        /// <summary>Starts the DSU motion server for emulators while the
+        /// profile is loaded.</summary>
+        public bool EnableDsu { get; set; }
+
+        /// <summary>The battery light's empty and full colors,
+        /// "r,g,b;r,g,b", or empty.</summary>
+        public string BatteryColors { get; set; } = "";
+
+        /// <summary>The Run Program action for something the file starts, noted
+        /// for the preview.</summary>
+        /// <summary>What the profile starts by itself when it loads.</summary>
+        public List<string> Starts { get; } = new();
+
+        public ActionData Run(string label, string path, string args = "", string workDir = "", bool onLoad = false)
+        {
+            var list = onLoad ? Starts : Runs;
+            if (!list.Contains(label)) list.Add(label);
+            return new ActionData
+            {
+                Type = MacroActionType.RunProgram,
+                ProgramPath = path,
+                ProgramArgs = args ?? "",
+                ProgramWorkingDir = workDir ?? "",
+            };
+        }
+
+        /// <summary>A curve's points, the card's own format.</summary>
+        public static string CurvePoints(Func<double, double> curve, int steps = 16)
+        {
+            var parts = new List<string>(steps + 1);
+            for (int i = 0; i <= steps; i++)
+            {
+                double x = (double)i / steps;
+                double y = Math.Clamp(curve(x), 0.0, 1.0);
+                parts.Add(x.ToString("0.####", System.Globalization.CultureInfo.InvariantCulture) + ","
+                        + y.ToString("0.####", System.Globalization.CultureInfo.InvariantCulture));
+            }
+            return string.Join(";", parts);
+        }
 
         public int NextPairKey() => ++_pairSeq;
 
@@ -527,6 +624,50 @@ namespace PadForge.Common.ConfigImport
             LightbarB = b,
         };
 
+        /// <summary>The steps of a lighting pattern that plays on an Always
+        /// macro: a color held past the wait that follows it, so the bar never
+        /// falls back between two steps, and it ends by itself when the
+        /// profile switches away.</summary>
+        public static ActionData[] LightStep(byte r, byte g, byte b, int holdMs, int fadeMs, int waitMs)
+        {
+            var color = ProfileColor(r, g, b);
+            color.LightbarHoldMs = holdMs;
+            color.LightbarFadeMs = fadeMs;
+            return new[] { color, new ActionData { Type = MacroActionType.Delay, DurationMs = waitMs } };
+        }
+
+        /// <summary>Every hue once around the given time, in steps too short to
+        /// see, as an Always macro plays it, at a fraction of full
+        /// brightness.</summary>
+        public static List<ActionData> RainbowPattern(int periodMs, double brightness = 1.0)
+        {
+            const int Steps = 36;
+            int wait = Math.Max(10, periodMs / Steps);
+            brightness = Math.Clamp(brightness, 0.0, 1.0);
+            var actions = new List<ActionData>(Steps * 2);
+            for (int i = 0; i < Steps; i++)
+            {
+                var (r, g, b) = FromHue(i * 360.0 / Steps);
+                actions.AddRange(LightStep((byte)(r * brightness), (byte)(g * brightness), (byte)(b * brightness), wait + 100, 0, wait));
+            }
+            return actions;
+        }
+
+        private static (byte R, byte G, byte B) FromHue(double hue)
+        {
+            double x = 1.0 - Math.Abs(hue / 60.0 % 2.0 - 1.0);
+            var (r, g, b) = (int)(hue / 60.0) switch
+            {
+                0 => (1.0, x, 0.0),
+                1 => (x, 1.0, 0.0),
+                2 => (0.0, 1.0, x),
+                3 => (0.0, x, 1.0),
+                4 => (x, 0.0, 1.0),
+                _ => (1.0, 0.0, x),
+            };
+            return ((byte)(r * 255), (byte)(g * 255), (byte)(b * 255));
+        }
+
         /// <summary>The Workshop translator's SetOutputInvert: a half-axis
         /// read spends Invert on choosing the half, so the output flip moves
         /// to its own field.</summary>
@@ -548,6 +689,33 @@ namespace PadForge.Common.ConfigImport
                 _layers.FirstOrDefault(l => l.Mask == layer)?.Blocked.Add(control);
         }
 
+        /// <summary>The layer hands the keyboard, the mouse or both back to
+        /// Windows: Base's mappings that read them stop on it, and the
+        /// layer's own stay.</summary>
+        public void Unlock(string layer, bool keyboard, bool mouse)
+        {
+            var info = _layers.FirstOrDefault(l => l.Mask == layer);
+            if (info == null) return;
+            info.UnlocksKeyboard |= keyboard;
+            info.UnlocksMouse |= mouse;
+        }
+
+        public bool HasLayer(string mask) => mask == BaseLayer || _layers.Any(l => l.Mask == mask);
+
+        /// <summary>A key or button the file stops reaching Windows. Consume
+        /// Mapped Inputs holds back one a row reads already. One no row reads
+        /// takes an empty macro that consumes its trigger, which the hook
+        /// holds back the same way (InputService.MacroTriggerConsumesKey).</summary>
+        public void Block(ImportInput input, string name) => _blocks.Add((input, name));
+
+        /// <summary>A virtual stick axis's output range on a layer, reWASD's
+        /// initial and maximum deflection: any movement starts at the floor
+        /// and the axis tops out at the scale. The floor rides each source as
+        /// its anti-deadzone, and the scale is an Always Scale Axis macro on
+        /// the layer, so a key and the mouse both land inside the range.</summary>
+        public void StickShape(string layer, string target, double floor, double scale, int padId)
+            => _stickShapes[(layer, target)] = (floor, scale, padId);
+
         /// <summary>A rotated stick's rows add their two legs instead of
         /// taking the larger one.</summary>
         public void SumRow(string target) => _sumRows.Add(target);
@@ -565,6 +733,7 @@ namespace PadForge.Common.ConfigImport
                 LayerMask = layer,
             };
             if (first.Gate.Length > 0) act.GateDescriptor = first.Gate;
+            if (first.Band.Length > 0) act.GateDescriptor = first.Band;
             if (first.IsAnalog)
             {
                 act.Kind = "Axis";
@@ -711,17 +880,91 @@ namespace PadForge.Common.ConfigImport
                 if (b.Layer == layer.Mask) own.Add(b.Control);
             foreach (var m in _macros)
                 if (m.Layer == layer.Mask && m.Control != null) own.Add(m.Control);
+            if (layer.UnlocksKeyboard || layer.UnlocksMouse)
+            {
+                // A chord with an unlocked part cannot fire either: that key
+                // or button reaches Windows instead.
+                bool Unlocked(string control) => control.Split('+').Any(p =>
+                    (layer.UnlocksKeyboard && p.StartsWith("kb:", StringComparison.Ordinal))
+                    || (layer.UnlocksMouse && (p.StartsWith("ms:", StringComparison.Ordinal)
+                                               || p.StartsWith("gp:stick:mouse:", StringComparison.Ordinal))));
+                foreach (var b in _bindings)
+                    if (b.Layer == BaseLayer && Unlocked(b.Control)) own.Add(b.Control);
+                foreach (var m in _macros)
+                    if (m.Layer == BaseLayer && m.Control != null && Unlocked(m.Control)) own.Add(m.Control);
+            }
             return own;
+        }
+
+        /// <summary>The Scale Axis macros for each stick range under a
+        /// scale, and the block that stops Base's on a layer whose own range
+        /// has none. Runs before layers work out what they own.</summary>
+        private void AddStickRangeMacros()
+        {
+            foreach (var ((layer, target), shape) in _stickShapes)
+            {
+                string control = "stickrange:" + target;
+                if (shape.Scale < 1.0)
+                {
+                    var (axis, _) = ImportOutput.Stick(target, false).AxisPayload();
+                    _macros.Add(new ImportMacro
+                    {
+                        Name = ImportOutput.Stick(target, false).Label.Replace(" Right", " X").Replace(" Down", " Y") + " range",
+                        Control = control,
+                        Layer = layer,
+                        Mode = MacroTriggerMode.Always,
+                        PadId = shape.PadId,
+                        Actions = new[]
+                        {
+                            new ActionData
+                            {
+                                Type = MacroActionType.AxisScale,
+                                AxisTarget = axis,
+                                // The engine multiplies by 1 + value / 32767.
+                                AxisValue = (short)Math.Round((shape.Scale - 1.0) * 32767),
+                                DurationMs = int.MaxValue,
+                            },
+                        },
+                    });
+                }
+                else if (layer != BaseLayer
+                         && _stickShapes.TryGetValue((BaseLayer, target), out var baseShape) && baseShape.Scale < 1.0)
+                {
+                    _layers.FirstOrDefault(l => l.Mask == layer)?.Blocked.Add(control);
+                }
+            }
+        }
+
+        /// <summary>The floor a stick axis row's sources take on a layer: the
+        /// layer's own range, else Base's, else none.</summary>
+        private double? FloorOf(string layer, string target)
+        {
+            if (_stickShapes.TryGetValue((layer, target), out var own)) return own.Floor;
+            if (_stickShapes.TryGetValue((BaseLayer, target), out var inherited)) return inherited.Floor;
+            return null;
+        }
+
+        private static void SetFloor(IEnumerable<MappingSource> sources, double? floor)
+        {
+            if (floor == null) return;
+            foreach (var s in sources) s.ParamAntiDeadzone = floor.Value;
         }
 
         public ProfileData Finish(string name, string executables)
         {
+            AddStickRangeMacros();
             var ownByLayer = _layers.ToDictionary(l => l, OwnControls);
 
             foreach (var layer in _layers)
             {
                 var own = ownByLayer[layer];
                 if (_macros.Any(m => m.Layer == BaseLayer && !m.RunsBesideLayers && m.Control != null && own.Contains(m.Control)))
+                    layer.Expand = true;
+                // A solid color writes every frame and ends the frame on top
+                // of Base's. A pattern writes between waits, and Base's color
+                // would cover it, so Base's has to stop on that layer.
+                if (_macros.Any(m => m.Layer == layer.Mask && m.Control != null && !m.RunsBesideLayers
+                        && _macros.Any(b => b.Layer == BaseLayer && b.Control == m.Control)))
                     layer.Expand = true;
             }
 
@@ -737,7 +980,7 @@ namespace PadForge.Common.ConfigImport
 
             // A macro rides a slot, so a file of nothing but macros still
             // needs one. Its keys go out through SendInput either way.
-            bool needsKbm = _bindings.Any(b => b.PadId == 0) || (_macros.Count > 0 && !_pads.Any());
+            bool needsKbm = _bindings.Any(b => b.PadId == 0) || ((_macros.Count > 0 || _blocks.Count > 0) && !_pads.Any());
 
             // Slot numbers: pads first, in file order, then keyboard and mouse.
             var slotOfPad = new Dictionary<int, int>();
@@ -778,6 +1021,9 @@ namespace PadForge.Common.ConfigImport
                 var row = new MappingRow { Target = group.Key.Target, LayerMask = BaseLayer };
                 if (_sumRows.Contains(group.Key.Target)) row.CombineMode = "Sum";
                 row.Sources.AddRange(Distinct(group.Select(b => b.Source)));
+                // The binding's own source objects, so a layer that copies
+                // them inherits Base's floor.
+                SetFloor(row.Sources, _stickShapes.TryGetValue((BaseLayer, row.Target), out var shape) ? shape.Floor : null);
                 sets[group.Key.Slot].Rows.Add(row);
             }
 
@@ -797,6 +1043,15 @@ namespace PadForge.Common.ConfigImport
                 foreach (var b in ownBindings) Touch(SlotOfBinding(b.PadId), b.Target);
                 foreach (var b in baseBindings)
                     if (layer.Expand || own.Contains(b.Control)) Touch(SlotOfBinding(b.PadId), b.Target);
+                // A layer with its own stick range needs its own rows for that
+                // stick, even where it maps nothing new.
+                foreach (var ((shapeLayer, shapeTarget), shape) in _stickShapes)
+                {
+                    if (shapeLayer != layer.Mask) continue;
+                    int slot = SlotOfBinding(shape.PadId);
+                    if (baseBindings.Concat(ownBindings).Any(b => SlotOfBinding(b.PadId) == slot && b.Target == shapeTarget))
+                        Touch(slot, shapeTarget);
+                }
 
                 foreach (var (slot, target) in targets)
                 {
@@ -805,6 +1060,7 @@ namespace PadForge.Common.ConfigImport
                         .Select(b => b.Source.Clone()));
                     var row = new MappingRow { Target = target, LayerMask = layer.Mask };
                     if (_sumRows.Contains(target)) row.CombineMode = "Sum";
+                    SetFloor(sources, FloorOf(layer.Mask, target));
                     if (sources.Count == 0)
                     {
                         // A layer that replaces Base already outputs nothing
@@ -862,6 +1118,11 @@ namespace PadForge.Common.ConfigImport
                     sets[i].WorkshopGyroEngageInvert = GyroEngageInvert;
                     sets[i].WorkshopGyroEngageToggle = GyroEngageToggle;
                 }
+                if (Curves.Count > 0)
+                    sets[i].WorkshopCurves = string.Join("|", Curves.Select(kv => kv.Key + "=" + kv.Value));
+                sets[i].WorkshopRumblePercent = RumblePercent ?? "";
+                sets[i].WorkshopIdleDisconnectSeconds = IdleDisconnectSeconds ?? "";
+                sets[i].WorkshopBatteryColors = BatteryColors ?? "";
             }
 
             // Unclaimed slots stay non-authoritative, so a slot the user
@@ -893,6 +1154,24 @@ namespace PadForge.Common.ConfigImport
                 }
             }
 
+            // A block only for a key no row reads: one a row reads is held
+            // back already, and a block there would also stop the row while
+            // the key is down (the engine's consume). Base only, because the
+            // hook holds a key back on every layer alike.
+            var blockedReads = new HashSet<(string, string)>();
+            foreach (var (input, blockName) in _blocks)
+            {
+                if (_bindings.Any(b => b.Source.Descriptor == input.Descriptor && Same(b.Source.DeviceGuid, input.DeviceGuid))) continue;
+                if (!blockedReads.Add((input.Descriptor, (input.DeviceGuid ?? "").ToLowerInvariant()))) continue;
+                var data = ToMacroData(new ImportMacro
+                {
+                    Name = blockName,
+                    Inputs = new[] { input },
+                    ConsumesTrigger = true,
+                }, BaseLayer, 0, firstPadSlot);
+                if (data != null) macros.Add(data);
+            }
+
             var (entries, padSettings) = AssignMergedDevices(sets, created, macros);
             ReadsController = _bindings.Any(b => string.IsNullOrEmpty(b.Source.DeviceGuid)
                                                  && !b.Source.Descriptor.StartsWith("Menu ", StringComparison.Ordinal))
@@ -920,6 +1199,7 @@ namespace PadForge.Common.ConfigImport
                 Macros = macros.ToArray(),
                 Entries = entries,
                 PadSettings = padSettings,
+                EnableDsuMotionServer = EnableDsu,
             };
         }
 
@@ -1030,9 +1310,10 @@ namespace PadForge.Common.ConfigImport
                 TriggerInputs = specs.Count > 0 ? string.Join("|", specs) : null,
                 TriggerButtons = 0,
                 TriggerAxisTargets = null,
-                // Never consume: a pair's legs read one trigger, and a row
-                // may read it too.
-                ConsumeTriggerButtons = false,
+                // Never consume, but for a block: a pair's legs read one
+                // trigger, and a row may read it too. A block's key is one no
+                // row reads.
+                ConsumeTriggerButtons = m.ConsumesTrigger,
                 TriggerMode = m.Mode,
                 TriggerHoldMs = Math.Clamp(m.HoldMs, 50, 10000),
                 TriggerDoublePressMs = Math.Clamp(m.DoublePressMs, 50, 5000),

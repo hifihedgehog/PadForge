@@ -46,6 +46,25 @@ namespace PadForge.Tests
         private static string Control(string group, string control, string value)
             => $"<Control><{group}><{control}>{value}</{control}></{group}></Control>";
 
+        private static CustomInputState Centered()
+        {
+            var state = new CustomInputState();
+            for (int i = 0; i < state.Axis.Length; i++) state.Axis[i] = 32768;
+            return state;
+        }
+
+        // A row's read of one source, its gate included.
+        private static bool ButtonRead(CustomInputState state, MappingSource src)
+            => SourceEvaluator.EvaluateForButtonTarget(state, src, 50, 0, "ButtonA", 0, null, 0, "");
+
+        // The left stick pushed to this angle (90 is up) and this far.
+        private static void Point(CustomInputState state, double degrees, double distance)
+        {
+            double r = degrees * Math.PI / 180.0;
+            state.Axis[0] = (int)Math.Round(32768 + 32767 * distance * Math.Cos(r));
+            state.Axis[1] = (int)Math.Round(32768 - 32767 * distance * Math.Sin(r));
+        }
+
         // ── Output device ───────────────────────────────────────────────
 
         [Fact]
@@ -515,36 +534,56 @@ namespace PadForge.Tests
             Assert.InRange(yOut, 0.42f, 0.58f);
         }
 
+        // The y a curve stamp gives at x, read from its "x,y;x,y" points.
+        private static double CurveAt(string points, double x)
+        {
+            var pts = points.Split(';').Select(p => p.Split(','))
+                .Select(p => (X: double.Parse(p[0], System.Globalization.CultureInfo.InvariantCulture),
+                              Y: double.Parse(p[1], System.Globalization.CultureInfo.InvariantCulture))).ToList();
+            for (int i = 1; i < pts.Count; i++)
+                if (x <= pts[i].X)
+                    return pts[i - 1].Y + (pts[i].Y - pts[i - 1].Y) * (x - pts[i - 1].X) / (pts[i].X - pts[i - 1].X);
+            return pts[^1].Y;
+        }
+
+        private static string StampFor(ProfileData p, string target)
+            => p.SlotMappingSets[0].WorkshopCurves.Split('|').Single(e => e.StartsWith(target + "=", StringComparison.Ordinal))[(target.Length + 1)..];
+
         [Theory]
-        [InlineData("quadratic", 2.0, false)]
-        [InlineData("cubic", 3.0, false)]
-        [InlineData("enhanced-precision", 1.2, true)]
-        [InlineData("easeout-quad", 0.6, true)]
-        [InlineData("easeout-cubic", 0.45, true)]
-        public void CurveNames_BecomeExponents(string mode, double exponent, bool partial)
+        [InlineData("quadratic", 0.25)]
+        [InlineData("cubic", 0.125)]
+        [InlineData("enhanced-precision", 0.42)]
+        [InlineData("easeout-quad", 0.75)]
+        [InlineData("easeout-cubic", 0.875)]
+        public void CurveNames_CarryTheirExactShape(string mode, double atHalf)
         {
             var r = Import($"<LSOutputCurveMode>{mode}</LSOutputCurveMode>");
-            Assert.Equal(exponent, Row(r.Profile, "LeftThumbAxisX").Sources[0].ParamCurveExponent, 3);
-            Assert.Equal(partial, r.Report.Entries.Any(e => e.ReasonKey == ImportReasons.CurveApproximated));
+            Assert.InRange(CurveAt(StampFor(r.Profile, "LeftThumbAxisX"), 0.5), atHalf - 0.02, atHalf + 0.02);
+            Assert.InRange(CurveAt(StampFor(r.Profile, "LeftThumbAxisY"), 0.5), atHalf - 0.02, atHalf + 0.02);
+            Assert.Equal(0, r.Report.PartialCount + r.Report.SkippedCount);
         }
 
         [Fact]
-        public void CustomCurve_IsFittedFromItsBezier()
+        public void CustomCurve_IsItsOwnBezier()
         {
             var r = Import("<LSOutputCurveMode>custom</LSOutputCurveMode><LSOutputCurveCustom>0.42, 0.00, 1.00, 1.00</LSOutputCurveCustom>");
-            Assert.InRange(Row(r.Profile, "LeftThumbAxisX").Sources[0].ParamCurveExponent, 1.1, 3.0);
-            Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.CurveApproximated);
+            var curve = Ds4WindowsTranslator.BezierCurve("0.42, 0.00, 1.00, 1.00");
+            Assert.InRange(CurveAt(StampFor(r.Profile, "LeftThumbAxisX"), 0.5), curve(0.5) - 0.02, curve(0.5) + 0.02);
+            Assert.Equal(0, r.Report.PartialCount + r.Report.SkippedCount);
         }
 
         [Fact]
-        public void BezierFit_ReadsTheStrayPercentSign()
-            => Assert.True(Ds4WindowsTranslator.FitBezier("0.00, 1.00, 0.00, 1.0000%") < 1.0);
+        public void Bezier_ReadsTheStrayPercentSign()
+            => Assert.NotNull(Ds4WindowsTranslator.BezierCurve("0.00, 1.00, 0.00, 1.0000%"));
 
         [Fact]
-        public void MaxOutput_SaysItScales()
+        public void MaxOutput_CapsTheStick()
         {
             var r = Import("<LSMaxOutput>90</LSMaxOutput>");
-            Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.MaxOutput);
+            string points = StampFor(r.Profile, "LeftThumbAxisX");
+            Assert.InRange(CurveAt(points, 1.0), 0.89, 0.91);
+            Assert.InRange(CurveAt(points, 0.5), 0.49, 0.51);
+            Assert.Equal(0, r.Report.PartialCount + r.Report.SkippedCount);
         }
 
         [Fact]
@@ -570,7 +609,6 @@ namespace PadForge.Tests
             Assert.Equal(0.2, src.ParamStickDeadZoneInner, 3);
             Assert.Equal(0.1, src.ParamAntiDeadzone, 3);
             Assert.Equal(0.8, src.ParamRangeOuter, 3);
-            Assert.Equal(2.0, src.ParamCurveExponent, 3);
         }
 
         [Fact]
@@ -690,18 +728,23 @@ namespace PadForge.Tests
             => Assert.False(Import("<DinputOnly>True</DinputOnly>").HasSlots);
 
         [Theory]
-        [InlineData("LSAntiSnapback", "True")]
-        [InlineData("RSAntiSnapback", "True")]
-        [InlineData("TouchpadButtonMode", "None")]
-        [InlineData("TouchDisInvTriggers", "4")]
-        [InlineData("touchToggle", "False")]
-        [InlineData("TrackballMode", "True")]
-        [InlineData("flashBatteryAt", "20")]
-        [InlineData("ChargingType", "3")]
-        public void WhatNoRowReads_IsNamed(string element, string value)
+        [InlineData("LSAntiSnapback", "True", true)]
+        [InlineData("RSAntiSnapback", "True", true)]
+        [InlineData("TouchpadButtonMode", "None", false)]
+        [InlineData("TouchDisInvTriggers", "4", false)]
+        [InlineData("touchToggle", "False", false)]
+        [InlineData("TrackballMode", "True", true)]
+        [InlineData("flashBatteryAt", "20", true)]
+        [InlineData("ChargingType", "3", true)]
+        [InlineData("RumbleAutostopTime", "500", true)]
+        [InlineData("LSSquareStick", "True", true)]
+        public void WhatNoRowReads_IsNamed(string element, string value, bool padForgeHasNone)
         {
+            // A setting PadForge has no counterpart for says so, and one it
+            // reads another way says it did not come across.
             var r = Import($"<{element}>{value}</{element}>");
-            Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.ControllerSetting && e.ReasonArgs.Contains(element));
+            string reason = padForgeHasNone ? ImportReasons.NoSuchSetting : ImportReasons.ControllerSetting;
+            Assert.Contains(r.Report.Entries, e => e.ReasonKey == reason && e.ReasonArgs.Contains(element));
         }
 
         [Theory]
@@ -772,13 +815,93 @@ namespace PadForge.Tests
         }
 
         [Theory]
-        [InlineData("Normal", 39)]
-        [InlineData("HairTrigger", 2)]
-        public void ATriggerAsAButton_PressesWhereDs4WindowsDoes(string mode, int deadZone)
+        [InlineData("Normal", "")]
+        [InlineData("HairTrigger", "Stage HairTrigger Soft 0 1 39 Gamepad LeftTrigger")]
+        [InlineData("ExclusiveButtons", "Between 39 99 00 Gamepad LeftTrigger")]
+        public void ATriggerAsAButton_PressesPast100_UnderItsTwoStageMode(string mode, string gate)
         {
+            // GetBoolMapping presses a trigger past 100 of 255 for a pad
+            // button, and the two-stage mode decides when the soft pull's
+            // binding runs at all.
             var src = Row(Profile("<L2TwoStageMode>" + mode + "</L2TwoStageMode>" + Control("Button", "L2", "A Button")), "ButtonA")
                 .Sources.First(s => s.Descriptor == "Gamepad LeftTrigger");
-            Assert.Equal(deadZone, src.DeadZone);
+            Assert.Equal(39, src.DeadZone);
+            Assert.Equal(gate, src.GateDescriptor);
+        }
+
+        [Fact]
+        public void ATriggerAsAKey_PressesPastItsDeadZone()
+        {
+            // GetBoolActionMapping reads a trigger as pressed past 0, after
+            // its dead zone.
+            var src = Row(Profile("<LeftTriggerMiddle>51</LeftTriggerMiddle>" + Control("Key", "L2", "65")), "KbmKey41")
+                .Sources.First(s => s.Descriptor == "Gamepad LeftTrigger");
+            Assert.Equal(20, src.DeadZone);
+        }
+
+        [Fact]
+        public void AStickDirectionAsAKey_ReadsItsSector()
+        {
+            // GetBoolActionMapping: left reads from 112.5 to 247.5 degrees,
+            // past the dead zone.
+            var src = Row(Profile("<LSDeadZone>13</LSDeadZone>" + Control("Key", "LXNeg", "65")), "KbmKey41")
+                .Sources.First(s => s.Descriptor == "Gamepad LeftStickX");
+            Assert.Equal(BoundedReads.Sector(180, 67.5, 11, "Gamepad LeftStickRing"), src.GateDescriptor);
+            var state = Centered();
+            Point(state, 150, 0.6);
+            Assert.True(ButtonRead(state, src));
+            Point(state, 100, 0.6);
+            Assert.False(ButtonRead(state, src));
+            Point(state, 180, 0.05);
+            Assert.False(ButtonRead(state, src));
+            Point(state, 240, 0.6);
+            Assert.True(ButtonRead(state, src));
+        }
+
+        [Fact]
+        public void AStickDirectionAsAPadButton_ReadsPastAFixedPress()
+        {
+            // GetBoolMapping: a direction is pressed past 55 of 127.
+            var src = Row(Profile(Control("Button", "LXNeg", "A Button")), "ButtonA")
+                .Sources.First(s => s.Descriptor == "Gamepad LeftStickX");
+            Assert.Equal(43, src.DeadZone);
+            Assert.Equal("", src.GateDescriptor);
+        }
+
+        [Fact]
+        public void FullPullWithTwoStageOff_IsLeftOut()
+        {
+            // Mapping.cs passes a full pull binding over in Disabled, the default.
+            var p = Profile(Control("Button", "L2FullPull", "B Button"));
+            Assert.DoesNotContain(Row(p, "ButtonB").Sources, s => s.Descriptor == "Gamepad LeftTrigger");
+        }
+
+        [Theory]
+        [InlineData("HipFire", "Stage HipFire Soft 120 1 1 Gamepad LeftTrigger")]
+        [InlineData("HipFireExclusiveButtons", "Stage HipFireExclusive Soft 120 1 1 Gamepad LeftTrigger")]
+        [InlineData("HairTrigger", "Stage HairTrigger Soft 0 1 1 Gamepad LeftTrigger")]
+        [InlineData("ExclusiveButtons", "Between 1 99 00 Gamepad LeftTrigger")]
+        public void TwoStageModes_HoldTheTriggerBack(string mode, string gate)
+        {
+            var r = Import("<L2TwoStageMode>" + mode + "</L2TwoStageMode><L2HipFireTime>120</L2HipFireTime>");
+            var src = Row(r.Profile, "LeftTrigger").Sources.First(s => s.Descriptor == "Gamepad LeftTrigger");
+            Assert.Equal(gate, src.GateDescriptor);
+            Assert.Equal(0, r.Report.PartialCount + r.Report.SkippedCount);
+        }
+
+        [Fact]
+        public void HipFireWait_AddsTheDebounce()
+        {
+            var src = Row(Profile("<L2TwoStageMode>HipFire</L2TwoStageMode><L2HipFireTime>100</L2HipFireTime><DebouncingMs>20</DebouncingMs>"), "LeftTrigger")
+                .Sources.First(s => s.Descriptor == "Gamepad LeftTrigger");
+            Assert.Equal(120, BoundedReads.Parse(src.GateDescriptor).WaitMs);
+        }
+
+        [Fact]
+        public void LightbarMacro_RunsOnlyOnTheControlsDs4WindowsRunsItFor()
+        {
+            Assert.DoesNotContain(Profile(Control("LightbarMacro", "L2", "True/9,9,9:100;/Press/False")).Macros, m => m.Name.EndsWith("lightbar"));
+            Assert.Contains(Profile(Control("LightbarMacro", "Square", "True/9,9,9:100;/Press/False")).Macros, m => m.Name.EndsWith("lightbar"));
         }
 
         [Fact]
@@ -842,10 +965,11 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void WheelCalibration_IsNamed()
+        public void WheelCalibration_RecentersTheLean()
         {
             using var f = new Ds4Folder("<Actions>" + Action("W", "SASteeringWheelEmulationCalibrate", "") + "</Actions>");
-            Assert.Contains(f.Read("<ProfileActions>W</ProfileActions>").Report.Entries, e => e.ReasonKey == ImportReasons.SteeringWheel);
+            var r = f.Read("<ProfileActions>W</ProfileActions>");
+            Assert.Equal(MacroActionType.GyroRecenter, Only(r.Profile.Macros.First(m => m.Name == "W")).Type);
         }
 
         [Theory]
@@ -931,13 +1055,6 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void ExclusiveButtons_SaysTheSoftPullStaysOn()
-        {
-            var r = Import("<L2TwoStageMode>ExclusiveButtons</L2TwoStageMode>");
-            Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.ControllerSetting && e.ReasonArgs.Contains("ExclusiveButtons"));
-        }
-
-        [Fact]
         public void TouchpadClickPassthrough_KeepsTheClick()
         {
             var ds4 = Profile("<OutputContDevice>DS4</OutputContDevice><TouchpadOutputMode>Controls</TouchpadOutputMode><TouchpadClickPassthru>True</TouchpadClickPassthru>");
@@ -958,14 +1075,6 @@ namespace PadForge.Tests
             var bytes = Encoding.Unicode.GetPreamble().Concat(Encoding.Unicode.GetBytes(
                 """<?xml version="1.0" encoding="utf-16"?><DS4Windows config_version="5"><Color>1,2,3</Color></DS4Windows>""")).ToArray();
             Assert.False(ForeignConfigImporter.Translate(bytes, "x.xml").Refused);
-        }
-
-        [Fact]
-        public void HipFire_IsReportedWithItsTime()
-        {
-            var r = Import("<L2TwoStageMode>HipFire</L2TwoStageMode><L2HipFireTime>120</L2HipFireTime>");
-            var line = Assert.Single(r.Report.Entries, e => e.ReasonKey == ImportReasons.HipFire);
-            Assert.Contains("120", line.ReasonArgs);
         }
 
         [Theory]
@@ -1187,11 +1296,13 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void Rainbow_SetsTheMode()
+        public void Rainbow_GoesRoundEveryHueInItsTime()
         {
-            var a = Only(Assert.Single(Profile("<Color>1,2,3</Color><Rainbow>5</Rainbow>").Macros));
-            Assert.Equal(MacroActionType.LightbarModeSet, a.Type);
-            Assert.Equal(LightbarMode.Rainbow, a.LightbarTargetMode);
+            var m = Assert.Single(Profile("<Color>1,2,3</Color><Rainbow>6</Rainbow>").Macros);
+            Assert.Equal(MacroTriggerMode.Always, m.TriggerMode);
+            Assert.Equal(72, m.Actions.Length);
+            int waits = m.Actions.Where(a => a.Type == MacroActionType.Delay).Sum(a => a.DurationMs);
+            Assert.InRange(waits, 5900, 6100);
         }
 
         [Fact]
@@ -1199,40 +1310,81 @@ namespace PadForge.Tests
             => Assert.Empty(Profile("<Color>1,2,3</Color><LightbarMode>Passthru</LightbarMode>").Macros);
 
         [Fact]
-        public void BatteryIndicator_SaysItIsTheColor()
+        public void BatteryIndicator_ShowsTheBattery_InTheProfilesColors()
         {
-            var r = Import("<Color>1,2,3</Color><ledAsBatteryIndicator>True</ledAsBatteryIndicator>");
-            Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.LedShownAs);
+            var r = Import("<Color>1,2,3</Color><LowColor>4,5,6</LowColor><ledAsBatteryIndicator>True</ledAsBatteryIndicator>");
+            var a = Only(Assert.Single(r.Profile.Macros));
+            Assert.Equal(MacroActionType.LightbarModeSet, a.Type);
+            Assert.Equal(LightbarMode.Battery, a.LightbarTargetMode);
+            // getTransitionedColor: LowColor at empty, Color at full.
+            Assert.Equal("4,5,6;1,2,3", r.Profile.SlotMappingSets[0].WorkshopBatteryColors);
+            Assert.Equal(0, r.Report.PartialCount + r.Report.SkippedCount);
+        }
+
+        [Fact]
+        public void RainbowUnderTheBatteryLight_IsTheRainbow_AndSaysItDoesNotDim()
+        {
+            var r = Import("<Color>1,2,3</Color><Rainbow>6</Rainbow><ledAsBatteryIndicator>True</ledAsBatteryIndicator>");
+            Assert.Equal(72, Assert.Single(r.Profile.Macros).Actions.Length);
+            Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.ControllerSetting && e.ReasonArgs.Contains("ledAsBatteryIndicator"));
+        }
+
+        [Fact]
+        public void RainbowSaturation_DimsEveryHue()
+        {
+            var m = Assert.Single(Profile("<Rainbow>6</Rainbow><MaxSatRainbow>50</MaxSatRainbow>").Macros);
+            Assert.Equal((byte)127, m.Actions[0].LightbarR);
+            Assert.True(m.Actions.Where(x => x.Type == MacroActionType.LightbarColor).All(x => x.LightbarR <= 127 && x.LightbarG <= 127 && x.LightbarB <= 127));
         }
 
         // ── Safety and leftovers ────────────────────────────────────────
 
         [Fact]
-        public void LaunchProgram_NeverRuns_AndShowsThePath()
+        public void LaunchProgram_StartsWithTheProfile_OnceOnEveryLayer_AndThePreviewNamesIt()
         {
-            var r = Import("<LaunchProgram>C:\\evil\\app.exe</LaunchProgram>");
-            var line = Assert.Single(r.Report.Entries, e => e.ReasonKey == ImportReasons.ProgramNotRun);
-            Assert.Contains("C:\\evil\\app.exe", line.ReasonArgs);
-            Assert.DoesNotContain(r.Profile.Macros.SelectMany(m => m.Actions), a => a.Type == MacroActionType.RunProgram);
+            var r = Import("<LaunchProgram>C:\\Games\\tool.exe</LaunchProgram>");
+            var m = Assert.Single(r.Profile.Macros);
+            Assert.Equal(MacroTriggerMode.Always, m.TriggerMode);
+            Assert.Equal("", m.LayerMask);
+            Assert.Equal(MacroActionType.RunProgram, m.Actions[0].Type);
+            Assert.Equal("C:\\Games\\tool.exe", m.Actions[0].ProgramPath);
+            // Then it waits for as long as a wait can last, so it starts once.
+            Assert.Equal(int.MaxValue, m.Actions[1].DurationMs);
+            // The preview says it starts when the profile loads, not on a button.
+            Assert.Contains("C:\\Games\\tool.exe", r.Starts);
+            Assert.Empty(r.Runs);
         }
 
-        [Fact]
-        public void SteeringWheelEmulation_IsNamed()
+        [Theory]
+        [InlineData("LX", "LeftThumbAxisX")]
+        [InlineData("RY", "RightThumbAxisY")]
+        public void SteeringWheelEmulation_IsAMotionLeanRow(string axis, string target)
         {
-            var r = Import("<SASteeringWheelEmulationAxis>LX</SASteeringWheelEmulationAxis>");
-            Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.SteeringWheel);
+            var r = Import("<SASteeringWheelEmulationAxis>" + axis + "</SASteeringWheelEmulationAxis><SASteeringWheelEmulationRange>180</SASteeringWheelEmulationRange>");
+            var src = Assert.Single(Row(r.Profile, target).Sources);
+            Assert.Equal(SourceCoercion.MotionLeanDescriptor, src.Descriptor);
+            // A 180 degree wheel turns 90 degrees each way.
+            Assert.Equal(90.0, src.ParamMotionOuterDz, 3);
+            Assert.Equal(0, r.Report.PartialCount + r.Report.SkippedCount);
             Assert.DoesNotContain(Import("<SASteeringWheelEmulationAxis>None</SASteeringWheelEmulationAxis>").Report.Entries,
                 e => e.ReasonKey == ImportReasons.SteeringWheel);
         }
 
         [Fact]
-        public void ChangedDeviceSettings_AreNamed()
+        public void RumbleBoostUnder100_SetsTheMotorStrength()
         {
             var r = Import("<RumbleBoost>50</RumbleBoost><LSFuzz>3</LSFuzz>");
-            Assert.Equal(2, r.Report.Entries.Count(e => e.ReasonKey == ImportReasons.ControllerSetting));
+            Assert.Equal("50", r.Profile.SlotMappingSets[0].WorkshopRumblePercent);
+            // PadForge has no stick fuzz, and the line says so.
+            Assert.Single(r.Report.Entries, e => e.ReasonKey == ImportReasons.NoSuchSetting && e.ReasonArgs.Contains("LSFuzz"));
+            Assert.DoesNotContain(r.Report.Entries, e => e.ReasonKey == ImportReasons.ControllerSetting);
             Assert.DoesNotContain(Import("<RumbleBoost>100</RumbleBoost><LSFuzz>0</LSFuzz>").Report.Entries,
-                e => e.ReasonKey == ImportReasons.ControllerSetting);
+                e => e.ReasonKey is ImportReasons.ControllerSetting or ImportReasons.NoSuchSetting);
         }
+
+        [Fact]
+        public void IdleDisconnect_SetsTheDevicesIdleTime()
+            => Assert.Equal("600", Profile("<idleDisconnectTimeout>600</idleDisconnectTimeout>").SlotMappingSets[0].WorkshopIdleDisconnectSeconds);
 
         [Fact]
         public void ADtd_IsRefusedAndSaysWhy()
@@ -1332,37 +1484,97 @@ namespace PadForge.Tests
             Assert.Contains(p.Macros, x => x.PairId == press.PairId && x.TriggerMode == MacroTriggerMode.OnRelease);
         }
 
-        [Fact]
-        public void SpecialKeyWithAStyle_Flips()
+        [Theory]
+        [InlineData("Press", MacroTriggerMode.OnPress)]
+        [InlineData("Release", MacroTriggerMode.OnRelease)]
+        public void SpecialKeyWithAnUnloadTrigger_HoldsUntilThatTrigger(string style, MacroTriggerMode mode)
         {
-            using var f = new Ds4Folder("<Actions>" + Action("K", "Key", "65 Scan Code", "Press\n") + "</Actions>");
-            Assert.Equal(MacroLatchDirection.Toggle, Only(f.Read("<ProfileActions>K</ProfileActions>").Profile.Macros.First(x => x.Name == "K")).LatchDirection);
+            using var f = new Ds4Folder("<Actions><Action Name=\"K\"><Trigger>Cross</Trigger><Type>Key</Type><Details>65</Details>"
+                + "<UnloadTrigger>Circle</UnloadTrigger><UnloadStyle>" + style + "</UnloadStyle></Action></Actions>");
+            var r = f.Read("<ProfileActions>K</ProfileActions>");
+            Assert.Equal(MacroLatchDirection.On, Only(r.Profile.Macros.First(x => x.Name == "K")).LatchDirection);
+            var release = r.Profile.Macros.First(x => x.Name == "K (release)");
+            Assert.Equal(mode, release.TriggerMode);
+            Assert.Equal(MacroLatchDirection.Off, Only(release).LatchDirection);
+            Assert.Equal(0, r.Report.PartialCount + r.Report.SkippedCount);
         }
 
         [Fact]
-        public void SpecialDisconnect_HoldsForItsTime()
+        public void SpecialDisconnect_HoldsForItsTime_AndDisconnectsTheSlotsDevices()
         {
             using var f = new Ds4Folder("<Actions>" + Action("D", "DisconnectBT", "2") + "</Actions>");
             var m = f.Read("<ProfileActions>D</ProfileActions>").Profile.Macros.First(x => x.Name == "D");
             Assert.Equal(MacroTriggerMode.HoldForMs, m.TriggerMode);
             Assert.Equal(2000, m.TriggerHoldMs);
-            Assert.Equal(MacroActionType.DisconnectController, Only(m).Type);
+            var a = Only(m);
+            Assert.Equal(MacroActionType.DisconnectController, a.Type);
+            Assert.Equal(MacroDisconnectTarget.SlotDevices, a.DisconnectTarget);
         }
 
-        [Fact]
-        public void SpecialProgram_NeverRuns_AndShowsThePath()
+        [Theory]
+        [InlineData(null)]
+        [InlineData("<Actions></Actions>")]
+        public void DefaultDisconnectAction_ComesAcross_WhereverTheProfileGoes(string actions)
         {
-            using var f = new Ds4Folder("<Actions>" + Action("P", "Program", "C:\\evil.exe") + "</Actions>");
-            var r = f.Read("<ProfileActions>P</ProfileActions>");
-            Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.ProgramNotRun && e.ReasonArgs.Contains("C:\\evil.exe"));
-            Assert.DoesNotContain(r.Profile.Macros, m => m.Name == "P");
+            // ScpUtil writes "Disconnect Controller", PS and Options held, into
+            // every new Actions.xml, so a shared profile that names it finds it.
+            using var f = new Ds4Folder(actions);
+            var r = f.Read("<ProfileActions>Disconnect Controller</ProfileActions>");
+            var m = r.Profile.Macros.First(x => x.Name == "Disconnect Controller");
+            Assert.Equal(2, m.TriggerInputs.Split('|').Length);
+            Assert.Equal(MacroActionType.DisconnectController, Only(m).Type);
+            Assert.DoesNotContain(r.Report.Entries, e => e.ReasonKey == ImportReasons.ActionNotFound);
         }
 
         [Fact]
-        public void SpecialProfileSwitch_IsNamed()
+        public void AnActionsFilesOwnDisconnect_WinsOverTheDefault()
+        {
+            using var f = new Ds4Folder("<Actions>" + Action("Disconnect Controller", "DisconnectBT", "5", trigger: "Share") + "</Actions>");
+            var m = f.Read("<ProfileActions>Disconnect Controller</ProfileActions>").Profile.Macros.First(x => x.Name == "Disconnect Controller");
+            Assert.Single(m.TriggerInputs.Split('|'));
+            Assert.Equal(5000, m.TriggerHoldMs);
+        }
+
+        [Fact]
+        public void SpecialProgram_RunsWithItsArguments_AndThePreviewNamesIt()
+        {
+            using var f = new Ds4Folder("<Actions><Action Name=\"P\"><Trigger>Cross/L1</Trigger><Type>Program</Type><Details>C:\\Games\\tool.exe</Details>"
+                + "<Arguements>-fast $hidden</Arguements><Delay>1.5</Delay></Action></Actions>");
+            var r = f.Read("<ProfileActions>P</ProfileActions>");
+            var m = r.Profile.Macros.First(x => x.Name == "P");
+            Assert.Equal(MacroTriggerMode.HoldForMs, m.TriggerMode);
+            Assert.Equal(1500, m.TriggerHoldMs);
+            var a = Only(m);
+            Assert.Equal(MacroActionType.RunProgram, a.Type);
+            Assert.Equal("C:\\Games\\tool.exe", a.ProgramPath);
+            Assert.Equal("-fast", a.ProgramArgs);
+            Assert.Contains("C:\\Games\\tool.exe", r.Runs);
+        }
+
+        [Fact]
+        public void SpecialProfileSwitch_LoadsTheNamedProfile()
         {
             using var f = new Ds4Folder("<Actions>" + Action("S", "Profile", "Other") + "</Actions>");
-            Assert.Contains(f.Read("<ProfileActions>S</ProfileActions>").Report.Entries, e => e.ReasonKey == ImportReasons.ProfileSwitch);
+            var r = f.Read("<ProfileActions>S</ProfileActions>");
+            var a = Only(r.Profile.Macros.First(x => x.Name == "S"));
+            Assert.Equal(MacroActionType.ProfileShortcut, a.Type);
+            Assert.Equal(SwitchProfileMode.Specific, a.ProfileShortcutMode);
+            Assert.Equal("Other", a.ProfileShortcutName);
+            Assert.Equal(0, r.Report.PartialCount + r.Report.SkippedCount);
+        }
+
+        [Fact]
+        public void ProfileSwitchWithAWayBack_NamesTheProfileShortcut()
+        {
+            // The way back runs while the other profile is loaded, which a
+            // Profile Shortcut on the Profiles page reads from any profile.
+            using var f = new Ds4Folder("<Actions><Action Name=\"S\"><Trigger>Cross/L1</Trigger><Type>Profile</Type><Details>Other</Details>"
+                + "<UnloadTrigger>Circle</UnloadTrigger></Action></Actions>");
+            var r = f.Read("<ProfileActions>S</ProfileActions>");
+            Assert.Equal(MacroActionType.ProfileShortcut, Only(r.Profile.Macros.First(x => x.Name == "S")).Type);
+            var line = Assert.Single(r.Report.Entries, e => e.Status == TranslationStatus.Partial);
+            Assert.Equal(ImportReasons.UnloadTrigger, line.ReasonKey);
+            Assert.Contains("Other", line.ReasonArgs);
         }
 
         [Fact]

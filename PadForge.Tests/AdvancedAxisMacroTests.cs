@@ -528,7 +528,7 @@ namespace PadForge.Tests
             // 64 and 65 for #557's key colors pair, 66 for #560's Toggle
             // Screen Overlay).
             // The pins above are what this test protects.
-            Assert.Equal(MacroActionType.AxisScale, values[^16]);
+            Assert.Equal(MacroActionType.AxisScale, values[^17]);
         }
     }
 

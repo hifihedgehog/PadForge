@@ -4932,8 +4932,6 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>Šis fails nav PadForge, reWASD vai DS4Windows profils.</value></data>
   <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>Šis fails deklarē dokumenta tipu, kas profilam nekad nav vajadzīgs, tāpēc PadForge to nenolasīja.</value></data>
   <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>Šis fails nav reWASD formātā, ko PadForge nolasa (shēma 3).</value></data>
-  <data name="Import_Tr_ProgramNotRun" xml:space="preserve"><value>Izlaists, lai koplietots konfigurācijas fails nevarētu palaist programmu: {0}</value></data>
-  <data name="Import_Tr_SystemCommand" xml:space="preserve"><value>Izlaists, lai koplietots konfigurācijas fails nevarētu to darīt ar jūsu datoru: {0}</value></data>
   <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>PadForge neatpazīst šo ievadi: {0}</value></data>
   <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge neatpazīst šo izvadi: {0}</value></data>
   <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge nepazīst šādu komandu: {0}</value></data>
@@ -4941,29 +4939,41 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="Import_Tr_Crosshair" xml:space="preserve"><value>Mērķa krustiņš pastāv tikai reWASD iekšienē. Parādiet savu attēlu, izmantojot ekrāna pārklājumu.</value></data>
   <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>Kursorsviras trīcēšana un kratīšana netika pārnesta.</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Analogo taustiņu aktivizācijas punkti netika pārnesti.</value></data>
-  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>Sūtīšana uz citu datoru netika pārnesta. Iestatiet to, izmantojot Attālā savienojuma funkciju.</value></data>
+  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD nosūtīja šo kontrolieri uz citu ierīci, izmantojot adapteri. PadForge to atskaņo šajā datorā, un Attālais savienojums to nosūta uz citu datoru, kurā darbojas PadForge.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge nolasa divas kursorsviras, bet šeit minēta trešā.</value></data>
   <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Stūres emulācija netika pārnesta. Piesaistiet stūri cilnē Piesaistes.</value></data>
-  <data name="Import_Tr_ProfileSwitch" xml:space="preserve"><value>Īpašā darbība, kas ielādē citu profilu, netika pārnesta: {0}</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Šis profils min īpašu darbību, kuras nav failā Actions.xml blakus tā mapei Profiles: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Šis iestatījums netika pārnests: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD neļāva šiem ievades signāliem nonākt līdz Windows. Ieslēdziet Pārtvert piesaistīto ievadi ierīcei {0} lapā Ierīces, un tas apturēs tos, ko piesaista šis profils.</value></data>
-  <data name="Import_Tr_HeldAsTap" xml:space="preserve"><value>Īsi piespiež, nevis tur nospiestu, jo šo pogu izmanto arī cits žests.</value></data>
-  <data name="Import_Tr_CurveFitted" xml:space="preserve"><value>{0} punktu līkne tika pārnesta kā tuvākā pakāpes līkne.</value></data>
-  <data name="Import_Tr_CurveApproximated" xml:space="preserve"><value>Līkne {0} tika pārnesta kā tuvākā pakāpes līkne.</value></data>
-  <data name="Import_Tr_ZoneOutward" xml:space="preserve"><value>Aktivizējas no šīs zonas uz āru, ne tikai tās iekšpusē.</value></data>
-  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>Importēts kā parasts slānis.</value></data>
+  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>Base slāņa piesaistes ierīcei {0} šajā slānī beidzas. Ja ieslēgts Pārtvert piesaistīto ievadi, tās piesaistītā ievade visos slāņos joprojām netiek nodota Windows.</value></data>
   <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>Tās apakšizvēlnes kļuva par papildu slotiem vienā lokā.</value></data>
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Apstiprina, kad kursorsvira atgriežas centrā vai slānis beidzas. reWASD poga Apply netiek izmantota.</value></data>
-  <data name="Import_Tr_RegionCentered" xml:space="preserve"><value>Kursors paliek tāda paša izmēra apgabalā ekrāna centrā.</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Šajā failā abi kontrolieri ir nošķirti. PadForge šīs piesaistes aktivizē jebkurš slotā esošs kontrolieris.</value></data>
-  <data name="Import_Tr_ToggleSameGesture" xml:space="preserve"><value>Izslēdz to tas pats žests. reWASD to izslēdza ar vienu piespiešanu.</value></data>
-  <data name="Import_Tr_LedShownAs" xml:space="preserve"><value>{0} apgaismojums tika pārnests kā tuvākais gaismas joslas režīms.</value></data>
-  <data name="Import_Tr_LoweredToKeys" xml:space="preserve"><value>Tā vietā sūta {0}.</value></data>
-  <data name="Import_Tr_StickAdded" xml:space="preserve"><value>Iestata kursorsviru uz šo vērtību, nevis pieskaita to kursorsviras pašas pozīcijai.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>Kustības ātrums vai grūdiens netika pārnests.</value></data>
-  <data name="Import_Tr_HipFire" xml:space="preserve"><value>Vieglā un pilnā nospiešana darbojas bez {0} ms gaidīšanas pirms vieglās nospiešanas.</value></data>
-  <data name="Import_Tr_MaxOutput" xml:space="preserve"><value>Mērogo izvadi līdz {0} procentiem, nevis ierobežo to.</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Tie netika pārnesti. Iestatiet tos cilnē Skārienpaliktnis.</value></data>
   <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Nekas šajā failā neatver šo slāni. Piešķiriet tam pogu cilnē Piesaistes.</value></data>
+  <data name="Import_NoteRuns_Format" xml:space="preserve"><value>Tā pogas, tās nospiežot, palaiž šo: {0}.</value></data>
+  <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Profila saīsne</value></data>
+  <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Veic to pašu, ko profila saīsne: ielādē norādītu profilu, nākamo vai iepriekšējo profilu, parāda vai paslēpj logu, vai izslēdz un ieslēdz virtuālos kontrolierus.</value></data>
+  <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>Profila saīsne: {0}</value></data>
+  <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>X nobīde</value></data>
+  <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>Y nobīde</value></data>
+  <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>Atiestatīt X nobīdi</value></data>
+  <data name="Macro_Reset_OffsetY" xml:space="preserve"><value>Atiestatīt Y nobīdi</value></data>
+  <data name="Macro_UntilNextPress" xml:space="preserve"><value>Līdz nākamajam nospiedumam</value></data>
+  <data name="Mapping_Between_Format" xml:space="preserve"><value>{0}, {1}–{2}%</value></data>
+  <data name="Mapping_Sector_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Mapping_Stage_Format" xml:space="preserve"><value>{0}: {1}, {2}, {3} ms</value></data>
+  <data name="Mapping_StageNoWait_Format" xml:space="preserve"><value>{0}: {1}, {2}</value></data>
+  <data name="Mapping_Stage_HairTrigger" xml:space="preserve"><value>Hair Trigger</value></data>
+  <data name="Mapping_Stage_HipFire" xml:space="preserve"><value>Hip Fire</value></data>
+  <data name="Mapping_Stage_HipFireExclusive" xml:space="preserve"><value>Hip Fire Exclusive</value></data>
+  <data name="Mapping_Stage_Soft" xml:space="preserve"><value>Mīkstā nospiešana</value></data>
+  <data name="Mapping_Stage_Full" xml:space="preserve"><value>Pilnā nospiešana</value></data>
+  <data name="Import_NoteStarts_Format" xml:space="preserve"><value>Ielādējot tas pats palaiž šo programmu: {0}.</value></data>
+  <data name="Import_Tr_HideController" xml:space="preserve"><value>reWASD paslēpa šo kontrolieri no spēlēm. Ieslēdziet tam Paslēpt no spēlēm lapā Ierīces.</value></data>
+  <data name="Import_Tr_NoSuchSetting" xml:space="preserve"><value>PadForge nepazīst šādu iestatījumu: {0}</value></data>
+  <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD neļāva peles kustībai nonākt līdz Windows. PadForge aptur taustiņus un peles pogas, bet ne kustību, tāpēc kursors joprojām kustas.</value></data>
+  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>PadForge virtuālie kontrolieri saņem kustības datus tikai no kontroliera kustību sensora.</value></data>
+  <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows ar pogu atgriezās šajā profilā no profila {0}. Lai to izdarītu programmā PadForge, lapā Profili pievienojiet šim profilam profila īsinājumu.</value></data>
 </root>

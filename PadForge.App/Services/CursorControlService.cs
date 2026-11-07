@@ -85,6 +85,7 @@ namespace PadForge.Services
         private volatile bool _isClamped;
         private CursorClampMode _clampMode;
         private int _clampInsetX, _clampInsetY;
+        private int _clampOffsetX, _clampOffsetY;
 
         /// <summary>The active service instance so the macro evaluator (a separate
         /// object) can reach the cursor-write operations (#108 recenter, and later
@@ -231,8 +232,8 @@ namespace PadForge.Services
         /// the clamp with the given per-edge insets for the selected axes; each tick
         /// then keeps the cursor inside the inset rectangle, writing only when a
         /// clamped axis is outside. A second call releases it.</summary>
-        public void ToggleClamp(CursorClampMode mode, int insetX, int insetY)
-            => SetClamp(!_isClamped, mode, insetX, insetY);
+        public void ToggleClamp(CursorClampMode mode, int insetX, int insetY, int offsetX = 0, int offsetY = 0)
+            => SetClamp(!_isClamped, mode, insetX, insetY, offsetX, offsetY);
 
         /// <summary>Sets the clamp to an explicit state. The toggle above flips,
         /// which is right for a one-button clamp and wrong for an engage and
@@ -241,13 +242,15 @@ namespace PadForge.Services
         /// dropped, leaving the cursor trapped with nothing holding the trigger.
         /// An explicit state is idempotent, so a repeated engage or an orphaned
         /// release still lands where the trigger says.</summary>
-        public void SetClamp(bool engaged, CursorClampMode mode, int insetX, int insetY)
+        public void SetClamp(bool engaged, CursorClampMode mode, int insetX, int insetY, int offsetX = 0, int offsetY = 0)
         {
             if (_disposed) return;
             if (!engaged) { _isClamped = false; return; }
             _clampMode = mode;
             _clampInsetX = insetX;
             _clampInsetY = insetY;
+            _clampOffsetX = offsetX;
+            _clampOffsetY = offsetY;
             _isClamped = true;
             WakeSampler();
         }
@@ -270,20 +273,29 @@ namespace PadForge.Services
         {
             if (!_isClamped) return;
             if (!GetCursorPos(out POINT p)) return;
-            int left = r.Left + _clampInsetX;
-            int right = r.Right - _clampInsetX;
-            int top = r.Top + _clampInsetY;
-            int bottom = r.Bottom - _clampInsetY;
-            int nx = p.X, ny = p.Y;
-            if (_clampMode != CursorClampMode.YOnly)
-            {
-                if (nx < left) nx = left; else if (nx > right) nx = right;
-            }
-            if (_clampMode != CursorClampMode.XOnly)
-            {
-                if (ny < top) ny = top; else if (ny > bottom) ny = bottom;
-            }
+            var (nx, ny) = ClampPoint(p.X, p.Y, r.Left, r.Top, r.Right, r.Bottom,
+                _clampMode, _clampInsetX, _clampInsetY, _clampOffsetX, _clampOffsetY);
             if (nx != p.X || ny != p.Y) SetCursorPos(nx, ny);
+        }
+
+        /// <summary>The point held inside the region: the screen inset on each
+        /// edge, then moved by the offset.</summary>
+        internal static (int X, int Y) ClampPoint(int x, int y, int screenLeft, int screenTop, int screenRight, int screenBottom,
+            CursorClampMode mode, int insetX, int insetY, int offsetX, int offsetY)
+        {
+            int left = screenLeft + insetX + offsetX;
+            int right = screenRight - insetX + offsetX;
+            int top = screenTop + insetY + offsetY;
+            int bottom = screenBottom - insetY + offsetY;
+            if (mode != CursorClampMode.YOnly)
+            {
+                if (x < left) x = left; else if (x > right) x = right;
+            }
+            if (mode != CursorClampMode.XOnly)
+            {
+                if (y < top) y = top; else if (y > bottom) y = bottom;
+            }
+            return (x, y);
         }
 
         /// <summary>Primary-monitor center in physical pixels. Used to seed a pin

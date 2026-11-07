@@ -4883,8 +4883,6 @@
   <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>そのファイルはPadForge、reWASD、DS4Windowsのいずれのプロファイルでもありません。</value></data>
   <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>そのファイルには文書型宣言が含まれています。プロファイルには不要なため、PadForgeは読み込みませんでした。</value></data>
   <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>そのファイルは、PadForgeが読み取れるreWASD形式（スキーマ3）ではありません。</value></data>
-  <data name="Import_Tr_ProgramNotRun" xml:space="preserve"><value>共有された設定ファイルがプログラムを起動できないよう除外しました: {0}</value></data>
-  <data name="Import_Tr_SystemCommand" xml:space="preserve"><value>共有された設定ファイルがPCに対してこの操作を行えないよう除外しました: {0}</value></data>
   <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>PadForgeはこの入力を認識できません: {0}</value></data>
   <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForgeはこの出力を認識できません: {0}</value></data>
   <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForgeにそのようなコマンドはありません: {0}</value></data>
@@ -4892,29 +4890,41 @@
   <data name="Import_Tr_Crosshair" xml:space="preserve"><value>照準はreWASDの内部で表示されます。独自の画像を表示するには、画面オーバーレイを使ってください。</value></data>
   <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>スティックのジッターとシェイクは引き継がれませんでした。</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>アナログキーのアクチュエーションポイントは引き継がれませんでした。</value></data>
-  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>他のPCへの送信は引き継がれませんでした。Remote Linkで設定してください。</value></data>
+  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASDはこのコントローラーをアダプター経由で別のデバイスに送っていました。PadForgeはこのPCでそのコントローラーを再現し、Remote LinkはPadForgeが動作している別のPCに送ります。</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForgeが読み取るスティックは2本ですが、ここには3本目が指定されています。</value></data>
   <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>ステアリングホイールのエミュレーションは引き継がれませんでした。マッピングタブでホイールをマッピングしてください。</value></data>
-  <data name="Import_Tr_ProfileSwitch" xml:space="preserve"><value>別のプロファイルを読み込む特殊アクションは引き継がれませんでした: {0}</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>このプロファイルは、Profilesフォルダーと同じ場所にあるActions.xmlに存在しない特殊アクションを指定しています: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>この設定は引き継がれませんでした: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASDはこれらの入力がWindowsに届かないようにしていました。デバイスページで{0}のマッピング済み入力を消費するをオンにすると、このプロファイルがマッピングしている入力が届かなくなります。</value></data>
-  <data name="Import_Tr_HeldAsTap" xml:space="preserve"><value>別のジェスチャーがこのボタンを共有しているため、長押しではなくタップになります。</value></data>
-  <data name="Import_Tr_CurveFitted" xml:space="preserve"><value>{0}点のカーブは、最も近いべき乗カーブに置き換えられました。</value></data>
-  <data name="Import_Tr_CurveApproximated" xml:space="preserve"><value>{0}カーブは、最も近いべき乗カーブに置き換えられました。</value></data>
-  <data name="Import_Tr_ZoneOutward" xml:space="preserve"><value>このゾーン内だけでなく、外側に向かっても発動します。</value></data>
-  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>通常のレイヤーとしてインポートされました。</value></data>
+  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>{0}に対するBaseのマッピングは、このレイヤーでは無効になります。マッピング済み入力を消費するがオンの場合、そのデバイスのマッピング済み入力は、どのレイヤーでもWindowsに届かないままです。</value></data>
   <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>サブメニューは、1つのリング上の追加スロットになりました。</value></data>
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>スティックが中央に戻るか、レイヤーが終了した時点で確定します。reWASDの適用ボタンは使いません。</value></data>
-  <data name="Import_Tr_RegionCentered" xml:space="preserve"><value>カーソルは、画面中央にある同じ大きさの領域内にとどまります。</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>このファイルは2つのコントローラーを区別して扱います。PadForgeでは、そのスロット上のどのコントローラーでもこれらのマッピングが働きます。</value></data>
-  <data name="Import_Tr_ToggleSameGesture" xml:space="preserve"><value>オフにするのも同じジェスチャーです。reWASDでは1回の押下でオフになりました。</value></data>
-  <data name="Import_Tr_LedShownAs" xml:space="preserve"><value>{0}のライティングは、最も近いライトバーモードに置き換えられました。</value></data>
-  <data name="Import_Tr_LoweredToKeys" xml:space="preserve"><value>代わりに{0}を送信します。</value></data>
-  <data name="Import_Tr_StickAdded" xml:space="preserve"><value>スティック自体の位置に加算するのではなく、スティックをこの値に設定します。</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>移動速度とフリックは引き継がれませんでした。</value></data>
-  <data name="Import_Tr_HipFire" xml:space="preserve"><value>浅い引きと深い引きは動作しますが、浅い引きの前の{0}ミリ秒の待機はありません。</value></data>
-  <data name="Import_Tr_MaxOutput" xml:space="preserve"><value>出力を上限で止めるのではなく、{0}パーセントにスケーリングします。</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>これらは引き継がれませんでした。タッチパッドタブで設定してください。</value></data>
   <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>このファイルには、このレイヤーを開くものがありません。マッピングタブでボタンを割り当ててください。</value></data>
+  <data name="Import_NoteRuns_Format" xml:space="preserve"><value>ボタンを押すと、次を実行します: {0}。</value></data>
+  <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>プロファイルショートカット</value></data>
+  <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>プロファイルショートカットと同じ動作をします。指定したプロファイル、次または前のプロファイルの読み込み、ウィンドウの表示と非表示、仮想コントローラーのオフとオンの切り替えができます。</value></data>
+  <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>プロファイルショートカット: {0}</value></data>
+  <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>オフセット X</value></data>
+  <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>オフセット Y</value></data>
+  <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>オフセット X をリセット</value></data>
+  <data name="Macro_Reset_OffsetY" xml:space="preserve"><value>オフセット Y をリセット</value></data>
+  <data name="Macro_UntilNextPress" xml:space="preserve"><value>次に押すまで</value></data>
+  <data name="Mapping_Between_Format" xml:space="preserve"><value>{0}、{1}~{2}%</value></data>
+  <data name="Mapping_Sector_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Mapping_Stage_Format" xml:space="preserve"><value>{0}: {1}、{2}、{3} ms</value></data>
+  <data name="Mapping_StageNoWait_Format" xml:space="preserve"><value>{0}: {1}、{2}</value></data>
+  <data name="Mapping_Stage_HairTrigger" xml:space="preserve"><value>ヘアトリガー</value></data>
+  <data name="Mapping_Stage_HipFire" xml:space="preserve"><value>ヒップファイア</value></data>
+  <data name="Mapping_Stage_HipFireExclusive" xml:space="preserve"><value>ヒップファイア排他</value></data>
+  <data name="Mapping_Stage_Soft" xml:space="preserve"><value>浅押し</value></data>
+  <data name="Mapping_Stage_Full" xml:space="preserve"><value>全押し</value></data>
+  <data name="Import_NoteStarts_Format" xml:space="preserve"><value>読み込み時に、次のプログラムを起動します: {0}。</value></data>
+  <data name="Import_Tr_HideController" xml:space="preserve"><value>reWASDはこのコントローラーをゲームから隠していました。デバイスページで、このコントローラーのゲームから隠すをオンにしてください。</value></data>
+  <data name="Import_Tr_NoSuchSetting" xml:space="preserve"><value>PadForgeにそのような設定はありません: {0}</value></data>
+  <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASDはマウスの動きがWindowsに届かないようにしていました。PadForgeはキーとマウスボタンは届かないようにしますが、動きは対象外のため、ポインターは引き続き動きます。</value></data>
+  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>PadForgeの仮想コントローラーは、コントローラーのモーションセンサーからのみモーションを受け取ります。</value></data>
+  <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windowsは、ボタンの操作で{0}からこのプロファイルに戻っていました。PadForgeで同じことをするには、プロファイルページでこのプロファイル用のプロファイルショートカットを追加してください。</value></data>
 </root>

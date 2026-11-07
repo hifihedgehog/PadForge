@@ -4883,8 +4883,6 @@ Sollen sie jetzt deinstalliert werden? Dies erfordert erhöhte Rechte und kann e
   <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>Diese Datei ist kein Profil von PadForge, reWASD oder DS4Windows.</value></data>
   <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>Diese Datei deklariert einen Dokumenttyp, den ein Profil nie braucht, daher hat PadForge sie nicht gelesen.</value></data>
   <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>Diese Datei hat nicht das reWASD-Format, das PadForge liest, Schema 3.</value></data>
-  <data name="Import_Tr_ProgramNotRun" xml:space="preserve"><value>Ausgelassen, damit eine geteilte Konfiguration kein Programm starten kann: {0}</value></data>
-  <data name="Import_Tr_SystemCommand" xml:space="preserve"><value>Ausgelassen, damit eine geteilte Konfiguration dies nicht mit deinem PC tun kann: {0}</value></data>
   <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>PadForge erkennt diese Eingabe nicht: {0}</value></data>
   <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge erkennt diese Ausgabe nicht: {0}</value></data>
   <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge kennt diesen Befehl nicht: {0}</value></data>
@@ -4892,29 +4890,41 @@ Sollen sie jetzt deinstalliert werden? Dies erfordert erhöhte Rechte und kann e
   <data name="Import_Tr_Crosshair" xml:space="preserve"><value>Ein Fadenkreuz existiert nur innerhalb von reWASD. Zeige dein eigenes Bild mit einem Bildschirm-Overlay.</value></data>
   <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>Stick-Jitter und Shaking wurden nicht übernommen.</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Analoge Auslösepunkte von Tasten wurden nicht übernommen.</value></data>
-  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>Das Senden an einen anderen PC wurde nicht übernommen. Richte es mit Remote Link ein.</value></data>
+  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD hat diesen Controller über einen Adapter an ein anderes Gerät gesendet. PadForge spielt ihn auf diesem PC ab, und Remote Link sendet ihn an einen anderen PC, auf dem PadForge läuft.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge liest zwei Sticks, und hier ist ein dritter genannt.</value></data>
   <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Die Lenkrademulation wurde nicht übernommen. Ordne das Lenkrad auf dem Tab Zuordnungen zu.</value></data>
-  <data name="Import_Tr_ProfileSwitch" xml:space="preserve"><value>Eine Spezialaktion, die ein anderes Profil lädt, wurde nicht übernommen: {0}</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Dieses Profil nennt eine Spezialaktion, die in Actions.xml neben seinem Profiles-Ordner fehlt: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Diese Einstellung wurde nicht übernommen: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD hat verhindert, dass diese Eingaben Windows erreichen. Aktiviere auf der Geräte-Seite für {0} die Option Zugeordnete Eingaben verbrauchen, die die in diesem Profil zugeordneten Eingaben abfängt.</value></data>
-  <data name="Import_Tr_HeldAsTap" xml:space="preserve"><value>Tippt statt zu halten, weil eine andere Geste dieselbe Taste nutzt.</value></data>
-  <data name="Import_Tr_CurveFitted" xml:space="preserve"><value>Die Kurve mit {0} Punkten wurde als nächstliegende Potenzkurve übernommen.</value></data>
-  <data name="Import_Tr_CurveApproximated" xml:space="preserve"><value>Die Kurve {0} wurde als nächstliegende Potenzkurve übernommen.</value></data>
-  <data name="Import_Tr_ZoneOutward" xml:space="preserve"><value>Löst von dieser Zone nach außen aus, nicht nur innerhalb von ihr.</value></data>
-  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>Als gewöhnliche Ebene importiert.</value></data>
+  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>Die Zuordnungen von Base für {0} enden in dieser Ebene. Bei aktivierter Option Zugeordnete Eingaben verbrauchen bleiben die zugeordneten Eingaben in jeder Ebene vor Windows zurückgehalten.</value></data>
   <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>Seine Untermenüs wurden zu weiteren Slots auf einem Ring.</value></data>
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Bestätigt, wenn der Stick wieder in die Mitte geht oder die Ebene endet. Die Schaltfläche Apply von reWASD wird nicht verwendet.</value></data>
-  <data name="Import_Tr_RegionCentered" xml:space="preserve"><value>Der Cursor bleibt in einem gleich großen Bereich in der Mitte des Bildschirms.</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Diese Datei hält zwei Controller getrennt. In PadForge löst jeder Controller auf dem Slot diese Zuordnungen aus.</value></data>
-  <data name="Import_Tr_ToggleSameGesture" xml:space="preserve"><value>Dieselbe Geste schaltet es wieder aus. reWASD schaltete es mit einem Tastendruck aus.</value></data>
-  <data name="Import_Tr_LedShownAs" xml:space="preserve"><value>Die Beleuchtung {0} wurde als nächstliegender Lightbar-Modus übernommen.</value></data>
-  <data name="Import_Tr_LoweredToKeys" xml:space="preserve"><value>Sendet stattdessen {0}.</value></data>
-  <data name="Import_Tr_StickAdded" xml:space="preserve"><value>Setzt den Stick auf diesen Wert, statt ihn zur eigenen Position des Sticks zu addieren.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>Die Bewegungsgeschwindigkeit oder der Flick wurde nicht übernommen.</value></data>
-  <data name="Import_Tr_HipFire" xml:space="preserve"><value>Der leichte und der volle Zug funktionieren, ohne die Wartezeit von {0} ms vor dem leichten Zug.</value></data>
-  <data name="Import_Tr_MaxOutput" xml:space="preserve"><value>Skaliert die Ausgabe auf {0} Prozent, statt sie zu begrenzen.</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Diese wurden nicht übernommen. Stelle sie auf dem Tab Touchpad ein.</value></data>
   <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Nichts in dieser Datei öffnet diese Ebene. Gib ihr auf dem Tab Zuordnungen eine Taste.</value></data>
+  <data name="Import_NoteRuns_Format" xml:space="preserve"><value>Seine Tasten führen beim Drücken Folgendes aus: {0}.</value></data>
+  <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Profil-Shortcut</value></data>
+  <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Tut, was ein Profil-Shortcut tut: lädt ein benanntes Profil, das nächste oder das vorherige, zeigt oder verbirgt das Fenster oder schaltet die virtuellen Controller aus und wieder ein.</value></data>
+  <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>Profil-Shortcut: {0}</value></data>
+  <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>Versatz X</value></data>
+  <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>Versatz Y</value></data>
+  <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>Versatz X zurücksetzen</value></data>
+  <data name="Macro_Reset_OffsetY" xml:space="preserve"><value>Versatz Y zurücksetzen</value></data>
+  <data name="Macro_UntilNextPress" xml:space="preserve"><value>Bis zum nächsten Drücken</value></data>
+  <data name="Mapping_Between_Format" xml:space="preserve"><value>{0}, {1} bis {2} %</value></data>
+  <data name="Mapping_Sector_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Mapping_Stage_Format" xml:space="preserve"><value>{0}: {1}, {2}, {3} ms</value></data>
+  <data name="Mapping_StageNoWait_Format" xml:space="preserve"><value>{0}: {1}, {2}</value></data>
+  <data name="Mapping_Stage_HairTrigger" xml:space="preserve"><value>Hair Trigger</value></data>
+  <data name="Mapping_Stage_HipFire" xml:space="preserve"><value>Hip Fire</value></data>
+  <data name="Mapping_Stage_HipFireExclusive" xml:space="preserve"><value>Hip Fire Exclusive</value></data>
+  <data name="Mapping_Stage_Soft" xml:space="preserve"><value>Leichter Zug</value></data>
+  <data name="Mapping_Stage_Full" xml:space="preserve"><value>Voller Zug</value></data>
+  <data name="Import_NoteStarts_Format" xml:space="preserve"><value>Beim Laden startet es dieses Programm: {0}.</value></data>
+  <data name="Import_Tr_HideController" xml:space="preserve"><value>reWASD hat diesen Controller vor Spielen verborgen. Aktiviere dafür auf der Geräte-Seite die Option Vor Spielen verbergen.</value></data>
+  <data name="Import_Tr_NoSuchSetting" xml:space="preserve"><value>PadForge kennt diese Einstellung nicht: {0}</value></data>
+  <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD hat verhindert, dass Mausbewegungen Windows erreichen. PadForge fängt Tasten und Maustasten ab, aber keine Bewegung, daher bewegt sich der Mauszeiger weiterhin.</value></data>
+  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>Die virtuellen Controller von PadForge übernehmen Bewegung nur vom Bewegungssensor eines Controllers.</value></data>
+  <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows ist mit einer Taste von {0} zu diesem Profil zurückgewechselt. Um das in PadForge zu erreichen, füge auf der Profile-Seite eine Profil-Tastenkombination für dieses Profil hinzu.</value></data>
 </root>

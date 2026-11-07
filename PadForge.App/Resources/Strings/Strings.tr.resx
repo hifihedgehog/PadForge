@@ -4932,8 +4932,6 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>Bu dosya bir PadForge, reWASD veya DS4Windows profili değil.</value></data>
   <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>Bu dosya bir belge türü bildiriyor, bir profilin buna hiç ihtiyacı olmaz, bu yüzden PadForge dosyayı okumadı.</value></data>
   <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>Bu dosya, PadForge'un okuduğu reWASD biçiminde (şema 3) değil.</value></data>
-  <data name="Import_Tr_ProgramNotRun" xml:space="preserve"><value>Paylaşılan bir yapılandırma program başlatamasın diye dışarıda bırakıldı: {0}</value></data>
-  <data name="Import_Tr_SystemCommand" xml:space="preserve"><value>Paylaşılan bir yapılandırma bilgisayarınıza bunu yapamasın diye dışarıda bırakıldı: {0}</value></data>
   <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>PadForge bu girişi tanımıyor: {0}</value></data>
   <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge bu çıkışı tanımıyor: {0}</value></data>
   <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge'da böyle bir komut yok: {0}</value></data>
@@ -4941,29 +4939,41 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Import_Tr_Crosshair" xml:space="preserve"><value>Artı işareti reWASD'in içinde yaşar. Kendi resminizi Ekran kaplaması ile gösterin.</value></data>
   <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>Çubuk titremesi ve sallanması aktarılmadı.</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Analog tuş etkinleşme noktaları aktarılmadı.</value></data>
-  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>Başka bir bilgisayara gönderme aktarılmadı. Bunu Uzak Bağlantı ile kurun.</value></data>
+  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD bu denetleyiciyi bir adaptör aracılığıyla başka bir cihaza gönderdi. PadForge onu bu bilgisayarda çalar, Uzak Bağlantı ise PadForge çalıştıran başka bir bilgisayara gönderir.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge iki çubuk okur, bu ise üçüncüsünü adlandırıyor.</value></data>
   <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Direksiyon emülasyonu aktarılmadı. Direksiyonu Eşlemeler sekmesinde eşleyin.</value></data>
-  <data name="Import_Tr_ProfileSwitch" xml:space="preserve"><value>Başka bir profili yükleyen özel eylem aktarılmadı: {0}</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Bu profil, Profiles klasörünün yanındaki Actions.xml dosyasında bulunmayan bir özel eylemi adlandırıyor: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Bu ayar aktarılmadı: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD bu girişlerin Windows'a ulaşmasını engelledi. Cihazlar sayfasında {0} için Eşlenmiş girişleri tüket ayarını açın, bu ayar bu profilin eşlediği girişleri engeller.</value></data>
-  <data name="Import_Tr_HeldAsTap" xml:space="preserve"><value>Başka bir hareket aynı düğmeyi paylaştığı için basılı tutmak yerine dokunma olarak çalışır.</value></data>
-  <data name="Import_Tr_CurveFitted" xml:space="preserve"><value>{0} noktalı eğri, en yakın üstel eğri olarak aktarıldı.</value></data>
-  <data name="Import_Tr_CurveApproximated" xml:space="preserve"><value>{0} eğrisi, en yakın üstel eğri olarak aktarıldı.</value></data>
-  <data name="Import_Tr_ZoneOutward" xml:space="preserve"><value>Yalnızca bu bölgenin içinde değil, bölgeden dışarıya doğru tetiklenir.</value></data>
-  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>Sıradan bir katman olarak içe aktarıldı.</value></data>
+  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>{0} için Base katmanının eşlemeleri bu katmanda durur. Eşlenmiş girişleri tüket açıkken, eşlenmiş girişleri her katmanda Windows'tan engellenmeye devam eder.</value></data>
   <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>Alt menüleri, tek bir halkada daha fazla yuva oldu.</value></data>
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Çubuk merkeze döndüğünde veya katman bittiğinde onaylanır. reWASD'in Uygula düğmesi kullanılmaz.</value></data>
-  <data name="Import_Tr_RegionCentered" xml:space="preserve"><value>İmleç, ekranın ortasındaki aynı boyutlu bir alanda kalır.</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Bu dosya iki denetleyiciyi birbirinden ayrı tutuyor. PadForge'da yuvadaki herhangi bir denetleyici bu eşlemeleri tetikler.</value></data>
-  <data name="Import_Tr_ToggleSameGesture" xml:space="preserve"><value>Aynı hareket onu kapatır. reWASD onu tek basışla kapatıyordu.</value></data>
-  <data name="Import_Tr_LedShownAs" xml:space="preserve"><value>{0} aydınlatması, en yakın ışık çubuğu kipi olarak aktarıldı.</value></data>
-  <data name="Import_Tr_LoweredToKeys" xml:space="preserve"><value>Bunun yerine {0} gönderir.</value></data>
-  <data name="Import_Tr_StickAdded" xml:space="preserve"><value>Çubuğun kendi konumuna eklemek yerine çubuğu bu değere ayarlar.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>Hareket hızı veya hızlı çevirme aktarılmadı.</value></data>
-  <data name="Import_Tr_HipFire" xml:space="preserve"><value>Hafif ve tam basış çalışır, ancak hafif basıştan önceki {0} ms bekleme yoktur.</value></data>
-  <data name="Import_Tr_MaxOutput" xml:space="preserve"><value>Çıkışı sınırlamak yerine yüzde {0} değerine ölçekler.</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Bunlar aktarılmadı. Bunları Dokunmatik yüzey sekmesinde ayarlayın.</value></data>
   <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Bu dosyada bu katmanı açan hiçbir şey yok. Eşlemeler sekmesinde ona bir düğme verin.</value></data>
+  <data name="Import_NoteRuns_Format" xml:space="preserve"><value>Düğmeleri basıldığında şunları çalıştırır: {0}.</value></data>
+  <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Profil kısayolu</value></data>
+  <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Bir profil kısayolunun yaptığını yapar: adı verilen bir profili, sonrakini veya öncekini yükler, pencereyi gösterir veya gizler ya da sanal kumandaları kapatıp açar.</value></data>
+  <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>Profil kısayolu: {0}</value></data>
+  <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>X kayması</value></data>
+  <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>Y kayması</value></data>
+  <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>X kaymasını sıfırla</value></data>
+  <data name="Macro_Reset_OffsetY" xml:space="preserve"><value>Y kaymasını sıfırla</value></data>
+  <data name="Macro_UntilNextPress" xml:space="preserve"><value>Sonraki basışa kadar</value></data>
+  <data name="Mapping_Between_Format" xml:space="preserve"><value>{0}, %{1} ile %{2} arası</value></data>
+  <data name="Mapping_Sector_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Mapping_Stage_Format" xml:space="preserve"><value>{0}: {1}, {2}, {3} ms</value></data>
+  <data name="Mapping_StageNoWait_Format" xml:space="preserve"><value>{0}: {1}, {2}</value></data>
+  <data name="Mapping_Stage_HairTrigger" xml:space="preserve"><value>Hair Trigger</value></data>
+  <data name="Mapping_Stage_HipFire" xml:space="preserve"><value>Hip Fire</value></data>
+  <data name="Mapping_Stage_HipFireExclusive" xml:space="preserve"><value>Hip Fire Exclusive</value></data>
+  <data name="Mapping_Stage_Soft" xml:space="preserve"><value>Hafif çekiş</value></data>
+  <data name="Mapping_Stage_Full" xml:space="preserve"><value>Tam çekiş</value></data>
+  <data name="Import_NoteStarts_Format" xml:space="preserve"><value>Yüklendiğinde şu programı başlatır: {0}.</value></data>
+  <data name="Import_Tr_HideController" xml:space="preserve"><value>reWASD bu denetleyiciyi oyunlardan gizledi. Cihazlar sayfasında bunun için Oyunlardan gizle ayarını açın.</value></data>
+  <data name="Import_Tr_NoSuchSetting" xml:space="preserve"><value>PadForge'da böyle bir ayar yok: {0}</value></data>
+  <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD fare hareketinin Windows'a ulaşmasını engelledi. PadForge tuşları ve fare düğmelerini engeller ama hareketi engellemez, bu yüzden imleç yine de hareket eder.</value></data>
+  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>PadForge'un sanal denetleyicileri hareket verisini yalnızca bir denetleyicinin hareket sensöründen alır.</value></data>
+  <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows bir düğmeyle {0} profilinden bu profile geri döndü. PadForge'da bunu yapmak için Profiller sayfasında bu profil için bir Profil kısayolu ekleyin.</value></data>
 </root>

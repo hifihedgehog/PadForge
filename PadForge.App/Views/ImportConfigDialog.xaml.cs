@@ -64,6 +64,10 @@ namespace PadForge.Views
             if (!result.HasSlots) notes.Add(Strings.Instance.Import_NothingToImport);
             else
             {
+                if (result.Starts.Count > 0)
+                    notes.Add(string.Format(CultureInfo.CurrentCulture, Strings.Instance.Import_NoteStarts_Format, string.Join(", ", result.Starts)));
+                if (result.Runs.Count > 0)
+                    notes.Add(string.Format(CultureInfo.CurrentCulture, Strings.Instance.Import_NoteRuns_Format, string.Join(", ", result.Runs)));
                 if (result.ReadsController) notes.Add(Strings.Instance.Import_NoteController);
                 if (result.ReadsKeyboard && result.ReadsMouse)
                     notes.Add(string.Format(CultureInfo.CurrentCulture, Strings.Instance.Import_NoteAssignsTwo_Format,

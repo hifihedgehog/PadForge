@@ -172,6 +172,13 @@ namespace PadForge.Common.Input
                     // Not gated on touchpads: sticks host menus too.
                     UpdateMenuContexts(ud, newState);
 
+                    // Two-stage trigger pulls (#561): the hip fire and hair
+                    // trigger state DS4Windows keeps per trigger, stepped here
+                    // so a pull sees every release whether or not a row or a
+                    // macro reads it this tick.
+                    PadForge.Engine.Common.Mapping.BoundedReads.StepPulls(
+                        ud.InstanceGuid, ud.InstanceGuidString, newState, Environment.TickCount64);
+
                     // Web Menus (#471): a phone's held tiles fire their cells.
                     if (ud.Device is WebControllerDevice webMenus && webMenus.IsMenuSurface)
                         UpdateMenuDirectPresses(ud, webMenus);

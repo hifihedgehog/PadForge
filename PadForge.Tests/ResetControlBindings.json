@@ -307,6 +307,12 @@
   },
   {
     "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_ProfileShortcutMode_2980",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "ProfileShortcutMode"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
     "Id": "Reset_MacroAction_MouseX_2239",
     "Owner": "PadForge.ViewModels.MacroAction",
     "Property": "MouseX"

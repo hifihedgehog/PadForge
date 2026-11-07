@@ -4932,8 +4932,6 @@
   <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>वह फ़ाइल PadForge, reWASD या DS4Windows प्रोफ़ाइल नहीं है।</value></data>
   <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>उस फ़ाइल में दस्तावेज़ प्रकार घोषित है, जिसकी प्रोफ़ाइल को कभी ज़रूरत नहीं होती, इसलिए PadForge ने उसे नहीं पढ़ा।</value></data>
   <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>वह फ़ाइल उस reWASD फ़ॉर्मैट में नहीं है जिसे PadForge पढ़ता है, यानी स्कीमा 3।</value></data>
-  <data name="Import_Tr_ProgramNotRun" xml:space="preserve"><value>छोड़ दिया गया, ताकि कोई साझा कॉन्फ़िग कोई प्रोग्राम शुरू न कर सके: {0}</value></data>
-  <data name="Import_Tr_SystemCommand" xml:space="preserve"><value>छोड़ दिया गया, ताकि कोई साझा कॉन्फ़िग आपके PC के साथ ऐसा न कर सके: {0}</value></data>
   <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>PadForge इस इनपुट को नहीं पहचानता: {0}</value></data>
   <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge इस आउटपुट को नहीं पहचानता: {0}</value></data>
   <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge में ऐसा कोई कमांड नहीं है: {0}</value></data>
@@ -4941,29 +4939,41 @@
   <data name="Import_Tr_Crosshair" xml:space="preserve"><value>क्रॉसहेयर reWASD के अंदर ही रहता है। अपनी तस्वीर स्क्रीन ओवरले से दिखाएँ।</value></data>
   <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>स्टिक का जिटर और शेकिंग नहीं आ पाए।</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>एनालॉग कुंजी के एक्चुएशन पॉइंट नहीं आ पाए।</value></data>
-  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>दूसरे PC पर भेजना नहीं आ पाया। इसे रिमोट लिंक से सेट करें।</value></data>
+  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD ने इस कंट्रोलर को एडाप्टर के ज़रिए किसी दूसरे डिवाइस पर भेजा था। PadForge इसे इसी PC पर चलाता है, और रिमोट लिंक इसे PadForge चला रहे किसी दूसरे PC पर भेजता है।</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge दो स्टिक पढ़ता है, और इसमें तीसरी का नाम है।</value></data>
   <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>स्टीयरिंग व्हील एमुलेशन नहीं आ पाया। व्हील को मैपिंग टैब पर मैप करें।</value></data>
-  <data name="Import_Tr_ProfileSwitch" xml:space="preserve"><value>दूसरी प्रोफ़ाइल लोड करने वाली एक विशेष क्रिया नहीं आ पाई: {0}</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>यह प्रोफ़ाइल एक ऐसी विशेष क्रिया का नाम लेती है जो इसके Profiles फ़ोल्डर के बगल की Actions.xml में नहीं है: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>यह सेटिंग नहीं आ पाई: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD ने इन इनपुट को Windows तक पहुँचने से रोका था। डिवाइस पेज पर {0} के लिए मैप किए गए इनपुट रोक लें चालू करें, जो इस प्रोफ़ाइल में मैप किए गए इनपुट को रोकता है।</value></data>
-  <data name="Import_Tr_HeldAsTap" xml:space="preserve"><value>दबाए रखने की जगह टैप होता है, क्योंकि बटन पर दूसरा जेस्चर भी है।</value></data>
-  <data name="Import_Tr_CurveFitted" xml:space="preserve"><value>{0}-पॉइंट कर्व सबसे नज़दीकी पावर कर्व के रूप में आया।</value></data>
-  <data name="Import_Tr_CurveApproximated" xml:space="preserve"><value>{0} कर्व सबसे नज़दीकी पावर कर्व के रूप में आया।</value></data>
-  <data name="Import_Tr_ZoneOutward" xml:space="preserve"><value>सिर्फ़ इस ज़ोन के अंदर नहीं, इससे बाहर की ओर भी सक्रिय होता है।</value></data>
-  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>सामान्य लेयर के रूप में आयात किया गया।</value></data>
+  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>{0} के लिए Base के मैपिंग इस लेयर में बंद हो जाते हैं। मैप किए गए इनपुट रोक लें चालू होने पर, उसके मैप किए गए इनपुट हर लेयर में Windows से रुके रहते हैं।</value></data>
   <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>इसके सब-मेन्यू एक ही रिंग के अतिरिक्त स्लॉट बन गए।</value></data>
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>स्टिक के दोबारा केंद्र में आने या लेयर के खत्म होने पर चुनाव लागू होता है। reWASD के Apply बटन का इस्तेमाल नहीं होता।</value></data>
-  <data name="Import_Tr_RegionCentered" xml:space="preserve"><value>कर्सर स्क्रीन के केंद्र में उसी आकार के एक क्षेत्र में रहता है।</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>यह फ़ाइल दो कंट्रोलर को अलग रखती है। PadForge में स्लॉट पर मौजूद कोई भी कंट्रोलर ये मैपिंग चलाता है।</value></data>
-  <data name="Import_Tr_ToggleSameGesture" xml:space="preserve"><value>उसी जेस्चर से यह बंद होता है। reWASD में यह एक बार दबाने से बंद हो जाता था।</value></data>
-  <data name="Import_Tr_LedShownAs" xml:space="preserve"><value>{0} लाइटिंग सबसे नज़दीकी लाइटबार मोड के रूप में आई।</value></data>
-  <data name="Import_Tr_LoweredToKeys" xml:space="preserve"><value>इसके बजाय {0} भेजता है।</value></data>
-  <data name="Import_Tr_StickAdded" xml:space="preserve"><value>स्टिक की अपनी स्थिति में जोड़ने की जगह स्टिक को इसी मान पर सेट करता है।</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>गति की रफ़्तार या फ़्लिक नहीं आ पाए।</value></data>
-  <data name="Import_Tr_HipFire" xml:space="preserve"><value>हल्का और पूरा दबाव काम करते हैं, पर हल्के दबाव से पहले का {0} ms का इंतज़ार नहीं है।</value></data>
-  <data name="Import_Tr_MaxOutput" xml:space="preserve"><value>आउटपुट को सीमित करने की जगह {0} प्रतिशत तक स्केल करता है।</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>ये नहीं आ पाए। इन्हें टचपैड टैब पर सेट करें।</value></data>
   <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>इस फ़ाइल में कुछ भी इस लेयर को नहीं खोलता। मैपिंग टैब पर इसे एक बटन दें।</value></data>
+  <data name="Import_NoteRuns_Format" xml:space="preserve"><value>इसके बटन दबाने पर ये चलते हैं: {0}।</value></data>
+  <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>प्रोफ़ाइल शॉर्टकट</value></data>
+  <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>वही करता है जो प्रोफ़ाइल शॉर्टकट करता है: किसी नामित प्रोफ़ाइल को, अगली या पिछली प्रोफ़ाइल को लोड करता है, विंडो दिखाता या छिपाता है, या वर्चुअल कंट्रोलर बंद और चालू करता है।</value></data>
+  <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>प्रोफ़ाइल शॉर्टकट: {0}</value></data>
+  <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>ऑफ़सेट X</value></data>
+  <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>ऑफ़सेट Y</value></data>
+  <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>ऑफ़सेट X रीसेट करें</value></data>
+  <data name="Macro_Reset_OffsetY" xml:space="preserve"><value>ऑफ़सेट Y रीसेट करें</value></data>
+  <data name="Macro_UntilNextPress" xml:space="preserve"><value>अगले प्रेस तक</value></data>
+  <data name="Mapping_Between_Format" xml:space="preserve"><value>{0}, {1} से {2}%</value></data>
+  <data name="Mapping_Sector_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Mapping_Stage_Format" xml:space="preserve"><value>{0}: {1}, {2}, {3} मि.से.</value></data>
+  <data name="Mapping_StageNoWait_Format" xml:space="preserve"><value>{0}: {1}, {2}</value></data>
+  <data name="Mapping_Stage_HairTrigger" xml:space="preserve"><value>हेयर ट्रिगर</value></data>
+  <data name="Mapping_Stage_HipFire" xml:space="preserve"><value>हिप फ़ायर</value></data>
+  <data name="Mapping_Stage_HipFireExclusive" xml:space="preserve"><value>हिप फ़ायर एक्सक्लूसिव</value></data>
+  <data name="Mapping_Stage_Soft" xml:space="preserve"><value>हल्का खिंचाव</value></data>
+  <data name="Mapping_Stage_Full" xml:space="preserve"><value>पूरा खिंचाव</value></data>
+  <data name="Import_NoteStarts_Format" xml:space="preserve"><value>लोड होने पर यह इस प्रोग्राम को शुरू करती है: {0}।</value></data>
+  <data name="Import_Tr_HideController" xml:space="preserve"><value>reWASD ने इस कंट्रोलर को गेम से छिपा रखा था। डिवाइस पेज पर इसके लिए गेम से छिपाएँ चालू करें।</value></data>
+  <data name="Import_Tr_NoSuchSetting" xml:space="preserve"><value>PadForge में ऐसी कोई सेटिंग नहीं है: {0}</value></data>
+  <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD ने माउस की गति को Windows तक पहुँचने से रोका था। PadForge कीबोर्ड की कुंजियाँ और माउस बटन रोकता है, गति नहीं, इसलिए पॉइंटर अब भी चलता है।</value></data>
+  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>PadForge के वर्चुअल कंट्रोलर मोशन केवल कंट्रोलर के मोशन सेंसर से लेते हैं।</value></data>
+  <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows एक बटन दबाने पर {0} से इस प्रोफ़ाइल में लौट आता था। PadForge में ऐसा करने के लिए प्रोफ़ाइल पेज पर इस प्रोफ़ाइल के लिए एक प्रोफ़ाइल शॉर्टकट जोड़ें।</value></data>
 </root>

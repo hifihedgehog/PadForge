@@ -4903,8 +4903,6 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>Dat bestand is geen PadForge-, reWASD- of DS4Windows-profiel.</value></data>
   <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>Dat bestand declareert een documenttype, wat een profiel nooit nodig heeft, dus PadForge heeft het niet gelezen.</value></data>
   <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>Dat bestand heeft niet het reWASD-formaat dat PadForge leest, schema 3.</value></data>
-  <data name="Import_Tr_ProgramNotRun" xml:space="preserve"><value>Weggelaten zodat een gedeelde config geen programma kan starten: {0}</value></data>
-  <data name="Import_Tr_SystemCommand" xml:space="preserve"><value>Weggelaten zodat een gedeelde config dit niet met je pc kan doen: {0}</value></data>
   <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>PadForge herkent deze invoer niet: {0}</value></data>
   <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge herkent deze uitvoer niet: {0}</value></data>
   <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge kent dit commando niet: {0}</value></data>
@@ -4912,29 +4910,41 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="Import_Tr_Crosshair" xml:space="preserve"><value>Een dradenkruis bestaat alleen binnen reWASD. Toon je eigen afbeelding met een Schermoverlay.</value></data>
   <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>Stick-jitter en schudden zijn niet overgenomen.</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Analoge activeringspunten van toetsen zijn niet overgenomen.</value></data>
-  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>Verzenden naar een andere pc is niet overgenomen. Stel het in met Remote Link.</value></data>
+  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD stuurde deze controller via een adapter naar een ander apparaat. PadForge speelt hem af op deze pc, en Remote Link stuurt hem naar een andere pc waarop PadForge draait.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge leest twee sticks en dit noemt een derde.</value></data>
   <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Stuurwielemulatie is niet overgenomen. Wijs het stuur toe op het tabblad Toewijzingen.</value></data>
-  <data name="Import_Tr_ProfileSwitch" xml:space="preserve"><value>Een speciale actie die een ander profiel laadt, is niet overgenomen: {0}</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Dit profiel noemt een speciale actie die ontbreekt in Actions.xml naast de map Profiles: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Deze instelling is niet overgenomen: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD hield deze invoer tegen voordat die Windows bereikte. Zet Toegewezen invoer verbruiken aan voor {0} op de pagina Apparaten, zodat de invoer die dit profiel toewijst wordt tegengehouden.</value></data>
-  <data name="Import_Tr_HeldAsTap" xml:space="preserve"><value>Tikt in plaats van ingedrukt te houden, omdat een ander gebaar de knop deelt.</value></data>
-  <data name="Import_Tr_CurveFitted" xml:space="preserve"><value>De curve met {0} punten is overgenomen als de dichtstbijzijnde machtscurve.</value></data>
-  <data name="Import_Tr_CurveApproximated" xml:space="preserve"><value>De curve {0} is overgenomen als de dichtstbijzijnde machtscurve.</value></data>
-  <data name="Import_Tr_ZoneOutward" xml:space="preserve"><value>Activeert vanaf deze zone naar buiten, niet alleen erbinnen.</value></data>
-  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>Geïmporteerd als een gewone laag.</value></data>
+  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>De toewijzingen van Base voor {0} stoppen in deze laag. Met Toegewezen invoer verbruiken aan blijft de toegewezen invoer van dit apparaat in elke laag tegengehouden voor Windows.</value></data>
   <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>De submenu's zijn extra slots op één ring geworden.</value></data>
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Bevestigt zodra de stick weer in het midden komt of de laag eindigt. De knop Apply van reWASD wordt niet gebruikt.</value></data>
-  <data name="Import_Tr_RegionCentered" xml:space="preserve"><value>De cursor blijft in een gebied van dezelfde grootte in het midden van het scherm.</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Dit bestand houdt twee controllers gescheiden. In PadForge activeert elke controller op het slot deze toewijzingen.</value></data>
-  <data name="Import_Tr_ToggleSameGesture" xml:space="preserve"><value>Hetzelfde gebaar zet het uit. In reWASD ging het uit met één druk.</value></data>
-  <data name="Import_Tr_LedShownAs" xml:space="preserve"><value>De {0}-verlichting is overgenomen als de dichtstbijzijnde lightbar-modus.</value></data>
-  <data name="Import_Tr_LoweredToKeys" xml:space="preserve"><value>Verstuurt in plaats daarvan {0}.</value></data>
-  <data name="Import_Tr_StickAdded" xml:space="preserve"><value>Zet de stick op deze waarde in plaats van die bij de eigen stand van de stick op te tellen.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>De bewegingssnelheid of flick is niet overgenomen.</value></data>
-  <data name="Import_Tr_HipFire" xml:space="preserve"><value>De lichte en volle trekkerdruk werken, zonder de wachttijd van {0} ms vóór de lichte druk.</value></data>
-  <data name="Import_Tr_MaxOutput" xml:space="preserve"><value>Schaalt de uitvoer naar {0} procent in plaats van die te begrenzen.</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Deze zijn niet overgenomen. Stel ze in op het tabblad Touchpad.</value></data>
   <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Niets in dit bestand opent deze laag. Geef er een knop aan op het tabblad Toewijzingen.</value></data>
+  <data name="Import_NoteRuns_Format" xml:space="preserve"><value>De knoppen voeren deze uit wanneer ze worden ingedrukt: {0}.</value></data>
+  <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Profielsnelkoppeling</value></data>
+  <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Doet wat een profielsnelkoppeling doet: laadt een profiel met een opgegeven naam, het volgende of het vorige profiel, toont of verbergt het venster, of schakelt de virtuele controllers uit en in.</value></data>
+  <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>Profielsnelkoppeling: {0}</value></data>
+  <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>Verschuiving X</value></data>
+  <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>Verschuiving Y</value></data>
+  <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>Verschuiving X herstellen</value></data>
+  <data name="Macro_Reset_OffsetY" xml:space="preserve"><value>Verschuiving Y herstellen</value></data>
+  <data name="Macro_UntilNextPress" xml:space="preserve"><value>Tot volgende druk</value></data>
+  <data name="Mapping_Between_Format" xml:space="preserve"><value>{0}, {1} tot {2}%</value></data>
+  <data name="Mapping_Sector_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Mapping_Stage_Format" xml:space="preserve"><value>{0}: {1}, {2}, {3} ms</value></data>
+  <data name="Mapping_StageNoWait_Format" xml:space="preserve"><value>{0}: {1}, {2}</value></data>
+  <data name="Mapping_Stage_HairTrigger" xml:space="preserve"><value>Hair Trigger</value></data>
+  <data name="Mapping_Stage_HipFire" xml:space="preserve"><value>Hip Fire</value></data>
+  <data name="Mapping_Stage_HipFireExclusive" xml:space="preserve"><value>Hip Fire Exclusive</value></data>
+  <data name="Mapping_Stage_Soft" xml:space="preserve"><value>Zachte trekking</value></data>
+  <data name="Mapping_Stage_Full" xml:space="preserve"><value>Volledige trekking</value></data>
+  <data name="Import_NoteStarts_Format" xml:space="preserve"><value>Het start dit programma zodra het wordt geladen: {0}.</value></data>
+  <data name="Import_Tr_HideController" xml:space="preserve"><value>reWASD verborg deze controller voor games. Zet Verbergen voor games aan voor deze controller op de pagina Apparaten.</value></data>
+  <data name="Import_Tr_NoSuchSetting" xml:space="preserve"><value>PadForge kent deze instelling niet: {0}</value></data>
+  <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD hield muisbeweging tegen voordat die Windows bereikte. PadForge houdt toetsen en muisknoppen tegen, maar geen beweging, dus de aanwijzer beweegt nog steeds.</value></data>
+  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>De virtuele controllers van PadForge nemen bewegingsinvoer alleen over van de bewegingssensor van een controller.</value></data>
+  <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows schakelde met een knop vanuit {0} terug naar dit profiel. Om dat in PadForge te doen, voeg je op de pagina Profielen een Profiel-snelkoppeling voor dit profiel toe.</value></data>
 </root>

@@ -1174,7 +1174,9 @@ namespace PadForge.Common.Input
 
         private void AddConsumedDescriptor(int slot, System.Guid deviceGuid, PadForge.Engine.Data.MappingSource src)
         {
-            string desc = CanonicalPostponeDescriptor(src.Descriptor);
+            // A zone, sector or stage trigger (#561) consumes the input it
+            // reads, which is what a row reading that input is keyed by.
+            string desc = CanonicalPostponeDescriptor(BoundedReads.InnerOf(src.Descriptor));
             if (string.IsNullOrEmpty(desc)) return;
             if (deviceGuid == System.Guid.Empty)
             {
@@ -3769,6 +3771,7 @@ namespace PadForge.Common.Input
             MappingSource shaping = null)
         {
             if (dev == null) return true;
+            descriptor = BoundedReads.InnerOf(descriptor);
             if (SourceCoercion.IsGamepadAliasDescriptor(descriptor) && !SpeaksGamepadLayout(dev)) return false;
             using var placement = SourceCoercion.UsePlacement(PlacementOf(dev));
             int n = SourceCoercion.NumberedAxesRead(descriptor, out int first, out int second);

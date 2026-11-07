@@ -18,10 +18,6 @@ namespace PadForge.Common.ConfigImport
         public const string FileHasDtd = "Import_Tr_FileHasDtd";
         public const string RewasdOtherVersion = "Import_Tr_RewasdOtherVersion";
 
-        // Nothing named in a file runs.
-        public const string ProgramNotRun = "Import_Tr_ProgramNotRun";
-        public const string SystemCommand = "Import_Tr_SystemCommand";
-
         // Skipped lines.
         public const string UnknownInput = "Import_Tr_UnknownInput";
         public const string UnknownOutput = "Import_Tr_UnknownOutput";
@@ -33,28 +29,21 @@ namespace PadForge.Common.ConfigImport
         public const string RemoteTarget = "Import_Tr_RemoteTarget";
         public const string ThirdStick = "Import_Tr_ThirdStick";
         public const string SteeringWheel = "Import_Tr_SteeringWheel";
-        public const string ProfileSwitch = "Import_Tr_ProfileSwitch";
         public const string ControllerSetting = "Import_Tr_ControllerSetting";
+        public const string NoSuchSetting = "Import_Tr_NoSuchSetting";
         public const string ActionNotFound = "Import_Tr_ActionNotFound";
 
         // Partial lines.
         public const string ConsumeKeys = "Import_Tr_ConsumeKeys";
-        public const string HeldAsTap = "Import_Tr_HeldAsTap";
-        public const string CurveFitted = "Import_Tr_CurveFitted";
-        public const string CurveApproximated = "Import_Tr_CurveApproximated";
-        public const string ZoneOutward = "Import_Tr_ZoneOutward";
+        public const string HideController = "Import_Tr_HideController";
+        public const string MouseMovement = "Import_Tr_MouseMovement";
+        public const string MotionOutput = "Import_Tr_MotionOutput";
+        public const string UnloadTrigger = "Import_Tr_UnloadTrigger";
         public const string UnlockLayer = "Import_Tr_UnlockLayer";
         public const string RadialFlattened = "Import_Tr_RadialFlattened";
         public const string RadialMenu = "Import_Tr_RadialMenu";
-        public const string RegionCentered = "Import_Tr_RegionCentered";
         public const string SharedControllers = "Import_Tr_SharedControllers";
-        public const string ToggleSameGesture = "Import_Tr_ToggleSameGesture";
-        public const string LedShownAs = "Import_Tr_LedShownAs";
-        public const string LoweredToKeys = "Import_Tr_LoweredToKeys";
-        public const string StickAdded = "Import_Tr_StickAdded";
         public const string MoveSpeed = "Import_Tr_MoveSpeed";
-        public const string HipFire = "Import_Tr_HipFire";
-        public const string MaxOutput = "Import_Tr_MaxOutput";
         public const string TouchpadShape = "Import_Tr_TouchpadShape";
         public const string LayerNoInput = "Import_Tr_LayerNoInput";
     }
@@ -69,6 +58,12 @@ namespace PadForge.Common.ConfigImport
         public bool ReadsKeyboard { get; init; }
         public bool ReadsMouse { get; init; }
         public bool ReadsController { get; init; }
+
+        /// <summary>What the profile's buttons start or power off.</summary>
+        public IReadOnlyList<string> Runs { get; init; } = Array.Empty<string>();
+
+        /// <summary>What the profile starts by itself when it loads.</summary>
+        public IReadOnlyList<string> Starts { get; init; } = Array.Empty<string>();
 
         /// <summary>A <c>Import_Tr_*</c> key when the file was refused, else
         /// null.</summary>

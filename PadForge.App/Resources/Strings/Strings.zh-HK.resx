@@ -4932,8 +4932,6 @@
   <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>該檔案並非 PadForge、reWASD 或 DS4Windows 的設定檔。</value></data>
   <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>該檔案宣告了文件類型，而設定檔從不需要這樣做，因此 PadForge 沒有讀取。</value></data>
   <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>該檔案不是 PadForge 能讀取的 reWASD 格式（架構 3）。</value></data>
-  <data name="Import_Tr_ProgramNotRun" xml:space="preserve"><value>已略去，以免他人分享的設定啟動程式：{0}</value></data>
-  <data name="Import_Tr_SystemCommand" xml:space="preserve"><value>已略去，以免他人分享的設定對你的電腦執行此操作：{0}</value></data>
   <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>PadForge 無法辨識此輸入：{0}</value></data>
   <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge 無法辨識此輸出：{0}</value></data>
   <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge 沒有此指令：{0}</value></data>
@@ -4941,29 +4939,41 @@
   <data name="Import_Tr_Crosshair" xml:space="preserve"><value>十字準星存在於 reWASD 內部。請用熒幕重疊介面顯示你自己的圖片。</value></data>
   <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>搖桿抖動和晃動未能帶過來。</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>類比按鍵觸發點未能帶過來。</value></data>
-  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>傳送到另一部電腦未能帶過來。請用遠端連線設定。</value></data>
+  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD 曾透過轉接器把此控制器傳送到另一部裝置。PadForge 會在這部電腦上建立並使用它，而遠端連線可把它傳送到另一部執行 PadForge 的電腦。</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge 讀取兩支搖桿，而此處指明了第三支。</value></data>
   <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>方向盤模擬未能帶過來。請在對應分頁中對應方向盤。</value></data>
-  <data name="Import_Tr_ProfileSwitch" xml:space="preserve"><value>載入另一個設定檔的特殊動作未能帶過來：{0}</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>此設定檔指明了一個特殊動作，但其 Profiles 資料夾旁的 Actions.xml 中沒有它：{0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>此設定未能帶過來：{0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD 曾阻止這些輸入傳到 Windows。請在裝置頁面為 {0} 開啟攔截已對應的輸入，這會攔截此設定檔所對應的輸入。</value></data>
-  <data name="Import_Tr_HeldAsTap" xml:space="preserve"><value>改為輕按而非按住，因為另一個手勢共用該按鈕。</value></data>
-  <data name="Import_Tr_CurveFitted" xml:space="preserve"><value>{0} 點曲線已轉換為最接近的冪曲線。</value></data>
-  <data name="Import_Tr_CurveApproximated" xml:space="preserve"><value>{0} 曲線已轉換為最接近的冪曲線。</value></data>
-  <data name="Import_Tr_ZoneOutward" xml:space="preserve"><value>由此區域向外觸發，而不只在區域內。</value></data>
-  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>已匯入為一般的層。</value></data>
+  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>{0} 在 Base 的對應會在此層停止。開啟攔截已對應的輸入後，其已對應的輸入在每一層都會繼續被攔截，不會傳到 Windows。</value></data>
   <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>其子選單變成同一個圓環上的更多插槽。</value></data>
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>當搖桿回到中心或該層結束時確認。不使用 reWASD 的套用按鈕。</value></data>
-  <data name="Import_Tr_RegionCentered" xml:space="preserve"><value>游標停留在熒幕中央一個大小相同的區域內。</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>此檔案把兩個控制器分開處理。在 PadForge 中，插槽上的任何控制器都會觸發這些對應。</value></data>
-  <data name="Import_Tr_ToggleSameGesture" xml:space="preserve"><value>同一個手勢會把它關閉。reWASD 只需按一下就會關閉。</value></data>
-  <data name="Import_Tr_LedShownAs" xml:space="preserve"><value>{0} 燈光已轉換為最接近的燈條模式。</value></data>
-  <data name="Import_Tr_LoweredToKeys" xml:space="preserve"><value>改為傳送 {0}。</value></data>
-  <data name="Import_Tr_StickAdded" xml:space="preserve"><value>把搖桿設為此數值，而不是疊加到搖桿本身的位置上。</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>移動速度或快速甩動未能帶過來。</value></data>
-  <data name="Import_Tr_HipFire" xml:space="preserve"><value>輕按和完全按下均可使用，但沒有輕按前 {0} 毫秒的等待。</value></data>
-  <data name="Import_Tr_MaxOutput" xml:space="preserve"><value>把輸出縮放至 {0}%，而不是設定上限。</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>這些未能帶過來。請在觸控板分頁中設定。</value></data>
   <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>此檔案中沒有任何項目可開啟這個層。請在對應分頁中為它指定一個按鈕。</value></data>
+  <data name="Import_NoteRuns_Format" xml:space="preserve"><value>它的按鈕按下時會執行：{0}。</value></data>
+  <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>設定檔捷徑</value></data>
+  <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>執行設定檔捷徑的動作：載入指定名稱的設定檔、下一個或上一個設定檔、顯示或隱藏視窗，或關閉及開啟虛擬控制器。</value></data>
+  <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>設定檔捷徑：{0}</value></data>
+  <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>偏移 X</value></data>
+  <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>偏移 Y</value></data>
+  <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>重設偏移 X</value></data>
+  <data name="Macro_Reset_OffsetY" xml:space="preserve"><value>重設偏移 Y</value></data>
+  <data name="Macro_UntilNextPress" xml:space="preserve"><value>直至再次按下</value></data>
+  <data name="Mapping_Between_Format" xml:space="preserve"><value>{0}，{1} 至 {2}%</value></data>
+  <data name="Mapping_Sector_Format" xml:space="preserve"><value>{0}：{1}</value></data>
+  <data name="Mapping_Stage_Format" xml:space="preserve"><value>{0}：{1}，{2}，{3} 毫秒</value></data>
+  <data name="Mapping_StageNoWait_Format" xml:space="preserve"><value>{0}：{1}，{2}</value></data>
+  <data name="Mapping_Stage_HairTrigger" xml:space="preserve"><value>Hair Trigger</value></data>
+  <data name="Mapping_Stage_HipFire" xml:space="preserve"><value>Hip Fire</value></data>
+  <data name="Mapping_Stage_HipFireExclusive" xml:space="preserve"><value>Hip Fire Exclusive</value></data>
+  <data name="Mapping_Stage_Soft" xml:space="preserve"><value>輕按</value></data>
+  <data name="Mapping_Stage_Full" xml:space="preserve"><value>全按</value></data>
+  <data name="Import_NoteStarts_Format" xml:space="preserve"><value>載入時，它會自動啟動此程式：{0}。</value></data>
+  <data name="Import_Tr_HideController" xml:space="preserve"><value>reWASD 曾對遊戲隱藏此控制器。請在裝置頁面為它開啟對遊戲隱藏。</value></data>
+  <data name="Import_Tr_NoSuchSetting" xml:space="preserve"><value>PadForge 沒有此設定：{0}</value></data>
+  <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD 曾阻止滑鼠移動傳到 Windows。PadForge 會攔截按鍵和滑鼠按鈕，但不會攔截移動，因此指標仍會移動。</value></data>
+  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>PadForge 的虛擬控制器只會從控制器的動作感應器取得動作。</value></data>
+  <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows 曾透過按鈕從 {0} 切換回此設定檔。若要在 PadForge 中做到這一點，請在設定檔頁面為此設定檔加入設定檔快捷鍵。</value></data>
 </root>

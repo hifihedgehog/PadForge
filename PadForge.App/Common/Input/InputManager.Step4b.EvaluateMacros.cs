@@ -752,6 +752,21 @@ namespace PadForge.Common.Input
                 macro.WasTriggerActive = triggerActive;
                 macro.LastEvaluatedUtc = nowUtcForEdge;
 
+                // Until Next Press: the next press ends the run and counts
+                // for nothing else. It arms no double press or hold, and the
+                // run cannot start again until it is released, the combo
+                // break's wait. The press that started the run cannot end it:
+                // the run starts below this check. A closed layer ends the
+                // run too, as it ends an until-release run.
+                bool nextPress = triggerActive && !wasTriggerActive;
+                if (macro.IsExecuting && macro.RepeatMode == MacroRepeatMode.UntilNextPress
+                    && (nextPress || !layerOpen))
+                {
+                    EndRunOnNextPress(macro);
+                    macro.AwaitReleaseAfterBreak = triggerActive;
+                    if (nextPress) wasTriggerActive = true;
+                }
+
                 // Determine if we should start execution based on trigger mode.
                 bool shouldStart = false;
                 switch (macro.TriggerMode)
@@ -901,8 +916,9 @@ namespace PadForge.Common.Input
                      // (owner report 2026-08-10, AxisTriggerReleaseReproTests).
                      // The executor's own comment promised "a held run ...
                      // stops on release"; this makes that true for every
-                     // RepeatMode, not just UntilRelease.
-                     || AllActionsContinuous(macro)) &&
+                     // RepeatMode beyond UntilRelease. Until Next Press has
+                     // its own end, the next press.
+                     || (AllActionsContinuous(macro) && macro.RepeatMode != MacroRepeatMode.UntilNextPress)) &&
                     !triggerActive
                     && !macro.RunReleasedFireToCompletion
                     && !WithinReleaseLinger(macro))
@@ -1309,6 +1325,15 @@ namespace PadForge.Common.Input
         /// through the second press's hold, so UntilRelease action shapes
         /// stop on its release, Valve's "if held on the second press, it
         /// will remain pressed" semantics.</summary>
+        private static void EndRunOnNextPress(MacroItem macro)
+        {
+            macro.IsExecuting = false;
+            macro.CurrentActionIndex = 0;
+            macro.ComboResumeIndex = 0;
+            ClearAxisYields(macro);
+            SoundMacroService.StopLoopsForMacro(macro.PadIndex, macro);
+        }
+
         private static bool EvaluateDoublePressTrigger(MacroItem macro, bool triggerActive, bool wasTriggerActive)
         {
             if (!triggerActive || wasTriggerActive) return false;
@@ -1408,6 +1433,35 @@ namespace PadForge.Common.Input
                 macro.TriggerLastPressUtc = DateTime.MinValue;
             }
             return false;
+        }
+
+        /// <summary>A deferred fire that found the button already up has no
+        /// release left to clear what its sequence set (#561), so what it set
+        /// ends with its pass. Its sequence ran as a tap. The same macro with
+        /// the button still down holds until the release.</summary>
+        private void ClearLatchesOfReleasedFire(MacroItem macro)
+        {
+            var actions = macro.Actions;
+            for (int i = 0; i < actions.Count; i++)
+            {
+                var a = actions[i];
+                if (a == null) continue;
+                switch (a.Type)
+                {
+                    case MacroActionType.ToggleKey when a.LatchDirection == MacroLatchDirection.On:
+                        a.KeyToggleLatched = false;
+                        break;
+                    case MacroActionType.ToggleMouseButton when a.LatchDirection == MacroLatchDirection.On:
+                        a.MouseToggleLatched = false;
+                        break;
+                    case MacroActionType.ToggleVcButton when a.LatchDirection == MacroLatchDirection.On:
+                        a.VcToggleLatched = false;
+                        break;
+                    case MacroActionType.AxisSetLatched:
+                        ExecuteAxisLatchRelease(a);
+                        break;
+                }
+            }
         }
 
         /// <summary>The Hold For macro a single press yields to, read once per
@@ -2512,6 +2566,7 @@ namespace PadForge.Common.Input
                 // keeps running as before and stops on release.
                 if (macro.RunReleasedFireToCompletion)
                 {
+                    ClearLatchesOfReleasedFire(macro);
                     macro.IsExecuting = false;
                     macro.CurrentActionIndex = 0;
                     macro.ComboResumeIndex = 0;
@@ -2528,6 +2583,7 @@ namespace PadForge.Common.Input
             // path re-fires immediately, unpaced.
             bool repeatsUntilRelease =
                 (macro.RepeatMode == MacroRepeatMode.UntilRelease
+                 || macro.RepeatMode == MacroRepeatMode.UntilNextPress
                  || macro.TriggerMode == MacroTriggerMode.Toggle
                  || macro.TriggerMode == MacroTriggerMode.Turbo)
                 && !macro.RunReleasedFireToCompletion;
@@ -2557,6 +2613,7 @@ namespace PadForge.Common.Input
                 // #237: normal completion re-arms the combo from the top
                 // and releases any yield latches.
                 macro.ComboResumeIndex = 0;
+                if (macro.RunReleasedFireToCompletion) ClearLatchesOfReleasedFire(macro);
                 macro.RunReleasedFireToCompletion = false;
                 ClearAxisYields(macro);
             }
@@ -3183,6 +3240,11 @@ namespace PadForge.Common.Input
                     AdvanceAction(macro);
                     break;
 
+                case MacroActionType.ProfileShortcut:
+                    RunProfileShortcut(action.ProfileShortcutMode, ProfileIdNamed(action.ProfileShortcutName));
+                    AdvanceAction(macro);
+                    break;
+
                 case MacroActionType.LightbarColor:
                 {
                     // Single-frame fire — write the override into PSConfig
@@ -3442,11 +3504,13 @@ namespace PadForge.Common.Input
                         var cursor = CursorControlService.Active;
                         if (action.LatchDirection == ViewModels.MacroLatchDirection.Toggle)
                             cursor?.ToggleClamp(action.CursorClampMode,
-                                action.CursorClampInsetX, action.CursorClampInsetY);
+                                action.CursorClampInsetX, action.CursorClampInsetY,
+                                action.CursorClampOffsetX, action.CursorClampOffsetY);
                         else
                             cursor?.SetClamp(action.LatchDirection == ViewModels.MacroLatchDirection.On,
                                 action.CursorClampMode,
-                                action.CursorClampInsetX, action.CursorClampInsetY);
+                                action.CursorClampInsetX, action.CursorClampInsetY,
+                                action.CursorClampOffsetX, action.CursorClampOffsetY);
                     }
                     AdvanceAction(macro);
                     break;
@@ -5159,6 +5223,21 @@ namespace PadForge.Common.Input
                 macro.WasTriggerActive = triggerActive;
                 macro.LastEvaluatedUtc = nowUtcForEdge;
 
+                // Until Next Press: the next press ends the run and counts
+                // for nothing else. It arms no double press or hold, and the
+                // run cannot start again until it is released, the combo
+                // break's wait. The press that started the run cannot end it:
+                // the run starts below this check. A closed layer ends the
+                // run too, as it ends an until-release run.
+                bool nextPress = triggerActive && !wasTriggerActive;
+                if (macro.IsExecuting && macro.RepeatMode == MacroRepeatMode.UntilNextPress
+                    && (nextPress || !layerOpen))
+                {
+                    EndRunOnNextPress(macro);
+                    macro.AwaitReleaseAfterBreak = triggerActive;
+                    if (nextPress) wasTriggerActive = true;
+                }
+
                 bool shouldStart = false;
                 switch (macro.TriggerMode)
                 {
@@ -5289,8 +5368,9 @@ namespace PadForge.Common.Input
                      // (owner report 2026-08-10, AxisTriggerReleaseReproTests).
                      // The executor's own comment promised "a held run ...
                      // stops on release"; this makes that true for every
-                     // RepeatMode, not just UntilRelease.
-                     || AllActionsContinuous(macro)) &&
+                     // RepeatMode beyond UntilRelease. Until Next Press has
+                     // its own end, the next press.
+                     || (AllActionsContinuous(macro) && macro.RepeatMode != MacroRepeatMode.UntilNextPress)) &&
                     !triggerActive
                     && !macro.RunReleasedFireToCompletion
                     && !WithinReleaseLinger(macro))
@@ -5484,6 +5564,7 @@ namespace PadForge.Common.Input
                 // keeps running as before and stops on release.
                 if (macro.RunReleasedFireToCompletion)
                 {
+                    ClearLatchesOfReleasedFire(macro);
                     macro.IsExecuting = false;
                     macro.CurrentActionIndex = 0;
                     macro.ComboResumeIndex = 0;
@@ -5500,6 +5581,7 @@ namespace PadForge.Common.Input
             // path re-fires immediately, unpaced.
             bool repeatsUntilRelease =
                 (macro.RepeatMode == MacroRepeatMode.UntilRelease
+                 || macro.RepeatMode == MacroRepeatMode.UntilNextPress
                  || macro.TriggerMode == MacroTriggerMode.Toggle
                  || macro.TriggerMode == MacroTriggerMode.Turbo)
                 && !macro.RunReleasedFireToCompletion;
@@ -5529,6 +5611,7 @@ namespace PadForge.Common.Input
                 // #237: normal completion re-arms the combo from the top
                 // and releases any yield latches.
                 macro.ComboResumeIndex = 0;
+                if (macro.RunReleasedFireToCompletion) ClearLatchesOfReleasedFire(macro);
                 macro.RunReleasedFireToCompletion = false;
                 ClearAxisYields(macro);
             }
@@ -5944,11 +6027,13 @@ namespace PadForge.Common.Input
                         var cursor = CursorControlService.Active;
                         if (action.LatchDirection == ViewModels.MacroLatchDirection.Toggle)
                             cursor?.ToggleClamp(action.CursorClampMode,
-                                action.CursorClampInsetX, action.CursorClampInsetY);
+                                action.CursorClampInsetX, action.CursorClampInsetY,
+                                action.CursorClampOffsetX, action.CursorClampOffsetY);
                         else
                             cursor?.SetClamp(action.LatchDirection == ViewModels.MacroLatchDirection.On,
                                 action.CursorClampMode,
-                                action.CursorClampInsetX, action.CursorClampInsetY);
+                                action.CursorClampInsetX, action.CursorClampInsetY,
+                                action.CursorClampOffsetX, action.CursorClampOffsetY);
                     }
                     AdvanceAction(macro);
                     break;
@@ -6126,6 +6211,11 @@ namespace PadForge.Common.Input
 
                 case MacroActionType.ToggleScreenOverlay:
                     RequestScreenOverlayToggle(action.ScreenOverlayNumber);
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.ProfileShortcut:
+                    RunProfileShortcut(action.ProfileShortcutMode, ProfileIdNamed(action.ProfileShortcutName));
                     AdvanceAction(macro);
                     break;
 
@@ -7325,24 +7415,41 @@ namespace PadForge.Common.Input
         }
 
         private void HandleGlobalMacroAction(GlobalMacroData gm)
+            => RunProfileShortcut(gm.SwitchMode, gm.TargetProfileId);
+
+        /// <summary>The profile a Profile Shortcut action names (#561), by
+        /// name, since it can name a profile imported after this one. An
+        /// empty name and a name no profile has both read as nothing, which
+        /// the shortcut then leaves alone.</summary>
+        private static string ProfileIdNamed(string name)
         {
-            if (gm.SwitchMode == SwitchProfileMode.ToggleWindow)
+            if (string.IsNullOrWhiteSpace(name)) return null;
+            var profiles = SettingsManager.Profiles;
+            if (profiles == null) return null;
+            foreach (var p in profiles)
+                if (string.Equals(p.Name, name, StringComparison.OrdinalIgnoreCase)) return p.Id;
+            return null;
+        }
+
+        private void RunProfileShortcut(SwitchProfileMode mode, string specificId)
+        {
+            if (mode == SwitchProfileMode.ToggleWindow)
             {
                 PendingToggleWindow = true;
                 return;
             }
 
-            if (gm.SwitchMode == SwitchProfileMode.ToggleVCsDisabled)
+            if (mode == SwitchProfileMode.ToggleVCsDisabled)
             {
                 PendingToggleVCsDisabled = true;
                 return;
             }
 
             string targetId;
-            switch (gm.SwitchMode)
+            switch (mode)
             {
                 case SwitchProfileMode.Specific:
-                    targetId = gm.TargetProfileId;
+                    targetId = specificId;
                     break;
                 case SwitchProfileMode.Next:
                     targetId = GetNextProfileId(+1);

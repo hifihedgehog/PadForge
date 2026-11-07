@@ -135,8 +135,7 @@ namespace PadForge.Tests
                 }
                 if (index < parts.Length && double.TryParse(parts[index], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out double sens) && sens != 1.0)
                 {
-                    double output = double.TryParse(root.Element((index == 2 ? "L2" : "R2") + "MaxOutput")?.Value, out double o) && o is > 0 and < 100 ? o / 100.0 : 1.0;
-                    Assert.Equal(Math.Clamp(sens, 0.1, 5.0) * output, src.Sensitivity, 3);
+                    Assert.Equal(Math.Clamp(sens, 0.1, 5.0), src.Sensitivity, 3);
                     checkedValues++;
                 }
             }
@@ -185,7 +184,9 @@ namespace PadForge.Tests
             foreach (var m in p.Macros)
             {
                 Assert.NotNull(m.Actions);
-                Assert.NotEmpty(m.Actions);
+                // An empty macro is only ever a block: it consumes the one key
+                // the file stops reaching Windows.
+                Assert.True(m.Actions.Length > 0 || m.ConsumeTriggerButtons, $"{name}: macro {m.Name} does nothing");
                 Assert.True(m.TriggerMode == ViewModels.MacroTriggerMode.Always || !string.IsNullOrEmpty(m.TriggerInputs),
                     $"{name}: macro {m.Name} has no trigger");
             }

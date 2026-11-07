@@ -2426,6 +2426,20 @@
                                                      Width="80" VerticalAlignment="Center"/>
                                             <ui:Button Command="{Binding ResetCursorClampInsetYCommand}" Style="{StaticResource ResetButton}" Margin="8,0,0,0" ToolTip="{Binding Macro_Reset_InsetY, Source={x:Static strings:Strings.Instance}}"/>
                                         </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_CursorClampOffsetX_Label, Source={x:Static strings:Strings.Instance}}"
+                                                       Width="80" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                                            <TextBox Text="{Binding CursorClampOffsetX, Mode=TwoWay, StringFormat=F0, UpdateSourceTrigger=LostFocus}"
+                                                     Width="80" VerticalAlignment="Center"/>
+                                            <ui:Button Command="{Binding ResetCursorClampOffsetXCommand}" Style="{StaticResource ResetButton}" Margin="8,0,0,0" ToolTip="{Binding Macro_Reset_OffsetX, Source={x:Static strings:Strings.Instance}}"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_CursorClampOffsetY_Label, Source={x:Static strings:Strings.Instance}}"
+                                                       Width="80" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                                            <TextBox Text="{Binding CursorClampOffsetY, Mode=TwoWay, StringFormat=F0, UpdateSourceTrigger=LostFocus}"
+                                                     Width="80" VerticalAlignment="Center"/>
+                                            <ui:Button Command="{Binding ResetCursorClampOffsetYCommand}" Style="{StaticResource ResetButton}" Margin="8,0,0,0" ToolTip="{Binding Macro_Reset_OffsetY, Source={x:Static strings:Strings.Instance}}"/>
+                                        </StackPanel>
                                         <TextBlock Text="{Binding Macro_CursorWrite_Caveat, Source={x:Static strings:Strings.Instance}}"
                                                    FontSize="11" TextWrapping="Wrap"
                                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
@@ -2943,6 +2957,27 @@
                                             <ComboBoxItem Content="{Binding KeyboardScreens_Kind_Overlay, Source={x:Static strings:Strings.Instance}}"/>
                                         </ComboBox>
                                         <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="ScreenKind" SettingLabel="{Binding Macro_KeyboardScreen_Kind, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_ScreenKind_13101"/>
+                                    </StackPanel>
+
+                                    <!-- Profile Shortcut (#561): the Profile Shortcuts card's modes
+                                         on a macro, and the profile's name for the one that names one. -->
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
+                                                Visibility="{Binding IsProfileShortcutType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding MacroAction_Type_ProfileShortcut, Source={x:Static strings:Strings.Instance}}"
+                                                   VerticalAlignment="Center" Width="80" Margin="0,0,8,0" TextWrapping="Wrap"/>
+                                        <ComboBox SelectedIndex="{Binding ProfileShortcutModeIndex}" MinWidth="200"
+                                                  AutomationProperties.Name="{Binding MacroAction_Type_ProfileShortcut, Source={x:Static strings:Strings.Instance}}">
+                                            <ComboBoxItem Content="{Binding Profiles_ShortcutMode_Specific, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding Profiles_ShortcutMode_Next, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding Profiles_ShortcutMode_Previous, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding Profiles_ShortcutMode_ToggleWindow, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding Profiles_ShortcutMode_ToggleVCsDisabled, Source={x:Static strings:Strings.Instance}}"/>
+                                        </ComboBox>
+                                        <ComboBox IsEditable="True" Text="{Binding ProfileShortcutName, UpdateSourceTrigger=LostFocus}" MinWidth="200" Margin="8,0,0,0"
+                                                  ItemsSource="{Binding ProfileShortcutChoices}"
+                                                  Visibility="{Binding ShowsProfileShortcutName, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                  AutomationProperties.Name="{Binding Profiles_ShortcutMode_Specific, Source={x:Static strings:Strings.Instance}}"/>
+                                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="ProfileShortcutMode" SettingLabel="{Binding MacroAction_Type_ProfileShortcut, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_ProfileShortcutMode_2980"/>
                                     </StackPanel>
 
                                     <!-- Which Screen Overlay (#560): Show Keyboard Screen and
@@ -4105,6 +4140,7 @@
                                     <ComboBoxItem Content="{Binding Macro_Once, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroRepeatMode.Once}"/>
                                     <ComboBoxItem Content="{Binding Macro_FixedCount, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroRepeatMode.FixedCount}"/>
                                     <ComboBoxItem Content="{Binding Macro_UntilRelease, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroRepeatMode.UntilRelease}" IsEnabled="{Binding SupportsUntilReleaseRepeat}"/>
+                                    <ComboBoxItem Content="{Binding Macro_UntilNextPress, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroRepeatMode.UntilNextPress}"/>
                                 </ComboBox>
                                 <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="RepeatMode" SettingLabel="{Binding Macro_RepeatMode, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroItem_RepeatMode_3262"/>
                             </StackPanel>

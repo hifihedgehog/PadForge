@@ -4932,8 +4932,6 @@
   <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>ไฟล์นั้นไม่ใช่โปรไฟล์ของ PadForge, reWASD หรือ DS4Windows</value></data>
   <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>ไฟล์นั้นประกาศประเภทเอกสาร ซึ่งโปรไฟล์ไม่เคยต้องใช้ PadForge จึงไม่อ่านไฟล์นี้</value></data>
   <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>ไฟล์นั้นไม่ใช่รูปแบบ reWASD ที่ PadForge อ่านได้ คือสคีมา 3</value></data>
-  <data name="Import_Tr_ProgramNotRun" xml:space="preserve"><value>ตัดออกเพื่อไม่ให้คอนฟิกที่แชร์กันสั่งเริ่มโปรแกรมได้: {0}</value></data>
-  <data name="Import_Tr_SystemCommand" xml:space="preserve"><value>ตัดออกเพื่อไม่ให้คอนฟิกที่แชร์กันทำสิ่งนี้กับพีซีของคุณได้: {0}</value></data>
   <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>PadForge ไม่รู้จักอินพุตนี้: {0}</value></data>
   <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge ไม่รู้จักเอาต์พุตนี้: {0}</value></data>
   <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge ไม่มีคำสั่งนี้: {0}</value></data>
@@ -4941,29 +4939,41 @@
   <data name="Import_Tr_Crosshair" xml:space="preserve"><value>เป้าเล็งอยู่ภายใน reWASD แสดงภาพของคุณเองได้ด้วยโอเวอร์เลย์หน้าจอ</value></data>
   <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>การสั่นและการเขย่าของสติ๊กไม่ถูกนำมาด้วย</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>จุดสั่งการของปุ่มอนาล็อกไม่ถูกนำมาด้วย</value></data>
-  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>การส่งไปยังพีซีเครื่องอื่นไม่ถูกนำมาด้วย ตั้งค่าได้ด้วยลิงก์ระยะไกล</value></data>
+  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD เคยส่งคอนโทรลเลอร์นี้ไปยังอุปกรณ์อื่นผ่านอะแดปเตอร์ PadForge จะเล่นคอนโทรลเลอร์นี้บนพีซีเครื่องนี้ และลิงก์ระยะไกลจะส่งไปยังพีซีอีกเครื่องที่รัน PadForge</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge อ่านสติ๊กสองอัน แต่ไฟล์นี้อ้างถึงอันที่สาม</value></data>
   <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>การจำลองพวงมาลัยไม่ถูกนำมาด้วย ให้แมปพวงมาลัยในแท็บการแมป</value></data>
-  <data name="Import_Tr_ProfileSwitch" xml:space="preserve"><value>การกระทำพิเศษที่โหลดโปรไฟล์อื่นไม่ถูกนำมาด้วย: {0}</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>โปรไฟล์นี้อ้างถึงการกระทำพิเศษที่ไม่มีใน Actions.xml ข้างโฟลเดอร์ Profiles ของมัน: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>การตั้งค่านี้ไม่ถูกนำมาด้วย: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD เคยกันอินพุตเหล่านี้ไม่ให้ไปถึง Windows เปิด ดักอินพุตที่แมปไว้ สำหรับ {0} ในหน้าอุปกรณ์ ซึ่งจะกันอินพุตที่โปรไฟล์นี้แมปไว้</value></data>
-  <data name="Import_Tr_HeldAsTap" xml:space="preserve"><value>กดแตะแทนการกดค้าง เพราะมีท่าทางอื่นใช้ปุ่มเดียวกัน</value></data>
-  <data name="Import_Tr_CurveFitted" xml:space="preserve"><value>เส้นโค้ง {0} จุดถูกนำมาเป็นเส้นโค้งกำลังที่ใกล้เคียงที่สุด</value></data>
-  <data name="Import_Tr_CurveApproximated" xml:space="preserve"><value>เส้นโค้ง {0} ถูกนำมาเป็นเส้นโค้งกำลังที่ใกล้เคียงที่สุด</value></data>
-  <data name="Import_Tr_ZoneOutward" xml:space="preserve"><value>ทำงานจากโซนนี้ออกไปด้านนอก ไม่ใช่เฉพาะภายในโซน</value></data>
-  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>นำเข้าเป็นเลเยอร์ธรรมดา</value></data>
+  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>การแมปของเลเยอร์ Base สำหรับ {0} จะหยุดทำงานในเลเยอร์นี้ เมื่อเปิด ดักอินพุตที่แมปไว้ อินพุตที่แมปไว้ของอุปกรณ์จะยังถูกกันไม่ให้ไปถึง Windows ในทุกเลเยอร์</value></data>
   <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>เมนูย่อยของมันกลายเป็นช่องเพิ่มเติมบนวงแหวนเดียว</value></data>
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>ยืนยันเมื่อสติ๊กกลับสู่ศูนย์กลางหรือเมื่อเลเยอร์สิ้นสุด ไม่ใช้ปุ่ม Apply ของ reWASD</value></data>
-  <data name="Import_Tr_RegionCentered" xml:space="preserve"><value>เคอร์เซอร์อยู่ในพื้นที่ขนาดเท่าเดิมที่กลางหน้าจอ</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>ไฟล์นี้แยกคอนโทรลเลอร์สองตัวออกจากกัน ใน PadForge คอนโทรลเลอร์ใดก็ตามบนสล็อตจะเรียกใช้การแมปเหล่านี้</value></data>
-  <data name="Import_Tr_ToggleSameGesture" xml:space="preserve"><value>ท่าทางเดิมจะปิดมัน ส่วน reWASD ปิดด้วยการกดครั้งเดียว</value></data>
-  <data name="Import_Tr_LedShownAs" xml:space="preserve"><value>แสง {0} ถูกนำมาเป็นโหมดไลต์บาร์ที่ใกล้เคียงที่สุด</value></data>
-  <data name="Import_Tr_LoweredToKeys" xml:space="preserve"><value>ส่ง {0} แทน</value></data>
-  <data name="Import_Tr_StickAdded" xml:space="preserve"><value>ตั้งสติ๊กเป็นค่านี้ แทนที่จะบวกเข้ากับตำแหน่งของสติ๊กเอง</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>ความเร็วการเคลื่อนที่หรือการสะบัดไม่ถูกนำมาด้วย</value></data>
-  <data name="Import_Tr_HipFire" xml:space="preserve"><value>การเหนี่ยวเบาและเหนี่ยวสุดใช้งานได้ โดยไม่มีการรอ {0} มิลลิวินาทีก่อนการเหนี่ยวเบา</value></data>
-  <data name="Import_Tr_MaxOutput" xml:space="preserve"><value>ย่อเอาต์พุตเหลือ {0} เปอร์เซ็นต์ แทนที่จะจำกัดเพดาน</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>รายการเหล่านี้ไม่ถูกนำมาด้วย ตั้งค่าได้ในแท็บทัชแพด</value></data>
   <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>ไม่มีสิ่งใดในไฟล์นี้เปิดเลเยอร์นี้ ให้กำหนดปุ่มให้ในแท็บการแมป</value></data>
+  <data name="Import_NoteRuns_Format" xml:space="preserve"><value>ปุ่มของโปรไฟล์จะเรียกใช้สิ่งเหล่านี้เมื่อกด: {0}</value></data>
+  <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>ทางลัดโปรไฟล์</value></data>
+  <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>ทำสิ่งเดียวกับทางลัดโปรไฟล์ คือโหลดโปรไฟล์ที่ระบุชื่อ โปรไฟล์ถัดไปหรือก่อนหน้า แสดงหรือซ่อนหน้าต่าง หรือปิดและเปิดคอนโทรลเลอร์เสมือน</value></data>
+  <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>ทางลัดโปรไฟล์: {0}</value></data>
+  <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>ระยะเยื้อง X</value></data>
+  <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>ระยะเยื้อง Y</value></data>
+  <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>รีเซ็ตระยะเยื้อง X</value></data>
+  <data name="Macro_Reset_OffsetY" xml:space="preserve"><value>รีเซ็ตระยะเยื้อง Y</value></data>
+  <data name="Macro_UntilNextPress" xml:space="preserve"><value>จนกว่าจะกดอีกครั้ง</value></data>
+  <data name="Mapping_Between_Format" xml:space="preserve"><value>{0}, {1} ถึง {2}%</value></data>
+  <data name="Mapping_Sector_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Mapping_Stage_Format" xml:space="preserve"><value>{0}: {1}, {2}, {3} มิลลิวินาที</value></data>
+  <data name="Mapping_StageNoWait_Format" xml:space="preserve"><value>{0}: {1}, {2}</value></data>
+  <data name="Mapping_Stage_HairTrigger" xml:space="preserve"><value>แฮร์ทริกเกอร์</value></data>
+  <data name="Mapping_Stage_HipFire" xml:space="preserve"><value>ฮิปไฟร์</value></data>
+  <data name="Mapping_Stage_HipFireExclusive" xml:space="preserve"><value>ฮิปไฟร์เฉพาะขั้น</value></data>
+  <data name="Mapping_Stage_Soft" xml:space="preserve"><value>ดึงเบา</value></data>
+  <data name="Mapping_Stage_Full" xml:space="preserve"><value>ดึงสุด</value></data>
+  <data name="Import_NoteStarts_Format" xml:space="preserve"><value>โปรไฟล์จะเริ่มโปรแกรมนี้เมื่อโหลด: {0}</value></data>
+  <data name="Import_Tr_HideController" xml:space="preserve"><value>reWASD เคยซ่อนคอนโทรลเลอร์นี้จากเกม เปิด ซ่อนจากเกม สำหรับคอนโทรลเลอร์นี้ในหน้าอุปกรณ์</value></data>
+  <data name="Import_Tr_NoSuchSetting" xml:space="preserve"><value>PadForge ไม่มีการตั้งค่านี้: {0}</value></data>
+  <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD เคยกันการเคลื่อนที่ของเมาส์ไม่ให้ไปถึง Windows PadForge กันได้เฉพาะปุ่มคีย์บอร์ดและปุ่มเมาส์ แต่กันการเคลื่อนที่ไม่ได้ ตัวชี้จึงยังเคลื่อนที่อยู่</value></data>
+  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>คอนโทรลเลอร์เสมือนของ PadForge รับข้อมูลการเคลื่อนไหวจากเซ็นเซอร์การเคลื่อนไหวของคอนโทรลเลอร์เท่านั้น</value></data>
+  <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows เคยสลับกลับมาที่โปรไฟล์นี้จาก {0} ด้วยปุ่มหนึ่ง หากต้องการทำแบบนี้ใน PadForge ให้เพิ่มทางลัดโปรไฟล์สำหรับโปรไฟล์นี้ในหน้าโปรไฟล์</value></data>
 </root>

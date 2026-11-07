@@ -2744,7 +2744,9 @@ namespace PadForge.ViewModels
         /// <summary>Set when a combo break parks the sequence while the
         /// trigger is still held: hold-shaped trigger modes (WhileHeld,
         /// Always) must not auto-resume through the break, so the start
-        /// gate stays closed until the trigger reads inactive once.</summary>
+        /// gate stays closed until the trigger reads inactive once. The press
+        /// that ends an Until Next Press run sets it for the same
+        /// reason.</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool AwaitReleaseAfterBreak { get; set; }
 
@@ -3017,6 +3019,8 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsDisconnectSpecificDevice));
                     OnPropertyChanged(nameof(DisconnectDeviceOptions));
                     OnPropertyChanged(nameof(IsRunProgramType));
+                    OnPropertyChanged(nameof(IsProfileShortcutType));
+                    OnPropertyChanged(nameof(ShowsProfileShortcutName));
                     OnPropertyChanged(nameof(IsTextBlockType));
                     OnPropertyChanged(nameof(IsRumbleReactiveHold));
                     OnPropertyChanged(nameof(IsRumbleStickyHold));
@@ -3373,6 +3377,12 @@ namespace PadForge.ViewModels
         /// path / arguments / working-folder editor.</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool IsRunProgramType => _type == MacroActionType.RunProgram;
+
+        /// <summary>True when Type is Profile Shortcut (#561).</summary>
+        public bool IsProfileShortcutType => _type == MacroActionType.ProfileShortcut;
+
+        /// <summary>True when the shortcut names one profile.</summary>
+        public bool ShowsProfileShortcutName => IsProfileShortcutType && _profileShortcutMode == PadForge.Services.SwitchProfileMode.Specific;
 
         /// <summary>True when Type is TextBlock (#201). Gates the multiline
         /// text editor panel.</summary>
@@ -4811,6 +4821,60 @@ namespace PadForge.ViewModels
             }
         }
 
+        // ── Profile Shortcut (for MacroActionType.ProfileShortcut, #561) ──
+
+        private PadForge.Services.SwitchProfileMode _profileShortcutMode = PadForge.Services.SwitchProfileMode.Specific;
+
+        public PadForge.Services.SwitchProfileMode ProfileShortcutMode
+        {
+            get => _profileShortcutMode;
+            set
+            {
+                if (SetProperty(ref _profileShortcutMode, value))
+                {
+                    OnPropertyChanged(nameof(ProfileShortcutModeIndex));
+                    OnPropertyChanged(nameof(ShowsProfileShortcutName));
+                    OnPropertyChanged(nameof(DisplayText));
+                }
+            }
+        }
+
+        /// <summary>The Mode list's position, in <see cref="PadForge.Services.SwitchProfileMode"/>'s order.</summary>
+        public int ProfileShortcutModeIndex
+        {
+            get => (int)_profileShortcutMode;
+            set => ProfileShortcutMode = Enum.IsDefined(typeof(PadForge.Services.SwitchProfileMode), value)
+                ? (PadForge.Services.SwitchProfileMode)value
+                : PadForge.Services.SwitchProfileMode.Specific;
+        }
+
+        private string _profileShortcutName = string.Empty;
+
+        public string ProfileShortcutName
+        {
+            get => _profileShortcutName;
+            set
+            {
+                if (SetProperty(ref _profileShortcutName, value ?? string.Empty))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
+        /// <summary>The profile names the Profile box offers. It takes a name
+        /// no profile has yet, since that profile can be imported later.</summary>
+        public System.Collections.Generic.IEnumerable<string> ProfileShortcutChoices
+            => PadForge.Common.Input.SettingsManager.Profiles?.Select(p => p.Name).ToList()
+               ?? new System.Collections.Generic.List<string>();
+
+        private string ProfileShortcutSummary => _profileShortcutMode switch
+        {
+            PadForge.Services.SwitchProfileMode.Next => Strings.Instance.Profiles_ShortcutMode_Next,
+            PadForge.Services.SwitchProfileMode.Previous => Strings.Instance.Profiles_ShortcutMode_Previous,
+            PadForge.Services.SwitchProfileMode.ToggleWindow => Strings.Instance.Profiles_ShortcutMode_ToggleWindow,
+            PadForge.Services.SwitchProfileMode.ToggleVCsDisabled => Strings.Instance.Profiles_ShortcutMode_ToggleVCsDisabled,
+            _ => string.Format(Strings.Instance.MacroAction_ProfileShortcut_Format, _profileShortcutName),
+        };
+
         // ── Run program (for MacroActionType.RunProgram, user request) ──
 
         private string _programPath = "";
@@ -6026,6 +6090,26 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _cursorClampInsetY, ClampInsetToHalfHeight(value));
         }
 
+        private int _cursorClampOffsetX;
+        /// <summary>Pixels the region sits right of the screen's center. A
+        /// negative value sits left of it. Zero keeps the region centered.
+        /// Clamped to half the primary monitor's width either way.</summary>
+        public int CursorClampOffsetX
+        {
+            get => _cursorClampOffsetX;
+            set => SetProperty(ref _cursorClampOffsetX, ClampOffsetToHalfWidth(value));
+        }
+
+        private int _cursorClampOffsetY;
+        /// <summary>Pixels the region sits below the screen's center. A
+        /// negative value sits above it. Zero keeps the region centered.
+        /// Clamped to half the primary monitor's height either way.</summary>
+        public int CursorClampOffsetY
+        {
+            get => _cursorClampOffsetY;
+            set => SetProperty(ref _cursorClampOffsetY, ClampOffsetToHalfHeight(value));
+        }
+
         private RelayCommand _resetCursorClampInsetXCommand;
         /// <summary>Resets the region-clamp X inset to the 50 px default (#110).</summary>
         [System.Xml.Serialization.XmlIgnore]
@@ -6037,6 +6121,18 @@ namespace PadForge.ViewModels
         [System.Xml.Serialization.XmlIgnore]
         public RelayCommand ResetCursorClampInsetYCommand =>
             _resetCursorClampInsetYCommand ??= new RelayCommand(() => CursorClampInsetY = 50);
+
+        private RelayCommand _resetCursorClampOffsetXCommand;
+        /// <summary>Returns the region to the screen's center across.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public RelayCommand ResetCursorClampOffsetXCommand =>
+            _resetCursorClampOffsetXCommand ??= new RelayCommand(() => CursorClampOffsetX = 0);
+
+        private RelayCommand _resetCursorClampOffsetYCommand;
+        /// <summary>Returns the region to the screen's center down.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public RelayCommand ResetCursorClampOffsetYCommand =>
+            _resetCursorClampOffsetYCommand ??= new RelayCommand(() => CursorClampOffsetY = 0);
 
         // CSV of LightbarMode int values for ModeCycle. Default skips
         // Off and the audio modes. Most users want a quick visual
@@ -6356,6 +6452,7 @@ namespace PadForge.ViewModels
                     MacroActionType.MouseButtonRelease => string.Format(Strings.Instance.MacroAction_MouseRelease_Format, MacroMouseButtonDisplayName(_mouseButton)),
                     MacroActionType.MouseScroll => string.Format(Strings.Instance.MacroAction_Scroll_Format, axisLabel, _mouseSensitivity),
                     MacroActionType.ToggleTouchpadOverlay => Strings.Instance.MacroAction_ToggleTouchpadOverlay,
+                    MacroActionType.ProfileShortcut => ProfileShortcutSummary,
                     MacroActionType.ToggleScreenOverlay => _screenOverlayNumber == 0
                         ? Strings.Instance.MacroAction_ToggleScreenOverlay
                         : string.Format(Strings.Instance.MacroAction_ToggleScreenOverlay_Format, _screenOverlayNumber),
@@ -6788,6 +6885,12 @@ namespace PadForge.ViewModels
             if (CursorControlService.TryGetPrimarySize(out _, out int h) && value > h / 2) return h / 2;
             return value;
         }
+
+        private static int ClampOffsetToHalfWidth(int value)
+            => CursorControlService.TryGetPrimarySize(out int w, out _) ? Math.Clamp(value, -w / 2, w / 2) : value;
+
+        private static int ClampOffsetToHalfHeight(int value)
+            => CursorControlService.TryGetPrimarySize(out _, out int h) ? Math.Clamp(value, -h / 2, h / 2) : value;
     }
 
     // ─────────────────────────────────────────────
@@ -6919,7 +7022,12 @@ namespace PadForge.ViewModels
         FixedCount,
 
         /// <summary>Repeat until the trigger is released (WhileHeld mode only).</summary>
-        UntilRelease
+        UntilRelease,
+
+        /// <summary>Repeat until the trigger is pressed again. The press that
+        /// started the run does not count, and releasing it changes nothing.
+        /// Appended: the macro clipboard writes this enum numerically.</summary>
+        UntilNextPress
     }
 
     // APPEND-ONLY: the macro clipboard leg (SettingsService.SerializeMacrosToClipboard)
@@ -7432,7 +7540,15 @@ namespace PadForge.ViewModels
 
         /// <summary>Shows or hides the Screen Overlay (#560), the way
         /// <see cref="ToggleTouchpadOverlay"/> does the Touchpad Overlay.</summary>
-        ToggleScreenOverlay = 66
+        ToggleScreenOverlay = 66,
+
+        /// <summary>Does what a Profile Shortcut does (#561): switches to a
+        /// named, next or previous profile, shows or hides the window, or
+        /// turns the virtual controllers off. A shortcut works in every
+        /// profile. This belongs to the macro's own profile and layer, and it
+        /// names its profile by name, so that profile can arrive later. Ordinal
+        /// pinned.</summary>
+        ProfileShortcut = 67
     }
 
     /// <summary>One parsed part of a <see cref="MacroActionType.CycleTapList"/>

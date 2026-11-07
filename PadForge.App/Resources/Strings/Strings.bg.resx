@@ -4932,8 +4932,6 @@
   <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>Този файл не е профил на PadForge, reWASD или DS4Windows.</value></data>
   <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>Този файл декларира тип на документа, който един профил никога не изисква, затова PadForge не го прочете.</value></data>
   <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>Този файл не е във формата на reWASD, който PadForge чете, схема 3.</value></data>
-  <data name="Import_Tr_ProgramNotRun" xml:space="preserve"><value>Пропуснато, за да не може споделена конфигурация да стартира програма: {0}</value></data>
-  <data name="Import_Tr_SystemCommand" xml:space="preserve"><value>Пропуснато, за да не може споделена конфигурация да направи това на компютъра ви: {0}</value></data>
   <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>PadForge не разпознава този вход: {0}</value></data>
   <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge не разпознава този изход: {0}</value></data>
   <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge няма такава команда: {0}</value></data>
@@ -4941,29 +4939,41 @@
   <data name="Import_Tr_Crosshair" xml:space="preserve"><value>Мерникът живее вътре в reWASD. Покажете своя картина с Наслагване на екрана.</value></data>
   <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>Треперенето и разклащането на стика не бяха пренесени.</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Точките на задействане на аналоговите клавиши не бяха пренесени.</value></data>
-  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>Изпращането към друг компютър не беше пренесено. Настройте го с Отдалечена връзка.</value></data>
+  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD изпращаше този контролер към друго устройство чрез адаптер. PadForge го пуска на този компютър, а Отдалечена връзка го изпраща към друг компютър с PadForge.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge чете два стика, а тук е посочен трети.</value></data>
   <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Емулацията на волан не беше пренесена. Съпоставете волана в раздела Съпоставяния.</value></data>
-  <data name="Import_Tr_ProfileSwitch" xml:space="preserve"><value>Специално действие, което зарежда друг профил, не беше пренесено: {0}</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Този профил посочва специално действие, което липсва в Actions.xml до папката му Profiles: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Тази настройка не беше пренесена: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD пречеше на тези входове да стигнат до Windows. Включете Поглъщане на съпоставените входове за {0} на страницата Устройства, което спира входовете, съпоставени от този профил.</value></data>
-  <data name="Import_Tr_HeldAsTap" xml:space="preserve"><value>Натиска за кратко вместо да държи, защото друг жест споделя бутона.</value></data>
-  <data name="Import_Tr_CurveFitted" xml:space="preserve"><value>Кривата с {0} точки беше пренесена като най-близката степенна крива.</value></data>
-  <data name="Import_Tr_CurveApproximated" xml:space="preserve"><value>Кривата {0} беше пренесена като най-близката степенна крива.</value></data>
-  <data name="Import_Tr_ZoneOutward" xml:space="preserve"><value>Задейства се от тази зона навън, не само вътре в нея.</value></data>
-  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>Импортиран като обикновен слой.</value></data>
+  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>Съпоставянията на Base за {0} спират в този слой. При включено Поглъщане на съпоставените входове съпоставените му входове остават задържани от Windows във всеки слой.</value></data>
   <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>Подменютата му станаха допълнителни слотове на един пръстен.</value></data>
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Потвърждава се, когато стикът се върне в центъра или слоят приключи. Бутонът Приложи на reWASD не се използва.</value></data>
-  <data name="Import_Tr_RegionCentered" xml:space="preserve"><value>Курсорът остава в област със същия размер в центъра на екрана.</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Този файл държи два контролера разделени. В PadForge всеки контролер на слота задейства тези съпоставяния.</value></data>
-  <data name="Import_Tr_ToggleSameGesture" xml:space="preserve"><value>Същият жест го изключва. В reWASD го изключваше едно натискане.</value></data>
-  <data name="Import_Tr_LedShownAs" xml:space="preserve"><value>Осветлението {0} беше пренесено като най-близкия режим на светлинната лента.</value></data>
-  <data name="Import_Tr_LoweredToKeys" xml:space="preserve"><value>Изпраща {0} вместо това.</value></data>
-  <data name="Import_Tr_StickAdded" xml:space="preserve"><value>Задава на стика тази стойност, вместо да я добавя към собственото положение на стика.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>Скоростта на движение или рязкото движение не бяха пренесени.</value></data>
-  <data name="Import_Tr_HipFire" xml:space="preserve"><value>Слабото и пълното натискане работят, без изчакването от {0} ms преди слабото натискане.</value></data>
-  <data name="Import_Tr_MaxOutput" xml:space="preserve"><value>Мащабира изхода до {0} процента вместо да го ограничава.</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Те не бяха пренесени. Задайте ги в раздела Тъчпад.</value></data>
   <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Нищо в този файл не отваря този слой. Дайте му бутон в раздела Съпоставяния.</value></data>
+  <data name="Import_NoteRuns_Format" xml:space="preserve"><value>Бутоните му изпълняват това при натискане: {0}.</value></data>
+  <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Пряк път към профил</value></data>
+  <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Прави това, което прави пряк път към профил: зарежда именуван профил, следващия или предишния, показва или скрива прозореца или изключва и включва виртуалните контролери.</value></data>
+  <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>Пряк път към профил: {0}</value></data>
+  <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>Изместване по X</value></data>
+  <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>Изместване по Y</value></data>
+  <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>Нулиране на изместването по X</value></data>
+  <data name="Macro_Reset_OffsetY" xml:space="preserve"><value>Нулиране на изместването по Y</value></data>
+  <data name="Macro_UntilNextPress" xml:space="preserve"><value>До следващо натискане</value></data>
+  <data name="Mapping_Between_Format" xml:space="preserve"><value>{0}, от {1} до {2}%</value></data>
+  <data name="Mapping_Sector_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Mapping_Stage_Format" xml:space="preserve"><value>{0}: {1}, {2}, {3} мс</value></data>
+  <data name="Mapping_StageNoWait_Format" xml:space="preserve"><value>{0}: {1}, {2}</value></data>
+  <data name="Mapping_Stage_HairTrigger" xml:space="preserve"><value>Hair Trigger</value></data>
+  <data name="Mapping_Stage_HipFire" xml:space="preserve"><value>Hip Fire</value></data>
+  <data name="Mapping_Stage_HipFireExclusive" xml:space="preserve"><value>Hip Fire Exclusive</value></data>
+  <data name="Mapping_Stage_Soft" xml:space="preserve"><value>Леко натискане</value></data>
+  <data name="Mapping_Stage_Full" xml:space="preserve"><value>Пълно натискане</value></data>
+  <data name="Import_NoteStarts_Format" xml:space="preserve"><value>При зареждане стартира тази програма: {0}.</value></data>
+  <data name="Import_Tr_HideController" xml:space="preserve"><value>reWASD скри този контролер от игрите. Включете Скриване от игрите за него на страницата Устройства.</value></data>
+  <data name="Import_Tr_NoSuchSetting" xml:space="preserve"><value>PadForge няма такава настройка: {0}</value></data>
+  <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD пречеше на движението на мишката да стига до Windows. PadForge задържа клавишите и бутоните на мишката, но не и движението, така че показалецът пак се движи.</value></data>
+  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>Виртуалните контролери на PadForge получават движение само от сензора за движение на контролера.</value></data>
+  <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows се върна към този профил от {0} с бутон. За да направите същото в PadForge, добавете бърза комбинация за профил за този профил на страницата Профили.</value></data>
 </root>

@@ -4932,8 +4932,6 @@
   <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>Гэты файл не з'яўляецца профілем PadForge, reWASD або DS4Windows.</value></data>
   <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>Гэты файл абвяшчае тып дакумента, які профілю ніколі не патрэбны, таму PadForge яго не чытаў.</value></data>
   <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>Гэты файл не ў фармаце reWASD, які чытае PadForge: схема 3.</value></data>
-  <data name="Import_Tr_ProgramNotRun" xml:space="preserve"><value>Прапушчана, каб чужая канфігурацыя не магла запусціць праграму: {0}</value></data>
-  <data name="Import_Tr_SystemCommand" xml:space="preserve"><value>Прапушчана, каб чужая канфігурацыя не магла зрабіць гэта з вашым ПК: {0}</value></data>
   <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>PadForge не распазнае гэты ўвод: {0}</value></data>
   <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge не распазнае гэты вывад: {0}</value></data>
   <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>У PadForge няма такой каманды: {0}</value></data>
@@ -4941,29 +4939,41 @@
   <data name="Import_Tr_Crosshair" xml:space="preserve"><value>Прыцэл жыве ўнутры reWASD. Паказвайце сваю карцінку праз Накладку экрана.</value></data>
   <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>Дрыжанне і трасенне стыкаў не перанесліся.</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Кропкі аналагавага зрабатання клавіш не перанесліся.</value></data>
-  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>Адпраўка на іншы ПК не перанеслася. Наладзьце яе праз Аддаленую сувязь.</value></data>
+  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD адпраўляў гэты кантролер на іншую прыладу праз адаптар. PadForge ўзнаўляе яго на гэтым ПК, а Аддаленая сувязь адпраўляе яго на іншы ПК з PadForge.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge чытае два стыкі, а тут названы трэці.</value></data>
   <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Эмуляцыя руля не перанеслася. Прызначце руль на ўкладцы Прызначэнні.</value></data>
-  <data name="Import_Tr_ProfileSwitch" xml:space="preserve"><value>Асаблівае дзеянне, якое загружае іншы профіль, не перанеслося: {0}</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Гэты профіль называе асаблівае дзеянне, якога няма ў Actions.xml побач з яго папкай Profiles: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Гэта налада не перанеслася: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD не пускаў гэтыя ўводы ў Windows. Уключыце Паглынаць прызначаныя ўводы для {0} на старонцы Прылады: гэта спыніць тыя, што прызначае гэты профіль.</value></data>
-  <data name="Import_Tr_HeldAsTap" xml:space="preserve"><value>Націск замест утрымання, бо кнопку дзеляць іншыя жэсты.</value></data>
-  <data name="Import_Tr_CurveFitted" xml:space="preserve"><value>Крывая з {0} кропак перанеслася як бліжэйшая ступенная крывая.</value></data>
-  <data name="Import_Tr_CurveApproximated" xml:space="preserve"><value>Крывая {0} перанеслася як бліжэйшая ступенная крывая.</value></data>
-  <data name="Import_Tr_ZoneOutward" xml:space="preserve"><value>Спрацоўвае ад гэтай зоны вонкі, а не толькі ўнутры яе.</value></data>
-  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>Імпартавана як звычайны пласт.</value></data>
+  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>Прызначэнні пласта Base для {0} у гэтым пласце не дзейнічаюць. Калі ўключана Паглынаць прызначаныя ўводы, прызначаныя ўводы гэтай прылады застаюцца схаванымі ад Windows у кожным пласце.</value></data>
   <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>Яго падменю сталі дадатковымі слотамі на адным коле.</value></data>
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Прымяняецца, калі стык вяртаецца ў цэнтр або пласт заканчваецца. Кнопка Ужыць у reWASD не выкарыстоўваецца.</value></data>
-  <data name="Import_Tr_RegionCentered" xml:space="preserve"><value>Курсор застаецца ў вобласці таго ж памеру ў цэнтры экрана.</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Гэты файл трымае два кантролеры асобна. У PadForge гэтыя прызначэнні выконвае любы кантролер на слоце.</value></data>
-  <data name="Import_Tr_ToggleSameGesture" xml:space="preserve"><value>Той самы жэст выключае яго. У reWASD яго выключала адно націсканне.</value></data>
-  <data name="Import_Tr_LedShownAs" xml:space="preserve"><value>Падсветка {0} перанеслася як найбліжэйшы рэжым светлавой паласы.</value></data>
-  <data name="Import_Tr_LoweredToKeys" xml:space="preserve"><value>Замест гэтага адпраўляе {0}.</value></data>
-  <data name="Import_Tr_StickAdded" xml:space="preserve"><value>Задае стыку гэтае значэнне замест таго, каб дадаваць яго да ўласнага палажэння стыка.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>Хуткасць руху або рэзкі рух не перанеслася.</value></data>
-  <data name="Import_Tr_HipFire" xml:space="preserve"><value>Слабае і поўнае націсканне працуюць, але без чакання {0} мс перад слабым.</value></data>
-  <data name="Import_Tr_MaxOutput" xml:space="preserve"><value>Маштабуе вывад да {0} працэнтаў замест таго, каб абмяжоўваць яго.</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Гэтыя налады не перанесліся. Задайце іх на ўкладцы Сэнсарная панэль.</value></data>
   <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Нічога ў гэтым файле не адкрывае гэты пласт. Дайце яму кнопку на ўкладцы Прызначэнні.</value></data>
+  <data name="Import_NoteRuns_Format" xml:space="preserve"><value>Яго кнопкі запускаюць пры націсканні: {0}.</value></data>
+  <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Хуткая каманда профілю</value></data>
+  <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Выконвае тое, што робіць хуткая каманда профілю: загружае профіль з назвай, наступны або папярэдні, паказвае ці хавае акно, або выключае і ўключае віртуальныя кантролеры.</value></data>
+  <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>Хуткая каманда профілю: {0}</value></data>
+  <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>Зрух X</value></data>
+  <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>Зрух Y</value></data>
+  <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>Скінуць зрух X</value></data>
+  <data name="Macro_Reset_OffsetY" xml:space="preserve"><value>Скінуць зрух Y</value></data>
+  <data name="Macro_UntilNextPress" xml:space="preserve"><value>Да наступнага націскання</value></data>
+  <data name="Mapping_Between_Format" xml:space="preserve"><value>{0}, ад {1} да {2}%</value></data>
+  <data name="Mapping_Sector_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Mapping_Stage_Format" xml:space="preserve"><value>{0}: {1}, {2}, {3} мс</value></data>
+  <data name="Mapping_StageNoWait_Format" xml:space="preserve"><value>{0}: {1}, {2}</value></data>
+  <data name="Mapping_Stage_HairTrigger" xml:space="preserve"><value>Hair Trigger</value></data>
+  <data name="Mapping_Stage_HipFire" xml:space="preserve"><value>Hip Fire</value></data>
+  <data name="Mapping_Stage_HipFireExclusive" xml:space="preserve"><value>Hip Fire Exclusive</value></data>
+  <data name="Mapping_Stage_Soft" xml:space="preserve"><value>Мяккае націсканне</value></data>
+  <data name="Mapping_Stage_Full" xml:space="preserve"><value>Поўнае націсканне</value></data>
+  <data name="Import_NoteStarts_Format" xml:space="preserve"><value>Пры загрузцы ён запускае гэтую праграму: {0}.</value></data>
+  <data name="Import_Tr_HideController" xml:space="preserve"><value>reWASD схаваў гэты кантролер ад гульняў. Уключыце Хаваць ад гульняў для яго на старонцы Прылады.</value></data>
+  <data name="Import_Tr_NoSuchSetting" xml:space="preserve"><value>У PadForge няма такой налады: {0}</value></data>
+  <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD не пускаў рух мышы ў Windows. PadForge стрымлівае клавішы і кнопкі мышы, але не рух, таму ўказальнік усё роўна рухаецца.</value></data>
+  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>Віртуальныя кантролеры PadForge атрымліваюць рух толькі ад датчыка руху кантролера.</value></data>
+  <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows вяртаўся ў гэты профіль з {0} па кнопцы. Каб зрабіць так у PadForge, дадайце для гэтага профілю Спалучэнне для профіляў на старонцы Профілі.</value></data>
 </root>

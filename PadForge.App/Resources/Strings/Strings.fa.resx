@@ -4932,8 +4932,6 @@
   <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>آن فایل یک پروفایل PadForge، reWASD یا DS4Windows نیست.</value></data>
   <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>آن فایل یک نوع سند اعلام می‌کند که پروفایل هرگز به آن نیاز ندارد، بنابراین PadForge آن را نخواند.</value></data>
   <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>آن فایل در قالب reWASD موردپشتیبانی PadForge، یعنی طرح 3، نیست.</value></data>
-  <data name="Import_Tr_ProgramNotRun" xml:space="preserve"><value>کنار گذاشته شد تا یک پیکربندی اشتراکی نتواند برنامه‌ای را اجرا کند: {0}</value></data>
-  <data name="Import_Tr_SystemCommand" xml:space="preserve"><value>کنار گذاشته شد تا یک پیکربندی اشتراکی نتواند این کار را روی رایانه شما انجام دهد: {0}</value></data>
   <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>PadForge این ورودی را نمی‌شناسد: {0}</value></data>
   <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge این خروجی را نمی‌شناسد: {0}</value></data>
   <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge چنین فرمانی ندارد: {0}</value></data>
@@ -4941,29 +4939,41 @@
   <data name="Import_Tr_Crosshair" xml:space="preserve"><value>ضربدر نشانه‌گیری درون reWASD قرار دارد. تصویر خودتان را با اورلی صفحه‌نمایش نشان دهید.</value></data>
   <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>لرزش و تکان استیک منتقل نشد.</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>نقاط فعال‌سازی آنالوگ کلیدها منتقل نشد.</value></data>
-  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>ارسال به رایانه دیگر منتقل نشد. آن را با پیوند از راه دور تنظیم کنید.</value></data>
+  <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD این کنترلر را از طریق یک آداپتور به دستگاه دیگری می‌فرستاد. PadForge آن را روی همین رایانه اجرا می‌کند و پیوند از راه دور آن را به رایانه دیگری که PadForge روی آن اجرا می‌شود می‌فرستد.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge دو استیک را می‌خواند و این مورد استیک سومی را نام می‌برد.</value></data>
   <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>شبیه‌سازی فرمان منتقل نشد. فرمان را در زبانه نگاشت‌ها نگاشت کنید.</value></data>
-  <data name="Import_Tr_ProfileSwitch" xml:space="preserve"><value>یک کنش ویژه که پروفایل دیگری را بارگذاری می‌کند منتقل نشد: {0}</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>این پروفایل یک کنش ویژه را نام می‌برد که در Actions.xml کنار پوشه Profiles آن وجود ندارد: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>این تنظیم منتقل نشد: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD جلوی رسیدن این ورودی‌ها به ویندوز را می‌گرفت. مصرف ورودی‌های نگاشت‌شده را برای {0} در صفحه دستگاه‌ها روشن کنید تا ورودی‌هایی که این پروفایل نگاشت می‌کند مسدود شوند.</value></data>
-  <data name="Import_Tr_HeldAsTap" xml:space="preserve"><value>به‌جای نگه‌داشتن، ضربه می‌زند، چون ژست دیگری همین دکمه را به اشتراک می‌گذارد.</value></data>
-  <data name="Import_Tr_CurveFitted" xml:space="preserve"><value>منحنی {0} نقطه‌ای به نزدیک‌ترین منحنی توانی تبدیل شد.</value></data>
-  <data name="Import_Tr_CurveApproximated" xml:space="preserve"><value>منحنی {0} به نزدیک‌ترین منحنی توانی تبدیل شد.</value></data>
-  <data name="Import_Tr_ZoneOutward" xml:space="preserve"><value>از این ناحیه به سمت بیرون فعال می‌شود، نه فقط درون آن.</value></data>
-  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>به‌صورت یک لایه معمولی وارد شد.</value></data>
+  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>نگاشت‌های Base برای {0} در این لایه متوقف می‌شوند. وقتی مصرف ورودی‌های نگاشت‌شده روشن است، ورودی‌های نگاشت‌شده‌ی آن در همه لایه‌ها از Windows مسدود می‌مانند.</value></data>
   <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>زیرمنوهای آن به اسلات‌های بیشتری روی یک حلقه تبدیل شدند.</value></data>
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>وقتی استیک به مرکز برمی‌گردد یا لایه تمام می‌شود، انتخاب را ثبت می‌کند. دکمه اعمال در reWASD استفاده نمی‌شود.</value></data>
-  <data name="Import_Tr_RegionCentered" xml:space="preserve"><value>مکان‌نما در ناحیه‌ای هم‌اندازه در مرکز صفحه می‌ماند.</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>این فایل دو کنترلر را از هم جدا نگه می‌دارد. در PadForge، هر کنترلری روی اسلات، این نگاشت‌ها را اجرا می‌کند.</value></data>
-  <data name="Import_Tr_ToggleSameGesture" xml:space="preserve"><value>همان ژست آن را خاموش می‌کند. reWASD با یک بار فشردن آن را خاموش می‌کرد.</value></data>
-  <data name="Import_Tr_LedShownAs" xml:space="preserve"><value>نورپردازی {0} به نزدیک‌ترین حالت لایت‌بار تبدیل شد.</value></data>
-  <data name="Import_Tr_LoweredToKeys" xml:space="preserve"><value>به‌جای آن {0} را ارسال می‌کند.</value></data>
-  <data name="Import_Tr_StickAdded" xml:space="preserve"><value>استیک را روی این مقدار تنظیم می‌کند، نه اینکه آن را به موقعیت خود استیک اضافه کند.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>سرعت حرکت یا فلیک منتقل نشد.</value></data>
-  <data name="Import_Tr_HipFire" xml:space="preserve"><value>کشش نرم و کامل کار می‌کنند، بدون {0} میلی‌ثانیه انتظار پیش از کشش نرم.</value></data>
-  <data name="Import_Tr_MaxOutput" xml:space="preserve"><value>خروجی را به {0} درصد مقیاس می‌دهد، نه اینکه آن را محدود کند.</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>این موارد منتقل نشدند. آن‌ها را در زبانه تاچ‌پد تنظیم کنید.</value></data>
   <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>هیچ چیز در این فایل این لایه را باز نمی‌کند. در زبانه نگاشت‌ها یک دکمه به آن بدهید.</value></data>
+  <data name="Import_NoteRuns_Format" xml:space="preserve"><value>دکمه‌های آن هنگام فشردن این موارد را اجرا می‌کنند: {0}.</value></data>
+  <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>میانبر پروفایل</value></data>
+  <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>همان کار میانبر پروفایل را انجام می‌دهد: پروفایلی با نام مشخص، بعدی یا قبلی را بارگذاری می‌کند، پنجره را نشان می‌دهد یا پنهان می‌کند، یا کنترلرهای مجازی را خاموش و روشن می‌کند.</value></data>
+  <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>میانبر پروفایل: {0}</value></data>
+  <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>انحراف X</value></data>
+  <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>انحراف Y</value></data>
+  <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>بازنشانی انحراف X</value></data>
+  <data name="Macro_Reset_OffsetY" xml:space="preserve"><value>بازنشانی انحراف Y</value></data>
+  <data name="Macro_UntilNextPress" xml:space="preserve"><value>تا فشردن بعدی</value></data>
+  <data name="Mapping_Between_Format" xml:space="preserve"><value>{0}، {1} تا {2}%</value></data>
+  <data name="Mapping_Sector_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Mapping_Stage_Format" xml:space="preserve"><value>{0}: {1}، {2}، {3} میلی‌ثانیه</value></data>
+  <data name="Mapping_StageNoWait_Format" xml:space="preserve"><value>{0}: {1}، {2}</value></data>
+  <data name="Mapping_Stage_HairTrigger" xml:space="preserve"><value>هیر تریگر</value></data>
+  <data name="Mapping_Stage_HipFire" xml:space="preserve"><value>هیپ فایر</value></data>
+  <data name="Mapping_Stage_HipFireExclusive" xml:space="preserve"><value>هیپ فایر انحصاری</value></data>
+  <data name="Mapping_Stage_Soft" xml:space="preserve"><value>کشش نرم</value></data>
+  <data name="Mapping_Stage_Full" xml:space="preserve"><value>کشش کامل</value></data>
+  <data name="Import_NoteStarts_Format" xml:space="preserve"><value>هنگام بارگذاری، این برنامه را اجرا می‌کند: {0}.</value></data>
+  <data name="Import_Tr_HideController" xml:space="preserve"><value>reWASD این کنترلر را از بازی‌ها پنهان کرده بود. پنهان کردن از بازی‌ها را برای آن در صفحه دستگاه‌ها روشن کنید.</value></data>
+  <data name="Import_Tr_NoSuchSetting" xml:space="preserve"><value>PadForge چنین تنظیمی ندارد: {0}</value></data>
+  <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD جلوی رسیدن حرکت ماوس به Windows را می‌گرفت. PadForge کلیدها و دکمه‌های ماوس را مسدود می‌کند اما حرکت را نه، بنابراین اشاره‌گر همچنان حرکت می‌کند.</value></data>
+  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>کنترلرهای مجازی PadForge حرکت را فقط از حسگر حرکت یک کنترلر دریافت می‌کنند.</value></data>
+  <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows با یک دکمه از {0} به این پروفایل برمی‌گشت. برای انجام همین کار در PadForge، یک میانبر پروفایل برای این پروفایل در صفحه پروفایل‌ها اضافه کنید.</value></data>
 </root>

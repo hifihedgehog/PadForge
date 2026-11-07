@@ -866,7 +866,7 @@ namespace PadForge.Engine
             effect.condition.type = (ushort)SDL_HAPTIC_SPRING;
             // CARTESIAN +X, not STEERING_AXIS. SDL encodes STEERING_AXIS as
             // DIEFF_CARTESIAN with a ZERO direction vector
-            // (SDL_dinputhaptic.c:567-570), and Moza is the vendor Linux had
+            // (SDL_dinputhaptic.c:578-581), and Moza is the vendor Linux had
             // to special-case for exactly that on CONDITION effects:
             // HID_PIDFF_QUIRK_FIX_CONDITIONAL_DIRECTION (hid-pidff.h:18-19)
             // discards the caller's direction and forces the fixed +X wheel

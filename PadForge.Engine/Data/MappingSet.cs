@@ -224,6 +224,11 @@ namespace PadForge.Engine.Data
         /// empty then full, written <c>r,g,b;r,g,b</c>. Empty means none.</summary>
         [XmlAttribute] public string WorkshopBatteryColors { get; set; } = "";
 
+        /// <summary>A gyro dead zone in degrees per second, as text (#561),
+        /// for the Gyro tab of whichever device lands on the slot. Empty
+        /// means none.</summary>
+        [XmlAttribute] public string WorkshopGyroDeadZone { get; set; } = "";
+
         /// <summary>Steam gyro_button as a device-free engage descriptor
         /// (empty DeviceGuid contract): gyro rows fire only while it is
         /// held. Only read when <see cref="Authoritative"/>.</summary>
@@ -283,6 +288,7 @@ namespace PadForge.Engine.Data
             dst.WorkshopRumblePercent = WorkshopRumblePercent ?? "";
             dst.WorkshopIdleDisconnectSeconds = WorkshopIdleDisconnectSeconds ?? "";
             dst.WorkshopBatteryColors = WorkshopBatteryColors ?? "";
+            dst.WorkshopGyroDeadZone = WorkshopGyroDeadZone ?? "";
             dst.WorkshopLeftStickDeadZoneShape = WorkshopLeftStickDeadZoneShape ?? "";
             dst.WorkshopRightStickDeadZoneShape = WorkshopRightStickDeadZoneShape ?? "";
             dst.WorkshopGyroEngageDescriptor = WorkshopGyroEngageDescriptor ?? "";

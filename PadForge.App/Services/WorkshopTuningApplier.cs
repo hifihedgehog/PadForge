@@ -203,6 +203,17 @@ namespace PadForge.Services
                 }
                 set.WorkshopRumblePercent = "";
             }
+            if (!string.IsNullOrEmpty(set.WorkshopGyroDeadZone))
+            {
+                // Over the default only, as the rumble: a dead zone the user
+                // set on the Gyro tab stays.
+                if (string.IsNullOrEmpty(ps.GyroDeadZoneDegPerSec) || ps.GyroDeadZoneDegPerSec == DefaultGyroDeadZone)
+                {
+                    ps.GyroDeadZoneDegPerSec = set.WorkshopGyroDeadZone;
+                    changed = true;
+                }
+                set.WorkshopGyroDeadZone = "";
+            }
             if (!string.IsNullOrEmpty(set.WorkshopIdleDisconnectSeconds))
             {
                 if (Guid.TryParse(deviceGuid, out var guid)
@@ -612,6 +623,8 @@ namespace PadForge.Services
         /// <summary>True when a percent field still holds the given default,
         /// i.e. the user has not chosen a value. An unparseable or empty
         /// field counts as the default, matching how Step3 reads it.</summary>
+        private static readonly string DefaultGyroDeadZone = new PadSetting().GyroDeadZoneDegPerSec;
+
         private static bool IsPercent(string stored, double expected)
         {
             if (string.IsNullOrWhiteSpace(stored)) return true;

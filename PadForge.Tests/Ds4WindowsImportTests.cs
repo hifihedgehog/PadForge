@@ -730,9 +730,7 @@ namespace PadForge.Tests
         [Theory]
         [InlineData("LSAntiSnapback", "True", true)]
         [InlineData("RSAntiSnapback", "True", true)]
-        [InlineData("TouchpadButtonMode", "None", false)]
-        [InlineData("TouchDisInvTriggers", "4", false)]
-        [InlineData("touchToggle", "False", false)]
+        [InlineData("TouchpadButtonMode", "Release", false)]
         [InlineData("TrackballMode", "True", true)]
         [InlineData("flashBatteryAt", "20", true)]
         [InlineData("ChargingType", "3", true)]
@@ -771,10 +769,10 @@ namespace PadForge.Tests
         [Fact]
         public void TheGyroSettingsOfAModeInUse_AreNamed_AndOfOneNotInUse_AreNot()
         {
-            Assert.Contains(Import("<GyroOutputMode>Mouse</GyroOutputMode><GyroMouseDeadZone>20</GyroMouseDeadZone>").Report.Entries,
-                e => e.ReasonArgs.Contains("GyroMouseDeadZone"));
-            Assert.DoesNotContain(Import("<GyroOutputMode>Controls</GyroOutputMode><GyroMouseDeadZone>20</GyroMouseDeadZone>").Report.Entries,
-                e => e.ReasonArgs.Contains("GyroMouseDeadZone"));
+            Assert.Contains(Import("<GyroOutputMode>Mouse</GyroOutputMode><GyroMouseMinThreshold>3</GyroMouseMinThreshold>").Report.Entries,
+                e => e.ReasonArgs.Contains("GyroMouseMinThreshold"));
+            Assert.DoesNotContain(Import("<GyroOutputMode>Controls</GyroOutputMode><GyroMouseMinThreshold>3</GyroMouseMinThreshold>").Report.Entries,
+                e => e.ReasonArgs.Contains("GyroMouseMinThreshold"));
             Assert.Contains(Import("<GyroOutputMode>MouseJoystick</GyroOutputMode><GyroMouseStickMaxOutputEnabled>True</GyroMouseStickMaxOutputEnabled>").Report.Entries,
                 e => e.ReasonArgs.Contains("GyroMouseStickMaxOutputEnabled"));
         }
@@ -1561,6 +1559,104 @@ namespace PadForge.Tests
             Assert.Equal(SwitchProfileMode.Specific, a.ProfileShortcutMode);
             Assert.Equal("Other", a.ProfileShortcutName);
             Assert.Equal(0, r.Report.PartialCount + r.Report.SkippedCount);
+        }
+
+        [Fact]
+        public void GyroAsStick_TakesDs4WindowsZones_InPadForgeUnits()
+        {
+            // Mouse.cs SixMouseStick with the defaults: full at 830 counts,
+            // 16 to a degree per second, so 51.875 of PadForge's 500; a 0.4
+            // floor; a 30-count dead zone, 1.875 degrees per second.
+            var r = Import("<GyroOutputMode>MouseJoystick</GyroOutputMode><GyroMouseStickOutputStick>RightStick</GyroMouseStickOutputStick>");
+            var x = Row(r.Profile, "RightThumbAxisX").Sources.Single(s => s.Descriptor == "Gyro Yaw");
+            var y = Row(r.Profile, "RightThumbAxisY").Sources.Single(s => s.Descriptor == "Gyro Pitch");
+            Assert.Equal(830 / 16.0 / 500.0, x.ParamRangeOuter, 6);
+            Assert.Equal(830 / 16.0 / 500.0, y.ParamRangeOuter, 6);
+            Assert.Equal(0.4, x.ParamAntiDeadzone, 6);
+            Assert.Equal(0.4, y.ParamAntiDeadzone, 6);
+            Assert.Equal("1.875", r.Profile.SlotMappingSets[0].WorkshopGyroDeadZone);
+            Assert.DoesNotContain(r.Report.Entries, e => e.ReasonKey == ImportReasons.ControllerSetting);
+
+            var tuned = Import("<GyroOutputMode>MouseJoystick</GyroOutputMode><GyroMouseStickDeadZone>48</GyroMouseStickDeadZone>"
+                + "<GyroMouseStickMaxZone>1600</GyroMouseStickMaxZone><GyroMouseStickAntiDeadX>0.25</GyroMouseStickAntiDeadX>");
+            var tx = Row(tuned.Profile, "RightThumbAxisX").Sources.Single(s => s.Descriptor == "Gyro Yaw");
+            Assert.Equal(1600 / 16.0 / 500.0, tx.ParamRangeOuter, 6);
+            Assert.Equal(0.25, tx.ParamAntiDeadzone, 6);
+            Assert.Equal("3", tuned.Profile.SlotMappingSets[0].WorkshopGyroDeadZone);
+        }
+
+        [Fact]
+        public void GyroAsMouse_CarriesItsDeadZone()
+        {
+            // MouseCursor.cs GYRO_MOUSE_DEADZONE 10 counts, 0.625 degrees per second.
+            var r = Import("<GyroOutputMode>Mouse</GyroOutputMode>");
+            Assert.Equal("0.625", r.Profile.SlotMappingSets[0].WorkshopGyroDeadZone);
+            Assert.Equal("1.25", Import("<GyroOutputMode>Mouse</GyroOutputMode><GyroMouseDeadZone>20</GyroMouseDeadZone>")
+                .Profile.SlotMappingSets[0].WorkshopGyroDeadZone);
+        }
+
+        private static bool ReadsTouch(MappingRow row)
+            => row != null && row.Sources.Any(s => s.Descriptor.StartsWith("Touchpad 0", StringComparison.Ordinal));
+
+        [Fact]
+        public void TouchToggle_IsAToggleLayerOnPsAndATouch()
+        {
+            // ControlService.CheckForTouchToggle: on in every profile unless
+            // the profile turns it off.
+            var p = Profile("<TouchpadOutputMode>Mouse</TouchpadOutputMode>");
+            var act = Assert.Single(p.SlotMappingSets[0].ShiftActivators, a => a.Mode == "Toggle");
+            Assert.Equal("Touchpad 0 Finger 0 Down", act.ChordSecondDescriptor);
+            Assert.True(ReadsTouch(Row(p, "KbmMouseX")));
+            var off = Row(p, "KbmMouseX", act.LayerMask);
+            Assert.NotNull(off);
+            Assert.False(ReadsTouch(off));
+        }
+
+        [Fact]
+        public void TouchpadThatStartsOff_MovesOnlyOnTheToggleLayer()
+        {
+            var p = Profile("<TouchpadOutputMode>Mouse</TouchpadOutputMode><StartTouchpadOff>True</StartTouchpadOff>");
+            var act = Assert.Single(p.SlotMappingSets[0].ShiftActivators, a => a.Mode == "Toggle");
+            Assert.False(ReadsTouch(Row(p, "KbmMouseX")));
+            Assert.True(ReadsTouch(Row(p, "KbmMouseX", act.LayerMask)));
+        }
+
+        [Fact]
+        public void TouchToggleOff_AddsNoLayer_AndNothingSaysSo()
+        {
+            var r = Import("<TouchpadOutputMode>Mouse</TouchpadOutputMode><touchToggle>False</touchToggle>");
+            Assert.DoesNotContain(r.Profile.SlotMappingSets[0].ShiftActivators, a => a.Mode == "Toggle");
+            Assert.True(ReadsTouch(Row(r.Profile, "KbmMouseX")));
+            Assert.DoesNotContain(r.Report.Entries, e => e.ReasonArgs.Contains("touchToggle"));
+        }
+
+        [Fact]
+        public void DisableInvertTriggers_HoldALayerThatDropsTheInversion()
+        {
+            // Mouse.cs touchesMoved: while Cross is held the inversion is off.
+            var p = Profile("<TouchpadOutputMode>Mouse</TouchpadOutputMode><TouchpadInvert>3</TouchpadInvert><TouchDisInvTriggers>0</TouchDisInvTriggers>");
+            var hold = Assert.Single(p.SlotMappingSets[0].ShiftActivators, a => a.Mode == "Hold");
+            Assert.True(Row(p, "KbmMouseX").Sources.First(s => s.Descriptor == "Touchpad 0 Finger 0 X").Invert);
+            Assert.False(Row(p, "KbmMouseX", hold.LayerMask).Sources.First(s => s.Descriptor == "Touchpad 0 Finger 0 X").Invert);
+            // With nothing inverted the triggers change nothing.
+            var r = Import("<TouchpadOutputMode>Mouse</TouchpadOutputMode><TouchDisInvTriggers>0</TouchDisInvTriggers>");
+            Assert.DoesNotContain(r.Profile.SlotMappingSets[0].ShiftActivators, a => a.Mode == "Hold");
+            Assert.DoesNotContain(r.Report.Entries, e => e.ReasonArgs.Contains("TouchDisInvTriggers"));
+        }
+
+        [Fact]
+        public void TouchButtonMode_Touch_ReadsTheRegionsWithoutAClick()
+        {
+            var p = Profile("<TouchpadOutputMode>Mouse</TouchpadOutputMode><TouchpadButtonMode>Touch</TouchpadButtonMode>");
+            Assert.Contains(p.SlotMappingSets.SelectMany(s => s.Rows).SelectMany(r => r.Sources), s => s.Descriptor == "Touchpad 0 Finger 0 Down Left");
+            Assert.DoesNotContain(p.SlotMappingSets.SelectMany(s => s.Rows).SelectMany(r => r.Sources), s => s.Descriptor == "Touchpad 0 Click Left");
+        }
+
+        [Fact]
+        public void ButtonMouseAcceleration_SaysPadForgeHasNoSuchSetting()
+        {
+            var r = Import("<MouseAcceleration>True</MouseAcceleration>");
+            Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.NoSuchSetting && e.ReasonArgs.Contains("MouseAcceleration"));
         }
 
         [Fact]

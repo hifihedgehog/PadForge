@@ -432,20 +432,22 @@ namespace PadForge.Common.ConfigImport
                 case "GyroSwipeRight": return Half(SwipeAxisX(), true, SwipeThreshold("DeadZoneX"));
                 case "GyroSwipeUp": return Half("Gyro Pitch", false, SwipeThreshold("DeadZoneY"));
                 case "GyroSwipeDown": return Half("Gyro Pitch", true, SwipeThreshold("DeadZoneY"));
-                case "TouchLeft": return Btn("Touchpad 0 Click Left");
-                case "TouchRight": return Btn("Touchpad 0 Click Right");
-                // Mouse.cs sets these regions on the click, where PadForge's two
-                // spots read the touch, so the click gates them.
+                // Mouse.cs TouchButtonCheckProcess sets these regions on the
+                // click, or on the touch alone in Touch button mode.
+                case "TouchLeft": return Btn(RegionsByTouch ? "Touchpad 0 Finger 0 Down Left" : "Touchpad 0 Click Left");
+                case "TouchRight": return Btn(RegionsByTouch ? "Touchpad 0 Finger 0 Down Right" : "Touchpad 0 Click Right");
+                // PadForge's two spots read the touch, so the click gates them
+                // unless the regions answer the touch.
                 case "TouchUpper":
                 {
                     var top = Btn("Touchpad 0 TouchTop");
-                    top.Gate = "Touchpad 0 Click";
+                    if (!RegionsByTouch) top.Gate = "Touchpad 0 Click";
                     return top;
                 }
                 case "TouchMulti":
                 {
                     var multi = Btn("Touchpad 0 TouchMulti");
-                    multi.Gate = "Touchpad 0 Click";
+                    if (!RegionsByTouch) multi.Gate = "Touchpad 0 Click";
                     return multi;
                 }
                 // DS4StateFieldMapping reads these true on the one frame a touch
@@ -1286,6 +1288,17 @@ namespace PadForge.Common.ConfigImport
                 _b.Partial(ImportReasons.ControllerSetting, "Gyro", "Triggers", first, "Gyro triggers");
         }
 
+        /// <summary>DS4Sixaxis GYRO_RES_IN_DEG_SEC: the raw counts DS4Windows'
+        /// gyro zones are written in, per degree per second.</summary>
+        private const double GyroCountsPerDegree = 16;
+
+        /// <summary>PadForge's gyro reaches full deflection at 500 degrees per
+        /// second (SourceCoercion.GyroScale).</summary>
+        private const double GyroFullScaleDegrees = 500;
+
+        private static string GyroDegrees(double counts)
+            => (Math.Max(0, counts) / GyroCountsPerDegree).ToString("0.###", CultureInfo.InvariantCulture);
+
         private void ReadGyro()
         {
             string mode = _gyroMode;
@@ -1303,6 +1316,8 @@ namespace PadForge.Common.ConfigImport
                         new MappingSource { Descriptor = yaw, GyroSensitivity = sensitivity, Invert = (invert & 2) != 0 }, 0);
                     _b.Bind(ImportBuilder.BaseLayer, "ds:gyro:y", "KbmMouseY",
                         new MappingSource { Descriptor = "Gyro Pitch", GyroSensitivity = sensitivity * vertical, Invert = (invert & 1) != 0 }, 0);
+                    // MouseCursor.cs subtracts its dead zone from the raw counts.
+                    _b.GyroDeadZone = GyroDegrees(Num("GyroMouseDeadZone", 10));
                     _b.Clean("Gyro", "Mouse", "KbmMouseX, KbmMouseY");
                     break;
                 }
@@ -1317,12 +1332,21 @@ namespace PadForge.Common.ConfigImport
                     ApplyGyroEngage(Text("GyroMouseStickTriggers"), IsTrue(_root, "GyroMouseStickTriggerTurns", true), IsTrue("GyroMouseStickToggle"));
                     string axes = Text("GyroMouseStickOutputStickAxes");
                     string stickYaw = (int)Num("GyroMouseStickHAxis", 0) == 1 ? "Gyro Roll" : "Gyro Yaw";
+                    // Mouse.cs SixMouseStick: past the dead zone the stick is
+                    // full at the max zone, both in raw counts, and the
+                    // anti-dead zone floors any movement. PadForge's gyro is
+                    // full at 500 degrees per second, so the outer range is
+                    // the max zone over that.
+                    double outer = Math.Clamp(Math.Max(1, Num("GyroMouseStickMaxZone", 830)) / GyroCountsPerDegree / GyroFullScaleDegrees, 0.001, 0.99);
+                    double antiX = Math.Clamp(Num("GyroMouseStickAntiDeadX", 0.4), 0.0, 0.99);
+                    double antiY = Math.Clamp(Num("GyroMouseStickAntiDeadY", 0.4), 0.0, 0.99);
+                    _b.GyroDeadZone = GyroDegrees(Num("GyroMouseStickDeadZone", 30));
                     if (!string.Equals(axes, "YOnly", StringComparison.OrdinalIgnoreCase))
                         _b.Bind(ImportBuilder.BaseLayer, "ds:gyro:x", side + "ThumbAxisX",
-                            new MappingSource { Descriptor = stickYaw, Invert = (stickInvert & 1) != 0 }, PadId);
+                            new MappingSource { Descriptor = stickYaw, Invert = (stickInvert & 1) != 0, ParamRangeOuter = outer, ParamAntiDeadzone = antiX }, PadId);
                     if (!string.Equals(axes, "XOnly", StringComparison.OrdinalIgnoreCase))
                         _b.Bind(ImportBuilder.BaseLayer, "ds:gyro:y", side + "ThumbAxisY",
-                            new MappingSource { Descriptor = "Gyro Pitch", GyroSensitivity = stickVertical, Invert = (stickInvert & 2) != 0 }, PadId);
+                            new MappingSource { Descriptor = "Gyro Pitch", GyroSensitivity = stickVertical, Invert = (stickInvert & 2) != 0, ParamRangeOuter = outer, ParamAntiDeadzone = antiY }, PadId);
                     _b.Clean("Gyro", "Mouse joystick", side + "ThumbAxis");
                     break;
                 }
@@ -1354,6 +1378,82 @@ namespace PadForge.Common.ConfigImport
         }
 
         // ── Touchpad ────────────────────────────────────────────────────
+
+        /// <summary>TouchpadButtonMode Touch: the touchpad's click regions fire
+        /// on a touch, no click needed.</summary>
+        private bool RegionsByTouch => string.Equals(Text("TouchpadButtonMode"), "Touch", StringComparison.OrdinalIgnoreCase);
+
+        /// <summary>One past DS4Windows' shift triggers, so these layers never
+        /// meet a shift layer's mask.</summary>
+        private string TouchLayerMask(int offset) => "Shift" + (ShiftTriggers.Length + offset);
+
+        /// <summary>ControlService.CheckForTouchToggle: a touch while PS is
+        /// held turns touchpad movement off and on, in every mode but
+        /// Controls, and StartTouchpadOff starts it off. A toggle layer on
+        /// that chord carries both: the movement stops on it, or lives only
+        /// on it when the touchpad starts off.</summary>
+        private void ApplyTouchToggle()
+        {
+            if (_touchMode is not ("Mouse" or "MouseJoystick" or "AbsoluteMouse")) return;
+            bool toggles = IsTrue(_root, "touchToggle", true);
+            bool startsOff = IsTrue("StartTouchpadOff");
+            var controls = new[] { "ds:tp:x", "ds:tp:y" };
+            if (!toggles)
+            {
+                // Off from the start with no way to turn it on.
+                if (startsOff)
+                {
+                    foreach (string c in controls) _b.Remove(ImportBuilder.BaseLayer, c);
+                    _b.Clean("Touchpad", "Starts off", "");
+                }
+                return;
+            }
+            var ps = ControlInput("PS");
+            if (ps == null) return;
+            var touch = new ImportInput { Control = "ds:Touch", Label = "Touch", Descriptor = "Touchpad 0 Finger 0 Down" };
+            string mask = TouchLayerMask(0);
+            string name = string.Format(CultureInfo.CurrentCulture, Strings.Instance.Import_ShiftLayerName_Format, "PS + Touch");
+            _b.AddLayer(mask, name);
+            _b.AddActivator(ImportBuilder.ActivatorFor(new[] { ps, touch }, "Toggle", mask));
+            foreach (string c in controls)
+            {
+                if (startsOff) _b.MoveBindings(c, ImportBuilder.BaseLayer, mask);
+                else _b.Remove(mask, c);
+            }
+            _b.Clean(name, "PS + Touch", startsOff ? "Toggle, starts off" : "Toggle");
+        }
+
+        /// <summary>Mouse.cs touchesMoved: while every TouchDisInvTriggers
+        /// control is held, the touchpad's inversion is off. A hold layer on
+        /// that chord carries the movement uninverted. With no inversion set
+        /// it changes nothing.</summary>
+        private void ApplyTouchDisInvert(int invert)
+        {
+            var list = (Text("TouchDisInvTriggers") ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries)
+                .Select(s => int.TryParse(s.Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int v) ? v : -1)
+                .Where(v => v >= 0)
+                .ToList();
+            if (list.Count == 0 || invert == 0 || _touchMode != "Mouse" || IsTrue("StartTouchpadOff")) return;
+            var inputs = new List<ImportInput>();
+            foreach (int index in list)
+            {
+                string descriptor = GyroTriggerDescriptor(index);
+                if (descriptor == null) { inputs = null; break; }
+                inputs.Add(new ImportInput { Control = "ds:disinv:" + index, Label = descriptor, Descriptor = descriptor });
+            }
+            if (inputs == null || inputs.Count > 3)
+            {
+                _b.Partial(ImportReasons.ControllerSetting, "Touchpad", "", "", "TouchDisInvTriggers");
+                return;
+            }
+            string mask = TouchLayerMask(1);
+            string name = string.Format(CultureInfo.CurrentCulture, Strings.Instance.Import_ShiftLayerName_Format, string.Join(" + ", inputs.Select(i => i.Label)));
+            _b.AddLayer(mask, name);
+            _b.AddActivator(ImportBuilder.ActivatorFor(inputs, "Hold", mask));
+            foreach (string c in new[] { "ds:tp:x", "ds:tp:y" })
+                _b.CopyBindings(c, ImportBuilder.BaseLayer, mask, s => s.Invert = false);
+            _b.Clean(name, "Touchpad inversion off", "Hold");
+        }
 
         private void ReadTouchpad()
         {
@@ -1427,6 +1527,8 @@ namespace PadForge.Common.ConfigImport
                     break;
                 }
             }
+            ApplyTouchToggle();
+            ApplyTouchDisInvert(invert);
         }
 
         private void BindRegionDefault(string name, ImportOutput output)
@@ -1569,8 +1671,9 @@ namespace PadForge.Common.ConfigImport
             // trackball, no low-battery flash and no charging light.
             const string None = ImportReasons.NoSuchSetting;
             Note("RumbleAutostopTime", v => v != "0", None);
-            Note("StartTouchpadOff", v => v == "True", None);
-            Note("MouseAcceleration", v => v == "True");
+            // The movement modes carry it as the touch toggle's layer.
+            Note("StartTouchpadOff", v => v == "True" && _touchMode is not ("Mouse" or "MouseJoystick" or "AbsoluteMouse"));
+            Note("MouseAcceleration", v => v == "True", None);
             Note("ButtonMouseSensitivity", v => v != "25", None);
             Note("LSFuzz", v => v != "0", None);
             Note("RSFuzz", v => v != "0", None);
@@ -1578,9 +1681,7 @@ namespace PadForge.Common.ConfigImport
             Note("RSSquareStick", v => v == "True", None);
             Note("LSAntiSnapback", v => v == "True", None);
             Note("RSAntiSnapback", v => v == "True", None);
-            Note("TouchpadButtonMode", v => v != "Click");
-            Note("TouchDisInvTriggers", v => v != "-1");
-            Note("touchToggle", v => v == "False");
+            Note("TouchpadButtonMode", v => v == "Release");
             Note("TrackballMode", v => v == "True", None);
             Note("TouchRelMouseRotation", v => v != "0");
             Note("TouchRelMouseMinThreshold", v => v != "1");
@@ -1594,16 +1695,11 @@ namespace PadForge.Common.ConfigImport
             }
             if (_gyroMode == "Mouse")
             {
-                Note("GyroMouseDeadZone", v => v != "10");
                 Note("GyroMouseMinThreshold", v => v != "1");
                 Note("SATriggerCond", v => v != "and");
             }
             if (_gyroMode == "MouseJoystick")
             {
-                Note("GyroMouseStickDeadZone", v => v != "30");
-                Note("GyroMouseStickMaxZone", v => v != "830");
-                Note("GyroMouseStickAntiDeadX", v => v != "0.4");
-                Note("GyroMouseStickAntiDeadY", v => v != "0.4");
                 Note("GyroMouseStickMaxOutputEnabled", v => v == "True");
                 Note("GyroMouseStickTriggerCond", v => v != "and");
             }

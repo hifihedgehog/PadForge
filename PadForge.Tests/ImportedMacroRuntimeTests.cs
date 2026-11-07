@@ -673,6 +673,17 @@ namespace PadForge.Tests
                 var tuned = new PadSetting { LeftMotorStrength = "70" };
                 WorkshopTuningApplier.ApplyToAssignedDevice(0, tuned);
                 Assert.Equal("70", tuned.LeftMotorStrength);
+
+                // The gyro dead zone folds the same way.
+                sets[0].WorkshopGyroDeadZone = "1.875";
+                var gyro = new PadSetting();
+                Assert.True(WorkshopTuningApplier.ApplyToAssignedDevice(0, gyro));
+                Assert.Equal("1.875", gyro.GyroDeadZoneDegPerSec);
+                Assert.Equal("", sets[0].WorkshopGyroDeadZone);
+                sets[0].WorkshopGyroDeadZone = "1.875";
+                var ownGyro = new PadSetting { GyroDeadZoneDegPerSec = "5" };
+                WorkshopTuningApplier.ApplyToAssignedDevice(0, ownGyro);
+                Assert.Equal("5", ownGyro.GyroDeadZoneDegPerSec);
             }
             finally
             {

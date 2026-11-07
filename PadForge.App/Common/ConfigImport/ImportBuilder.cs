@@ -513,6 +513,10 @@ namespace PadForge.Common.ConfigImport
         /// profile is loaded.</summary>
         public bool EnableDsu { get; set; }
 
+        /// <summary>The gyro dead zone in degrees per second, as text, for
+        /// whichever device lands on the slot. Empty means none.</summary>
+        public string GyroDeadZone { get; set; } = "";
+
         /// <summary>The battery light's empty and full colors,
         /// "r,g,b;r,g,b", or empty.</summary>
         public string BatteryColors { get; set; } = "";
@@ -701,6 +705,25 @@ namespace PadForge.Common.ConfigImport
         }
 
         public bool HasLayer(string mask) => mask == BaseLayer || _layers.Any(l => l.Mask == mask);
+
+        /// <summary>Moves what an input does from one layer to another.</summary>
+        public void MoveBindings(string control, string fromLayer, string toLayer)
+        {
+            foreach (var b in _bindings.Where(b => b.Layer == fromLayer && b.Control == control))
+                b.Layer = toLayer;
+        }
+
+        /// <summary>Copies what an input does on one layer onto another,
+        /// each source changed as given.</summary>
+        public void CopyBindings(string control, string fromLayer, string toLayer, Action<MappingSource> change)
+        {
+            foreach (var b in _bindings.Where(b => b.Layer == fromLayer && b.Control == control).ToList())
+            {
+                var src = b.Source.Clone();
+                change(src);
+                _bindings.Add(new Binding { Layer = toLayer, Control = b.Control, Target = b.Target, PadId = b.PadId, Source = src });
+            }
+        }
 
         /// <summary>A key or button the file stops reaching Windows. Consume
         /// Mapped Inputs holds back one a row reads already. One no row reads
@@ -1123,6 +1146,7 @@ namespace PadForge.Common.ConfigImport
                 sets[i].WorkshopRumblePercent = RumblePercent ?? "";
                 sets[i].WorkshopIdleDisconnectSeconds = IdleDisconnectSeconds ?? "";
                 sets[i].WorkshopBatteryColors = BatteryColors ?? "";
+                sets[i].WorkshopGyroDeadZone = GyroDeadZone ?? "";
             }
 
             // Unclaimed slots stay non-authoritative, so a slot the user

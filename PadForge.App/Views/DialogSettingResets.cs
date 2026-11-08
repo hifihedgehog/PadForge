@@ -60,7 +60,7 @@ namespace PadForge.Views
 
     public partial class KeyboardScreenDialog
     {
-        /// <summary>Back to the light bar's color, the default (#519).</summary>
+        /// <summary>Back to the lightbar's color, the default (#519).</summary>
         private void ResetMode_Click(object sender, RoutedEventArgs e)
             => ModeBox.SelectedIndex = (int)PadForge.Services.KeyboardScreenData.DefaultMode;
 

@@ -23,6 +23,7 @@ namespace PadForge.Common.ConfigImport
         public const string UnknownOutput = "Import_Tr_UnknownOutput";
         public const string UnknownCommand = "Import_Tr_UnknownCommand";
         public const string NoSuchPadButton = "Import_Tr_NoSuchPadButton";
+        public const string MacroCannotPress = "Import_Tr_MacroCannotPress";
         public const string Crosshair = "Import_Tr_Crosshair";
         public const string JitterShaking = "Import_Tr_JitterShaking";
         public const string AnalogActuation = "Import_Tr_AnalogActuation";
@@ -35,17 +36,28 @@ namespace PadForge.Common.ConfigImport
 
         // Partial lines.
         public const string ConsumeKeys = "Import_Tr_ConsumeKeys";
+        public const string MappedKeyHeldBack = "Import_Tr_MappedKeyHeldBack";
         public const string HideController = "Import_Tr_HideController";
         public const string MouseMovement = "Import_Tr_MouseMovement";
         public const string MotionOutput = "Import_Tr_MotionOutput";
         public const string UnloadTrigger = "Import_Tr_UnloadTrigger";
-        public const string UnlockLayer = "Import_Tr_UnlockLayer";
         public const string RadialFlattened = "Import_Tr_RadialFlattened";
         public const string RadialMenu = "Import_Tr_RadialMenu";
         public const string SharedControllers = "Import_Tr_SharedControllers";
         public const string MoveSpeed = "Import_Tr_MoveSpeed";
         public const string TouchpadShape = "Import_Tr_TouchpadShape";
         public const string LayerNoInput = "Import_Tr_LayerNoInput";
+        public const string NinthCrosshair = "Import_Tr_NinthCrosshair";
+        public const string GyroAxes = "Import_Tr_GyroAxes";
+        public const string TiltLean = "Import_Tr_TiltLean";
+        public const string TouchpadDiagonal = "Import_Tr_TouchpadDiagonal";
+        public const string GyroZone = "Import_Tr_GyroZone";
+        public const string AbsoluteMouse = "Import_Tr_AbsoluteMouse";
+        public const string StickBeforeRotation = "Import_Tr_StickBeforeRotation";
+        public const string StickBeforeCurve = "Import_Tr_StickBeforeCurve";
+        public const string StickRotation = "Import_Tr_StickRotation";
+        public const string StickByAngle = "Import_Tr_StickByAngle";
+        public const string CurveOnRows = "Import_Tr_CurveOnRows";
     }
 
     /// <summary>What an import came to: a profile and its report, or the

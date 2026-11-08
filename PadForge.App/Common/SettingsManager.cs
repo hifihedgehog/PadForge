@@ -37,6 +37,21 @@ namespace PadForge.Common.Input
         /// <summary>All saved profiles. Empty list = no profiles configured.</summary>
         public static List<ProfileData> Profiles { get; set; } = new();
 
+        /// <summary>The name a new profile takes: its own, trimmed, or
+        /// "Imported profile" when it has none, then the first "name (n)" from
+        /// 2 up that no profile has, compared without case. Every import and
+        /// the import preview use it, so the preview names the profile the
+        /// import adds.</summary>
+        internal static string UniqueProfileName(string name)
+        {
+            string baseName = string.IsNullOrWhiteSpace(name) ? "Imported profile" : name.Trim();
+            string unique = baseName;
+            int n = 2;
+            while (Profiles.Any(p => string.Equals(p.Name, unique, System.StringComparison.OrdinalIgnoreCase)))
+                unique = $"{baseName} ({n++})";
+            return unique;
+        }
+
         /// <summary>The ID of the currently active profile, or null for the default (root) profile.</summary>
         public static string ActiveProfileId { get; set; }
 

@@ -41,7 +41,8 @@ namespace PadForge.Tests
             Assert.True(e.IsKeyboard);
             Assert.False(e.IsCellMenu);
             Assert.False(e.ShowsClickRow);
-            Assert.False(e.Entry.HasCenter);
+            // A keyboard reads no Center Cell, so the ring's stays for a turn back.
+            Assert.True(e.Entry.HasCenter);
             // Steering waits for half a push and the keyboard sits at the
             // bottom, as the Windows and Steam keyboards do.
             Assert.Equal(KeyboardMenuDefaults.SteerDeadzonePercent, e.Entry.EngageDeadzonePercent);
@@ -54,10 +55,26 @@ namespace PadForge.Tests
             Assert.Equal(20, touch.Entry.PosYPercent);
             Assert.Equal(40, touch.Entry.EngageDeadzonePercent);
 
-            // And back: no keyboard rows on a cell menu.
+            // And back: no keyboard rows on a cell menu, and the ring takes
+            // back its own place, deadzone and Center Cell.
             e.KindIndex = 0;
             Assert.Empty(e.KeyboardControlRows);
             Assert.True(e.IsCellMenu);
+            Assert.True(e.Entry.HasCenter);
+            Assert.Equal(50, e.Entry.PosYPercent);
+            Assert.Equal(25, e.Entry.EngageDeadzonePercent);
+
+            // A place or a deadzone the user set on the keyboard stays.
+            var set = Keyboard();
+            set.Entry.PosYPercent = 80;
+            set.Entry.EngageDeadzonePercent = 60;
+            set.KindIndex = 0;
+            Assert.Equal(80, set.Entry.PosYPercent);
+            Assert.Equal(60, set.Entry.EngageDeadzonePercent);
+            // A touch grid loses its Center Cell, as before.
+            var grid = new MenuEditorItem(new MenuDefinitionEntry { MenuId = 3, Kind = MenuKind.Radial, CellCount = 4, HasCenter = true });
+            grid.KindIndex = 1;
+            Assert.False(grid.Entry.HasCenter);
         }
 
         [Fact]
@@ -212,6 +229,29 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void APressRow_RefusesAFingersPlace_WhichOnlyAPointerReads()
+        {
+            var e = Keyboard();
+            e.InputChoicesProvider = () => new[]
+            {
+                new InputChoice { Descriptor = "Touchpad 0 Finger 0 X", DisplayName = "Finger X", DeviceGuid = "", DeviceLabel = "Any" },
+                new InputChoice { Descriptor = "Touchpad 0 Finger 0 Y", DisplayName = "Finger Y", DeviceGuid = "", DeviceLabel = "Any" },
+                new InputChoice { Descriptor = "Touchpad 0 Finger 0 Down", DisplayName = "Finger Down", DeviceGuid = "", DeviceLabel = "Any" },
+            };
+            List<string> Offered(KeyboardInputRow row)
+                => row.ChoicesView.SourceCollection.Cast<KeyboardChoice>()
+                    .Select(c => c.Input.Descriptor).Where(d => d != row.Input.Descriptor).ToList();
+            // A button read of a finger's place reads nothing.
+            foreach (var row in new[] { Row(e, KeyboardControlAction.TypeKey), Row(e, KeyboardControlAction.Pointer1Click), e.OpenRow })
+            {
+                Assert.Equal(new[] { "Touchpad 0 Finger 0 Down" }, Offered(row));
+                Assert.False(e.TryApplyKeyboardPress(row, Press("Touchpad 0 Finger 0 X")));
+            }
+            // A pointer's X reads it as a place.
+            Assert.Contains("Touchpad 0 Finger 0 Y", Offered(Row(e, KeyboardControlAction.Pointer1X)));
+        }
+
+        [Fact]
         public void ThePressPoint_ShowsWhereItActs_AndStaysWithTheRow()
         {
             var e = Keyboard();
@@ -352,6 +392,20 @@ namespace PadForge.Tests
             e.ResetOpenPressCommand.Execute(null);
             Assert.Equal(KeyboardOpenPress.Press, e.Entry.OpenPress);
             Assert.False(e.ShowsOpenPressMs);
+        }
+
+        [Fact]
+        public void ATypesThroughValueNoEntryCarries_SaysWhatIsMissing()
+        {
+            var e = Keyboard();
+            e.KbmSlotsProvider = () => new[] { new KbmSlotChoice(4, "Keyboard + Mouse 1") };
+            e.Entry.TypesThrough = "slot:2";
+            var slot = e.TypesThroughOptions.Single(o => o.Value == "slot:2");
+            Assert.Equal(Strings.Get("Menu_TypesThrough_MissingSlot"), slot.Label);
+            Assert.DoesNotContain("slot:", slot.Label);
+            e.Entry.TypesThrough = "nokeyboard-xyz";
+            var model = e.TypesThroughOptions.Single(o => o.Value == "nokeyboard-xyz");
+            Assert.Equal(string.Format(Strings.Get("Menu_TypesThrough_MissingKeyboard_Format"), "nokeyboard-xyz"), model.Label);
         }
 
         [Fact]

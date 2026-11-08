@@ -8140,7 +8140,7 @@ namespace PadForge.Services
             {
                 mapping.InputSelectedFromDropdown -= OnInputSelectedFromDropdown;
                 mapping.InputSelectedFromDropdown += OnInputSelectedFromDropdown;
-                mapping.UseSharedAvailableInputs(PickerListForRow(padVm, mapping.TargetSettingName));
+                mapping.UseSharedAvailableInputs(PickerListForRow(padVm, mapping));
                 mapping.UseSharedParamInputs(padVm.SlotAvailableInputs);
                 mapping.UseSharedKeyInputs(padVm.SlotKeyInputs);
                 mapping.BeginSharedListRebuild();
@@ -8151,6 +8151,7 @@ namespace PadForge.Services
                 padVm.SlotMotionGyroInputs.Clear();
                 padVm.SlotMotionAccelInputs.Clear();
                 padVm.SlotKeyInputs.Clear();
+                padVm.SlotButtonInputs.Clear();
                 foreach (var c in flat)
                     PickerListForChoice(padVm, c.Descriptor).Add(c);
                 // The Up and Down pickers of an Incremental or Ramp source
@@ -8159,6 +8160,11 @@ namespace PadForge.Services
                 // resolves from the full list is the item its picker holds.
                 foreach (var c in padVm.SlotAvailableInputs)
                     if (IsUpDownKeyChoice(c)) padVm.SlotKeyInputs.Add(c);
+                // A button row's pickers offer what a button read can press:
+                // the same instances, less a touchpad finger's place, which
+                // the read never presses (MappingItem.ButtonReadPressesNothing).
+                foreach (var c in padVm.SlotAvailableInputs)
+                    if (!PadForge.ViewModels.MappingItem.ButtonReadPressesNothing(c.Descriptor)) padVm.SlotButtonInputs.Add(c);
             }
             finally
             {
@@ -8189,8 +8195,11 @@ namespace PadForge.Services
 
         /// <summary>The list a row's source pickers offer (#475). The Motion
         /// Gyro and Motion Accelerometer rows read only the bundled motion
-        /// sources, so each takes its own list, and every other row takes
-        /// the slot's list, which leaves those sources out.</summary>
+        /// sources, so each takes its own list. A row whose target reads its
+        /// sources as a press (a button, a D-pad direction, a key: the
+        /// discrete targets but the touchpad X and Y rows, which read a
+        /// place) takes the slot's button list, and every other row takes
+        /// the slot's list, which leaves the motion sources out.</summary>
         internal static System.Collections.ObjectModel.ObservableCollection<PadForge.ViewModels.InputChoice> PickerListForRow(
             PadViewModel padVm, string target) => target switch
         {
@@ -8198,6 +8207,15 @@ namespace PadForge.Services
             PadForge.Engine.Data.MappingSetMigrator.MotionAccelTarget => padVm.SlotMotionAccelInputs,
             _ => padVm.SlotAvailableInputs,
         };
+
+        internal static System.Collections.ObjectModel.ObservableCollection<PadForge.ViewModels.InputChoice> PickerListForRow(
+            PadViewModel padVm, PadForge.ViewModels.MappingItem mapping)
+        {
+            var list = PickerListForRow(padVm, mapping.TargetSettingName);
+            return ReferenceEquals(list, padVm.SlotAvailableInputs)
+                   && mapping.IsTargetDiscrete && !mapping.IsTouchpadAxisTarget
+                ? padVm.SlotButtonInputs : list;
+        }
 
         /// <summary>True for a choice the Up and Down pickers offer: an input
         /// the key reader of an Incremental or Ramp source can read as held
@@ -8995,7 +9013,9 @@ namespace PadForge.Services
         /// matches the guid exactly, so an unretargeted scoped menu would
         /// paste as an editor-visible but dead definition (audit
         /// 2026-07-16). A scoped menu whose product has no device on the
-        /// target slot degrades to the any-device form rather than dying.</summary>
+        /// target slot degrades to the any-device form rather than dying. A
+        /// keyboard menu's input devices (#566) take the same rule
+        /// (<see cref="RetargetKeyboardInputsForSlot"/>).</summary>
         public static void ApplyMenusSnapshotJson(int padIndex, string json)
         {
             if (string.IsNullOrEmpty(json)) return;
@@ -9019,6 +9039,7 @@ namespace PadForge.Services
                 var clone = m.Clone();
                 if (!string.IsNullOrEmpty(clone.DeviceGuid))
                     clone.DeviceGuid = RetargetDeviceGuidForSlot(clone.DeviceGuid, padIndex) ?? "";
+                RetargetKeyboardInputsForSlot(clone, padIndex);
                 built.Add(clone);
             }
             slotMs.Menus = built;
@@ -9737,6 +9758,34 @@ namespace PadForge.Services
             return suppress || (!hadPair && hasPair);
         }
 
+        /// <summary>A copied keyboard menu's inputs (#566) onto the target
+        /// slot's controllers: Opens With's two devices and each control's two,
+        /// through <see cref="RetargetDeviceGuidForSlot"/>, the rule the menu's
+        /// own device follows. An input whose product has no device on the
+        /// target slot reads on every controller there, as the menu does. The
+        /// controls' list is swapped whole, as KeyboardMenuDefaults.Set swaps
+        /// it. Copy From Slot and Paste both run it, beside the remap walk
+        /// (<see cref="RemapDeviceGuidsInSlotMappingSets"/>), which moves the
+        /// same four fields from one instance to another.</summary>
+        internal static void RetargetKeyboardInputsForSlot(Engine.Menus.MenuDefinitionEntry menu, int targetSlot)
+        {
+            if (menu == null) return;
+            string Move(string guid) => string.IsNullOrEmpty(guid) ? guid : RetargetDeviceGuidForSlot(guid, targetSlot) ?? "";
+            menu.OpenDeviceGuid = Move(menu.OpenDeviceGuid);
+            menu.OpenAndDeviceGuid = Move(menu.OpenAndDeviceGuid);
+            if (menu.KeyboardControls == null || menu.KeyboardControls.Count == 0) return;
+            var moved = new List<Engine.Menus.KeyboardControlEntry>(menu.KeyboardControls.Count);
+            foreach (var c in menu.KeyboardControls)
+            {
+                if (c == null) continue;
+                var copy = c.Clone();
+                copy.DeviceGuid = Move(copy.DeviceGuid);
+                copy.AndDeviceGuid = Move(copy.AndDeviceGuid);
+                moved.Add(copy);
+            }
+            menu.KeyboardControls = moved;
+        }
+
         /// <summary>
         /// Retargets a source row's DeviceGuid onto the target slot's
         /// equivalent same-ProductGuid device, so Copy From / Copy / Paste
@@ -9892,9 +9941,10 @@ namespace PadForge.Services
             // authoring above (the same leg CloneMappingSetDeep carries).
             // Without it, Copy From Slot dropped the source's menus and the
             // fresh-set swap below wiped the target's own menus. Scoped
-            // menu DeviceGuids retarget onto the target slot's same-product
-            // device like row sources do (the runtime matches exactly), and
-            // degrade to any-device when the product is absent there.
+            // menu DeviceGuids, and a keyboard menu's input devices (#566),
+            // retarget onto the target slot's same-product device like row
+            // sources do (the runtime matches exactly), and degrade to
+            // any-device when the product is absent there.
             if (src.Menus != null)
             {
                 foreach (var m in src.Menus)
@@ -9903,6 +9953,7 @@ namespace PadForge.Services
                     var clone = m.Clone();
                     if (!string.IsNullOrEmpty(clone.DeviceGuid))
                         clone.DeviceGuid = RetargetDeviceGuidForSlot(clone.DeviceGuid, targetSlot) ?? "";
+                    RetargetKeyboardInputsForSlot(clone, targetSlot);
                     copy.Menus.Add(clone);
                 }
             }
@@ -10347,11 +10398,6 @@ namespace PadForge.Services
             return any;
         }
 
-        /// <summary>Handheld hidden buttons registry changed (#343): the NFC
-        /// fan-out (re-read the row's objects and button span, rebuild the
-        /// pickers, refresh the preview, persist) plus a hook re-evaluation,
-        /// since the first chord learned is what makes the hooks necessary
-        /// and the last one removed is what lets them go.</summary>
         /// <summary>A key name learned, removed or imported with Map Key
         /// Lights (#557) is saved at once, the handheld buttons' rule. The
         /// backends apply it on their own.</summary>
@@ -10374,6 +10420,11 @@ namespace PadForge.Services
             }));
         }
 
+        /// <summary>Handheld hidden buttons registry changed (#343): the NFC
+        /// fan-out (re-read the row's objects and button span, rebuild the
+        /// pickers, refresh the preview, persist) plus a hook re-evaluation,
+        /// since the first chord learned is what makes the hooks necessary
+        /// and the last one removed is what lets them go.</summary>
         private void OnHandheldRegistryChanged(object sender, EventArgs e)
         {
             _dispatcher.BeginInvoke(new Action(() =>
@@ -15329,6 +15380,8 @@ namespace PadForge.Services
             // ── Input hooks ──
             var suppressedKeys = new HashSet<int>();
             var suppressedMouse = new HashSet<int>();
+            var layerGated = new List<InputManager.HookTriggerKey>();
+            var rowGated = new List<InputManager.HookRowKey>();
 
             foreach (var ud in snapshot)
             {
@@ -15340,13 +15393,13 @@ namespace PadForge.Services
                 if (ServedByPadForgeDriver(ud)) continue;
 
                 // Collect all mapped virtual key codes / mouse buttons from this device's mappings.
-                CollectSuppressedInputs(ud, suppressedKeys, suppressedMouse);
+                CollectSuppressedInputs(ud, suppressedKeys, suppressedMouse, rowGated);
                 CollectMacroTriggerKeys(ud,
                     slot => (uint)slot < (uint)_mainVm.Pads.Count ? _mainVm.Pads[slot].Macros : null,
-                    suppressedKeys, suppressedMouse);
+                    suppressedKeys, suppressedMouse, layerGated);
             }
 
-            ApplyInputHooks(suppressedKeys, suppressedMouse);
+            ApplyInputHooks(suppressedKeys, suppressedMouse, layerGated, rowGated);
         }
 
         /// <summary>Installs or removes the low-level keyboard and mouse
@@ -15355,12 +15408,24 @@ namespace PadForge.Services
         /// need the hooks whether or not Input Hiding is on: that master
         /// switch governs HidHide and consumption, and a learned chord or an
         /// armed Learn capture keeps the hooks installed with nothing to
-        /// suppress. With neither, the feature costs no hook at all.</summary>
-        private void ApplyInputHooks(HashSet<int> suppressedKeys, HashSet<int> suppressedMouse)
+        /// suppress. With neither, the feature costs no hook at all.
+        /// <paramref name="layerGated"/> holds the trigger inputs of layer
+        /// macros, which the poll thread hands the hooks while each macro's
+        /// layer gate is open (InputManager.PublishLayerGatedHookKeys), and
+        /// <paramref name="rowGated"/> the inputs of mapping rows that run on
+        /// some layers only, handed over while the engine evaluates the row.
+        /// None when omitted.</summary>
+        private void ApplyInputHooks(HashSet<int> suppressedKeys, HashSet<int> suppressedMouse,
+            List<InputManager.HookTriggerKey> layerGated = null, List<InputManager.HookRowKey> rowGated = null)
         {
             bool chordHooks = PadForge.Common.Input.HandheldChordRuntime.NeedsHooks;
+            var gated = layerGated?.ToArray() ?? Array.Empty<InputManager.HookTriggerKey>();
+            var gatedRows = rowGated?.ToArray() ?? Array.Empty<InputManager.HookRowKey>();
+            InputManager.SetLayerGatedHookKeys(gated);
+            InputManager.SetLayerGatedHookRows(gatedRows);
 
-            if (suppressedKeys.Count > 0 || suppressedMouse.Count > 0 || chordHooks)
+            if (suppressedKeys.Count > 0 || suppressedMouse.Count > 0 || gated.Length > 0
+                || gatedRows.Length > 0 || chordHooks)
             {
                 EnsureHookManager();
                 _hookManager.SetSuppressedKeys(suppressedKeys);
@@ -15586,6 +15651,8 @@ namespace PadForge.Services
             ReleaseTouchpads(touchpadCaptures, keepCloaks);
 
             // ── Input hooks ──
+            InputManager.SetLayerGatedHookKeys(Array.Empty<InputManager.HookTriggerKey>());
+            InputManager.SetLayerGatedHookRows(Array.Empty<InputManager.HookRowKey>());
             if (_hookManager != null)
             {
                 _hookManager.ClearGlobalHotkeys();
@@ -15596,13 +15663,6 @@ namespace PadForge.Services
             }
         }
 
-        /// <summary>Adds the keys and buttons of this device that alone
-        /// trigger a macro on one of its slots (<see cref="MacroTriggerConsumesKey"/>).
-        /// Consume Trigger Buttons promises the trigger input is eaten, and a
-        /// keyboard key reaches programs through Windows, so only the hook
-        /// eats it. Before, a macro pad key typed itself and then ran its
-        /// macro (discussion #537). The apply passes each slot's macros, read
-        /// on the UI thread where every apply runs.</summary>
         /// <summary>True for a device PadForge reads over its own WinUSB
         /// driver: a keyboard taken from Windows (#549), plugged in or not,
         /// or any row whose path is PadForge's WinUSB interface, a bound
@@ -15623,8 +15683,24 @@ namespace PadForge.Services
             => ud != null && ud.HidHideEnabled && !string.IsNullOrEmpty(ud.DevicePath)
                && !ServedByPadForgeDriver(ud) && !ud.IsTouchpad && !IsTouchpadMouseRow(ud);
 
+        /// <summary>Adds the keys and buttons of this device that alone
+        /// trigger a macro on one of its slots (<see cref="MacroTriggerConsumesKey"/>).
+        /// Consume Trigger Buttons promises the trigger input is eaten, and a
+        /// keyboard key reaches programs through Windows, so only the hook
+        /// eats it. Before, a macro pad key typed itself and then ran its
+        /// macro (discussion #537). The apply passes each slot's macros, read
+        /// on the UI thread where every apply runs.
+        ///
+        /// <para>A macro on any layer (an empty LayerMask) can fire whatever
+        /// layer is engaged, so its input joins the static sets. A macro on
+        /// a layer, Base included, fires only while its layer gate is open
+        /// (InputManager.MacroLayerGateOpen), so its input goes to
+        /// <paramref name="layerGated"/> instead, and the poll thread has the
+        /// hook eat it only while the gate is open. Before, a macro on a
+        /// layer ate its key on every layer, and the key typed nowhere where
+        /// the macro could not fire.</para></summary>
         internal static void CollectMacroTriggerKeys(UserDevice ud, Func<int, IEnumerable<MacroItem>> macrosOfSlot,
-            HashSet<int> keys, HashSet<int> mouseButtons)
+            HashSet<int> keys, HashSet<int> mouseButtons, List<InputManager.HookTriggerKey> layerGated)
         {
             if (!ud.IsKeyboard && !ud.IsMouse) return;
             var slots = SettingsManager.GetAssignedSlots(ud.InstanceGuid);
@@ -15636,7 +15712,9 @@ namespace PadForge.Services
                 foreach (var macro in macros)
                 {
                     if (!MacroTriggerConsumesKey(macro, ud.InstanceGuid, out int index)) continue;
-                    if (ud.IsKeyboard) keys.Add(index);
+                    if (!string.IsNullOrEmpty(macro.LayerMask))
+                        layerGated.Add(new InputManager.HookTriggerKey(macro, index, Mouse: !ud.IsKeyboard));
+                    else if (ud.IsKeyboard) keys.Add(index);
                     else mouseButtons.Add(index);
                 }
             }
@@ -15676,27 +15754,53 @@ namespace PadForge.Services
         /// <summary>
         /// Collects the virtual key codes and mouse button IDs that should be
         /// suppressed based on the device's active mappings across all assigned slots.
-        /// Parses "Button {index}" descriptors from PadSetting properties.
+        /// Parses "Button {index}" descriptors from the slot's mapping rows
+        /// and its PadSetting properties.
+        ///
+        /// <para>A row the engine evaluates whatever layer is engaged
+        /// (InputManager.RowReadsOnEveryLayer) puts its inputs in the static
+        /// sets. Any other row's inputs go to <paramref name="layerGated"/>,
+        /// and the poll thread has the hooks eat them only while the engine
+        /// evaluates that row (InputManager.RowReadsUnder). Before, every
+        /// row of every layer went into the static sets, so a key only a
+        /// layer row read was dead on Base, where no row reads it.</para>
         /// </summary>
-        private static void CollectSuppressedInputs(UserDevice ud, HashSet<int> keys, HashSet<int> mouseButtons)
+        internal static void CollectSuppressedInputs(UserDevice ud, HashSet<int> keys, HashSet<int> mouseButtons,
+            List<InputManager.HookRowKey> layerGated)
         {
             var assignedSlots = SettingsManager.GetAssignedSlots(ud.InstanceGuid);
             if (assignedSlots == null) return;
 
             string deviceGuidStr = ud.InstanceGuid.ToString();
 
+            // The row being walked when its inputs are layer-gated, with its
+            // slot and set, or null for the static sets. rowReads collects the
+            // indices the slot's rows read, for the legacy pass.
+            int gateSlot = -1;
+            MappingSet gateSet = null;
+            MappingRow gateRow = null;
+            HashSet<int> rowReads = null;
+
+            static bool TryIndex(string descriptor, out int index)
+            {
+                index = -1;
+                return !string.IsNullOrEmpty(descriptor)
+                       && descriptor.StartsWith("Button ", StringComparison.Ordinal)
+                       && int.TryParse(descriptor.AsSpan(7), out index);
+            }
+
             // Parse a "Button {index}" descriptor and route the index to the
             // right suppression set. For a keyboard the index is a VKey code,
             // for a mouse it is a button id (0=L, 1=M, 2=R, 3=X1, 4=X2).
             void AddDescriptor(string descriptor)
             {
-                if (string.IsNullOrEmpty(descriptor)) return;
-                if (descriptor.StartsWith("Button ", StringComparison.Ordinal) &&
-                    int.TryParse(descriptor.AsSpan(7), out int index))
-                {
-                    if (ud.IsKeyboard) keys.Add(index);
-                    else if (ud.IsMouse) mouseButtons.Add(index);
-                }
+                if (!TryIndex(descriptor, out int index)) return;
+                if (!ud.IsKeyboard && !ud.IsMouse) return;
+                rowReads?.Add(index);
+                if (gateRow != null)
+                    layerGated.Add(new InputManager.HookRowKey(gateSlot, gateSet, gateRow, index, Mouse: !ud.IsKeyboard));
+                else if (ud.IsKeyboard) keys.Add(index);
+                else mouseButtons.Add(index);
             }
 
             // A key reads the controller it names, or any controller when it
@@ -15711,33 +15815,29 @@ namespace PadForge.Services
 
             foreach (int slotIndex in assignedSlots)
             {
-                // Legacy single-source PadSetting descriptors. These hold the
-                // owning Direct mapping's descriptor only, so they catch the
-                // primary Direct case (and stay as a fallback for configs not
-                // resaved since the MappingSet UI shipped).
-                var us = SettingsManager.FindSettingByInstanceGuidAndSlot(ud.InstanceGuid, slotIndex);
-                var ps = us?.GetPadSetting();
-                if (ps != null)
-                {
-                    foreach (string descriptor in ps.GetAllMappingDescriptors())
-                        AddDescriptor(descriptor);
-                }
-
                 // Authoritative per-slot MappingSet: every source on every row.
                 // The legacy PadSetting cannot encode Ramp/Incremental up/down
                 // keys (they live in ParamUp/ParamDown, not SourceDescriptor) or
                 // secondary sources on a multi-source row, so reading the same
                 // data the engine evaluates is what makes consumption cover all
-                // mapping kinds and both primary and secondary sources.
+                // mapping kinds and both primary and secondary sources. Each
+                // row's inputs are eaten while the engine evaluates the row.
+                var slotReads = new HashSet<int>();
+                bool slotHasRows = false;
                 var msArr = SettingsManager.SlotMappingSets;
                 if (msArr != null && slotIndex >= 0 && slotIndex < msArr.Length)
                 {
                     var ms = msArr[slotIndex];
                     if (ms?.Rows != null)
                     {
+                        slotHasRows = ms.Rows.Count > 0;
+                        gateSlot = slotIndex;
+                        gateSet = ms;
+                        rowReads = slotReads;
                         foreach (var row in ms.Rows)
                         {
                             if (row?.Sources == null) continue;
+                            gateRow = InputManager.RowReadsOnEveryLayer(ms, row) ? null : row;
                             foreach (var src in row.Sources)
                             {
                                 if (src == null) continue;
@@ -15801,6 +15901,26 @@ namespace PadForge.Services
                                     AddDescriptor(src.ParamYDescriptor);
                             }
                         }
+                    }
+                }
+                gateRow = null;
+                rowReads = null;
+
+                // Legacy single-source PadSetting descriptors, in the static
+                // sets. They project the slot's Base rows
+                // (LegacyBaseMappingProjection), and the engine reads one only
+                // where the slot has no row for its target, so one a row of
+                // a slot with rows reads already follows that row's layer.
+                // The rest stay as the fallback for configs not resaved
+                // since the MappingSet UI shipped.
+                var us = SettingsManager.FindSettingByInstanceGuidAndSlot(ud.InstanceGuid, slotIndex);
+                var ps = us?.GetPadSetting();
+                if (ps != null)
+                {
+                    foreach (string descriptor in ps.GetAllMappingDescriptors())
+                    {
+                        if (slotHasRows && TryIndex(descriptor, out int index) && slotReads.Contains(index)) continue;
+                        AddDescriptor(descriptor);
                     }
                 }
             }

@@ -4541,7 +4541,7 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="KeyboardScreens_Status_Strike7Waiting" xml:space="preserve"><value>valitse PadForge V.E.N.O.M. -näytöllä</value></data>
   <data name="KeyboardScreens_Status_Strike7Showing" xml:space="preserve"><value>V.E.N.O.M. -näytöllä</value></data>
   <data name="KeyboardScreens_Status_NotFound" xml:space="preserve"><value>näyttöä ei löytynyt</value></data>
-  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}, odotetaan valopalkin väriä</value></data>
+  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}, ei valopalkin väriä</value></data>
   <data name="KeyboardScreens_Status_NoPicture_Format" xml:space="preserve"><value>{0}, kuvaa ei ole valittu</value></data>
   <data name="KeyboardScreens_LgsShared_Format" xml:space="preserve"><value>Kun Logitech Gaming Software on käynnissä, jokainen tämän tyyppinen näyttö näyttää kohteelle {0} asetetun kuvan.</value></data>
   <data name="DeviceType_KeyboardScreenKeys" xml:space="preserve"><value>Näppäimistön näyttö</value></data>
@@ -4590,7 +4590,7 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Panoroi näppäimistön näytön kuvaa</value></data>
   <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Siirtää jokaisen tähän paikkaan syöttävän näppäimistön näytön ikkunaa näyttöä suuremman kuvan päällä, esimerkiksi karttaa varten. Näytön peittokuva siirtyy samalla tavalla, kun sen zoomaus on yli 100 prosenttia.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Panoroi kuvia: X {0}, Y {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Siirtää jokaista tähän paikkaan syöttävää näyttöä, jolla näkyy valittu itseään suurempi kuva. Ikkuna pysähtyy kuvan reunoihin. Näytön peittokuva siirtyy, kun sen zoomaus on yli 100 prosenttia, riippumatta siitä, mikä paikka suorittaa makron.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Siirtää jokaista tähän paikkaan syöttävää näyttöä, jolla näkyy valittu itseään suurempi kuva. Ikkuna pysähtyy kuvan reunoihin. Näytön peittokuva siirtyy, kun sen zoomaus on yli 100 prosenttia, riippumatta siitä, mikä paikka suorittaa makron. Makro, joka nimeää yhden peittokuvan, siirtää vain sitä peittokuvaa.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Näyttö</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Toiminto</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Suunta</value></data>
@@ -4907,11 +4907,11 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Alin paikka, jossa on väri</value></data>
   <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>Zoomaus</value></data>
   <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>Kuvaa ei ole valittu.</value></data>
-  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Odotetaan valopalkin väriä.</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Ei DualShock 4- tai DualSense-ohjaimen valopalkin väriä näytettäväksi.</value></data>
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Peittokuva</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Kaikki peittokuvat</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Näytä/piilota näytön peittokuva {0}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Näytä kuvat, {0}: {1} × {2} ms, kunnes seuraava makro</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Näytä kuvat, {0}: {1} × {2} ms, kunnes seuraava näyttö- tai tilamakro</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>Tuo profiili</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}, {1}-tiedosto</value></data>
   <data name="Import_ProfileName_Format" xml:space="preserve"><value>Tulee profiiliksi "{0}".</value></data>
@@ -4945,7 +4945,6 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Tämä profiili viittaa erikoistoimintoon, jota ei löydy Actions.xml-tiedostosta Profiles-kansion vierestä: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Tätä asetusta ei saatu mukaan: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD esti nämä syötteet pääsemästä Windowsiin. Ota Estä määritetyt syötteet käyttöön laitteelle {0} Laitteet-sivulla, jolloin tämän profiilin määrittämät syötteet estetään.</value></data>
-  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>Base-tason määritykset laitteelle {0} päättyvät tässä tasossa. Kun Estä määritetyt syötteet on käytössä, laitteen määritetyt syötteet pysyvät estettyinä Windowsilta jokaisessa tasossa.</value></data>
   <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>Sen alivalikoista tuli lisää paikkoja samalle renkaalle.</value></data>
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Vahvistuu, kun sauva palaa keskelle tai taso päättyy. reWASDin Apply-painiketta ei käytetä.</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Tämä tiedosto pitää kaksi ohjainta erillään. PadForge-ssa mikä tahansa paikan ohjain laukaisee nämä määritykset.</value></data>
@@ -4974,7 +4973,7 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="Import_Tr_HideController" xml:space="preserve"><value>reWASD piilotti tämän ohjaimen peleiltä. Ota Piilota peleiltä käyttöön sille Laitteet-sivulla.</value></data>
   <data name="Import_Tr_NoSuchSetting" xml:space="preserve"><value>PadForge-ssa ei ole tällaista asetusta: {0}</value></data>
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD esti hiiren liikkeen pääsemästä Windowsiin. PadForge estää näppäimet ja hiiren painikkeet mutta ei liikettä, joten osoitin liikkuu silti.</value></data>
-  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>PadForge-n virtuaaliset ohjaimet saavat liikedataa vain ohjaimen omasta liikeanturista.</value></data>
+  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>Xbox-virtuaaliohjaimessa ei ole liikettä. Valitse PlayStation- tai Nintendo-ohjaintyyppi, jotta liike lähetetään.</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows palasi tähän profiiliin profiilista {0} painikkeella. Voit tehdä saman PadForge-ssa lisäämällä tälle profiilille profiilin pikavalinnan Profiilit-sivulla.</value></data>
   <data name="Osk_Style_Grid" xml:space="preserve">
     <value>Ruudukko</value>
@@ -5193,4 +5192,37 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Avaa tai sulkee näppäimistön, kun Avaava syöte vapautetaan ennen pitoaikaa. Pidempi painallus ei tee mitään.</value></data>
   <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Avaa tai sulkee näppäimistön, kun Avaava syöte painetaan kolmesti painallusikkunan sisällä.</value></data>
   <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Avaa tai sulkee näppäimistön, kun painallusikkuna päättyy yhden Avaava syöte -painalluksen jälkeen. Toinen painallus ikkunan sisällä peruuttaa sen.</value></data>
+  <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>Värit lähetetään suoraan laitteeseen {0}. Muuttuvat värit, kuten värikierto tai ääntä seuraavat värit, eivät pääse perille. Muuttumaton väri pääsee.</value></data>
+  <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Kaikki tiedostot (*.*)|*.*</value></data>
+  <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>PadForge-profiili (*{0})|*{0}</value></data>
+  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml</value></data>
+  <data name="FileDialog_ProgramFilter" xml:space="preserve"><value>Ohjelmat (*.exe;*.bat;*.cmd;*.com)|*.exe;*.bat;*.cmd;*.com|Kaikki tiedostot (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundFileFilter" xml:space="preserve"><value>Äänitiedostot ja äänipaketit|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.pfsounds|Äänipaketit (*.pfsounds)|*.pfsounds|Kaikki tiedostot (*.*)|*.*</value></data>
+  <data name="FileDialog_AudioFilter" xml:space="preserve"><value>Äänitiedostot|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.ogg|Kaikki tiedostot (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundPackageFilter_Format" xml:space="preserve"><value>PadForge-äänipaketit (*{0})|*{0}</value></data>
+  <data name="FileDialog_IconPackageFilter_Format" xml:space="preserve"><value>PadForge-kuvakepaketit (*{0})|*{0}</value></data>
+  <data name="FileDialog_AutoEqFilter" xml:space="preserve"><value>AutoEq-profiili (*.txt)|*.txt|Kaikki tiedostot (*.*)|*.*</value></data>
+  <data name="FileDialog_IconPickerFilter" xml:space="preserve"><value>Kuvat ja kuvakepaketit|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.pficons|Kuvakepaketit (*.pficons)|*.pficons</value></data>
+  <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>PadForge-käsikonsolin painikkeet (*.json)|*.json</value></data>
+  <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro-profiili (*.json)|*.json</value></data>
+  <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge-näppäinvalot (*.json)|*.json</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Makro ei voi painaa kohdetta {0}. Määritys Määritykset-välilehdellä voi.</value></data>
+  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge näyttää kahdeksan Näytön peittokuvaa, ja tämä on reWASD-in yhdeksäs tai kymmenes tähtäin.</value></data>
+  <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge lukee Gyron vasemman ja oikean suunnan kallistuksesta ja Gyron nojauksen kiertymästä, kuten reWASD oletuksena. reWASD-in Preferences-asetuksissa nämä kaksi voi vaihtaa keskenään, eikä tämä tiedosto kerro, onko niin tehty.</value></data>
+  <data name="Import_Tr_TiltLean" xml:space="preserve"><value>Tilt-tilassa reWASD-in Lean on kierto pystyakselin ympäri, eikä liikeanturi anna kulmaa tälle kierrolle.</value></data>
+  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge lukee kosketuslevyn viistosuunnan kahtena suuntana yhtä aikaa, minkä kosketuslevy ilmoittaa vain, kun Ristiohjaintila on 8-suuntainen Kosketuslevy-välilehdellä.</value></data>
+  <data name="Import_Tr_GyroZone" xml:space="preserve"><value>PadForge lukee gyron suunnan yhden kynnysarvon yli, eikä reWASD anna gyrovyöhykkeen reunalle yksikköä.</value></data>
+  <data name="Import_Tr_AbsoluteMouse" xml:space="preserve"><value>DS4Windows asetti osoittimen sinne, minne sauva osoittaa. PadForge-ssa sauva siirtää osoitinta sen sijaan.</value></data>
+  <data name="Import_Tr_StickBeforeRotation" xml:space="preserve"><value>{0} lukee sauvan ennen sen kiertoa. DS4Windows luki sen jälkeen.</value></data>
+  <data name="Import_Tr_StickBeforeCurve" xml:space="preserve"><value>{0} lukee sauvan kulman ennen sen vyöhykkeitä ja käyrää. DS4Windows luki sen jälkeen.</value></data>
+  <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>Paikan näppäimistö, joka ei ole enää Näppäimistö + hiiri</value></data>
+  <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (ei tässä tietokoneessa)</value></data>
+  <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (ei tällä paikalla)</value></data>
+  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>kiertymä ja kallistus lisätty täydellä voimakkuudella (kallistuksen osuutta ei luettu)</value></data>
+  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>Paikallinen tila -gyro luettu kiertymänä (PadForge-ssa ei ole kallistettua pääakselia)</value></data>
+  <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>Laserosoitin-gyro luettu kiertymänä (PadForge-ssa ei ole laserosoittimen muunnosta)</value></data>
+  <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>reWASD-issa {0} pääsee silti Windows-iin, koska tiedosto määrittää sen ilman määrityksen poistoa. Kun Estä määritetyt syötteet on käytössä, PadForge estää sen.</value></data>
+  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge kääntää positiivisen kierron myötäpäivään, kuten DS4Windows. reWASD-in ohje kertoo kierron alueen, ei sen suuntaa.</value></data>
+  <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows muotoilee säteittäisen sauvan asetuksia {0} työnnön kulman mukaan. PadForge-n sauvakortti toistaa suoran työnnön samoin ja vinon eri tavalla.</value></data>
+  <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Tasot säätävät kohdetta {0} eri tavoin, joten kullakin on omat säätönsä, ja käyrä tulee mukaan lähimpänä potenssikäyränä.</value></data>
 </root>

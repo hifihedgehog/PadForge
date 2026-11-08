@@ -29,7 +29,9 @@ namespace PadForge.Views
     /// list (#561). What came across with a difference, or did not, sits first
     /// with its reason in full. Accepting hands the profile to the sink the
     /// Workshop and starter profiles land through, so nothing about it stays
-    /// special after that. Nothing the file names has run or will run.
+    /// special after that. Nothing the file names runs before the user
+    /// accepts, and the notes name every program its buttons or its load
+    /// will start.
     /// </summary>
     public partial class ImportConfigDialog
     {
@@ -54,7 +56,7 @@ namespace PadForge.Views
             SourceText.Text = string.Format(CultureInfo.CurrentCulture, Strings.Instance.Import_Source_Format,
                 Path.GetFileName(path), result.ToolName);
             ProfileNameText.Text = string.Format(CultureInfo.CurrentCulture, Strings.Instance.Import_ProfileName_Format,
-                result.Profile?.Name ?? string.Empty);
+                PreviewName(result));
 
             StatCleanNum.Text = result.Report.CleanCount.ToString(CultureInfo.CurrentCulture);
             StatPartialNum.Text = result.Report.PartialCount.ToString(CultureInfo.CurrentCulture);
@@ -108,6 +110,11 @@ namespace PadForge.Views
                 })
                 .ToList();
         }
+
+        /// <summary>The name the profile will land under: the sink renames a
+        /// name that is taken, and the preview says the same name.</summary>
+        internal static string PreviewName(ForeignImportResult result)
+            => PadForge.Common.Input.SettingsManager.UniqueProfileName(result.Profile?.Name);
 
         internal static string ReasonText(TranslationEntry entry)
         {

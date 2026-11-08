@@ -213,6 +213,16 @@ namespace PadForge.SteamWorkshop.Tests
         }
 
         [Fact]
+        public void KeypadEnter_ResolvesToNumpadEnter()
+        {
+            // PadForge keeps Numpad Enter at 0x88 and sends it as VK_RETURN
+            // with the extended flag (RawInputListener.NumpadEnterKey).
+            Assert.True(SteamInputVkTable.TryResolve("KEYPAD_ENTER", out byte vk, out bool supported));
+            Assert.Equal(0x88, vk);
+            Assert.True(supported);
+        }
+
+        [Fact]
         public void MediaKey_PlainPress_RidesHoldKeyMacro()
         {
             // VK_MEDIA_PLAY_PAUSE is outside the KbM row engine's closed

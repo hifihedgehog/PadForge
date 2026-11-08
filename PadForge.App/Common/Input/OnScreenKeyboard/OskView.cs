@@ -90,9 +90,6 @@ namespace PadForge.Common.Input.OnScreenKeyboard
             IReadOnlyDictionary<KeyboardControlAction, KeyboardInput> bindings = null)
         {
             if (e == null || !e.IsOpen) return Closed(nowMs);
-            var shape = new StringBuilder();
-            shape.Append((int)e.Style).Append('|').Append(e.Page).Append('|').Append(e.FunctionRow)
-                 .Append('|').Append(e.Settings.Suggestions).Append('|').Append(e.Layout?.Name);
             var boards = new List<OskViewBoard>();
             OskViewWheel wheel = null;
             if (e.Style == OskStyle.Wheel)
@@ -130,7 +127,6 @@ namespace PadForge.Common.Input.OnScreenKeyboard
                         rows[r] = new OskViewKey[b.Rows[r].Length];
                         for (int i = 0; i < b.Rows[r].Length; i++)
                             rows[r][i] = ViewOf(e, b.Rows[r][i], b.Starts[r][i]);
-                        shape.Append('|').Append(b.Rows[r].Length);
                     }
                     boards.Add(new OskViewBoard
                     {
@@ -161,8 +157,24 @@ namespace PadForge.Common.Input.OnScreenKeyboard
                 Slot = slot,
                 MenuId = menuId,
                 Bindings = bindings ?? EmptyBindings,
-                Shape = shape.ToString(),
+                Shape = ShapeOf(e),
             };
+        }
+
+        /// <summary>The shape of the keys the engine shows now: the style,
+        /// the page, the function row, the suggestion row, the layout and each
+        /// row's key count. A window click carries the shape of the keys it
+        /// landed on, and the poll thread drops one whose shape is gone.</summary>
+        public static string ShapeOf(OskEngine e)
+        {
+            var shape = new StringBuilder();
+            shape.Append((int)e.Style).Append('|').Append(e.Page).Append('|').Append(e.FunctionRow)
+                 .Append('|').Append(e.Settings.Suggestions).Append('|').Append(e.Layout?.Name);
+            if (e.Style != OskStyle.Wheel)
+                foreach (var b in e.Boards())
+                    for (int r = 0; r < b.Rows.Length; r++)
+                        shape.Append('|').Append(b.Rows[r].Length);
+            return shape.ToString();
         }
 
         private static OskViewKey ViewOf(OskEngine e, OskKey k, float start)

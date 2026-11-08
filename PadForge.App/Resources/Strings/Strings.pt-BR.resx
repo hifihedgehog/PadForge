@@ -4486,7 +4486,7 @@ Deseja que o PadForge os desinstale agora? Isso exige elevação e pode levar um
   <data name="KeyboardScreens_Status_Strike7Waiting" xml:space="preserve"><value>escolha o PadForge na tela V.E.N.O.M.</value></data>
   <data name="KeyboardScreens_Status_Strike7Showing" xml:space="preserve"><value>na tela V.E.N.O.M.</value></data>
   <data name="KeyboardScreens_Status_NotFound" xml:space="preserve"><value>nenhuma tela encontrada</value></data>
-  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}, aguardando a cor da barra de luz</value></data>
+  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}, sem cor da barra de luz</value></data>
   <data name="KeyboardScreens_Status_NoPicture_Format" xml:space="preserve"><value>{0}, nenhuma imagem escolhida</value></data>
   <data name="KeyboardScreens_LgsShared_Format" xml:space="preserve"><value>Enquanto o Logitech Gaming Software estiver em execução, todas as telas deste tipo mostram a imagem definida para {0}.</value></data>
   <data name="DeviceType_KeyboardScreenKeys" xml:space="preserve"><value>Tela do Teclado</value></data>
@@ -4535,7 +4535,7 @@ Deseja que o PadForge os desinstale agora? Isso exige elevação e pode levar um
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Deslocar Imagem da Tela do Teclado</value></data>
   <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Move a janela de cada tela de teclado que alimenta este slot sobre uma imagem maior que a tela, como em um mapa. Uma Sobreposição de Tela se move da mesma forma quando o zoom está acima de 100 por cento.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Deslocar imagens {0} por {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Move cada tela que alimenta este slot e mostra uma imagem escolhida maior que a própria tela. A janela para nas bordas da imagem. Uma Sobreposição de Tela se move quando o zoom está acima de 100 por cento, seja qual for o slot que executa a macro.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Move cada tela que alimenta este slot e mostra uma imagem escolhida maior que a própria tela. A janela para nas bordas da imagem. Uma Sobreposição de Tela se move quando o zoom está acima de 100 por cento, seja qual for o slot que executa a macro. Uma macro que cita uma só sobreposição move apenas essa sobreposição.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Tela</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Ação</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Direção</value></data>
@@ -4852,11 +4852,11 @@ Deseja que o PadForge os desinstale agora? Isso exige elevação e pode levar um
   <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Menor Slot com uma Cor</value></data>
   <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>Zoom</value></data>
   <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>Nenhuma imagem escolhida.</value></data>
-  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Aguardando a cor da barra de luz.</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Nenhuma cor da barra de luz do DualShock 4 ou DualSense para mostrar.</value></data>
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Sobreposição</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Todas as Sobreposições</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Alternar Sobreposição de Tela {0}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Mostrar imagens de {0}: {1} × {2} ms, até a próxima macro</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Mostrar imagens de {0}: {1} × {2} ms, até a próxima macro de exibição ou de modo</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>Importar Perfil</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}, um arquivo do {1}</value></data>
   <data name="Import_ProfileName_Format" xml:space="preserve"><value>Vira o perfil "{0}".</value></data>
@@ -4890,7 +4890,6 @@ Deseja que o PadForge os desinstale agora? Isso exige elevação e pode levar um
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Este perfil cita uma ação especial que não está no Actions.xml ao lado da pasta Profiles: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Esta configuração não foi trazida: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>O reWASD impedia que estas entradas chegassem ao Windows. Ative Consumir Entradas Mapeadas para {0} na página Dispositivos, o que bloqueia as que este perfil mapeia.</value></data>
-  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>Os mapeamentos da Base para {0} deixam de valer nesta camada. Com Consumir Entradas Mapeadas ativado, as entradas mapeadas do dispositivo continuam bloqueadas para o Windows em todas as camadas.</value></data>
   <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>Seus submenus viraram mais slots em um único anel.</value></data>
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Confirma quando o analógico volta ao centro ou a camada termina. O botão Aplicar do reWASD não é usado.</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Este arquivo mantém dois controles separados. No PadForge, qualquer controle no slot aciona estes mapeamentos.</value></data>
@@ -4919,7 +4918,7 @@ Deseja que o PadForge os desinstale agora? Isso exige elevação e pode levar um
   <data name="Import_Tr_HideController" xml:space="preserve"><value>O reWASD ocultou este controle dos jogos. Ative Ocultar dos Jogos para ele na página Dispositivos.</value></data>
   <data name="Import_Tr_NoSuchSetting" xml:space="preserve"><value>O PadForge não tem esta configuração: {0}</value></data>
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>O reWASD impedia que o movimento do mouse chegasse ao Windows. O PadForge bloqueia teclas e botões do mouse, mas não o movimento, então o ponteiro continua se movendo.</value></data>
-  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>Os controles virtuais do PadForge recebem movimento apenas do sensor de movimento de um controle.</value></data>
+  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>Um controle virtual Xbox não tem movimento. Escolha um tipo de controle PlayStation ou Nintendo para enviar movimento.</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>O DS4Windows voltava a este perfil a partir de {0} por meio de um botão. Para fazer isso no PadForge, adicione um Atalho de Perfil para este perfil na página Perfis.</value></data>
   <data name="Osk_Style_Grid" xml:space="preserve">
     <value>Grade</value>
@@ -5138,4 +5137,37 @@ Deseja que o PadForge os desinstale agora? Isso exige elevação e pode levar um
   <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Abre ou fecha o teclado quando Abre com é solto antes do Tempo de Retenção. Um toque mais longo não faz nada.</value></data>
   <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Abre ou fecha o teclado quando Abre com é pressionado três vezes dentro da Janela de Pressão.</value></data>
   <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Abre ou fecha o teclado quando a Janela de Pressão termina após um toque em Abre com. Um segundo toque dentro da janela o cancela.</value></data>
+  <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>As cores vão direto para {0}. Cores que mudam, como um ciclo de cores ou cores que seguem o som, não chegam a ele. Uma cor que fica igual chega.</value></data>
+  <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Todos os Arquivos (*.*)|*.*</value></data>
+  <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>Perfil do PadForge (*{0})|*{0}</value></data>
+  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml</value></data>
+  <data name="FileDialog_ProgramFilter" xml:space="preserve"><value>Programas (*.exe;*.bat;*.cmd;*.com)|*.exe;*.bat;*.cmd;*.com|Todos os Arquivos (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundFileFilter" xml:space="preserve"><value>Arquivos de áudio e pacotes de som|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.pfsounds|Pacotes de som (*.pfsounds)|*.pfsounds|Todos os Arquivos (*.*)|*.*</value></data>
+  <data name="FileDialog_AudioFilter" xml:space="preserve"><value>Arquivos de áudio|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.ogg|Todos os Arquivos (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundPackageFilter_Format" xml:space="preserve"><value>Pacotes de som do PadForge (*{0})|*{0}</value></data>
+  <data name="FileDialog_IconPackageFilter_Format" xml:space="preserve"><value>Pacotes de ícones do PadForge (*{0})|*{0}</value></data>
+  <data name="FileDialog_AutoEqFilter" xml:space="preserve"><value>Perfil do AutoEq (*.txt)|*.txt|Todos os Arquivos (*.*)|*.*</value></data>
+  <data name="FileDialog_IconPickerFilter" xml:space="preserve"><value>Imagens e pacotes de ícones|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.pficons|Pacotes de ícones (*.pficons)|*.pficons</value></data>
+  <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>Botões do Handheld do PadForge (*.json)|*.json</value></data>
+  <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>Perfil do HIDMaestro (*.json)|*.json</value></data>
+  <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>Luzes das Teclas do PadForge (*.json)|*.json</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Uma macro não pode pressionar {0}. Um mapeamento na guia Mapeamentos pode.</value></data>
+  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>O PadForge executa oito Sobreposições de Tela, e esta é a nona ou décima mira do reWASD.</value></data>
+  <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>O PadForge lê Giroscópio Esquerda e Direita a partir do roll e Inclinação a partir do yaw, o padrão do reWASD. As Preferências do reWASD podem trocar os dois, e este arquivo não diz se foram trocados.</value></data>
+  <data name="Import_Tr_TiltLean" xml:space="preserve"><value>No modo Tilt, a Inclinação do reWASD é uma rotação em torno do eixo vertical, e um sensor de movimento não fornece ângulo para essa rotação.</value></data>
+  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>O PadForge lê uma diagonal do touchpad como duas direções ao mesmo tempo, o que o touchpad só informa quando o Modo D-Pad na guia Touchpad está em 8 Direções.</value></data>
+  <data name="Import_Tr_GyroZone" xml:space="preserve"><value>O PadForge lê a direção do giroscópio além de um limite, e o reWASD não dá unidade para a borda de uma zona do giroscópio.</value></data>
+  <data name="Import_Tr_AbsoluteMouse" xml:space="preserve"><value>O DS4Windows colocava o ponteiro onde o analógico aponta. No PadForge, o analógico move o ponteiro.</value></data>
+  <data name="Import_Tr_StickBeforeRotation" xml:space="preserve"><value>{0} lê o analógico antes da rotação. O DS4Windows o lia depois.</value></data>
+  <data name="Import_Tr_StickBeforeCurve" xml:space="preserve"><value>{0} lê o ângulo do analógico antes das zonas e da curva. O DS4Windows o lia depois.</value></data>
+  <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>Teclado de um slot que não é mais Teclado + Mouse</value></data>
+  <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (não está neste PC)</value></data>
+  <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (não está neste slot)</value></data>
+  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>yaw e roll somados com força total (contribuição do roll não lida)</value></data>
+  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>giroscópio em Espaço local lido como yaw (o PadForge não tem eixo principal inclinado)</value></data>
+  <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>giroscópio em Apontador laser lido como yaw (o PadForge não tem conversão de apontador laser)</value></data>
+  <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>No reWASD, {0} ainda chegava ao Windows porque o arquivo o mapeia sem um desmapeamento. Com Consumir Entradas Mapeadas ativado, o PadForge o bloqueia.</value></data>
+  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>O PadForge gira uma rotação positiva no sentido horário, como o DS4Windows. A ajuda do reWASD informa o intervalo da rotação, não o sentido.</value></data>
+  <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>O DS4Windows molda {0} de um analógico radial pelo ângulo do empurrão. O cartão de Analógicos do PadForge trata um empurrão reto de um jeito e um diagonal de outro.</value></data>
+  <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>As camadas ajustam {0} de maneiras diferentes, então cada uma mantém o próprio ajuste, e a curva passa para a curva de potência mais próxima.</value></data>
 </root>

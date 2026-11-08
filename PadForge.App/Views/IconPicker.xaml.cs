@@ -332,8 +332,7 @@ namespace PadForge.Views
                 Title = Strings.Instance.Menu_Icon_PickTitle,
                 // Only what the resolver draws: an unsupported file stored as
                 // an icon would draw nothing anywhere.
-                Filter = "Images and icon packages|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.pficons"
-                       + "|Icon packages (*.pficons)|*.pficons",
+                Filter = Strings.Instance.FileDialog_IconPickerFilter,
                 CheckFileExists = true,
             };
             if ((owner != null ? dlg.ShowDialog(owner) : dlg.ShowDialog()) != true) return null;

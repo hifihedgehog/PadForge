@@ -138,7 +138,7 @@ namespace PadForge.Common.Input.KeyboardScreens
         }
 
         /// <summary>
-        /// Lightbar mode: the whole screen in the light bar's color. A
+        /// Lightbar mode: the whole screen in the lightbar's color. A
         /// monochrome screen shows the color's luminance as an ordered
         /// dither: a 4 by 4 Bayer matrix lights a pixel where the luminance
         /// falls at or below the matrix's step, so white lights none, black

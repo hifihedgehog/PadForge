@@ -858,6 +858,8 @@ namespace PadForge.Tests
             const uint ScanA = 0x1E;
             var hooks = new InputHookManager();
             hooks.SetSuppressedKeys(new HashSet<int> { A });
+            bool paused = InputHookManager.ConsumePaused;
+            InputHookManager.ConsumePaused = false; // as while the engine evaluates
             try
             {
                 Assert.False(InputHookManager.HandleKeyboardEvent(A, ScanA, 0, InputHookManager.OutputTag, isDown: true));
@@ -876,6 +878,7 @@ namespace PadForge.Tests
             finally
             {
                 hooks.SetSuppressedKeys(new HashSet<int>());
+                InputHookManager.ConsumePaused = paused;
             }
         }
 
@@ -917,6 +920,8 @@ namespace PadForge.Tests
         {
             var hooks = new InputHookManager();
             hooks.SetSuppressedMouseButtons(new HashSet<int> { 0 });
+            bool paused = InputHookManager.ConsumePaused;
+            InputHookManager.ConsumePaused = false; // as while the engine evaluates
             try
             {
                 Assert.False(InputHookManager.HandleMouseButton(0, true, InputHookManager.OutputTag, 0));
@@ -933,6 +938,7 @@ namespace PadForge.Tests
             finally
             {
                 hooks.SetSuppressedMouseButtons(new HashSet<int>());
+                InputHookManager.ConsumePaused = paused;
             }
             // The callback hands the decision the event's own extra info.
             Assert.Contains("if (HandleMouseButton(buttonId, IsMouseDown(msg), ms.dwExtraInfo, ms.flags))",
@@ -946,10 +952,13 @@ namespace PadForge.Tests
         public void EveryOutputEvent_CarriesTheTag()
         {
             const string tag = "dwExtraInfo = PadForge.Engine.Common.InputHookManager.OutputTag";
+            // The Keyboard + Mouse controller and the On-Screen Keyboard
+            // build no event of their own: the output queue's builders do.
             foreach (var (file, events) in new[]
             {
-                ("PadForge.App/Common/Input/InputManager.Step4b.EvaluateMacros.cs", 9),
-                ("PadForge.App/Common/Input/KeyboardMouseVirtualController.cs", 3),
+                ("PadForge.App/Common/Input/InputManager.Step4b.EvaluateMacros.cs", 2),
+                ("PadForge.App/Common/Input/KeyboardMouseVirtualController.cs", 0),
+                ("PadForge.App/Common/Input/OnScreenKeyboard/OskWindows.cs", 0),
             })
             {
                 string src = RepoText(file);
@@ -1332,7 +1341,7 @@ namespace PadForge.Tests
             SettingsManager.SlotMappingSets[Slot] = ms;
 
             var keys = new HashSet<int>();
-            collect.Invoke(null, new object[] { ud, keys, new HashSet<int>() });
+            collect.Invoke(null, new object[] { ud, keys, new HashSet<int>(), new List<InputManager.HookRowKey>() });
             Assert.Contains(65, keys);
             Assert.Contains(67, keys);
             Assert.Contains(70, keys);

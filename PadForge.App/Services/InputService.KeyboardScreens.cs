@@ -20,6 +20,8 @@ namespace PadForge.Services
                 m => PadForge.Engine.SdlDiagLog.WriteLine(m))
             {
                 OverlayNumbers = () => _mainVm.Dashboard.ScreenOverlayNumbers(),
+                OverlaySize = number => _mainVm.Dashboard.FindScreenOverlay(number) is { } overlay
+                    ? new System.Windows.Size(overlay.Width, overlay.Height) : System.Windows.Size.Empty,
             };
 
         /// <summary>Every UI tick while the engine runs, ungated by focus: a
@@ -27,8 +29,9 @@ namespace PadForge.Services
         /// sits behind a game, the Dreamcast screens' rule. The service holds
         /// itself to four passes a second. With the Keyboard Screens switch off and
         /// no Screen Overlay up, a service that ran lets go of what it held, which
-        /// closes every screen's session, and a macro's work still lands. The switch
-        /// off with an overlay up closes the sessions and leaves the overlay
+        /// closes every screen's session, a macro's work still lands, and play time
+        /// counts from the profile's switch for a window that comes up later. The
+        /// switch off with an overlay up closes the sessions and leaves the overlay
         /// running.</summary>
         private void TickKeyboardScreens()
         {
@@ -44,7 +47,7 @@ namespace PadForge.Services
             {
                 try
                 {
-                    if (_keyboardScreens != null || KeyboardScreenService.PendingRequests > 0) KeyboardScreens.TickWithNothingUp();
+                    KeyboardScreens.TickWithNothingUp();
                 }
                 catch (Exception ex) { PadForge.Engine.SdlDiagLog.WriteLine("Keyboard screens: tick failed: " + ex.Message); }
                 if (_keyboardScreens?.Active == true) _keyboardScreens.ReleaseWhileIdle();

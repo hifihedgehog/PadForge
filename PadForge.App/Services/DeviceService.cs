@@ -42,10 +42,6 @@ namespace PadForge.Services
             _settingsService = settingsService ?? throw new ArgumentNullException(nameof(settingsService));
         }
 
-        /// <summary>
-        /// Wires event handlers from the DevicesViewModel and PadViewModels
-        /// to this service's handler methods.
-        /// </summary>
         /// <summary>An import's battery light colors (#561) live on the
         /// device's Lighting card, which only the slot's view model holds.</summary>
         private void FoldBatteryColors(int slotIndex, Guid deviceGuid)
@@ -56,6 +52,10 @@ namespace PadForge.Services
             WorkshopTuningApplier.ApplyBatteryColors(slotIndex, _mainVm.Pads[slotIndex].GetOrCreateDeviceConfig(deviceGuid));
         }
 
+        /// <summary>
+        /// Wires event handlers from the DevicesViewModel and PadViewModels
+        /// to this service's handler methods.
+        /// </summary>
         public void WireEvents()
         {
             _mainVm.Devices.AssignToSlotRequested += OnAssignToSlot;

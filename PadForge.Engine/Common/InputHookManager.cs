@@ -193,10 +193,27 @@ namespace PadForge.Engine.Common
         private LowLevelHookProc _keyboardProc;
         private LowLevelHookProc _mouseProc;
 
-        // Suppression sets — volatile reference swap for thread safety.
-        // Static so MergeHookedKeyState/MergeHookedMouseState can read them.
+        // Suppression sets the hooks read: volatile reference swap for
+        // thread safety. Static so MergeHookedKeyState/MergeHookedMouseState
+        // can read them. Each is the apply's static set
+        // (SetSuppressedKeys/SetSuppressedMouseButtons) joined with the keys
+        // of the layer macros whose layer gate the poll thread found open and
+        // of the layer rows the engine evaluates now
+        // (SetLayerGatedSuppression). The parts are kept apart so either
+        // side replaces its own without the other's, under _suppressionLock.
         private static volatile HashSet<int> _suppressedVKeys = new();
         private static volatile HashSet<int> _suppressedMouseButtons = new();
+        private static readonly object _suppressionLock = new();
+        private static HashSet<int> _staticKeys = new();
+        private static HashSet<int> _staticMouseButtons = new();
+        private static HashSet<int> _gatedKeys = new();
+        private static HashSet<int> _gatedMouseButtons = new();
+
+        // True while the engine evaluates nothing (no poll loop yet, idle, a
+        // focus suspension, the loop's exit): no row or macro reads a key
+        // then, so the hooks eat none of the sets above. Set by the poll
+        // thread (ConsumePaused), read before each set lookup.
+        private static volatile bool _consumePaused = true;
 
         // Global hotkeys — registered combos that fire callbacks when all
         // their VK codes are held simultaneously. Edge-triggered (one fire per
@@ -225,6 +242,36 @@ namespace PadForge.Engine.Common
         private static volatile bool _hasHookedKeys;
         private static readonly bool[] _hookedMouseState = new bool[5]; // L, M, R, X1, X2 (MouseMessageToButtonId)
         private static volatile bool _hasHookedMouse;
+
+        // Keys and buttons whose down the hook let through to Windows and
+        // whose up it has not seen yet. A key's down and up are decided as a
+        // pair: the up, and any repeat down between, go the way the down
+        // went, whatever the suppression set says by then. The set moves
+        // under a held key when a layer engages or ends. An up swallowed
+        // after its down went through would leave the key held down in
+        // Windows, and an up let through after its down was swallowed would
+        // reach programs with no down. A swallowed down is _hookedKeyState.
+        // Hook thread only, cleared with the hooked state.
+        private static readonly bool[] _passedKeyDown = new bool[256];
+        private static readonly bool[] _passedMouseDown = new bool[5];
+
+        /// <summary>A new manager has seen no event, so no key is held
+        /// through its hooks. The hook state is static, and what a stopped
+        /// manager left is cleared here too.</summary>
+        public InputHookManager()
+        {
+            ClearHookedState();
+        }
+
+        private static void ClearHookedState()
+        {
+            Array.Clear(_hookedKeyState, 0, 256);
+            Array.Clear(_passedKeyDown, 0, 256);
+            _hasHookedKeys = false;
+            Array.Clear(_hookedMouseState, 0, 5);
+            Array.Clear(_passedMouseDown, 0, 5);
+            _hasHookedMouse = false;
+        }
 
         // ─────────────────────────────────────────────
         //  Handheld chords (issue #343)
@@ -488,45 +535,77 @@ namespace PadForge.Engine.Common
             _hookThreadId = 0;
 
             // Clear hooked state so stale keys/buttons don't persist.
-            Array.Clear(_hookedKeyState, 0, 256);
-            _hasHookedKeys = false;
-            Array.Clear(_hookedMouseState, 0, 5);
-            _hasHookedMouse = false;
+            ClearHookedState();
         }
 
         /// <summary>
-        /// Updates the set of keys to suppress from keyboard hooks, as
+        /// Updates the static set of keys to suppress from keyboard hooks, as
         /// keyboard state indices (RawInputListener.KeyIndex), the numbers a
         /// keyboard mapping's "Button N" carries.
         /// Pass an empty set to stop suppressing keyboard input.
-        /// Clears hooked state for keys no longer in the suppression set.
+        /// A key held through the hook keeps its state: its up goes the way
+        /// its down went (<see cref="ConsumeKey"/>), so a key swallowed
+        /// before it left the set stays held for the polling loop until its
+        /// swallowed up.
         /// </summary>
         public void SetSuppressedKeys(HashSet<int> vkCodes)
         {
-            var newSet = vkCodes ?? new HashSet<int>();
-            // Clear hooked state for keys removed from suppression.
-            for (int i = 0; i < 256; i++)
+            lock (_suppressionLock)
             {
-                if (_hookedKeyState[i] && !newSet.Contains(i))
-                    _hookedKeyState[i] = false;
+                _staticKeys = vkCodes ?? new HashSet<int>();
+                _suppressedVKeys = Join(_staticKeys, _gatedKeys);
             }
-            _suppressedVKeys = newSet;
         }
 
         /// <summary>
-        /// Updates the set of mouse button identifiers to suppress.
+        /// Updates the static set of mouse button identifiers to suppress.
         /// Button IDs: 0=Left, 1=Middle, 2=Right, 3=XButton1, 4=XButton2.
-        /// Pass an empty set to stop suppressing mouse input.
+        /// Pass an empty set to stop suppressing mouse input. A held button
+        /// keeps its state, as a key does.
         /// </summary>
         public void SetSuppressedMouseButtons(HashSet<int> buttons)
         {
-            var newSet = buttons ?? new HashSet<int>();
-            for (int i = 0; i < 5; i++)
+            lock (_suppressionLock)
             {
-                if (_hookedMouseState[i] && !newSet.Contains(i))
-                    _hookedMouseState[i] = false;
+                _staticMouseButtons = buttons ?? new HashSet<int>();
+                _suppressedMouseButtons = Join(_staticMouseButtons, _gatedMouseButtons);
             }
-            _suppressedMouseButtons = newSet;
+        }
+
+        /// <summary>The keys and buttons of the layer macros whose layer gate
+        /// is open now and of the layer rows the engine evaluates now,
+        /// published by the poll thread when they change. The
+        /// hooks suppress them with the static sets until the next
+        /// publish.</summary>
+        public static void SetLayerGatedSuppression(HashSet<int> keys, HashSet<int> mouseButtons)
+        {
+            lock (_suppressionLock)
+            {
+                _gatedKeys = keys ?? new HashSet<int>();
+                _gatedMouseButtons = mouseButtons ?? new HashSet<int>();
+                _suppressedVKeys = Join(_staticKeys, _gatedKeys);
+                _suppressedMouseButtons = Join(_staticMouseButtons, _gatedMouseButtons);
+            }
+        }
+
+        /// <summary>True while the engine evaluates nothing, and then the
+        /// hooks eat none of the consume sets, static or layer-gated. A key
+        /// or button already held goes on the way its down went
+        /// (<see cref="ConsumeKey"/>). Chord swallows, global hotkeys and
+        /// PadForge's own output are no consume set and are not
+        /// affected. The poll thread sets it when it changes.</summary>
+        public static bool ConsumePaused
+        {
+            get => _consumePaused;
+            set => _consumePaused = value;
+        }
+
+        private static HashSet<int> Join(HashSet<int> staticSet, HashSet<int> gated)
+        {
+            if (gated.Count == 0) return staticSet;
+            var joined = new HashSet<int>(staticSet);
+            joined.UnionWith(gated);
+            return joined;
         }
 
         /// <summary>
@@ -597,7 +676,9 @@ namespace PadForge.Engine.Common
         /// rather than OR-merged. This ensures the output accurately reflects
         /// the hook's key-up/key-down tracking for keys that WM_INPUT no longer
         /// receives, rather than letting a stale WM_INPUT true linger until the
-        /// next state reset.
+        /// next state reset. A key whose down went through to Windows before
+        /// it joined the set is the exception: WM_INPUT saw that down and
+        /// sees its up, which the hook lets through too.
         /// </summary>
         public static void MergeHookedKeyState(bool[] dest, int count)
         {
@@ -606,7 +687,7 @@ namespace PadForge.Engine.Common
             var suppressed = _suppressedVKeys;
             for (int i = 0; i < n; i++)
             {
-                if (suppressed.Contains(i))
+                if (suppressed.Contains(i) && !_passedKeyDown[i])
                     dest[i] = _hookedKeyState[i]; // Authoritative for suppressed keys
                 else if (_hookedKeyState[i])
                     dest[i] = true;
@@ -625,7 +706,7 @@ namespace PadForge.Engine.Common
             var suppressed = _suppressedMouseButtons;
             for (int i = 0; i < n; i++)
             {
-                if (suppressed.Contains(i))
+                if (suppressed.Contains(i) && !_passedMouseDown[i])
                     dest[i] = _hookedMouseState[i]; // Authoritative for suppressed buttons
                 else if (_hookedMouseState[i])
                     dest[i] = true;
@@ -749,20 +830,39 @@ namespace PadForge.Engine.Common
         /// libuiohook's keycode_to_scancode and AutoHotkey's hook read to tell
         /// it from Enter, and a mapping names it 0x88, so a consumed Numpad
         /// Enter typed on and a consumed Enter took Numpad Enter with it
-        /// (#486).</summary>
+        /// (#486). The set decides a fresh down only, and only while the
+        /// engine evaluates (<see cref="ConsumePaused"/>): a key's repeats and
+        /// its up go the way its down went (<see cref="_passedKeyDown"/>).</summary>
         internal static bool ConsumeKey(int vk, uint scanCode, uint flags, bool isDown)
         {
             int key = RawInputListener.KeyIndex(vk, (int)scanCode, (flags & LLKHF_EXTENDED) != 0);
-            if (!_suppressedVKeys.Contains(key)) return false;
+            if (key < 0 || key >= 256) return !_consumePaused && _suppressedVKeys.Contains(key);
+
+            if (_hookedKeyState[key])
+            {
+                // The down was swallowed: so are its repeats and its up.
+                if (!isDown) _hookedKeyState[key] = false;
+                return true;
+            }
+            if (_passedKeyDown[key])
+            {
+                // The down went to Windows: so do its repeats and its up.
+                if (!isDown) _passedKeyDown[key] = false;
+                return false;
+            }
+            if (_consumePaused || !_suppressedVKeys.Contains(key))
+            {
+                if (isDown) _passedKeyDown[key] = true;
+                return false;
+            }
 
             // A swallowed key never reaches RawInputListener, since
             // WH_KEYBOARD_LL runs in the RIT before WM_INPUT is posted, so its
-            // state is kept here for the polling loop to read.
-            if (key >= 0 && key < 256)
-            {
-                _hookedKeyState[key] = isDown;
-                _hasHookedKeys = true;
-            }
+            // state is kept here for the polling loop to read. An up whose
+            // down the hook never saw (a key held since before the hook) is
+            // swallowed as the set says and leaves the state up.
+            _hookedKeyState[key] = isDown;
+            _hasHookedKeys = true;
             return true;
         }
 
@@ -852,13 +952,27 @@ namespace PadForge.Engine.Common
             if (_chordEngine != null
                 && ChordSwallows(HandheldChordDefinition.MouseCode + buttonId, isDown, extraInfo, (flags & LLMHF_INJECTED) != 0))
                 return true;
-            if (!_suppressedMouseButtons.Contains(buttonId)) return false;
-            // Capture button state before suppressing (same reason as keyboard).
-            if (buttonId < 5)
+            if (buttonId < 0 || buttonId >= 5) return !_consumePaused && _suppressedMouseButtons.Contains(buttonId);
+            // A button's up goes the way its down went, as a key's does
+            // (ConsumeKey).
+            if (_hookedMouseState[buttonId])
             {
-                _hookedMouseState[buttonId] = isDown;
-                _hasHookedMouse = true;
+                if (!isDown) _hookedMouseState[buttonId] = false;
+                return true;
             }
+            if (_passedMouseDown[buttonId])
+            {
+                if (!isDown) _passedMouseDown[buttonId] = false;
+                return false;
+            }
+            if (_consumePaused || !_suppressedMouseButtons.Contains(buttonId))
+            {
+                if (isDown) _passedMouseDown[buttonId] = true;
+                return false;
+            }
+            // Capture button state before suppressing (same reason as keyboard).
+            _hookedMouseState[buttonId] = isDown;
+            _hasHookedMouse = true;
             return true;
         }
 

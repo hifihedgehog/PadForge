@@ -1,13 +1,20 @@
+using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace PadForge.Common.ConfigImport
 {
     /// <summary>A reWASD keyboard <c>buttonId</c> is a DirectInput scan code
-    /// (DIK_A = 30). PadForge's keyboard rows and macros speak Windows
-    /// virtual keys, so the importer converts through this table. Values are
-    /// the published dinput.h and winuser.h constants. The modifiers come out
-    /// sided (VK_LSHIFT, not VK_SHIFT) because that is what the keyboard row
-    /// engine and the Raw Input keyboard read both use.</summary>
+    /// (DIK_A = 30), the key's place on the keyboard. PadForge's keyboard rows
+    /// and macros speak Windows virtual keys, and which virtual key a place
+    /// types is the layout's to say: the bottom-left letter is Z on a US
+    /// keyboard and Y on a German one. So a key that types a character takes
+    /// its virtual key from the PC's active layout, Windows' own scan code
+    /// table for it (kbd.h). The table below is the US layout, from the
+    /// published dinput.h and winuser.h constants, and gives the rest: the
+    /// modifiers sided (VK_LSHIFT, not VK_SHIFT) as the keyboard row engine
+    /// and the Raw Input keyboard read both use them, the numpad with its
+    /// own codes, and every E0 key.</summary>
     internal static class DirectInputKeys
     {
         private static readonly Dictionary<int, byte> Table = new()
@@ -60,7 +67,7 @@ namespace PadForge.Common.ConfigImport
             [0x7B] = 0x1D, // NOCONVERT
             [0x90] = 0xB1, // PREVTRACK
             [0x99] = 0xB0, // NEXTTRACK
-            [0x9C] = 0x0D, // NUMPADENTER
+            [0x9C] = 0x88, // NUMPADENTER, PadForge's own index (RawInputListener.NumpadEnterKey)
             [0x9D] = 0xA3, // RCONTROL
             [0xA0] = 0xAD, // MUTE
             [0xA1] = 0xB7, // CALCULATOR
@@ -98,6 +105,53 @@ namespace PadForge.Common.ConfigImport
             [0xED] = 0xB5, // MEDIASELECT
         };
 
-        public static bool TryGetVirtualKey(int scanCode, out byte vk) => Table.TryGetValue(scanCode, out vk);
+        /// <summary>The virtual key a scan code types on this PC.</summary>
+        public static bool TryGetVirtualKey(int scanCode, out byte vk) => TryGetVirtualKey(scanCode, ActiveLayout, out vk);
+
+        /// <summary>The virtual key a scan code types under
+        /// <paramref name="layout"/>, which gives a scan code's virtual key or
+        /// 0 for none. A key with no E0 prefix that the table lacks or lists
+        /// as a character asks the layout first. Everything else, and a key
+        /// the layout has nothing for, reads the table.</summary>
+        internal static bool TryGetVirtualKey(int scanCode, Func<int, int> layout, out byte vk)
+        {
+            bool listed = Table.TryGetValue(scanCode, out vk);
+            if (scanCode is > 0 and < 0x80 && (!listed || IsCharacterKey(vk)))
+            {
+                int fromLayout = layout?.Invoke(scanCode) ?? 0;
+                if (fromLayout is > 0 and < 0xFF)
+                {
+                    vk = (byte)fromLayout;
+                    return true;
+                }
+            }
+            return listed;
+        }
+
+        /// <summary>Digits, letters and the OEM punctuation keys: the keys a
+        /// layout moves.</summary>
+        private static bool IsCharacterKey(byte vk)
+            => vk is >= 0x30 and <= 0x39 or >= 0x41 and <= 0x5A or >= 0xBA and <= 0xC0 or >= 0xDB and <= 0xDF or 0xE2;
+
+        /// <summary>Set by the test host: the PC's own layout is not read, so
+        /// an import there reads every key through the US table, whatever
+        /// layout the test machine has.</summary>
+        internal static bool OffLimitsForTest;
+
+        private const uint MAPVK_VSC_TO_VK_EX = 3;
+
+        [DllImport("user32.dll")]
+        private static extern uint MapVirtualKeyEx(uint uCode, uint uMapType, IntPtr dwhkl);
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetKeyboardLayout(uint idThread);
+
+        /// <summary>The importing thread's keyboard layout, the one the user
+        /// types with on the PC that will play the profile.</summary>
+        private static int ActiveLayout(int scanCode)
+        {
+            if (OffLimitsForTest) return 0;
+            return (int)MapVirtualKeyEx((uint)scanCode, MAPVK_VSC_TO_VK_EX, GetKeyboardLayout(0));
+        }
     }
 }

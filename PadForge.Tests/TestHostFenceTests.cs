@@ -167,7 +167,6 @@ namespace PadForge.Tests
         private const string Macros = Input + "InputManager.Step4b.EvaluateMacros.cs";
         private const string Kbm = Input + "KeyboardMouseVirtualController.cs";
         private const string Cursor = Services + "CursorControlService.cs";
-        private const string Osk = Input + "OnScreenKeyboard/OskWindows.cs";
         private const string WiiPairing = Services + "WiiPairingService.cs";
         private const string Passthrough = Input + "AudioPassthroughService.cs";
         private const string RumbleAudio = Input + "RumbleAudioService.cs";
@@ -204,6 +203,7 @@ namespace PadForge.Tests
         private const string OpenRgbPort = Input + "Peripherals/OpenRgbServerPort.cs";
         private const string Icue = Services + "IcueSdkNative.cs";
         private const string ScreenCapture = Input + "ScreenColor/ScreenColorSource.cs";
+        private const string KeyboardLayout = "PadForge.App/Common/ConfigImport/DirectInputKeys.cs";
 
         private const string RefusesHost = "if (PadForge.Engine.Common.OutboundNetworkGate.RefusesHost(host))";
         private const string VendorRefuses = "if (PadForge.Engine.Common.VendorProgramGate.Refuses";
@@ -241,6 +241,7 @@ namespace PadForge.Tests
             (OpenRgbPort, "OpenRgbServerPort"),
             (Icue, "IcueSdkNative"),
             (ScreenCapture, "ScreenColorSource"),
+            (KeyboardLayout, "DirectInputKeys"),
         };
 
         private const string Flag = "OffLimitsForTest";
@@ -286,6 +287,7 @@ namespace PadForge.Tests
             Assert.True(OpenRgbServerPort.OffLimitsForTest);
             Assert.True(IcueSdkNative.OffLimitsForTest);
             Assert.True(PadForge.Common.Input.ScreenColor.ScreenColorSource.OffLimitsForTest);
+            Assert.True(PadForge.Common.ConfigImport.DirectInputKeys.OffLimitsForTest);
         }
 
         /// <summary>Each flag is a plain field that starts false, and no
@@ -384,7 +386,6 @@ namespace PadForge.Tests
             new object[] { Hooks, "private static IntPtr SetWindowsHookExW(int idHook, LowLevelHookProc lpfn, IntPtr hMod, uint dwThreadId)", "OffLimitsForTest ? IntPtr.Zero : SetWindowsHookExNative(idHook, lpfn, hMod, dwThreadId);" },
             new object[] { Hooks, "private static uint SendInput(uint nInputs, INPUT[] pInputs, int cbSize)", "OffLimitsForTest ? 0 : SendInputNative(nInputs, pInputs, cbSize);" },
             new object[] { Macros, "private static uint SendInput(uint nInputs, INPUT[] pInputs, int cbSize)", "PadForge.Engine.Common.InputHookManager.DesktopInputOffLimits ? 0 : SendInputNative(nInputs, pInputs, cbSize);" },
-            new object[] { Kbm, "private static uint SendInput(uint nInputs, INPUT[] pInputs, int cbSize)", "PadForge.Engine.Common.InputHookManager.DesktopInputOffLimits ? 0 : SendInputNative(nInputs, pInputs, cbSize);" },
             new object[] { Kbm, "private static bool SetCursorPos(int x, int y)", "!PadForge.Engine.Common.InputHookManager.DesktopInputOffLimits && SetCursorPosNative(x, y);" },
             new object[] { Cursor, "private static bool SetCursorPos(int X, int Y)", "!PadForge.Engine.Common.InputHookManager.DesktopInputOffLimits && SetCursorPosNative(X, Y);" },
 
@@ -488,6 +489,9 @@ namespace PadForge.Tests
             new object[] { OpenRgbPort, "internal static string CommandLineOf(uint processId)", "if (OffLimitsForTest) return null;" },
             // Corsair iCUE's SDK library (#557).
             new object[] { Icue, "public bool TryLoad(out string detail)", "if (OffLimitsForTest || PadForge.Engine.Common.VendorProgramGate.Refuses)" },
+
+            // The keyboard layout a reWASD import reads keys through.
+            new object[] { KeyboardLayout, "private static int ActiveLayout(int scanCode)", "if (OffLimitsForTest) return 0;" },
 
             // Steam.
             new object[] { SteamHttpFile, "private static HttpClient CreateClient()", "var http = OffLimitsForTest ? new HttpClient(new SendsNothing()) : new HttpClient();" },
@@ -608,7 +612,9 @@ namespace PadForge.Tests
         [Fact]
         public void EveryInjectionAndHook_GoesThroughItsWrapper()
         {
-            var imports = Map((Hooks, 2), (Macros, 1), (Kbm, 2), (Cursor, 1), (Osk, 1));
+            // The Keyboard + Mouse controller and the On-Screen Keyboard
+            // queue their keys and buttons for the macros' wrapper to send.
+            var imports = Map((Hooks, 2), (Macros, 1), (Kbm, 1), (Cursor, 1));
             Assert.Equal(imports, FenceSource.Census(@"\bextern\b.*\b(SendInput|SetCursorPos|SetWindowsHookEx|keybd_event|mouse_event)[A-Za-z]*\("));
             Assert.Equal(imports, FenceSource.Census(@"\bextern\b.*\b(SendInputNative|SetCursorPosNative|SetWindowsHookExNative)\("));
             Assert.Equal(imports, FenceSource.Census(@"(=>|\?|:|&&)[^;]*\b(SendInputNative|SetCursorPosNative|SetWindowsHookExNative)\("));

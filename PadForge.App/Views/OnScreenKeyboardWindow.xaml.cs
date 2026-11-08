@@ -251,7 +251,7 @@ namespace PadForge.Views
                     var kv = new KeyVisual { Board = boardIndex, Row = r + board.RowOffset, Index = i, Box = box, Label = label, Corner = corner };
                     box.MouseLeftButtonUp += (_, e) =>
                     {
-                        _post(new OskCommand(OskCommandKind.ClickKey, kv.Board, kv.Row, kv.Index));
+                        _post(new OskCommand(OskCommandKind.ClickKey, kv.Board, kv.Row, kv.Index, _view?.Shape));
                         e.Handled = true;
                     };
                     canvas.Children.Add(box);
@@ -287,7 +287,7 @@ namespace PadForge.Views
                     var t = new TextBlock { FontSize = 16, FontWeight = FontWeights.SemiBold, Cursor = Cursors.Hand, Background = Brushes.Transparent, Padding = new Thickness(3, 0, 3, 0) };
                     t.MouseLeftButtonUp += (_, ev) =>
                     {
-                        _post(new OskCommand(OskCommandKind.ClickWheel, petalIndex, spot));
+                        _post(new OskCommand(OskCommandKind.ClickWheel, petalIndex, spot, 0, _view?.Shape));
                         ev.Handled = true;
                     };
                     t.Tag = (x + spots[k].X, y + spots[k].Y);

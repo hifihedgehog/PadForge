@@ -16,7 +16,7 @@ namespace PadForge.Services
 {
     /// <summary>What a keyboard screen shows (issue #519). The VMU's list in
     /// the VMU's order (<see cref="DreamcastScreenMode"/>), with a stopwatch
-    /// and the light bar's color appended. The settings file stores the
+    /// and the lightbar's color appended. The settings file stores the
     /// names, so none is renamed, and the values stay as numbered.</summary>
     public enum KeyboardScreenMode
     {
@@ -35,8 +35,8 @@ namespace PadForge.Services
         Picture = 6,
         /// <summary>The timer the Stopwatch macro runs.</summary>
         Stopwatch = 7,
-        /// <summary>The color of a DualShock 4 or DualSense light bar in the
-        /// lowest slot the screen feeds, @eVenent's light bar sync mode
+        /// <summary>The color of a DualShock 4 or DualSense lightbar in the
+        /// lowest slot the screen feeds, @eVenent's lightbar sync mode
         /// (discussion #507).</summary>
         Lightbar = 8,
     }
@@ -64,7 +64,7 @@ namespace PadForge.Services
     public class KeyboardScreenData
     {
         /// <summary>The mode a screen shows until the user picks another: the
-        /// light bar's color, the mode @eVenent asked to have when nothing
+        /// lightbar's color, the mode @eVenent asked to have when nothing
         /// else is set.</summary>
         public const KeyboardScreenMode DefaultMode = KeyboardScreenMode.Lightbar;
 
@@ -234,6 +234,10 @@ namespace PadForge.Services
         /// <summary>The numbers on the Dashboard's card, for a macro that names every
         /// overlay. With none set, every overlay is every window that is up.</summary>
         internal Func<IEnumerable<int>> OverlayNumbers { get; set; }
+
+        /// <summary>An overlay's saved window size by its number, for a pan that
+        /// lands while its window is down. Empty when it has none.</summary>
+        internal Func<int, System.Windows.Size> OverlaySize { get; set; }
         private long _nextTick;
         private bool _playStarted;
         private string _playProfile;
@@ -294,10 +298,10 @@ namespace PadForge.Services
         public static void RequestStopwatch(KeyboardScreenStopwatchAction action)
             => Enqueue(new StopwatchRequest(action));
 
-        /// <summary>Pan Keyboard Screen Picture: moves the window of each
-        /// screen that feeds the slot over its picture, stopping at the
-        /// picture's edges, and of the Screen Overlay <paramref name="overlay"/>
-        /// names, or every overlay at 0, from any slot.</summary>
+        /// <summary>Pan Keyboard Screen Picture: moves the window of the Screen
+        /// Overlay <paramref name="overlay"/> names over its picture, from any
+        /// slot, stopping at the picture's edges. At 0 it moves every overlay and
+        /// each keyboard screen that feeds the slot.</summary>
         public static void RequestPan(int padIndex, int overlay, KeyboardScreenPanDirection direction, int step)
             => Enqueue(new PanRequest(padIndex, overlay, direction, step));
 
@@ -374,8 +378,8 @@ namespace PadForge.Services
         }
 
         /// <summary>Its window went down. What it plays carries on for the window to
-        /// come back to: a picture held until the next macro is still there after a
-        /// hotkey hides the panel and shows it again.</summary>
+        /// come back to: a picture held until the next show or mode macro is still
+        /// there after a hotkey hides the panel and shows it again.</summary>
         internal void DetachOverlay(int number)
         {
             if (!_overlays.TryGetValue(number, out var overlay)) return;
@@ -417,10 +421,13 @@ namespace PadForge.Services
 
         /// <summary>No window is up and the Keyboard Screens switch is off. A macro's
         /// work still lands: an overlay's show runs for its window to come up to, a
-        /// mode is kept, and the stopwatch starts or stops.</summary>
+        /// mode is kept, and the stopwatch starts or stops. Play time counts from the
+        /// profile's switch either way, so a window that comes up later shows the
+        /// whole session.</summary>
         internal void TickWithNothingUp()
         {
             long now = Environment.TickCount64;
+            TrackPlayTime(now);
             while (_requests.TryDequeue(out var request)) Apply(request, Array.Empty<KeyboardScreenInfo>(), now);
             foreach (var overlay in _overlays.Values)
                 if (overlay.Show?.Frame(now) == null) overlay.Show = null;
@@ -576,29 +583,33 @@ namespace PadForge.Services
             _host.Start();
         }
 
-        /// <summary>The engine stopped, or the feature was switched off: the
-        /// host closes every screen's session, and the shows, requests and
-        /// loaded pictures go, so the next start reads each picture file
-        /// again. Play time starts over with the next start. The stopwatch
-        /// keeps its time.</summary>
+        /// <summary>The engine stopped: the host closes every screen's session,
+        /// and the shows, requests and loaded pictures go, so the next start
+        /// reads each picture file again. Play time starts over with the next
+        /// start, and the lightbar colors go with the pads' sessions. The
+        /// stopwatch keeps its time.</summary>
         public void Reset()
         {
             ReleaseWhileIdle();
             _overlays.Clear();
             DropRequests();
+            _playStarted = false;
+            LightbarColors.Clear();
         }
 
         /// <summary>No window is up and the Keyboard Screens switch is off: the
         /// screens' sessions close and what they held goes. An overlay's show stays
         /// for its window to come back to, and the queue keeps what a macro just
-        /// asked.</summary>
+        /// asked. The lightbar colors stay: a pad with a steady color sends it
+        /// only when something changes, so a cleared one would leave a Lightbar
+        /// screen or overlay blank once it comes back. A pad that left its slot
+        /// is dropped by the slot check that reads them. Play time keeps counting
+        /// the session, which a hide and show does not end.</summary>
         internal void ReleaseWhileIdle()
         {
             CloseHost();
             _overlaysRan = false;
             _pictures.Clear();
-            _playStarted = false;
-            LightbarColors.Clear();
         }
 
         /// <summary>The Keyboard Screens switch went off while a Screen Overlay
@@ -684,9 +695,11 @@ namespace PadForge.Services
                         KeyboardScreenPanDirection.Up => (0, -step),
                         _ => (0, step),
                     };
-                    foreach (var screen in Feeding(screens, pan.PadIndex)) PanScreen(screen, dx, dy);
-                    foreach (var overlay in OverlaysFor(pan.Overlay))
-                        if (overlay.Bounds != null) PanOverlay(overlay, dx, dy);
+                    // A pan that names one overlay moves that overlay alone. Every
+                    // Overlay also moves the keyboard screens that feed the slot.
+                    if (pan.Overlay == 0)
+                        foreach (var screen in Feeding(screens, pan.PadIndex)) PanScreen(screen, dx, dy);
+                    foreach (var overlay in OverlaysFor(pan.Overlay)) PanOverlay(overlay, dx, dy);
                     break;
                 }
             }
@@ -745,17 +758,22 @@ namespace PadForge.Services
         }
 
         /// <summary>Moves an overlay's window over its picture, held to the picture's
-        /// edges. At 100 percent all of the picture shows, so it stays.</summary>
+        /// edges. At 100 percent all of the picture shows, so it stays. With the
+        /// window down the edges come from its saved size, so the pan lands as a
+        /// mode or a show does, and an overlay with no size is left as it is.</summary>
         private void PanOverlay(OverlayScreen overlay, int dx, int dy)
         {
+            var bounds = overlay.Bounds?.Invoke() ?? OverlaySize?.Invoke(overlay.Info.OverlayNumber) ?? System.Windows.Size.Empty;
+            if (bounds.IsEmpty) return;
             var data = Get(overlay.Info.RowGuid);
             var picture = Picture(data?.Picture, Environment.TickCount64);
-            if (picture != null) MoveOverlayPan(overlay, data, picture, data.PanX + dx, data.PanY + dy);
+            if (picture != null) MoveOverlayPan(overlay, data, picture, data.PanX + dx, data.PanY + dy, bounds);
         }
 
-        private void MoveOverlayPan(OverlayScreen overlay, KeyboardScreenData data, BitmapSource picture, int x, int y)
+        private void MoveOverlayPan(OverlayScreen overlay, KeyboardScreenData data, BitmapSource picture, int x, int y,
+            System.Windows.Size bounds)
         {
-            var (maxX, maxY) = PadForge.Views.ScreenOverlayContentView.PanLimits(picture.PixelWidth, picture.PixelHeight, data.Zoom, overlay.Bounds());
+            var (maxX, maxY) = PadForge.Views.ScreenOverlayContentView.PanLimits(picture.PixelWidth, picture.PixelHeight, data.Zoom, bounds);
             SavePan(overlay.Info.RowGuid, data, Math.Clamp(x, 0, maxX), Math.Clamp(y, 0, maxY));
         }
 
@@ -770,10 +788,11 @@ namespace PadForge.Services
             var picture = Picture(data?.Picture, Environment.TickCount64);
             if (picture == null) return;
             if (begin) overlay.DragStart = (data.PanX, data.PanY);
-            double scale = PadForge.Views.ScreenOverlayContentView.PictureScale(picture.PixelWidth, picture.PixelHeight, data.Zoom, overlay.Bounds());
+            var bounds = overlay.Bounds();
+            double scale = PadForge.Views.ScreenOverlayContentView.PictureScale(picture.PixelWidth, picture.PixelHeight, data.Zoom, bounds);
             if (scale <= 0) return;
             MoveOverlayPan(overlay, data, picture,
-                overlay.DragStart.X - (int)Math.Round(moved.X / scale), overlay.DragStart.Y - (int)Math.Round(moved.Y / scale));
+                overlay.DragStart.X - (int)Math.Round(moved.X / scale), overlay.DragStart.Y - (int)Math.Round(moved.Y / scale), bounds);
         }
 
         private void TrackPlayTime(long now)
@@ -868,7 +887,7 @@ namespace PadForge.Services
             }
         }
 
-        /// <summary>The slots whose light bar a screen follows: the ones its
+        /// <summary>The slots whose lightbar a screen follows: the ones its
         /// row feeds, or every slot when it feeds none.</summary>
         internal static Func<int, bool> SlotFilter(Guid row)
         {
@@ -876,7 +895,7 @@ namespace PadForge.Services
             return slots.Count == 0 ? null : slots.Contains;
         }
 
-        /// <summary>Whether a pad whose light bar color is on record is still
+        /// <summary>Whether a pad whose lightbar color is on record is still
         /// online and mapped to the slot the color came from.</summary>
         private static bool IsOnItsSlot(Guid device, int slot)
         {

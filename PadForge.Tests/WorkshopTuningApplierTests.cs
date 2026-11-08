@@ -109,6 +109,24 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void GyroSpaceLandsOnTheDevice_OverTheDefaultOnly()
+        {
+            // A Steam gyro_to_2d_conversion_style of Player or World Space.
+            var set = ArrangeSlot(s => s.WorkshopGyroSpace = "Player");
+            var ps = new PadSetting();
+            Assert.True(WorkshopTuningApplier.ApplyToAssignedDevice(Slot, ps));
+            Assert.Equal("Player", ps.GyroSpace);
+            Assert.Equal("", set.WorkshopGyroSpace);
+
+            // A space the user chose on the Gyro tab stays.
+            set = ArrangeSlot(s => s.WorkshopGyroSpace = "Player");
+            ps = new PadSetting { GyroSpace = "World" };
+            WorkshopTuningApplier.ApplyToAssignedDevice(Slot, ps);
+            Assert.Equal("World", ps.GyroSpace);
+            Assert.Equal("", set.WorkshopGyroSpace);
+        }
+
+        [Fact]
         public void AUserChoiceIsNeverOverwritten()
         {
             // Re-assigning a device must not silently discard tuning the user

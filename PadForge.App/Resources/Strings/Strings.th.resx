@@ -4541,7 +4541,7 @@
   <data name="KeyboardScreens_Status_Strike7Waiting" xml:space="preserve"><value>เลือก PadForge บนหน้าจอ V.E.N.O.M.</value></data>
   <data name="KeyboardScreens_Status_Strike7Showing" xml:space="preserve"><value>บนหน้าจอ V.E.N.O.M.</value></data>
   <data name="KeyboardScreens_Status_NotFound" xml:space="preserve"><value>ไม่พบหน้าจอ</value></data>
-  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0} กำลังรอสีแถบไฟ</value></data>
+  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0} ไม่มีสีแถบไฟ</value></data>
   <data name="KeyboardScreens_Status_NoPicture_Format" xml:space="preserve"><value>{0} ยังไม่ได้เลือกรูปภาพ</value></data>
   <data name="KeyboardScreens_LgsShared_Format" xml:space="preserve"><value>ขณะที่ Logitech Gaming Software ทำงานอยู่ ทุกหน้าจอประเภทนี้จะแสดงรูปภาพที่ตั้งไว้สำหรับ {0}</value></data>
   <data name="DeviceType_KeyboardScreenKeys" xml:space="preserve"><value>หน้าจอคีย์บอร์ด</value></data>
@@ -4590,7 +4590,7 @@
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>เลื่อนรูปภาพหน้าจอคีย์บอร์ด</value></data>
   <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>ย้ายหน้าต่างของแต่ละหน้าจอคีย์บอร์ดที่ป้อนช่องนี้ไปบนรูปภาพที่ใหญ่กว่าหน้าจอ สำหรับแผนที่ โอเวอร์เลย์หน้าจอเลื่อนได้เช่นกันเมื่อซูมเกิน 100 เปอร์เซ็นต์</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>เลื่อนรูปภาพ {0} × {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>ย้ายแต่ละหน้าจอที่ป้อนช่องนี้และแสดงรูปภาพที่เลือกซึ่งใหญ่กว่าตัวเอง หน้าต่างจะหยุดที่ขอบของรูปภาพ โอเวอร์เลย์หน้าจอจะเลื่อนเมื่อซูมเกิน 100 เปอร์เซ็นต์ ไม่ว่าช่องใดจะรันมาโครนั้น</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>ย้ายแต่ละหน้าจอที่ป้อนช่องนี้และแสดงรูปภาพที่เลือกซึ่งใหญ่กว่าตัวเอง หน้าต่างจะหยุดที่ขอบของรูปภาพ โอเวอร์เลย์หน้าจอจะเลื่อนเมื่อซูมเกิน 100 เปอร์เซ็นต์ ไม่ว่าช่องใดจะรันมาโครนั้น มาโครที่ระบุโอเวอร์เลย์เดียวจะเลื่อนเฉพาะโอเวอร์เลย์นั้น</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>หน้าจอ</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>การทำงาน</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>ทิศทาง</value></data>
@@ -4907,11 +4907,11 @@
   <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>ช่องต่ำสุดที่มีสี</value></data>
   <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>ซูม</value></data>
   <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>ยังไม่ได้เลือกรูปภาพ</value></data>
-  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>กำลังรอสีแถบไฟ</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>ไม่มีสีแถบไฟของ DualShock 4 หรือ DualSense ให้แสดง</value></data>
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>โอเวอร์เลย์</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>ทุกโอเวอร์เลย์</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>สลับเปิด/ปิดโอเวอร์เลย์หน้าจอ {0}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>แสดงรูปภาพ {0}: {1} × {2} ms จนถึงมาโครถัดไป</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>แสดงรูปภาพ {0}: {1} × {2} ms จนกว่าจะมีมาโครแสดงหรือมาโครโหมดถัดไป</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>นำเข้าโปรไฟล์</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0} ไฟล์ {1}</value></data>
   <data name="Import_ProfileName_Format" xml:space="preserve"><value>จะกลายเป็นโปรไฟล์ "{0}"</value></data>
@@ -4945,7 +4945,6 @@
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>โปรไฟล์นี้อ้างถึงการกระทำพิเศษที่ไม่มีใน Actions.xml ข้างโฟลเดอร์ Profiles ของมัน: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>การตั้งค่านี้ไม่ถูกนำมาด้วย: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD เคยกันอินพุตเหล่านี้ไม่ให้ไปถึง Windows เปิด ดักอินพุตที่แมปไว้ สำหรับ {0} ในหน้าอุปกรณ์ ซึ่งจะกันอินพุตที่โปรไฟล์นี้แมปไว้</value></data>
-  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>การแมปของเลเยอร์ Base สำหรับ {0} จะหยุดทำงานในเลเยอร์นี้ เมื่อเปิด ดักอินพุตที่แมปไว้ อินพุตที่แมปไว้ของอุปกรณ์จะยังถูกกันไม่ให้ไปถึง Windows ในทุกเลเยอร์</value></data>
   <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>เมนูย่อยของมันกลายเป็นช่องเพิ่มเติมบนวงแหวนเดียว</value></data>
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>ยืนยันเมื่อสติ๊กกลับสู่ศูนย์กลางหรือเมื่อเลเยอร์สิ้นสุด ไม่ใช้ปุ่ม Apply ของ reWASD</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>ไฟล์นี้แยกคอนโทรลเลอร์สองตัวออกจากกัน ใน PadForge คอนโทรลเลอร์ใดก็ตามบนสล็อตจะเรียกใช้การแมปเหล่านี้</value></data>
@@ -4974,7 +4973,7 @@
   <data name="Import_Tr_HideController" xml:space="preserve"><value>reWASD เคยซ่อนคอนโทรลเลอร์นี้จากเกม เปิด ซ่อนจากเกม สำหรับคอนโทรลเลอร์นี้ในหน้าอุปกรณ์</value></data>
   <data name="Import_Tr_NoSuchSetting" xml:space="preserve"><value>PadForge ไม่มีการตั้งค่านี้: {0}</value></data>
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD เคยกันการเคลื่อนที่ของเมาส์ไม่ให้ไปถึง Windows PadForge กันได้เฉพาะปุ่มคีย์บอร์ดและปุ่มเมาส์ แต่กันการเคลื่อนที่ไม่ได้ ตัวชี้จึงยังเคลื่อนที่อยู่</value></data>
-  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>คอนโทรลเลอร์เสมือนของ PadForge รับข้อมูลการเคลื่อนไหวจากเซ็นเซอร์การเคลื่อนไหวของคอนโทรลเลอร์เท่านั้น</value></data>
+  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>คอนโทรลเลอร์เสมือน Xbox ไม่มีการเคลื่อนไหว เลือกประเภทคอนโทรลเลอร์ PlayStation หรือ Nintendo เพื่อส่งการเคลื่อนไหว</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows เคยสลับกลับมาที่โปรไฟล์นี้จาก {0} ด้วยปุ่มหนึ่ง หากต้องการทำแบบนี้ใน PadForge ให้เพิ่มทางลัดโปรไฟล์สำหรับโปรไฟล์นี้ในหน้าโปรไฟล์</value></data>
   <data name="Osk_Style_Grid" xml:space="preserve">
     <value>ตาราง</value>
@@ -5193,4 +5192,37 @@
   <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>เปิดหรือปิดคีย์บอร์ดเมื่อปล่อย เปิดด้วย ก่อนถึงเวลากดค้าง การกดที่นานกว่านั้นไม่มีผลใดๆ</value></data>
   <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>เปิดหรือปิดคีย์บอร์ดเมื่อกด เปิดด้วย สามครั้งภายในช่วงเวลาการกด</value></data>
   <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>เปิดหรือปิดคีย์บอร์ดเมื่อช่วงเวลาการกดสิ้นสุดหลังกด เปิดด้วย หนึ่งครั้ง การกดครั้งที่สองภายในช่วงเวลานั้นจะยกเลิก</value></data>
+  <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>สีจะส่งตรงไปยัง {0} สีที่เปลี่ยนไปเรื่อย ๆ เช่น สีวนรอบหรือสีที่ตามเสียงจะไม่ไปถึงอุปกรณ์ สีที่คงที่จะไปถึง</value></data>
+  <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>ไฟล์ทั้งหมด (*.*)|*.*</value></data>
+  <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>โปรไฟล์ PadForge (*{0})|*{0}</value></data>
+  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml</value></data>
+  <data name="FileDialog_ProgramFilter" xml:space="preserve"><value>โปรแกรม (*.exe;*.bat;*.cmd;*.com)|*.exe;*.bat;*.cmd;*.com|ไฟล์ทั้งหมด (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundFileFilter" xml:space="preserve"><value>ไฟล์เสียงและชุดเสียง|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.pfsounds|ชุดเสียง (*.pfsounds)|*.pfsounds|ไฟล์ทั้งหมด (*.*)|*.*</value></data>
+  <data name="FileDialog_AudioFilter" xml:space="preserve"><value>ไฟล์เสียง|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.ogg|ไฟล์ทั้งหมด (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundPackageFilter_Format" xml:space="preserve"><value>ชุดเสียง PadForge (*{0})|*{0}</value></data>
+  <data name="FileDialog_IconPackageFilter_Format" xml:space="preserve"><value>ชุดไอคอน PadForge (*{0})|*{0}</value></data>
+  <data name="FileDialog_AutoEqFilter" xml:space="preserve"><value>โปรไฟล์ AutoEq (*.txt)|*.txt|ไฟล์ทั้งหมด (*.*)|*.*</value></data>
+  <data name="FileDialog_IconPickerFilter" xml:space="preserve"><value>รูปภาพและชุดไอคอน|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.pficons|ชุดไอคอน (*.pficons)|*.pficons</value></data>
+  <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>ปุ่มเครื่องเล่นพกพา PadForge (*.json)|*.json</value></data>
+  <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>โปรไฟล์ HIDMaestro (*.json)|*.json</value></data>
+  <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>ไฟปุ่ม PadForge (*.json)|*.json</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>มาโครกด {0} ไม่ได้ แต่การแมปในแท็บการแมปทำได้</value></data>
+  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge รันโอเวอร์เลย์หน้าจอได้แปดอัน และนี่คือเป้าเล็งอันที่เก้าหรือสิบของ reWASD</value></data>
+  <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge อ่านไจโรซ้ายและขวาจากโรล และการเอนจากยอว์ ซึ่งเป็นค่าเริ่มต้นของ reWASD การตั้งค่าของ reWASD สลับสองอย่างนี้ได้ และไฟล์นี้ไม่ได้บอกว่าสลับไว้หรือไม่</value></data>
+  <data name="Import_Tr_TiltLean" xml:space="preserve"><value>ในโหมดเอียง การเอนของ reWASD คือการหมุนรอบแกนตั้ง และเซ็นเซอร์การเคลื่อนไหวไม่ให้มุมของการหมุนนั้น</value></data>
+  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge อ่านแนวทแยงของทัชแพดเป็นสองทิศทางพร้อมกัน ซึ่งทัชแพดรายงานเฉพาะเมื่อโหมดปุ่มทิศทางในแท็บทัชแพดเป็น 8 ทิศทาง</value></data>
+  <data name="Import_Tr_GyroZone" xml:space="preserve"><value>PadForge อ่านทิศทางของไจโรเมื่อเกินเกณฑ์หนึ่งค่า และ reWASD ไม่ระบุหน่วยของขอบโซนไจโร</value></data>
+  <data name="Import_Tr_AbsoluteMouse" xml:space="preserve"><value>DS4Windows วางตัวชี้ไว้ตรงที่สติ๊กชี้ ใน PadForge สติ๊กจะเลื่อนตัวชี้แทน</value></data>
+  <data name="Import_Tr_StickBeforeRotation" xml:space="preserve"><value>{0} อ่านสติ๊กก่อนการหมุน DS4Windows อ่านหลังการหมุน</value></data>
+  <data name="Import_Tr_StickBeforeCurve" xml:space="preserve"><value>{0} อ่านมุมของสติ๊กก่อนโซนและเส้นโค้ง DS4Windows อ่านหลังจากนั้น</value></data>
+  <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>คีย์บอร์ดของสล็อตที่ไม่ใช่คีย์บอร์ด + เมาส์อีกต่อไป</value></data>
+  <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (ไม่มีบนพีซีเครื่องนี้)</value></data>
+  <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (ไม่มีบนช่องนี้)</value></data>
+  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>รวมยอว์และโรลด้วยความแรงเต็มที่ (ไม่อ่านส่วนของโรล)</value></data>
+  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>ไจโรแบบพื้นที่เฉพาะแห่งถูกอ่านเป็นยอว์ (PadForge ไม่มีแกนหลักที่เอียง)</value></data>
+  <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>ไจโรแบบตัวชี้เลเซอร์ถูกอ่านเป็นยอว์ (PadForge ไม่มีการแปลงแบบตัวชี้เลเซอร์)</value></data>
+  <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>ใน reWASD {0} ยังไปถึง Windows เพราะไฟล์แมปไว้โดยไม่ยกเลิกการแมป เมื่อเปิด ดักอินพุตที่แมปไว้ PadForge จะกันไว้</value></data>
+  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge หมุนค่าบวกตามเข็มนาฬิกา เหมือนที่ DS4Windows ทำ ความช่วยเหลือของ reWASD ระบุช่วงของการหมุน ไม่ได้ระบุทิศทาง</value></data>
+  <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows ปรับ {0} ของสติ๊กแบบรัศมีตามมุมที่ดัน การ์ดสติ๊กของ PadForge ถือว่าการดันตรงเหมือนกัน และการดันทแยงต่างออกไป</value></data>
+  <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>เลเยอร์ต่างๆ ปรับแต่ง {0} ไม่เหมือนกัน แต่ละเลเยอร์จึงเก็บการปรับแต่งของตัวเองไว้ และเส้นโค้งถูกนำมาเป็นเส้นโค้งยกกำลังที่ใกล้เคียงที่สุด</value></data>
 </root>

@@ -4541,7 +4541,7 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="KeyboardScreens_Status_Strike7Waiting" xml:space="preserve"><value>na zaslonu V.E.N.O.M. izberi PadForge</value></data>
   <data name="KeyboardScreens_Status_Strike7Showing" xml:space="preserve"><value>na zaslonu V.E.N.O.M.</value></data>
   <data name="KeyboardScreens_Status_NotFound" xml:space="preserve"><value>zaslon ni najden</value></data>
-  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}, čakanje na barvo svetlobnega traku</value></data>
+  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}, ni barve svetlobnega traku</value></data>
   <data name="KeyboardScreens_Status_NoPicture_Format" xml:space="preserve"><value>{0}, slika ni izbrana</value></data>
   <data name="KeyboardScreens_LgsShared_Format" xml:space="preserve"><value>Dokler deluje Logitech Gaming Software, vsi zasloni te vrste prikazujejo sliko, nastavljeno za {0}.</value></data>
   <data name="DeviceType_KeyboardScreenKeys" xml:space="preserve"><value>Zaslon tipkovnice</value></data>
@@ -4590,7 +4590,7 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Premakni sliko zaslona tipkovnice</value></data>
   <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Premakne okno vsakega zaslona tipkovnice, ki napaja to režo, po sliki, večji od zaslona, na primer po zemljevidu. Prekrivni prikaz zaslona se premika enako, kadar je povečava nad 100 odstotki.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Premakni slike za {0} in {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Premakne vsak zaslon, ki napaja to režo in prikazuje izbrano sliko, večjo od njega. Okno se ustavi na robovih slike. Prekrivni prikaz zaslona se premakne, kadar je povečava nad 100 odstotki, ne glede na to, katera reža izvede makro.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Premakne vsak zaslon, ki napaja to režo in prikazuje izbrano sliko, večjo od njega. Okno se ustavi na robovih slike. Prekrivni prikaz zaslona se premakne, kadar je povečava nad 100 odstotki, ne glede na to, katera reža izvede makro. Makro, ki imenuje en prekrivni prikaz, premakne samo ta prikaz.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Zaslon</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Dejanje</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Smer</value></data>
@@ -4907,11 +4907,11 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Najnižja reža z barvo</value></data>
   <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>Povečava</value></data>
   <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>Slika ni izbrana.</value></data>
-  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Čakanje na barvo svetlobnega traku.</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Ni barve svetlobnega traku DualShock 4 ali DualSense za prikaz.</value></data>
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Prekrivni prikaz</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Vsi prekrivni prikazi</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Preklopi prekrivni prikaz zaslona {0}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Prikaži slike {0}: {1} × {2} ms, do naslednjega makra</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Prikaži slike {0}: {1} × {2} ms, do naslednjega makra za prikaz ali način</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>Uvoz profila</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}, datoteka {1}</value></data>
   <data name="Import_ProfileName_Format" xml:space="preserve"><value>Postane profil „{0}“.</value></data>
@@ -4945,7 +4945,6 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Ta profil omenja posebno dejanje, ki manjka v datoteki Actions.xml poleg mape Profiles: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Ta nastavitev se ni prenesla: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD je tem vnosom preprečil dostop do sistema Windows. Na strani Naprave vklopite Zadrži preslikane vnose za {0}, kar zadrži vnose, ki jih preslika ta profil.</value></data>
-  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>Preslikave plasti Base za {0} se v tej plasti končajo. Ko je vklopljeno Zadrži preslikane vnose, so njegovi preslikani vnosi v vseh plasteh še naprej zadržani pred sistemom Windows.</value></data>
   <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>Njegovi podmeniji so postali dodatne reže na enem obroču.</value></data>
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Potrdi se, ko se palčka vrne v sredino ali ko se plast konča. Gumb Uveljavi iz reWASD se ne uporablja.</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Ta datoteka ločuje dva krmilnika. V PadForge te preslikave sproži kateri koli krmilnik na reži.</value></data>
@@ -4974,7 +4973,7 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="Import_Tr_HideController" xml:space="preserve"><value>reWASD je ta krmilnik skril pred igrami. Na strani Naprave zanj vklopite Skrij pred igrami.</value></data>
   <data name="Import_Tr_NoSuchSetting" xml:space="preserve"><value>PadForge nima take nastavitve: {0}</value></data>
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD je preprečil, da bi gibanje miške doseglo Windows. PadForge zadrži tipke in gumbe miške, ne pa gibanja, zato se kazalec še vedno premika.</value></data>
-  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>Virtualni krmilniki PadForge-a prejemajo gibanje samo iz senzorja gibanja krmilnika.</value></data>
+  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>Virtualni krmilnik Xbox nima gibanja. Za pošiljanje gibanja izberite vrsto krmilnika PlayStation ali Nintendo.</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows se je s profila {0} na gumb vrnil na ta profil. Če želite isto narediti v PadForge-u, dodajte Bližnjico za profil za ta profil na strani Profili.</value></data>
   <data name="Osk_Style_Grid" xml:space="preserve">
     <value>Mreža</value>
@@ -5193,4 +5192,37 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Tipkovnico odpre ali zapre, ko je „Odpre se z“ spuščeno pred časom držanja. Daljši pritisk ne naredi nič.</value></data>
   <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Tipkovnico odpre ali zapre, ko je „Odpre se z“ pritisnjeno trikrat znotraj okna pritiska.</value></data>
   <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Tipkovnico odpre ali zapre, ko se okno pritiska izteče po enem pritisku „Odpre se z“. Drugi pritisk znotraj okna to prekliče.</value></data>
+  <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>Barve gredo neposredno na {0}. Spreminjajoče se barve, na primer kroženje barv ali barve, ki sledijo zvoku, ne dosežejo naprave. Barva, ki ostane enaka, jo doseže.</value></data>
+  <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Vse datoteke (*.*)|*.*</value></data>
+  <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>Profil PadForge (*{0})|*{0}</value></data>
+  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml</value></data>
+  <data name="FileDialog_ProgramFilter" xml:space="preserve"><value>Programi (*.exe;*.bat;*.cmd;*.com)|*.exe;*.bat;*.cmd;*.com|Vse datoteke (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundFileFilter" xml:space="preserve"><value>Zvočne datoteke in zvočni paketi|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.pfsounds|Zvočni paketi (*.pfsounds)|*.pfsounds|Vse datoteke (*.*)|*.*</value></data>
+  <data name="FileDialog_AudioFilter" xml:space="preserve"><value>Zvočne datoteke|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.ogg|Vse datoteke (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundPackageFilter_Format" xml:space="preserve"><value>Zvočni paketi PadForge (*{0})|*{0}</value></data>
+  <data name="FileDialog_IconPackageFilter_Format" xml:space="preserve"><value>Paketi ikon PadForge (*{0})|*{0}</value></data>
+  <data name="FileDialog_AutoEqFilter" xml:space="preserve"><value>Profil AutoEq (*.txt)|*.txt|Vse datoteke (*.*)|*.*</value></data>
+  <data name="FileDialog_IconPickerFilter" xml:space="preserve"><value>Slike in paketi ikon|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.pficons|Paketi ikon (*.pficons)|*.pficons</value></data>
+  <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>Gumbi ročne konzole PadForge (*.json)|*.json</value></data>
+  <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>Profil HIDMaestro (*.json)|*.json</value></data>
+  <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>Osvetlitev tipk PadForge (*.json)|*.json</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Makro ne more pritisniti {0}. Preslikava na zavihku Preslikave lahko.</value></data>
+  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge izvaja osem prekrivnih prikazov zaslona, to pa je deveti ali deseti merilni križ iz reWASD.</value></data>
+  <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge bere Žiroskop levo in desno iz nagiba, Nagnjenost pa iz zasuka, kot je privzeto v reWASD. Nastavitve reWASD lahko to dvoje zamenjajo, ta datoteka pa ne pove, ali so bile zamenjani.</value></data>
+  <data name="Import_Tr_TiltLean" xml:space="preserve"><value>V načinu Nagib je Nagnjenost v reWASD vrtenje okoli navpične osi, senzor gibanja pa za to vrtenje ne daje kota.</value></data>
+  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge bere diagonalo sledilne ploščice kot dve smeri hkrati, kar ploščica sporoči samo, kadar je Način smernega križa na njenem zavihku Sledilna ploščica nastavljen na 8 smeri.</value></data>
+  <data name="Import_Tr_GyroZone" xml:space="preserve"><value>PadForge bere smer žiroskopa čez en prag, reWASD pa ne podaja enote za rob območja žiroskopa.</value></data>
+  <data name="Import_Tr_AbsoluteMouse" xml:space="preserve"><value>DS4Windows je kazalec postavil tja, kamor kaže palčka. V PadForge palčka namesto tega premika kazalec.</value></data>
+  <data name="Import_Tr_StickBeforeRotation" xml:space="preserve"><value>{0} bere palčko pred njenim vrtenjem. DS4Windows jo je bral po njem.</value></data>
+  <data name="Import_Tr_StickBeforeCurve" xml:space="preserve"><value>{0} bere kot palčke pred njenimi območji in krivuljo. DS4Windows ga je bral po njih.</value></data>
+  <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>Tipkovnica reže, ki ni več „Tipkovnica + miška“</value></data>
+  <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (ni na tem računalniku)</value></data>
+  <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (ni na tej reži)</value></data>
+  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>zasuk in nagib seštet s polno močjo (prispevek nagiba ni prebran)</value></data>
+  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>žiroskop Local Space prebran kot zasuk (PadForge nima nagnjene glavne osi)</value></data>
+  <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>žiroskop Laser Pointer prebran kot zasuk (PadForge nima pretvorbe laserskega kazalca)</value></data>
+  <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>V reWASD {0} še vedno doseže Windows, ker ga datoteka preslika brez preklica preslikave. Če je vklopljeno Zadrži preslikane vnose, ga PadForge zadrži.</value></data>
+  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge pozitivno vrtenje obrne v smeri urnega kazalca, kot DS4Windows. Pomoč reWASD navaja obseg vrtenja, ne pa njegove smeri.</value></data>
+  <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows oblikuje {0} radialne palčke glede na kot potiska. Kartica nastavitev palčke v PadForge raven potisk odigra enako, diagonalnega pa drugače.</value></data>
+  <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Plasti {0} nastavijo različno, zato vsaka obdrži svoje nastavitve, krivulja pa se prenese kot najbližja potenčna krivulja.</value></data>
 </root>

@@ -4541,7 +4541,7 @@
   <data name="KeyboardScreens_Status_Strike7Waiting" xml:space="preserve"><value>επιλέξτε το PadForge στην οθόνη V.E.N.O.M.</value></data>
   <data name="KeyboardScreens_Status_Strike7Showing" xml:space="preserve"><value>στην οθόνη V.E.N.O.M.</value></data>
   <data name="KeyboardScreens_Status_NotFound" xml:space="preserve"><value>δεν βρέθηκε οθόνη</value></data>
-  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}, αναμονή για χρώμα φωτεινής μπάρας</value></data>
+  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}, κανένα χρώμα φωτεινής μπάρας</value></data>
   <data name="KeyboardScreens_Status_NoPicture_Format" xml:space="preserve"><value>{0}, δεν έχει επιλεγεί εικόνα</value></data>
   <data name="KeyboardScreens_LgsShared_Format" xml:space="preserve"><value>Όσο εκτελείται το Logitech Gaming Software, κάθε οθόνη αυτού του είδους δείχνει την εικόνα που έχει οριστεί για το {0}.</value></data>
   <data name="DeviceType_KeyboardScreenKeys" xml:space="preserve"><value>Οθόνη πληκτρολογίου</value></data>
@@ -4590,7 +4590,7 @@
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Μετακίνηση εικόνας οθόνης πληκτρολογίου</value></data>
   <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Μετακινεί το παράθυρο κάθε οθόνης πληκτρολογίου που τροφοδοτεί αυτή την υποδοχή πάνω σε μια εικόνα μεγαλύτερη από την οθόνη, για παράδειγμα έναν χάρτη. Μια επικάλυψη οθόνης μετακινείται με τον ίδιο τρόπο όταν η μεγέθυνσή της είναι πάνω από 100 τοις εκατό.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Μετακίνηση εικόνων κατά {0} επί {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Μετακινεί κάθε οθόνη που τροφοδοτεί αυτή την υποδοχή και δείχνει επιλεγμένη εικόνα μεγαλύτερη από την ίδια. Το παράθυρο σταματά στα όρια της εικόνας. Μια επικάλυψη οθόνης μετακινείται όταν η μεγέθυνσή της είναι πάνω από 100 τοις εκατό, όποια υποδοχή κι αν εκτελεί τη μακροεντολή.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Μετακινεί κάθε οθόνη που τροφοδοτεί αυτή την υποδοχή και δείχνει επιλεγμένη εικόνα μεγαλύτερη από την ίδια. Το παράθυρο σταματά στα όρια της εικόνας. Μια επικάλυψη οθόνης μετακινείται όταν η μεγέθυνσή της είναι πάνω από 100 τοις εκατό, όποια υποδοχή κι αν εκτελεί τη μακροεντολή. Μια μακροεντολή που ονομάζει μία επικάλυψη μετακινεί μόνο αυτήν.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Οθόνη</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Ενέργεια</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Κατεύθυνση</value></data>
@@ -4907,11 +4907,11 @@
   <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Χαμηλότερη υποδοχή με χρώμα</value></data>
   <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>Μεγέθυνση</value></data>
   <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>Δεν έχει επιλεγεί εικόνα.</value></data>
-  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Αναμονή για χρώμα φωτεινής μπάρας.</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Δεν υπάρχει χρώμα φωτεινής μπάρας DualShock 4 ή DualSense για εμφάνιση.</value></data>
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Επικάλυψη</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Κάθε επικάλυψη</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Εναλλαγή επικάλυψης οθόνης {0}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Εμφάνιση εικόνων {0}: {1} × {2} ms, μέχρι την επόμενη μακροεντολή</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Εμφάνιση εικόνων {0}: {1} × {2} ms, μέχρι την επόμενη μακροεντολή εμφάνισης ή λειτουργίας</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>Εισαγωγή προφίλ</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}, αρχείο {1}</value></data>
   <data name="Import_ProfileName_Format" xml:space="preserve"><value>Θα γίνει το προφίλ «{0}».</value></data>
@@ -4945,7 +4945,6 @@
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Αυτό το προφίλ αναφέρει μια ειδική ενέργεια που λείπει από το Actions.xml δίπλα στον φάκελο Profiles: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Αυτή η ρύθμιση δεν μεταφέρθηκε: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>Το reWASD εμπόδιζε αυτές τις εισόδους να φτάνουν στα Windows. Ενεργοποιήστε την Κατακράτηση αντιστοιχισμένων εισόδων για τη συσκευή {0} στη σελίδα Συσκευές, ώστε να σταματούν αυτές που αντιστοιχίζει το προφίλ.</value></data>
-  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>Οι αντιστοιχίσεις του Base για τη συσκευή {0} σταματούν σε αυτό το επίπεδο. Με ενεργή την Κατακράτηση αντιστοιχισμένων εισόδων, οι αντιστοιχισμένες είσοδοί της παραμένουν κατακρατημένες από τα Windows σε κάθε επίπεδο.</value></data>
   <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>Τα υπομενού του έγιναν επιπλέον θέσεις στον ίδιο κύκλο.</value></data>
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Επιβεβαιώνεται όταν ο μοχλός επανέρχεται στο κέντρο ή τελειώνει το επίπεδο. Το κουμπί Εφαρμογή του reWASD δεν χρησιμοποιείται.</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Αυτό το αρχείο κρατά δύο χειριστήρια χωριστά. Στο PadForge, οποιοδήποτε χειριστήριο στη θέση ενεργοποιεί αυτές τις αντιστοιχίσεις.</value></data>
@@ -4974,7 +4973,7 @@
   <data name="Import_Tr_HideController" xml:space="preserve"><value>Το reWASD απέκρυπτε αυτό το χειριστήριο από τα παιχνίδια. Ενεργοποιήστε την Απόκρυψη από τα παιχνίδια για αυτό στη σελίδα Συσκευές.</value></data>
   <data name="Import_Tr_NoSuchSetting" xml:space="preserve"><value>Το PadForge δεν έχει τέτοια ρύθμιση: {0}</value></data>
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>Το reWASD εμπόδιζε την κίνηση του ποντικιού να φτάνει στα Windows. Το PadForge κατακρατά πλήκτρα και κουμπιά του ποντικιού, όχι όμως την κίνηση, οπότε ο δείκτης εξακολουθεί να κινείται.</value></data>
-  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>Τα εικονικά χειριστήρια του PadForge λαμβάνουν κίνηση μόνο από τον αισθητήρα κίνησης ενός χειριστηρίου.</value></data>
+  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>Ένα εικονικό χειριστήριο Xbox δεν έχει κίνηση. Επιλέξτε τύπο χειριστηρίου PlayStation ή Nintendo για να στείλετε κίνηση.</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>Το DS4Windows επέστρεφε σε αυτό το προφίλ από το {0} με ένα κουμπί. Για να γίνει αυτό στο PadForge, προσθέστε μια Συντόμευση προφίλ για αυτό το προφίλ στη σελίδα Προφίλ.</value></data>
   <data name="Osk_Style_Grid" xml:space="preserve">
     <value>Πλέγμα</value>
@@ -5193,4 +5192,37 @@
   <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Ανοίγει ή κλείνει το πληκτρολόγιο όταν το «Ανοίγει με» αφεθεί πριν από τον χρόνο κρατήματος. Ένα μεγαλύτερο πάτημα δεν κάνει τίποτα.</value></data>
   <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Ανοίγει ή κλείνει το πληκτρολόγιο όταν το «Ανοίγει με» πατηθεί τρεις φορές μέσα στο χρονικό παράθυρο πατήματος.</value></data>
   <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Ανοίγει ή κλείνει το πληκτρολόγιο όταν τελειώσει το χρονικό παράθυρο πατήματος μετά από ένα πάτημα του «Ανοίγει με». Ένα δεύτερο πάτημα μέσα στο παράθυρο το ακυρώνει.</value></data>
+  <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>Τα χρώματα στέλνονται απευθείας στη συσκευή {0}. Τα χρώματα που αλλάζουν, όπως η κυκλική εναλλαγή χρωμάτων ή τα χρώματα που ακολουθούν τον ήχο, δεν φτάνουν σε αυτήν. Ένα χρώμα που μένει σταθερό φτάνει.</value></data>
+  <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Όλα τα αρχεία (*.*)|*.*</value></data>
+  <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>Προφίλ PadForge (*{0})|*{0}</value></data>
+  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml</value></data>
+  <data name="FileDialog_ProgramFilter" xml:space="preserve"><value>Προγράμματα (*.exe;*.bat;*.cmd;*.com)|*.exe;*.bat;*.cmd;*.com|Όλα τα αρχεία (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundFileFilter" xml:space="preserve"><value>Αρχεία ήχου και πακέτα ήχων|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.pfsounds|Πακέτα ήχων (*.pfsounds)|*.pfsounds|Όλα τα αρχεία (*.*)|*.*</value></data>
+  <data name="FileDialog_AudioFilter" xml:space="preserve"><value>Αρχεία ήχου|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.ogg|Όλα τα αρχεία (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundPackageFilter_Format" xml:space="preserve"><value>Πακέτα ήχων PadForge (*{0})|*{0}</value></data>
+  <data name="FileDialog_IconPackageFilter_Format" xml:space="preserve"><value>Πακέτα εικονιδίων PadForge (*{0})|*{0}</value></data>
+  <data name="FileDialog_AutoEqFilter" xml:space="preserve"><value>Προφίλ AutoEq (*.txt)|*.txt|Όλα τα αρχεία (*.*)|*.*</value></data>
+  <data name="FileDialog_IconPickerFilter" xml:space="preserve"><value>Εικόνες και πακέτα εικονιδίων|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.pficons|Πακέτα εικονιδίων (*.pficons)|*.pficons</value></data>
+  <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>Κουμπιά φορητής κονσόλας PadForge (*.json)|*.json</value></data>
+  <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>Προφίλ HIDMaestro (*.json)|*.json</value></data>
+  <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>Φωτισμός πλήκτρων PadForge (*.json)|*.json</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Μια μακροεντολή δεν μπορεί να πατήσει το {0}. Μια αντιστοίχιση στην καρτέλα Αντιστοιχίσεις μπορεί.</value></data>
+  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>Το PadForge εκτελεί οκτώ Επικαλύψεις οθόνης, και αυτό είναι το ένατο ή δέκατο σταυρόνημα του reWASD.</value></data>
+  <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>Το PadForge διαβάζει το Αριστερά και Δεξιά του γυροσκοπίου από τον διατοιχισμό και το Γέρσιμο από την εκτροπή, την προεπιλογή του reWASD. Οι Προτιμήσεις του reWASD μπορούν να εναλλάξουν τα δύο, και αυτό το αρχείο δεν λέει αν εναλλάχθηκαν.</value></data>
+  <data name="Import_Tr_TiltLean" xml:space="preserve"><value>Στη λειτουργία Κλίσης, το Γέρσιμο του reWASD είναι στροφή γύρω από τον κατακόρυφο άξονα, και ένας αισθητήρας κίνησης δεν δίνει γωνία για αυτή τη στροφή.</value></data>
+  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>Το PadForge διαβάζει μια διαγώνιο της επιφάνειας αφής ως δύο κατευθύνσεις ταυτόχρονα, κάτι που η επιφάνεια αφής αναφέρει μόνο όταν η Λειτουργία D-pad στην καρτέλα Επιφάνεια αφής είναι 8 κατευθύνσεις.</value></data>
+  <data name="Import_Tr_GyroZone" xml:space="preserve"><value>Το PadForge διαβάζει την κατεύθυνση του γυροσκοπίου πέρα από ένα όριο, και το reWASD δεν δίνει μονάδα για το άκρο μιας ζώνης γυροσκοπίου.</value></data>
+  <data name="Import_Tr_AbsoluteMouse" xml:space="preserve"><value>Το DS4Windows τοποθετούσε τον δείκτη εκεί που δείχνει ο μοχλός. Στο PadForge ο μοχλός μετακινεί τον δείκτη.</value></data>
+  <data name="Import_Tr_StickBeforeRotation" xml:space="preserve"><value>Το {0} διαβάζει τον μοχλό πριν από την περιστροφή του. Το DS4Windows τον διάβαζε μετά.</value></data>
+  <data name="Import_Tr_StickBeforeCurve" xml:space="preserve"><value>Το {0} διαβάζει τη γωνία του μοχλού πριν από τις ζώνες και την καμπύλη του. Το DS4Windows τη διάβαζε μετά.</value></data>
+  <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>Πληκτρολόγιο μιας υποδοχής που δεν είναι πια Πληκτρολόγιο + ποντίκι</value></data>
+  <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (δεν υπάρχει σε αυτόν τον υπολογιστή)</value></data>
+  <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (δεν υπάρχει σε αυτή την υποδοχή)</value></data>
+  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>η εκτροπή και ο διατοιχισμός προστέθηκαν με πλήρη ένταση (η συμβολή του διατοιχισμού δεν διαβάστηκε)</value></data>
+  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>το γυροσκόπιο Τοπικός χώρος διαβάστηκε ως εκτροπή (το PadForge δεν έχει κεκλιμένο κύριο άξονα)</value></data>
+  <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>το γυροσκόπιο Δείκτης λέιζερ διαβάστηκε ως εκτροπή (το PadForge δεν έχει μετατροπή δείκτη λέιζερ)</value></data>
+  <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>Στο reWASD, το {0} εξακολουθεί να φτάνει στα Windows επειδή το αρχείο το αντιστοιχίζει χωρίς αποαντιστοίχιση. Με ενεργή την Κατακράτηση αντιστοιχισμένων εισόδων, το PadForge το κατακρατά.</value></data>
+  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>Το PadForge περιστρέφει μια θετική περιστροφή δεξιόστροφα, όπως το DS4Windows. Η βοήθεια του reWASD δίνει το εύρος της περιστροφής, όχι την κατεύθυνσή της.</value></data>
+  <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>Το DS4Windows διαμορφώνει το {0} ενός ακτινικού μοχλού με βάση τη γωνία της ώθησης. Η κάρτα μοχλού του PadForge αντιμετωπίζει μια ευθεία ώθηση με τον ίδιο τρόπο και μια διαγώνια διαφορετικά.</value></data>
+  <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Τα επίπεδα ρυθμίζουν διαφορετικά το {0}, γι' αυτό κάθε επίπεδο κρατά τη δική του ρύθμιση και η καμπύλη μεταφέρεται ως η πλησιέστερη καμπύλη δύναμης.</value></data>
 </root>

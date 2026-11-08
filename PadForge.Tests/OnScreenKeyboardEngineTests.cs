@@ -593,6 +593,121 @@ namespace PadForge.Tests
             Assert.Equal(new[] { "tap E047 None", "tap E04F None" }, _out.Sent);
         }
 
+        // ── A control on Move the Keyboard's input ──────────────
+
+        /// <summary>One tick with <paramref name="a"/> bound to Move the
+        /// Keyboard's input, that input held or not, and the steering input
+        /// at <paramref name="sx"/>.</summary>
+        private void TickSharedWithMove(KeyboardControlAction a, bool held, float sx, int ms = 16)
+        {
+            _now += ms;
+            Sync();
+            _pad.SX = sx;
+            _pad.SY = 0;
+            _pad.Shared[(int)a] = _pad.Shared[(int)KeyboardControlAction.MoveKeyboard] = 99;
+            _pad.Down[(int)a] = _pad.Down[(int)KeyboardControlAction.MoveKeyboard] = held;
+            _e.Tick(_pad, _now);
+        }
+
+        /// <summary>Move Up on the input that moves the keyboard: holding it
+        /// to move the keyboard moves no selection, and a tap moves it up
+        /// once, as a tap control on that input fires on its release.</summary>
+        [Fact]
+        public void Grid_AMoveControlOnTheMoveKeyboardInput_MovesTheSelectionOnATapOnly()
+        {
+            Open();
+            Press(Down);
+            TickSharedWithMove(KeyboardControlAction.MoveUp, false, 0);
+            TickSharedWithMove(KeyboardControlAction.MoveUp, true, 0);
+            for (int i = 0; i < 40; i++) TickSharedWithMove(KeyboardControlAction.MoveUp, true, 1);
+            TickSharedWithMove(KeyboardControlAction.MoveUp, false, 0);
+            Press(A);
+            TickSharedWithMove(KeyboardControlAction.MoveUp, true, 0);
+            TickSharedWithMove(KeyboardControlAction.MoveUp, false, 0);
+            Press(A);
+            // a while the keyboard moved, then q after the tap.
+            Assert.Equal(new[] { "tap 001E None", "tap 0010 None" }, _out.Sent);
+        }
+
+        /// <summary>Split's Arrow Up on the input that moves the keyboard
+        /// sends no arrow while it moves the keyboard, and one on a tap.</summary>
+        [Fact]
+        public void Split_AnArrowOnTheMoveKeyboardInput_SendsOnATapOnly()
+        {
+            Open(OskStyle.Split);
+            TickSharedWithMove(KeyboardControlAction.ArrowUp, false, 0);
+            TickSharedWithMove(KeyboardControlAction.ArrowUp, true, 0);
+            for (int i = 0; i < 60; i++) TickSharedWithMove(KeyboardControlAction.ArrowUp, true, 1);
+            TickSharedWithMove(KeyboardControlAction.ArrowUp, false, 0);
+            Assert.Empty(_out.Sent);
+            TickSharedWithMove(KeyboardControlAction.ArrowUp, true, 0);
+            TickSharedWithMove(KeyboardControlAction.ArrowUp, false, 0);
+            Assert.Equal(new[] { "tap E048 None" }, _out.Sent);
+        }
+
+        /// <summary>The wheel's Capitals hold on the input that moves the
+        /// keyboard shows capitals until the keyboard starts to move, then
+        /// lets go of them.</summary>
+        [Fact]
+        public void Wheel_AHoldOnTheMoveKeyboardInput_EndsWhenTheKeyboardMoves()
+        {
+            Open(OskStyle.Wheel);
+            TickSharedWithMove(KeyboardControlAction.Capitals, false, 0);
+            TickSharedWithMove(KeyboardControlAction.Capitals, true, 0);
+            Assert.Equal(1, _e.WheelSet);
+            TickSharedWithMove(KeyboardControlAction.Capitals, true, 1);
+            TickSharedWithMove(KeyboardControlAction.Capitals, true, 1);
+            Assert.Equal(0, _e.WheelSet);
+        }
+
+        // ── A save that lags the keyboard's own keys ────────────
+
+        /// <summary>Clicks the first key of a kind on the boards showing.</summary>
+        private void ClickSpecial(OskSpecial special)
+        {
+            var bs = _e.Boards();
+            for (int b = 0; b < bs.Length; b++)
+                for (int r = 0; r < bs[b].Rows.Length; r++)
+                    for (int i = 0; i < bs[b].Rows[r].Length; i++)
+                        if (bs[b].Rows[r][i].Special == special)
+                        {
+                            _e.ClickKey(b, r - bs[b].Offset, i);
+                            return;
+                        }
+            Assert.Fail("no " + special + " key");
+        }
+
+        /// <summary>The style key pressed twice, Grid to Split to Wheel, with
+        /// the save of the first press arriving after the second: the
+        /// keyboard stays on Wheel. A style picked on the Menus tab still
+        /// applies.</summary>
+        [Fact]
+        public void TwoStyleKeyPresses_AroundALaggingSave_EndOnTheSecond()
+        {
+            Open();
+            ClickSpecial(OskSpecial.Layout);
+            ClickSpecial(OskSpecial.Layout);
+            Assert.Equal(OskStyle.Wheel, _e.Style);
+            _e.ApplySettings(new OskSettings { Suggestions = false, Style = OskStyle.Split });
+            Assert.Equal(OskStyle.Wheel, _e.Style);
+            _e.ApplySettings(new OskSettings { Suggestions = false, Style = OskStyle.Wheel });
+            _e.ApplySettings(new OskSettings { Suggestions = false, Style = OskStyle.Split });
+            Assert.Equal(OskStyle.Split, _e.Style);
+        }
+
+        /// <summary>The Fn key pressed twice, on then off, with the save of
+        /// the first press arriving after the second: the row stays off.</summary>
+        [Fact]
+        public void TwoFnKeyPresses_AroundALaggingSave_EndOnTheSecond()
+        {
+            Open();
+            ClickSpecial(OskSpecial.Fn);
+            ClickSpecial(OskSpecial.Fn);
+            Assert.False(_e.FunctionRow);
+            _e.ApplySettings(new OskSettings { Suggestions = false, FunctionRow = true });
+            Assert.False(_e.FunctionRow);
+        }
+
         // ── Suggestions ─────────────────────────────────────────
 
         [Fact]

@@ -4541,7 +4541,7 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="KeyboardScreens_Status_Strike7Waiting" xml:space="preserve"><value>veldu PadForge á V.E.N.O.M. skjánum</value></data>
   <data name="KeyboardScreens_Status_Strike7Showing" xml:space="preserve"><value>á V.E.N.O.M. skjánum</value></data>
   <data name="KeyboardScreens_Status_NotFound" xml:space="preserve"><value>enginn skjár fannst</value></data>
-  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}, bíður eftir lit ljósrandar</value></data>
+  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}, enginn litur ljósrandar</value></data>
   <data name="KeyboardScreens_Status_NoPicture_Format" xml:space="preserve"><value>{0}, engin mynd valin</value></data>
   <data name="KeyboardScreens_LgsShared_Format" xml:space="preserve"><value>Meðan Logitech Gaming Software er í gangi sýnir hver skjár af þessu tagi myndina sem er stillt fyrir {0}.</value></data>
   <data name="DeviceType_KeyboardScreenKeys" xml:space="preserve"><value>Skjár lyklaborðs</value></data>
@@ -4590,7 +4590,7 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Færa mynd á skjá lyklaborðs</value></data>
   <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Færir glugga hvers lyklaborðsskjás sem tengist þessari rauf yfir mynd sem er stærri en skjárinn, fyrir kort. Yfirlag skjás færist á sama hátt þegar aðdrátturinn er yfir 100 prósentum.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Færa myndir um {0} og {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Færir hvern skjá sem tengist þessari rauf og sýnir valda mynd sem er stærri en hann sjálfur. Glugginn stöðvast við brúnir myndarinnar. Yfirlag skjás færist þegar aðdrátturinn er yfir 100 prósentum, sama hvaða rauf keyrir fjölvann.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Færir hvern skjá sem tengist þessari rauf og sýnir valda mynd sem er stærri en hann sjálfur. Glugginn stöðvast við brúnir myndarinnar. Yfirlag skjás færist þegar aðdrátturinn er yfir 100 prósentum, sama hvaða rauf keyrir fjölvann. Fjölvi sem nefnir eitt yfirlag færir aðeins það yfirlag.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Skjár</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Aðgerð</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Stefna</value></data>
@@ -4907,11 +4907,11 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Lægsta rauf með lit</value></data>
   <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>Aðdráttur</value></data>
   <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>Engin mynd valin.</value></data>
-  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Bíður eftir lit ljósrandar.</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Enginn litur ljósrandar á DualShock 4 eða DualSense til að sýna.</value></data>
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Yfirlag</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Öll yfirlög</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Víxla yfirlagi skjás {0}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Sýna {0} myndir: {1} × {2} ms, þar til næsta fjölvi tekur við</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Sýna {0} myndir: {1} × {2} ms, þar til næsta sýning eða hamfjölvi tekur við</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>Flytja inn snið</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}, {1}-skrá</value></data>
   <data name="Import_ProfileName_Format" xml:space="preserve"><value>Verður sniðið „{0}“.</value></data>
@@ -4945,7 +4945,6 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Þetta snið nefnir sérstaka aðgerð sem vantar í Actions.xml við hlið Profiles-möppunnar: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Þessi stilling fluttist ekki með: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD kom í veg fyrir að þessi inntök næðu til Windows. Kveiktu á Gleypa varpað inntak fyrir {0} á Tækjasíðunni, sem stöðvar þau inntök sem þetta snið varpar.</value></data>
-  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>Varpanir Base fyrir {0} hætta í þessu lagi. Þegar kveikt er á Gleypa varpað inntak haldast varpað inntök þess áfram til baka frá Windows í öllum lögum.</value></data>
   <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>Undirvalmyndir þess urðu að fleiri raufum á einum hring.</value></data>
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Staðfestir þegar stýripinninn miðjast aftur eða lagið endar. Apply-hnappur reWASD er ekki notaður.</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Þessi skrá heldur tveimur stýripinnum aðskildum. Í PadForge kveikir hvaða stýripinni sem er á raufinni á þessum varpunum.</value></data>
@@ -4974,7 +4973,7 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Import_Tr_HideController" xml:space="preserve"><value>reWASD faldi þennan stýripinna fyrir leikjum. Kveiktu á Fela fyrir leikjum fyrir hann á Tækjasíðunni.</value></data>
   <data name="Import_Tr_NoSuchSetting" xml:space="preserve"><value>PadForge hefur enga slíka stillingu: {0}</value></data>
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD kom í veg fyrir að hreyfing músar næði til Windows. PadForge heldur lyklum og músarhnöppum til baka en ekki hreyfingu, svo bendillinn hreyfist áfram.</value></data>
-  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>Sýndarstýripinnar PadForge taka við hreyfingu eingöngu frá hreyfiskynjara stýripinna.</value></data>
+  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>Xbox-sýndarstýripinni hefur enga hreyfingu. Veldu PlayStation- eða Nintendo-gerð stýripinna til að senda hreyfingu.</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows sneri aftur í þetta snið úr {0} með hnappi. Til að gera það í PadForge skaltu bæta við flýtileið sniðs fyrir þetta snið á síðunni Snið.</value></data>
   <data name="Osk_Style_Grid" xml:space="preserve">
     <value>Rist</value>
@@ -5193,4 +5192,37 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Opnar eða lokar lyklaborðinu þegar „Opnast með“ er sleppt áður en haldtíminn líður. Lengri ýting gerir ekkert.</value></data>
   <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Opnar eða lokar lyklaborðinu þegar ýtt er þrisvar á „Opnast með“ innan tímaglugga ýtinga.</value></data>
   <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Opnar eða lokar lyklaborðinu þegar tímaglugga ýtinga lýkur eftir eina ýtingu á „Opnast með“. Önnur ýting innan gluggans hættir við það.</value></data>
+  <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>Litir fara beint til {0}. Breytilegir litir, eins og litahringrás eða litir sem fylgja hljóði, berast ekki til þess. Litur sem helst óbreyttur gerir það.</value></data>
+  <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Allar skrár (*.*)|*.*</value></data>
+  <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>PadForge-snið (*{0})|*{0}</value></data>
+  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml</value></data>
+  <data name="FileDialog_ProgramFilter" xml:space="preserve"><value>Forrit (*.exe;*.bat;*.cmd;*.com)|*.exe;*.bat;*.cmd;*.com|Allar skrár (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundFileFilter" xml:space="preserve"><value>Hljóðskrár og hljóðpakkar|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.pfsounds|Hljóðpakkar (*.pfsounds)|*.pfsounds|Allar skrár (*.*)|*.*</value></data>
+  <data name="FileDialog_AudioFilter" xml:space="preserve"><value>Hljóðskrár|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.ogg|Allar skrár (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundPackageFilter_Format" xml:space="preserve"><value>PadForge-hljóðpakkar (*{0})|*{0}</value></data>
+  <data name="FileDialog_IconPackageFilter_Format" xml:space="preserve"><value>PadForge-táknpakkar (*{0})|*{0}</value></data>
+  <data name="FileDialog_AutoEqFilter" xml:space="preserve"><value>AutoEq-snið (*.txt)|*.txt|Allar skrár (*.*)|*.*</value></data>
+  <data name="FileDialog_IconPickerFilter" xml:space="preserve"><value>Myndir og táknpakkar|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.pficons|Táknpakkar (*.pficons)|*.pficons</value></data>
+  <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>PadForge-hnappar handtölvu (*.json)|*.json</value></data>
+  <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro-snið (*.json)|*.json</value></data>
+  <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge-lyklaljós (*.json)|*.json</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Fjölvi getur ekki ýtt á {0}. Varpa á Varpanir-flipanum getur það.</value></data>
+  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge keyrir átta yfirlög skjás og þetta er níundi eða tíundi miðunarkross reWASD.</value></data>
+  <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge les vinstri og hægri hreyfingu snúningsskynjara úr veltu og hneigingu úr snúningi, sem er sjálfgefið í reWASD. Stillingar reWASD geta víxlað þessu tvennu og skráin segir ekki hvort það var gert.</value></data>
+  <data name="Import_Tr_TiltLean" xml:space="preserve"><value>Í hallahami er hneiging í reWASD snúningur um lóðréttan ás og hreyfiskynjari gefur ekkert horn fyrir þann snúning.</value></data>
+  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge les skáhreyfingu á snertifleti sem tvær áttir í einu, en snertiflöturinn skilar því aðeins þegar Hamur stefnuhnappa á Snertiflötur-flipanum er 8 áttir.</value></data>
+  <data name="Import_Tr_GyroZone" xml:space="preserve"><value>PadForge les stefnu snúningsskynjarans yfir einn þröskuld og reWASD gefur enga einingu fyrir jaðar svæðis snúningsskynjara.</value></data>
+  <data name="Import_Tr_AbsoluteMouse" xml:space="preserve"><value>DS4Windows setti bendilinn þangað sem stýripinninn vísar. Í PadForge hreyfir stýripinninn bendilinn í staðinn.</value></data>
+  <data name="Import_Tr_StickBeforeRotation" xml:space="preserve"><value>{0} les stýripinnann áður en hann er snúinn. DS4Windows las hann á eftir.</value></data>
+  <data name="Import_Tr_StickBeforeCurve" xml:space="preserve"><value>{0} les horn stýripinnans áður en svæði hans og ferill eru notuð. DS4Windows las það á eftir.</value></data>
+  <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>Lyklaborð rauf sem er ekki lengur Lyklaborð + mús</value></data>
+  <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (ekki í þessari tölvu)</value></data>
+  <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (ekki í þessari rauf)</value></data>
+  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>snúningi og veltu bætt við með fullum styrk (framlag veltu ekki lesið)</value></data>
+  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>Local Space-snúningsskynjari lesinn sem snúningur (PadForge hefur engan hallaðan aðalás)</value></data>
+  <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>Laser Pointer-snúningsskynjari lesinn sem snúningur (PadForge hefur enga leysibendilsumbreytingu)</value></data>
+  <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>Í reWASD nær {0} enn til Windows því skráin varpar honum án afvörpunar. Með Gleypa varpað inntak kveikt heldur PadForge honum til baka.</value></data>
+  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge snýr jákvæðum snúningi réttsælis, eins og DS4Windows gerir. Hjálp reWASD gefur svið snúningsins, ekki stefnu hans.</value></data>
+  <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows mótar {0} hringlaga stýripinna eftir horni hreyfingarinnar. Stillingaspjald stýripinna í PadForge spilar beina hreyfingu eins en skáhreyfingu á annan hátt.</value></data>
+  <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Lögin stilla {0} á mismunandi hátt, svo hvert þeirra heldur sínum stillingum og ferillinn fluttist yfir sem næsti veldisferill.</value></data>
 </root>

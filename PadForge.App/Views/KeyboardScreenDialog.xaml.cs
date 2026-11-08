@@ -234,8 +234,16 @@ namespace PadForge.Views
             Refresh();
         }
 
-        private void PanBox_LostFocus(object sender, RoutedEventArgs e)
+        private void PanBox_LostFocus(object sender, RoutedEventArgs e) => ReadBoxes();
+
+        /// <summary>Takes the zoom and the pan from their boxes, then redraws once.
+        /// Refresh writes every box back, so a box read after it would give the old
+        /// value: Enter on Save leaves the box being typed in focused, and no
+        /// LostFocus has run for it.</summary>
+        private void ReadBoxes()
         {
+            if (int.TryParse(ZoomBox.Text, NumberStyles.Integer, CultureInfo.CurrentCulture, out int zoom))
+                _zoom = Math.Clamp(zoom, KeyboardScreenData.DefaultZoom, KeyboardScreenData.MaxZoom);
             if (int.TryParse(PanXBox.Text, NumberStyles.Integer, CultureInfo.CurrentCulture, out int x)) _panX = Math.Max(0, x);
             if (int.TryParse(PanYBox.Text, NumberStyles.Integer, CultureInfo.CurrentCulture, out int y)) _panY = Math.Max(0, y);
             Refresh();
@@ -248,17 +256,11 @@ namespace PadForge.Views
             Refresh();
         }
 
-        private void ZoomBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (int.TryParse(ZoomBox.Text, NumberStyles.Integer, CultureInfo.CurrentCulture, out int zoom))
-                _zoom = Math.Clamp(zoom, KeyboardScreenData.DefaultZoom, KeyboardScreenData.MaxZoom);
-            Refresh();
-        }
+        private void ZoomBox_LostFocus(object sender, RoutedEventArgs e) => ReadBoxes();
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            ZoomBox_LostFocus(sender, e);
-            PanBox_LostFocus(sender, e);
+            ReadBoxes();
             _saved = true;
             DialogResult = true;
         }

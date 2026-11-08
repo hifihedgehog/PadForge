@@ -657,18 +657,10 @@ namespace PadForge.Common.Input
         }
 
         // ─────────────────────────────────────────────
-        //  SendInput P/Invoke
-        //
-        //  The INPUT struct uses a union (MOUSEINPUT / KEYBDINPUT)
-        //  that contains IntPtr (ULONG_PTR). On x64, IntPtr is 8 bytes
-        //  with 8-byte alignment, so the union must start at offset 8
-        //  (after DWORD type + 4 bytes padding). Using LayoutKind.Sequential
-        //  with a separate Explicit union struct lets the CLR handle
-        //  platform-correct alignment automatically.
+        //  Windows input: keys and buttons go through InputManager's output
+        //  queue, which the injector thread sends (FlushPendingInput), so
+        //  no SendInput runs on the poll thread that submits this slot.
         // ─────────────────────────────────────────────
-
-        private const int INPUT_MOUSE = 0;
-        private const int INPUT_KEYBOARD = 1;
 
         private const uint MOUSEEVENTF_LEFTDOWN = 0x0002;
         private const uint MOUSEEVENTF_LEFTUP = 0x0004;
@@ -684,51 +676,6 @@ namespace PadForge.Common.Input
 
         private const uint KEYEVENTF_EXTENDEDKEY = 0x0001;
         private const uint KEYEVENTF_KEYUP = 0x0002;
-
-        [StructLayout(LayoutKind.Sequential)]
-        private struct MOUSEINPUT
-        {
-            public int dx;
-            public int dy;
-            public uint mouseData;
-            public uint dwFlags;
-            public uint time;
-            public IntPtr dwExtraInfo;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        private struct KEYBDINPUT
-        {
-            public ushort wVk;
-            public ushort wScan;
-            public uint dwFlags;
-            public uint time;
-            public IntPtr dwExtraInfo;
-        }
-
-        [StructLayout(LayoutKind.Explicit)]
-        private struct InputUnion
-        {
-            [FieldOffset(0)] public MOUSEINPUT mi;
-            [FieldOffset(0)] public KEYBDINPUT ki;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        private struct INPUT
-        {
-            public int type;
-            public InputUnion u;
-        }
-
-        [DllImport("user32.dll", SetLastError = true, EntryPoint = "SendInput")]
-        private static extern uint SendInputNative(uint nInputs, INPUT[] pInputs, int cbSize);
-
-        /// <summary>The one way this controller injects a key or a button.
-        /// The test host injects none
-        /// (InputHookManager.DesktopInputOffLimits) and is answered no event
-        /// sent, as when the input is blocked.</summary>
-        private static uint SendInput(uint nInputs, INPUT[] pInputs, int cbSize)
-            => PadForge.Engine.Common.InputHookManager.DesktopInputOffLimits ? 0 : SendInputNative(nInputs, pInputs, cbSize);
 
         // Absolute cursor positioning for the Wii IR pointer (issue #146),
         // the same call Touchmote's MouseSimulator uses (SetCursorPosition).
@@ -773,60 +720,19 @@ namespace PadForge.Common.Input
                 (down ? 0u : KEYEVENTF_KEYUP) | (extended ? KEYEVENTF_EXTENDEDKEY : 0u));
         }
 
+        /// <summary>Queues one key event (InputManager.QueueKeyboardOutput).
+        /// Each slot's restriction was applied at its submit.</summary>
         private static void SendKeyboard(ushort vk, bool down)
         {
             var (outVk, scan, flags) = KeyEvent(vk, down);
-            var input = new INPUT
-            {
-                type = INPUT_KEYBOARD,
-                u = new InputUnion
-                {
-                    ki = new KEYBDINPUT
-                    {
-                        wVk = outVk,
-                        wScan = scan,
-                        dwFlags = flags,
-                        dwExtraInfo = PadForge.Engine.Common.InputHookManager.OutputTag
-                    }
-                }
-            };
-            SendInput(1, new[] { input }, Marshal.SizeOf<INPUT>());
+            InputManager.QueueKeyboardOutput(outVk, scan, flags);
         }
 
         private static void SendMouseButton(uint downFlag, uint upFlag, bool down)
-        {
-            var input = new INPUT
-            {
-                type = INPUT_MOUSE,
-                u = new InputUnion
-                {
-                    mi = new MOUSEINPUT
-                    {
-                        dwFlags = down ? downFlag : upFlag,
-                        dwExtraInfo = PadForge.Engine.Common.InputHookManager.OutputTag
-                    }
-                }
-            };
-            SendInput(1, new[] { input }, Marshal.SizeOf<INPUT>());
-        }
+            => InputManager.QueueMouseButtonOutput(down ? downFlag : upFlag, 0);
 
         private static void SendMouseButtonX(uint xButton, bool down)
-        {
-            var input = new INPUT
-            {
-                type = INPUT_MOUSE,
-                u = new InputUnion
-                {
-                    mi = new MOUSEINPUT
-                    {
-                        dwFlags = down ? MOUSEEVENTF_XDOWN : MOUSEEVENTF_XUP,
-                        mouseData = xButton,
-                        dwExtraInfo = PadForge.Engine.Common.InputHookManager.OutputTag
-                    }
-                }
-            };
-            SendInput(1, new[] { input }, Marshal.SizeOf<INPUT>());
-        }
+            => InputManager.QueueMouseButtonOutput(down ? MOUSEEVENTF_XDOWN : MOUSEEVENTF_XUP, xButton);
 
     }
 }

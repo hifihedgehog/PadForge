@@ -13,7 +13,7 @@ namespace PadForge.Tests
     /// <summary>
     /// The DualShock 3 has a body of its own in both previews. Until it
     /// did, the dualshock-3 profile fell through the generic DualShock
-    /// route and drew a DualShock 4: a touchpad, a light bar, SHARE and
+    /// route and drew a DualShock 4: a touchpad, a lightbar, SHARE and
     /// OPTIONS, none of which the pad has.
     ///
     /// <para>The mesh is a bought model split by tools/dualshock3_mesh.py

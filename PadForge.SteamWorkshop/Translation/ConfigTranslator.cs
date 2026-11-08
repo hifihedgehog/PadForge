@@ -462,7 +462,7 @@ namespace PadForge.SteamWorkshop.Translation
                     // at all, so absent = 1.0x).
                     EmitMouseAxes(run, slot, layer, path, settings, GenericBaseline,
                         sensitivityKey: "gyro_natural_sensitivity",
-                        curveChannel: CurveChannelApplies(slot, mode));
+                        curveChannel: CurveChannelApplies(slot, mode), conversionStyle: true);
                     TranslateMemberGroup(run, preset, effective, slot, layer, path, settings);
                     break;
 
@@ -477,7 +477,7 @@ namespace PadForge.SteamWorkshop.Translation
                     // gyro_button / ratchet settings ride the shared
                     // gyro-settings walk like every other gyro mode.
                     EmitMouseJoystickAxes(run, slot, layer, path, settings, StickMouseBaseline,
-                        curveChannel: CurveChannelApplies(slot, mode));
+                        curveChannel: CurveChannelApplies(slot, mode), conversionStyle: true);
                     TranslateMemberGroup(run, preset, effective, slot, layer, path, settings);
                     break;
 
@@ -488,6 +488,13 @@ namespace PadForge.SteamWorkshop.Translation
                     // stick's own frame by construction (Lean X positive =
                     // tilt right, Lean Y positive = nose up = stick pulled
                     // back), so the pair lowers 1:1 onto the thumb axes.
+                    // The controller is the stick: Valve's 10/25/23 client
+                    // notes call the mode "most appropriate for simulating
+                    // Steering and Flight Yokes", and JoyShockMapper's
+                    // motion stick, the same tilt-to-stick read, pulls the
+                    // stick back for the nose up (main.cpp, calY =
+                    // -grav.z). This is the opposite of gyro_to_joystick,
+                    // the camera mode, whose Y row is negated.
                     EmitGyroLeanJoystickAxes(run, layer, path, settings);
                     TranslateMemberGroup(run, preset, effective, slot, layer, path, settings);
                     break;
@@ -2966,6 +2973,63 @@ namespace PadForge.SteamWorkshop.Translation
             TranslateMemberGroup(run, preset, group, slot, layer, path, settings);
         }
 
+        /// <summary><para>The gyro sources that turn a gyro group's
+        /// horizontal output, each with whether its Invert flips. The Steam
+        /// client stores the choice as setting 64, "gyro_axis" (the
+        /// steamclient64.dll setting table), offered by steamui/sp.js as
+        /// GyroAxisAbsMouse, GyroAxisJoystickCamera and GyroAxisMouseJoystick
+        /// with Gyro_Yaw 0, Gyro_Roll 1 and Gyro_YawAndRoll 2. gyro_to_mouse
+        /// and gyro_to_joystick store setting 152,
+        /// "gyro_to_2d_conversion_style" (GyroTo2DConversionStyle):
+        /// LocalSpaceYaw 0, LocalSpaceRoll 1, LocalSpaceCombineYawAndRoll 2,
+        /// LocalSpaceAdvanced 3, PlayerSpace 4, WorldSpace 5,
+        /// LaserPointer 6. An absent key reads as yaw, the old lowering.</para>
+        /// <para>Roll turns right for a roll to the right, as sc-controller's
+        /// MouseAction(ROLL) does for gyro_axis 1 (scc/foreign/vdf.py,
+        /// scc/actions.py: cursor X = roll * -speed on SDL's roll).
+        /// PadForge's Gyro Roll is positive for that roll, and both the mouse
+        /// lane and a stick X row turn it left, so it rides inverted.</para>
+        /// <para>Yaw and roll together are added, Steam's "Yaw + Roll adds
+        /// the Lean and Turn together". Both ride at full strength: the
+        /// client shows gyro_yaw_scale and gyro_roll_scale as -100 to 100
+        /// percent, and the stored scale behind that display is not in the
+        /// UI code, so the contribution is not read and the line says so.
+        /// Player and World Space are PadForge's own gyro spaces
+        /// (GamepadMotion.hpp CalculatePlayerSpaceGyro and
+        /// CalculateWorldSpaceGyro, Steam's descriptions of the same), set
+        /// on the device. Local Space with a tilted primary axis and Laser
+        /// Pointer have no counterpart and read yaw.</para></summary>
+        private (string Descriptor, bool Flip)[] GyroTurningSources(Run run, string path,
+            Dictionary<string, string> settings, bool conversionStyle)
+        {
+            var yaw = ("Gyro Yaw", false);
+            var roll = ("Gyro Roll", true);
+            int choice = ParseIntSetting(settings,
+                conversionStyle ? "gyro_to_2d_conversion_style" : "gyro_axis", 0);
+            switch (choice)
+            {
+                case 1:
+                    return new[] { roll };
+                case 2:
+                    run.Report.Add(TranslationStatus.Partial, TranslationReasons.GyroRollContribution, path);
+                    return new[] { yaw, roll };
+                case 3 when conversionStyle:
+                    run.Report.Add(TranslationStatus.Partial, TranslationReasons.GyroLocalSpaceAdvanced, path);
+                    return new[] { yaw };
+                case 4 when conversionStyle:
+                    run.Profile.GyroSpace = "Player";
+                    return new[] { yaw };
+                case 5 when conversionStyle:
+                    run.Profile.GyroSpace = "World";
+                    return new[] { yaw };
+                case 6 when conversionStyle:
+                    run.Report.Add(TranslationStatus.Partial, TranslationReasons.GyroLaserPointer, path);
+                    return new[] { yaw };
+                default:
+                    return new[] { yaw };
+            }
+        }
+
         /// <summary>Mouse-mode groups: the slot's analog surface drives the
         /// KbM mouse delta. Multiple groups merging into KbmMouseX/Y get
         /// Combine=Sum (mouse deltas are additive). The sensitivity key is
@@ -2977,10 +3041,14 @@ namespace PadForge.SteamWorkshop.Translation
         /// the row instead of the old TouchpadTuningNotPerRow drop.</summary>
         private void EmitMouseAxes(Run run, SteamSlot slot, string layer, string path,
             Dictionary<string, string> settings, double baseline,
-            string sensitivityKey = "sensitivity", bool curveChannel = false)
+            string sensitivityKey = "sensitivity", bool curveChannel = false,
+            bool conversionStyle = false)
         {
             var pair = PhysicalSlotResolver.MouseAxisPair(slot, run.SinglePadTrackpads);
             if (pair == null) return;
+            var turns = pair.Value.Family == 2
+                ? GyroTurningSources(run, path, settings, conversionStyle)
+                : new[] { (pair.Value.X, false) };
 
             double ratio = 1.0;
             if (settings.TryGetValue(sensitivityKey, out var sensRaw)
@@ -3080,15 +3148,18 @@ namespace PadForge.SteamWorkshop.Translation
                         Make(desc, invert, isX, coeff), isAxis: true,
                         TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
                 }
-                AddLeg("KbmMouseX", x, invertX, isX: true, cos);
+                foreach (var (turn, flip) in turns)
+                    AddLeg("KbmMouseX", turn, invertX ^ flip, isX: true, cos);
                 AddLeg("KbmMouseX", y, invertY, isX: true, -sin);
-                AddLeg("KbmMouseY", x, invertX, isX: false, sin);
+                foreach (var (turn, flip) in turns)
+                    AddLeg("KbmMouseY", turn, invertX ^ flip, isX: false, sin);
                 AddLeg("KbmMouseY", y, invertY, isX: false, cos);
             }
             else
             {
-                AddRowSource(run, isKbm: true, layer, "KbmMouseX", Make(x, invertX, isX: true), isAxis: true,
-                    TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
+                foreach (var (turn, flip) in turns)
+                    AddRowSource(run, isKbm: true, layer, "KbmMouseX", Make(turn, invertX ^ flip, isX: true), isAxis: true,
+                        TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
                 AddRowSource(run, isKbm: true, layer, "KbmMouseY", Make(y, invertY, isX: false), isAxis: true,
                     TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
             }
@@ -3104,14 +3175,19 @@ namespace PadForge.SteamWorkshop.Translation
         /// lowers the mode to ABS_RX/ABS_RY). Same source pair, sensitivity
         /// ratio, deadzone, and inversion handling as
         /// <see cref="EmitMouseAxes"/>, targeting the thumb axes on the Xbox
-        /// slot. output_joystick 1 redirects to the left stick (the value
-        /// joystick_move reads as "left"); anything else keeps the mode's
-        /// right-stick default.</summary>
+        /// slot, except that the gyro's Y row is negated so the nose up
+        /// pushes the stick up. output_joystick 1 redirects to the left stick
+        /// (the value joystick_move reads as "left"). Anything else keeps the
+        /// mode's right-stick default.</summary>
         private void EmitMouseJoystickAxes(Run run, SteamSlot slot, string layer, string path,
-            Dictionary<string, string> settings, double baseline, bool curveChannel = false)
+            Dictionary<string, string> settings, double baseline, bool curveChannel = false,
+            bool conversionStyle = false)
         {
             var pair = PhysicalSlotResolver.MouseAxisPair(slot, run.SinglePadTrackpads);
             if (pair == null) return;
+            var turns = pair.Value.Family == 2
+                ? GyroTurningSources(run, path, settings, conversionStyle)
+                : new[] { (pair.Value.X, false) };
 
             double ratio = 1.0;
             if (settings.TryGetValue("sensitivity", out var sensRaw)
@@ -3134,6 +3210,14 @@ namespace PadForge.SteamWorkshop.Translation
                 ReportRadialDeadZoneResidual(run, settings, path);
             bool invertX = SettingIsOn(settings, "invert_x");
             bool invertY = SettingIsOn(settings, "invert_y");
+            // The gyro's Y row is negated (gyro family only). A gyro stick
+            // is camera aim: sc-controller's gyro joystick action
+            // (scc/actions.py GyroAction.gyro) writes ABS_RY = pitch * -10
+            // with SDL's pitch, so the nose up pushes the stick up. The
+            // engine writes Gyro Pitch, positive with the nose up, on a
+            // stick Y row as the stick down, so the row is flipped here. The
+            // stick and trackpad pairs are already in the stick's frame.
+            bool flipGyroY = family == 2;
             string dst = ParseIntSetting(settings, "output_joystick", 0) == 1 ? "Left" : "Right";
             // v11 (every analog host since v18): same curve-channel stamps
             // as EmitMouseAxes.
@@ -3215,26 +3299,35 @@ namespace PadForge.SteamWorkshop.Translation
                 // per-source axis-frame seam flips gyro yaw / roll on the
                 // thumb X targets but never pitch
                 // (SourceEvaluator.ShouldFlipForAxisFrame), so the authored
-                // -sin composed with that yaw flip realized
-                // [[-cos, -sin], [sin, cos]] on the stick pair
-                // (det = -cos 2θ, a shear). The rotation acts in the
-                // SENSOR plane before the yaw→stick frame map
-                // (out = B·R(θ)·g with B = diag(-1, 1)), so factoring the
-                // per-source frame into the emitted coefficient means the
-                // pitch→X leg flips to +sin for the gyro family, restoring
-                // an orthogonal realized matrix [[-cos, sin], [sin, cos]]
-                // (det = -1). Stick and touchpad pairs (families 0/1)
-                // never hit that engine flip and keep -sin.
-                AddLeg($"{dst}ThumbAxisX", x, invertX, isX: true, cos);
+                // -sin composed with that yaw flip realized a shear. The
+                // pitch→X leg is +sin for the gyro family. Stick and
+                // touchpad pairs (families 0/1) never hit that engine flip
+                // and keep -sin.
+                //
+                // The gyro's Y row is negated (flipGyroY above), both legs.
+                // In the value frame each row is written in (X right, Y
+                // down), the trackpad legs realize R(θ) = [[cos, -sin],
+                // [sin, cos]]. The gyro realizes
+                // [[-cos, sin], [-sin, -cos]] = R(θ)·diag(-1, -1) on
+                // (yaw, pitch): the nose left and the nose up map to the
+                // stick left and up, then turn by the same θ a trackpad's
+                // output turns by (det = 1). Negating only the pitch→Y leg
+                // would leave the yaw→Y leg's sign behind and turn the
+                // gyro the other way.
+                double ySign = flipGyroY ? -1.0 : 1.0;
+                foreach (var (turn, flip) in turns)
+                    AddLeg($"{dst}ThumbAxisX", turn, invertX ^ flip, isX: true, cos);
                 AddLeg($"{dst}ThumbAxisX", y, invertY, isX: true, family == 2 ? sin : -sin);
-                AddLeg($"{dst}ThumbAxisY", x, invertX, isX: false, sin);
-                AddLeg($"{dst}ThumbAxisY", y, invertY, isX: false, cos);
+                foreach (var (turn, flip) in turns)
+                    AddLeg($"{dst}ThumbAxisY", turn, invertX ^ flip, isX: false, ySign * sin);
+                AddLeg($"{dst}ThumbAxisY", y, invertY, isX: false, ySign * cos);
             }
             else
             {
-                AddRowSource(run, isKbm: false, layer, $"{dst}ThumbAxisX", Make(x, invertX, isX: true), isAxis: true,
-                    TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
-                AddRowSource(run, isKbm: false, layer, $"{dst}ThumbAxisY", Make(y, invertY, isX: false), isAxis: true,
+                foreach (var (turn, flip) in turns)
+                    AddRowSource(run, isKbm: false, layer, $"{dst}ThumbAxisX", Make(turn, invertX ^ flip, isX: true), isAxis: true,
+                        TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
+                AddRowSource(run, isKbm: false, layer, $"{dst}ThumbAxisY", Make(y, invertY ^ flipGyroY, isX: false), isAxis: true,
                     TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
             }
 

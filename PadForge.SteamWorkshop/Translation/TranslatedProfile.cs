@@ -75,6 +75,11 @@ namespace PadForge.SteamWorkshop.Translation
         /// <summary>Steam gyro_button_invert: engage while NOT held.</summary>
         public bool GyroEngageInvert { get; set; }
 
+        /// <summary>Steam gyro_to_2d_conversion_style 4 or 5 as PadForge's
+        /// gyro space: "Player" or "World". Empty = leave the device's own
+        /// space.</summary>
+        public string GyroSpace { get; set; } = "";
+
         /// <summary>Steam gyro_button_invert value 2 (v25): the three-state
         /// "Gyro Button Behavior" enum's Toggle arm ("the device's gyro
         /// will toggle its state each time the button is pressed", shipped

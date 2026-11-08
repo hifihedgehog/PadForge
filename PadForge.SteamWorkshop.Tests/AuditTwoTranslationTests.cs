@@ -91,9 +91,13 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.False(yawLeg.Invert);
             Assert.Equal(0.866, yawLeg.GyroSensitivity, 3);
 
+            // The gyro's Y row is negated, both legs, so the nose up pushes
+            // the stick up and the rotation keeps its sense
+            // (PadForge.Tests.SteamGyroStickSignTests reads it through the
+            // engine).
             var y = p.XboxMappingSet.Rows.Single(r => r.Target == "RightThumbAxisY");
-            Assert.False(y.Sources.Single(s => s.Descriptor == "Gyro Yaw").Invert);
-            Assert.False(y.Sources.Single(s => s.Descriptor == "Gyro Pitch").Invert);
+            Assert.True(y.Sources.Single(s => s.Descriptor == "Gyro Yaw").Invert);
+            Assert.True(y.Sources.Single(s => s.Descriptor == "Gyro Pitch").Invert);
         }
 
         [Fact]

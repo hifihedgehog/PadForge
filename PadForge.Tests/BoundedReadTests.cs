@@ -251,5 +251,80 @@ namespace PadForge.Tests
             BoundedReads.StepPulls(device, guid, state, 1112);
             Assert.False(Read(state, soft, guid));
         }
+
+        /// <summary>The parse cache is process-wide. Once it held 256
+        /// descriptors it took no more, so every read of a later profile's
+        /// zone parsed and allocated on the poll thread. Full, it starts over,
+        /// and the descriptor in use is cached again.</summary>
+        [Fact]
+        public void TheParseCache_KeepsCachingPastItsCap()
+        {
+            for (int i = 0; i < 300; i++)
+                Assert.NotNull(BoundedReads.Parse(BoundedReads.Between(10, 20, false, false, "Axis " + i)));
+
+            string d = BoundedReads.Between(10, 20, false, false, "Axis 999");
+            Assert.Same(BoundedReads.Parse(d), BoundedReads.Parse(d));
+        }
+
+        /// <summary>A sector is named by the nearest of the eight directions.
+        /// Only 0, 90 and 180 had names, so a sector at 45 or 315 was called
+        /// Down.</summary>
+        [Theory]
+        [InlineData(0, "Right")]
+        [InlineData(45, "UpRight")]
+        [InlineData(90, "Up")]
+        [InlineData(135, "UpLeft")]
+        [InlineData(180, "Left")]
+        [InlineData(225, "DownLeft")]
+        [InlineData(270, "Down")]
+        [InlineData(315, "DownRight")]
+        [InlineData(350, "Right")]
+        public void ASector_IsNamedByItsNearestDirection(double center, string direction)
+        {
+            string text = MappingDisplayResolver.ResolveDescriptorText(
+                BoundedReads.Sector(center, 22.5, 10, "Gamepad LeftStickRing"), null);
+            Assert.Contains(MappingDisplayResolver.ResolvePovDirection(direction), text);
+        }
+    }
+
+    /// <summary>A zone, a stick sector or a two-stage pull reads one input. A
+    /// layer activator held on that input, or a macro consuming it, holds a row
+    /// reading it back, and the row's bounded read of the same input is held
+    /// back with it.</summary>
+    [Collection("SettingsManagerStatics")]
+    public class BoundedReadSuppressionTests
+    {
+        [Fact]
+        public void ABoundedReadOfAnActivatorsInput_IsHeldBackWithIt()
+        {
+            const int slot = 13;
+            PadForge.Common.Input.InputManager.ClearAllShiftRuntime();
+            try
+            {
+                var ms = new MappingSet();
+                ms.ShiftActivators.Add(new ShiftActivator
+                {
+                    DeviceGuid = "", Descriptor = "Axis 5", Mode = "Hold",
+                    LayerMask = "Aim", LayerName = "Aim", Kind = "Axis", DelayMs = 0,
+                });
+                var state = new CustomInputState();
+                state.Axis[5] = 65535;
+                Assert.Equal("Aim", PadForge.Common.Input.InputManager.ResolveActiveLayerMask(slot, ms, state, ""));
+
+                // Positive control: the plain read of the input is held back.
+                Assert.True(PadForge.Common.Input.InputManager.IsSourceSuppressedPostpone(slot, "", "Axis 5"));
+                Assert.True(PadForge.Common.Input.InputManager.IsSourceSuppressedPostpone(slot, "",
+                    BoundedReads.Between(30, 66, false, false, "Axis 5")));
+                Assert.True(PadForge.Common.Input.InputManager.IsSourceSuppressedPostpone(slot, "",
+                    BoundedReads.Stage(TwoStageMode.HipFire, true, 100, 10, 99, "Gamepad RightTrigger")));
+                // Another input stays live.
+                Assert.False(PadForge.Common.Input.InputManager.IsSourceSuppressedPostpone(slot, "",
+                    BoundedReads.Between(30, 66, false, false, "Axis 2")));
+            }
+            finally
+            {
+                PadForge.Common.Input.InputManager.ClearAllShiftRuntime();
+            }
+        }
     }
 }

@@ -81,6 +81,16 @@ namespace PadForge.ViewModels
             if (Entry.EngageDeadzonePercent == 25) Entry.EngageDeadzonePercent = KeyboardMenuDefaults.SteerDeadzonePercent;
         }
 
+        /// <summary>The way back when a keyboard turns into a ring or a grid:
+        /// a value still at the keyboard's default returns to the ring's, so
+        /// the menu does not open at the bottom of the screen or wait for
+        /// half a push. A value the user set stays.</summary>
+        private void LeaveKeyboardDefaults()
+        {
+            if (Entry.PosYPercent == KeyboardMenuDefaults.PosYPercent) Entry.PosYPercent = 50;
+            if (Entry.EngageDeadzonePercent == KeyboardMenuDefaults.SteerDeadzonePercent) Entry.EngageDeadzonePercent = 25;
+        }
+
         private void RaiseKeyboardDependents()
         {
             OnPropertyChanged(nameof(IsKeyboard));
@@ -297,8 +307,17 @@ namespace PadForge.ViewModels
                 bool found = false;
                 foreach (var o in list)
                     if (string.Equals(o.Value, cur, StringComparison.OrdinalIgnoreCase)) { found = true; break; }
+                // The marked entry says what is gone in words: a slot that is
+                // no longer Keyboard + Mouse, or a keyboard model this PC does
+                // not have. The stored "slot:N" is never shown.
                 if (!found)
-                    list.Add(new MenuStringOption { Value = cur, Label = string.Format(s.Menu_Layer_Missing_Format, cur) });
+                    list.Add(new MenuStringOption
+                    {
+                        Value = cur,
+                        Label = cur.StartsWith("slot:", StringComparison.OrdinalIgnoreCase)
+                            ? s.Menu_TypesThrough_MissingSlot
+                            : string.Format(s.Menu_TypesThrough_MissingKeyboard_Format, cur),
+                    });
                 return list;
             }
         }
@@ -511,17 +530,24 @@ namespace PadForge.ViewModels
 
         /// <summary>Whether an input has two halves to list: a plain axis,
         /// the abstract Gamepad sticks among them, with no direction of its
-        /// own yet. A stick rests at the middle of its range, so a press or a
-        /// steering direction reads one half of it. The Gamepad triggers rest
-        /// at zero and are listed whole.</summary>
-        internal static bool HasHalves(string descriptor)
+        /// own yet, on <paramref name="deviceGuid"/>. A stick rests at the
+        /// middle of its range, so a press or a steering direction reads one
+        /// half of it. An axis that rests at zero and moves one way (a
+        /// gamepad's trigger, by its Gamepad name or on the controller, a VR
+        /// controller's trigger or grip, a Bliss-Box pressure axis) is listed
+        /// whole, by the rule the press recorder records it by
+        /// (InputManager.AxisRestsAtZero): its lower half would read pressed
+        /// at rest.</summary>
+        internal static bool HasHalves(string descriptor, string deviceGuid = "")
         {
             if (string.IsNullOrWhiteSpace(descriptor)) return false;
             string clean = SourceCoercion.StripLegacyPrefix(descriptor.Trim(), out bool invert, out bool half);
             if (invert || half) return false;
             if (clean.StartsWith("Gamepad ", StringComparison.Ordinal) && clean.Contains("Trigger", StringComparison.Ordinal)) return false;
             string canonical = SourceCoercion.ResolveGamepadAlias(clean) ?? clean;
-            return canonical.StartsWith("Axis ", StringComparison.Ordinal);
+            if (!canonical.StartsWith("Axis ", StringComparison.Ordinal)) return false;
+            var device = Guid.TryParse(deviceGuid, out var g) ? PadForge.Common.Input.SettingsManager.FindDeviceByInstanceGuid(g) : null;
+            return !PadForge.Common.Input.InputManager.AxisRestsAtZero(clean, device);
         }
 
         // ── A row's list and its text ────────────────────────────
@@ -538,9 +564,10 @@ namespace PadForge.ViewModels
 
         /// <summary>A row's input list: the slot's inputs, grouped by device
         /// as the mapping picker shows them, less those the row cannot read
-        /// (<see cref="KeyboardInputRow.Accepts"/>). An axis is followed by
-        /// its two halves, the directions a recorded push gives, on every row
-        /// but a pointer's X and Y, which read the whole axis. The
+        /// (<see cref="KeyboardInputRow.Accepts"/>). An axis that rests at the
+        /// middle is followed by its two halves, the directions a recorded
+        /// push gives (<see cref="HasHalves"/>), on every row but a pointer's
+        /// X and Y, which read the whole axis. The
         /// device-free "Gamepad ..." names sit under (Any Device). The row's
         /// own input, when no entry is it (a combination), gets an entry of
         /// its own so the selection never lies.</summary>
@@ -564,7 +591,7 @@ namespace PadForge.ViewModels
                     if (c == null || string.IsNullOrEmpty(c.Descriptor) || !row.Accepts(c.Descriptor)) continue;
                     string guid = c.DeviceGuid ?? "";
                     Add(new KeyboardInput(c.Descriptor, guid), c.DisplayName, c.DeviceLabel);
-                    if (row.RecordsAnAxis || !HasHalves(c.Descriptor)) continue;
+                    if (row.RecordsAnAxis || !HasHalves(c.Descriptor, guid)) continue;
                     foreach (string flags in new[] { "H", "IH" })
                     {
                         var half = new KeyboardInput(flags + c.Descriptor.Trim(), guid);
@@ -625,6 +652,12 @@ namespace PadForge.ViewModels
             return any;
         }
 
+        /// <summary>The group an input on a device shows under: "(Any Device)"
+        /// for one read on every controller, the device's label in the
+        /// slot's lists, else the controller's name marked as not on the
+        /// slot. An input stays on a controller that leaves the slot, and the
+        /// runtime reads it on that controller alone, so it never shows as
+        /// one any device presses.</summary>
         private string DeviceLabelOf(string deviceGuid)
         {
             if (string.IsNullOrEmpty(deviceGuid)) return Strings.Instance.Mapping_AnyDevice;
@@ -633,7 +666,10 @@ namespace PadForge.ViewModels
                 foreach (var c in provided)
                     if (c != null && string.Equals(c.DeviceGuid ?? "", deviceGuid, StringComparison.OrdinalIgnoreCase))
                         return c.DeviceLabel;
-            return Strings.Instance.Mapping_AnyDevice;
+            var device = Guid.TryParse(deviceGuid, out var g) ? PadForge.Common.Input.SettingsManager.FindDeviceByInstanceGuid(g) : null;
+            string name = device != null ? PadForge.Services.InputService.LocalizedDeviceName(device) : null;
+            if (string.IsNullOrEmpty(name)) name = deviceGuid.Length > 8 ? deviceGuid.Substring(0, 8) + "…" : deviceGuid;
+            return string.Format(Strings.Instance.Menu_Keyboard_DeviceNotOnSlot_Format, name);
         }
 
         /// <summary>A row's subtitle: the device its input is read on, both
@@ -724,13 +760,19 @@ namespace PadForge.ViewModels
 
         /// <summary>Whether the row reads an input. A pointer's X and Y take
         /// an input with a place (<see cref="MenuEditorItem.IsPositionDescriptor"/>).
-        /// Opens With takes every input, gestures and menu cells too. Every
-        /// other control takes all but those two, which stop while the
+        /// A key, a pointer's touch and click, and Opens With press through
+        /// the button read, which never presses on a touchpad finger's place
+        /// (<see cref="MappingItem.ButtonReadPressesNothing"/>), so none of
+        /// them takes one. A steering row reads its input's depth and keeps
+        /// it. Opens With takes every other input, gestures and menu cells
+        /// too. The controls take all but those two, which stop while the
         /// keyboard holds the controller at rest.</summary>
         internal bool Accepts(string descriptor)
         {
             if (string.IsNullOrWhiteSpace(descriptor)) return false;
             if (RecordsAnAxis) return MenuEditorItem.IsPositionDescriptor(descriptor);
+            if (!(Action is { } a && KeyboardMenuDefaults.IsSteer(a))
+                && MappingItem.ButtonReadPressesNothing(descriptor)) return false;
             if (IsOpensWith) return true;
             return !MenuEditorItem.IsSlotEvent(descriptor)
                    && !descriptor.TrimStart().StartsWith("Menu ", StringComparison.Ordinal);

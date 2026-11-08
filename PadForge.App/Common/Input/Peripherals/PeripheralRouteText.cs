@@ -342,6 +342,10 @@ namespace PadForge.Common.Input.Peripherals
                 // are lost (HidLightingModel.ReplacesStoredEffects).
                 else if (direct is { StoresPictures: true })
                     line = direct.ReplacesStoredEffects ? s.Pad_Lighting_RouteDirectStoredEffects : s.Pad_Lighting_RouteDirectStored;
+                // One sent no changing color, with no reference that it stores
+                // what it is sent (DirectUnit.SteadyColorsOnly), says that alone.
+                else if (direct is { SteadyColorsOnly: true })
+                    line = s.Pad_Lighting_RouteDirectSteadyOnly;
                 return string.Format(line, name);
             }
             if (app == null) return null;

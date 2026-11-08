@@ -19,7 +19,9 @@ namespace PadForge.Engine
 
         private const int MouseButtons = 5;
         private const int MouseAxes = 3;
-        private const int AxisCenter = 32767;
+        /// <summary>Where the motion and scroll lanes (Axis 0 to 2) rest,
+        /// which the On-Screen Keyboard holds a mouse at (#566).</summary>
+        public const int AxisCenter = 32767;
         private const float MotionScale = 2048f;
         private const float ScrollScale = 128f;
 

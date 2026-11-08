@@ -475,6 +475,11 @@ namespace PadForge.Common.Input.Peripherals
         /// show (<see cref="HidLightingModel.HoldMs"/>).</summary>
         public bool StoresPictures { get; init; }
 
+        /// <summary>The device is sent no color that keeps changing, and no
+        /// reference says it stores what it is sent: a SteelSeries family with a
+        /// hold (<see cref="SteelSeriesFamilyInfo.HoldMs"/>).</summary>
+        public bool SteadyColorsOnly { get; init; }
+
         /// <summary>The first picture replaces effects stored on the device
         /// (<see cref="HidLightingModel.ReplacesStoredEffects"/>).</summary>
         public bool ReplacesStoredEffects { get; init; }

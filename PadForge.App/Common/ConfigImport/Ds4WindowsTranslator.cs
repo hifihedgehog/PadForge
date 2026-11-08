@@ -168,41 +168,48 @@ namespace PadForge.Common.ConfigImport
         }
 
         /// <summary>ProfileDTO writes the sensitivities LS, RS, L2, R2, SX, SZ
-        /// and clamps what it reads to 0.1 through 5.</summary>
+        /// joined by "|" in the culture DS4Windows runs in, so a decimal comma
+        /// is its own, and an older file joins them by ",". It reads a part
+        /// in that culture and clamps it to 0.1 through 5 for the sticks, 0.1
+        /// through 10 for the triggers and 0 through 5 for the tilt axes, and
+        /// a part that does not read is 1.</summary>
         private double SensitivityPart(int index)
         {
-            var parts = Text("Sensitivity").Split('|');
-            return index < parts.Length
-                   && double.TryParse(parts[index], NumberStyles.Float, CultureInfo.InvariantCulture, out double v)
-                ? Math.Clamp(v, 0.1, 5.0)
-                : 1.0;
+            string text = Text("Sensitivity");
+            var parts = text.Split('|');
+            if (parts.Length == 1) parts = text.Split(',');
+            if (index >= parts.Length) return 1.0;
+            string part = parts[index].Trim();
+            if (!double.TryParse(part, NumberStyles.Float, CultureInfo.InvariantCulture, out double v)
+                && !double.TryParse(part.Replace(',', '.'), NumberStyles.Float, CultureInfo.InvariantCulture, out v))
+                return 1.0;
+            if (!double.IsFinite(v)) return 1.0;
+            return index switch
+            {
+                2 or 3 => Math.Clamp(v, 0.1, 10.0),
+                4 or 5 => Math.Clamp(v, 0.0, 5.0),
+                _ => Math.Clamp(v, 0.1, 5.0),
+            };
         }
 
-        /// <summary>A stick or trigger's output curve and its Max Output, in
-        /// the points the device's curve card takes. The named curves are
-        /// Mapping.cs's own formulas, a custom curve its bezier, and Max Output
-        /// the cap it applies ahead of them.</summary>
-        private void SetCurve(string prefix, params string[] targets)
-        {
-            string mode = Text(prefix + "OutputCurveMode");
-            Func<double, double> curve = mode.ToLowerInvariant() switch
+        /// <summary>A stick, trigger or tilt axis's named output curve on
+        /// 0..1, Mapping.cs's own formula, or null for linear. The sticks'
+        /// enhanced precision is 0.8, 0.08 and 1.32. The triggers' and the
+        /// tilt axes' is 0.55, 0.18 and 1.72 (SetCurveAndDeadzone's L2, R2,
+        /// SX and SZ blocks).</summary>
+        private Func<double, double> CurveOf(string prefix, bool stick)
+            => Text(prefix + "OutputCurveMode").ToLowerInvariant() switch
             {
                 "quadratic" => x => x * x,
                 "cubic" => x => x * x * x,
-                "enhanced-precision" => x => x <= 0.4 ? 0.8 * x : x <= 0.75 ? x - 0.08 : x * 1.32 - 0.32,
+                "enhanced-precision" => stick
+                    ? x => x <= 0.4 ? 0.8 * x : x <= 0.75 ? x - 0.08 : x * 1.32 - 0.32
+                    : x => x <= 0.4 ? 0.55 * x : x <= 0.75 ? x - 0.18 : x * 1.72 - 0.72,
                 "easeout-quad" => x => -x * (x - 2.0),
                 "easeout-cubic" => x => (x - 1.0) * (x - 1.0) * (x - 1.0) + 1.0,
                 "custom" => BezierCurve(Text(prefix + "OutputCurveCustom")),
                 _ => null,
             };
-            double output = Num(prefix + "MaxOutput", 100);
-            bool capped = output is > 0 and < 100;
-            if (curve == null && !capped) return;
-            curve ??= x => x;
-            double cap = capped ? output / 100.0 : 1.0;
-            string points = ImportBuilder.CurvePoints(x => curve(Math.Min(x, cap)));
-            foreach (string target in targets) _b.Curves[target] = points;
-        }
 
         /// <summary>A cubic bezier from (0,0) to (1,1), written <c>x1, y1, x2,
         /// y2</c>, as y at a given x. Null when the text does not read.</summary>
@@ -235,29 +242,194 @@ namespace PadForge.Common.ConfigImport
             };
         }
 
+        /// <summary>A trigger's row, with its tuning on the device's Triggers
+        /// card. Mapping.cs takes the dead zone and max zone, the max output
+        /// and the anti-dead zone first (1615-1663), then the sensitivity,
+        /// clamped to full (1743-1749), then the curve (2045-2080). PadForge
+        /// reads a row's sensitivity before the card, so the sensitivity
+        /// rides the card too: the anti-dead zone grows by it, the range
+        /// narrows by what is left of it, and a curve takes what neither can
+        /// hold. The row itself reads the plain pull.</summary>
         private MappingSource TriggerSource(string prefix, int sensIndex)
         {
             var src = new MappingSource { Descriptor = prefix == "L2" ? "Gamepad LeftTrigger" : "Gamepad RightTrigger" };
             // A trigger's dead zone has no prefix of its own. ProfileDTO calls
             // it LeftTriggerMiddle and RightTriggerMiddle, 0 through 255.
-            double dead = Num(prefix == "L2" ? "LeftTriggerMiddle" : "RightTriggerMiddle", 0);
-            if (dead > 0)
+            var z = TriggerZones(prefix);
+            if (z.Dead > 0)
             {
                 // A trigger's dead zone only folds onto its card with a shape
                 // stamped (StarterProfileCatalog.BrakeTrigger).
                 src.ParamStickDeadZoneShape = 1;
-                src.ParamStickDeadZoneInner = Math.Clamp(dead / 255.0, 0.0, 0.99);
+                src.ParamStickDeadZoneInner = Math.Min(z.Dead, 0.99);
             }
-            double anti = Num(prefix + "AntiDeadZone", 0);
-            if (anti > 0) src.ParamAntiDeadzone = Math.Clamp(anti / 100.0, 0.0, 0.99);
-            double max = Num(prefix + "MaxZone", 100);
-            if (max > 0 && max < 100) src.ParamRangeOuter = max / 100.0;
-            double sens = SensitivityPart(sensIndex);
-            if (sens != 1.0) src.Sensitivity = sens;
-            SetCurve(prefix, prefix == "L2" ? "LeftTrigger" : "RightTrigger");
+            var (anti, range, curve) = TriggerCard(z);
+            if (anti > 0) src.ParamAntiDeadzone = anti;
+            if (range < 1) src.ParamRangeOuter = range;
+            if (curve != null) _b.Curves[prefix == "L2" ? "LeftTrigger" : "RightTrigger"] = ImportBuilder.CurvePoints(curve);
             string stage = StageRead(prefix, false, TriggerPullPercent(prefix));
             if (stage.Length > 0) src.GateDescriptor = stage;
             return src;
+        }
+
+        /// <summary>The Triggers card that plays Mapping.cs's trigger:
+        /// its anti-dead zone, its range as a fraction, and its curve on the
+        /// pull past the dead zone, null for a straight line.
+        ///
+        /// <para>With the dead zone d, max zone m, max output c, anti-dead
+        /// zone a and sensitivity s, Mapping.cs gives curve(min(1, s(a + (1 -
+        /// a) min(o, c)))) for o = (min(t, m) - d) / (m - d). The card gives
+        /// A + (1 - A) L(p) for p = min(1, (t - d) / (r - d)). With A = sa and
+        /// k = s(1 - a) / (1 - sa), a range r = d + (m - d) / k makes p =
+        /// min(1, ko) for k of 1 or more, and L(p) = min(p, kc) then matches
+        /// the straight line exactly. Under 1 the range stays m and L scales
+        /// by k. A curve takes A into L, since the card lifts after its curve
+        /// and Mapping.cs before. A trigger that reads the same past its dead
+        /// zone at every pull (sa of 1 or more, a max zone at or under the
+        /// dead zone, a max output of 0, a dead zone of 255) gets a flat
+        /// curve at that value.</para></summary>
+        private static (double Anti, double Range, Func<double, double> Curve) TriggerCard((double Dead, double Anti, double Max, double Cap, double Sens, Func<double, double> Curve) z)
+        {
+            double Shaped(double o) => o > 0.0 && z.Curve != null ? z.Curve(o) : o;
+            var (lift, range, line, flat) = ZoneLine(z.Dead, z.Anti, z.Max, z.Cap, z.Sens, 1.0, z.Curve);
+            if (flat is double full) return (0.0, 1.0, _ => full);
+            if (z.Curve == null) return (lift, range, line);
+            if (line == null && lift <= 0.0) return (0.0, range, z.Curve);
+            return (0.0, range, x => Shaped(lift + (1.0 - lift) * (line != null ? line(x) : x)));
+        }
+
+        /// <summary>The straight-line part of a trigger or stick axis that
+        /// Mapping.cs shapes as curve(min(1, s(a + (1 - a) min(g o, c)))) for
+        /// the travel o past the dead zone d, scaled to the max zone m: the
+        /// lift s a, the card's range as a fraction of the travel, and the
+        /// line on the card's remapped travel p, null for p itself, with
+        /// curve(lift + (1 - lift) line(p)) giving Mapping.cs's value. The
+        /// gain g is a radial stick's vertical scale on Y, which Mapping.cs
+        /// applies and clamps to full before the max output c (1200-1203).
+        /// Flat holds the value when every travel past the dead zone reads
+        /// the same: a max output or gain of 0, a dead zone at full, a max
+        /// zone at the dead zone (0 / 0, which Mapping.cs leaves at rest),
+        /// a max zone under it (full at once), or a lift of full.</summary>
+        private static (double Lift, double Range, Func<double, double> Line, double? Flat) ZoneLine(
+            double d, double a, double m, double c, double s, double g, Func<double, double> curve)
+        {
+            double Shaped(double o) => o > 0.0 && curve != null ? curve(o) : o;
+            if (c <= 0.0 || g <= 0.0 || d >= 1.0 || Math.Abs(m - d) < 1e-9) return (0.0, 1.0, null, 0.0);
+            if (m < d) return (0.0, 1.0, null, Shaped(Math.Min(1.0, s * ((1.0 - a) * Math.Min(g, c) + a))));
+            double lift = s * a;
+            if (lift >= 1.0) return (0.0, 1.0, null, Shaped(1.0));
+            // s (1 - a) min(g o, c) = (1 - lift) k min(o, c / g).
+            double k = s * (1.0 - a) * g / (1.0 - lift);
+            double capO = c / g;
+            if (k >= 1.0)
+            {
+                double top = Math.Min(1.0, k * capO);
+                return (lift, d + (m - d) / k, top < 1.0 ? x => Math.Min(x, top) : null, null);
+            }
+            return (lift, m, x => k * Math.Min(x, capO), null);
+        }
+
+        /// <summary>What ProfileDTO gives a Radial stick's dead zone and
+        /// anti-dead zone a file leaves out: StickDeadZoneInfo.DEFAULT_DEADZONE
+        /// and DEFAULT_ANTIDEADZONE (ProfileDTO.cs:453-477), which MapTo copies
+        /// on (2047-2050).</summary>
+        private static class StickDeadZoneInfo
+        {
+            public const double DeadZone = 10;
+            public const double AntiDeadZone = 20;
+        }
+
+        /// <summary>A trigger's anti-dead zone a file leaves out: L2AntiDeadZone
+        /// and R2AntiDeadZone are auto-properties with no initializer
+        /// (ProfileDTO.cs:383-393).</summary>
+        private const double TriggerAntiDeadZone = 0;
+
+        /// <summary>One stick axis's zones as ProfileDTO reads them (the
+        /// Radial type's shared values, or the Axial type's for that axis).
+        /// An AxialDeadOptions child the file leaves out reads 0, its max zone
+        /// and max output included: those fields have no initializer
+        /// (ProfileDTO.cs:2699-2760), the DTO builds the options when it is
+        /// made (1445-1447), and MapTo copies them in whole (2069-2079). All
+        /// as fractions: the dead zone of 127, the anti-dead zone, which
+        /// Mapping.cs applies only above 0, the max zone, the max output
+        /// widened by 0.99 and capped at full (1204-1216, 1304-1309), 1 when
+        /// Mapping.cs skips it, the sensitivity and the vertical scale, which
+        /// only the Radial type applies, and the curve.</summary>
+        private (bool Axial, double Dead, double Anti, double Max, double Cap, double Sens, double Gain, Func<double, double> Curve) StickZones(string prefix, bool isX)
+        {
+            bool axial = string.Equals(Text(prefix + "DeadZoneType"), "Axial", StringComparison.OrdinalIgnoreCase);
+            var opts = Element(prefix + "AxialDeadOptions");
+            double dead = axial ? Num(opts, isX ? "DeadZoneX" : "DeadZoneY", 0) : Num(prefix + "DeadZone", StickDeadZoneInfo.DeadZone);
+            double anti = axial ? Num(opts, isX ? "AntiDeadZoneX" : "AntiDeadZoneY", 0) : Num(prefix + "AntiDeadZone", StickDeadZoneInfo.AntiDeadZone);
+            double max = axial ? Num(opts, isX ? "MaxZoneX" : "MaxZoneY", 0) : Num(prefix + "MaxZone", 100);
+            double output = axial ? Num(opts, isX ? "MaxOutputX" : "MaxOutputY", 0) : Num(prefix + "MaxOutput", 100);
+            bool capped = output != 100 || (!axial && IsTrue(prefix + "MaxOutputForce"));
+            double vertical = axial || isX ? 100 : Num(prefix + "VerticalScale", 100);
+            return (axial,
+                Math.Clamp(dead, 0.0, 127.0) / 127.0,
+                Math.Clamp(anti, 0.0, 100.0) / 100.0,
+                Math.Clamp(max, 0.0, 100.0) / 100.0,
+                capped ? Math.Min(Math.Clamp(output, 0.0, 100.0) / 100.0 / 0.99, 1.0) : 1.0,
+                axial ? 1.0 : SensitivityPart(prefix == "LS" ? 0 : 1),
+                Math.Clamp(vertical, 0.0, 400.0) / 100.0,
+                CurveOf(prefix, stick: true));
+        }
+
+        /// <summary>The stick card that plays one axis of Mapping.cs's stick
+        /// on a straight push: its anti-dead zone, its range as a fraction,
+        /// and its curve, null for a straight line. The card runs the curve
+        /// before its anti-dead zone and Mapping.cs the anti-dead zone, the
+        /// sensitivity and then the curve, so with a curve the anti-dead zone
+        /// takes the curve's first value past the dead zone, and the curve
+        /// the rest of the climb to full: A + (1 - A) L(p) is Mapping.cs's
+        /// value. Keeping the jump in the anti-dead zone keeps it on the
+        /// pair's length, as the card floors it, where a jump in the curve
+        /// would lift each axis apart.</summary>
+        private static (double Anti, double Range, Func<double, double> Curve) StickCard((bool Axial, double Dead, double Anti, double Max, double Cap, double Sens, double Gain, Func<double, double> Curve) z)
+        {
+            double Shaped(double o) => o > 0.0 && z.Curve != null ? z.Curve(o) : o;
+            var (lift, range, line, flat) = ZoneLine(z.Dead, z.Anti, z.Max, z.Cap, z.Sens, z.Gain, z.Curve);
+            if (flat is double full) return (0.0, 1.0, _ => full);
+            if (z.Curve == null) return (lift, range, line);
+            double first = Shaped(lift);
+            if (first >= 1.0) return (0.0, 1.0, _ => 1.0);
+            return (first, range, x => (Shaped(lift + (1.0 - lift) * (line != null ? line(x) : x)) - first) / (1.0 - first));
+        }
+
+        /// <summary>True when Mapping.cs works out a Radial stick's dead
+        /// zone, anti-dead zone, max output or curve from the angle of the
+        /// push, which the stick card cannot follow off the axes. The dead
+        /// zone comes off each axis by that axis's share of it, over that
+        /// axis's own span (tempLsXDead, 1181-1189), where the card's scaled
+        /// radial dead zone takes the whole length (ComputeRadial). The
+        /// anti-dead zone and the max output scale by the same share
+        /// (1204-1223), where the card floors the pair's length and caps
+        /// nothing. The curve runs on the processed length (tempRatioX over
+        /// capX, 1771-1863), where the card curves each axis apart. A max
+        /// output of 0 rests the stick on both, and an Axial stick shapes
+        /// each axis alone on both.</summary>
+        private bool StickBendsByAngle(string prefix, out string settings)
+        {
+            var named = new List<string>();
+            if (!string.Equals(Text(prefix + "DeadZoneType"), "Axial", StringComparison.OrdinalIgnoreCase))
+            {
+                double output = Num(prefix + "MaxOutput", 100);
+                if (Num(prefix + "DeadZone", StickDeadZoneInfo.DeadZone) > 0) named.Add(prefix + "DeadZone");
+                if (Num(prefix + "AntiDeadZone", StickDeadZoneInfo.AntiDeadZone) > 0) named.Add(prefix + "AntiDeadZone");
+                // The cap binds off the axes once the length reaches it
+                // inside the unit circle: a max zone m over a gain g gives
+                // the axis its full value at m / g of the push, against a
+                // cap of the output over 0.99 at that axis's share.
+                double reach = Math.Clamp(Num(prefix + "MaxZone", 100), 0.0, 100.0) / 100.0;
+                double vertical = Math.Clamp(Num(prefix + "VerticalScale", 100), 0.0, 400.0) / 100.0;
+                if (vertical > 1.0) reach /= vertical;
+                if (output > 0 && (output != 100 || IsTrue(prefix + "MaxOutputForce"))
+                    && reach * Math.Clamp(output, 0.0, 100.0) / 100.0 / 0.99 < 1.0)
+                    named.Add(prefix + "MaxOutput");
+                if (CurveOf(prefix, stick: true) != null) named.Add(prefix + "OutputCurveMode");
+            }
+            settings = string.Join(", ", named);
+            return named.Count > 0;
         }
 
         /// <summary>A stick's two rows. Its dead zone, anti dead zone, range,
@@ -276,46 +448,66 @@ namespace PadForge.Common.ConfigImport
             {
                 var settings = Element(prefix + "OutputSettings")?.Element("FlickStickSettings");
                 var src = new MappingSource { Descriptor = "Flick Stick " + side };
-                // ProcessFlickStick multiplies the flick's degrees by the
-                // calibration, so a full turn is 360 of them.
-                double calibration = Num(settings, "RealWorldCalibration", 5.3);
-                if (calibration > 0) src.ParamFlickCountsPer360 = 360.0 * calibration;
+                // A setting the file leaves out reads 0: FlickStickSettings'
+                // properties have no initializer, the DTO builds them when it
+                // is made, and MapTo copies them on (ProfileDTO.cs:3033-3070,
+                // 1456, 2309-2316). ProcessFlickStick multiplies the flick's
+                // degrees by the calibration, so a full turn is 360 of them,
+                // and a calibration of 0 turns nothing (Mapping.cs:3327-3334).
+                double calibration = Num(settings, "RealWorldCalibration", 0);
+                if (calibration <= 0)
+                {
+                    _b.Clean(label, "Flick Stick", "");
+                    return;
+                }
+                src.ParamFlickCountsPer360 = 360.0 * calibration;
                 double threshold = Num(settings, "FlickThreshold", 0);
                 if (threshold > 0) src.ParamFlickThreshold = threshold;
+                // A threshold of 0 holds the stick past it even at rest
+                // (Mapping.cs:3359-3361), which the flick row's own threshold,
+                // above 0, cannot.
+                else _b.Partial(ImportReasons.ControllerSetting, label, "FlickThreshold", "", "FlickThreshold");
+                // A flick time of 0 spends the flick at once (3398-3399). The
+                // row holds a time above 0, so it takes a millisecond.
                 double time = Num(settings, "FlickTime", 0);
-                if (time > 0) src.ParamFlickTime = time;
+                src.ParamFlickTime = time > 0 ? time : 0.001;
                 _b.Bind(layer, "ds:" + prefix + ":flick", "KbmMouseX", src, 0);
                 _b.Clean(label, "Flick Stick", "KbmMouseX");
                 return;
             }
 
-            bool axial = string.Equals(Text(prefix + "DeadZoneType"), "Axial", StringComparison.OrdinalIgnoreCase);
-            var opts = Element(prefix + "AxialDeadOptions");
-            SetCurve(prefix, tx, ty);
             double rotation = Num(prefix + "Rotation", 0);
-            double sens = SensitivityPart(prefix == "LS" ? 0 : 1);
-            double verticalScale = Num(prefix + "VerticalScale", 100) / 100.0;
+            // The zones, the sensitivity, the vertical scale, the max output
+            // and the curve all ride the device's stick card, which runs
+            // after the rows. Mapping.cs applies the sensitivity and the
+            // vertical scale after the dead zone, so a row that scaled the
+            // raw stick would move the dead zone's edge.
+            var zx = StickZones(prefix, true);
+            var zy = StickZones(prefix, false);
+            var cardX = StickCard(zx);
+            var cardY = StickCard(zy);
+            if (cardX.Curve != null) _b.Curves[tx] = ImportBuilder.CurvePoints(cardX.Curve);
+            if (cardY.Curve != null) _b.Curves[ty] = ImportBuilder.CurvePoints(cardY.Curve);
+            if (StickBendsByAngle(prefix, out string bent))
+                _b.Partial(ImportReasons.StickByAngle, label, bent, "", bent);
 
+            // A row carries only the rotation's coefficient and sign.
             MappingSource Make(string descriptor, double coeff, bool isX)
             {
                 var src = new MappingSource { Descriptor = descriptor };
-                double dead = axial
-                    ? Num(opts, isX ? "DeadZoneX" : "DeadZoneY", 0)
-                    : Num(prefix + "DeadZone", 0);
-                double anti = axial
-                    ? Num(opts, isX ? "AntiDeadZoneX" : "AntiDeadZoneY", 0)
-                    : Num(prefix + "AntiDeadZone", 0);
-                double max = axial
-                    ? Num(opts, isX ? "MaxZoneX" : "MaxZoneY", 100)
-                    : Num(prefix + "MaxZone", 100);
-                if (dead > 0)
+                var z = isX ? zx : zy;
+                var (anti, range, _) = isX ? cardX : cardY;
+                // An Axial stick's card takes the Axial shape even without a
+                // dead zone, since the card's radial shapes floor the pair's
+                // length, and Mapping.cs floors each axis alone (1312-1320).
+                if (z.Dead > 0 || zx.Axial)
                 {
-                    src.ParamStickDeadZoneShape = axial ? 1 : 2;
-                    src.ParamStickDeadZoneInner = Math.Clamp(dead / 127.0, 0.0, 0.99);
+                    src.ParamStickDeadZoneShape = zx.Axial ? 1 : 2;
+                    src.ParamStickDeadZoneInner = Math.Min(z.Dead, 0.99);
                 }
-                if (anti > 0) src.ParamAntiDeadzone = Math.Clamp(anti / 100.0, 0.0, 0.99);
-                if (max is > 0 and < 100) src.ParamRangeOuter = max / 100.0;
-                double scale = Math.Abs(coeff) * sens * (isX ? 1.0 : verticalScale);
+                if (anti > 0) src.ParamAntiDeadzone = Math.Min(anti, 0.99);
+                if (range < 1) src.ParamRangeOuter = range;
+                double scale = Math.Abs(coeff);
                 if (scale != 1.0) src.Sensitivity = scale;
                 if (coeff < 0) src.Invert = true;
                 return src;
@@ -350,11 +542,13 @@ namespace PadForge.Common.ConfigImport
 
         // ── Control names ───────────────────────────────────────────────
 
-        private ImportInput ControlInput(string name)
+        /// <param name="specialAction">True for a special action's trigger,
+        /// which Mapping.cs reads through getBoolSpecialActionMapping. It
+        /// presses a tilt at a different point, and every other control at
+        /// the same one.</param>
+        private ImportInput ControlInput(string name, bool specialAction = false)
         {
             ImportInput Btn(string descriptor) => new() { Control = "ds:" + name, Label = name, Descriptor = descriptor };
-            // Mapping.cs reads a stick direction as pressed past 55 of 127.
-            const int StickPress = 43;
             ImportInput Half(string descriptor, bool lower, int threshold = 0) => new()
             {
                 Control = "ds:" + name,
@@ -375,7 +569,7 @@ namespace PadForge.Common.ConfigImport
             };
             ImportInput Ring(string prefix, string descriptor)
             {
-                var i = Pull(descriptor, (int)Math.Clamp(Num(prefix + "OuterBindDead", 75), 1, 99));
+                var i = Pull(descriptor, RingPressPercent(prefix, asKey: false));
                 i.Invert = IsTrue(prefix + "OuterBindInvert");
                 return i;
             }
@@ -388,8 +582,8 @@ namespace PadForge.Common.ConfigImport
                 case "Triangle": return Btn("Gamepad ButtonY");
                 case "L1": return Btn("Gamepad LeftShoulder");
                 case "R1": return Btn("Gamepad RightShoulder");
-                case "L2": return Pull("Gamepad LeftTrigger", TriggerPress);
-                case "R2": return Pull("Gamepad RightTrigger", TriggerPress);
+                case "L2": return Pull("Gamepad LeftTrigger", TriggerPressPercent("L2"));
+                case "R2": return Pull("Gamepad RightTrigger", TriggerPressPercent("R2"));
                 case "L2FullPull": return Pull("Gamepad LeftTrigger", BoundedReads.FullPullPercent);
                 case "R2FullPull": return Pull("Gamepad RightTrigger", BoundedReads.FullPullPercent);
                 case "L3": return Btn("Gamepad LeftStick");
@@ -411,25 +605,29 @@ namespace PadForge.Common.ConfigImport
                 case "BLP": case "SideL": return Btn("Gamepad Paddle2");
                 case "FnR": return Btn("Gamepad Paddle3");
                 case "FnL": return Btn("Gamepad Paddle4");
-                case "LXNeg": return Half("Gamepad LeftStickX", true, StickPress);
-                case "LXPos": return Half("Gamepad LeftStickX", false, StickPress);
-                case "LYNeg": return Half("Gamepad LeftStickY", true, StickPress);
-                case "LYPos": return Half("Gamepad LeftStickY", false, StickPress);
-                case "RXNeg": return Half("Gamepad RightStickX", true, StickPress);
-                case "RXPos": return Half("Gamepad RightStickX", false, StickPress);
-                case "RYNeg": return Half("Gamepad RightStickY", true, StickPress);
-                case "RYPos": return Half("Gamepad RightStickY", false, StickPress);
+                case "LXNeg": return Half("Gamepad LeftStickX", true, StickPressPercent("LS", true, false));
+                case "LXPos": return Half("Gamepad LeftStickX", false, StickPressPercent("LS", true, true));
+                case "LYNeg": return Half("Gamepad LeftStickY", true, StickPressPercent("LS", false, false));
+                case "LYPos": return Half("Gamepad LeftStickY", false, StickPressPercent("LS", false, true));
+                case "RXNeg": return Half("Gamepad RightStickX", true, StickPressPercent("RS", true, false));
+                case "RXPos": return Half("Gamepad RightStickX", false, StickPressPercent("RS", true, true));
+                case "RYNeg": return Half("Gamepad RightStickY", true, StickPressPercent("RS", false, false));
+                case "RYPos": return Half("Gamepad RightStickY", false, StickPressPercent("RS", false, true));
                 case "LSOuter": return Ring("LS", "Gamepad LeftStickRing");
                 case "RSOuter": return Ring("RS", "Gamepad RightStickRing");
                 // Sustained tilt, as DS4Windows reads the accelerometer. Its
                 // special actions name these Tilt Left, Tilt Right, Tilt Down
                 // and Tilt Up. Lean Y reads positive with the nose up.
-                case "GyroXPos": return Half("Gyro Lean X", true, LeanThreshold(4));
-                case "GyroXNeg": return Half("Gyro Lean X", false, LeanThreshold(4));
-                case "GyroZPos": return Half("Gyro Lean Y", true, LeanThreshold(5));
-                case "GyroZNeg": return Half("Gyro Lean Y", false, LeanThreshold(5));
-                case "GyroSwipeLeft": return Half(SwipeAxisX(), false, SwipeThreshold("DeadZoneX"));
-                case "GyroSwipeRight": return Half(SwipeAxisX(), true, SwipeThreshold("DeadZoneX"));
+                case "GyroXPos": return Half("Gyro Lean X", true, LeanThreshold(true, specialAction));
+                case "GyroXNeg": return Half("Gyro Lean X", false, LeanThreshold(true, specialAction));
+                case "GyroZPos": return Half("Gyro Lean Y", true, LeanThreshold(false, specialAction));
+                case "GyroZNeg": return Half("Gyro Lean Y", false, LeanThreshold(false, specialAction));
+                // SixDirectionalSwipe swipes right on a positive angVelYaw or
+                // angVelRoll, minus SDL's yaw or roll. A Gyro Yaw read is SDL's
+                // yaw, so right is its lower half. A Gyro Roll read is minus
+                // SDL's roll (ReadTunedGyroRate), so right is its upper half.
+                case "GyroSwipeLeft": return Half(SwipeAxisX(), SwipeAxisX() == "Gyro Roll", SwipeThreshold("DeadZoneX"));
+                case "GyroSwipeRight": return Half(SwipeAxisX(), SwipeAxisX() != "Gyro Roll", SwipeThreshold("DeadZoneX"));
                 case "GyroSwipeUp": return Half("Gyro Pitch", false, SwipeThreshold("DeadZoneY"));
                 case "GyroSwipeDown": return Half("Gyro Pitch", true, SwipeThreshold("DeadZoneY"));
                 // Mouse.cs TouchButtonCheckProcess sets these regions on the
@@ -472,14 +670,51 @@ namespace PadForge.Common.ConfigImport
             }
         }
 
-        /// <summary>Mapping.cs calls a tilt pressed when the accelerometer,
-        /// 128 to a g, scaled by the file's sensitivity, reads past 67. PadForge's
-        /// lean reads 90 degrees as full scale.</summary>
-        private int LeanThreshold(int sensitivityIndex)
+        /// <summary>Where a tilt presses, as a percent of PadForge's lean,
+        /// which reads 90 degrees as full scale. Mapping.cs turns the
+        /// accelerometer, 128 counts to a g, into an output of 0..128: zero
+        /// up to SXDeadZone (a fraction of 128, 0.25 by default), then the
+        /// travel to SXMaxZone scaled by the sensitivity and lifted by the
+        /// anti-dead zone, each step cut to a whole count, then the SX curve.
+        /// A binding, a key and a shift trigger read that output past 0
+        /// (GetBoolMapping, GetBoolActionMapping), a special action past 67
+        /// (getBoolSpecialActionMapping). SZ is the same for the forward
+        /// tilt. 100 when no tilt reaches it.</summary>
+        private int LeanThreshold(bool isX, bool specialAction)
         {
-            double g = 67.0 / 128.0 / SensitivityPart(sensitivityIndex);
-            if (g >= 1.0) return 99;
-            return (int)Math.Clamp(Math.Round(Math.Asin(g) * 180.0 / Math.PI / 90.0 * 100.0), 1, 99);
+            string axis = isX ? "SX" : "SZ";
+            double deadZone = Num(axis + "DeadZone", 0.25);
+            double maxZone = Math.Clamp(Num(axis + "MaxZone", 100) / 100.0, 0.0, 1.0);
+            double anti = Math.Clamp(Num(axis + "AntiDeadZone", 0) / 100.0, 0.0, 1.0);
+            double sens = SensitivityPart(isX ? 4 : 5);
+            var curve = CurveOf(axis, stick: false);
+            int dead = (int)(128.0 * deadZone);
+            int need = specialAction ? 68 : 1;
+            for (int counts = 0; counts <= 128; counts++)
+            {
+                int output;
+                if (dead > 0 || maxZone < 1.0 || anti > 0.0)
+                {
+                    int maxValue = (int)(maxZone * 128.0);
+                    if (counts > dead)
+                    {
+                        double ratio = counts < maxValue ? (counts - dead) / (double)(maxValue - dead) : 1.0;
+                        output = (int)Math.Min(128.0, sens * 128.0 * ((1.0 - anti) * ratio + anti));
+                    }
+                    else
+                    {
+                        output = 0;
+                    }
+                }
+                else
+                {
+                    output = (int)Math.Min(128.0, sens * 128.0 * (counts / 128.0));
+                }
+                if (curve != null && output > 0) output = (int)(curve(output / 128.0) * 128.0);
+                if (output >= need)
+                    return (int)Math.Clamp(Math.Round(Math.Asin(counts / 128.0) * 180.0 / Math.PI / 90.0 * 100.0), 1.0, 99.0);
+            }
+            return 100;
         }
 
         private string SwipeAxisX()
@@ -506,9 +741,134 @@ namespace PadForge.Common.ConfigImport
             _ => false,
         };
 
-        /// <summary>GetBoolMapping presses a trigger past 100 of 255, for a
-        /// pad button or a macro.</summary>
-        private const int TriggerPress = 39;
+        // ── Press points on the processed state ─────────────────────────
+        //
+        // ControlService hands MapCustom the state SetCurveAndDeadzone made
+        // (rotation, dead zone, max zone, anti-dead zone, vertical scale,
+        // sensitivity, curve), and GetBoolMapping presses a pad button, a
+        // macro or a shift trigger on that state: a stick direction past 55,
+        // a trigger and the outer ring past 100 of 255. A row reads the raw
+        // input, so each press point is the raw travel where the processed
+        // value first passes DS4Windows' own. A rotated stick turns the axis
+        // GetBoolMapping reads, which no single raw axis can, so a pad
+        // button's direction reads the unrotated axis.
+
+        /// <summary>The raw travel, in percent, past which
+        /// <paramref name="processed"/> passes <paramref name="threshold"/>.
+        /// The processed value never falls as the travel grows. 100 when it
+        /// never passes, so a full push is the least that presses.</summary>
+        private static int RawPastProcessed(Func<double, double> processed, double threshold)
+        {
+            if (processed(1.0) <= threshold) return 100;
+            double lo = 0.0, hi = 1.0;
+            for (int i = 0; i < 40; i++)
+            {
+                double mid = (lo + hi) / 2.0;
+                if (processed(mid) > threshold) hi = mid;
+                else lo = mid;
+            }
+            return (int)Math.Clamp(Math.Round(hi * 100.0), 1.0, 100.0);
+        }
+
+        /// <summary>One stick axis pushed alone, on 0..1, through
+        /// SetCurveAndDeadzone: the dead zone and max zone (radial, or that
+        /// axis's axial values), the vertical scale on a radial Y, the max
+        /// output, the anti-dead zone and then, unless
+        /// <paramref name="zonesOnly"/>, the sensitivity and the curve. The
+        /// outer ring reads the stick before those last two.</summary>
+        private Func<double, double> StickProcessed(string prefix, bool isX, bool zonesOnly = false)
+        {
+            bool axial = string.Equals(Text(prefix + "DeadZoneType"), "Axial", StringComparison.OrdinalIgnoreCase);
+            var opts = Element(prefix + "AxialDeadOptions");
+            double dead = (axial ? Num(opts, isX ? "DeadZoneX" : "DeadZoneY", 0) : Num(prefix + "DeadZone", StickDeadZoneInfo.DeadZone)) / 127.0;
+            double anti = (axial ? Num(opts, isX ? "AntiDeadZoneX" : "AntiDeadZoneY", 0) : Num(prefix + "AntiDeadZone", StickDeadZoneInfo.AntiDeadZone)) / 100.0;
+            double max = (axial ? Num(opts, isX ? "MaxZoneX" : "MaxZoneY", 0) : Num(prefix + "MaxZone", 100)) / 100.0;
+            double maxOut = (axial ? Num(opts, isX ? "MaxOutputX" : "MaxOutputY", 0) : Num(prefix + "MaxOutput", 100)) / 100.0;
+            double vertical = !axial && !isX ? Num(prefix + "VerticalScale", 100) / 100.0 : 1.0;
+            // The sensitivity applies on the Radial type only (Mapping.cs,
+            // "Only apply deprecated Sensitivity modifier for Radial DZ").
+            double sens = axial ? 1.0 : SensitivityPart(prefix == "LS" ? 0 : 1);
+            var curve = CurveOf(prefix, stick: true);
+            return r =>
+            {
+                if (r <= dead) return 0.0;
+                double span = max - dead;
+                double o = span > 0.0 ? (Math.Min(r, max) - dead) / span : 1.0;
+                o = Math.Clamp(o * vertical, 0.0, 1.0);
+                // Mapping.cs widens the max output by dividing it by 0.99.
+                if (maxOut is >= 0.0 and < 1.0) o = Math.Min(o, Math.Min(maxOut / 0.99, 1.0));
+                if (o <= 0.0) return 0.0;
+                o = (1.0 - anti) * o + anti;
+                if (zonesOnly) return o;
+                o = Math.Min(1.0, o * sens);
+                return curve != null ? curve(o) : o;
+            };
+        }
+
+        /// <summary>A trigger on 0..1 through its dead zone, max zone, max
+        /// output, anti-dead zone, sensitivity and curve.</summary>
+        private Func<double, double> TriggerProcessed(string prefix)
+        {
+            var z = TriggerZones(prefix);
+            return t =>
+            {
+                double o;
+                if (z.Dead > 0.0) o = t > z.Dead ? PastDeadZone(z, t) : 0.0;
+                else o = z.Max > 0.0 ? Math.Min(t, z.Max) / z.Max : 0.0;
+                o = Math.Min(o, z.Cap);
+                if (o <= 0.0) return 0.0;
+                o = (1.0 - z.Anti) * o + z.Anti;
+                o = Math.Min(1.0, o * z.Sens);
+                return z.Curve != null ? z.Curve(o) : o;
+            };
+        }
+
+        /// <summary>A trigger's zones as ProfileDTO reads them: the dead zone
+        /// a byte, the max zone and max output clamped to 0..100, the
+        /// anti-dead zone as given, which Mapping.cs applies only above 0
+        /// (above 100 it overflows the byte, read here as full), all as
+        /// fractions, with the sensitivity and the curve.</summary>
+        private (double Dead, double Anti, double Max, double Cap, double Sens, Func<double, double> Curve) TriggerZones(string prefix)
+            => (Math.Clamp(Num(prefix == "L2" ? "LeftTriggerMiddle" : "RightTriggerMiddle", 0), 0.0, 255.0) / 255.0,
+                Math.Clamp(Num(prefix + "AntiDeadZone", TriggerAntiDeadZone), 0.0, 100.0) / 100.0,
+                Math.Clamp(Num(prefix + "MaxZone", 100), 0.0, 100.0) / 100.0,
+                Math.Clamp(Num(prefix + "MaxOutput", 100), 0.0, 100.0) / 100.0,
+                SensitivityPart(prefix == "L2" ? 2 : 3),
+                CurveOf(prefix, stick: false));
+
+        /// <summary>Mapping.cs's (current - dead) / (maxValue - dead) for a
+        /// pull past the dead zone, current clamped to the max zone. A max
+        /// zone under the dead zone divides two negatives and reads full, and
+        /// one equal to it reads 0 / 0, which leaves the trigger at 0.</summary>
+        private static double PastDeadZone((double Dead, double Anti, double Max, double Cap, double Sens, Func<double, double> Curve) z, double t)
+            => Math.Abs(z.Max - z.Dead) < 1e-9 ? 0.0
+               : z.Max < z.Dead ? 1.0
+               : (Math.Min(t, z.Max) - z.Dead) / (z.Max - z.Dead);
+
+        /// <summary>Where a pad button, macro or shift trigger reads a stick
+        /// direction as pressed: the processed axis past 55 of 127 on the
+        /// positive side, of 128 on the negative.</summary>
+        private int StickPressPercent(string prefix, bool isX, bool positive)
+            => RawPastProcessed(StickProcessed(prefix, isX), 55.0 / (positive ? 127.0 : 128.0));
+
+        /// <summary>Where a pad button, macro or shift trigger reads a
+        /// trigger as pressed: the processed trigger past 100 of 255.</summary>
+        private int TriggerPressPercent(string prefix)
+            => RawPastProcessed(TriggerProcessed(prefix), 100.0 / 255.0);
+
+        /// <summary>The outer ring's radius. Mapping.cs scales the band past
+        /// the outer bind dead zone to 0..255 (or the band inside it, when
+        /// inverted), and a pad button reads it past 100, a key past 0. The
+        /// ring takes the stick's zones, not its sensitivity or curve.</summary>
+        private int RingPressPercent(string prefix, bool asKey)
+        {
+            double edge = Math.Clamp(Num(prefix + "OuterBindDead", 75), 0, 100) / 100.0;
+            double part = asKey ? 0.0 : 100.0 / 255.0;
+            double radius = IsTrue(prefix + "OuterBindInvert")
+                ? edge * (1.0 - part)
+                : edge + (1.0 - edge) * part;
+            return Math.Clamp(RawPastProcessed(StickProcessed(prefix, true, zonesOnly: true), radius), 1, 99);
+        }
 
         /// <summary>The percent a trigger's value leaves 0 at: past its dead
         /// zone. A key and a mouse button read it (GetBoolActionMapping), and
@@ -551,17 +911,22 @@ namespace PadForge.Common.ConfigImport
         /// is what <see cref="ControlInput"/> gives.</summary>
         private void ReadAsKeyOrClick(ImportInput input, string name)
         {
-            const double HalfWidth = 67.5;
             void Sector(double center, string stick, bool isX)
             {
                 string prefix = stick == "Left" ? "LS" : "RS";
                 bool axial = string.Equals(Text(prefix + "DeadZoneType"), "Axial", StringComparison.OrdinalIgnoreCase);
                 double dead = axial
                     ? Num(Element(prefix + "AxialDeadOptions"), isX ? "DeadZoneX" : "DeadZoneY", 0)
-                    : Num(prefix + "DeadZone", 0);
+                    : Num(prefix + "DeadZone", StickDeadZoneInfo.DeadZone);
                 // The half-axis read underneath only has to agree on the side.
                 input.DeadZone = 1;
-                input.Band = BoundedReads.Sector(center, HalfWidth,
+                // MapCustom reads the angle off the rotated stick, and
+                // rotateLSCoordinates turns the stick clockwise by the
+                // rotation in this counterclockwise frame, so the push that
+                // reads as this direction lies the rotation further round.
+                double rotation = Num(prefix + "Rotation", 0);
+                center = ((center + rotation) % 360.0 + 360.0) % 360.0;
+                input.Band = BoundedReads.Sector(center, Math.Round(KeySectorHalfWidth(prefix, isX), 2),
                     (int)Math.Clamp(Math.Ceiling(dead * 100.0 / 127.0), 1.0, 99.0), "Gamepad " + stick + "StickRing");
             }
             switch (name)
@@ -576,7 +941,88 @@ namespace PadForge.Common.ConfigImport
                 case "RXPos": Sector(0, "Right", true); break;
                 case "RYNeg": Sector(90, "Right", false); break;
                 case "RYPos": Sector(270, "Right", false); break;
+                case "LSOuter": input.DeadZone = RingPressPercent("LS", asKey: true); break;
+                case "RSOuter": input.DeadZone = RingPressPercent("RS", asKey: true); break;
             }
+        }
+
+        /// <summary>True when SetCurveAndDeadzone turns a push of the stick
+        /// by an angle that depends on how far it goes, so no sector on the
+        /// raw ring holds the region a key reads. MapCustom reads a key's
+        /// angle off the processed stick (calculateStickAngles). On the Axial
+        /// type every axis is shaped alone (Mapping.cs:1280-1330, 1890-1894):
+        /// a dead zone, an anti-dead zone, a max zone or a max output under
+        /// 100, or a curve, bends it. On the Radial type the curve runs on the
+        /// length and keeps the angle (tempRatio over capX, 1771-1888), and a
+        /// dead zone or a vertical scale under 100 turns a push by an angle its
+        /// length does not change. An anti-dead zone, a max zone under 100,
+        /// a max output under 100 beside a dead zone, a vertical scale over
+        /// 100 and a sensitivity over 1 each clamp or lift one axis apart
+        /// from the other, which bends it (1141-1240, 1721-1730).</summary>
+        private bool KeyAngleBends(string prefix)
+        {
+            if (string.Equals(Text(prefix + "DeadZoneType"), "Axial", StringComparison.OrdinalIgnoreCase))
+            {
+                var opts = Element(prefix + "AxialDeadOptions");
+                foreach (string axis in new[] { "X", "Y" })
+                {
+                    if (Num(opts, "DeadZone" + axis, 0) > 0 || Num(opts, "AntiDeadZone" + axis, 0) > 0
+                        || Num(opts, "MaxZone" + axis, 0) < 100 || Num(opts, "MaxOutput" + axis, 0) < 100)
+                        return true;
+                }
+                return CurveOf(prefix, stick: true) != null;
+            }
+            double dead = Num(prefix + "DeadZone", StickDeadZoneInfo.DeadZone);
+            return Num(prefix + "AntiDeadZone", StickDeadZoneInfo.AntiDeadZone) > 0
+                || Num(prefix + "MaxZone", 100) < 100
+                || (Num(prefix + "MaxOutput", 100) < 100 && dead > 0)
+                || Num(prefix + "VerticalScale", 100) > 100
+                || SensitivityPart(prefix == "LS" ? 0 : 1) > 1.0;
+        }
+
+        /// <summary>The half-width, in degrees on the raw ring, of a key's
+        /// sector. Mapping.cs reads a direction 67.5 degrees each side of its
+        /// axis (GetBoolActionMapping). On the Radial type a dead zone d
+        /// (of 127) moves a push at raw angle r to tan r x (1 - d cos r) /
+        /// (1 - d sin r), and a vertical scale v multiplies that by v, so the
+        /// raw edge is where that reaches 67.5 degrees from the X axis, or
+        /// 22.5 for an up or down key.</summary>
+        private double KeySectorHalfWidth(string prefix, bool xDirection)
+        {
+            if (string.Equals(Text(prefix + "DeadZoneType"), "Axial", StringComparison.OrdinalIgnoreCase)) return 67.5;
+            double d = Math.Clamp(Num(prefix + "DeadZone", StickDeadZoneInfo.DeadZone) / 127.0, 0.0, 0.99);
+            double v = Math.Clamp(Num(prefix + "VerticalScale", 100) / 100.0, 0.01, 1.0);
+            if (d <= 0.0 && v >= 1.0) return 67.5;
+            double Processed(double r)
+                => Math.Atan2(v * Math.Sin(r) / (1.0 - d * Math.Sin(r)), Math.Cos(r) / (1.0 - d * Math.Cos(r))) * 180.0 / Math.PI;
+            double target = xDirection ? 67.5 : 22.5;
+            double lo = 0.0, hi = Math.PI / 2.0;
+            for (int i = 0; i < 60; i++)
+            {
+                double mid = (lo + hi) / 2.0;
+                if (Processed(mid) < target) lo = mid;
+                else hi = mid;
+            }
+            double edge = lo * 180.0 / Math.PI;
+            return xDirection ? edge : 90.0 - edge;
+        }
+
+        /// <summary>The report line for a key, click or Extras binding.
+        /// Partial when <paramref name="control"/> is a stick direction whose
+        /// angle the stick's zones or curve bend unevenly
+        /// (<see cref="KeyAngleBends"/>).</summary>
+        private void KeyLine(string path, string binding, string emitted, string control)
+        {
+            string prefix = control switch
+            {
+                "LXNeg" or "LXPos" or "LYNeg" or "LYPos" => "LS",
+                "RXNeg" or "RXPos" or "RYNeg" or "RYPos" => "RS",
+                _ => null,
+            };
+            if (prefix != null && KeyAngleBends(prefix))
+                _b.Partial(ImportReasons.StickBeforeCurve, path, binding, emitted, control);
+            else
+                _b.Clean(path, binding, emitted);
         }
 
         /// <summary>A soft or full pull binding under its trigger's two-stage
@@ -645,6 +1091,10 @@ namespace PadForge.Common.ConfigImport
                 "5th Mouse Button" => ImportOutput.Mouse(4),
                 "Mouse Wheel Up" => ImportOutput.MouseWheel(false, true),
                 "Mouse Wheel Down" => ImportOutput.MouseWheel(false, false),
+                // DS4Windows' absolute outputs place the pointer where the
+                // stick points (GetAbsMouseMapping). PadForge's absolute
+                // pointer takes pointer sources only, so these move it, and
+                // the report line says so.
                 "Mouse Up" or "Abs Mouse Up" => ImportOutput.MouseMove(false, true),
                 "Mouse Down" or "Abs Mouse Down" => ImportOutput.MouseMove(false, false),
                 "Mouse Left" or "Abs Mouse Left" => ImportOutput.MouseMove(true, true),
@@ -805,14 +1255,28 @@ namespace PadForge.Common.ConfigImport
                 else
                 {
                     var read = Staged(spec.Name, output.Kind is ImportOutputKind.MouseButton or ImportOutputKind.Wheel);
-                    if (read.EdgeOnly != null)
+                    if (read.EdgeOnly != null && output.Kind == ImportOutputKind.PadButton && output.PadBit == 0)
+                    {
+                        // A moment rides a macro, and a macro's button word
+                        // has no bit for the touchpad click a row can press.
+                        _b.Skipped(ImportReasons.MacroCannotPress, path, spec.Button, output.Label);
+                    }
+                    else if (read.EdgeOnly != null)
                     {
                         LowerEdgeTap(read, layer, output, path);
                     }
                     else
                     {
                         _b.Bind(layer, read, output);
-                        _b.Clean(path, output.Label, output.Target);
+                        if (spec.Button.StartsWith("Abs Mouse ", StringComparison.Ordinal))
+                            _b.Partial(ImportReasons.AbsoluteMouse, path, spec.Button, output.Target);
+                        else
+                        {
+                            if (output.Kind is ImportOutputKind.MouseButton or ImportOutputKind.Wheel)
+                                KeyLine(path, output.Label, output.Target, spec.Name);
+                            else
+                                Line(path, output.Label, output.Target, spec.Name);
+                        }
                     }
                 }
             }
@@ -838,6 +1302,30 @@ namespace PadForge.Common.ConfigImport
             "L1", "L3", "R1", "R3", "Share", "Options", "Mute", "TouchRight", "TouchLeft", "Capture",
             "SideL", "SideR", "FnL", "FnR", "BLP", "BRP",
         };
+
+        /// <summary>True for a direction of a rotated stick. GetBoolMapping
+        /// and getBoolSpecialActionMapping read it off the rotated axis, the
+        /// stick turned by LSRotation or RSRotation, which mixes both raw
+        /// axes, and a row or a macro entry here reads one raw axis.</summary>
+        private bool ReadsBeforeRotation(string control) => control switch
+        {
+            "LXNeg" or "LXPos" or "LYNeg" or "LYPos" => Num("LSRotation", 0) != 0,
+            "RXNeg" or "RXPos" or "RYNeg" or "RYPos" => Num("RSRotation", 0) != 0,
+            _ => false,
+        };
+
+        /// <summary>The report line for a binding that came across. Partial
+        /// when <paramref name="control"/> is a direction of a rotated stick
+        /// read the GetBoolMapping way, which reads here before the rotation.
+        /// A key's or a click's sector turns with the stick and passes
+        /// null.</summary>
+        private void Line(string path, string binding, string emitted, string control)
+        {
+            if (control != null && ReadsBeforeRotation(control))
+                _b.Partial(ImportReasons.StickBeforeRotation, path, binding, emitted, control);
+            else
+                _b.Clean(path, binding, emitted);
+        }
 
         /// <summary>The control as one kind of binding reads it. A key, a
         /// mouse button and Extras read it as GetBoolActionMapping does, a
@@ -916,12 +1404,12 @@ namespace PadForge.Common.ConfigImport
                     PadId = PadId,
                     Actions = new[] { output.Flip() },
                 });
-                _b.Clean(path, output.Label, "ToggleKey");
+                KeyLine(path, output.Label, "ToggleKey", input.Label);
             }
             else if (output.HasRow)
             {
                 _b.Bind(layer, input, output);
-                _b.Clean(path, output.Label, output.Target);
+                KeyLine(path, output.Label, output.Target, input.Label);
             }
             else
             {
@@ -935,7 +1423,7 @@ namespace PadForge.Common.ConfigImport
                     PadId = PadId,
                     Actions = new[] { output.Down() },
                 }, new[] { output.Up() });
-                _b.Clean(path, output.Label, "ToggleKey");
+                KeyLine(path, output.Label, "ToggleKey", input.Label);
             }
         }
 
@@ -990,8 +1478,8 @@ namespace PadForge.Common.ConfigImport
             283 => ImportOutput.Stick("RightThumbAxisX", true),
             284 => ImportOutput.Stick("RightThumbAxisY", false),
             285 => ImportOutput.Stick("RightThumbAxisY", true),
-            // 286, the touchpad click: a macro's button action writes the Xbox
-            // button word, which has none.
+            // 286, the touchpad click, is DecodeMacro's own case: a macro's
+            // button action writes the Xbox button word, which has none.
             _ => null,
         };
 
@@ -1057,6 +1545,14 @@ namespace PadForge.Common.ConfigImport
                 else
                 {
                     var output = code <= 255 ? ImportOutput.Key((byte)code) : MacroCodeOutput(code);
+                    if (code == 286)
+                    {
+                        // A DualShock 4 slot has the touchpad click and a
+                        // mapping row presses it. An Xbox slot has none.
+                        _b.Skipped(_ds4Output ? ImportReasons.MacroCannotPress : ImportReasons.NoSuchPadButton,
+                            path, "286", "Touchpad click");
+                        continue;
+                    }
                     if (output == null)
                     {
                         _b.Skipped(ImportReasons.UnknownOutput, path, code.ToString(CultureInfo.InvariantCulture), code.ToString(CultureInfo.InvariantCulture));
@@ -1119,7 +1615,7 @@ namespace PadForge.Common.ConfigImport
                 PadId = PadId,
                 Actions = actions,
             });
-            _b.Clean(path, "Macro", repeats ? "UntilRelease" : "Once");
+            Line(path, "Macro", repeats ? "UntilRelease" : "Once", input.Label);
         }
 
         /// <summary>Extras: heavy, light, lightbar on, red, green, blue, flash,
@@ -1166,7 +1662,7 @@ namespace PadForge.Common.ConfigImport
                 PadId = PadId,
                 Actions = down,
             }, up);
-            _b.Clean(path, "Extras", "Rumble, lightbar");
+            KeyLine(path, "Extras", "Rumble, lightbar", input.Label);
         }
 
         /// <summary><c>True/255,255,255:100;255,0,0:50;/Press/False</c>: active,
@@ -1312,8 +1808,13 @@ namespace PadForge.Common.ConfigImport
                 case "Mouse":
                 {
                     ApplyGyroEngage(Text("SATriggers"), IsTrue(_root, "GyroTriggerTurns", true), IsTrue("GyroMouseToggle"));
+                    // MouseCursor.cs moves right on gyroYawFull or gyroRollFull,
+                    // minus SDL's yaw or roll, with one sign for both. A Gyro
+                    // Roll read is minus SDL's roll against a Gyro Yaw read's
+                    // plus SDL's yaw (ReadTunedGyroRate), so roll takes the
+                    // other direction.
                     _b.Bind(ImportBuilder.BaseLayer, "ds:gyro:x", "KbmMouseX",
-                        new MappingSource { Descriptor = yaw, GyroSensitivity = sensitivity, Invert = (invert & 2) != 0 }, 0);
+                        new MappingSource { Descriptor = yaw, GyroSensitivity = sensitivity, Invert = ((invert & 2) != 0) != (yaw == "Gyro Roll") }, 0);
                     _b.Bind(ImportBuilder.BaseLayer, "ds:gyro:y", "KbmMouseY",
                         new MappingSource { Descriptor = "Gyro Pitch", GyroSensitivity = sensitivity * vertical, Invert = (invert & 1) != 0 }, 0);
                     // MouseCursor.cs subtracts its dead zone from the raw counts.
@@ -1323,14 +1824,17 @@ namespace PadForge.Common.ConfigImport
                 }
                 case "MouseJoystick":
                 {
-                    string stick = Text("GyroMouseStickOutputStick");
-                    string side = stick.Contains("Left", StringComparison.OrdinalIgnoreCase) ? "Left" : "Right";
+                    // A stick or axes the file leaves out read None: both are
+                    // auto-properties with no initializer, which MapTo copies
+                    // (ProfileDTO.cs:1018-1028, 2229-2230), and None writes no
+                    // stick (Mapping.cs:3036).
+                    string side = OutputStickSide(Text("GyroMouseStickOutputStick"), "");
+                    var (stickX, stickY) = OutputStickAxes(Text("GyroMouseStickOutputStickAxes"), "");
                     // Mouse.cs reads these bits X first, the reverse of the mouse and
                     // touchpad modes' 2 for X and 1 for Y.
                     int stickInvert = (int)Num("GyroMouseStickInvert", 0);
                     double stickVertical = Num("GyroMouseStickVerticalScale", 100) / 100.0;
                     ApplyGyroEngage(Text("GyroMouseStickTriggers"), IsTrue(_root, "GyroMouseStickTriggerTurns", true), IsTrue("GyroMouseStickToggle"));
-                    string axes = Text("GyroMouseStickOutputStickAxes");
                     string stickYaw = (int)Num("GyroMouseStickHAxis", 0) == 1 ? "Gyro Roll" : "Gyro Yaw";
                     // Mouse.cs SixMouseStick: past the dead zone the stick is
                     // full at the max zone, both in raw counts, and the
@@ -1341,13 +1845,21 @@ namespace PadForge.Common.ConfigImport
                     double antiX = Math.Clamp(Num("GyroMouseStickAntiDeadX", 0.4), 0.0, 0.99);
                     double antiY = Math.Clamp(Num("GyroMouseStickAntiDeadY", 0.4), 0.0, 0.99);
                     _b.GyroDeadZone = GyroDegrees(Num("GyroMouseStickDeadZone", 30));
-                    if (!string.Equals(axes, "YOnly", StringComparison.OrdinalIgnoreCase))
+                    if (side != null && stickX)
                         _b.Bind(ImportBuilder.BaseLayer, "ds:gyro:x", side + "ThumbAxisX",
-                            new MappingSource { Descriptor = stickYaw, Invert = (stickInvert & 1) != 0, ParamRangeOuter = outer, ParamAntiDeadzone = antiX }, PadId);
-                    if (!string.Equals(axes, "XOnly", StringComparison.OrdinalIgnoreCase))
+                            // SixMouseStick pushes right on gyroYawFull or
+                            // gyroRollFull with one sign, and a Gyro Roll read
+                            // runs against a Gyro Yaw read, as on the mouse.
+                            new MappingSource { Descriptor = stickYaw, Invert = ((stickInvert & 1) != 0) != (stickYaw == "Gyro Roll"), ParamRangeOuter = outer, ParamAntiDeadzone = antiX }, PadId);
+                    if (side != null && stickY)
                         _b.Bind(ImportBuilder.BaseLayer, "ds:gyro:y", side + "ThumbAxisY",
-                            new MappingSource { Descriptor = "Gyro Pitch", GyroSensitivity = stickVertical, Invert = (stickInvert & 2) != 0, ParamRangeOuter = outer, ParamAntiDeadzone = antiY }, PadId);
-                    _b.Clean("Gyro", "Mouse joystick", side + "ThumbAxis");
+                            // SixMouseStick pushes the stick up as the nose
+                            // comes up (deltaY = -gyroPitchFull toward LY 0).
+                            // A Gyro Pitch read is plus SDL's pitch, nose up,
+                            // and a stick Y row's positive value is down, so
+                            // the row turns it unless bit 2 turns it back.
+                            new MappingSource { Descriptor = "Gyro Pitch", GyroSensitivity = stickVertical, Invert = (stickInvert & 2) == 0, ParamRangeOuter = outer, ParamAntiDeadzone = antiY }, PadId);
+                    _b.Clean("Gyro", "Mouse joystick", side != null && (stickX || stickY) ? side + "ThumbAxis" : "");
                     break;
                 }
                 case "Passthru":
@@ -1505,6 +2017,13 @@ namespace PadForge.Common.ConfigImport
                     BindRegionDefault("TouchMulti", ImportOutput.Mouse(1));
                     BindRegionDefault("TouchRight", ImportOutput.Mouse(IsTrue("lowerRCOn") ? 1 : 0));
                     _b.Clean("Touchpad", "Mouse", "KbmMouseX, KbmMouseY");
+                    // Mouse.cs rolls the trackball in Mouse mode only.
+                    if (IsTrue("TrackballMode"))
+                    {
+                        _b.TouchpadGlide = TrackballGlide(Num("TrackballFriction", 10))
+                            .ToString("0.#####", CultureInfo.InvariantCulture);
+                        _b.Clean("TrackballMode", "True", "Touchpad momentum");
+                    }
                     if (Num("scrollSensitivity", 0) > 0 || IsTrue("doubleTap") || Num("tapSensitivity", 0) > 0)
                         _b.Partial(ImportReasons.TouchpadShape, "Touchpad", "Scroll and tap", "");
                     break;
@@ -1519,16 +2038,62 @@ namespace PadForge.Common.ConfigImport
 
                 case "MouseJoystick":
                 {
+                    // TouchpadMouseStickSerializer starts at RightStick and XY
+                    // (ProfileDTO.cs:3200-3210), as BackingStore does when the
+                    // element is absent (MapTo skips it, 2369).
                     var stickSettings = Element("TouchpadMouseStick");
-                    string side = Text(stickSettings, "OutputStick").Contains("Left", StringComparison.OrdinalIgnoreCase) ? "Left" : "Right";
-                    _b.Bind(Base, "ds:tp:x", side + "ThumbAxisX", new MappingSource { Descriptor = "Touchpad 0 StickX" }, PadId);
-                    _b.Bind(Base, "ds:tp:y", side + "ThumbAxisY", new MappingSource { Descriptor = "Touchpad 0 StickY" }, PadId);
-                    _b.Clean("Touchpad", "Mouse joystick", side + "ThumbAxis");
+                    string side = OutputStickSide(Text(stickSettings, "OutputStick"), "RightStick");
+                    var (stickX, stickY) = OutputStickAxes(Text(stickSettings, "OutputStickAxes"), "XY");
+                    if (side != null && stickX)
+                        _b.Bind(Base, "ds:tp:x", side + "ThumbAxisX", new MappingSource { Descriptor = "Touchpad 0 StickX" }, PadId);
+                    if (side != null && stickY)
+                        _b.Bind(Base, "ds:tp:y", side + "ThumbAxisY", new MappingSource { Descriptor = "Touchpad 0 StickY" }, PadId);
+                    _b.Clean("Touchpad", "Mouse joystick", side != null && (stickX || stickY) ? side + "ThumbAxis" : "");
                     break;
                 }
             }
             ApplyTouchToggle();
             ApplyTouchDisInvert(invert);
+        }
+
+        /// <summary>A gyro or touchpad stick's output, GyroMouseStickInfo's and
+        /// TouchMouseStickInfo's OutputStick (ProfilePropGroups.cs:339-344):
+        /// "Left" or "Right", or null for None, which writes no stick.
+        /// <paramref name="absent"/> is what the loader gives a file that
+        /// leaves it out.</summary>
+        private static string OutputStickSide(string value, string absent)
+        {
+            string v = value.Length > 0 ? value : absent;
+            if (v.Equals("LeftStick", StringComparison.OrdinalIgnoreCase)) return "Left";
+            if (v.Equals("RightStick", StringComparison.OrdinalIgnoreCase)) return "Right";
+            return null;
+        }
+
+        /// <summary>Which axes a gyro or touchpad stick writes, OutputStickAxes
+        /// XY, X, Y or None (ProfilePropGroups.cs:346-352, OutputHorizontal
+        /// and OutputVertical 514-524).</summary>
+        private static (bool X, bool Y) OutputStickAxes(string value, string absent)
+        {
+            string v = (value.Length > 0 ? value : absent).ToUpperInvariant();
+            return (v is "XY" or "X", v is "XY" or "Y");
+        }
+
+        /// <summary>The touchpad momentum glide that coasts as DS4Windows'
+        /// trackball does. Mouse.cs slows the ball by TRACKBALL_RADIUS x
+        /// friction / TRACKBALL_INERTIA a second, with TRACKBALL_INERTIA
+        /// 2 x TRACKBALL_MASS x TRACKBALL_RADIUS^2 / 5, in units of one touch
+        /// count per TRACKBALL_SCALE (4 ms), over a pad 1920 counts wide
+        /// (DS4Touchpad.RESOLUTION_X_MAX). PadForge's glide g slows the ball
+        /// by 44.8 x (1 - g) / 0.20 pad widths a second
+        /// (SourceCoercion.TouchFrictionAtMinGlide) and reads g from 0.80 to
+        /// 1.00.</summary>
+        internal static double TrackballGlide(double friction)
+        {
+            const double Radius = 0.0245, Mass = 45.0, Scale = 0.004, PadCounts = 1920.0;
+            const double PadForgeFullFriction = 44.8 / 0.20;
+            double inertia = 2.0 * Mass * Radius * Radius / 5.0;
+            double padWidthsPerSecondSquared = Radius * Math.Max(0.0, friction) / inertia / Scale / PadCounts;
+            return Math.Clamp(1.0 - padWidthsPerSecondSquared / PadForgeFullFriction, 0.80, 1.00);
         }
 
         private void BindRegionDefault(string name, ImportOutput output)
@@ -1553,7 +2118,7 @@ namespace PadForge.Common.ConfigImport
             double rainbow = Num("Rainbow", 0);
             IReadOnlyList<ActionData> actions;
             string shown;
-            var color = ColorOf("Color");
+            var color = LedColor();
             if (rainbow > 0)
             {
                 // MaxSatRainbow scales every channel (HuetoRGB's C).
@@ -1570,16 +2135,15 @@ namespace PadForge.Common.ConfigImport
                 // getTransitionedColor runs from LowColor at empty to Color at
                 // full, the device's Battery light from Low to High.
                 actions = new[] { new ActionData { Type = MacroActionType.LightbarModeSet, LightbarTargetMode = LightbarMode.Battery } };
-                var low = ColorOf("LowColor") ?? ((byte)0, (byte)0, (byte)0);
-                var high = color ?? ((byte)0, (byte)0, (byte)255);
+                var low = LowLedColor();
+                var high = color;
                 _b.BatteryColors = string.Create(CultureInfo.InvariantCulture,
                     $"{low.Item1},{low.Item2},{low.Item3};{high.Item1},{high.Item2},{high.Item3}");
                 shown = "Battery";
             }
             else
             {
-                if (color == null) return;
-                actions = new[] { ImportBuilder.ProfileColor(color.Value.Item1, color.Value.Item2, color.Value.Item3) };
+                actions = new[] { ImportBuilder.ProfileColor(color.Item1, color.Item2, color.Item3) };
                 shown = "Color";
             }
 
@@ -1594,6 +2158,32 @@ namespace PadForge.Common.ConfigImport
             });
             _b.Clean("Lightbar", shown, "LightbarColor");
         }
+
+        /// <summary>The lightbar color as ProfileDTO reads it: a DS4Color that
+        /// starts black (ProfileDTO.cs:98), set from Color when it holds three
+        /// parts, else from the older Red, Green and Blue, where
+        /// PostProcessXml parses Red for every channel it finds
+        /// (2569-2597).</summary>
+        private (byte, byte, byte) LedColor()
+        {
+            if (Text("Color").Length > 0) return ColorOf("Color") ?? ((byte)0, (byte)0, (byte)0);
+            byte red = Byte(Text("Red"));
+            return (Text("Red").Length > 0 ? red : (byte)0,
+                Text("Green").Length > 0 ? red : (byte)0,
+                Text("Blue").Length > 0 ? red : (byte)0);
+        }
+
+        /// <summary>The battery light's empty color as ProfileDTO reads it:
+        /// black (224), set from LowColor, else from LowRed, LowGreen and
+        /// LowBlue (2599-2622).</summary>
+        private (byte, byte, byte) LowLedColor()
+        {
+            if (Text("LowColor").Length > 0) return ColorOf("LowColor") ?? ((byte)0, (byte)0, (byte)0);
+            return (Byte(Text("LowRed")), Byte(Text("LowGreen")), Byte(Text("LowBlue")));
+        }
+
+        private static byte Byte(string text)
+            => byte.TryParse(text, NumberStyles.Integer, CultureInfo.InvariantCulture, out byte v) ? v : (byte)0;
 
         private (byte, byte, byte)? ColorOf(string element)
         {
@@ -1667,8 +2257,8 @@ namespace PadForge.Common.ConfigImport
             }
             // PadForge has nothing these could land on: no rumble auto-stop,
             // no start-with-the-touchpad-off, no button-to-mouse speed, no
-            // stick fuzz, square gate or anti-snapback, no touchpad
-            // trackball, no low-battery flash and no charging light.
+            // stick fuzz, square gate or anti-snapback, no low-battery flash
+            // and no charging light.
             const string None = ImportReasons.NoSuchSetting;
             Note("RumbleAutostopTime", v => v != "0", None);
             // The movement modes carry it as the touch toggle's layer.
@@ -1682,7 +2272,6 @@ namespace PadForge.Common.ConfigImport
             Note("LSAntiSnapback", v => v == "True", None);
             Note("RSAntiSnapback", v => v == "True", None);
             Note("TouchpadButtonMode", v => v == "Release");
-            Note("TrackballMode", v => v == "True", None);
             Note("TouchRelMouseRotation", v => v != "0");
             Note("TouchRelMouseMinThreshold", v => v != "1");
             Note("ButtonMouseVerticalScale", v => v != "100", None);
@@ -1834,10 +2423,12 @@ namespace PadForge.Common.ConfigImport
             string path = "Special action / " + name;
 
             var inputs = new List<ImportInput>();
+            string unrotated = null;
             foreach (var control in Text(action, "Trigger").Split('/', StringSplitOptions.RemoveEmptyEntries))
             {
+                if (ReadsBeforeRotation(ActionControlName(control.Trim()))) unrotated ??= ActionControlName(control.Trim());
                 if (GyroControlIsOff(ActionControlName(control.Trim()))) return;
-                var input = ControlInput(ActionControlName(control.Trim()));
+                var input = ControlInput(ActionControlName(control.Trim()), specialAction: true);
                 if (input == null)
                 {
                     _b.Skipped(ImportReasons.UnknownInput, path, control, control);
@@ -1869,7 +2460,7 @@ namespace PadForge.Common.ConfigImport
                         PadId = PadId,
                         Actions = new[] { _b.Run(details, details, args) },
                     });
-                    _b.Clean(path, details, "RunProgram");
+                    Line(path, details, "RunProgram", unrotated);
                     return;
                 }
                 case "Profile":
@@ -1895,7 +2486,7 @@ namespace PadForge.Common.ConfigImport
                     if (Text(action, "UnloadTrigger").Length > 0)
                         _b.Partial(ImportReasons.UnloadTrigger, path, details, "ProfileShortcut", details);
                     else
-                        _b.Clean(path, details, "ProfileShortcut");
+                        Line(path, details, "ProfileShortcut", unrotated);
                     return;
                 }
                 case "Macro":
@@ -1918,7 +2509,7 @@ namespace PadForge.Common.ConfigImport
                         PadId = PadId,
                         Actions = steps,
                     });
-                    _b.Clean(path, "Macro", onRelease ? "OnRelease" : "OnPress");
+                    Line(path, "Macro", onRelease ? "OnRelease" : "OnPress", unrotated);
                     return;
                 }
                 case "Key":
@@ -1935,7 +2526,7 @@ namespace PadForge.Common.ConfigImport
                     var unload = new List<ImportInput>();
                     foreach (var control in Text(action, "UnloadTrigger").Split('/', StringSplitOptions.RemoveEmptyEntries))
                     {
-                        var input = ControlInput(ActionControlName(control.Trim()));
+                        var input = ControlInput(ActionControlName(control.Trim()), specialAction: true);
                         if (input != null) unload.Add(input);
                     }
                     if (unload.Count > 0)
@@ -1981,7 +2572,7 @@ namespace PadForge.Common.ConfigImport
                             Actions = new[] { output.Down() },
                         }, new[] { output.Up() });
                     }
-                    _b.Clean(path, output.Label, "ToggleKey");
+                    Line(path, output.Label, "ToggleKey", unrotated);
                     return;
                 }
                 case "DisconnectBT":
@@ -2001,14 +2592,14 @@ namespace PadForge.Common.ConfigImport
                             new ActionData { Type = MacroActionType.DisconnectController, DisconnectTarget = MacroDisconnectTarget.SlotDevices },
                         },
                     });
-                    _b.Clean(path, "Disconnect", "DisconnectController");
+                    Line(path, "Disconnect", "DisconnectController", unrotated);
                     return;
                 }
                 case "MultiAction":
-                    LowerMultiAction(inputs[0], name, path, details.Split(','));
+                    LowerMultiAction(inputs[0], name, path, details.Split(','), unrotated);
                     return;
                 case "XboxGameDVR":
-                    LowerMultiAction(inputs[0], name, path, ExpandGameDvr(details));
+                    LowerMultiAction(inputs[0], name, path, ExpandGameDvr(details), unrotated);
                     return;
                 case "GyroCalibration":
                     _b.AddMacro(new ImportMacro
@@ -2018,7 +2609,7 @@ namespace PadForge.Common.ConfigImport
                         PadId = PadId,
                         Actions = new[] { new ActionData { Type = MacroActionType.GyroRecenter } },
                     });
-                    _b.Clean(path, "Gyro calibration", "GyroRecenter");
+                    Line(path, "Gyro calibration", "GyroRecenter", unrotated);
                     return;
                 case "SASteeringWheelEmulationCalibrate":
                     // Recenter re-captures the lean's neutral too.
@@ -2029,7 +2620,7 @@ namespace PadForge.Common.ConfigImport
                         PadId = PadId,
                         Actions = new[] { new ActionData { Type = MacroActionType.GyroRecenter } },
                     });
-                    _b.Clean(path, "Wheel calibration", "GyroRecenter");
+                    Line(path, "Wheel calibration", "GyroRecenter", unrotated);
                     return;
                 default:
                     _b.Skipped(ImportReasons.ControllerSetting, path, type, type);
@@ -2064,7 +2655,7 @@ namespace PadForge.Common.ConfigImport
         /// go within 150 ms, a hold past 500 ms, and a double tap if the next
         /// press lands within 150 ms of that release. PadForge's window runs
         /// from press to press, so it spans the two 150s.</summary>
-        private void LowerMultiAction(ImportInput input, string name, string path, IReadOnlyList<string> macros)
+        private void LowerMultiAction(ImportInput input, string name, string path, IReadOnlyList<string> macros, string unrotated)
         {
             const int HoldMs = 500;
             const int WindowMs = 300;
@@ -2086,7 +2677,7 @@ namespace PadForge.Common.ConfigImport
                     PadId = PadId,
                     Actions = actions,
                 });
-                _b.Clean(path, gesture, mode.ToString());
+                Line(path, gesture, mode.ToString(), unrotated);
             }
             Add("tap", twice.Count > 0 ? MacroTriggerMode.SinglePress
                 : hold.Count > 0 ? MacroTriggerMode.ShortPress

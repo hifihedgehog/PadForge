@@ -4,12 +4,12 @@ using System.Collections.Generic;
 namespace PadForge.Common.Input.KeyboardScreens
 {
     /// <summary>
-    /// The light bar color each DualShock 4 and DualSense was last sent, by
+    /// The lightbar color each DualShock 4 and DualSense was last sent, by
     /// device and slot (issue #519, the Lightbar mode @eVenent asked for in
     /// discussion #507). The effects dispatcher records a color where it
     /// builds the final bytes for the pad, and only when the frame asserts
     /// the bar: a DualShock 4 frame always does, and a DualSense frame does
-    /// with its light bar enable bit, so a color the pad never took is never
+    /// with its lightbar enable bit, so a color the pad never took is never
     /// shown. The screen service reads it on the UI thread.
     /// </summary>
     internal static class LightbarColors

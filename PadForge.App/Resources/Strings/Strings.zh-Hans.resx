@@ -4492,7 +4492,7 @@
   <data name="KeyboardScreens_Status_Strike7Waiting" xml:space="preserve"><value>请在 V.E.N.O.M. 屏幕上选择 PadForge</value></data>
   <data name="KeyboardScreens_Status_Strike7Showing" xml:space="preserve"><value>在 V.E.N.O.M. 屏幕上</value></data>
   <data name="KeyboardScreens_Status_NotFound" xml:space="preserve"><value>未找到屏幕</value></data>
-  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}，正在等待灯条颜色</value></data>
+  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}，没有灯条颜色</value></data>
   <data name="KeyboardScreens_Status_NoPicture_Format" xml:space="preserve"><value>{0}，未选择图片</value></data>
   <data name="KeyboardScreens_LgsShared_Format" xml:space="preserve"><value>Logitech Gaming Software 运行期间，此类的每个屏幕都显示为 {0} 设置的图片。</value></data>
   <data name="DeviceType_KeyboardScreenKeys" xml:space="preserve"><value>键盘屏幕</value></data>
@@ -4541,7 +4541,7 @@
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>平移键盘屏幕图片</value></data>
   <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>让为此槽位提供输入的每个键盘屏幕的窗口在比屏幕大的图片上移动，例如用于地图。缩放高于 100% 时，屏幕叠加层的移动方式相同。</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>平移图片 {0}，{1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>移动为此槽位提供输入、且显示了比自身更大的所选图片的每个屏幕。窗口会停在图片的边缘。缩放高于 100% 时，屏幕叠加层会移动，无论由哪个槽位运行该宏。</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>移动为此槽位提供输入、且显示了比自身更大的所选图片的每个屏幕。窗口会停在图片的边缘。缩放高于 100% 时，屏幕叠加层会移动，无论由哪个槽位运行该宏。指定了某一个叠加层的宏只移动该叠加层。</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>屏幕</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>操作</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>方向</value></data>
@@ -4858,11 +4858,11 @@
   <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>有颜色的最低槽位</value></data>
   <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>缩放</value></data>
   <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>未选择图片。</value></data>
-  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>正在等待灯条颜色。</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>没有可显示的 DualShock 4 或 DualSense 灯条颜色。</value></data>
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>叠加层</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>所有叠加层</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>切换屏幕叠加层 {0}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>显示 {0} 图片：{1} × {2} 毫秒，直到下一个宏</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>显示 {0} 图片：{1} × {2} 毫秒，直到下一个显示宏或模式宏</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>导入配置文件</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}，{1} 文件</value></data>
   <data name="Import_ProfileName_Format" xml:space="preserve"><value>将成为配置文件“{0}”。</value></data>
@@ -4896,7 +4896,6 @@
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>此配置文件指定了一个特殊动作，但其 Profiles 文件夹旁的 Actions.xml 中没有它：{0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>此设置未导入：{0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD 会阻止这些输入传到 Windows。请在设备页面为 {0} 开启拦截已映射的输入，这会拦截此配置文件映射的输入。</value></data>
-  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>{0} 在 Base 上的映射在此层中停止。开启拦截已映射的输入后，其已映射的输入在每一层中都会继续被拦截，不会传到 Windows。</value></data>
   <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>其子菜单变成了同一圆环上的更多插槽。</value></data>
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>在摇杆回中或层结束时确认。不使用 reWASD 的应用按钮。</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>该文件将两个控制器分开处理。在 PadForge 中，插槽上的任何控制器都会触发这些映射。</value></data>
@@ -4925,7 +4924,7 @@
   <data name="Import_Tr_HideController" xml:space="preserve"><value>reWASD 对游戏隐藏了此控制器。请在设备页面为它开启对游戏隐藏。</value></data>
   <data name="Import_Tr_NoSuchSetting" xml:space="preserve"><value>PadForge 没有这个设置：{0}</value></data>
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD 阻止了鼠标移动传到 Windows。PadForge 会拦截按键和鼠标按钮，但不拦截移动，因此指针仍会移动。</value></data>
-  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>PadForge 的虚拟控制器只从控制器的体感传感器获取体感数据。</value></data>
+  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>Xbox 虚拟控制器没有体感。请选择 PlayStation 或 Nintendo 控制器类型来发送体感。</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows 曾通过一个按钮从 {0} 切换回此配置文件。要在 PadForge 中实现这一点，请在配置文件页面为此配置文件添加一个配置文件快捷键。</value></data>
   <data name="Osk_Style_Grid" xml:space="preserve">
     <value>网格</value>
@@ -5144,4 +5143,37 @@
   <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>“打开方式”在保持时间之前松开时，打开或关闭键盘。更长的按压不起作用。</value></data>
   <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>“打开方式”在连按时间内按下三次时，打开或关闭键盘。</value></data>
   <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>“打开方式”按下一次后连按时间结束时，打开或关闭键盘。在该时间内再按第二次则取消。</value></data>
+  <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>颜色直接发送到 {0}。颜色循环、随声音变化的颜色等动态颜色无法送达。固定不变的颜色可以。</value></data>
+  <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>所有文件 (*.*)|*.*</value></data>
+  <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>PadForge 配置文件 (*{0})|*{0}</value></data>
+  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml</value></data>
+  <data name="FileDialog_ProgramFilter" xml:space="preserve"><value>程序 (*.exe;*.bat;*.cmd;*.com)|*.exe;*.bat;*.cmd;*.com|所有文件 (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundFileFilter" xml:space="preserve"><value>音频文件和声音包|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.pfsounds|声音包 (*.pfsounds)|*.pfsounds|所有文件 (*.*)|*.*</value></data>
+  <data name="FileDialog_AudioFilter" xml:space="preserve"><value>音频文件|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.ogg|所有文件 (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundPackageFilter_Format" xml:space="preserve"><value>PadForge 声音包 (*{0})|*{0}</value></data>
+  <data name="FileDialog_IconPackageFilter_Format" xml:space="preserve"><value>PadForge 图标包 (*{0})|*{0}</value></data>
+  <data name="FileDialog_AutoEqFilter" xml:space="preserve"><value>AutoEq 配置文件 (*.txt)|*.txt|所有文件 (*.*)|*.*</value></data>
+  <data name="FileDialog_IconPickerFilter" xml:space="preserve"><value>图片和图标包|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.pficons|图标包 (*.pficons)|*.pficons</value></data>
+  <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>PadForge 掌机按键 (*.json)|*.json</value></data>
+  <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro 配置文件 (*.json)|*.json</value></data>
+  <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge 按键灯光 (*.json)|*.json</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>宏无法按下 {0}。映射标签页中的映射可以。</value></data>
+  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge 运行八个屏幕叠加层，而这是 reWASD 的第九个或第十个准星。</value></data>
+  <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge 按 reWASD 的默认设置，从翻滚读取陀螺仪的左和右，从偏航读取倾斜。reWASD 的首选项可以将两者互换，而此文件没有说明是否互换过。</value></data>
+  <data name="Import_Tr_TiltLean" xml:space="preserve"><value>在倾斜模式下，reWASD 的倾斜是绕垂直轴的转动，而运动传感器不提供这种转动的角度。</value></data>
+  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge 将触控板对角线读取为同时按下两个方向，只有触控板标签页上的方向键模式为 8 方向时，触控板才会报告这种输入。</value></data>
+  <data name="Import_Tr_GyroZone" xml:space="preserve"><value>PadForge 读取陀螺仪越过某个阈值后的方向，而 reWASD 没有给出陀螺仪区域边缘的单位。</value></data>
+  <data name="Import_Tr_AbsoluteMouse" xml:space="preserve"><value>DS4Windows 将指针放在摇杆所指的位置。在 PadForge 中，摇杆改为移动指针。</value></data>
+  <data name="Import_Tr_StickBeforeRotation" xml:space="preserve"><value>{0} 在旋转之前读取摇杆。DS4Windows 在旋转之后读取。</value></data>
+  <data name="Import_Tr_StickBeforeCurve" xml:space="preserve"><value>{0} 在区域和曲线之前读取摇杆的角度。DS4Windows 在之后读取。</value></data>
+  <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>已不再是“键盘 + 鼠标”的槽位的键盘</value></data>
+  <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0}（不在此电脑上）</value></data>
+  <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0}（不在此槽位上）</value></data>
+  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>偏航和翻滚以全强度叠加（未读取翻滚的贡献值）</value></data>
+  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>本地空间陀螺仪按偏航读取（PadForge 没有倾斜的主轴）</value></data>
+  <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>激光指针陀螺仪按偏航读取（PadForge 没有激光指针转换）</value></data>
+  <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>在 reWASD 中，{0} 仍会传到 Windows，因为文件映射了它但没有取消映射。开启拦截已映射的输入后，PadForge 会拦截它。</value></data>
+  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge 将正的旋转值按顺时针方向处理，与 DS4Windows 相同。reWASD 的帮助只给出了旋转的范围，没有给出方向。</value></data>
+  <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows 按推动的角度来调整放射状摇杆的 {0}。PadForge 的摇杆卡片对笔直推动的处理一致，对斜向推动的处理则不同。</value></data>
+  <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>各层对 {0} 的调节不同，因此每层保留各自的调节设置，曲线则导入为最接近的幂曲线。</value></data>
 </root>

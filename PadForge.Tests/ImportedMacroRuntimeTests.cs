@@ -637,6 +637,61 @@ namespace PadForge.Tests
             }
         }
 
+        /// <summary>A shortcut naming a profile no one has, or no profile at
+        /// all, changes nothing, as DS4Windows' own switch does when the named
+        /// file is missing (ScpUtil.LoadTempProfile switches only when the load
+        /// succeeds). A null target would have switched to the default
+        /// profile, since the UI reads null as the default.</summary>
+        [Theory]
+        [InlineData("Missing")]
+        [InlineData("")]
+        public void ProfileShortcut_NamingNoProfile_SwitchesNothing(string name)
+        {
+            var saved = SettingsManager.Profiles;
+            try
+            {
+                SettingsManager.Profiles = new List<ProfileData> { new() { Id = "p1", Name = "Racing" } };
+                var m = Item(MacroTriggerMode.OnPress, MacroRepeatMode.Once, 0, new MacroAction
+                {
+                    Type = MacroActionType.ProfileShortcut,
+                    ProfileShortcutMode = SwitchProfileMode.Specific,
+                    ProfileShortcutName = name,
+                });
+                var macros = new[] { m };
+                var im = Engine(macros);
+                Tick(im, macros, true);
+                Assert.Equal("\0", im.PendingProfileSwitchId);
+            }
+            finally
+            {
+                SettingsManager.Profiles = saved;
+            }
+        }
+
+        /// <summary>The UI thread adds and removes profiles while the poll
+        /// thread looks one up, and a List enumerator throws on a change in
+        /// flight. Both poll-thread lookups read a copy. A race cannot be
+        /// timed from a test, so the copy is pinned in the source.</summary>
+        [Fact]
+        public void ProfileLookupsOnThePollThread_ReadACopyOfTheList()
+        {
+            var d = new System.IO.DirectoryInfo(AppContext.BaseDirectory);
+            while (d != null && !System.IO.File.Exists(System.IO.Path.Combine(d.FullName, "PadForge.sln")))
+                d = d.Parent;
+            Assert.NotNull(d);
+            string src = System.IO.File.ReadAllText(System.IO.Path.Combine(d.FullName,
+                "PadForge.App", "Common", "Input", "InputManager.Step4b.EvaluateMacros.cs"));
+            foreach (string head in new[] { "private static string ProfileIdNamed(", "private string GetNextProfileId(" })
+            {
+                int start = src.IndexOf(head, StringComparison.Ordinal);
+                Assert.True(start > 0, head + " is gone");
+                int end = src.IndexOf("\n        }", start, StringComparison.Ordinal);
+                string body = src.Substring(start, end - start);
+                Assert.DoesNotContain("SettingsManager.Profiles", body);
+                Assert.Contains("ProfilesSnapshot()", body);
+            }
+        }
+
         [Fact]
         public void ProfileShortcut_ControllerMode_IsTheShortcutsOwn()
         {

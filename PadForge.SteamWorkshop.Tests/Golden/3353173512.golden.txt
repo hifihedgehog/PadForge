@@ -78,8 +78,6 @@ kbm rows: 51
     <- Touchpad 1 Finger 0 Y sens=1.9 accel=1.5
   Layer_3353173512_1 | KbmKey08
     <- Menu 2 Item 3
-  Layer_3353173512_1 | KbmKey0D
-    <- Menu 2 Item 14
   Layer_3353173512_1 | KbmKey30
     <- Menu 2 Item 12
   Layer_3353173512_1 | KbmKey31
@@ -104,6 +102,8 @@ kbm rows: 51
     <- Menu 2 Item 11
   Layer_3353173512_1 | KbmKey6D
     <- Menu 2 Item 7
+  Layer_3353173512_1 | KbmKey88
+    <- Menu 2 Item 14
   Layer_3353173512_1 | KbmKeyBE
     <- Menu 2 Item 13
   Layer_3353173512_2 | KbmKey52
@@ -264,7 +264,7 @@ report: v26 rows:x0+k51 macros:42 menus:3 layers:8 clean:78 partial:3 skipped:0 
   Clean RowEmitted @ Numpad/left_trackpad/group 45 (touch_menu)/touch_menu_button_11/Full_Press => KbmKey6B <- Menu 2 Item 11
   Clean RowEmitted @ Numpad/left_trackpad/group 45 (touch_menu)/touch_menu_button_12/Full_Press => KbmKey30 <- Menu 2 Item 12
   Clean RowEmitted @ Numpad/left_trackpad/group 45 (touch_menu)/touch_menu_button_13/Full_Press => KbmKeyBE <- Menu 2 Item 13
-  Clean RowEmitted @ Numpad/left_trackpad/group 45 (touch_menu)/touch_menu_button_14/Full_Press => KbmKey0D <- Menu 2 Item 14
+  Clean RowEmitted @ Numpad/left_trackpad/group 45 (touch_menu)/touch_menu_button_14/Full_Press => KbmKey88 <- Menu 2 Item 14
   Partial RemoveLayerApproximated @ Numpad/left_trackpad/group 45 (touch_menu)/touch_menu_button_15/release :: controller_action remove_layer 2 1 1, Back Menu, ghost_050_menu_0306.png, #23232...
   Clean MenuEmitted(9) @ Picker Dollies/left_trackpad/group 43 (touch_menu) => Grid menu 3: 9 bound cells <- Touchpad 0
   Clean RowEmitted @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_0/Full_Press => KbmKey52 <- Menu 3 Item 0

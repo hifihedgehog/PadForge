@@ -157,5 +157,131 @@ namespace PadForge.Tests
 
             Assert.Empty(Pending(im));
         }
+
+        // ── Every way a run ends sends the up its press leg owes ──
+        //
+        // The release stop of a Repeat Until Release run, the next press that
+        // ends an Until Next Press run and a hold pair's cancel of its twin
+        // each ended the run without the up, so a key held for a duration
+        // stayed down in Windows until the macro next ran that leg.
+
+        /// <summary>A key code no keyboard has (VK_NONAME), so nothing a test
+        /// sends could type even outside the test host's fence.</summary>
+        private const int InertKey = 0xFC;
+
+        private static MacroAction InertLeg() => new MacroAction
+        {
+            Type = MacroActionType.KeyPress,
+            KeyCode = InertKey,
+            KeyString = "",
+            DurationMs = 60000,
+        };
+
+        private static MacroItem OnA(MacroTriggerMode mode, MacroRepeatMode repeat, MacroAction leg, int pairId = 0)
+        {
+            var m = new MacroItem
+            {
+                Name = "leg",
+                IsEnabled = true,
+                PadIndex = 0,
+                TriggerButtons = Gamepad.A,
+                TriggerMode = mode,
+                RepeatMode = repeat,
+                ConsumeTriggerButtons = false,
+                PairId = pairId,
+            };
+            m.Actions.Add(leg);
+            return m;
+        }
+
+        [Fact]
+        public void AReleaseMidLeg_SendsTheLegsUp()
+        {
+            var im = new InputManager();
+            var leg = InertLeg();
+            var macros = new[] { OnA(MacroTriggerMode.WhileHeld, MacroRepeatMode.UntilRelease, leg) };
+
+            var gp = new Gamepad { Buttons = Gamepad.A };
+            im.EvaluateSlotMacros(ref gp, macros);
+            Assert.Contains(leg, Pending(im));
+
+            gp = new Gamepad();
+            im.EvaluateSlotMacros(ref gp, macros);
+            Assert.False(macros[0].IsExecuting);
+            Assert.DoesNotContain(leg, Pending(im));
+        }
+
+        [Fact]
+        public void AReleaseMidLeg_SendsTheLegsUp_OnAnExtendedSlot()
+        {
+            var im = new InputManager();
+            var leg = InertLeg();
+            var m = new MacroItem
+            {
+                Name = "legX",
+                IsEnabled = true,
+                PadIndex = 0,
+                TriggerCustomButtons = "00000001,00000000,00000000,00000000",
+                TriggerMode = MacroTriggerMode.WhileHeld,
+                RepeatMode = MacroRepeatMode.UntilRelease,
+                ConsumeTriggerButtons = false,
+            };
+            m.Actions.Add(leg);
+            var macros = new[] { m };
+
+            var raw = RawHidState.Create(8, 32, 1);
+            raw.Buttons[0] = 1;
+            im.EvaluateSlotMacrosExtended(ref raw, macros);
+            Assert.Contains(leg, Pending(im));
+
+            raw = RawHidState.Create(8, 32, 1);
+            im.EvaluateSlotMacrosExtended(ref raw, macros);
+            Assert.False(m.IsExecuting);
+            Assert.DoesNotContain(leg, Pending(im));
+        }
+
+        [Fact]
+        public void TheNextPressThatEndsAnUntilNextPressRun_SendsTheLegsUp()
+        {
+            var im = new InputManager();
+            var leg = InertLeg();
+            var macros = new[] { OnA(MacroTriggerMode.WhileHeld, MacroRepeatMode.UntilNextPress, leg) };
+
+            var gp = new Gamepad { Buttons = Gamepad.A };
+            im.EvaluateSlotMacros(ref gp, macros);
+            gp = new Gamepad();
+            im.EvaluateSlotMacros(ref gp, macros);
+            // A release changes nothing for this repeat mode: the leg is held.
+            Assert.True(macros[0].IsExecuting);
+            Assert.Contains(leg, Pending(im));
+
+            gp = new Gamepad { Buttons = Gamepad.A };
+            im.EvaluateSlotMacros(ref gp, macros);
+            Assert.False(macros[0].IsExecuting);
+            Assert.DoesNotContain(leg, Pending(im));
+        }
+
+        [Fact]
+        public void AHoldPairsCancelOfItsTwin_SendsTheTwinsUp()
+        {
+            var im = new InputManager();
+            var twinLeg = InertLeg();
+            var twin = OnA(MacroTriggerMode.WhileHeld, MacroRepeatMode.UntilRelease, twinLeg, pairId: 7);
+            twin.TriggerButtons = Gamepad.B;
+            var starter = OnA(MacroTriggerMode.WhileHeld, MacroRepeatMode.UntilRelease,
+                new MacroAction { Type = MacroActionType.Delay, DurationMs = 60000 }, pairId: 7);
+            // The twin first, so its leg is down when the pair's other leg starts.
+            var macros = new[] { twin, starter };
+
+            var gp = new Gamepad { Buttons = Gamepad.B };
+            im.EvaluateSlotMacros(ref gp, macros);
+            Assert.Contains(twinLeg, Pending(im));
+
+            gp = new Gamepad { Buttons = (ushort)(Gamepad.A | Gamepad.B) };
+            im.EvaluateSlotMacros(ref gp, macros);
+            Assert.True(starter.IsExecuting);
+            Assert.False(twin.IsExecuting);
+            Assert.DoesNotContain(twinLeg, Pending(im));
+        }
     }
 }

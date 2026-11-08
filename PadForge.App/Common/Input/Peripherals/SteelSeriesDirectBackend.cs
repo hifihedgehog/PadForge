@@ -670,6 +670,9 @@ namespace PadForge.Common.Input.Peripherals
                 {
                     Name = SteelSeriesDirectProtocol.NameOf(unit.ProductId),
                     Asleep = unit.Asleep,
+                    // A family with a hold is sent no color that keeps changing
+                    // (StartAt), and its Lighting tab says so.
+                    SteadyColorsOnly = unit.Plan.Info.HoldMs > 0,
                 };
             }
             Volatile.Write(ref _snapshot, new DirectBackendSnapshot(list));

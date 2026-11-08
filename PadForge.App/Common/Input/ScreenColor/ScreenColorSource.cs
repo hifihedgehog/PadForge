@@ -26,6 +26,14 @@ namespace PadForge.Common.Input.ScreenColor
         /// production.</summary>
         internal static Func<string, IScreenGrabber> GrabberSeam;
 
+        /// <summary>Test seam: whether Windows lists a display as attached.
+        /// Null in production.</summary>
+        internal static Func<string, bool> ListedSeam;
+
+        /// <summary>Test seam: whether a capture built now would read that
+        /// display. Null in production.</summary>
+        internal static Func<string, bool> ResolvesSeam;
+
         /// <summary>Test seam: the time in milliseconds. Null in production.</summary>
         internal static Func<long> ClockSeam;
 
@@ -116,7 +124,7 @@ namespace PadForge.Common.Input.ScreenColor
         /// it changes, so a device with nothing new to show gets no write.</summary>
         public static ScreenPicture PictureFor(DeviceSlotConfig cfg)
         {
-            var key = KeyOf(cfg) with { Method = ScreenColorMethod.Average };
+            var key = KeyOf(cfg);
             long now = Now;
             lock (s_gate)
             {
@@ -178,7 +186,7 @@ namespace PadForge.Common.Input.ScreenColor
             if (OffLimitsForTest && GrabberSeam == null) return null;
             if (!s_workers.TryGetValue(display, out var worker))
             {
-                worker = new ScreenCaptureWorker(display, GrabberSeam ?? MakeGrabber, () => Now, Retire);
+                worker = new ScreenCaptureWorker(display, GrabberSeam ?? MakeGrabber, () => Now, Retire, CanReadAgain);
                 s_workers[display] = worker;
                 if (StartSeam != null) StartSeam(worker);
                 else worker.Start();
@@ -199,6 +207,16 @@ namespace PadForge.Common.Input.ScreenColor
                 return true;
             }
         }
+
+        /// <summary>Whether a capture built now would read <paramref name="display"/>
+        /// and not fall back to the primary. The display list answers first,
+        /// since it costs no DXGI factory while the display stays away. A display
+        /// it lists as attached is then asked of DXGI, the walk the rebuild makes
+        /// (<see cref="ScreenDxgi.Resolves"/>): an indirect or virtual display the
+        /// list holds and DXGI does not enumerate would otherwise rebuild the
+        /// capture onto the primary every second.</summary>
+        private static bool CanReadAgain(string display)
+            => (ListedSeam ?? ScreenDxgi.IsAttached)(display) && (ResolvesSeam ?? ScreenDxgi.Resolves)(display);
 
         private static IScreenGrabber MakeGrabber(string display)
             => FirstThatRuns(display, d => new DesktopDuplicationGrabber(d), d => new WindowsCaptureGrabber(d));
@@ -226,11 +244,11 @@ namespace PadForge.Common.Input.ScreenColor
         private static int Process(in ResultKey key, int rgb)
             => ScreenColorMath.Dim(ScreenColorMath.Saturate(rgb, key.Saturation), key.Brightness);
 
-        /// <summary>The chosen area's cells, averaged down to
+        /// <summary>The chosen area's cells, brought down to
         /// <see cref="PictureMaxCols"/> by <see cref="PictureMaxRows"/> at the
-        /// most, each with the device's saturation and brightness. Every cell of
-        /// the area lands in one cell of the result, so no edge of the screen
-        /// goes missing.</summary>
+        /// most by the device's Color choice, Most Common or Average, each with
+        /// the device's saturation and brightness. Every cell of the area lands
+        /// in one cell of the result, so no edge of the screen goes missing.</summary>
         private static void Crop(ScreenFrame frame, in ResultKey key, out int cols, out int rows, out int[] cells)
         {
             ScreenColorMath.CellRange(frame, key.Area, out int left, out int top, out int right, out int bottom);
@@ -244,7 +262,7 @@ namespace PadForge.Common.Input.ScreenColor
                     int x0 = left + x * width / cols, x1 = left + (x + 1) * width / cols;
                     int y0 = top + y * height / rows, y1 = top + (y + 1) * height / rows;
                     var part = new ScreenRect(x0 / (float)frame.Cols, y0 / (float)frame.Rows, x1 / (float)frame.Cols, y1 / (float)frame.Rows);
-                    cells[y * cols + x] = Process(key, ScreenColorMath.Average(frame, part));
+                    cells[y * cols + x] = Process(key, Pick(frame, key with { Area = part }));
                 }
         }
 

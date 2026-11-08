@@ -198,16 +198,38 @@ namespace PadForge.Common.Input.OnScreenKeyboard
 
         /// <summary>Takes saved settings. A style or function row that did
         /// not change since the last ones leaves the keyboard's own choice
-        /// alone, so a save that lags a key press never undoes it.
-        /// <paramref name="force"/> takes both as saved, for a keyboard that
-        /// opens for a menu.</summary>
+        /// alone. One that changed to a value the keyboard's own keys chose
+        /// since the save last caught up is that key's save arriving late,
+        /// after a second press moved on, so it is left alone too (two
+        /// presses of the style key, Grid to Split to Wheel, with Split's save
+        /// landing after the second). One that the keyboard now shows means
+        /// the saves caught up. Any other change is an edit on the Menus tab,
+        /// which applies. <paramref name="force"/> takes both as saved, for a
+        /// keyboard that opens for a menu.</summary>
         public void ApplySettings(OskSettings s, bool force = false)
         {
             if (s == null) s = OskSettings.Default;
             var old = Settings;
             Settings = s;
-            if (force || old.FunctionRow != s.FunctionRow) SetFunctionRow(s.FunctionRow);
-            if (force || old.Style != s.Style) SetStyle(s.Style);
+            if (force)
+            {
+                _ownStyles = _ownRows = 0;
+                SetFunctionRow(s.FunctionRow);
+                SetStyle(s.Style);
+            }
+            else
+            {
+                if (old.FunctionRow != s.FunctionRow)
+                {
+                    if (s.FunctionRow == FunctionRow) _ownRows = 0;
+                    else if ((_ownRows & RowBit(s.FunctionRow)) == 0) SetFunctionRow(s.FunctionRow);
+                }
+                if (old.Style != s.Style)
+                {
+                    if (s.Style == Style) _ownStyles = 0;
+                    else if ((_ownStyles & StyleBit(s.Style)) == 0) SetStyle(s.Style);
+                }
+            }
             if (!s.Suggestions && Suggestions.Length > 0) Suggestions = Array.Empty<string>();
             _boards = null;
             Version++;
@@ -244,6 +266,13 @@ namespace PadForge.Common.Input.OnScreenKeyboard
         }
 
         private bool _guardOnNextTick;
+
+        /// <summary>The styles and function-row states the keyboard's own
+        /// keys chose since the saved settings last showed what the keyboard
+        /// shows, one bit each. ApplySettings reads them.</summary>
+        private int _ownStyles, _ownRows;
+        private static int StyleBit(OskStyle s) => 1 << (int)s;
+        private static int RowBit(bool on) => on ? 2 : 1;
 
         /// <summary>The style the style key switches to, which the key is
         /// labeled with.</summary>
@@ -511,14 +540,31 @@ namespace PadForge.Common.Input.OnScreenKeyboard
         /// not held, since that hold steers the keyboard instead.</summary>
         private bool SteerFree => !Held(KeyboardControlAction.MoveKeyboard);
 
-        /// <summary>The direction four controls point, the first held one.</summary>
+        /// <summary>The direction four controls point, the first held one. A
+        /// control on Move the Keyboard's input is left out: it acts once, on
+        /// a tap (<see cref="DirTap"/>), as a tap control there does.</summary>
         private string DirButtons(KeyboardControlAction up, KeyboardControlAction down,
             KeyboardControlAction left, KeyboardControlAction right)
         {
-            if (Held(up)) return "up";
-            if (Held(down)) return "down";
-            if (Held(left)) return "left";
-            if (Held(right)) return "right";
+            if (HeldFree(up)) return "up";
+            if (HeldFree(down)) return "down";
+            if (HeldFree(left)) return "left";
+            if (HeldFree(right)) return "right";
+            return null;
+        }
+
+        /// <summary>Held, unless the control shares Move the Keyboard's input.</summary>
+        private bool HeldFree(KeyboardControlAction a) => !SharesMove(a) && Held(a);
+
+        /// <summary>The direction a control on Move the Keyboard's input
+        /// points this tick: on its release, when the hold moved nothing.</summary>
+        private string DirTap(KeyboardControlAction up, KeyboardControlAction down,
+            KeyboardControlAction left, KeyboardControlAction right)
+        {
+            if (SharesMove(up) && Fire(up)) return "up";
+            if (SharesMove(down) && Fire(down)) return "down";
+            if (SharesMove(left) && Fire(left)) return "left";
+            if (SharesMove(right) && Fire(right)) return "right";
             return null;
         }
 
@@ -635,6 +681,9 @@ namespace PadForge.Common.Input.OnScreenKeyboard
             string nav = DirButtons(KeyboardControlAction.MoveUp, KeyboardControlAction.MoveDown,
                 KeyboardControlAction.MoveLeft, KeyboardControlAction.MoveRight) ?? DirSteer(0);
             Repeat("nav", nav, now, NavDelayMs, NavIntervalMs, (d, _) => MoveFocus(GridFocus, b, d));
+            if (DirTap(KeyboardControlAction.MoveUp, KeyboardControlAction.MoveDown,
+                    KeyboardControlAction.MoveLeft, KeyboardControlAction.MoveRight) is { } tap)
+                MoveFocus(GridFocus, b, tap);
             RepeatButton("type", KeyboardControlAction.TypeKey, now, rep => Activate(FocusedKey(GridFocus, Boards()[0]), rep));
             Common(now);
             if (Fire(KeyboardControlAction.ShiftNextKey)) Cycle(OskSpecial.Shift);
@@ -660,6 +709,9 @@ namespace PadForge.Common.Input.OnScreenKeyboard
             Repeat("arrows", DirButtons(KeyboardControlAction.ArrowUp, KeyboardControlAction.ArrowDown,
                 KeyboardControlAction.ArrowLeft, KeyboardControlAction.ArrowRight),
                 now, RepeatDelayMs, RepeatIntervalMs, (d, _) => Special(ArrowOf(d)));
+            if (DirTap(KeyboardControlAction.ArrowUp, KeyboardControlAction.ArrowDown,
+                    KeyboardControlAction.ArrowLeft, KeyboardControlAction.ArrowRight) is { } tap)
+                Special(ArrowOf(tap));
         }
 
         private void TypeSide(int side)
@@ -690,7 +742,9 @@ namespace PadForge.Common.Input.OnScreenKeyboard
         private void TickWheel(long now)
         {
             int petal = PetalOf();
-            bool caps = Held(KeyboardControlAction.Capitals), nums = Held(KeyboardControlAction.Numbers);
+            // A set hold on Move the Keyboard's input holds until the keyboard
+            // starts to move, then lets go, so moving it shows the letters.
+            bool caps = HoldUntilMoved(KeyboardControlAction.Capitals), nums = HoldUntilMoved(KeyboardControlAction.Numbers);
             int set = caps && nums ? 3 : caps ? 1 : nums ? 2 : 0;
             if (petal != Petal || set != WheelSet)
             {
@@ -707,6 +761,8 @@ namespace PadForge.Common.Input.OnScreenKeyboard
             if (Fire(KeyboardControlAction.End)) Special(OskSpecial.End);
             SuggestionControls();
         }
+
+        private bool HoldUntilMoved(KeyboardControlAction a) => Held(a) && !(SharesMove(a) && _movedDuringHold);
 
         /// <summary>The group the main steering input points at, 0 north and
         /// then clockwise, or -1 when it rests.</summary>
@@ -939,9 +995,11 @@ namespace PadForge.Common.Input.OnScreenKeyboard
                     return;
                 case OskSpecial.Fn:
                     SetFunctionRow(!FunctionRow);
+                    _ownRows |= RowBit(FunctionRow);
                     return;
                 case OskSpecial.Layout:
                     SetStyle(NextStyle(Style));
+                    _ownStyles |= StyleBit(Style);
                     return;
                 case OskSpecial.CapsLock:
                     _out.TapKey(0x3A, OskMods.None);

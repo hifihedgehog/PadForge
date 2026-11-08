@@ -860,6 +860,102 @@ namespace PadForge.Tests
             Assert.Equal(1, FlickStates());
         }
 
+        // ── The mouse rate lanes turn the way the row says ──────────────
+
+        private static MappingSource InvertOnHold(int button)
+            => new() { Kind = "InvertOnHold", ParamModifier = Button(button), ParamModifierDeviceGuid = A };
+
+        private static void NextFrame() => StickFrame.SetValue(null, (long)StickFrame.GetValue(null) + 1);
+
+        private static readonly FieldInfo StickFrame = typeof(InputManager)
+            .GetField("_stickTrimFrameSeq", BindingFlags.NonPublic | BindingFlags.Static);
+
+        /// <summary>A left flick: rest, push right, then the first tick of the
+        /// turn, the counts the lane sends.</summary>
+        private static int FlickRight(UserDevice a, MappingSet set)
+        {
+            InputManager.ClearSourceKindRuntime();
+            a.InputState.Axis[0] = 32768;
+            Invoke<int>("TickFlickStickSources", a.InputState, set, A, Slot);
+            NextFrame();
+            a.InputState.Axis[0] = 65535;
+            Invoke<int>("TickFlickStickSources", a.InputState, set, A, Slot);
+            NextFrame();
+            return Invoke<int>("TickFlickStickSources", a.InputState, set, A, Slot);
+        }
+
+        /// <summary>A finger dragged right across touchpad 0, the counts the
+        /// lane sends for the second report.</summary>
+        private static float DragRight(UserDevice a, MappingSet set)
+        {
+            TouchBalls.Remove((Slot, A, 0, 0));
+            var pad = new TouchpadInputState(2);
+            pad.FingerDown[0] = true;
+            pad.FingerX[0] = pad.FingerY[0] = 0.5f;
+            a.InputState.Touchpads = new[] { pad };
+            SourceCoercion.BeginPollFrame();
+            Invoke<(float, float)>("TickTouchpadMouseSources", a.InputState, set, A, Slot);
+            System.Threading.Thread.Sleep(5);
+            pad.FingerX[0] = 0.6f;
+            SourceCoercion.BeginPollFrame();
+            return Invoke<(float, float)>("TickTouchpadMouseSources", a.InputState, set, A, Slot).Item1;
+        }
+
+        /// <summary>A flick source's Invert turns the flick the other way, as
+        /// the bipolar evaluator turns every other source.</summary>
+        [Fact]
+        public void AnInvertedFlickSource_TurnsTheOtherWay()
+        {
+            var a = Device(A);
+            FrameDeltas[Slot] = 0.004;
+            int plain = FlickRight(a, Row("KbmMouseX", Direct(SourceCoercion.FlickStickLeftDescriptor)));
+            int inverted = FlickRight(a, Row("KbmMouseX", Direct(SourceCoercion.FlickStickLeftDescriptor, invert: true)));
+            Assert.True(plain > 0, "plain = " + plain);
+            Assert.Equal(-plain, inverted);
+        }
+
+        /// <summary>An Invert on Hold modifier flips the whole row, so the
+        /// gyro lane's part of a mouse row flips with it.</summary>
+        [Fact]
+        public void InvertOnHold_TurnsTheGyroMouseLane()
+        {
+            var a = Device(A);
+            a.InputState.Gyro[1] = 3f;
+            FrameDeltas[Slot] = 0.004;
+            var set = Row("KbmMouseX", Direct("Gyro Yaw"), InvertOnHold(Free));
+            float released = Invoke<(float, float)>("TickGyroMouseSources", a.InputState, set, A, Slot).Item1;
+            Hold(a, Free);
+            float held = Invoke<(float, float)>("TickGyroMouseSources", a.InputState, set, A, Slot).Item1;
+            Assert.NotEqual(0f, released);
+            Assert.Equal(-released, held, 4);
+        }
+
+        [Fact]
+        public void InvertOnHold_TurnsTheTouchpadMouseLane()
+        {
+            var a = Device(A);
+            FrameDeltas[Slot] = 0.004;
+            var set = Row("KbmMouseX", Direct("Touchpad 0 Finger 0 X"), InvertOnHold(Free));
+            float released = DragRight(a, set);
+            Hold(a, Free);
+            float held = DragRight(a, set);
+            Assert.True(released > 0f, "released = " + released);
+            Assert.True(held < 0f, "held = " + held);
+        }
+
+        [Fact]
+        public void InvertOnHold_TurnsTheFlickLane()
+        {
+            var a = Device(A);
+            FrameDeltas[Slot] = 0.004;
+            var set = Row("KbmMouseX", Direct(SourceCoercion.FlickStickLeftDescriptor), InvertOnHold(Free));
+            int released = FlickRight(a, set);
+            Hold(a, Free);
+            int held = FlickRight(a, set);
+            Assert.True(released > 0, "released = " + released);
+            Assert.Equal(-released, held);
+        }
+
         /// <summary>The absolute cursor lanes take the row's pointer source.
         /// A key source that kept a pointer took the cursor.</summary>
         [Fact]

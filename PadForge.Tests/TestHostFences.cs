@@ -282,5 +282,14 @@ namespace PadForge.Tests
         internal static void Set() => Flag()?.SetValue(null, true);
     }
 
+    /// <summary>The PC's keyboard layout is not read: a reWASD import in a
+    /// test reads every key through the US table, whatever layout the test
+    /// machine has.</summary>
+    internal static class KeyboardLayoutOffLimits
+    {
+        [ModuleInitializer]
+        internal static void Set() => PadForge.Common.ConfigImport.DirectInputKeys.OffLimitsForTest = true;
+    }
+
 #pragma warning restore CA2255
 }

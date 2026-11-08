@@ -4541,7 +4541,7 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="KeyboardScreens_Status_Strike7Waiting" xml:space="preserve"><value>alegeți PadForge pe ecranul V.E.N.O.M.</value></data>
   <data name="KeyboardScreens_Status_Strike7Showing" xml:space="preserve"><value>pe ecranul V.E.N.O.M.</value></data>
   <data name="KeyboardScreens_Status_NotFound" xml:space="preserve"><value>nu s-a găsit niciun ecran</value></data>
-  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}, se așteaptă o culoare a barei luminoase</value></data>
+  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}, nicio culoare a barei luminoase</value></data>
   <data name="KeyboardScreens_Status_NoPicture_Format" xml:space="preserve"><value>{0}, nicio imagine aleasă</value></data>
   <data name="KeyboardScreens_LgsShared_Format" xml:space="preserve"><value>Cât timp rulează Logitech Gaming Software, fiecare ecran de acest fel afișează imaginea setată pentru {0}.</value></data>
   <data name="DeviceType_KeyboardScreenKeys" xml:space="preserve"><value>Ecran de tastatură</value></data>
@@ -4590,7 +4590,7 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Panoramare imagine pe ecranul tastaturii</value></data>
   <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Deplasează fereastra fiecărui ecran de tastatură care alimentează acest slot peste o imagine mai mare decât ecranul, de exemplu pentru o hartă. O suprapunere ecran se deplasează la fel când zoomul ei depășește 100 la sută.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Panoramare imagini cu {0} pe {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Deplasează fiecare ecran care alimentează acest slot și afișează o imagine aleasă mai mare decât el. Fereastra se oprește la marginile imaginii. O suprapunere ecran se deplasează când zoomul ei depășește 100 la sută, indiferent de slotul care rulează macroul.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Deplasează fiecare ecran care alimentează acest slot și afișează o imagine aleasă mai mare decât el. Fereastra se oprește la marginile imaginii. O suprapunere ecran se deplasează când zoomul ei depășește 100 la sută, indiferent de slotul care rulează macroul. Un macro care numește o singură suprapunere o deplasează numai pe aceea.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Ecran</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Acțiune</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Direcție</value></data>
@@ -4907,11 +4907,11 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Cel mai mic slot cu o culoare</value></data>
   <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>Zoom</value></data>
   <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>Nicio imagine aleasă.</value></data>
-  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Se așteaptă o culoare a barei luminoase.</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Nu există nicio culoare a barei luminoase DualShock 4 sau DualSense de afișat.</value></data>
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Suprapunere</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Toate suprapunerile</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Comutare suprapunere ecran {0}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Afișare imagini {0}: {1} × {2} ms, până la următorul macro</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Afișare imagini {0}: {1} × {2} ms, până la următorul macro de afișare sau de mod</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>Importare profil</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}, un fișier {1}</value></data>
   <data name="Import_ProfileName_Format" xml:space="preserve"><value>Devine profilul „{0}”.</value></data>
@@ -4945,7 +4945,6 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Acest profil numește o acțiune specială care lipsește din Actions.xml de lângă dosarul său Profiles: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Această setare nu a fost preluată: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD a împiedicat aceste intrări să ajungă în Windows. Activați Blocare intrări mapate pentru {0} în pagina Dispozitive, care le blochează pe cele mapate de acest profil.</value></data>
-  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>Mapările din Base pentru {0} se opresc în acest strat. Cu Blocare intrări mapate activată, intrările mapate ale dispozitivului rămân blocate față de Windows în toate straturile.</value></data>
   <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>Submeniurile sale au devenit sloturi suplimentare pe un singur inel.</value></data>
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Se confirmă când maneta revine în centru sau când stratul se încheie. Butonul Apply din reWASD nu este folosit.</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Acest fișier ține separate două controllere. În PadForge, orice controller de pe slot activează aceste mapări.</value></data>
@@ -4974,7 +4973,7 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Import_Tr_HideController" xml:space="preserve"><value>reWASD a ascuns acest controller față de jocuri. Activați Ascundere față de jocuri pentru el în pagina Dispozitive.</value></data>
   <data name="Import_Tr_NoSuchSetting" xml:space="preserve"><value>PadForge nu are o astfel de setare: {0}</value></data>
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD a împiedicat mișcarea mouse-ului să ajungă în Windows. PadForge blochează tastele și butoanele mouse-ului, dar nu și mișcarea, deci cursorul se mișcă în continuare.</value></data>
-  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>Controllerele virtuale din PadForge preiau mișcarea doar de la senzorul de mișcare al unui controller.</value></data>
+  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>Un controller virtual Xbox nu are mișcare. Alegeți un tip de controller PlayStation sau Nintendo pentru a trimite mișcarea.</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows revenea la acest profil din {0} la apăsarea unui buton. Pentru a face acest lucru în PadForge, adăugați o comandă rapidă pentru profiluri pentru acest profil în pagina Profiluri.</value></data>
   <data name="Osk_Style_Grid" xml:space="preserve">
     <value>Grilă</value>
@@ -5193,4 +5192,37 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Deschide sau închide tastatura când „Se deschide cu” este eliberat înainte de timpul de menținere. O apăsare mai lungă nu face nimic.</value></data>
   <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Deschide sau închide tastatura când „Se deschide cu” este apăsat de trei ori în fereastra de apăsare.</value></data>
   <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Deschide sau închide tastatura când fereastra de apăsare se încheie după o singură apăsare a lui „Se deschide cu”. O a doua apăsare în fereastră o anulează.</value></data>
+  <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>Culorile ajung direct la {0}. Culorile care se schimbă, cum ar fi un ciclu de culori sau culorile care urmează sunetul, nu ajung la el. O culoare fixă ajunge.</value></data>
+  <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Toate fișierele (*.*)|*.*</value></data>
+  <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>Profil PadForge (*{0})|*{0}</value></data>
+  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml</value></data>
+  <data name="FileDialog_ProgramFilter" xml:space="preserve"><value>Programe (*.exe;*.bat;*.cmd;*.com)|*.exe;*.bat;*.cmd;*.com|Toate fișierele (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundFileFilter" xml:space="preserve"><value>Fișiere audio și pachete de sunete|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.pfsounds|Pachete de sunete (*.pfsounds)|*.pfsounds|Toate fișierele (*.*)|*.*</value></data>
+  <data name="FileDialog_AudioFilter" xml:space="preserve"><value>Fișiere audio|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.ogg|Toate fișierele (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundPackageFilter_Format" xml:space="preserve"><value>Pachete de sunete PadForge (*{0})|*{0}</value></data>
+  <data name="FileDialog_IconPackageFilter_Format" xml:space="preserve"><value>Pachete de pictograme PadForge (*{0})|*{0}</value></data>
+  <data name="FileDialog_AutoEqFilter" xml:space="preserve"><value>Profil AutoEq (*.txt)|*.txt|Toate fișierele (*.*)|*.*</value></data>
+  <data name="FileDialog_IconPickerFilter" xml:space="preserve"><value>Imagini și pachete de pictograme|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.pficons|Pachete de pictograme (*.pficons)|*.pficons</value></data>
+  <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>Butoanele consolei portabile PadForge (*.json)|*.json</value></data>
+  <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>Profil HIDMaestro (*.json)|*.json</value></data>
+  <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>Luminile tastelor PadForge (*.json)|*.json</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Un macro nu poate apăsa {0}. O mapare din fila Mapări poate.</value></data>
+  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge rulează opt suprapuneri ecran, iar aceasta este al nouălea sau al zecelea reticul din reWASD.</value></data>
+  <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge citește Giroscop: ruliu ca stânga și dreapta, iar Giroscop: girație ca înclinare, setarea implicită din reWASD. Preferințele reWASD le pot inversa, iar acest fișier nu spune dacă au fost inversate.</value></data>
+  <data name="Import_Tr_TiltLean" xml:space="preserve"><value>În modul Tilt, înclinarea din reWASD este o rotire în jurul axei verticale, iar un senzor de mișcare nu dă niciun unghi pentru acea rotire.</value></data>
+  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge citește o diagonală a touchpadului ca două direcții simultan, lucru pe care touchpadul îl raportează doar când Mod D-pad din fila Touchpad este 8 direcții.</value></data>
+  <data name="Import_Tr_GyroZone" xml:space="preserve"><value>PadForge citește direcția giroscopului dincolo de un prag, iar reWASD nu dă nicio unitate pentru marginea unei zone de giroscop.</value></data>
+  <data name="Import_Tr_AbsoluteMouse" xml:space="preserve"><value>DS4Windows plasa cursorul acolo unde indică maneta. În PadForge, maneta mișcă în schimb cursorul.</value></data>
+  <data name="Import_Tr_StickBeforeRotation" xml:space="preserve"><value>{0} citește maneta înainte de rotirea ei. DS4Windows o citea după.</value></data>
+  <data name="Import_Tr_StickBeforeCurve" xml:space="preserve"><value>{0} citește unghiul manetei înainte de zonele și curba ei. DS4Windows îl citea după.</value></data>
+  <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>Tastatura unui slot care nu mai este Tastatură + mouse</value></data>
+  <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (nu există pe acest PC)</value></data>
+  <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (nu există pe acest slot)</value></data>
+  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>girația și ruliul sunt adunate la intensitate maximă (contribuția ruliului nu este citită)</value></data>
+  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>giroscop Spațiu local citit ca girație (PadForge nu are o axă principală înclinată)</value></data>
+  <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>giroscop Indicator laser citit ca girație (PadForge nu are conversie pentru indicatorul laser)</value></data>
+  <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>În reWASD, {0} ajunge totuși în Windows, deoarece fișierul îl mapează fără o demapare. Cu Blocare intrări mapate activată, PadForge îl blochează.</value></data>
+  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge rotește o rotire pozitivă în sensul acelor de ceasornic, ca DS4Windows. Ajutorul reWASD dă intervalul rotirii, nu direcția ei.</value></data>
+  <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows modelează {0} ale unei manete radiale după unghiul împingerii. Cardul manetei din PadForge tratează la fel o împingere dreaptă și diferit una diagonală.</value></data>
+  <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Straturile reglează {0} diferit, așa că fiecare păstrează propriile setări, iar curba este preluată ca cea mai apropiată curbă de putere.</value></data>
 </root>

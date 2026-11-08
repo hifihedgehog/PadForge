@@ -4541,7 +4541,7 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="KeyboardScreens_Status_Strike7Waiting" xml:space="preserve"><value>V.E.N.O.M. స్క్రీన్లో PadForge ఎంచుకోండి</value></data>
   <data name="KeyboardScreens_Status_Strike7Showing" xml:space="preserve"><value>V.E.N.O.M. స్క్రీన్ మీద</value></data>
   <data name="KeyboardScreens_Status_NotFound" xml:space="preserve"><value>స్క్రీన్ కనబడలేదు</value></data>
-  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}, లైట్ బార్ రంగు కోసం వేచి ఉంది</value></data>
+  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}, లైట్ బార్ రంగు లేదు</value></data>
   <data name="KeyboardScreens_Status_NoPicture_Format" xml:space="preserve"><value>{0}, చిత్రం ఎంచుకోలేదు</value></data>
   <data name="KeyboardScreens_LgsShared_Format" xml:space="preserve"><value>Logitech Gaming Software నడుస్తున్నప్పుడు, ఈ రకం స్క్రీన్లన్నీ {0} కోసం సెట్ చేసిన చిత్రాన్నే చూపుతాయి.</value></data>
   <data name="DeviceType_KeyboardScreenKeys" xml:space="preserve"><value>కీబోర్డ్ స్క్రీన్</value></data>
@@ -4590,7 +4590,7 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>కీబోర్డ్ స్క్రీన్ చిత్రాన్ని పాన్ చేయి</value></data>
   <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>స్క్రీన్ కంటే పెద్ద చిత్రం మీద, ఈ స్లాట్‌కు ఇన్‌పుట్ ఇచ్చే ప్రతి కీబోర్డ్ స్క్రీన్ విండోను కదిలిస్తుంది, ఉదాహరణకు మ్యాప్ కోసం. జూమ్ 100 శాతం కంటే ఎక్కువ ఉంటే స్క్రీన్ ఓవర్లే కూడా అదే విధంగా కదులుతుంది.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>చిత్రాలను {0} బై {1} px పాన్ చేయి</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>ఈ స్లాట్‌కు ఇన్‌పుట్ ఇచ్చే, తన కంటే పెద్ద ఎంచుకున్న చిత్రాన్ని చూపే ప్రతి స్క్రీన్‌ను కదిలిస్తుంది. విండో చిత్రం అంచుల వద్ద ఆగుతుంది. మాక్రోను ఏ స్లాట్ నడిపినా, జూమ్ 100 శాతం కంటే ఎక్కువ ఉంటే స్క్రీన్ ఓవర్లే కదులుతుంది.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>ఈ స్లాట్‌కు ఇన్‌పుట్ ఇచ్చే, తన కంటే పెద్ద ఎంచుకున్న చిత్రాన్ని చూపే ప్రతి స్క్రీన్‌ను కదిలిస్తుంది. విండో చిత్రం అంచుల వద్ద ఆగుతుంది. మాక్రోను ఏ స్లాట్ నడిపినా, జూమ్ 100 శాతం కంటే ఎక్కువ ఉంటే స్క్రీన్ ఓవర్లే కదులుతుంది. ఒక ఓవర్లేను పేర్కొనే మాక్రో ఆ ఓవర్లేను మాత్రమే కదిలిస్తుంది.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>స్క్రీన్</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>చర్య</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>దిశ</value></data>
@@ -4907,11 +4907,11 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>రంగు ఉన్న అతి తక్కువ స్లాట్</value></data>
   <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>జూమ్</value></data>
   <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>చిత్రం ఎంచుకోలేదు.</value></data>
-  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>లైట్ బార్ రంగు కోసం వేచి ఉంది.</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>చూపించడానికి DualShock 4 లేదా DualSense లైట్ బార్ రంగు లేదు.</value></data>
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>ఓవర్లే</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>ప్రతి ఓవర్లే</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>స్క్రీన్ ఓవర్లే {0}ను టోగుల్ చేయి</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>{0} చిత్రాలు చూపు: {1} × {2} ms, తదుపరి మాక్రో వరకు</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>{0} చిత్రాలు చూపు: {1} × {2} ms, తదుపరి చూపు లేదా మోడ్ మాక్రో వరకు</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>ప్రొఫైల్ దిగుమతి</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}, ఒక {1} ఫైల్</value></data>
   <data name="Import_ProfileName_Format" xml:space="preserve"><value>ఇది "{0}" ప్రొఫైల్ అవుతుంది.</value></data>
@@ -4945,7 +4945,6 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>ఈ ప్రొఫైల్ దాని Profiles ఫోల్డర్ పక్కన ఉన్న Actions.xml లో లేని ప్రత్యేక చర్యను పేర్కొంటోంది: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>ఈ సెట్టింగ్ రాలేదు: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD ఈ ఇన్‌పుట్‌లు Windowsకు చేరకుండా ఆపింది. పరికరాలు పేజీలో {0} కోసం మ్యాప్ చేసిన ఇన్పుట్లను వినియోగించు ను ఆన్ చేయండి, ఇది ఈ ప్రొఫైల్ మ్యాప్ చేసిన వాటిని ఆపుతుంది.</value></data>
-  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>{0} కోసం Base మ్యాపింగ్‌లు ఈ లేయర్‌లో ఆగిపోతాయి. మ్యాప్ చేసిన ఇన్పుట్లను వినియోగించు ఆన్‌లో ఉంటే, దాని మ్యాప్ చేసిన ఇన్‌పుట్‌లు ప్రతి లేయర్‌లో Windowsకు చేరకుండా ఆపబడే ఉంటాయి.</value></data>
   <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>దీని ఉప-మెనూలు ఒకే వలయంలో మరిన్ని స్లాట్‌లుగా మారాయి.</value></data>
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>స్టిక్ మళ్లీ మధ్యకు వచ్చినప్పుడు లేదా లేయర్ ముగిసినప్పుడు ఖరారవుతుంది. reWASD యొక్క వర్తింపజేయి బటన్ ఉపయోగించబడదు.</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>ఈ ఫైల్ రెండు కంట్రోలర్‌లను వేరుగా ఉంచుతుంది. PadForgeలో, ఆ స్లాట్‌లోని ఏ కంట్రోలర్ అయినా ఈ మ్యాపింగ్‌లను అమలు చేస్తుంది.</value></data>
@@ -4974,7 +4973,7 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="Import_Tr_HideController" xml:space="preserve"><value>reWASD ఈ కంట్రోలర్‌ను గేమ్‌ల నుండి దాచింది. పరికరాలు పేజీలో దీని కోసం గేమ్‌ల నుండి దాచు ను ఆన్ చేయండి.</value></data>
   <data name="Import_Tr_NoSuchSetting" xml:space="preserve"><value>PadForge-లో అలాంటి సెట్టింగ్ లేదు: {0}</value></data>
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD మౌస్ కదలిక Windowsకు చేరకుండా ఆపింది. PadForge కీలు మరియు మౌస్ బటన్లను ఆపుతుంది కానీ కదలికను ఆపదు, కాబట్టి పాయింటర్ ఇంకా కదులుతుంది.</value></data>
-  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>PadForge వర్చువల్ కంట్రోలర్‌లు మోషన్‌ను కంట్రోలర్ మోషన్ సెన్సార్ నుండి మాత్రమే తీసుకుంటాయి.</value></data>
+  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>Xbox వర్చువల్ కంట్రోలర్‌కు మోషన్ ఉండదు. మోషన్ పంపడానికి PlayStation లేదా Nintendo కంట్రోలర్ రకాన్ని ఎంచుకోండి.</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows ఒక బటన్ ద్వారా {0} నుండి ఈ ప్రొఫైల్‌కు తిరిగి వచ్చింది. PadForge-లో అలా చేయడానికి, ప్రొఫైళ్లు పేజీలో ఈ ప్రొఫైల్ కోసం ఒక ప్రొఫైల్ షార్ట్కట్ జోడించండి.</value></data>
   <data name="Osk_Style_Grid" xml:space="preserve">
     <value>గ్రిడ్</value>
@@ -5193,4 +5192,37 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>దీనితో తెరుచుకుంటుంది హోల్డ్ సమయానికి ముందే వదిలినప్పుడు కీబోర్డ్‌ను తెరుస్తుంది లేదా మూసివేస్తుంది. ఎక్కువసేపు నొక్కు ఏమీ చేయదు.</value></data>
   <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>దీనితో తెరుచుకుంటుంది నొక్కు విండో లోపల మూడుసార్లు నొక్కినప్పుడు కీబోర్డ్‌ను తెరుస్తుంది లేదా మూసివేస్తుంది.</value></data>
   <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>దీనితో తెరుచుకుంటుంది ఒకసారి నొక్కిన తర్వాత నొక్కు విండో ముగిసినప్పుడు కీబోర్డ్‌ను తెరుస్తుంది లేదా మూసివేస్తుంది. విండో లోపల రెండవ నొక్కు దాన్ని రద్దు చేస్తుంది.</value></data>
+  <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>రంగులు నేరుగా {0}కు వెళ్తాయి. రంగుల చక్రం లేదా ధ్వనిని అనుసరించే రంగుల వంటి మారే రంగులు దానికి చేరవు. మారని రంగు చేరుతుంది.</value></data>
+  <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>అన్ని ఫైళ్లు (*.*)|*.*</value></data>
+  <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>PadForge ప్రొఫైల్ (*{0})|*{0}</value></data>
+  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml</value></data>
+  <data name="FileDialog_ProgramFilter" xml:space="preserve"><value>ప్రోగ్రామ్‌లు (*.exe;*.bat;*.cmd;*.com)|*.exe;*.bat;*.cmd;*.com|అన్ని ఫైళ్లు (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundFileFilter" xml:space="preserve"><value>ఆడియో ఫైళ్లు మరియు సౌండ్ ప్యాకేజీలు|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.pfsounds|సౌండ్ ప్యాకేజీలు (*.pfsounds)|*.pfsounds|అన్ని ఫైళ్లు (*.*)|*.*</value></data>
+  <data name="FileDialog_AudioFilter" xml:space="preserve"><value>ఆడియో ఫైళ్లు|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.ogg|అన్ని ఫైళ్లు (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundPackageFilter_Format" xml:space="preserve"><value>PadForge సౌండ్ ప్యాకేజీలు (*{0})|*{0}</value></data>
+  <data name="FileDialog_IconPackageFilter_Format" xml:space="preserve"><value>PadForge ఐకాన్ ప్యాకేజీలు (*{0})|*{0}</value></data>
+  <data name="FileDialog_AutoEqFilter" xml:space="preserve"><value>AutoEq ప్రొఫైల్ (*.txt)|*.txt|అన్ని ఫైళ్లు (*.*)|*.*</value></data>
+  <data name="FileDialog_IconPickerFilter" xml:space="preserve"><value>చిత్రాలు మరియు ఐకాన్ ప్యాకేజీలు|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.pficons|ఐకాన్ ప్యాకేజీలు (*.pficons)|*.pficons</value></data>
+  <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>PadForge హ్యాండ్‌హెల్డ్ బటన్లు (*.json)|*.json</value></data>
+  <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro ప్రొఫైల్ (*.json)|*.json</value></data>
+  <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge కీ లైట్లు (*.json)|*.json</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>మాక్రో {0} నొక్కలేదు. మ్యాపింగ్లు ట్యాబ్‌లోని మ్యాపింగ్ నొక్కగలదు.</value></data>
+  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge ఎనిమిది స్క్రీన్ ఓవర్లేలను నడుపుతుంది, ఇది reWASD తొమ్మిదో లేదా పదో క్రాస్‌హెయిర్.</value></data>
+  <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge గైరో ఎడమ, కుడిని రోల్ నుండి, వంపును యా నుండి చదువుతుంది, ఇది reWASD డిఫాల్ట్. reWASD ప్రాధాన్యతలలో ఈ రెండింటినీ మార్చుకోవచ్చు, అవి మార్చబడ్డాయో లేదో ఈ ఫైల్ చెప్పదు.</value></data>
+  <data name="Import_Tr_TiltLean" xml:space="preserve"><value>టిల్ట్ మోడ్‌లో, reWASD వంపు అంటే నిలువు అక్షం చుట్టూ తిరగడం, దానికి మోషన్ సెన్సార్ కోణాన్ని ఇవ్వదు.</value></data>
+  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge టచ్ ప్యాడ్ వికర్ణాన్ని ఒకేసారి రెండు దిశలుగా చదువుతుంది, టచ్ ప్యాడ్ ట్యాబ్‌లో D-ప్యాడ్ మోడ్ 8-దిశలు అయినప్పుడు మాత్రమే టచ్ ప్యాడ్ దాన్ని నివేదిస్తుంది.</value></data>
+  <data name="Import_Tr_GyroZone" xml:space="preserve"><value>PadForge గైరో దిశను ఒక పరిమితి దాటిన తర్వాత చదువుతుంది, గైరో జోన్ అంచుకు reWASD ఎలాంటి యూనిట్ ఇవ్వదు.</value></data>
+  <data name="Import_Tr_AbsoluteMouse" xml:space="preserve"><value>DS4Windows స్టిక్ చూపిన చోట పాయింటర్‌ను ఉంచింది. PadForgeలో బదులుగా స్టిక్ పాయింటర్‌ను కదిలిస్తుంది.</value></data>
+  <data name="Import_Tr_StickBeforeRotation" xml:space="preserve"><value>{0} స్టిక్‌ను దాని భ్రమణానికి ముందు చదువుతుంది. DS4Windows తర్వాత చదివింది.</value></data>
+  <data name="Import_Tr_StickBeforeCurve" xml:space="preserve"><value>{0} స్టిక్ కోణాన్ని దాని జోన్‌లు మరియు వక్రరేఖకు ముందు చదువుతుంది. DS4Windows తర్వాత చదివింది.</value></data>
+  <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>ఇకపై కీబోర్డ్ + మౌస్ కాని స్లాట్ కీబోర్డ్</value></data>
+  <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (ఈ PCలో లేదు)</value></data>
+  <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (ఈ స్లాట్‌లో లేదు)</value></data>
+  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>యా, రోల్ పూర్తి బలంతో జోడించబడ్డాయి (రోల్ వాటా చదవలేదు)</value></data>
+  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>Local Space గైరో యాగా చదవబడింది (PadForge-లో వంగిన ప్రాథమిక అక్షం లేదు)</value></data>
+  <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>Laser Pointer గైరో యాగా చదవబడింది (PadForge-లో లేజర్ పాయింటర్ మార్పిడి లేదు)</value></data>
+  <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>reWASD-లో {0} ఇంకా Windows-కు చేరుతుంది, ఎందుకంటే ఫైల్ దాన్ని మ్యాప్ తొలగింపు లేకుండా మ్యాప్ చేస్తుంది. మ్యాప్ చేసిన ఇన్పుట్లను వినియోగించు ఆన్ చేసినప్పుడు, PadForge దాన్ని ఆపుతుంది.</value></data>
+  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge సానుకూల భ్రమణాన్ని DS4Windows లాగే సవ్యదిశలో తిప్పుతుంది. reWASD సహాయం భ్రమణ పరిధిని ఇస్తుంది, దిశను కాదు.</value></data>
+  <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows రేడియల్ స్టిక్ {0} ను నెట్టిన కోణాన్ని బట్టి ఆకృతి చేస్తుంది. PadForge-లో స్టిక్ కార్డ్ నేరుగా నెట్టడాన్ని ఒకేలా, వికర్ణ నెట్టడాన్ని వేరుగా ప్లే చేస్తుంది.</value></data>
+  <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>లేయర్‌లు {0} ను వేర్వేరుగా ట్యూన్ చేస్తాయి, కాబట్టి ప్రతి లేయర్ తన సొంత ట్యూనింగ్‌ను ఉంచుకుంటుంది, వక్రరేఖ అత్యంత దగ్గరి పవర్ వక్రరేఖగా వస్తుంది.</value></data>
 </root>

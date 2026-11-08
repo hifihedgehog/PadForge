@@ -29,7 +29,7 @@ namespace PadForge.Tests
         private const string PadAndKbm =
             """[{"id":1,"name":"gamepad","convertToVirtual":true},{"id":11,"name":"keyboard"},{"id":23,"name":"mouse"}]""";
 
-        private static string File(string masks = "[]", string mappings = "[]", string shifts = "[]",
+        internal static string File(string masks = "[]", string mappings = "[]", string shifts = "[]",
             string commands = "[]", string hardware = PadAndKbm, string virtualType = "360", string extra = "",
             string config = """{"appName":"Test Game","processNames":["game.exe","launcher.exe"]}""")
             => "{\"schemaVersion\":\"3.0\",\"appVersion\":\"9.3.2\",\"config\":" + config
@@ -37,10 +37,10 @@ namespace PadForge.Tests
              + ",\"shifts\":" + shifts + ",\"masks\":" + masks + ",\"commands\":" + commands
              + ",\"mappings\":" + mappings + extra + "}";
 
-        private static string Mask(int id, int device, int button)
+        internal static string Mask(int id, int device, int button)
             => "{\"id\":" + id + ",\"set\":[{\"deviceId\":" + device + ",\"buttonId\":" + button + "}]}";
 
-        private static string Map(int mask, string steps, string type = "single", string mode = "hold_until_release",
+        internal static string Map(int mask, string steps, string type = "single", string mode = "hold_until_release",
             int shift = 0, string more = "", string activatorParams = "")
             => "{\"condition\":{" + (shift > 0 ? "\"shiftId\":" + shift + "," : "")
              + "\"mask\":{\"id\":" + mask + ",\"activator\":{\"type\":\"" + type + "\",\"mode\":\"" + mode + "\""
@@ -50,7 +50,7 @@ namespace PadForge.Tests
         private static string Key(int scan, string action = null)
             => "{\"keyboard\":{\"buttonId\":" + scan + (action != null ? ",\"action\":\"" + action + "\"" : "") + "}}";
 
-        private static ForeignImportResult Import(string json, string path = "C:/profiles/Test.rewasd")
+        internal static ForeignImportResult Import(string json, string path = "C:/profiles/Test.rewasd")
             => ForeignConfigImporter.Translate(Encoding.UTF8.GetBytes(json), path);
 
         private static ProfileData Profile(string json)
@@ -257,6 +257,56 @@ namespace PadForge.Tests
             Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.ConsumeKeys);
         }
 
+        /// <summary>reWASD sends a mapped key's native key unless the file
+        /// unmaps it ("we suggest using Unmaps for keyboard keys, so the
+        /// native action did not bother the mapping you have added", reWASD
+        /// blog, How to reassign keyboard keys). The import asks for Consume
+        /// Mapped Inputs on the keyboard because the file unmaps DIK_B, and
+        /// that switch also holds back DIK_A, which a row reads with no
+        /// unmap. That key gets its own line. DIK_C, mapped and unmapped,
+        /// and DIK_D, remapped in hardware, which replaces its native key,
+        /// get none.</summary>
+        [Fact]
+        public void AKeyMappedWithoutAnUnmap_SaysTheSwitchHoldsItBack()
+        {
+            var r = Import(File(
+                masks: "[" + Mask(1, 11, 30) + "," + Mask(2, 11, 46) + "]",
+                mappings: "[" + Map(1, PadOut(1)) + "," + Map(2, PadOut(3)) + ","
+                    + """{"condition":{"hardware":{"deviceId":11,"buttonId":48,"description":"DIK_B"}},"hardware":{"unmap":true}},"""
+                    + """{"condition":{"hardware":{"deviceId":11,"buttonId":46,"description":"DIK_C"}},"hardware":{"unmap":true}},"""
+                    + """{"condition":{"hardware":{"deviceId":11,"buttonId":32,"description":"DIK_D"}},"hardware":{"buttonId":33}}]"""));
+            Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.ConsumeKeys);
+            var line = Assert.Single(r.Report.Entries, e => e.ReasonKey == "Import_Tr_MappedKeyHeldBack");
+            Assert.Equal(TranslationStatus.Partial, line.Status);
+            Assert.Equal("Keyboard A", Assert.Single(line.ReasonArgs));
+        }
+
+        /// <summary>A hardware remap sits in reWASD's hardware layer beside
+        /// the unmaps and replaces the native key, which the import models
+        /// (replacesNative). So a keyboard or mouse whose only change is a
+        /// hardware remap still gets the Consume Mapped Inputs advice, or the
+        /// remapped key would type beside its new one. The remapped key gets
+        /// no held-back line.</summary>
+        [Fact]
+        public void AHardwareRemapAlone_AsksForConsumeMappedInputs()
+        {
+            var r = Import(File(mappings: "["
+                + """{"condition":{"hardware":{"deviceId":11,"buttonId":32,"description":"DIK_D"}},"hardware":{"buttonId":33}},"""
+                + """{"condition":{"hardware":{"deviceId":23,"buttonId":4}},"hardware":{"buttonId":5}}]"""));
+            Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.ConsumeKeys && e.SourcePath == "Keyboard");
+            Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.ConsumeKeys && e.SourcePath == "Mouse");
+            Assert.DoesNotContain(r.Report.Entries, e => e.ReasonKey == ImportReasons.MappedKeyHeldBack);
+        }
+
+        /// <summary>With no unmap on the keyboard the import asks for no
+        /// switch, and a mapped key reaches Windows in both programs.</summary>
+        [Fact]
+        public void AKeyMappedWithoutAnUnmap_HasNoLine_WhenTheFileUnmapsNoKey()
+        {
+            var r = Import(File(masks: "[" + Mask(1, 11, 30) + "]", mappings: "[" + Map(1, PadOut(1)) + "]"));
+            Assert.DoesNotContain(r.Report.Entries, e => e.ReasonKey == "Import_Tr_MappedKeyHeldBack");
+        }
+
         [Fact]
         public void UnmappedMouseMovement_HasItsOwnLine()
         {
@@ -368,8 +418,9 @@ namespace PadForge.Tests
         [InlineData(50, "Gamepad RightStickX", false)]
         [InlineData(68, "Gyro Pitch", false)]
         [InlineData(69, "Gyro Pitch", true)]
-        [InlineData(70, "Gyro Yaw", false)]
-        [InlineData(71, "Gyro Yaw", true)]
+        // Gyro mode looks left and right by roll, reWASD's default.
+        [InlineData(70, "Gyro Roll", true)]
+        [InlineData(71, "Gyro Roll", false)]
         public void Directions_ReadOneHalf(int id, string descriptor, bool lower)
         {
             var p = Profile(File(masks: "[" + Mask(1, 1, id) + "]", mappings: "[" + Map(1, "[" + Key(57) + "]") + "]"));
@@ -512,7 +563,11 @@ namespace PadForge.Tests
             Assert.Equal(MacroActionType.AxisAdd, a.Type);
             Assert.Equal(MacroAxisTarget.LeftStickX, a.AxisTarget);
             Assert.True(a.AxisValue > 0);
-            Assert.Equal(0, r.Report.PartialCount + r.Report.SkippedCount);
+            // Compensation has no published meaning, so its line is the one
+            // the report holds.
+            var line = Assert.Single(r.Report.Entries, e => e.Status != TranslationStatus.Clean);
+            Assert.Equal(ImportReasons.ControllerSetting, line.ReasonKey);
+            Assert.Contains("compensation", line.ReasonArgs);
         }
 
         [Theory]
@@ -941,7 +996,7 @@ namespace PadForge.Tests
 
         private const string OneLayer = """[{"id":1,"type":"default","description":"Combat"}]""";
 
-        private static string Jump(int mask, int layer, string type = "single", string mode = "hold_until_release", int shift = 0, string jumpMore = "")
+        internal static string Jump(int mask, int layer, string type = "single", string mode = "hold_until_release", int shift = 0, string jumpMore = "")
             => Map(mask, "", type, mode, shift, ",\"jumpToLayer\":{\"layer\":" + layer + jumpMore + "}");
 
         [Fact]
@@ -1144,15 +1199,19 @@ namespace PadForge.Tests
             Assert.NotNull(Row(p, "ButtonA", "Shift1"));
             Assert.DoesNotContain(Row(p, "ButtonA", "Shift1").Sources, Keyboard);
             Assert.Null(Row(p, "ButtonX", "Shift1"));
-            var line = Assert.Single(r.Report.Entries, e => e.ReasonKey == ImportReasons.UnlockLayer);
-            Assert.Contains(PadForge.Resources.Strings.Strings.Instance.Devices_AllKeyboardsMerged, line.ReasonArgs);
+            // The layer does what reWASD's does, so it reports Clean with no reason.
+            Assert.DoesNotContain(r.Report.Entries, e => e.ReasonKey == "Import_Tr_UnlockLayer");
+            var line = Assert.Single(r.Report.Entries, e => e.Binding == "unlockKeyboardOnly");
+            Assert.Equal(TranslationStatus.Clean, line.Status);
+            Assert.Equal(PadForge.Resources.Strings.Strings.Instance.Devices_AllKeyboardsMerged, line.Emitted);
         }
 
         [Fact]
-        public void UnlockLayer_ForBoth_NamesEach()
+        public void UnlockLayer_ForBoth_IsCleanForEach()
         {
             var r = Import(File(shifts: """[{"id":1,"type":"unlock"}]"""));
-            Assert.Equal(2, r.Report.Entries.Count(e => e.ReasonKey == ImportReasons.UnlockLayer));
+            Assert.DoesNotContain(r.Report.Entries, e => e.ReasonKey == "Import_Tr_UnlockLayer");
+            Assert.Equal(2, r.Report.Entries.Count(e => e.Binding == "unlock" && e.Status == TranslationStatus.Clean));
         }
 
         // ── Tuning ──────────────────────────────────────────────────────
@@ -1199,6 +1258,25 @@ namespace PadForge.Tests
             float Read(MappingRow row) => row.Sources.Sum(s => SourceCoercion.EvaluateForBipolarAxisTarget(state, s, 0, false, ""));
             Assert.InRange(Read(x), 0.80f, 0.92f);
             Assert.InRange(Read(y), 0.42f, 0.58f);
+        }
+
+        [Fact]
+        public void ARotatedStick_SaysWhichWayPadForgeTurnsIt()
+        {
+            // reWASD's help gives the rotation's range and no direction, so a
+            // rotated stick's tuning is no Clean match. PadForge turns it the
+            // way DS4Windows does, which the line states.
+            var r = Import(File(hardware: Tuned("""{"sticks":[{"name":"left","rotation":30}]}""")));
+            Assert.Contains(r.Report.Entries, e => e.Status == TranslationStatus.Partial && e.ReasonKey == ImportReasons.StickRotation);
+            Assert.DoesNotContain(r.Report.Entries, e => e.Status == TranslationStatus.Clean && e.Binding == "Tuning");
+        }
+
+        [Fact]
+        public void AStickTunedWithoutRotation_KeepsItsCleanTuningLine()
+        {
+            var r = Import(File(hardware: Tuned("""{"sticks":[{"name":"left","sensitivity":{"x":16384,"y":32767}}]}""")));
+            Assert.Contains(r.Report.Entries, e => e.Status == TranslationStatus.Clean && e.Binding == "Tuning");
+            Assert.DoesNotContain(r.Report.Entries, e => e.ReasonKey == ImportReasons.StickRotation);
         }
 
         [Fact]
@@ -1580,7 +1658,8 @@ namespace PadForge.Tests
 
             var macro = Import(File(virtualType: "ds4", masks: "[" + Mask(1, 11, 30) + "]",
                 mappings: "[" + Map(1, """[{"gamepad":{"id":1,"buttonId":99}}]""", mode: "onetime") + "]"));
-            Assert.Contains(macro.Report.Entries, e => e.ReasonKey == ImportReasons.NoSuchPadButton);
+            // The DualShock 4 has the button. A macro cannot press it.
+            Assert.Contains(macro.Report.Entries, e => e.ReasonKey == ImportReasons.MacroCannotPress);
             Assert.Empty(macro.Profile.Macros);
         }
 
@@ -2047,6 +2126,653 @@ namespace PadForge.Tests
             var b = Profile(json);
             Assert.NotEqual(a.Id, b.Id);
             Assert.Equal(a.SlotMappingSets[0].Rows.Count, b.SlotMappingSets[0].Rows.Count);
+        }
+
+        // ── Audit 2026-11-08 ────────────────────────────────────────────
+
+        private static string PadOut(int button) => "[{\"gamepad\":{\"id\":1,\"buttonId\":" + button + "}}]";
+
+        private static bool Names(ForeignImportResult r, string reason, string arg)
+            => r.Report.Entries.Any(e => e.ReasonKey == reason && e.ReasonArgs != null && e.ReasonArgs.Contains(arg));
+
+        [Fact]
+        public void MouseScrollUp_ReadsTheUpperHalfOfTheWheel()
+        {
+            var p = Profile(File(masks: "[" + Mask(1, 23, 171) + "," + Mask(2, 23, 172) + "]",
+                mappings: "[" + Map(1, PadOut(1)) + "," + Map(2, PadOut(2)) + "]"));
+            var up = Row(p, "ButtonA").Sources.Single(s => s.Descriptor == "Axis 2");
+            var down = Row(p, "ButtonB").Sources.Single(s => s.Descriptor == "Axis 2");
+            // Windows reports a notch up as +120, which the mouse puts above
+            // center (SdlMouseWrapper's Axis 2).
+            var wheelUp = Centered();
+            wheelUp.Axis[2] = 65535;
+            var wheelDown = Centered();
+            wheelDown.Axis[2] = 0;
+            Assert.True(ButtonRead(wheelUp, up));
+            Assert.False(ButtonRead(wheelDown, up));
+            Assert.True(ButtonRead(wheelDown, down));
+            Assert.False(ButtonRead(wheelUp, down));
+        }
+
+        [Fact]
+        public void ACurveEndingAtAThirdOfTravel_ReachesFullOutputThere()
+        {
+            // Vergil.rewasd's left stick: travel and value on one 0-32767
+            // scale, full output at 31% of the travel and held from there.
+            var r = Import(File(hardware: Tuned(
+                """{"sticks":[{"name":"left","curves":{"points":{"horizontal":[{"id":1,"value":2293,"travel":2531},{"id":2,"value":5570,"travel":4781},{"id":3,"value":9830,"travel":7594},{"id":4,"value":32768,"travel":10125}]}}}]}""")));
+            string card = r.Profile.SlotMappingSets[0].WorkshopCurves.Split('|')
+                .Single(c => c.StartsWith("LeftThumbAxisX=", StringComparison.Ordinal))["LeftThumbAxisX=".Length..];
+            Assert.Equal("0,0;0.0772,0.07;0.1459,0.17;0.2318,0.3;0.309,1;1,1", card);
+        }
+
+        [Fact]
+        public void ANumpadEnterOutput_SendsNumpadEnter()
+        {
+            var p = Profile(File(masks: "[" + Mask(1, 1, 1) + "," + Mask(2, 1, 2) + "]",
+                mappings: "[" + Map(1, "[" + Key(156) + "]") + "," + Map(2, "[" + Key(28) + "]") + "]"));
+            Assert.NotNull(Row(p, "KbmKey88"));
+            Assert.NotNull(Row(p, "KbmKey0D"));
+        }
+
+        [Fact]
+        public void AKeyReadsThroughTheActiveLayout()
+        {
+            // QWERTZ: the bottom-left letter key (scan 0x2C) types Y.
+            static int Qwertz(int scan) => scan switch { 0x15 => 0x5A, 0x2C => 0x59, _ => 0 };
+            Assert.True(DirectInputKeys.TryGetVirtualKey(0x2C, Qwertz, out byte vk));
+            Assert.Equal(0x59, vk);
+            Assert.True(DirectInputKeys.TryGetVirtualKey(0x15, Qwertz, out vk));
+            Assert.Equal(0x5A, vk);
+            // A key only a regional layout has: ABNT C1 on a Brazilian one.
+            Assert.True(DirectInputKeys.TryGetVirtualKey(0x73, s => s == 0x73 ? 0xC1 : 0, out vk));
+            Assert.Equal(0xC1, vk);
+            // The numpad, the modifiers and the E0 keys keep their own codes,
+            // whatever the layout says.
+            static int Home(int scan) => 0x24;
+            Assert.True(DirectInputKeys.TryGetVirtualKey(0x47, Home, out vk));
+            Assert.Equal(0x67, vk);
+            Assert.True(DirectInputKeys.TryGetVirtualKey(0x2A, Home, out vk));
+            Assert.Equal(0xA0, vk);
+            Assert.True(DirectInputKeys.TryGetVirtualKey(0xC8, Home, out vk));
+            Assert.Equal(0x26, vk);
+            // A layout with no key there falls back to the table.
+            Assert.True(DirectInputKeys.TryGetVirtualKey(0x2C, _ => 0, out vk));
+            Assert.Equal(0x5A, vk);
+        }
+
+        [Fact]
+        public void ACompensatedStickOutput_SaysSo()
+        {
+            var r = Import(File(masks: "[" + Mask(1, 23, 67) + "]",
+                mappings: "[" + Map(1, """[{"gamepad":{"id":1,"buttonId":50,"absolute":false,"compensation":true,"value":32767}}]""") + "]"));
+            Assert.True(Names(r, ImportReasons.ControllerSetting, "compensation"));
+        }
+
+        [Fact]
+        public void ARumbleStepsMacroFlag_IsNamed()
+        {
+            var r = Import(File(masks: "[" + Mask(1, 1, 1) + "]",
+                mappings: "[" + Map(1, """[{"rumble":{"duration":100,"amplitude":{"motor":{"left":50}},"macro":true}}]""", mode: "onetime") + "]"));
+            Assert.True(Names(r, ImportReasons.ControllerSetting, "macro"));
+        }
+
+        [Fact]
+        public void AVirtualPadsPerformanceAndHub_AreNamed()
+        {
+            var r = Import(WithVirtualPad("""{"id":1,"type":"360","performance":"high","virtualUsbHub":true}"""));
+            Assert.True(Names(r, ImportReasons.ControllerSetting, "performance"));
+            Assert.True(Names(r, ImportReasons.ControllerSetting, "virtualUsbHub"));
+            var plain = Import(WithVirtualPad("""{"id":1,"type":"360","performance":"normal"}"""));
+            Assert.False(Names(plain, ImportReasons.ControllerSetting, "performance"));
+        }
+
+        private static string Set(int count)
+            => "[" + string.Join(",", Enumerable.Range(1, count).Select(b => "{\"deviceId\":1,\"buttonId\":" + b + "}")) + "]";
+
+        [Fact]
+        public void AMaskOfFiveInputs_IsRefused()
+        {
+            // The schema's set holds one to four inputs.
+            Assert.Equal(ImportReasons.FileTooLarge, Import(File(masks: "[{\"id\":1,\"set\":" + Set(5) + "}]")).RefusedKey);
+            Assert.Equal(ImportReasons.FileTooLarge, Import(File(shifts: "[{\"id\":1,\"type\":\"default\",\"set\":" + Set(5) + "}]")).RefusedKey);
+            Assert.False(Import(File(masks: "[{\"id\":1,\"set\":" + Set(4) + "}]")).Refused);
+        }
+
+        [Fact]
+        public void CrosshairsNineAndTen_DoNotShareOverlayEight()
+        {
+            static string Cmd(int id) => "{\"command\":{\"id\":" + id + "}}";
+            var r = Import(File(commands: """[{"id":1,"type":108,"name":"c8"},{"id":2,"type":109,"name":"c9"},{"id":3,"type":110,"name":"c10"}]""",
+                masks: "[" + Mask(1, 1, 1) + "," + Mask(2, 1, 2) + "," + Mask(3, 1, 3) + "]",
+                mappings: "[" + Map(1, "[" + Cmd(1) + "]", mode: "onetime") + "," + Map(2, "[" + Cmd(2) + "]", mode: "onetime")
+                    + "," + Map(3, "[" + Cmd(3) + "]", mode: "onetime") + "]"));
+            var overlays = r.Profile.Macros.SelectMany(m => m.Actions).Where(a => a.Type == MacroActionType.ToggleScreenOverlay).ToList();
+            Assert.Equal(8, Assert.Single(overlays).ScreenOverlayNumber);
+            Assert.Equal(2, r.Report.Entries.Count(e => e.ReasonKey == ImportReasons.NinthCrosshair));
+        }
+
+        [Fact]
+        public void AMaskInputWithExtended_SaysSo()
+        {
+            var r = Import(File(masks: """[{"id":1,"set":[{"deviceId":1,"buttonId":1,"extended":2}]}]""",
+                mappings: "[" + Map(1, "[" + Key(57) + "]") + "]"));
+            Assert.True(Names(r, ImportReasons.ControllerSetting, "extended"));
+        }
+
+        private static int Down(int percent) => 32768 + 32767 * percent / 100;
+        private static int Left(int percent) => 32768 - 32767 * percent / 100;
+
+        [Fact]
+        public void AStickZoneDirection_ReadsInsideItsZone()
+        {
+            // 113 LeftStickMedUpZone: up, between the medium and high edges
+            // (66% and 85% by default).
+            var p = Profile(File(masks: "[" + Mask(1, 1, 113) + "]", mappings: "[" + Map(1, "[" + Key(57) + "]") + "]"));
+            var src = Row(p, "KbmKey20").Sources[0];
+            var state = Centered();
+            state.Axis[1] = Up(75);
+            Assert.True(ButtonRead(state, src));
+            state.Axis[1] = Up(50);
+            Assert.False(ButtonRead(state, src));
+            state.Axis[1] = Up(95);
+            Assert.False(ButtonRead(state, src));
+            state.Axis[1] = Down(75);
+            Assert.False(ButtonRead(state, src));
+        }
+
+        [Fact]
+        public void TheUpLeftDiagonal_ReadsASector()
+        {
+            var p = Profile(File(masks: "[" + Mask(1, 1, 175) + "]", mappings: "[" + Map(1, "[" + Key(57) + "]") + "]"));
+            var src = Row(p, "KbmKey20").Sources[0];
+            var state = Centered();
+            state.Axis[0] = Left(60);
+            state.Axis[1] = Up(60);
+            Assert.True(ButtonRead(state, src));
+            state.Axis[0] = 32768;
+            state.Axis[1] = Up(80);
+            Assert.False(ButtonRead(state, src));
+            state.Axis[0] = Left(80);
+            state.Axis[1] = 32768;
+            Assert.False(ButtonRead(state, src));
+        }
+
+        [Fact]
+        public void GyroLean_ReadsTheYawHalves()
+        {
+            // reWASD's help: "By default, Lean is a yaw rotation." Gyro Yaw's
+            // upper half turns the nose left.
+            var p = Profile(File(masks: "[" + Mask(1, 1, 72) + "," + Mask(2, 1, 73) + "]",
+                mappings: "[" + Map(1, "[" + Key(57) + "]") + "," + Map(2, "[" + Key(28) + "]") + "]"));
+            var left = Row(p, "KbmKey20").Sources[0];
+            var right = Row(p, "KbmKey0D").Sources[0];
+            Assert.Equal("Gyro Yaw", left.Descriptor);
+            Assert.True(left.HalfAxis);
+            Assert.False(left.Invert);
+            Assert.Equal("Gyro Yaw", right.Descriptor);
+            Assert.True(right.Invert);
+        }
+
+        [Fact]
+        public void AStickToGyroMapping_DrivesTheMotionRows()
+        {
+            var r = Import(File(virtualType: "ds4",
+                mappings: """[{"condition":{"hardware":{"deviceId":1,"stick":"right","axis":"x"}},"hardware":{"stick":"gyro","axis":"x"}},{"condition":{"hardware":{"deviceId":1,"stick":"right","axis":"y"}},"hardware":{"stick":"gyro","axis":"y"}}]"""));
+            Assert.Contains(Row(r.Profile, "MotionYaw").Sources, s => s.Descriptor == "Gamepad RightStickX");
+            Assert.Contains(Row(r.Profile, "MotionPitch").Sources, s => s.Descriptor == "Gamepad RightStickY");
+            Assert.DoesNotContain(r.Report.Entries, e => e.ReasonKey == ImportReasons.MotionOutput);
+        }
+
+        [Fact]
+        public void ALayerOnlyUnmap_BlocksOnThatLayer()
+        {
+            var r = Import(File(shifts: OneLayer, masks: "[" + Mask(3, 1, 5) + "]",
+                mappings: "[" + Jump(3, 1) + "," + """{"condition":{"shiftId":1,"hardware":{"deviceId":11,"buttonId":17,"description":"DIK_W"}},"hardware":{"unmap":true}}]"""));
+            var block = Assert.Single(r.Profile.Macros, m => m.ConsumeTriggerButtons);
+            Assert.Equal("Shift1", block.LayerMask);
+        }
+
+        /// <summary>A shift inherits Main's Unmap for every control it does
+        /// not map itself (reWASD help, Shift mode, and forum thread 217280).
+        /// A layer that replaces Base takes no Base macro, so it takes its
+        /// own copy of Base's block, except for a control it maps: DIK_C,
+        /// which Shift1 maps, takes none there.</summary>
+        [Fact]
+        public void ALayerThatReplacesBase_TakesBasesBlock_ForAControlItDoesNotMap()
+        {
+            var p = Profile(File(shifts: OneLayer,
+                masks: "[" + Mask(1, 1, 1) + "," + Mask(3, 1, 5) + "," + Mask(4, 11, 46) + "]",
+                mappings: "[" + Jump(3, 1) + ","
+                    + Map(1, "[" + Key(57) + "]", mode: "onetime") + ","
+                    + Map(1, "[" + Key(15) + "]", mode: "onetime", shift: 1) + ","
+                    + Map(4, PadOut(3), shift: 1) + ","
+                    + """{"condition":{"hardware":{"deviceId":11,"buttonId":48,"description":"DIK_B"}},"hardware":{"unmap":true}},"""
+                    + """{"condition":{"hardware":{"deviceId":11,"buttonId":46,"description":"DIK_C"}},"hardware":{"unmap":true}}]"""));
+            Assert.False(p.SlotMappingSets[0].ShiftActivators.Single().InheritUnmapped);
+            var blocks = p.Macros.Where(m => m.ConsumeTriggerButtons).ToList();
+            var baseBlocks = blocks.Where(m => m.LayerMask == "Base").ToList();
+            Assert.Equal(2, baseBlocks.Count);
+            var copy = Assert.Single(blocks, m => m.LayerMask == "Shift1");
+            var original = Assert.Single(baseBlocks, m => m.TriggerInputs == copy.TriggerInputs);
+            Assert.Equal("Block Keyboard B", original.Name);
+        }
+
+        /// <summary>"Do not inherit" makes a key "work normally, as if no
+        /// mappings are applied to it" on the shift (reWASD help, Shift
+        /// mode), so Base's unmap of DIK_C must not reach the layer. Base's
+        /// block runs on every layer that inherits, so that layer replaces
+        /// Base, and it takes no copy of the block.</summary>
+        [Fact]
+        public void ALayerThatDoesNotInheritABaseUnmap_ReplacesBase_AndTakesNoBlock()
+        {
+            var p = Profile(File(shifts: """[{"id":1,"type":"default","unheritableMasks":[4]}]""",
+                masks: "[" + Mask(3, 1, 5) + "," + Mask(4, 11, 46) + "]",
+                mappings: "[" + Jump(3, 1) + ","
+                    + """{"condition":{"hardware":{"deviceId":11,"buttonId":46,"description":"DIK_C"}},"hardware":{"unmap":true}}]"""));
+            Assert.False(p.SlotMappingSets[0].ShiftActivators.Single().InheritUnmapped);
+            var block = Assert.Single(p.Macros, m => m.ConsumeTriggerButtons);
+            Assert.Equal("Base", block.LayerMask);
+        }
+
+        /// <summary>The hook eats a row's key only on the layers where the
+        /// row runs. A key one layer unmaps and only another layer's row
+        /// reads reaches Windows on the first layer, so that layer keeps its
+        /// block. Before, any row on any layer reading the key dropped it.</summary>
+        [Fact]
+        public void ALayerUnmap_KeepsItsBlock_WhenOnlyAnotherLayersRowReadsTheKey()
+        {
+            var r = Import(File(
+                shifts: """[{"id":1,"type":"default","description":"One"},{"id":2,"type":"default","description":"Two"}]""",
+                masks: "[" + Mask(3, 1, 5) + "," + Mask(4, 1, 6) + "," + Mask(1, 11, 30) + "]",
+                mappings: "[" + Jump(3, 1) + "," + Jump(4, 2) + "," + Map(1, PadOut(1), shift: 2) + ","
+                    + """{"condition":{"shiftId":1,"hardware":{"deviceId":11,"buttonId":30,"description":"DIK_A"}},"hardware":{"unmap":true}}]"""));
+            Assert.Contains(r.Profile.SlotMappingSets[0].Rows, row => row.LayerMask == "Shift2"
+                && row.Sources.Any(s => s.Descriptor == "Button 65"));
+            var block = Assert.Single(r.Profile.Macros, m => m.ConsumeTriggerButtons);
+            Assert.Equal("Shift1", block.LayerMask);
+        }
+
+        [Fact]
+        public void ALayerButtonOnAStickDirection_UsesTheFilesZone()
+        {
+            var r = Import(File(shifts: """[{"id":1,"type":"default","set":[{"deviceId":1,"buttonId":40}]}]""",
+                hardware: Tuned("""{"sticks":[{"name":"left","zones":[{"name":"low","x":16384}]}]}""")));
+            var act = r.Profile.SlotMappingSets[0].ShiftActivators.Single(a => a.LayerMask == "Shift1");
+            Assert.InRange(act.AxisThreshold, 0.49, 0.51);
+        }
+
+        [Fact]
+        public void AStickSensitivityOfOne_ScalesNothing()
+        {
+            // reWASD 9.x writes 1 on every stick it never touched (Miner
+            // Warfare 9.1.2, TATE - Rotate -90 9.3.0).
+            var p = Profile(File(hardware: Tuned("""{"sticks":[{"name":"left","sensitivity":{"x":1,"y":1}}]}""")));
+            Assert.Equal(1.0, Row(p, "LeftThumbAxisX").Sources[0].Sensitivity);
+            Assert.Equal(1.0, Row(p, "LeftThumbAxisY").Sources[0].Sensitivity);
+        }
+
+        [Fact]
+        public void ATurboOnTheTouchpadClick_SaysAMacroCannotPressIt()
+        {
+            var r = Import(File(virtualType: "ds4", masks: "[" + Mask(1, 1, 1) + "]",
+                mappings: "[" + Map(1, PadOut(99), mode: "turbo") + "]"));
+            Assert.Contains(r.Report.Entries, e => e.Status == TranslationStatus.Skipped && e.ReasonKey == ImportReasons.MacroCannotPress);
+            Assert.DoesNotContain(r.Report.Entries, e => e.ReasonKey == ImportReasons.NoSuchPadButton);
+        }
+
+        // ── Audit 2026-11-08, second pass ───────────────────────────────
+
+        private const float G = 9.81f;
+
+        /// <summary>A source read through PadForge's own gyro and lean
+        /// reads, with the device's motion as given: rates in rad/s on SDL's
+        /// axes, and the accelerometer's reading, which points up. The lean
+        /// latches its neutral on the first read, so <paramref name="rest"/>
+        /// is read first.</summary>
+        private static T ThroughMotion<T>(Func<CustomInputState, T> read, (float x, float y, float z) rest,
+            (float x, float y, float z) now, float pitch = 0, float yaw = 0, float roll = 0)
+        {
+            var oldTuning = SourceCoercion.GyroTuningProvider;
+            var oldGravity = SourceCoercion.GravityProvider;
+            var oldBias = SourceCoercion.GyroBiasProvider;
+            var oldEngage = SourceCoercion.AimEngageStateProvider;
+            try
+            {
+                SourceCoercion.ResetGyroLeanNeutral();
+                SourceCoercion.GyroBiasProvider = null;
+                SourceCoercion.AimEngageStateProvider = null;
+                SourceCoercion.GyroTuningProvider = (_, _) => new SourceCoercion.GyroTuning
+                {
+                    SensH = 1, SensV = 1, OutputCurve = "Linear", Space = "Local", Grip = "Pointing",
+                };
+                var gravity = rest;
+                SourceCoercion.GravityProvider = _ => gravity;
+                read(Centered());
+                gravity = now;
+                var state = Centered();
+                state.Gyro[0] = pitch;
+                state.Gyro[1] = yaw;
+                state.Gyro[2] = roll;
+                return read(state);
+            }
+            finally
+            {
+                SourceCoercion.ResetGyroLeanNeutral();
+                SourceCoercion.GyroTuningProvider = oldTuning;
+                SourceCoercion.GravityProvider = oldGravity;
+                SourceCoercion.GyroBiasProvider = oldBias;
+                SourceCoercion.AimEngageStateProvider = oldEngage;
+            }
+        }
+
+        private static readonly (float, float, float) Flat = (0f, G, 0f);
+
+        private static bool Pressed(MappingSource src, float pitch = 0, float yaw = 0, float roll = 0)
+            => ThroughMotion(s => SourceCoercion.EvaluateForButtonTarget(s, src, 50, 0, ""), Flat, Flat, pitch, yaw, roll);
+
+        private static bool PressedAtTilt(MappingSource src, (float, float, float) tilted)
+            => ThroughMotion(s => SourceCoercion.EvaluateForButtonTarget(s, src, 50, 0, ""), Flat, tilted);
+
+        private static MappingSource KeySource(ProfileData p, string target)
+            => Row(p, target).Sources.Single(s => s.Descriptor.StartsWith("Gyro ", StringComparison.Ordinal));
+
+        private static string GyroMasks(params int[] ids)
+            => "[" + string.Join(",", ids.Select((id, i) => Mask(i + 1, 1, id))) + "]";
+
+        private static string KeysFor(params int[] scans)
+            => "[" + string.Join(",", scans.Select((sc, i) => Map(i + 1, "[" + Key(sc) + "]"))) + "]";
+
+        [Fact]
+        public void InGyroMode_LeftAndRightReadRoll_AndLeanReadsYaw()
+        {
+            // reWASD's help: "By default in reWASD, in Gyro mode, yaw stands
+            // for Lean mappings, while the roll is used to look around."
+            var r = Import(File(masks: GyroMasks(70, 71, 72, 73, 68), mappings: KeysFor(30, 31, 32, 33, 34)));
+            var left = KeySource(r.Profile, "KbmKey41");
+            var right = KeySource(r.Profile, "KbmKey53");
+            var leanLeft = KeySource(r.Profile, "KbmKey44");
+            var leanRight = KeySource(r.Profile, "KbmKey46");
+            var up = KeySource(r.Profile, "KbmKey47");
+
+            // Rolling right lowers the right side: SDL's roll is negative.
+            Assert.True(Pressed(right, roll: -2f));
+            Assert.False(Pressed(left, roll: -2f));
+            Assert.True(Pressed(left, roll: 2f));
+            // Turning the nose left is a positive SDL yaw.
+            Assert.True(Pressed(leanLeft, yaw: 2f));
+            Assert.False(Pressed(leanRight, yaw: 2f));
+            Assert.True(Pressed(leanRight, yaw: -2f));
+            // The nose up is a positive SDL pitch.
+            Assert.True(Pressed(up, pitch: 2f));
+            // One line says which axes these are, whatever reads them.
+            Assert.Single(r.Report.Entries, e => e.ReasonKey == ImportReasons.GyroAxes);
+        }
+
+        [Fact]
+        public void AGyroStickSource_PushesRightOnARollToTheRight()
+        {
+            var r = Import(File(mappings: """[{"condition":{"hardware":{"deviceId":1,"stick":"gyro","axis":"x"}},"hardware":{"stick":"right","axis":"x"}}]"""));
+            var src = Row(r.Profile, "RightThumbAxisX").Sources.Single(s => s.Descriptor.StartsWith("Gyro ", StringComparison.Ordinal));
+            // reWASD's help (Gyroscope): "roll your gamepad to the right to
+            // look right". Rolling right lowers the right side, a negative SDL
+            // roll. The row is read the way the engine reads it, with the
+            // axis-frame correction a stick X target applies to the gyro's
+            // horizontal family. Gyro to a stick reaches full scale at 500
+            // deg/s, so 2 rad/s is about a quarter.
+            short pushed = ThroughMotion(s => GyroStickSignProbe.Written(s, src, "RightThumbAxisX"), Flat, Flat, roll: -2f);
+            Assert.True(pushed > 3000, $"a roll to the right should push right, wrote {pushed}");
+            short back = ThroughMotion(s => GyroStickSignProbe.Written(s, src, "RightThumbAxisX"), Flat, Flat, roll: 2f);
+            Assert.True(back < -3000, $"a roll to the left should push left, wrote {back}");
+            Assert.Single(r.Report.Entries, e => e.ReasonKey == ImportReasons.GyroAxes);
+        }
+
+        [Fact]
+        public void AGyroStickSource_TheFilesInvertedFlagPushesLeftOnARollToTheRight()
+        {
+            var r = Import(File(mappings: GyroTo("x", "right", inverted: true)));
+            var src = GyroSourceOn(r.Profile, "RightThumbAxisX");
+            short written = ThroughMotion(s => GyroStickSignProbe.Written(s, src, "RightThumbAxisX"), Flat, Flat, roll: -2f);
+            Assert.True(written < -3000, $"inverted: a roll to the right should push left, wrote {written}");
+        }
+
+        [Theory]
+        [InlineData(false)]
+        [InlineData(true)]
+        public void AGyroMouseSource_MovesRightOnARollToTheRight(bool inverted)
+        {
+            // reWASD's help: "roll your gamepad to the right to look right".
+            // The roll lane is SDL's roll negated, and the mouse lane negates
+            // it into screen space, so without an Invert of its own the row
+            // moves the cursor left. The row is read through the mouse lane
+            // and the KBM controller's screen-space negation.
+            var r = Import(File(mappings: GyroTo("x", "mouse", inverted)));
+            var src = GyroSourceOn(r.Profile, "KbmMouseX");
+            Assert.Equal("Gyro Roll", src.Descriptor);
+            float screen = GyroStickSignProbe.AtRate(s => GyroStickSignProbe.ScreenCounts(s, src, forX: true), roll: -2f);
+            if (inverted) Assert.True(screen < 0f, $"inverted: a roll to the right should move the cursor left, moved {screen}");
+            else Assert.True(screen > 0f, $"a roll to the right should move the cursor right, moved {screen}");
+        }
+
+        /// <summary>A mapping from the gyro's own stick axis to a stick or
+        /// the mouse, with the output's "inverted" flag.</summary>
+        private static string GyroTo(string axis, string toStick, bool inverted = false)
+            => "[{\"condition\":{\"hardware\":{\"deviceId\":1,\"stick\":\"gyro\",\"axis\":\"" + axis + "\"}},"
+             + "\"hardware\":{\"stick\":\"" + toStick + "\",\"axis\":\"" + axis + "\""
+             + (inverted ? ",\"inverted\":true" : "") + "}}]";
+
+        private static MappingSource GyroSourceOn(ProfileData p, string target)
+            => Row(p, target).Sources.Single(s => s.Descriptor.StartsWith("Gyro ", StringComparison.Ordinal));
+
+        [Theory]
+        [InlineData(false)]
+        [InlineData(true)]
+        public void AGyroStickSource_PushesUpOnTheNoseUp(bool inverted)
+        {
+            // reWASD's help (Gyroscope, Advanced settings for Gyro mode): "By
+            // default, you need to move the gamepad's 'nose' up to look up".
+            // The nose up is a positive SDL pitch. The row is read the way the
+            // engine reads it, axis-frame correction and Y negate included,
+            // so the written stick field is up positive.
+            var r = Import(File(mappings: GyroTo("y", "right", inverted)));
+            var src = GyroSourceOn(r.Profile, "RightThumbAxisY");
+            Assert.Equal("Gyro Pitch", src.Descriptor);
+            short written = ThroughMotion(s => GyroStickSignProbe.Written(s, src, "RightThumbAxisY"), Flat, Flat, pitch: 2f);
+            if (inverted) Assert.True(written < -3000, $"inverted: nose up should push down, wrote {written}");
+            else Assert.True(written > 3000, $"nose up should push the stick up, wrote {written}");
+        }
+
+        [Fact]
+        public void AGyroMouseSource_MovesUpOnTheNoseUp()
+        {
+            // The mouse lane already turns the nose up into the cursor up, so
+            // the pitch row to the mouse carries no Invert of its own.
+            var r = Import(File(mappings: GyroTo("y", "mouse")));
+            var src = GyroSourceOn(r.Profile, "KbmMouseY");
+            Assert.False(src.Invert);
+            float screen = GyroStickSignProbe.AtRate(s => GyroStickSignProbe.ScreenCounts(s, src, forX: false), pitch: 2f);
+            Assert.True(screen < 0f, $"nose up should move the cursor up, moved {screen}");
+        }
+
+        [Theory]
+        [InlineData(false)]
+        [InlineData(true)]
+        public void InTiltMode_AGyroStickSourcePushesUpOnTheNoseUp(bool inverted)
+        {
+            // reWASD's help (Gyroscope, Advanced settings for Tilt mode)
+            // repeats it: "By default, you need to move the gamepad's 'nose'
+            // up to look up". Gyro Lean Y is positive with the nose up, which
+            // the Y negate writes as the stick down without an Invert.
+            var r = Import(File(hardware: TiltPad, mappings: GyroTo("y", "right", inverted)));
+            var src = GyroSourceOn(r.Profile, "RightThumbAxisY");
+            Assert.Equal("Gyro Lean Y", src.Descriptor);
+            float s70 = MathF.Sin(70 * MathF.PI / 180f), c70 = MathF.Cos(70 * MathF.PI / 180f);
+            var noseUp = (0f, G * c70, -G * s70);
+            short written = ThroughMotion(s => GyroStickSignProbe.Written(s, src, "RightThumbAxisY"), Flat, noseUp);
+            if (inverted) Assert.True(written < -16000, $"inverted: nose up should push down, wrote {written}");
+            else Assert.True(written > 16000, $"nose up should push the stick up, wrote {written}");
+        }
+
+        private static string TiltPad => Tuned("""{"sticks":[{"name":"gyro","tilt":true}]}""");
+
+        [Fact]
+        public void InTiltMode_DirectionsReadTheTiltAngle()
+        {
+            var r = Import(File(hardware: TiltPad, masks: GyroMasks(70, 71, 68, 69), mappings: KeysFor(30, 31, 32, 33)));
+            var left = KeySource(r.Profile, "KbmKey41");
+            var right = KeySource(r.Profile, "KbmKey53");
+            var up = KeySource(r.Profile, "KbmKey44");
+            var down = KeySource(r.Profile, "KbmKey46");
+            float s70 = MathF.Sin(70 * MathF.PI / 180f), c70 = MathF.Cos(70 * MathF.PI / 180f);
+            // The right edge down: the reading, which points up, leans to -X.
+            var rightDown = (-G * s70, G * c70, 0f);
+            var noseUp = (0f, G * c70, -G * s70);
+            Assert.True(PressedAtTilt(right, rightDown));
+            Assert.False(PressedAtTilt(left, rightDown));
+            Assert.True(PressedAtTilt(up, noseUp));
+            Assert.False(PressedAtTilt(down, noseUp));
+            // The tilt switch is read, so it has no line of its own, and Tilt
+            // mode's directions are no roll or yaw.
+            Assert.False(Names(r, ImportReasons.ControllerSetting, "gyro"));
+            Assert.DoesNotContain(r.Report.Entries, e => e.ReasonKey == ImportReasons.GyroAxes);
+        }
+
+        [Fact]
+        public void InTiltMode_AGyroStickSourceReadsTheTiltAngle_AndLeanIsSkipped()
+        {
+            var r = Import(File(hardware: TiltPad, masks: GyroMasks(72),
+                mappings: "[" + Map(1, "[" + Key(30) + "]") + ","
+                    + """{"condition":{"hardware":{"deviceId":1,"stick":"gyro","axis":"x"}},"hardware":{"stick":"right","axis":"x"}}]"""));
+            var src = Row(r.Profile, "RightThumbAxisX").Sources.Single(s => s.Descriptor.StartsWith("Gyro ", StringComparison.Ordinal));
+            Assert.Equal("Gyro Lean X", src.Descriptor);
+            float s70 = MathF.Sin(70 * MathF.PI / 180f), c70 = MathF.Cos(70 * MathF.PI / 180f);
+            // Read the way the engine reads the row. The axis-frame correction
+            // leaves the lean pair alone, so the right edge down pushes right.
+            short pushed = ThroughMotion(s => GyroStickSignProbe.Written(s, src, "RightThumbAxisX"), Flat, (-G * s70, G * c70, 0f));
+            Assert.True(pushed > 16000, $"the right edge down should push right, wrote {pushed}");
+            Assert.Contains(r.Report.Entries, e => e.Status == TranslationStatus.Skipped && e.ReasonKey == ImportReasons.TiltLean);
+        }
+
+        [Theory]
+        [InlineData(176, 1, 1)]
+        [InlineData(177, -1, -1)]
+        [InlineData(178, 1, -1)]
+        public void TheOtherLeftStickDiagonals_ReadTheirSectors(int id, int right, int up)
+        {
+            var p = Profile(File(masks: "[" + Mask(1, 1, id) + "]", mappings: "[" + Map(1, "[" + Key(57) + "]") + "]"));
+            var src = Row(p, "KbmKey20").Sources[0];
+            var state = Centered();
+            state.Axis[0] = right > 0 ? Right(60) : Left(60);
+            state.Axis[1] = up > 0 ? Up(60) : Down(60);
+            Assert.True(ButtonRead(state, src));
+            state.Axis[0] = 32768;
+            state.Axis[1] = up > 0 ? Up(80) : Down(80);
+            Assert.False(ButtonRead(state, src));
+        }
+
+        [Fact]
+        public void TheRightStickDiagonals_ReadTheRightStick()
+        {
+            var p = Profile(File(masks: "[" + Mask(1, 1, 181) + "]", mappings: "[" + Map(1, "[" + Key(57) + "]") + "]"));
+            var src = Row(p, "KbmKey20").Sources[0];
+            var state = Centered();
+            state.Axis[3] = Left(60);
+            state.Axis[4] = Down(60);
+            Assert.True(ButtonRead(state, src));
+            state.Axis[0] = Left(60);
+            state.Axis[1] = Down(60);
+            state.Axis[3] = 32768;
+            state.Axis[4] = 32768;
+            Assert.False(ButtonRead(state, src));
+        }
+
+        [Fact]
+        public void AThirdStickDiagonal_SaysPadForgeReadsTwoSticks()
+        {
+            var r = Import(File(masks: "[" + Mask(1, 1, 220) + "]", mappings: "[" + Map(1, "[" + Key(57) + "]") + "]"));
+            Assert.Contains(r.Report.Entries, e => e.Status == TranslationStatus.Skipped && e.ReasonKey == ImportReasons.ThirdStick);
+        }
+
+        [Fact]
+        public void ATouchpadDiagonal_ReadsTwoDirectionsTogether_AndSaysWhatTheTouchpadNeeds()
+        {
+            var r = Import(File(virtualType: "ds4", masks: "[" + Mask(1, 1, 95) + "," + Mask(2, 1, 107) + "]",
+                mappings: "[" + Map(1, "[" + Key(57) + "]") + "," + Map(2, "[" + Key(28) + "]") + "]"));
+            var upLeft = Row(r.Profile, "KbmKey20").Sources[0];
+            Assert.Equal("Touchpad 0 DPadUp", upLeft.Descriptor);
+            Assert.Equal("Touchpad 0 DPadLeft", upLeft.GateDescriptor);
+            var downRight = Row(r.Profile, "KbmKey0D").Sources[0];
+            Assert.Equal("Touchpad 1 DPadDown", downRight.Descriptor);
+            Assert.Equal("Touchpad 1 DPadRight", downRight.GateDescriptor);
+            Assert.Single(r.Report.Entries, e => e.ReasonKey == ImportReasons.TouchpadDiagonal);
+        }
+
+        [Theory]
+        [InlineData(74)]
+        [InlineData(76)]
+        [InlineData(145)]
+        [InlineData(162)]
+        public void AGyroZone_SaysWhyItIsSkipped(int id)
+        {
+            var r = Import(File(masks: "[" + Mask(1, 1, id) + "]", mappings: "[" + Map(1, "[" + Key(57) + "]") + "]"));
+            Assert.Contains(r.Report.Entries, e => e.Status == TranslationStatus.Skipped && e.ReasonKey == ImportReasons.GyroZone);
+            Assert.DoesNotContain(r.Report.Entries, e => e.ReasonKey == ImportReasons.UnknownInput);
+        }
+
+        [Fact]
+        public void TheTestHostReadsKeysThroughTheUsTable()
+        {
+            // The fence keeps the build machine's layout out of every import
+            // test, and the layout path is driven by AKeyReadsThroughTheActiveLayout.
+            Assert.True(DirectInputKeys.OffLimitsForTest);
+            Assert.True(DirectInputKeys.TryGetVirtualKey(0x2C, out byte vk));
+            Assert.Equal(0x5A, vk);
+        }
+
+        [Theory]
+        [InlineData("PadForge.App/MainWindow.xaml.cs")]
+        [InlineData("PadForge.App/Views/IconPicker.xaml.cs")]
+        [InlineData("PadForge.App/Views/LearnHandheldButtonDialog.xaml.cs")]
+        [InlineData("PadForge.App/Views/ManageProfilesDialog.xaml.cs")]
+        [InlineData("PadForge.App/Views/MapKeyLightsDialog.xaml.cs")]
+        [InlineData("PadForge.App/ViewModels/PadViewModel.AudioDsp.cs")]
+        [InlineData("PadForge.App/Views/PadPage.xaml.cs")]
+        public void FileDialogTypeNames_ComeFromTheStrings(string file)
+        {
+            // A file dialog's type names are words the user reads, so every
+            // one comes from the strings. A literal in a Filter assignment may
+            // hold extensions and nothing else.
+            string src = System.IO.File.ReadAllText(AuditDelta20260823Tests.FindRepoFile(file.Replace('/', Path.DirectorySeparatorChar)));
+            var filters = System.Text.RegularExpressions.Regex.Matches(src, @"Filter\s*=\s*[^\n]*(\n\s*\+[^\n]*)*");
+            Assert.NotEmpty(filters);
+            foreach (System.Text.RegularExpressions.Match m in filters)
+            {
+                string code = System.Text.RegularExpressions.Regex.Replace(m.Value, @"\{[^}]*\}", "");
+                foreach (System.Text.RegularExpressions.Match literal in System.Text.RegularExpressions.Regex.Matches(code, "\"([^\"]*)\""))
+                {
+                    string words = System.Text.RegularExpressions.Regex.Replace(literal.Groups[1].Value, @"\*\.[A-Za-z0-9]+", "");
+                    Assert.DoesNotMatch("[A-Za-z]{3,}", words);
+                }
+            }
+        }
+
+        [Fact]
+        public void ThePreviewNamesTheProfileTheAddCreates()
+        {
+            var saved = SettingsManager.Profiles.ToList();
+            try
+            {
+                SettingsManager.Profiles.Clear();
+                Assert.Equal("Test Game", PadForge.Views.ImportConfigDialog.PreviewName(Import(File())));
+                SettingsManager.Profiles.Add(new ProfileData { Name = "test game" });
+                Assert.Equal("Test Game (2)", PadForge.Views.ImportConfigDialog.PreviewName(Import(File())));
+                Assert.Equal("Test Game (2)", SettingsManager.UniqueProfileName("Test Game"));
+            }
+            finally
+            {
+                SettingsManager.Profiles.Clear();
+                SettingsManager.Profiles.AddRange(saved);
+            }
         }
     }
 }

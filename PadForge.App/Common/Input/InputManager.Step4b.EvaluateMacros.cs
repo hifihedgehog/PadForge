@@ -933,6 +933,9 @@ namespace PadForge.Common.Input
                     // Looping macro sounds are trigger-bound on this path:
                     // release stops them (one-shots play out).
                     SoundMacroService.StopLoopsForMacro(macro.PadIndex, macro);
+                    // A press leg the release cut short owes its up, and no
+                    // later pass of this run will send it (EndMacroRun's drain).
+                    ReleasePendingPresses(macro);
                 }
 
                 // Execute current action if macro is running.
@@ -1082,6 +1085,161 @@ namespace PadForge.Common.Input
             if (!SlotDeclaresMask(ownSet, mask))
                 return AnySlotEngages(sets, mask);
             return false;
+        }
+
+        /// <summary>A layer macro's trigger key (keyboard state index) or
+        /// mouse button (0=L, 1=M, 2=R, 3=X1, 4=X2) that the low-level hooks
+        /// eat while the macro's layer gate is open
+        /// (InputService.CollectMacroTriggerKeys).</summary>
+        internal readonly record struct HookTriggerKey(MacroItem Macro, int Index, bool Mouse);
+
+        private static volatile HookTriggerKey[] _layerGatedHookKeys = Array.Empty<HookTriggerKey>();
+
+        // What the last publish handed the hooks, and this tick's scratch.
+        // Poll thread only (the loop's exit publish runs on it too).
+        private static readonly ulong[] _gatedKeyBitsPublished = new ulong[4];
+        private static readonly ulong[] _gatedKeyBitsNow = new ulong[4];
+        private static int _gatedMouseBitsPublished;
+
+        /// <summary>The apply's layer macro trigger inputs, on the UI thread.
+        /// The poll thread reads them each tick.</summary>
+        internal static void SetLayerGatedHookKeys(HookTriggerKey[] keys)
+            => _layerGatedHookKeys = keys ?? Array.Empty<HookTriggerKey>();
+
+        /// <summary>A key (keyboard state index) or mouse button that a
+        /// mapping row reads and the low-level hooks eat only while the
+        /// engine evaluates that row (<see cref="RowReadsUnder"/>), from
+        /// InputService.CollectSuppressedInputs.</summary>
+        internal readonly record struct HookRowKey(int Slot, MappingSet Set, MappingRow Row, int Index, bool Mouse);
+
+        private static volatile HookRowKey[] _layerGatedHookRows = Array.Empty<HookRowKey>();
+        private static volatile bool _hookRowsChanged;
+
+        // The layer each row-gated slot had engaged when the row bits were
+        // last worked out, and those bits. Poll thread only.
+        private static readonly string[] _hookRowLayers = new string[MaxPads];
+        private static readonly ulong[] _hookRowKeyBits = new ulong[4];
+        private static int _hookRowMouseBits;
+        private static bool _hookRowBitsCurrent;
+
+        /// <summary>The apply's layer-gated row inputs, on the UI thread.
+        /// The poll thread works their bits out again on its next publish.</summary>
+        internal static void SetLayerGatedHookRows(HookRowKey[] rows)
+        {
+            _layerGatedHookRows = rows ?? Array.Empty<HookRowKey>();
+            _hookRowsChanged = true;
+        }
+
+        /// <summary>Poll thread: the row inputs the hooks eat now, worked out
+        /// again only when the apply handed new ones or a row-gated slot's
+        /// engaged layer moved. Otherwise the last bits stand, read with no
+        /// allocation.</summary>
+        private static void UpdateHookRowBits()
+        {
+            bool recompute = !_hookRowBitsCurrent;
+            if (_hookRowsChanged)
+            {
+                _hookRowsChanged = false;
+                recompute = true;
+            }
+            var rows = _layerGatedHookRows;
+            var sets = SettingsManager.SlotMappingSets;
+            uint seen = 0;
+            for (int i = 0; i < rows.Length; i++)
+            {
+                int slot = rows[i].Slot;
+                if ((uint)slot >= MaxPads || (seen & (1u << slot)) != 0) continue;
+                seen |= 1u << slot;
+                // The set the engine reads now, as its own passes ask, so the
+                // engaged-layer memo is not rebuilt each tick when a writer
+                // swapped the set before the next apply.
+                var live = sets != null && slot < sets.Length ? sets[slot] : null;
+                string engaged = GetEngagedLayerMask(slot, live ?? rows[i].Set);
+                if (string.Equals(engaged, _hookRowLayers[slot], StringComparison.Ordinal)) continue;
+                _hookRowLayers[slot] = engaged;
+                recompute = true;
+            }
+            if (!recompute) return;
+
+            _hookRowBitsCurrent = true;
+            Array.Clear(_hookRowKeyBits);
+            _hookRowMouseBits = 0;
+            for (int i = 0; i < rows.Length; i++)
+            {
+                var e = rows[i];
+                if ((uint)e.Slot >= MaxPads || !RowReadsUnder(e.Set, e.Row, _hookRowLayers[e.Slot])) continue;
+                if (e.Mouse)
+                {
+                    if ((uint)e.Index < 5) _hookRowMouseBits |= 1 << e.Index;
+                }
+                else if ((uint)e.Index < 256)
+                {
+                    _hookRowKeyBits[e.Index >> 6] |= 1UL << (e.Index & 63);
+                }
+            }
+        }
+
+        /// <summary>Poll thread, after the macro pass: hands the hooks the
+        /// trigger inputs of the layer macros whose gate is open now, by the
+        /// engine's own rule (<see cref="MacroLayerGateOpen"/>), with the
+        /// inputs of the layer-gated rows the engine evaluates now
+        /// (<see cref="RowReadsUnder"/>), and only when they changed, so a
+        /// tick with nothing new allocates nothing and makes no call.
+        /// <paramref name="evaluating"/> is false while no slot's macros or
+        /// rows run (idle, a focus suspension, the loop's exit), and then the
+        /// hooks eat no consume set at all, the static one included
+        /// (InputHookManager.ConsumePaused). The hooks pair each key's up with its
+        /// down, so a key held across a change goes on as it began
+        /// (InputHookManager.ConsumeKey).</summary>
+        internal static void PublishLayerGatedHookKeys(bool evaluating)
+        {
+            // With nothing evaluated the hooks eat no consume set, the static
+            // one included. Written only when it changes.
+            if (PadForge.Engine.Common.InputHookManager.ConsumePaused == evaluating)
+                PadForge.Engine.Common.InputHookManager.ConsumePaused = !evaluating;
+
+            var entries = _layerGatedHookKeys;
+            var keyBits = _gatedKeyBitsNow;
+            Array.Clear(keyBits);
+            int mouseBits = 0;
+            if (!evaluating)
+            {
+                // The next evaluating tick works the row bits out afresh.
+                _hookRowBitsCurrent = false;
+            }
+            else
+            {
+                UpdateHookRowBits();
+                for (int w = 0; w < keyBits.Length; w++) keyBits[w] = _hookRowKeyBits[w];
+                mouseBits = _hookRowMouseBits;
+                for (int i = 0; i < entries.Length; i++)
+                {
+                    var e = entries[i];
+                    if (e.Macro == null || !MacroLayerGateOpen(e.Macro)) continue;
+                    if (e.Mouse)
+                    {
+                        if ((uint)e.Index < 5) mouseBits |= 1 << e.Index;
+                    }
+                    else if ((uint)e.Index < 256)
+                    {
+                        keyBits[e.Index >> 6] |= 1UL << (e.Index & 63);
+                    }
+                }
+            }
+
+            if (mouseBits == _gatedMouseBitsPublished
+                && keyBits.AsSpan().SequenceEqual(_gatedKeyBitsPublished))
+                return;
+
+            keyBits.CopyTo(_gatedKeyBitsPublished, 0);
+            _gatedMouseBitsPublished = mouseBits;
+            var keys = new HashSet<int>();
+            for (int k = 0; k < 256; k++)
+                if ((keyBits[k >> 6] & (1UL << (k & 63))) != 0) keys.Add(k);
+            var buttons = new HashSet<int>();
+            for (int b = 0; b < 5; b++)
+                if ((mouseBits & (1 << b)) != 0) buttons.Add(b);
+            PadForge.Engine.Common.InputHookManager.SetLayerGatedSuppression(keys, buttons);
         }
 
         /// <summary>DC20. With the macro's layer gate closed on the layer
@@ -1313,6 +1471,19 @@ namespace PadForge.Common.Input
             return false;
         }
 
+        /// <summary>Ends an Until Next Press run when its trigger is pressed
+        /// again or its layer closes (#561), and sends the up any press leg
+        /// it left down owes, as every other end of a run does.</summary>
+        private void EndRunOnNextPress(MacroItem macro)
+        {
+            ReleasePendingPresses(macro);
+            macro.IsExecuting = false;
+            macro.CurrentActionIndex = 0;
+            macro.ComboResumeIndex = 0;
+            ClearAxisYields(macro);
+            SoundMacroService.StopLoopsForMacro(macro.PadIndex, macro);
+        }
+
         /// <summary>Shared DoublePress trigger evaluation (translator v17,
         /// Steam's Double_Press activator) for both slot evaluators. Fires
         /// exactly once, on a rising edge whose predecessor rising edge lay
@@ -1325,15 +1496,6 @@ namespace PadForge.Common.Input
         /// through the second press's hold, so UntilRelease action shapes
         /// stop on its release, Valve's "if held on the second press, it
         /// will remain pressed" semantics.</summary>
-        private static void EndRunOnNextPress(MacroItem macro)
-        {
-            macro.IsExecuting = false;
-            macro.CurrentActionIndex = 0;
-            macro.ComboResumeIndex = 0;
-            ClearAxisYields(macro);
-            SoundMacroService.StopLoopsForMacro(macro.PadIndex, macro);
-        }
-
         private static bool EvaluateDoublePressTrigger(MacroItem macro, bool triggerActive, bool wasTriggerActive)
         {
             if (!triggerActive || wasTriggerActive) return false;
@@ -3241,7 +3403,7 @@ namespace PadForge.Common.Input
                     break;
 
                 case MacroActionType.ProfileShortcut:
-                    RunProfileShortcut(action.ProfileShortcutMode, ProfileIdNamed(action.ProfileShortcutName));
+                    RunProfileShortcutAction(action);
                     AdvanceAction(macro);
                     break;
 
@@ -3699,15 +3861,16 @@ namespace PadForge.Common.Input
         /// Without the cancel, a re-press during that Delay leaves the
         /// stale Clear in flight and it releases the NEW hold when the
         /// delay elapses. Stopping the twin mid-sequence is the
-        /// UntilRelease stop shape: execution state only, latches stay
-        /// where they are.</summary>
-        private static void CancelExecutingPairTwin(MacroItem[] macros, MacroItem self)
+        /// UntilRelease stop shape: latches stay where they are, and a
+        /// press leg the twin left down gets the up it owes.</summary>
+        private void CancelExecutingPairTwin(MacroItem[] macros, MacroItem self)
         {
             for (int i = 0; i < macros.Length; i++)
             {
                 var twin = macros[i];
                 if (twin == null || ReferenceEquals(twin, self)) continue;
                 if (twin.PairId != self.PairId || !twin.IsExecuting) continue;
+                ReleasePendingPresses(twin);
                 twin.IsExecuting = false;
                 twin.CurrentActionIndex = 0;
                 // #237: a canceled twin's combo state dies with it.
@@ -5385,6 +5548,9 @@ namespace PadForge.Common.Input
                     // Looping macro sounds are trigger-bound on this path:
                     // release stops them (one-shots play out).
                     SoundMacroService.StopLoopsForMacro(macro.PadIndex, macro);
+                    // A press leg the release cut short owes its up, and no
+                    // later pass of this run will send it (EndMacroRun's drain).
+                    ReleasePendingPresses(macro);
                 }
 
                 if (macro.IsExecuting && macro.Actions.Count == 0) EndMacroRun(macro); // X14 twin
@@ -6215,7 +6381,7 @@ namespace PadForge.Common.Input
                     break;
 
                 case MacroActionType.ProfileShortcut:
-                    RunProfileShortcut(action.ProfileShortcutMode, ProfileIdNamed(action.ProfileShortcutName));
+                    RunProfileShortcutAction(action);
                     AdvanceAction(macro);
                     break;
 
@@ -6875,7 +7041,7 @@ namespace PadForge.Common.Input
         // Accumulated mouse-move delta (macro actions + the KBM virtual
         // controller's continuous lanes). Written by the poll thread
         // (~1000 Hz), drained by the dedicated mouse-injector
-        // thread (FlushPendingMouseMove). Keeping SendInput OFF the poll thread is
+        // thread (FlushPendingInput). Keeping SendInput OFF the poll thread is
         // what stops a mouse-move macro from collapsing the 1000 Hz input loop:
         // injected mouse movement is processed synchronously (it traverses every
         // process's low-level mouse hook chain plus the cursor/DWM update), so a
@@ -6887,6 +7053,51 @@ namespace PadForge.Common.Input
         private static int _pendingScroll;
         private static int _pendingScrollH;
         private static readonly INPUT[] _mouseInjectBuf = new INPUT[1];
+
+        // The ordered output queue. Every key and button event PadForge
+        // injects (the macros, the Keyboard + Mouse virtual controller, the
+        // On-Screen Keyboard) goes in here, never to SendInput on the thread
+        // that made it. SendInput waits on every program's low-level hook
+        // for each event it injects, measured at 31 ms a key against a 30 ms
+        // hook, so a key sent on the poll thread held the 1000 Hz loop for
+        // as long as the slowest hook ran. The injector thread sends the
+        // queue in order (FlushPendingInput). A ring of INPUTs, grown only
+        // when a burst outgrows it, so the steady state allocates nothing.
+        // Producers hold _injectQueueLock only to copy events in, and the
+        // drainer only to copy them out, never across a SendInput.
+        private static readonly object _injectQueueLock = new();
+        private static INPUT[] _injectQueue = new INPUT[1024];
+        private static int _injectQueueHead;
+        private static int _injectQueueCount;
+
+        // The queue's entries: how many events each producer's batch holds,
+        // in order beside the event ring. The drain sends each entry as its
+        // own SendInput call, as each key event went out before the queue.
+        // One call for a tap's down and up queued while the injector sat in
+        // a slow hook would give both one timestamp, a press of no length
+        // (Individual calls, docs virtual-controllers.md).
+        private static int[] _injectEntries = new int[256];
+        private static int _injectEntryHead;
+        private static int _injectEntryCount;
+
+        // The most events one entry holds, the Text Block's old chunk size
+        // and the size of the drain's send buffer.
+        private const int MaxEventsPerEntry = 4096;
+
+        // One drainer at a time, so two threads draining (the injector, one
+        // a stop left waiting for its poll thread, Stop's own last send)
+        // never send the queue's entries out of order. The send buffer
+        // belongs to the holder and fits the largest entry. 4096 events per
+        // SendInput is the Text Block's old chunk size: AutoHotkey caps its
+        // SendInput arrays because giant batches drop tail keystrokes.
+        private static readonly object _injectDrainLock = new();
+        private static readonly INPUT[] _injectSendBuf = new INPUT[MaxEventsPerEntry];
+
+        // A batch's events (a Text Block's slice, an On-Screen Keyboard tap),
+        // built here before they are queued as one entry. Both makers run on
+        // the poll thread, and the lock keeps that an assumption no caller
+        // can break.
+        private static readonly List<INPUT> _batchInputScratch = new();
 
         /// <summary>Poll thread: accumulate the desired mouse delta. Lock-free and
         /// syscall-free, so a mouse-move macro adds no per-poll SendInput cost. The
@@ -6923,58 +7134,224 @@ namespace PadForge.Common.Input
                 MouseWorkSignal.Set();
         }
 
-        internal static bool HasPendingMouseInput()
-            => System.Threading.Volatile.Read(ref _pendingMouseDx) != 0
+        /// <summary>True while anything waits for the injector: a queued
+        /// event or an unsent move or wheel delta.</summary>
+        internal static bool HasPendingInput()
+            => System.Threading.Volatile.Read(ref _injectQueueCount) != 0
+            || System.Threading.Volatile.Read(ref _pendingMouseDx) != 0
             || System.Threading.Volatile.Read(ref _pendingMouseDy) != 0
             || System.Threading.Volatile.Read(ref _pendingScroll) != 0
             || System.Threading.Volatile.Read(ref _pendingScrollH) != 0;
 
-        /// <summary>Injector thread only: drain the accumulated mouse move + scroll
-        /// deltas and inject them off the poll thread. Every MouseMove / MouseScroll
-        /// action's contribution since the last flush is batched, so the expensive
-        /// SendInput syscall runs here on its own cadence instead of N times per poll
-        /// on the rate-holding thread. Reuses one INPUT[] (no per-flush alloc).
-        /// Single-threaded (the injector loop), so the shared buffer is safe.</summary>
-        internal static bool FlushPendingMouseInput()
+        private static INPUT MouseOutput(int dx, int dy, uint mouseData, uint flags) => new()
         {
-            bool injectedAny = false;
-            int dx = Interlocked.Exchange(ref _pendingMouseDx, 0);
-            int dy = Interlocked.Exchange(ref _pendingMouseDy, 0);
-            if (dx != 0 || dy != 0)
-            {
-                _mouseInjectBuf[0] = new INPUT
-                {
-                    type = INPUT_MOUSE,
-                    u = new InputUnion { mi = new MOUSEINPUT { dx = dx, dy = dy, dwFlags = MOUSEEVENTF_MOVE, dwExtraInfo = PadForge.Engine.Common.InputHookManager.OutputTag } }
-                };
-                SendInput(1, _mouseInjectBuf, Marshal.SizeOf<INPUT>());
-                injectedAny = true;
-            }
+            type = INPUT_MOUSE,
+            u = new InputUnion { mi = new MOUSEINPUT { dx = dx, dy = dy, mouseData = mouseData, dwFlags = flags, dwExtraInfo = PadForge.Engine.Common.InputHookManager.OutputTag } }
+        };
 
-            int scroll = Interlocked.Exchange(ref _pendingScroll, 0);
-            if (scroll != 0)
+        private static INPUT KeyOutput(ushort vk, ushort scan, uint flags) => new()
+        {
+            type = INPUT_KEYBOARD,
+            u = new InputUnion
             {
-                _mouseInjectBuf[0] = new INPUT
+                ki = new KEYBDINPUT
                 {
-                    type = INPUT_MOUSE,
-                    u = new InputUnion { mi = new MOUSEINPUT { mouseData = (uint)scroll, dwFlags = MOUSEEVENTF_WHEEL, dwExtraInfo = PadForge.Engine.Common.InputHookManager.OutputTag } }
-                };
-                SendInput(1, _mouseInjectBuf, Marshal.SizeOf<INPUT>());
-                injectedAny = true;
+                    wVk = vk,
+                    wScan = scan,
+                    dwFlags = flags,
+                    // PadForge's own output: the hooks and the Raw Input
+                    // reader pass it by (OutputTag).
+                    dwExtraInfo = PadForge.Engine.Common.InputHookManager.OutputTag
+                }
             }
+        };
 
-            int scrollH = Interlocked.Exchange(ref _pendingScrollH, 0);
-            if (scrollH != 0)
+        /// <summary>Queues events for the injector in order, with no system
+        /// call but the injector's wake on the first event after an empty
+        /// queue. The move and wheel deltas accumulated so far are sealed in
+        /// ahead of them, each lane its own entry, so a move made before a
+        /// click lands before it and one made after lands after. Deltas
+        /// accumulated after the last seal stay in the accumulators and batch
+        /// as before. The events are one entry, one SendInput call, split
+        /// only past <see cref="MaxEventsPerEntry"/>.</summary>
+        private static void QueueInputs(ReadOnlySpan<INPUT> events)
+        {
+            if (events.Length == 0) return;
+            bool wake;
+            lock (_injectQueueLock)
             {
-                _mouseInjectBuf[0] = new INPUT
+                wake = _injectQueueCount == 0;
+                int dx = Interlocked.Exchange(ref _pendingMouseDx, 0);
+                int dy = Interlocked.Exchange(ref _pendingMouseDy, 0);
+                int scroll = Interlocked.Exchange(ref _pendingScroll, 0);
+                int scrollH = Interlocked.Exchange(ref _pendingScrollH, 0);
+                if (dx != 0 || dy != 0) { AppendQueued(MouseOutput(dx, dy, 0, MOUSEEVENTF_MOVE)); AppendEntry(1); }
+                if (scroll != 0) { AppendQueued(MouseOutput(0, 0, (uint)scroll, MOUSEEVENTF_WHEEL)); AppendEntry(1); }
+                if (scrollH != 0) { AppendQueued(MouseOutput(0, 0, (uint)scrollH, MOUSEEVENTF_HWHEEL)); AppendEntry(1); }
+                for (int off = 0; off < events.Length; off += MaxEventsPerEntry)
                 {
-                    type = INPUT_MOUSE,
-                    u = new InputUnion { mi = new MOUSEINPUT { mouseData = (uint)scrollH, dwFlags = MOUSEEVENTF_HWHEEL, dwExtraInfo = PadForge.Engine.Common.InputHookManager.OutputTag } }
-                };
-                SendInput(1, _mouseInjectBuf, Marshal.SizeOf<INPUT>());
-                injectedAny = true;
+                    int n = Math.Min(MaxEventsPerEntry, events.Length - off);
+                    for (int i = 0; i < n; i++) AppendQueued(events[off + i]);
+                    AppendEntry(n);
+                }
             }
-            return injectedAny;
+            if (wake) MouseWorkSignal.Set();
+        }
+
+        /// <summary>Under <see cref="_injectQueueLock"/>: closes an entry of
+        /// <paramref name="length"/> events just appended, doubling the entry
+        /// ring when it is full.</summary>
+        private static void AppendEntry(int length)
+        {
+            var ring = _injectEntries;
+            if (_injectEntryCount == ring.Length)
+            {
+                var grown = new int[ring.Length * 2];
+                for (int i = 0; i < _injectEntryCount; i++)
+                    grown[i] = ring[(_injectEntryHead + i) & (ring.Length - 1)];
+                _injectEntries = ring = grown;
+                _injectEntryHead = 0;
+            }
+            ring[(_injectEntryHead + _injectEntryCount) & (ring.Length - 1)] = length;
+            _injectEntryCount++;
+        }
+
+        /// <summary>Under <see cref="_injectQueueLock"/>: one event at the
+        /// tail, doubling the ring when it is full.</summary>
+        private static void AppendQueued(in INPUT e)
+        {
+            var ring = _injectQueue;
+            if (_injectQueueCount == ring.Length)
+            {
+                var grown = new INPUT[ring.Length * 2];
+                for (int i = 0; i < _injectQueueCount; i++)
+                    grown[i] = ring[(_injectQueueHead + i) & (ring.Length - 1)];
+                _injectQueue = ring = grown;
+                _injectQueueHead = 0;
+            }
+            ring[(_injectQueueHead + _injectQueueCount) & (ring.Length - 1)] = e;
+            _injectQueueCount++;
+        }
+
+        /// <summary>A key event for the output queue, tagged as PadForge's
+        /// own output. The Keyboard + Mouse virtual controller and the
+        /// On-Screen Keyboard queue their keys here, after their own checks.</summary>
+        internal static void QueueKeyboardOutput(ushort vk, ushort scan, uint flags)
+        {
+            var e = KeyOutput(vk, scan, flags);
+            QueueInputs(new ReadOnlySpan<INPUT>(in e));
+        }
+
+        /// <summary>Several key events queued as one batch, so the injector
+        /// sends them in one SendInput: a tap with its modifiers, a typed
+        /// string.</summary>
+        internal static void QueueKeyboardOutputs(ReadOnlySpan<(ushort Vk, ushort Scan, uint Flags)> keys)
+        {
+            lock (_batchInputScratch)
+            {
+                _batchInputScratch.Clear();
+                foreach (var (vk, scan, flags) in keys) _batchInputScratch.Add(KeyOutput(vk, scan, flags));
+                QueueInputs(CollectionsMarshal.AsSpan(_batchInputScratch));
+            }
+        }
+
+        /// <summary>A mouse button event for the output queue, tagged as
+        /// PadForge's own output: MOUSEEVENTF flags, and the X button in
+        /// <paramref name="mouseData"/>.</summary>
+        internal static void QueueMouseButtonOutput(uint flags, uint mouseData)
+        {
+            var e = MouseOutput(0, 0, mouseData, flags);
+            QueueInputs(new ReadOnlySpan<INPUT>(in e));
+        }
+
+        /// <summary>The injector thread's send, and Stop's last one: sends
+        /// everything queued, in order, one SendInput call per entry, then
+        /// the move and wheel deltas accumulated since the last seal, each
+        /// lane as one event. Moves and wheels batch at the injector's
+        /// cadence, so the expensive SendInput runs here instead of N times
+        /// per poll on the rate-holding thread. The unsealed deltas are taken
+        /// only once the queue reads empty under its lock, so they are always
+        /// younger than every queued event. Reuses its buffers (no per-flush
+        /// alloc). True when anything was sent.
+        ///
+        /// <para>It returns only from a check, under the queue's lock, that
+        /// found the queue empty, with no send after it, so an event queued
+        /// while a drainer holds the drain lock goes out with that drain.
+        /// That is what lets <paramref name="lockWaitMs"/> bound the wait: a
+        /// caller that cannot take the drain lock in time leaves its events
+        /// to the drain that holds it.</para></summary>
+        internal static bool FlushPendingInput(int lockWaitMs = Timeout.Infinite)
+        {
+            if (!Monitor.TryEnter(_injectDrainLock, lockWaitMs)) return false;
+            try
+            {
+                bool injectedAny = false;
+                bool motionSent = false;
+                while (true)
+                {
+                    int n = 0, dx = 0, dy = 0, scroll = 0, scrollH = 0;
+                    lock (_injectQueueLock)
+                    {
+                        if (_injectQueueCount > 0)
+                        {
+                            // One entry, one producer's batch, one call.
+                            var ring = _injectQueue;
+                            var entries = _injectEntries;
+                            n = entries[_injectEntryHead];
+                            _injectEntryHead = (_injectEntryHead + 1) & (entries.Length - 1);
+                            _injectEntryCount--;
+                            for (int i = 0; i < n; i++)
+                                _injectSendBuf[i] = ring[(_injectQueueHead + i) & (ring.Length - 1)];
+                            _injectQueueHead = (_injectQueueHead + n) & (ring.Length - 1);
+                            _injectQueueCount -= n;
+                        }
+                        else if (motionSent)
+                        {
+                            return injectedAny;
+                        }
+                        else
+                        {
+                            dx = Interlocked.Exchange(ref _pendingMouseDx, 0);
+                            dy = Interlocked.Exchange(ref _pendingMouseDy, 0);
+                            scroll = Interlocked.Exchange(ref _pendingScroll, 0);
+                            scrollH = Interlocked.Exchange(ref _pendingScrollH, 0);
+                            if (dx == 0 && dy == 0 && scroll == 0 && scrollH == 0)
+                                return injectedAny;
+                        }
+                    }
+                    if (n > 0)
+                    {
+                        SendQueued(_injectSendBuf, n);
+                        injectedAny = true;
+                        continue;
+                    }
+
+                    // The unsealed deltas go once a call, so the moves keep
+                    // the injector's batch cadence. The loop then checks the
+                    // queue once more before it returns.
+                    motionSent = true;
+                    injectedAny = true;
+                    if (dx != 0 || dy != 0)
+                    {
+                        _mouseInjectBuf[0] = MouseOutput(dx, dy, 0, MOUSEEVENTF_MOVE);
+                        SendQueued(_mouseInjectBuf, 1);
+                    }
+                    if (scroll != 0)
+                    {
+                        _mouseInjectBuf[0] = MouseOutput(0, 0, (uint)scroll, MOUSEEVENTF_WHEEL);
+                        SendQueued(_mouseInjectBuf, 1);
+                    }
+                    if (scrollH != 0)
+                    {
+                        _mouseInjectBuf[0] = MouseOutput(0, 0, (uint)scrollH, MOUSEEVENTF_HWHEEL);
+                        SendQueued(_mouseInjectBuf, 1);
+                    }
+                }
+            }
+            finally
+            {
+                Monitor.Exit(_injectDrainLock);
+            }
         }
 
         private static void SendMouseButtonInput(MacroMouseButton button, bool down)
@@ -6991,12 +7368,7 @@ namespace PadForge.Common.Input
                 case MacroMouseButton.X2:     flags = down ? MOUSEEVENTF_XDOWN : MOUSEEVENTF_XUP; mouseData = 2; break;
                 default: return;
             }
-            var input = new INPUT
-            {
-                type = INPUT_MOUSE,
-                u = new InputUnion { mi = new MOUSEINPUT { dwFlags = flags, mouseData = mouseData, dwExtraInfo = PadForge.Engine.Common.InputHookManager.OutputTag } }
-            };
-            SendInput(1, new[] { input }, Marshal.SizeOf<INPUT>());
+            QueueMouseButtonOutput(flags, mouseData);
         }
 
         /// <summary>Poll thread: accumulate the desired scroll amount. Like
@@ -7105,26 +7477,7 @@ namespace PadForge.Common.Input
         {
             if (_currentMacroSlotRestricted) return; // gamepad-only peer: no keystrokes
             var (vk, scanCode, flags) = MacroKeyEvent(virtualKeyCode, keyUp);
-
-            var input = new INPUT
-            {
-                type = INPUT_KEYBOARD,
-                u = new InputUnion
-                {
-                    ki = new KEYBDINPUT
-                    {
-                        wVk = vk,
-                        wScan = scanCode,
-                        dwFlags = flags,
-                        time = 0,
-                        // PadForge's own output: the hooks and the Raw
-                        // Input reader pass it by (OutputTag).
-                        dwExtraInfo = PadForge.Engine.Common.InputHookManager.OutputTag
-                    }
-                }
-            };
-
-            SendInput(1, new[] { input }, Marshal.SizeOf<INPUT>());
+            QueueKeyboardOutput(vk, scanCode, flags);
         }
 
         // ─────────────────────────────────────────────
@@ -7133,12 +7486,11 @@ namespace PadForge.Common.Input
 
         /// <summary>Runs a TextBlock action's frame-paced Unicode typing. Returns
         /// true when the whole text has been emitted and the sequence can advance.
-        /// Delay 0 emits the entire string as ONE batched SendInput call on the
-        /// first tick; a per-character delay emits at most a few characters per
-        /// tick. Never a blocking loop: macro execution runs on the ~1 kHz poll
-        /// thread, and per-poll SendInput churn is exactly what dragged the loop
-        /// to ~200 Hz before the mouse injector existed (see the injector's block
-        /// comment in this file).</summary>
+        /// Delay 0 queues the entire string as one batch on the first tick, and
+        /// a per-character delay queues at most a few characters per tick. Never
+        /// a blocking loop: macro execution runs on the ~1 kHz poll thread, and
+        /// the injector thread makes the SendInput calls (see the output
+        /// queue's block comment in this file).</summary>
         private static bool ExecuteTextBlockAction(MacroAction action, double actionElapsed)
         {
             string text = action.TextContent;
@@ -7158,8 +7510,9 @@ namespace PadForge.Common.Input
             return false;
         }
 
-        /// <summary>Emits <paramref name="text"/>[from..to) as one batched SendInput
-        /// call. Characters ride KEYEVENTF_UNICODE (wVk 0, wScan = UTF-16 code unit,
+        /// <summary>Queues <paramref name="text"/>[from..to) as one batch, which
+        /// the injector sends in one SendInput call up to 4096 events.
+        /// Characters ride KEYEVENTF_UNICODE (wVk 0, wScan = UTF-16 code unit,
         /// the AutoHotkey SendText mechanism), which is layout-independent and needs
         /// no shift-state juggling. Surrogate halves emit as consecutive down/up
         /// pairs in the same batch and the target app's message loop reassembles
@@ -7169,63 +7522,41 @@ namespace PadForge.Common.Input
         {
             if (_currentMacroSlotRestricted) return; // gamepad-only peer: no keystrokes
 
-            var inputs = new List<INPUT>((to - from) * 2);
-            for (int i = from; i < to; i++)
+            lock (_batchInputScratch)
             {
-                char c = text[i];
-                if (c == '\r')
+                var inputs = _batchInputScratch;
+                inputs.Clear();
+                for (int i = from; i < to; i++)
                 {
-                    // CRLF folds to one Enter: skip the '\r' and let the '\n'
-                    // emit it (the pair can straddle an emission boundary, so
-                    // the lookahead checks the full text, not the slice). A
-                    // bare '\r' still gets its own Enter.
-                    if (i + 1 < text.Length && text[i + 1] == '\n') continue;
-                    AppendVkPair(inputs, VK_RETURN);
+                    char c = text[i];
+                    if (c == '\r')
+                    {
+                        // CRLF folds to one Enter: skip the '\r' and let the '\n'
+                        // emit it (the pair can straddle an emission boundary, so
+                        // the lookahead checks the full text, not the slice). A
+                        // bare '\r' still gets its own Enter.
+                        if (i + 1 < text.Length && text[i + 1] == '\n') continue;
+                        AppendVkPair(inputs, VK_RETURN);
+                    }
+                    else if (c == '\n') AppendVkPair(inputs, VK_RETURN);
+                    else if (c == '\t') AppendVkPair(inputs, VK_TAB);
+                    else AppendUnicodePair(inputs, c);
                 }
-                else if (c == '\n') AppendVkPair(inputs, VK_RETURN);
-                else if (c == '\t') AppendVkPair(inputs, VK_TAB);
-                else AppendUnicodePair(inputs, c);
-            }
-
-            // Chunk oversized batches. AutoHotkey (the reference for this
-            // mechanism) caps its SendInput arrays because giant batches drop
-            // tail keystrokes; 4096 events (2048 characters) per call stays far
-            // under that scale while normal texts still go out in one call.
-            const int maxInputsPerSend = 4096;
-            for (int off = 0; off < inputs.Count; off += maxInputsPerSend)
-            {
-                int n = Math.Min(maxInputsPerSend, inputs.Count - off);
-                SendInput((uint)n, inputs.GetRange(off, n).ToArray(), Marshal.SizeOf<INPUT>());
+                QueueInputs(CollectionsMarshal.AsSpan(inputs));
             }
         }
 
         private static void AppendUnicodePair(List<INPUT> inputs, char codeUnit)
         {
-            inputs.Add(new INPUT
-            {
-                type = INPUT_KEYBOARD,
-                u = new InputUnion { ki = new KEYBDINPUT { wVk = 0, wScan = codeUnit, dwFlags = KEYEVENTF_UNICODE, dwExtraInfo = PadForge.Engine.Common.InputHookManager.OutputTag } }
-            });
-            inputs.Add(new INPUT
-            {
-                type = INPUT_KEYBOARD,
-                u = new InputUnion { ki = new KEYBDINPUT { wVk = 0, wScan = codeUnit, dwFlags = KEYEVENTF_UNICODE | KEYEVENTF_KEYUP, dwExtraInfo = PadForge.Engine.Common.InputHookManager.OutputTag } }
-            });
+            inputs.Add(KeyOutput(0, codeUnit, KEYEVENTF_UNICODE));
+            inputs.Add(KeyOutput(0, codeUnit, KEYEVENTF_UNICODE | KEYEVENTF_KEYUP));
         }
 
         private static void AppendVkPair(List<INPUT> inputs, ushort vk)
         {
             ushort scan = (ushort)MapVirtualKey(vk, MAPVK_VK_TO_VSC);
-            inputs.Add(new INPUT
-            {
-                type = INPUT_KEYBOARD,
-                u = new InputUnion { ki = new KEYBDINPUT { wVk = vk, wScan = scan, dwFlags = 0, dwExtraInfo = PadForge.Engine.Common.InputHookManager.OutputTag } }
-            });
-            inputs.Add(new INPUT
-            {
-                type = INPUT_KEYBOARD,
-                u = new InputUnion { ki = new KEYBDINPUT { wVk = vk, wScan = scan, dwFlags = KEYEVENTF_KEYUP, dwExtraInfo = PadForge.Engine.Common.InputHookManager.OutputTag } }
-            });
+            inputs.Add(KeyOutput(vk, scan, 0));
+            inputs.Add(KeyOutput(vk, scan, KEYEVENTF_KEYUP));
         }
 
         // ── P/Invoke declarations ──
@@ -7241,12 +7572,43 @@ namespace PadForge.Common.Input
         [DllImport("user32.dll", SetLastError = true, EntryPoint = "SendInput")]
         private static extern uint SendInputNative(uint nInputs, INPUT[] pInputs, int cbSize);
 
-        /// <summary>The one way a macro injects a key, a button, a wheel
-        /// turn or a move. The test host injects none
+        /// <summary>The one way PadForge's output queue and move lanes reach
+        /// Windows. The test host injects none
         /// (InputHookManager.DesktopInputOffLimits) and is answered no event
         /// sent, as when the input is blocked.</summary>
         private static uint SendInput(uint nInputs, INPUT[] pInputs, int cbSize)
             => PadForge.Engine.Common.InputHookManager.DesktopInputOffLimits ? 0 : SendInputNative(nInputs, pInputs, cbSize);
+
+        /// <summary>The drain's send (<see cref="FlushPendingInput"/>), never
+        /// the poll thread's: the first <paramref name="count"/> events of
+        /// <paramref name="inputs"/> in one SendInput call.</summary>
+        private static void SendQueued(INPUT[] inputs, int count)
+        {
+            SentForTest?.Invoke(Decode(inputs, (uint)count));
+            SendInput((uint)count, inputs, Marshal.SizeOf<INPUT>());
+        }
+
+        /// <summary>One event as <see cref="SendQueued"/> sent it, for the
+        /// tests: a key's VK, scan code and flags, or a mouse event's flags,
+        /// motion and data.</summary>
+        internal readonly record struct InjectedEvent(bool Keyboard, ushort Vk, ushort Scan, uint Flags, int Dx, int Dy, uint Data);
+
+        /// <summary>Test seam: sees each <see cref="SendQueued"/> call's events
+        /// in order, on the calling thread. Null in the app.</summary>
+        internal static Action<InjectedEvent[]> SentForTest;
+
+        private static InjectedEvent[] Decode(INPUT[] inputs, uint count)
+        {
+            var events = new InjectedEvent[count];
+            for (int i = 0; i < count; i++)
+            {
+                var e = inputs[i];
+                events[i] = e.type == INPUT_KEYBOARD
+                    ? new InjectedEvent(true, e.u.ki.wVk, e.u.ki.wScan, e.u.ki.dwFlags, 0, 0, 0)
+                    : new InjectedEvent(false, 0, 0, e.u.mi.dwFlags, e.u.mi.dx, e.u.mi.dy, e.u.mi.mouseData);
+            }
+            return events;
+        }
 
         [DllImport("user32.dll")]
         private static extern uint MapVirtualKey(uint uCode, uint uMapType);
@@ -7417,18 +7779,57 @@ namespace PadForge.Common.Input
         private void HandleGlobalMacroAction(GlobalMacroData gm)
             => RunProfileShortcut(gm.SwitchMode, gm.TargetProfileId);
 
+        /// <summary>A Profile Shortcut action (#561), shared by both dispatch
+        /// switches. One that names a profile switches only when a profile
+        /// has that name: DS4Windows' own switch changes nothing when the
+        /// named profile is missing (ScpUtil.LoadTempProfile switches only
+        /// when the load succeeds), and passing no id on would switch to the
+        /// default profile, which the UI reads a null target as. The other
+        /// modes name no profile.</summary>
+        private void RunProfileShortcutAction(MacroAction action)
+        {
+            var mode = action.ProfileShortcutMode;
+            if (mode != SwitchProfileMode.Specific)
+            {
+                RunProfileShortcut(mode, null);
+                return;
+            }
+            string id = ProfileIdNamed(action.ProfileShortcutName);
+            if (id != null) RunProfileShortcut(mode, id);
+        }
+
         /// <summary>The profile a Profile Shortcut action names (#561), by
-        /// name, since it can name a profile imported after this one. An
-        /// empty name and a name no profile has both read as nothing, which
-        /// the shortcut then leaves alone.</summary>
+        /// name, since it can name a profile imported after this one, or null
+        /// for an empty name and a name no profile has.</summary>
         private static string ProfileIdNamed(string name)
         {
             if (string.IsNullOrWhiteSpace(name)) return null;
-            var profiles = SettingsManager.Profiles;
-            if (profiles == null) return null;
-            foreach (var p in profiles)
-                if (string.Equals(p.Name, name, StringComparison.OrdinalIgnoreCase)) return p.Id;
+            foreach (var p in ProfilesSnapshot())
+                if (p != null && string.Equals(p.Name, name, StringComparison.OrdinalIgnoreCase)) return p.Id;
             return null;
+        }
+
+        /// <summary>A copy of the profile list for the poll thread. The UI
+        /// thread adds profiles to the list and removes them while the poll
+        /// thread looks one up, and List's enumerator throws on a change in
+        /// flight while its indexer can read past a shrink. A copy torn by a
+        /// change is taken again, and an entry a shrink left empty is
+        /// dropped.</summary>
+        private static ProfileData[] ProfilesSnapshot()
+        {
+            var list = SettingsManager.Profiles;
+            if (list == null) return Array.Empty<ProfileData>();
+            for (int attempt = 0; attempt < 3; attempt++)
+            {
+                try
+                {
+                    var copy = list.ToArray();
+                    return Array.IndexOf(copy, null) < 0 ? copy : Array.FindAll(copy, p => p != null);
+                }
+                catch (ArgumentException) { }
+                catch (InvalidOperationException) { }
+            }
+            return Array.Empty<ProfileData>();
         }
 
         private void RunProfileShortcut(SwitchProfileMode mode, string specificId)
@@ -7467,23 +7868,23 @@ namespace PadForge.Common.Input
 
         private string GetNextProfileId(int direction)
         {
-            var profiles = SettingsManager.Profiles;
-            if (profiles == null || profiles.Count == 0) return null;
+            var profiles = ProfilesSnapshot();
+            if (profiles.Length == 0) return null;
 
             string currentId = SettingsManager.ActiveProfileId;
 
             // Build ordered list: [null (default), profile0, profile1, ...]
             int currentIndex = 0; // default
-            for (int i = 0; i < profiles.Count; i++)
+            for (int i = 0; i < profiles.Length; i++)
             {
-                if (profiles[i].Id == currentId)
+                if (profiles[i]?.Id == currentId)
                 { currentIndex = i + 1; break; }
             }
 
-            int totalCount = profiles.Count + 1; // +1 for default
+            int totalCount = profiles.Length + 1; // +1 for default
             int nextIndex = (currentIndex + direction + totalCount) % totalCount;
 
-            return nextIndex == 0 ? null : profiles[nextIndex - 1].Id;
+            return nextIndex == 0 ? null : profiles[nextIndex - 1]?.Id;
         }
     }
 }

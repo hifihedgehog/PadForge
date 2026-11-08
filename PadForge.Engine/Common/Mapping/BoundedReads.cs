@@ -21,9 +21,10 @@ namespace PadForge.Engine.Common.Mapping
 
     /// <summary>The two-stage trigger modes that need memory of the pull,
     /// named as DS4Windows's TwoStageTriggerMode names them. Its Normal and
-    /// ExclusiveButtons modes need none: in both, ProcessTwoStageTrigger
-    /// starts the soft pull engaged and holds it back only at a full pull, so
-    /// the soft pull is a <see cref="BoundedReadKind.Between"/> read.</summary>
+    /// ExclusiveButtons modes need none. In Normal, ProcessTwoStageTrigger
+    /// fires each stage on its own. In ExclusiveButtons it holds the soft
+    /// pull back only at a full pull, so that soft pull is a
+    /// <see cref="BoundedReadKind.Between"/> read.</summary>
     public enum TwoStageMode
     {
         HairTrigger,
@@ -247,7 +248,11 @@ namespace PadForge.Engine.Common.Mapping
             if (!IsBounded(descriptor)) return null;
             if (s_cache.TryGetValue(descriptor, out var hit)) return hit;
             var read = ParseUncached(descriptor);
-            if (s_cache.Count < CacheCap) s_cache[descriptor] = read;
+            // Full, the cache starts over: a long session's imported profiles
+            // keep adding descriptors, and the ones in use come back in on
+            // their next read instead of parsing on every poll.
+            if (s_cache.Count >= CacheCap) s_cache.Clear();
+            s_cache[descriptor] = read;
             return read;
         }
 

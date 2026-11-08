@@ -1516,7 +1516,11 @@ namespace PadForge.ViewModels
         public double Sensitivity
         {
             get => _sensitivity;
-            set => SetProperty(ref _sensitivity, Math.Clamp(value, 0.1, 5.0));
+            // The floor is the import's: a rotated stick's row carries the
+            // rotation's sine or cosine, which falls under a tenth within
+            // about 6 degrees of none or a quarter turn, and the importers
+            // drop a leg only under 0.001.
+            set => SetProperty(ref _sensitivity, Math.Clamp(value, 0.001, 5.0));
         }
 
         /// <summary>True when the primary source descriptor is an absolute cursor
@@ -1682,6 +1686,18 @@ namespace PadForge.ViewModels
             // triggers that canonicalize to one (#9).
             return PadForge.Engine.Common.Mapping.SourceCoercion.IsGenericSensitivityDescriptor(desc);
         }
+
+        /// <summary>True when a button read of a source, given in its legacy
+        /// I/H form or plain, never presses: a touchpad finger's X or Y,
+        /// whole or windowed, which the button read has no threshold for
+        /// (SourceCoercion.ReadAsBool's touchpad branch reads Click, "Finger M
+        /// Down", rings, pressure and the absolute pointer, and the finger's
+        /// place falls through to false). A list for a button target leaves
+        /// these out: the Mappings grid's button rows and a keyboard menu's
+        /// press rows (#566).</summary>
+        internal static bool ButtonReadPressesNothing(string descriptor)
+            => PadForge.Engine.Common.Mapping.SourceCoercion.IsTouchpadFingerAxisDescriptor(
+                PadForge.Engine.Common.Mapping.SourceCoercion.StripLegacyPrefix((descriptor ?? "").Trim(), out _, out _));
 
         /// <summary>
         /// True when the Half checkbox (and the dependent Either) is

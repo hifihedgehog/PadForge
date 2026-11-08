@@ -5993,10 +5993,10 @@
                                                             <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Mapping_GyroSensitivity, Source={x:Static strings:Strings.Instance}}"
                                                                        VerticalAlignment="Center" Margin="0,0,4,0"/>
                                                             <Slider Value="{Binding Sensitivity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                    Minimum="0.1" Maximum="5" SmallChange="0.1" LargeChange="1"
+                                                                    Minimum="0.001" Maximum="5" SmallChange="0.1" LargeChange="1"
                                                                     Width="120" VerticalAlignment="Center"
                                                                     ToolTip="{Binding Mapping_LeanSensitivity_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                                            <TextBox Text="{Binding Sensitivity, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
+                                                            <TextBox Text="{Binding Sensitivity, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00#}}"
                                                                      Width="50" Margin="4,0,4,0" Padding="2,1"
                                                                      VerticalContentAlignment="Center"/>
                                                             <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
@@ -6914,10 +6914,10 @@
                                                 <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Mapping_GyroSensitivity, Source={x:Static strings:Strings.Instance}}"
                                                            VerticalAlignment="Center" Margin="0,0,4,0"/>
                                                 <Slider Value="{Binding Sensitivity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                        Minimum="0.1" Maximum="5" SmallChange="0.1" LargeChange="1"
+                                                        Minimum="0.001" Maximum="5" SmallChange="0.1" LargeChange="1"
                                                         Width="120" VerticalAlignment="Center"
                                                         ToolTip="{Binding Mapping_LeanSensitivity_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                                <TextBox Text="{Binding Sensitivity, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
+                                                <TextBox Text="{Binding Sensitivity, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00#}}"
                                                          Width="50" Margin="4,0,4,0" Padding="2,1"
                                                          VerticalContentAlignment="Center"/>
                                                 <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>

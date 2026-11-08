@@ -135,11 +135,12 @@ namespace PadForge.Common.Input.OnScreenKeyboard
     /// for an E0 key. Every event carries <c>InputHookManager.OutputTag</c>,
     /// so PadForge's own hooks and Raw Input reader pass it by, as they pass
     /// the mapped keys. Text the layout cannot type goes out as Unicode, the
-    /// Text Block's way.
+    /// Text Block's way. The keys go into InputManager's output queue and
+    /// the injector thread sends them, in order with the macros' and the
+    /// mapped keys.
     /// </summary>
     public sealed class OskWindowsOutput : IOskOutput
     {
-        private const uint INPUT_KEYBOARD = 1;
         private const uint KEYEVENTF_EXTENDEDKEY = 0x0001;
         private const uint KEYEVENTF_KEYUP = 0x0002;
         private const uint KEYEVENTF_UNICODE = 0x0004;
@@ -147,64 +148,8 @@ namespace PadForge.Common.Input.OnScreenKeyboard
         private const ushort VK_LSHIFT = 0xA0, VK_LCONTROL = 0xA2, VK_LMENU = 0xA4, VK_RMENU = 0xA5, VK_LWIN = 0x5B;
         private const ushort VK_RETURN = 0x0D, VK_TAB = 0x09;
 
-        [DllImport("user32.dll", SetLastError = true, EntryPoint = "SendInput")]
-        private static extern uint SendInputNative(uint nInputs, INPUT[] pInputs, int cbSize);
-
-        /// <summary>The one way the keyboard injects a key, as the macros'
-        /// wrapper does. The test host injects none
-        /// (InputHookManager.DesktopInputOffLimits) and is answered no event
-        /// sent, as when the input is blocked.</summary>
-        private static uint SendInput(uint nInputs, INPUT[] pInputs, int cbSize)
-            => PadForge.Engine.Common.InputHookManager.DesktopInputOffLimits ? 0 : SendInputNative(nInputs, pInputs, cbSize);
-
         [DllImport("user32.dll")]
         private static extern uint MapVirtualKeyExW(uint uCode, uint uMapType, IntPtr dwhkl);
-
-        [StructLayout(LayoutKind.Sequential)]
-        private struct INPUT
-        {
-            public uint type;
-            public InputUnion u;
-        }
-
-        // All three members, so the union is as large as Win32's and
-        // Marshal.SizeOf<INPUT>() matches what SendInput expects.
-        [StructLayout(LayoutKind.Explicit)]
-        private struct InputUnion
-        {
-            [FieldOffset(0)] public MOUSEINPUT mi;
-            [FieldOffset(0)] public KEYBDINPUT ki;
-            [FieldOffset(0)] public HARDWAREINPUT hi;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        private struct MOUSEINPUT
-        {
-            public int dx;
-            public int dy;
-            public uint mouseData;
-            public uint dwFlags;
-            public uint time;
-            public IntPtr dwExtraInfo;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        private struct KEYBDINPUT
-        {
-            public ushort wVk;
-            public ushort wScan;
-            public uint dwFlags;
-            public uint time;
-            public IntPtr dwExtraInfo;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        private struct HARDWAREINPUT
-        {
-            public uint uMsg;
-            public ushort wParamL;
-            public ushort wParamH;
-        }
 
         private readonly Func<IntPtr> _layout;
         private readonly Func<bool> _allowed;
@@ -218,20 +163,10 @@ namespace PadForge.Common.Input.OnScreenKeyboard
             _allowed = allowed;
         }
 
-        private static INPUT Key(ushort vk, ushort scan, bool extended, bool up) => new()
-        {
-            type = INPUT_KEYBOARD,
-            u = new InputUnion
-            {
-                ki = new KEYBDINPUT
-                {
-                    wVk = vk,
-                    wScan = scan,
-                    dwFlags = (extended ? KEYEVENTF_EXTENDEDKEY : 0) | (up ? KEYEVENTF_KEYUP : 0),
-                    dwExtraInfo = PadForge.Engine.Common.InputHookManager.OutputTag,
-                },
-            },
-        };
+        /// <summary>A key event for InputManager's output queue, which tags
+        /// it as PadForge's own output.</summary>
+        private static (ushort Vk, ushort Scan, uint Flags) Key(ushort vk, ushort scan, bool extended, bool up)
+            => (vk, scan, (extended ? KEYEVENTF_EXTENDEDKEY : 0) | (up ? KEYEVENTF_KEYUP : 0));
 
         /// <summary>The events of a tap: modifiers down, the key down and up,
         /// the modifiers up in reverse. AltGr is left Ctrl with right Alt,
@@ -269,16 +204,19 @@ namespace PadForge.Common.Input.OnScreenKeyboard
             ushort vk = VirtualKeyOf(scan, _layout());
             if (vk == 0) return;
             var events = TapEvents(vk, scan, mods);
-            var inputs = new INPUT[events.Count];
+            var inputs = new (ushort Vk, ushort Scan, uint Flags)[events.Count];
             for (int i = 0; i < events.Count; i++)
                 inputs[i] = Key(events[i].Vk, events[i].Scan, events[i].Extended, events[i].Up);
-            SendInput((uint)inputs.Length, inputs, Marshal.SizeOf<INPUT>());
+            // Queued as one batch, sent by the injector thread: this runs on
+            // the poll thread, where SendInput would wait on every program's
+            // low-level hook.
+            InputManager.QueueKeyboardOutputs(inputs);
         }
 
         public void TypeText(string text)
         {
             if (string.IsNullOrEmpty(text) || !_allowed()) return;
-            var inputs = new List<INPUT>(text.Length * 2);
+            var inputs = new List<(ushort Vk, ushort Scan, uint Flags)>(text.Length * 2);
             foreach (char c in text)
             {
                 if (c == '\n' || c == '\t')
@@ -289,17 +227,10 @@ namespace PadForge.Common.Input.OnScreenKeyboard
                     inputs.Add(Key(vk, sc, false, true));
                     continue;
                 }
-                var down = new INPUT
-                {
-                    type = INPUT_KEYBOARD,
-                    u = new InputUnion { ki = new KEYBDINPUT { wVk = 0, wScan = c, dwFlags = KEYEVENTF_UNICODE, dwExtraInfo = PadForge.Engine.Common.InputHookManager.OutputTag } },
-                };
-                var up = down;
-                up.u.ki.dwFlags = KEYEVENTF_UNICODE | KEYEVENTF_KEYUP;
-                inputs.Add(down);
-                inputs.Add(up);
+                inputs.Add((0, c, KEYEVENTF_UNICODE));
+                inputs.Add((0, c, KEYEVENTF_UNICODE | KEYEVENTF_KEYUP));
             }
-            SendInput((uint)inputs.Count, inputs.ToArray(), Marshal.SizeOf<INPUT>());
+            InputManager.QueueKeyboardOutputs(CollectionsMarshal.AsSpan(inputs));
         }
     }
 }

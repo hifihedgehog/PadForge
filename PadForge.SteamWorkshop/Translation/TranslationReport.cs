@@ -728,6 +728,18 @@ namespace PadForge.SteamWorkshop.Translation
         /// rotated legs carry only the linear knobs and the withheld keys
         /// are named. {0} = the withheld keys.</summary>
         public const string RotationNonlinearWithheld = "Workshop_Tr_RotationNonlinearWithheld"; // {0} setting keys
+        /// <summary>A gyro that turns with yaw and roll together (gyro_axis
+        /// 2, or gyro_to_2d_conversion_style 2): both rows ride at full
+        /// strength, and the roll contribution (gyro_yaw_scale,
+        /// gyro_roll_scale) is not read.</summary>
+        public const string GyroRollContribution = "Workshop_Tr_GyroRollContribution";
+        /// <summary>gyro_to_2d_conversion_style 3, Steam's Local Space with
+        /// a tilted primary axis: PadForge has no counterpart and reads
+        /// yaw.</summary>
+        public const string GyroLocalSpaceAdvanced = "Workshop_Tr_GyroLocalSpaceAdvanced";
+        /// <summary>gyro_to_2d_conversion_style 6, Steam's Laser Pointer:
+        /// PadForge has no counterpart and reads yaw.</summary>
+        public const string GyroLaserPointer = "Workshop_Tr_GyroLaserPointer";
         // Since v18 the note is the out-of-census net only: gyro_button 0
         // (the none/default sentinel, pad touch) stamps the slot-level
         // engage overlay and gyro_button_invert 1 the inverted hold.

@@ -33,7 +33,7 @@ namespace PadForge.Tests
 
     /// <summary>
     /// The Screen Overlay (#560): what a keyboard screen shows, in a window on the
-    /// PC's own display. These share the macro queue, the light bar's colors and
+    /// PC's own display. These share the macro queue, the lightbar's colors and
     /// the settings statics, and read the z-order, so they run alone.
     /// </summary>
     [Collection("ScreenOverlayStatics")]
@@ -380,7 +380,7 @@ namespace PadForge.Tests
                 Assert.Null(two[^1].Picture);
             }));
 
-        /// <summary>A picture held until the next macro is still there after the hotkey
+        /// <summary>A picture held until the next show or mode macro is still there after the hotkey
         /// hides the panel and shows it again, through the idle pass that lets go of
         /// the screens. A mode macro with the window down ends it. The engine stopping
         /// ends it too.</summary>
@@ -607,7 +607,7 @@ namespace PadForge.Tests
                 Assert.NotNull(two[^1].Picture);
             }));
 
-        /// <summary>A repeat count of 0 stays until the next macro, for a weapon icon
+        /// <summary>A repeat count of 0 stays until the next show or mode macro, for a weapon icon
         /// that stays until the next press. Another show replaces it, a mode macro ends
         /// it, and a mode macro leaves a timed show playing.</summary>
         [Fact]
@@ -696,7 +696,7 @@ namespace PadForge.Tests
                 Assert.Equal(modes.Length, cases.Count);
                 foreach (var mode in modes)
                     cases[mode](service.OverlayContent(new KeyboardScreenData { Mode = mode }, now));
-                Assert.True(service.OverlayContent(null, now).IsEmpty, "the default mode is the light bar, with no color on record");
+                Assert.True(service.OverlayContent(null, now).IsEmpty, "the default mode is the lightbar, with no color on record");
             });
 
         [Fact]
@@ -1071,7 +1071,8 @@ namespace PadForge.Tests
             })));
 
         /// <summary>The pan macro names one overlay, or moves every one at 0. A window
-        /// that is down stays where it was, since a pan's limits come from its size.</summary>
+        /// that is down with no saved size stays where it was, since a pan's limits
+        /// come from a size.</summary>
         [Fact]
         public void ThePanMacro_NamesItsOverlay()
             => OnSta(() => WithPicture(400, 300, Opaque, path => WithQueue(() =>
@@ -2205,6 +2206,175 @@ namespace PadForge.Tests
                 Assert.Empty(windows);
                 KeyboardScreenService.DropRequests();
             });
+
+        // ── Audit 2026-11-08 ──
+
+        /// <summary>The hotkey that hides the last overlay and shows it again leaves
+        /// the lightbar colors alone: the pad sends a static color only when
+        /// something changes, so a cleared color stays missing.</summary>
+        [Fact]
+        public void ALightbarOverlay_KeepsItsColor_ThroughAHideAndShow()
+            => OnSta(() =>
+            {
+                using var statics = new SavedStatics();
+                LightbarColors.Clear();
+                try
+                {
+                    Guid pad = Guid.NewGuid();
+                    SettingsManager.UserDevices.Items.Add(new UserDevice { InstanceGuid = pad, ProductGuid = pad, IsOnline = true });
+                    SettingsManager.UserSettings.Items.Add(new UserSetting { InstanceGuid = pad, ProductGuid = pad, MapTo = 0 });
+                    LightbarColors.Record(0, pad, 10, 20, 30);
+                    var service = new KeyboardScreenService(new SettingsViewModel(), null);
+                    var shown = Attach(service, 1);
+                    service.Tick(hardware: false);
+                    Assert.Equal(Color.FromRgb(10, 20, 30), shown[^1].Fill);
+
+                    // The window goes down, and TickKeyboardScreens' idle pass runs.
+                    service.DetachOverlay(1);
+                    service.TickWithNothingUp();
+                    service.ReleaseWhileIdle();
+
+                    shown = Attach(service, 1);
+                    service.Tick(hardware: false);
+                    Assert.Equal(Color.FromRgb(10, 20, 30), shown[^1].Fill);
+                    Assert.Equal(KeyboardScreenService.Blank.None, shown[^1].Blank);
+
+                    // The engine stopping does clear them.
+                    service.Reset();
+                    Assert.False(LightbarColors.TryGetLowest((_, _) => true, out _));
+                }
+                finally { LightbarColors.Clear(); }
+            });
+
+        /// <summary>Play Time counts from the profile's switch, or the engine's start,
+        /// with every window down, and a hide and show does not start it over.</summary>
+        [Fact]
+        public void PlayTime_CountsWithEveryWindowDown_AndThroughAHideAndShow()
+            => OnSta(() => WithQueue(() =>
+            {
+                using var statics = new SavedStatics();
+                var playTime = new KeyboardScreenData { Mode = KeyboardScreenMode.PlayTime };
+                var halfHour = TimeSpan.FromMinutes(30.5);
+
+                var service = new KeyboardScreenService(new SettingsViewModel(), null);
+                long start = Environment.TickCount64;
+                service.TickWithNothingUp();
+                Assert.Equal(DreamcastScreenService.FormatPlayTime(halfHour),
+                    service.OverlayContent(playTime, start + (long)halfHour.TotalMilliseconds).Text);
+
+                // A hide and show keeps the start. The clock moves between them.
+                var again = new KeyboardScreenService(new SettingsViewModel(), null);
+                var playStart = typeof(KeyboardScreenService).GetField("_playStart", BindingFlags.NonPublic | BindingFlags.Instance);
+                Attach(again, 1);
+                again.Tick(hardware: false);
+                long first = (long)playStart.GetValue(again);
+                again.DetachOverlay(1);
+                Thread.Sleep(50);
+                again.TickWithNothingUp();
+                again.ReleaseWhileIdle();
+                Attach(again, 1);
+                again.Tick(hardware: false);
+                Assert.Equal(first, (long)playStart.GetValue(again));
+
+                // The engine stopping starts it over.
+                again.Reset();
+                Thread.Sleep(50);
+                again.TickWithNothingUp();
+                Assert.NotEqual(first, (long)playStart.GetValue(again));
+            }));
+
+        /// <summary>A pan that names one overlay moves that overlay alone. Every
+        /// Overlay also moves the keyboard screens that feed the slot.</summary>
+        [Fact]
+        public void APanNamingOneOverlay_LeavesTheKeyboardScreensAlone()
+            => OnSta(() => WithPicture(1000, 1000, Opaque, path => WithQueue(() =>
+            {
+                using var statics = new SavedStatics();
+                var screen = KeyboardScreenInfo.Strike7();
+                SettingsManager.UserSettings.Items.Add(new UserSetting { InstanceGuid = screen.RowGuid, ProductGuid = screen.RowGuid, MapTo = 0 });
+                var service = new KeyboardScreenService(new SettingsViewModel(), null);
+                var overlay = KeyboardScreenInfo.OverlayRow(1);
+                foreach (var row in new[] { screen.RowGuid, overlay })
+                    service.Update(row, d =>
+                    {
+                        d.Mode = KeyboardScreenMode.Picture;
+                        d.Picture = path;
+                        d.Zoom = 200;
+                    });
+                Attach(service, 1, new Size(100, 100));
+
+                var apply = typeof(KeyboardScreenService).GetMethod("Apply", BindingFlags.NonPublic | BindingFlags.Instance);
+                var request = typeof(KeyboardScreenService).GetNestedType("PanRequest", BindingFlags.NonPublic);
+                void Pan(int number) => apply.Invoke(service, new object[]
+                {
+                    Activator.CreateInstance(request, 0, number, KeyboardScreenPanDirection.Right, 8),
+                    new[] { screen }, Environment.TickCount64,
+                });
+
+                Pan(1);
+                Assert.Equal(8, service.Get(overlay).PanX);
+                Assert.Equal(0, service.Get(screen.RowGuid).PanX);
+
+                Pan(0);
+                Assert.Equal(16, service.Get(overlay).PanX);
+                Assert.Equal(8, service.Get(screen.RowGuid).PanX);
+            })));
+
+        /// <summary>A pan for an overlay whose window is down lands, held to the
+        /// edges its saved size gives, as a mode or a show does with the window down.</summary>
+        [Fact]
+        public void APan_LandsWithTheWindowDown()
+            => OnSta(() => WithPicture(400, 300, Opaque, path => WithQueue(() =>
+            {
+                var service = new KeyboardScreenService(new SettingsViewModel(), null)
+                {
+                    OverlaySize = number => number == 1 ? new Size(100, 100) : Size.Empty,
+                };
+                var row = KeyboardScreenInfo.OverlayRow(1);
+                service.Update(row, d =>
+                {
+                    d.Mode = KeyboardScreenMode.Picture;
+                    d.Picture = path;
+                    d.Zoom = 200;
+                });
+
+                KeyboardScreenService.RequestPan(0, 1, KeyboardScreenPanDirection.Right, 8);
+                service.TickWithNothingUp();
+                Assert.Equal(8, service.Get(row).PanX);
+
+                KeyboardScreenService.RequestPan(0, 1, KeyboardScreenPanDirection.Down, 5000);
+                service.TickWithNothingUp();
+                Assert.Equal(100, service.Get(row).PanY);
+
+                // With the window up its own size is the bound.
+                Attach(service, 1, new Size(100, 60));
+                KeyboardScreenService.RequestPan(0, 1, KeyboardScreenPanDirection.Down, 5000);
+                Thread.Sleep(300);
+                service.Tick(hardware: false);
+                Assert.Equal(150, service.Get(row).PanY);
+            })));
+
+        /// <summary>The blank lines say what the code read: no color in that slot. A
+        /// slot with no DualShock 4 or DualSense never gets one, so neither line
+        /// promises it.</summary>
+        [Fact]
+        public void TheNoLightbarLines_PromiseNoColor()
+        {
+            Assert.DoesNotContain("aiting", Strings.Instance.ScreenOverlay_Blank_NoLightbar);
+            Assert.DoesNotContain("aiting", Strings.Instance.KeyboardScreens_Status_NoLightbar_Format);
+            Assert.Contains("{0}", Strings.Instance.KeyboardScreens_Status_NoLightbar_Format);
+        }
+
+        /// <summary>Only another show or a mode macro ends a held show, and its line
+        /// says so.</summary>
+        [Fact]
+        public void TheHeldShowLine_NamesWhatEndsIt()
+        {
+            string line = Strings.Instance.MacroAction_ShowKeyboardScreen_Hold_Format;
+            Assert.DoesNotContain("until the next macro", line);
+            Assert.Contains("show", line);
+            Assert.Contains("mode", line);
+        }
 
         /// <summary>The window's own file keeps its grip in place in every language.</summary>
         [Fact]

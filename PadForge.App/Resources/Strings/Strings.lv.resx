@@ -4541,7 +4541,7 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="KeyboardScreens_Status_Strike7Waiting" xml:space="preserve"><value>izvēlieties PadForge V.E.N.O.M. ekrānā</value></data>
   <data name="KeyboardScreens_Status_Strike7Showing" xml:space="preserve"><value>V.E.N.O.M. ekrānā</value></data>
   <data name="KeyboardScreens_Status_NotFound" xml:space="preserve"><value>ekrāns nav atrasts</value></data>
-  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}, gaida gaismas joslas krāsu</value></data>
+  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}, nav gaismas joslas krāsas</value></data>
   <data name="KeyboardScreens_Status_NoPicture_Format" xml:space="preserve"><value>{0}, attēls nav izvēlēts</value></data>
   <data name="KeyboardScreens_LgsShared_Format" xml:space="preserve"><value>Kamēr darbojas Logitech Gaming Software, visi šī veida ekrāni rāda attēlu, kas iestatīts ierīcei {0}.</value></data>
   <data name="DeviceType_KeyboardScreenKeys" xml:space="preserve"><value>Tastatūras ekrāns</value></data>
@@ -4590,7 +4590,7 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Pārvietot tastatūras ekrāna attēlu</value></data>
   <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Pārvieto katra tastatūras ekrāna, kas padod datus šim slotam, logu pa attēlu, kas ir lielāks par ekrānu, piemēram, kartei. Ekrāna pārklājums pārvietojas tāpat, kad tā tālummaiņa ir virs 100 procentiem.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Pārvietot attēlus: {0} × {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Pārvieto katru ekrānu, kas padod datus šim slotam un rāda izvēlētu attēlu, lielāku par pašu ekrānu. Logs apstājas pie attēla malām. Ekrāna pārklājums pārvietojas, kad tā tālummaiņa ir virs 100 procentiem, neatkarīgi no tā, kurš slots palaiž makro.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Pārvieto katru ekrānu, kas padod datus šim slotam un rāda izvēlētu attēlu, lielāku par pašu ekrānu. Logs apstājas pie attēla malām. Ekrāna pārklājums pārvietojas, kad tā tālummaiņa ir virs 100 procentiem, neatkarīgi no tā, kurš slots palaiž makro. Makro, kas min vienu pārklājumu, pārvieto tikai to.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Ekrāns</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Darbība</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Virziens</value></data>
@@ -4907,11 +4907,11 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Zemākais slots ar krāsu</value></data>
   <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>Tālummaiņa</value></data>
   <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>Attēls nav izvēlēts.</value></data>
-  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Gaida gaismas joslas krāsu.</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Nav DualShock 4 vai DualSense gaismas joslas krāsas, ko rādīt.</value></data>
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Pārklājums</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Katrs pārklājums</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Pārslēgt ekrāna pārklājumu {0}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Rādīt {0} attēlus: {1} × {2} ms, līdz nākamajam makro</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Rādīt {0} attēlus: {1} × {2} ms, līdz nākamajam rādīšanas vai režīma makro</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>Profila importēšana</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}, {1} fails</value></data>
   <data name="Import_ProfileName_Format" xml:space="preserve"><value>Kļūs par profilu "{0}".</value></data>
@@ -4945,7 +4945,6 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Šis profils min īpašu darbību, kuras nav failā Actions.xml blakus tā mapei Profiles: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Šis iestatījums netika pārnests: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD neļāva šiem ievades signāliem nonākt līdz Windows. Ieslēdziet Pārtvert piesaistīto ievadi ierīcei {0} lapā Ierīces, un tas apturēs tos, ko piesaista šis profils.</value></data>
-  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>Base slāņa piesaistes ierīcei {0} šajā slānī beidzas. Ja ieslēgts Pārtvert piesaistīto ievadi, tās piesaistītā ievade visos slāņos joprojām netiek nodota Windows.</value></data>
   <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>Tās apakšizvēlnes kļuva par papildu slotiem vienā lokā.</value></data>
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Apstiprina, kad kursorsvira atgriežas centrā vai slānis beidzas. reWASD poga Apply netiek izmantota.</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Šajā failā abi kontrolieri ir nošķirti. PadForge šīs piesaistes aktivizē jebkurš slotā esošs kontrolieris.</value></data>
@@ -4974,7 +4973,7 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="Import_Tr_HideController" xml:space="preserve"><value>reWASD paslēpa šo kontrolieri no spēlēm. Ieslēdziet tam Paslēpt no spēlēm lapā Ierīces.</value></data>
   <data name="Import_Tr_NoSuchSetting" xml:space="preserve"><value>PadForge nepazīst šādu iestatījumu: {0}</value></data>
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD neļāva peles kustībai nonākt līdz Windows. PadForge aptur taustiņus un peles pogas, bet ne kustību, tāpēc kursors joprojām kustas.</value></data>
-  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>PadForge virtuālie kontrolieri saņem kustības datus tikai no kontroliera kustību sensora.</value></data>
+  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>Xbox virtuālajam kontrolierim nav kustības. Lai sūtītu kustību, izvēlieties PlayStation vai Nintendo kontroliera tipu.</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows ar pogu atgriezās šajā profilā no profila {0}. Lai to izdarītu programmā PadForge, lapā Profili pievienojiet šim profilam profila īsinājumu.</value></data>
   <data name="Osk_Style_Grid" xml:space="preserve">
     <value>Režģis</value>
@@ -5193,4 +5192,37 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Atver vai aizver tastatūru, kad „Atver ar” tiek atlaista pirms turēšanas laika beigām. Ilgāka nospiešana neko nedara.</value></data>
   <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Atver vai aizver tastatūru, kad „Atver ar” tiek nospiesta trīsreiz nospiešanas loga laikā.</value></data>
   <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Atver vai aizver tastatūru, kad nospiešanas logs beidzas pēc vienas „Atver ar” nospiešanas. Otra nospiešana loga laikā to atceļ.</value></data>
+  <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>Krāsas tiek sūtītas tieši uz {0}. Mainīgas krāsas, piemēram, krāsu cikls vai skaņai sekojošas krāsas, tai nenonāk. Nemainīga krāsa nonāk.</value></data>
+  <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Visi faili (*.*)|*.*</value></data>
+  <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>PadForge profils (*{0})|*{0}</value></data>
+  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml</value></data>
+  <data name="FileDialog_ProgramFilter" xml:space="preserve"><value>Programmas (*.exe;*.bat;*.cmd;*.com)|*.exe;*.bat;*.cmd;*.com|Visi faili (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundFileFilter" xml:space="preserve"><value>Audio faili un skaņu pakotnes|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.pfsounds|Skaņu pakotnes (*.pfsounds)|*.pfsounds|Visi faili (*.*)|*.*</value></data>
+  <data name="FileDialog_AudioFilter" xml:space="preserve"><value>Audio faili|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.ogg|Visi faili (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundPackageFilter_Format" xml:space="preserve"><value>PadForge skaņu pakotnes (*{0})|*{0}</value></data>
+  <data name="FileDialog_IconPackageFilter_Format" xml:space="preserve"><value>PadForge ikonu pakotnes (*{0})|*{0}</value></data>
+  <data name="FileDialog_AutoEqFilter" xml:space="preserve"><value>AutoEq profils (*.txt)|*.txt|Visi faili (*.*)|*.*</value></data>
+  <data name="FileDialog_IconPickerFilter" xml:space="preserve"><value>Attēli un ikonu pakotnes|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.pficons|Ikonu pakotnes (*.pficons)|*.pficons</value></data>
+  <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>PadForge rokas konsoles pogas (*.json)|*.json</value></data>
+  <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro profils (*.json)|*.json</value></data>
+  <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge taustiņu apgaismojums (*.json)|*.json</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Makro nevar nospiest {0}. To var izdarīt piesaiste cilnē Piesaistes.</value></data>
+  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge darbina astoņus ekrāna pārklājumus, un šis ir reWASD devītais vai desmitais mērķa krustiņš.</value></data>
+  <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge nolasa žiroskopa kreiso un labo pusi no sānsveres, bet noliekumu no pagrieziena, kā reWASD pēc noklusējuma. reWASD preferencēs šos divus var apmainīt, un šis fails nenorāda, vai tie tika apmainīti.</value></data>
+  <data name="Import_Tr_TiltLean" xml:space="preserve"><value>Režīmā Tilt reWASD noliekums ir pagrieziens ap vertikālo asi, un kustības sensors šādam pagriezienam leņķi nenorāda.</value></data>
+  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge skārienpaliktņa diagonāli nolasa kā divus virzienus vienlaikus, ko skārienpaliktnis ziņo tikai tad, ja D-pad režīms tā cilnē Skārienpaliktnis ir 8 virzieni.</value></data>
+  <data name="Import_Tr_GyroZone" xml:space="preserve"><value>PadForge nolasa žiroskopa virzienu aiz viena sliekšņa, un reWASD nenorāda žiroskopa zonas malas mērvienību.</value></data>
+  <data name="Import_Tr_AbsoluteMouse" xml:space="preserve"><value>DS4Windows novietoja kursoru tur, uz kuru rāda kursorsvira. Programmā PadForge kursorsvira kursoru pārvieto.</value></data>
+  <data name="Import_Tr_StickBeforeRotation" xml:space="preserve"><value>{0} nolasa kursorsviru pirms tās pagriešanas. DS4Windows to nolasīja pēc tās.</value></data>
+  <data name="Import_Tr_StickBeforeCurve" xml:space="preserve"><value>{0} nolasa kursorsviras leņķi pirms tās zonām un līknes. DS4Windows to nolasīja pēc tām.</value></data>
+  <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>Tastatūra slotam, kas vairs nav Tastatūra + pele</value></data>
+  <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (nav šajā datorā)</value></data>
+  <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (nav šajā slotā)</value></data>
+  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>pagrieziens un sānsvere pievienoti pilnā stiprumā (sānsveres devums netiek nolasīts)</value></data>
+  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>žiroskops režīmā Local Space nolasīts kā pagrieziens (PadForge nav sasvērtas primārās ass)</value></data>
+  <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>žiroskops režīmā Laser Pointer nolasīts kā pagrieziens (PadForge nav lāzera rādītāja pārveidošanas)</value></data>
+  <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>Programmā reWASD {0} joprojām nonāk līdz Windows, jo fails to piesaista bez atcelšanas. Ja ir ieslēgts Pārtvert piesaistīto ievadi, PadForge to aptur.</value></data>
+  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge pozitīvu pagriezienu pagriež pulksteņrādītāja virzienā, kā DS4Windows. reWASD palīdzība nosaka pagrieziena diapazonu, nevis virzienu.</value></data>
+  <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows veido radiālās kursorsviras {0} pēc grūdiena leņķa. PadForge kursorsviras iestatījumi taisnu grūdienu atskaņo vienādi, bet diagonālu citādi.</value></data>
+  <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Slāņi {0} noregulē atšķirīgi, tāpēc katrs saglabā savus iestatījumus, un līkne tiek pārnesta kā tuvākā pakāpes līkne.</value></data>
 </root>

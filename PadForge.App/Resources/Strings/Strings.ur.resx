@@ -4541,7 +4541,7 @@
   <data name="KeyboardScreens_Status_Strike7Waiting" xml:space="preserve"><value>V.E.N.O.M. اسکرین پر PadForge منتخب کریں</value></data>
   <data name="KeyboardScreens_Status_Strike7Showing" xml:space="preserve"><value>V.E.N.O.M. اسکرین پر</value></data>
   <data name="KeyboardScreens_Status_NotFound" xml:space="preserve"><value>کوئی اسکرین نہیں ملی</value></data>
-  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}، لائٹ بار کے رنگ کا انتظار ہے</value></data>
+  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}، لائٹ بار کا کوئی رنگ نہیں</value></data>
   <data name="KeyboardScreens_Status_NoPicture_Format" xml:space="preserve"><value>{0}، کوئی تصویر منتخب نہیں کی گئی</value></data>
   <data name="KeyboardScreens_LgsShared_Format" xml:space="preserve"><value>جب تک Logitech Gaming Software چل رہا ہو، اس قسم کی ہر اسکرین {0} کے لیے مقرر کردہ تصویر دکھاتی ہے۔</value></data>
   <data name="DeviceType_KeyboardScreenKeys" xml:space="preserve"><value>کی بورڈ اسکرین</value></data>
@@ -4590,7 +4590,7 @@
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>کی بورڈ اسکرین کی تصویر پین کریں</value></data>
   <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>اس سلاٹ کو ان پٹ دینے والی ہر کی بورڈ اسکرین کی کھڑکی کو اسکرین سے بڑی تصویر پر حرکت دیتا ہے، مثلاً نقشے کے لیے۔ اسکرین اوورلے بھی اسی طرح حرکت کرتا ہے جب اس کا زوم 100 فیصد سے اوپر ہو۔</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>تصاویر پین کریں {0} بائی {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>اس سلاٹ کو ان پٹ دینے والی ہر اس اسکرین کو حرکت دیتا ہے جو خود سے بڑی منتخب تصویر دکھا رہی ہو۔ کھڑکی تصویر کے کناروں پر رک جاتی ہے۔ اسکرین اوورلے اس وقت حرکت کرتا ہے جب اس کا زوم 100 فیصد سے اوپر ہو، چاہے میکرو کوئی بھی سلاٹ چلائے۔</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>اس سلاٹ کو ان پٹ دینے والی ہر اس اسکرین کو حرکت دیتا ہے جو خود سے بڑی منتخب تصویر دکھا رہی ہو۔ کھڑکی تصویر کے کناروں پر رک جاتی ہے۔ اسکرین اوورلے اس وقت حرکت کرتا ہے جب اس کا زوم 100 فیصد سے اوپر ہو، چاہے میکرو کوئی بھی سلاٹ چلائے۔ جو میکرو ایک اوورلے کا نام لے وہ صرف اسی اوورلے کو حرکت دیتا ہے۔</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>اسکرین</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>عمل</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>سمت</value></data>
@@ -4907,11 +4907,11 @@
   <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>رنگ والا سب سے کم نمبر کا سلاٹ</value></data>
   <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>زوم</value></data>
   <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>کوئی تصویر منتخب نہیں کی گئی۔</value></data>
-  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>لائٹ بار کے رنگ کا انتظار ہے۔</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>دکھانے کے لیے DualShock 4 یا DualSense کی لائٹ بار کا کوئی رنگ نہیں۔</value></data>
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>اوورلے</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>ہر اوورلے</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>اسکرین اوورلے {0} ٹوگل کریں</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>{0} تصاویر دکھائیں: {1} × {2} ملی سیکنڈ، اگلے میکرو تک</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>{0} تصاویر دکھائیں: {1} × {2} ملی سیکنڈ، اگلے شو یا موڈ میکرو تک</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>پروفائل درآمد کریں</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}، ایک {1} فائل</value></data>
   <data name="Import_ProfileName_Format" xml:space="preserve"><value>یہ پروفائل "{0}" بن جائے گی۔</value></data>
@@ -4945,7 +4945,6 @@
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>یہ پروفائل ایک ایسے خصوصی ایکشن کا ذکر کرتا ہے جو اس کے Profiles فولڈر کے ساتھ موجود Actions.xml میں نہیں ہے: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>یہ سیٹنگ منتقل نہیں ہوئی: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD ان ان پٹس کو Windows تک پہنچنے سے روکتا تھا۔ آلات کے صفحے پر {0} کے لیے میپ شدہ ان پٹ روک لیں آن کریں، جو اس پروفائل میں میپ کیے گئے ان پٹس کو روکتی ہے۔</value></data>
-  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>{0} کے لیے Base کی میپنگز اس لیر میں رک جاتی ہیں۔ میپ شدہ ان پٹ روک لیں آن ہونے پر اس کے میپ شدہ ان پٹ ہر لیر میں Windows سے روکے رہتے ہیں۔</value></data>
   <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>اس کے ذیلی مینیو ایک ہی حلقے میں مزید سلاٹس بن گئے۔</value></data>
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>جب اسٹک دوبارہ مرکز پر آتی ہے یا لیئر ختم ہوتی ہے تو انتخاب طے ہو جاتا ہے۔ reWASD کا لاگو کریں بٹن استعمال نہیں ہوتا۔</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>یہ فائل دو کنٹرولرز کو الگ رکھتی ہے۔ PadForge میں سلاٹ پر موجود کوئی بھی کنٹرولر ان میپنگز کو فائر کرتا ہے۔</value></data>
@@ -4974,7 +4973,7 @@
   <data name="Import_Tr_HideController" xml:space="preserve"><value>reWASD نے اس کنٹرولر کو گیمز سے چھپایا تھا۔ آلات کے صفحے پر اس کے لیے گیمز سے چھپائیں آن کریں۔</value></data>
   <data name="Import_Tr_NoSuchSetting" xml:space="preserve"><value>PadForge میں ایسی کوئی سیٹنگ نہیں: {0}</value></data>
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD نے ماؤس کی حرکت کو Windows تک پہنچنے سے روکا تھا۔ PadForge کیز اور ماؤس بٹن روک لیتا ہے لیکن حرکت نہیں روکتا، اس لیے پوائنٹر پھر بھی حرکت کرتا ہے۔</value></data>
-  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>PadForge کے ورچوئل کنٹرولرز موشن صرف کنٹرولر کے موشن سینسر سے لیتے ہیں۔</value></data>
+  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>Xbox ورچوئل کنٹرولر میں موشن نہیں ہوتا۔ موشن بھیجنے کے لیے PlayStation یا Nintendo کنٹرولر کی قسم چنیں۔</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows ایک بٹن دبانے پر {0} سے اس پروفائل پر واپس آتا تھا۔ PadForge میں ایسا کرنے کے لیے پروفائلز کے صفحے پر اس پروفائل کے لیے پروفائل شارٹ کٹ شامل کریں۔</value></data>
   <data name="Osk_Style_Grid" xml:space="preserve">
     <value>گرڈ</value>
@@ -5193,4 +5192,37 @@
   <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>جب "اس سے کھلتا ہے" کو دبائے رکھنے کے وقت سے پہلے چھوڑ دیا جائے تو کی بورڈ کھلتا یا بند ہوتا ہے۔ اس سے زیادہ دیر دبانے پر کچھ نہیں ہوتا۔</value></data>
   <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>جب "اس سے کھلتا ہے" کو دبانے کی مہلت کے اندر تین بار دبایا جائے تو کی بورڈ کھلتا یا بند ہوتا ہے۔</value></data>
   <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>"اس سے کھلتا ہے" کو ایک بار دبانے کے بعد جب دبانے کی مہلت ختم ہو تو کی بورڈ کھلتا یا بند ہوتا ہے۔ مہلت کے اندر دوسری بار دبانے سے یہ منسوخ ہو جاتا ہے۔</value></data>
+  <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>رنگ سیدھے {0} کو جاتے ہیں۔ بدلتے رنگ، جیسے رنگوں کا چکر یا آواز کے ساتھ چلنے والے رنگ، اس تک نہیں پہنچتے۔ جو رنگ ایک جیسا رہے وہ پہنچتا ہے۔</value></data>
+  <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>تمام فائلیں (*.*)|*.*</value></data>
+  <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>PadForge پروفائل (*{0})|*{0}</value></data>
+  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml</value></data>
+  <data name="FileDialog_ProgramFilter" xml:space="preserve"><value>پروگرامز (*.exe;*.bat;*.cmd;*.com)|*.exe;*.bat;*.cmd;*.com|تمام فائلیں (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundFileFilter" xml:space="preserve"><value>آڈیو فائلیں اور ساؤنڈ پیکیجز|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.pfsounds|ساؤنڈ پیکیجز (*.pfsounds)|*.pfsounds|تمام فائلیں (*.*)|*.*</value></data>
+  <data name="FileDialog_AudioFilter" xml:space="preserve"><value>آڈیو فائلیں|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.ogg|تمام فائلیں (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundPackageFilter_Format" xml:space="preserve"><value>PadForge ساؤنڈ پیکیجز (*{0})|*{0}</value></data>
+  <data name="FileDialog_IconPackageFilter_Format" xml:space="preserve"><value>PadForge آئیکن پیکیجز (*{0})|*{0}</value></data>
+  <data name="FileDialog_AutoEqFilter" xml:space="preserve"><value>AutoEq پروفائل (*.txt)|*.txt|تمام فائلیں (*.*)|*.*</value></data>
+  <data name="FileDialog_IconPickerFilter" xml:space="preserve"><value>تصاویر اور آئیکن پیکیجز|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.pficons|آئیکن پیکیجز (*.pficons)|*.pficons</value></data>
+  <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>PadForge ہینڈ ہیلڈ بٹن (*.json)|*.json</value></data>
+  <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro پروفائل (*.json)|*.json</value></data>
+  <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge کی لائٹس (*.json)|*.json</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>میکرو {0} کو نہیں دبا سکتا۔ میپنگز ٹیب کی میپنگ دبا سکتی ہے۔</value></data>
+  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge آٹھ اسکرین اوورلے چلاتا ہے، اور یہ reWASD کا نواں یا دسواں کراس ہیئر ہے۔</value></data>
+  <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge جائرو کا بایاں اور دایاں رول سے اور جھکاؤ یاؤ سے پڑھتا ہے، جو reWASD کی ڈیفالٹ ہے۔ reWASD کی ترجیحات میں دونوں کو بدلا جا سکتا ہے، اور یہ فائل نہیں بتاتی کہ بدلا گیا تھا یا نہیں۔</value></data>
+  <data name="Import_Tr_TiltLean" xml:space="preserve"><value>ٹلٹ موڈ میں reWASD کا جھکاؤ عمودی محور کے گرد گھومنا ہے، اور موشن سینسر اس گھماؤ کا کوئی زاویہ نہیں دیتا۔</value></data>
+  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge ٹچ پیڈ کے وتری رخ کو بیک وقت دو سمتیں پڑھتا ہے، جو ٹچ پیڈ صرف تب بتاتا ہے جب اس کے ٹچ پیڈ ٹیب میں ڈی پیڈ موڈ 8 سمتی ہو۔</value></data>
+  <data name="Import_Tr_GyroZone" xml:space="preserve"><value>PadForge جائرو کی سمت کو ایک حد کے پار پڑھتا ہے، اور reWASD جائرو زون کے کنارے کی کوئی اکائی نہیں دیتا۔</value></data>
+  <data name="Import_Tr_AbsoluteMouse" xml:space="preserve"><value>DS4Windows پوائنٹر کو وہاں رکھتا تھا جہاں اسٹک اشارہ کرے۔ PadForge میں اسٹک اس کے بجائے پوائنٹر کو حرکت دیتی ہے۔</value></data>
+  <data name="Import_Tr_StickBeforeRotation" xml:space="preserve"><value>{0} اسٹک کو اس کی گردش سے پہلے پڑھتا ہے۔ DS4Windows اسے بعد میں پڑھتا تھا۔</value></data>
+  <data name="Import_Tr_StickBeforeCurve" xml:space="preserve"><value>{0} اسٹک کے زاویے کو اس کے زونز اور کروو سے پہلے پڑھتا ہے۔ DS4Windows اسے بعد میں پڑھتا تھا۔</value></data>
+  <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>ایسے سلاٹ کا کی بورڈ جو اب کی بورڈ + ماؤس نہیں رہا</value></data>
+  <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (اس پی سی پر نہیں)</value></data>
+  <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (اس سلاٹ پر نہیں)</value></data>
+  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>یاؤ اور رول پوری شدت سے جمع کیے گئے (رول کا حصہ نہیں پڑھا گیا)</value></data>
+  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>Local Space جائرو کو یاؤ کے طور پر پڑھا گیا (PadForge میں جھکا ہوا بنیادی محور نہیں ہے)</value></data>
+  <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>Laser Pointer جائرو کو یاؤ کے طور پر پڑھا گیا (PadForge میں لیزر پوائنٹر کی تبدیلی نہیں ہے)</value></data>
+  <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>reWASD میں {0} پھر بھی Windows تک پہنچتی ہے کیونکہ فائل اسے بغیر ان میپ کے میپ کرتی ہے۔ میپ شدہ ان پٹ روک لیں آن ہو تو PadForge اسے روک لیتا ہے۔</value></data>
+  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge مثبت گردش کو گھڑی کی سمت میں گھماتا ہے، جیسا DS4Windows کرتا ہے۔ reWASD کی مدد گردش کی حد بتاتی ہے، سمت نہیں۔</value></data>
+  <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows ریڈیل اسٹک کی {0} کو دھکیلنے کے زاویے کے مطابق ڈھالتا ہے۔ PadForge کا اسٹک کارڈ سیدھے دھکے کو ایک جیسا اور وتری دھکے کو مختلف طور پر چلاتا ہے۔</value></data>
+  <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>لیئرز {0} کو مختلف طور پر ٹیون کرتے ہیں، اس لیے ہر ایک کی اپنی ٹیوننگ برقرار رہتی ہے، اور کروو قریب ترین پاور کروو کے طور پر منتقل ہوتا ہے۔</value></data>
 </root>

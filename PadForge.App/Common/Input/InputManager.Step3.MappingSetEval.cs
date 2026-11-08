@@ -954,6 +954,11 @@ namespace PadForge.Common.Input
 
         private static string CanonicalPostponeDescriptor(string descriptor)
         {
+            // A zone, a stick sector or a two-stage pull (#561) reads one
+            // input, and an activator, a consumed trigger and a row reading
+            // that input all key by it, so a row's bounded read is held back
+            // with the input it reads.
+            descriptor = BoundedReads.InnerOf(descriptor);
             if (SourceCoercion.IsGamepadAliasDescriptor(descriptor))
             {
                 string resolved = SourceCoercion.ResolveGamepadAlias(descriptor);
@@ -1175,8 +1180,8 @@ namespace PadForge.Common.Input
         private void AddConsumedDescriptor(int slot, System.Guid deviceGuid, PadForge.Engine.Data.MappingSource src)
         {
             // A zone, sector or stage trigger (#561) consumes the input it
-            // reads, which is what a row reading that input is keyed by.
-            string desc = CanonicalPostponeDescriptor(BoundedReads.InnerOf(src.Descriptor));
+            // reads: CanonicalPostponeDescriptor keys it by that input.
+            string desc = CanonicalPostponeDescriptor(src.Descriptor);
             if (string.IsNullOrEmpty(desc)) return;
             if (deviceGuid == System.Guid.Empty)
             {
@@ -4625,6 +4630,72 @@ namespace PadForge.Common.Input
                     return a.InheritUnmapped;
             }
             return false;
+        }
+
+        /// <summary>True when the engine evaluates <paramref name="row"/>
+        /// with <paramref name="engaged"/> engaged on its slot, by the row
+        /// pick of <see cref="ApplyMappingSetToGamepad"/> and
+        /// <see cref="FindActiveRowForTarget"/>. On Base it is a Base row. On
+        /// a layer it is a row of that layer with sources, or a Base row when the
+        /// layer inherits unmapped targets and has no row with sources or a
+        /// NoInherit row for the target. The hooks eat a row's inputs only
+        /// while this holds (InputService.CollectSuppressedInputs).</summary>
+        internal static bool RowReadsUnder(MappingSet mappingSet, MappingRow row, string engaged)
+        {
+            if (row == null) return false;
+            string rowLayer = row.LayerMask ?? "Base";
+            if (string.IsNullOrEmpty(engaged) || string.Equals(engaged, "Base", System.StringComparison.Ordinal))
+                return string.Equals(rowLayer, "Base", System.StringComparison.Ordinal);
+            if (string.Equals(rowLayer, engaged, System.StringComparison.Ordinal))
+                return row.Sources != null && row.Sources.Count > 0;
+            return string.Equals(rowLayer, "Base", System.StringComparison.Ordinal)
+                   && LayerLetsBaseRowThrough(mappingSet, engaged, row.Target);
+        }
+
+        /// <summary>True when the engine evaluates <paramref name="row"/>
+        /// whatever layer its slot engages: a Base row on a set with no
+        /// layer, or one every layer the set can engage (each activator's
+        /// layer and the layers of its Cycle) lets through. The hooks eat
+        /// such a row's inputs from the static set.</summary>
+        internal static bool RowReadsOnEveryLayer(MappingSet mappingSet, MappingRow row)
+        {
+            if (row == null || !string.Equals(row.LayerMask ?? "Base", "Base", System.StringComparison.Ordinal))
+                return false;
+            var activators = mappingSet?.ShiftActivators;
+            if (activators == null) return true;
+            for (int i = 0; i < activators.Count; i++)
+            {
+                var a = activators[i];
+                if (a == null) continue;
+                if (!LayerLetsBaseRowThrough(mappingSet, a.LayerMask, row.Target)) return false;
+                if (string.IsNullOrEmpty(a.CycleLayers)) continue;
+                foreach (string layer in a.CycleLayers.Split('|', System.StringSplitOptions.RemoveEmptyEntries))
+                    if (!LayerLetsBaseRowThrough(mappingSet, layer, row.Target)) return false;
+            }
+            return true;
+        }
+
+        /// <summary>True when a Base row for <paramref name="target"/> stays
+        /// live with <paramref name="layerMask"/> engaged: Base itself, or a
+        /// layer that inherits unmapped targets and does not cover this one
+        /// (the cover rule of <see cref="ApplyMappingSetToGamepad"/>).</summary>
+        private static bool LayerLetsBaseRowThrough(MappingSet mappingSet, string layerMask, string target)
+        {
+            if (string.IsNullOrEmpty(layerMask) || string.Equals(layerMask, "Base", System.StringComparison.Ordinal))
+                return true;
+            if (!LayerInheritsUnmapped(mappingSet, layerMask)) return false;
+            var rows = mappingSet.Rows;
+            if (rows == null) return true;
+            int count = rows.Count;
+            for (int i = 0; i < count && i < rows.Count; i++)
+            {
+                var r = rows[i];
+                if (r == null) continue;
+                if (!string.Equals(r.LayerMask, layerMask, System.StringComparison.Ordinal)) continue;
+                if (!string.Equals(r.Target, target, System.StringComparison.Ordinal)) continue;
+                if ((r.Sources != null && r.Sources.Count > 0) || r.NoInherit) return false;
+            }
+            return true;
         }
 
         // ── DC20: menu commits made by leaving a layer ──

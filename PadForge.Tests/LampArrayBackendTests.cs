@@ -3769,6 +3769,93 @@ namespace PadForge.Tests
             Assert.NotEmpty(board.Take());
         }
 
+        /// <summary>Lamps a picture sent into an update that has not closed yet,
+        /// then left by a picture for one color: the one range update waits the
+        /// interval after those lamps as well as after the last close (HID Usage
+        /// Tables 1.6, 26.7).</summary>
+        private void LampsSentAfterTheLastClose(LampBoard board, LampArrayBackend backend)
+        {
+            Color(board, 0x010101, EachLamp(16, 0x100000));
+            Passes(backend);
+            Advance(40);
+            Passes(backend);
+            board.Take();
+
+            // A slow paint closes at +40, and the next goes on 10 ms later: lamps
+            // 0 to 7 go out unclosed at +50, and 8 to 15 wait for their interval.
+            Advance(100);
+            board.OnCall = () => Advance(20);
+            Color(board, 0x010101, EachLamp(16, 0x200000));
+            Passes(backend);
+            board.OnCall = null;
+            Assert.Equal(new[] { "00", "01" }, board.Take().Select(text => text.Split(' ')[3]));
+            Advance(10);
+            Color(board, 0x010101, EachLamp(16, 0x300000));
+            Passes(backend);
+            Assert.Equal(new[] { "00" }, board.Take().Select(text => text.Split(' ')[3]));
+        }
+
+        [Fact]
+        public void AOneColorUpdate_WaitsForLampsAPictureJustSent()
+        {
+            var (backend, board) = Found(b => ManyLamps(b, 16));
+            LampsSentAfterTheLastClose(board, backend);
+
+            // 23 ms on is the interval after the close, and 23 ms after lamps 0 to 7.
+            Color(board, 0x445566);
+            Passes(backend);
+            Advance(23);
+            Passes(backend);
+            Assert.Empty(board.Take());
+
+            Advance(10);
+            Passes(backend);
+            Assert.Equal(Paint(0x445566, lamps: 16), board.Take().Last());
+        }
+
+        [Fact]
+        public void APictureAfterAOneColorUpdate_WaitsTheInterval()
+        {
+            var (backend, board) = Found(b => ManyLamps(b, 16));
+            Color(board, 0x445566);
+            Passes(backend);
+            Advance(40);
+            Passes(backend);
+            Assert.Equal(Paint(0x445566, lamps: 16), board.Take().Last());
+
+            // Every lamp just took the one color, so no report of the picture goes
+            // before the interval, the unclosed ones included.
+            Advance(5);
+            Color(board, 0x010101, EachLamp(16, 0x100000));
+            Passes(backend);
+            Assert.Empty(board.Take());
+
+            Advance(33);
+            Passes(backend);
+            Assert.NotEmpty(board.Take());
+        }
+
+        [Fact]
+        public void TheLampsOffHandBack_WaitsForLampsAPictureJustSent()
+        {
+            var (backend, board) = Found(b =>
+            {
+                ManyLamps(b, 16);
+                b.Layout = b.Layout with { HasControl = false };
+            });
+            LampsSentAfterTheLastClose(board, backend);
+
+            Dark(board);
+            Passes(backend);
+            Advance(23);
+            Passes(backend);
+            Assert.Empty(board.Take());
+
+            Advance(10);
+            Passes(backend);
+            Assert.Equal("set 05 01 00 00 0F 00 00 00 00 00", board.Take().Last());
+        }
+
         /// <summary>A frame that gives every lamp one color takes one report.</summary>
         [Fact]
         public void AWholeFrameOfOneColor_TakesOneReport()

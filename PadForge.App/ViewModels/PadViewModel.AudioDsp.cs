@@ -191,7 +191,7 @@ namespace PadForge.ViewModels
                     // GraphicEQ.txt does not, and is deliberately still
                     // selectable: picking it and being told why beats not
                     // seeing the file and assuming the dialog is broken.
-                    Filter = "AutoEq profile (*.txt)|*.txt|All files|*.*",
+                    Filter = Strings.Instance.FileDialog_AutoEqFilter,
                     CheckFileExists = true,
                 };
                 try { if (dlg.ShowDialog() != true) return; }

@@ -598,6 +598,21 @@ namespace PadForge.Tests
             Assert.Equal(shown, Writes(Channel()).Count);
         }
 
+        /// <summary>The same two headsets are published as taking steady colors
+        /// only, so their Lighting tab line says a changing color does not reach
+        /// them. A family with no hold is not.</summary>
+        [Theory]
+        [InlineData(0x12EC, 4, true)]
+        [InlineData(0x1229, 3, true)]
+        [InlineData(0x1722, 0, false)]
+        public void AHeadsetWithAHold_IsPublishedAsTakingSteadyColorsOnly(int productId, int iface, bool steadyOnly)
+        {
+            // A wired Sensei 310 answers on feature reports, the headsets on output.
+            var device = steadyOnly ? Control((ushort)productId, iface, output: 521) : Control((ushort)productId, iface, feature: 263);
+            using var backend = Started(device);
+            Assert.Equal(steadyOnly, Assert.Single(backend.Snapshot.Units).SteadyColorsOnly);
+        }
+
         /// <summary>The same two headsets are sent nothing of a color whose
         /// mode keeps changing it (#559), however long it stands, and a steady
         /// color still goes out.</summary>

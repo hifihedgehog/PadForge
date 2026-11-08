@@ -2312,7 +2312,7 @@ namespace PadForge.Tests
             var collect = typeof(InputService).GetMethod("CollectSuppressedInputs", BindingFlags.NonPublic | BindingFlags.Static);
             Assert.NotNull(collect);
             var keys = new HashSet<int>();
-            collect.Invoke(null, new object[] { keyboard, keys, new HashSet<int>() });
+            collect.Invoke(null, new object[] { keyboard, keys, new HashSet<int>(), new List<InputManager.HookRowKey>() });
             Assert.Contains(65, keys);
             Assert.DoesNotContain(66, keys);
         }
@@ -2351,7 +2351,7 @@ namespace PadForge.Tests
             var collect = typeof(InputService).GetMethod("CollectSuppressedInputs", BindingFlags.NonPublic | BindingFlags.Static);
             Assert.NotNull(collect);
             var keys = new HashSet<int>();
-            collect.Invoke(null, new object[] { keyboard, keys, new HashSet<int>() });
+            collect.Invoke(null, new object[] { keyboard, keys, new HashSet<int>(), new List<InputManager.HookRowKey>() });
             Assert.Equal(descriptor, keys.Contains(65));
             Assert.Equal(paramY, keys.Contains(66));
         }
@@ -2371,8 +2371,35 @@ namespace PadForge.Tests
                 new MacroItem { TriggerDeviceGuid = id, TriggerRawButtons = new[] { 17, 112 } },
             };
             var keys = new HashSet<int>();
-            InputService.CollectMacroTriggerKeys(keyboard, slot => slot == Slot ? macros : null, keys, new HashSet<int>());
+            var gated = new List<InputManager.HookTriggerKey>();
+            InputService.CollectMacroTriggerKeys(keyboard, slot => slot == Slot ? macros : null, keys, new HashSet<int>(), gated);
             Assert.Equal(new[] { 65 }, keys.ToArray());
+            Assert.Empty(gated);
+        }
+
+        /// <summary>A macro on a layer has its trigger key eaten only while
+        /// its layer gate is open, so the apply hands it to the poll thread
+        /// instead of the static set. An any-layer macro's key stays in the
+        /// static set. Before, a layer macro's key was in the static set and
+        /// typed nowhere, on every layer.</summary>
+        [Fact]
+        public void ALayerMacrosKey_GoesToThePollThreadNotTheStaticSet()
+        {
+            var keyboard = Device(A, InputDeviceType.Keyboard);
+            var id = Guid.Parse(A);
+            var anyLayer = new MacroItem { TriggerDeviceGuid = id, TriggerRawButtons = new[] { 65 }, PadIndex = Slot };
+            var onShift = new MacroItem { TriggerDeviceGuid = id, TriggerRawButtons = new[] { 112 }, PadIndex = Slot, LayerMask = "Shift" };
+            var onBase = new MacroItem { TriggerDeviceGuid = id, TriggerRawButtons = new[] { 113 }, PadIndex = Slot, LayerMask = "Base" };
+            var macros = new[] { anyLayer, onShift, onBase };
+            var keys = new HashSet<int>();
+            var gated = new List<InputManager.HookTriggerKey>();
+            InputService.CollectMacroTriggerKeys(keyboard, slot => slot == Slot ? macros : null, keys, new HashSet<int>(), gated);
+            Assert.Equal(new[] { 65 }, keys.ToArray());
+            Assert.Equal(new[]
+            {
+                new InputManager.HookTriggerKey(onShift, 112, false),
+                new InputManager.HookTriggerKey(onBase, 113, false),
+            }, gated);
         }
     }
 }

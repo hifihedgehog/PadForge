@@ -404,12 +404,20 @@ namespace PadForge.Engine.Common.Mapping
         /// rule, <c>gp.ThumbLY = -value</c>) and leaves X alone. So a correction belongs
         /// here only where that downstream step does nothing — the X axis. Flipping a Y
         /// target here would double-negate it. That is exactly what an earlier touchpad
-        /// branch did (finger-up drove the stick DOWN); it was removed. Everything else is
-        /// already correct downstream: gyro pitch rides the Y negate to nose-up → stick-down
-        /// (the flight-stick pull-back, JSM <c>processGyroStick</c> emits
-        /// <c>setStick(gyroStickX, -gyroStickY)</c>); touchpad finger-Y rides it to
-        /// finger-up → stick-up; KBM mouse / scroll keep their own aim convention. None of
-        /// them may be flipped here.</para>
+        /// branch did (finger-up drove the stick DOWN), and it was removed. Touchpad finger-Y
+        /// rides the Y negate to finger-up → stick-up, and KBM mouse / scroll keep their own
+        /// aim convention.</para>
+        ///
+        /// <para><b>Gyro pitch on a stick Y target goes DOWN for the nose up.</b> A rate
+        /// pitch is positive with the nose up, and the Y negate writes it as the stick
+        /// pulled back. That is the opposite of the gyro mouse lane, which moves the cursor
+        /// up, and of JoyShockMapper's gyro stick: its pitch is camera space, down positive
+        /// (main.cpp <c>gyroY -= inGyroX</c>), and <c>processGyroStick</c> writes
+        /// <c>setStick(gyroStickX, -gyroStickY)</c>, so the nose up pushes the stick up.
+        /// Saved and exported profiles carry this sign, so it stays. A producer that writes
+        /// a camera-style gyro-to-stick row (an importer, a starter profile) sets Invert on
+        /// the pitch source to look up for the nose up. Pitch must not be flipped here
+        /// without the hardware re-test named above.</para>
         /// </summary>
         private static bool ShouldFlipForAxisFrame(MappingSource src, string target)
         {

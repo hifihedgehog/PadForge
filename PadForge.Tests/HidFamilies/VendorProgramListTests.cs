@@ -297,6 +297,20 @@ namespace PadForge.Tests
             Assert.Equal(string.Format(s.Pad_Lighting_RouteDirect, "Board"), PeripheralRouteText.Lighting(Row(0x3434, 0x0123), 0));
         }
 
+        /// <summary>A device sent no changing color, with nothing that says it
+        /// stores what it is sent, says the changing colors do not reach it and
+        /// names no memory.</summary>
+        [Fact]
+        public void ADeviceThatTakesSteadyColorsOnly_SaysChangingColorsDoNotReachIt()
+        {
+            var s = Strings.Instance;
+            var unit = new DirectUnit(OutputFamily.HidLightingUnit, "unit", Box, 0x3434, 0x0123) { Name = "Board", SteadyColorsOnly = true };
+            PeripheralOutputs.PublishLinks(new LinkTable(new[] { new DeviceLinks { Device = A, Lighting = new[] { unit.Path } } }));
+            PeripheralOutputs.Direct = Found(unit);
+            Assert.Equal(string.Format(s.Pad_Lighting_RouteDirectSteadyOnly, "Board"), PeripheralRouteText.Lighting(Row(0x3434, 0x0123), 0));
+            Assert.DoesNotContain("memory", s.Pad_Lighting_RouteDirectSteadyOnly);
+        }
+
         /// <summary>A device whose pictures write over the effects stored on it
         /// says those are lost, where the user turns the row on.</summary>
         [Fact]

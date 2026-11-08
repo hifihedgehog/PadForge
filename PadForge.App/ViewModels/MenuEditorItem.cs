@@ -296,9 +296,13 @@ namespace PadForge.ViewModels
                 if (value < 0) return;
                 var kind = value switch { 1 => MenuKind.Grid, 2 => MenuKind.Keyboard, _ => MenuKind.Radial };
                 if (Entry.Kind == kind) return;
+                var was = Entry.Kind;
                 Entry.Kind = kind;
-                if (kind != MenuKind.Radial) Entry.HasCenter = false;
+                // A touch grid has no center cell. A keyboard reads none, so
+                // a ring's stays for when it turns back (#566).
+                if (kind == MenuKind.Grid) Entry.HasCenter = false;
                 if (kind == MenuKind.Keyboard) ApplyKeyboardDefaults();
+                else if (was == MenuKind.Keyboard) LeaveKeyboardDefaults();
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(IsRadial));
                 OnPropertyChanged(nameof(IsGrid));
@@ -1128,6 +1132,19 @@ namespace PadForge.ViewModels
         {
             PendingRecordTarget = target;
             RecordingTarget = target;
+        }
+
+        /// <summary>Runs <paramref name="start"/>, which starts the recorder
+        /// and says whether it runs, and arms <paramref name="target"/> only
+        /// then. The start cancels any recording another record button left
+        /// running, and that cancel clears every menu's Recording state
+        /// (MainViewModel.ClearMenuRecordings), so the state is set after it.
+        /// With no device to record from, nothing is armed.</summary>
+        internal bool BeginRecordAfterStart(MenuRecordTarget target, Func<bool> start)
+        {
+            if (start == null || !start()) return false;
+            BeginRecord(target);
+            return true;
         }
 
         /// <summary>Segoe MDL2's Stop and Record glyphs, which every record

@@ -985,6 +985,29 @@ namespace PadForge.Tests
             Assert.True(IsOpen);
         }
 
+        /// <summary>Every focus change into a text box opens the keyboard, as
+        /// the option says a text box "takes focus". Closed in one box, it
+        /// stays closed while focus stays there, and opens when the watcher
+        /// reports focus in another box.</summary>
+        [Fact]
+        public void TextFocusMovingToAnotherTextBox_OpensAKeyboardClosedInTheFirst()
+        {
+            var ud = AddPad();
+            _menu.OpenOnTextFocus = true;
+            Poll(ud, Rest());
+            _im.NoteTextFocus(true);
+            Poll(ud, Rest());
+            Assert.True(IsOpen);
+            Poll(ud, Rest(B));
+            Poll(ud, Rest());
+            Assert.False(IsOpen);
+            Poll(ud, Rest());
+            Assert.False(IsOpen);
+            _im.NoteTextFocus(true);
+            Poll(ud, Rest());
+            Assert.True(IsOpen);
+        }
+
         [Fact]
         public void TextFocus_DoesNothing_WhenNoMenuAsksForIt()
         {
@@ -1143,6 +1166,321 @@ namespace PadForge.Tests
                 Thread.Sleep(50);   // nothing more arrives
                 return Log;
             }
+        }
+
+        // ── Devices that are not gamepads, held and let go ───────
+
+        /// <summary>A mouse at rest, its motion and scroll lanes at their
+        /// center (SdlMouseWrapper.AxisCenter).</summary>
+        private static CustomInputState StillMouse()
+        {
+            var s = new CustomInputState();
+            s.Axis[0] = s.Axis[1] = s.Axis[2] = SdlMouseWrapper.AxisCenter;
+            return s;
+        }
+
+        /// <summary>A flight stick read as a raw joystick, SDL's axes in
+        /// order: X, Y, the twist (Rz) and the throttle, an extra axis at 7
+        /// and a slider. Axis 4 does not exist and reads 0.</summary>
+        private static CustomInputState Stick(int twist, int throttle, int extra = 1000, int slider = 2000)
+        {
+            var s = new CustomInputState();
+            s.Axis[0] = s.Axis[1] = 32768;
+            s.Axis[2] = twist;
+            s.Axis[3] = throttle;
+            s.Axis[7] = extra;
+            s.Sliders[0] = slider;
+            return s;
+        }
+
+        /// <summary>A mouse on the slot is a controller the keyboard holds.
+        /// Its scroll lane rests at its center, so the wheel's mappings read
+        /// no scroll while the keyboard is open.</summary>
+        [Fact]
+        public void AMouseOnTheSlot_KeepsItsWheelAtItsRest_WhileOpen()
+        {
+            var pad = AddPad();
+            var mouse = AddPad(capType: InputDeviceType.Mouse);
+            Poll((pad, Rest()), (mouse, StillMouse()));
+            Poll((pad, Rest(GuideButton)), (mouse, StillMouse()));
+            Assert.True(IsOpen);
+            Assert.True(_im.OnScreenKeyboardMasks(mouse.InstanceGuid));
+            var moving = StillMouse();
+            moving.Axis[2] = 65535;
+            var seen = Poll((pad, Rest()), (mouse, moving));
+            Assert.Equal(SdlMouseWrapper.AxisCenter, seen[1].Axis[0]);
+            Assert.Equal(SdlMouseWrapper.AxisCenter, seen[1].Axis[2]);
+        }
+
+        /// <summary>A flight stick's axes have no rest PadForge can name, so
+        /// each holds where it was when the keyboard took the stick: the twist
+        /// centered, the throttle back, the extra axis and the slider where
+        /// they were, while the stick moves under the keyboard.</summary>
+        [Fact]
+        public void AFlightStickOnTheSlot_HoldsEveryAxisWhereItWas_WhileOpen()
+        {
+            var pad = AddPad();
+            var stick = AddPad(capType: InputDeviceType.Flight);
+            Poll((pad, Rest()), (stick, Stick(32768, 0)));
+            Poll((pad, Rest(GuideButton)), (stick, Stick(32768, 0)));
+            Assert.True(IsOpen);
+            Assert.True(_im.OnScreenKeyboardMasks(stick.InstanceGuid));
+            var seen = Poll((pad, Rest()), (stick, Stick(60000, 50000, 9000, 40000)));
+            Assert.Equal(32768, seen[1].Axis[2]);
+            Assert.Equal(0, seen[1].Axis[3]);
+            Assert.Equal(1000, seen[1].Axis[7]);
+            Assert.Equal(2000, seen[1].Sliders[0]);
+        }
+
+        /// <summary>A mouse at rest holds nothing at the close: its scroll
+        /// lane rests at its center, which a trigger's "held" test reads as a
+        /// pull. The mask goes with the close, and the mouse's mappings read
+        /// its real state.</summary>
+        [Fact]
+        public void AMouseOnTheSlot_IsLetGoAtTheClose()
+        {
+            var pad = AddPad();
+            var mouse = AddPad(capType: InputDeviceType.Mouse);
+            Poll((pad, Rest()), (mouse, StillMouse()));
+            Poll((pad, Rest(GuideButton)), (mouse, StillMouse()));
+            Assert.True(IsOpen);
+            Poll((pad, Rest()), (mouse, StillMouse()));
+            Poll((pad, Rest(B)), (mouse, StillMouse()));
+            Assert.False(IsOpen);
+            Poll((pad, Rest()), (mouse, StillMouse()));
+            Assert.False(_im.OnScreenKeyboardMasks(mouse.InstanceGuid));
+            var still = StillMouse();
+            Assert.Same(still, Poll((pad, Rest()), (mouse, still))[1]);
+        }
+
+        /// <summary>A flight stick with four axes, its twist centered and its
+        /// throttle back, holds nothing at the close: axis 4 does not exist
+        /// and reads 0, which a stick's "deflected" test reads as a push.</summary>
+        [Fact]
+        public void AFourAxisStickOnTheSlot_IsLetGoAtTheClose()
+        {
+            var pad = AddPad();
+            var stick = AddPad(capType: InputDeviceType.Flight);
+            Poll((pad, Rest()), (stick, Stick(32768, 0)));
+            Poll((pad, Rest(GuideButton)), (stick, Stick(32768, 0)));
+            Assert.True(IsOpen);
+            Poll((pad, Rest()), (stick, Stick(32768, 0)));
+            Poll((pad, Rest(B)), (stick, Stick(32768, 0)));
+            Assert.False(IsOpen);
+            Poll((pad, Rest()), (stick, Stick(32768, 0)));
+            Assert.False(_im.OnScreenKeyboardMasks(stick.InstanceGuid));
+            var moved = Stick(40000, 30000);
+            Assert.Same(moved, Poll((pad, Rest()), (stick, moved))[1]);
+        }
+
+        /// <summary>The positive control: a gamepad's stick pushed at the
+        /// close stays centered for everything else until it comes back.</summary>
+        [Fact]
+        public void AGamepadStickPushedAtTheClose_StaysCenteredUntilItComesBack()
+        {
+            var pad = AddPad();
+            OpenWithGuide(pad);
+            var pushed = Rest(B);
+            pushed.Axis[3] = 65535;
+            Poll(pad, pushed);
+            Assert.False(IsOpen);
+            var still = Rest();
+            still.Axis[3] = 65535;
+            Assert.Equal(32768, Poll(pad, still).Axis[3]);
+            var back = Rest();
+            Assert.Same(back, Poll(pad, back));
+        }
+
+        private static CustomInputState Midi(int note = -1, int pitchBend = MidiInputState.PitchBendCenter)
+        {
+            var s = new CustomInputState { Midi = new MidiInputState() };
+            if (note >= 0) s.Midi.Notes[note] = true;
+            s.Midi.PitchBend = pitchBend;
+            return s;
+        }
+
+        private static CustomInputState AnalogKeys(int code = 0, float depth = 0f)
+        {
+            var s = new CustomInputState { AnalogKeys = new AnalogKeyInputState() };
+            if (code > 0) s.AnalogKeys.Set(code, depth);
+            return s;
+        }
+
+        /// <summary>A MIDI note that presses a key of the keyboard reaches no
+        /// mapping while the keyboard is open, as a button would not, and a
+        /// note still down at the close stays silent until it is let go.</summary>
+        [Fact]
+        public void AMidiNoteBoundToAControl_ReachesNoMappingWhileOpen_NorAfterTheClose()
+        {
+            var pad = AddPad();
+            var midi = AddPad(capType: InputDeviceType.Midi);
+            KeyboardMenuDefaults.Set(_menu, KeyboardLayout.Grid, KeyboardControlAction.TypeKey,
+                new KeyboardInput("Midi Note 60", midi.InstanceGuidString));
+            Poll((pad, Rest()), (midi, Midi()));
+            Poll((pad, Rest(GuideButton)), (midi, Midi()));
+            Assert.True(IsOpen);
+            Poll((pad, Rest()), (midi, Midi()));
+            var seen = Poll((pad, Rest()), (midi, Midi(60, 60000)));
+            Assert.False(seen[1].Midi.Notes[60]);
+            Assert.Equal(MidiInputState.PitchBendCenter, seen[1].Midi.PitchBend);
+            Assert.Equal(new[] { "tap 0010 None" }, _out.Sent);
+
+            Poll((pad, Rest(B)), (midi, Midi(60)));
+            Assert.False(IsOpen);
+            Assert.False(Poll((pad, Rest()), (midi, Midi(60)))[1].Midi.Notes[60]);
+            Poll((pad, Rest()), (midi, Midi()));
+            Assert.True(Poll((pad, Rest()), (midi, Midi(60)))[1].Midi.Notes[60]);
+        }
+
+        /// <summary>An analog key that presses a key of the keyboard reads
+        /// no depth for any mapping while the keyboard is open.</summary>
+        [Fact]
+        public void AnAnalogKeyBoundToAControl_ReadsNoDepthWhileOpen()
+        {
+            var pad = AddPad();
+            var keys = AddPad(capType: InputDeviceType.AnalogKeyboard);
+            KeyboardMenuDefaults.Set(_menu, KeyboardLayout.Grid, KeyboardControlAction.TypeKey,
+                new KeyboardInput("Analog Key 4", keys.InstanceGuidString));
+            Poll((pad, Rest()), (keys, AnalogKeys()));
+            Poll((pad, Rest(GuideButton)), (keys, AnalogKeys()));
+            Assert.True(IsOpen);
+            Assert.True(_im.OnScreenKeyboardMasks(keys.InstanceGuid));
+            Poll((pad, Rest()), (keys, AnalogKeys()));
+            var seen = Poll((pad, Rest()), (keys, AnalogKeys(4, 0.9f)));
+            Assert.Equal(0f, seen[1].AnalogKeys.Get(4));
+            Assert.Equal(new[] { "tap 0010 None" }, _out.Sent);
+        }
+
+        /// <summary>A second hat held at the close stays centered for
+        /// everything else until it is let go, as the first one does.</summary>
+        [Fact]
+        public void ASecondHatHeldAtTheClose_StaysCenteredUntilLetGo()
+        {
+            var pad = AddPad();
+            OpenWithGuide(pad);
+            var held = Rest(B);
+            held.Povs[1] = 9000;
+            Poll(pad, held);
+            Assert.False(IsOpen);
+            var still = Rest();
+            still.Povs[1] = 9000;
+            Assert.Equal(-1, Poll(pad, still).Povs[1]);
+            var back = Rest();
+            Assert.Same(back, Poll(pad, back));
+        }
+
+        // ── The hint bar's labels, the pointer's reads ───────────
+
+        /// <summary>The hint bar shows the labels of the first controller the
+        /// keyboard holds. When that one goes offline, it shows the labels of
+        /// the controller that remains.</summary>
+        [Fact]
+        public void TheHintFamily_FollowsTheControllerThatRemains()
+        {
+            var sony = AddPad();
+            sony.VendorId = 0x054C;
+            var xbox = AddPad();
+            xbox.VendorId = 0x045E;
+            Poll((sony, Rest()), (xbox, Rest()));
+            Poll((sony, Rest(GuideButton)), (xbox, Rest()));
+            Assert.True(IsOpen);
+            Poll((sony, Rest()), (xbox, Rest()));
+            Assert.Equal(OskFamily.PlayStation, _im.OnScreenKeyboardView.Family);
+            for (int i = 0; i < 30; i++) Poll(xbox, Rest());
+            Assert.True(IsOpen);
+            Assert.Equal(new[] { xbox.InstanceGuid }, _im.OnScreenKeyboardOwners);
+            Assert.Equal(OskFamily.Xbox, _im.OnScreenKeyboardView.Family);
+        }
+
+        /// <summary>A pointer read every poll fills the same array, so an open
+        /// keyboard with a touchpad allocates nothing per poll for it.</summary>
+        [Fact]
+        public void APointerReadEveryPoll_ReusesItsArray()
+        {
+            var ud = AddPad();
+            OpenWithGuide(ud);
+            Poll(ud, Touching(1, 0, 0.11f, 0.3f, false));
+            var first = _im.OnScreenKeyboardControls.Touch;
+            Poll(ud, Touching(1, 0, 0.5f, 0.3f, false));
+            var second = _im.OnScreenKeyboardControls.Touch;
+            Assert.Single(second);
+            Assert.Same(first, second);
+            Assert.True(second[0].Down);
+            Assert.Equal(0.5f, second[0].X, 2);
+        }
+
+        // ── Window clicks ────────────────────────────────────────
+
+        /// <summary>A window click names a key by its place on the keys the
+        /// window drew. When the controller switched the page before the
+        /// poll thread read the click, the place holds another key, so the
+        /// click types nothing. A click on the keys showing types.</summary>
+        [Fact]
+        public void AClickOnKeysThatHaveSinceMoved_TypesNothing()
+        {
+            var ud = AddPad();
+            OpenWithGuide(ud);
+            Poll(ud, Rest());
+            string letters = _im.OnScreenKeyboardView.Shape;
+            var symbols = Rest();
+            symbols.Axis[5] = 65535;
+            Poll(ud, symbols);
+            Poll(ud, Rest());
+            Assert.Equal(1, _im.OnScreenKeyboardEngine.Page);
+            // q's place on the letters page, clicked on the letters the window showed.
+            _im.PostOnScreenKeyboardCommand(new OskCommand(OskCommandKind.ClickKey, 0, 1, 1, letters));
+            Poll(ud, Rest());
+            Assert.Empty(_out.Sent);
+            _im.PostOnScreenKeyboardCommand(new OskCommand(OskCommandKind.ClickKey, 0, 1, 1, _im.OnScreenKeyboardView.Shape));
+            Poll(ud, Rest());
+            Assert.Single(_out.Sent);
+        }
+
+        // ── The text-focus watcher ───────────────────────────────
+
+        /// <summary>UI Automation answers a call into a hung window with
+        /// UIA_E_TIMEOUT, which .NET throws as a TimeoutException. One such
+        /// answer while the watcher subscribes leaves it listening: a menu
+        /// that stops and starts asking gets its report.</summary>
+        [Fact]
+        public void ATimeoutAnsweringTheFocusedElement_LeavesTheWatcherListening()
+        {
+            int wanted = 1, calls = 0;
+            var reports = new List<bool>();
+            using var w = new OskTextFocusWatcher(
+                () => Volatile.Read(ref wanted) == 1,
+                r => { lock (reports) reports.Add(r); },
+                () =>
+                {
+                    if (Interlocked.Increment(ref calls) == 1) throw new TimeoutException("UIA_E_TIMEOUT");
+                    return (null, true);
+                },
+                _ => { }, _ => { });
+            Assert.True(SpinWait.SpinUntil(() => Volatile.Read(ref calls) >= 1, 5000));
+            Volatile.Write(ref wanted, 0);
+            Thread.Sleep(1200);
+            Volatile.Write(ref wanted, 1);
+            Assert.True(SpinWait.SpinUntil(() => { lock (reports) return reports.Contains(true); }, 5000),
+                "the watcher stopped after the timeout");
+        }
+
+        /// <summary>Focus that stays in one element is reported once: UI
+        /// Automation raises the focus event again when the element's window
+        /// comes back to the front, and that is no focus change. Another
+        /// element, or the same one with another answer, is reported.</summary>
+        [Fact]
+        public void TheWatcher_ReportsFocusThatStaysInOneElementOnce()
+        {
+            var reports = new List<bool>();
+            using var w = new OskTextFocusWatcher(() => false, r => { lock (reports) reports.Add(r); },
+                () => (null, false), _ => { }, _ => { });
+            w.Report(new[] { 42, 7 }, true);
+            w.Report(new[] { 42, 7 }, true);
+            w.Report(new[] { 42, 8 }, true);
+            w.Report(new[] { 42, 8 }, false);
+            w.Report(null, true);
+            w.Report(null, true);
+            lock (reports) Assert.Equal(new[] { true, true, false, true, true }, reports);
         }
 
         // ── Wiring ───────────────────────────────────────────────

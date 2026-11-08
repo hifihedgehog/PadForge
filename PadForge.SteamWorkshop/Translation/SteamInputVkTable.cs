@@ -196,9 +196,11 @@ namespace PadForge.SteamWorkshop.Translation
             d["KEYPAD_DASH"] = 0x6D;
             d["KEYPAD_PERIOD"] = 0x6E;
             d["KEYPAD_FORWARD_SLASH"] = 0x6F;
-            // Windows has no distinct numpad-Enter VK (it is VK_RETURN with
-            // the extended-key flag, which SendInput-level mapping ignores).
-            d["KEYPAD_ENTER"] = 0x0D;
+            // Windows reports Numpad Enter as VK_RETURN with the extended
+            // flag. PadForge keeps it at 0x88, a code Windows leaves
+            // unassigned (RawInputListener.NumpadEnterKey), and sends it
+            // back out as VK_RETURN with the extended flag.
+            d["KEYPAD_ENTER"] = 0x88;
 
             return d;
         }
@@ -226,6 +228,7 @@ namespace PadForge.SteamWorkshop.Translation
             s.Add(0xDC); s.Add(0xDD); s.Add(0xDE);                  // \ ] '
             for (int i = 0; i <= 9; i++) s.Add((byte)(0x60 + i));   // Num 0-9
             s.Add(0x6A); s.Add(0x6B); s.Add(0x6D); s.Add(0x6E); s.Add(0x6F); // Num * + - . /
+            s.Add(0x88);                                            // Num Enter, PadForge's own index
             return s;
         }
     }

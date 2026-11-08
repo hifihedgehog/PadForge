@@ -4541,7 +4541,7 @@
   <data name="KeyboardScreens_Status_Strike7Waiting" xml:space="preserve"><value>روی صفحه‌نمایش V.E.N.O.M. گزینه PadForge را انتخاب کنید</value></data>
   <data name="KeyboardScreens_Status_Strike7Showing" xml:space="preserve"><value>روی صفحه‌نمایش V.E.N.O.M.</value></data>
   <data name="KeyboardScreens_Status_NotFound" xml:space="preserve"><value>صفحه‌نمایشی پیدا نشد</value></data>
-  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}، در انتظار رنگ نوار نوری</value></data>
+  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}، بدون رنگ نوار نوری</value></data>
   <data name="KeyboardScreens_Status_NoPicture_Format" xml:space="preserve"><value>{0}، تصویری انتخاب نشده</value></data>
   <data name="KeyboardScreens_LgsShared_Format" xml:space="preserve"><value>تا وقتی Logitech Gaming Software اجرا می‌شود، هر صفحه‌نمایشِ این نوع تصویری را نشان می‌دهد که برای {0} تنظیم شده است.</value></data>
   <data name="DeviceType_KeyboardScreenKeys" xml:space="preserve"><value>صفحه‌نمایش صفحه‌کلید</value></data>
@@ -4590,7 +4590,7 @@
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>جابه‌جایی تصویر صفحه‌نمایش صفحه‌کلید</value></data>
   <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>پنجره هر صفحه‌نمایش صفحه‌کلید را که به این اسلات ورودی می‌دهد روی تصویری بزرگ‌تر از صفحه‌نمایش جابه‌جا می‌کند، مثلاً برای یک نقشه. اورلی صفحه‌نمایش وقتی بزرگ‌نمایی‌اش بیش از 100 درصد باشد به همین شکل جابه‌جا می‌شود.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>جابه‌جایی تصاویر به اندازه {0} و {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>هر صفحه‌نمایشی را که به این اسلات ورودی می‌دهد و تصویر انتخاب‌شده‌ای بزرگ‌تر از خودش نشان می‌دهد جابه‌جا می‌کند. پنجره در لبه‌های تصویر می‌ایستد. اورلی صفحه‌نمایش وقتی بزرگ‌نمایی‌اش بیش از 100 درصد باشد جابه‌جا می‌شود، هر اسلاتی که ماکرو را اجرا کند.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>هر صفحه‌نمایشی را که به این اسلات ورودی می‌دهد و تصویر انتخاب‌شده‌ای بزرگ‌تر از خودش نشان می‌دهد جابه‌جا می‌کند. پنجره در لبه‌های تصویر می‌ایستد. اورلی صفحه‌نمایش وقتی بزرگ‌نمایی‌اش بیش از 100 درصد باشد جابه‌جا می‌شود، هر اسلاتی که ماکرو را اجرا کند. ماکرویی که یک اورلی را نام ببرد، فقط همان اورلی را جابه‌جا می‌کند.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>صفحه‌نمایش</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>عمل</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>جهت</value></data>
@@ -4907,11 +4907,11 @@
   <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>پایین‌ترین اسلات دارای رنگ</value></data>
   <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>بزرگ‌نمایی</value></data>
   <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>تصویری انتخاب نشده.</value></data>
-  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>در انتظار رنگ نوار نوری.</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>رنگ نوار نوری DualShock 4 یا DualSense برای نمایش وجود ندارد.</value></data>
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>اورلی</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>همه اورلی‌ها</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>تغییر وضعیت اورلی صفحه‌نمایش {0}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>نمایش تصاویر {0}: {1} × {2} ms، تا ماکروی بعدی</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>نمایش تصاویر {0}: {1} × {2} ms، تا نمایش یا ماکروی حالت بعدی</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>وارد کردن پروفایل</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}، یک فایل {1}</value></data>
   <data name="Import_ProfileName_Format" xml:space="preserve"><value>به پروفایل «{0}» تبدیل می‌شود.</value></data>
@@ -4945,7 +4945,6 @@
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>این پروفایل یک کنش ویژه را نام می‌برد که در Actions.xml کنار پوشه Profiles آن وجود ندارد: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>این تنظیم منتقل نشد: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD جلوی رسیدن این ورودی‌ها به ویندوز را می‌گرفت. مصرف ورودی‌های نگاشت‌شده را برای {0} در صفحه دستگاه‌ها روشن کنید تا ورودی‌هایی که این پروفایل نگاشت می‌کند مسدود شوند.</value></data>
-  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>نگاشت‌های Base برای {0} در این لایه متوقف می‌شوند. وقتی مصرف ورودی‌های نگاشت‌شده روشن است، ورودی‌های نگاشت‌شده‌ی آن در همه لایه‌ها از Windows مسدود می‌مانند.</value></data>
   <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>زیرمنوهای آن به اسلات‌های بیشتری روی یک حلقه تبدیل شدند.</value></data>
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>وقتی استیک به مرکز برمی‌گردد یا لایه تمام می‌شود، انتخاب را ثبت می‌کند. دکمه اعمال در reWASD استفاده نمی‌شود.</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>این فایل دو کنترلر را از هم جدا نگه می‌دارد. در PadForge، هر کنترلری روی اسلات، این نگاشت‌ها را اجرا می‌کند.</value></data>
@@ -4974,7 +4973,7 @@
   <data name="Import_Tr_HideController" xml:space="preserve"><value>reWASD این کنترلر را از بازی‌ها پنهان کرده بود. پنهان کردن از بازی‌ها را برای آن در صفحه دستگاه‌ها روشن کنید.</value></data>
   <data name="Import_Tr_NoSuchSetting" xml:space="preserve"><value>PadForge چنین تنظیمی ندارد: {0}</value></data>
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD جلوی رسیدن حرکت ماوس به Windows را می‌گرفت. PadForge کلیدها و دکمه‌های ماوس را مسدود می‌کند اما حرکت را نه، بنابراین اشاره‌گر همچنان حرکت می‌کند.</value></data>
-  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>کنترلرهای مجازی PadForge حرکت را فقط از حسگر حرکت یک کنترلر دریافت می‌کنند.</value></data>
+  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>کنترلر مجازی Xbox حرکت ندارد. برای ارسال حرکت، نوع کنترلر PlayStation یا Nintendo را انتخاب کنید.</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows با یک دکمه از {0} به این پروفایل برمی‌گشت. برای انجام همین کار در PadForge، یک میانبر پروفایل برای این پروفایل در صفحه پروفایل‌ها اضافه کنید.</value></data>
   <data name="Osk_Style_Grid" xml:space="preserve">
     <value>شبکه‌ای</value>
@@ -5193,4 +5192,37 @@
   <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>وقتی «باز شدن با» پیش از زمان نگه داشتن رها شود، صفحه‌کلید را باز یا بسته می‌کند. فشار طولانی‌تر کاری نمی‌کند.</value></data>
   <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>وقتی «باز شدن با» سه بار در پنجره زمانی فشار فشرده شود، صفحه‌کلید را باز یا بسته می‌کند.</value></data>
   <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>وقتی پنجره زمانی فشار پس از یک بار فشردن «باز شدن با» تمام شود، صفحه‌کلید را باز یا بسته می‌کند. فشار دوم درون پنجره آن را لغو می‌کند.</value></data>
+  <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>رنگ‌ها مستقیماً به {0} می‌روند. رنگ‌های متغیر، مانند چرخش رنگ یا رنگ‌هایی که صدا را دنبال می‌کنند، به آن نمی‌رسند. رنگ ثابت می‌رسد.</value></data>
+  <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>همه فایل‌ها (*.*)|*.*</value></data>
+  <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>پروفایل PadForge (*{0})|*{0}</value></data>
+  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml</value></data>
+  <data name="FileDialog_ProgramFilter" xml:space="preserve"><value>برنامه‌ها (*.exe;*.bat;*.cmd;*.com)|*.exe;*.bat;*.cmd;*.com|همه فایل‌ها (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundFileFilter" xml:space="preserve"><value>فایل‌های صوتی و بسته‌های صدا|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.pfsounds|بسته‌های صدا (*.pfsounds)|*.pfsounds|همه فایل‌ها (*.*)|*.*</value></data>
+  <data name="FileDialog_AudioFilter" xml:space="preserve"><value>فایل‌های صوتی|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.ogg|همه فایل‌ها (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundPackageFilter_Format" xml:space="preserve"><value>بسته‌های صدای PadForge (*{0})|*{0}</value></data>
+  <data name="FileDialog_IconPackageFilter_Format" xml:space="preserve"><value>بسته‌های آیکون PadForge (*{0})|*{0}</value></data>
+  <data name="FileDialog_AutoEqFilter" xml:space="preserve"><value>پروفایل AutoEq (*.txt)|*.txt|همه فایل‌ها (*.*)|*.*</value></data>
+  <data name="FileDialog_IconPickerFilter" xml:space="preserve"><value>تصاویر و بسته‌های آیکون|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.pficons|بسته‌های آیکون (*.pficons)|*.pficons</value></data>
+  <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>دکمه‌های کنسول دستی PadForge (*.json)|*.json</value></data>
+  <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>پروفایل HIDMaestro (*.json)|*.json</value></data>
+  <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>نورهای کلید PadForge (*.json)|*.json</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>ماکرو نمی‌تواند {0} را فشار دهد. نگاشتی در زبانه نگاشت‌ها می‌تواند.</value></data>
+  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge هشت اورلی صفحه‌نمایش اجرا می‌کند و این ضربدر نشانه‌گیری نهم یا دهم reWASD است.</value></data>
+  <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge چپ و راست ژیروسکوپ را از رول و کج کردن را از یاو می‌خواند، که پیش‌فرض reWASD است. تنظیمات reWASD می‌تواند این دو را عوض کند و این فایل نمی‌گوید عوض شده‌اند یا نه.</value></data>
+  <data name="Import_Tr_TiltLean" xml:space="preserve"><value>در حالت Tilt، کج کردن reWASD چرخشی حول محور عمودی است و حسگر حرکت برای آن چرخش زاویه‌ای نمی‌دهد.</value></data>
+  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge قطری تاچ‌پد را دو جهت هم‌زمان می‌خواند، که تاچ‌پد فقط وقتی گزارش می‌کند که حالت دکمه‌های جهتی در زبانه تاچ‌پد آن هشت‌جهته (8-Way) باشد.</value></data>
+  <data name="Import_Tr_GyroZone" xml:space="preserve"><value>PadForge جهت ژیروسکوپ را از یک آستانه به بعد می‌خواند و reWASD برای لبه ناحیه ژیروسکوپ واحدی نمی‌دهد.</value></data>
+  <data name="Import_Tr_AbsoluteMouse" xml:space="preserve"><value>DS4Windows اشاره‌گر را همان جایی می‌گذاشت که استیک به آن اشاره می‌کند. در PadForge به‌جای آن استیک اشاره‌گر را حرکت می‌دهد.</value></data>
+  <data name="Import_Tr_StickBeforeRotation" xml:space="preserve"><value>{0} استیک را پیش از چرخش آن می‌خواند. DS4Windows پس از آن می‌خواند.</value></data>
+  <data name="Import_Tr_StickBeforeCurve" xml:space="preserve"><value>{0} زاویه استیک را پیش از ناحیه‌ها و منحنی آن می‌خواند. DS4Windows پس از آن می‌خواند.</value></data>
+  <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>صفحه‌کلید اسلاتی که دیگر «صفحه‌کلید + ماوس» نیست</value></data>
+  <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (روی این رایانه نیست)</value></data>
+  <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (روی این اسلات نیست)</value></data>
+  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>یاو و رول با قدرت کامل جمع شدند (سهم رول خوانده نشد)</value></data>
+  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>ژیروسکوپ Local Space به‌صورت یاو خوانده شد (PadForge محور اصلی کج ندارد)</value></data>
+  <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>ژیروسکوپ Laser Pointer به‌صورت یاو خوانده شد (PadForge تبدیل لیزر پوینتر ندارد)</value></data>
+  <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>در reWASD، {0} همچنان به Windows می‌رسد، چون فایل آن را بدون لغو نگاشت نگاشت کرده است. وقتی مصرف ورودی‌های نگاشت‌شده روشن باشد، PadForge جلوی آن را می‌گیرد.</value></data>
+  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge چرخش مثبت را ساعت‌گرد می‌چرخاند، مثل DS4Windows. راهنمای reWASD دامنه چرخش را می‌دهد، نه جهت آن را.</value></data>
+  <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows {0} استیک شعاعی را بر اساس زاویه فشار شکل می‌دهد. کارت استیک در PadForge فشار مستقیم را یکسان و فشار مورب را متفاوت اجرا می‌کند.</value></data>
+  <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>لایه‌ها {0} را متفاوت تنظیم می‌کنند، بنابراین هر لایه تنظیم خودش را نگه می‌دارد و منحنی به نزدیک‌ترین منحنی توانی منتقل می‌شود.</value></data>
 </root>

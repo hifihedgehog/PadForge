@@ -1614,7 +1614,9 @@ namespace PadForge.Common.Input.Peripherals
             // longer than one interval. A lamp-by-lamp paint keeps that
             // promise report by report, since only the report that closes an
             // update counts, so its reports go on at once.
-            long spaced = lamp.SentAt + unit.PaintIntervalMs;
+            // A one-color update also waits for the lamps a picture sent into an
+            // update after the last close (LampsFreeAt).
+            long spaced = Math.Max(lamp.SentAt + unit.PaintIntervalMs, LampsFreeAt(lamp, unit.PaintIntervalMs));
             bool reassert = pass.Now - lamp.ClaimedAt >= ReassertMs;
             if (!reassert && !lamp.Unclosed && Showing(lamp, rgb, ruler.Keys))
             {
@@ -1891,10 +1893,15 @@ namespace PadForge.Common.Input.Peripherals
         }
 
         /// <summary>Sends one color. False when a write failed, and the
-        /// unit is asleep then.</summary>
+        /// unit is asleep then. Its reports reach every lamp, so each lamp's
+        /// clock and the interval's report count take them, and a picture that
+        /// follows waits the interval for every lamp (HID Usage Tables 1.6,
+        /// 26.7).</summary>
         private bool Send(Lamp lamp, int rgb, ref Pass pass)
         {
-            foreach (var frame in LampArrayProtocol.Frames(lamp.Unit, rgb))
+            var frames = LampArrayProtocol.Frames(lamp.Unit, rgb);
+            long at = _ticks();
+            foreach (var frame in frames)
             {
                 if (Set(lamp, frame)) continue;
                 Sleep(lamp, "a color write failed", ref pass);
@@ -1903,7 +1910,33 @@ namespace PadForge.Common.Input.Peripherals
             lamp.SentRgb = rgb;
             lamp.SentAt = _ticks();
             lamp.Sent = true;
+            int count = lamp.Unit.LampCount;
+            if (count > 0)
+            {
+                if (lamp.LampSentAt?.Length != count) lamp.LampSentAt = new long[count];
+                Array.Fill(lamp.LampSentAt, at);
+            }
+            if (at - lamp.WindowAt >= lamp.Unit.PaintIntervalMs)
+            {
+                lamp.WindowAt = at;
+                lamp.WindowReports = 0;
+            }
+            lamp.WindowReports += frames.Length;
             return true;
+        }
+
+        /// <summary>When every lamp may take its next update: the interval after
+        /// the lamp that went out last (HID Usage Tables 1.6, 26.7, "the Host to
+        /// wait before sending two updates for any one Lamp"). A picture's
+        /// reports that have not closed an update count, so this can be later
+        /// than the interval after the last close.</summary>
+        private static long LampsFreeAt(Lamp lamp, int interval)
+        {
+            var sent = lamp.LampSentAt;
+            if (sent == null || sent.Length == 0) return long.MinValue;
+            long last = long.MinValue;
+            foreach (long at in sent) last = Math.Max(last, at);
+            return last + interval;
         }
 
         /// <summary>
@@ -1937,7 +1970,7 @@ namespace PadForge.Common.Input.Peripherals
             }
             else
             {
-                long spaced = lamp.SentAt + unit.PaintIntervalMs;
+                long spaced = Math.Max(lamp.SentAt + unit.PaintIntervalMs, LampsFreeAt(lamp, unit.PaintIntervalMs));
                 if (pass.Now < spaced)
                 {
                     pass.DueAt(spaced);
@@ -2022,9 +2055,10 @@ namespace PadForge.Common.Input.Peripherals
             }
             if (!lamp.Sent) return;
             // The lamps' off is an update, so it waits out what is left of
-            // the interval since the last one, which a device may hold a
-            // host to. The wait is the interval at most.
-            long left = lamp.SentAt + unit.PaintIntervalMs - _ticks();
+            // the interval since the last one, and since the last lamp a
+            // picture sent, which a device may hold a host to. The wait is the
+            // interval at most.
+            long left = Math.Max(lamp.SentAt + unit.PaintIntervalMs, LampsFreeAt(lamp, unit.PaintIntervalMs)) - _ticks();
             if (left > 0) _pause((int)Math.Min(left, LampArrayProtocol.MaxIntervalMs));
             Set(lamp, LampArrayProtocol.AllOff(unit));
         }

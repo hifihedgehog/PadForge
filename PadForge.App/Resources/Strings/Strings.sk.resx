@@ -4541,7 +4541,7 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="KeyboardScreens_Status_Strike7Waiting" xml:space="preserve"><value>vyberte PadForge na obrazovke V.E.N.O.M.</value></data>
   <data name="KeyboardScreens_Status_Strike7Showing" xml:space="preserve"><value>na obrazovke V.E.N.O.M.</value></data>
   <data name="KeyboardScreens_Status_NotFound" xml:space="preserve"><value>nenašla sa žiadna obrazovka</value></data>
-  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}, čaká sa na farbu svetelnej lišty</value></data>
+  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}, žiadna farba svetelnej lišty</value></data>
   <data name="KeyboardScreens_Status_NoPicture_Format" xml:space="preserve"><value>{0}, nie je vybratý žiadny obrázok</value></data>
   <data name="KeyboardScreens_LgsShared_Format" xml:space="preserve"><value>Kým beží Logitech Gaming Software, každá obrazovka tohto druhu zobrazuje obrázok nastavený pre {0}.</value></data>
   <data name="DeviceType_KeyboardScreenKeys" xml:space="preserve"><value>Obrazovka klávesnice</value></data>
@@ -4590,7 +4590,7 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Posunúť obrázok obrazovky klávesnice</value></data>
   <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Posúva okno každej obrazovky klávesnice, ktorá napája tento slot, nad obrázkom väčším ako obrazovka, napríklad pre mapu. Prekrytie obrazovky sa posúva rovnako, keď je jeho priblíženie nad 100 percent.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Posunúť obrázky o {0} a {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Posúva každú obrazovku, ktorá napája tento slot a zobrazuje vybratý obrázok väčší ako ona sama. Okno sa zastaví na okrajoch obrázka. Prekrytie obrazovky sa posúva, keď je jeho priblíženie nad 100 percent, bez ohľadu na to, ktorý slot spustí makro.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Posúva každú obrazovku, ktorá napája tento slot a zobrazuje vybratý obrázok väčší ako ona sama. Okno sa zastaví na okrajoch obrázka. Prekrytie obrazovky sa posúva, keď je jeho priblíženie nad 100 percent, bez ohľadu na to, ktorý slot spustí makro. Makro, ktoré uvádza jedno prekrytie, posúva iba toto prekrytie.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Obrazovka</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Akcia</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Smer</value></data>
@@ -4907,11 +4907,11 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Najnižší slot s farbou</value></data>
   <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>Priblíženie</value></data>
   <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>Nie je vybratý žiadny obrázok.</value></data>
-  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Čaká sa na farbu svetelnej lišty.</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Nie je žiadna farba svetelnej lišty DualShock 4 ani DualSense, ktorú by bolo možné zobraziť.</value></data>
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Prekrytie</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Každé prekrytie</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Prepnúť prekrytie obrazovky {0}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Zobraziť obrázky {0}: {1} × {2} ms, do ďalšieho makra</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Zobraziť obrázky {0}: {1} × {2} ms, do ďalšieho makra zobrazenia alebo režimu</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>Import profilu</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}, súbor {1}</value></data>
   <data name="Import_ProfileName_Format" xml:space="preserve"><value>Stane sa profilom „{0}“.</value></data>
@@ -4945,7 +4945,6 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Tento profil uvádza špeciálnu akciu, ktorá chýba v Actions.xml vedľa priečinka Profiles: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Toto nastavenie sa neprenieslo: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD bránil týmto vstupom dostať sa do Windowsu. Zapnite Pohltiť namapované vstupy pre {0} na stránke Zariadenia, čo zastaví tie, ktoré tento profil mapuje.</value></data>
-  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>Mapovania vrstvy Base pre {0} sa v tejto vrstve zastavia. Keď je zapnuté Pohltiť namapované vstupy, jeho namapované vstupy zostanú zadržané pred Windowsom vo všetkých vrstvách.</value></data>
   <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>Jeho podponuky sa stali ďalšími slotmi na jednom kruhu.</value></data>
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Potvrdí sa, keď sa páčka vráti do stredu alebo skončí vrstva. Tlačidlo Použiť z reWASD sa nepoužíva.</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Tento súbor oddeľuje dva ovládače. V PadForge tieto mapovania spustí ktorýkoľvek ovládač na slote.</value></data>
@@ -4974,7 +4973,7 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="Import_Tr_HideController" xml:space="preserve"><value>reWASD skryl tento ovládač pred hrami. Zapnite preň Skryť pred hrami na stránke Zariadenia.</value></data>
   <data name="Import_Tr_NoSuchSetting" xml:space="preserve"><value>PadForge nemá takéto nastavenie: {0}</value></data>
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD bránil pohybu myši dostať sa do Windowsu. PadForge zadržiava klávesy a tlačidlá myši, ale nie pohyb, takže ukazovateľ sa stále hýbe.</value></data>
-  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>Virtuálne ovládače PadForge preberajú pohyb iba z pohybového snímača ovládača.</value></data>
+  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>Virtuálny ovládač Xbox nemá pohyb. Ak chcete posielať pohyb, vyberte typ ovládača PlayStation alebo Nintendo.</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows sa tlačidlom vrátil k tomuto profilu z profilu {0}. Ak to chcete dosiahnuť v PadForge, pridajte pre tento profil Skratku profilu na stránke Profily.</value></data>
   <data name="Osk_Style_Grid" xml:space="preserve">
     <value>Mriežka</value>
@@ -5193,4 +5192,37 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Otvorí alebo zatvorí klávesnicu, keď sa Otvára sa pomocou uvoľní pred uplynutím času podržania. Dlhšie stlačenie nespraví nič.</value></data>
   <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Otvorí alebo zatvorí klávesnicu, keď sa Otvára sa pomocou stlačí trikrát v okne stlačenia.</value></data>
   <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Otvorí alebo zatvorí klávesnicu, keď okno stlačenia skončí po jednom stlačení Otvára sa pomocou. Druhé stlačenie v okne to zruší.</value></data>
+  <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>Farby sa posielajú priamo do zariadenia {0}. Meniace sa farby, napríklad cyklus farieb alebo farby reagujúce na zvuk, sa k nemu nedostanú. Farba, ktorá sa nemení, áno.</value></data>
+  <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Všetky súbory (*.*)|*.*</value></data>
+  <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>Profil PadForge (*{0})|*{0}</value></data>
+  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml</value></data>
+  <data name="FileDialog_ProgramFilter" xml:space="preserve"><value>Programy (*.exe;*.bat;*.cmd;*.com)|*.exe;*.bat;*.cmd;*.com|Všetky súbory (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundFileFilter" xml:space="preserve"><value>Zvukové súbory a zvukové balíky|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.pfsounds|Zvukové balíky (*.pfsounds)|*.pfsounds|Všetky súbory (*.*)|*.*</value></data>
+  <data name="FileDialog_AudioFilter" xml:space="preserve"><value>Zvukové súbory|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.ogg|Všetky súbory (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundPackageFilter_Format" xml:space="preserve"><value>Zvukové balíky PadForge (*{0})|*{0}</value></data>
+  <data name="FileDialog_IconPackageFilter_Format" xml:space="preserve"><value>Balíky ikon PadForge (*{0})|*{0}</value></data>
+  <data name="FileDialog_AutoEqFilter" xml:space="preserve"><value>Profil AutoEq (*.txt)|*.txt|Všetky súbory (*.*)|*.*</value></data>
+  <data name="FileDialog_IconPickerFilter" xml:space="preserve"><value>Obrázky a balíky ikon|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.pficons|Balíky ikon (*.pficons)|*.pficons</value></data>
+  <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>Tlačidlá handheldu PadForge (*.json)|*.json</value></data>
+  <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>Profil HIDMaestro (*.json)|*.json</value></data>
+  <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>Podsvietenie klávesov PadForge (*.json)|*.json</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Makro nedokáže stlačiť {0}. Mapovanie na karte Mapovania to dokáže.</value></data>
+  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge spúšťa osem prekrytí obrazovky a toto je deviaty alebo desiaty zameriavač z reWASD.</value></data>
+  <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge číta Gyroskop – nakláňanie X z náklonu a nakláňanie Y z otáčania, ako je to predvolené v reWASD. Predvoľby reWASD môžu tieto dve osi vymeniť a tento súbor neuvádza, či sa tak stalo.</value></data>
+  <data name="Import_Tr_TiltLean" xml:space="preserve"><value>V režime Tilt je nakláňanie v reWASD otáčanie okolo zvislej osi a pohybový snímač pre takéto otáčanie neposkytuje uhol.</value></data>
+  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge číta uhlopriečku touchpadu ako dva smery naraz, čo touchpad hlási iba vtedy, keď je Režim D-padu na jeho karte Touchpad nastavený na 8 smerov.</value></data>
+  <data name="Import_Tr_GyroZone" xml:space="preserve"><value>PadForge číta smer gyroskopu za jedným prahom a reWASD neuvádza jednotku pre okraj zóny gyroskopu.</value></data>
+  <data name="Import_Tr_AbsoluteMouse" xml:space="preserve"><value>DS4Windows umiestnil ukazovateľ tam, kam mieri páčka. V PadForge páčka ukazovateľ namiesto toho posúva.</value></data>
+  <data name="Import_Tr_StickBeforeRotation" xml:space="preserve"><value>{0} číta páčku pred jej otočením. DS4Windows ju čítal po ňom.</value></data>
+  <data name="Import_Tr_StickBeforeCurve" xml:space="preserve"><value>{0} číta uhol páčky pred jej zónami a krivkou. DS4Windows ho čítal po nich.</value></data>
+  <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>Klávesnica slotu, ktorý už nie je Klávesnica + myš</value></data>
+  <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (nie je v tomto počítači)</value></data>
+  <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (nie je v tomto slote)</value></data>
+  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>otáčanie a náklon sa pripočítavajú plnou silou (príspevok náklonu sa nečíta)</value></data>
+  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>gyroskop Local Space sa číta ako otáčanie (PadForge nemá naklonenú primárnu os)</value></data>
+  <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>gyroskop Laser Pointer sa číta ako otáčanie (PadForge nemá prevod laserového ukazovateľa)</value></data>
+  <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>V reWASD sa {0} stále dostáva do systému Windows, pretože ho súbor mapuje bez zrušenia mapovania. Keď je zapnuté Pohltiť namapované vstupy, PadForge ho zadrží.</value></data>
+  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge otáča kladné otočenie v smere hodinových ručičiek, ako to robí DS4Windows. Pomocník reWASD uvádza rozsah otočenia, nie jeho smer.</value></data>
+  <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows tvaruje {0} radiálnej páčky podľa uhla vychýlenia. Karta páčky v PadForge hrá priame vychýlenie rovnako a uhlopriečne inak.</value></data>
+  <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Vrstvy ladia {0} odlišne, preto si každá ponecháva vlastné ladenie a krivka sa prenesie ako najbližšia mocninová krivka.</value></data>
 </root>

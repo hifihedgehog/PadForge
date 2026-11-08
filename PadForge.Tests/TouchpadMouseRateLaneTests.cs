@@ -81,6 +81,26 @@ namespace PadForge.Tests
             return SourceCoercion.EvaluateForBipolarAxisTarget(st, src, slot, relativeTouchpad: true);
         }
 
+        // ── a row's Invert turns the cursor ───────────────────────────────
+
+        // The bipolar evaluator flips a source on Invert, and the rate lane
+        // that replaced it for touch on the mouse must too.
+        [Fact]
+        public void AnInvertedRow_TurnsTheCursorTheOtherWay()
+        {
+            float Drag(MappingSource src)
+            {
+                int slot = NewSlot();
+                Counts(PadAt(0.50f), TicksAt(0.000f), src, slot);
+                Counts(PadAt(0.52f), TicksAt(0.004f), src, slot);
+                return Counts(PadAt(0.52f), TicksAt(0.005f), src, slot);
+            }
+            float plain = Drag(XSource());
+            float inverted = Drag(new MappingSource { Descriptor = "Touchpad 0 Finger 0 X", Invert = true });
+            Assert.True(plain > 0f, "plain = " + plain);
+            Assert.Equal(-plain, inverted, 4);
+        }
+
         // ── the stutter is gone ───────────────────────────────────────────
 
         [Fact]

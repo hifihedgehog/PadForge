@@ -4541,7 +4541,7 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="KeyboardScreens_Status_Strike7Waiting" xml:space="preserve"><value>hãy chọn PadForge trên màn hình V.E.N.O.M.</value></data>
   <data name="KeyboardScreens_Status_Strike7Showing" xml:space="preserve"><value>trên màn hình V.E.N.O.M.</value></data>
   <data name="KeyboardScreens_Status_NotFound" xml:space="preserve"><value>không tìm thấy màn hình</value></data>
-  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}, đang chờ màu thanh đèn</value></data>
+  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}, không có màu thanh đèn</value></data>
   <data name="KeyboardScreens_Status_NoPicture_Format" xml:space="preserve"><value>{0}, chưa chọn hình</value></data>
   <data name="KeyboardScreens_LgsShared_Format" xml:space="preserve"><value>Khi Logitech Gaming Software đang chạy, mọi màn hình thuộc loại này đều hiển thị hình đã đặt cho {0}.</value></data>
   <data name="DeviceType_KeyboardScreenKeys" xml:space="preserve"><value>Màn hình bàn phím</value></data>
@@ -4590,7 +4590,7 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Dịch hình màn hình bàn phím</value></data>
   <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Di chuyển khung của từng màn hình bàn phím đang cấp cho khe này trên một hình lớn hơn màn hình, chẳng hạn một bản đồ. Lớp phủ màn hình cũng di chuyển theo cách đó khi mức thu phóng trên 100 phần trăm.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Dịch hình theo {0} và {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Di chuyển từng màn hình đang cấp cho khe này và hiển thị một hình đã chọn lớn hơn chính nó. Khung dừng ở mép hình. Lớp phủ màn hình di chuyển khi mức thu phóng trên 100 phần trăm, bất kể khe nào chạy macro.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Di chuyển từng màn hình đang cấp cho khe này và hiển thị một hình đã chọn lớn hơn chính nó. Khung dừng ở mép hình. Lớp phủ màn hình di chuyển khi mức thu phóng trên 100 phần trăm, bất kể khe nào chạy macro. Macro nêu tên một lớp phủ thì chỉ di chuyển riêng lớp phủ đó.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Màn hình</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Hành động</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Hướng</value></data>
@@ -4907,11 +4907,11 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Khe thấp nhất có màu</value></data>
   <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>Thu phóng</value></data>
   <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>Chưa chọn hình.</value></data>
-  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Đang chờ màu thanh đèn.</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Không có màu thanh đèn DualShock 4 hoặc DualSense để hiển thị.</value></data>
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Lớp phủ</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Mọi lớp phủ</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Bật/tắt lớp phủ màn hình {0}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Hiện hình {0}: {1} × {2} ms, cho đến macro tiếp theo</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Hiện hình {0}: {1} × {2} ms, cho đến lần hiện hoặc macro chế độ tiếp theo</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>Nhập hồ sơ</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}, một tệp {1}</value></data>
   <data name="Import_ProfileName_Format" xml:space="preserve"><value>Sẽ thành hồ sơ "{0}".</value></data>
@@ -4945,7 +4945,6 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Hồ sơ này nêu một hành động đặc biệt không có trong Actions.xml cạnh thư mục Profiles của nó: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Thiết lập này đã không được chuyển sang: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD đã chặn các đầu vào này không đến được Windows. Hãy bật Chặn các đầu vào đã ánh xạ cho {0} trên trang Thiết bị, tùy chọn này chặn những đầu vào mà hồ sơ này ánh xạ.</value></data>
-  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>Các ánh xạ của Base cho {0} dừng lại trong lớp này. Khi bật Chặn các đầu vào đã ánh xạ, các đầu vào đã ánh xạ của thiết bị vẫn bị chặn không đến được Windows ở mọi lớp.</value></data>
   <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>Các menu con của nó đã thành thêm các ô trên một vòng.</value></data>
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Xác nhận khi cần analog về tâm hoặc khi lớp kết thúc. Nút Apply của reWASD không được dùng.</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Tệp này tách riêng hai tay cầm. Trong PadForge, bất kỳ tay cầm nào ở ô này đều kích hoạt các ánh xạ này.</value></data>
@@ -4974,7 +4973,7 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Import_Tr_HideController" xml:space="preserve"><value>reWASD đã ẩn tay cầm này khỏi trò chơi. Hãy bật Ẩn khỏi trò chơi cho tay cầm này trên trang Thiết bị.</value></data>
   <data name="Import_Tr_NoSuchSetting" xml:space="preserve"><value>PadForge không có thiết lập như vậy: {0}</value></data>
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD đã chặn chuyển động chuột không đến được Windows. PadForge chặn phím và nút chuột nhưng không chặn chuyển động, nên con trỏ vẫn di chuyển.</value></data>
-  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>Các tay cầm ảo của PadForge chỉ nhận chuyển động từ cảm biến chuyển động của tay cầm.</value></data>
+  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>Tay cầm ảo Xbox không có chuyển động. Hãy chọn loại tay cầm PlayStation hoặc Nintendo để gửi chuyển động.</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows đã quay lại hồ sơ này từ {0} bằng một nút. Để làm điều đó trong PadForge, hãy thêm một Lối tắt hồ sơ cho hồ sơ này trên trang Hồ sơ.</value></data>
   <data name="Osk_Style_Grid" xml:space="preserve">
     <value>Lưới</value>
@@ -5193,4 +5192,37 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Mở hoặc đóng bàn phím khi Mở bằng được thả ra trước thời gian giữ. Nhấn lâu hơn thì không làm gì.</value></data>
   <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Mở hoặc đóng bàn phím khi Mở bằng được nhấn ba lần trong khoảng thời gian nhấn.</value></data>
   <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Mở hoặc đóng bàn phím khi khoảng thời gian nhấn kết thúc sau một lần nhấn Mở bằng. Nhấn lần thứ hai trong khoảng đó sẽ hủy.</value></data>
+  <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>Màu được gửi thẳng đến {0}. Các màu thay đổi, như màu chuyển vòng hoặc màu theo âm thanh, sẽ không đến được thiết bị. Màu giữ nguyên thì vẫn đến.</value></data>
+  <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Tất cả tệp (*.*)|*.*</value></data>
+  <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>Hồ sơ PadForge (*{0})|*{0}</value></data>
+  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml</value></data>
+  <data name="FileDialog_ProgramFilter" xml:space="preserve"><value>Chương trình (*.exe;*.bat;*.cmd;*.com)|*.exe;*.bat;*.cmd;*.com|Tất cả tệp (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundFileFilter" xml:space="preserve"><value>Tệp âm thanh và gói âm thanh|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.pfsounds|Gói âm thanh (*.pfsounds)|*.pfsounds|Tất cả tệp (*.*)|*.*</value></data>
+  <data name="FileDialog_AudioFilter" xml:space="preserve"><value>Tệp âm thanh|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.ogg|Tất cả tệp (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundPackageFilter_Format" xml:space="preserve"><value>Gói âm thanh PadForge (*{0})|*{0}</value></data>
+  <data name="FileDialog_IconPackageFilter_Format" xml:space="preserve"><value>Gói biểu tượng PadForge (*{0})|*{0}</value></data>
+  <data name="FileDialog_AutoEqFilter" xml:space="preserve"><value>Hồ sơ AutoEq (*.txt)|*.txt|Tất cả tệp (*.*)|*.*</value></data>
+  <data name="FileDialog_IconPickerFilter" xml:space="preserve"><value>Hình ảnh và gói biểu tượng|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.pficons|Gói biểu tượng (*.pficons)|*.pficons</value></data>
+  <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>Nút máy cầm tay PadForge (*.json)|*.json</value></data>
+  <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>Hồ sơ HIDMaestro (*.json)|*.json</value></data>
+  <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>Đèn phím PadForge (*.json)|*.json</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Macro không thể nhấn {0}. Một ánh xạ trên tab Ánh xạ thì có thể.</value></data>
+  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge chạy tám Lớp phủ màn hình, còn đây là tâm ngắm thứ chín hoặc thứ mười của reWASD.</value></data>
+  <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge đọc Con quay hồi chuyển trái và phải từ roll, và ngả từ yaw, theo mặc định của reWASD. Preferences của reWASD có thể đổi hai trục này, và tệp này không cho biết có đổi hay không.</value></data>
+  <data name="Import_Tr_TiltLean" xml:space="preserve"><value>Ở chế độ Tilt, ngả của reWASD là một vòng xoay quanh trục thẳng đứng, và cảm biến chuyển động không cho góc nào cho vòng xoay đó.</value></data>
+  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge đọc đường chéo trên bàn cảm ứng là hai hướng cùng lúc, và bàn cảm ứng chỉ báo như vậy khi Chế độ D-pad trên tab Bàn cảm ứng của nó là 8 hướng.</value></data>
+  <data name="Import_Tr_GyroZone" xml:space="preserve"><value>PadForge đọc hướng của con quay hồi chuyển qua một ngưỡng, còn reWASD không cho đơn vị nào cho mép vùng của con quay hồi chuyển.</value></data>
+  <data name="Import_Tr_AbsoluteMouse" xml:space="preserve"><value>DS4Windows đặt con trỏ tại chỗ cần analog hướng tới. Trong PadForge, cần analog di chuyển con trỏ thay vào đó.</value></data>
+  <data name="Import_Tr_StickBeforeRotation" xml:space="preserve"><value>{0} đọc cần analog trước khi xoay. DS4Windows đọc sau khi xoay.</value></data>
+  <data name="Import_Tr_StickBeforeCurve" xml:space="preserve"><value>{0} đọc góc của cần analog trước vùng và đường cong của nó. DS4Windows đọc sau.</value></data>
+  <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>Bàn phím của một khe không còn là Bàn phím + chuột</value></data>
+  <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (không có trên PC này)</value></data>
+  <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (không có trên khe này)</value></data>
+  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>yaw và roll được cộng với toàn bộ cường độ (không đọc phần đóng góp của roll)</value></data>
+  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>con quay hồi chuyển Không gian lân cận được đọc như yaw (PadForge không có trục chính nghiêng)</value></data>
+  <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>con quay hồi chuyển Bút laze được đọc như yaw (PadForge không có chuyển đổi bút laze)</value></data>
+  <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>Trong reWASD, {0} vẫn đến được Windows vì tệp ánh xạ nó mà không hủy ánh xạ. Khi bật Chặn các đầu vào đã ánh xạ, PadForge sẽ chặn nó.</value></data>
+  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge xoay theo chiều kim đồng hồ khi góc xoay dương, như DS4Windows. Phần trợ giúp của reWASD chỉ nêu phạm vi của góc xoay, không nêu chiều.</value></data>
+  <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows định hình {0} của cần analog tròn theo góc đẩy. Thẻ cần analog của PadForge xử lý cú đẩy thẳng như nhau và cú đẩy chéo thì khác.</value></data>
+  <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Các lớp tinh chỉnh {0} khác nhau, nên mỗi lớp giữ tinh chỉnh riêng, và đường cong được chuyển sang thành đường cong lũy thừa gần nhất.</value></data>
 </root>

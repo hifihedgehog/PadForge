@@ -1223,12 +1223,15 @@ namespace PadForge
                     // raising; capture it so a re-aim mid-record cannot
                     // misroute the callback.
                     var target = menu.PendingRecordTarget;
-                    menu.BeginRecord(target);
-                    _recorderService.StartRecordingFreeform(pvm.PadIndex, (deviceGuid, descriptor) =>
+                    menu.BeginRecordAfterStart(target, () =>
                     {
-                        menu.HostRecording = false;
-                        if (menu.TryApplyRecorded(target, descriptor))
-                            _settingsService.MarkDirty();
+                        _recorderService.StartRecordingFreeform(pvm.PadIndex, (deviceGuid, descriptor) =>
+                        {
+                            menu.HostRecording = false;
+                            if (menu.TryApplyRecorded(target, descriptor))
+                                _settingsService.MarkDirty();
+                        });
+                        return _recorderService.IsRecording;
                     });
                 };
 
@@ -1269,8 +1272,7 @@ namespace PadForge
                         return;
                     }
                     if (menu.KeyboardControlRows.Count == 0) return;
-                    menu.KeyboardMapAllActive = true;
-                    RecordKeyboardRow(pvm, menu, menu.KeyboardControlRows[0]);
+                    RecordKeyboardRow(pvm, menu, menu.KeyboardControlRows[0], mapAll: true);
                 };
 
                 // Record button on the Mouse Gestures card's custom
@@ -2040,6 +2042,12 @@ namespace PadForge
                 else
                     activePad.CurrentRecordingTarget = null;
             };
+
+            // A recording dropped unanswered (#566): the user's stop, a
+            // timeout, or another record button starting one. The Menus
+            // tab's record buttons leave their Recording state on their
+            // callbacks, which never run now (MainViewModel.ClearMenuRecordings).
+            _recorderService.RecordingCanceled += (s, e) => _viewModel.ClearMenuRecordings();
 
             // Recording timeout clears flash + advances Map All.
             _recorderService.RecordingTimedOut += (s, e) =>
@@ -7552,7 +7560,7 @@ namespace PadForge
             {
                 Title = Strings.Instance.Profiles_Export,
                 FileName = exportName + PadForge.Common.ProfileTransfer.FileExtension,
-                Filter = $"PadForge profile (*{PadForge.Common.ProfileTransfer.FileExtension})|*{PadForge.Common.ProfileTransfer.FileExtension}",
+                Filter = string.Format(Strings.Instance.FileDialog_ProfileFilter_Format, PadForge.Common.ProfileTransfer.FileExtension),
             };
             if (dlg.ShowDialog() != true) return;
             // The parked Default snapshot is live state the revert path
@@ -7589,17 +7597,20 @@ namespace PadForge
             }
         }
 
-        /// <summary>Imports a .pfprofile: bundled sound packages land next
-        /// to the exe and register; the profile joins the registry (name
-        /// deduped). The user activates it via the existing Load button.</summary>
+        /// <summary>Imports a .pfprofile, or another tool's config through
+        /// ImportForeignConfig (#561). A .pfprofile's bundled sound packages land next
+        /// to the exe and register. The profile joins the registry under a
+        /// name no other profile has. The user activates it via the existing
+        /// Load button.</summary>
         private void OnImportProfile(object sender, EventArgs e)
         {
             var dlg = new Microsoft.Win32.OpenFileDialog
             {
                 Title = Strings.Instance.Profiles_Import,
                 Filter = $"{Strings.Instance.Profiles_ImportFilterAll} (*{PadForge.Common.ProfileTransfer.FileExtension};*.rewasd;*.xml)|*{PadForge.Common.ProfileTransfer.FileExtension};*.rewasd;*.xml"
-                    + $"|PadForge profile (*{PadForge.Common.ProfileTransfer.FileExtension})|*{PadForge.Common.ProfileTransfer.FileExtension}"
-                    + "|reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml|All files|*.*",
+                    + "|" + string.Format(Strings.Instance.FileDialog_ProfileFilter_Format, PadForge.Common.ProfileTransfer.FileExtension)
+                    + "|" + Strings.Instance.FileDialog_ForeignProfileFilter
+                    + "|" + Strings.Instance.FileDialog_AllFilesFilter,
                 CheckFileExists = true,
             };
             foreach (string folder in PadForge.Common.ConfigImport.ForeignConfigImporter.ProfileFolders())
@@ -7627,12 +7638,7 @@ namespace PadForge
             }
 
             // Dedup the display name against existing profiles.
-            string baseName = string.IsNullOrWhiteSpace(profile.Name) ? "Imported profile" : profile.Name.Trim();
-            string name = baseName;
-            int n = 2;
-            while (SettingsManager.Profiles.Any(p => string.Equals(p.Name, name, StringComparison.OrdinalIgnoreCase)))
-                name = $"{baseName} ({n++})";
-            profile.Name = name;
+            profile.Name = SettingsManager.UniqueProfileName(profile.Name);
 
             SettingsManager.Profiles.Add(profile);
             var listItem = new ViewModels.ProfileListItem
@@ -7839,12 +7845,8 @@ namespace PadForge
         /// it as the active profile. Returns the deduped display name.</summary>
         private string AddWorkshopProfile(Services.ProfileData profile, bool applyAfter)
         {
-            string baseName = string.IsNullOrWhiteSpace(profile.Name) ? "Imported profile" : profile.Name.Trim();
-            string name = baseName;
-            int n = 2;
-            while (SettingsManager.Profiles.Any(p => string.Equals(p.Name, name, StringComparison.OrdinalIgnoreCase)))
-                name = $"{baseName} ({n++})";
-            profile.Name = name;
+            // The preview named this same name (ImportConfigDialog.PreviewName).
+            profile.Name = SettingsManager.UniqueProfileName(profile.Name);
 
             SettingsManager.Profiles.Add(profile);
             var listItem = new ViewModels.ProfileListItem
@@ -9624,16 +9626,14 @@ namespace PadForge
         /// <summary>Records one keyboard row (#566): a press, or an axis on a
         /// pointer's X and Y rows. Opens With records a touchpad gesture too,
         /// which the controls cannot read while the keyboard holds the
-        /// controller at rest. During Map All, the row's completion records
-        /// the next control, and the status line names each one with its
-        /// place in the list.</summary>
-        private void RecordKeyboardRow(PadViewModel pvm, MenuEditorItem menu, KeyboardInputRow row)
+        /// controller at rest. With <paramref name="mapAll"/>, Map All runs:
+        /// the row's completion records the next control, and the status line
+        /// names each one with its place in the list. The row's Recording
+        /// state and Map All are set after the recorder starts: starting it
+        /// cancels any recording another record button left running, and that
+        /// cancel clears every keyboard row's state (RecordingCanceled).</summary>
+        private void RecordKeyboardRow(PadViewModel pvm, MenuEditorItem menu, KeyboardInputRow row, bool mapAll = false)
         {
-            menu.RecordingKeyboardRow = row;
-            int index = menu.KeyboardControlRows.IndexOf(row);
-            if (menu.KeyboardMapAllActive && index >= 0)
-                _viewModel.SetStatus(string.Format(Strings.Instance.Menu_Keyboard_MapAll_Prompt_Format,
-                    row.Label, index + 1, menu.KeyboardControlRows.Count), persist: true);
             void Done(bool applied)
             {
                 menu.RecordingKeyboardRow = null;
@@ -9647,7 +9647,7 @@ namespace PadForge
                     _viewModel.SetStatus(Strings.Instance.Menu_Keyboard_MapAll_Done, persist: false);
                     return;
                 }
-                RecordKeyboardRow(pvm, menu, menu.KeyboardControlRows[next]);
+                RecordKeyboardRow(pvm, menu, menu.KeyboardControlRows[next], mapAll: true);
             }
             if (row.RecordsAnAxis)
                 _recorderService.StartRecordingFreeform(pvm.PadIndex,
@@ -9661,7 +9661,14 @@ namespace PadForge
             {
                 menu.RecordingKeyboardRow = null;
                 menu.KeyboardMapAllActive = false;
+                return;
             }
+            menu.KeyboardMapAllActive = mapAll;
+            menu.RecordingKeyboardRow = row;
+            int index = menu.KeyboardControlRows.IndexOf(row);
+            if (mapAll && index >= 0)
+                _viewModel.SetStatus(string.Format(Strings.Instance.Menu_Keyboard_MapAll_Prompt_Format,
+                    row.Label, index + 1, menu.KeyboardControlRows.Count), persist: true);
         }
 
         /// <summary>

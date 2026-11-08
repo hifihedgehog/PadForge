@@ -84,8 +84,18 @@ namespace PadForge.Common.Input.ScreenColor
         /// </summary>
         public static void FindOutput(string display, out nint adapter, out nint output, out OutputInfo info)
         {
+            FindOutput(display, out adapter, out output, out info, out nint factory);
+            Release(ref factory);
+        }
+
+        /// <summary>The same, with the factory the walk ran on handed to the
+        /// caller, who releases it. Its <see cref="IsCurrent"/> turns false when
+        /// the displays change, an HDR switch among them.</summary>
+        public static void FindOutput(string display, out nint adapter, out nint output, out OutputInfo info, out nint factoryOut)
+        {
             int hr;
             nint factory;
+            factoryOut = 0;
             fixed (Guid* iid = &IID_IDXGIFactory1)
                 hr = CreateDXGIFactory1(iid, out factory);
             if (hr != 0) throw new ScreenGrabberUnavailable($"CreateDXGIFactory1 0x{hr:X8}");
@@ -121,6 +131,8 @@ namespace PadForge.Common.Input.ScreenColor
                             adapter = candidate;
                             output = one;
                             info = found;
+                            factoryOut = factory;
+                            factory = 0;
                             return;
                         }
                         if (primary && primaryOutput == 0)
@@ -141,6 +153,8 @@ namespace PadForge.Common.Input.ScreenColor
                 info = primaryInfo;
                 primaryAdapter = 0;
                 primaryOutput = 0;
+                factoryOut = factory;
+                factory = 0;
             }
             finally
             {
@@ -149,6 +163,14 @@ namespace PadForge.Common.Input.ScreenColor
                 Release(ref factory);
             }
         }
+
+        /// <summary>IDXGIFactory1::IsCurrent (slot 13): false once the adapters
+        /// or outputs a factory saw have changed. Sunshine asks it on every frame
+        /// of every capture, its Windows.Graphics.Capture one included, because
+        /// "This will return false if the HDR state changes"
+        /// (src/platform/windows/display_base.cpp:337-341).</summary>
+        public static bool IsCurrent(nint factory)
+            => factory != 0 && ((delegate* unmanaged[Stdcall]<nint, int>)Slot(factory, 13))(factory) != 0;
 
         /// <summary>A device on one adapter, from feature levels the runtime
         /// picks.</summary>
@@ -218,6 +240,53 @@ namespace PadForge.Common.Input.ScreenColor
             *(long*)(header + 8) = *(long*)adapterId;
             *(uint*)(header + 16) = sourceId;
         }
+
+        /// <summary>Whether DXGI's own walk, on a new factory so it sees the
+        /// displays as they are now, finds <paramref name="display"/> attached:
+        /// the question <see cref="FindOutput"/> answers when a capture is built,
+        /// without falling back to the primary.</summary>
+        public static bool Resolves(string display)
+        {
+            if (string.IsNullOrEmpty(display)) return false;
+            nint adapter = 0, output = 0;
+            try
+            {
+                FindOutput(display, out adapter, out output, out var info);
+                return string.Equals(info.Name, display, StringComparison.OrdinalIgnoreCase);
+            }
+            catch (ScreenGrabberUnavailable)
+            {
+                return false;
+            }
+            finally
+            {
+                Release(ref output);
+                Release(ref adapter);
+            }
+        }
+
+        /// <summary>Whether a display by its GDI name (\\.\DISPLAY2) is attached
+        /// to the desktop now: DISPLAY_DEVICEW's StateFlags at byte 324, with
+        /// DISPLAY_DEVICE_ATTACHED_TO_DESKTOP (wingdi.h).</summary>
+        public static bool IsAttached(string display)
+        {
+            const int Size = 840, NameAt = 4, FlagsAt = 324;
+            const uint AttachedToDesktop = 0x1;
+            if (string.IsNullOrEmpty(display)) return false;
+            byte* device = stackalloc byte[Size];
+            for (uint i = 0; ; i++)
+            {
+                new Span<byte>(device, Size).Clear();
+                *(uint*)device = Size;
+                if (!EnumDisplayDevicesW(null, i, device, 0)) return false;
+                string name = Marshal.PtrToStringUni((nint)(device + NameAt)) ?? string.Empty;
+                if (string.Equals(name, display, StringComparison.OrdinalIgnoreCase))
+                    return (*(uint*)(device + FlagsAt) & AttachedToDesktop) != 0;
+            }
+        }
+
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+        private static extern bool EnumDisplayDevicesW(string device, uint index, byte* displayDevice, uint flags);
 
         [DllImport("user32.dll")]
         private static extern int GetDisplayConfigBufferSizes(uint flags, out uint paths, out uint modes);
@@ -356,10 +425,12 @@ namespace PadForge.Common.Input.ScreenColor
 
         public string Kind => "Desktop Duplication";
         public long LastWorkMs { get; private set; }
+        public string Output { get; }
 
         public DesktopDuplicationGrabber(string display)
         {
             ScreenDxgi.FindOutput(display, out nint adapter, out nint output, out var info);
+            Output = info.Name;
             try
             {
                 ScreenDxgi.CreateDevice(adapter, out _device, out _context);

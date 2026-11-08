@@ -7,12 +7,15 @@ namespace PadForge.Common.Input
 {
     /// <summary>
     /// Open When a Text Box Is Selected (#566). The watcher reports on UI
-    /// Automation's thread, and the tick reads the report: focus entering a
-    /// text box opens the keyboard for the first enabled keyboard menu that
+    /// Automation's thread, and the tick reads the report. The watcher
+    /// reports each focus change once (focus that stays in one element is not
+    /// reported again), so every report of a text box is focus moving into
+    /// one: it opens the keyboard for the first enabled keyboard menu that
     /// asks for it, in slot order and each slot's list order, whose layer is
-    /// open and whose slot no restricted Remote Link peer feeds. Focus leaving
-    /// text boxes closes a keyboard text focus opened, and leaves one opened
-    /// another way alone.
+    /// open and whose slot no restricted Remote Link peer feeds, also after
+    /// the keyboard was closed in another text box. Focus leaving text boxes
+    /// closes a keyboard text focus opened, and leaves one opened another way
+    /// alone.
     /// </summary>
     public partial class InputManager
     {
@@ -24,7 +27,6 @@ namespace PadForge.Common.Input
         private volatile bool _oskFocusEditable;
         private int _oskFocusSeq;
         private int _oskFocusSeqSeen;
-        private bool _oskFocusWasEditable;
         private OskTextFocusWatcher _oskFocusWatcher;
 
         /// <summary>The watcher's report, from any thread.</summary>
@@ -41,9 +43,9 @@ namespace PadForge.Common.Input
             int seq = Volatile.Read(ref _oskFocusSeq);
             if (seq == _oskFocusSeqSeen) return;
             _oskFocusSeqSeen = seq;
+            // A new report is a focus change. Each one into a text box opens,
+            // a move from one text box to another included.
             bool editable = _oskFocusEditable && _oskWantsTextFocus;
-            if (editable == _oskFocusWasEditable) return;
-            _oskFocusWasEditable = editable;
             if (editable)
             {
                 if (_osk?.IsOpen == true) return;
@@ -66,7 +68,6 @@ namespace PadForge.Common.Input
         private void ResetTextFocus()
         {
             _oskFocusSeqSeen = Volatile.Read(ref _oskFocusSeq);
-            _oskFocusWasEditable = false;
         }
 
         /// <summary>Engine start: the watcher runs for the engine's life and

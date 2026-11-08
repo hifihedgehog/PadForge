@@ -104,6 +104,14 @@ namespace PadForge.Services
                     mappingSets[kbmSlot].WorkshopGyroEngageToggle = translated.GyroEngageToggle;
                 }
             }
+            // The gyro space (gyro_to_2d_conversion_style Player or World
+            // Space) rides every claimed slot like the engage stamp: the
+            // gyro rows sit on whichever side the config put them.
+            if (!string.IsNullOrEmpty(translated.GyroSpace))
+            {
+                if (xboxSlot >= 0) mappingSets[xboxSlot].WorkshopGyroSpace = translated.GyroSpace;
+                if (kbmSlot >= 0) mappingSets[kbmSlot].WorkshopGyroSpace = translated.GyroSpace;
+            }
             // The gyro ratchet stamp (v22, Steam gyro_ratchet_button_mask)
             // rides every claimed slot like the engage stamp above: the
             // clutch gate is per slot and split configs host gyro rows on

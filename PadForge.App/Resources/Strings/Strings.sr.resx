@@ -4541,7 +4541,7 @@
   <data name="KeyboardScreens_Status_Strike7Waiting" xml:space="preserve"><value>изаберите PadForge на екрану V.E.N.O.M.</value></data>
   <data name="KeyboardScreens_Status_Strike7Showing" xml:space="preserve"><value>на екрану V.E.N.O.M.</value></data>
   <data name="KeyboardScreens_Status_NotFound" xml:space="preserve"><value>екран није пронађен</value></data>
-  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}, чека се боја светлосне траке</value></data>
+  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}, нема боје светлосне траке</value></data>
   <data name="KeyboardScreens_Status_NoPicture_Format" xml:space="preserve"><value>{0}, слика није изабрана</value></data>
   <data name="KeyboardScreens_LgsShared_Format" xml:space="preserve"><value>Док Logitech Gaming Software ради, сваки екран ове врсте приказује слику подешену за {0}.</value></data>
   <data name="DeviceType_KeyboardScreenKeys" xml:space="preserve"><value>Екран тастатуре</value></data>
@@ -4590,7 +4590,7 @@
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Помери слику на екрану тастатуре</value></data>
   <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Помера прозор сваког екрана тастатуре који шаље улаз овом слоту преко слике веће од екрана, на пример за мапу. Оверлеј екрана се помера на исти начин када је зум изнад 100 процената.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Помери слике за {0} × {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Помера сваки екран који шаље улаз овом слоту и приказује изабрану слику већу од себе. Прозор се зауставља на ивицама слике. Оверлеј екрана се помера када је зум изнад 100 процената, без обзира на то који слот покреће макро.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Помера сваки екран који шаље улаз овом слоту и приказује изабрану слику већу од себе. Прозор се зауставља на ивицама слике. Оверлеј екрана се помера када је зум изнад 100 процената, без обзира на то који слот покреће макро. Макро који именује један оверлеј помера само тај оверлеј.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Екран</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Радња</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Смер</value></data>
@@ -4907,11 +4907,11 @@
   <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Најнижи слот са бојом</value></data>
   <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>Зум</value></data>
   <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>Слика није изабрана.</value></data>
-  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Чека се боја светлосне траке.</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Нема боје светлосне траке уређаја DualShock 4 или DualSense за приказ.</value></data>
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Оверлеј</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Сваки оверлеј</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Прикажи/сакриј оверлеј екрана {0}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Прикажи {0} слике: {1} × {2} мс, до следећег макроа</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Прикажи {0} слике: {1} × {2} мс, до следећег макроа за приказ или режим</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>Увоз профила</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}, {1} датотека</value></data>
   <data name="Import_ProfileName_Format" xml:space="preserve"><value>Постаје профил „{0}“.</value></data>
@@ -4945,7 +4945,6 @@
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Овај профил помиње посебну радњу која недостаје у датотеци Actions.xml поред његове фасцикле Profiles: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Ово подешавање није пренето: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD је спречавао да ови улази стигну до система Windows. Укључите Блокирај мапиране улазе за {0} на страници Уређаји, што блокира оне које овај профил мапира.</value></data>
-  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>Мапирања слоја Base за {0} престају у овом слоју. Када је укључено Блокирај мапиране улазе, мапирани улази тог уређаја остају блокирани од система Windows у сваком слоју.</value></data>
   <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>Његови подмени постали су додатни слотови на једном прстену.</value></data>
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Потврђује се када се штапић врати у центар или када слој заврши. reWASD-ово дугме Примени се не користи.</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Ова датотека раздваја два контролера. У PadForge-у ова мапирања активира било који контролер на слоту.</value></data>
@@ -4974,7 +4973,7 @@
   <data name="Import_Tr_HideController" xml:space="preserve"><value>reWASD је сакрио овај контролер од игара. Укључите Сакриј од игара за њега на страници Уређаји.</value></data>
   <data name="Import_Tr_NoSuchSetting" xml:space="preserve"><value>PadForge нема такво подешавање: {0}</value></data>
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD је спречавао да кретање миша стигне до система Windows. PadForge блокира тастере и дугмад миша, али не и кретање, па се показивач и даље креће.</value></data>
-  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>Виртуелни контролери програма PadForge примају покрете само од сензора покрета на контролеру.</value></data>
+  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>Виртуелни Xbox контролер нема покрет. Изаберите тип контролера PlayStation или Nintendo да бисте слали покрет.</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows се на дугме вратио на овај профил са профила {0}. Да бисте то постигли у програму PadForge, додајте пречицу за профил за овај профил на страници Профили.</value></data>
   <data name="Osk_Style_Grid" xml:space="preserve">
     <value>Мрежа</value>
@@ -5193,4 +5192,37 @@
   <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Отвара или затвара тастатуру када се „Отвара се помоћу“ отпусти пре времена држања. Дужи притисак не ради ништа.</value></data>
   <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Отвара или затвара тастатуру када се „Отвара се помоћу“ притисне три пута у оквиру прозора притиска.</value></data>
   <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Отвара или затвара тастатуру када прозор притиска истекне после једног притиска „Отвара се помоћу“. Други притисак унутар прозора то поништава.</value></data>
+  <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>Боје се шаљу директно на {0}. Променљиве боје, као што су циклус боја или боје које прате звук, не стижу до њега. Боја која се не мења стиже.</value></data>
+  <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Све датотеке (*.*)|*.*</value></data>
+  <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>PadForge профил (*{0})|*{0}</value></data>
+  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml</value></data>
+  <data name="FileDialog_ProgramFilter" xml:space="preserve"><value>Програми (*.exe;*.bat;*.cmd;*.com)|*.exe;*.bat;*.cmd;*.com|Све датотеке (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundFileFilter" xml:space="preserve"><value>Звучне датотеке и звучни пакети|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.pfsounds|Звучни пакети (*.pfsounds)|*.pfsounds|Све датотеке (*.*)|*.*</value></data>
+  <data name="FileDialog_AudioFilter" xml:space="preserve"><value>Звучне датотеке|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.ogg|Све датотеке (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundPackageFilter_Format" xml:space="preserve"><value>PadForge звучни пакети (*{0})|*{0}</value></data>
+  <data name="FileDialog_IconPackageFilter_Format" xml:space="preserve"><value>PadForge пакети икона (*{0})|*{0}</value></data>
+  <data name="FileDialog_AutoEqFilter" xml:space="preserve"><value>AutoEq профил (*.txt)|*.txt|Све датотеке (*.*)|*.*</value></data>
+  <data name="FileDialog_IconPickerFilter" xml:space="preserve"><value>Слике и пакети икона|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.pficons|Пакети икона (*.pficons)|*.pficons</value></data>
+  <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>PadForge дугмад ручног уређаја (*.json)|*.json</value></data>
+  <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro профил (*.json)|*.json</value></data>
+  <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge осветљење тастера (*.json)|*.json</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Макро не може да притисне {0}. Мапирање на картици Мапирања може.</value></data>
+  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge покреће осам оверлеја екрана, а ово је девети или десети нишан програма reWASD.</value></data>
+  <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge чита лево и десно са жироскопа из ваљања, а нагињање из скретања, што је подразумевано у програму reWASD. Подешавања програма reWASD могу да замене та два, а ова датотека не каже да ли јесу.</value></data>
+  <data name="Import_Tr_TiltLean" xml:space="preserve"><value>У режиму нагиба, нагињање у програму reWASD је окретање око усправне осе, а сензор покрета не даје угао за то окретање.</value></data>
+  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge чита дијагоналу тачпеда као два смера истовремено, што тачпед јавља само када је Режим D-pad на његовој картици Тачпед подешен на 8 смерова.</value></data>
+  <data name="Import_Tr_GyroZone" xml:space="preserve"><value>PadForge чита смер жироскопа иза једног прага, а reWASD не даје јединицу за ивицу зоне жироскопа.</value></data>
+  <data name="Import_Tr_AbsoluteMouse" xml:space="preserve"><value>DS4Windows је постављао показивач тамо где штапић показује. У програму PadForge штапић уместо тога помера показивач.</value></data>
+  <data name="Import_Tr_StickBeforeRotation" xml:space="preserve"><value>{0} чита штапић пре његовог ротирања. DS4Windows га је читао после.</value></data>
+  <data name="Import_Tr_StickBeforeCurve" xml:space="preserve"><value>{0} чита угао штапића пре његових зона и криве. DS4Windows га је читао после.</value></data>
+  <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>Тастатура слота који више није „Тастатура + миш“</value></data>
+  <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (није на овом рачунару)</value></data>
+  <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (није на овом слоту)</value></data>
+  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>скретање и ваљање додати пуном јачином (допринос ваљања није прочитан)</value></data>
+  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>жироскоп Local Space прочитан као скретање (PadForge нема нагнуту примарну осу)</value></data>
+  <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>жироскоп Laser Pointer прочитан као скретање (PadForge нема претварање у ласерски показивач)</value></data>
+  <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>У програму reWASD, {0} и даље стиже до система Windows јер га датотека мапира без поништавања мапирања. Када је укључено Блокирај мапиране улазе, PadForge га задржава.</value></data>
+  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge окреће позитивно ротирање у смеру казаљке на сату, као што то ради DS4Windows. Помоћ програма reWASD даје опсег ротирања, а не његов смер.</value></data>
+  <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows обликује {0} радијалног штапића према углу гурања. Картица штапића у програму PadForge једнако изводи право гурање, а дијагонално другачије.</value></data>
+  <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Слојеви различито подешавају {0}, па сваки задржава своје подешавање, а крива се преноси као најближа степена крива.</value></data>
 </root>

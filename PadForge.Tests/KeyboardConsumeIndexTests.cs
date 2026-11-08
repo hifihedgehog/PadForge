@@ -51,6 +51,8 @@ namespace PadForge.Tests
         {
             var hooks = new InputHookManager();
             hooks.SetSuppressedKeys(new HashSet<int> { RawInputListener.NumpadEnterKey });
+            bool paused = InputHookManager.ConsumePaused;
+            InputHookManager.ConsumePaused = false; // as while the engine evaluates
             try
             {
                 Assert.True(InputHookManager.ConsumeKey(VkReturn, ScanEnter, LlkhfExtended, isDown: true));
@@ -66,6 +68,7 @@ namespace PadForge.Tests
             finally
             {
                 hooks.SetSuppressedKeys(new HashSet<int>());
+                InputHookManager.ConsumePaused = paused;
             }
         }
 
@@ -74,6 +77,8 @@ namespace PadForge.Tests
         {
             var hooks = new InputHookManager();
             hooks.SetSuppressedKeys(new HashSet<int> { VkReturn });
+            bool paused = InputHookManager.ConsumePaused;
+            InputHookManager.ConsumePaused = false; // as while the engine evaluates
             try
             {
                 Assert.False(InputHookManager.ConsumeKey(VkReturn, ScanEnter, LlkhfExtended, isDown: true));
@@ -87,6 +92,7 @@ namespace PadForge.Tests
             finally
             {
                 hooks.SetSuppressedKeys(new HashSet<int>());
+                InputHookManager.ConsumePaused = paused;
             }
         }
 

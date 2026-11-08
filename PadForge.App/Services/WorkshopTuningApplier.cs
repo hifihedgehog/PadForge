@@ -115,14 +115,20 @@ namespace PadForge.Services
                 set.WorkshopGyroEngageInvert = false;
             }
 
+            // A target whose rows tune it differently keeps its rows' tuning.
+            var kept = TargetsKeepingTheirRows(set);
+
             // ── response curves, rumble and idle time from an import (#561) ──
-            changed |= FoldImportStamps(set, ps, deviceGuid);
+            changed |= FoldImportStamps(set, ps, deviceGuid, kept);
 
             // ── per-source response shaping ───────────────────────────────
-            changed |= FoldSourceShaping(set, ps);
+            changed |= FoldSourceShaping(set, ps, kept);
 
             // ── per-pad cursor acceleration ───────────────────────────────
             changed |= FoldTouchpadAcceleration(set, ps, deviceGuid);
+
+            // ── touchpad momentum from an import (#561) ──────────────────
+            changed |= FoldTouchpadGlide(set, ps, deviceGuid);
 
             // ── gyro cursor acceleration ──────────────────────────────────
             changed |= FoldGyroAcceleration(set, ps);
@@ -175,7 +181,7 @@ namespace PadForge.Services
 
         /// <summary>What a reWASD or DS4Windows import set for the device (#561),
         /// each kept where the user has not chosen something.</summary>
-        private static bool FoldImportStamps(MappingSet set, PadSetting ps, string deviceGuid)
+        private static bool FoldImportStamps(MappingSet set, PadSetting ps, string deviceGuid, HashSet<string> kept)
         {
             bool changed = false;
             if (!string.IsNullOrEmpty(set.WorkshopCurves))
@@ -184,6 +190,8 @@ namespace PadForge.Services
                 {
                     int eq = entry.IndexOf('=');
                     if (eq <= 0) continue;
+                    // The card stays as it was under rows that keep their own.
+                    if (kept.Contains(entry[..eq])) continue;
                     var card = ShapingCardFor(entry[..eq], ps);
                     if (card != null && Common.CurveLut.IsLinear(card.GetCurve()))
                     {
@@ -213,6 +221,17 @@ namespace PadForge.Services
                     changed = true;
                 }
                 set.WorkshopGyroDeadZone = "";
+            }
+            if (!string.IsNullOrEmpty(set.WorkshopGyroSpace))
+            {
+                // A Steam import's Player or World Space, over the default
+                // Local only: a space the user chose on the Gyro tab stays.
+                if (string.IsNullOrEmpty(ps.GyroSpace) || ps.GyroSpace == "Local")
+                {
+                    ps.GyroSpace = set.WorkshopGyroSpace;
+                    changed = true;
+                }
+                set.WorkshopGyroSpace = "";
             }
             if (!string.IsNullOrEmpty(set.WorkshopIdleDisconnectSeconds))
             {
@@ -340,6 +359,36 @@ namespace PadForge.Services
             return changed;
         }
 
+        /// <summary>Turns on touchpad momentum for pad 0 at the glide an
+        /// import stamped (#561), on the device's own Touchpad card, where
+        /// momentum is still off. It needs the device to key the pad's entry
+        /// on, so the stamp waits for an assignment that names one, and is
+        /// spent on the first that does.</summary>
+        private static bool FoldTouchpadGlide(MappingSet set, PadSetting ps, string deviceGuid)
+        {
+            if (string.IsNullOrEmpty(set.WorkshopTouchpadGlide) || string.IsNullOrEmpty(deviceGuid)) return false;
+
+            bool changed = false;
+            if (float.TryParse(set.WorkshopTouchpadGlide, NumberStyles.Float, CultureInfo.InvariantCulture, out float glide)
+                && float.IsFinite(glide))
+            {
+                var list = ps.TouchpadSettings != null
+                    ? new List<PadForge.Engine.Touchpad.TouchpadSettingsEntry>(ps.TouchpadSettings)
+                    : new List<PadForge.Engine.Touchpad.TouchpadSettingsEntry>();
+                bool listGrew = false;
+                var entry = FindOrAddPadEntry(list, deviceGuid, 0, ref listGrew);
+                if (!entry.Settings.MouseMomentum)
+                {
+                    entry.Settings.MouseMomentum = true;
+                    entry.Settings.MouseMomentumDecay = Math.Clamp(glide, 0.80f, 1.00f);
+                    changed = true;
+                }
+                if (listGrew) ps.TouchpadSettings = list.ToArray();
+            }
+            set.WorkshopTouchpadGlide = "";
+            return changed;
+        }
+
         /// <summary>Pad index from a "Touchpad N ..." source descriptor.</summary>
         private static bool TryPadIndexOfTouchpadSource(string descriptor, out int pad)
         {
@@ -418,20 +467,41 @@ namespace PadForge.Services
         /// control points instead of the legacy single-number curve, whose
         /// scale is <c>4^(-v/100)</c> and would read a bare "2.0" as very
         /// nearly linear.</para></summary>
-        private static bool FoldSourceShaping(MappingSet set, PadSetting ps)
+        private static bool FoldSourceShaping(MappingSet set, PadSetting ps, HashSet<string> kept)
         {
             if (set.Rows == null) return false;
 
             bool changed = false;
             foreach (var row in set.Rows)
             {
-                if (row?.Sources == null) continue;
+                if (row?.Sources == null || kept.Contains(row.Target ?? "")) continue;
                 var card = ShapingCardFor(row.Target, ps);
                 if (card == null) continue;
 
                 foreach (var src in row.Sources)
                 {
                     if (src == null) continue;
+
+                    // A stick row's scale with a dead zone geometry: the row
+                    // reads the geometry, then the scale, then the curve
+                    // (SourceCoercion.ReadAsBipolar), and the card runs after
+                    // the row, so a scale left on the row would read before
+                    // the card's dead zone and move its edge. The card's
+                    // curve takes the scale, clamped to full, ahead of the
+                    // stamped exponent. A row of several sources sums them,
+                    // each scale a coefficient of its own, so it keeps them.
+                    if (row.Sources.Count == 1 && card.SetShape != null
+                        && src.ParamStickDeadZoneShape != 0
+                        && src.Sensitivity > 0.0 && src.Sensitivity != 1.0
+                        && Common.CurveLut.IsLinear(card.GetCurve()))
+                    {
+                        double scale = src.Sensitivity;
+                        double exponent = src.ParamCurveExponent > 0.0 ? src.ParamCurveExponent : 1.0;
+                        card.SetCurve(CurveFrom(x => Math.Pow(Math.Min(1.0, scale * x), exponent), scale > 1.0 ? 1.0 / scale : 1.0));
+                        src.Sensitivity = 1.0;
+                        src.ParamCurveExponent = 0.0;
+                        changed = true;
+                    }
 
                     if (src.ParamCurveExponent > 0.0 && src.ParamCurveExponent != 1.0)
                     {
@@ -469,6 +539,64 @@ namespace PadForge.Services
                 }
             }
             return changed;
+        }
+
+        /// <summary>The six outputs a device card shapes.</summary>
+        private static readonly HashSet<string> CardTargets = new(StringComparer.Ordinal)
+        {
+            "LeftThumbAxisX", "LeftThumbAxisY", "RightThumbAxisX", "RightThumbAxisY", "LeftTrigger", "RightTrigger",
+        };
+
+        /// <summary><para>The card targets whose rows, on every layer, do not
+        /// all carry the same shaping stamps, a source with none counting as
+        /// one more value. The device has one card per output and a slot's
+        /// layers each write the same outputs, so a card that took one row's
+        /// shaping would shape every layer's output by it: SpaceSim's
+        /// Precision layer played Base's curve, and a reWASD layer's own
+        /// curve was dropped. Such a target keeps every row's stamps, which
+        /// the engine applies on that row's read (SourceCoercion.ReadAsBipolar
+        /// and ReadAsUnipolar), and its card stays as it was.</para>
+        ///
+        /// <para>A single-source stick row with a geometry hands its scale to
+        /// the card too (FoldSourceShaping), so that scale counts. A row that
+        /// sums several sources keeps its scales as coefficients, which
+        /// never reach the card.</para></summary>
+        internal static HashSet<string> TargetsKeepingTheirRows(MappingSet set)
+        {
+            var kept = new HashSet<string>(StringComparer.Ordinal);
+            if (set?.Rows == null) return kept;
+            var first = new Dictionary<string, string>(StringComparer.Ordinal);
+            foreach (var row in set.Rows)
+            {
+                if (row?.Sources == null || row.Target == null || !CardTargets.Contains(row.Target)) continue;
+                foreach (var src in row.Sources)
+                {
+                    if (src == null) continue;
+                    string stamps = Stamps(src, row.Sources.Count, row.Target.Contains("Thumb", StringComparison.Ordinal));
+                    if (!first.TryGetValue(row.Target, out string seen)) first[row.Target] = stamps;
+                    else if (seen != stamps) kept.Add(row.Target);
+                }
+            }
+            return kept;
+        }
+
+        /// <summary>A source's shaping stamps as the fold reads them, each
+        /// outside its live range read as none.</summary>
+        private static string Stamps(MappingSource src, int sources, bool stick)
+        {
+            double exponent = src.ParamCurveExponent > 0.0 && src.ParamCurveExponent != 1.0 ? src.ParamCurveExponent : 0.0;
+            double anti = src.ParamAntiDeadzone > 0.0 && src.ParamAntiDeadzone < 1.0 ? src.ParamAntiDeadzone : 0.0;
+            double inner = src.ParamStickDeadZoneInner > 0.0 && src.ParamStickDeadZoneInner < 1.0 ? src.ParamStickDeadZoneInner : 0.0;
+            double outer = src.ParamRangeOuter > 0.0 && src.ParamRangeOuter < 1.0 ? src.ParamRangeOuter : 0.0;
+            double scale = stick && sources == 1 && src.ParamStickDeadZoneShape != 0
+                && src.Sensitivity > 0.0 && src.Sensitivity != 1.0 ? src.Sensitivity : 1.0;
+            return string.Join("|",
+                exponent.ToString("R", CultureInfo.InvariantCulture),
+                anti.ToString("R", CultureInfo.InvariantCulture),
+                src.ParamStickDeadZoneShape.ToString(CultureInfo.InvariantCulture),
+                inner.ToString("R", CultureInfo.InvariantCulture),
+                outer.ToString("R", CultureInfo.InvariantCulture),
+                scale.ToString("R", CultureInfo.InvariantCulture));
         }
 
         /// <summary><para>Moves a stamped stick deadzone geometry (shape, inner
@@ -630,6 +758,20 @@ namespace PadForge.Services
             if (string.IsNullOrWhiteSpace(stored)) return true;
             return double.TryParse(stored, NumberStyles.Float, CultureInfo.InvariantCulture,
                 out double v) && Math.Abs(v - expected) < 0.001;
+        }
+
+        /// <summary>A curve as the card's control-point string: sixteen even
+        /// steps, plus the point at <paramref name="corner"/> where the curve
+        /// bends, so the card's spline keeps the bend.</summary>
+        private static string CurveFrom(Func<double, double> curve, double corner)
+        {
+            const int steps = 16;
+            var xs = new SortedSet<double>();
+            for (int i = 0; i <= steps; i++) xs.Add((double)i / steps);
+            if (corner > 0.0 && corner < 1.0) xs.Add(Math.Round(corner, 4));
+            var points = new List<(double X, double Y)>(xs.Count);
+            foreach (double x in xs) points.Add((x, Math.Clamp(curve(x), 0.0, 1.0)));
+            return Common.CurveLut.Serialize(points);
         }
 
         /// <summary>y = x^exponent as the card's control-point string.

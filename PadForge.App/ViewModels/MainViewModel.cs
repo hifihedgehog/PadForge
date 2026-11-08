@@ -148,7 +148,7 @@ namespace PadForge.ViewModels
                 pad.PropertyChanged += OnPadPresetChanged;
                 // A keyboard menu on any slot can type through a Keyboard +
                 // Mouse slot's keyboard (#566), so every Types Through list
-                // reads the slots again when one changes type.
+                // reads the slots again when one changes type or label.
                 pad.PropertyChanged += OnPadOutputTypeChanged;
                 pad.KbmSlotChoicesProvider = KeyboardMouseSlots;
                 Pads.Add(pad);
@@ -165,6 +165,23 @@ namespace PadForge.ViewModels
             _selectedNavTag = "Dashboard";
         }
 
+        /// <summary>Leaves every Menus tab record button's Recording state,
+        /// on RecorderService.RecordingCanceled: a cancel drops the callback
+        /// that would have left it: the opener's Record buttons, and a
+        /// keyboard row and Map All (#566). Each sets its state after its own
+        /// start, so its start's cancel of another recording never clears it
+        /// (MenuEditorItem.BeginRecordAfterStart, MainWindow.RecordKeyboardRow).</summary>
+        internal void ClearMenuRecordings()
+        {
+            foreach (var pad in Pads)
+                foreach (var menu in pad.Menus)
+                {
+                    menu.HostRecording = false;
+                    menu.RecordingKeyboardRow = null;
+                    menu.KeyboardMapAllActive = false;
+                }
+        }
+
         /// <summary>Every slot that exists and is Keyboard + Mouse, by pad
         /// index, which a reorder never moves (InputService.SwapSlots).</summary>
         private IReadOnlyList<KbmSlotChoice> KeyboardMouseSlots()
@@ -179,9 +196,14 @@ namespace PadForge.ViewModels
             return list;
         }
 
+        /// <summary>Re-reads every Types Through list (#566) when a slot
+        /// changes type, which adds or drops a Keyboard + Mouse entry, and
+        /// when its label changes, since slots renumber on a reorder, a
+        /// create or a delete and each entry names its slot by label.</summary>
         private void OnPadOutputTypeChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName != nameof(PadViewModel.OutputType)) return;
+            if (e.PropertyName != nameof(PadViewModel.OutputType)
+                && e.PropertyName != nameof(PadViewModel.SlotLabel)) return;
             foreach (var p in Pads)
                 foreach (var m in p.Menus)
                     m.RefreshTypesThrough();

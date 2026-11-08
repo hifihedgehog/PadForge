@@ -111,7 +111,7 @@ namespace PadForge.Views
             var dlg = new Microsoft.Win32.SaveFileDialog
             {
                 Title = Strings.Instance.MapKeyLights_Export,
-                Filter = "PadForge Key Lights (*.json)|*.json",
+                Filter = Strings.Instance.FileDialog_KeyLightsFilter,
                 FileName = SafeFileName(_vm.DeviceName) + "-key-lights.json",
             };
             if (dlg.ShowDialog(this) != true) return;
@@ -133,7 +133,7 @@ namespace PadForge.Views
             var dlg = new Microsoft.Win32.OpenFileDialog
             {
                 Title = Strings.Instance.MapKeyLights_Import,
-                Filter = "PadForge Key Lights (*.json)|*.json",
+                Filter = Strings.Instance.FileDialog_KeyLightsFilter,
             };
             if (dlg.ShowDialog(this) != true) return;
             try

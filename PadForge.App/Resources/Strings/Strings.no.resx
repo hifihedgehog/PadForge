@@ -4541,7 +4541,7 @@ Vil du at PadForge skal avinstallere dem nå? Dette krever administratorrettighe
   <data name="KeyboardScreens_Status_Strike7Waiting" xml:space="preserve"><value>velg PadForge på V.E.N.O.M.-skjermen</value></data>
   <data name="KeyboardScreens_Status_Strike7Showing" xml:space="preserve"><value>på V.E.N.O.M.-skjermen</value></data>
   <data name="KeyboardScreens_Status_NotFound" xml:space="preserve"><value>ingen skjerm funnet</value></data>
-  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}, venter på en lyslistfarge</value></data>
+  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}, ingen lyslistfarge</value></data>
   <data name="KeyboardScreens_Status_NoPicture_Format" xml:space="preserve"><value>{0}, ingen bilde valgt</value></data>
   <data name="KeyboardScreens_LgsShared_Format" xml:space="preserve"><value>Mens Logitech Gaming Software kjører, viser alle skjermer av denne typen bildet som er satt for {0}.</value></data>
   <data name="DeviceType_KeyboardScreenKeys" xml:space="preserve"><value>Tastaturskjerm</value></data>
@@ -4590,7 +4590,7 @@ Vil du at PadForge skal avinstallere dem nå? Dette krever administratorrettighe
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Panorer bilde på tastaturskjerm</value></data>
   <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Flytter utsnittet til hver tastaturskjerm som forsyner dette sporet, over et bilde som er større enn skjermen, for eksempel et kart. Et skjermoverlegg flyttes på samme måte når zoomen er over 100 prosent.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Panorer bilder med {0} × {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Flytter hver skjerm som forsyner dette sporet og viser et valgt bilde som er større enn skjermen. Utsnittet stopper ved kanten av bildet. Et skjermoverlegg flyttes når zoomen er over 100 prosent, uansett hvilket spor som kjører makroen.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Flytter hver skjerm som forsyner dette sporet og viser et valgt bilde som er større enn skjermen. Utsnittet stopper ved kanten av bildet. Et skjermoverlegg flyttes når zoomen er over 100 prosent, uansett hvilket spor som kjører makroen. En makro som navngir ett overlegg, flytter bare det overlegget.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Skjerm</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Handling</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Retning</value></data>
@@ -4907,11 +4907,11 @@ Vil du at PadForge skal avinstallere dem nå? Dette krever administratorrettighe
   <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Laveste spor med en farge</value></data>
   <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>Zoom</value></data>
   <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>Ingen bilde valgt.</value></data>
-  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Venter på en lyslistfarge.</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Ingen lyslistfarge fra DualShock 4 eller DualSense å vise.</value></data>
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Overlegg</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Alle overlegg</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Vis/skjul skjermoverlegg {0}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Vis bilder på {0}: {1} × {2} ms, til neste makro</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Vis bilder på {0}: {1} × {2} ms, til neste visning eller modusmakro</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>Importer profil</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}, en {1}-fil</value></data>
   <data name="Import_ProfileName_Format" xml:space="preserve"><value>Blir profilen «{0}».</value></data>
@@ -4945,7 +4945,6 @@ Vil du at PadForge skal avinstallere dem nå? Dette krever administratorrettighe
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Denne profilen navngir en spesialhandling som mangler i Actions.xml ved siden av Profiles-mappen: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Denne innstillingen kom ikke med: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD hindret disse inndataene i å nå Windows. Slå på Blokker tilordnede inndata for {0} på Enheter-siden, som blokkerer de denne profilen tilordner.</value></data>
-  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>Base-tilordningene for {0} opphører i dette laget. Med Blokker tilordnede inndata på forblir enhetens tilordnede inndata blokkert fra Windows i alle lag.</value></data>
   <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>Undermenyene ble til flere spor på én ring.</value></data>
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Bekrefter når stikken går tilbake til midten eller laget avsluttes. reWASDs Bruk-knapp brukes ikke.</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Denne filen holder to kontrollere adskilt. I PadForge utløser enhver kontroller på sporet disse tilordningene.</value></data>
@@ -4974,7 +4973,7 @@ Vil du at PadForge skal avinstallere dem nå? Dette krever administratorrettighe
   <data name="Import_Tr_HideController" xml:space="preserve"><value>reWASD skjulte denne kontrolleren for spill. Slå på Skjul for spill for den på Enheter-siden.</value></data>
   <data name="Import_Tr_NoSuchSetting" xml:space="preserve"><value>PadForge har ingen slik innstilling: {0}</value></data>
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD hindret musebevegelse i å nå Windows. PadForge blokkerer taster og museknapper, men ikke bevegelse, så pekeren beveger seg fortsatt.</value></data>
-  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>De virtuelle kontrollerne i PadForge henter bevegelse bare fra en kontrollers bevegelsessensor.</value></data>
+  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>En virtuell Xbox-kontroller har ingen bevegelse. Velg en PlayStation- eller Nintendo-kontrollertype for å sende bevegelse.</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows byttet tilbake til denne profilen fra {0} med en knapp. For å gjøre det i PadForge, legg til en profilsnarvei for denne profilen på Profiler-siden.</value></data>
   <data name="Osk_Style_Grid" xml:space="preserve">
     <value>Rutenett</value>
@@ -5193,4 +5192,37 @@ Vil du at PadForge skal avinstallere dem nå? Dette krever administratorrettighe
   <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Åpner eller lukker tastaturet når Åpnes med slippes før holdetiden. Et lengre trykk gjør ingenting.</value></data>
   <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Åpner eller lukker tastaturet når Åpnes med trykkes tre ganger innenfor trykkvinduet.</value></data>
   <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Åpner eller lukker tastaturet når trykkvinduet utløper etter ett trykk på Åpnes med. Et andre trykk innenfor vinduet avbryter det.</value></data>
+  <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>Fargene sendes direkte til {0}. Skiftende farger, for eksempel fargesyklus eller farger som følger lyd, når den ikke. En farge som ikke endres, gjør det.</value></data>
+  <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Alle filer (*.*)|*.*</value></data>
+  <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>PadForge-profil (*{0})|*{0}</value></data>
+  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml</value></data>
+  <data name="FileDialog_ProgramFilter" xml:space="preserve"><value>Programfiler (*.exe;*.bat;*.cmd;*.com)|*.exe;*.bat;*.cmd;*.com|Alle filer (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundFileFilter" xml:space="preserve"><value>Lydfiler og lydpakker|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.pfsounds|Lydpakker (*.pfsounds)|*.pfsounds|Alle filer (*.*)|*.*</value></data>
+  <data name="FileDialog_AudioFilter" xml:space="preserve"><value>Lydfiler|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.ogg|Alle filer (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundPackageFilter_Format" xml:space="preserve"><value>PadForge-lydpakker (*{0})|*{0}</value></data>
+  <data name="FileDialog_IconPackageFilter_Format" xml:space="preserve"><value>PadForge-ikonpakker (*{0})|*{0}</value></data>
+  <data name="FileDialog_AutoEqFilter" xml:space="preserve"><value>AutoEq-profil (*.txt)|*.txt|Alle filer (*.*)|*.*</value></data>
+  <data name="FileDialog_IconPickerFilter" xml:space="preserve"><value>Bilder og ikonpakker|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.pficons|Ikonpakker (*.pficons)|*.pficons</value></data>
+  <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>PadForge-håndholdte knapper (*.json)|*.json</value></data>
+  <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro-profil (*.json)|*.json</value></data>
+  <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge-tastelys (*.json)|*.json</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>En makro kan ikke trykke {0}. En tilordning på Tilordninger-fanen kan.</value></data>
+  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge kjører åtte skjermoverlegg, og dette er reWASDs niende eller tiende trådkors.</value></data>
+  <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge leser Gyro venstre og høyre fra rulling og Helning fra giring, som er standard i reWASD. reWASDs innstillinger kan bytte de to, og denne filen sier ikke om de ble byttet.</value></data>
+  <data name="Import_Tr_TiltLean" xml:space="preserve"><value>I Tilt-modus er reWASDs Lean en dreining rundt den vertikale aksen, og en bevegelsessensor gir ingen vinkel for den dreiningen.</value></data>
+  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge leser en diagonal på berøringsplaten som to retninger samtidig, noe berøringsplaten bare melder når D-pad-modus på Berøringsplate-fanen er 8 retninger.</value></data>
+  <data name="Import_Tr_GyroZone" xml:space="preserve"><value>PadForge leser retningen til gyroen forbi én terskel, og reWASD oppgir ingen enhet for kanten av en gyrosone.</value></data>
+  <data name="Import_Tr_AbsoluteMouse" xml:space="preserve"><value>DS4Windows plasserte pekeren dit stikken peker. I PadForge flytter stikken i stedet pekeren.</value></data>
+  <data name="Import_Tr_StickBeforeRotation" xml:space="preserve"><value>{0} leser stikken før rotasjonen. DS4Windows leste den etter.</value></data>
+  <data name="Import_Tr_StickBeforeCurve" xml:space="preserve"><value>{0} leser vinkelen til stikken før sonene og kurven. DS4Windows leste den etter.</value></data>
+  <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>Tastaturet til et spor som ikke lenger er Tastatur + mus</value></data>
+  <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (ikke på denne PC-en)</value></data>
+  <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (ikke på dette sporet)</value></data>
+  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>giring og rulling lagt til med full styrke (bidraget fra rulling ikke lest)</value></data>
+  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>gyro i Lokalt rom lest som giring (PadForge har ingen skråstilt primærakse)</value></data>
+  <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>gyro i Laserpeker lest som giring (PadForge har ingen konvertering for laserpeker)</value></data>
+  <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>I reWASD når {0} fortsatt Windows fordi filen tilordner den uten å oppheve den. Med Blokker tilordnede inndata slått på blokkerer PadForge den.</value></data>
+  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge dreier en positiv rotasjon med klokken, slik DS4Windows gjør. reWASDs hjelp oppgir rotasjonens område, ikke retningen.</value></data>
+  <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows former {0} for en radial stikke etter vinkelen på skyvet. stikkekortet i PadForge spiller et rett skyv likt og et diagonalt skyv annerledes.</value></data>
+  <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Lagene justerer {0} ulikt, så hvert beholder sin egen justering, og kurven kommer med som den nærmeste potenskurven.</value></data>
 </root>

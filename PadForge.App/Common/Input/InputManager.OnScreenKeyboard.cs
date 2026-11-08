@@ -12,7 +12,11 @@ namespace PadForge.Common.Input
     /// <summary>A click or a close from the keyboard window, for the poll thread.</summary>
     internal enum OskCommandKind { ClickKey, ClickWheel, Close }
 
-    internal readonly record struct OskCommand(OskCommandKind Kind, int A = 0, int B = 0, int C = 0);
+    /// <summary>A command from the window. <see cref="Shape"/> is the
+    /// <see cref="OskView.Shape"/> of the keys the click landed on, so the poll
+    /// thread can tell a click on keys that have since moved (null: no keys
+    /// drawn, as for Close).</summary>
+    internal readonly record struct OskCommand(OskCommandKind Kind, int A = 0, int B = 0, int C = 0, string Shape = null);
 
     /// <summary>
     /// The On-Screen Keyboard's runtime (#566). A keyboard menu, a menu of
@@ -35,6 +39,9 @@ namespace PadForge.Common.Input
         private const int OskStickCenter = 32768;
         /// <summary>A trigger counts as let go under a tenth of its travel.</summary>
         private const int OskTriggerRest = 6554;
+        /// <summary>A centered axis counts as let go within a quarter of its
+        /// travel either side of its rest, the stick test's radius.</summary>
+        private const int OskCenteredRest = 8192;
         /// <summary>A masked controller Step 2 has not read for this long is
         /// gone: it went offline. Every time here is on MenuClock, the menu
         /// runtime's clock, as a keyboard menu is a menu.</summary>
@@ -119,6 +126,8 @@ namespace PadForge.Common.Input
         private OskFamily _oskFamily;
         private readonly Dictionary<Guid, OskMask> _oskMasks = new();
         private readonly OskControlState _oskState = new();
+        /// <summary>The controls the keyboard read this poll, for tests.</summary>
+        internal OskControlState OnScreenKeyboardControls => _oskState;
         private readonly bool[] _oskPrevDown = new bool[OskControlState.ActionCount];
         private readonly List<OskRequest> _oskRequests = new();
         private OskPredictor _oskPredictor;
@@ -137,11 +146,80 @@ namespace PadForge.Common.Input
             public UserDevice Device;
             public bool Owned;
             public bool[] Buttons;
-            public bool Pov, Left, Right, LT, RT, Touch;
+            public bool Left, Right, Touch, PitchBend;
+            /// <summary>Per hat: held at the close.</summary>
+            public readonly bool[] Povs = new bool[CustomInputState.MaxPovs];
+            /// <summary>MIDI notes and analog keys held at the close, or null.</summary>
+            public bool[] Notes;
+            public List<int> AnalogCodes;
+            /// <summary>Per axis: held away from its named rest at the close,
+            /// kept at the rest until it comes back (KeepHeldSilent).</summary>
+            public readonly bool[] Axes = new bool[CustomInputState.MaxAxis];
             public PooledInputStatePair Pool;
             public CustomInputState Raw, Masked;
             public long RawAtMs;
             public readonly float[] Accel = new float[3], AccelAux = new float[3];
+            /// <summary>The device reads through SDL's gamepad layout, where
+            /// Axis 0 to 5 are LX, LY, LT, RX, RY, RT (SdlDeviceWrapper's
+            /// GetGamepadState).</summary>
+            public bool Gamepad;
+            /// <summary>What the keyboard holds each axis and slider at. An
+            /// axis with a rest PadForge can name (a gamepad's sticks and
+            /// triggers, a mouse's motion and scroll lanes) holds there. Any
+            /// other axis, a flight stick's twist or throttle, a wheel's
+            /// pedal, has no rest to name, so it holds where it was when the
+            /// keyboard took the device: what everything else saw last.</summary>
+            public readonly int[] RestAxis = new int[CustomInputState.MaxAxis];
+            public readonly int[] RestSliders = new int[CustomInputState.MaxSliders];
+            /// <summary>Per axis: its rest is named (a gamepad's trigger, a
+            /// mouse's lane), not taken at the open. Only a named rest tells
+            /// a held input from a resting one at the close.</summary>
+            public readonly bool[] RestNamed = new bool[CustomInputState.MaxAxis];
+            /// <summary>A MIDI device's controller values, a Ring-Con's strain
+            /// and a Joy-Con's IR intensity when the keyboard took the
+            /// device: absolute values with no rest to name, held there.</summary>
+            public byte[] RestCc;
+            public float RingCon, IrIntensity;
+        }
+
+        /// <summary>True when a device's state is SDL's gamepad layout: an
+        /// SDL device opened as a gamepad and not forced to its raw joystick,
+        /// or a device with no SDL wrapper whose type is Gamepad (a Remote
+        /// Link peer, a phone).</summary>
+        private static bool ReadsAsGamepad(UserDevice ud)
+            => ud.Device is SdlDeviceWrapper w
+                ? w.GamepadHandle != IntPtr.Zero && !ud.ForceRawJoystickMode
+                : ud.CapType == InputDeviceType.Gamepad;
+
+        /// <summary>Takes the rest a device is held at, from its state when
+        /// the keyboard takes it.</summary>
+        private static void TakeRest(OskMask m, UserDevice ud, CustomInputState s)
+        {
+            m.Gamepad = ReadsAsGamepad(ud);
+            Array.Clear(m.RestNamed);
+            if (s != null)
+            {
+                Array.Copy(s.Axis, m.RestAxis, CustomInputState.MaxAxis);
+                Array.Copy(s.Sliders, m.RestSliders, CustomInputState.MaxSliders);
+                if (s.Midi != null)
+                {
+                    m.RestCc ??= new byte[MidiInputState.CcCount];
+                    Array.Copy(s.Midi.Cc, m.RestCc, MidiInputState.CcCount);
+                }
+                m.RingCon = s.RingConStrain;
+                m.IrIntensity = s.JoyConIrIntensity;
+            }
+            if (m.Gamepad)
+            {
+                m.RestAxis[0] = m.RestAxis[1] = m.RestAxis[3] = m.RestAxis[4] = OskStickCenter;
+                m.RestAxis[2] = m.RestAxis[5] = 0;
+                for (int i = 0; i < 6; i++) m.RestNamed[i] = true;
+            }
+            else if (ud.CapType == InputDeviceType.Mouse)
+            {
+                m.RestAxis[0] = m.RestAxis[1] = m.RestAxis[2] = SdlMouseWrapper.AxisCenter;
+                m.RestNamed[0] = m.RestNamed[1] = m.RestNamed[2] = true;
+            }
         }
 
         internal bool OnScreenKeyboardMasks(Guid device) => _oskMasks.ContainsKey(device);
@@ -176,8 +254,23 @@ namespace PadForge.Common.Input
         {
             Array.Clear(s.Buttons);
             for (int i = 0; i < s.Povs.Length; i++) s.Povs[i] = -1;
-            s.Axis[0] = s.Axis[1] = s.Axis[3] = s.Axis[4] = OskStickCenter;
-            s.Axis[2] = s.Axis[5] = 0;
+            // Every axis and slider at its rest (OskMask.RestAxis), never a
+            // gamepad's rest on a device whose axes mean something else.
+            Array.Copy(m.RestAxis, s.Axis, CustomInputState.MaxAxis);
+            Array.Copy(m.RestSliders, s.Sliders, CustomInputState.MaxSliders);
+            // A MIDI device's notes up and its pitch bend centered, its
+            // controllers where they were. An analog keyboard's keys up.
+            if (s.Midi != null)
+            {
+                Array.Clear(s.Midi.Notes);
+                Array.Clear(s.Midi.CcUp);
+                Array.Clear(s.Midi.CcDown);
+                s.Midi.PitchBend = MidiInputState.PitchBendCenter;
+                if (m.RestCc != null) Array.Copy(m.RestCc, s.Midi.Cc, MidiInputState.CcCount);
+            }
+            if (s.AnalogKeys != null) s.AnalogKeys.Count = 0;
+            s.RingConStrain = m.RingCon;
+            s.JoyConIrIntensity = m.IrIntensity;
             Array.Clear(s.Gyro);
             Array.Clear(s.GyroAux);
             Array.Copy(m.Accel, s.Accel, 3);
@@ -210,6 +303,11 @@ namespace PadForge.Common.Input
             return false;
         }
 
+        /// <summary>An axis away from its named rest: a trigger (rest 0) past
+        /// a tenth of its travel, a centered axis past a quarter.</summary>
+        private static bool AwayFromRest(int value, int rest)
+            => rest == 0 ? value > OskTriggerRest : Math.Abs(value - rest) > OskCenteredRest;
+
         private static bool Deflected(int x, int y)
         {
             double dx = (x - OskStickCenter) / 32767.0, dy = (y - OskStickCenter) / 32767.0;
@@ -228,10 +326,42 @@ namespace PadForge.Common.Input
                     if (raw.Buttons[i]) { s.Buttons[i] = false; any = true; }
                     else m.Buttons[i] = false;
                 }
-            if (m.Pov)
+            for (int p = 0; p < m.Povs.Length && p < raw.Povs.Length; p++)
             {
-                if (raw.Povs[0] >= 0) { s.Povs[0] = -1; any = true; }
-                else m.Pov = false;
+                if (!m.Povs[p]) continue;
+                if (raw.Povs[p] >= 0) { s.Povs[p] = -1; any = true; }
+                else m.Povs[p] = false;
+            }
+            if (m.Notes != null)
+            {
+                bool held = false;
+                if (raw.Midi != null)
+                    for (int n = 0; n < m.Notes.Length; n++)
+                    {
+                        if (!m.Notes[n]) continue;
+                        if (raw.Midi.Notes[n]) { s.Midi.Notes[n] = false; held = true; }
+                        else m.Notes[n] = false;
+                    }
+                if (held) any = true; else m.Notes = null;
+            }
+            if (m.PitchBend)
+            {
+                if (raw.Midi != null && AwayFromRest(raw.Midi.PitchBend, MidiInputState.PitchBendCenter))
+                {
+                    s.Midi.PitchBend = MidiInputState.PitchBendCenter;
+                    any = true;
+                }
+                else m.PitchBend = false;
+            }
+            if (m.AnalogCodes != null)
+            {
+                for (int k = m.AnalogCodes.Count - 1; k >= 0; k--)
+                {
+                    int code = m.AnalogCodes[k];
+                    if (raw.AnalogKeys != null && raw.AnalogKeys.Get(code) > 0f) { s.AnalogKeys.Remove(code); any = true; }
+                    else m.AnalogCodes.RemoveAt(k);
+                }
+                if (m.AnalogCodes.Count == 0) m.AnalogCodes = null;
             }
             if (m.Left)
             {
@@ -243,15 +373,11 @@ namespace PadForge.Common.Input
                 if (Deflected(raw.Axis[3], raw.Axis[4])) { s.Axis[3] = s.Axis[4] = OskStickCenter; any = true; }
                 else m.Right = false;
             }
-            if (m.LT)
+            for (int i = 0; i < m.Axes.Length; i++)
             {
-                if (raw.Axis[2] > OskTriggerRest) { s.Axis[2] = 0; any = true; }
-                else m.LT = false;
-            }
-            if (m.RT)
-            {
-                if (raw.Axis[5] > OskTriggerRest) { s.Axis[5] = 0; any = true; }
-                else m.RT = false;
+                if (!m.Axes[i]) continue;
+                if (AwayFromRest(raw.Axis[i], m.RestAxis[i])) { s.Axis[i] = m.RestAxis[i]; any = true; }
+                else m.Axes[i] = false;
             }
             if (m.Touch)
             {
@@ -641,6 +767,8 @@ namespace PadForge.Common.Input
             return new OskTouch(down, Math.Clamp((x + 1f) / 2f, 0f, 1f), Math.Clamp((y + 1f) / 2f, 0f, 1f), click);
         }
 
+        private readonly OskTouch[] _oskTouchOne = new OskTouch[1], _oskTouchTwo = new OskTouch[2];
+
         /// <summary>The keyboard's controls this poll, from the owner menu's
         /// inputs on the real states of the devices that drive it.</summary>
         private void ReadControls(OskMenuRecord r, OskControlState into)
@@ -661,9 +789,21 @@ namespace PadForge.Common.Input
                 KeyboardControlAction.Pointer1Touch, KeyboardControlAction.Pointer1Click);
             var p2 = PointerOf(r, src, KeyboardControlAction.Pointer2X, KeyboardControlAction.Pointer2Y,
                 KeyboardControlAction.Pointer2Touch, KeyboardControlAction.Pointer2Click);
-            if (p1 is { } a && p2 is { } b) into.Touch = new[] { a, b };
-            else if (p1 is { } c) into.Touch = new[] { c };
-            else if (p2 is { } d) into.Touch = new[] { d };
+            // Two arrays kept for the poll, filled in place: the poll runs at
+            // 1000 Hz and a pointer reads every poll while the keyboard is
+            // open. The engine reads them in the same tick, and the state that
+            // holds them is rebuilt here before the next.
+            if (p1 is { } a && p2 is { } b)
+            {
+                _oskTouchTwo[0] = a;
+                _oskTouchTwo[1] = b;
+                into.Touch = _oskTouchTwo;
+            }
+            else if ((p1 ?? p2) is { } one)
+            {
+                _oskTouchOne[0] = one;
+                into.Touch = _oskTouchOne;
+            }
         }
 
         // ── The tick ───────────────────────────────────────────
@@ -713,10 +853,15 @@ namespace PadForge.Common.Input
             // ticks with, and a switch guards what the new layout reads.
             while (_oskCommands.TryDequeue(out var c))
             {
+                // A click names a place on the keys the window drew. One whose
+                // keys have moved since (the controller switched the page, the
+                // function row or the style first) would type another key, so
+                // it types nothing.
+                bool keysAsDrawn = c.Shape == null || string.Equals(c.Shape, OskView.ShapeOf(e), StringComparison.Ordinal);
                 switch (c.Kind)
                 {
-                    case OskCommandKind.ClickKey: e.ClickKey(c.A, c.B, c.C); break;
-                    case OskCommandKind.ClickWheel: e.ClickWheel(c.A, c.B); break;
+                    case OskCommandKind.ClickKey: if (keysAsDrawn) e.ClickKey(c.A, c.B, c.C); break;
+                    case OskCommandKind.ClickWheel: if (keysAsDrawn) e.ClickWheel(c.A, c.B); break;
                     case OskCommandKind.Close: CloseKeyboard(); break;
                 }
             }
@@ -1053,7 +1198,11 @@ namespace PadForge.Common.Input
             m.Raw ??= raw;
             m.Owned = true;
             m.Buttons = null;
-            m.Pov = m.Left = m.Right = m.LT = m.RT = m.Touch = false;
+            m.Left = m.Right = m.Touch = m.PitchBend = false;
+            Array.Clear(m.Povs);
+            m.Notes = null;
+            m.AnalogCodes = null;
+            Array.Clear(m.Axes);
             m.RawAtMs = now;
             var s = raw ?? ud.InputState;
             if (s != null)
@@ -1061,6 +1210,7 @@ namespace PadForge.Common.Input
                 Array.Copy(s.Accel, m.Accel, 3);
                 Array.Copy(s.AccelAux, m.AccelAux, 3);
             }
+            TakeRest(m, ud, s);
         }
 
         /// <summary>While open: a device that starts driving the owner menu,
@@ -1093,6 +1243,9 @@ namespace PadForge.Common.Input
                 if (_oskMasks.TryGetValue(g, out var m) && m.Owned) kept[k++] = g;
             _oskOwned = kept;
             if (live == 0) CloseKeyboard();
+            // The hint bar shows the labels of the first controller held, so
+            // they follow the one that remains.
+            else _oskFamily = FamilyOf(_oskOwned);
         }
 
         private void CloseKeyboard()
@@ -1124,13 +1277,45 @@ namespace PadForge.Common.Input
             if (raw == null) { _oskMasks.Remove(g); return; }
             m.Owned = false;
             m.Buttons = (bool[])raw.Buttons.Clone();
-            m.Pov = raw.Povs[0] >= 0;
-            m.Left = Deflected(raw.Axis[0], raw.Axis[1]);
-            m.Right = Deflected(raw.Axis[3], raw.Axis[4]);
-            m.LT = raw.Axis[2] > OskTriggerRest;
-            m.RT = raw.Axis[5] > OskTriggerRest;
+            for (int p = 0; p < m.Povs.Length && p < raw.Povs.Length; p++) m.Povs[p] = raw.Povs[p] >= 0;
+            // A MIDI device's notes and pitch bend, and an analog keyboard's
+            // keys, have a rest to come back to, so they stay silent too.
+            m.Notes = null;
+            m.PitchBend = false;
+            m.AnalogCodes = null;
+            if (raw.Midi != null)
+            {
+                if (Array.IndexOf(raw.Midi.Notes, true) >= 0) m.Notes = (bool[])raw.Midi.Notes.Clone();
+                m.PitchBend = AwayFromRest(raw.Midi.PitchBend, MidiInputState.PitchBendCenter);
+            }
+            if (raw.AnalogKeys != null && raw.AnalogKeys.Count > 0)
+            {
+                m.AnalogCodes = new List<int>(raw.AnalogKeys.Count);
+                for (int k = 0; k < raw.AnalogKeys.Count; k++) m.AnalogCodes.Add(raw.AnalogKeys.Codes[k]);
+            }
+            // Only an axis whose rest is named can be told held from resting:
+            // a gamepad's sticks by the stick test, its triggers and a
+            // mouse's lanes by their distance from that rest. An axis held
+            // where it was at the open (a flight stick's twist, a throttle)
+            // has no rest to come back to, so it is let go with the close.
+            Array.Clear(m.Axes);
+            if (m.Gamepad)
+            {
+                m.Left = Deflected(raw.Axis[0], raw.Axis[1]);
+                m.Right = Deflected(raw.Axis[3], raw.Axis[4]);
+                m.Axes[2] = AwayFromRest(raw.Axis[2], 0);
+                m.Axes[5] = AwayFromRest(raw.Axis[5], 0);
+            }
+            else
+            {
+                m.Left = m.Right = false;
+                for (int i = 0; i < m.Axes.Length; i++)
+                    m.Axes[i] = m.RestNamed[i] && AwayFromRest(raw.Axis[i], m.RestAxis[i]);
+            }
             m.Touch = TouchActive(raw);
-            bool any = m.Pov || m.Left || m.Right || m.LT || m.RT || m.Touch;
+            bool any = m.Left || m.Right || m.Touch || m.PitchBend || m.Notes != null || m.AnalogCodes != null;
+            for (int i = 0; !any && i < m.Povs.Length; i++) any = m.Povs[i];
+            for (int i = 0; !any && i < m.Axes.Length; i++) any = m.Axes[i];
             for (int i = 0; !any && i < m.Buttons.Length; i++) any = m.Buttons[i];
             if (!any)
             {

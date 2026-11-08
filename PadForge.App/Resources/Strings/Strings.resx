@@ -1004,6 +1004,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_Lighting_RouteDirectChangingThroughLampArray" xml:space="preserve"><value>Colors go straight to {0}. Changing colors go through its Dynamic Lighting interface. If the lights do not change, turn that interface on: some laptops do it in the BIOS, some in the maker's lighting app or with a hotkey.</value></data>
   <data name="Pad_Lighting_RouteDirectBesideWindows" xml:space="preserve"><value>Colors go straight to {0}. Windows Dynamic Lighting holds its Dynamic Lighting interface, so changing colors do not reach it. Turn Windows Dynamic Lighting off for this device in Windows Settings and PadForge sends them there.</value></data>
   <data name="Pad_Lighting_RouteDirectStored" xml:space="preserve"><value>Colors go straight to {0}. It stores each picture in its own memory, so changing colors, such as a color cycle or colors that follow sound, do not show. A color that stays the same does.</value></data>
+  <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>Colors go straight to {0}. Changing colors, such as a color cycle or colors that follow sound, do not reach it. A color that stays the same does.</value></data>
   <data name="Pad_Lighting_RouteDirectStoredEffects" xml:space="preserve"><value>Colors go straight to {0}. It stores each picture in its own memory, so changing colors, such as a color cycle or colors that follow sound, do not show. A color that stays the same does. The first picture writes over the effects saved on the keyboard, and the old ones do not come back.</value></data>
   <data name="Peripheral_SerialDeviceOnPort" xml:space="preserve"><value>Serial device on {0}</value></data>
   <data name="Pad_Lighting_RouteRefused" xml:space="preserve"><value>This device is connected and did not take PadForge's colors. PadForge tries again each minute.</value></data>
@@ -2412,6 +2413,19 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="FileDialog_SelectWhitelist" xml:space="preserve"><value>Select Application to Whitelist</value></data>
   <data name="FileDialog_SelectGameExe" xml:space="preserve"><value>Select Game Executable</value></data>
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>Executables (*.exe)|*.exe|All Files (*.*)|*.*</value></data>
+  <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>All Files (*.*)|*.*</value></data>
+  <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>PadForge profile (*{0})|*{0}</value></data>
+  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml</value></data>
+  <data name="FileDialog_ProgramFilter" xml:space="preserve"><value>Programs (*.exe;*.bat;*.cmd;*.com)|*.exe;*.bat;*.cmd;*.com|All Files (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundFileFilter" xml:space="preserve"><value>Audio files and sound packages|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.pfsounds|Sound packages (*.pfsounds)|*.pfsounds|All Files (*.*)|*.*</value></data>
+  <data name="FileDialog_AudioFilter" xml:space="preserve"><value>Audio files|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.ogg|All Files (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundPackageFilter_Format" xml:space="preserve"><value>PadForge sound packages (*{0})|*{0}</value></data>
+  <data name="FileDialog_IconPackageFilter_Format" xml:space="preserve"><value>PadForge icon packages (*{0})|*{0}</value></data>
+  <data name="FileDialog_AutoEqFilter" xml:space="preserve"><value>AutoEq profile (*.txt)|*.txt|All Files (*.*)|*.*</value></data>
+  <data name="FileDialog_IconPickerFilter" xml:space="preserve"><value>Images and icon packages|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.pficons|Icon packages (*.pficons)|*.pficons</value></data>
+  <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>PadForge Handheld Buttons (*.json)|*.json</value></data>
+  <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro profile (*.json)|*.json</value></data>
+  <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge Key Lights (*.json)|*.json</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
   <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge is already running.</value></data>
@@ -3699,6 +3713,9 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>flick stick on a surface with no analog pair skipped</value></data>
   <data name="Workshop_Tr_DeadZoneRadialResidual" xml:space="preserve"><value>deadzone radii apply per axis, not radially ({0})</value></data>
   <data name="Workshop_Tr_RotationNonlinearWithheld" xml:space="preserve"><value>nonlinear response withheld on rotated axes ({0})</value></data>
+  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>yaw and roll added at full strength (roll contribution not read)</value></data>
+  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>Local Space gyro read as yaw (PadForge has no tilted primary axis)</value></data>
+  <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>Laser Pointer gyro read as yaw (PadForge has no laser pointer conversion)</value></data>
   <data name="Workshop_Tr_LayerReleaseEdgeApproximated" xml:space="preserve"><value>release-hosted {0} switches on press instead</value></data>
   <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>mouse feel settings dropped ({0})</value></data>
   <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>axis inversion not applied ({0})</value></data>
@@ -4567,7 +4584,7 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="KeyboardScreens_Status_Strike7Waiting" xml:space="preserve"><value>pick PadForge on the V.E.N.O.M. screen</value></data>
   <data name="KeyboardScreens_Status_Strike7Showing" xml:space="preserve"><value>on the V.E.N.O.M. screen</value></data>
   <data name="KeyboardScreens_Status_NotFound" xml:space="preserve"><value>no screen found</value></data>
-  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}, waiting for a lightbar color</value></data>
+  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}, no lightbar color</value></data>
   <data name="KeyboardScreens_Status_NoPicture_Format" xml:space="preserve"><value>{0}, no picture chosen</value></data>
   <data name="KeyboardScreens_LgsShared_Format" xml:space="preserve"><value>While Logitech Gaming Software runs, every screen of this kind shows the picture set for {0}.</value></data>
   <data name="DeviceType_KeyboardScreenKeys" xml:space="preserve"><value>Keyboard Screen</value></data>
@@ -4616,7 +4633,7 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Pan Keyboard Screen Picture</value></data>
   <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Moves the window of each keyboard screen that feeds this slot over a picture larger than the screen, for a map. A Screen Overlay moves the same way when its zoom is above 100 percent.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Pan pictures {0} by {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Moves each screen that feeds this slot and shows a chosen picture larger than itself. The window stops at the picture's edges. A Screen Overlay moves when its zoom is above 100 percent, whichever slot runs the macro.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Moves each screen that feeds this slot and shows a chosen picture larger than itself. The window stops at the picture's edges. A Screen Overlay moves when its zoom is above 100 percent, whichever slot runs the macro. A macro that names one overlay moves that overlay alone.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Screen</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Action</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Direction</value></data>
@@ -4933,11 +4950,11 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Lowest Slot with a Color</value></data>
   <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>Zoom</value></data>
   <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>No picture chosen.</value></data>
-  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Waiting for a lightbar color.</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>No DualShock 4 or DualSense lightbar color to show.</value></data>
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Overlay</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Every Overlay</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Toggle Screen Overlay {0}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Show {0} pictures: {1} × {2} ms, until the next macro</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Show {0} pictures: {1} × {2} ms, until the next show or mode macro</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>Import Profile</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}, a {1} file</value></data>
   <data name="Import_ProfileName_Format" xml:space="preserve"><value>Becomes the profile "{0}".</value></data>
@@ -4954,6 +4971,7 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge does not recognize this output: {0}</value></data>
   <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge has no such command: {0}</value></data>
   <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>The virtual controller has no such button: {0}</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>A macro cannot press {0}. A mapping on the Mappings tab can.</value></data>
   <data name="Import_Tr_Crosshair" xml:space="preserve"><value>A crosshair lives inside reWASD. Show your own picture with a Screen Overlay.</value></data>
   <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>Stick jitter and shaking did not come across.</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Analog key actuation points did not come across.</value></data>
@@ -4963,13 +4981,24 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>This profile names a special action missing from Actions.xml beside its Profiles folder: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>This setting did not come across: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD stopped these inputs reaching Windows. Turn on Consume Mapped Inputs for {0} on the Devices page, which stops the ones this profile maps.</value></data>
-  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>Base's mappings for {0} stop in this layer. With Consume Mapped Inputs on, its mapped inputs stay held back from Windows in every layer.</value></data>
+  <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>In reWASD, {0} still reaches Windows because the file maps it without an unmap. With Consume Mapped Inputs on, PadForge holds it back.</value></data>
   <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>Its sub-menus became more slots on one ring.</value></data>
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Commits when the stick re-centers or the layer ends. reWASD's Apply button is not used.</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>This file keeps two controllers apart. In PadForge, any controller on the slot fires these mappings.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>The movement speed or flick did not come across.</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>These did not come across. Set them on the Touchpad tab.</value></data>
   <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Nothing in this file opens this layer. Give it a button on the Mappings tab.</value></data>
+  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge runs eight Screen Overlays, and this is reWASD's ninth or tenth crosshair.</value></data>
+  <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge reads Gyro Left and Right from roll and Lean from yaw, reWASD's default. reWASD's Preferences can swap the two, and this file does not say whether they were.</value></data>
+  <data name="Import_Tr_TiltLean" xml:space="preserve"><value>In Tilt mode, reWASD's Lean is a turn around the vertical axis, and a motion sensor gives no angle for that turn.</value></data>
+  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge reads a touchpad diagonal as two directions at once, which the touchpad reports only when D-Pad Mode on its Touchpad tab is 8-Way.</value></data>
+  <data name="Import_Tr_GyroZone" xml:space="preserve"><value>PadForge reads the gyro's direction past one threshold, and reWASD gives no unit for a gyro zone's edge.</value></data>
+  <data name="Import_Tr_AbsoluteMouse" xml:space="preserve"><value>DS4Windows placed the pointer where the stick points. In PadForge the stick moves the pointer instead.</value></data>
+  <data name="Import_Tr_StickBeforeRotation" xml:space="preserve"><value>{0} reads the stick before its rotation. DS4Windows read it after.</value></data>
+  <data name="Import_Tr_StickBeforeCurve" xml:space="preserve"><value>{0} reads the stick's angle before its zones and curve. DS4Windows read it after.</value></data>
+  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge turns a positive rotation clockwise, as DS4Windows does. reWASD's help gives the rotation's range, not its direction.</value></data>
+  <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows shapes a radial stick's {0} by the angle of the push. PadForge's stick card plays a straight push the same and a diagonal one differently.</value></data>
+  <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>The layers tune {0} differently, so each keeps its own tuning, and the curve comes across as the nearest power curve.</value></data>
   <data name="Import_LayerName_Format" xml:space="preserve"><value>Layer {0}</value></data>
   <data name="Import_ShiftLayerName_Format" xml:space="preserve"><value>Shift {0}</value></data>
   <data name="Import_MenuItem_Format" xml:space="preserve"><value>Item {0}</value></data>
@@ -5000,7 +5029,7 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="Import_Tr_HideController" xml:space="preserve"><value>reWASD hid this controller from games. Turn on Hide from Games for it on the Devices page.</value></data>
   <data name="Import_Tr_NoSuchSetting" xml:space="preserve"><value>PadForge has no such setting: {0}</value></data>
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD stopped mouse movement reaching Windows. PadForge holds back keys and mouse buttons but not movement, so the pointer still moves.</value></data>
-  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>PadForge's virtual controllers take motion only from a controller's motion sensor.</value></data>
+  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>An Xbox virtual controller has no motion. Pick a PlayStation or Nintendo controller type to send motion.</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows came back to this profile from {0} on a button. To do that in PadForge, add a Profile Shortcut for this profile on the Profiles page.</value></data>
   <data name="Osk_Style_Grid" xml:space="preserve">
     <value>Grid</value>
@@ -5154,6 +5183,8 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="Menu_TypesThrough" xml:space="preserve"><value>Types Through</value></data>
   <data name="Menu_TypesThrough_Caption" xml:space="preserve"><value>Windows Input types each key through Windows, and programs can tell it came from software. A Keyboard + Mouse slot's keyboard types it the way that slot's Keyboard setting does. A HIDMaestro virtual keyboard types it as that model of keyboard, which programs see as hardware. The keyboard menu makes that one itself, so it needs no Keyboard + Mouse slot. A key the chosen keyboard lacks, and a character no key types, still go through Windows Input.</value></data>
   <data name="Menu_TypesThrough_Slot_Format" xml:space="preserve"><value>Same Keyboard as {0}</value></data>
+  <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>Keyboard of a slot that is no longer Keyboard + Mouse</value></data>
+  <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (not on this PC)</value></data>
   <data name="Menu_Reset_TypesThrough" xml:space="preserve"><value>Reset Types Through</value></data>
   <data name="Menu_FunctionRow" xml:space="preserve"><value>Function Row</value></data>
   <data name="Menu_FunctionRow_Caption" xml:space="preserve"><value>Esc, F1 to F12 and Delete. The Fn key on the keyboard switches it too.</value></data>
@@ -5213,6 +5244,7 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="Menu_Keyboard_Deadzone_Tip" xml:space="preserve"><value>How far a steering control is pushed before the highlight moves. A button or another on/off input moves it at once.</value></data>
   <data name="Menu_Keyboard_Threshold_Name_Format" xml:space="preserve"><value>{0} Axis-to-Button Deadzone</value></data>
   <data name="Menu_Keyboard_RecordingAxisPrompt" xml:space="preserve"><value>Move an axis on any device assigned to this slot</value></data>
+  <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (not on this slot)</value></data>
   <data name="Menu_Keyboard_OpenPress_Press_Desc" xml:space="preserve"><value>Opens or closes the keyboard as soon as Opens With is pressed.</value></data>
   <data name="Menu_Keyboard_OpenPress_Release_Desc" xml:space="preserve"><value>Opens or closes the keyboard when Opens With is let go.</value></data>
   <data name="Menu_Keyboard_OpenPress_WhileHeld_Desc" xml:space="preserve"><value>Opens the keyboard while Opens With is held and closes it when that press is let go.</value></data>

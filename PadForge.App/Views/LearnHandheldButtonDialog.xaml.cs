@@ -256,7 +256,7 @@ namespace PadForge.Views
             var dlg = new Microsoft.Win32.SaveFileDialog
             {
                 Title = Strings.Instance.Handheld_Export,
-                Filter = "PadForge Handheld Buttons (*.json)|*.json",
+                Filter = Strings.Instance.FileDialog_HandheldButtonsFilter,
                 FileName = SafeFileName(MachineIdentity.Current.DisplayName) + "-hidden-buttons.json",
             };
             if (dlg.ShowDialog(this) != true) return;
@@ -281,7 +281,7 @@ namespace PadForge.Views
             var dlg = new Microsoft.Win32.OpenFileDialog
             {
                 Title = Strings.Instance.Handheld_Import,
-                Filter = "PadForge Handheld Buttons (*.json)|*.json",
+                Filter = Strings.Instance.FileDialog_HandheldButtonsFilter,
             };
             if (dlg.ShowDialog(this) != true) return;
             try

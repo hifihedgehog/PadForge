@@ -1015,9 +1015,13 @@ namespace PadForge.Services
                 Row("LeftThumbAxisY", Src(PadLY)),
 
                 // Gyro and stick on the same axis row. Yaw is the horizontal
-                // sweep, pitch the vertical.
+                // sweep, pitch the vertical. The nose up looks up, as
+                // JoyShockMapper's gyro stick does (processGyroStick writes
+                // setStick(gyroStickX, -gyroStickY) from a camera-space,
+                // down-positive pitch). The engine writes a positive pitch on
+                // a stick Y row as the stick down, so the pitch is inverted.
                 Row("RightThumbAxisX", GyroSource(GyroYaw), Src(PadRX)),
-                Row("RightThumbAxisY", GyroSource(GyroPitch), Src(PadRY)),
+                Row("RightThumbAxisY", GyroSource(GyroPitch, invert: true), Src(PadRY)),
 
                 Row("RightTrigger", Src(PadRT)),
                 Row("LeftTrigger", Src(PadLT)),
@@ -1094,10 +1098,11 @@ namespace PadForge.Services
         /// is the lower threshold of zero; the upper end saturates at the
         /// lane's full scale rather than at a stated degrees-per-second, and
         /// that is the honest limit of the per-source channel.</para></summary>
-        private static MappingSource GyroSource(string descriptor)
+        private static MappingSource GyroSource(string descriptor, bool invert = false)
         {
             var src = Src(descriptor);
             src.ParamAccel = 1.0;
+            src.Invert = invert;
             return src;
         }
 

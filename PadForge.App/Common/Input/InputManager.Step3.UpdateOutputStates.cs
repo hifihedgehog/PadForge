@@ -887,6 +887,15 @@ namespace PadForge.Common.Input
                     state, mappingSet, thisDeviceGuid, slotIndex, targetName, out value);
         }
 
+        /// <summary>True while the row's Invert on Hold modifier flips it,
+        /// read as EvaluateBipolarAxisRow reads it for the same mouse row: a
+        /// row of several sources, or one whose value ignores the pass, takes
+        /// an "(Any Device)" modifier across the slot. The rate lanes carry
+        /// part of that row's value, so the flip reaches them too.</summary>
+        private static bool LaneRowInverted(MappingRow row, CustomInputState state, string thisDeviceGuid, int slotIndex)
+            => IsInvertOnHoldActive(row, state, thisDeviceGuid, slotIndex,
+                CountContributingSources(row) > 1 || RowValueIgnoresThePass(row));
+
         /// <summary>Sums the gyro rate lane for both mouse axes. Mirrors
         /// <see cref="TickFlickStickSources"/>: walks the active row for each
         /// mouse target and takes only the sources whose output is calibrated
@@ -909,6 +918,7 @@ namespace PadForge.Common.Input
                 if (shiftSuppressed) continue;
                 var sources = row?.Sources;
                 if (sources == null) continue;
+                bool flip = LaneRowInverted(row, state, thisDeviceGuid, slotIndex);
 
                 for (int i = 0; i < sources.Count; i++)
                 {
@@ -938,6 +948,7 @@ namespace PadForge.Common.Input
                     // A layer row turning the cursor is that layer's output
                     // (#206 auto-cancel), the mark the row evaluators stamp.
                     if (cx != 0f || cy != 0f) StampLayerActivity(slotIndex, row);
+                    if (flip) { cx = -cx; cy = -cy; }
                     gx += cx; gy += cy;
                 }
             }
@@ -965,6 +976,7 @@ namespace PadForge.Common.Input
                 if (shiftSuppressed) continue;
                 var sources = row?.Sources;
                 if (sources == null) continue;
+                bool flip = LaneRowInverted(row, state, thisDeviceGuid, slotIndex);
 
                 for (int i = 0; i < sources.Count; i++)
                 {
@@ -992,6 +1004,7 @@ namespace PadForge.Common.Input
                     if (cx != 0f || cy != 0f
                         || PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadMouseFingerEngaged(devState, src.Descriptor))
                         StampLayerActivity(slotIndex, row);
+                    if (flip) { cx = -cx; cy = -cy; }
                     tx += cx; ty += cy;
                 }
             }
@@ -1075,6 +1088,11 @@ namespace PadForge.Common.Input
                 }
                 int flicked = runtime.TickFlickStick(slotIndex, "KbmMouseX", i, src, devState,
                     dt, _stickTrimFrameSeq, row.LayerMask);
+                // The source's own direction, as the bipolar evaluator turns
+                // every other source and the gyro and touch lanes theirs.
+                if (PadForge.Engine.Common.Mapping.SourceCoercion.InvertConsumedByHalfAxisRead(src)
+                        ? src.InvertOutput : src.Invert)
+                    flicked = -flicked;
                 // A flick or a turn is the layer's output (#206 auto-cancel),
                 // and so is a stick held past the flick threshold between
                 // them, the way a touchpad row counts a resting finger.
@@ -1082,6 +1100,9 @@ namespace PadForge.Common.Input
                     StampLayerActivity(slotIndex, row);
                 counts += flicked;
             }
+            // The row's Invert on Hold flips the flick part with the rest of
+            // the row.
+            if (LaneRowInverted(row, state, thisDeviceGuid, slotIndex)) counts = -counts;
             return counts;
         }
 

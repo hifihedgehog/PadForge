@@ -1164,7 +1164,11 @@ namespace PadForge.ViewModels
         public double Sensitivity
         {
             get => _sensitivity;
-            set => SetProperty(ref _sensitivity, System.Math.Clamp(value, 0.1, 5.0));
+            // The floor is the import's: a rotated stick's row carries the
+            // rotation's sine or cosine, which falls under a tenth within
+            // about 6 degrees of none or a quarter turn, and the importers
+            // drop a leg only under 0.001.
+            set => SetProperty(ref _sensitivity, System.Math.Clamp(value, 0.001, 5.0));
         }
         public bool ParamSticky { get => _paramSticky; set => SetProperty(ref _paramSticky, value); }
         public double ParamMin { get => _paramMin; set { if (double.IsFinite(value)) SetProperty(ref _paramMin, value); } }

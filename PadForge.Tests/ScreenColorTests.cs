@@ -224,6 +224,7 @@ namespace PadForge.Tests
         public int Disposed;
         public string Kind => "Scripted";
         public long LastWorkMs { get; set; }
+        public string Output { get; set; }
 
         public void Say(ScreenGrabResult result, ScreenFrame frame = null) => Next.Enqueue(() => (result, frame));
 
@@ -250,12 +251,12 @@ namespace PadForge.Tests
         private int _retires;
         private bool _refuseRetire;
 
-        private ScreenCaptureWorker Worker(Func<string, IScreenGrabber> factory)
+        private ScreenCaptureWorker Worker(Func<string, IScreenGrabber> factory, Func<string, bool> attached = null)
             => new("d", factory, () => _now, w =>
             {
                 _retires++;
                 return !_refuseRetire && w.IsIdle;
-            });
+            }, attached);
 
         private static ScreenFrame OneCell(int rgb) => new(1, 1, new[] { rgb });
 
@@ -346,7 +347,8 @@ namespace PadForge.Tests
             first.Say(ScreenGrabResult.Lost);
             Assert.Equal(ScreenCaptureWorker.RetryMinMs, worker.Step());
             Assert.Equal(1, first.Disposed);
-            Assert.Equal(ScreenCaptureState.Waiting, worker.State);
+            // A capture that ended is no word that Windows holds the screen.
+            Assert.Equal(ScreenCaptureState.Restarting, worker.State);
             Assert.Equal(1, worker.Latest.Cells[0]);
 
             second.Say(ScreenGrabResult.Frame, OneCell(2));
@@ -365,10 +367,68 @@ namespace PadForge.Tests
             first.Next.Enqueue(() => throw new InvalidOperationException("the driver reset"));
             Assert.Equal(ScreenCaptureWorker.RetryMinMs, worker.Step());
             Assert.Equal(1, first.Disposed);
-            Assert.Equal(ScreenCaptureState.Waiting, worker.State);
+            Assert.Equal(ScreenCaptureState.Restarting, worker.State);
             second.Say(ScreenGrabResult.Frame, OneCell(2));
             worker.Step();
             Assert.Equal(ScreenCaptureState.Capturing, worker.State);
+        }
+
+        /// <summary>A capture that ended says nothing while it is built again, and
+        /// the build's own answer decides the line: Windows holding the desktop is
+        /// Waiting.</summary>
+        [Fact]
+        public void ACaptureThatEnded_TakesTheStateTheRebuildAnswers()
+        {
+            var first = new ScriptedGrabber();
+            bool held = true;
+            var grabbers = new Queue<ScriptedGrabber>(new[] { first });
+            var worker = Worker(_ => grabbers.Count > 0 ? grabbers.Dequeue() : held ? throw new ScreenGrabberWaiting("UAC") : throw new ScreenGrabberUnavailable("no way"));
+            first.Say(ScreenGrabResult.Frame, OneCell(1));
+            worker.Step();
+            first.Say(ScreenGrabResult.Lost);
+            worker.Step();
+            Assert.Equal(ScreenCaptureState.Restarting, worker.State);
+            worker.Step();
+            Assert.Equal(ScreenCaptureState.Waiting, worker.State);
+            held = false;
+            worker.Step();
+            Assert.Equal(ScreenCaptureState.Unavailable, worker.State);
+        }
+
+        /// <summary>A capture that keeps ending with no picture between its builds
+        /// says PadForge cannot read the screen at the third end in a row, and its
+        /// waits grow toward eight seconds from there. A picture starts the count
+        /// again.</summary>
+        [Fact]
+        public void ACaptureThatKeepsEndingWithNoPicture_SaysUnavailable_AtTheThirdEnd()
+        {
+            var worker = Worker(_ =>
+            {
+                var grabber = new ScriptedGrabber();
+                grabber.Say(ScreenGrabResult.Lost);
+                return grabber;
+            });
+            var states = new List<ScreenCaptureState>();
+            var waits = new List<int>();
+            for (int i = 0; i < 5; i++)
+            {
+                waits.Add(worker.Step());
+                states.Add(worker.State);
+            }
+            Assert.Equal(new[]
+            {
+                ScreenCaptureState.Restarting, ScreenCaptureState.Restarting, ScreenCaptureState.Unavailable,
+                ScreenCaptureState.Unavailable, ScreenCaptureState.Unavailable,
+            }, states);
+            Assert.Equal(new[] { 250, 500, 1000, 2000, 4000 }, waits);
+
+            var once = new ScriptedGrabber();
+            once.Say(ScreenGrabResult.Frame, OneCell(1));
+            once.Say(ScreenGrabResult.Lost);
+            var again = Worker(_ => once);
+            again.Step();
+            again.Step();
+            Assert.Equal(ScreenCaptureState.Restarting, again.State);
         }
 
         [Fact]
@@ -379,7 +439,9 @@ namespace PadForge.Tests
             var worker = Worker(_ => ready ? grabber : throw new ScreenGrabberWaiting("UAC"));
             var waits = new List<int>();
             for (int i = 0; i < 7; i++) waits.Add(worker.Step());
-            Assert.Equal(new[] { 250, 500, 1000, 2000, 4000, 8000, 8000 }, waits);
+            // A lock screen or a UAC prompt can end at any moment, so the wait
+            // stops at Prismatik's second for the secure desktop.
+            Assert.Equal(new[] { 250, 500, 1000, 1000, 1000, 1000, 1000 }, waits);
             Assert.Equal(ScreenCaptureState.Waiting, worker.State);
             Assert.Null(worker.Latest);
 
@@ -392,6 +454,54 @@ namespace PadForge.Tests
             grabber.Say(ScreenGrabResult.Lost);
             ready = false;
             Assert.Equal(ScreenCaptureWorker.RetryMinMs, worker.Step());
+        }
+
+        [Fact]
+        public void NoWayOfReadingTheScreen_RetriesMoreSlowlyEachTime_UpToEightSeconds()
+        {
+            var worker = Worker(_ => throw new ScreenGrabberUnavailable("no way"));
+            var waits = new List<int>();
+            for (int i = 0; i < 7; i++) waits.Add(worker.Step());
+            Assert.Equal(new[] { 250, 500, 1000, 2000, 4000, 8000, 8000 }, waits);
+            Assert.Equal(ScreenCaptureState.Unavailable, worker.State);
+        }
+
+        /// <summary>A capture asked for one display reads the primary while that
+        /// display is gone, and goes back to it once it is attached again.</summary>
+        [Fact]
+        public void ACaptureOnThePrimary_GoesBackToThePickedDisplay_WhenItReturns()
+        {
+            bool attached = false;
+            var onPrimary = new ScriptedGrabber { Output = "primary" };
+            var onPicked = new ScriptedGrabber { Output = "d" };
+            var grabbers = new Queue<ScriptedGrabber>(new[] { onPrimary, onPicked });
+            int made = 0;
+            var worker = Worker(_ => { made++; return grabbers.Dequeue(); }, _ => attached);
+            onPrimary.Say(ScreenGrabResult.Frame, OneCell(1));
+            worker.Step();
+            Assert.Equal(1, made);
+
+            // Still gone: the primary keeps being read.
+            _now += ScreenCaptureWorker.ReturnCheckMs;
+            worker.Touch();
+            worker.Step();
+            Assert.Equal(0, onPrimary.Disposed);
+
+            attached = true;
+            _now += ScreenCaptureWorker.ReturnCheckMs;
+            worker.Touch();
+            worker.Step();
+            Assert.Equal(1, onPrimary.Disposed);
+            onPicked.Say(ScreenGrabResult.Frame, OneCell(2));
+            worker.Step();
+            Assert.Equal(2, made);
+            Assert.Equal(2, worker.Latest.Cells[0]);
+
+            // Reading the picked display, it never looks again.
+            _now += 10 * ScreenCaptureWorker.ReturnCheckMs;
+            worker.Touch();
+            worker.Step();
+            Assert.Equal(0, onPicked.Disposed);
         }
 
         [Fact]
@@ -443,6 +553,117 @@ namespace PadForge.Tests
                 _ => throw new InvalidOperationException("the second way ran")));
         }
 
+        private sealed class Disposable : IDisposable
+        {
+            public int Id;
+            public bool Disposed;
+            public void Dispose() => Disposed = true;
+        }
+
+        /// <summary>The capture pool queues its frames, so a read takes the
+        /// newest and hands the older ones back, as Sunshine's mailbox does
+        /// (display_wgc.cpp, on_frame_arrived).</summary>
+        [Fact]
+        public void APoolRead_TakesTheNewestFrame_AndHandsBackTheOlder()
+        {
+            var queued = new Queue<Disposable>(new[] { new Disposable { Id = 1 }, new Disposable { Id = 2 } });
+            var older = queued.Peek();
+            var newest = WindowsCaptureGrabber.Newest(() => queued.Count > 0 ? queued.Dequeue() : null);
+            Assert.Equal(2, newest.Id);
+            Assert.False(newest.Disposed);
+            Assert.True(older.Disposed);
+            Assert.Null(WindowsCaptureGrabber.Newest<Disposable>(() => null));
+        }
+
+        /// <summary>On an HDR display the second way asks for 16-bit float color
+        /// and converts through the display's SDR white level, as the first way
+        /// does. 8-bit color comes out clipped there (Microsoft, Screen capture).</summary>
+        [Fact]
+        public void TheSecondWay_AsksForFloatColorOnHdr()
+        {
+            var hdr = WindowsCaptureGrabber.PoolFormat(true, () => 240f);
+            Assert.Equal(Windows.Graphics.DirectX.DirectXPixelFormat.R16G16B16A16Float, hdr.Format);
+            Assert.Equal(240f, hdr.SdrWhite);
+            var sdr = WindowsCaptureGrabber.PoolFormat(false, () => throw new InvalidOperationException("read on SDR"));
+            Assert.Equal(Windows.Graphics.DirectX.DirectXPixelFormat.B8G8R8A8UIntNormalized, sdr.Format);
+        }
+
+        /// <summary>A grabber that reads its display through a
+        /// <see cref="ScreenModeWatch"/>, as the second way does, with the
+        /// display's state behind seams.</summary>
+        private sealed class WatchedGrabber : IScreenGrabber
+        {
+            private readonly ScreenModeWatch _watch;
+            public WatchedGrabber(Func<bool> hdr, Func<long> clock)
+                => _watch = new ScreenModeWatch(hdr(), 80f, () => true, hdr, () => 80f, clock);
+            public string Kind => "Watched";
+            public long LastWorkMs => 0;
+            public string Output => "d";
+            public ScreenGrabResult Grab(int timeoutMs, out ScreenFrame frame)
+            {
+                frame = null;
+                if (_watch.Changed()) return ScreenGrabResult.Lost;
+                frame = new ScreenFrame(1, 1, new[] { 1 });
+                return ScreenGrabResult.Frame;
+            }
+            public void Dispose() { }
+        }
+
+        /// <summary>The number of captures a worker builds over twenty seconds,
+        /// with the display turning HDR on after five when <paramref name="flip"/>.</summary>
+        private static int CapturesOverAnHdrSwitch(bool flip)
+        {
+            long now = 1000;
+            bool hdr = false;
+            int made = 0;
+            var worker = new ScreenCaptureWorker("d", _ => { made++; return new WatchedGrabber(() => hdr, () => now); }, () => now, _ => false);
+            for (int ms = 0; ms < 20000; ms += 250)
+            {
+                if (flip && ms == 5000) hdr = true;
+                now += 250;
+                worker.Touch();
+                worker.Step();
+            }
+            return made;
+        }
+
+        /// <summary>Windows.Graphics.Capture sends no word of an HDR switch, so the
+        /// pool built for SDR is built again once the display turns HDR, and once
+        /// only (#559).</summary>
+        [Fact]
+        public void AnHdrSwitchAfterTheBuild_BuildsTheCaptureAgainOnce()
+            => Assert.Equal(2, CapturesOverAnHdrSwitch(flip: true));
+
+        [Fact]
+        public void AnUnchangedDisplay_NeverBuildsTheCaptureAgain()
+            => Assert.Equal(1, CapturesOverAnHdrSwitch(flip: false));
+
+        /// <summary>The watch asks once a second, takes a new white level on an HDR
+        /// display at once, and asks for a new capture when the DXGI factory saw a
+        /// change.</summary>
+        [Fact]
+        public void TheModeWatch_AsksOnceASecond_TakesTheWhiteLevel_AndFollowsTheFactory()
+        {
+            long now = 0;
+            bool current = true;
+            float white = 200f;
+            int asks = 0;
+            var watch = new ScreenModeWatch(true, 200f, () => current, () => { asks++; return true; }, () => white, () => now);
+            Assert.False(watch.Changed());
+            Assert.Equal(0, asks);
+            white = 240f;
+            now += ScreenCaptureWorker.ReturnCheckMs;
+            Assert.False(watch.Changed());
+            Assert.Equal(1, asks);
+            Assert.Equal(240f, watch.SdrWhite);
+            now += ScreenCaptureWorker.ReturnCheckMs - 1;
+            Assert.False(watch.Changed());
+            Assert.Equal(1, asks);
+            current = false;
+            now += 1;
+            Assert.True(watch.Changed());
+        }
+
         [Fact]
         public void TheSecondWaysOwnRefusalReachesTheWorker()
         {
@@ -485,6 +706,8 @@ namespace PadForge.Tests
             ScreenColorSource.GrabberSeam = null;
             ScreenColorSource.ClockSeam = null;
             ScreenColorSource.StartSeam = null;
+            ScreenColorSource.ListedSeam = null;
+            ScreenColorSource.ResolvesSeam = null;
             ScreenColorSource.ResetForTest();
         }
 
@@ -518,6 +741,62 @@ namespace PadForge.Tests
             ScreenColorSource.ColorFor(other);
             Assert.Equal(1, _starts[Display]);
             Assert.Equal(1, _starts[other.ScreenColorDisplay]);
+        }
+
+        /// <summary>A capture on the primary while the picked display is gone,
+        /// with Windows listing that display as attached. Steps the worker past
+        /// several return checks and says how many captures were built.</summary>
+        private int CapturesBuilt(bool resolves)
+        {
+            int made = 0;
+            _grabber.Output = "primary";
+            ScreenColorSource.GrabberSeam = _ => { made++; return _grabber; };
+            ScreenColorSource.ListedSeam = _ => true;
+            ScreenColorSource.ResolvesSeam = _ => resolves;
+            var cfg = Config();
+            ScreenColorSource.ColorFor(cfg);
+            Show(Solid(0x204060));
+            for (int i = 0; i < 5; i++)
+            {
+                _now += ScreenCaptureWorker.ReturnCheckMs;
+                ScreenColorSource.ColorFor(cfg);
+                _started[Display].Step();
+            }
+            return made;
+        }
+
+        /// <summary>A display Windows lists as attached and DXGI does not
+        /// enumerate, an indirect or virtual one, would land the rebuild on the
+        /// primary again: the capture stays where it is.</summary>
+        [Fact]
+        public void ADisplayListedButNotFoundByTheCapture_NeverDropsTheCapture()
+        {
+            Assert.Equal(1, CapturesBuilt(resolves: false));
+            Assert.Equal(0, _grabber.Disposed);
+        }
+
+        /// <summary>The same, with DXGI finding the display: the capture moves.</summary>
+        [Fact]
+        public void ADisplayTheCaptureFindsAgain_DropsTheCaptureOnThePrimary()
+        {
+            Assert.True(CapturesBuilt(resolves: true) > 1);
+            Assert.True(_grabber.Disposed > 0);
+        }
+
+        /// <summary>The Color choice reaches a spread picture too: each light's
+        /// spot takes Most Common or Average of the cells it covers.</summary>
+        [Fact]
+        public void ASpreadPicture_TakesTheChosenColorMethod()
+        {
+            // 64 columns crop to 32, so each spot covers one red and one gray cell.
+            var scene = new ScreenFrame(64, 1, Enumerable.Range(0, 64).Select(i => i % 2 == 0 ? 0xFF0000 : 0x808080).ToArray());
+            var common = Config(ScreenColorMethod.MostCommon);
+            var average = Config(ScreenColorMethod.Average);
+            ScreenColorSource.PictureFor(common);
+            ScreenColorSource.PictureFor(average);
+            Show(scene);
+            Assert.Equal(0xFF0000, ScreenColorSource.PictureFor(common).At(0f, 0f));
+            Assert.Equal(0xC04040, ScreenColorSource.PictureFor(average).At(0f, 0f));
         }
 
         [Fact]
@@ -602,7 +881,7 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void TheLastColorStays_WhileWindowsHoldsTheScreen()
+        public void TheLastColorStays_WhileTheCaptureIsBuiltAgain()
         {
             var cfg = Config();
             ScreenColorSource.ColorFor(cfg);
@@ -610,7 +889,7 @@ namespace PadForge.Tests
             Assert.Equal(((byte)0x33, (byte)0x66, (byte)0x99), ScreenColorSource.ColorFor(cfg));
             _grabber.Say(ScreenGrabResult.Lost);
             _started[Display].Step();
-            Assert.Equal(ScreenCaptureState.Waiting, ScreenColorSource.StateOf(Display));
+            Assert.Equal(ScreenCaptureState.Restarting, ScreenColorSource.StateOf(Display));
             Assert.Equal(((byte)0x33, (byte)0x66, (byte)0x99), ScreenColorSource.ColorFor(cfg));
         }
 

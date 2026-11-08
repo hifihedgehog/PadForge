@@ -4492,7 +4492,7 @@
   <data name="KeyboardScreens_Status_Strike7Waiting" xml:space="preserve"><value>V.E.N.O.M. 画面で PadForge を選択してください</value></data>
   <data name="KeyboardScreens_Status_Strike7Showing" xml:space="preserve"><value>V.E.N.O.M. 画面に表示中</value></data>
   <data name="KeyboardScreens_Status_NotFound" xml:space="preserve"><value>画面が見つかりません</value></data>
-  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}、ライトバーの色を待機中</value></data>
+  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}、ライトバーの色なし</value></data>
   <data name="KeyboardScreens_Status_NoPicture_Format" xml:space="preserve"><value>{0}、画像が未選択</value></data>
   <data name="KeyboardScreens_LgsShared_Format" xml:space="preserve"><value>Logitech Gaming Software の実行中は、この種類のすべての画面に {0} 用に設定した画像が表示されます。</value></data>
   <data name="DeviceType_KeyboardScreenKeys" xml:space="preserve"><value>キーボード画面</value></data>
@@ -4541,7 +4541,7 @@
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>キーボード画面の画像をパン</value></data>
   <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>このスロットに入力する各キーボード画面の表示範囲を、画面より大きい画像上で動かします。地図などに使えます。画面オーバーレイも、ズームが 100% を超えていれば同じように動きます。</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>画像を横 {0} px、縦 {1} px パン</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>このスロットに入力する画面のうち、自分より大きい選択画像を表示しているものを動かします。表示範囲は画像の端で止まります。画面オーバーレイは、どのスロットがマクロを実行しても、ズームが 100% を超えていれば動きます。</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>このスロットに入力する画面のうち、自分より大きい選択画像を表示しているものを動かします。表示範囲は画像の端で止まります。画面オーバーレイは、どのスロットがマクロを実行しても、ズームが 100% を超えていれば動きます。1 つのオーバーレイを指定したマクロは、そのオーバーレイだけを動かします。</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>画面</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>操作</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>方向</value></data>
@@ -4858,11 +4858,11 @@
   <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>色のある最小のスロット</value></data>
   <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>ズーム</value></data>
   <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>画像が選択されていません。</value></data>
-  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>ライトバーの色を待機中です。</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>表示する DualShock 4 または DualSense のライトバーの色がありません。</value></data>
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>オーバーレイ</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>すべてのオーバーレイ</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>画面オーバーレイ {0} の切り替え</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>{0} の画像を表示: {1} × {2} ms、次のマクロまで</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>{0} の画像を表示: {1} × {2} ms、次の表示またはモードのマクロまで</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>プロファイルをインポート</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}、{1}ファイル</value></data>
   <data name="Import_ProfileName_Format" xml:space="preserve"><value>プロファイル「{0}」として追加されます。</value></data>
@@ -4896,7 +4896,6 @@
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>このプロファイルは、Profilesフォルダーと同じ場所にあるActions.xmlに存在しない特殊アクションを指定しています: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>この設定は引き継がれませんでした: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASDはこれらの入力がWindowsに届かないようにしていました。デバイスページで{0}のマッピング済み入力を消費するをオンにすると、このプロファイルがマッピングしている入力が届かなくなります。</value></data>
-  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>{0}に対するBaseのマッピングは、このレイヤーでは無効になります。マッピング済み入力を消費するがオンの場合、そのデバイスのマッピング済み入力は、どのレイヤーでもWindowsに届かないままです。</value></data>
   <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>サブメニューは、1つのリング上の追加スロットになりました。</value></data>
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>スティックが中央に戻るか、レイヤーが終了した時点で確定します。reWASDの適用ボタンは使いません。</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>このファイルは2つのコントローラーを区別して扱います。PadForgeでは、そのスロット上のどのコントローラーでもこれらのマッピングが働きます。</value></data>
@@ -4925,7 +4924,7 @@
   <data name="Import_Tr_HideController" xml:space="preserve"><value>reWASDはこのコントローラーをゲームから隠していました。デバイスページで、このコントローラーのゲームから隠すをオンにしてください。</value></data>
   <data name="Import_Tr_NoSuchSetting" xml:space="preserve"><value>PadForgeにそのような設定はありません: {0}</value></data>
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASDはマウスの動きがWindowsに届かないようにしていました。PadForgeはキーとマウスボタンは届かないようにしますが、動きは対象外のため、ポインターは引き続き動きます。</value></data>
-  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>PadForgeの仮想コントローラーは、コントローラーのモーションセンサーからのみモーションを受け取ります。</value></data>
+  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>Xbox の仮想コントローラーにはモーションがありません。モーションを送るには、PlayStation または Nintendo のコントローラータイプを選んでください。</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windowsは、ボタンの操作で{0}からこのプロファイルに戻っていました。PadForgeで同じことをするには、プロファイルページでこのプロファイル用のプロファイルショートカットを追加してください。</value></data>
   <data name="Osk_Style_Grid" xml:space="preserve">
     <value>グリッド</value>
@@ -5144,4 +5143,37 @@
   <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>開く操作を保持時間より前に離すと、キーボードを開閉します。それより長い押し方では何も起きません。</value></data>
   <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>開く操作を連続プレス時間内に3回押すと、キーボードを開閉します。</value></data>
   <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>開く操作を1回押して連続プレス時間が終わると、キーボードを開閉します。時間内に2回目を押すと取り消されます。</value></data>
+  <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>色は {0} に直接送られます。カラーサイクルや音に追従する色のような変化する色は届きません。変化しない色は届きます。</value></data>
+  <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>すべてのファイル (*.*)|*.*</value></data>
+  <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>PadForge プロファイル (*{0})|*{0}</value></data>
+  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml</value></data>
+  <data name="FileDialog_ProgramFilter" xml:space="preserve"><value>プログラム (*.exe;*.bat;*.cmd;*.com)|*.exe;*.bat;*.cmd;*.com|すべてのファイル (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundFileFilter" xml:space="preserve"><value>オーディオファイルとサウンドパッケージ|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.pfsounds|サウンドパッケージ (*.pfsounds)|*.pfsounds|すべてのファイル (*.*)|*.*</value></data>
+  <data name="FileDialog_AudioFilter" xml:space="preserve"><value>オーディオファイル|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.ogg|すべてのファイル (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundPackageFilter_Format" xml:space="preserve"><value>PadForge サウンドパッケージ (*{0})|*{0}</value></data>
+  <data name="FileDialog_IconPackageFilter_Format" xml:space="preserve"><value>PadForge アイコンパッケージ (*{0})|*{0}</value></data>
+  <data name="FileDialog_AutoEqFilter" xml:space="preserve"><value>AutoEq プロファイル (*.txt)|*.txt|すべてのファイル (*.*)|*.*</value></data>
+  <data name="FileDialog_IconPickerFilter" xml:space="preserve"><value>画像とアイコンパッケージ|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.pficons|アイコンパッケージ (*.pficons)|*.pficons</value></data>
+  <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>PadForge ハンドヘルドのボタン (*.json)|*.json</value></data>
+  <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro プロファイル (*.json)|*.json</value></data>
+  <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge キーライト (*.json)|*.json</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>マクロでは {0} を押せません。マッピングタブのマッピングなら押せます。</value></data>
+  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForgeが実行できる画面オーバーレイは 8 つで、これはreWASDの 9 つ目または 10 個目の照準です。</value></data>
+  <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForgeは、reWASDの既定どおり、ジャイロの左右をロールから、傾きをヨーから読み取ります。reWASDの設定でこの 2 つを入れ替えられますが、このファイルには入れ替えたかどうかが記録されていません。</value></data>
+  <data name="Import_Tr_TiltLean" xml:space="preserve"><value>チルトモードでは、reWASDの傾きは垂直軸まわりの回転です。モーションセンサーはその回転の角度を返しません。</value></data>
+  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForgeはタッチパッドの斜めを 2 方向の同時入力として読み取ります。タッチパッドがこれを報告するのは、タッチパッドタブの方向キーモードが 8 方向のときだけです。</value></data>
+  <data name="Import_Tr_GyroZone" xml:space="preserve"><value>PadForgeはジャイロの向きを 1 つのしきい値で判定します。reWASDはジャイロゾーンの端に単位を指定していません。</value></data>
+  <data name="Import_Tr_AbsoluteMouse" xml:space="preserve"><value>DS4Windowsはスティックの向いた位置にポインターを置いていました。PadForgeでは、スティックがポインターを動かします。</value></data>
+  <data name="Import_Tr_StickBeforeRotation" xml:space="preserve"><value>{0}は回転の前にスティックを読み取ります。DS4Windowsは回転の後に読み取っていました。</value></data>
+  <data name="Import_Tr_StickBeforeCurve" xml:space="preserve"><value>{0}はゾーンとカーブの前にスティックの角度を読み取ります。DS4Windowsはその後に読み取っていました。</value></data>
+  <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>キーボード + マウスではなくなったスロットのキーボード</value></data>
+  <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0}（このPCにはありません）</value></data>
+  <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0}（このスロットにはありません）</value></data>
+  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>ヨーとロールを全強度で加算 (ロールの寄与は読み取らず)</value></data>
+  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>ローカルスペースのジャイロはヨーとして読み取り (PadForgeには傾いた主軸がありません)</value></data>
+  <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>レーザーポインターのジャイロはヨーとして読み取り (PadForgeにはレーザーポインター変換がありません)</value></data>
+  <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>reWASDでは、ファイルがマッピングのみでマップ解除を指定していないため、{0}は引き続きWindowsに届きます。マッピング済み入力を消費するをオンにすると、PadForgeは届かないようにします。</value></data>
+  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForgeは、DS4Windowsと同じく、正の回転を時計回りとして扱います。reWASDのヘルプには回転の範囲しかなく、向きは書かれていません。</value></data>
+  <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windowsは、放射状スティックの{0}を倒した角度に応じて調整します。PadForgeのスティックカードでは、まっすぐ倒した場合と斜めに倒した場合で動作が異なります。</value></data>
+  <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>レイヤーごとに{0}の調整が異なるため、それぞれの調整はそのまま保持し、カーブは最も近いべき乗カーブとして引き継がれました。</value></data>
 </root>

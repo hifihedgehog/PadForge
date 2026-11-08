@@ -43,6 +43,23 @@ namespace PadForge.Tests
             return x;
         }
 
+        // ── a row's Invert turns the cursor ───────────────────────────────
+
+        // The bipolar evaluator flips a source on Invert, and the rate lane
+        // that replaced it for gyro on the mouse must too, or a ticked
+        // Invert, Steam's invert_x and DS4Windows' GyroInvert do nothing.
+        [Fact]
+        public void AnInvertedRow_TurnsTheCursorTheOtherWay()
+        {
+            var plain = SourceCoercion.ReadGyroMouseCounts(
+                StateWithYaw(300f), YawSource(), slotIndex: -1, deviceGuid: "", dtSeconds: NominalDt, forX: true).X;
+            var inverted = SourceCoercion.ReadGyroMouseCounts(
+                StateWithYaw(300f), new MappingSource { Descriptor = "Gyro Yaw", Invert = true },
+                slotIndex: -1, deviceGuid: "", dtSeconds: NominalDt, forX: true).X;
+            Assert.NotEqual(0f, plain);
+            Assert.Equal(-plain, inverted, 4);
+        }
+
         // ── the ceiling is gone ───────────────────────────────────────────
 
         [Fact]

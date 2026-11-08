@@ -4541,7 +4541,7 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="KeyboardScreens_Status_Strike7Waiting" xml:space="preserve"><value>pilih PadForge di layar V.E.N.O.M.</value></data>
   <data name="KeyboardScreens_Status_Strike7Showing" xml:space="preserve"><value>di layar V.E.N.O.M.</value></data>
   <data name="KeyboardScreens_Status_NotFound" xml:space="preserve"><value>layar tidak ditemukan</value></data>
-  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}, menunggu warna bilah lampu</value></data>
+  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}, tanpa warna bilah lampu</value></data>
   <data name="KeyboardScreens_Status_NoPicture_Format" xml:space="preserve"><value>{0}, belum ada gambar yang dipilih</value></data>
   <data name="KeyboardScreens_LgsShared_Format" xml:space="preserve"><value>Selama Logitech Gaming Software berjalan, setiap layar dari jenis ini menampilkan gambar yang ditetapkan untuk {0}.</value></data>
   <data name="DeviceType_KeyboardScreenKeys" xml:space="preserve"><value>Layar Keyboard</value></data>
@@ -4590,7 +4590,7 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Geser Gambar Layar Keyboard</value></data>
   <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Menggeser jendela setiap layar keyboard yang memasok slot ini di atas gambar yang lebih besar dari layar, misalnya untuk peta. Overlay layar bergeser dengan cara yang sama saat zoom-nya di atas 100 persen.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Geser gambar {0} kali {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Menggeser setiap layar yang memasok slot ini dan menampilkan gambar pilihan yang lebih besar dari layarnya. Jendela berhenti di tepi gambar. Overlay layar bergeser saat zoom-nya di atas 100 persen, slot mana pun yang menjalankan makro.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Menggeser setiap layar yang memasok slot ini dan menampilkan gambar pilihan yang lebih besar dari layarnya. Jendela berhenti di tepi gambar. Overlay layar bergeser saat zoom-nya di atas 100 persen, slot mana pun yang menjalankan makro. Makro yang menyebut satu overlay hanya menggeser overlay itu.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Layar</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Aksi</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Arah</value></data>
@@ -4907,11 +4907,11 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Slot terendah yang punya warna</value></data>
   <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>Zoom</value></data>
   <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>Belum ada gambar yang dipilih.</value></data>
-  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Menunggu warna bilah lampu.</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Tidak ada warna bilah lampu DualShock 4 atau DualSense untuk ditampilkan.</value></data>
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Overlay</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Semua overlay</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Alihkan overlay layar {0}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Tampilkan gambar {0}: {1} × {2} ms, hingga makro berikutnya</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Tampilkan gambar {0}: {1} × {2} ms, hingga tampilan atau makro mode berikutnya</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>Impor profil</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}, file {1}</value></data>
   <data name="Import_ProfileName_Format" xml:space="preserve"><value>Menjadi profil "{0}".</value></data>
@@ -4945,7 +4945,6 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Profil ini menyebut aksi khusus yang tidak ada di Actions.xml di samping folder Profiles-nya: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Pengaturan ini tidak terbawa: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD mencegah input ini mencapai Windows. Aktifkan Serap input yang dipetakan untuk {0} di halaman Perangkat, yang mencegah input yang dipetakan profil ini.</value></data>
-  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>Pemetaan Base untuk {0} berhenti di lapisan ini. Jika Serap input yang dipetakan aktif, input yang dipetakan perangkat itu tetap ditahan dari Windows di setiap lapisan.</value></data>
   <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>Submenunya menjadi slot tambahan pada satu cincin.</value></data>
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Dikonfirmasi saat stik kembali ke tengah atau lapisan berakhir. Tombol Terapkan milik reWASD tidak digunakan.</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>File ini memisahkan dua kontroler. Di PadForge, kontroler mana pun pada slot memicu pemetaan ini.</value></data>
@@ -4974,7 +4973,7 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Import_Tr_HideController" xml:space="preserve"><value>reWASD menyembunyikan kontroler ini dari game. Aktifkan Sembunyikan dari game untuk kontroler ini di halaman Perangkat.</value></data>
   <data name="Import_Tr_NoSuchSetting" xml:space="preserve"><value>PadForge tidak memiliki pengaturan seperti itu: {0}</value></data>
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD mencegah gerakan mouse mencapai Windows. PadForge menahan tombol keyboard dan tombol mouse, tetapi tidak gerakannya, jadi penunjuk tetap bergerak.</value></data>
-  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>Kontroler virtual PadForge hanya menerima gerakan dari sensor gerak kontroler.</value></data>
+  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>Kontroler virtual Xbox tidak punya gerakan. Pilih tipe kontroler PlayStation atau Nintendo untuk mengirim gerakan.</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows kembali ke profil ini dari {0} lewat sebuah tombol. Untuk melakukannya di PadForge, tambahkan Pintasan profil untuk profil ini di halaman Profil.</value></data>
   <data name="Osk_Style_Grid" xml:space="preserve">
     <value>Kisi</value>
@@ -5193,4 +5192,37 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Membuka atau menutup keyboard saat Dibuka dengan dilepas sebelum waktu tahan. Penekanan yang lebih lama tidak melakukan apa pun.</value></data>
   <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Membuka atau menutup keyboard saat Dibuka dengan ditekan tiga kali dalam jendela penekanan.</value></data>
   <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Membuka atau menutup keyboard saat jendela penekanan berakhir setelah Dibuka dengan ditekan sekali. Penekanan kedua di dalam jendela membatalkannya.</value></data>
+  <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>Warna dikirim langsung ke {0}. Warna yang berubah, seperti siklus warna atau warna yang mengikuti suara, tidak sampai ke sana. Warna yang tetap sama sampai.</value></data>
+  <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Semua file (*.*)|*.*</value></data>
+  <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>Profil PadForge (*{0})|*{0}</value></data>
+  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml</value></data>
+  <data name="FileDialog_ProgramFilter" xml:space="preserve"><value>Program (*.exe;*.bat;*.cmd;*.com)|*.exe;*.bat;*.cmd;*.com|Semua file (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundFileFilter" xml:space="preserve"><value>File audio dan paket suara|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.pfsounds|Paket suara (*.pfsounds)|*.pfsounds|Semua file (*.*)|*.*</value></data>
+  <data name="FileDialog_AudioFilter" xml:space="preserve"><value>File audio|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.ogg|Semua file (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundPackageFilter_Format" xml:space="preserve"><value>Paket suara PadForge (*{0})|*{0}</value></data>
+  <data name="FileDialog_IconPackageFilter_Format" xml:space="preserve"><value>Paket ikon PadForge (*{0})|*{0}</value></data>
+  <data name="FileDialog_AutoEqFilter" xml:space="preserve"><value>Profil AutoEq (*.txt)|*.txt|Semua file (*.*)|*.*</value></data>
+  <data name="FileDialog_IconPickerFilter" xml:space="preserve"><value>Gambar dan paket ikon|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.pficons|Paket ikon (*.pficons)|*.pficons</value></data>
+  <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>Tombol Handheld PadForge (*.json)|*.json</value></data>
+  <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>Profil HIDMaestro (*.json)|*.json</value></data>
+  <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>Lampu Tombol PadForge (*.json)|*.json</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Makro tidak dapat menekan {0}. Pemetaan di tab Pemetaan bisa.</value></data>
+  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge menjalankan delapan Overlay layar, dan ini adalah crosshair kesembilan atau kesepuluh milik reWASD.</value></data>
+  <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge membaca Condong kiri dan kanan dari roll serta Condong dari yaw, bawaan reWASD. Preferensi reWASD dapat menukar keduanya, dan file ini tidak menyebut apakah keduanya ditukar.</value></data>
+  <data name="Import_Tr_TiltLean" xml:space="preserve"><value>Pada mode Tilt, Lean milik reWASD adalah putaran mengelilingi sumbu vertikal, dan sensor gerak tidak memberi sudut untuk putaran itu.</value></data>
+  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge membaca diagonal panel sentuh sebagai dua arah sekaligus, yang hanya dilaporkan panel sentuh jika Mode D-pad di tab Panel sentuh adalah 8 arah.</value></data>
+  <data name="Import_Tr_GyroZone" xml:space="preserve"><value>PadForge membaca arah giroskop melewati satu ambang, dan reWASD tidak memberi satuan untuk tepi zona giroskop.</value></data>
+  <data name="Import_Tr_AbsoluteMouse" xml:space="preserve"><value>DS4Windows menempatkan penunjuk di arah yang ditunjuk stik. Di PadForge, stik menggerakkan penunjuk.</value></data>
+  <data name="Import_Tr_StickBeforeRotation" xml:space="preserve"><value>{0} membaca stik sebelum rotasinya. DS4Windows membacanya sesudahnya.</value></data>
+  <data name="Import_Tr_StickBeforeCurve" xml:space="preserve"><value>{0} membaca sudut stik sebelum zona dan kurvanya. DS4Windows membacanya sesudahnya.</value></data>
+  <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>Keyboard dari slot yang bukan lagi Keyboard + mouse</value></data>
+  <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (tidak ada di PC ini)</value></data>
+  <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (tidak ada di slot ini)</value></data>
+  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>yaw dan roll ditambahkan dengan kekuatan penuh (kontribusi roll tidak dibaca)</value></data>
+  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>giroskop Ruang Lokal dibaca sebagai yaw (PadForge tidak memiliki sumbu utama yang miring)</value></data>
+  <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>giroskop Penunjuk Laser dibaca sebagai yaw (PadForge tidak memiliki konversi penunjuk laser)</value></data>
+  <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>Di reWASD, {0} tetap mencapai Windows karena file memetakannya tanpa unmap. Dengan Serap input yang dipetakan aktif, PadForge menahannya.</value></data>
+  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge memutar rotasi positif searah jarum jam, seperti DS4Windows. Bantuan reWASD menyebut rentang rotasi, bukan arahnya.</value></data>
+  <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows membentuk {0} stik radial menurut sudut dorongan. Kartu stik PadForge memperlakukan dorongan lurus dengan cara yang sama dan dorongan diagonal dengan cara berbeda.</value></data>
+  <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Lapisan menyetel {0} secara berbeda, sehingga masing-masing mempertahankan penyetelannya sendiri, dan kurvanya diterapkan sebagai kurva pangkat terdekat.</value></data>
 </root>

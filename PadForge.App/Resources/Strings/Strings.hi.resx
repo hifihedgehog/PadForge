@@ -4541,7 +4541,7 @@
   <data name="KeyboardScreens_Status_Strike7Waiting" xml:space="preserve"><value>V.E.N.O.M. स्क्रीन पर PadForge चुनें</value></data>
   <data name="KeyboardScreens_Status_Strike7Showing" xml:space="preserve"><value>V.E.N.O.M. स्क्रीन पर</value></data>
   <data name="KeyboardScreens_Status_NotFound" xml:space="preserve"><value>कोई स्क्रीन नहीं मिली</value></data>
-  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}, लाइटबार के रंग का इंतज़ार है</value></data>
+  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}, लाइटबार का कोई रंग नहीं</value></data>
   <data name="KeyboardScreens_Status_NoPicture_Format" xml:space="preserve"><value>{0}, कोई चित्र नहीं चुना गया</value></data>
   <data name="KeyboardScreens_LgsShared_Format" xml:space="preserve"><value>जब तक Logitech Gaming Software चल रहा है, इस प्रकार की हर स्क्रीन वही चित्र दिखाती है जो {0} के लिए सेट है।</value></data>
   <data name="DeviceType_KeyboardScreenKeys" xml:space="preserve"><value>कीबोर्ड स्क्रीन</value></data>
@@ -4590,7 +4590,7 @@
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>कीबोर्ड स्क्रीन चित्र पैन करें</value></data>
   <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>इस स्लॉट को इनपुट देने वाली हर कीबोर्ड स्क्रीन की विंडो स्क्रीन से बड़े चित्र पर खिसकाता है, जैसे नक्शे के लिए। स्क्रीन ओवरले भी इसी तरह खिसकता है जब उसका ज़ूम 100 प्रतिशत से ऊपर हो।</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>चित्र पैन करें: {0}, {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>इस स्लॉट को इनपुट देने वाली हर उस स्क्रीन को खिसकाता है जो अपने से बड़ा चुना हुआ चित्र दिखा रही हो। विंडो चित्र के किनारों पर रुक जाती है। स्क्रीन ओवरले तब खिसकता है जब उसका ज़ूम 100 प्रतिशत से ऊपर हो, चाहे मैक्रो किसी भी स्लॉट में चले।</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>इस स्लॉट को इनपुट देने वाली हर उस स्क्रीन को खिसकाता है जो अपने से बड़ा चुना हुआ चित्र दिखा रही हो। विंडो चित्र के किनारों पर रुक जाती है। स्क्रीन ओवरले तब खिसकता है जब उसका ज़ूम 100 प्रतिशत से ऊपर हो, चाहे मैक्रो किसी भी स्लॉट में चले। जो मैक्रो किसी एक ओवरले का नाम लेता है, वह केवल उसी ओवरले को खिसकाता है।</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>स्क्रीन</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>कार्रवाई</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>दिशा</value></data>
@@ -4907,11 +4907,11 @@
   <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>रंग वाला सबसे कम नंबर का स्लॉट</value></data>
   <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>ज़ूम</value></data>
   <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>कोई चित्र नहीं चुना गया।</value></data>
-  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>लाइटबार के रंग का इंतज़ार है।</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>दिखाने के लिए DualShock 4 या DualSense लाइटबार का कोई रंग नहीं है।</value></data>
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>ओवरले</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>हर ओवरले</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>स्क्रीन ओवरले {0} टॉगल करें</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>{0} चित्र दिखाएँ: {1} × {2} ms, अगले मैक्रो तक</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>{0} चित्र दिखाएँ: {1} × {2} ms, अगले शो या मोड मैक्रो तक</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>प्रोफ़ाइल आयात करें</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}, एक {1} फ़ाइल</value></data>
   <data name="Import_ProfileName_Format" xml:space="preserve"><value>यह प्रोफ़ाइल "{0}" बन जाएगी।</value></data>
@@ -4945,7 +4945,6 @@
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>यह प्रोफ़ाइल एक ऐसी विशेष क्रिया का नाम लेती है जो इसके Profiles फ़ोल्डर के बगल की Actions.xml में नहीं है: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>यह सेटिंग नहीं आ पाई: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD ने इन इनपुट को Windows तक पहुँचने से रोका था। डिवाइस पेज पर {0} के लिए मैप किए गए इनपुट रोक लें चालू करें, जो इस प्रोफ़ाइल में मैप किए गए इनपुट को रोकता है।</value></data>
-  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>{0} के लिए Base के मैपिंग इस लेयर में बंद हो जाते हैं। मैप किए गए इनपुट रोक लें चालू होने पर, उसके मैप किए गए इनपुट हर लेयर में Windows से रुके रहते हैं।</value></data>
   <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>इसके सब-मेन्यू एक ही रिंग के अतिरिक्त स्लॉट बन गए।</value></data>
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>स्टिक के दोबारा केंद्र में आने या लेयर के खत्म होने पर चुनाव लागू होता है। reWASD के Apply बटन का इस्तेमाल नहीं होता।</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>यह फ़ाइल दो कंट्रोलर को अलग रखती है। PadForge में स्लॉट पर मौजूद कोई भी कंट्रोलर ये मैपिंग चलाता है।</value></data>
@@ -4974,7 +4973,7 @@
   <data name="Import_Tr_HideController" xml:space="preserve"><value>reWASD ने इस कंट्रोलर को गेम से छिपा रखा था। डिवाइस पेज पर इसके लिए गेम से छिपाएँ चालू करें।</value></data>
   <data name="Import_Tr_NoSuchSetting" xml:space="preserve"><value>PadForge में ऐसी कोई सेटिंग नहीं है: {0}</value></data>
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD ने माउस की गति को Windows तक पहुँचने से रोका था। PadForge कीबोर्ड की कुंजियाँ और माउस बटन रोकता है, गति नहीं, इसलिए पॉइंटर अब भी चलता है।</value></data>
-  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>PadForge के वर्चुअल कंट्रोलर मोशन केवल कंट्रोलर के मोशन सेंसर से लेते हैं।</value></data>
+  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>Xbox वर्चुअल कंट्रोलर में मोशन नहीं होता। मोशन भेजने के लिए PlayStation या Nintendo कंट्रोलर प्रकार चुनें।</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows एक बटन दबाने पर {0} से इस प्रोफ़ाइल में लौट आता था। PadForge में ऐसा करने के लिए प्रोफ़ाइल पेज पर इस प्रोफ़ाइल के लिए एक प्रोफ़ाइल शॉर्टकट जोड़ें।</value></data>
   <data name="Osk_Style_Grid" xml:space="preserve">
     <value>ग्रिड</value>
@@ -5193,4 +5192,37 @@
   <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>“इससे खुलता है” को दबाए रखने के समय से पहले छोड़ने पर कीबोर्ड खुलता या बंद होता है। इससे लंबा दबाना कुछ नहीं करता।</value></data>
   <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>“इससे खुलता है” को दबाने की समय-सीमा के भीतर तीन बार दबाने पर कीबोर्ड खुलता या बंद होता है।</value></data>
   <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>“इससे खुलता है” को एक बार दबाने के बाद दबाने की समय-सीमा पूरी होते ही कीबोर्ड खुलता या बंद होता है। समय-सीमा के भीतर दूसरी बार दबाने से यह रद्द हो जाता है।</value></data>
+  <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>रंग सीधे {0} को जाते हैं। बदलते रंग, जैसे रंग चक्र या ध्वनि के साथ चलने वाले रंग, उस तक नहीं पहुँचते। स्थिर रंग पहुँचता है।</value></data>
+  <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>सभी फ़ाइलें (*.*)|*.*</value></data>
+  <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>PadForge प्रोफ़ाइल (*{0})|*{0}</value></data>
+  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml</value></data>
+  <data name="FileDialog_ProgramFilter" xml:space="preserve"><value>प्रोग्राम (*.exe;*.bat;*.cmd;*.com)|*.exe;*.bat;*.cmd;*.com|सभी फ़ाइलें (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundFileFilter" xml:space="preserve"><value>ऑडियो फ़ाइलें और साउंड पैकेज|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.pfsounds|साउंड पैकेज (*.pfsounds)|*.pfsounds|सभी फ़ाइलें (*.*)|*.*</value></data>
+  <data name="FileDialog_AudioFilter" xml:space="preserve"><value>ऑडियो फ़ाइलें|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.ogg|सभी फ़ाइलें (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundPackageFilter_Format" xml:space="preserve"><value>PadForge साउंड पैकेज (*{0})|*{0}</value></data>
+  <data name="FileDialog_IconPackageFilter_Format" xml:space="preserve"><value>PadForge आइकन पैकेज (*{0})|*{0}</value></data>
+  <data name="FileDialog_AutoEqFilter" xml:space="preserve"><value>AutoEq प्रोफ़ाइल (*.txt)|*.txt|सभी फ़ाइलें (*.*)|*.*</value></data>
+  <data name="FileDialog_IconPickerFilter" xml:space="preserve"><value>चित्र और आइकन पैकेज|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.pficons|आइकन पैकेज (*.pficons)|*.pficons</value></data>
+  <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>PadForge हैंडहेल्ड बटन (*.json)|*.json</value></data>
+  <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro प्रोफ़ाइल (*.json)|*.json</value></data>
+  <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge कुंजी लाइटें (*.json)|*.json</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>मैक्रो {0} नहीं दबा सकता। मैपिंग टैब की कोई मैपिंग दबा सकती है।</value></data>
+  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge आठ स्क्रीन ओवरले चलाता है, और यह reWASD का नौवाँ या दसवाँ क्रॉसहेयर है।</value></data>
+  <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge बाएँ और दाएँ को जाइरो रोल से और झुकाव को जाइरो यॉ से पढ़ता है, जो reWASD का डिफ़ॉल्ट है। reWASD की Preferences में दोनों की अदला-बदली हो सकती है, और यह फ़ाइल नहीं बताती कि हुई थी या नहीं।</value></data>
+  <data name="Import_Tr_TiltLean" xml:space="preserve"><value>टिल्ट मोड में reWASD का झुकाव ऊर्ध्वाधर अक्ष के चारों ओर का घुमाव है, और मोशन सेंसर उस घुमाव का कोई कोण नहीं देता।</value></data>
+  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge टचपैड के तिरछे को एक साथ दो दिशाओं के रूप में पढ़ता है, जिसे टचपैड तभी बताता है जब उसके टचपैड टैब पर डी-पैड मोड 8-दिशा हो।</value></data>
+  <data name="Import_Tr_GyroZone" xml:space="preserve"><value>PadForge जाइरो की दिशा को एक सीमा के पार पढ़ता है, और reWASD जाइरो ज़ोन के किनारे के लिए कोई इकाई नहीं देता।</value></data>
+  <data name="Import_Tr_AbsoluteMouse" xml:space="preserve"><value>DS4Windows ने पॉइंटर को वहाँ रखा जहाँ स्टिक इशारा करती है। PadForge में इसकी जगह स्टिक पॉइंटर को चलाती है।</value></data>
+  <data name="Import_Tr_StickBeforeRotation" xml:space="preserve"><value>{0} स्टिक को उसके घुमाव से पहले पढ़ता है। DS4Windows उसे बाद में पढ़ता था।</value></data>
+  <data name="Import_Tr_StickBeforeCurve" xml:space="preserve"><value>{0} स्टिक के कोण को उसके ज़ोन और कर्व से पहले पढ़ता है। DS4Windows उसे बाद में पढ़ता था।</value></data>
+  <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>उस स्लॉट का कीबोर्ड जो अब “कीबोर्ड + माउस” नहीं रहा</value></data>
+  <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (इस PC पर नहीं)</value></data>
+  <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (इस स्लॉट पर नहीं)</value></data>
+  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>यॉ और रोल पूरी तीव्रता से जोड़े गए (रोल का योगदान नहीं पढ़ा गया)</value></data>
+  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>Local Space जाइरो को यॉ की तरह पढ़ा गया (PadForge में झुकी हुई प्राथमिक अक्ष नहीं होती)</value></data>
+  <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>Laser Pointer जाइरो को यॉ की तरह पढ़ा गया (PadForge में लेज़र पॉइंटर रूपांतरण नहीं है)</value></data>
+  <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>reWASD में {0} फिर भी Windows तक पहुँचता है, क्योंकि फ़ाइल उसे अनमैप किए बिना मैप करती है। मैप किए गए इनपुट रोक लें चालू होने पर PadForge उसे रोक लेता है।</value></data>
+  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge धनात्मक घुमाव को दक्षिणावर्त घुमाता है, जैसा DS4Windows करता है। reWASD की मदद घुमाव की सीमा बताती है, उसकी दिशा नहीं।</value></data>
+  <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows रेडियल स्टिक के {0} को धक्के के कोण के हिसाब से ढालता है। PadForge का स्टिक कार्ड सीधे धक्के को एक तरह और तिरछे धक्के को दूसरी तरह चलाता है।</value></data>
+  <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>लेयर {0} को अलग-अलग ट्यून करती हैं, इसलिए हर लेयर की अपनी ट्यूनिंग रहती है, और कर्व सबसे नज़दीकी पावर कर्व के रूप में आता है।</value></data>
 </root>

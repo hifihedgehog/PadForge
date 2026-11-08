@@ -199,6 +199,13 @@ namespace PadForge.Services
         /// <summary>Raised when recording times out without detection.</summary>
         public event EventHandler RecordingTimedOut;
 
+        /// <summary>Raised when a cancel drops a freeform or press recording's
+        /// callback unanswered: the user's own stop, a timeout, or another
+        /// recording starting. A record button that waits on its callback to
+        /// leave its Recording state (a keyboard row, #566) leaves it here,
+        /// since the callback never runs.</summary>
+        public event EventHandler RecordingCanceled;
+
         // ─────────────────────────────────────────────
         //  Constructor
         // ─────────────────────────────────────────────
@@ -704,6 +711,7 @@ namespace PadForge.Services
 
             if (_activeExtraSource != null) _activeExtraSource.IsRecording = false;
             else if (_activeMapping != null) _activeMapping.IsRecording = false;
+            bool droppedCallback = _freeformCallback != null;
             CleanupTimer();
 
             _activeMapping = null;
@@ -718,6 +726,7 @@ namespace PadForge.Services
             ClearPress();
 
             _mainVm.StatusText = Strings.Instance.Status_RecordingCanceled;
+            if (droppedCallback) RecordingCanceled?.Invoke(this, EventArgs.Empty);
         }
 
         // ─────────────────────────────────────────────

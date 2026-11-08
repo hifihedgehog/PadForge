@@ -67,10 +67,26 @@ namespace PadForge.Common.ConfigImport
         private bool _twoPads;
         private int _keyboardUnmaps;
         private int _mouseUnmaps;
+        // Hardware remaps replace the native key as an unmap does, so they
+        // ask for Consume Mapped Inputs too.
+        private int _keyboardRemaps;
+        private int _mouseRemaps;
         private int _mouseMoves;
         private readonly List<(JsonElement Pad, int Id)> _virtualPads = new();
         private int _firstVirtualId = 1;
         private bool _noted;
+
+        /// <summary>Per layer, whether the gyro is in Tilt mode (the gyro
+        /// entry's "tilt"). A layer with no gyro entry takes Base's.</summary>
+        private readonly Dictionary<int, bool> _gyroTilt = new();
+
+        /// <summary>Set when a Gyro mode left, right or lean input, or a gyro
+        /// stick source's X, is read, so the report says which rotation it
+        /// reads.</summary>
+        private bool _gyroAxesRead;
+
+        /// <summary>Set when a touchpad diagonal is read.</summary>
+        private bool _touchDiagonalRead;
 
         private RewasdTranslator(JsonElement root)
         {
@@ -90,6 +106,7 @@ namespace PadForge.Common.ConfigImport
             t.ReadDevices();
             t.ReadShifts();
             t.ReadDeviceTuning();
+            t.ReadShiftActivators();
             t.ReadVirtualSticks();
             t.BuildPassThrough();
             t.ReadHardwareMappings();
@@ -120,15 +137,25 @@ namespace PadForge.Common.ConfigImport
         private const int MaxTableEntries = 5000;
         private const int MaxShifts = 64;
 
+        // The schema's set holds one to four inputs (definitions/set,
+        // maxItems 4), and a longer one would become one macro reading every
+        // input on every poll.
+        private const int MaxSetInputs = 4;
+
         private static bool TooManyEntries(JsonElement root)
         {
-            int Count(string name) => Has(root, name, out var v) && v.ValueKind == JsonValueKind.Array ? v.GetArrayLength() : 0;
-            return Count("shifts") > MaxShifts
+            static int Length(JsonElement e, string name) => Has(e, name, out var v) && v.ValueKind == JsonValueKind.Array ? v.GetArrayLength() : 0;
+            int Count(string name) => Length(root, name);
+            if (Count("shifts") > MaxShifts
                 || Count("masks") > MaxTableEntries
                 || Count("mappings") > MaxTableEntries
                 || Count("commands") > MaxTableEntries
                 || Count("radialMenuCircles") > MaxTableEntries
-                || Count("radialMenuSectors") > MaxTableEntries;
+                || Count("radialMenuSectors") > MaxTableEntries)
+                return true;
+            return Arr(root, "masks").Any(m => Length(m, "set") > MaxSetInputs)
+                || Arr(root, "shifts").Any(s => Length(s, "set") > MaxSetInputs
+                                                || Length(s, "unheritableMasks") > MaxTableEntries);
         }
 
         // ── Reading JSON ────────────────────────────────────────────────
@@ -294,6 +321,14 @@ namespace PadForge.Common.ConfigImport
                     // Bluetooth adapter to a console, a phone or another PC.
                     if (Flag(g, "external"))
                         _b.Partial(ImportReasons.RemoteTarget, type, "", "");
+                    // The pad's report rate and its virtual USB hub have no
+                    // published unit or counterpart, so a file that sets them
+                    // says so. Normal is the schema's first value.
+                    string performance = Str(g, "performance");
+                    if (!string.IsNullOrEmpty(performance) && performance != "normal")
+                        _b.Partial(ImportReasons.ControllerSetting, type, "", "", "performance");
+                    if (Flag(g, "virtualUsbHub"))
+                        _b.Partial(ImportReasons.ControllerSetting, type, "", "", "virtualUsbHub");
                     _virtualPads.Add((g, id));
                 }
             }
@@ -425,16 +460,16 @@ namespace PadForge.Common.ConfigImport
 
         private ImportInput KeyboardInput(int scanCode)
         {
+            // Numpad Enter comes back at 0x88, the index RawInputListener
+            // keeps it under apart from Enter, which is also the index the
+            // output side sends it from.
             if (!DirectInputKeys.TryGetVirtualKey(scanCode, out byte vk)) return null;
             _b.ReadsKeyboard = true;
-            // Numpad Enter reads apart from Enter in the keyboard's state,
-            // at the index RawInputListener keeps it under.
-            int index = scanCode == 0x9C ? 0x88 : vk;
             return new ImportInput
             {
-                Control = "kb:" + index,
+                Control = "kb:" + vk,
                 Label = "Keyboard " + ImportOutput.KeyName(vk),
-                Descriptor = "Button " + index,
+                Descriptor = "Button " + vk,
                 DeviceGuid = ImportBuilder.AllKeyboardsGuid,
                 IsKeyboard = true,
             };
@@ -483,8 +518,10 @@ namespace PadForge.Common.ConfigImport
                 65 => Axis(1, false, "Mouse Down"),
                 66 or 143 => Axis(0, true, "Mouse Left"),
                 67 or 144 => Axis(0, false, "Mouse Right"),
-                171 => Axis(2, true, "Wheel Up"),
-                172 => Axis(2, false, "Wheel Down"),
+                // Windows reports a notch up as +120 (RawInputListener), and
+                // the mouse's Axis 2 sits above center for it, the upper half.
+                171 => Axis(2, false, "Wheel Up"),
+                172 => Axis(2, true, "Wheel Down"),
                 _ => null,
             };
         }
@@ -530,10 +567,34 @@ namespace PadForge.Common.ConfigImport
                 DeadZone = zone,
                 IsAnalog = true,
             };
-            ImportInput HighDir(string axis, bool lower, string stick, string label)
+            // A direction inside one zone: Low, Med or High by index 0 to 3
+            // Up, Down, Left, Right, reWASD's order for ids 109 to 132. It
+            // reads past the zone's edge and short of the next one, and the
+            // high zone is open upward.
+            ImportInput ZoneDir(int k, string stick)
             {
-                var d = Dir(axis, lower, stick, label);
-                d.DeadZone = TuningOf(shift, stick).High;
+                int zone = k / 4, dir = k % 4;
+                string prefix = stick == "left" ? "Left" : "Right";
+                var t = TuningOf(shift, stick);
+                var d = Dir("Gamepad " + prefix + "Stick" + (dir <= 1 ? "Y" : "X"), dir is 0 or 2, stick,
+                    prefix + " stick " + (zone == 0 ? "low" : zone == 1 ? "medium" : "high") + " zone "
+                    + (dir switch { 0 => "Up", 1 => "Down", 2 => "Left", _ => "Right" }));
+                d.DeadZone = zone == 0 ? t.Low : zone == 1 ? t.Med : t.High;
+                return d.Below(zone == 0 ? t.Med : zone == 1 ? t.High : 0);
+            }
+            // A diagonal: past the low zone and within 22.5 degrees of its
+            // bearing, an eighth of the circle, through the Sector read the
+            // DS4Windows import uses for stick directions. The schema's
+            // diagonalZones is a switch with no edge of its own, so the low
+            // zone is where a diagonal starts. The half-axis read underneath
+            // only has to agree on the side. Bearings run counterclockwise
+            // from right.
+            ImportInput Diagonal(double bearing, string stick, string label)
+            {
+                string prefix = stick == "left" ? "Left" : "Right";
+                var d = Dir("Gamepad " + prefix + "StickY", bearing is > 0 and < 180, stick, label);
+                d.DeadZone = 1;
+                d.Band = PadForge.Engine.Common.Mapping.BoundedReads.Sector(bearing, 22.5, TuningOf(shift, stick).Low, "Gamepad " + prefix + "StickRing");
                 return d;
             }
             ImportInput Half(string descriptor, bool lower, string label) => new()
@@ -545,6 +606,30 @@ namespace PadForge.Common.ConfigImport
                 Invert = lower,
                 IsAnalog = true,
             };
+            // reWASD's help (Gyroscope): "By default in reWASD, in Gyro mode,
+            // yaw stands for Lean mappings, while the roll is used to look
+            // around." PadForge's Gyro Roll is SDL's roll negated
+            // (SourceCoercion.ReadTunedGyroRate), so its upper half is a roll
+            // to the right, and Gyro Yaw's upper half turns the nose left.
+            ImportInput Look(ImportInput input)
+            {
+                _gyroAxesRead = true;
+                return input;
+            }
+            // Tilt mode reads how far the gamepad is tilted (reWASD's help,
+            // Gyroscope), PadForge's gravity lean: Gyro Lean X is positive
+            // with the right edge down, Gyro Lean Y with the nose up.
+            bool tilt = GyroTilt(shift);
+            // A touchpad diagonal is two of the touchpad d-pad's directions at
+            // once, which it reports only in its 8-Way mode
+            // (GestureRecognizer.ComputeJoystickDPad).
+            ImportInput TouchDiagonal(int pad, string vertical, string horizontal, string label)
+            {
+                _touchDiagonalRead = true;
+                var input = Btn("Touchpad " + pad + " DPad" + vertical, label);
+                input.Gate = "Touchpad " + pad + " DPad" + horizontal;
+                return input;
+            }
 
             var l = TuningOf(shift, "left");
             var r = TuningOf(shift, "right");
@@ -601,25 +686,41 @@ namespace PadForge.Common.ConfigImport
                 56 => Trig("Gamepad RightTrigger", rt.Low, "Right trigger low zone").Below(rt.Med),
                 57 => Trig("Gamepad RightTrigger", rt.Med, "Right trigger medium zone").Below(rt.High),
                 58 => Trig("Gamepad RightTrigger", rt.High, "Right trigger high zone"),
-                68 => Half("Gyro Pitch", false, "Gyro Up"),
-                69 => Half("Gyro Pitch", true, "Gyro Down"),
-                70 => Half("Gyro Yaw", false, "Gyro Left"),
-                71 => Half("Gyro Yaw", true, "Gyro Right"),
+                68 => tilt ? Half("Gyro Lean Y", false, "Tilt Up") : Half("Gyro Pitch", false, "Gyro Up"),
+                69 => tilt ? Half("Gyro Lean Y", true, "Tilt Down") : Half("Gyro Pitch", true, "Gyro Down"),
+                70 => tilt ? Half("Gyro Lean X", true, "Tilt Left") : Look(Half("Gyro Roll", true, "Gyro Left")),
+                71 => tilt ? Half("Gyro Lean X", false, "Tilt Right") : Look(Half("Gyro Roll", false, "Gyro Right")),
+                72 when !tilt => Look(Half("Gyro Yaw", false, "Gyro Lean Left")),
+                73 when !tilt => Look(Half("Gyro Yaw", true, "Gyro Lean Right")),
                 91 => Btn("Touchpad 0 DPadUp", "Left touchpad Up"),
                 92 => Btn("Touchpad 0 DPadDown", "Left touchpad Down"),
                 93 => Btn("Touchpad 0 DPadLeft", "Left touchpad Left"),
                 94 => Btn("Touchpad 0 DPadRight", "Left touchpad Right"),
+                95 => TouchDiagonal(0, "Up", "Left", "Left touchpad Up-Left"),
+                96 => TouchDiagonal(0, "Up", "Right", "Left touchpad Up-Right"),
+                97 => TouchDiagonal(0, "Down", "Left", "Left touchpad Down-Left"),
+                98 => TouchDiagonal(0, "Down", "Right", "Left touchpad Down-Right"),
                 99 => Btn("Touchpad 0 Click", "Left touchpad click"),
                 100 => Btn("Touchpad 1 DPadUp", "Right touchpad Up"),
                 101 => Btn("Touchpad 1 DPadDown", "Right touchpad Down"),
                 102 => Btn("Touchpad 1 DPadLeft", "Right touchpad Left"),
                 103 => Btn("Touchpad 1 DPadRight", "Right touchpad Right"),
+                104 => TouchDiagonal(1, "Up", "Left", "Right touchpad Up-Left"),
+                105 => TouchDiagonal(1, "Up", "Right", "Right touchpad Up-Right"),
+                106 => TouchDiagonal(1, "Down", "Left", "Right touchpad Down-Left"),
+                107 => TouchDiagonal(1, "Down", "Right", "Right touchpad Down-Right"),
                 108 => Btn("Touchpad 1 Click", "Right touchpad click"),
-                119 => HighDir("Gamepad LeftStickX", true, "left", "Left stick far Left"),
-                120 => HighDir("Gamepad LeftStickX", false, "left", "Left stick far Right"),
-                131 => HighDir("Gamepad RightStickX", true, "right", "Right stick far Left"),
-                132 => HighDir("Gamepad RightStickX", false, "right", "Right stick far Right"),
+                >= 109 and <= 120 => ZoneDir(id - 109, "left"),
+                >= 121 and <= 132 => ZoneDir(id - 121, "right"),
                 163 => Btn("Touchpad 0 Tap", "Left touchpad tap"),
+                175 => Diagonal(135, "left", "Left stick Up-Left"),
+                176 => Diagonal(45, "left", "Left stick Up-Right"),
+                177 => Diagonal(225, "left", "Left stick Down-Left"),
+                178 => Diagonal(315, "left", "Left stick Down-Right"),
+                179 => Diagonal(135, "right", "Right stick Up-Left"),
+                180 => Diagonal(45, "right", "Right stick Up-Right"),
+                181 => Diagonal(225, "right", "Right stick Down-Left"),
+                182 => Diagonal(315, "right", "Right stick Down-Right"),
                 _ => null,
             };
         }
@@ -628,22 +729,48 @@ namespace PadForge.Common.ConfigImport
         /// it in <paramref name="unknown"/>, because a mask missing a leg
         /// would fire too easily.</summary>
         private List<ImportInput> InputsOf(JsonElement set, int shift, out string unknown)
+            => InputsOf(set, shift, out unknown, out _);
+
+        /// <summary>The same, with the reason key for the input that could
+        /// not be read.</summary>
+        private List<ImportInput> InputsOf(JsonElement set, int shift, out string unknown, out string reason)
         {
             unknown = null;
+            reason = ImportReasons.UnknownInput;
             var inputs = new List<ImportInput>();
             foreach (var item in set.EnumerateArray())
             {
                 string description = Str(item, "description");
-                var input = ResolveInput(Int(item, "deviceId"), Int(item, "buttonId"), description, shift);
+                int device = Int(item, "deviceId"), button = Int(item, "buttonId");
+                var input = ResolveInput(device, button, description, shift);
                 if (input == null)
                 {
-                    unknown = description ?? Int(item, "buttonId").ToString(CultureInfo.InvariantCulture);
+                    unknown = description ?? button.ToString(CultureInfo.InvariantCulture);
+                    if (ClassOf(device, description) == "gamepad") reason = GamepadSkipReason(button, shift);
                     return null;
                 }
                 inputs.Add(input);
             }
             return inputs;
         }
+
+        /// <summary>Why a gamepad input PadForge cannot read is left out.
+        /// The ids are reWASD's GamepadButton names (shunt's enum dump).</summary>
+        private string GamepadSkipReason(int id, int shift) => id switch
+        {
+            // BTN_THUMBSTICK_3_*: a third stick.
+            >= 213 and <= 235 => ImportReasons.ThirdStick,
+            // BTN_GYRO_TILT_LOW, MED, HIGH and their directions and leans.
+            >= 74 and <= 76 or >= 145 and <= 162 => ImportReasons.GyroZone,
+            72 or 73 when GyroTilt(shift) => ImportReasons.TiltLean,
+            _ => ImportReasons.UnknownInput,
+        };
+
+        /// <summary>True when an input of a set carries the schema's
+        /// "extended" field, which no public sample writes and no source
+        /// explains, so the import names it.</summary>
+        private static bool SetHasExtended(JsonElement set)
+            => set.ValueKind == JsonValueKind.Array && set.EnumerateArray().Any(i => Has(i, "extended", out _));
 
         private static string ControlOf(IReadOnlyList<ImportInput> inputs)
             => string.Join("+", inputs.Select(i => i.Control).OrderBy(c => c, StringComparer.Ordinal));
@@ -674,27 +801,9 @@ namespace PadForge.Common.ConfigImport
                     bool mouse = type is "unlock" or "unlockMouseOnly";
                     _b.Unlock(mask, keyboard, mouse);
                     if (keyboard)
-                        _b.Partial(ImportReasons.UnlockLayer, _b.LayerName(mask), type, "", Strings.Instance.Devices_AllKeyboardsMerged);
+                        _b.Clean(_b.LayerName(mask), type, Strings.Instance.Devices_AllKeyboardsMerged);
                     if (mouse)
-                        _b.Partial(ImportReasons.UnlockLayer, _b.LayerName(mask), type, "", Strings.Instance.Devices_AllMiceMerged);
-                }
-
-                // A layer can name its own input: held for "default", flipped
-                // for "toggle".
-                if (Has(shift, "set", out var set) && set.ValueKind == JsonValueKind.Array)
-                {
-                    var inputs = InputsOf(set, 0, out string unknown);
-                    if (inputs == null)
-                    {
-                        _b.Skipped(ImportReasons.UnknownInput, _b.LayerName(mask), unknown, unknown);
-                    }
-                    else if (inputs.Count > 0)
-                    {
-                        var act = ImportBuilder.ActivatorFor(inputs, type == "toggle" ? "Toggle" : "Hold", mask);
-                        _b.AddActivator(act);
-                        _engagedBy.Add((id, ControlOf(inputs)));
-                        _b.Clean(_b.LayerName(mask), LabelOf(inputs), act.Mode);
-                    }
+                        _b.Clean(_b.LayerName(mask), type, Strings.Instance.Devices_AllMiceMerged);
                 }
 
                 // Do Not Inherit: the control acts as unmapped on this layer
@@ -726,6 +835,35 @@ namespace PadForge.Common.ConfigImport
                 if (!Has(m, "set", out var set) || set.ValueKind != JsonValueKind.Array) continue;
                 var inputs = InputsOf(set, 0, out _);
                 if (inputs != null) _engagedBy.Add((Int(jump, "layer"), ControlOf(inputs)));
+            }
+        }
+
+        /// <summary>A layer can name its own input: held for "default",
+        /// flipped for "toggle". Read after the device tuning, so a stick
+        /// direction or zone engages at the file's own zone edge.</summary>
+        private void ReadShiftActivators()
+        {
+            foreach (var shift in Arr(_root, "shifts"))
+            {
+                int id = Int(shift, "id");
+                if (_shiftAs.ContainsKey(id)) continue;
+                if (!Has(shift, "set", out var set) || set.ValueKind != JsonValueKind.Array) continue;
+                string type = Str(shift, "type") ?? "default";
+                string mask = LayerOf(id);
+                var inputs = InputsOf(set, 0, out string unknown, out string reason);
+                if (inputs == null)
+                {
+                    _b.Skipped(reason, _b.LayerName(mask), unknown, unknown);
+                }
+                else if (inputs.Count > 0)
+                {
+                    var act = ImportBuilder.ActivatorFor(inputs, type == "toggle" ? "Toggle" : "Hold", mask);
+                    _b.AddActivator(act);
+                    _engagedBy.Add((id, ControlOf(inputs)));
+                    _b.Clean(_b.LayerName(mask), LabelOf(inputs), act.Mode);
+                    if (SetHasExtended(set))
+                        _b.Partial(ImportReasons.ControllerSetting, _b.LayerName(mask), "", "", "extended");
+                }
             }
         }
 
@@ -920,7 +1058,7 @@ namespace PadForge.Common.ConfigImport
                         var blocked = Has(from, "buttonId", out _)
                             ? ResolveInput(device, Int(from, "buttonId"), description, shift)
                             : null;
-                        if (blocked != null) _b.Block(blocked, "Block " + blocked.Label);
+                        if (blocked != null) _b.Block(blocked, "Block " + blocked.Label, layer);
                         continue;
                     }
                     if (Has(from, "stick", out _))
@@ -939,8 +1077,10 @@ namespace PadForge.Common.ConfigImport
                         _b.Skipped(ImportReasons.UnknownInput, PathOf(shift, description ?? cls), description ?? cls, description ?? cls);
                         continue;
                     }
-                    _b.Bind(layer, input, output);
+                    _b.Bind(layer, input, output, replacesNative: true);
                     _b.Clean(PathOf(shift, input.Label), output.Label, output.Target);
+                    if (cls == "keyboard") _keyboardRemaps++;
+                    else _mouseRemaps++;
                     continue;
                 }
 
@@ -982,7 +1122,7 @@ namespace PadForge.Common.ConfigImport
                 var padInput = GamepadInput(id, shift);
                 if (padInput == null)
                 {
-                    _b.Skipped(ImportReasons.UnknownInput, PathOf(shift, description ?? id.ToString(CultureInfo.InvariantCulture)),
+                    _b.Skipped(GamepadSkipReason(id, shift), PathOf(shift, description ?? id.ToString(CultureInfo.InvariantCulture)),
                         description ?? "", description ?? id.ToString(CultureInfo.InvariantCulture));
                     continue;
                 }
@@ -1005,17 +1145,31 @@ namespace PadForge.Common.ConfigImport
             foreach (var ((shift, stick, axis), state) in halves)
                 ApplyHalfUnmap(shift, stick, axis, state.Lower, state.Upper);
 
-            if (_keyboardUnmaps > 0)
-                _b.Partial(ImportReasons.ConsumeKeys, "Keyboard",
-                    string.Format(CultureInfo.InvariantCulture, "{0} x Unmap", _keyboardUnmaps), "",
+            if (_keyboardUnmaps + _keyboardRemaps > 0)
+            {
+                _b.AdviseConsume(ImportBuilder.AllKeyboardsGuid);
+                _b.Partial(ImportReasons.ConsumeKeys, "Keyboard", HardwareCount(_keyboardUnmaps, _keyboardRemaps), "",
                     Strings.Instance.Devices_AllKeyboardsMerged);
-            if (_mouseUnmaps > 0)
-                _b.Partial(ImportReasons.ConsumeKeys, "Mouse",
-                    string.Format(CultureInfo.InvariantCulture, "{0} x Unmap", _mouseUnmaps), "",
+            }
+            if (_mouseUnmaps + _mouseRemaps > 0)
+            {
+                _b.AdviseConsume(ImportBuilder.AllMiceGuid);
+                _b.Partial(ImportReasons.ConsumeKeys, "Mouse", HardwareCount(_mouseUnmaps, _mouseRemaps), "",
                     Strings.Instance.Devices_AllMiceMerged);
+            }
             if (_mouseMoves > 0)
                 _b.Partial(ImportReasons.MouseMovement, "Mouse",
                     string.Format(CultureInfo.InvariantCulture, "{0} x Unmap", _mouseMoves), "");
+        }
+
+        /// <summary>The binding column of the Consume Mapped Inputs line:
+        /// "3 x Unmap", "2 x Remap" or both.</summary>
+        private static string HardwareCount(int unmaps, int remaps)
+        {
+            var parts = new List<string>(2);
+            if (unmaps > 0) parts.Add(string.Format(CultureInfo.InvariantCulture, "{0} x Unmap", unmaps));
+            if (remaps > 0) parts.Add(string.Format(CultureInfo.InvariantCulture, "{0} x Remap", remaps));
+            return string.Join(", ", parts);
         }
 
         /// <summary>A stick direction unmapped: the axis keeps its other half,
@@ -1080,8 +1234,19 @@ namespace PadForge.Common.ConfigImport
             switch (stick)
             {
                 case "gyro":
-                    src = new MappingSource { Descriptor = axis == "x" ? "Gyro Yaw" : "Gyro Pitch" };
+                {
+                    // Gyro mode looks left and right by roll, reWASD's
+                    // default, and Tilt mode reads the tilt angle (its help,
+                    // Gyroscope).
+                    bool tilt = GyroTilt(shift);
+                    if (!tilt && axis == "x") _gyroAxesRead = true;
+                    src = new MappingSource
+                    {
+                        Descriptor = tilt ? (axis == "x" ? "Gyro Lean X" : "Gyro Lean Y")
+                                          : (axis == "x" ? "Gyro Roll" : "Gyro Pitch"),
+                    };
                     break;
+                }
                 case "mouse":
                     _b.ReadsMouse = true;
                     src = new MappingSource { Descriptor = axis == "x" ? "Axis 0" : "Axis 1", DeviceGuid = ImportBuilder.AllMiceGuid };
@@ -1097,6 +1262,26 @@ namespace PadForge.Common.ConfigImport
 
             string toStick = Str(to, "stick") ?? "";
             string toAxis = (Str(to, "axis") ?? "x").ToUpperInvariant();
+            // reWASD's help (Gyroscope, Advanced settings, both modes): "By
+            // default, you need to move the gamepad's 'nose' up to look up".
+            // Gyro Pitch and Gyro Lean Y are positive with the nose up, and
+            // the engine writes a stick's Y negated, so on a stick the row
+            // would push down. Invert turns it up, and the file's own
+            // "inverted" flips it back. The mouse lane already moves the
+            // cursor up for the nose up.
+            if (stick == "gyro" && axis == "y" && toStick is "left" or "right")
+                src.Invert = !src.Invert;
+            // The same help: "and to roll your gamepad to the right to look
+            // right". PadForge's Gyro Roll is SDL's roll negated
+            // (SourceCoercion.ReadTunedGyroRate), positive for a roll to the
+            // right. A stick X row turns that left (the axis-frame flip in
+            // SourceEvaluator.ShouldFlipForAxisFrame), and so does the mouse
+            // lane (negated into screen space, KeyboardMouseVirtualController).
+            // Invert turns it right. Tilt mode's Gyro Lean X already pushes
+            // right for the right edge down.
+            if (stick == "gyro" && axis == "x" && src.Descriptor == "Gyro Roll"
+                && toStick is "left" or "right" or "mouse")
+                src.Invert = !src.Invert;
             if (toStick == "mouse")
             {
                 _b.Bind(layer, control, "KbmMouse" + toAxis, src, 0);
@@ -1107,10 +1292,17 @@ namespace PadForge.Common.ConfigImport
             }
             else if (toStick == "gyro")
             {
-                // A virtual pad's motion comes from a controller's own sensor
-                // (the Motion Gyro row), never from a stick or the mouse.
-                _b.Skipped(ImportReasons.MotionOutput, PathOf(shift, label), toStick);
-                return;
+                // A PlayStation or Nintendo slot turns its virtual motion from
+                // any stick through the Motion Yaw and Motion Pitch rows
+                // (#475): pushed right turns right, pushed up raises the nose
+                // (MotionRowsModel). An Xbox controller has no motion.
+                if (_b.PadTypeOf(_firstVirtualId) is not (VirtualControllerType.PlayStation or VirtualControllerType.Nintendo))
+                {
+                    _b.Skipped(ImportReasons.MotionOutput, PathOf(shift, label), toStick);
+                    return;
+                }
+                _b.Bind(layer, control, toAxis == "X" ? MappingSetMigrator.MotionYawTarget : MappingSetMigrator.MotionPitchTarget,
+                    src, _firstVirtualId);
             }
             else
             {
@@ -1258,6 +1450,13 @@ namespace PadForge.Common.ConfigImport
                         if (value is > 0 and < 32767) o.Scale = value / 32767.0;
                         o.Relative = Has(g, "absolute", out var abs) && abs.ValueKind == JsonValueKind.False;
                     }
+                    // The schema's relative stick form carries a compensation
+                    // switch no public source gives a meaning, so it is named.
+                    if (Flag(g, "compensation"))
+                    {
+                        _b.Partial(ImportReasons.ControllerSetting, path, o.Label, o.Target, "compensation");
+                        notes = true;
+                    }
                     steps.Add(new Step { Output = o, Action = Str(g, "action"), Pulse = Flag(g, "pulsation") });
                 }
                 else if (Has(s, "pause", out var p))
@@ -1276,6 +1475,12 @@ namespace PadForge.Common.ConfigImport
                 {
                     foreach (var a in RumbleActions(r))
                         steps.Add(new Step { Kind = StepKind.Raw, Raw = a });
+                    // A rumble step's "macro" switch has no published meaning.
+                    if (Flag(r, "macro"))
+                    {
+                        _b.Partial(ImportReasons.ControllerSetting, path, "Rumble", "", "macro");
+                        notes = true;
+                    }
                 }
                 else if (Has(s, "command", out var cmd))
                 {
@@ -1392,6 +1597,16 @@ namespace PadForge.Common.ConfigImport
                     return Chord(0xA4, 0x73);   // Alt + F4
                 case >= 101 and <= 110:
                 case 120:
+                    // PadForge runs eight Screen Overlays, and reWASD's ninth
+                    // and tenth crosshairs have none of their own: folded
+                    // onto the eighth, one button would hide another's
+                    // picture.
+                    if (type != 120 && type - 100 > PadForge.Common.Input.KeyboardScreens.KeyboardScreenInfo.MaxOverlays)
+                    {
+                        _b.Skipped(ImportReasons.NinthCrosshair, path, name);
+                        _noted = true;
+                        return null;
+                    }
                     // The button works: it shows a Screen Overlay, and the
                     // picture is the user's to give it.
                     _b.Partial(ImportReasons.Crosshair, path, name, "ToggleScreenOverlay");
@@ -1399,7 +1614,7 @@ namespace PadForge.Common.ConfigImport
                     return new ActionData
                     {
                         Type = MacroActionType.ToggleScreenOverlay,
-                        ScreenOverlayNumber = type == 120 ? 0 : Math.Min(type - 100, PadForge.Common.Input.KeyboardScreens.KeyboardScreenInfo.MaxOverlays),
+                        ScreenOverlayNumber = type == 120 ? 0 : type - 100,
                     };
                 case >= 130 and <= 137:
                     // Radial navigation. PadForge's menu reads its host itself,
@@ -1470,10 +1685,10 @@ namespace PadForge.Common.ConfigImport
                 if (!Has(mask, "set", out var set) || set.ValueKind != JsonValueKind.Array)
                     continue;
 
-                var inputs = InputsOf(set, shift, out string unknown);
+                var inputs = InputsOf(set, shift, out string unknown, out string reason);
                 if (inputs == null)
                 {
-                    _b.Skipped(ImportReasons.UnknownInput, PathOf(shift, unknown), "", unknown);
+                    _b.Skipped(reason, PathOf(shift, unknown), "", unknown);
                     continue;
                 }
                 if (inputs.Count == 0) continue;
@@ -1481,6 +1696,8 @@ namespace PadForge.Common.ConfigImport
                 ApplyZone(inputs, type, shift);
                 string path = PathOf(shift, LabelOf(inputs));
                 string description = Str(mapping, "description");
+                if (SetHasExtended(set))
+                    _b.Partial(ImportReasons.ControllerSetting, path, "", "", "extended");
 
                 if (Has(mapping, "jumpToLayer", out var jump))
                     LowerJump(jump, shift, maskId, inputs, type, mode, activator, path, description);
@@ -1638,7 +1855,7 @@ namespace PadForge.Common.ConfigImport
             foreach (var noBit in steps.Where(s => s.Kind == StepKind.Output
                          && s.Output.Kind == ImportOutputKind.PadButton && s.Output.PadBit == 0).ToList())
             {
-                _b.Skipped(ImportReasons.NoSuchPadButton, path, noBit.Output.Label, noBit.Output.Label);
+                _b.Skipped(ImportReasons.MacroCannotPress, path, noBit.Output.Label, noBit.Output.Label);
                 steps.Remove(noBit);
             }
             if (steps.Count == 0) return;
@@ -2122,6 +2339,14 @@ namespace PadForge.Common.ConfigImport
             foreach (var st in Arr(scope, "sticks"))
             {
                 string name = Str(st, "name") ?? "";
+                if (name == "gyro")
+                {
+                    // The gyro's own entry. "tilt" puts it in Tilt mode, which
+                    // reads the tilt angle in place of the rotation.
+                    _gyroTilt[shift] = Flag(st, "tilt");
+                    NoteLeftovers(st, Scoped("Gyro"), "name", "tilt");
+                    continue;
+                }
                 if (name is not ("left" or "right"))
                 {
                     if (Names(st).Any(n => n != "name"))
@@ -2134,10 +2359,8 @@ namespace PadForge.Common.ConfigImport
                 var t = new StickTuning();
                 if (Has(st, "sensitivity", out var sens))
                 {
-                    // Shunt's compiler reads the same field as a fraction of
-                    // 32767 and floors it at a tenth.
-                    t.SensX = Math.Clamp(Int(sens, "x", 32767) / 32767.0, 0.1, 1.0);
-                    t.SensY = Math.Clamp(Int(sens, "y", 32767) / 32767.0, 0.1, 1.0);
+                    t.SensX = StickSensitivity(sens, "x");
+                    t.SensY = StickSensitivity(sens, "y");
                 }
                 t.RotationDeg = Int(st, "rotation");
                 foreach (var z in Arr(st, "zones"))
@@ -2176,7 +2399,13 @@ namespace PadForge.Common.ConfigImport
                     }
                 }
                 _tuning[(shift, name)] = t;
-                if (Has(st, "sensitivity", out _) || t.RotationDeg != 0 || Arr(st, "zones").Any())
+                // reWASD's help (Advanced stick settings) gives the rotation's
+                // range, -45 to 45, and no direction. BindStick turns a
+                // positive rotation clockwise, DS4Windows' matrix
+                // (DS4State.rotateLSCoordinates), so a rotated stick says so.
+                if (t.RotationDeg != 0)
+                    _b.Partial(ImportReasons.StickRotation, Scoped(StickLabel(name)), "Tuning", "");
+                else if (Has(st, "sensitivity", out _) || Arr(st, "zones").Any())
                     _b.Clean(Scoped(StickLabel(name)), "Tuning", "");
             }
 
@@ -2229,7 +2458,24 @@ namespace PadForge.Common.ConfigImport
                 _b.Partial(ImportReasons.ControllerSetting, Scoped("Vibration"), "", "", "vibration");
         }
 
+        /// <summary>A stick's sensitivity on one axis as an output scale.
+        /// reWASD's blog (How to tune a virtual stick on mouse) calls
+        /// Sensitivity a multiplier. reWASD 9.x writes 1 on every stick
+        /// nobody touched (the samples Miner Warfare, 9.1.2, and TATE - Rotate
+        /// -90 Landscape 180, 9.3.0), so 1 scales nothing. Any other value
+        /// reads as a fraction of 32767, floored at a tenth. Shunt's compiler
+        /// reads the same fraction and spends it on a dead zone instead.</summary>
+        private static double StickSensitivity(JsonElement sens, string axis)
+        {
+            int raw = Int(sens, axis, 32767);
+            return raw == 1 ? 1.0 : Math.Clamp(raw / 32767.0, 0.1, 1.0);
+        }
+
         private static string StickLabel(string name) => name == "left" ? "Left stick" : "Right stick";
+
+        /// <summary>Whether the gyro is in Tilt mode on a layer.</summary>
+        private bool GyroTilt(int shift)
+            => _gyroTilt.TryGetValue(shift, out bool tilt) ? tilt : shift != 0 && _gyroTilt.TryGetValue(0, out tilt) && tilt;
 
         /// <summary>An analog key's name: the file's description, else its
         /// id. The schema has no name field.</summary>
@@ -2305,8 +2551,17 @@ namespace PadForge.Common.ConfigImport
                 _b.Partial(ImportReasons.ControllerSetting, path, "", "", string.Join(", ", left));
         }
 
+        /// <summary>A curve point's travel or value as a fraction of the
+        /// stick's full scale. Both sit on the 0-32767 scale the same files'
+        /// zones use: the public samples end their curves at travels of
+        /// 10125, 19970, 23626 and 24697, so the last point is not full
+        /// travel.</summary>
+        private static double CurveUnit(double raw) => Math.Min(1.0, raw / 32767.0);
+
         /// <summary>A file's curve points in the card's format, 0 to 1 on both
-        /// sides, from the center out. Null when it names too few.</summary>
+        /// sides, from the center out. A curve that ends short of full travel
+        /// holds its last value from there to the end. Null when it names too
+        /// few.</summary>
         private static string CurvePoints(JsonElement points, string side)
         {
             if (!Has(points, side, out var list) || list.ValueKind != JsonValueKind.Array) return null;
@@ -2316,14 +2571,13 @@ namespace PadForge.Common.ConfigImport
                 .OrderBy(p => p.Travel)
                 .ToList();
             if (pts.Count < 2 || pts[^1].Travel <= 0 || pts[^1].Value <= 0) return null;
-            double maxTravel = pts[^1].Travel, maxValue = pts[^1].Value;
-            var parts = new List<string>(pts.Count + 1);
+            static string Text(double v) => v.ToString("0.####", CultureInfo.InvariantCulture);
+            var parts = new List<string>(pts.Count + 2);
             if (pts[0].Travel > 0) parts.Add("0,0");
             foreach (var (travel, value) in pts)
-            {
-                parts.Add((travel / maxTravel).ToString("0.####", CultureInfo.InvariantCulture) + ","
-                        + (value / maxValue).ToString("0.####", CultureInfo.InvariantCulture));
-            }
+                parts.Add(Text(CurveUnit(travel)) + "," + Text(CurveUnit(value)));
+            if (CurveUnit(pts[^1].Travel) < 1.0)
+                parts.Add("1," + Text(CurveUnit(pts[^1].Value)));
             return string.Join(";", parts);
         }
 
@@ -2342,13 +2596,11 @@ namespace PadForge.Common.ConfigImport
                 .OrderBy(p => p.Travel)
                 .ToList();
             if (pts.Count == 0) return 0;
-            double maxTravel = pts[^1].Travel;
-            double maxValue = Math.Max(pts[^1].Value, 1.0);
             double num = 0, den = 0;
             foreach (var (travel, value) in pts)
             {
-                double x = travel / maxTravel;
-                double y = value / maxValue;
+                double x = CurveUnit(travel);
+                double y = CurveUnit(value);
                 if (x >= 1.0 || y >= 1.0) continue;
                 double lx = Math.Log(x), ly = Math.Log(y);
                 num += lx * ly;
@@ -2436,6 +2688,12 @@ namespace PadForge.Common.ConfigImport
 
         private void ReportLeftovers()
         {
+            // reWASD's Preferences pick which rotation steers, and a file does
+            // not record the choice (reWASD's help, Gyroscope).
+            if (_gyroAxesRead)
+                _b.Partial(ImportReasons.GyroAxes, "Gyro", "", "");
+            if (_touchDiagonalRead)
+                _b.Partial(ImportReasons.TouchpadDiagonal, "Touchpad", "", "");
             if (Arr(_root, "crosshairs").Any())
                 _b.Skipped(ImportReasons.Crosshair, "Crosshairs", "");
 

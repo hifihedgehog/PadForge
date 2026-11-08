@@ -166,7 +166,9 @@ namespace PadForge.Common.Input
         /// run left when it begins (<see cref="ReleaseInheritedLatches"/>). A
         /// loop that outlived Stop's join released them anyway, racing the new
         /// loop and sending ups for the keys it holds. The lock orders this
-        /// against Start's stamp.</summary>
+        /// against Start's stamp. With no loop left to run a macro or a row,
+        /// the hooks stop eating the layer-gated inputs too
+        /// (<see cref="PublishLayerGatedHookKeys"/>).</summary>
         internal void ReleaseLatchesOnExit(int generation)
         {
             lock (_runHandoffLock)
@@ -175,6 +177,7 @@ namespace PadForge.Common.Input
                 {
                     ExitReleaseCheckedForTest?.Invoke();
                     try { ReleaseAllLatchedMacroKeys(); } catch { }
+                    try { PublishLayerGatedHookKeys(evaluating: false); } catch { }
                 }
             }
         }
@@ -1891,7 +1894,8 @@ namespace PadForge.Common.Input
             };
             _pollingThread.Start();
 
-            _mouseInjectorThread = new Thread(() => MouseInjectorLoop(generation))
+            var pollThread = _pollingThread;
+            _mouseInjectorThread = new Thread(() => MouseInjectorLoop(generation, pollThread))
             {
                 Name = "PadForge.MouseInjector",
                 IsBackground = true,
@@ -1901,35 +1905,45 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Flushes macro mouse-move deltas that the poll thread accumulated, one
-        /// SendInput per tick, so the SendInput syscall never runs on the 1000 Hz
-        /// poll thread. Injected mouse movement is processed synchronously (it
-        /// traverses every process's low-level mouse hook chain), which is why a
-        /// per-poll SendInput could collapse the poll rate to ~200 Hz. ~500 Hz cap
-        /// via a 2 ms sleep (timeBeginPeriod(1) from the poll loop keeps the sleep
-        /// near 2 ms); accumulated delta is never lost, only batched.
+        /// Sends what the poll thread queued (keys, buttons, Text Blocks) in
+        /// order, and the mouse-move and wheel deltas it accumulated, so the
+        /// SendInput syscall never runs on the 1000 Hz poll thread
+        /// (FlushPendingInput). SendInput is processed synchronously: it
+        /// traverses every process's low-level hook chain, so a 30 ms hook
+        /// held one key's SendInput for 31 ms, and per-poll SendInput could
+        /// collapse the poll rate to ~200 Hz. Moves batch at a ~500 Hz cap via
+        /// a 2 ms wait (timeBeginPeriod(1) from the poll loop keeps it near
+        /// 2 ms), and accumulated delta is never lost, only batched. A queued
+        /// key or button ends the wait at once (MouseWorkSignal).
+        ///
+        /// <para>The poll loop's exit release (ReleaseLatchesOnExit) queues
+        /// its ups after this loop may already have seen the stop, so the last
+        /// act waits for <paramref name="pollThread"/> to end, then sends
+        /// everything queued before the stop, in order.</para>
         /// </summary>
-        private void MouseInjectorLoop(int generation)
+        private void MouseInjectorLoop(int generation, Thread pollThread)
         {
             while (_running && System.Threading.Volatile.Read(ref _runGeneration) == generation)
             {
-                bool injected = FlushPendingMouseInput();
+                bool injected = FlushPendingInput();
                 if (injected)
                 {
-                    // Active: keep the 2 ms batch cadence so SendInput
-                    // stays coalesced exactly as before.
-                    Thread.Sleep(2);
+                    // Active: keep the 2 ms batch cadence for moves, so
+                    // SendInput stays coalesced exactly as before. A key
+                    // queued meanwhile signals and ends the wait.
+                    MouseWorkSignal.WaitOne(2);
                     continue;
                 }
-                // Idle: park until the first accumulated delta signals.
-                // Disarm-then-recheck prevents the lost-wakeup race; the
-                // timeout is a safety net only.
+                // Idle: park until the first accumulated delta or queued
+                // event signals. Disarm-then-recheck prevents the
+                // lost-wakeup race. The timeout is a safety net only.
                 System.Threading.Interlocked.Exchange(ref MouseWorkArmed, 0);
-                if (HasPendingMouseInput())
+                if (HasPendingInput())
                     continue;
                 MouseWorkSignal.WaitOne(500);
             }
-            FlushPendingMouseInput(); // drain any final delta on shutdown
+            pollThread?.Join();
+            FlushPendingInput(); // everything queued before the stop
         }
 
         /// <summary>
@@ -2022,6 +2036,13 @@ namespace PadForge.Common.Input
             AwaitPendingLifecycleTasks();
 
             DestroyAllVirtualControllers();
+
+            // A Keyboard + Mouse controller's teardown queues the ups of the
+            // keys and buttons it held, after the injector has ended. Sent
+            // here, or the keys stay down in Windows until the next start.
+            // An injector that outlived its join still holds the drain and
+            // sends them itself, so the wait is bounded.
+            FlushPendingInput(lockWaitMs: 1000);
 
             // Every Sony pad PadForge left off its headset gets the headset
             // back (#546), with no dispatcher left to write after it and
@@ -2200,6 +2221,9 @@ namespace PadForge.Common.Input
                                 // the desired-set rebuild re-asserts them when
                                 // the pipeline wakes. No-op when nothing is held.
                                 ReleaseAllLatchedMacroKeys();
+                                // No slot macro or row runs, so the hooks
+                                // eat no layer-gated input.
+                                PublishLayerGatedHookKeys(evaluating: false);
                             }
                         }
                         catch (Exception ex)
@@ -2223,6 +2247,8 @@ namespace PadForge.Common.Input
 
                     if (ApplyFocusSuspension())
                     {
+                        try { PublishLayerGatedHookKeys(evaluating: false); }
+                        catch (Exception ex) { RaiseError("Focus-suspend hook release", ex); }
                         CurrentFrequency = 0;
                         _frequencyCounter = 0;
                         _frequencyTimer.Restart();
@@ -2295,6 +2321,11 @@ namespace PadForge.Common.Input
                             // holds it open, and before Step 5, which sends
                             // a slot's keyboard the keys it typed.
                             TickOnScreenKeyboard(step5Runs: true);
+                            // The layers are final for this tick: the hooks
+                            // eat a layer macro's trigger input only while
+                            // its layer gate is open, and a layer row's
+                            // inputs only while the engine evaluates the row.
+                            PublishLayerGatedHookKeys(evaluating: true);
                             // The Motion Pitch, Yaw and Roll rows (#475) are
                             // evaluated in Step 3, so their motion composes
                             // here, after the macro pass's Gyro Recenter, and

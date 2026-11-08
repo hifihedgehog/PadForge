@@ -1303,6 +1303,16 @@ namespace PadForge.ViewModels
         /// another axis is in the full list and not in this one.</summary>
         public ObservableCollection<InputChoice> SlotKeyInputs { get; } = new();
 
+        /// <summary>A button row's list: the entries of
+        /// <see cref="SlotAvailableInputs"/> a button read can press, the same
+        /// instances, less a touchpad finger's place
+        /// (<c>MappingItem.ButtonReadPressesNothing</c>). The rows whose
+        /// target reads its sources as a press bind it
+        /// (<c>InputService.PickerListForRow</c>). A finger's place saved on
+        /// such a row before stays stored, and its picker shows no
+        /// selection.</summary>
+        public ObservableCollection<InputChoice> SlotButtonInputs { get; } = new();
+
         private ICollectionView _slotAvailableInputsView;
         /// <summary>Grouped CollectionView over <see cref="SlotAvailableInputs"/>
         /// keyed on <c>DeviceLabel</c> for the picker's GroupStyle header.</summary>
@@ -1447,10 +1457,10 @@ namespace PadForge.ViewModels
         internal void ApplyMappingPickerFilter()
         {
             // The dropdown side: what every picker OFFERS. The Motion rows'
-            // two lists (#475) and the Up and Down pickers' list take the
-            // same filter as the shared one.
+            // two lists (#475), the Up and Down pickers' list and the button
+            // rows' list take the same filter as the shared one.
             int shown = -1;
-            foreach (var list in new[] { SlotAvailableInputs, SlotMotionGyroInputs, SlotMotionAccelInputs, SlotKeyInputs })
+            foreach (var list in new[] { SlotAvailableInputs, SlotMotionGyroInputs, SlotMotionAccelInputs, SlotKeyInputs, SlotButtonInputs })
             {
                 var view = ReferenceEquals(list, SlotAvailableInputs)
                     ? SlotAvailableInputsView : CollectionViewSource.GetDefaultView(list);

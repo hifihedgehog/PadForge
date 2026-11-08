@@ -701,13 +701,9 @@ namespace PadForge.Tests
             Assert.All(p.Macros, m => Assert.False(string.IsNullOrEmpty(m.TriggerInputs)));
         }
 
-        /// <summary>Desktop must reach the two system keys no row target can:
-        /// Valve's Show Keyboard on X (Win+Ctrl+O) and the Windows key. Both
-        /// were dropped as "not reachable" when the profile first shipped.
-        /// </summary>
         /// <summary>Every key one action presses. A single key rides the plain
-        /// code field; a chord rides the multi-key string, which is what keeps
-        /// its modifiers down across the final key.</summary>
+        /// code field, and a chord rides the multi-key string, which is what
+        /// keeps its modifiers down across the final key.</summary>
         static List<int> ChordKeys(ActionData a)
         {
             if (a == null) return new List<int>();
@@ -716,6 +712,10 @@ namespace PadForge.Tests
             return a.KeyCode != 0 ? new List<int> { a.KeyCode } : new List<int>();
         }
 
+        /// <summary>Desktop reaches the two things no row target can: Show
+        /// Keyboard on X, which is PadForge's On-Screen Keyboard since #566,
+        /// and the Windows key. Both were dropped as "not reachable" when the
+        /// profile first shipped.</summary>
         [Fact]
         public void Desktop_ReachesShowKeyboardAndTheWindowsKey()
         {
@@ -1007,6 +1007,29 @@ namespace PadForge.Tests
                 Assert.Equal(1.0, gyro.ParamAccel);          // gain 1 at rest, 2 at full scale
                 Assert.Equal(1.0, gyro.GyroSensitivity);     // the flat lane stays at unity
             }
+        }
+
+        /// <summary>Gyro Aim is camera aim on the right stick, the
+        /// JoyShockMapper gyro stick its doc comment cites: the nose up looks
+        /// up and the nose left looks left. JoyShockMapper puts the pitch in
+        /// camera space, down positive (main.cpp, gyroY -= inGyroX), so the
+        /// nose up is negative there, and processGyroStick writes
+        /// setStick(gyroStickX, -gyroStickY): the stick goes up. A positive
+        /// SDL pitch is the nose up, and the rows are read the way the engine
+        /// reads them, Y negate included, so the written field is up
+        /// positive.</summary>
+        [Fact]
+        public void GyroAim_LooksUpForTheNoseUp_AndLeftForTheNoseLeft()
+        {
+            var pitch = RowOf("gyroaim", "RightThumbAxisY").Sources
+                .Single(s => s.Descriptor.StartsWith("Gyro ", StringComparison.Ordinal));
+            short up = GyroStickSignProbe.AtRate(s => GyroStickSignProbe.Written(s, pitch, "RightThumbAxisY"), pitch: 2f);
+            Assert.True(up > 3000, $"the nose up should push the right stick up, wrote {up}");
+
+            var yaw = RowOf("gyroaim", "RightThumbAxisX").Sources
+                .Single(s => s.Descriptor.StartsWith("Gyro ", StringComparison.Ordinal));
+            short left = GyroStickSignProbe.AtRate(s => GyroStickSignProbe.Written(s, yaw, "RightThumbAxisX"), yaw: 2f);
+            Assert.True(left < -3000, $"the nose left should push the right stick left, wrote {left}");
         }
 
         /// <summary><para>THE OVERLAP CONTRACT. A shift activator with

@@ -116,7 +116,7 @@ namespace PadForge.Views
             var dlg = new SaveFileDialog
             {
                 FileName = $"{row.Id}.json",
-                Filter = "HIDMaestro profile (*.json)|*.json|All files (*.*)|*.*",
+                Filter = Strings.Instance.FileDialog_HidMaestroProfileFilter + "|" + Strings.Instance.FileDialog_AllFilesFilter,
                 Title = Strings.Instance.ManageProfiles_ExportTitle
             };
             if (dlg.ShowDialog(this) != true) return;
@@ -154,7 +154,7 @@ namespace PadForge.Views
         {
             var dlg = new OpenFileDialog
             {
-                Filter = "HIDMaestro profile (*.json)|*.json|All files (*.*)|*.*",
+                Filter = Strings.Instance.FileDialog_HidMaestroProfileFilter + "|" + Strings.Instance.FileDialog_AllFilesFilter,
                 Title = Strings.Instance.ManageProfiles_ImportFromFileTitle,
                 CheckFileExists = true,
                 Multiselect = false

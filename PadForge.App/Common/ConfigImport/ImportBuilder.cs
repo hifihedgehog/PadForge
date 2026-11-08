@@ -225,8 +225,12 @@ namespace PadForge.Common.ConfigImport
             Label = target == "LeftTrigger" ? "Left trigger" : "Right trigger",
         };
 
+        /// <summary>A key's name for the preview. Numpad Enter has no VK of
+        /// its own, and PadForge keeps it at 0x88
+        /// (RawInputListener.NumpadEnterKey).</summary>
         public static string KeyName(byte vk)
-            => Enum.IsDefined(typeof(VirtualKey), (int)vk)
+            => vk == 0x88 ? "NumpadEnter"
+            : Enum.IsDefined(typeof(VirtualKey), (int)vk)
                 ? ((VirtualKey)vk).ToString()
                 : "0x" + vk.ToString("X2");
 
@@ -449,6 +453,13 @@ namespace PadForge.Common.ConfigImport
             public string Target;
             public int PadId;
             public MappingSource Source;
+
+            /// <summary>The inputs the binding reads, with their labels.</summary>
+            public List<(string Descriptor, string Label)> Reads;
+
+            /// <summary>A hardware remap: reWASD replaces the input's native
+            /// key, so holding it back matches.</summary>
+            public bool ReplacesNative;
         }
 
         private sealed class LayerInfo
@@ -479,7 +490,8 @@ namespace PadForge.Common.ConfigImport
         private readonly List<MenuDefinitionEntry> _menus = new();
         private readonly List<PadSlot> _pads = new();
         private readonly HashSet<string> _sumRows = new(StringComparer.Ordinal);
-        private readonly List<(ImportInput Input, string Name)> _blocks = new();
+        private readonly List<(ImportInput Input, string Name, string Layer)> _blocks = new();
+        private readonly HashSet<string> _consumeAdvised = new(StringComparer.OrdinalIgnoreCase);
         private readonly Dictionary<(string Layer, string Target), (double Floor, double Scale, int PadId)> _stickShapes = new();
         private int _pairSeq;
 
@@ -517,15 +529,19 @@ namespace PadForge.Common.ConfigImport
         /// whichever device lands on the slot. Empty means none.</summary>
         public string GyroDeadZone { get; set; } = "";
 
+        /// <summary>The touchpad momentum glide, as text, for pad 0 of
+        /// whichever device lands on the slot. Empty means none.</summary>
+        public string TouchpadGlide { get; set; } = "";
+
         /// <summary>The battery light's empty and full colors,
         /// "r,g,b;r,g,b", or empty.</summary>
         public string BatteryColors { get; set; } = "";
 
-        /// <summary>The Run Program action for something the file starts, noted
-        /// for the preview.</summary>
         /// <summary>What the profile starts by itself when it loads.</summary>
         public List<string> Starts { get; } = new();
 
+        /// <summary>The Run Program action for something the file starts, noted
+        /// for the preview.</summary>
         public ActionData Run(string label, string path, string args = "", string workDir = "", bool onLoad = false)
         {
             var list = onLoad ? Starts : Runs;
@@ -537,6 +553,57 @@ namespace PadForge.Common.ConfigImport
                 ProgramArgs = args ?? "",
                 ProgramWorkingDir = workDir ?? "",
             };
+        }
+
+        private readonly HashSet<string> _curvesOnRows = new(StringComparer.Ordinal);
+
+        /// <summary>The curve stamps for a slot's set. A target whose rows
+        /// tune it differently on its layers keeps its rows' tuning at
+        /// assignment (WorkshopTuningApplier.TargetsKeepingTheirRows), and its
+        /// card stays as it was, so its curve rides the rows that read the
+        /// stick or trigger as the nearest power curve, and the report says
+        /// so.</summary>
+        private void WriteCurves(MappingSet set)
+        {
+            var kept = PadForge.Services.WorkshopTuningApplier.TargetsKeepingTheirRows(set);
+            var entries = new List<string>();
+            foreach (var (target, points) in Curves)
+            {
+                if (!kept.Contains(target))
+                {
+                    entries.Add(target + "=" + points);
+                    continue;
+                }
+                double exponent = PowerFit(points);
+                foreach (var row in set.Rows.Where(r => r.Target == target))
+                    foreach (var src in row.Sources.Where(s => s.ParamCurveExponent <= 0 && ReadsTheCard(s.Descriptor)))
+                        src.ParamCurveExponent = exponent;
+                if (_curvesOnRows.Add(target))
+                    Partial(ImportReasons.CurveOnRows, target, "Curve", "", target);
+            }
+            set.WorkshopCurves = string.Join("|", entries);
+        }
+
+        /// <summary>A stick or trigger read that a card would shape.</summary>
+        private static bool ReadsTheCard(string descriptor) => descriptor is
+            "Gamepad LeftStickX" or "Gamepad LeftStickY" or "Gamepad RightStickX" or "Gamepad RightStickY"
+            or "Gamepad LeftTrigger" or "Gamepad RightTrigger";
+
+        /// <summary>The exponent e whose x^e lies nearest a curve's points in
+        /// least squares, on 0.05 to 20.</summary>
+        internal static double PowerFit(string points)
+        {
+            var pts = Common.CurveLut.Parse(points).Where(p => p.X > 0.0).ToList();
+            if (pts.Count == 0) return 1.0;
+            double Error(double e) => pts.Sum(p => (Math.Pow(p.X, e) - p.Y) * (Math.Pow(p.X, e) - p.Y));
+            double lo = Math.Log(0.05), hi = Math.Log(20.0);
+            for (int i = 0; i < 80; i++)
+            {
+                double a = lo + (hi - lo) / 3.0, b = hi - (hi - lo) / 3.0;
+                if (Error(Math.Exp(a)) < Error(Math.Exp(b))) hi = b;
+                else lo = a;
+            }
+            return Math.Exp((lo + hi) / 2.0);
         }
 
         /// <summary>A curve's points, the card's own format.</summary>
@@ -599,18 +666,27 @@ namespace PadForge.Common.ConfigImport
 
         /// <summary>The input drives this output on this layer. Direction
         /// outputs read negative through the source's output flip.</summary>
-        public void Bind(string layer, ImportInput input, ImportOutput output, IReadOnlyList<ImportInput> gates = null)
+        public void Bind(string layer, ImportInput input, ImportOutput output, IReadOnlyList<ImportInput> gates = null,
+            bool replacesNative = false)
         {
             var src = input.ToSource();
             if (output.Kind is ImportOutputKind.PadStick or ImportOutputKind.MouseAxis or ImportOutputKind.Wheel)
                 SetOutputDirection(src, output.Negative);
+            var reads = new List<(string, string)> { (input.Descriptor, input.Label) };
             if (gates != null)
             {
                 if (gates.Count > 0) src.GateDescriptor = gates[0].Descriptor;
                 if (gates.Count > 1) src.Gate2Descriptor = gates[1].Descriptor;
+                for (int i = 0; i < gates.Count && i < 2; i++) reads.Add((gates[i].Descriptor, gates[i].Label));
             }
             Bind(layer, input.Control, output.Target, src, output.IsKbm ? 0 : output.PadId);
+            _bindings[^1].Reads = reads;
+            _bindings[^1].ReplacesNative = replacesNative;
         }
+
+        /// <summary>The import asks for Consume Mapped Inputs on this device
+        /// (ImportReasons.ConsumeKeys).</summary>
+        public void AdviseConsume(string deviceGuid) => _consumeAdvised.Add(deviceGuid ?? "");
 
         /// <summary>A profile's own lightbar color, written every frame while
         /// its macro is open. It holds a moment past each write and needs no
@@ -725,11 +801,13 @@ namespace PadForge.Common.ConfigImport
             }
         }
 
-        /// <summary>A key or button the file stops reaching Windows. Consume
-        /// Mapped Inputs holds back one a row reads already. One no row reads
-        /// takes an empty macro that consumes its trigger, which the hook
-        /// holds back the same way (InputService.MacroTriggerConsumesKey).</summary>
-        public void Block(ImportInput input, string name) => _blocks.Add((input, name));
+        /// <summary>A key or button the file stops reaching Windows on a
+        /// layer. Consume Mapped Inputs holds back one a row running on that
+        /// layer reads already.
+        /// One no row reads takes an empty macro on that layer that consumes
+        /// its trigger, which the hook holds back the same way
+        /// (InputService.MacroTriggerConsumesKey).</summary>
+        public void Block(ImportInput input, string name, string layer = BaseLayer) => _blocks.Add((input, name, layer));
 
         /// <summary>A virtual stick axis's output range on a layer, reWASD's
         /// initial and maximum deflection: any movement starts at the floor
@@ -896,6 +974,46 @@ namespace PadForge.Common.ConfigImport
         public void Skipped(string reasonKey, string path, string binding, params string[] args)
             => Report.Add(TranslationStatus.Skipped, reasonKey, path, binding, "", args);
 
+        /// <summary>reWASD sends a mapped key's native key unless the file
+        /// unmaps it (reWASD blog, How to reassign keyboard keys: "we suggest
+        /// using Unmaps for keyboard keys, so the native action did not
+        /// bother the mapping you have added"). Consume Mapped Inputs, which
+        /// the import asks for on a device the file unmaps keys of, holds
+        /// back every key a row reads. So each key or button of such a device
+        /// that a running row reads on a layer where the file does not unmap
+        /// it gets a line, once. A hardware remap replaces the native key in
+        /// reWASD, so it gets none.</summary>
+        private void ReportKeysTheSwitchHoldsBack(Dictionary<LayerInfo, HashSet<string>> ownByLayer)
+        {
+            if (_consumeAdvised.Count == 0) return;
+            var reported = new HashSet<(string, string)>();
+            var layers = new List<LayerInfo> { null };
+            layers.AddRange(_layers);
+            foreach (var layer in layers)
+            {
+                string mask = layer?.Mask ?? BaseLayer;
+                var own = layer != null ? ownByLayer[layer] : null;
+                foreach (var b in _bindings)
+                {
+                    bool runs = layer == null
+                        ? b.Layer == BaseLayer
+                        : b.Layer == mask || (b.Layer == BaseLayer && !own.Contains(b.Control));
+                    if (!runs || b.ReplacesNative || b.Reads == null) continue;
+                    string device = b.Source.DeviceGuid ?? "";
+                    if (!_consumeAdvised.Contains(device)) continue;
+                    foreach (var (descriptor, label) in b.Reads)
+                    {
+                        if (string.IsNullOrEmpty(descriptor) || !descriptor.StartsWith("Button ", StringComparison.Ordinal)) continue;
+                        bool unmapped = _blocks.Any(x => x.Input.Descriptor == descriptor && Same(x.Input.DeviceGuid, device)
+                            && (x.Layer == mask || (x.Layer == BaseLayer && own != null && !own.Contains(x.Input.Control))));
+                        if (unmapped || !reported.Add((device.ToLowerInvariant(), descriptor))) continue;
+                        Partial(ImportReasons.MappedKeyHeldBack,
+                            layer == null ? label : LayerName(mask) + " / " + label, label, "", label);
+                    }
+                }
+            }
+        }
+
         private HashSet<string> OwnControls(LayerInfo layer)
         {
             var own = new HashSet<string>(layer.Blocked, StringComparer.Ordinal);
@@ -915,6 +1033,12 @@ namespace PadForge.Common.ConfigImport
                     if (b.Layer == BaseLayer && Unlocked(b.Control)) own.Add(b.Control);
                 foreach (var m in _macros)
                     if (m.Layer == BaseLayer && m.Control != null && Unlocked(m.Control)) own.Add(m.Control);
+                // Base's unmap of a key or button the layer hands back stops
+                // there too: the layer replaces Base (Finish) and takes no
+                // copy of that block.
+                foreach (var b in _blocks)
+                    if (b.Layer == BaseLayer && !string.IsNullOrEmpty(b.Input.Control) && Unlocked(b.Input.Control))
+                        own.Add(b.Input.Control);
             }
             return own;
         }
@@ -982,6 +1106,13 @@ namespace PadForge.Common.ConfigImport
             {
                 var own = ownByLayer[layer];
                 if (_macros.Any(m => m.Layer == BaseLayer && !m.RunsBesideLayers && m.Control != null && own.Contains(m.Control)))
+                    layer.Expand = true;
+                // A shift inherits Main's unmap for every control it does not
+                // map itself, and a control it maps or does not inherit works
+                // without it (reWASD help, Shift mode). Base's block runs on
+                // every layer that inherits, so a layer that owns a control
+                // Base unmaps has to replace Base.
+                if (_blocks.Any(b => b.Layer == BaseLayer && own.Contains(b.Input.Control)))
                     layer.Expand = true;
                 // A solid color writes every frame and ends the frame on top
                 // of Base's. A pattern writes between waits, and Base's color
@@ -1142,11 +1273,12 @@ namespace PadForge.Common.ConfigImport
                     sets[i].WorkshopGyroEngageToggle = GyroEngageToggle;
                 }
                 if (Curves.Count > 0)
-                    sets[i].WorkshopCurves = string.Join("|", Curves.Select(kv => kv.Key + "=" + kv.Value));
+                    WriteCurves(sets[i]);
                 sets[i].WorkshopRumblePercent = RumblePercent ?? "";
                 sets[i].WorkshopIdleDisconnectSeconds = IdleDisconnectSeconds ?? "";
                 sets[i].WorkshopBatteryColors = BatteryColors ?? "";
                 sets[i].WorkshopGyroDeadZone = GyroDeadZone ?? "";
+                sets[i].WorkshopTouchpadGlide = TouchpadGlide ?? "";
             }
 
             // Unclaimed slots stay non-authoritative, so a slot the user
@@ -1178,23 +1310,58 @@ namespace PadForge.Common.ConfigImport
                 }
             }
 
-            // A block only for a key no row reads: one a row reads is held
-            // back already, and a block there would also stop the row while
-            // the key is down (the engine's consume). Base only, because the
-            // hook holds a key back on every layer alike.
-            var blockedReads = new HashSet<(string, string)>();
-            foreach (var (input, blockName) in _blocks)
+            // Each block sits on the layer that unmaps the key, so a key one
+            // layer unmaps still reaches Windows on the others. A block is
+            // only for a key no row reads where the block runs: the hook
+            // eats a row's key only while the row runs
+            // (InputManager.RowReadsUnder), and a block beside such a row
+            // would also stop it while the key is down (the engine's
+            // consume). A layer's block runs on that layer, where Base's
+            // bindings it does not own run with its own. A Base block also
+            // runs on every layer that inherits unmapped targets
+            // (MacroLayerGateOpen).
+            bool ReadOnLayer(LayerInfo layer, ImportInput input)
             {
-                if (_bindings.Any(b => b.Source.Descriptor == input.Descriptor && Same(b.Source.DeviceGuid, input.DeviceGuid))) continue;
-                if (!blockedReads.Add((input.Descriptor, (input.DeviceGuid ?? "").ToLowerInvariant()))) continue;
+                var own = ownByLayer[layer];
+                return _bindings.Any(b => (b.Layer == layer.Mask || (b.Layer == BaseLayer && !own.Contains(b.Control)))
+                                          && b.Source.Descriptor == input.Descriptor && Same(b.Source.DeviceGuid, input.DeviceGuid));
+            }
+            bool ReadWhereBlockRuns(ImportInput input, string blockLayer)
+            {
+                if (blockLayer != BaseLayer)
+                {
+                    var layer = _layers.FirstOrDefault(l => l.Mask == blockLayer);
+                    return layer != null && ReadOnLayer(layer, input);
+                }
+                return _bindings.Any(b => b.Layer == BaseLayer && b.Source.Descriptor == input.Descriptor && Same(b.Source.DeviceGuid, input.DeviceGuid))
+                       || _layers.Any(l => !l.Expand && ReadOnLayer(l, input));
+            }
+            // A layer that replaces Base closes Base's blocks, so it takes
+            // its own copy of each one for a control it does not own, as it
+            // takes Base's macros above.
+            var blocks = new List<(ImportInput Input, string Name, string Layer)>(_blocks);
+            foreach (var layer in _layers.Where(l => l.Expand))
+            {
+                var own = ownByLayer[layer];
+                foreach (var b in _blocks)
+                    if (b.Layer == BaseLayer && !own.Contains(b.Input.Control))
+                        blocks.Add((b.Input, b.Name, layer.Mask));
+            }
+            var blockedReads = new HashSet<(string, string, string)>();
+            foreach (var (input, blockName, blockLayer) in blocks)
+            {
+                if (ReadWhereBlockRuns(input, blockLayer)) continue;
+                if (!blockedReads.Add((input.Descriptor, (input.DeviceGuid ?? "").ToLowerInvariant(), blockLayer))) continue;
                 var data = ToMacroData(new ImportMacro
                 {
                     Name = blockName,
                     Inputs = new[] { input },
                     ConsumesTrigger = true,
-                }, BaseLayer, 0, firstPadSlot);
+                }, blockLayer, 0, firstPadSlot);
                 if (data != null) macros.Add(data);
             }
+
+            ReportKeysTheSwitchHoldsBack(ownByLayer);
 
             var (entries, padSettings) = AssignMergedDevices(sets, created, macros);
             ReadsController = _bindings.Any(b => string.IsNullOrEmpty(b.Source.DeviceGuid)

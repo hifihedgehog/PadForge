@@ -4541,7 +4541,7 @@
   <data name="KeyboardScreens_Status_Strike7Waiting" xml:space="preserve"><value>изберете PadForge на екрана V.E.N.O.M.</value></data>
   <data name="KeyboardScreens_Status_Strike7Showing" xml:space="preserve"><value>на екрана V.E.N.O.M.</value></data>
   <data name="KeyboardScreens_Status_NotFound" xml:space="preserve"><value>не е намерен екран</value></data>
-  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}, изчакване на цвят на светлинната лента</value></data>
+  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}, няма цвят на светлинната лента</value></data>
   <data name="KeyboardScreens_Status_NoPicture_Format" xml:space="preserve"><value>{0}, не е избрана картинка</value></data>
   <data name="KeyboardScreens_LgsShared_Format" xml:space="preserve"><value>Докато Logitech Gaming Software работи, всеки екран от този вид показва картинката, зададена за {0}.</value></data>
   <data name="DeviceType_KeyboardScreenKeys" xml:space="preserve"><value>Екран на клавиатурата</value></data>
@@ -4590,7 +4590,7 @@
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Панорамиране на картинката на екрана на клавиатурата</value></data>
   <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Мести прозореца на всеки екран на клавиатурата, който подава към този слот, върху картинка, по-голяма от екрана, например за карта. Наслагване на екрана се движи по същия начин, когато мащабът му е над 100 процента.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Панорамиране на картинките с {0} на {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Мести всеки екран, който подава към този слот и показва избрана картинка, по-голяма от самия него. Прозорецът спира при краищата на картинката. Наслагване на екрана се движи, когато мащабът му е над 100 процента, независимо кой слот изпълнява макроса.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Мести всеки екран, който подава към този слот и показва избрана картинка, по-голяма от самия него. Прозорецът спира при краищата на картинката. Наслагване на екрана се движи, когато мащабът му е над 100 процента, независимо кой слот изпълнява макроса. Макрос, който посочва едно наслагване, мести само него.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Екран</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Действие</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Посока</value></data>
@@ -4907,11 +4907,11 @@
   <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Най-ниският слот с цвят</value></data>
   <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>Мащаб</value></data>
   <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>Не е избрана картинка.</value></data>
-  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Изчакване на цвят на светлинната лента.</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Няма цвят на светлинната лента на DualShock 4 или DualSense за показване.</value></data>
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Наслагване</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Всяко наслагване</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Превключване на наслагването на екрана {0}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Показване на картинки на {0}: {1} × {2} мс, до следващия макрос</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Показване на картинки на {0}: {1} × {2} мс, до следващото показване или макрос за режим</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>Импортиране на профил</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}, файл на {1}</value></data>
   <data name="Import_ProfileName_Format" xml:space="preserve"><value>Става профилът „{0}“.</value></data>
@@ -4945,7 +4945,6 @@
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Този профил посочва специално действие, което липсва в Actions.xml до папката му Profiles: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Тази настройка не беше пренесена: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD пречеше на тези входове да стигнат до Windows. Включете Поглъщане на съпоставените входове за {0} на страницата Устройства, което спира входовете, съпоставени от този профил.</value></data>
-  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>Съпоставянията на Base за {0} спират в този слой. При включено Поглъщане на съпоставените входове съпоставените му входове остават задържани от Windows във всеки слой.</value></data>
   <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>Подменютата му станаха допълнителни слотове на един пръстен.</value></data>
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Потвърждава се, когато стикът се върне в центъра или слоят приключи. Бутонът Приложи на reWASD не се използва.</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Този файл държи два контролера разделени. В PadForge всеки контролер на слота задейства тези съпоставяния.</value></data>
@@ -4974,7 +4973,7 @@
   <data name="Import_Tr_HideController" xml:space="preserve"><value>reWASD скри този контролер от игрите. Включете Скриване от игрите за него на страницата Устройства.</value></data>
   <data name="Import_Tr_NoSuchSetting" xml:space="preserve"><value>PadForge няма такава настройка: {0}</value></data>
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD пречеше на движението на мишката да стига до Windows. PadForge задържа клавишите и бутоните на мишката, но не и движението, така че показалецът пак се движи.</value></data>
-  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>Виртуалните контролери на PadForge получават движение само от сензора за движение на контролера.</value></data>
+  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>Виртуален контролер на Xbox няма движение. Изберете тип контролер на PlayStation или Nintendo, за да изпращате движение.</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows се върна към този профил от {0} с бутон. За да направите същото в PadForge, добавете бърза комбинация за профил за този профил на страницата Профили.</value></data>
   <data name="Osk_Style_Grid" xml:space="preserve">
     <value>Мрежа</value>
@@ -5193,4 +5192,37 @@
   <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Отваря или затваря клавиатурата, когато „Отваря се с“ е отпуснат преди времето за задържане. По-дълго натискане не прави нищо.</value></data>
   <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Отваря или затваря клавиатурата, когато „Отваря се с“ е натиснат три пъти в рамките на прозореца за натискане.</value></data>
   <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Отваря или затваря клавиатурата, когато прозорецът за натискане изтече след едно натискане на „Отваря се с“. Второ натискане в прозореца го отменя.</value></data>
+  <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>Цветовете се изпращат директно към {0}. Променящите се цветове, като цикъл на цветовете или цветове, които следват звука, не стигат до него. Цвят, който не се променя, стига.</value></data>
+  <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Всички файлове (*.*)|*.*</value></data>
+  <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>Профил на PadForge (*{0})|*{0}</value></data>
+  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml</value></data>
+  <data name="FileDialog_ProgramFilter" xml:space="preserve"><value>Програми (*.exe;*.bat;*.cmd;*.com)|*.exe;*.bat;*.cmd;*.com|Всички файлове (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundFileFilter" xml:space="preserve"><value>Аудио файлове и звукови пакети|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.pfsounds|Звукови пакети (*.pfsounds)|*.pfsounds|Всички файлове (*.*)|*.*</value></data>
+  <data name="FileDialog_AudioFilter" xml:space="preserve"><value>Аудио файлове|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.ogg|Всички файлове (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundPackageFilter_Format" xml:space="preserve"><value>Звукови пакети на PadForge (*{0})|*{0}</value></data>
+  <data name="FileDialog_IconPackageFilter_Format" xml:space="preserve"><value>Пакети с икони на PadForge (*{0})|*{0}</value></data>
+  <data name="FileDialog_AutoEqFilter" xml:space="preserve"><value>Профил на AutoEq (*.txt)|*.txt|Всички файлове (*.*)|*.*</value></data>
+  <data name="FileDialog_IconPickerFilter" xml:space="preserve"><value>Картинки и пакети с икони|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.pficons|Пакети с икони (*.pficons)|*.pficons</value></data>
+  <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>Бутони на портативно устройство за PadForge (*.json)|*.json</value></data>
+  <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>Профил на HIDMaestro (*.json)|*.json</value></data>
+  <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>Осветление на клавишите за PadForge (*.json)|*.json</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Макрос не може да натисне {0}. Съпоставяне в раздела Съпоставяния може.</value></data>
+  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge поддържа осем Наслагвания на екрана, а това е деветият или десетият мерник на reWASD.</value></data>
+  <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge чете Жироскоп наляво и надясно от крена, а навеждането от завъртането, както е по подразбиране в reWASD. Предпочитанията на reWASD могат да ги разменят, а този файл не показва дали са били разменени.</value></data>
+  <data name="Import_Tr_TiltLean" xml:space="preserve"><value>В режим Наклон навеждането на reWASD е завъртане около вертикалната ос, а сензорът за движение не дава ъгъл за такова завъртане.</value></data>
+  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge чете диагонал на тъчпада като две посоки едновременно, което тъчпадът отчита само когато Режим на кръстачката в раздела му Тъчпад е 8 посоки.</value></data>
+  <data name="Import_Tr_GyroZone" xml:space="preserve"><value>PadForge чете посоката на жироскопа отвъд един праг, а reWASD не дава мерна единица за края на зона на жироскопа.</value></data>
+  <data name="Import_Tr_AbsoluteMouse" xml:space="preserve"><value>DS4Windows поставяше показалеца там, накъдето сочи стикът. В PadForge стикът вместо това движи показалеца.</value></data>
+  <data name="Import_Tr_StickBeforeRotation" xml:space="preserve"><value>{0} чете стика преди неговото завъртане. DS4Windows го четеше след него.</value></data>
+  <data name="Import_Tr_StickBeforeCurve" xml:space="preserve"><value>{0} чете ъгъла на стика преди зоните и кривата му. DS4Windows го четеше след тях.</value></data>
+  <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>Клавиатурата на слот, който вече не е Клавиатура + мишка</value></data>
+  <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (не е на този компютър)</value></data>
+  <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (не е на този слот)</value></data>
+  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>завъртането и крена са добавени с пълна сила (приносът на крена не се чете)</value></data>
+  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>жироскопът в режим Локално пространство се чете като завъртане (PadForge няма наклонена основна ос)</value></data>
+  <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>жироскопът в режим Лазерна показалка се чете като завъртане (PadForge няма преобразуване за лазерна показалка)</value></data>
+  <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>В reWASD {0} все още стига до Windows, защото файлът го съпоставя без отмяна на съпоставянето. При включено Поглъщане на съпоставените входове PadForge го задържа.</value></data>
+  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge завърта положителното завъртане по посока на часовниковата стрелка, както прави DS4Windows. Помощта на reWASD дава обхвата на завъртането, а не посоката му.</value></data>
+  <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows оформя {0} на радиален стик според ъгъла на натиска. Картата на стика в PadForge възпроизвежда еднакво прав натиск, а диагоналния по различен начин.</value></data>
+  <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Слоевете настройват {0} по различен начин, затова всеки запазва собствените си настройки, а кривата се пренася като най-близката степенна крива.</value></data>
 </root>

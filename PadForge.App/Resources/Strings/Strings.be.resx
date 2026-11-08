@@ -4541,7 +4541,7 @@
   <data name="KeyboardScreens_Status_Strike7Waiting" xml:space="preserve"><value>выберыце PadForge на экране V.E.N.O.M.</value></data>
   <data name="KeyboardScreens_Status_Strike7Showing" xml:space="preserve"><value>на экране V.E.N.O.M.</value></data>
   <data name="KeyboardScreens_Status_NotFound" xml:space="preserve"><value>экран не знойдзены</value></data>
-  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}, чаканне колеру светлавой панэлі</value></data>
+  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}, колер светлавой панэлі адсутнічае</value></data>
   <data name="KeyboardScreens_Status_NoPicture_Format" xml:space="preserve"><value>{0}, выява не выбрана</value></data>
   <data name="KeyboardScreens_LgsShared_Format" xml:space="preserve"><value>Пакуль працуе Logitech Gaming Software, кожны экран гэтага віду паказвае выяву, заданую для «{0}».</value></data>
   <data name="DeviceType_KeyboardScreenKeys" xml:space="preserve"><value>Экран клавіятуры</value></data>
@@ -4590,7 +4590,7 @@
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Зрух выявы экрана клавіятуры</value></data>
   <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Перасоўвае акно кожнага экрана клавіятуры, які падае даныя ў гэты слот, па выяве, большай за экран, напрыклад па карце. Накладка экрана перасоўваецца гэтак жа, калі яе маштаб вышэйшы за 100 працэнтаў.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Зрушыць выявы на {0} і {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Перасоўвае кожны экран, які падае даныя ў гэты слот і паказвае выбраную выяву, большую за сам экран. Акно спыняецца на краях выявы. Накладка экрана перасоўваецца, калі яе маштаб вышэйшы за 100 працэнтаў, незалежна ад таго, які слот выконвае макрас.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Перасоўвае кожны экран, які падае даныя ў гэты слот і паказвае выбраную выяву, большую за сам экран. Акно спыняецца на краях выявы. Накладка экрана перасоўваецца, калі яе маштаб вышэйшы за 100 працэнтаў, незалежна ад таго, які слот выконвае макрас. Макрас, які называе адну накладку, перасоўвае толькі яе.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Экран</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Дзеянне</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Кірунак</value></data>
@@ -4907,11 +4907,11 @@
   <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Слот з найменшым нумарам, у якога ёсць колер</value></data>
   <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>Маштаб</value></data>
   <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>Выява не выбрана.</value></data>
-  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Чаканне колеру светлавой панэлі.</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Няма колеру светлавой панэлі DualShock 4 або DualSense для паказу.</value></data>
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Накладка</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Кожная накладка</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Паказаць/схаваць накладку экрана {0}</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Паказаць выявы {0}: {1} × {2} мс, да наступнага макраса</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Паказаць выявы {0}: {1} × {2} мс, да наступнага макраса паказу або рэжыму</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>Імпарт профілю</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}, файл {1}</value></data>
   <data name="Import_ProfileName_Format" xml:space="preserve"><value>Стане профілем «{0}».</value></data>
@@ -4945,7 +4945,6 @@
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Гэты профіль называе асаблівае дзеянне, якога няма ў Actions.xml побач з яго папкай Profiles: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Гэта налада не перанеслася: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD не пускаў гэтыя ўводы ў Windows. Уключыце Паглынаць прызначаныя ўводы для {0} на старонцы Прылады: гэта спыніць тыя, што прызначае гэты профіль.</value></data>
-  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>Прызначэнні пласта Base для {0} у гэтым пласце не дзейнічаюць. Калі ўключана Паглынаць прызначаныя ўводы, прызначаныя ўводы гэтай прылады застаюцца схаванымі ад Windows у кожным пласце.</value></data>
   <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>Яго падменю сталі дадатковымі слотамі на адным коле.</value></data>
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Прымяняецца, калі стык вяртаецца ў цэнтр або пласт заканчваецца. Кнопка Ужыць у reWASD не выкарыстоўваецца.</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Гэты файл трымае два кантролеры асобна. У PadForge гэтыя прызначэнні выконвае любы кантролер на слоце.</value></data>
@@ -4974,7 +4973,7 @@
   <data name="Import_Tr_HideController" xml:space="preserve"><value>reWASD схаваў гэты кантролер ад гульняў. Уключыце Хаваць ад гульняў для яго на старонцы Прылады.</value></data>
   <data name="Import_Tr_NoSuchSetting" xml:space="preserve"><value>У PadForge няма такой налады: {0}</value></data>
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD не пускаў рух мышы ў Windows. PadForge стрымлівае клавішы і кнопкі мышы, але не рух, таму ўказальнік усё роўна рухаецца.</value></data>
-  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>Віртуальныя кантролеры PadForge атрымліваюць рух толькі ад датчыка руху кантролера.</value></data>
+  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>Віртуальны кантролер Xbox не мае руху. Абярыце тып кантролера PlayStation або Nintendo, каб адпраўляць рух.</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows вяртаўся ў гэты профіль з {0} па кнопцы. Каб зрабіць так у PadForge, дадайце для гэтага профілю Спалучэнне для профіляў на старонцы Профілі.</value></data>
   <data name="Osk_Style_Grid" xml:space="preserve">
     <value>Сетка</value>
@@ -5193,4 +5192,37 @@
   <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Адкрывае або закрывае клавіятуру, калі Адкрываецца праз адпушчана раней, чым мінуў час утрымання. Больш доўгі націск нічога не робіць.</value></data>
   <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Адкрывае або закрывае клавіятуру, калі Адкрываецца праз націснута тройчы ў акне націску.</value></data>
   <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Адкрывае або закрывае клавіятуру, калі акно націску заканчваецца пасля аднаго націску Адкрываецца праз. Другі націск у акне скасоўвае гэта.</value></data>
+  <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>Колеры ідуць напрамую на {0}. Зменлівыя колеры, напрыклад цыкл колераў або колеры, што залежаць ад гуку, на яго не трапляюць. Колер, які не змяняецца, трапляе.</value></data>
+  <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Усе файлы (*.*)|*.*</value></data>
+  <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>Профіль PadForge (*{0})|*{0}</value></data>
+  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml</value></data>
+  <data name="FileDialog_ProgramFilter" xml:space="preserve"><value>Праграмы (*.exe;*.bat;*.cmd;*.com)|*.exe;*.bat;*.cmd;*.com|Усе файлы (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundFileFilter" xml:space="preserve"><value>Аўдыяфайлы і гукавыя пакеты|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.pfsounds|Гукавыя пакеты (*.pfsounds)|*.pfsounds|Усе файлы (*.*)|*.*</value></data>
+  <data name="FileDialog_AudioFilter" xml:space="preserve"><value>Аўдыяфайлы|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.ogg|Усе файлы (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundPackageFilter_Format" xml:space="preserve"><value>Гукавыя пакеты PadForge (*{0})|*{0}</value></data>
+  <data name="FileDialog_IconPackageFilter_Format" xml:space="preserve"><value>Пакеты значкоў PadForge (*{0})|*{0}</value></data>
+  <data name="FileDialog_AutoEqFilter" xml:space="preserve"><value>Профіль AutoEq (*.txt)|*.txt|Усе файлы (*.*)|*.*</value></data>
+  <data name="FileDialog_IconPickerFilter" xml:space="preserve"><value>Выявы і пакеты значкоў|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.pficons|Пакеты значкоў (*.pficons)|*.pficons</value></data>
+  <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>Кнопкі партатыўнай прылады PadForge (*.json)|*.json</value></data>
+  <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>Профіль HIDMaestro (*.json)|*.json</value></data>
+  <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>Падсветка клавіш PadForge (*.json)|*.json</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Макрас не можа націснуць {0}. Прызначэнне на ўкладцы Прызначэнні можа.</value></data>
+  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge запускае восем Накладак экрана, а гэта дзевяты або дзясяты прыцэл reWASD.</value></data>
+  <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge чытае Гіраскоп: крэн як налева і направа, а Гіраскоп: рысканне як нахіл, як у reWASD па змаўчанні. У наладах reWASD іх можна памяняць месцамі, і гэты файл не паказвае, ці мянялі.</value></data>
+  <data name="Import_Tr_TiltLean" xml:space="preserve"><value>У рэжыме нахілу нахіл reWASD азначае паварот вакол вертыкальнай восі, а датчык руху не дае вугла для такога павароту.</value></data>
+  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge чытае дыяганаль сэнсарнай панэлі як два напрамкі адначасова, а панэль паведамляе пра гэта, толькі калі Рэжым крыжавіны на яе ўкладцы Сэнсарная панэль мае значэнне 8 напрамкаў.</value></data>
+  <data name="Import_Tr_GyroZone" xml:space="preserve"><value>PadForge чытае напрамак гіраскопа за адным парогам, а reWASD не дае адзінкі для краю зоны гіраскопа.</value></data>
+  <data name="Import_Tr_AbsoluteMouse" xml:space="preserve"><value>DS4Windows ставіў указальнік туды, куды паказвае стык. У PadForge стык замест гэтага рухае ўказальнік.</value></data>
+  <data name="Import_Tr_StickBeforeRotation" xml:space="preserve"><value>{0} чытае стык да яго павароту. DS4Windows чытаў яго пасля.</value></data>
+  <data name="Import_Tr_StickBeforeCurve" xml:space="preserve"><value>{0} чытае кут стыка да яго зон і крывой. DS4Windows чытаў яго пасля.</value></data>
+  <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>Клавіятура слота, які больш не Клавіятура + мыш</value></data>
+  <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (няма на гэтым ПК)</value></data>
+  <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (няма на гэтым слоце)</value></data>
+  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>рысканне і крэн складаюцца на поўную сілу (уклад крэну не чытаецца)</value></data>
+  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>гіраскоп Local Space чытаецца як рысканне (у PadForge няма нахіленай галоўнай восі)</value></data>
+  <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>гіраскоп Laser Pointer чытаецца як рысканне (у PadForge няма пераўтварэння лазернай указкі)</value></data>
+  <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>У reWASD {0} усё роўна трапляе ў Windows, бо файл прызначае яго без скасавання. Калі ўключана Паглынаць прызначаныя ўводы, PadForge яго стрымлівае.</value></data>
+  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge паварочвае станоўчы паварот па гадзіннікавай стрэлцы, як і DS4Windows. Даведка reWASD паказвае дыяпазон павароту, а не яго напрамак.</value></data>
+  <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows фармуе {0} радыяльнага стыка па вуглу націску. Картка налад стыка ў PadForge прамы націск праводзіць аднолькава, а дыяганальны па-іншаму.</value></data>
+  <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Пласты па-рознаму наладжваюць {0}, таму кожны захоўвае ўласную наладу, а крывая пераносіцца як бліжэйшая ступенная крывая.</value></data>
 </root>

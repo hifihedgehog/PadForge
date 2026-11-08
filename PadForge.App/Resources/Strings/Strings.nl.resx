@@ -4512,7 +4512,7 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="KeyboardScreens_Status_Strike7Waiting" xml:space="preserve"><value>kies PadForge op het V.E.N.O.M.-scherm</value></data>
   <data name="KeyboardScreens_Status_Strike7Showing" xml:space="preserve"><value>op het V.E.N.O.M.-scherm</value></data>
   <data name="KeyboardScreens_Status_NotFound" xml:space="preserve"><value>geen scherm gevonden</value></data>
-  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}, wacht op een lightbarkleur</value></data>
+  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}, geen lightbarkleur</value></data>
   <data name="KeyboardScreens_Status_NoPicture_Format" xml:space="preserve"><value>{0}, geen afbeelding gekozen</value></data>
   <data name="KeyboardScreens_LgsShared_Format" xml:space="preserve"><value>Zolang Logitech Gaming Software draait, toont elk scherm van dit type de afbeelding die voor {0} is ingesteld.</value></data>
   <data name="DeviceType_KeyboardScreenKeys" xml:space="preserve"><value>Toetsenbordscherm</value></data>
@@ -4561,7 +4561,7 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Afbeelding op toetsenbordscherm verschuiven</value></data>
   <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Verschuift het venster van elk toetsenbordscherm dat dit slot voedt over een afbeelding die groter is dan het scherm, bijvoorbeeld voor een kaart. Een schermoverlay verschuift op dezelfde manier als de zoom boven 100 procent ligt.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Afbeeldingen verschuiven met {0} bij {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Verschuift elk scherm dat dit slot voedt en een gekozen afbeelding toont die groter is dan het scherm zelf. Het venster stopt aan de randen van de afbeelding. Een schermoverlay verschuift als de zoom boven 100 procent ligt, ongeacht welk slot de macro uitvoert.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Verschuift elk scherm dat dit slot voedt en een gekozen afbeelding toont die groter is dan het scherm zelf. Het venster stopt aan de randen van de afbeelding. Een schermoverlay verschuift als de zoom boven 100 procent ligt, ongeacht welk slot de macro uitvoert. Een macro die één overlay noemt, verschuift alleen die overlay.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Scherm</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Actie</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Richting</value></data>
@@ -4878,11 +4878,11 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Laagste slot met een kleur</value></data>
   <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>Zoom</value></data>
   <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>Geen afbeelding gekozen.</value></data>
-  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Wacht op een lightbarkleur.</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Geen lightbarkleur van een DualShock 4 of DualSense om te tonen.</value></data>
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Overlay</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Elke overlay</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Schermoverlay {0} in-/uitschakelen</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Afbeeldingen tonen op {0}: {1} × {2} ms, tot de volgende macro</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Afbeeldingen tonen op {0}: {1} × {2} ms, tot de volgende macro Tonen of Modus</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>Profiel importeren</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}, een {1}-bestand</value></data>
   <data name="Import_ProfileName_Format" xml:space="preserve"><value>Wordt het profiel "{0}".</value></data>
@@ -4916,7 +4916,6 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Dit profiel noemt een speciale actie die ontbreekt in Actions.xml naast de map Profiles: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Deze instelling is niet overgenomen: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD hield deze invoer tegen voordat die Windows bereikte. Zet Toegewezen invoer verbruiken aan voor {0} op de pagina Apparaten, zodat de invoer die dit profiel toewijst wordt tegengehouden.</value></data>
-  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>De toewijzingen van Base voor {0} stoppen in deze laag. Met Toegewezen invoer verbruiken aan blijft de toegewezen invoer van dit apparaat in elke laag tegengehouden voor Windows.</value></data>
   <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>De submenu's zijn extra slots op één ring geworden.</value></data>
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Bevestigt zodra de stick weer in het midden komt of de laag eindigt. De knop Apply van reWASD wordt niet gebruikt.</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Dit bestand houdt twee controllers gescheiden. In PadForge activeert elke controller op het slot deze toewijzingen.</value></data>
@@ -4945,7 +4944,7 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="Import_Tr_HideController" xml:space="preserve"><value>reWASD verborg deze controller voor games. Zet Verbergen voor games aan voor deze controller op de pagina Apparaten.</value></data>
   <data name="Import_Tr_NoSuchSetting" xml:space="preserve"><value>PadForge kent deze instelling niet: {0}</value></data>
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD hield muisbeweging tegen voordat die Windows bereikte. PadForge houdt toetsen en muisknoppen tegen, maar geen beweging, dus de aanwijzer beweegt nog steeds.</value></data>
-  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>De virtuele controllers van PadForge nemen bewegingsinvoer alleen over van de bewegingssensor van een controller.</value></data>
+  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>Een virtuele Xbox-controller heeft geen beweging. Kies een PlayStation- of Nintendo-controllertype om beweging te sturen.</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows schakelde met een knop vanuit {0} terug naar dit profiel. Om dat in PadForge te doen, voeg je op de pagina Profielen een Profiel-snelkoppeling voor dit profiel toe.</value></data>
   <data name="Osk_Style_Grid" xml:space="preserve">
     <value>Raster</value>
@@ -5164,4 +5163,37 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Opent of sluit het toetsenbord als Opent met wordt losgelaten vóór de vasthoudtijd. Een langere druk doet niets.</value></data>
   <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Opent of sluit het toetsenbord als Opent met drie keer binnen het tijdvenster wordt ingedrukt.</value></data>
   <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Opent of sluit het toetsenbord als het tijdvenster eindigt na één druk op Opent met. Een tweede druk binnen het venster annuleert dit.</value></data>
+  <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>De kleuren gaan rechtstreeks naar {0}. Wisselende kleuren, zoals een kleurencyclus of kleuren die het geluid volgen, komen er niet aan. Een kleur die gelijk blijft wel.</value></data>
+  <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Alle bestanden (*.*)|*.*</value></data>
+  <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>PadForge-profiel (*{0})|*{0}</value></data>
+  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml</value></data>
+  <data name="FileDialog_ProgramFilter" xml:space="preserve"><value>Programma's (*.exe;*.bat;*.cmd;*.com)|*.exe;*.bat;*.cmd;*.com|Alle bestanden (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundFileFilter" xml:space="preserve"><value>Audiobestanden en geluidspakketten|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.pfsounds|Geluidspakketten (*.pfsounds)|*.pfsounds|Alle bestanden (*.*)|*.*</value></data>
+  <data name="FileDialog_AudioFilter" xml:space="preserve"><value>Audiobestanden|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.ogg|Alle bestanden (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundPackageFilter_Format" xml:space="preserve"><value>PadForge-geluidspakketten (*{0})|*{0}</value></data>
+  <data name="FileDialog_IconPackageFilter_Format" xml:space="preserve"><value>PadForge-pictogrampakketten (*{0})|*{0}</value></data>
+  <data name="FileDialog_AutoEqFilter" xml:space="preserve"><value>AutoEq-profiel (*.txt)|*.txt|Alle bestanden (*.*)|*.*</value></data>
+  <data name="FileDialog_IconPickerFilter" xml:space="preserve"><value>Afbeeldingen en pictogrampakketten|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.pficons|Pictogrampakketten (*.pficons)|*.pficons</value></data>
+  <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>PadForge Handheld Buttons (*.json)|*.json</value></data>
+  <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro-profiel (*.json)|*.json</value></data>
+  <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge Key Lights (*.json)|*.json</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Een macro kan {0} niet indrukken. Een toewijzing op het tabblad Toewijzingen kan dat wel.</value></data>
+  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge draait acht schermoverlays, en dit is het negende of tiende dradenkruis van reWASD.</value></data>
+  <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge leest Gyro links en rechts van roll en kanteling van yaw, de standaard van reWASD. In de voorkeuren van reWASD kunnen die twee worden omgewisseld, en dit bestand zegt niet of dat is gebeurd.</value></data>
+  <data name="Import_Tr_TiltLean" xml:space="preserve"><value>In de modus Tilt is de kanteling van reWASD een draai om de verticale as, en een bewegingssensor geeft voor die draai geen hoek.</value></data>
+  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge leest een diagonaal op het touchpad als twee richtingen tegelijk, wat het touchpad alleen meldt als de D-pad-modus op het tabblad Touchpad op 8-Weg staat.</value></data>
+  <data name="Import_Tr_GyroZone" xml:space="preserve"><value>PadForge leest de richting van de gyro voorbij één drempel, en reWASD geeft geen eenheid voor de rand van een gyrozone.</value></data>
+  <data name="Import_Tr_AbsoluteMouse" xml:space="preserve"><value>DS4Windows plaatste de aanwijzer waar de stick naar wijst. In PadForge beweegt de stick de aanwijzer in plaats daarvan.</value></data>
+  <data name="Import_Tr_StickBeforeRotation" xml:space="preserve"><value>{0} leest de stick vóór de rotatie. DS4Windows las hem erna.</value></data>
+  <data name="Import_Tr_StickBeforeCurve" xml:space="preserve"><value>{0} leest de hoek van de stick vóór de zones en de curve. DS4Windows las hem erna.</value></data>
+  <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>Toetsenbord van een slot dat niet meer Toetsenbord + Muis is</value></data>
+  <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (niet op deze pc)</value></data>
+  <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (niet op dit slot)</value></data>
+  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>yaw en roll met volle sterkte opgeteld (bijdrage van roll niet gelezen)</value></data>
+  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>gyro Lokale ruimte gelezen als yaw (PadForge heeft geen gekantelde hoofdas)</value></data>
+  <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>gyro Laserpen gelezen als yaw (PadForge heeft geen laserpenomzetting)</value></data>
+  <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>In reWASD bereikt {0} nog steeds Windows, omdat het bestand die toewijst zonder de toewijzing op te heffen. Met Toegewezen invoer verbruiken aan houdt PadForge die tegen.</value></data>
+  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge draait een positieve rotatie met de klok mee, zoals DS4Windows. De help van reWASD geeft het bereik van de rotatie, niet de richting.</value></data>
+  <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows vormt de {0} van een radiale stick naar de hoek van de duw. De stickkaart van PadForge behandelt een rechte duw gelijk en een diagonale duw anders.</value></data>
+  <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>De lagen stemmen {0} verschillend af, dus elke laag houdt zijn eigen afstelling, en de curve is overgenomen als de dichtstbijzijnde machtscurve.</value></data>
 </root>

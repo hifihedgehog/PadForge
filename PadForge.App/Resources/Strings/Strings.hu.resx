@@ -4541,7 +4541,7 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="KeyboardScreens_Status_Strike7Waiting" xml:space="preserve"><value>válassza ki a PadForge-ot a V.E.N.O.M. képernyőn</value></data>
   <data name="KeyboardScreens_Status_Strike7Showing" xml:space="preserve"><value>a V.E.N.O.M. képernyőn</value></data>
   <data name="KeyboardScreens_Status_NotFound" xml:space="preserve"><value>nincs képernyő</value></data>
-  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}, várakozás fénysáv színére</value></data>
+  <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}, nincs fénysáv-szín</value></data>
   <data name="KeyboardScreens_Status_NoPicture_Format" xml:space="preserve"><value>{0}, nincs kép kiválasztva</value></data>
   <data name="KeyboardScreens_LgsShared_Format" xml:space="preserve"><value>Amíg a Logitech Gaming Software fut, ennek a fajtának minden képernyője a következőhöz beállított képet mutatja: {0}.</value></data>
   <data name="DeviceType_KeyboardScreenKeys" xml:space="preserve"><value>Billentyűzetképernyő</value></data>
@@ -4590,7 +4590,7 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="MacroAction_Type_PanKeyboardScreen" xml:space="preserve"><value>Billentyűzetképernyő-kép pásztázása</value></data>
   <data name="MacroAction_PanKeyboardScreen_Tooltip" xml:space="preserve"><value>Térképhez a képernyőnél nagyobb kép fölött mozgatja a foglalatot tápláló egyes billentyűzetképernyők ablakát. A Képernyő-átfedés ugyanígy mozog, ha a nagyítása 100 százalék fölött van.</value></data>
   <data name="MacroAction_PanKeyboardScreen_Format" xml:space="preserve"><value>Képek pásztázása: {0}, {1} px</value></data>
-  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Minden olyan képernyőt mozgat, amely a foglalatot táplálja, és önmagánál nagyobb kiválasztott képet mutat. Az ablak megáll a kép szélein. A Képernyő-átfedés akkor mozog, ha a nagyítása 100 százalék fölött van, bármelyik foglalat futtatja a makrót.</value></data>
+  <data name="MacroAction_PanKeyboardScreen_Hint" xml:space="preserve"><value>Minden olyan képernyőt mozgat, amely a foglalatot táplálja, és önmagánál nagyobb kiválasztott képet mutat. Az ablak megáll a kép szélein. A Képernyő-átfedés akkor mozog, ha a nagyítása 100 százalék fölött van, bármelyik foglalat futtatja a makrót. Az a makró, amely egyetlen átfedést nevez meg, csak azt az átfedést mozgatja.</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Képernyő</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Művelet</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Irány</value></data>
@@ -4907,11 +4907,11 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Legalacsonyabb színes foglalat</value></data>
   <data name="KeyboardScreen_Zoom_Label" xml:space="preserve"><value>Nagyítás</value></data>
   <data name="ScreenOverlay_Blank_NoPicture" xml:space="preserve"><value>Nincs kép kiválasztva.</value></data>
-  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Várakozás fénysáv színére.</value></data>
+  <data name="ScreenOverlay_Blank_NoLightbar" xml:space="preserve"><value>Nincs megjeleníthető DualShock 4 vagy DualSense fénysáv-szín.</value></data>
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Átfedés</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Minden átfedés</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Képernyő-átfedés {0} be/ki</value></data>
-  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>{0} képeinek megjelenítése: {1} × {2} ms, a következő makróig</value></data>
+  <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>{0} képeinek megjelenítése: {1} × {2} ms, a következő megjelenítő vagy módváltó makróig</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>Profil importálása</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}, {1}-fájl</value></data>
   <data name="Import_ProfileName_Format" xml:space="preserve"><value>A neve „{0}” profil lesz.</value></data>
@@ -4945,7 +4945,6 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Ez a profil olyan különleges műveletet nevez meg, amely hiányzik a Profiles mappa melletti Actions.xml fájlból: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Ez a beállítás nem került át: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>A reWASD megakadályozta, hogy ezek a bemenetek eljussanak a Windowsig. Kapcsolja be a Hozzárendelt bemenetek elnyelése beállítást a(z) {0} eszközhöz az Eszközök oldalon, amely elnyeli a profil által hozzárendelteket.</value></data>
-  <data name="Import_Tr_UnlockLayer" xml:space="preserve"><value>A Base rétegben a(z) {0} eszközhöz tartozó hozzárendelések ebben a rétegben megszűnnek. Ha a Hozzárendelt bemenetek elnyelése be van kapcsolva, a hozzárendelt bemenetek minden rétegben vissza vannak tartva a Windows elől.</value></data>
   <data name="Import_Tr_RadialFlattened" xml:space="preserve"><value>Az almenüi további szlotok lettek egyetlen gyűrűn.</value></data>
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Akkor érvényesít, amikor a kar visszaáll középre, vagy a réteg véget ér. A reWASD Alkalmaz gombját nem használja.</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Ez a fájl két vezérlőt tart külön. A PadForge-ban a szlot bármely vezérlője kiváltja ezeket a hozzárendeléseket.</value></data>
@@ -4974,7 +4973,7 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Import_Tr_HideController" xml:space="preserve"><value>A reWASD elrejtette ezt a vezérlőt a játékok elől. Kapcsolja be hozzá az Elrejtés a játékok elől beállítást az Eszközök oldalon.</value></data>
   <data name="Import_Tr_NoSuchSetting" xml:space="preserve"><value>A PadForge-ban nincs ilyen beállítás: {0}</value></data>
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>A reWASD megakadályozta, hogy az egérmozgás eljusson a Windowsig. A PadForge a billentyűket és az egérgombokat elnyeli, a mozgást nem, ezért a mutató továbbra is mozog.</value></data>
-  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>A PadForge virtuális vezérlői a mozgásadatokat csak a vezérlő mozgásérzékelőjéből kapják.</value></data>
+  <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>Az Xbox virtuális vezérlőnek nincs mozgása. Mozgás küldéséhez válasszon PlayStation vagy Nintendo vezérlőtípust.</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>A DS4Windows egy gombnyomásra visszatért ehhez a profilhoz a(z) {0} profilból. Ennek PadForge-ban történő megvalósításához adjon hozzá egy Profil-gyorsparancsot ehhez a profilhoz a Profilok oldalon.</value></data>
   <data name="Osk_Style_Grid" xml:space="preserve">
     <value>Rács</value>
@@ -5193,4 +5192,37 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Megnyitja vagy bezárja a billentyűzetet, ha a Megnyitás ezzel bemenetet a Tartási idő letelte előtt engedik fel. A hosszabb lenyomás nem csinál semmit.</value></data>
   <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Megnyitja vagy bezárja a billentyűzetet, ha a Megnyitás ezzel bemenetet háromszor nyomják meg a Lenyomási időablakon belül.</value></data>
   <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Megnyitja vagy bezárja a billentyűzetet, amikor a Lenyomási időablak véget ér a Megnyitás ezzel bemenet egyszeri lenyomása után. Ha az időablakon belül másodszor is megnyomják, megszakad.</value></data>
+  <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>A színek közvetlenül ide jutnak: {0}. A változó színek, például a színváltás vagy a hangot követő színek nem jutnak el hozzá. Az állandó szín igen.</value></data>
+  <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Minden fájl (*.*)|*.*</value></data>
+  <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>PadForge-profil (*{0})|*{0}</value></data>
+  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml</value></data>
+  <data name="FileDialog_ProgramFilter" xml:space="preserve"><value>Programok (*.exe;*.bat;*.cmd;*.com)|*.exe;*.bat;*.cmd;*.com|Minden fájl (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundFileFilter" xml:space="preserve"><value>Hangfájlok és hangcsomagok|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.pfsounds|Hangcsomagok (*.pfsounds)|*.pfsounds|Minden fájl (*.*)|*.*</value></data>
+  <data name="FileDialog_AudioFilter" xml:space="preserve"><value>Hangfájlok|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.ogg|Minden fájl (*.*)|*.*</value></data>
+  <data name="FileDialog_SoundPackageFilter_Format" xml:space="preserve"><value>PadForge-hangcsomagok (*{0})|*{0}</value></data>
+  <data name="FileDialog_IconPackageFilter_Format" xml:space="preserve"><value>PadForge-ikoncsomagok (*{0})|*{0}</value></data>
+  <data name="FileDialog_AutoEqFilter" xml:space="preserve"><value>AutoEq-profil (*.txt)|*.txt|Minden fájl (*.*)|*.*</value></data>
+  <data name="FileDialog_IconPickerFilter" xml:space="preserve"><value>Képek és ikoncsomagok|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.pficons|Ikoncsomagok (*.pficons)|*.pficons</value></data>
+  <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>PadForge-kézikonzolgombok (*.json)|*.json</value></data>
+  <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro-profil (*.json)|*.json</value></data>
+  <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge-billentyűfények (*.json)|*.json</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>A makró nem tudja megnyomni ezt: {0}. A Hozzárendelések fülön egy hozzárendelés igen.</value></data>
+  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>A PadForge nyolc Képernyő-átfedést futtat, ez pedig a reWASD kilencedik vagy tizedik célkeresztje.</value></data>
+  <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>A PadForge a Balra és Jobbra irányt az orsózásból, a Dőlést a legyezésből olvassa, a reWASD alapértelmezése szerint. A reWASD Beállításaiban a kettő felcserélhető, és ez a fájl nem mondja meg, felcserélték-e.</value></data>
+  <data name="Import_Tr_TiltLean" xml:space="preserve"><value>Billentés módban a reWASD Dőlése a függőleges tengely körüli fordulat, és a mozgásérzékelő nem ad szöget ehhez a fordulathoz.</value></data>
+  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>A PadForge az érintőpad átlóját két irányként olvassa egyszerre, amelyet az érintőpad csak akkor jelent, ha az Érintőpad fülön a D-pad mód 8 irányú.</value></data>
+  <data name="Import_Tr_GyroZone" xml:space="preserve"><value>A PadForge a giroszkóp irányát egyetlen küszöbön túl olvassa, és a reWASD nem ad mértékegységet a giroszkópzóna szélére.</value></data>
+  <data name="Import_Tr_AbsoluteMouse" xml:space="preserve"><value>A DS4Windows oda tette a mutatót, ahová a kar mutat. A PadForge-ban ehelyett a kar mozgatja a mutatót.</value></data>
+  <data name="Import_Tr_StickBeforeRotation" xml:space="preserve"><value>A(z) {0} a kart az elforgatása előtt olvassa. A DS4Windows utána olvasta.</value></data>
+  <data name="Import_Tr_StickBeforeCurve" xml:space="preserve"><value>A(z) {0} a kar szögét a zónái és a görbéje előtt olvassa. A DS4Windows utána olvasta.</value></data>
+  <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>Olyan foglalat billentyűzete, amely már nem Billentyűzet + egér</value></data>
+  <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (nincs ezen a számítógépen)</value></data>
+  <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (nincs ezen a foglalaton)</value></data>
+  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>a legyezés és az orsózás teljes erővel összeadva (az orsózás hozzájárulása nincs beolvasva)</value></data>
+  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>a Helyi tér giroszkóp legyezésként olvasva (a PadForge-nak nincs megdöntött elsődleges tengelye)</value></data>
+  <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>a Lézermutató giroszkóp legyezésként olvasva (a PadForge-ban nincs lézermutató-átalakítás)</value></data>
+  <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>A reWASD-ban a(z) {0} még így is eljut a Windows-ig, mert a fájl hozzárendeli, de nem szünteti meg az eredeti funkcióját. Ha a Hozzárendelt bemenetek elnyelése be van kapcsolva, a PadForge visszatartja.</value></data>
+  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>A PadForge a pozitív elforgatást az óramutató járásával megegyezően alkalmazza, ahogy a DS4Windows is. A reWASD súgója az elforgatás tartományát adja meg, az irányát nem.</value></data>
+  <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>A DS4Windows a radiális kar {0} beállítását a kitérítés szöge szerint alakítja. A PadForge kar kártyája az egyenes kitérítést ugyanúgy, az átlósat másképp játssza le.</value></data>
+  <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>A rétegek eltérően hangolják ezt: {0}, ezért mindegyik megtartja a saját hangolását, a görbe pedig a legközelebbi hatványgörbeként került át.</value></data>
 </root>

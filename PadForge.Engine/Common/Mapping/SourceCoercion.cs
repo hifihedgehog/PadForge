@@ -5006,8 +5006,10 @@ namespace PadForge.Engine.Common.Mapping
         /// ball properly (moment of inertia of a solid sphere,
         /// I = 2*m*r^2/5, giving a = r*friction/I) and its defaults work out
         /// to 15.6 rad/s^2, which over that same 0.698 rad pad is 22.4 pad
-        /// widths per second squared. The glide knob scales this to zero at
-        /// 1.00, where the ball becomes frictionless.</para></summary>
+        /// widths per second squared. The constant is twice that, so the
+        /// default glide of 0.90, half friction, slows the ball at
+        /// sc-controller's 22.4. The glide knob scales this to zero at 1.00,
+        /// where the ball becomes frictionless.</para></summary>
         private const float TouchFrictionAtMinGlide = 44.8f;
 
         /// <summary>Clamp on the measured inter-report interval, so a stall
@@ -5117,6 +5119,9 @@ namespace PadForge.Engine.Common.Mapping
                 // row that never set it.
                 float v = axisOffset == 0 ? ball.FrameCountsX : ball.FrameCountsY;
                 v *= PerSourceSensitivity(src);
+                // The row's own direction, as EvaluateForBipolarAxisTarget
+                // turns every other source and ReadGyroMouseCounts the gyro.
+                if (InvertConsumedByHalfAxisRead(src) ? src.InvertOutput : src.Invert) v = -v;
                 return forX ? (v, 0f) : (0f, v);
             }
         }
@@ -5511,6 +5516,11 @@ namespace PadForge.Engine.Common.Mapping
                 float counts = v * GyroCountsPerUnitAxis
                                * (dtSeconds / GyroNominalPollSeconds);
                 if (counts == 0f) return (0f, 0f);
+
+                // The row's own direction, as EvaluateForBipolarAxisTarget
+                // turns every other source: a half read spends Invert on
+                // choosing the half and carries its flip in InvertOutput.
+                if (InvertConsumedByHalfAxisRead(src) ? src.InvertOutput : src.Invert) counts = -counts;
 
                 // The shaped counts pass through directly (#324). This lane
                 // used to add a hidden jitter curve plus a 0.2-count nudge
@@ -6589,6 +6599,12 @@ namespace PadForge.Engine.Common.Mapping
                         // at rest, same as legacy. Users who want a clean
                         // stick-to-trigger map opt in via HalfAxis.
                         axisValue = Math.Max(0f, Math.Min(1f, av / 65535f));
+                        // A stamped dead zone the fold left on the row, as
+                        // the bipolar read applies it: a trigger axis has no
+                        // companion, so the test is the pull alone. The fold
+                        // clears the stamp when it moves it onto the card.
+                        if (src.ParamStickDeadZoneShape != 0)
+                            axisValue = ApplyStickDeadZoneShape(state, src, idx, axisValue);
                     }
                     break;
 

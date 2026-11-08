@@ -17,7 +17,7 @@ namespace PadForge.Models3D
     /// DualShock 3 controller model. B1 to B4 follow the PlayStation
     /// positions the DS4 and DualSense use (B1 is cross, at the bottom).
     /// SELECT is Back and the PS button is Special. The pad has no
-    /// touchpad and no light bar.
+    /// touchpad and no lightbar.
     /// </summary>
     public class ControllerModelDS3 : ControllerModelBase
     {

@@ -1080,16 +1080,6 @@ namespace PadForge.Common
             return null;
         }
 
-        /// <summary>Reverse-resolves a <c>"Gamepad ..."</c> descriptor to its
-        /// localized display (<c>"Gamepad Left Stick X"</c>). Returns null when
-        /// the descriptor is not a recognized gamepad-family member. Shared by
-        /// the row resolver, the neg/extra resolver, and the picker builder so
-        /// all three stay in lockstep with SourceCoercion.GamepadAliasTable.
-        /// <paramref name="anyDevice"/> false is a concrete controller's
-        /// context, where a stick ring is that controller's own input and is
-        /// named like its sticks, without the Gamepad prefix ("Left Stick
-        /// Ring"). The prefix marks the device-agnostic family of the
-        /// "(Any device)" group.</summary>
         /// <summary>A zone, a stick sector or a two-stage pull, named by the
         /// input it reads and the numbers it reads it with.</summary>
         private static string BoundedReadText(PadForge.Engine.Common.Mapping.BoundedRead read, DeviceObjectItem[] objects, bool padPrefixAlways)
@@ -1103,14 +1093,7 @@ namespace PadForge.Common
                     if (half != null) inner = string.Format(si.Mapping_Sector_Format, inner, ResolvePovDirection(half));
                     return string.Format(si.Mapping_Between_Format, inner, read.Low, read.High);
                 case PadForge.Engine.Common.Mapping.BoundedReadKind.Sector:
-                    string direction = read.Center switch
-                    {
-                        0 => "Right",
-                        90 => "Up",
-                        180 => "Left",
-                        _ => "Down",
-                    };
-                    return string.Format(si.Mapping_Sector_Format, inner, ResolvePovDirection(direction));
+                    return string.Format(si.Mapping_Sector_Format, inner, ResolvePovDirection(NearestDirection(read.Center)));
                 default:
                     string mode = read.Mode switch
                     {
@@ -1137,6 +1120,26 @@ namespace PadForge.Common
             return null;
         }
 
+        /// <summary>The nearest of the eight directions to a sector's center,
+        /// in degrees counterclockwise from right (BoundedRead.Center's
+        /// bearing, so 90 is up).</summary>
+        private static string NearestDirection(double degrees)
+        {
+            string[] ways = { "Right", "UpRight", "Up", "UpLeft", "Left", "DownLeft", "Down", "DownRight" };
+            double d = ((degrees % 360.0) + 360.0) % 360.0;
+            return ways[(int)System.Math.Round(d / 45.0) % 8];
+        }
+
+        /// <summary>Reverse-resolves a <c>"Gamepad ..."</c> descriptor to its
+        /// localized display (<c>"Gamepad Left Stick X"</c>). Returns null when
+        /// the descriptor is not a recognized gamepad-family member. Shared by
+        /// the row resolver, the neg/extra resolver, and the picker builder so
+        /// all three stay in lockstep with SourceCoercion.GamepadAliasTable.
+        /// <paramref name="anyDevice"/> false is a concrete controller's
+        /// context, where a stick ring is that controller's own input and is
+        /// named like its sticks, without the Gamepad prefix ("Left Stick
+        /// Ring"). The prefix marks the device-agnostic family of the
+        /// "(Any device)" group.</summary>
         internal static string ResolveGamepadText(string descriptor, bool anyDevice = true)
         {
             if (string.IsNullOrEmpty(descriptor)

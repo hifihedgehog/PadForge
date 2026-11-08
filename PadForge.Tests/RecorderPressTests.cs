@@ -122,5 +122,53 @@ namespace PadForge.Tests
             s.Tick();
             Assert.Equal(new RecorderService.RecordedPress("Gamepad RightTrigger", "", "", ""), s.Result);
         }
+
+        /// <summary>Another recording that starts drops this one's callback
+        /// unanswered, so the recorder says so: a keyboard row (and every
+        /// other record button that waits on a callback) leaves its
+        /// Recording state on the event.</summary>
+        [Fact]
+        public void AnotherRecordingStarting_RaisesCanceledForTheDroppedOne()
+        {
+            using var s = new Session();
+            var ev = typeof(RecorderService).GetEvent("RecordingCanceled");
+            Assert.NotNull(ev);
+            int canceled = 0;
+            ev.AddEventHandler(s.Recorder, new EventHandler((_, _) => canceled++));
+            s.Recorder.StartRecordingFreeform(0, (_, _) => { });
+            Assert.Equal(1, canceled);
+            Assert.Null(s.Result);
+            // Nothing to drop, nothing raised.
+            s.Recorder.CancelRecording();
+            Assert.Equal(2, canceled);
+            s.Recorder.CancelRecording();
+            Assert.Equal(2, canceled);
+        }
+
+        /// <summary>The Menus tab's opener Record button, wired as MainWindow
+        /// wires it: another recording that starts leaves its Recording state,
+        /// and starting it while another button records leaves it armed.</summary>
+        [Fact]
+        public void TheOpenersRecordButton_LeavesRecording_WhenAnotherRecordingStarts_AndStartingItStaysArmed()
+        {
+            using var s = new Session();
+            s.Recorder.RecordingCanceled += (_, _) => s.ViewModel.ClearMenuRecordings();
+            var menu = new MenuEditorItem(new PadForge.Engine.Menus.MenuDefinitionEntry { MenuId = 1 });
+            s.ViewModel.Pads[0].Menus.Add(menu);
+
+            // Started while a keyboard row's press recording runs: the start
+            // cancels that one, and the opener stays armed.
+            Assert.True(menu.BeginRecordAfterStart(MenuEditorItem.MenuRecordTarget.Host, () =>
+            {
+                s.Recorder.StartRecordingFreeform(0, (_, _) => { });
+                return s.Recorder.IsRecording;
+            }));
+            Assert.True(menu.HostRecording);
+
+            // Another record button starts: the opener's callback is dropped,
+            // and its button leaves Recording.
+            s.Recorder.StartRecordingPress(0, _ => { });
+            Assert.False(menu.HostRecording);
+        }
     }
 }

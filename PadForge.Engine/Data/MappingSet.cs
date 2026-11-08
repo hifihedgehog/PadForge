@@ -229,6 +229,16 @@ namespace PadForge.Engine.Data
         /// means none.</summary>
         [XmlAttribute] public string WorkshopGyroDeadZone { get; set; } = "";
 
+        /// <summary>Touchpad momentum from an import (#561): the glide the
+        /// touchpad's cursor coasts with after the finger lifts, as text, for
+        /// pad 0 of whichever device lands on the slot. Empty means none.</summary>
+        [XmlAttribute] public string WorkshopTouchpadGlide { get; set; } = "";
+
+        /// <summary>A Steam import's gyro space, "Player" or "World"
+        /// (gyro_to_2d_conversion_style), for the Gyro tab of whichever
+        /// device lands on the slot. Empty means none.</summary>
+        [XmlAttribute] public string WorkshopGyroSpace { get; set; } = "";
+
         /// <summary>Steam gyro_button as a device-free engage descriptor
         /// (empty DeviceGuid contract): gyro rows fire only while it is
         /// held. Only read when <see cref="Authoritative"/>.</summary>
@@ -289,6 +299,8 @@ namespace PadForge.Engine.Data
             dst.WorkshopIdleDisconnectSeconds = WorkshopIdleDisconnectSeconds ?? "";
             dst.WorkshopBatteryColors = WorkshopBatteryColors ?? "";
             dst.WorkshopGyroDeadZone = WorkshopGyroDeadZone ?? "";
+            dst.WorkshopTouchpadGlide = WorkshopTouchpadGlide ?? "";
+            dst.WorkshopGyroSpace = WorkshopGyroSpace ?? "";
             dst.WorkshopLeftStickDeadZoneShape = WorkshopLeftStickDeadZoneShape ?? "";
             dst.WorkshopRightStickDeadZoneShape = WorkshopRightStickDeadZoneShape ?? "";
             dst.WorkshopGyroEngageDescriptor = WorkshopGyroEngageDescriptor ?? "";

@@ -36,7 +36,7 @@ namespace PadForge.Tests
 
         [Theory]
         [InlineData("private void PollingLoop(int generation, int pollRun)")]
-        [InlineData("private void MouseInjectorLoop(int generation)")]
+        [InlineData("private void MouseInjectorLoop(int generation, Thread pollThread)")]
         public void EveryEngineLoopRetiresOnAStaleGeneration(string method)
         {
             Assert.True(ChecksGeneration(FirstLoopHead(Source(), method)), method);

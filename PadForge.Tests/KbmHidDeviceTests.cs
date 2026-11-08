@@ -820,6 +820,8 @@ namespace PadForge.Tests
             const uint ScanA = 0x1E;
             var hooks = new InputHookManager();
             hooks.SetSuppressedKeys(new HashSet<int> { A });
+            bool paused = InputHookManager.ConsumePaused;
+            InputHookManager.ConsumePaused = false; // as while the engine evaluates
             OwnHidOutput.ResetForTests();
             try
             {
@@ -837,6 +839,7 @@ namespace PadForge.Tests
             finally
             {
                 hooks.SetSuppressedKeys(new HashSet<int>());
+                InputHookManager.ConsumePaused = paused;
                 OwnHidOutput.ResetForTests();
             }
         }
@@ -846,6 +849,8 @@ namespace PadForge.Tests
         {
             var hooks = new InputHookManager();
             hooks.SetSuppressedMouseButtons(new HashSet<int> { 0 });
+            bool paused = InputHookManager.ConsumePaused;
+            InputHookManager.ConsumePaused = false; // as while the engine evaluates
             OwnHidOutput.ResetForTests();
             try
             {
@@ -862,6 +867,7 @@ namespace PadForge.Tests
             finally
             {
                 hooks.SetSuppressedMouseButtons(new HashSet<int>());
+                InputHookManager.ConsumePaused = paused;
                 OwnHidOutput.ResetForTests();
             }
         }

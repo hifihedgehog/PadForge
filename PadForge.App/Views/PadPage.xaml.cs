@@ -1500,8 +1500,7 @@ namespace PadForge.Views
             var dlg = new Microsoft.Win32.OpenFileDialog
             {
                 Title = PadForge.Resources.Strings.Strings.Instance.Macro_Sound_File_Label,
-                Filter = "Audio files and sound packages|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.pfsounds"
-                       + "|Sound packages (*.pfsounds)|*.pfsounds|All files|*.*",
+                Filter = PadForge.Resources.Strings.Strings.Instance.FileDialog_SoundFileFilter,
                 CheckFileExists = true,
             };
             try
@@ -1552,7 +1551,7 @@ namespace PadForge.Views
             var dlg = new Microsoft.Win32.OpenFileDialog
             {
                 Title = PadForge.Resources.Strings.Strings.Instance.MacroAction_RunProgram_Path,
-                Filter = "Programs (*.exe;*.bat;*.cmd;*.com)|*.exe;*.bat;*.cmd;*.com|All files|*.*",
+                Filter = PadForge.Resources.Strings.Strings.Instance.FileDialog_ProgramFilter,
                 CheckFileExists = true,
             };
             try
@@ -1609,7 +1608,7 @@ namespace PadForge.Views
             var dlg = new Microsoft.Win32.OpenFileDialog
             {
                 Title = PadForge.Resources.Strings.Strings.Instance.Pad_Audio_Packages_Add,
-                Filter = $"PadForge sound packages (*{ext})|*{ext}|All files|*.*",
+                Filter = string.Format(PadForge.Resources.Strings.Strings.Instance.FileDialog_SoundPackageFilter_Format, ext) + "|" + PadForge.Resources.Strings.Strings.Instance.FileDialog_AllFilesFilter,
                 Multiselect = true,
                 CheckFileExists = true,
             };
@@ -1623,7 +1622,7 @@ namespace PadForge.Views
             var pick = new Microsoft.Win32.OpenFileDialog
             {
                 Title = PadForge.Resources.Strings.Strings.Instance.Pad_Audio_Packages_PickSounds,
-                Filter = "Audio files|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.ogg|All files|*.*",
+                Filter = PadForge.Resources.Strings.Strings.Instance.FileDialog_AudioFilter,
                 Multiselect = true,
                 CheckFileExists = true,
             };
@@ -1634,7 +1633,7 @@ namespace PadForge.Views
             {
                 Title = PadForge.Resources.Strings.Strings.Instance.Pad_Audio_Packages_Create,
                 FileName = "Sounds" + ext,
-                Filter = $"PadForge sound packages (*{ext})|*{ext}",
+                Filter = string.Format(PadForge.Resources.Strings.Strings.Instance.FileDialog_SoundPackageFilter_Format, ext),
             };
             if (save.ShowDialog() != true) return;
 
@@ -1672,7 +1671,7 @@ namespace PadForge.Views
             var dlg = new Microsoft.Win32.OpenFileDialog
             {
                 Title = PadForge.Resources.Strings.Strings.Instance.Pad_Menus_IconPackages_Add,
-                Filter = $"PadForge icon packages (*{ext})|*{ext}|All files|*.*",
+                Filter = string.Format(PadForge.Resources.Strings.Strings.Instance.FileDialog_IconPackageFilter_Format, ext) + "|" + PadForge.Resources.Strings.Strings.Instance.FileDialog_AllFilesFilter,
                 Multiselect = true,
                 CheckFileExists = true,
             };
@@ -1686,7 +1685,8 @@ namespace PadForge.Views
             var pick = new Microsoft.Win32.OpenFileDialog
             {
                 Title = PadForge.Resources.Strings.Strings.Instance.Pad_Menus_IconPackages_PickImages,
-                Filter = "Image files|*.png;*.jpg;*.jpeg;*.bmp;*.gif|All files|*.*",
+                // The same file types as a keyboard screen's picture.
+                Filter = PadForge.Resources.Strings.Strings.Instance.KeyboardScreen_PictureFilter,
                 Multiselect = true,
                 CheckFileExists = true,
             };
@@ -1697,7 +1697,7 @@ namespace PadForge.Views
             {
                 Title = PadForge.Resources.Strings.Strings.Instance.Pad_Menus_IconPackages_Create,
                 FileName = "Icons" + ext,
-                Filter = $"PadForge icon packages (*{ext})|*{ext}",
+                Filter = string.Format(PadForge.Resources.Strings.Strings.Instance.FileDialog_IconPackageFilter_Format, ext),
             };
             if (save.ShowDialog() != true) return;
 

@@ -5108,20 +5108,15 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>டெய்சி சக்கரம்: எட்டுக் குழுக்களில் ஒன்றைத் தேர்ந்தெடுத்து, பிறகு அதிலுள்ள நான்கு எழுத்துகளில் ஒன்றைத் தேர்ந்தெடுக்கவும்.</value></data>
   <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>அமைப்பை மீட்டமை</value></data>
   <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>திறக்கும் உள்ளீடு</value></data>
-  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>இந்த ஸ்லாட்டுக்கு ஒதுக்கிய சாதனத்தின் ஏதேனும் ஓர் உள்ளீடு, அல்லது ஒன்றாகப் பிடித்த இரண்டு. விசைப்பலகையின் ஒரு கட்டுப்பாடும் அதையே பயன்படுத்தாவிட்டால், அதே உள்ளீடு விசைப்பலகையை மூடும். காலியாக இருந்தால் எந்த உள்ளீடும் அதைத் திறக்காது.</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>இந்த ஸ்லாட்டுக்கு ஒதுக்கிய சாதனத்தின் ஏதேனும் ஓர் உள்ளீடு, டச்பேட் சைகை அல்லது மெனு கலம் உட்பட, அல்லது ஒன்றாகப் பிடித்த இரண்டு. விசைப்பலகையின் ஒரு கட்டுப்பாடும் அதையே பயன்படுத்தாவிட்டால், அதே உள்ளீடு விசைப்பலகையை மூடும். காலியாக இருந்தால் எந்த உள்ளீடும் அதைத் திறக்காது.</value></data>
   <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>திறக்கும் உள்ளீட்டை மீட்டமை</value></data>
   <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>உரைப் பெட்டி தேர்ந்தெடுக்கப்படும்போது திற</value></data>
   <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>Windows பயன்பாடுகளிலும் உலாவிகளிலும், பொத்தான் இல்லாமல். விளையாட்டுகள் தங்கள் உரைப் பெட்டிகளைத் தாமே வரைவதால், விளையாட்டில் இது மேலுள்ள உள்ளீட்டால் திறக்கும்; அடுக்கு மெனுவைத் திறந்தே வைத்திருக்கும் இயக்கத்தில் இருந்தால் அதன் அடுக்கால் திறக்கும்.</value></data>
-  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>விசைகளின் மேல் தனிப்படுத்தலை நகர்த்தும் உள்ளீடு, ஸ்லாட்டுக்கு ஒதுக்கிய இயற்பியல் கட்டுப்படுத்திகளிலிருந்து படிக்கப்படும்.</value></data>
-  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>இடது பாதியை இதைக் கொண்டு செலுத்து</value></data>
-  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>வலது பாதியை இதைக் கொண்டு செலுத்து</value></data>
-  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>குழுவைத் தேர்ந்தெடுக்கும் உள்ளீடு</value></data>
-  <data name="Menu_Reset_Host2" xml:space="preserve"><value>வலது பாதியைச் செலுத்தும் உள்ளீட்டை மீட்டமை</value></data>
   <data name="Menu_Host_DPad" xml:space="preserve"><value>டி-பேட்</value></data>
   <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>முகப் பொத்தான்கள்</value></data>
   <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>விசைப்பலகைக் கட்டுப்பாடுகள்</value></data>
   <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>{0} அமைப்பு, {1} கட்டுப்பாடுகள்</value></data>
-  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>இந்த ஸ்லாட்டுக்கு ஒதுக்கிய இயற்பியல் கட்டுப்படுத்திகளிலிருந்து படிக்கப்படும். ஒவ்வொரு கட்டுப்பாடும் அவற்றில் எதிலுமுள்ள எந்த உள்ளீட்டையும் ஏற்கும்: பொத்தான், அச்சுத் திசை, ஹேட், டச்பேட், அல்லது ஒன்றாகப் பிடித்த இரண்டு. பதிவு பொத்தானைக் கிளிக் செய்து உள்ளீட்டை அழுத்தவும், அல்லது இணைப்புக்கு ஓர் உள்ளீட்டைப் பிடித்தபடி இரண்டாவதை அழுத்தவும். அனைத்தையும் மேப் செய் அவற்றை வரிசையாகப் பதிவுசெய்யும்.</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>இந்த ஸ்லாட்டுக்கு ஒதுக்கிய இயற்பியல் கட்டுப்படுத்திகளிலிருந்து படிக்கப்படும். ஒவ்வொரு கட்டுப்பாடும் அவற்றில் எதிலுமுள்ள பொத்தான், அச்சுத் திசை, ஹேட், டச்பேட், அல்லது ஒன்றாகப் பிடித்த இரண்டு ஆகியவற்றை ஏற்கும். அச்சு ஒரு விசையை அழுத்தும் புள்ளி: அச்சு-பொத்தான் டெட்ஜோன். விசைப்பலகை கட்டுப்படுத்தியை ஓய்வில் வைத்திருக்கும்போது சைகைகளும் மெனு கலங்களும் நின்றுவிடும், எனவே அவற்றைத் திறக்கும் உள்ளீடு மட்டுமே ஏற்கும். பதிவு பொத்தானைக் கிளிக் செய்து உள்ளீட்டை அழுத்தவும், அல்லது இணைப்புக்கு ஓர் உள்ளீட்டைப் பிடித்தபடி இரண்டாவதை அழுத்தவும். அனைத்தையும் மேப் செய் அவற்றை வரிசையாகப் பதிவுசெய்யும்.</value></data>
   <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>அனைத்தையும் மேப் செய்</value></data>
   <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>அமைப்பின் ஒவ்வொரு கட்டுப்பாட்டையும் வரிசையாகப் பதிவுசெய்யும். எந்தக் கட்டுப்பாட்டுக்கு உள்ளீட்டை அழுத்த வேண்டும் என்பதை நிலை வரி குறிப்பிடும்.</value></data>
   <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>{0}-க்கான உள்ளீட்டை அழுத்தவும் ({2}-இல் {1})</value></data>
@@ -5179,4 +5174,23 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>திறக்கும் அழுத்தத்தை மீட்டமை</value></data>
   <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>திறக்கும் உள்ளீடு பிடிப்பு நேரம் வரை பிடிக்கப்பட்டதும் விசைப்பலகையைத் திறக்கும் அல்லது மூடும். குறுகிய அழுத்தம் எதுவும் செய்யாது.</value></data>
   <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>அழுத்தக் கால வரம்புக்குள் திறக்கும் உள்ளீடு இருமுறை அழுத்தப்படும்போது விசைப்பலகையைத் திறக்கும் அல்லது மூடும்.</value></data>
+  <data name="Osk_Control_SteerUp" xml:space="preserve"><value>மேலே செலுத்து</value></data>
+  <data name="Osk_Control_SteerDown" xml:space="preserve"><value>கீழே செலுத்து</value></data>
+  <data name="Osk_Control_SteerLeft" xml:space="preserve"><value>இடதுபுறம் செலுத்து</value></data>
+  <data name="Osk_Control_SteerRight" xml:space="preserve"><value>வலதுபுறம் செலுத்து</value></data>
+  <data name="Osk_Control_LeftHand_Format" xml:space="preserve"><value>{0}, இடது கை</value></data>
+  <data name="Osk_Control_RightHand_Format" xml:space="preserve"><value>{0}, வலது கை</value></data>
+  <data name="Osk_Control_PointerX_Format" xml:space="preserve"><value>சுட்டி {0} X</value></data>
+  <data name="Osk_Control_PointerY_Format" xml:space="preserve"><value>சுட்டி {0} Y</value></data>
+  <data name="Osk_Control_PointerTouch_Format" xml:space="preserve"><value>சுட்டி {0} தொடுதல்</value></data>
+  <data name="Osk_Control_PointerClick_Format" xml:space="preserve"><value>சுட்டி {0} கிளிக்</value></data>
+  <data name="Menu_Keyboard_Deadzone_Tip" xml:space="preserve"><value>தனிப்படுத்தல் நகர்வதற்கு முன் ஒரு செலுத்தும் கட்டுப்பாடு எவ்வளவு தூரம் தள்ளப்பட வேண்டும் என்பது. பொத்தான் அல்லது மற்றொரு ஆன்/ஆஃப் உள்ளீடு அதை உடனே நகர்த்தும்.</value></data>
+  <data name="Menu_Keyboard_Threshold_Name_Format" xml:space="preserve"><value>{0} அச்சு-பொத்தான் டெட்ஜோன்</value></data>
+  <data name="Menu_Keyboard_RecordingAxisPrompt" xml:space="preserve"><value>இந்த ஸ்லாட்டுக்கு ஒதுக்கிய ஏதேனும் சாதனத்தில் ஓர் அச்சை நகர்த்தவும்</value></data>
+  <data name="Menu_Keyboard_OpenPress_Press_Desc" xml:space="preserve"><value>திறக்கும் உள்ளீடு அழுத்தப்பட்டவுடன் விசைப்பலகையைத் திறக்கும் அல்லது மூடும்.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Release_Desc" xml:space="preserve"><value>திறக்கும் உள்ளீடு விடப்படும்போது விசைப்பலகையைத் திறக்கும் அல்லது மூடும்.</value></data>
+  <data name="Menu_Keyboard_OpenPress_WhileHeld_Desc" xml:space="preserve"><value>திறக்கும் உள்ளீடு பிடிக்கப்பட்டிருக்கும்போது விசைப்பலகையைத் திறக்கும், அந்த அழுத்தம் விடப்பட்டதும் மூடும்.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>பிடிப்பு நேரத்துக்கு முன் திறக்கும் உள்ளீடு விடப்படும்போது விசைப்பலகையைத் திறக்கும் அல்லது மூடும். நீண்ட அழுத்தம் எதுவும் செய்யாது.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>அழுத்தக் கால வரம்புக்குள் திறக்கும் உள்ளீடு மும்முறை அழுத்தப்படும்போது விசைப்பலகையைத் திறக்கும் அல்லது மூடும்.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>திறக்கும் உள்ளீடு ஒருமுறை அழுத்தப்பட்டு அழுத்தக் கால வரம்பு முடியும்போது விசைப்பலகையைத் திறக்கும் அல்லது மூடும். வரம்புக்குள் இரண்டாவது அழுத்தம் அதை ரத்து செய்யும்.</value></data>
 </root>

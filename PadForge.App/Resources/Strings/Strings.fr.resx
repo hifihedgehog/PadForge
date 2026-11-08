@@ -5059,20 +5059,15 @@ Voulez-vous que PadForge les désinstalle maintenant ? Cette opération nécessi
   <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>La roue à marguerite : choisissez l'un des huit groupes, puis l'un de ses quatre caractères.</value></data>
   <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>Réinitialiser la disposition</value></data>
   <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>S'ouvre avec</value></data>
-  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>N'importe quelle entrée d'un appareil assigné à cet emplacement, ou deux maintenues ensemble. La même entrée ferme le clavier, sauf si une commande du clavier l'utilise aussi. Vide : aucune entrée ne l'ouvre.</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>N'importe quelle entrée d'un appareil assigné à cet emplacement, y compris un geste du pavé tactile ou une case de menu, ou deux maintenues ensemble. La même entrée ferme le clavier, sauf si une commande du clavier l'utilise aussi. Vide : aucune entrée ne l'ouvre.</value></data>
   <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>Réinitialiser S'ouvre avec</value></data>
   <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>Ouvrir quand une zone de texte est sélectionnée</value></data>
   <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>Dans les applications Windows et les navigateurs, sans bouton. Les jeux dessinent leurs propres zones de texte : dans un jeu, il s'ouvre donc avec l'entrée ci-dessus, ou avec son calque quand Le calque maintient le menu ouvert est activé.</value></data>
-  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>L'entrée qui déplace la surbrillance sur les touches, lue sur les manettes physiques assignées à l'emplacement.</value></data>
-  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>Diriger la moitié gauche avec</value></data>
-  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>Diriger la moitié droite avec</value></data>
-  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>Choisir un groupe avec</value></data>
-  <data name="Menu_Reset_Host2" xml:space="preserve"><value>Réinitialiser Diriger la moitié droite avec</value></data>
   <data name="Menu_Host_DPad" xml:space="preserve"><value>Croix dir.</value></data>
   <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>Boutons d'action</value></data>
   <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>Commandes du clavier</value></data>
   <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>Disposition {0}, {1} commandes</value></data>
-  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Lues sur les manettes physiques assignées à cet emplacement. Chaque commande accepte n'importe quelle entrée de n'importe laquelle d'entre elles : un bouton, une direction d'axe, une croix, un pavé tactile, ou deux entrées maintenues ensemble. Cliquez sur un bouton d'enregistrement et appuyez sur l'entrée, ou maintenez une entrée et appuyez sur une seconde pour une combinaison. Tout assigner les enregistre dans l'ordre.</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Lues sur les manettes physiques assignées à cet emplacement. Chaque commande accepte un bouton, une direction d'axe, une croix, un pavé tactile, ou deux entrées maintenues ensemble, sur n'importe laquelle d'entre elles. Un axe appuie sur une touche à sa Zone morte axe vers bouton. Les gestes et les cases de menu s'arrêtent tant que le clavier maintient la manette au repos : seul S'ouvre avec les prend. Cliquez sur un bouton d'enregistrement et appuyez sur l'entrée, ou maintenez une entrée et appuyez sur une seconde pour une combinaison. Tout assigner les enregistre dans l'ordre.</value></data>
   <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>Tout assigner</value></data>
   <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>Enregistre dans l'ordre toutes les commandes de la disposition. La ligne d'état indique la commande pour laquelle appuyer sur une entrée.</value></data>
   <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>Appuyez sur l'entrée pour {0} ({1} sur {2})</value></data>
@@ -5130,4 +5125,23 @@ Voulez-vous que PadForge les désinstalle maintenant ? Cette opération nécessi
   <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>Réinitialiser S'ouvre sur</value></data>
   <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>Ouvre ou ferme le clavier quand S'ouvre avec est maintenu pendant la durée de maintien. Un appui plus court ne fait rien.</value></data>
   <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>Ouvre ou ferme le clavier quand S'ouvre avec est appuyé deux fois dans la fenêtre d'appui.</value></data>
+  <data name="Osk_Control_SteerUp" xml:space="preserve"><value>Diriger vers le haut</value></data>
+  <data name="Osk_Control_SteerDown" xml:space="preserve"><value>Diriger vers le bas</value></data>
+  <data name="Osk_Control_SteerLeft" xml:space="preserve"><value>Diriger vers la gauche</value></data>
+  <data name="Osk_Control_SteerRight" xml:space="preserve"><value>Diriger vers la droite</value></data>
+  <data name="Osk_Control_LeftHand_Format" xml:space="preserve"><value>{0}, main gauche</value></data>
+  <data name="Osk_Control_RightHand_Format" xml:space="preserve"><value>{0}, main droite</value></data>
+  <data name="Osk_Control_PointerX_Format" xml:space="preserve"><value>Pointeur {0} X</value></data>
+  <data name="Osk_Control_PointerY_Format" xml:space="preserve"><value>Pointeur {0} Y</value></data>
+  <data name="Osk_Control_PointerTouch_Format" xml:space="preserve"><value>Pointeur {0} contact</value></data>
+  <data name="Osk_Control_PointerClick_Format" xml:space="preserve"><value>Pointeur {0} clic</value></data>
+  <data name="Menu_Keyboard_Deadzone_Tip" xml:space="preserve"><value>Distance à pousser une commande de direction avant que le surlignage se déplace. Un bouton ou une autre entrée tout ou rien le déplace aussitôt.</value></data>
+  <data name="Menu_Keyboard_Threshold_Name_Format" xml:space="preserve"><value>{0} Zone morte axe vers bouton</value></data>
+  <data name="Menu_Keyboard_RecordingAxisPrompt" xml:space="preserve"><value>Déplacez un axe de n'importe quel appareil assigné à cet emplacement</value></data>
+  <data name="Menu_Keyboard_OpenPress_Press_Desc" xml:space="preserve"><value>Ouvre ou ferme le clavier dès que S'ouvre avec est appuyé.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Release_Desc" xml:space="preserve"><value>Ouvre ou ferme le clavier quand S'ouvre avec est relâché.</value></data>
+  <data name="Menu_Keyboard_OpenPress_WhileHeld_Desc" xml:space="preserve"><value>Ouvre le clavier tant que S'ouvre avec est maintenu et le ferme quand cet appui est relâché.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Ouvre ou ferme le clavier quand S'ouvre avec est relâché avant la durée de maintien. Un appui plus long ne fait rien.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Ouvre ou ferme le clavier quand S'ouvre avec est appuyé trois fois dans la fenêtre d'appui.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Ouvre ou ferme le clavier quand la fenêtre d'appui se termine après un seul appui sur S'ouvre avec. Un second appui dans la fenêtre l'annule.</value></data>
 </root>

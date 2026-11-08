@@ -5081,20 +5081,15 @@ Vuoi che PadForge li disinstalli ora? L'operazione richiede privilegi elevati e 
   <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>La daisy wheel: si sceglie uno degli otto gruppi, poi uno dei suoi quattro caratteri.</value></data>
   <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>Reimposta Layout</value></data>
   <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>Si apre con</value></data>
-  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Qualsiasi input di un dispositivo assegnato a questo slot, oppure due tenuti premuti insieme. Lo stesso input chiude la tastiera, a meno che lo usi anche un controllo della tastiera. Vuoto significa che nessun input la apre.</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Qualsiasi input di un dispositivo assegnato a questo slot, compresi un gesto del touchpad o una cella del menu, oppure due tenuti premuti insieme. Lo stesso input chiude la tastiera, a meno che lo usi anche un controllo della tastiera. Vuoto significa che nessun input la apre.</value></data>
   <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>Reimposta Si apre con</value></data>
   <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>Apri quando è selezionata una casella di testo</value></data>
   <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>Nelle app di Windows e nei browser, senza alcun pulsante. I giochi disegnano le proprie caselle di testo, quindi in un gioco si apre con l'input indicato sopra, oppure con il suo livello quando «Il livello tiene aperto il menu» è attivo.</value></data>
-  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>L'input che sposta l'evidenziazione sui tasti, letto dai controller fisici assegnati allo slot.</value></data>
-  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>Guida metà sinistra con</value></data>
-  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>Guida metà destra con</value></data>
-  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>Scegli un gruppo con</value></data>
-  <data name="Menu_Reset_Host2" xml:space="preserve"><value>Reimposta Guida metà destra con</value></data>
   <data name="Menu_Host_DPad" xml:space="preserve"><value>D-Pad</value></data>
   <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>Pulsanti frontali</value></data>
   <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>Controlli della tastiera</value></data>
   <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>Layout {0}, controlli {1}</value></data>
-  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Letti dai controller fisici assegnati a questo slot. Ogni controllo accetta qualsiasi input di uno qualsiasi di essi: un pulsante, la direzione di un asse, un hat, un touchpad, oppure due input tenuti premuti insieme. Fai clic su un pulsante di registrazione e premi l'input, oppure tieni premuto un input e premine un secondo per una combinazione. «Mappa tutto» li registra in ordine.</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Letti dai controller fisici assegnati a questo slot. Ogni controllo accetta un pulsante, la direzione di un asse, un hat, un touchpad, oppure due input tenuti premuti insieme, su uno qualsiasi di essi. Un asse preme un tasto alla sua «Zona morta asse-pulsante». Gesti e celle del menu si fermano mentre la tastiera tiene il controller a riposo, quindi solo «Si apre con» li accetta. Fai clic su un pulsante di registrazione e premi l'input, oppure tieni premuto un input e premine un secondo per una combinazione. «Mappa tutto» li registra in ordine.</value></data>
   <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>Mappa tutto</value></data>
   <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>Registra in ordine ogni controllo del layout. La riga di stato indica il controllo per cui premere un input.</value></data>
   <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>Premi l'input per {0} ({1} di {2})</value></data>
@@ -5152,4 +5147,23 @@ Vuoi che PadForge li disinstalli ora? L'operazione richiede privilegi elevati e 
   <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>Reimposta Si apre con la</value></data>
   <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>Apre o chiude la tastiera quando «Si apre con» resta premuto per il tempo di mantenimento. Una pressione più breve non fa nulla.</value></data>
   <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>Apre o chiude la tastiera quando «Si apre con» viene premuto due volte entro la finestra di pressione.</value></data>
+  <data name="Osk_Control_SteerUp" xml:space="preserve"><value>Guida su</value></data>
+  <data name="Osk_Control_SteerDown" xml:space="preserve"><value>Guida giù</value></data>
+  <data name="Osk_Control_SteerLeft" xml:space="preserve"><value>Guida a sinistra</value></data>
+  <data name="Osk_Control_SteerRight" xml:space="preserve"><value>Guida a destra</value></data>
+  <data name="Osk_Control_LeftHand_Format" xml:space="preserve"><value>{0}, mano sinistra</value></data>
+  <data name="Osk_Control_RightHand_Format" xml:space="preserve"><value>{0}, mano destra</value></data>
+  <data name="Osk_Control_PointerX_Format" xml:space="preserve"><value>Puntatore {0} X</value></data>
+  <data name="Osk_Control_PointerY_Format" xml:space="preserve"><value>Puntatore {0} Y</value></data>
+  <data name="Osk_Control_PointerTouch_Format" xml:space="preserve"><value>Puntatore {0} tocco</value></data>
+  <data name="Osk_Control_PointerClick_Format" xml:space="preserve"><value>Puntatore {0} clic</value></data>
+  <data name="Menu_Keyboard_Deadzone_Tip" xml:space="preserve"><value>Quanto va spinto un controllo di guida prima che l'evidenziazione si muova. Un pulsante o un altro input on/off la muove subito.</value></data>
+  <data name="Menu_Keyboard_Threshold_Name_Format" xml:space="preserve"><value>{0} Zona morta asse-pulsante</value></data>
+  <data name="Menu_Keyboard_RecordingAxisPrompt" xml:space="preserve"><value>Muovi un asse su un dispositivo qualsiasi assegnato a questo slot</value></data>
+  <data name="Menu_Keyboard_OpenPress_Press_Desc" xml:space="preserve"><value>Apre o chiude la tastiera non appena «Si apre con» viene premuto.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Release_Desc" xml:space="preserve"><value>Apre o chiude la tastiera quando «Si apre con» viene rilasciato.</value></data>
+  <data name="Menu_Keyboard_OpenPress_WhileHeld_Desc" xml:space="preserve"><value>Apre la tastiera finché «Si apre con» resta premuto e la chiude quando la pressione viene rilasciata.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Apre o chiude la tastiera quando «Si apre con» viene rilasciato prima del tempo di mantenimento. Una pressione più lunga non fa nulla.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Apre o chiude la tastiera quando «Si apre con» viene premuto tre volte entro la finestra di pressione.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Apre o chiude la tastiera quando la finestra di pressione termina dopo una sola pressione di «Si apre con». Una seconda pressione dentro la finestra la annulla.</value></data>
 </root>

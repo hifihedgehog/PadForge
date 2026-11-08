@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using PadForge.Engine.Menus;
 
 namespace PadForge.Common.Input.OnScreenKeyboard
 {
-    /// <summary>How the On-Screen Keyboard is laid out and driven (#565).
+    /// <summary>How the On-Screen Keyboard is laid out and driven (#566).
     /// Saved by name in the settings file, so the names stay.</summary>
     public enum OskStyle
     {
@@ -87,6 +88,9 @@ namespace PadForge.Common.Input.OnScreenKeyboard
         public bool Suggestions { get; init; } = true;
         /// <summary>The symbols page's characters. Empty: the default set.</summary>
         public string Symbols { get; init; } = "";
+        /// <summary>How far a steering input is pushed before it moves the
+        /// selection or picks a group, 0 to 1: the menu's Deadzone.</summary>
+        public float SteerDeadzone { get; init; } = KeyboardMenuDefaults.SteerDeadzonePercent / 100f;
 
         public static readonly OskSettings Default = new();
     }
@@ -193,7 +197,7 @@ namespace PadForge.Common.Input.OnScreenKeyboard
     }
 
     /// <summary>
-    /// The physical frame of the keyboard (#565): the main block of a PC
+    /// The physical frame of the keyboard (#566): the main block of a PC
     /// keyboard by scan code, its rows aligned in columns so up and down move
     /// straight (Windows' gamepad keyboard aligns its keys the same way), and
     /// where each row splits for the Split style. The labels come from the

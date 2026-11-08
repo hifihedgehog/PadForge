@@ -8,7 +8,7 @@ using System.Text;
 namespace PadForge.Common.Input.OnScreenKeyboard
 {
     /// <summary>
-    /// The Windows keyboard layout of the window being typed into (#565),
+    /// The Windows keyboard layout of the window being typed into (#566),
     /// read once per layout with <c>ToUnicodeEx</c>. Flag 4 asks Windows not
     /// to change the keyboard state (Windows 10 1607 and later), so reading a
     /// dead key leaves no pending accent behind for the user's next key.
@@ -129,7 +129,7 @@ namespace PadForge.Common.Input.OnScreenKeyboard
     }
 
     /// <summary>
-    /// Sends the keyboard's keys to Windows (#565). A key goes out as a
+    /// Sends the keyboard's keys to Windows (#566). A key goes out as a
     /// physical key does: the scan code of its place and the virtual key the
     /// foreground window's layout gives that place, with the extended flag
     /// for an E0 key. Every event carries <c>InputHookManager.OutputTag</c>,

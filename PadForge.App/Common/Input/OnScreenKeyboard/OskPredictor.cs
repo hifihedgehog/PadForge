@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace PadForge.Common.Input.OnScreenKeyboard
 {
     /// <summary>
-    /// Word suggestions from Windows' own text prediction (#565,
+    /// Word suggestions from Windows' own text prediction (#566,
     /// <c>Windows.Data.Text.TextPredictionGenerator</c>), asked off the poll
     /// thread. Windows answers for the languages installed on the PC and
     /// returns nothing for others. Its touch keyboard model mixes in near

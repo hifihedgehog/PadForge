@@ -97,7 +97,7 @@ namespace PadForge.ViewModels
         /// <summary>Which input the freeform recorder is currently aimed
         /// at: the opener fold, one of the Custom steer axes, or the
         /// Click input.</summary>
-        public enum MenuRecordTarget { Host, CustomX, CustomY, Click, Custom2X, Custom2Y, Host2 }
+        public enum MenuRecordTarget { Host, CustomX, CustomY, Click }
 
         public MenuEditorItem(MenuDefinitionEntry entry)
         {
@@ -229,8 +229,6 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(OpenPressIndex));
             OnPropertyChanged(nameof(OpenPressMsLabel));
             OnPropertyChanged(nameof(KeyboardLayoutDescription));
-            OnPropertyChanged(nameof(Host2Options));
-            OnPropertyChanged(nameof(SelectedHost2));
             OnPropertyChanged(nameof(MapAllText));
             RefreshTypesThrough();
             // The rows carry their labels, so they are made again in the new
@@ -546,15 +544,11 @@ namespace PadForge.ViewModels
         /// <summary>The host row's label: "Opens With" in surface mode, where
         /// the surface opens the menu, and "Steer With" in stay-open mode, where
         /// the layer opens it and the surface only moves the highlight.</summary>
-        public string HostInputLabel => IsKeyboard ? KeyboardHostLabel
-            : EffectiveLayerHoldsOpen
+        public string HostInputLabel => EffectiveLayerHoldsOpen
             ? Strings.Instance.Menu_Host_SteerWith
             : Strings.Instance.Menu_HostInput;
 
-        /// <summary>A keyboard menu opens with its own input, so its steering
-        /// row only steers (#566).</summary>
-        public string HostInputTip => IsKeyboard ? Strings.Instance.Menu_Keyboard_Steer_Tip
-            : EffectiveLayerHoldsOpen
+        public string HostInputTip => EffectiveLayerHoldsOpen
             ? Strings.Instance.Menu_Host_SteerWith_Tip
             : Strings.Instance.Menu_HostInput_Tip;
 
@@ -736,31 +730,6 @@ namespace PadForge.ViewModels
             return false;
         }
 
-        /// <summary>Split's right half (#566), folded the same way.</summary>
-        public bool TryApplyRecordedHost2(string descriptor)
-        {
-            string host = FoldHost(descriptor, out string customAxis);
-            if (host == null) return false;
-            if (customAxis != null)
-            {
-                Entry.Host2Descriptor = "Custom";
-                Entry.Custom2XDescriptor = customAxis;
-                RefreshHost2Options();
-                RaiseCustomInput(MenuRecordTarget.Custom2X);
-                OnEdited();
-                return true;
-            }
-            foreach (var h in Host2Options)
-            {
-                if (h.Descriptor == host)
-                {
-                    SelectedHost2 = h;
-                    return true;
-                }
-            }
-            return false;
-        }
-
         /// <summary>The host a recorded input folds onto: a stick axis or
         /// click picks the stick, a touchpad read the pad, a D-pad press the
         /// D-pad and a face button the four face buttons (the button-pair
@@ -809,21 +778,11 @@ namespace PadForge.ViewModels
                 case MenuRecordTarget.Host:
                     return TryApplyRecordedHost(descriptor);
 
-                case MenuRecordTarget.Host2:
-                    return TryApplyRecordedHost2(descriptor);
-
                 case MenuRecordTarget.CustomX:
                 case MenuRecordTarget.CustomY:
-                case MenuRecordTarget.Custom2X:
-                case MenuRecordTarget.Custom2Y:
                     if (!IsAnalogDescriptor(canonical)) return false;
-                    switch (target)
-                    {
-                        case MenuRecordTarget.CustomX: Entry.CustomXDescriptor = canonical; break;
-                        case MenuRecordTarget.CustomY: Entry.CustomYDescriptor = canonical; break;
-                        case MenuRecordTarget.Custom2X: Entry.Custom2XDescriptor = canonical; break;
-                        default: Entry.Custom2YDescriptor = canonical; break;
-                    }
+                    if (target == MenuRecordTarget.CustomX) Entry.CustomXDescriptor = canonical;
+                    else Entry.CustomYDescriptor = canonical;
                     RaiseCustomInput(target);
                     OnEdited();
                     return true;
@@ -1043,14 +1002,6 @@ namespace PadForge.ViewModels
                     if ((Entry.CustomYDescriptor ?? "") == v) return;
                     Entry.CustomYDescriptor = v;
                     break;
-                case MenuRecordTarget.Custom2X:
-                    if ((Entry.Custom2XDescriptor ?? "") == v) return;
-                    Entry.Custom2XDescriptor = v;
-                    break;
-                case MenuRecordTarget.Custom2Y:
-                    if ((Entry.Custom2YDescriptor ?? "") == v) return;
-                    Entry.Custom2YDescriptor = v;
-                    break;
                 default:
                     if ((Entry.ClickDescriptor ?? "") == v) return;
                     Entry.ClickDescriptor = v;
@@ -1083,18 +1034,6 @@ namespace PadForge.ViewModels
                         OnPropertyChanged(nameof(CustomYSelected));
                         OnPropertyChanged(nameof(CustomYSubtitle));
                         break;
-                    case MenuRecordTarget.Custom2X:
-                        OnPropertyChanged(nameof(Custom2XChoices));
-                        OnPropertyChanged(nameof(Custom2XChoicesView));
-                        OnPropertyChanged(nameof(Custom2XSelected));
-                        OnPropertyChanged(nameof(Custom2XSubtitle));
-                        break;
-                    case MenuRecordTarget.Custom2Y:
-                        OnPropertyChanged(nameof(Custom2YChoices));
-                        OnPropertyChanged(nameof(Custom2YChoicesView));
-                        OnPropertyChanged(nameof(Custom2YSelected));
-                        OnPropertyChanged(nameof(Custom2YSubtitle));
-                        break;
                     default:
                         OnPropertyChanged(nameof(ClickChoices));
                         OnPropertyChanged(nameof(ClickChoicesView));
@@ -1118,8 +1057,6 @@ namespace PadForge.ViewModels
             RaiseCustomInput(MenuRecordTarget.CustomX);
             RaiseCustomInput(MenuRecordTarget.CustomY);
             RaiseCustomInput(MenuRecordTarget.Click);
-            RaiseCustomInput(MenuRecordTarget.Custom2X);
-            RaiseCustomInput(MenuRecordTarget.Custom2Y);
             // The keyboard rows' lists come from the same picker.
             OpenRow.Refresh();
             foreach (var row in KeyboardControlRows) row.Refresh();
@@ -1175,9 +1112,6 @@ namespace PadForge.ViewModels
                 OnPropertyChanged(nameof(CustomXRecordIcon));
                 OnPropertyChanged(nameof(CustomYRecordIcon));
                 OnPropertyChanged(nameof(ClickRecordIcon));
-                OnPropertyChanged(nameof(Custom2XRecordIcon));
-                OnPropertyChanged(nameof(Custom2YRecordIcon));
-                OnPropertyChanged(nameof(Host2RecordIcon));
                 RaiseRecordTexts();
             }
         }
@@ -1188,9 +1122,6 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(CustomXRecordText));
             OnPropertyChanged(nameof(CustomYRecordText));
             OnPropertyChanged(nameof(ClickRecordText));
-            OnPropertyChanged(nameof(Custom2XRecordText));
-            OnPropertyChanged(nameof(Custom2YRecordText));
-            OnPropertyChanged(nameof(Host2RecordText));
         }
 
         internal void BeginRecord(MenuRecordTarget target)
@@ -1378,7 +1309,7 @@ namespace PadForge.ViewModels
             // Write the MODEL default directly, never by list index: a
             // never-lie entry for an out-of-grammar descriptor can extend
             // the list, so positions are not fixed.
-            Entry.HostDescriptor = IsKeyboard ? KeyboardMenuDefaults.Host : "Gamepad RightStick";
+            Entry.HostDescriptor = "Gamepad RightStick";
             Entry.HostHalf = 0;
             Entry.CustomXDescriptor = "";
             Entry.CustomYDescriptor = "";
@@ -1422,7 +1353,10 @@ namespace PadForge.ViewModels
         });
         private RelayCommand _resetGeometry;
 
-        public RelayCommand ResetDeadzoneCommand => _resetDeadzone ??= new RelayCommand(() => EngageDeadzonePercent = 25);
+        /// <summary>Back to the style's default: a quarter push engages a
+        /// ring or a grid, half a push moves a keyboard's selection.</summary>
+        public RelayCommand ResetDeadzoneCommand => _resetDeadzone ??= new RelayCommand(
+            () => EngageDeadzonePercent = IsKeyboard ? KeyboardMenuDefaults.SteerDeadzonePercent : 25);
         private RelayCommand _resetDeadzone;
 
         // ── Cells ────────────────────────────────────────────────

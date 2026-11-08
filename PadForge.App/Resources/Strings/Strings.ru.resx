@@ -5108,20 +5108,15 @@
   <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>Колесо с группами: выберите одну из восьми групп, затем один из четырех её символов.</value></data>
   <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>Сбросить раскладку</value></data>
   <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>Чем открывать</value></data>
-  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Любой ввод на устройстве, назначенном этому слоту, или два ввода одновременно. Тот же ввод закрывает клавиатуру, если его не использует и элемент управления клавиатурой. Если поле пустое, клавиатуру не открывает ни один ввод.</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Любой ввод на устройстве, назначенном этому слоту, включая жест тачпада или ячейку меню, или два ввода одновременно. Тот же ввод закрывает клавиатуру, если его не использует и элемент управления клавиатурой. Если поле пустое, клавиатуру не открывает ни один ввод.</value></data>
   <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>Сбросить «Чем открывать»</value></data>
   <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>Открывать при выборе текстового поля</value></data>
   <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>В приложениях Windows и браузерах, без нажатия кнопки. Игры рисуют текстовые поля сами, поэтому в игре клавиатура открывается заданным выше вводом или своим слоем, если включено «Слой держит меню открытым».</value></data>
-  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>Ввод, который двигает выделение по клавишам. Читается с физических контроллеров, назначенных слоту.</value></data>
-  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>Чем управлять левой половиной</value></data>
-  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>Чем управлять правой половиной</value></data>
-  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>Чем выбирать группу</value></data>
-  <data name="Menu_Reset_Host2" xml:space="preserve"><value>Сбросить «Чем управлять правой половиной»</value></data>
   <data name="Menu_Host_DPad" xml:space="preserve"><value>Крестовина</value></data>
   <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>Лицевые кнопки</value></data>
   <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>Управление клавиатурой</value></data>
   <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>Раскладка: {0}, элементов управления: {1}</value></data>
-  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Читается с физических контроллеров, назначенных этому слоту. Каждому элементу подходит любой ввод на любом из них: кнопка, направление оси, крестовина, тачпад или два ввода одновременно. Нажмите кнопку записи и подайте ввод либо удерживайте один ввод и нажмите второй, чтобы записать сочетание. «Назначить все» записывает их по порядку.</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Читается с физических контроллеров, назначенных этому слоту. Каждому элементу подходит любой ввод на любом из них: кнопка, направление оси, крестовина, тачпад или два ввода одновременно. Ось нажимает клавишу на пороге «Мертвая зона оси как кнопки». Жесты и ячейки меню не работают, пока клавиатура держит контроллер в покое, поэтому их принимает только «Чем открывать». Нажмите кнопку записи и подайте ввод либо удерживайте один ввод и нажмите второй, чтобы записать сочетание. «Назначить все» записывает их по порядку.</value></data>
   <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>Назначить все</value></data>
   <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>Записывает по порядку все элементы управления раскладки. Строка состояния называет элемент, для которого нужно подать ввод.</value></data>
   <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>Подайте ввод для «{0}» ({1} из {2})</value></data>
@@ -5179,4 +5174,23 @@
   <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>Сбросить «Когда открывать»</value></data>
   <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>Открывает или закрывает клавиатуру, когда «Чем открывать» удерживается в течение времени удержания. Более короткое нажатие ничего не делает.</value></data>
   <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>Открывает или закрывает клавиатуру, когда «Чем открывать» нажимается дважды в пределах окна нажатия.</value></data>
+  <data name="Osk_Control_SteerUp" xml:space="preserve"><value>Управление вверх</value></data>
+  <data name="Osk_Control_SteerDown" xml:space="preserve"><value>Управление вниз</value></data>
+  <data name="Osk_Control_SteerLeft" xml:space="preserve"><value>Управление влево</value></data>
+  <data name="Osk_Control_SteerRight" xml:space="preserve"><value>Управление вправо</value></data>
+  <data name="Osk_Control_LeftHand_Format" xml:space="preserve"><value>{0}, левая рука</value></data>
+  <data name="Osk_Control_RightHand_Format" xml:space="preserve"><value>{0}, правая рука</value></data>
+  <data name="Osk_Control_PointerX_Format" xml:space="preserve"><value>Указатель {0} X</value></data>
+  <data name="Osk_Control_PointerY_Format" xml:space="preserve"><value>Указатель {0} Y</value></data>
+  <data name="Osk_Control_PointerTouch_Format" xml:space="preserve"><value>Указатель {0}, касание</value></data>
+  <data name="Osk_Control_PointerClick_Format" xml:space="preserve"><value>Указатель {0}, щелчок</value></data>
+  <data name="Menu_Keyboard_Deadzone_Tip" xml:space="preserve"><value>Насколько нужно отклонить управляющий элемент, чтобы выделение сдвинулось. Кнопка или другой ввод «включено/выключено» сдвигает его сразу.</value></data>
+  <data name="Menu_Keyboard_Threshold_Name_Format" xml:space="preserve"><value>{0}: Мертвая зона оси как кнопки</value></data>
+  <data name="Menu_Keyboard_RecordingAxisPrompt" xml:space="preserve"><value>Подвигайте осью на любом устройстве, назначенном этому слоту</value></data>
+  <data name="Menu_Keyboard_OpenPress_Press_Desc" xml:space="preserve"><value>Открывает или закрывает клавиатуру, как только нажимается «Чем открывать».</value></data>
+  <data name="Menu_Keyboard_OpenPress_Release_Desc" xml:space="preserve"><value>Открывает или закрывает клавиатуру, когда «Чем открывать» отпускается.</value></data>
+  <data name="Menu_Keyboard_OpenPress_WhileHeld_Desc" xml:space="preserve"><value>Открывает клавиатуру, пока «Чем открывать» удерживается, и закрывает ее, когда нажатие отпущено.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Открывает или закрывает клавиатуру, когда «Чем открывать» отпускается раньше, чем истекает время удержания. Более долгое нажатие ничего не делает.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Открывает или закрывает клавиатуру, когда «Чем открывать» нажимается трижды в пределах окна нажатия.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Открывает или закрывает клавиатуру, когда окно нажатия заканчивается после одного нажатия «Чем открывать». Второе нажатие внутри окна отменяет это.</value></data>
 </root>

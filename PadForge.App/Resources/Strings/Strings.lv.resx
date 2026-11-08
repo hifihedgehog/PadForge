@@ -5108,20 +5108,15 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>Margrietiņas ritenis: izvēlieties vienu no astoņām grupām, tad vienu no tās četrām rakstzīmēm.</value></data>
   <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>Atiestatīt izkārtojumu</value></data>
   <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>Atver ar</value></data>
-  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Jebkura ievade ierīcē, kas piešķirta šim slotam, vai divas kopā turētas ievades. Tā pati ievade tastatūru arī aizver, ja vien to neizmanto kāda tastatūras vadīkla. Ja lauks ir tukšs, tastatūru neatver neviena ievade.</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Jebkura ievade ierīcē, kas piešķirta šim slotam, ieskaitot skārienpaliktņa žestu vai izvēlnes šūnu, vai divas kopā turētas ievades. Tā pati ievade tastatūru arī aizver, ja vien to neizmanto kāda tastatūras vadīkla. Ja lauks ir tukšs, tastatūru neatver neviena ievade.</value></data>
   <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>Atiestatīt „Atver ar”</value></data>
   <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>Atvērt, kad atlasīts teksta lodziņš</value></data>
   <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>Windows lietotnēs un pārlūkos, bez pogas. Spēles zīmē savus teksta lodziņus, tāpēc spēlē tastatūra atveras ar iepriekš norādīto ievadi vai ar savu slāni, ja ir ieslēgts „Slānis notur izvēlni atvērtu”.</value></data>
-  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>Ievade, kas pārvieto iezīmējumu pa taustiņiem. To nolasa no slota piešķirtajiem fiziskajiem kontrolieriem.</value></data>
-  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>Vadīt kreiso pusi ar</value></data>
-  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>Vadīt labo pusi ar</value></data>
-  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>Izvēlēties grupu ar</value></data>
-  <data name="Menu_Reset_Host2" xml:space="preserve"><value>Atiestatīt „Vadīt labo pusi ar”</value></data>
   <data name="Menu_Host_DPad" xml:space="preserve"><value>D-pad</value></data>
   <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>Darbības pogas</value></data>
   <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>Tastatūras vadīklas</value></data>
   <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>Izkārtojums: {0}, vadīklas: {1}</value></data>
-  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Nolasa no fiziskajiem kontrolieriem, kas piešķirti šim slotam. Katrai vadīklai var izmantot jebkuru ievadi jebkurā no tiem: pogu, ass virzienu, hat slēdzi, skārienpaliktni vai divas kopā turētas ievades. Noklikšķiniet uz ierakstīšanas pogas un nospiediet ievadi vai turiet vienu ievadi un nospiediet otru, lai iegūtu kombināciju. „Piesaistīt visu” ieraksta tās pēc kārtas.</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Nolasa no fiziskajiem kontrolieriem, kas piešķirti šim slotam. Katrai vadīklai var izmantot pogu, ass virzienu, hat slēdzi, skārienpaliktni vai divas kopā turētas ievades jebkurā no tiem. Ass nospiež taustiņu pie „Nejutības zona asij kā pogai”. Žesti un izvēlnes šūnas apstājas, kamēr tastatūra tur kontrolieri miera stāvoklī, tāpēc tos izmanto tikai „Atver ar”. Noklikšķiniet uz ierakstīšanas pogas un nospiediet ievadi vai turiet vienu ievadi un nospiediet otru, lai iegūtu kombināciju. „Piesaistīt visu” ieraksta tās pēc kārtas.</value></data>
   <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>Piesaistīt visu</value></data>
   <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>Ieraksta visas izkārtojuma vadīklas pēc kārtas. Statusa rindā ir norādīta vadīkla, kurai jānospiež ievade.</value></data>
   <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>Nospiediet ievadi vadīklai {0} ({1} no {2})</value></data>
@@ -5179,4 +5174,23 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>Atiestatīt „Atver pie”</value></data>
   <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>Atver vai aizver tastatūru, kad „Atver ar” ir turēta tik ilgi, cik ilgs ir turēšanas laiks. Īsāka nospiešana neko nedara.</value></data>
   <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>Atver vai aizver tastatūru, kad „Atver ar” tiek nospiesta divreiz nospiešanas loga laikā.</value></data>
+  <data name="Osk_Control_SteerUp" xml:space="preserve"><value>Vadīt uz augšu</value></data>
+  <data name="Osk_Control_SteerDown" xml:space="preserve"><value>Vadīt uz leju</value></data>
+  <data name="Osk_Control_SteerLeft" xml:space="preserve"><value>Vadīt pa kreisi</value></data>
+  <data name="Osk_Control_SteerRight" xml:space="preserve"><value>Vadīt pa labi</value></data>
+  <data name="Osk_Control_LeftHand_Format" xml:space="preserve"><value>{0}, kreisā roka</value></data>
+  <data name="Osk_Control_RightHand_Format" xml:space="preserve"><value>{0}, labā roka</value></data>
+  <data name="Osk_Control_PointerX_Format" xml:space="preserve"><value>Rādītājs {0} X</value></data>
+  <data name="Osk_Control_PointerY_Format" xml:space="preserve"><value>Rādītājs {0} Y</value></data>
+  <data name="Osk_Control_PointerTouch_Format" xml:space="preserve"><value>Rādītājs {0} pieskāriens</value></data>
+  <data name="Osk_Control_PointerClick_Format" xml:space="preserve"><value>Rādītājs {0} klikšķis</value></data>
+  <data name="Menu_Keyboard_Deadzone_Tip" xml:space="preserve"><value>Cik tālu jānovirza vadīkla, lai iezīmējums pārvietotos. Poga vai cita ieslēgšanas/izslēgšanas ievade to pārvieto uzreiz.</value></data>
+  <data name="Menu_Keyboard_Threshold_Name_Format" xml:space="preserve"><value>{0}: Nejutības zona asij kā pogai</value></data>
+  <data name="Menu_Keyboard_RecordingAxisPrompt" xml:space="preserve"><value>Pakustiniet asi jebkurā ierīcē, kas piešķirta šim slotam</value></data>
+  <data name="Menu_Keyboard_OpenPress_Press_Desc" xml:space="preserve"><value>Atver vai aizver tastatūru, tiklīdz „Atver ar” tiek nospiesta.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Release_Desc" xml:space="preserve"><value>Atver vai aizver tastatūru, kad „Atver ar” tiek atlaista.</value></data>
+  <data name="Menu_Keyboard_OpenPress_WhileHeld_Desc" xml:space="preserve"><value>Atver tastatūru, kamēr „Atver ar” ir turēta, un aizver to, kad nospiešana tiek atlaista.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Atver vai aizver tastatūru, kad „Atver ar” tiek atlaista pirms turēšanas laika beigām. Ilgāka nospiešana neko nedara.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Atver vai aizver tastatūru, kad „Atver ar” tiek nospiesta trīsreiz nospiešanas loga laikā.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Atver vai aizver tastatūru, kad nospiešanas logs beidzas pēc vienas „Atver ar” nospiešanas. Otra nospiešana loga laikā to atceļ.</value></data>
 </root>

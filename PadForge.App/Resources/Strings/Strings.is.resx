@@ -5108,20 +5108,15 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>Stafahjólið: veldu einn af átta hópum og síðan einn af fjórum stöfum hans.</value></data>
   <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>Endurstilla uppsetningu</value></data>
   <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>Opnast með</value></data>
-  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Hvaða inntak sem er á tæki sem er úthlutað á þessa rauf, eða tvö inntök haldin saman. Sama inntak lokar lyklaborðinu, nema stýring lyklaborðsins noti það líka. Tómt þýðir að ekkert inntak opnar það.</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Hvaða inntak sem er á tæki sem er úthlutað á þessa rauf, þar með talin snertiflatarhreyfing eða valmyndarreitur, eða tvö inntök haldin saman. Sama inntak lokar lyklaborðinu, nema stýring lyklaborðsins noti það líka. Tómt þýðir að ekkert inntak opnar það.</value></data>
   <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>Endurstilla „Opnast með“</value></data>
   <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>Opna þegar textareitur er valinn</value></data>
   <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>Í Windows-forritum og vöfrum, án hnapps. Leikir teikna sína eigin textareiti, svo í leik opnast það með inntakinu hér að ofan, eða með laginu sínu þegar kveikt er á „Lagið heldur valmyndinni opinni“.</value></data>
-  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>Inntakið sem færir auðkenninguna yfir lyklana, lesið úr raunverulegum stýripinnum sem eru úthlutaðir á raufina.</value></data>
-  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>Stýra vinstri helmingi með</value></data>
-  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>Stýra hægri helmingi með</value></data>
-  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>Velja hóp með</value></data>
-  <data name="Menu_Reset_Host2" xml:space="preserve"><value>Endurstilla „Stýra hægri helmingi með“</value></data>
   <data name="Menu_Host_DPad" xml:space="preserve"><value>Stefnuhnappar</value></data>
   <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>Aðalhnappar</value></data>
   <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>Stýringar lyklaborðs</value></data>
   <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>Uppsetning: {0}, stýringar: {1}</value></data>
-  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Lesið úr raunverulegum stýripinnum sem eru úthlutaðir á þessa rauf. Hver stýring tekur við hvaða inntaki sem er á hverjum þeirra: hnappi, ásstefnu, stefnuhnappi, snertifleti eða tveimur inntökum haldnum saman. Smelltu á upptökuhnapp og ýttu á inntakið, eða haltu einu inntaki og ýttu á annað til að fá samsetningu. „Varpa öllu“ tekur þau upp í röð.</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Lesið úr raunverulegum stýripinnum sem eru úthlutaðir á þessa rauf. Hver stýring tekur við hnappi, ásstefnu, stefnuhnappi, snertifleti eða tveimur inntökum haldnum saman, á hvaða þeirra sem er. Ás ýtir á lykil við „Dautt svæði áss-í-hnapp“. Snertiflatarhreyfingar og valmyndarreitir stöðvast á meðan lyklaborðið heldur stýripinnanum í hvíld, þannig að aðeins „Opnast með“ tekur við þeim. Smelltu á upptökuhnapp og ýttu á inntakið, eða haltu einu inntaki og ýttu á annað til að fá samsetningu. „Varpa öllu“ tekur þau upp í röð.</value></data>
   <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>Varpa öllu</value></data>
   <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>Tekur upp hverja stýringu uppsetningarinnar í röð. Stöðulínan nefnir stýringuna sem á að ýta á inntak fyrir.</value></data>
   <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>Ýttu á inntakið fyrir {0} ({1} af {2})</value></data>
@@ -5179,4 +5174,23 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>Endurstilla „Opnast við“</value></data>
   <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>Opnar eða lokar lyklaborðinu þegar „Opnast með“ hefur verið haldið í haldtímann. Styttri ýting gerir ekkert.</value></data>
   <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>Opnar eða lokar lyklaborðinu þegar ýtt er tvisvar á „Opnast með“ innan tímaglugga ýtinga.</value></data>
+  <data name="Osk_Control_SteerUp" xml:space="preserve"><value>Stýra upp</value></data>
+  <data name="Osk_Control_SteerDown" xml:space="preserve"><value>Stýra niður</value></data>
+  <data name="Osk_Control_SteerLeft" xml:space="preserve"><value>Stýra til vinstri</value></data>
+  <data name="Osk_Control_SteerRight" xml:space="preserve"><value>Stýra til hægri</value></data>
+  <data name="Osk_Control_LeftHand_Format" xml:space="preserve"><value>{0}, vinstri hönd</value></data>
+  <data name="Osk_Control_RightHand_Format" xml:space="preserve"><value>{0}, hægri hönd</value></data>
+  <data name="Osk_Control_PointerX_Format" xml:space="preserve"><value>Bendill {0} X</value></data>
+  <data name="Osk_Control_PointerY_Format" xml:space="preserve"><value>Bendill {0} Y</value></data>
+  <data name="Osk_Control_PointerTouch_Format" xml:space="preserve"><value>Bendill {0} snerting</value></data>
+  <data name="Osk_Control_PointerClick_Format" xml:space="preserve"><value>Bendill {0} smellur</value></data>
+  <data name="Menu_Keyboard_Deadzone_Tip" xml:space="preserve"><value>Hversu langt stýringu er ýtt áður en auðkenningin færist. Hnappur eða annað inntak sem er bara í eða úr færir hana strax.</value></data>
+  <data name="Menu_Keyboard_Threshold_Name_Format" xml:space="preserve"><value>{0} Dautt svæði áss-í-hnapp</value></data>
+  <data name="Menu_Keyboard_RecordingAxisPrompt" xml:space="preserve"><value>Hreyfðu ás á hvaða tæki sem er úthlutað á þessa rauf</value></data>
+  <data name="Menu_Keyboard_OpenPress_Press_Desc" xml:space="preserve"><value>Opnar eða lokar lyklaborðinu um leið og ýtt er á „Opnast með“.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Release_Desc" xml:space="preserve"><value>Opnar eða lokar lyklaborðinu þegar „Opnast með“ er sleppt.</value></data>
+  <data name="Menu_Keyboard_OpenPress_WhileHeld_Desc" xml:space="preserve"><value>Opnar lyklaborðið á meðan „Opnast með“ er haldið og lokar því þegar sleppt er.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Opnar eða lokar lyklaborðinu þegar „Opnast með“ er sleppt áður en haldtíminn líður. Lengri ýting gerir ekkert.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Opnar eða lokar lyklaborðinu þegar ýtt er þrisvar á „Opnast með“ innan tímaglugga ýtinga.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Opnar eða lokar lyklaborðinu þegar tímaglugga ýtinga lýkur eftir eina ýtingu á „Opnast með“. Önnur ýting innan gluggans hættir við það.</value></data>
 </root>

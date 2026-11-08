@@ -5059,20 +5059,15 @@
   <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>雏菊轮盘：先选八组之一，再选该组的四个字符之一。</value></data>
   <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>重置布局</value></data>
   <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>打开方式</value></data>
-  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>分配给此槽位的设备上的任意输入，或同时按住的两个输入。同一输入也会关闭键盘，除非某个键盘控制也使用它。留空表示没有输入能打开它。</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>分配给此槽位的设备上的任意输入（包括触控板手势或菜单单元格），或同时按住的两个输入。同一输入也会关闭键盘，除非某个键盘控制也使用它。留空表示没有输入能打开它。</value></data>
   <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>重置打开方式</value></data>
   <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>选中文本框时打开</value></data>
   <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>在 Windows 应用和浏览器中，无需按键。游戏自己绘制文本框，因此在游戏中用上方的输入打开，或在“由层保持菜单打开”开启时用其层打开。</value></data>
-  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>在键盘按键间移动高亮的输入，读取自此槽位所分配的物理手柄。</value></data>
-  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>左半部分操控输入</value></data>
-  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>右半部分操控输入</value></data>
-  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>选择分组输入</value></data>
-  <data name="Menu_Reset_Host2" xml:space="preserve"><value>重置右半部分操控输入</value></data>
   <data name="Menu_Host_DPad" xml:space="preserve"><value>十字键</value></data>
   <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>正面按键</value></data>
   <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>键盘控制</value></data>
   <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>{0} 布局，{1} 个控制</value></data>
-  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>读取自分配给此槽位的物理手柄。每个控制可接受其中任意手柄的任意输入：按键、轴方向、方向键、触控板，或同时按住的两个输入。点击录制按钮并按下输入，或按住一个输入再按第二个以设置组合。“全部映射”会按顺序录制它们。</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>读取自分配给此槽位的物理手柄。每个控制可接受其中任意手柄的任意输入：按键、轴方向、方向键、触控板，或同时按住的两个输入。轴在其“轴到按钮死区”处按下一个键。键盘使手柄保持静止状态时，手势和菜单单元格会停止工作，因此只有“打开方式”能使用它们。点击录制按钮并按下输入，或按住一个输入再按第二个以设置组合。“全部映射”会按顺序录制它们。</value></data>
   <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>全部映射</value></data>
   <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>按顺序录制布局中的每个控制。状态行会指出当前要为哪个控制按下输入。</value></data>
   <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>请按下 {0} 的输入（第 {1} 项，共 {2} 项）</value></data>
@@ -5130,4 +5125,23 @@
   <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>重置打开时机</value></data>
   <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>“打开方式”按住达到保持时间后，打开或关闭键盘。更短的按压不起作用。</value></data>
   <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>“打开方式”在连按时间内按下两次时，打开或关闭键盘。</value></data>
+  <data name="Osk_Control_SteerUp" xml:space="preserve"><value>上操控</value></data>
+  <data name="Osk_Control_SteerDown" xml:space="preserve"><value>下操控</value></data>
+  <data name="Osk_Control_SteerLeft" xml:space="preserve"><value>左操控</value></data>
+  <data name="Osk_Control_SteerRight" xml:space="preserve"><value>右操控</value></data>
+  <data name="Osk_Control_LeftHand_Format" xml:space="preserve"><value>{0}（左手）</value></data>
+  <data name="Osk_Control_RightHand_Format" xml:space="preserve"><value>{0}（右手）</value></data>
+  <data name="Osk_Control_PointerX_Format" xml:space="preserve"><value>指针 {0} X</value></data>
+  <data name="Osk_Control_PointerY_Format" xml:space="preserve"><value>指针 {0} Y</value></data>
+  <data name="Osk_Control_PointerTouch_Format" xml:space="preserve"><value>指针 {0} 触摸</value></data>
+  <data name="Osk_Control_PointerClick_Format" xml:space="preserve"><value>指针 {0} 点击</value></data>
+  <data name="Menu_Keyboard_Deadzone_Tip" xml:space="preserve"><value>操控控件推动多远后高亮才会移动。按钮或其他开关式输入会立即移动高亮。</value></data>
+  <data name="Menu_Keyboard_Threshold_Name_Format" xml:space="preserve"><value>{0} 轴到按钮死区</value></data>
+  <data name="Menu_Keyboard_RecordingAxisPrompt" xml:space="preserve"><value>请在分配给此槽位的任意设备上移动一个轴</value></data>
+  <data name="Menu_Keyboard_OpenPress_Press_Desc" xml:space="preserve"><value>“打开方式”一按下，就打开或关闭键盘。</value></data>
+  <data name="Menu_Keyboard_OpenPress_Release_Desc" xml:space="preserve"><value>“打开方式”松开时，打开或关闭键盘。</value></data>
+  <data name="Menu_Keyboard_OpenPress_WhileHeld_Desc" xml:space="preserve"><value>“打开方式”按住期间打开键盘，松开该按压时关闭键盘。</value></data>
+  <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>“打开方式”在保持时间之前松开时，打开或关闭键盘。更长的按压不起作用。</value></data>
+  <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>“打开方式”在连按时间内按下三次时，打开或关闭键盘。</value></data>
+  <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>“打开方式”按下一次后连按时间结束时，打开或关闭键盘。在该时间内再按第二次则取消。</value></data>
 </root>

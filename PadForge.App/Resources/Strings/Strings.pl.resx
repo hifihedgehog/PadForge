@@ -5108,20 +5108,15 @@ Czy PadForge ma je teraz odinstalować? Wymaga to uprawnień administratora i mo
   <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>Koło „daisy wheel”: wybierz jedną z ośmiu grup, a potem jeden z jej czterech znaków.</value></data>
   <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>Resetuj układ</value></data>
   <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>Otwierane przez</value></data>
-  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Dowolne wejście na urządzeniu przypisanym do tego slotu albo dwa przytrzymane razem. To samo wejście zamyka klawiaturę, chyba że używa go też jakiś element sterowania klawiaturą. Puste pole oznacza, że żadne wejście jej nie otwiera.</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Dowolne wejście na urządzeniu przypisanym do tego slotu, w tym gest panelu dotykowego lub komórka menu, albo dwa przytrzymane razem. To samo wejście zamyka klawiaturę, chyba że używa go też jakiś element sterowania klawiaturą. Puste pole oznacza, że żadne wejście jej nie otwiera.</value></data>
   <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>Resetuj „Otwierane przez”</value></data>
   <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>Otwórz po zaznaczeniu pola tekstowego</value></data>
   <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>W aplikacjach Windows i przeglądarkach, bez przycisku. Gry rysują własne pola tekstowe, więc w grze klawiatura otwiera się wejściem powyżej albo swoją warstwą, gdy włączono „Warstwa utrzymuje menu otwarte”.</value></data>
-  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>Wejście, które przesuwa zaznaczenie po klawiszach, odczytywane z fizycznych kontrolerów przypisanych do slotu.</value></data>
-  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>Steruj lewą połową za pomocą</value></data>
-  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>Steruj prawą połową za pomocą</value></data>
-  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>Wybierz grupę za pomocą</value></data>
-  <data name="Menu_Reset_Host2" xml:space="preserve"><value>Resetuj „Steruj prawą połową za pomocą”</value></data>
   <data name="Menu_Host_DPad" xml:space="preserve"><value>Krzyżak</value></data>
   <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>Przyciski czołowe</value></data>
   <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>Sterowanie klawiaturą</value></data>
   <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>Układ: {0}, elementy sterowania: {1}</value></data>
-  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Odczytywane z fizycznych kontrolerów przypisanych do tego slotu. Każdy element sterowania przyjmuje dowolne wejście z dowolnego z nich: przycisk, kierunek osi, krzyżak, panel dotykowy albo dwa wejścia przytrzymane razem. Kliknij przycisk nagrywania i naciśnij wejście albo przytrzymaj jedno wejście i naciśnij drugie, aby uzyskać kombinację. „Mapuj wszystko” nagrywa je po kolei.</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Odczytywane z fizycznych kontrolerów przypisanych do tego slotu. Każdy element sterowania przyjmuje dowolne wejście z dowolnego z nich: przycisk, kierunek osi, krzyżak, panel dotykowy albo dwa wejścia przytrzymane razem. Oś naciska klawisz przy swojej wartości „Martwa strefa osi jako przycisku”. Gesty i komórki menu przestają działać, gdy klawiatura trzyma kontroler w spoczynku, więc tylko „Otwierane przez” może ich używać. Kliknij przycisk nagrywania i naciśnij wejście albo przytrzymaj jedno wejście i naciśnij drugie, aby uzyskać kombinację. „Mapuj wszystko” nagrywa je po kolei.</value></data>
   <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>Mapuj wszystko</value></data>
   <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>Nagrywa po kolei wszystkie elementy sterowania układu. Wiersz stanu podaje element, dla którego trzeba nacisnąć wejście.</value></data>
   <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>Naciśnij wejście dla: {0} ({1} z {2})</value></data>
@@ -5179,4 +5174,23 @@ Czy PadForge ma je teraz odinstalować? Wymaga to uprawnień administratora i mo
   <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>Resetuj „Otwiera przy”</value></data>
   <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>Otwiera lub zamyka klawiaturę, gdy „Otwierane przez” jest przytrzymane przez czas przytrzymania. Krótsze naciśnięcie nic nie robi.</value></data>
   <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>Otwiera lub zamyka klawiaturę, gdy „Otwierane przez” zostanie naciśnięte dwa razy w oknie naciśnięć.</value></data>
+  <data name="Osk_Control_SteerUp" xml:space="preserve"><value>Steruj w górę</value></data>
+  <data name="Osk_Control_SteerDown" xml:space="preserve"><value>Steruj w dół</value></data>
+  <data name="Osk_Control_SteerLeft" xml:space="preserve"><value>Steruj w lewo</value></data>
+  <data name="Osk_Control_SteerRight" xml:space="preserve"><value>Steruj w prawo</value></data>
+  <data name="Osk_Control_LeftHand_Format" xml:space="preserve"><value>{0}, lewa ręka</value></data>
+  <data name="Osk_Control_RightHand_Format" xml:space="preserve"><value>{0}, prawa ręka</value></data>
+  <data name="Osk_Control_PointerX_Format" xml:space="preserve"><value>Wskaźnik {0} X</value></data>
+  <data name="Osk_Control_PointerY_Format" xml:space="preserve"><value>Wskaźnik {0} Y</value></data>
+  <data name="Osk_Control_PointerTouch_Format" xml:space="preserve"><value>Wskaźnik {0}, dotknięcie</value></data>
+  <data name="Osk_Control_PointerClick_Format" xml:space="preserve"><value>Wskaźnik {0}, kliknięcie</value></data>
+  <data name="Menu_Keyboard_Deadzone_Tip" xml:space="preserve"><value>Jak daleko trzeba wychylić element sterujący, zanim podświetlenie się przesunie. Przycisk lub inne wejście włącz/wyłącz przesuwa je od razu.</value></data>
+  <data name="Menu_Keyboard_Threshold_Name_Format" xml:space="preserve"><value>{0}, Martwa strefa osi jako przycisku</value></data>
+  <data name="Menu_Keyboard_RecordingAxisPrompt" xml:space="preserve"><value>Poruszaj osią na dowolnym urządzeniu przypisanym do tego slotu</value></data>
+  <data name="Menu_Keyboard_OpenPress_Press_Desc" xml:space="preserve"><value>Otwiera lub zamyka klawiaturę od razu po naciśnięciu „Otwierane przez”.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Release_Desc" xml:space="preserve"><value>Otwiera lub zamyka klawiaturę, gdy „Otwierane przez” zostanie zwolnione.</value></data>
+  <data name="Menu_Keyboard_OpenPress_WhileHeld_Desc" xml:space="preserve"><value>Otwiera klawiaturę, gdy „Otwierane przez” jest przytrzymane, i zamyka ją po zwolnieniu.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Otwiera lub zamyka klawiaturę, gdy „Otwierane przez” zostanie zwolnione przed upływem czasu przytrzymania. Dłuższe naciśnięcie nic nie robi.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Otwiera lub zamyka klawiaturę, gdy „Otwierane przez” zostanie naciśnięte trzy razy w oknie naciśnięć.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Otwiera lub zamyka klawiaturę, gdy okno naciśnięć kończy się po jednym naciśnięciu „Otwierane przez”. Drugie naciśnięcie w tym oknie anuluje to.</value></data>
 </root>

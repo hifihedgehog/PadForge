@@ -5108,20 +5108,15 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>డైజీ వీల్: ఎనిమిది గుంపులలో ఒకదాన్ని, ఆపై దాని నాలుగు అక్షరాలలో ఒకదాన్ని ఎంచుకోండి.</value></data>
   <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>లేఅవుట్‌ను రీసెట్ చేయి</value></data>
   <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>దీనితో తెరుచుకుంటుంది</value></data>
-  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>ఈ స్లాట్‌కు కేటాయించిన పరికరంలోని ఏదైనా ఇన్పుట్, లేదా రెండు కలిపి పట్టుకున్నవి. కీబోర్డ్ నియంత్రణ కూడా అదే ఇన్పుట్ వాడితే తప్ప, అదే ఇన్పుట్ కీబోర్డ్‌ను మూసివేస్తుంది. ఖాళీగా ఉంటే ఏ ఇన్పుట్ దీన్ని తెరవదు.</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>ఈ స్లాట్‌కు కేటాయించిన పరికరంలోని ఏదైనా ఇన్పుట్, టచ్ ప్యాడ్ సంజ్ఞ లేదా మెనూ సెల్ కూడా సహా, లేదా రెండు కలిపి పట్టుకున్నవి. కీబోర్డ్ నియంత్రణ కూడా అదే ఇన్పుట్ వాడితే తప్ప, అదే ఇన్పుట్ కీబోర్డ్‌ను మూసివేస్తుంది. ఖాళీగా ఉంటే ఏ ఇన్పుట్ దీన్ని తెరవదు.</value></data>
   <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>దీనితో తెరుచుకోవడాన్ని రీసెట్ చేయి</value></data>
   <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>టెక్స్ట్ బాక్స్ ఎంచుకున్నప్పుడు తెరువు</value></data>
   <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>Windows యాప్‌లలో మరియు బ్రౌజర్‌లలో, బటన్ లేకుండా. గేమ్‌లు తమ సొంత టెక్స్ట్ బాక్స్‌లను గీస్తాయి, కాబట్టి గేమ్‌లో ఇది పైన ఉన్న ఇన్పుట్‌తో తెరుచుకుంటుంది, లేదా లేయర్ మెనును తెరిచి ఉంచుతుంది ఆన్‌లో ఉంటే దాని లేయర్‌తో.</value></data>
-  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>కీలపై హైలైట్‌ను కదిలించే ఇన్పుట్, స్లాట్‌కు కేటాయించిన భౌతిక కంట్రోలర్ల నుండి చదవబడుతుంది.</value></data>
-  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>ఎడమ సగాన్ని దీనితో నడిపించు</value></data>
-  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>కుడి సగాన్ని దీనితో నడిపించు</value></data>
-  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>గుంపును దీనితో ఎంచుకో</value></data>
-  <data name="Menu_Reset_Host2" xml:space="preserve"><value>కుడి సగాన్ని దీనితో నడిపించడాన్ని రీసెట్ చేయి</value></data>
   <data name="Menu_Host_DPad" xml:space="preserve"><value>D-ప్యాడ్</value></data>
   <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>ఫేస్ బటన్లు</value></data>
   <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>కీబోర్డ్ నియంత్రణలు</value></data>
   <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>{0} లేఅవుట్, {1} నియంత్రణలు</value></data>
-  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>ఈ స్లాట్‌కు కేటాయించిన భౌతిక కంట్రోలర్ల నుండి చదవబడుతుంది. ప్రతి నియంత్రణ వాటిలో దేనిలోనైనా ఏ ఇన్పుట్‌నైనా తీసుకుంటుంది: బటన్, అక్షం దిశ, హ్యాట్, టచ్ ప్యాడ్, లేదా రెండు కలిపి పట్టుకున్నవి. రికార్డ్ బటన్‌ను క్లిక్ చేసి ఇన్పుట్‌ను నొక్కండి, లేదా కలయిక కోసం ఒక ఇన్పుట్‌ను పట్టుకుని రెండవదాన్ని నొక్కండి. అన్నీ మ్యాప్ చేయి వాటిని వరుసగా రికార్డ్ చేస్తుంది.</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>ఈ స్లాట్‌కు కేటాయించిన భౌతిక కంట్రోలర్ల నుండి చదవబడుతుంది. ప్రతి నియంత్రణ వాటిలో దేనిలోనైనా బటన్, అక్షం దిశ, హ్యాట్, టచ్ ప్యాడ్, లేదా రెండు కలిపి పట్టుకున్నవి తీసుకుంటుంది. అక్షం అక్షం-నుండి-బటన్ డెడ్ జోన్ వద్ద కీని నొక్కుతుంది. కీబోర్డ్ కంట్రోలర్‌ను విశ్రాంతిలో ఉంచినప్పుడు సంజ్ఞలు, మెనూ సెల్లు ఆగిపోతాయి, కాబట్టి వాటిని దీనితో తెరుచుకుంటుంది మాత్రమే తీసుకుంటుంది. రికార్డ్ బటన్‌ను క్లిక్ చేసి ఇన్పుట్‌ను నొక్కండి, లేదా కలయిక కోసం ఒక ఇన్పుట్‌ను పట్టుకుని రెండవదాన్ని నొక్కండి. అన్నీ మ్యాప్ చేయి వాటిని వరుసగా రికార్డ్ చేస్తుంది.</value></data>
   <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>అన్నీ మ్యాప్ చేయి</value></data>
   <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>లేఅవుట్‌లోని ప్రతి నియంత్రణను వరుసగా రికార్డ్ చేస్తుంది. ఏ నియంత్రణకు ఇన్పుట్ నొక్కాలో స్థితి పంక్తి చెబుతుంది.</value></data>
   <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>{0} కోసం ఇన్పుట్‌ను నొక్కండి ({2} లో {1})</value></data>
@@ -5179,4 +5174,23 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>దీనిపై తెరుచుకోవడాన్ని రీసెట్ చేయి</value></data>
   <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>దీనితో తెరుచుకుంటుంది హోల్డ్ సమయం వరకు పట్టుకున్నప్పుడు కీబోర్డ్‌ను తెరుస్తుంది లేదా మూసివేస్తుంది. చిన్న నొక్కు ఏమీ చేయదు.</value></data>
   <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>దీనితో తెరుచుకుంటుంది నొక్కు విండో లోపల రెండుసార్లు నొక్కినప్పుడు కీబోర్డ్‌ను తెరుస్తుంది లేదా మూసివేస్తుంది.</value></data>
+  <data name="Osk_Control_SteerUp" xml:space="preserve"><value>పైకి నడిపించు</value></data>
+  <data name="Osk_Control_SteerDown" xml:space="preserve"><value>కిందికి నడిపించు</value></data>
+  <data name="Osk_Control_SteerLeft" xml:space="preserve"><value>ఎడమకు నడిపించు</value></data>
+  <data name="Osk_Control_SteerRight" xml:space="preserve"><value>కుడికి నడిపించు</value></data>
+  <data name="Osk_Control_LeftHand_Format" xml:space="preserve"><value>{0}, ఎడమ చేయి</value></data>
+  <data name="Osk_Control_RightHand_Format" xml:space="preserve"><value>{0}, కుడి చేయి</value></data>
+  <data name="Osk_Control_PointerX_Format" xml:space="preserve"><value>పాయింటర్ {0} X</value></data>
+  <data name="Osk_Control_PointerY_Format" xml:space="preserve"><value>పాయింటర్ {0} Y</value></data>
+  <data name="Osk_Control_PointerTouch_Format" xml:space="preserve"><value>పాయింటర్ {0} టచ్</value></data>
+  <data name="Osk_Control_PointerClick_Format" xml:space="preserve"><value>పాయింటర్ {0} క్లిక్</value></data>
+  <data name="Menu_Keyboard_Deadzone_Tip" xml:space="preserve"><value>హైలైట్ కదలడానికి ముందు ఒక నడిపించే నియంత్రణను ఎంత నెట్టాలో. బటన్ లేదా మరొక ఆన్/ఆఫ్ ఇన్పుట్ దాన్ని వెంటనే కదిలిస్తుంది.</value></data>
+  <data name="Menu_Keyboard_Threshold_Name_Format" xml:space="preserve"><value>{0} అక్షం-నుండి-బటన్ డెడ్ జోన్</value></data>
+  <data name="Menu_Keyboard_RecordingAxisPrompt" xml:space="preserve"><value>ఈ స్లాట్‌కు కేటాయించిన ఏదైనా పరికరంలో ఒక అక్షాన్ని కదిలించండి</value></data>
+  <data name="Menu_Keyboard_OpenPress_Press_Desc" xml:space="preserve"><value>దీనితో తెరుచుకుంటుంది నొక్కిన వెంటనే కీబోర్డ్‌ను తెరుస్తుంది లేదా మూసివేస్తుంది.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Release_Desc" xml:space="preserve"><value>దీనితో తెరుచుకుంటుంది వదిలినప్పుడు కీబోర్డ్‌ను తెరుస్తుంది లేదా మూసివేస్తుంది.</value></data>
+  <data name="Menu_Keyboard_OpenPress_WhileHeld_Desc" xml:space="preserve"><value>దీనితో తెరుచుకుంటుంది నొక్కి ఉన్నంతసేపు కీబోర్డ్‌ను తెరుస్తుంది, ఆ నొక్కును వదిలినప్పుడు మూసివేస్తుంది.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>దీనితో తెరుచుకుంటుంది హోల్డ్ సమయానికి ముందే వదిలినప్పుడు కీబోర్డ్‌ను తెరుస్తుంది లేదా మూసివేస్తుంది. ఎక్కువసేపు నొక్కు ఏమీ చేయదు.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>దీనితో తెరుచుకుంటుంది నొక్కు విండో లోపల మూడుసార్లు నొక్కినప్పుడు కీబోర్డ్‌ను తెరుస్తుంది లేదా మూసివేస్తుంది.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>దీనితో తెరుచుకుంటుంది ఒకసారి నొక్కిన తర్వాత నొక్కు విండో ముగిసినప్పుడు కీబోర్డ్‌ను తెరుస్తుంది లేదా మూసివేస్తుంది. విండో లోపల రెండవ నొక్కు దాన్ని రద్దు చేస్తుంది.</value></data>
 </root>

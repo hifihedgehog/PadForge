@@ -36,7 +36,7 @@ namespace PadForge.Tests
             Assert.Equal("On-screen keyboard (button_y)", menu.Name);
             Assert.Equal(new KeyboardInput("Gamepad ButtonY"), KeyboardMenuDefaults.OpenInput(menu));
             Assert.Equal(KeyboardOpenPress.Press, menu.OpenPress);
-            Assert.Equal(KeyboardMenuDefaults.Host, menu.HostDescriptor);
+            Assert.Equal(KeyboardMenuDefaults.SteerDeadzonePercent, menu.EngageDeadzonePercent);
             Assert.Equal(KeyboardMenuDefaults.PosYPercent, menu.PosYPercent);
             Assert.True(menu.Enabled);
         }
@@ -63,7 +63,7 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void ALongPressAndADoublePress_ImportWithTheirTimes()
+        public void ALongPressADoublePressAndARelease_ImportAsTheirPresses()
         {
             var hold = Show("HoldForMs", "Gamepad LeftShoulder");
             hold.TriggerHoldMs = 650;
@@ -82,9 +82,8 @@ namespace PadForge.Tests
             Assert.Equal(0, menu.OpenPressMs);
             Assert.Equal(KeyboardMenuDefaults.DefaultDoublePressMs, KeyboardMenuDefaults.OpenPressMs(menu));
 
-            // Release acts on the press: the keyboard opens when it is let go
-            // in Steam and when it goes down here.
-            Assert.Equal(KeyboardOpenPress.Press, WorkshopProfileMaterializer.KeyboardMenuFor(Show("OnRelease", "Gamepad ButtonA"), 1).OpenPress);
+            // Release opens it when the input is let go, in Steam and here.
+            Assert.Equal(KeyboardOpenPress.Release, WorkshopProfileMaterializer.KeyboardMenuFor(Show("OnRelease", "Gamepad ButtonA"), 1).OpenPress);
         }
 
         [Fact]

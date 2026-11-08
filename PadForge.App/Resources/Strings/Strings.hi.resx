@@ -5108,20 +5108,15 @@
   <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>डेज़ी व्हील: आठ समूहों में से एक चुनें, फिर उसके चार अक्षरों में से एक।</value></data>
   <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>लेआउट रीसेट करें</value></data>
   <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>इससे खुलता है</value></data>
-  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>इस स्लॉट को सौंपे गए किसी डिवाइस का कोई भी इनपुट, या एक साथ दबाए गए दो इनपुट। वही इनपुट कीबोर्ड को बंद भी करता है, जब तक कीबोर्ड का कोई कंट्रोल उसे इस्तेमाल न करे। खाली होने पर कोई इनपुट इसे नहीं खोलता।</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>इस स्लॉट को सौंपे गए किसी डिवाइस का कोई भी इनपुट, टचपैड जेस्चर या मेनू सेल सहित, या एक साथ दबाए गए दो इनपुट। वही इनपुट कीबोर्ड को बंद भी करता है, जब तक कीबोर्ड का कोई कंट्रोल उसे इस्तेमाल न करे। खाली होने पर कोई इनपुट इसे नहीं खोलता।</value></data>
   <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>“इससे खुलता है” रीसेट करें</value></data>
   <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>टेक्स्ट बॉक्स चुनने पर खोलें</value></data>
   <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>Windows ऐप्स और ब्राउज़र में, बिना किसी बटन के। गेम अपने टेक्स्ट बॉक्स खुद बनाते हैं, इसलिए गेम में यह ऊपर वाले इनपुट से खुलता है, या “लेयर मेनू को खुला रखती है” चालू होने पर अपनी लेयर से।</value></data>
-  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>वह इनपुट जो हाइलाइट को कुंजियों पर चलाता है। यह स्लॉट के सौंपे गए भौतिक कंट्रोलर से पढ़ा जाता है।</value></data>
-  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>बाएँ हिस्से को इससे चलाएँ</value></data>
-  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>दाएँ हिस्से को इससे चलाएँ</value></data>
-  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>समूह इससे चुनें</value></data>
-  <data name="Menu_Reset_Host2" xml:space="preserve"><value>“दाएँ हिस्से को इससे चलाएँ” रीसेट करें</value></data>
   <data name="Menu_Host_DPad" xml:space="preserve"><value>डी-पैड</value></data>
   <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>फ़ेस बटन</value></data>
   <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>कीबोर्ड कंट्रोल</value></data>
   <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>{0} लेआउट, {1} कंट्रोल</value></data>
-  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>इस स्लॉट को सौंपे गए भौतिक कंट्रोलर से पढ़ा जाता है। हर कंट्रोल उनमें से किसी का भी कोई इनपुट ले सकता है: बटन, अक्ष की दिशा, हैट, टचपैड, या एक साथ दबाए गए दो इनपुट। रिकॉर्ड बटन पर क्लिक करें और इनपुट दबाएँ, या एक इनपुट को दबाए रखकर दूसरा दबाएँ, तो संयोजन बनता है। “सभी मैप करें” इन्हें क्रम से रिकॉर्ड करता है।</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>इस स्लॉट को सौंपे गए भौतिक कंट्रोलर से पढ़ा जाता है। हर कंट्रोल उनमें से किसी का भी बटन, अक्ष की दिशा, हैट, टचपैड, या एक साथ दबाए गए दो इनपुट ले सकता है। अक्ष अपने अक्ष-से-बटन डेडज़ोन पर कुंजी दबाता है। कीबोर्ड जब तक कंट्रोलर को निष्क्रिय स्थिति में रोके रखता है, तब तक जेस्चर और मेनू सेल रुके रहते हैं, इसलिए उन्हें केवल “इससे खुलता है” ले सकता है। रिकॉर्ड बटन पर क्लिक करें और इनपुट दबाएँ, या एक इनपुट को दबाए रखकर दूसरा दबाएँ, तो संयोजन बनता है। “सभी मैप करें” इन्हें क्रम से रिकॉर्ड करता है।</value></data>
   <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>सभी मैप करें</value></data>
   <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>लेआउट के हर कंट्रोल को क्रम से रिकॉर्ड करता है। स्थिति पंक्ति बताती है कि किस कंट्रोल के लिए इनपुट दबाना है।</value></data>
   <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>{0} के लिए इनपुट दबाएँ ({2} में से {1})</value></data>
@@ -5179,4 +5174,23 @@
   <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>“इस पर खुलता है” रीसेट करें</value></data>
   <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>“इससे खुलता है” को दबाए रखने का समय पूरा होते ही कीबोर्ड खुलता या बंद होता है। इससे छोटा दबाना कुछ नहीं करता।</value></data>
   <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>“इससे खुलता है” को दबाने की समय-सीमा के भीतर दो बार दबाने पर कीबोर्ड खुलता या बंद होता है।</value></data>
+  <data name="Osk_Control_SteerUp" xml:space="preserve"><value>ऊपर चलाएँ</value></data>
+  <data name="Osk_Control_SteerDown" xml:space="preserve"><value>नीचे चलाएँ</value></data>
+  <data name="Osk_Control_SteerLeft" xml:space="preserve"><value>बाएँ चलाएँ</value></data>
+  <data name="Osk_Control_SteerRight" xml:space="preserve"><value>दाएँ चलाएँ</value></data>
+  <data name="Osk_Control_LeftHand_Format" xml:space="preserve"><value>{0}, बायाँ हाथ</value></data>
+  <data name="Osk_Control_RightHand_Format" xml:space="preserve"><value>{0}, दायाँ हाथ</value></data>
+  <data name="Osk_Control_PointerX_Format" xml:space="preserve"><value>पॉइंटर {0} X</value></data>
+  <data name="Osk_Control_PointerY_Format" xml:space="preserve"><value>पॉइंटर {0} Y</value></data>
+  <data name="Osk_Control_PointerTouch_Format" xml:space="preserve"><value>पॉइंटर {0} टच</value></data>
+  <data name="Osk_Control_PointerClick_Format" xml:space="preserve"><value>पॉइंटर {0} क्लिक</value></data>
+  <data name="Menu_Keyboard_Deadzone_Tip" xml:space="preserve"><value>स्टीयरिंग कंट्रोल को कितना धकेलने पर हाइलाइट आगे बढ़ता है। बटन या कोई और ऑन/ऑफ़ इनपुट उसे तुरंत आगे बढ़ाता है।</value></data>
+  <data name="Menu_Keyboard_Threshold_Name_Format" xml:space="preserve"><value>{0} अक्ष-से-बटन डेडज़ोन</value></data>
+  <data name="Menu_Keyboard_RecordingAxisPrompt" xml:space="preserve"><value>इस स्लॉट को सौंपे गए किसी भी डिवाइस पर कोई अक्ष हिलाएँ</value></data>
+  <data name="Menu_Keyboard_OpenPress_Press_Desc" xml:space="preserve"><value>“इससे खुलता है” को दबाते ही कीबोर्ड खुलता या बंद होता है।</value></data>
+  <data name="Menu_Keyboard_OpenPress_Release_Desc" xml:space="preserve"><value>“इससे खुलता है” को छोड़ते ही कीबोर्ड खुलता या बंद होता है।</value></data>
+  <data name="Menu_Keyboard_OpenPress_WhileHeld_Desc" xml:space="preserve"><value>“इससे खुलता है” को दबाए रखने तक कीबोर्ड खुला रहता है, और दबाना छोड़ते ही बंद हो जाता है।</value></data>
+  <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>“इससे खुलता है” को दबाए रखने के समय से पहले छोड़ने पर कीबोर्ड खुलता या बंद होता है। इससे लंबा दबाना कुछ नहीं करता।</value></data>
+  <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>“इससे खुलता है” को दबाने की समय-सीमा के भीतर तीन बार दबाने पर कीबोर्ड खुलता या बंद होता है।</value></data>
+  <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>“इससे खुलता है” को एक बार दबाने के बाद दबाने की समय-सीमा पूरी होते ही कीबोर्ड खुलता या बंद होता है। समय-सीमा के भीतर दूसरी बार दबाने से यह रद्द हो जाता है।</value></data>
 </root>

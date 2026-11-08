@@ -4792,11 +4792,6 @@ public class Strings : INotifyPropertyChanged
     public string Menu_Reset_OpensWith => Get("Menu_Reset_OpensWith");
     public string Menu_OpenOnTextFocus => Get("Menu_OpenOnTextFocus");
     public string Menu_OpenOnTextFocus_Caption => Get("Menu_OpenOnTextFocus_Caption");
-    public string Menu_Keyboard_Steer_Tip => Get("Menu_Keyboard_Steer_Tip");
-    public string Menu_Keyboard_SteerLeftHalf => Get("Menu_Keyboard_SteerLeftHalf");
-    public string Menu_Keyboard_SteerRightHalf => Get("Menu_Keyboard_SteerRightHalf");
-    public string Menu_Keyboard_PickGroup => Get("Menu_Keyboard_PickGroup");
-    public string Menu_Reset_Host2 => Get("Menu_Reset_Host2");
     public string Menu_Host_DPad => Get("Menu_Host_DPad");
     public string Menu_Host_FaceButtons => Get("Menu_Host_FaceButtons");
     public string Menu_Keyboard_Controls => Get("Menu_Keyboard_Controls");
@@ -4859,4 +4854,23 @@ public class Strings : INotifyPropertyChanged
     public string Menu_Reset_OpenPress => Get("Menu_Reset_OpenPress");
     public string Menu_Keyboard_OpenPress_Hold_Desc => Get("Menu_Keyboard_OpenPress_Hold_Desc");
     public string Menu_Keyboard_OpenPress_Double_Desc => Get("Menu_Keyboard_OpenPress_Double_Desc");
+    public string Osk_Control_SteerUp => Get("Osk_Control_SteerUp");
+    public string Osk_Control_SteerDown => Get("Osk_Control_SteerDown");
+    public string Osk_Control_SteerLeft => Get("Osk_Control_SteerLeft");
+    public string Osk_Control_SteerRight => Get("Osk_Control_SteerRight");
+    public string Osk_Control_LeftHand_Format => Get("Osk_Control_LeftHand_Format");
+    public string Osk_Control_RightHand_Format => Get("Osk_Control_RightHand_Format");
+    public string Osk_Control_PointerX_Format => Get("Osk_Control_PointerX_Format");
+    public string Osk_Control_PointerY_Format => Get("Osk_Control_PointerY_Format");
+    public string Osk_Control_PointerTouch_Format => Get("Osk_Control_PointerTouch_Format");
+    public string Osk_Control_PointerClick_Format => Get("Osk_Control_PointerClick_Format");
+    public string Menu_Keyboard_Deadzone_Tip => Get("Menu_Keyboard_Deadzone_Tip");
+    public string Menu_Keyboard_Threshold_Name_Format => Get("Menu_Keyboard_Threshold_Name_Format");
+    public string Menu_Keyboard_RecordingAxisPrompt => Get("Menu_Keyboard_RecordingAxisPrompt");
+    public string Menu_Keyboard_OpenPress_Press_Desc => Get("Menu_Keyboard_OpenPress_Press_Desc");
+    public string Menu_Keyboard_OpenPress_Release_Desc => Get("Menu_Keyboard_OpenPress_Release_Desc");
+    public string Menu_Keyboard_OpenPress_WhileHeld_Desc => Get("Menu_Keyboard_OpenPress_WhileHeld_Desc");
+    public string Menu_Keyboard_OpenPress_Short_Desc => Get("Menu_Keyboard_OpenPress_Short_Desc");
+    public string Menu_Keyboard_OpenPress_Triple_Desc => Get("Menu_Keyboard_OpenPress_Triple_Desc");
+    public string Menu_Keyboard_OpenPress_Single_Desc => Get("Menu_Keyboard_OpenPress_Single_Desc");
 }

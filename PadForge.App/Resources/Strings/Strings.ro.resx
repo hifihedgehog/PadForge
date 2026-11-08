@@ -5108,20 +5108,15 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>Roata daisy: alegeți unul din opt grupuri, apoi unul din cele patru caractere ale sale.</value></data>
   <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>Resetare aspect</value></data>
   <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>Se deschide cu</value></data>
-  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Orice intrare de pe un dispozitiv atribuit acestui slot, sau două apăsate împreună. Aceeași intrare închide tastatura, dacă o comandă a tastaturii nu o folosește și ea. Gol înseamnă că nicio intrare nu o deschide.</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Orice intrare de pe un dispozitiv atribuit acestui slot, inclusiv un gest de touchpad sau o celulă de meniu, sau două apăsate împreună. Aceeași intrare închide tastatura, dacă o comandă a tastaturii nu o folosește și ea. Gol înseamnă că nicio intrare nu o deschide.</value></data>
   <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>Resetare „Se deschide cu”</value></data>
   <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>Se deschide când o casetă de text este selectată</value></data>
   <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>În aplicațiile Windows și în browsere, fără niciun buton. Jocurile își desenează propriile casete de text, deci într-un joc se deschide cu intrarea de mai sus sau cu stratul ei, când „Stratul menține meniul deschis” este activat.</value></data>
-  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>Intrarea care mută evidențierea peste taste, citită de la controlerele fizice atribuite slotului.</value></data>
-  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>Jumătatea stângă controlată cu</value></data>
-  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>Jumătatea dreaptă controlată cu</value></data>
-  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>Alegerea grupului cu</value></data>
-  <data name="Menu_Reset_Host2" xml:space="preserve"><value>Resetare „Jumătatea dreaptă controlată cu”</value></data>
   <data name="Menu_Host_DPad" xml:space="preserve"><value>D-pad</value></data>
   <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>Butoane frontale</value></data>
   <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>Comenzi tastatură</value></data>
   <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>Aspect {0}, {1} comenzi</value></data>
-  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Citite de la controlerele fizice atribuite acestui slot. Fiecare comandă acceptă orice intrare de pe oricare dintre ele: un buton, o direcție de axă, un hat, un touchpad sau două apăsate împreună. Faceți clic pe un buton de înregistrare și apăsați intrarea, sau mențineți o intrare și apăsați a doua pentru o combinație. Mapare completă le înregistrează în ordine.</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Citite de la controlerele fizice atribuite acestui slot. Fiecare comandă acceptă un buton, o direcție de axă, un hat, un touchpad sau două apăsate împreună, de pe oricare dintre ele. O axă apasă o tastă la „Zonă moartă axă-buton”. Gesturile și celulele de meniu se opresc cât timp tastatura ține controlerul în repaus, deci doar „Se deschide cu” le acceptă. Faceți clic pe un buton de înregistrare și apăsați intrarea, sau mențineți o intrare și apăsați a doua pentru o combinație. „Mapare completă” le înregistrează în ordine.</value></data>
   <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>Mapare completă</value></data>
   <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>Înregistrează în ordine fiecare comandă a aspectului. Linia de stare numește comanda pentru care apăsați o intrare.</value></data>
   <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>Apăsați intrarea pentru {0} ({1} din {2})</value></data>
@@ -5179,4 +5174,23 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>Resetare „Se deschide la”</value></data>
   <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>Deschide sau închide tastatura după ce „Se deschide cu” este menținut cât timpul de menținere. O apăsare mai scurtă nu face nimic.</value></data>
   <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>Deschide sau închide tastatura când „Se deschide cu” este apăsat de două ori în fereastra de apăsare.</value></data>
+  <data name="Osk_Control_SteerUp" xml:space="preserve"><value>Direcționare în sus</value></data>
+  <data name="Osk_Control_SteerDown" xml:space="preserve"><value>Direcționare în jos</value></data>
+  <data name="Osk_Control_SteerLeft" xml:space="preserve"><value>Direcționare la stânga</value></data>
+  <data name="Osk_Control_SteerRight" xml:space="preserve"><value>Direcționare la dreapta</value></data>
+  <data name="Osk_Control_LeftHand_Format" xml:space="preserve"><value>{0}, mâna stângă</value></data>
+  <data name="Osk_Control_RightHand_Format" xml:space="preserve"><value>{0}, mâna dreaptă</value></data>
+  <data name="Osk_Control_PointerX_Format" xml:space="preserve"><value>Pointer {0} X</value></data>
+  <data name="Osk_Control_PointerY_Format" xml:space="preserve"><value>Pointer {0} Y</value></data>
+  <data name="Osk_Control_PointerTouch_Format" xml:space="preserve"><value>Pointer {0} atingere</value></data>
+  <data name="Osk_Control_PointerClick_Format" xml:space="preserve"><value>Pointer {0} clic</value></data>
+  <data name="Menu_Keyboard_Deadzone_Tip" xml:space="preserve"><value>Cât de mult trebuie împinsă o comandă de direcționare înainte ca evidențierea să se mute. Un buton sau altă intrare pornit/oprit o mută imediat.</value></data>
+  <data name="Menu_Keyboard_Threshold_Name_Format" xml:space="preserve"><value>{0} Zonă moartă axă-buton</value></data>
+  <data name="Menu_Keyboard_RecordingAxisPrompt" xml:space="preserve"><value>Mișcați o axă pe orice dispozitiv atribuit acestui slot</value></data>
+  <data name="Menu_Keyboard_OpenPress_Press_Desc" xml:space="preserve"><value>Deschide sau închide tastatura imediat ce „Se deschide cu” este apăsat.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Release_Desc" xml:space="preserve"><value>Deschide sau închide tastatura când „Se deschide cu” este eliberat.</value></data>
+  <data name="Menu_Keyboard_OpenPress_WhileHeld_Desc" xml:space="preserve"><value>Deschide tastatura cât timp „Se deschide cu” este ținut și o închide când apăsarea este eliberată.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Deschide sau închide tastatura când „Se deschide cu” este eliberat înainte de timpul de menținere. O apăsare mai lungă nu face nimic.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Deschide sau închide tastatura când „Se deschide cu” este apăsat de trei ori în fereastra de apăsare.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Deschide sau închide tastatura când fereastra de apăsare se încheie după o singură apăsare a lui „Se deschide cu”. O a doua apăsare în fereastră o anulează.</value></data>
 </root>

@@ -5079,20 +5079,15 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>Het margrietwiel: kies een van acht groepen en daarna een van de vier tekens.</value></data>
   <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>Indeling herstellen</value></data>
   <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>Opent met</value></data>
-  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Elke invoer op een apparaat dat aan deze slot is toegewezen, of twee tegelijk ingehouden. Dezelfde invoer sluit het toetsenbord, tenzij een toetsenbordbesturing hem ook gebruikt. Leeg betekent dat geen invoer het opent.</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Elke invoer op een apparaat dat aan deze slot is toegewezen, inclusief een touchpadgebaar of een menucel, of twee tegelijk ingehouden. Dezelfde invoer sluit het toetsenbord, tenzij een toetsenbordbesturing hem ook gebruikt. Leeg betekent dat geen invoer het opent.</value></data>
   <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>Opent met herstellen</value></data>
   <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>Openen bij geselecteerd tekstvak</value></data>
   <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>In Windows-apps en browsers, zonder knop. Games tekenen hun eigen tekstvakken, dus in een game opent het met de invoer hierboven, of met de bijbehorende laag als Laag houdt het menu open aanstaat.</value></data>
-  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>De invoer die de markering over de toetsen beweegt, gelezen van de fysieke controllers die aan de slot zijn toegewezen.</value></data>
-  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>Linkerhelft sturen met</value></data>
-  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>Rechterhelft sturen met</value></data>
-  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>Groep kiezen met</value></data>
-  <data name="Menu_Reset_Host2" xml:space="preserve"><value>Rechterhelft sturen met herstellen</value></data>
   <data name="Menu_Host_DPad" xml:space="preserve"><value>D-Pad</value></data>
   <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>Actieknoppen</value></data>
   <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>Toetsenbordbesturing</value></data>
   <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>Indeling {0}, {1} besturingen</value></data>
-  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Gelezen van de fysieke controllers die aan deze slot zijn toegewezen. Elke besturing neemt elke invoer van elk van die controllers: een knop, een asrichting, een hat, een touchpad, of twee tegelijk ingehouden. Klik op een opnameknop en druk op de invoer, of houd één invoer vast en druk op een tweede voor een combinatie. Alles toewijzen neemt ze op volgorde op.</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Gelezen van de fysieke controllers die aan deze slot zijn toegewezen. Elke besturing neemt een knop, een asrichting, een hat, een touchpad, of twee tegelijk ingehouden, op elk van die controllers. Een as drukt een toets in bij zijn As-naar-knop deadzone. Gebaren en menucellen stoppen zolang het toetsenbord de controller in rust houdt, dus alleen Opent met neemt ze aan. Klik op een opnameknop en druk op de invoer, of houd één invoer vast en druk op een tweede voor een combinatie. Alles toewijzen neemt ze op volgorde op.</value></data>
   <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>Alles toewijzen</value></data>
   <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>Neemt elke besturing van de indeling op volgorde op. De statusregel noemt de besturing waarvoor je op een invoer moet drukken.</value></data>
   <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>Druk op de invoer voor {0} ({1} van {2})</value></data>
@@ -5150,4 +5145,23 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>Opent bij herstellen</value></data>
   <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>Opent of sluit het toetsenbord zodra Opent met de vasthoudtijd is ingehouden. Een kortere druk doet niets.</value></data>
   <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>Opent of sluit het toetsenbord als Opent met twee keer binnen het tijdvenster wordt ingedrukt.</value></data>
+  <data name="Osk_Control_SteerUp" xml:space="preserve"><value>Sturen omhoog</value></data>
+  <data name="Osk_Control_SteerDown" xml:space="preserve"><value>Sturen omlaag</value></data>
+  <data name="Osk_Control_SteerLeft" xml:space="preserve"><value>Sturen naar links</value></data>
+  <data name="Osk_Control_SteerRight" xml:space="preserve"><value>Sturen naar rechts</value></data>
+  <data name="Osk_Control_LeftHand_Format" xml:space="preserve"><value>{0}, linkerhand</value></data>
+  <data name="Osk_Control_RightHand_Format" xml:space="preserve"><value>{0}, rechterhand</value></data>
+  <data name="Osk_Control_PointerX_Format" xml:space="preserve"><value>Aanwijzer {0} X</value></data>
+  <data name="Osk_Control_PointerY_Format" xml:space="preserve"><value>Aanwijzer {0} Y</value></data>
+  <data name="Osk_Control_PointerTouch_Format" xml:space="preserve"><value>Aanwijzer {0} aanraking</value></data>
+  <data name="Osk_Control_PointerClick_Format" xml:space="preserve"><value>Aanwijzer {0} klik</value></data>
+  <data name="Menu_Keyboard_Deadzone_Tip" xml:space="preserve"><value>Hoe ver een stuurbesturing moet worden geduwd voordat de markering verschuift. Een knop of een andere aan/uit-invoer verschuift haar meteen.</value></data>
+  <data name="Menu_Keyboard_Threshold_Name_Format" xml:space="preserve"><value>{0} As-naar-knop deadzone</value></data>
+  <data name="Menu_Keyboard_RecordingAxisPrompt" xml:space="preserve"><value>Beweeg een as op een apparaat dat aan deze slot is toegewezen</value></data>
+  <data name="Menu_Keyboard_OpenPress_Press_Desc" xml:space="preserve"><value>Opent of sluit het toetsenbord zodra Opent met wordt ingedrukt.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Release_Desc" xml:space="preserve"><value>Opent of sluit het toetsenbord als Opent met wordt losgelaten.</value></data>
+  <data name="Menu_Keyboard_OpenPress_WhileHeld_Desc" xml:space="preserve"><value>Opent het toetsenbord zolang Opent met is ingehouden en sluit het als die druk wordt losgelaten.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Opent of sluit het toetsenbord als Opent met wordt losgelaten vóór de vasthoudtijd. Een langere druk doet niets.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Opent of sluit het toetsenbord als Opent met drie keer binnen het tijdvenster wordt ingedrukt.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Opent of sluit het toetsenbord als het tijdvenster eindigt na één druk op Opent met. Een tweede druk binnen het venster annuleert dit.</value></data>
 </root>

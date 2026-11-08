@@ -14392,6 +14392,28 @@
                              shape: the slot's inputs grouped by device, the device
                              under the list, then record and reset. The label column
                              is shared with the card's steering rows. -->
+                        <!-- A keyboard row's press point (#566): where an analog input
+                             presses, the Axis-to-Button Deadzone a Mappings row with a
+                             button target has, shown only where it acts. -->
+                        <DataTemplate x:Key="KeyboardThresholdTemplate" DataType="{x:Type vm:KeyboardInputRow}">
+                            <StackPanel Orientation="Horizontal" Margin="4,4,0,0"
+                                        Visibility="{Binding ShowsThreshold, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <TextBlock Text="{Binding Pad_HeaderDeadZone, Source={x:Static strings:Strings.Instance}}"
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="12"
+                                           VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <Slider AutomationProperties.Name="{Binding ThresholdName, TargetNullValue=''}"
+                                        AutomationProperties.AutomationId="{Binding ThresholdAutomationId}"
+                                        Style="{StaticResource DzSlider}" Width="120" Minimum="1" Maximum="99" TickFrequency="1"
+                                        Value="{Binding ThresholdPercent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBox AutomationProperties.Name="{Binding ThresholdName, TargetNullValue=''}"
+                                         Text="{Binding ThresholdPercent, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                         Style="{StaticResource DzValueEdit}"/>
+                                <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                <ui:Button Command="{Binding ResetThresholdCommand}" Style="{StaticResource ResetButton}"
+                                           ToolTip="{Binding Pad_Reset_AxisToButtonDeadZone, Source={x:Static strings:Strings.Instance}}"
+                                           AutomationProperties.Name="{Binding Pad_Reset_AxisToButtonDeadZone, Source={x:Static strings:Strings.Instance}}"/>
+                            </StackPanel>
+                        </DataTemplate>
                         <DataTemplate x:Key="KeyboardControlRowTemplate" DataType="{x:Type vm:KeyboardInputRow}">
                             <Grid Margin="0,0,0,8">
                                 <Grid.ColumnDefinitions>
@@ -14436,6 +14458,8 @@
                                                 </Style>
                                             </TextBlock.Style>
                                         </TextBlock>
+                                        <ContentControl Content="{Binding}" ContentTemplate="{StaticResource KeyboardThresholdTemplate}"
+                                                        Focusable="False" IsTabStop="False"/>
                                     </StackPanel>
                                     <ui:Button AutomationProperties.Name="{Binding RecordText, TargetNullValue=''}"
                                                Command="{Binding DataContext.MenuKeyboardRecordCommand,
@@ -14739,6 +14763,8 @@
                                                 </Style>
                                             </TextBlock.Style>
                                         </TextBlock>
+                                        <ContentControl Content="{Binding}" ContentTemplate="{StaticResource KeyboardThresholdTemplate}"
+                                                        Focusable="False" IsTabStop="False"/>
                                     </StackPanel>
                                     <ui:Button AutomationProperties.Name="{Binding RecordText, TargetNullValue=''}"
                                                Command="{Binding DataContext.MenuKeyboardRecordCommand,
@@ -14766,7 +14792,8 @@
 
                             <!-- Opens On (#566): the macro trigger's press modes. Steam's
                                  Long_Press and Double_Press on Show Keyboard import here, so
-                                 a short press keeps its own binding. -->
+                                 a short press keeps its own binding, and its Release imports
+                                 as On Release. -->
                             <Grid Margin="0,0,0,10"
                                   Visibility="{Binding IsKeyboard, Converter={StaticResource BoolToVisibilityConverter}}">
                                 <Grid.ColumnDefinitions>
@@ -15192,224 +15219,28 @@
                                                Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                                TextWrapping="Wrap" MaxWidth="560" HorizontalAlignment="Left"
                                                Margin="0,0,0,10" FontSize="12"/>
+                                    <!-- Engage Deadzone: how far a steering control is pushed
+                                         before the highlight moves, the setting a ring and a
+                                         grid engage at. -->
                                     <Grid Margin="0,0,0,8">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto" SharedSizeGroup="MenuKeyboardLabel"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                   Text="{Binding HostInputLabel}"
-                                                   ToolTip="{Binding Menu_Keyboard_Steer_Tip, Source={x:Static strings:Strings.Instance}}"
+                                                   Text="{Binding Menu_Deadzone, Source={x:Static strings:Strings.Instance}}"
+                                                   ToolTip="{Binding Menu_Keyboard_Deadzone_Tip, Source={x:Static strings:Strings.Instance}}"
                                                    Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="240"/>
                                         <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                            <ComboBox MinWidth="260" ItemsSource="{Binding HostOptions}"
-                                                      ToolTip="{Binding Menu_Keyboard_Steer_Tip, Source={x:Static strings:Strings.Instance}}"
-                                                      DisplayMemberPath="Label"
-                                                      SelectedItem="{Binding SelectedHost, Mode=TwoWay}"/>
-                                            <ui:Button AutomationProperties.Name="{Binding HostRecordText, TargetNullValue=''}" Command="{Binding DataContext.MenuHostRecordCommand,
-                                                           RelativeSource={RelativeSource AncestorType=TabItem}}"
-                                                       Style="{StaticResource EmberIconButtonHot}" Margin="6,0,0,0">
-                                                <controls:GlyphText Text="{Binding HostRecordIcon}" FontFamily="Segoe MDL2 Assets"
-                                                           Foreground="{DynamicResource EmberBrush}"/>
-                                            </ui:Button>
-                                            <ui:Button Command="{Binding ResetHostCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Menu_Reset_HostInput, Source={x:Static strings:Strings.Instance}}"/>
-                                        </StackPanel>
-                                    </Grid>
-                                    <Grid Margin="16,0,0,8"
-                                          Visibility="{Binding IsCustomHost, Converter={StaticResource BoolToVisibilityConverter}}">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" SharedSizeGroup="MenuKeyboardLabel"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                   Text="{Binding Menu_CustomX, Source={x:Static strings:Strings.Instance}}"
-                                                   ToolTip="{Binding Menu_CustomAxis_Tip, Source={x:Static strings:Strings.Instance}}"
-                                                   Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="240"/>
-                                        <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                            <StackPanel Orientation="Vertical">
-                                                <ComboBox MinWidth="260" ItemsSource="{Binding CustomXChoicesView}"
-                                                          ToolTip="{Binding Menu_CustomAxis_Tip, Source={x:Static strings:Strings.Instance}}"
-                                                          DisplayMemberPath="DisplayName" SelectedValuePath="Descriptor"
-                                                          SelectedValue="{Binding CustomXSelected, Mode=TwoWay}">
-                                                    <ComboBox.GroupStyle>
-                                                <GroupStyle>
-                                                    <GroupStyle.HeaderTemplate>
-                                                        <DataTemplate>
-                                                            <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}" Padding="6,3,6,3">
-                                                                <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
-                                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                                           TextTrimming="CharacterEllipsis"/>
-                                                            </Border>
-                                                        </DataTemplate>
-                                                    </GroupStyle.HeaderTemplate>
-                                                </GroupStyle>
-                                            </ComboBox.GroupStyle>
-                                                </ComboBox>
-                                                <TextBlock FontSize="10" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                           Margin="4,1,0,0" TextTrimming="CharacterEllipsis" Text="{Binding CustomXSubtitle}"/>
-                                            </StackPanel>
-                                            <ui:Button AutomationProperties.Name="{Binding CustomXRecordText, TargetNullValue=''}" Command="{Binding DataContext.MenuRecordTargetCommand,
-                                                           RelativeSource={RelativeSource AncestorType=TabItem}}"
-                                                       CommandParameter="CustomX"
-                                                       Style="{StaticResource EmberIconButtonHot}" Margin="6,0,0,0" VerticalAlignment="Top">
-                                                <controls:GlyphText Text="{Binding CustomXRecordIcon}" FontFamily="Segoe MDL2 Assets"
-                                                           Foreground="{DynamicResource EmberBrush}"/>
-                                            </ui:Button>
-                                            <ui:Button Command="{Binding ResetCustomXCommand}" Style="{StaticResource ResetButton}" VerticalAlignment="Top" ToolTip="{Binding Menu_Reset_CustomX, Source={x:Static strings:Strings.Instance}}"/>
-                                        </StackPanel>
-                                    </Grid>
-                                    <Grid Margin="16,0,0,8"
-                                          Visibility="{Binding IsCustomHost, Converter={StaticResource BoolToVisibilityConverter}}">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" SharedSizeGroup="MenuKeyboardLabel"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                   Text="{Binding Menu_CustomY, Source={x:Static strings:Strings.Instance}}"
-                                                   ToolTip="{Binding Menu_CustomAxis_Tip, Source={x:Static strings:Strings.Instance}}"
-                                                   Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="240"/>
-                                        <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                            <StackPanel Orientation="Vertical">
-                                                <ComboBox MinWidth="260" ItemsSource="{Binding CustomYChoicesView}"
-                                                          ToolTip="{Binding Menu_CustomAxis_Tip, Source={x:Static strings:Strings.Instance}}"
-                                                          DisplayMemberPath="DisplayName" SelectedValuePath="Descriptor"
-                                                          SelectedValue="{Binding CustomYSelected, Mode=TwoWay}">
-                                                    <ComboBox.GroupStyle>
-                                                <GroupStyle>
-                                                    <GroupStyle.HeaderTemplate>
-                                                        <DataTemplate>
-                                                            <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}" Padding="6,3,6,3">
-                                                                <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
-                                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                                           TextTrimming="CharacterEllipsis"/>
-                                                            </Border>
-                                                        </DataTemplate>
-                                                    </GroupStyle.HeaderTemplate>
-                                                </GroupStyle>
-                                            </ComboBox.GroupStyle>
-                                                </ComboBox>
-                                                <TextBlock FontSize="10" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                           Margin="4,1,0,0" TextTrimming="CharacterEllipsis" Text="{Binding CustomYSubtitle}"/>
-                                            </StackPanel>
-                                            <ui:Button AutomationProperties.Name="{Binding CustomYRecordText, TargetNullValue=''}" Command="{Binding DataContext.MenuRecordTargetCommand,
-                                                           RelativeSource={RelativeSource AncestorType=TabItem}}"
-                                                       CommandParameter="CustomY"
-                                                       Style="{StaticResource EmberIconButtonHot}" Margin="6,0,0,0" VerticalAlignment="Top">
-                                                <controls:GlyphText Text="{Binding CustomYRecordIcon}" FontFamily="Segoe MDL2 Assets"
-                                                           Foreground="{DynamicResource EmberBrush}"/>
-                                            </ui:Button>
-                                            <ui:Button Command="{Binding ResetCustomYCommand}" Style="{StaticResource ResetButton}" VerticalAlignment="Top" ToolTip="{Binding Menu_Reset_CustomY, Source={x:Static strings:Strings.Instance}}"/>
-                                        </StackPanel>
-                                    </Grid>
-                                    <Grid Margin="0,0,0,8"
-                                          Visibility="{Binding IsSplitKeyboard, Converter={StaticResource BoolToVisibilityConverter}}">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" SharedSizeGroup="MenuKeyboardLabel"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                   Text="{Binding Menu_Keyboard_SteerRightHalf, Source={x:Static strings:Strings.Instance}}"
-                                                   ToolTip="{Binding Menu_Keyboard_Steer_Tip, Source={x:Static strings:Strings.Instance}}"
-                                                   Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="240"/>
-                                        <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                            <ComboBox MinWidth="260" ItemsSource="{Binding Host2Options}"
-                                                      ToolTip="{Binding Menu_Keyboard_Steer_Tip, Source={x:Static strings:Strings.Instance}}"
-                                                      DisplayMemberPath="Label"
-                                                      SelectedItem="{Binding SelectedHost2, Mode=TwoWay}"/>
-                                            <ui:Button AutomationProperties.Name="{Binding Host2RecordText, TargetNullValue=''}" Command="{Binding DataContext.MenuRecordTargetCommand,
-                                                           RelativeSource={RelativeSource AncestorType=TabItem}}"
-                                                       CommandParameter="Host2"
-                                                       Style="{StaticResource EmberIconButtonHot}" Margin="6,0,0,0">
-                                                <controls:GlyphText Text="{Binding Host2RecordIcon}" FontFamily="Segoe MDL2 Assets"
-                                                           Foreground="{DynamicResource EmberBrush}"/>
-                                            </ui:Button>
-                                            <ui:Button Command="{Binding ResetHost2Command}" Style="{StaticResource ResetButton}" ToolTip="{Binding Menu_Reset_Host2, Source={x:Static strings:Strings.Instance}}"/>
-                                        </StackPanel>
-                                    </Grid>
-                                    <Grid Margin="16,0,0,8"
-                                          Visibility="{Binding IsCustomHost2, Converter={StaticResource BoolToVisibilityConverter}}">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" SharedSizeGroup="MenuKeyboardLabel"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                   Text="{Binding Menu_CustomX, Source={x:Static strings:Strings.Instance}}"
-                                                   ToolTip="{Binding Menu_CustomAxis_Tip, Source={x:Static strings:Strings.Instance}}"
-                                                   Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="240"/>
-                                        <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                            <StackPanel Orientation="Vertical">
-                                                <ComboBox MinWidth="260" ItemsSource="{Binding Custom2XChoicesView}"
-                                                          ToolTip="{Binding Menu_CustomAxis_Tip, Source={x:Static strings:Strings.Instance}}"
-                                                          DisplayMemberPath="DisplayName" SelectedValuePath="Descriptor"
-                                                          SelectedValue="{Binding Custom2XSelected, Mode=TwoWay}">
-                                                    <ComboBox.GroupStyle>
-                                                <GroupStyle>
-                                                    <GroupStyle.HeaderTemplate>
-                                                        <DataTemplate>
-                                                            <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}" Padding="6,3,6,3">
-                                                                <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
-                                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                                           TextTrimming="CharacterEllipsis"/>
-                                                            </Border>
-                                                        </DataTemplate>
-                                                    </GroupStyle.HeaderTemplate>
-                                                </GroupStyle>
-                                            </ComboBox.GroupStyle>
-                                                </ComboBox>
-                                                <TextBlock FontSize="10" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                           Margin="4,1,0,0" TextTrimming="CharacterEllipsis" Text="{Binding Custom2XSubtitle}"/>
-                                            </StackPanel>
-                                            <ui:Button AutomationProperties.Name="{Binding Custom2XRecordText, TargetNullValue=''}" Command="{Binding DataContext.MenuRecordTargetCommand,
-                                                           RelativeSource={RelativeSource AncestorType=TabItem}}"
-                                                       CommandParameter="Custom2X"
-                                                       Style="{StaticResource EmberIconButtonHot}" Margin="6,0,0,0" VerticalAlignment="Top">
-                                                <controls:GlyphText Text="{Binding Custom2XRecordIcon}" FontFamily="Segoe MDL2 Assets"
-                                                           Foreground="{DynamicResource EmberBrush}"/>
-                                            </ui:Button>
-                                            <ui:Button Command="{Binding ResetCustom2XCommand}" Style="{StaticResource ResetButton}" VerticalAlignment="Top" ToolTip="{Binding Menu_Reset_CustomX, Source={x:Static strings:Strings.Instance}}"/>
-                                        </StackPanel>
-                                    </Grid>
-                                    <Grid Margin="16,0,0,8"
-                                          Visibility="{Binding IsCustomHost2, Converter={StaticResource BoolToVisibilityConverter}}">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" SharedSizeGroup="MenuKeyboardLabel"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                   Text="{Binding Menu_CustomY, Source={x:Static strings:Strings.Instance}}"
-                                                   ToolTip="{Binding Menu_CustomAxis_Tip, Source={x:Static strings:Strings.Instance}}"
-                                                   Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="240"/>
-                                        <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                            <StackPanel Orientation="Vertical">
-                                                <ComboBox MinWidth="260" ItemsSource="{Binding Custom2YChoicesView}"
-                                                          ToolTip="{Binding Menu_CustomAxis_Tip, Source={x:Static strings:Strings.Instance}}"
-                                                          DisplayMemberPath="DisplayName" SelectedValuePath="Descriptor"
-                                                          SelectedValue="{Binding Custom2YSelected, Mode=TwoWay}">
-                                                    <ComboBox.GroupStyle>
-                                                <GroupStyle>
-                                                    <GroupStyle.HeaderTemplate>
-                                                        <DataTemplate>
-                                                            <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}" Padding="6,3,6,3">
-                                                                <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
-                                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                                           TextTrimming="CharacterEllipsis"/>
-                                                            </Border>
-                                                        </DataTemplate>
-                                                    </GroupStyle.HeaderTemplate>
-                                                </GroupStyle>
-                                            </ComboBox.GroupStyle>
-                                                </ComboBox>
-                                                <TextBlock FontSize="10" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                           Margin="4,1,0,0" TextTrimming="CharacterEllipsis" Text="{Binding Custom2YSubtitle}"/>
-                                            </StackPanel>
-                                            <ui:Button AutomationProperties.Name="{Binding Custom2YRecordText, TargetNullValue=''}" Command="{Binding DataContext.MenuRecordTargetCommand,
-                                                           RelativeSource={RelativeSource AncestorType=TabItem}}"
-                                                       CommandParameter="Custom2Y"
-                                                       Style="{StaticResource EmberIconButtonHot}" Margin="6,0,0,0" VerticalAlignment="Top">
-                                                <controls:GlyphText Text="{Binding Custom2YRecordIcon}" FontFamily="Segoe MDL2 Assets"
-                                                           Foreground="{DynamicResource EmberBrush}"/>
-                                            </ui:Button>
-                                            <ui:Button Command="{Binding ResetCustom2YCommand}" Style="{StaticResource ResetButton}" VerticalAlignment="Top" ToolTip="{Binding Menu_Reset_CustomY, Source={x:Static strings:Strings.Instance}}"/>
+                                            <Slider Width="160" Minimum="1" Maximum="95"
+                                                    AutomationProperties.AutomationId="MenuKeyboard_EngageDeadzone"
+                                                    AutomationProperties.Name="{Binding Menu_Deadzone, Source={x:Static strings:Strings.Instance}}"
+                                                    ToolTip="{Binding Menu_Keyboard_Deadzone_Tip, Source={x:Static strings:Strings.Instance}}"
+                                                    Value="{Binding EngageDeadzonePercent, Mode=TwoWay}" VerticalAlignment="Center"/>
+                                            <ui:NumberBox Width="200" Minimum="1" Maximum="95" SmallChange="1" Margin="8,0,0,0"
+                                                          AutomationProperties.Name="{Binding Menu_Deadzone, Source={x:Static strings:Strings.Instance}}"
+                                                          Value="{Binding EngageDeadzonePercent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                            <ui:Button Command="{Binding ResetDeadzoneCommand}" Style="{StaticResource ResetButton}" Margin="6,0,0,0" ToolTip="{Binding Menu_Reset_Deadzone, Source={x:Static strings:Strings.Instance}}"/>
                                         </StackPanel>
                                     </Grid>
                                     <ItemsControl ItemsSource="{Binding KeyboardControlRows}" ItemTemplate="{StaticResource KeyboardControlRowTemplate}"

@@ -5059,20 +5059,15 @@
   <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>데이지 휠: 여덟 그룹 중 하나를 고른 다음 그 안의 문자 네 개 중 하나를 고릅니다.</value></data>
   <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>레이아웃 초기화</value></data>
   <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>여는 입력</value></data>
-  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>이 슬롯에 할당된 장치의 입력 하나 또는 동시에 누른 입력 두 개입니다. 키보드 컨트롤이 같은 입력을 쓰지 않는 한 같은 입력으로 키보드를 닫습니다. 비워 두면 키보드를 여는 입력이 없습니다.</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>이 슬롯에 할당된 장치의 입력 하나(터치패드 제스처나 메뉴 셀 포함) 또는 동시에 누른 입력 두 개입니다. 키보드 컨트롤이 같은 입력을 쓰지 않는 한 같은 입력으로 키보드를 닫습니다. 비워 두면 키보드를 여는 입력이 없습니다.</value></data>
   <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>여는 입력 초기화</value></data>
   <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>텍스트 상자를 선택하면 열기</value></data>
   <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>Windows 앱과 브라우저에서는 버튼 없이 열립니다. 게임은 텍스트 상자를 직접 그리므로 게임에서는 위의 입력으로 열리며, 레이어가 메뉴를 열어 둠이 켜져 있으면 해당 레이어로 열립니다.</value></data>
-  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>강조 표시를 키 위에서 움직이는 입력입니다. 슬롯에 할당된 물리 컨트롤러에서 읽습니다.</value></data>
-  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>왼쪽 절반 조작 입력</value></data>
-  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>오른쪽 절반 조작 입력</value></data>
-  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>그룹 선택 입력</value></data>
-  <data name="Menu_Reset_Host2" xml:space="preserve"><value>오른쪽 절반 조작 입력 초기화</value></data>
   <data name="Menu_Host_DPad" xml:space="preserve"><value>D-Pad</value></data>
   <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>페이스 버튼</value></data>
   <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>키보드 컨트롤</value></data>
   <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>{0} 레이아웃, 컨트롤 {1}개</value></data>
-  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>이 슬롯에 할당된 물리 컨트롤러에서 읽습니다. 컨트롤마다 그중 어느 컨트롤러의 입력이든 지정할 수 있습니다. 버튼, 축 방향, 햇 스위치, 터치패드 또는 동시에 누른 입력 두 개가 가능합니다. 기록 버튼을 누르고 입력을 누르세요. 조합은 입력 하나를 누른 채 두 번째 입력을 누르면 됩니다. 전체 매핑은 컨트롤을 순서대로 기록합니다.</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>이 슬롯에 할당된 물리 컨트롤러에서 읽습니다. 컨트롤마다 그중 어느 컨트롤러의 입력이든 지정할 수 있습니다. 버튼, 축 방향, 햇 스위치, 터치패드 또는 동시에 누른 입력 두 개가 가능합니다. 축은 축→버튼 데드존에서 키를 누릅니다. 키보드가 컨트롤러를 정지 상태로 유지하는 동안 제스처와 메뉴 셀은 멈추므로 여는 입력만 이를 사용할 수 있습니다. 기록 버튼을 누르고 입력을 누르세요. 조합은 입력 하나를 누른 채 두 번째 입력을 누르면 됩니다. 전체 매핑은 컨트롤을 순서대로 기록합니다.</value></data>
   <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>전체 매핑</value></data>
   <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>레이아웃의 모든 컨트롤을 순서대로 기록합니다. 상태 표시줄에 입력을 누를 컨트롤의 이름이 나옵니다.</value></data>
   <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>{0}에 사용할 입력을 누르세요 ({1}/{2})</value></data>
@@ -5130,4 +5125,23 @@
   <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>여는 방식 초기화</value></data>
   <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>여는 입력을 유지 시간 동안 누르고 있으면 키보드를 열거나 닫습니다. 더 짧게 누르면 아무 일도 일어나지 않습니다.</value></data>
   <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>연속 누르기 시간 안에 여는 입력을 두 번 누르면 키보드를 열거나 닫습니다.</value></data>
+  <data name="Osk_Control_SteerUp" xml:space="preserve"><value>위로 조작</value></data>
+  <data name="Osk_Control_SteerDown" xml:space="preserve"><value>아래로 조작</value></data>
+  <data name="Osk_Control_SteerLeft" xml:space="preserve"><value>왼쪽으로 조작</value></data>
+  <data name="Osk_Control_SteerRight" xml:space="preserve"><value>오른쪽으로 조작</value></data>
+  <data name="Osk_Control_LeftHand_Format" xml:space="preserve"><value>{0}, 왼손</value></data>
+  <data name="Osk_Control_RightHand_Format" xml:space="preserve"><value>{0}, 오른손</value></data>
+  <data name="Osk_Control_PointerX_Format" xml:space="preserve"><value>포인터 {0} X</value></data>
+  <data name="Osk_Control_PointerY_Format" xml:space="preserve"><value>포인터 {0} Y</value></data>
+  <data name="Osk_Control_PointerTouch_Format" xml:space="preserve"><value>포인터 {0} 터치</value></data>
+  <data name="Osk_Control_PointerClick_Format" xml:space="preserve"><value>포인터 {0} 클릭</value></data>
+  <data name="Menu_Keyboard_Deadzone_Tip" xml:space="preserve"><value>조작 컨트롤을 얼마나 기울여야 강조 표시가 이동하는지를 정합니다. 버튼이나 다른 켜짐/꺼짐 입력은 즉시 이동시킵니다.</value></data>
+  <data name="Menu_Keyboard_Threshold_Name_Format" xml:space="preserve"><value>{0} 축→버튼 데드존</value></data>
+  <data name="Menu_Keyboard_RecordingAxisPrompt" xml:space="preserve"><value>이 슬롯에 할당된 장치에서 축을 움직이세요</value></data>
+  <data name="Menu_Keyboard_OpenPress_Press_Desc" xml:space="preserve"><value>여는 입력을 누르는 즉시 키보드를 열거나 닫습니다.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Release_Desc" xml:space="preserve"><value>여는 입력에서 손을 뗄 때 키보드를 열거나 닫습니다.</value></data>
+  <data name="Menu_Keyboard_OpenPress_WhileHeld_Desc" xml:space="preserve"><value>여는 입력을 누르고 있는 동안 키보드를 열고, 뗄 때 닫습니다.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>유지 시간 전에 여는 입력에서 손을 떼면 키보드를 열거나 닫습니다. 더 길게 누르면 아무 일도 일어나지 않습니다.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>연속 누르기 시간 안에 여는 입력을 세 번 누르면 키보드를 열거나 닫습니다.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>여는 입력을 한 번 누르고 연속 누르기 시간이 끝나면 키보드를 열거나 닫습니다. 그 시간 안에 두 번째로 누르면 취소됩니다.</value></data>
 </root>

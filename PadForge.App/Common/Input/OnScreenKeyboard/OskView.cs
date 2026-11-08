@@ -80,11 +80,6 @@ namespace PadForge.Common.Input.OnScreenKeyboard
         public IReadOnlyDictionary<KeyboardControlAction, KeyboardInput> Bindings { get; init; } = EmptyBindings;
         internal static readonly IReadOnlyDictionary<KeyboardControlAction, KeyboardInput> EmptyBindings =
             new Dictionary<KeyboardControlAction, KeyboardInput>();
-        /// <summary>The steering inputs, in the menu host grammar ("Gamepad
-        /// LeftStick", "Gamepad DPad", "Touchpad 0", "Custom"). The second
-        /// is Split's right half.</summary>
-        public string Host { get; init; } = "";
-        public string Host2 { get; init; } = "";
         /// <summary>Changes when the keys' places change, so the window
         /// rebuilds then and only restyles otherwise.</summary>
         public string Shape { get; init; }
@@ -92,7 +87,7 @@ namespace PadForge.Common.Input.OnScreenKeyboard
         public static OskView Closed(long nowMs) => new() { Open = false, StampMs = nowMs, Boards = Array.Empty<OskViewBoard>() };
 
         public static OskView Build(OskEngine e, OskFamily family, long nowMs, int slot = -1, int menuId = 0,
-            IReadOnlyDictionary<KeyboardControlAction, KeyboardInput> bindings = null, string host = "", string host2 = "")
+            IReadOnlyDictionary<KeyboardControlAction, KeyboardInput> bindings = null)
         {
             if (e == null || !e.IsOpen) return Closed(nowMs);
             var shape = new StringBuilder();
@@ -166,8 +161,6 @@ namespace PadForge.Common.Input.OnScreenKeyboard
                 Slot = slot,
                 MenuId = menuId,
                 Bindings = bindings ?? EmptyBindings,
-                Host = host ?? "",
-                Host2 = host2 ?? "",
                 Shape = shape.ToString(),
             };
         }

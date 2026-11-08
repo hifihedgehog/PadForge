@@ -5108,20 +5108,15 @@
   <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>Колелото с осем групи: изберете една от осем групи, после един от четирите ѝ знака.</value></data>
   <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>Нулиране на подредбата</value></data>
   <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>Отваря се с</value></data>
-  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Всеки вход на устройство, зададено на този слот, или два входа, задържани заедно. Същият вход затваря клавиатурата, освен ако контрол на клавиатурата го ползва също. Празно означава, че никой вход не я отваря.</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Всеки вход на устройство, зададено на този слот, включително жест на тъчпад или клетка на меню, или два входа, задържани заедно. Същият вход затваря клавиатурата, освен ако контрол на клавиатурата го ползва също. Празно означава, че никой вход не я отваря.</value></data>
   <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>Нулиране на „Отваря се с“</value></data>
   <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>Отваряне при избрано текстово поле</value></data>
   <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>В приложения на Windows и в браузъри, без бутон. Игрите рисуват свои текстови полета, затова в игра клавиатурата се отваря с входа по-горе или със своя слой, когато „Слоят държи менюто отворено“ е включено.</value></data>
-  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>Входът, който премества маркирането по клавишите, чете се от физическите контролери, зададени на слота.</value></data>
-  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>Управление на лявата половина с</value></data>
-  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>Управление на дясната половина с</value></data>
-  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>Избор на група с</value></data>
-  <data name="Menu_Reset_Host2" xml:space="preserve"><value>Нулиране на „Управление на дясната половина с“</value></data>
   <data name="Menu_Host_DPad" xml:space="preserve"><value>Кръстачка</value></data>
   <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>Лицеви бутони</value></data>
   <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>Контроли на клавиатурата</value></data>
   <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>Подредба: {0}, контроли: {1}</value></data>
-  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Чете се от физическите контролери, зададени на този слот. Всеки контрол приема всеки вход на всеки от тях: бутон, посока на ос, хат, тъчпад или два входа, задържани заедно. Щракнете бутона за запис и натиснете входа или задръжте един вход и натиснете втори за комбинация. „Съпостави всички“ ги записва по ред.</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Чете се от физическите контролери, зададени на този слот. Всеки контрол приема бутон, посока на ос, хат, тъчпад или два входа, задържани заедно, на всеки от тях. Осът натиска клавиш при своята „Мъртва зона ос към бутон“. Жестовете и клетките на менюто спират, докато клавиатурата държи контролера в покой, затова само „Отваря се с“ ги приема. Щракнете бутона за запис и натиснете входа или задръжте един вход и натиснете втори за комбинация. „Съпостави всички“ ги записва по ред.</value></data>
   <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>Съпостави всички</value></data>
   <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>Записва по ред всеки контрол на подредбата. Редът за състояние назовава контрола, за който да натиснете вход.</value></data>
   <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>Натиснете входа за {0} ({1} от {2})</value></data>
@@ -5179,4 +5174,23 @@
   <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>Нулиране на „Отваря се при“</value></data>
   <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>Отваря или затваря клавиатурата, щом „Отваря се с“ е задържан за времето за задържане. По-кратко натискане не прави нищо.</value></data>
   <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>Отваря или затваря клавиатурата, когато „Отваря се с“ е натиснат два пъти в рамките на прозореца за натискане.</value></data>
+  <data name="Osk_Control_SteerUp" xml:space="preserve"><value>Управление нагоре</value></data>
+  <data name="Osk_Control_SteerDown" xml:space="preserve"><value>Управление надолу</value></data>
+  <data name="Osk_Control_SteerLeft" xml:space="preserve"><value>Управление наляво</value></data>
+  <data name="Osk_Control_SteerRight" xml:space="preserve"><value>Управление надясно</value></data>
+  <data name="Osk_Control_LeftHand_Format" xml:space="preserve"><value>{0}, лява ръка</value></data>
+  <data name="Osk_Control_RightHand_Format" xml:space="preserve"><value>{0}, дясна ръка</value></data>
+  <data name="Osk_Control_PointerX_Format" xml:space="preserve"><value>Указател {0} X</value></data>
+  <data name="Osk_Control_PointerY_Format" xml:space="preserve"><value>Указател {0} Y</value></data>
+  <data name="Osk_Control_PointerTouch_Format" xml:space="preserve"><value>Указател {0} докосване</value></data>
+  <data name="Osk_Control_PointerClick_Format" xml:space="preserve"><value>Указател {0} щракване</value></data>
+  <data name="Menu_Keyboard_Deadzone_Tip" xml:space="preserve"><value>Колко трябва да се отклони контрол за управление, преди маркерът да се премести. Бутон или друг вход с две състояния го премества веднага.</value></data>
+  <data name="Menu_Keyboard_Threshold_Name_Format" xml:space="preserve"><value>{0}: Мъртва зона ос към бутон</value></data>
+  <data name="Menu_Keyboard_RecordingAxisPrompt" xml:space="preserve"><value>Задвижете ос на всяко устройство, зададено на този слот</value></data>
+  <data name="Menu_Keyboard_OpenPress_Press_Desc" xml:space="preserve"><value>Отваря или затваря клавиатурата веднага щом „Отваря се с“ е натиснат.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Release_Desc" xml:space="preserve"><value>Отваря или затваря клавиатурата, когато „Отваря се с“ е отпуснат.</value></data>
+  <data name="Menu_Keyboard_OpenPress_WhileHeld_Desc" xml:space="preserve"><value>Отваря клавиатурата, докато „Отваря се с“ е задържан, и я затваря, когато натискането се прекрати.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Отваря или затваря клавиатурата, когато „Отваря се с“ е отпуснат преди времето за задържане. По-дълго натискане не прави нищо.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Отваря или затваря клавиатурата, когато „Отваря се с“ е натиснат три пъти в рамките на прозореца за натискане.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Отваря или затваря клавиатурата, когато прозорецът за натискане изтече след едно натискане на „Отваря се с“. Второ натискане в прозореца го отменя.</value></data>
 </root>

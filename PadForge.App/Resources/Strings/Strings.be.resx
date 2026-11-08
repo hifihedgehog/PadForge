@@ -5108,20 +5108,15 @@
   <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>Кола-ромашка: выберыце адну з васьмі груп, потым адзін з яе чатырох сімвалаў.</value></data>
   <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>Скінуць раскладку</value></data>
   <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>Адкрываецца праз</value></data>
-  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Любы ўвод на прыладзе, прызначанай гэтаму слоту, або два ўводы разам. Той самы ўвод закрывае клавіятуру, калі яго не выкарыстоўвае таксама які-небудзь элемент кіравання клавіятурай. Пустое поле значыць, што ніякі ўвод яе не адкрывае.</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Любы ўвод на прыладзе, прызначанай гэтаму слоту, уключна з жэстам сэнсарнай панэлі або ячэйкай меню, або два ўводы разам. Той самы ўвод закрывае клавіятуру, калі яго не выкарыстоўвае таксама які-небудзь элемент кіравання клавіятурай. Пустое поле значыць, што ніякі ўвод яе не адкрывае.</value></data>
   <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>Скінуць «Адкрываецца праз»</value></data>
   <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>Адкрываць, калі абрана тэкставае поле</value></data>
   <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>У праграмах Windows і браўзерах, без кнопкі. Гульні малююць свае тэкставыя палі, таму ў гульні клавіятура адкрываецца ўводам вышэй або яго слоем, калі ўключана Слой трымае меню адкрытым.</value></data>
-  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>Увод, які рухае вылучэнне па клавішах, чытаецца з фізічных кантролераў, прызначаных гэтаму слоту.</value></data>
-  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>Кіраваць левай паловай праз</value></data>
-  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>Кіраваць правай паловай праз</value></data>
-  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>Выбіраць групу праз</value></data>
-  <data name="Menu_Reset_Host2" xml:space="preserve"><value>Скінуць «Кіраваць правай паловай праз»</value></data>
   <data name="Menu_Host_DPad" xml:space="preserve"><value>Крыжавіна</value></data>
   <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>Асноўныя кнопкі</value></data>
   <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>Элементы кіравання клавіятурай</value></data>
   <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>Раскладка: {0}, элементаў кіравання: {1}</value></data>
-  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Чытаюцца з фізічных кантролераў, прызначаных гэтаму слоту. Кожны элемент кіравання прымае любы ўвод любога з іх: кнопку, напрамак восі, хат, сэнсарную панэль або два ўводы разам. Націсніце кнопку запісу і націсніце ўвод або ўтрымлівайце адзін увод і націсніце другі для спалучэння. Прызначыць усё запісвае іх па чарзе.</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Чытаюцца з фізічных кантролераў, прызначаных гэтаму слоту. Кожны элемент кіравання прымае на любым з іх кнопку, напрамак восі, хат, сэнсарную панэль або два ўводы разам. Вось націскае клавішу пры Мёртвая зона восі як кнопкі. Жэсты і ячэйкі меню спыняюцца, пакуль клавіятура трымае кантролер у спакоі, таму іх прымае толькі Адкрываецца праз. Націсніце кнопку запісу і націсніце ўвод або ўтрымлівайце адзін увод і націсніце другі для спалучэння. Прызначыць усё запісвае іх па чарзе.</value></data>
   <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>Прызначыць усё</value></data>
   <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>Запісвае ўсе элементы кіравання раскладкі па чарзе. Радок стану называе элемент, для якога трэба націснуць увод.</value></data>
   <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>Націсніце ўвод для: {0} ({1} з {2})</value></data>
@@ -5179,4 +5174,23 @@
   <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>Скінуць «Адкрываецца пры»</value></data>
   <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>Адкрывае або закрывае клавіятуру, калі Адкрываецца праз утрымліваецца на працягу часу ўтрымання. Кароткі націск нічога не робіць.</value></data>
   <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>Адкрывае або закрывае клавіятуру, калі Адкрываецца праз націснута двойчы ў акне націску.</value></data>
+  <data name="Osk_Control_SteerUp" xml:space="preserve"><value>Кіраваць уверх</value></data>
+  <data name="Osk_Control_SteerDown" xml:space="preserve"><value>Кіраваць уніз</value></data>
+  <data name="Osk_Control_SteerLeft" xml:space="preserve"><value>Кіраваць улева</value></data>
+  <data name="Osk_Control_SteerRight" xml:space="preserve"><value>Кіраваць управа</value></data>
+  <data name="Osk_Control_LeftHand_Format" xml:space="preserve"><value>{0}, левая рука</value></data>
+  <data name="Osk_Control_RightHand_Format" xml:space="preserve"><value>{0}, правая рука</value></data>
+  <data name="Osk_Control_PointerX_Format" xml:space="preserve"><value>Указальнік {0} X</value></data>
+  <data name="Osk_Control_PointerY_Format" xml:space="preserve"><value>Указальнік {0} Y</value></data>
+  <data name="Osk_Control_PointerTouch_Format" xml:space="preserve"><value>Указальнік {0}, дотык</value></data>
+  <data name="Osk_Control_PointerClick_Format" xml:space="preserve"><value>Указальнік {0}, націск</value></data>
+  <data name="Menu_Keyboard_Deadzone_Tip" xml:space="preserve"><value>Наколькі далёка трэба адхіліць элемент рулявання, каб вылучэнне перамясцілася. Кнопка або іншы ўвод, які толькі націснуты ці адпушчаны, перамяшчае яго адразу.</value></data>
+  <data name="Menu_Keyboard_Threshold_Name_Format" xml:space="preserve"><value>{0}: Мёртвая зона восі як кнопкі</value></data>
+  <data name="Menu_Keyboard_RecordingAxisPrompt" xml:space="preserve"><value>Пашавеліце вось на любой прыладзе, прызначанай гэтаму слоту</value></data>
+  <data name="Menu_Keyboard_OpenPress_Press_Desc" xml:space="preserve"><value>Адкрывае або закрывае клавіятуру, як толькі націснута Адкрываецца праз.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Release_Desc" xml:space="preserve"><value>Адкрывае або закрывае клавіятуру, калі Адкрываецца праз адпушчана.</value></data>
+  <data name="Menu_Keyboard_OpenPress_WhileHeld_Desc" xml:space="preserve"><value>Адкрывае клавіятуру, пакуль Адкрываецца праз утрымліваецца, і закрывае яе, калі націск адпушчаны.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Адкрывае або закрывае клавіятуру, калі Адкрываецца праз адпушчана раней, чым мінуў час утрымання. Больш доўгі націск нічога не робіць.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Адкрывае або закрывае клавіятуру, калі Адкрываецца праз націснута тройчы ў акне націску.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Адкрывае або закрывае клавіятуру, калі акно націску заканчваецца пасля аднаго націску Адкрываецца праз. Другі націск у акне скасоўвае гэта.</value></data>
 </root>

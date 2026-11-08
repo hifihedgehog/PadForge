@@ -5108,20 +5108,15 @@
   <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>輪盤式鍵盤：先選八個群組之一，再選該群組的四個字元之一。</value></data>
   <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>重設配置</value></data>
   <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>開啟方式</value></data>
-  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>指派給此插槽的任一裝置上的任何輸入，或同時按住的兩個輸入。同一個輸入也會關閉鍵盤，除非鍵盤控制項也使用它。留空表示沒有任何輸入能開啟。</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>指派給此插槽的任一裝置上的任何輸入（包括觸控板手勢或選單格子），或同時按住的兩個輸入。同一個輸入也會關閉鍵盤，除非鍵盤控制項也使用它。留空表示沒有任何輸入能開啟。</value></data>
   <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>重設開啟方式</value></data>
   <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>選取文字方塊時開啟</value></data>
   <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>在 Windows 應用程式和瀏覽器中，不需按任何按鈕。遊戲會自行繪製文字方塊，因此在遊戲中，鍵盤由上方的輸入開啟，或在開啟「由層保持選單開啟」時由其層開啟。</value></data>
-  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>在按鍵之間移動反白位置的輸入，讀取自此插槽所指派的實體控制器。</value></data>
-  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>操控左半部的輸入</value></data>
-  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>操控右半部的輸入</value></data>
-  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>選取群組的輸入</value></data>
-  <data name="Menu_Reset_Host2" xml:space="preserve"><value>重設操控右半部的輸入</value></data>
   <data name="Menu_Host_DPad" xml:space="preserve"><value>十字鍵</value></data>
   <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>正面按鈕</value></data>
   <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>鍵盤控制項</value></data>
   <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>{0} 配置，{1} 個控制項</value></data>
-  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>讀取自指派給此插槽的實體控制器。每個控制項可使用其中任一個的任何輸入：按鈕、軸方向、方向鍵、觸控板，或同時按住的兩個輸入。按一下錄製按鈕後按下輸入，或按住一個輸入再按第二個以組成組合。「全部對應」會依序錄製這些控制項。</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>讀取自指派給此插槽的實體控制器。每個控制項可使用其中任一個的按鈕、軸方向、方向鍵、觸控板，或同時按住的兩個輸入。軸會在其「軸轉按鈕死區」按下按鍵。鍵盤讓控制器保持靜止時，手勢和選單格子會停止作用，因此只有「開啟方式」能使用它們。按一下錄製按鈕後按下輸入，或按住一個輸入再按第二個以組成組合。「全部對應」會依序錄製這些控制項。</value></data>
   <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>全部對應</value></data>
   <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>依序錄製此配置的每個控制項。狀態列會顯示要為哪個控制項按下輸入。</value></data>
   <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>請按下 {0} 的輸入（第 {1} 個，共 {2} 個）</value></data>
@@ -5179,4 +5174,23 @@
   <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>重設開啟時機</value></data>
   <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>按住「開啟方式」達到按住時間後，開啟或關閉鍵盤。較短的按壓不會有任何作用。</value></data>
   <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>在按壓時間範圍內按兩次「開啟方式」時，開啟或關閉鍵盤。</value></data>
+  <data name="Osk_Control_SteerUp" xml:space="preserve"><value>上操控</value></data>
+  <data name="Osk_Control_SteerDown" xml:space="preserve"><value>下操控</value></data>
+  <data name="Osk_Control_SteerLeft" xml:space="preserve"><value>左操控</value></data>
+  <data name="Osk_Control_SteerRight" xml:space="preserve"><value>右操控</value></data>
+  <data name="Osk_Control_LeftHand_Format" xml:space="preserve"><value>{0}，左手</value></data>
+  <data name="Osk_Control_RightHand_Format" xml:space="preserve"><value>{0}，右手</value></data>
+  <data name="Osk_Control_PointerX_Format" xml:space="preserve"><value>指標 {0} X</value></data>
+  <data name="Osk_Control_PointerY_Format" xml:space="preserve"><value>指標 {0} Y</value></data>
+  <data name="Osk_Control_PointerTouch_Format" xml:space="preserve"><value>指標 {0} 觸碰</value></data>
+  <data name="Osk_Control_PointerClick_Format" xml:space="preserve"><value>指標 {0} 點擊</value></data>
+  <data name="Menu_Keyboard_Deadzone_Tip" xml:space="preserve"><value>操控控制項要推多遠，反白才會移動。按鈕或其他開關式輸入會立即移動反白。</value></data>
+  <data name="Menu_Keyboard_Threshold_Name_Format" xml:space="preserve"><value>{0} 軸轉按鈕死區</value></data>
+  <data name="Menu_Keyboard_RecordingAxisPrompt" xml:space="preserve"><value>請在指派給此插槽的任一裝置上移動一個軸</value></data>
+  <data name="Menu_Keyboard_OpenPress_Press_Desc" xml:space="preserve"><value>按下「開啟方式」的瞬間，開啟或關閉鍵盤。</value></data>
+  <data name="Menu_Keyboard_OpenPress_Release_Desc" xml:space="preserve"><value>放開「開啟方式」時，開啟或關閉鍵盤。</value></data>
+  <data name="Menu_Keyboard_OpenPress_WhileHeld_Desc" xml:space="preserve"><value>按住「開啟方式」期間開啟鍵盤，放開該次按壓時關閉鍵盤。</value></data>
+  <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>在按住時間內放開「開啟方式」時，開啟或關閉鍵盤。較長的按壓不會有任何作用。</value></data>
+  <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>在按壓時間範圍內按三次「開啟方式」時，開啟或關閉鍵盤。</value></data>
+  <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>按一次「開啟方式」後，按壓時間範圍結束時，開啟或關閉鍵盤。在該範圍內再按第二次會取消。</value></data>
 </root>

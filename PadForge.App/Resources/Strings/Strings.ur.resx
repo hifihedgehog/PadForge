@@ -5108,20 +5108,15 @@
   <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>ڈیزی وہیل: آٹھ گروپوں میں سے ایک چنیں، پھر اس کے چار حروف میں سے ایک۔</value></data>
   <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>لے آؤٹ ری سیٹ کریں</value></data>
   <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>اس سے کھلتا ہے</value></data>
-  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>اس سلاٹ کو دیے گئے کسی بھی آلے کا کوئی بھی ان پٹ، یا دو ان پٹ ایک ساتھ دبائے ہوئے۔ وہی ان پٹ کی بورڈ کو بند بھی کرتا ہے، جب تک کوئی کی بورڈ کنٹرول بھی اسے استعمال نہ کرے۔ خالی کا مطلب ہے کوئی ان پٹ اسے نہیں کھولتا۔</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>اس سلاٹ کو دیے گئے کسی بھی آلے کا کوئی بھی ان پٹ، ٹچ پیڈ کا اشارہ یا مینو کا خانہ بھی شامل، یا دو ان پٹ ایک ساتھ دبائے ہوئے۔ وہی ان پٹ کی بورڈ کو بند بھی کرتا ہے، جب تک کوئی کی بورڈ کنٹرول بھی اسے استعمال نہ کرے۔ خالی کا مطلب ہے کوئی ان پٹ اسے نہیں کھولتا۔</value></data>
   <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>"اس سے کھلتا ہے" ری سیٹ کریں</value></data>
   <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>ٹیکسٹ باکس منتخب ہونے پر کھولیں</value></data>
   <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>Windows ایپس اور براؤزرز میں، بغیر کسی بٹن کے۔ گیمز اپنے ٹیکسٹ باکس خود بناتی ہیں، اس لیے گیم میں یہ اوپر والے ان پٹ سے کھلتا ہے، یا اس کی لیئر سے جب "لیئر مینو کو کھلا رکھتی ہے" آن ہو۔</value></data>
-  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>وہ ان پٹ جو نمایاں خانے کو کلیدوں پر چلاتا ہے، اس سلاٹ کے مقرر کردہ فزیکل کنٹرولرز سے پڑھا جاتا ہے۔</value></data>
-  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>بایاں نصف اس سے چلائیں</value></data>
-  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>دایاں نصف اس سے چلائیں</value></data>
-  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>گروپ اس سے چنیں</value></data>
-  <data name="Menu_Reset_Host2" xml:space="preserve"><value>"دایاں نصف اس سے چلائیں" ری سیٹ کریں</value></data>
   <data name="Menu_Host_DPad" xml:space="preserve"><value>ڈی پیڈ</value></data>
   <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>فیس بٹن</value></data>
   <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>کی بورڈ کنٹرولز</value></data>
   <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>{0} لے آؤٹ، {1} کنٹرولز</value></data>
-  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>اس سلاٹ کو دیے گئے فزیکل کنٹرولرز سے پڑھا جاتا ہے۔ ہر کنٹرول ان میں سے کسی بھی ان پٹ کو لیتا ہے: بٹن، محور کی سمت، ہیٹ، ٹچ پیڈ، یا دو ان پٹ ایک ساتھ دبائے ہوئے۔ ریکارڈ بٹن پر کلک کریں اور ان پٹ دبائیں، یا ایک ان پٹ دبائے رکھ کر دوسرا دبائیں تاکہ مجموعہ بنے۔ "سب میپ کریں" انہیں ترتیب سے ریکارڈ کرتا ہے۔</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>اس سلاٹ کو دیے گئے فزیکل کنٹرولرز سے پڑھا جاتا ہے۔ ہر کنٹرول ان میں سے کسی بھی پر بٹن، محور کی سمت، ہیٹ، ٹچ پیڈ، یا دو ان پٹ ایک ساتھ دبائے ہوئے کو لیتا ہے۔ محور "محور سے بٹن کا ڈیڈ زون" پر کلید دباتا ہے۔ جب تک کی بورڈ کنٹرولر کو بے حرکت رکھتا ہے، اشارے اور مینو کے خانے رک جاتے ہیں، اس لیے انہیں صرف "اس سے کھلتا ہے" لیتا ہے۔ ریکارڈ بٹن پر کلک کریں اور ان پٹ دبائیں، یا ایک ان پٹ دبائے رکھ کر دوسرا دبائیں تاکہ مجموعہ بنے۔ "سب میپ کریں" انہیں ترتیب سے ریکارڈ کرتا ہے۔</value></data>
   <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>سب میپ کریں</value></data>
   <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>لے آؤٹ کے ہر کنٹرول کو ترتیب سے ریکارڈ کرتا ہے۔ اسٹیٹس لائن اس کنٹرول کا نام بتاتی ہے جس کے لیے ان پٹ دبانا ہے۔</value></data>
   <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>{0} کے لیے ان پٹ دبائیں ({2} میں سے {1})</value></data>
@@ -5179,4 +5174,23 @@
   <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>"اس پر کھلتا ہے" ری سیٹ کریں</value></data>
   <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>جب "اس سے کھلتا ہے" کو دبائے رکھنے کے وقت تک دبایا جائے تو کی بورڈ کھلتا یا بند ہوتا ہے۔ اس سے مختصر دبانے پر کچھ نہیں ہوتا۔</value></data>
   <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>جب "اس سے کھلتا ہے" کو دبانے کی مہلت کے اندر دو بار دبایا جائے تو کی بورڈ کھلتا یا بند ہوتا ہے۔</value></data>
+  <data name="Osk_Control_SteerUp" xml:space="preserve"><value>اوپر چلائیں</value></data>
+  <data name="Osk_Control_SteerDown" xml:space="preserve"><value>نیچے چلائیں</value></data>
+  <data name="Osk_Control_SteerLeft" xml:space="preserve"><value>بائیں چلائیں</value></data>
+  <data name="Osk_Control_SteerRight" xml:space="preserve"><value>دائیں چلائیں</value></data>
+  <data name="Osk_Control_LeftHand_Format" xml:space="preserve"><value>{0}، بایاں ہاتھ</value></data>
+  <data name="Osk_Control_RightHand_Format" xml:space="preserve"><value>{0}، دایاں ہاتھ</value></data>
+  <data name="Osk_Control_PointerX_Format" xml:space="preserve"><value>پوائنٹر {0} X</value></data>
+  <data name="Osk_Control_PointerY_Format" xml:space="preserve"><value>پوائنٹر {0} Y</value></data>
+  <data name="Osk_Control_PointerTouch_Format" xml:space="preserve"><value>پوائنٹر {0} ٹچ</value></data>
+  <data name="Osk_Control_PointerClick_Format" xml:space="preserve"><value>پوائنٹر {0} کلک</value></data>
+  <data name="Menu_Keyboard_Deadzone_Tip" xml:space="preserve"><value>ہائی لائٹ کے حرکت کرنے سے پہلے چلانے والے کنٹرول کو کتنا دھکیلنا ہے۔ بٹن یا کوئی اور آن/آف ان پٹ اسے فوراً حرکت دیتا ہے۔</value></data>
+  <data name="Menu_Keyboard_Threshold_Name_Format" xml:space="preserve"><value>{0} محور سے بٹن کا ڈیڈ زون</value></data>
+  <data name="Menu_Keyboard_RecordingAxisPrompt" xml:space="preserve"><value>اس سلاٹ کو دیے گئے کسی بھی آلے پر کوئی محور ہلائیں</value></data>
+  <data name="Menu_Keyboard_OpenPress_Press_Desc" xml:space="preserve"><value>جیسے ہی "اس سے کھلتا ہے" کو دبایا جائے، کی بورڈ کھلتا یا بند ہوتا ہے۔</value></data>
+  <data name="Menu_Keyboard_OpenPress_Release_Desc" xml:space="preserve"><value>جب "اس سے کھلتا ہے" کو چھوڑا جائے تو کی بورڈ کھلتا یا بند ہوتا ہے۔</value></data>
+  <data name="Menu_Keyboard_OpenPress_WhileHeld_Desc" xml:space="preserve"><value>جب تک "اس سے کھلتا ہے" دبا رہے، کی بورڈ کھلا رہتا ہے اور دبانا چھوڑنے پر بند ہو جاتا ہے۔</value></data>
+  <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>جب "اس سے کھلتا ہے" کو دبائے رکھنے کے وقت سے پہلے چھوڑ دیا جائے تو کی بورڈ کھلتا یا بند ہوتا ہے۔ اس سے زیادہ دیر دبانے پر کچھ نہیں ہوتا۔</value></data>
+  <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>جب "اس سے کھلتا ہے" کو دبانے کی مہلت کے اندر تین بار دبایا جائے تو کی بورڈ کھلتا یا بند ہوتا ہے۔</value></data>
+  <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>"اس سے کھلتا ہے" کو ایک بار دبانے کے بعد جب دبانے کی مہلت ختم ہو تو کی بورڈ کھلتا یا بند ہوتا ہے۔ مہلت کے اندر دوسری بار دبانے سے یہ منسوخ ہو جاتا ہے۔</value></data>
 </root>

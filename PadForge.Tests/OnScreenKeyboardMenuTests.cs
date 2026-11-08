@@ -9,6 +9,7 @@ using PadForge.Common.Input;
 using PadForge.Common.Input.OnScreenKeyboard;
 using PadForge.Engine;
 using PadForge.Engine.Common;
+using PadForge.Engine.Common.Mapping;
 using PadForge.Engine.Data;
 using PadForge.Engine.Menus;
 using Xunit;
@@ -477,16 +478,15 @@ namespace PadForge.Tests
             Assert.Equal(new[] { "tap 0010 None" }, _out.Sent);
         }
 
-        /// <summary>The left stick's axes swapped: pushed right, the selection
-        /// moves down, from q to a. The default steering would move it right,
-        /// to w.</summary>
+        /// <summary>Steer Down on the left stick's right half: pushed right,
+        /// the selection moves down, from q to a. The default steering would
+        /// move it right, to w.</summary>
         [Fact]
-        public void CustomSteering_ReadsTheAxesTheMenuNames()
+        public void Steering_ReadsItsFourDirectionControls()
         {
             var ud = AddPad();
-            _menu.HostDescriptor = "Custom";
-            _menu.CustomXDescriptor = "Gamepad LeftStickY";
-            _menu.CustomYDescriptor = "Gamepad LeftStickX";
+            KeyboardMenuDefaults.Set(_menu, KeyboardLayout.Grid, KeyboardControlAction.SteerDown, new KeyboardInput("HGamepad LeftStickX"));
+            KeyboardMenuDefaults.Set(_menu, KeyboardLayout.Grid, KeyboardControlAction.SteerRight, new KeyboardInput("HGamepad LeftStickY"));
             OpenWithGuide(ud);
             var right = Rest();
             right.Axis[0] = 65535;
@@ -494,6 +494,194 @@ namespace PadForge.Tests
             Poll(ud, Rest());
             Tap(ud, A);
             Assert.Equal(new[] { "tap 001E None" }, _out.Sent);
+        }
+
+        /// <summary>A flight stick's axis steers right, read on that stick
+        /// alone: q to w.</summary>
+        [Fact]
+        public void AnAxisOnAnyDevice_Steers()
+        {
+            var pad = AddPad();
+            var stick = AddPad(capType: InputDeviceType.Flight);
+            KeyboardMenuDefaults.Set(_menu, KeyboardLayout.Grid, KeyboardControlAction.SteerRight,
+                new KeyboardInput("HAxis 4", stick.InstanceGuidString));
+            CustomInputState Stick(int axis4)
+            {
+                var s = new CustomInputState();
+                s.Axis[4] = axis4;
+                return s;
+            }
+            Poll((pad, Rest()), (stick, Stick(32768)));
+            Poll((pad, Rest(GuideButton)), (stick, Stick(32768)));
+            Assert.True(IsOpen);
+            Assert.True(_im.OnScreenKeyboardMasks(stick.InstanceGuid));
+            Poll((pad, Rest()), (stick, Stick(32768)));
+            Poll((pad, Rest()), (stick, Stick(65535)));
+            Poll((pad, Rest()), (stick, Stick(32768)));
+            Poll((pad, Rest(A)), (stick, Stick(32768)));
+            Poll((pad, Rest()), (stick, Stick(32768)));
+            Assert.Equal(new[] { "tap 0011 None" }, _out.Sent);
+        }
+
+        /// <summary>A mouse answers device-free inputs, and holds 0 on the
+        /// stick axes it lacks, which would read as the left stick held up
+        /// and left for as long as the keyboard is open, so the pad's own
+        /// stick could never steer. The "Gamepad ..." names read only a
+        /// device with a gamepad's layout, the #431 rule Mappings rows keep:
+        /// the pad's push right moves q to w.</summary>
+        [Fact]
+        public void ADeviceWithNoSticks_NeverSteers()
+        {
+            var pad = AddPad();
+            var mouse = AddPad(capType: InputDeviceType.Mouse);
+            var still = new CustomInputState();
+            Poll((pad, Rest()), (mouse, still));
+            Poll((pad, Rest(GuideButton)), (mouse, still));
+            Assert.True(IsOpen);
+            for (int i = 0; i < 4; i++) Poll((pad, Rest()), (mouse, still));
+            var right = Rest();
+            right.Axis[0] = 65535;
+            Poll((pad, right), (mouse, still));
+            Poll((pad, Rest()), (mouse, still));
+            Poll((pad, Rest(A)), (mouse, still));
+            Poll((pad, Rest()), (mouse, still));
+            Assert.Equal(new[] { "tap 0011 None" }, _out.Sent);
+        }
+
+        /// <summary>The Engage Deadzone sets how far steering is pushed before
+        /// the selection moves: 70% of the way does nothing at 80, 90% moves
+        /// it from q to w.</summary>
+        [Fact]
+        public void TheEngageDeadzone_SetsHowFarSteeringIsPushed()
+        {
+            var ud = AddPad();
+            _menu.EngageDeadzonePercent = 80;
+            OpenWithGuide(ud);
+            var part = Rest();
+            part.Axis[0] = 32768 + (int)(0.7 * 32767);
+            Poll(ud, part);
+            Poll(ud, Rest());
+            Tap(ud, A);
+            var far = Rest();
+            far.Axis[0] = 32768 + (int)(0.9 * 32767);
+            Poll(ud, far);
+            Poll(ud, Rest());
+            Tap(ud, A);
+            Assert.Equal(new[] { "tap 0010 None", "tap 0011 None" }, _out.Sent);
+        }
+
+        /// <summary>A throttle as Type Key at an 80% press point: 70% does
+        /// nothing, 90% presses, 60% still holds it, as the press lets go
+        /// below 56%, 50% lets go and 90% presses again. Two keys, where a
+        /// press without the hold would type three.</summary>
+        [Fact]
+        public void AnAxisPressesAKey_AtItsPressPoint_AndLetsGoBelowSeventyPercentOfIt()
+        {
+            var pad = AddPad();
+            var stick = AddPad(capType: InputDeviceType.Flight);
+            KeyboardMenuDefaults.Set(_menu, KeyboardLayout.Grid, KeyboardControlAction.TypeKey,
+                new KeyboardInput("Axis 2", stick.InstanceGuidString, "", "", 80));
+            CustomInputState Throttle(double share)
+            {
+                var s = new CustomInputState();
+                s.Axis[2] = (int)(share * 65535);
+                return s;
+            }
+            Poll((pad, Rest()), (stick, Throttle(0)));
+            Poll((pad, Rest(GuideButton)), (stick, Throttle(0)));
+            Assert.True(IsOpen);
+            Poll((pad, Rest()), (stick, Throttle(0)));
+            foreach (double share in new[] { 0.7, 0.9, 0.6, 0.9, 0.5, 0.9, 0.0 })
+                Poll((pad, Rest()), (stick, Throttle(share)));
+            Assert.Equal(new[] { "tap 0010 None", "tap 0010 None" }, _out.Sent);
+        }
+
+        /// <summary>A zone of the right trigger, a third to two thirds of its
+        /// pull: an input with no depth of its own that a Mappings row with a
+        /// button target presses on. Type Key takes the same read.</summary>
+        [Fact]
+        public void AKey_PressesOnEveryInputAMappingsButtonReads()
+        {
+            var ud = AddPad();
+            KeyboardMenuDefaults.Set(_menu, KeyboardLayout.Grid, KeyboardControlAction.TypeKey,
+                new KeyboardInput("Between 30 66 00 Gamepad RightTrigger"));
+            OpenWithGuide(ud);
+            var inZone = Rest();
+            inZone.Axis[5] = (int)(0.45 * 65535);
+            Poll(ud, inZone);
+            Poll(ud, Rest());
+            Assert.Equal(new[] { "tap 0010 None" }, _out.Sent);
+        }
+
+        /// <summary>The same zone as Steer Right: an input with no depth
+        /// steers as a full push while its button read holds, q to w.</summary>
+        [Fact]
+        public void AnInputWithNoDepth_SteersAsAFullPush()
+        {
+            var ud = AddPad();
+            KeyboardMenuDefaults.Set(_menu, KeyboardLayout.Grid, KeyboardControlAction.SteerRight,
+                new KeyboardInput("Between 30 66 00 Gamepad RightTrigger"));
+            OpenWithGuide(ud);
+            var inZone = Rest();
+            inZone.Axis[5] = (int)(0.45 * 65535);
+            Poll(ud, inZone);
+            Poll(ud, Rest());
+            Tap(ud, A);
+            Assert.Equal(new[] { "tap 0011 None" }, _out.Sent);
+        }
+
+        // ── Pointers ─────────────────────────────────────────────
+
+        /// <summary>A controller with <paramref name="pads"/> touchpads, the
+        /// first finger on <paramref name="pad"/> at (x, y), its click held
+        /// when <paramref name="click"/> is set.</summary>
+        private static CustomInputState Touching(int pads, int pad, float x, float y, bool click)
+        {
+            var s = Untouched(pads);
+            var t = s.Touchpads[pad];
+            t.FingerDown[0] = true;
+            t.FingerX[0] = x;
+            t.FingerY[0] = y;
+            if (click)
+            {
+                if (pad == 0) s.Buttons[16] = true;
+                else t.Clicked = true;
+            }
+            return s;
+        }
+
+        private static CustomInputState Untouched(int pads)
+        {
+            var s = Rest();
+            s.Touchpads = new TouchpadInputState[pads];
+            for (int p = 0; p < pads; p++) s.Touchpads[p] = new TouchpadInputState(2);
+            return s;
+        }
+
+        /// <summary>One touchpad points across the whole grid: 0.11 of the
+        /// way across a fifth of the way down is q.</summary>
+        [Fact]
+        public void OneTouchpad_PointsAcrossTheWholeGrid()
+        {
+            var ud = AddPad();
+            OpenWithGuide(ud);
+            Poll(ud, Touching(1, 0, 0.11f, 0.3f, false));
+            Poll(ud, Touching(1, 0, 0.11f, 0.3f, true));
+            Poll(ud, Untouched(1));
+            Assert.Equal(new[] { "tap 0010 None" }, _out.Sent);
+        }
+
+        /// <summary>Two touchpads point at a half of the grid each, so 0.22 of
+        /// the way across the left pad is where 0.11 is on one pad, q.</summary>
+        [Fact]
+        public void TwoTouchpads_EachPointAtTheirHalfOfTheGrid()
+        {
+            var ud = AddPad();
+            OpenWithGuide(ud);
+            Poll(ud, Touching(2, 0, 0.22f, 0.3f, false));
+            Poll(ud, Touching(2, 0, 0.22f, 0.3f, true));
+            Poll(ud, Untouched(2));
+            Assert.Equal(new[] { "tap 0010 None" }, _out.Sent);
         }
 
         /// <summary>LT is Shift in Grid and types the left half in Split. Held
@@ -550,7 +738,7 @@ namespace PadForge.Tests
             Assert.True(v.Open);
             Assert.Equal(Slot, v.Slot);
             Assert.Equal(1, v.MenuId);
-            Assert.Equal(KeyboardMenuDefaults.Host, v.Host);
+            Assert.Equal("IHGamepad LeftStickY", v.Bindings[KeyboardControlAction.SteerUp].Descriptor);
             Assert.Equal("Gamepad ButtonA", v.Bindings[KeyboardControlAction.TypeKey].Descriptor);
             Assert.Equal("Gamepad ButtonB", v.Bindings[KeyboardControlAction.Close].Descriptor);
             // A wheel control has no place on the grid.
@@ -593,6 +781,127 @@ namespace PadForge.Tests
             Assert.False(IsOpen);
             Poll(ud, Rest(GuideButton));
             Assert.True(IsOpen);
+        }
+
+        [Fact]
+        public void OpensOnRelease_ActsWhenOpensWithIsLetGo()
+        {
+            var ud = AddPad();
+            _menu.OpenPress = KeyboardOpenPress.Release;
+            Poll(ud, Rest());
+            Poll(ud, Rest(GuideButton));
+            Assert.False(IsOpen);
+            Poll(ud, Rest());
+            Assert.True(IsOpen);
+            Poll(ud, Rest(GuideButton));
+            Assert.True(IsOpen);
+            Poll(ud, Rest());
+            Assert.False(IsOpen);
+        }
+
+        [Fact]
+        public void OpensWhileHeld_AndClosesWhenThatPressIsLetGo()
+        {
+            var ud = AddPad();
+            _menu.OpenPress = KeyboardOpenPress.WhileHeld;
+            Poll(ud, Rest());
+            Poll(ud, Rest(GuideButton));
+            Assert.True(IsOpen);
+            Poll(ud, Rest(GuideButton, A));
+            Poll(ud, Rest(GuideButton));
+            Assert.True(IsOpen);
+            Assert.Equal(new[] { "tap 0010 None" }, _out.Sent);
+            Poll(ud, Rest());
+            Assert.False(IsOpen);
+        }
+
+        /// <summary>The hold opened another way is not this press's: letting
+        /// Opens With go leaves a keyboard a text box opened.</summary>
+        [Fact]
+        public void OpensWhileHeld_LeavesAKeyboardOpenedAnotherWayOpen()
+        {
+            var ud = AddPad();
+            _menu.OpenPress = KeyboardOpenPress.WhileHeld;
+            _menu.OpenOnTextFocus = true;
+            Poll(ud, Rest());
+            _im.NoteTextFocus(true);
+            Poll(ud, Rest());
+            Assert.True(IsOpen);
+            Poll(ud, Rest(GuideButton));
+            Poll(ud, Rest());
+            Assert.True(IsOpen);
+        }
+
+        [Fact]
+        public void OpensOnShortPress_ActsOnAPressLetGoBeforeTheHoldTime()
+        {
+            var ud = AddPad();
+            _menu.OpenPress = KeyboardOpenPress.ShortPress;
+            _menu.OpenPressMs = 400;
+            Poll(ud, Rest());
+            for (int i = 0; i < 30; i++) Poll(ud, Rest(GuideButton));
+            Poll(ud, Rest());
+            Assert.False(IsOpen);
+            Poll(ud, Rest(GuideButton));
+            Assert.False(IsOpen);
+            Poll(ud, Rest());
+            Assert.True(IsOpen);
+        }
+
+        [Fact]
+        public void OpensOnTriplePress_ActsOnTheThirdPressInsideTheWindow()
+        {
+            var ud = AddPad();
+            _menu.OpenPress = KeyboardOpenPress.TriplePress;
+            Poll(ud, Rest());
+            Tap(ud, GuideButton);
+            Tap(ud, GuideButton);
+            Assert.False(IsOpen);
+            Poll(ud, Rest(GuideButton));
+            Assert.True(IsOpen);
+        }
+
+        [Fact]
+        public void OpensOnSinglePress_ActsOnceTheWindowPassesWithNoSecondPress()
+        {
+            var ud = AddPad();
+            _menu.OpenPress = KeyboardOpenPress.SinglePress;
+            Poll(ud, Rest());
+            Tap(ud, GuideButton);
+            Assert.False(IsOpen);
+            // Past the 442 ms window.
+            for (int i = 0; i < 30; i++) Poll(ud, Rest());
+            Assert.True(IsOpen);
+            // A double press is no single press.
+            Tap(ud, GuideButton);
+            Tap(ud, GuideButton);
+            for (int i = 0; i < 30; i++) Poll(ud, Rest());
+            Assert.True(IsOpen);
+        }
+
+        /// <summary>A radial menu's cell opens the keyboard: the cell fires
+        /// through the read a Mappings row takes.</summary>
+        [Fact]
+        public void AMenuCell_OpensTheKeyboard()
+        {
+            var saved = SourceCoercion.MenuItemFiredProvider;
+            try
+            {
+                bool fired = false;
+                SourceCoercion.MenuItemFiredProvider = (slot, guid, menu, item) => fired && slot == Slot && menu == 2 && item == 0;
+                var ud = AddPad();
+                KeyboardMenuDefaults.SetOpenInput(_menu, new KeyboardInput("Menu 2 Item 0"));
+                Poll(ud, Rest());
+                Poll(ud, Rest());
+                Assert.False(IsOpen);
+                fired = true;
+                Poll(ud, Rest());
+                Assert.True(IsOpen);
+            }
+            finally
+            {
+                SourceCoercion.MenuItemFiredProvider = saved;
+            }
         }
 
         [Fact]

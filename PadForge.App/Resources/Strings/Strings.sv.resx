@@ -5108,20 +5108,15 @@ Vill du att PadForge avinstallerar dem nu? Detta kräver förhöjd behörighet o
   <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>Tugghjulet: välj en av åtta grupper och sedan ett av dess fyra tecken.</value></data>
   <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>Återställ layout</value></data>
   <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>Öppnas med</value></data>
-  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Valfri inmatning på en enhet som är tilldelad den här platsen, eller två som hålls ned samtidigt. Samma inmatning stänger tangentbordet, om inte en tangentbordskontroll också använder den. Tomt betyder att ingen inmatning öppnar det.</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Valfri inmatning på en enhet som är tilldelad den här platsen, inklusive en gest på styrplattan eller en menycell, eller två som hålls ned samtidigt. Samma inmatning stänger tangentbordet, om inte en tangentbordskontroll också använder den. Tomt betyder att ingen inmatning öppnar det.</value></data>
   <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>Återställ Öppnas med</value></data>
   <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>Öppna när en textruta är markerad</value></data>
   <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>I Windows-appar och webbläsare, utan knapp. Spel ritar sina egna textrutor, så i ett spel öppnas det med inmatningen ovan, eller med sitt lager när Lagret håller menyn öppen är på.</value></data>
-  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>Inmatningen som flyttar markeringen över tangenterna, avläst från platsens tilldelade fysiska handkontroller.</value></data>
-  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>Styr vänster halva med</value></data>
-  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>Styr höger halva med</value></data>
-  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>Välj en grupp med</value></data>
-  <data name="Menu_Reset_Host2" xml:space="preserve"><value>Återställ Styr höger halva med</value></data>
   <data name="Menu_Host_DPad" xml:space="preserve"><value>Styrkors</value></data>
   <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>Frontknappar</value></data>
   <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>Tangentbordskontroller</value></data>
   <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>Layout {0}, {1} kontroller</value></data>
-  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Avläses från de fysiska handkontroller som är tilldelade den här platsen. Varje kontroll tar valfri inmatning på någon av dem: en knapp, en axelriktning, ett styrkors, en styrplatta eller två som hålls ned samtidigt. Klicka på en inspelningsknapp och tryck på inmatningen, eller håll en inmatning och tryck på en andra för en kombination. Mappa alla spelar in dem i ordning.</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Avläses från de fysiska handkontroller som är tilldelade den här platsen. Varje kontroll tar en knapp, en axelriktning, ett styrkors, en styrplatta eller två som hålls ned samtidigt, på valfri av dem. En axel trycker ned en tangent vid sin Dödzon för axel-till-knapp. Gester och menyceller stängs av medan tangentbordet håller handkontrollen i viloläge, så bara Öppnas med tar dem. Klicka på en inspelningsknapp och tryck på inmatningen, eller håll en inmatning och tryck på en andra för en kombination. Mappa alla spelar in dem i ordning.</value></data>
   <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>Mappa alla</value></data>
   <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>Spelar in varje kontroll i layouten i ordning. Statusraden anger kontrollen som du ska trycka en inmatning för.</value></data>
   <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>Tryck på inmatningen för {0} ({1} av {2})</value></data>
@@ -5179,4 +5174,23 @@ Vill du att PadForge avinstallerar dem nu? Detta kräver förhöjd behörighet o
   <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>Återställ Öppnas vid</value></data>
   <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>Öppnar eller stänger tangentbordet när Öppnas med hållits ned under hålltiden. Ett kortare tryck gör ingenting.</value></data>
   <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>Öppnar eller stänger tangentbordet när Öppnas med trycks två gånger inom tryckfönstret.</value></data>
+  <data name="Osk_Control_SteerUp" xml:space="preserve"><value>Styr upp</value></data>
+  <data name="Osk_Control_SteerDown" xml:space="preserve"><value>Styr ned</value></data>
+  <data name="Osk_Control_SteerLeft" xml:space="preserve"><value>Styr vänster</value></data>
+  <data name="Osk_Control_SteerRight" xml:space="preserve"><value>Styr höger</value></data>
+  <data name="Osk_Control_LeftHand_Format" xml:space="preserve"><value>{0}, vänster hand</value></data>
+  <data name="Osk_Control_RightHand_Format" xml:space="preserve"><value>{0}, höger hand</value></data>
+  <data name="Osk_Control_PointerX_Format" xml:space="preserve"><value>Pekare {0} X</value></data>
+  <data name="Osk_Control_PointerY_Format" xml:space="preserve"><value>Pekare {0} Y</value></data>
+  <data name="Osk_Control_PointerTouch_Format" xml:space="preserve"><value>Pekare {0} beröring</value></data>
+  <data name="Osk_Control_PointerClick_Format" xml:space="preserve"><value>Pekare {0} klick</value></data>
+  <data name="Menu_Keyboard_Deadzone_Tip" xml:space="preserve"><value>Hur långt en styrkontroll måste föras innan markeringen flyttas. En knapp eller en annan på/av-inmatning flyttar den direkt.</value></data>
+  <data name="Menu_Keyboard_Threshold_Name_Format" xml:space="preserve"><value>{0} Dödzon för axel-till-knapp</value></data>
+  <data name="Menu_Keyboard_RecordingAxisPrompt" xml:space="preserve"><value>Rör en axel på valfri enhet som är tilldelad den här platsen</value></data>
+  <data name="Menu_Keyboard_OpenPress_Press_Desc" xml:space="preserve"><value>Öppnar eller stänger tangentbordet så fort Öppnas med trycks ned.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Release_Desc" xml:space="preserve"><value>Öppnar eller stänger tangentbordet när Öppnas med släpps.</value></data>
+  <data name="Menu_Keyboard_OpenPress_WhileHeld_Desc" xml:space="preserve"><value>Öppnar tangentbordet medan Öppnas med hålls ned och stänger det när trycket släpps.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Öppnar eller stänger tangentbordet när Öppnas med släpps före hålltiden. Ett längre tryck gör ingenting.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Öppnar eller stänger tangentbordet när Öppnas med trycks tre gånger inom tryckfönstret.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Öppnar eller stänger tangentbordet när tryckfönstret tar slut efter ett tryck på Öppnas med. Ett andra tryck inom fönstret avbryter det.</value></data>
 </root>

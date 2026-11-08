@@ -679,10 +679,9 @@ namespace PadForge.Services
         /// (#566). Its device-free trigger inputs become Opens With, the first
         /// and the second held with it, with the hosting read's axis half
         /// (the half a stick-as-dpad member or a trigger pull reads). Steam's
-        /// Long_Press and Double_Press activators become the matching press,
-        /// with their times, and Release acts on the press. The binding's layer
-        /// gates the menu. Null when the binding carries no input to open it
-        /// with.</summary>
+        /// Long_Press, Double_Press and Release activators become the matching
+        /// press, with their times. The binding's layer gates the menu. Null
+        /// when the binding carries no input to open it with.</summary>
         internal static MenuDefinitionEntry KeyboardMenuFor(TranslatedMacro m, int menuId)
         {
             var descriptors = m?.TriggerInputDescriptors;
@@ -701,6 +700,9 @@ namespace PadForge.Services
                 descriptors.Count > 1 ? Half(descriptors[1].Trim()) : "", ""));
             switch (m.TriggerMode)
             {
+                case "OnRelease":
+                    menu.OpenPress = KeyboardOpenPress.Release;
+                    break;
                 case "HoldForMs":
                     menu.OpenPress = KeyboardOpenPress.Hold;
                     menu.OpenPressMs = Math.Clamp(m.TriggerHoldMs, 50, KeyboardMenuDefaults.MaxOpenPressMs);

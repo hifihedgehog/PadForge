@@ -39,14 +39,17 @@ namespace PadForge.Common.Input
         /// gone: it went offline. Every time here is on MenuClock, the menu
         /// runtime's clock, as a keyboard menu is a menu.</summary>
         private const long OskStaleMs = 300;
-        /// <summary>An input read as a press is down past half its travel and
-        /// let go under 35 percent, the erased build's trigger hysteresis, so a
-        /// trigger resting near half pull does not chatter.</summary>
-        private const float OskPressLevel = 0.5f, OskReleaseLevel = 0.35f;
+        /// <summary>An input read as a press is let go under this share of its
+        /// press point, the engine's steering hysteresis, so a trigger resting
+        /// at the press point does not chatter.</summary>
+        private const float OskReleaseShare = OskEngine.SteerReleaseShare;
         /// <summary>A layer that ends this soon after it opened the keyboard
         /// ended because the keyboard held its activator at rest, not because
         /// the user left it. The mask reaches Step 3 one poll after the open.</summary>
         private const long OskLayerSettleMs = 100;
+        /// <summary>How far past the press window a single press still acts,
+        /// the macro trigger's SinglePressStaleGraceMs.</summary>
+        private const long OskSinglePressGraceMs = 250;
         /// <summary>A keyboard menu no device drove for this long, and that
         /// does not own the keyboard, is forgotten.</summary>
         private const long OskMenuForgetMs = 2000;
@@ -281,9 +284,14 @@ namespace PadForge.Common.Input
             /// acted, and whether a control took the same press, which the
             /// keyboard keeps for itself.</summary>
             public long OpenDownMs;
-            /// <summary>A double press's first press, or long.MinValue.</summary>
+            /// <summary>The last press of a double, triple or single press's
+            /// chain, or long.MinValue, and the presses in the chain.</summary>
             public long OpenLastPressMs = long.MinValue;
+            public int OpenStreak;
             public bool OpenFired, OpenShared;
+            /// <summary>While Held: this hold opened the keyboard, so its
+            /// release closes it.</summary>
+            public bool OpenHeldOwner;
             public OskSources Sources;
         }
 
@@ -344,12 +352,13 @@ namespace PadForge.Common.Input
 
         // ── Sources ────────────────────────────────────────────
 
-        /// <summary>One input of a control: its source, the device it reads
-        /// (empty for every driver that reads device-free inputs), and its
-        /// press state, kept for the hysteresis.</summary>
+        /// <summary>One input of a control: its source with the press point
+        /// as its deadzone, the same source with the release point, the
+        /// device it reads (empty for every driver that reads device-free
+        /// inputs), and its press state, kept for the hysteresis.</summary>
         private sealed class OskLeg
         {
-            public MappingSource Src;
+            public MappingSource Src, HeldSrc;
             public Guid Device;
             public string DeviceString;
             public bool Was;
@@ -361,15 +370,6 @@ namespace PadForge.Common.Input
             public OskLeg A, B;
         }
 
-        private enum OskSteerKind { None, Axes, Buttons, Touchpad }
-
-        private sealed class OskSteer
-        {
-            public OskSteerKind Kind;
-            public string Host = "";
-            public MappingSource X, Y, Up, Down, Left, Right, Contact, Click;
-        }
-
         /// <summary>A keyboard menu's inputs for one layout, built from the
         /// menu and rebuilt when one of them changes. The UI thread replaces
         /// each field it edits, so reference compares find every edit.</summary>
@@ -378,7 +378,8 @@ namespace PadForge.Common.Input
             public MenuDefinitionEntry Def;
             public KeyboardLayout Layout;
             private object _controls;
-            private string _host, _host2, _cx, _cy, _c2x, _c2y, _open, _openDev, _openAnd, _openAndDev, _menuDevice;
+            private string _open, _openDev, _openAnd, _openAndDev, _menuDevice;
+            private int _openThreshold;
 
             public readonly OskInputReader[] Controls = new OskInputReader[OskControlState.ActionCount];
             public readonly int[] Shared = new int[OskControlState.ActionCount];
@@ -388,18 +389,15 @@ namespace PadForge.Common.Input
             /// with Start still closes when Start is Enter.</summary>
             public readonly bool[] HoldsOpen = new bool[OskControlState.ActionCount];
             public OskInputReader Open;
-            public OskSteer Steer = new(), Steer2 = new();
             public readonly HashSet<Guid> Named = new();
             public readonly Dictionary<KeyboardControlAction, KeyboardInput> Bindings = new();
 
             public bool Matches(MenuDefinitionEntry def, KeyboardLayout layout)
                 => ReferenceEquals(Def, def) && Layout == layout
                    && ReferenceEquals(_controls, def.KeyboardControls)
-                   && ReferenceEquals(_host, def.HostDescriptor) && ReferenceEquals(_host2, def.Host2Descriptor)
-                   && ReferenceEquals(_cx, def.CustomXDescriptor) && ReferenceEquals(_cy, def.CustomYDescriptor)
-                   && ReferenceEquals(_c2x, def.Custom2XDescriptor) && ReferenceEquals(_c2y, def.Custom2YDescriptor)
                    && ReferenceEquals(_open, def.OpenDescriptor) && ReferenceEquals(_openDev, def.OpenDeviceGuid)
                    && ReferenceEquals(_openAnd, def.OpenAndDescriptor) && ReferenceEquals(_openAndDev, def.OpenAndDeviceGuid)
+                   && _openThreshold == def.OpenThreshold
                    && ReferenceEquals(_menuDevice, def.DeviceGuid);
 
             public static OskSources Build(MenuDefinitionEntry def, KeyboardLayout layout)
@@ -409,11 +407,9 @@ namespace PadForge.Common.Input
                     Def = def,
                     Layout = layout,
                     _controls = def.KeyboardControls,
-                    _host = def.HostDescriptor, _host2 = def.Host2Descriptor,
-                    _cx = def.CustomXDescriptor, _cy = def.CustomYDescriptor,
-                    _c2x = def.Custom2XDescriptor, _c2y = def.Custom2YDescriptor,
                     _open = def.OpenDescriptor, _openDev = def.OpenDeviceGuid,
                     _openAnd = def.OpenAndDescriptor, _openAndDev = def.OpenAndDeviceGuid,
+                    _openThreshold = def.OpenThreshold,
                     _menuDevice = def.DeviceGuid,
                 };
                 var inputs = new KeyboardInput[OskControlState.ActionCount];
@@ -425,24 +421,24 @@ namespace PadForge.Common.Input
                     s.Controls[(int)a] = s.Reader(input);
                     s.Bindings[a] = input;
                 }
-                // Controls on one input share a number, so a tap control on
-                // the input that also moves the keyboard fires on release.
+                // Key controls on one input share a number, so a tap control
+                // on the input that also moves the keyboard fires on release.
+                // Steering and pointers are read for depth and place, and take
+                // no part.
                 for (int i = 0; i < inputs.Length; i++)
                 {
-                    if (s.Controls[i] == null || s.Shared[i] != 0) continue;
+                    if (s.Controls[i] == null || s.Shared[i] != 0 || !KeyboardMenuDefaults.IsKey((KeyboardControlAction)i)) continue;
                     for (int j = i + 1; j < inputs.Length; j++)
-                        if (s.Controls[j] != null && inputs[i].SameAs(inputs[j]))
+                        if (s.Controls[j] != null && KeyboardMenuDefaults.IsKey((KeyboardControlAction)j)
+                            && inputs[i].SameSource(inputs[j]))
                             s.Shared[i] = s.Shared[j] = i + 1;
                 }
                 var open = KeyboardMenuDefaults.OpenInput(def);
                 s.Open = open.IsEmpty ? null : s.Reader(open);
                 if (s.Open != null)
                     for (int i = 0; i < inputs.Length; i++)
-                        s.HoldsOpen[i] = s.Controls[i] != null && Holds(inputs[i], open);
-                s.Steer = SteerOf(def.HostDescriptor, def.CustomXDescriptor, def.CustomYDescriptor);
-                s.Steer2 = layout == KeyboardLayout.Split
-                    ? SteerOf(def.Host2Descriptor, def.Custom2XDescriptor, def.Custom2YDescriptor)
-                    : new OskSteer();
+                        s.HoldsOpen[i] = s.Controls[i] != null && KeyboardMenuDefaults.IsKey((KeyboardControlAction)i)
+                                         && Holds(inputs[i], open);
                 return s;
             }
 
@@ -459,13 +455,17 @@ namespace PadForge.Common.Input
                        && (!open.HasAnd || Has(open.AndDescriptor, open.AndDeviceGuid));
             }
 
-            private OskInputReader Reader(in KeyboardInput input) => new()
+            private OskInputReader Reader(in KeyboardInput input)
             {
-                A = Leg(input.Descriptor, input.DeviceGuid),
-                B = input.HasAnd ? Leg(input.AndDescriptor, input.AndDeviceGuid) : null,
-            };
+                int press = input.ThresholdPercent;
+                return new OskInputReader
+                {
+                    A = Leg(input.Descriptor, input.DeviceGuid, press),
+                    B = input.HasAnd ? Leg(input.AndDescriptor, input.AndDeviceGuid, press) : null,
+                };
+            }
 
-            private OskLeg Leg(string descriptor, string device)
+            private OskLeg Leg(string descriptor, string device, int press)
             {
                 Guid g = Guid.Empty;
                 if (!string.IsNullOrWhiteSpace(device) && Guid.TryParse(device.Trim(), out var parsed))
@@ -475,84 +475,80 @@ namespace PadForge.Common.Input
                 }
                 return new OskLeg
                 {
-                    Src = SourceOf(descriptor),
+                    Src = SourceOf(descriptor, press),
+                    HeldSrc = SourceOf(descriptor, ReleasePercent(press)),
                     Device = g,
                     DeviceString = g == Guid.Empty ? null : g.ToString().ToLowerInvariant(),
                 };
             }
 
+            /// <summary>Where a held press lets go: 70% of the way to the
+            /// press point, at least 1%.</summary>
+            internal static int ReleasePercent(int press)
+                => Math.Max(1, (int)MathF.Round(press * OskReleaseShare));
+
             /// <summary>A descriptor in the legacy I/H prefix form as a
-            /// source with the Invert and HalfAxis flags the reads take.</summary>
-            internal static MappingSource SourceOf(string descriptor)
+            /// source with the Invert and HalfAxis flags the reads take, and
+            /// <paramref name="deadZone"/> as the press point of its button
+            /// read (MappingSource.DeadZone, a Mappings row's own).</summary>
+            internal static MappingSource SourceOf(string descriptor, int deadZone = KeyboardInput.DefaultThreshold)
             {
                 string clean = SourceCoercion.StripLegacyPrefix((descriptor ?? "").Trim(), out bool invert, out bool half);
-                return new MappingSource { Descriptor = clean, Invert = invert, HalfAxis = half };
-            }
-
-            /// <summary>A steering input from the menu host grammar: a stick,
-            /// the D-pad, the face buttons, a touchpad, or two recorded axes.
-            /// The SDL frame throughout: +Y is down, the diamond's north is Y.</summary>
-            private static OskSteer SteerOf(string host, string customX, string customY)
-            {
-                string h = (host ?? "").Trim();
-                var s = new OskSteer { Host = h };
-                if (h.Length == 0) return s;
-                if (h == "Custom")
-                {
-                    string cx = (customX ?? "").Trim(), cy = (customY ?? "").Trim();
-                    if (cx.Length == 0 && cy.Length == 0) return s;
-                    s.Kind = OskSteerKind.Axes;
-                    s.X = cx.Length > 0 ? SourceOf(cx) : null;
-                    s.Y = cy.Length > 0 ? SourceOf(cy) : null;
-                    return s;
-                }
-                if (h == "Gamepad DPad" || h == "Gamepad Diamond")
-                {
-                    bool dpad = h == "Gamepad DPad";
-                    s.Kind = OskSteerKind.Buttons;
-                    s.Up = SourceOf(dpad ? "Gamepad DPadUp" : "Gamepad ButtonY");
-                    s.Down = SourceOf(dpad ? "Gamepad DPadDown" : "Gamepad ButtonA");
-                    s.Left = SourceOf(dpad ? "Gamepad DPadLeft" : "Gamepad ButtonX");
-                    s.Right = SourceOf(dpad ? "Gamepad DPadRight" : "Gamepad ButtonB");
-                    return s;
-                }
-                if (h.StartsWith("Gamepad ", StringComparison.Ordinal))
-                {
-                    s.Kind = OskSteerKind.Axes;
-                    s.X = SourceOf(h + "X");
-                    s.Y = SourceOf(h + "Y");
-                    return s;
-                }
-                if (h.StartsWith("Touchpad ", StringComparison.Ordinal))
-                {
-                    s.Kind = OskSteerKind.Touchpad;
-                    s.X = SourceOf(h + " Finger 0 X");
-                    s.Y = SourceOf(h + " Finger 0 Y");
-                    s.Contact = SourceOf(h + " Finger 0 Down");
-                    s.Click = SourceOf(h + " Click");
-                    return s;
-                }
-                return s;
+                return new MappingSource { Descriptor = clean, Invert = invert, HalfAxis = half, DeadZone = deadZone };
             }
         }
 
         // ── Reading a menu's inputs ────────────────────────────
 
-        /// <summary>A leg's press across the drivers that read it, with the
-        /// hysteresis. The level is the trigger read, 0 to 1 for any source:
-        /// a button 0 or 1, a half axis its travel, a trigger its pull.</summary>
-        private static bool LegHeld(OskMenuRecord r, OskLeg leg)
+        /// <summary>Whether a leg reads driver <paramref name="i"/>. A leg
+        /// that names a device reads that device. A device-free leg reads
+        /// every driver that answers device-free inputs and has what the leg
+        /// reads, the #431 rule mapping rows and menus keep: a mouse's wheel
+        /// is no half-pulled trigger, and a device with no stick holds 0 on
+        /// its axes, which would read as a full push.</summary>
+        private static bool LegReads(OskMenuRecord r, OskLeg leg, int i)
         {
-            if (leg?.Src == null) return false;
+            var ud = r.Drivers[i];
+            if (leg.Device != Guid.Empty) return ud.InstanceGuid == leg.Device;
+            return r.AnyOk[i] && HasAxesFor(ud, leg.Src, r.Raws[i]);
+        }
+
+        /// <summary>A leg's depth across the drivers it reads, 0 to 1: the
+        /// read a Mappings row with a trigger target takes, a button 0 or 1,
+        /// a half axis its travel, a trigger its pull. An input that read
+        /// has no depth for (a zone, a stick sector, a two-stage pull, IR
+        /// Offscreen) counts 1 while its button read holds.</summary>
+        private static float LegLevel(OskMenuRecord r, OskLeg leg)
+        {
+            if (leg?.Src == null) return 0f;
             float level = 0f;
             for (int i = 0; i < r.Drivers.Count; i++)
             {
-                var ud = r.Drivers[i];
-                if (leg.Device == Guid.Empty ? !r.AnyOk[i] : ud.InstanceGuid != leg.Device) continue;
-                float v = SourceCoercion.EvaluateForTriggerTarget(r.Raws[i], leg.Src, r.Slot, ud.InstanceGuidString);
+                if (!LegReads(r, leg, i)) continue;
+                string dev = r.Drivers[i].InstanceGuidString;
+                float v = SourceCoercion.EvaluateForTriggerTarget(r.Raws[i], leg.Src, r.Slot, dev);
+                if (v <= 0f && SourceCoercion.EvaluateForButtonTarget(r.Raws[i], leg.Src, KeyboardInput.DefaultThreshold, r.Slot, dev))
+                    v = 1f;
                 if (v > level) level = v;
             }
-            bool held = leg.Was ? level > OskReleaseLevel : level > OskPressLevel;
+            return level;
+        }
+
+        /// <summary>A leg's press across the drivers it reads: the read a
+        /// Mappings row with a button target takes
+        /// (SourceCoercion.EvaluateForButtonTarget), so every input that
+        /// row can press with presses here, at the leg's press point, and
+        /// at its release point while held, so an analog input resting at
+        /// the point does not type twice.</summary>
+        private static bool LegHeld(OskMenuRecord r, OskLeg leg)
+        {
+            if (leg?.Src == null) return false;
+            var src = leg.Was ? leg.HeldSrc : leg.Src;
+            bool held = false;
+            for (int i = 0; i < r.Drivers.Count && !held; i++)
+                held = LegReads(r, leg, i)
+                       && SourceCoercion.EvaluateForButtonTarget(r.Raws[i], src, KeyboardInput.DefaultThreshold,
+                           r.Slot, r.Drivers[i].InstanceGuidString);
             leg.Was = held;
             return held;
         }
@@ -566,58 +562,83 @@ namespace PadForge.Common.Input
             return a && b;
         }
 
-        /// <summary>A steering input's vector, the largest push among the
-        /// drivers that read device-free inputs.</summary>
-        private static (float X, float Y) SteerOf(OskMenuRecord r, OskSteer s)
+        /// <summary>A steering control's depth, 0 to 1: its input's level, the
+        /// second input of a combination held as a gate.</summary>
+        private static float InputLevel(OskMenuRecord r, OskInputReader input)
         {
-            float bx = 0, by = 0, best = 0;
-            if (s == null || s.Kind == OskSteerKind.None || s.Kind == OskSteerKind.Touchpad) return (0, 0);
-            for (int i = 0; i < r.Drivers.Count; i++)
-            {
-                if (!r.AnyOk[i]) continue;
-                var ud = r.Drivers[i];
-                var raw = r.Raws[i];
-                string g = ud.InstanceGuidString;
-                float x, y;
-                if (s.Kind == OskSteerKind.Buttons)
-                {
-                    bool up = SourceCoercion.EvaluateForButtonTarget(raw, s.Up, 50, r.Slot, g);
-                    bool down = SourceCoercion.EvaluateForButtonTarget(raw, s.Down, 50, r.Slot, g);
-                    bool left = SourceCoercion.EvaluateForButtonTarget(raw, s.Left, 50, r.Slot, g);
-                    bool right = SourceCoercion.EvaluateForButtonTarget(raw, s.Right, 50, r.Slot, g);
-                    x = (right ? 1 : 0) - (left ? 1 : 0);
-                    y = (down ? 1 : 0) - (up ? 1 : 0);
-                }
-                else
-                {
-                    x = s.X != null ? SourceCoercion.EvaluateForBipolarAxisTarget(raw, s.X, r.Slot, false, g) : 0;
-                    y = s.Y != null ? SourceCoercion.EvaluateForBipolarAxisTarget(raw, s.Y, r.Slot, false, g) : 0;
-                }
-                float m = x * x + y * y;
-                if (m > best) { best = m; bx = x; by = y; }
-            }
-            return (bx, by);
+            if (input?.A == null) return 0f;
+            bool gate = input.B == null || LegHeld(r, input.B);
+            float level = LegLevel(r, input.A);
+            return gate ? level : 0f;
         }
 
-        /// <summary>A touchpad steering input as the keyboard points with it:
-        /// the first driver with a finger on it or its click held, the
-        /// position from 0 to 1.</summary>
-        private static OskTouch TouchOf(OskMenuRecord r, OskSteer s)
+        /// <summary>A steering input from its four direction controls, -1 to 1
+        /// with +Y down, the SDL frame the engine steers in.</summary>
+        private static (float X, float Y) SteerOf(OskMenuRecord r, OskSources s,
+            KeyboardControlAction up, KeyboardControlAction down, KeyboardControlAction left, KeyboardControlAction right)
         {
+            float x = InputLevel(r, s.Controls[(int)right]) - InputLevel(r, s.Controls[(int)left]);
+            float y = InputLevel(r, s.Controls[(int)down]) - InputLevel(r, s.Controls[(int)up]);
+            return (Math.Clamp(x, -1f, 1f), Math.Clamp(y, -1f, 1f));
+        }
+
+        /// <summary>Whether a driver has a pointer's position input: a
+        /// touchpad by its number, any other input by the #431 test.</summary>
+        private static bool HasPointerInput(OskMenuRecord r, OskLeg leg, int i)
+        {
+            if (!LegReads(r, leg, i)) return false;
+            string d = leg.Src.Descriptor ?? "";
+            if (d.StartsWith("Touchpad ", StringComparison.Ordinal))
+            {
+                int end = d.IndexOf(' ', 9);
+                if (end < 0 || !int.TryParse(d.AsSpan(9, end - 9), out int pad)) return false;
+                var pads = r.Raws[i].Touchpads;
+                return pads != null && pad >= 0 && pad < pads.Length && pads[pad] != null;
+            }
+            return true;
+        }
+
+        /// <summary>A pointer, or null when no driver has its position: a
+        /// controller with one touchpad points with the whole board, not
+        /// half of it. Its place comes from the first driver it reads whose
+        /// touch input is held there, read across the whole range of its
+        /// two position inputs, 0 to 1.</summary>
+        private static OskTouch? PointerOf(OskMenuRecord r, OskSources s,
+            KeyboardControlAction ax, KeyboardControlAction ay, KeyboardControlAction at, KeyboardControlAction ac)
+        {
+            var xr = s.Controls[(int)ax]?.A;
+            if (xr?.Src == null) return null;
+            int first = -1, touching = -1;
+            var touchReader = s.Controls[(int)at];
             for (int i = 0; i < r.Drivers.Count; i++)
             {
-                if (!r.AnyOk[i]) continue;
-                var ud = r.Drivers[i];
-                var raw = r.Raws[i];
-                string g = ud.InstanceGuidString;
-                bool down = SourceCoercion.EvaluateForButtonTarget(raw, s.Contact, 50, r.Slot, g);
-                bool click = SourceCoercion.EvaluateForButtonTarget(raw, s.Click, 50, r.Slot, g);
-                if (!down && !click) continue;
-                float x = SourceCoercion.EvaluateForBipolarAxisTarget(raw, s.X, r.Slot, false, g);
-                float y = SourceCoercion.EvaluateForBipolarAxisTarget(raw, s.Y, r.Slot, false, g);
-                return new OskTouch(down, (x + 1f) / 2f, (y + 1f) / 2f, click);
+                if (!HasPointerInput(r, xr, i)) continue;
+                if (first < 0) first = i;
+                var t = touchReader?.A;
+                if (t?.Src != null && LegReads(r, t, i)
+                    && SourceCoercion.EvaluateForButtonTarget(r.Raws[i], t.Src, KeyboardInput.DefaultThreshold,
+                        r.Slot, r.Drivers[i].InstanceGuidString))
+                {
+                    touching = i;
+                    break;
+                }
             }
-            return default;
+            if (first < 0) return null;
+            bool down = InputHeld(r, touchReader);
+            bool click = InputHeld(r, s.Controls[(int)ac]);
+            if (!down && !click) return default(OskTouch);
+            int at0 = touching >= 0 ? touching : first;
+            float Axis(OskLeg leg)
+            {
+                if (leg?.Src == null) return 0f;
+                int i = LegReads(r, leg, at0) ? at0 : -1;
+                for (int k = 0; i < 0 && k < r.Drivers.Count; k++)
+                    if (LegReads(r, leg, k)) i = k;
+                return i < 0 ? 0f
+                    : SourceCoercion.EvaluateForBipolarAxisTarget(r.Raws[i], leg.Src, r.Slot, false, r.Drivers[i].InstanceGuidString);
+            }
+            float x = Axis(xr), y = Axis(s.Controls[(int)ay]?.A);
+            return new OskTouch(down, Math.Clamp((x + 1f) / 2f, 0f, 1f), Math.Clamp((y + 1f) / 2f, 0f, 1f), click);
         }
 
         /// <summary>The keyboard's controls this poll, from the owner menu's
@@ -628,15 +649,21 @@ namespace PadForge.Common.Input
             var src = SourcesOf(r);
             for (int i = 0; i < OskControlState.ActionCount; i++)
             {
+                if (!KeyboardMenuDefaults.IsKey((KeyboardControlAction)i)) continue;
                 into.Down[i] = InputHeld(r, src.Controls[i]);
                 into.Shared[i] = src.Shared[i];
             }
-            (into.SX, into.SY) = SteerOf(r, src.Steer);
-            (into.S2X, into.S2Y) = SteerOf(r, src.Steer2);
-            bool t1 = src.Steer.Kind == OskSteerKind.Touchpad, t2 = src.Steer2.Kind == OskSteerKind.Touchpad;
-            if (t1 && t2) into.Touch = new[] { TouchOf(r, src.Steer), TouchOf(r, src.Steer2) };
-            else if (t1) into.Touch = new[] { TouchOf(r, src.Steer) };
-            else if (t2) into.Touch = new[] { TouchOf(r, src.Steer2) };
+            (into.SX, into.SY) = SteerOf(r, src, KeyboardControlAction.SteerUp, KeyboardControlAction.SteerDown,
+                KeyboardControlAction.SteerLeft, KeyboardControlAction.SteerRight);
+            (into.S2X, into.S2Y) = SteerOf(r, src, KeyboardControlAction.Steer2Up, KeyboardControlAction.Steer2Down,
+                KeyboardControlAction.Steer2Left, KeyboardControlAction.Steer2Right);
+            var p1 = PointerOf(r, src, KeyboardControlAction.Pointer1X, KeyboardControlAction.Pointer1Y,
+                KeyboardControlAction.Pointer1Touch, KeyboardControlAction.Pointer1Click);
+            var p2 = PointerOf(r, src, KeyboardControlAction.Pointer2X, KeyboardControlAction.Pointer2Y,
+                KeyboardControlAction.Pointer2Touch, KeyboardControlAction.Pointer2Click);
+            if (p1 is { } a && p2 is { } b) into.Touch = new[] { a, b };
+            else if (p1 is { } c) into.Touch = new[] { c };
+            else if (p2 is { } d) into.Touch = new[] { d };
         }
 
         // ── The tick ───────────────────────────────────────────
@@ -753,7 +780,7 @@ namespace PadForge.Common.Input
             {
                 var vs = e.IsOpen && _oskMenus.TryGetValue((_oskSlot, _oskMenuId), out var ow) ? ow.Sources : null;
                 _oskView = OskView.Build(e, _oskFamily, now, e.IsOpen ? _oskSlot : -1, e.IsOpen ? _oskMenuId : -1,
-                    vs?.Bindings, vs?.Steer.Host ?? "", vs?.Steer2.Host ?? "");
+                    vs?.Bindings);
                 _oskPublishedVersion = e.Version;
                 _oskPublishedMs = now;
             }
@@ -778,8 +805,9 @@ namespace PadForge.Common.Input
             }
         }
 
-        /// <summary>The owner menu's layout, function row, suggestions and
-        /// symbols, as engine settings. A new object only when one changed.
+        /// <summary>The owner menu's layout, function row, suggestions,
+        /// symbols and steering deadzone, as engine settings. A new object
+        /// only when one changed.
         /// The keyboard's own layout key and Fn key change the engine first,
         /// and the window saves them to the menu.</summary>
         private void ApplyOwnerSettings(OskEngine e, bool force)
@@ -789,9 +817,11 @@ namespace PadForge.Common.Input
             var cur = _oskSettingsApplied;
             var style = (OskStyle)Math.Clamp((int)def.KeyboardLayout, 0, 2);
             string symbols = def.Symbols ?? "";
+            float deadzone = Math.Clamp(def.EngageDeadzonePercent, 1, 95) / 100f;
             if (!force && cur != null && ReferenceEquals(_oskSettingsDef, def) && cur.Style == style
                 && cur.FunctionRow == def.FunctionRow && cur.Suggestions == def.Suggestions
-                && string.Equals(cur.Symbols, symbols, StringComparison.Ordinal))
+                && string.Equals(cur.Symbols, symbols, StringComparison.Ordinal)
+                && cur.SteerDeadzone == deadzone)
                 return;
             var s = new OskSettings
             {
@@ -799,6 +829,7 @@ namespace PadForge.Common.Input
                 FunctionRow = def.FunctionRow,
                 Suggestions = def.Suggestions,
                 Symbols = symbols,
+                SteerDeadzone = deadzone,
             };
             e.ApplySettings(s, force);
             _oskSettingsApplied = s;
@@ -821,11 +852,12 @@ namespace PadForge.Common.Input
                 MappingSet set = sets != null && r.Slot >= 0 && r.Slot < sets.Length ? sets[r.Slot] : null;
                 bool layerOk = IsMenuLayerOpen(r.Slot, set, r.Def);
 
-                // Opens With acts once per press, as a macro trigger's press
-                // modes do: on the press, once held for the hold time, or on
-                // a second press within the window
-                // (EvaluateDoublePressTrigger's rule). An input held when the
-                // menu is first seen waits for its release.
+                // Opens With acts once per press, by the macro trigger's rule
+                // for its press mode (EvaluateHoldForMsTrigger,
+                // EvaluateShortPressTrigger, EvaluateDoublePressTrigger,
+                // EvaluateTriplePressTrigger, EvaluateSinglePressTrigger). An
+                // input held when the menu is first seen waits for its
+                // release.
                 bool held = InputHeld(r, src.Open);
                 if (!r.OpenSeen)
                 {
@@ -834,7 +866,7 @@ namespace PadForge.Common.Input
                 }
                 else
                 {
-                    bool rose = held && !r.OpenWas;
+                    bool rose = held && !r.OpenWas, fell = !held && r.OpenWas;
                     if (rose)
                     {
                         r.OpenDownMs = now;
@@ -848,11 +880,71 @@ namespace PadForge.Common.Input
                         case KeyboardOpenPress.Hold:
                             act = held && !r.OpenFired && now - r.OpenDownMs >= ms;
                             break;
+                        case KeyboardOpenPress.ShortPress:
+                            act = fell && !r.OpenFired && now - r.OpenDownMs < ms;
+                            break;
+                        case KeyboardOpenPress.Release:
+                            act = fell && !r.OpenFired;
+                            break;
                         case KeyboardOpenPress.DoublePress:
                             if (rose)
                             {
                                 act = r.OpenLastPressMs != long.MinValue && now - r.OpenLastPressMs <= ms;
                                 r.OpenLastPressMs = act ? long.MinValue : now;
+                            }
+                            break;
+                        case KeyboardOpenPress.TriplePress:
+                            if (rose)
+                            {
+                                bool chained = r.OpenLastPressMs != long.MinValue && now - r.OpenLastPressMs <= ms;
+                                r.OpenStreak = chained ? r.OpenStreak + 1 : 1;
+                                r.OpenLastPressMs = now;
+                                if (r.OpenStreak >= 3)
+                                {
+                                    act = true;
+                                    r.OpenStreak = 0;
+                                    r.OpenLastPressMs = long.MinValue;
+                                }
+                            }
+                            break;
+                        case KeyboardOpenPress.SinglePress:
+                            if (rose)
+                            {
+                                bool chained = r.OpenLastPressMs != long.MinValue && now - r.OpenLastPressMs <= ms;
+                                r.OpenStreak = chained ? r.OpenStreak + 1 : 1;
+                                r.OpenLastPressMs = now;
+                            }
+                            else if (r.OpenLastPressMs != long.MinValue && now - r.OpenLastPressMs > ms)
+                            {
+                                long elapsed = now - r.OpenLastPressMs;
+                                if (r.OpenStreak == 1)
+                                {
+                                    r.OpenStreak = 0;
+                                    r.OpenLastPressMs = long.MinValue;
+                                    // A window that ended long ago predates a
+                                    // stop: no ghost press.
+                                    act = elapsed <= ms + OskSinglePressGraceMs;
+                                }
+                                else if (!held)
+                                {
+                                    r.OpenStreak = 0;
+                                    r.OpenLastPressMs = long.MinValue;
+                                }
+                            }
+                            break;
+                        case KeyboardOpenPress.WhileHeld:
+                            // Open on the press, closed on the release of
+                            // the press that opened it.
+                            if (rose && !isOwner && layerOk)
+                            {
+                                r.OpenHeldOwner = true;
+                                _oskRequests.Add(new OskRequest(r.Slot, r.MenuId, OskRequestKind.Open, OskOpenReason.Input));
+                            }
+                            else if (fell)
+                            {
+                                if (isOwner && r.OpenHeldOwner)
+                                    _oskRequests.Add(new OskRequest(r.Slot, r.MenuId, OskRequestKind.Close, OskOpenReason.Input));
+                                r.OpenHeldOwner = false;
                             }
                             break;
                         default:

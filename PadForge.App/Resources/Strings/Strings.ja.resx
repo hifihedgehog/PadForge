@@ -5059,20 +5059,15 @@
   <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>デイジーホイール: 8つのグループから1つ選び、その4文字から1つ選びます。</value></data>
   <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>レイアウトをリセット</value></data>
   <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>開く操作</value></data>
-  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>このスロットに割り当てたデバイスの任意の入力、または2つの同時押しです。同じ入力でキーボードを閉じます。ただし、その入力をキーボードの操作にも使っている場合は閉じません。空の場合、キーボードを開く入力はありません。</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>このスロットに割り当てたデバイスの任意の入力(タッチパッドのジェスチャーやメニューセルを含む)、または2つの同時押しです。同じ入力でキーボードを閉じます。ただし、その入力をキーボードの操作にも使っている場合は閉じません。空の場合、キーボードを開く入力はありません。</value></data>
   <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>開く操作をリセット</value></data>
   <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>テキストボックス選択時に開く</value></data>
   <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>Windows アプリとブラウザーで、ボタンなしで開きます。ゲームは独自のテキストボックスを描画するため、ゲームでは上の入力で開くか、レイヤーがメニューを開いたままにするがオンの場合はそのレイヤーで開きます。</value></data>
-  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>ハイライトをキー上で動かす入力です。このスロットに割り当てた物理コントローラーから読み取ります。</value></data>
-  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>左半分の操作入力</value></data>
-  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>右半分の操作入力</value></data>
-  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>グループ選択入力</value></data>
-  <data name="Menu_Reset_Host2" xml:space="preserve"><value>右半分の操作入力をリセット</value></data>
   <data name="Menu_Host_DPad" xml:space="preserve"><value>十字キー</value></data>
   <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>フェイスボタン</value></data>
   <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>キーボード操作</value></data>
   <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>{0} レイアウト、操作 {1} 個</value></data>
-  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>このスロットに割り当てた物理コントローラーから読み取ります。各操作には、そのどれかの任意の入力を割り当てられます。ボタン、軸の方向、ハット、タッチパッド、または2つの同時押しです。記録ボタンをクリックして入力を押すか、1つの入力を押したままもう1つを押すと組み合わせになります。すべてマッピングで順番にすべて記録します。</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>このスロットに割り当てた物理コントローラーから読み取ります。各操作には、そのどれかの任意の入力を割り当てられます。ボタン、軸の方向、ハット、タッチパッド、または2つの同時押しです。軸は、軸→ボタン デッドゾーンの位置でキーを押します。ジェスチャーとメニューセルは、キーボードがコントローラーを無操作状態に保つ間は止まるため、開く操作だけが使えます。記録ボタンをクリックして入力を押すか、1つの入力を押したままもう1つを押すと組み合わせになります。すべてマッピングで順番にすべて記録します。</value></data>
   <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>すべてマッピング</value></data>
   <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>レイアウトのすべての操作を順番に記録します。ステータス行に、入力を押す操作の名前が表示されます。</value></data>
   <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>{0} の入力を押してください ({1}/{2})</value></data>
@@ -5130,4 +5125,23 @@
   <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>開く押し方をリセット</value></data>
   <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>開く操作を保持時間のあいだ押し続けると、キーボードを開閉します。それより短い押し方では何も起きません。</value></data>
   <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>開く操作を連続プレス時間内に2回押すと、キーボードを開閉します。</value></data>
+  <data name="Osk_Control_SteerUp" xml:space="preserve"><value>上へ操作</value></data>
+  <data name="Osk_Control_SteerDown" xml:space="preserve"><value>下へ操作</value></data>
+  <data name="Osk_Control_SteerLeft" xml:space="preserve"><value>左へ操作</value></data>
+  <data name="Osk_Control_SteerRight" xml:space="preserve"><value>右へ操作</value></data>
+  <data name="Osk_Control_LeftHand_Format" xml:space="preserve"><value>{0} (左手)</value></data>
+  <data name="Osk_Control_RightHand_Format" xml:space="preserve"><value>{0} (右手)</value></data>
+  <data name="Osk_Control_PointerX_Format" xml:space="preserve"><value>ポインター {0} X</value></data>
+  <data name="Osk_Control_PointerY_Format" xml:space="preserve"><value>ポインター {0} Y</value></data>
+  <data name="Osk_Control_PointerTouch_Format" xml:space="preserve"><value>ポインター {0} タッチ</value></data>
+  <data name="Osk_Control_PointerClick_Format" xml:space="preserve"><value>ポインター {0} クリック</value></data>
+  <data name="Menu_Keyboard_Deadzone_Tip" xml:space="preserve"><value>ハイライトが動くまでに、操作用の入力をどれだけ倒すかを決めます。ボタンなどのオン/オフ入力では、すぐに動きます。</value></data>
+  <data name="Menu_Keyboard_Threshold_Name_Format" xml:space="preserve"><value>{0} 軸→ボタン デッドゾーン</value></data>
+  <data name="Menu_Keyboard_RecordingAxisPrompt" xml:space="preserve"><value>このスロットに割り当てたデバイスの軸を動かしてください</value></data>
+  <data name="Menu_Keyboard_OpenPress_Press_Desc" xml:space="preserve"><value>開く操作を押した時点で、キーボードを開閉します。</value></data>
+  <data name="Menu_Keyboard_OpenPress_Release_Desc" xml:space="preserve"><value>開く操作を離した時点で、キーボードを開閉します。</value></data>
+  <data name="Menu_Keyboard_OpenPress_WhileHeld_Desc" xml:space="preserve"><value>開く操作を押している間キーボードを開き、離すと閉じます。</value></data>
+  <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>開く操作を保持時間より前に離すと、キーボードを開閉します。それより長い押し方では何も起きません。</value></data>
+  <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>開く操作を連続プレス時間内に3回押すと、キーボードを開閉します。</value></data>
+  <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>開く操作を1回押して連続プレス時間が終わると、キーボードを開閉します。時間内に2回目を押すと取り消されます。</value></data>
 </root>

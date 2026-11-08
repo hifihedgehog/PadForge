@@ -5059,20 +5059,15 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>La rueda de margarita: elija uno de ocho grupos y después uno de sus cuatro caracteres.</value></data>
   <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>Restablecer Distribución</value></data>
   <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>Se abre con</value></data>
-  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Cualquier entrada de un dispositivo asignado a este slot, o dos mantenidas a la vez. La misma entrada cierra el teclado, salvo que un control del teclado también la use. Vacío significa que ninguna entrada lo abre.</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Cualquier entrada de un dispositivo asignado a este slot, incluidos un gesto del touchpad o una celda de menú, o dos mantenidas a la vez. La misma entrada cierra el teclado, salvo que un control del teclado también la use. Vacío significa que ninguna entrada lo abre.</value></data>
   <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>Restablecer Se abre con</value></data>
   <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>Abrir al seleccionar un cuadro de texto</value></data>
   <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>En aplicaciones de Windows y navegadores, sin pulsar ningún botón. Los juegos dibujan sus propios cuadros de texto, así que en un juego se abre con la entrada de arriba, o con su capa cuando La capa mantiene el menú abierto está activado.</value></data>
-  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>La entrada que mueve el resaltado por las teclas, leída de los mandos físicos asignados al slot.</value></data>
-  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>Dirigir mitad izquierda con</value></data>
-  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>Dirigir mitad derecha con</value></data>
-  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>Elegir grupo con</value></data>
-  <data name="Menu_Reset_Host2" xml:space="preserve"><value>Restablecer Dirigir mitad derecha con</value></data>
   <data name="Menu_Host_DPad" xml:space="preserve"><value>Cruceta</value></data>
   <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>Botones frontales</value></data>
   <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>Controles del teclado</value></data>
   <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>Distribución {0}, {1} controles</value></data>
-  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Se leen de los mandos físicos asignados a este slot. Cada control admite cualquier entrada de cualquiera de ellos: un botón, una dirección de eje, una cruceta, un touchpad, o dos mantenidas a la vez. Haga clic en un botón de grabación y pulse la entrada, o mantenga una entrada y pulse una segunda para una combinación. Asignar todo las graba en orden.</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Se leen de los mandos físicos asignados a este slot. Cada control admite un botón, una dirección de eje, una cruceta, un touchpad, o dos mantenidos a la vez, de cualquiera de ellos. Un eje pulsa una tecla en su Zona muerta de eje a botón. Los gestos y las celdas de menú se detienen mientras el teclado mantiene el mando en reposo, así que solo Se abre con los admite. Haga clic en un botón de grabación y pulse la entrada, o mantenga una entrada y pulse una segunda para una combinación. Asignar todo las graba en orden.</value></data>
   <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>Asignar todo</value></data>
   <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>Graba en orden todos los controles de la distribución. La línea de estado indica el control para el que hay que pulsar una entrada.</value></data>
   <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>Pulse la entrada para {0} ({1} de {2})</value></data>
@@ -5130,4 +5125,23 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>Restablecer Se abre al</value></data>
   <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>Abre o cierra el teclado cuando Se abre con se mantiene durante el tiempo de retención. Una pulsación más corta no hace nada.</value></data>
   <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>Abre o cierra el teclado cuando Se abre con se pulsa dos veces dentro de la ventana de pulsación.</value></data>
+  <data name="Osk_Control_SteerUp" xml:space="preserve"><value>Dirigir arriba</value></data>
+  <data name="Osk_Control_SteerDown" xml:space="preserve"><value>Dirigir abajo</value></data>
+  <data name="Osk_Control_SteerLeft" xml:space="preserve"><value>Dirigir a la izquierda</value></data>
+  <data name="Osk_Control_SteerRight" xml:space="preserve"><value>Dirigir a la derecha</value></data>
+  <data name="Osk_Control_LeftHand_Format" xml:space="preserve"><value>{0}, mano izquierda</value></data>
+  <data name="Osk_Control_RightHand_Format" xml:space="preserve"><value>{0}, mano derecha</value></data>
+  <data name="Osk_Control_PointerX_Format" xml:space="preserve"><value>Puntero {0} X</value></data>
+  <data name="Osk_Control_PointerY_Format" xml:space="preserve"><value>Puntero {0} Y</value></data>
+  <data name="Osk_Control_PointerTouch_Format" xml:space="preserve"><value>Puntero {0} toque</value></data>
+  <data name="Osk_Control_PointerClick_Format" xml:space="preserve"><value>Puntero {0} clic</value></data>
+  <data name="Menu_Keyboard_Deadzone_Tip" xml:space="preserve"><value>Cuánto hay que empujar un control de dirección antes de que se mueva el resaltado. Un botón u otra entrada de activado/desactivado lo mueve al instante.</value></data>
+  <data name="Menu_Keyboard_Threshold_Name_Format" xml:space="preserve"><value>{0} Zona muerta de eje a botón</value></data>
+  <data name="Menu_Keyboard_RecordingAxisPrompt" xml:space="preserve"><value>Mueva un eje de cualquier dispositivo asignado a este slot</value></data>
+  <data name="Menu_Keyboard_OpenPress_Press_Desc" xml:space="preserve"><value>Abre o cierra el teclado en cuanto se pulsa Se abre con.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Release_Desc" xml:space="preserve"><value>Abre o cierra el teclado cuando se suelta Se abre con.</value></data>
+  <data name="Menu_Keyboard_OpenPress_WhileHeld_Desc" xml:space="preserve"><value>Abre el teclado mientras se mantiene Se abre con y lo cierra cuando se suelta.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Abre o cierra el teclado cuando Se abre con se suelta antes del tiempo de retención. Una pulsación más larga no hace nada.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Abre o cierra el teclado cuando Se abre con se pulsa tres veces dentro de la ventana de pulsación.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Abre o cierra el teclado cuando termina la ventana de pulsación tras una pulsación de Se abre con. Una segunda pulsación dentro de la ventana la cancela.</value></data>
 </root>

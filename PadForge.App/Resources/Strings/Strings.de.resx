@@ -5059,20 +5059,15 @@ Sollen sie jetzt deinstalliert werden? Dies erfordert erhöhte Rechte und kann e
   <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>Das Daisy-Wheel: eine von acht Gruppen wählen, dann eines ihrer vier Zeichen.</value></data>
   <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>Layout zurücksetzen</value></data>
   <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>Öffnet mit</value></data>
-  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Jede Eingabe eines Geräts, das diesem Slot zugewiesen ist, oder zwei gleichzeitig gehaltene. Dieselbe Eingabe schließt die Tastatur, es sei denn, ein Tastatursteuerelement verwendet sie ebenfalls. Leer bedeutet, dass keine Eingabe sie öffnet.</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Jede Eingabe eines Geräts, das diesem Slot zugewiesen ist, auch eine Touchpad-Geste oder eine Menüzelle, oder zwei gleichzeitig gehaltene. Dieselbe Eingabe schließt die Tastatur, es sei denn, ein Tastatursteuerelement verwendet sie ebenfalls. Leer bedeutet, dass keine Eingabe sie öffnet.</value></data>
   <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>Öffnet mit zurücksetzen</value></data>
   <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>Öffnen, wenn ein Textfeld ausgewählt ist</value></data>
   <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>In Windows-Apps und Browsern, ohne Taste. Spiele zeichnen ihre eigenen Textfelder, daher öffnet sie sich im Spiel mit der Eingabe oben oder mit ihrer Ebene, wenn „Ebene hält das Menü offen“ eingeschaltet ist.</value></data>
-  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>Die Eingabe, die die Hervorhebung über die Tasten bewegt, gelesen von den physischen Controllern, die dem Slot zugewiesen sind.</value></data>
-  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>Linke Hälfte steuern mit</value></data>
-  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>Rechte Hälfte steuern mit</value></data>
-  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>Gruppe wählen mit</value></data>
-  <data name="Menu_Reset_Host2" xml:space="preserve"><value>Rechte Hälfte steuern mit zurücksetzen</value></data>
   <data name="Menu_Host_DPad" xml:space="preserve"><value>Steuerkreuz</value></data>
   <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>Aktionstasten</value></data>
   <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>Tastatursteuerung</value></data>
   <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>{0}-Layout, {1} Steuerelemente</value></data>
-  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Gelesen von den physischen Controllern, die diesem Slot zugewiesen sind. Jedes Steuerelement nimmt jede Eingabe eines davon an: eine Taste, eine Achsenrichtung, ein Steuerkreuz, ein Touchpad oder zwei gleichzeitig gehaltene. Auf eine Aufnahmetaste klicken und die Eingabe drücken, oder eine Eingabe halten und eine zweite für eine Kombination drücken. „Alle zuordnen“ nimmt sie der Reihe nach auf.</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Gelesen von den physischen Controllern, die diesem Slot zugewiesen sind. Jedes Steuerelement nimmt jede Eingabe eines davon an: eine Taste, eine Achsenrichtung, ein Steuerkreuz, ein Touchpad oder zwei gleichzeitig gehaltene. Eine Achse drückt eine Taste an ihrer Achse-zu-Taste-Totzone. Gesten und Menüzellen pausieren, solange die Tastatur den Controller im Ruhezustand hält, daher nimmt nur „Öffnet mit“ sie an. Auf eine Aufnahmetaste klicken und die Eingabe drücken, oder eine Eingabe halten und eine zweite für eine Kombination drücken. „Alle zuordnen“ nimmt sie der Reihe nach auf.</value></data>
   <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>Alle zuordnen</value></data>
   <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>Nimmt alle Steuerelemente des Layouts der Reihe nach auf. Die Statuszeile nennt das Steuerelement, für das eine Eingabe zu drücken ist.</value></data>
   <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>Eingabe für {0} drücken ({1} von {2})</value></data>
@@ -5130,4 +5125,23 @@ Sollen sie jetzt deinstalliert werden? Dies erfordert erhöhte Rechte und kann e
   <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>Öffnet bei zurücksetzen</value></data>
   <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>Öffnet oder schließt die Tastatur, sobald „Öffnet mit“ für die Haltezeit gehalten wird. Ein kürzerer Druck bewirkt nichts.</value></data>
   <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>Öffnet oder schließt die Tastatur, wenn „Öffnet mit“ innerhalb des Zeitfensters zweimal gedrückt wird.</value></data>
+  <data name="Osk_Control_SteerUp" xml:space="preserve"><value>Nach oben steuern</value></data>
+  <data name="Osk_Control_SteerDown" xml:space="preserve"><value>Nach unten steuern</value></data>
+  <data name="Osk_Control_SteerLeft" xml:space="preserve"><value>Nach links steuern</value></data>
+  <data name="Osk_Control_SteerRight" xml:space="preserve"><value>Nach rechts steuern</value></data>
+  <data name="Osk_Control_LeftHand_Format" xml:space="preserve"><value>{0}, linke Hand</value></data>
+  <data name="Osk_Control_RightHand_Format" xml:space="preserve"><value>{0}, rechte Hand</value></data>
+  <data name="Osk_Control_PointerX_Format" xml:space="preserve"><value>Zeiger {0} X</value></data>
+  <data name="Osk_Control_PointerY_Format" xml:space="preserve"><value>Zeiger {0} Y</value></data>
+  <data name="Osk_Control_PointerTouch_Format" xml:space="preserve"><value>Zeiger {0} Berührung</value></data>
+  <data name="Osk_Control_PointerClick_Format" xml:space="preserve"><value>Zeiger {0} Klick</value></data>
+  <data name="Menu_Keyboard_Deadzone_Tip" xml:space="preserve"><value>Wie weit ein Steuerelement ausgelenkt werden muss, bevor die Markierung wandert. Eine Taste oder eine andere Ein-/Aus-Eingabe bewegt sie sofort.</value></data>
+  <data name="Menu_Keyboard_Threshold_Name_Format" xml:space="preserve"><value>{0} Achse-zu-Taste-Totzone</value></data>
+  <data name="Menu_Keyboard_RecordingAxisPrompt" xml:space="preserve"><value>Eine Achse auf einem Gerät bewegen, das diesem Slot zugewiesen ist</value></data>
+  <data name="Menu_Keyboard_OpenPress_Press_Desc" xml:space="preserve"><value>Öffnet oder schließt die Tastatur, sobald „Öffnet mit“ gedrückt wird.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Release_Desc" xml:space="preserve"><value>Öffnet oder schließt die Tastatur, wenn „Öffnet mit“ losgelassen wird.</value></data>
+  <data name="Menu_Keyboard_OpenPress_WhileHeld_Desc" xml:space="preserve"><value>Öffnet die Tastatur, solange „Öffnet mit“ gehalten wird, und schließt sie, wenn der Druck losgelassen wird.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Öffnet oder schließt die Tastatur, wenn „Öffnet mit“ vor Ablauf der Haltezeit losgelassen wird. Ein längerer Druck bewirkt nichts.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Öffnet oder schließt die Tastatur, wenn „Öffnet mit“ innerhalb des Zeitfensters dreimal gedrückt wird.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Öffnet oder schließt die Tastatur, wenn das Zeitfenster nach einem Druck auf „Öffnet mit“ endet. Ein zweiter Druck innerhalb des Zeitfensters bricht es ab.</value></data>
 </root>

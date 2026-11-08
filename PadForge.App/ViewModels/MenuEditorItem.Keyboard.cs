@@ -40,10 +40,11 @@ namespace PadForge.ViewModels
     /// <summary>
     /// The Keyboard style (#566): the On-Screen Keyboard as a menu. It has no
     /// cells, so the rows only a radial ring or a touch grid uses hide, as
-    /// Center Cell hides for a touch grid. What it adds: Layout, Opens With
-    /// and Open When a Text Box Is Selected rows, Split's second steering
-    /// input, the Keyboard Controls card with a row per control, and the
-    /// Keyboard card. Every control writes through
+    /// Center Cell hides for a touch grid, and it steers with its own
+    /// controls, so the opener rows hide too. What it adds: Layout, Opens
+    /// With and Open When a Text Box Is Selected rows, the Keyboard Controls
+    /// card with a row per control (steering, keys and pointers alike), and
+    /// the Keyboard card. Every control writes through
     /// <see cref="KeyboardMenuDefaults.Set"/>, which keeps only what differs
     /// from the layout's default.
     /// </summary>
@@ -51,38 +52,33 @@ namespace PadForge.ViewModels
     {
         public bool IsKeyboard => Entry.Kind == MenuKind.Keyboard;
 
-        /// <summary>The rows a radial ring or a touch grid uses: Cells,
-        /// Engage Deadzone, Fire Mode, Show Labels and the cell bindings.</summary>
+        /// <summary>The rows a radial ring or a touch grid uses: Cells, Fire
+        /// Mode, Show Labels, the cell bindings and the opener rows.</summary>
         public bool IsCellMenu => !IsKeyboard;
 
         /// <summary>Click Input: a keyboard types with its own controls.</summary>
         public bool ShowsClickRow => !IsKeyboard;
 
-        /// <summary>Pad Half: a keyboard points with the whole touchpad.</summary>
+        /// <summary>Pad Half: a keyboard points with its own pointer rows.</summary>
         public bool ShowsHostHalfRow => HostIsTouchpad && !IsKeyboard;
 
-        public bool IsSplitKeyboard => IsKeyboard && Entry.KeyboardLayout == KeyboardLayout.Split;
-
-        /// <summary>The Custom Axes rows under the opener: a keyboard shows its
-        /// own in the Keyboard Controls card.</summary>
+        /// <summary>The Custom Axes rows under the opener, which a keyboard
+        /// does not have: its steering rows take any axis on any device.</summary>
         public bool ShowsCustomAxesRows => IsCustomHost && IsCellMenu;
 
-        /// <summary>The Keyboard Controls card's count: the layout, and its
-        /// steering rows and controls together.</summary>
+        /// <summary>The Keyboard Controls card's count: the layout and its rows.</summary>
         public string KeyboardControlsSummary => string.Format(Strings.Instance.Menu_Keyboard_Controls_Summary_Format,
             KeyboardLayoutOptions[Math.Clamp((int)Entry.KeyboardLayout, 0, 2)].Label,
-            KeyboardControlRows.Count + (Entry.KeyboardLayout == KeyboardLayout.Split ? 2 : 1));
+            KeyboardControlRows.Count);
 
         /// <summary>Applies the keyboard's own defaults when a menu turns into
-        /// one: the left stick steers, as on the Windows and Steam keyboards,
-        /// and it sits at the bottom of the screen. Only a value still at the
-        /// radial default changes.</summary>
+        /// one: it sits at the bottom of the screen, and steering waits for
+        /// half a push. Only a value still at the radial default changes, and
+        /// the opener the menu had stays for when it turns back.</summary>
         private void ApplyKeyboardDefaults()
         {
-            if (string.Equals(Entry.HostDescriptor, "Gamepad RightStick", StringComparison.Ordinal))
-                Entry.HostDescriptor = KeyboardMenuDefaults.Host;
             if (Entry.PosYPercent == 50) Entry.PosYPercent = KeyboardMenuDefaults.PosYPercent;
-            Entry.HostHalf = 0;
+            if (Entry.EngageDeadzonePercent == 25) Entry.EngageDeadzonePercent = KeyboardMenuDefaults.SteerDeadzonePercent;
         }
 
         private void RaiseKeyboardDependents()
@@ -91,17 +87,12 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(IsCellMenu));
             OnPropertyChanged(nameof(ShowsClickRow));
             OnPropertyChanged(nameof(ShowsHostHalfRow));
-            OnPropertyChanged(nameof(IsSplitKeyboard));
-            OnPropertyChanged(nameof(IsCustomHost2));
             OnPropertyChanged(nameof(ShowsCustomAxesRows));
+            OnPropertyChanged(nameof(EngageDeadzonePercent));
             OnPropertyChanged(nameof(KeyboardLayoutIndex));
             OnPropertyChanged(nameof(KeyboardLayoutDescription));
-            OnPropertyChanged(nameof(HostInputLabel));
-            OnPropertyChanged(nameof(HostInputTip));
-            OnPropertyChanged(nameof(HostInputCaption));
             OnPropertyChanged(nameof(PosYPercent));
             RefreshHostOptions();
-            RefreshHost2Options();
             RebuildKeyboardControls();
         }
 
@@ -129,11 +120,6 @@ namespace PadForge.ViewModels
                 Entry.KeyboardLayout = layout;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(KeyboardLayoutDescription));
-                OnPropertyChanged(nameof(IsSplitKeyboard));
-                OnPropertyChanged(nameof(IsCustomHost2));
-                OnPropertyChanged(nameof(HostInputLabel));
-                OnPropertyChanged(nameof(HostInputTip));
-                OnPropertyChanged(nameof(HostInputCaption));
                 RebuildKeyboardControls();
                 OnEdited();
             }
@@ -144,15 +130,6 @@ namespace PadForge.ViewModels
 
         public RelayCommand ResetKeyboardLayoutCommand => _resetKeyboardLayout ??= new RelayCommand(() => KeyboardLayoutIndex = 0);
         private RelayCommand _resetKeyboardLayout;
-
-        /// <summary>The steering row's label in each layout: the selection in
-        /// Grid, the left half in Split, the group in the wheel.</summary>
-        private string KeyboardHostLabel => Entry.KeyboardLayout switch
-        {
-            KeyboardLayout.Split => Strings.Instance.Menu_Keyboard_SteerLeftHalf,
-            KeyboardLayout.Wheel => Strings.Instance.Menu_Keyboard_PickGroup,
-            _ => Strings.Instance.Menu_Host_SteerWith,
-        };
 
         // ── Opening ──────────────────────────────────────────────
 
@@ -166,22 +143,35 @@ namespace PadForge.ViewModels
 
         private static IReadOnlyList<MenuIntOption> OpenPressOptionsBacking = BuildOpenPressOptions();
 
-        private static IReadOnlyList<MenuIntOption> BuildOpenPressOptions() => new[]
+        /// <summary>The macro trigger's press modes that open and close, by
+        /// its own names, in the order a press runs through them.</summary>
+        private static IReadOnlyList<MenuIntOption> BuildOpenPressOptions()
         {
-            new MenuIntOption { Value = 0, Label = Strings.Instance.Macro_OnPress },
-            new MenuIntOption { Value = 1, Label = Strings.Instance.Macro_HoldForMs, Description = Strings.Instance.Menu_Keyboard_OpenPress_Hold_Desc },
-            new MenuIntOption { Value = 2, Label = Strings.Instance.Macro_DoublePress, Description = Strings.Instance.Menu_Keyboard_OpenPress_Double_Desc },
-        };
+            var s = Strings.Instance;
+            return new[]
+            {
+                new MenuIntOption { Value = (int)KeyboardOpenPress.Press, Label = s.Macro_OnPress, Description = s.Menu_Keyboard_OpenPress_Press_Desc },
+                new MenuIntOption { Value = (int)KeyboardOpenPress.Release, Label = s.Macro_OnRelease, Description = s.Menu_Keyboard_OpenPress_Release_Desc },
+                new MenuIntOption { Value = (int)KeyboardOpenPress.WhileHeld, Label = s.Macro_WhileHeld, Description = s.Menu_Keyboard_OpenPress_WhileHeld_Desc },
+                new MenuIntOption { Value = (int)KeyboardOpenPress.Hold, Label = s.Macro_HoldForMs, Description = s.Menu_Keyboard_OpenPress_Hold_Desc },
+                new MenuIntOption { Value = (int)KeyboardOpenPress.ShortPress, Label = s.Macro_ShortPress, Description = s.Menu_Keyboard_OpenPress_Short_Desc },
+                new MenuIntOption { Value = (int)KeyboardOpenPress.DoublePress, Label = s.Macro_DoublePress, Description = s.Menu_Keyboard_OpenPress_Double_Desc },
+                new MenuIntOption { Value = (int)KeyboardOpenPress.TriplePress, Label = s.Macro_TriplePress, Description = s.Menu_Keyboard_OpenPress_Triple_Desc },
+                new MenuIntOption { Value = (int)KeyboardOpenPress.SinglePress, Label = s.Macro_SinglePress, Description = s.Menu_Keyboard_OpenPress_Single_Desc },
+            };
+        }
 
         public IReadOnlyList<MenuIntOption> OpenPressOptions => OpenPressOptionsBacking;
 
+        private const int LastOpenPress = (int)KeyboardOpenPress.SinglePress;
+
         public int OpenPressIndex
         {
-            get => Math.Clamp((int)Entry.OpenPress, 0, 2);
+            get => Math.Clamp((int)Entry.OpenPress, 0, LastOpenPress);
             set
             {
                 if (value < 0) return;
-                var press = (KeyboardOpenPress)Math.Clamp(value, 0, 2);
+                var press = (KeyboardOpenPress)Math.Clamp(value, 0, LastOpenPress);
                 if (Entry.OpenPress == press) return;
                 Entry.OpenPress = press;
                 // A hold time is no press window: the new mode starts at its
@@ -201,7 +191,7 @@ namespace PadForge.ViewModels
             get => KeyboardMenuDefaults.OpenPressMs(Entry);
             set
             {
-                if (Entry.OpenPress == KeyboardOpenPress.Press) return;
+                if (!ShowsOpenPressMs) return;
                 int v = Math.Clamp(value, 50, KeyboardMenuDefaults.MaxOpenPressMs);
                 if (KeyboardMenuDefaults.OpenPressMs(Entry) == v && Entry.OpenPressMs != 0) return;
                 Entry.OpenPressMs = v;
@@ -210,14 +200,14 @@ namespace PadForge.ViewModels
             }
         }
 
-        public bool ShowsOpenPressMs => Entry.OpenPress != KeyboardOpenPress.Press;
+        public bool ShowsOpenPressMs => KeyboardMenuDefaults.UsesHoldTime(Entry.OpenPress)
+                                        || KeyboardMenuDefaults.UsesPressWindow(Entry.OpenPress);
 
         /// <summary>The time's name for the press: the macro trigger's Hold
         /// Time or Press Window.</summary>
-        public string OpenPressMsLabel => Entry.OpenPress == KeyboardOpenPress.DoublePress
+        public string OpenPressMsLabel => KeyboardMenuDefaults.UsesPressWindow(Entry.OpenPress)
             ? Strings.Instance.Macro_TriggerDoublePressMs_Label
             : Strings.Instance.Macro_TriggerHoldMs_Label;
-
         public RelayCommand ResetOpenPressCommand => _resetOpenPress ??= new RelayCommand(() =>
         {
             if (Entry.OpenPress == KeyboardOpenPress.Press && Entry.OpenPressMs == 0) return;
@@ -345,87 +335,6 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(TypesThrough));
         }
 
-        // ── Split's right half ───────────────────────────────────
-
-        /// <summary>The right half's steering choices, the same list as the
-        /// first one's.</summary>
-        public IReadOnlyList<MenuHostOption> Host2Options => HostOptionsFor(Entry.Host2Descriptor);
-
-        public MenuHostOption SelectedHost2
-        {
-            get
-            {
-                var options = Host2Options;
-                foreach (var h in options)
-                    if (h.Descriptor == Entry.Host2Descriptor) return h;
-                return options[1];
-            }
-            set
-            {
-                if (value == null || Entry.Host2Descriptor == value.Descriptor) return;
-                Entry.Host2Descriptor = value.Descriptor;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(IsCustomHost2));
-                RaiseCustomInput(MenuRecordTarget.Custom2X);
-                RaiseCustomInput(MenuRecordTarget.Custom2Y);
-                OnEdited();
-            }
-        }
-
-        public bool IsCustomHost2 => IsSplitKeyboard
-            && string.Equals(Entry.Host2Descriptor, "Custom", StringComparison.Ordinal);
-
-        internal void RefreshHost2Options()
-        {
-            OnPropertyChanged(nameof(Host2Options));
-            OnPropertyChanged(nameof(SelectedHost2));
-            OnPropertyChanged(nameof(IsCustomHost2));
-        }
-
-        public RelayCommand ResetHost2Command => _resetHost2 ??= new RelayCommand(() =>
-        {
-            Entry.Host2Descriptor = KeyboardMenuDefaults.Host2;
-            Entry.Custom2XDescriptor = "";
-            Entry.Custom2YDescriptor = "";
-            RefreshHost2Options();
-            RaiseCustomInput(MenuRecordTarget.Custom2X);
-            RaiseCustomInput(MenuRecordTarget.Custom2Y);
-            OnEdited();
-        });
-        private RelayCommand _resetHost2;
-
-        public IReadOnlyList<InputChoice> Custom2XChoices => BuildInputChoices(analog: true, Entry.Custom2XDescriptor);
-        public IReadOnlyList<InputChoice> Custom2YChoices => BuildInputChoices(analog: true, Entry.Custom2YDescriptor);
-        public System.ComponentModel.ICollectionView Custom2XChoicesView => BuildChoicesView(BuildInputChoices(analog: true, Entry.Custom2XDescriptor));
-        public System.ComponentModel.ICollectionView Custom2YChoicesView => BuildChoicesView(BuildInputChoices(analog: true, Entry.Custom2YDescriptor));
-        public string Custom2XSubtitle => SubtitleFor(Entry.Custom2XDescriptor, Strings.Instance.Menu_NotRecorded);
-        public string Custom2YSubtitle => SubtitleFor(Entry.Custom2YDescriptor, Strings.Instance.Menu_NotRecorded);
-
-        public string Custom2XSelected
-        {
-            get => Entry.Custom2XDescriptor ?? "";
-            set => SetCustomInput(MenuRecordTarget.Custom2X, value);
-        }
-
-        public string Custom2YSelected
-        {
-            get => Entry.Custom2YDescriptor ?? "";
-            set => SetCustomInput(MenuRecordTarget.Custom2Y, value);
-        }
-
-        public RelayCommand ResetCustom2XCommand => _resetCustom2X ??= new RelayCommand(() => SetCustomInput(MenuRecordTarget.Custom2X, ""));
-        private RelayCommand _resetCustom2X;
-
-        public RelayCommand ResetCustom2YCommand => _resetCustom2Y ??= new RelayCommand(() => SetCustomInput(MenuRecordTarget.Custom2Y, ""));
-        private RelayCommand _resetCustom2Y;
-
-        public string Host2RecordIcon => IconFor(MenuRecordTarget.Host2);
-        public string Host2RecordText => TextFor(MenuRecordTarget.Host2);
-        public string Custom2XRecordIcon => IconFor(MenuRecordTarget.Custom2X);
-        public string Custom2YRecordIcon => IconFor(MenuRecordTarget.Custom2Y);
-        public string Custom2XRecordText => TextFor(MenuRecordTarget.Custom2X);
-        public string Custom2YRecordText => TextFor(MenuRecordTarget.Custom2Y);
-
         // ── Opens With and the controls ──────────────────────────
 
         private KeyboardInputRow _openRow;
@@ -448,7 +357,8 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(KeyboardControlsSummary));
         }
 
-        /// <summary>A control's name, the one its row and the issue's tables use.</summary>
+        /// <summary>A control's name, the one its row and the issue's tables use.
+        /// Split's steering names the hand each set moves.</summary>
         internal static string ControlName(KeyboardLayout layout, KeyboardControlAction a)
         {
             var s = Strings.Instance;
@@ -486,9 +396,31 @@ namespace PadForge.ViewModels
                 KeyboardControlAction.Numbers => s.Osk_Control_Numbers,
                 KeyboardControlAction.Home => s.Osk_Control_Home,
                 KeyboardControlAction.End => s.Osk_Control_End,
+                KeyboardControlAction.SteerUp => Hand(layout, s.Osk_Control_SteerUp, left: true),
+                KeyboardControlAction.SteerDown => Hand(layout, s.Osk_Control_SteerDown, left: true),
+                KeyboardControlAction.SteerLeft => Hand(layout, s.Osk_Control_SteerLeft, left: true),
+                KeyboardControlAction.SteerRight => Hand(layout, s.Osk_Control_SteerRight, left: true),
+                KeyboardControlAction.Steer2Up => Hand(layout, s.Osk_Control_SteerUp, left: false),
+                KeyboardControlAction.Steer2Down => Hand(layout, s.Osk_Control_SteerDown, left: false),
+                KeyboardControlAction.Steer2Left => Hand(layout, s.Osk_Control_SteerLeft, left: false),
+                KeyboardControlAction.Steer2Right => Hand(layout, s.Osk_Control_SteerRight, left: false),
+                KeyboardControlAction.Pointer1X => string.Format(s.Osk_Control_PointerX_Format, 1),
+                KeyboardControlAction.Pointer1Y => string.Format(s.Osk_Control_PointerY_Format, 1),
+                KeyboardControlAction.Pointer1Touch => string.Format(s.Osk_Control_PointerTouch_Format, 1),
+                KeyboardControlAction.Pointer1Click => string.Format(s.Osk_Control_PointerClick_Format, 1),
+                KeyboardControlAction.Pointer2X => string.Format(s.Osk_Control_PointerX_Format, 2),
+                KeyboardControlAction.Pointer2Y => string.Format(s.Osk_Control_PointerY_Format, 2),
+                KeyboardControlAction.Pointer2Touch => string.Format(s.Osk_Control_PointerTouch_Format, 2),
+                KeyboardControlAction.Pointer2Click => string.Format(s.Osk_Control_PointerClick_Format, 2),
                 _ => a.ToString(),
             };
         }
+
+        /// <summary>A steering name, with the hand on Split, whose left half
+        /// and right half each steer on their own.</summary>
+        private static string Hand(KeyboardLayout layout, string name, bool left)
+            => layout != KeyboardLayout.Split ? name
+             : string.Format(left ? Strings.Instance.Osk_Control_LeftHand_Format : Strings.Instance.Osk_Control_RightHand_Format, name);
 
         /// <summary>Reset All: every control back to its layout's default.</summary>
         public RelayCommand ResetKeyboardControlsCommand => _resetKeyboardControls ??= new RelayCommand(() =>
@@ -526,23 +458,70 @@ namespace PadForge.ViewModels
             OnEdited();
         }
 
-        /// <summary>Applies a recorded press to a row. An input the keyboard
-        /// cannot read while it is open is refused: a touchpad or mouse
-        /// gesture and a menu cell come from state the keyboard holds at rest.</summary>
+        /// <summary>Applies a recorded press to a row. The row's press point
+        /// stays, as a Mappings row's deadzone stays when its source changes.
+        /// An input the row cannot read is refused (<see cref="KeyboardInputRow.Accepts"/>).</summary>
         public bool TryApplyKeyboardPress(KeyboardInputRow row, PadForge.Services.RecorderService.RecordedPress press)
         {
             if (row == null || string.IsNullOrWhiteSpace(press.Descriptor)) return false;
-            if (IsSlotEvent(press.Descriptor) || IsSlotEvent(press.AndDescriptor)) return false;
+            if (!row.Accepts(press.Descriptor)) return false;
+            if (!string.IsNullOrWhiteSpace(press.AndDescriptor) && (row.RecordsAnAxis || !row.Accepts(press.AndDescriptor))) return false;
             SetKeyboardInput(row, new KeyboardInput(press.Descriptor, press.DeviceGuid ?? "",
-                press.AndDescriptor ?? "", press.AndDeviceGuid ?? ""));
+                press.AndDescriptor ?? "", press.AndDeviceGuid ?? "", row.Input.Threshold));
             return true;
         }
 
-        private static bool IsSlotEvent(string descriptor)
+        /// <summary>Applies a recorded axis to a pointer's X or Y row: an
+        /// input with a place across its range, on the device it moved on.</summary>
+        public bool TryApplyKeyboardAxis(KeyboardInputRow row, string descriptor, string deviceGuid)
+        {
+            if (row == null || !row.RecordsAnAxis || string.IsNullOrWhiteSpace(descriptor)) return false;
+            string d = descriptor.Trim();
+            if (!IsPositionDescriptor(d)) return false;
+            SetKeyboardInput(row, new KeyboardInput(d, deviceGuid ?? ""));
+            return true;
+        }
+
+        /// <summary>A touchpad or mouse gesture or a menu cell: inputs the
+        /// keyboard's own controls cannot read, since the keyboard holds the
+        /// controller at rest while it is open and they come from that state.
+        /// Opens With reads them, since the keyboard is closed when it opens.</summary>
+        internal static bool IsSlotEvent(string descriptor)
         {
             if (string.IsNullOrWhiteSpace(descriptor)) return false;
             string clean = SourceCoercion.StripLegacyPrefix(descriptor.Trim(), out _, out _);
             return SourceCoercion.IsSlotEventDescriptor(clean);
+        }
+
+        /// <summary>An input with a place across a range, what a pointer's X
+        /// and Y rows read (SourceCoercion.EvaluateForBipolarAxisTarget): an
+        /// axis or a slider, the abstract Gamepad sticks among them, a
+        /// touchpad finger's position, the absolute touchpad pointer, the
+        /// mouse position and the IR pointer. Gyro and mouse motion measure
+        /// speed, which has no place.</summary>
+        internal static bool IsPositionDescriptor(string descriptor)
+        {
+            if (string.IsNullOrWhiteSpace(descriptor)) return false;
+            string clean = SourceCoercion.StripLegacyPrefix(descriptor.Trim(), out _, out _);
+            return SourceCoercion.IsGenericSensitivityDescriptor(clean)
+                || SourceCoercion.IsTouchpadPointerDescriptor(clean)
+                || clean.StartsWith("Mouse Position ", StringComparison.Ordinal)
+                || clean.StartsWith("IR Pointer ", StringComparison.Ordinal);
+        }
+
+        /// <summary>Whether an input has two halves to list: a plain axis,
+        /// the abstract Gamepad sticks among them, with no direction of its
+        /// own yet. A stick rests at the middle of its range, so a press or a
+        /// steering direction reads one half of it. The Gamepad triggers rest
+        /// at zero and are listed whole.</summary>
+        internal static bool HasHalves(string descriptor)
+        {
+            if (string.IsNullOrWhiteSpace(descriptor)) return false;
+            string clean = SourceCoercion.StripLegacyPrefix(descriptor.Trim(), out bool invert, out bool half);
+            if (invert || half) return false;
+            if (clean.StartsWith("Gamepad ", StringComparison.Ordinal) && clean.Contains("Trigger", StringComparison.Ordinal)) return false;
+            string canonical = SourceCoercion.ResolveGamepadAlias(clean) ?? clean;
+            return canonical.StartsWith("Axis ", StringComparison.Ordinal);
         }
 
         // ── A row's list and its text ────────────────────────────
@@ -558,27 +537,39 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>A row's input list: the slot's inputs, grouped by device
-        /// as the mapping picker shows them, less the families the keyboard
-        /// cannot read while open (gestures, menu cells). The device-free
-        /// "Gamepad ..." names sit under (Any Device). The row's own input,
-        /// when no entry is it (an axis half, a combination), gets an entry
-        /// of its own so the selection never lies.</summary>
-        internal System.ComponentModel.ICollectionView KeyboardChoicesView(KeyboardInput current)
+        /// as the mapping picker shows them, less those the row cannot read
+        /// (<see cref="KeyboardInputRow.Accepts"/>). An axis is followed by
+        /// its two halves, the directions a recorded push gives, on every row
+        /// but a pointer's X and Y, which read the whole axis. The
+        /// device-free "Gamepad ..." names sit under (Any Device). The row's
+        /// own input, when no entry is it (a combination), gets an entry of
+        /// its own so the selection never lies.</summary>
+        internal System.ComponentModel.ICollectionView KeyboardChoicesView(KeyboardInputRow row)
         {
+            var current = row.Input;
             var list = new List<KeyboardChoice>();
             string curKey = KeyOf(current);
             bool found = curKey.Length == 0;
+            void Add(KeyboardInput input, string name, string device)
+            {
+                string key = KeyOf(input);
+                if (key == curKey) found = true;
+                list.Add(new KeyboardChoice { Key = key, DisplayName = name, DeviceLabel = device, Input = input });
+            }
             var provided = InputChoicesProvider?.Invoke();
             if (provided != null)
             {
                 foreach (var c in provided)
                 {
-                    if (c == null || string.IsNullOrEmpty(c.Descriptor)) continue;
-                    if (IsSlotEvent(c.Descriptor) || c.Descriptor.StartsWith("Menu ", StringComparison.Ordinal)) continue;
-                    var input = new KeyboardInput(c.Descriptor, c.DeviceGuid ?? "");
-                    string key = KeyOf(input);
-                    if (key == curKey) found = true;
-                    list.Add(new KeyboardChoice { Key = key, DisplayName = c.DisplayName, DeviceLabel = c.DeviceLabel, Input = input });
+                    if (c == null || string.IsNullOrEmpty(c.Descriptor) || !row.Accepts(c.Descriptor)) continue;
+                    string guid = c.DeviceGuid ?? "";
+                    Add(new KeyboardInput(c.Descriptor, guid), c.DisplayName, c.DeviceLabel);
+                    if (row.RecordsAnAxis || !HasHalves(c.Descriptor)) continue;
+                    foreach (string flags in new[] { "H", "IH" })
+                    {
+                        var half = new KeyboardInput(flags + c.Descriptor.Trim(), guid);
+                        Add(half, KeyboardInputText(half), c.DeviceLabel);
+                    }
                 }
             }
             if (!found)
@@ -701,8 +692,10 @@ namespace PadForge.ViewModels
     /// <summary>
     /// One input row of a keyboard menu (#566): a control of the layout, or
     /// Opens With. Its list picks an input on one device, its record button
-    /// takes a press or a combination on any device of the slot, and its
-    /// reset puts the layout's default back (Opens With's default is none).
+    /// takes a press or a combination on any device of the slot (an axis on
+    /// a pointer's X and Y rows), its press point sets where an analog input
+    /// presses, and its reset puts the layout's default back (Opens With's
+    /// default is none).
     /// </summary>
     public sealed partial class KeyboardInputRow : ObservableObject
     {
@@ -725,6 +718,24 @@ namespace PadForge.ViewModels
 
         public bool IsOpensWith => Action == null;
 
+        /// <summary>A pointer's X or Y row, which takes a place across a
+        /// range and records an axis.</summary>
+        public bool RecordsAnAxis => Action is { } a && KeyboardMenuDefaults.IsPointerAxis(a);
+
+        /// <summary>Whether the row reads an input. A pointer's X and Y take
+        /// an input with a place (<see cref="MenuEditorItem.IsPositionDescriptor"/>).
+        /// Opens With takes every input, gestures and menu cells too. Every
+        /// other control takes all but those two, which stop while the
+        /// keyboard holds the controller at rest.</summary>
+        internal bool Accepts(string descriptor)
+        {
+            if (string.IsNullOrWhiteSpace(descriptor)) return false;
+            if (RecordsAnAxis) return MenuEditorItem.IsPositionDescriptor(descriptor);
+            if (IsOpensWith) return true;
+            return !MenuEditorItem.IsSlotEvent(descriptor)
+                   && !descriptor.TrimStart().StartsWith("Menu ", StringComparison.Ordinal);
+        }
+
         /// <summary>The row's id for UI Automation, stable across languages.</summary>
         public string AutomationId => "MenuKeyboard_" + (Action?.ToString() ?? "OpensWith");
 
@@ -734,7 +745,7 @@ namespace PadForge.ViewModels
 
         public KeyboardInput Default => Action is { } a ? KeyboardMenuDefaults.DefaultInput(Layout, a) : KeyboardInput.None;
 
-        public System.ComponentModel.ICollectionView ChoicesView => _owner.KeyboardChoicesView(Input);
+        public System.ComponentModel.ICollectionView ChoicesView => _owner.KeyboardChoicesView(this);
 
         public string SelectedKey
         {
@@ -747,7 +758,9 @@ namespace PadForge.ViewModels
                     foreach (var c in items)
                         if (c.Key == value)
                         {
-                            _owner.SetKeyboardInput(this, c.Input);
+                            // The press point stays with the row, as a
+                            // Mappings row's deadzone stays with its source.
+                            _owner.SetKeyboardInput(this, c.Input with { Threshold = Input.Threshold });
                             return;
                         }
             }
@@ -755,7 +768,9 @@ namespace PadForge.ViewModels
 
         /// <summary>The device the input is read on, or, while the row records,
         /// what to do.</summary>
-        public string Subtitle => IsRecording ? Strings.Instance.Menu_Keyboard_RecordingPrompt : _owner.KeyboardSubtitle(Input);
+        public string Subtitle => IsRecording
+            ? (RecordsAnAxis ? Strings.Instance.Menu_Keyboard_RecordingAxisPrompt : Strings.Instance.Menu_Keyboard_RecordingPrompt)
+            : _owner.KeyboardSubtitle(Input);
 
         /// <summary>The reset button's name: what the default is.</summary>
         public string ResetTip => string.Format(Strings.Instance.Menu_Keyboard_Reset_Format, Label,
@@ -769,6 +784,55 @@ namespace PadForge.ViewModels
 
         public RelayCommand ResetInputCommand => _reset ??= new RelayCommand(() => _owner.SetKeyboardInput(this, Default));
         private RelayCommand _reset;
+
+        // ── The press point ──────────────────────────────────────
+
+        /// <summary>Whether the row's press point acts, so its Axis-to-Button
+        /// Deadzone shows. A key, a pointer's touch or click and Opens With
+        /// press at it where a Mappings row with a button target would, for
+        /// either input of a combination
+        /// (<see cref="MappingItem.ButtonReadThresholds"/>). A steering row
+        /// reads its input's depth, so only a combination's second input,
+        /// which holds the steering as a press, has one. A pointer's X and Y
+        /// read a place, and have none.</summary>
+        public bool ShowsThreshold
+        {
+            get
+            {
+                var input = Input;
+                if (input.IsEmpty || RecordsAnAxis) return false;
+                bool b = input.HasAnd && Thresholds(input.AndDescriptor);
+                if (Action is { } a && KeyboardMenuDefaults.IsSteer(a)) return b;
+                return b || Thresholds(input.Descriptor);
+            }
+        }
+
+        private static bool Thresholds(string descriptor)
+            => MappingItem.ButtonReadThresholds(SourceCoercion.StripLegacyPrefix((descriptor ?? "").Trim(), out _, out _));
+
+        /// <summary>The press point, 1 to 99 percent of the input's travel,
+        /// 50 unless set. A held press lets go at 70% of it.</summary>
+        public int ThresholdPercent
+        {
+            get => Input.ThresholdPercent;
+            set
+            {
+                int v = Math.Clamp(value, 1, 99);
+                var input = Input;
+                if (input.IsEmpty || input.ThresholdPercent == v) return;
+                _owner.SetKeyboardInput(this, input with { Threshold = v });
+            }
+        }
+
+        /// <summary>The press point's name for screen readers, with the row's.</summary>
+        public string ThresholdName => string.Format(Strings.Instance.Menu_Keyboard_Threshold_Name_Format, Label);
+
+        /// <summary>The press point's id for UI Automation.</summary>
+        public string ThresholdAutomationId => AutomationId + "_Deadzone";
+
+        public RelayCommand ResetThresholdCommand => _resetThreshold ??= new RelayCommand(
+            () => ThresholdPercent = KeyboardInput.DefaultThreshold);
+        private RelayCommand _resetThreshold;
 
         internal void RaiseRecording()
         {
@@ -795,6 +859,8 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(Input));
             OnPropertyChanged(nameof(Subtitle));
             OnPropertyChanged(nameof(ResetTip));
+            OnPropertyChanged(nameof(ShowsThreshold));
+            OnPropertyChanged(nameof(ThresholdPercent));
         }
     }
 }

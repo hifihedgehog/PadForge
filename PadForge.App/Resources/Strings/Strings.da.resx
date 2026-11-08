@@ -5108,20 +5108,15 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>Daisy wheel: vælg en af otte grupper og derefter et af dens fire tegn.</value></data>
   <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>Nulstil layout</value></data>
   <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>Åbnes med</value></data>
-  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Ethvert input på en enhed, der er tildelt denne slot, eller to input holdt nede sammen. Det samme input lukker tastaturet, medmindre en tastaturkontrol også bruger det. Tom betyder, at intet input åbner det.</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Ethvert input på en enhed, der er tildelt denne slot, en touchpad-bevægelse eller en menucelle medregnet, eller to input holdt nede sammen. Det samme input lukker tastaturet, medmindre en tastaturkontrol også bruger det. Tom betyder, at intet input åbner det.</value></data>
   <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>Nulstil Åbnes med</value></data>
   <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>Åbn, når et tekstfelt er markeret</value></data>
   <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>I Windows-apps og browsere, uden knap. Spil tegner deres egne tekstfelter, så i et spil åbnes det med inputtet ovenfor eller med dets lag, når Laget holder menuen åben er slået til.</value></data>
-  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>Det input, der flytter markeringen hen over tasterne, aflæst fra slottens tildelte fysiske controllere.</value></data>
-  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>Styr venstre halvdel med</value></data>
-  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>Styr højre halvdel med</value></data>
-  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>Vælg en gruppe med</value></data>
-  <data name="Menu_Reset_Host2" xml:space="preserve"><value>Nulstil Styr højre halvdel med</value></data>
   <data name="Menu_Host_DPad" xml:space="preserve"><value>D-pad</value></data>
   <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>Frontknapper</value></data>
   <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>Tastaturkontroller</value></data>
   <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>{0}-layout, {1} kontroller</value></data>
-  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Aflæses fra de fysiske controllere, der er tildelt denne slot. Hver kontrol tager ethvert input på en af dem: en knap, en akseretning, en hat, en touchpad eller to input holdt nede sammen. Klik på en optageknap og tryk på inputtet, eller hold ét input nede og tryk på et andet for en kombination. Tildel alle optager dem i rækkefølge.</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Aflæses fra de fysiske controllere, der er tildelt denne slot. Hver kontrol tager en knap, en akseretning, en hat, en touchpad eller to input holdt nede sammen på en hvilken som helst af dem. En akse trykker en tast ved Dødzone for akse til knap. Bevægelser og menuceller stopper, mens tastaturet holder controlleren i hvile, så kun Åbnes med tager dem. Klik på en optageknap og tryk på inputtet, eller hold ét input nede og tryk på et andet for en kombination. Tildel alle optager dem i rækkefølge.</value></data>
   <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>Tildel alle</value></data>
   <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>Optager alle layoutets kontroller i rækkefølge. Statuslinjen nævner den kontrol, du skal trykke et input for.</value></data>
   <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>Tryk på inputtet for {0} ({1} af {2})</value></data>
@@ -5179,4 +5174,23 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>Nulstil Åbnes ved</value></data>
   <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>Åbner eller lukker tastaturet, når Åbnes med holdes nede i holdetiden. Et kortere tryk gør ingenting.</value></data>
   <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>Åbner eller lukker tastaturet, når Åbnes med trykkes to gange inden for tryktidsvinduet.</value></data>
+  <data name="Osk_Control_SteerUp" xml:space="preserve"><value>Styr op</value></data>
+  <data name="Osk_Control_SteerDown" xml:space="preserve"><value>Styr ned</value></data>
+  <data name="Osk_Control_SteerLeft" xml:space="preserve"><value>Styr til venstre</value></data>
+  <data name="Osk_Control_SteerRight" xml:space="preserve"><value>Styr til højre</value></data>
+  <data name="Osk_Control_LeftHand_Format" xml:space="preserve"><value>{0}, venstre hånd</value></data>
+  <data name="Osk_Control_RightHand_Format" xml:space="preserve"><value>{0}, højre hånd</value></data>
+  <data name="Osk_Control_PointerX_Format" xml:space="preserve"><value>Pointer {0} X</value></data>
+  <data name="Osk_Control_PointerY_Format" xml:space="preserve"><value>Pointer {0} Y</value></data>
+  <data name="Osk_Control_PointerTouch_Format" xml:space="preserve"><value>Pointer {0} berøring</value></data>
+  <data name="Osk_Control_PointerClick_Format" xml:space="preserve"><value>Pointer {0} klik</value></data>
+  <data name="Menu_Keyboard_Deadzone_Tip" xml:space="preserve"><value>Hvor langt en styrekontrol skal skubbes, før markeringen flytter sig. En knap eller et andet til/fra-input flytter den med det samme.</value></data>
+  <data name="Menu_Keyboard_Threshold_Name_Format" xml:space="preserve"><value>{0} Dødzone for akse til knap</value></data>
+  <data name="Menu_Keyboard_RecordingAxisPrompt" xml:space="preserve"><value>Bevæg en akse på en enhed, der er tildelt denne slot</value></data>
+  <data name="Menu_Keyboard_OpenPress_Press_Desc" xml:space="preserve"><value>Åbner eller lukker tastaturet, så snart Åbnes med trykkes.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Release_Desc" xml:space="preserve"><value>Åbner eller lukker tastaturet, når Åbnes med slippes.</value></data>
+  <data name="Menu_Keyboard_OpenPress_WhileHeld_Desc" xml:space="preserve"><value>Åbner tastaturet, mens Åbnes med holdes nede, og lukker det, når trykket slippes.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Åbner eller lukker tastaturet, når Åbnes med slippes inden holdetiden. Et længere tryk gør ingenting.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Åbner eller lukker tastaturet, når Åbnes med trykkes tre gange inden for tryktidsvinduet.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Åbner eller lukker tastaturet, når tryktidsvinduet slutter efter ét tryk på Åbnes med. Et andet tryk inden for vinduet annullerer det.</value></data>
 </root>

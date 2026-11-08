@@ -178,6 +178,9 @@ namespace PadForge.Services
         // a second input held with the first as a combination. It ends when
         // the first input is let go, or when a second one goes down.
         private bool _pressMode;
+        /// <summary>A press recording that takes a touchpad gesture (Opens
+        /// With, #566).</summary>
+        private bool _pressTakesGestures;
         private Action<RecordedPress> _pressCallback;
         private string _pressFirstRaw, _pressFirst, _pressFirstGuid;
         private Guid _pressFirstDevice;
@@ -348,15 +351,17 @@ namespace PadForge.Services
         /// gamepad's buttons, D-pad, sticks and triggers record by position,
         /// the device-free "Gamepad ..." names the keyboard's defaults use,
         /// so a control works on any controller on the slot. Any other
-        /// device's input keeps its device. Touchpad gestures are left out:
-        /// the keyboard holds the touchpad at rest, so a gesture never fires
+        /// device's input keeps its device. A touchpad gesture records only
+        /// when <paramref name="takesGestures"/> is set, for Opens With: the
+        /// keyboard holds the touchpad at rest, so a gesture never fires
         /// while it is open.</summary>
-        public void StartRecordingPress(int padIndex, Action<RecordedPress> onComplete)
+        public void StartRecordingPress(int padIndex, Action<RecordedPress> onComplete, bool takesGestures = false)
         {
             if (onComplete == null) return;
             StartRecordingFreeform(padIndex, (_, _) => { });
             if (_freeformCallback == null) return;
             _pressMode = true;
+            _pressTakesGestures = takesGestures;
             _pressCallback = onComplete;
             _pressFirstRaw = _pressFirst = _pressFirstGuid = null;
             _pressFirstDevice = Guid.Empty;
@@ -448,6 +453,7 @@ namespace PadForge.Services
         private void ClearPress()
         {
             _pressMode = false;
+            _pressTakesGestures = false;
             _pressCallback = null;
             _pressFirstRaw = _pressFirst = _pressFirstGuid = null;
             _pressFirstDevice = Guid.Empty;
@@ -1067,7 +1073,7 @@ namespace PadForge.Services
                 //     detects exactly the descriptors the mapping picker
                 //     offers. Checked after buttons / POVs so a deliberate
                 //     press wins the tick over an incidental touch. ──
-                if (digital && !_pressMode && (hasTouchpad || ud.IsTouchpad))
+                if (digital && (!_pressMode || _pressTakesGestures) && (hasTouchpad || ud.IsTouchpad))
                 {
                     string gestureDesc = DetectNewGestureFire(dg);
                     if (gestureDesc != null)

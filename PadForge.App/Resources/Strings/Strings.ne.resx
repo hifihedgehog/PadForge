@@ -5108,20 +5108,15 @@ PadForge ले तिनलाई अहिले अनइन्स्टल �
   <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>डेजी ह्वील: आठ समूहमध्ये एउटा छान्नुहोस्, त्यसपछि त्यसका चार अक्षरमध्ये एउटा।</value></data>
   <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>लेआउट रिसेट गर्नुहोस्</value></data>
   <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>खोल्ने इनपुट</value></data>
-  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>यस स्लटमा तोकिएको यन्त्रको कुनै पनि इनपुट, वा सँगै थिचिराखिएका दुई इनपुट। उही इनपुटले किबोर्ड बन्द गर्छ, यदि कुनै किबोर्ड नियन्त्रणले पनि त्यसलाई प्रयोग गर्दैन भने। खाली भए कुनै पनि इनपुटले यसलाई खोल्दैन।</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>यस स्लटमा तोकिएको यन्त्रको कुनै पनि इनपुट, टचप्याड इसारा वा मेनु सेल समेत, वा सँगै थिचिराखिएका दुई इनपुट। उही इनपुटले किबोर्ड बन्द गर्छ, यदि कुनै किबोर्ड नियन्त्रणले पनि त्यसलाई प्रयोग गर्दैन भने। खाली भए कुनै पनि इनपुटले यसलाई खोल्दैन।</value></data>
   <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>खोल्ने इनपुट रिसेट गर्नुहोस्</value></data>
   <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>पाठ बाकस चयन हुँदा खोल्नुहोस्</value></data>
   <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>Windows एपहरू र ब्राउजरहरूमा, कुनै बटन बिना। खेलहरूले आफ्नै पाठ बाकस बनाउँछन्, त्यसैले खेलमा यो माथिको इनपुटले खुल्छ, वा "लेयरले मेनु खुला राख्छ" सक्रिय हुँदा त्यसको लेयरले।</value></data>
-  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>कुञ्जीहरूमा हाइलाइट सार्ने इनपुट, जुन स्लटमा तोकिएका भौतिक कन्ट्रोलरहरूबाट पढिन्छ।</value></data>
-  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>बायाँ आधा सार्ने इनपुट</value></data>
-  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>दायाँ आधा सार्ने इनपुट</value></data>
-  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>समूह छान्ने इनपुट</value></data>
-  <data name="Menu_Reset_Host2" xml:space="preserve"><value>दायाँ आधा सार्ने इनपुट रिसेट गर्नुहोस्</value></data>
   <data name="Menu_Host_DPad" xml:space="preserve"><value>डी-प्याड</value></data>
   <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>फेस बटनहरू</value></data>
   <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>किबोर्ड नियन्त्रणहरू</value></data>
   <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>{0} लेआउट, {1} नियन्त्रण</value></data>
-  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>यस स्लटमा तोकिएका भौतिक कन्ट्रोलरहरूबाट पढिन्छ। प्रत्येक नियन्त्रणले तीमध्ये कुनैको पनि कुनै पनि इनपुट लिन्छ: बटन, अक्षको दिशा, ह्याट, टचप्याड, वा सँगै थिचिराखिएका दुई इनपुट। रेकर्ड बटन क्लिक गरी इनपुट थिच्नुहोस्, वा संयोजनका लागि एउटा इनपुट थिचिराखेर दोस्रो थिच्नुहोस्। "सबै म्याप गर्नुहोस्" ले तिनलाई क्रमैसँग रेकर्ड गर्छ।</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>यस स्लटमा तोकिएका भौतिक कन्ट्रोलरहरूबाट पढिन्छ। प्रत्येक नियन्त्रणले तीमध्ये कुनैको पनि बटन, अक्षको दिशा, ह्याट, टचप्याड, वा सँगै थिचिराखिएका दुई इनपुट लिन्छ। अक्षले आफ्नो "अक्ष-देखि-बटन डेडजोन" मा कुञ्जी थिच्छ। किबोर्डले कन्ट्रोलरलाई विश्राम अवस्थामा राखेको बेला इसारा र मेनु सेलहरू रोकिन्छन्, त्यसैले "खोल्ने इनपुट" ले मात्र तिनलाई लिन्छ। रेकर्ड बटन क्लिक गरी इनपुट थिच्नुहोस्, वा संयोजनका लागि एउटा इनपुट थिचिराखेर दोस्रो थिच्नुहोस्। "सबै म्याप गर्नुहोस्" ले तिनलाई क्रमैसँग रेकर्ड गर्छ।</value></data>
   <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>सबै म्याप गर्नुहोस्</value></data>
   <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>लेआउटका सबै नियन्त्रणहरू क्रमैसँग रेकर्ड गर्छ। स्थिति पङ्क्तिले इनपुट थिच्नुपर्ने नियन्त्रणको नाम देखाउँछ।</value></data>
   <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>{0} का लागि इनपुट थिच्नुहोस् ({2} मध्ये {1})</value></data>
@@ -5179,4 +5174,23 @@ PadForge ले तिनलाई अहिले अनइन्स्टल �
   <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>खोल्ने थिचाइ रिसेट गर्नुहोस्</value></data>
   <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>"खोल्ने इनपुट" थिचिराख्ने समयसम्म थिचिराखेपछि किबोर्ड खोल्छ वा बन्द गर्छ। त्योभन्दा छोटो थिचाइले केही गर्दैन।</value></data>
   <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>थिचाइ अवधिभित्र "खोल्ने इनपुट" दुई पटक थिचिँदा किबोर्ड खोल्छ वा बन्द गर्छ।</value></data>
+  <data name="Osk_Control_SteerUp" xml:space="preserve"><value>माथि चलाउनुहोस्</value></data>
+  <data name="Osk_Control_SteerDown" xml:space="preserve"><value>तल चलाउनुहोस्</value></data>
+  <data name="Osk_Control_SteerLeft" xml:space="preserve"><value>बायाँ चलाउनुहोस्</value></data>
+  <data name="Osk_Control_SteerRight" xml:space="preserve"><value>दायाँ चलाउनुहोस्</value></data>
+  <data name="Osk_Control_LeftHand_Format" xml:space="preserve"><value>{0}, बायाँ हात</value></data>
+  <data name="Osk_Control_RightHand_Format" xml:space="preserve"><value>{0}, दायाँ हात</value></data>
+  <data name="Osk_Control_PointerX_Format" xml:space="preserve"><value>पोइन्टर {0} X</value></data>
+  <data name="Osk_Control_PointerY_Format" xml:space="preserve"><value>पोइन्टर {0} Y</value></data>
+  <data name="Osk_Control_PointerTouch_Format" xml:space="preserve"><value>पोइन्टर {0} स्पर्श</value></data>
+  <data name="Osk_Control_PointerClick_Format" xml:space="preserve"><value>पोइन्टर {0} क्लिक</value></data>
+  <data name="Menu_Keyboard_Deadzone_Tip" xml:space="preserve"><value>हाइलाइट सर्नुअघि सार्ने नियन्त्रण कति धकेल्नुपर्छ। बटन वा अर्को अन/अफ इनपुटले यसलाई तुरुन्तै सार्छ।</value></data>
+  <data name="Menu_Keyboard_Threshold_Name_Format" xml:space="preserve"><value>{0} अक्ष-देखि-बटन डेडजोन</value></data>
+  <data name="Menu_Keyboard_RecordingAxisPrompt" xml:space="preserve"><value>यस स्लटमा तोकिएको कुनै पनि यन्त्रमा एउटा अक्ष चलाउनुहोस्</value></data>
+  <data name="Menu_Keyboard_OpenPress_Press_Desc" xml:space="preserve"><value>"खोल्ने इनपुट" थिचिनेबित्तिकै किबोर्ड खोल्छ वा बन्द गर्छ।</value></data>
+  <data name="Menu_Keyboard_OpenPress_Release_Desc" xml:space="preserve"><value>"खोल्ने इनपुट" छोडिँदा किबोर्ड खोल्छ वा बन्द गर्छ।</value></data>
+  <data name="Menu_Keyboard_OpenPress_WhileHeld_Desc" xml:space="preserve"><value>"खोल्ने इनपुट" थिचिराख्दा किबोर्ड खोल्छ र त्यो थिचाइ छोडिँदा बन्द गर्छ।</value></data>
+  <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>"खोल्ने इनपुट" थिचिराख्ने समयभन्दा पहिले छोडिँदा किबोर्ड खोल्छ वा बन्द गर्छ। त्योभन्दा लामो थिचाइले केही गर्दैन।</value></data>
+  <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>थिचाइ अवधिभित्र "खोल्ने इनपुट" तीन पटक थिचिँदा किबोर्ड खोल्छ वा बन्द गर्छ।</value></data>
+  <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>"खोल्ने इनपुट" एक पटक थिचिएपछि थिचाइ अवधि सकिँदा किबोर्ड खोल्छ वा बन्द गर्छ। अवधिभित्र दोस्रो थिचाइले यसलाई रद्द गर्छ।</value></data>
 </root>

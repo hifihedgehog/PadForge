@@ -28,27 +28,32 @@ namespace PadForge.Tests
             Assert.Equal(MenuKind.Keyboard, Enum.GetValues<MenuKind>()[^1]);
             Assert.Equal(new[] { 0, 1, 2 }, Enum.GetValues<KeyboardLayout>().Select(v => (int)v));
             Assert.Equal(KeyboardLayout.Wheel, Enum.GetValues<KeyboardLayout>()[^1]);
-            Assert.Equal(new[] { 0, 1, 2 }, Enum.GetValues<KeyboardOpenPress>().Select(v => (int)v));
-            Assert.Equal(KeyboardOpenPress.DoublePress, Enum.GetValues<KeyboardOpenPress>()[^1]);
+            Assert.Equal(Enumerable.Range(0, 8), Enum.GetValues<KeyboardOpenPress>().Select(v => (int)v));
+            Assert.Equal(KeyboardOpenPress.SinglePress, Enum.GetValues<KeyboardOpenPress>()[^1]);
+            Assert.Equal(2, (int)KeyboardOpenPress.DoublePress);
+            Assert.Equal(4, (int)KeyboardOpenPress.WhileHeld);
             var actions = Enum.GetValues<KeyboardControlAction>();
-            Assert.Equal(Enumerable.Range(0, 32), actions.Select(v => (int)v));
-            Assert.Equal(KeyboardControlAction.End, actions[^1]);
+            Assert.Equal(Enumerable.Range(0, 48), actions.Select(v => (int)v));
+            Assert.Equal(KeyboardControlAction.Pointer2Click, actions[^1]);
             Assert.Equal(4, (int)KeyboardControlAction.Close);
             Assert.Equal(17, (int)KeyboardControlAction.MoveKeyboard);
             Assert.Equal(27, (int)KeyboardControlAction.PickSouth);
+            Assert.Equal(31, (int)KeyboardControlAction.End);
+            Assert.Equal(32, (int)KeyboardControlAction.SteerUp);
+            Assert.Equal(36, (int)KeyboardControlAction.Steer2Up);
+            Assert.Equal(40, (int)KeyboardControlAction.Pointer1X);
+            Assert.Equal(44, (int)KeyboardControlAction.Pointer2X);
         }
 
         private static MenuDefinitionEntry EveryField()
         {
             var def = KeyboardMenuDefaults.Create(4, "Typing");
             def.KeyboardLayout = KeyboardLayout.Split;
-            KeyboardMenuDefaults.SetOpenInput(def, new KeyboardInput("Gamepad ButtonBack", "", "Button 3", G));
-            def.OpenPress = KeyboardOpenPress.DoublePress;
+            KeyboardMenuDefaults.SetOpenInput(def, new KeyboardInput("Gamepad ButtonBack", "", "Gamepad LeftTrigger", "", 30));
+            def.OpenPress = KeyboardOpenPress.TriplePress;
             def.OpenPressMs = 300;
             def.OpenOnTextFocus = true;
-            def.Host2Descriptor = "Custom";
-            def.Custom2XDescriptor = "Axis 3";
-            def.Custom2YDescriptor = "IAxis 4";
+            def.EngageDeadzonePercent = 70;
             def.TypesThrough = "slot:6";
             def.FunctionRow = true;
             def.Suggestions = false;
@@ -59,6 +64,12 @@ namespace PadForge.Tests
             KeyboardMenuDefaults.Set(def, KeyboardLayout.Grid, KeyboardControlAction.Close, KeyboardInput.None);
             KeyboardMenuDefaults.Set(def, KeyboardLayout.Wheel, KeyboardControlAction.PickNorth,
                 new KeyboardInput("Button 1", G, "Button 2", G2));
+            // Steering from a flight stick's axis, a key at a trigger's
+            // three-quarter pull, and a pointer on a slider.
+            KeyboardMenuDefaults.Set(def, KeyboardLayout.Split, KeyboardControlAction.Steer2Right, new KeyboardInput("HAxis 3", G2));
+            KeyboardMenuDefaults.Set(def, KeyboardLayout.Grid, KeyboardControlAction.Backspace,
+                new KeyboardInput("Gamepad RightTrigger", "", "", "", 75));
+            KeyboardMenuDefaults.Set(def, KeyboardLayout.Grid, KeyboardControlAction.Pointer1X, new KeyboardInput("Slider 0", G));
             return def;
         }
 
@@ -68,14 +79,17 @@ namespace PadForge.Tests
             Assert.Equal(4, back.MenuId);
             Assert.Equal("Typing", back.Name);
             Assert.Equal(KeyboardLayout.Split, back.KeyboardLayout);
-            Assert.Equal(new KeyboardInput("Gamepad ButtonBack", "", "Button 3", G), KeyboardMenuDefaults.OpenInput(back));
-            Assert.Equal(KeyboardOpenPress.DoublePress, back.OpenPress);
+            Assert.Equal(new KeyboardInput("Gamepad ButtonBack", "", "Gamepad LeftTrigger", "", 30), KeyboardMenuDefaults.OpenInput(back));
+            Assert.Equal(KeyboardOpenPress.TriplePress, back.OpenPress);
             Assert.Equal(300, back.OpenPressMs);
             Assert.True(back.OpenOnTextFocus);
-            Assert.Equal(KeyboardMenuDefaults.Host, back.HostDescriptor);
-            Assert.Equal("Custom", back.Host2Descriptor);
-            Assert.Equal("Axis 3", back.Custom2XDescriptor);
-            Assert.Equal("IAxis 4", back.Custom2YDescriptor);
+            Assert.Equal(70, back.EngageDeadzonePercent);
+            Assert.Equal(new KeyboardInput("HAxis 3", G2),
+                KeyboardMenuDefaults.Effective(back, KeyboardLayout.Split, KeyboardControlAction.Steer2Right));
+            Assert.Equal(new KeyboardInput("Gamepad RightTrigger", "", "", "", 75),
+                KeyboardMenuDefaults.Effective(back, KeyboardLayout.Grid, KeyboardControlAction.Backspace));
+            Assert.Equal(new KeyboardInput("Slider 0", G),
+                KeyboardMenuDefaults.Effective(back, KeyboardLayout.Grid, KeyboardControlAction.Pointer1X));
             Assert.Equal("slot:6", back.TypesThrough);
             Assert.True(back.FunctionRow);
             Assert.False(back.Suggestions);
@@ -117,6 +131,7 @@ namespace PadForge.Tests
             var radial = new MenuDefinitionEntry { MenuId = 1, Kind = MenuKind.Radial, CellCount = 4 };
             // Even with keyboard fields set, as a menu that was a keyboard keeps them.
             radial.OpenDescriptor = "Gamepad ButtonX";
+            radial.OpenThreshold = 30;
             radial.OpenPress = KeyboardOpenPress.Hold;
             radial.OpenPressMs = 700;
             radial.TypesThrough = "slot:1";
@@ -126,11 +141,64 @@ namespace PadForge.Tests
             string xml = Xml(set);
             foreach (var name in new[]
             {
-                "KeyboardLayout=", "OpenDescriptor=", "OpenDeviceGuid=", "OpenAndDescriptor=", "OpenPress=", "OpenPressMs=",
-                "OpenOnTextFocus=", "Host2Descriptor=", "Custom2XDescriptor=", "Custom2YDescriptor=", "TypesThrough=",
-                "FunctionRow=", "Suggestions=", "Symbols=", "<KeyboardControl",
+                "KeyboardLayout=", "OpenDescriptor=", "OpenDeviceGuid=", "OpenAndDescriptor=", "OpenThreshold=", "OpenPress=",
+                "OpenPressMs=", "OpenOnTextFocus=", "TypesThrough=", "FunctionRow=", "Suggestions=", "Symbols=", "<KeyboardControl",
             })
                 Assert.DoesNotContain(name, xml);
+        }
+
+        [Fact]
+        public void APressPoint_IsSavedOnlyAwayFromItsDefault_AndAloneMakesAControlCustom()
+        {
+            var def = KeyboardMenuDefaults.Create(1, "Keyboard");
+            var stock = KeyboardMenuDefaults.DefaultInput(KeyboardLayout.Grid, KeyboardControlAction.TypeKey);
+            KeyboardMenuDefaults.Set(def, KeyboardLayout.Grid, KeyboardControlAction.TypeKey, stock with { Threshold = 50 });
+            Assert.Empty(def.KeyboardControls);
+            KeyboardMenuDefaults.Set(def, KeyboardLayout.Grid, KeyboardControlAction.TypeKey, stock with { Threshold = 80 });
+            Assert.True(KeyboardMenuDefaults.IsCustomized(def, KeyboardLayout.Grid, KeyboardControlAction.TypeKey));
+            Assert.Equal(80, KeyboardMenuDefaults.Effective(def, KeyboardLayout.Grid, KeyboardControlAction.TypeKey).ThresholdPercent);
+            var set = new MappingSet();
+            set.Menus.Add(def);
+            string xml = Xml(set);
+            Assert.Contains("Threshold=\"80\"", xml);
+            Assert.DoesNotContain("OpenThreshold=", xml);
+            var back = Assert.Single(Read(xml).Menus);
+            Assert.Equal(stock with { Threshold = 80 },
+                KeyboardMenuDefaults.Effective(back, KeyboardLayout.Grid, KeyboardControlAction.TypeKey));
+
+            // A press point outside 1 to 99 reads as the nearest end, and
+            // none reads as 50.
+            Assert.Equal(99, new KeyboardInput("Axis 2", Threshold: 140).ThresholdPercent);
+            Assert.Equal(KeyboardInput.DefaultThreshold, new KeyboardInput("Axis 2").ThresholdPercent);
+            Assert.True(new KeyboardInput("Axis 2", Threshold: 50).SameAs(new KeyboardInput("Axis 2")));
+            Assert.False(new KeyboardInput("Axis 2", Threshold: 60).SameAs(new KeyboardInput("Axis 2")));
+            Assert.True(new KeyboardInput("Axis 2", Threshold: 60).SameSource(new KeyboardInput("Axis 2")));
+        }
+
+        [Fact]
+        public void EachLayout_SteersAndPointsWithItsOwnControls()
+        {
+            static bool Has(KeyboardLayout l, KeyboardControlAction a) => KeyboardMenuDefaults.Actions(l).Contains(a);
+            foreach (var layout in Enum.GetValues<KeyboardLayout>())
+            {
+                Assert.True(Has(layout, KeyboardControlAction.SteerUp), layout.ToString());
+                Assert.Equal(layout == KeyboardLayout.Split, Has(layout, KeyboardControlAction.Steer2Up));
+                Assert.Equal(layout != KeyboardLayout.Wheel, Has(layout, KeyboardControlAction.Pointer1X));
+                Assert.Equal(layout != KeyboardLayout.Wheel, Has(layout, KeyboardControlAction.Pointer2Click));
+            }
+            // The left stick steers by default, and Split's right half takes
+            // the right stick. Each direction is a half of an axis.
+            Assert.Equal("IHGamepad LeftStickY", KeyboardMenuDefaults.DefaultFor(KeyboardLayout.Grid, KeyboardControlAction.SteerUp));
+            Assert.Equal("HGamepad LeftStickX", KeyboardMenuDefaults.DefaultFor(KeyboardLayout.Wheel, KeyboardControlAction.SteerRight));
+            Assert.Equal("HGamepad RightStickY", KeyboardMenuDefaults.DefaultFor(KeyboardLayout.Split, KeyboardControlAction.Steer2Down));
+            Assert.Equal("Touchpad 1 Finger 0 X", KeyboardMenuDefaults.DefaultFor(KeyboardLayout.Grid, KeyboardControlAction.Pointer2X));
+            Assert.Equal("Touchpad 0 Click", KeyboardMenuDefaults.DefaultFor(KeyboardLayout.Split, KeyboardControlAction.Pointer1Click));
+            // Key controls are the ones that share numbers and hold Opens With.
+            Assert.True(KeyboardMenuDefaults.IsKey(KeyboardControlAction.Backspace));
+            Assert.False(KeyboardMenuDefaults.IsKey(KeyboardControlAction.SteerLeft));
+            Assert.False(KeyboardMenuDefaults.IsKey(KeyboardControlAction.Pointer1Click));
+            Assert.True(KeyboardMenuDefaults.IsPress(KeyboardControlAction.Pointer1Touch));
+            Assert.False(KeyboardMenuDefaults.IsPress(KeyboardControlAction.Pointer1Y));
         }
 
         [Fact]
@@ -222,6 +290,22 @@ namespace PadForge.Tests
             Assert.Equal(KeyboardMenuDefaults.MaxOpenPressMs, KeyboardMenuDefaults.OpenPressMs(def));
             def.OpenPress = KeyboardOpenPress.Press;
             Assert.Equal(0, KeyboardMenuDefaults.OpenPressMs(def));
+            // Short Press is timed by the hold time, Triple and Single Press by
+            // the press window, as the macro trigger's are. Release and While
+            // Held have no time.
+            def.OpenPressMs = 0;
+            def.OpenPress = KeyboardOpenPress.ShortPress;
+            Assert.Equal(new MacroData().TriggerHoldMs, KeyboardMenuDefaults.OpenPressMs(def));
+            foreach (var p in new[] { KeyboardOpenPress.TriplePress, KeyboardOpenPress.SinglePress })
+            {
+                def.OpenPress = p;
+                Assert.Equal(new MacroData().TriggerDoublePressMs, KeyboardMenuDefaults.OpenPressMs(def));
+            }
+            foreach (var p in new[] { KeyboardOpenPress.Release, KeyboardOpenPress.WhileHeld })
+            {
+                def.OpenPress = p;
+                Assert.Equal(0, KeyboardMenuDefaults.OpenPressMs(def));
+            }
         }
     }
 }

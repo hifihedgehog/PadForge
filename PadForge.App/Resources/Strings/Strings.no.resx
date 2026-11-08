@@ -5108,20 +5108,15 @@ Vil du at PadForge skal avinstallere dem nå? Dette krever administratorrettighe
   <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>Tastaturhjulet: velg én av åtte grupper, deretter ett av de fire tegnene i den.</value></data>
   <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>Tilbakestill oppsett</value></data>
   <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>Åpnes med</value></data>
-  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Hvilken som helst inndata på en enhet som er tilordnet dette sporet, eller to holdt samtidig. Den samme inndataen lukker tastaturet, med mindre en tastaturkontroll bruker den også. Tom betyr at ingen inndata åpner det.</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Hvilken som helst inndata på en enhet som er tilordnet dette sporet, også en berøringsbevegelse eller en menycelle, eller to holdt samtidig. Den samme inndataen lukker tastaturet, med mindre en tastaturkontroll bruker den også. Tom betyr at ingen inndata åpner det.</value></data>
   <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>Tilbakestill Åpnes med</value></data>
   <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>Åpne når et tekstfelt er valgt</value></data>
   <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>I Windows-apper og nettlesere, uten knapp. Spill tegner sine egne tekstfelt, så i et spill åpnes det med inndataen ovenfor, eller med laget sitt når Laget holder menyen åpen er slått på.</value></data>
-  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>Inndataen som flytter markeringen over tastene, lest fra de fysiske kontrollerne som er tilordnet sporet.</value></data>
-  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>Styr venstre halvdel med</value></data>
-  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>Styr høyre halvdel med</value></data>
-  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>Velg en gruppe med</value></data>
-  <data name="Menu_Reset_Host2" xml:space="preserve"><value>Tilbakestill Styr høyre halvdel med</value></data>
   <data name="Menu_Host_DPad" xml:space="preserve"><value>D-pad</value></data>
   <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>Frontknapper</value></data>
   <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>Tastaturkontroller</value></data>
   <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>Oppsett: {0}, {1} kontroller</value></data>
-  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Leses fra de fysiske kontrollerne som er tilordnet dette sporet. Hver kontroll tar imot hvilken som helst inndata på hvilken som helst av dem: en knapp, en akseretning, en hatt, en berøringsplate eller to holdt samtidig. Klikk på en opptaksknapp og trykk inndataen, eller hold én inndata og trykk en andre for en kombinasjon. Tilordne alle tar dem opp i rekkefølge.</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Leses fra de fysiske kontrollerne som er tilordnet dette sporet. Hver kontroll tar imot en knapp, en akseretning, en hatt, en berøringsplate eller to holdt samtidig, på hvilken som helst av dem. En akse trykker en tast ved sin Dødsone for akse til knapp. Bevegelser og menyceller stopper mens tastaturet holder kontrolleren i hvile, så bare Åpnes med tar imot dem. Klikk på en opptaksknapp og trykk inndataen, eller hold én inndata og trykk en andre for en kombinasjon. Tilordne alle tar dem opp i rekkefølge.</value></data>
   <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>Tilordne alle</value></data>
   <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>Tar opp alle kontrollene i oppsettet i rekkefølge. Statuslinjen oppgir kontrollen du skal trykke en inndata for.</value></data>
   <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>Trykk inndataen for {0} ({1} av {2})</value></data>
@@ -5179,4 +5174,23 @@ Vil du at PadForge skal avinstallere dem nå? Dette krever administratorrettighe
   <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>Tilbakestill Åpnes ved</value></data>
   <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>Åpner eller lukker tastaturet når Åpnes med holdes i holdetiden. Et kortere trykk gjør ingenting.</value></data>
   <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>Åpner eller lukker tastaturet når Åpnes med trykkes to ganger innenfor trykkvinduet.</value></data>
+  <data name="Osk_Control_SteerUp" xml:space="preserve"><value>Styr opp</value></data>
+  <data name="Osk_Control_SteerDown" xml:space="preserve"><value>Styr ned</value></data>
+  <data name="Osk_Control_SteerLeft" xml:space="preserve"><value>Styr til venstre</value></data>
+  <data name="Osk_Control_SteerRight" xml:space="preserve"><value>Styr til høyre</value></data>
+  <data name="Osk_Control_LeftHand_Format" xml:space="preserve"><value>{0}, venstre hånd</value></data>
+  <data name="Osk_Control_RightHand_Format" xml:space="preserve"><value>{0}, høyre hånd</value></data>
+  <data name="Osk_Control_PointerX_Format" xml:space="preserve"><value>Peker {0} X</value></data>
+  <data name="Osk_Control_PointerY_Format" xml:space="preserve"><value>Peker {0} Y</value></data>
+  <data name="Osk_Control_PointerTouch_Format" xml:space="preserve"><value>Peker {0} berøring</value></data>
+  <data name="Osk_Control_PointerClick_Format" xml:space="preserve"><value>Peker {0} klikk</value></data>
+  <data name="Menu_Keyboard_Deadzone_Tip" xml:space="preserve"><value>Hvor langt en styrekontroll må skyves før markøren flyttes. En knapp eller en annen av/på-inndata flytter den med en gang.</value></data>
+  <data name="Menu_Keyboard_Threshold_Name_Format" xml:space="preserve"><value>{0} Dødsone for akse til knapp</value></data>
+  <data name="Menu_Keyboard_RecordingAxisPrompt" xml:space="preserve"><value>Beveg en akse på en hvilken som helst enhet som er tilordnet dette sporet</value></data>
+  <data name="Menu_Keyboard_OpenPress_Press_Desc" xml:space="preserve"><value>Åpner eller lukker tastaturet så snart Åpnes med trykkes.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Release_Desc" xml:space="preserve"><value>Åpner eller lukker tastaturet når Åpnes med slippes.</value></data>
+  <data name="Menu_Keyboard_OpenPress_WhileHeld_Desc" xml:space="preserve"><value>Åpner tastaturet mens Åpnes med holdes inne, og lukker det når trykket slippes.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Åpner eller lukker tastaturet når Åpnes med slippes før holdetiden. Et lengre trykk gjør ingenting.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Åpner eller lukker tastaturet når Åpnes med trykkes tre ganger innenfor trykkvinduet.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Åpner eller lukker tastaturet når trykkvinduet utløper etter ett trykk på Åpnes med. Et andre trykk innenfor vinduet avbryter det.</value></data>
 </root>

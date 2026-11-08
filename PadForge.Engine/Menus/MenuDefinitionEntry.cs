@@ -290,16 +290,22 @@ namespace PadForge.Engine.Menus
         [XmlAttribute] public string OpenAndDeviceGuid { get; set; } = "";
         public bool ShouldSerializeOpenAndDeviceGuid() => Kind == MenuKind.Keyboard && !string.IsNullOrEmpty(OpenAndDeviceGuid);
 
-        /// <summary>What press of Opens With opens or closes the keyboard:
-        /// the press, a long press or a double press, as a macro trigger
-        /// takes them. Steam's Long_Press and Double_Press activators on a
-        /// Show Keyboard binding import here, so a short press of the same
-        /// button keeps its own binding.</summary>
+        /// <summary>Where an analog Opens With counts as pressed, in percent.
+        /// 0 takes the default (KeyboardInput.DefaultThreshold).</summary>
+        [XmlAttribute] public int OpenThreshold { get; set; }
+        public bool ShouldSerializeOpenThreshold() => Kind == MenuKind.Keyboard && OpenThreshold > 0;
+
+        /// <summary>What press of Opens With opens or closes the keyboard,
+        /// as a macro trigger takes its press modes. Steam's Long_Press,
+        /// Double_Press and Release activators on a Show Keyboard binding
+        /// import here, so a short press of the same button keeps its own
+        /// binding.</summary>
         [XmlAttribute] public KeyboardOpenPress OpenPress { get; set; } = KeyboardOpenPress.Press;
         public bool ShouldSerializeOpenPress() => Kind == MenuKind.Keyboard && OpenPress != KeyboardOpenPress.Press;
 
-        /// <summary>The long press's hold time or the double press's window,
-        /// in milliseconds. 0 takes the macro trigger's default for the press.</summary>
+        /// <summary>The hold time of a long or short press, or the press
+        /// window of a double, triple or single press, in milliseconds. 0
+        /// takes the macro trigger's default for the press.</summary>
         [XmlAttribute] public int OpenPressMs { get; set; }
         public bool ShouldSerializeOpenPressMs() => Kind == MenuKind.Keyboard && OpenPressMs > 0;
 
@@ -307,17 +313,6 @@ namespace PadForge.Engine.Menus
         /// browser takes focus, and closes it when focus leaves text boxes.</summary>
         [XmlAttribute] public bool OpenOnTextFocus { get; set; }
         public bool ShouldSerializeOpenOnTextFocus() => Kind == MenuKind.Keyboard;
-
-        /// <summary>Split's right-half steering input, in the
-        /// <see cref="HostDescriptor"/> grammar.</summary>
-        [XmlAttribute] public string Host2Descriptor { get; set; } = KeyboardMenuDefaults.Host2;
-        public bool ShouldSerializeHost2Descriptor() => Kind == MenuKind.Keyboard;
-
-        [XmlAttribute] public string Custom2XDescriptor { get; set; } = "";
-        public bool ShouldSerializeCustom2XDescriptor() => Kind == MenuKind.Keyboard;
-
-        [XmlAttribute] public string Custom2YDescriptor { get; set; } = "";
-        public bool ShouldSerializeCustom2YDescriptor() => Kind == MenuKind.Keyboard;
 
         /// <summary>Where the keys go: "" Windows Input, "slot:N" the
         /// Keyboard device of the Keyboard + Mouse slot at pad index N, or a
@@ -382,12 +377,10 @@ namespace PadForge.Engine.Menus
                 OpenDeviceGuid = OpenDeviceGuid,
                 OpenAndDescriptor = OpenAndDescriptor,
                 OpenAndDeviceGuid = OpenAndDeviceGuid,
+                OpenThreshold = OpenThreshold,
                 OpenPress = OpenPress,
                 OpenPressMs = OpenPressMs,
                 OpenOnTextFocus = OpenOnTextFocus,
-                Host2Descriptor = Host2Descriptor,
-                Custom2XDescriptor = Custom2XDescriptor,
-                Custom2YDescriptor = Custom2YDescriptor,
                 TypesThrough = TypesThrough,
                 FunctionRow = FunctionRow,
                 Suggestions = Suggestions,

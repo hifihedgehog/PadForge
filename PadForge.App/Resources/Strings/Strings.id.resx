@@ -5108,20 +5108,15 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>Daisy wheel: pilih satu dari delapan grup, lalu satu dari empat karakternya.</value></data>
   <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>Atur ulang tata letak</value></data>
   <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>Dibuka dengan</value></data>
-  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Input apa pun pada perangkat yang ditetapkan ke slot ini, atau dua input yang ditahan bersamaan. Input yang sama menutup keyboard, kecuali kontrol keyboard juga memakainya. Kosong berarti tidak ada input yang membukanya.</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Input apa pun pada perangkat yang ditetapkan ke slot ini, termasuk gestur panel sentuh atau sel menu, atau dua input yang ditahan bersamaan. Input yang sama menutup keyboard, kecuali kontrol keyboard juga memakainya. Kosong berarti tidak ada input yang membukanya.</value></data>
   <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>Atur ulang Dibuka dengan</value></data>
   <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>Buka saat kotak teks dipilih</value></data>
   <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>Di aplikasi Windows dan browser, tanpa tombol. Game menggambar kotak teksnya sendiri, jadi di dalam game keyboard terbuka dengan input di atas, atau dengan lapisannya saat Lapisan menahan menu tetap terbuka aktif.</value></data>
-  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>Input yang menggerakkan sorotan di antara tombol, dibaca dari kontroler fisik yang ditetapkan ke slot.</value></data>
-  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>Kendalikan paruh kiri dengan</value></data>
-  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>Kendalikan paruh kanan dengan</value></data>
-  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>Pilih grup dengan</value></data>
-  <data name="Menu_Reset_Host2" xml:space="preserve"><value>Atur ulang Kendalikan paruh kanan dengan</value></data>
   <data name="Menu_Host_DPad" xml:space="preserve"><value>D-pad</value></data>
   <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>Tombol depan</value></data>
   <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>Kontrol keyboard</value></data>
   <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>Tata letak {0}, {1} kontrol</value></data>
-  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Dibaca dari kontroler fisik yang ditetapkan ke slot ini. Setiap kontrol menerima input apa pun dari kontroler tersebut: tombol, arah sumbu, hat, panel sentuh, atau dua input yang ditahan bersamaan. Klik tombol rekam lalu tekan inputnya, atau tahan satu input dan tekan input kedua untuk kombinasi. Petakan semua merekamnya secara berurutan.</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Dibaca dari kontroler fisik yang ditetapkan ke slot ini. Setiap kontrol menerima tombol, arah sumbu, hat, panel sentuh, atau dua input yang ditahan bersamaan, pada kontroler mana pun. Sumbu menekan tombol pada Zona mati sumbu-ke-tombol. Gestur dan sel menu berhenti selama keyboard menahan kontroler dalam keadaan diam, jadi hanya Dibuka dengan yang menerimanya. Klik tombol rekam lalu tekan inputnya, atau tahan satu input dan tekan input kedua untuk kombinasi. Petakan semua merekamnya secara berurutan.</value></data>
   <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>Petakan semua</value></data>
   <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>Merekam setiap kontrol tata letak secara berurutan. Baris status menyebut kontrol yang perlu ditekan inputnya.</value></data>
   <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>Tekan input untuk {0} ({1} dari {2})</value></data>
@@ -5179,4 +5174,23 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>Atur ulang Dibuka saat</value></data>
   <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>Membuka atau menutup keyboard setelah Dibuka dengan ditahan selama waktu tahan. Penekanan yang lebih singkat tidak melakukan apa pun.</value></data>
   <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>Membuka atau menutup keyboard saat Dibuka dengan ditekan dua kali dalam jendela penekanan.</value></data>
+  <data name="Osk_Control_SteerUp" xml:space="preserve"><value>Kemudikan ke atas</value></data>
+  <data name="Osk_Control_SteerDown" xml:space="preserve"><value>Kemudikan ke bawah</value></data>
+  <data name="Osk_Control_SteerLeft" xml:space="preserve"><value>Kemudikan ke kiri</value></data>
+  <data name="Osk_Control_SteerRight" xml:space="preserve"><value>Kemudikan ke kanan</value></data>
+  <data name="Osk_Control_LeftHand_Format" xml:space="preserve"><value>{0}, tangan kiri</value></data>
+  <data name="Osk_Control_RightHand_Format" xml:space="preserve"><value>{0}, tangan kanan</value></data>
+  <data name="Osk_Control_PointerX_Format" xml:space="preserve"><value>Penunjuk {0} X</value></data>
+  <data name="Osk_Control_PointerY_Format" xml:space="preserve"><value>Penunjuk {0} Y</value></data>
+  <data name="Osk_Control_PointerTouch_Format" xml:space="preserve"><value>Sentuhan penunjuk {0}</value></data>
+  <data name="Osk_Control_PointerClick_Format" xml:space="preserve"><value>Klik penunjuk {0}</value></data>
+  <data name="Menu_Keyboard_Deadzone_Tip" xml:space="preserve"><value>Seberapa jauh kontrol kemudi didorong sebelum sorotan berpindah. Tombol atau input hidup/mati lainnya langsung memindahkannya.</value></data>
+  <data name="Menu_Keyboard_Threshold_Name_Format" xml:space="preserve"><value>{0} Zona mati sumbu-ke-tombol</value></data>
+  <data name="Menu_Keyboard_RecordingAxisPrompt" xml:space="preserve"><value>Gerakkan sumbu pada perangkat mana pun yang ditetapkan ke slot ini</value></data>
+  <data name="Menu_Keyboard_OpenPress_Press_Desc" xml:space="preserve"><value>Membuka atau menutup keyboard segera setelah Dibuka dengan ditekan.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Release_Desc" xml:space="preserve"><value>Membuka atau menutup keyboard saat Dibuka dengan dilepas.</value></data>
+  <data name="Menu_Keyboard_OpenPress_WhileHeld_Desc" xml:space="preserve"><value>Membuka keyboard selama Dibuka dengan ditahan dan menutupnya saat penekanan itu dilepas.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Membuka atau menutup keyboard saat Dibuka dengan dilepas sebelum waktu tahan. Penekanan yang lebih lama tidak melakukan apa pun.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Membuka atau menutup keyboard saat Dibuka dengan ditekan tiga kali dalam jendela penekanan.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Membuka atau menutup keyboard saat jendela penekanan berakhir setelah Dibuka dengan ditekan sekali. Penekanan kedua di dalam jendela membatalkannya.</value></data>
 </root>

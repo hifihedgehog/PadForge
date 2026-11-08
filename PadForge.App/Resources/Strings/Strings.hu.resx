@@ -5108,20 +5108,15 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>A margaréta-kerék: kiválaszt egyet a nyolc csoportból, majd annak négy karaktere közül egyet.</value></data>
   <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>Elrendezés visszaállítása</value></data>
   <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>Megnyitás ezzel</value></data>
-  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Bármely, a tárolóhoz rendelt eszköz bármely bemenete, vagy kettő egyszerre lenyomva. Ugyanez a bemenet zárja be a billentyűzetet, kivéve ha az egyik billentyűzetvezérlő is ezt használja. Ha üres, semmilyen bemenet nem nyitja meg.</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Bármely, a tárolóhoz rendelt eszköz bármely bemenete, beleértve az érintőpad-gesztust és a menücellát, vagy kettő egyszerre lenyomva. Ugyanez a bemenet zárja be a billentyűzetet, kivéve ha az egyik billentyűzetvezérlő is ezt használja. Ha üres, semmilyen bemenet nem nyitja meg.</value></data>
   <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>A „Megnyitás ezzel” visszaállítása</value></data>
   <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>Megnyitás szövegmező kijelölésekor</value></data>
   <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>Windows-alkalmazásokban és böngészőkben, gomb nélkül. A játékok saját szövegmezőket rajzolnak, ezért játékban a fenti bemenettel nyílik meg, vagy a rétegével, ha a „A réteg nyitva tartja a menüt” be van kapcsolva.</value></data>
-  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>A bemenet, amely a kijelölést mozgatja a billentyűk között; a tárolóhoz rendelt fizikai kontrollerekről olvassa.</value></data>
-  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>Bal fél irányítása ezzel</value></data>
-  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>Jobb fél irányítása ezzel</value></data>
-  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>Csoport választása ezzel</value></data>
-  <data name="Menu_Reset_Host2" xml:space="preserve"><value>A „Jobb fél irányítása ezzel” visszaállítása</value></data>
   <data name="Menu_Host_DPad" xml:space="preserve"><value>D-pad</value></data>
   <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>Főgombok</value></data>
   <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>Billentyűzetvezérlők</value></data>
   <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>{0} elrendezés, {1} vezérlő</value></data>
-  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>A tárolóhoz rendelt fizikai kontrollerekről olvassa. Minden vezérlő bármelyikük bármely bemenetét fogadja: gombot, tengelyirányt, hatgombot, érintőpadot, vagy kettőt egyszerre lenyomva. Kattintson egy rögzítés gombra, és nyomja meg a bemenetet, vagy tartson lenyomva egy bemenetet, és nyomjon meg egy másodikat a kombinációhoz. Az Összes hozzárendelése sorrendben rögzíti őket.</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>A tárolóhoz rendelt fizikai kontrollerekről olvassa. Minden vezérlő bármelyikük bármely bemenetét fogadja: gombot, tengelyirányt, hatgombot, érintőpadot, vagy kettőt egyszerre lenyomva. A tengely a Tengely–gomb holtzóna értékénél nyom le egy billentyűt. A gesztusok és a menücellák leállnak, amíg a billentyűzet nyugalmi állapotban tartja a kontrollert, ezért csak a Megnyitás ezzel fogadja őket. Kattintson egy rögzítés gombra, és nyomja meg a bemenetet, vagy tartson lenyomva egy bemenetet, és nyomjon meg egy másodikat a kombinációhoz. Az Összes hozzárendelése sorrendben rögzíti őket.</value></data>
   <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>Összes hozzárendelése</value></data>
   <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>Sorrendben rögzíti az elrendezés minden vezérlőjét. Az állapotsor megnevezi a vezérlőt, amelyhez bemenetet kell megnyomni.</value></data>
   <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>Nyomja meg a bemenetet ehhez: {0} ({1}/{2})</value></data>
@@ -5179,4 +5174,23 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>A „Megnyitás módja” visszaállítása</value></data>
   <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>Megnyitja vagy bezárja a billentyűzetet, amint a Megnyitás ezzel bemenetet a Tartási idő alatt nyomva tartják. A rövidebb lenyomás nem csinál semmit.</value></data>
   <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>Megnyitja vagy bezárja a billentyűzetet, ha a Megnyitás ezzel bemenetet kétszer nyomják meg a Lenyomási időablakon belül.</value></data>
+  <data name="Osk_Control_SteerUp" xml:space="preserve"><value>Irányítás felfelé</value></data>
+  <data name="Osk_Control_SteerDown" xml:space="preserve"><value>Irányítás lefelé</value></data>
+  <data name="Osk_Control_SteerLeft" xml:space="preserve"><value>Irányítás balra</value></data>
+  <data name="Osk_Control_SteerRight" xml:space="preserve"><value>Irányítás jobbra</value></data>
+  <data name="Osk_Control_LeftHand_Format" xml:space="preserve"><value>{0}, bal kéz</value></data>
+  <data name="Osk_Control_RightHand_Format" xml:space="preserve"><value>{0}, jobb kéz</value></data>
+  <data name="Osk_Control_PointerX_Format" xml:space="preserve"><value>{0}. mutató X</value></data>
+  <data name="Osk_Control_PointerY_Format" xml:space="preserve"><value>{0}. mutató Y</value></data>
+  <data name="Osk_Control_PointerTouch_Format" xml:space="preserve"><value>{0}. mutató érintés</value></data>
+  <data name="Osk_Control_PointerClick_Format" xml:space="preserve"><value>{0}. mutató kattintás</value></data>
+  <data name="Menu_Keyboard_Deadzone_Tip" xml:space="preserve"><value>Mennyire kell kitolni egy irányítóvezérlőt, mielőtt a kijelölés mozog. Egy gomb vagy más be/ki bemenet azonnal mozgatja.</value></data>
+  <data name="Menu_Keyboard_Threshold_Name_Format" xml:space="preserve"><value>{0} Tengely–gomb holtzóna</value></data>
+  <data name="Menu_Keyboard_RecordingAxisPrompt" xml:space="preserve"><value>Mozgasson egy tengelyt a tárolóhoz rendelt bármely eszközön</value></data>
+  <data name="Menu_Keyboard_OpenPress_Press_Desc" xml:space="preserve"><value>Megnyitja vagy bezárja a billentyűzetet, amint a Megnyitás ezzel bemenetet megnyomják.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Release_Desc" xml:space="preserve"><value>Megnyitja vagy bezárja a billentyűzetet, amikor a Megnyitás ezzel bemenetet felengedik.</value></data>
+  <data name="Menu_Keyboard_OpenPress_WhileHeld_Desc" xml:space="preserve"><value>Megnyitja a billentyűzetet, amíg a Megnyitás ezzel bemenetet nyomva tartják, és bezárja, amikor felengedik.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Megnyitja vagy bezárja a billentyűzetet, ha a Megnyitás ezzel bemenetet a Tartási idő letelte előtt engedik fel. A hosszabb lenyomás nem csinál semmit.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Megnyitja vagy bezárja a billentyűzetet, ha a Megnyitás ezzel bemenetet háromszor nyomják meg a Lenyomási időablakon belül.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Megnyitja vagy bezárja a billentyűzetet, amikor a Lenyomási időablak véget ér a Megnyitás ezzel bemenet egyszeri lenyomása után. Ha az időablakon belül másodszor is megnyomják, megszakad.</value></data>
 </root>

@@ -5108,20 +5108,15 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>Daisy-kehä: valitse yksi kahdeksasta ryhmästä ja sitten yksi sen neljästä merkistä.</value></data>
   <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>Palauta asettelu</value></data>
   <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>Avaava syöte</value></data>
-  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Mikä tahansa syöte tähän paikkaan määritetyllä laitteella tai kaksi yhdessä pidettyä. Sama syöte sulkee näppäimistön, ellei jokin näppäimistön ohjaus käytä sitä myös. Tyhjä tarkoittaa, ettei mikään syöte avaa sitä.</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Mikä tahansa syöte tähän paikkaan määritetyllä laitteella, kosketuslevyn ele tai valikon solu mukaan lukien, tai kaksi yhdessä pidettyä. Sama syöte sulkee näppäimistön, ellei jokin näppäimistön ohjaus käytä sitä myös. Tyhjä tarkoittaa, ettei mikään syöte avaa sitä.</value></data>
   <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>Palauta avaava syöte</value></data>
   <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>Avaa, kun tekstikenttä on valittuna</value></data>
   <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>Windows-sovelluksissa ja selaimissa ilman painiketta. Pelit piirtävät omat tekstikenttänsä, joten pelissä näppäimistö avautuu yllä olevalla syötteellä tai sen kerroksella, kun Kerros pitää valikon auki on käytössä.</value></data>
-  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>Syöte, joka liikuttaa korostusta näppäinten yli. Se luetaan paikkaan määritetyistä fyysisistä ohjaimista.</value></data>
-  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>Vasemman puoliskon ohjaava syöte</value></data>
-  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>Oikean puoliskon ohjaava syöte</value></data>
-  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>Ryhmän valitseva syöte</value></data>
-  <data name="Menu_Reset_Host2" xml:space="preserve"><value>Palauta oikean puoliskon ohjaava syöte</value></data>
   <data name="Menu_Host_DPad" xml:space="preserve"><value>Ristiohjain</value></data>
   <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>Etupainikkeet</value></data>
   <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>Näppäimistön ohjaus</value></data>
   <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>Asettelu {0}, {1} ohjausta</value></data>
-  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Luetaan tähän paikkaan määritetyistä fyysisistä ohjaimista. Jokainen ohjaus ottaa minkä tahansa syötteen miltä tahansa niistä: painikkeen, akselin suunnan, hatun, kosketuslevyn tai kaksi yhdessä pidettyä. Napsauta nauhoituspainiketta ja paina syötettä tai pidä yhtä syötettä ja paina toista yhdistelmää varten. Määritä kaikki nauhoittaa ne järjestyksessä.</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Luetaan tähän paikkaan määritetyistä fyysisistä ohjaimista. Jokainen ohjaus ottaa minkä tahansa syötteen miltä tahansa niistä: painikkeen, akselin suunnan, hatun, kosketuslevyn tai kaksi yhdessä pidettyä. Akseli painaa näppäintä kohdassa Akselipainikkeen kuollut alue. Eleet ja valikon solut pysähtyvät, kun näppäimistö pitää ohjaimen lepotilassa, joten vain Avaava syöte voi käyttää niitä. Napsauta nauhoituspainiketta ja paina syötettä tai pidä yhtä syötettä ja paina toista yhdistelmää varten. Määritä kaikki nauhoittaa ne järjestyksessä.</value></data>
   <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>Määritä kaikki</value></data>
   <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>Nauhoittaa asettelun jokaisen ohjauksen järjestyksessä. Tilarivi kertoo, minkä ohjauksen syötettä painetaan.</value></data>
   <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>Paina syötettä kohteelle {0} ({1}/{2})</value></data>
@@ -5179,4 +5174,23 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>Palauta avaava painallus</value></data>
   <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>Avaa tai sulkee näppäimistön, kun Avaava syöte on pidetty pohjassa pitoajan. Lyhyempi painallus ei tee mitään.</value></data>
   <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>Avaa tai sulkee näppäimistön, kun Avaava syöte painetaan kahdesti painallusikkunan sisällä.</value></data>
+  <data name="Osk_Control_SteerUp" xml:space="preserve"><value>Ohjaa ylös</value></data>
+  <data name="Osk_Control_SteerDown" xml:space="preserve"><value>Ohjaa alas</value></data>
+  <data name="Osk_Control_SteerLeft" xml:space="preserve"><value>Ohjaa vasemmalle</value></data>
+  <data name="Osk_Control_SteerRight" xml:space="preserve"><value>Ohjaa oikealle</value></data>
+  <data name="Osk_Control_LeftHand_Format" xml:space="preserve"><value>{0}, vasen käsi</value></data>
+  <data name="Osk_Control_RightHand_Format" xml:space="preserve"><value>{0}, oikea käsi</value></data>
+  <data name="Osk_Control_PointerX_Format" xml:space="preserve"><value>Osoitin {0} X</value></data>
+  <data name="Osk_Control_PointerY_Format" xml:space="preserve"><value>Osoitin {0} Y</value></data>
+  <data name="Osk_Control_PointerTouch_Format" xml:space="preserve"><value>Osoitin {0}, kosketus</value></data>
+  <data name="Osk_Control_PointerClick_Format" xml:space="preserve"><value>Osoitin {0}, napsautus</value></data>
+  <data name="Menu_Keyboard_Deadzone_Tip" xml:space="preserve"><value>Kuinka pitkälle ohjausta on työnnettävä, ennen kuin korostus siirtyy. Painike tai muu päälle/pois-syöte siirtää sen heti.</value></data>
+  <data name="Menu_Keyboard_Threshold_Name_Format" xml:space="preserve"><value>{0}: Akselipainikkeen kuollut alue</value></data>
+  <data name="Menu_Keyboard_RecordingAxisPrompt" xml:space="preserve"><value>Liikuta akselia millä tahansa tähän paikkaan määritetyllä laitteella</value></data>
+  <data name="Menu_Keyboard_OpenPress_Press_Desc" xml:space="preserve"><value>Avaa tai sulkee näppäimistön heti, kun Avaava syöte painetaan.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Release_Desc" xml:space="preserve"><value>Avaa tai sulkee näppäimistön, kun Avaava syöte vapautetaan.</value></data>
+  <data name="Menu_Keyboard_OpenPress_WhileHeld_Desc" xml:space="preserve"><value>Avaa näppäimistön, kun Avaava syöte on pidetty pohjassa, ja sulkee sen, kun painallus vapautetaan.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Avaa tai sulkee näppäimistön, kun Avaava syöte vapautetaan ennen pitoaikaa. Pidempi painallus ei tee mitään.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Avaa tai sulkee näppäimistön, kun Avaava syöte painetaan kolmesti painallusikkunan sisällä.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Avaa tai sulkee näppäimistön, kun painallusikkuna päättyy yhden Avaava syöte -painalluksen jälkeen. Toinen painallus ikkunan sisällä peruuttaa sen.</value></data>
 </root>

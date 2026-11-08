@@ -5108,20 +5108,15 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>ডেইজি হুইল: আটটি গ্রুপের একটি বাছুন, তারপর তার চারটি অক্ষরের একটি।</value></data>
   <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>লেআউট রিসেট করুন</value></data>
   <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>যা দিয়ে খোলে</value></data>
-  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>এই স্লটে নির্ধারিত ডিভাইসের যেকোনো ইনপুট, অথবা একসাথে ধরা দুটি ইনপুট। একই ইনপুট কীবোর্ড বন্ধও করে, তবে কীবোর্ডের কোনো কন্ট্রোল সেটি ব্যবহার করলে নয়। খালি থাকলে কোনো ইনপুট এটি খোলে না।</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>এই স্লটে নির্ধারিত ডিভাইসের যেকোনো ইনপুট, টাচপ্যাড জেসচার বা মেনু সেলসহ, অথবা একসাথে ধরা দুটি ইনপুট। একই ইনপুট কীবোর্ড বন্ধও করে, তবে কীবোর্ডের কোনো কন্ট্রোল সেটি ব্যবহার করলে নয়। খালি থাকলে কোনো ইনপুট এটি খোলে না।</value></data>
   <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>“যা দিয়ে খোলে” রিসেট করুন</value></data>
   <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>টেক্সট বক্স নির্বাচিত হলে খুলুন</value></data>
   <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>Windows অ্যাপ ও ব্রাউজারে, কোনো বোতাম ছাড়াই। গেম নিজের টেক্সট বক্স আঁকে, তাই গেমে এটি উপরের ইনপুটে খোলে, অথবা “লেয়ার মেনু খোলা রাখে” চালু থাকলে তার লেয়ারে খোলে।</value></data>
-  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>যে ইনপুট কীগুলোর ওপর হাইলাইট সরায়। স্লটে নির্ধারিত ফিজিক্যাল কন্ট্রোলার থেকে পড়া হয়।</value></data>
-  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>বাম অর্ধেক যা দিয়ে চালানো হয়</value></data>
-  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>ডান অর্ধেক যা দিয়ে চালানো হয়</value></data>
-  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>গ্রুপ যা দিয়ে বাছা হয়</value></data>
-  <data name="Menu_Reset_Host2" xml:space="preserve"><value>“ডান অর্ধেক যা দিয়ে চালানো হয়” রিসেট করুন</value></data>
   <data name="Menu_Host_DPad" xml:space="preserve"><value>ডি-প্যাড</value></data>
   <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>ফেস বোতাম</value></data>
   <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>কীবোর্ড কন্ট্রোল</value></data>
   <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>{0} লেআউট, {1} কন্ট্রোল</value></data>
-  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>এই স্লটে নির্ধারিত ফিজিক্যাল কন্ট্রোলার থেকে পড়া হয়। প্রতিটি কন্ট্রোল সেগুলোর যেকোনোটির যেকোনো ইনপুট নেয়: বোতাম, অক্ষের দিক, হ্যাট, টাচপ্যাড, অথবা একসাথে ধরা দুটি ইনপুট। রেকর্ড বোতামে ক্লিক করে ইনপুট চাপুন, অথবা সংমিশ্রণের জন্য একটি ইনপুট ধরে রেখে দ্বিতীয়টি চাপুন। “সব ম্যাপ করুন” সেগুলো পরপর রেকর্ড করে।</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>এই স্লটে নির্ধারিত ফিজিক্যাল কন্ট্রোলার থেকে পড়া হয়। প্রতিটি কন্ট্রোল সেগুলোর যেকোনোটির যেকোনো ইনপুট নেয়: বোতাম, অক্ষের দিক, হ্যাট, টাচপ্যাড, অথবা একসাথে ধরা দুটি ইনপুট। অক্ষ “অক্ষ-থেকে-বোতাম ডেডজোন” পেরোলে একটি কী চাপে। কীবোর্ড কন্ট্রোলারকে বিশ্রামে ধরে রাখলে জেসচার ও মেনু সেল বন্ধ থাকে, তাই কেবল “যা দিয়ে খোলে” সেগুলো নিতে পারে। রেকর্ড বোতামে ক্লিক করে ইনপুট চাপুন, অথবা সংমিশ্রণের জন্য একটি ইনপুট ধরে রেখে দ্বিতীয়টি চাপুন। “সব ম্যাপ করুন” সেগুলো পরপর রেকর্ড করে।</value></data>
   <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>সব ম্যাপ করুন</value></data>
   <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>লেআউটের প্রতিটি কন্ট্রোল পরপর রেকর্ড করে। স্ট্যাটাস লাইন বলে কোন কন্ট্রোলের জন্য ইনপুট চাপতে হবে।</value></data>
   <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>{0}-এর জন্য ইনপুট চাপুন ({2}-এর মধ্যে {1})</value></data>
@@ -5179,4 +5174,23 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>“যে চাপে খোলে” রিসেট করুন</value></data>
   <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>“যা দিয়ে খোলে” ধরে রাখার সময় পূর্ণ হলে কীবোর্ড খোলে বা বন্ধ হয়। ছোট চাপে কিছু হয় না।</value></data>
   <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>চাপের সময়সীমার মধ্যে “যা দিয়ে খোলে” দুবার চাপলে কীবোর্ড খোলে বা বন্ধ হয়।</value></data>
+  <data name="Osk_Control_SteerUp" xml:space="preserve"><value>ওপরে চালান</value></data>
+  <data name="Osk_Control_SteerDown" xml:space="preserve"><value>নিচে চালান</value></data>
+  <data name="Osk_Control_SteerLeft" xml:space="preserve"><value>বামে চালান</value></data>
+  <data name="Osk_Control_SteerRight" xml:space="preserve"><value>ডানে চালান</value></data>
+  <data name="Osk_Control_LeftHand_Format" xml:space="preserve"><value>{0}, বাম হাত</value></data>
+  <data name="Osk_Control_RightHand_Format" xml:space="preserve"><value>{0}, ডান হাত</value></data>
+  <data name="Osk_Control_PointerX_Format" xml:space="preserve"><value>পয়েন্টার {0} X</value></data>
+  <data name="Osk_Control_PointerY_Format" xml:space="preserve"><value>পয়েন্টার {0} Y</value></data>
+  <data name="Osk_Control_PointerTouch_Format" xml:space="preserve"><value>পয়েন্টার {0} স্পর্শ</value></data>
+  <data name="Osk_Control_PointerClick_Format" xml:space="preserve"><value>পয়েন্টার {0} ক্লিক</value></data>
+  <data name="Menu_Keyboard_Deadzone_Tip" xml:space="preserve"><value>হাইলাইট সরার আগে কোনো স্টিয়ারিং কন্ট্রোল কতটা ঠেলতে হবে। বোতাম বা অন্য কোনো চালু/বন্ধ ইনপুট এটিকে তখনই সরায়।</value></data>
+  <data name="Menu_Keyboard_Threshold_Name_Format" xml:space="preserve"><value>{0} অক্ষ-থেকে-বোতাম ডেডজোন</value></data>
+  <data name="Menu_Keyboard_RecordingAxisPrompt" xml:space="preserve"><value>এই স্লটে নির্ধারিত যেকোনো ডিভাইসে একটি অক্ষ নাড়ান</value></data>
+  <data name="Menu_Keyboard_OpenPress_Press_Desc" xml:space="preserve"><value>“যা দিয়ে খোলে” চাপামাত্র কীবোর্ড খোলে বা বন্ধ হয়।</value></data>
+  <data name="Menu_Keyboard_OpenPress_Release_Desc" xml:space="preserve"><value>“যা দিয়ে খোলে” ছাড়লে কীবোর্ড খোলে বা বন্ধ হয়।</value></data>
+  <data name="Menu_Keyboard_OpenPress_WhileHeld_Desc" xml:space="preserve"><value>“যা দিয়ে খোলে” ধরে রাখার সময় কীবোর্ড খোলা থাকে, চাপ ছাড়লে বন্ধ হয়।</value></data>
+  <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>ধরে রাখার সময়ের আগে “যা দিয়ে খোলে” ছাড়লে কীবোর্ড খোলে বা বন্ধ হয়। দীর্ঘ চাপে কিছু হয় না।</value></data>
+  <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>চাপের সময়সীমার মধ্যে “যা দিয়ে খোলে” তিনবার চাপলে কীবোর্ড খোলে বা বন্ধ হয়।</value></data>
+  <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>“যা দিয়ে খোলে” একবার চাপার পর চাপের সময়সীমা শেষ হলে কীবোর্ড খোলে বা বন্ধ হয়। সময়সীমার মধ্যে দ্বিতীয়বার চাপলে তা বাতিল হয়।</value></data>
 </root>

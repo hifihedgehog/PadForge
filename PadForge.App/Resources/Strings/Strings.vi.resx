@@ -5108,20 +5108,15 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>Bánh xe hoa cúc: chọn một trong tám nhóm, rồi một trong bốn ký tự của nhóm đó.</value></data>
   <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>Đặt lại bố cục</value></data>
   <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>Mở bằng</value></data>
-  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Bất kỳ đầu vào nào trên thiết bị được gán cho slot này, hoặc hai đầu vào giữ cùng lúc. Chính đầu vào đó cũng đóng bàn phím, trừ khi một điều khiển của bàn phím cũng dùng nó. Để trống nghĩa là không có đầu vào nào mở bàn phím.</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Bất kỳ đầu vào nào trên thiết bị được gán cho slot này, kể cả cử chỉ bàn cảm ứng hoặc ô menu, hoặc hai đầu vào giữ cùng lúc. Chính đầu vào đó cũng đóng bàn phím, trừ khi một điều khiển của bàn phím cũng dùng nó. Để trống nghĩa là không có đầu vào nào mở bàn phím.</value></data>
   <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>Đặt lại Mở bằng</value></data>
   <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>Mở khi chọn hộp văn bản</value></data>
   <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>Trong ứng dụng Windows và trình duyệt, không cần nút nào. Game tự vẽ hộp văn bản, nên trong game bàn phím mở bằng đầu vào ở trên, hoặc bằng lớp của nó khi Lớp giữ menu mở được bật.</value></data>
-  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>Đầu vào di chuyển phần tô sáng qua các phím, đọc từ các bộ điều khiển vật lý được gán cho slot.</value></data>
-  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>Điều hướng nửa trái bằng</value></data>
-  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>Điều hướng nửa phải bằng</value></data>
-  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>Chọn nhóm bằng</value></data>
-  <data name="Menu_Reset_Host2" xml:space="preserve"><value>Đặt lại Điều hướng nửa phải bằng</value></data>
   <data name="Menu_Host_DPad" xml:space="preserve"><value>D-pad</value></data>
   <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>Nút mặt</value></data>
   <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>Điều khiển bàn phím</value></data>
   <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>Bố cục {0}, {1} điều khiển</value></data>
-  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Đọc từ các bộ điều khiển vật lý được gán cho slot này. Mỗi điều khiển nhận bất kỳ đầu vào nào trên chúng: một nút, một hướng trục, một hat, một bàn cảm ứng, hoặc hai đầu vào giữ cùng lúc. Nhấp nút ghi rồi nhấn đầu vào, hoặc giữ một đầu vào và nhấn đầu vào thứ hai để tạo tổ hợp. Ánh xạ tất cả ghi chúng theo thứ tự.</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Đọc từ các bộ điều khiển vật lý được gán cho slot này. Mỗi điều khiển nhận bất kỳ đầu vào nào trên chúng: một nút, một hướng trục, một hat, một bàn cảm ứng, hoặc hai đầu vào giữ cùng lúc. Một trục nhấn phím tại Vùng chết trục thành nút của nó. Cử chỉ và ô menu ngừng hoạt động khi bàn phím giữ bộ điều khiển ở trạng thái nghỉ, nên chỉ Mở bằng nhận được chúng. Nhấp nút ghi rồi nhấn đầu vào, hoặc giữ một đầu vào và nhấn đầu vào thứ hai để tạo tổ hợp. Ánh xạ tất cả ghi chúng theo thứ tự.</value></data>
   <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>Ánh xạ tất cả</value></data>
   <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>Ghi mọi điều khiển của bố cục theo thứ tự. Dòng trạng thái cho biết điều khiển cần nhấn đầu vào.</value></data>
   <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>Nhấn đầu vào cho {0} ({1}/{2})</value></data>
@@ -5179,4 +5174,23 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>Đặt lại Mở khi</value></data>
   <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>Mở hoặc đóng bàn phím khi Mở bằng được giữ đủ thời gian giữ. Nhấn ngắn hơn thì không làm gì.</value></data>
   <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>Mở hoặc đóng bàn phím khi Mở bằng được nhấn hai lần trong khoảng thời gian nhấn.</value></data>
+  <data name="Osk_Control_SteerUp" xml:space="preserve"><value>Điều hướng lên</value></data>
+  <data name="Osk_Control_SteerDown" xml:space="preserve"><value>Điều hướng xuống</value></data>
+  <data name="Osk_Control_SteerLeft" xml:space="preserve"><value>Điều hướng sang trái</value></data>
+  <data name="Osk_Control_SteerRight" xml:space="preserve"><value>Điều hướng sang phải</value></data>
+  <data name="Osk_Control_LeftHand_Format" xml:space="preserve"><value>{0}, tay trái</value></data>
+  <data name="Osk_Control_RightHand_Format" xml:space="preserve"><value>{0}, tay phải</value></data>
+  <data name="Osk_Control_PointerX_Format" xml:space="preserve"><value>Con trỏ {0} X</value></data>
+  <data name="Osk_Control_PointerY_Format" xml:space="preserve"><value>Con trỏ {0} Y</value></data>
+  <data name="Osk_Control_PointerTouch_Format" xml:space="preserve"><value>Con trỏ {0} chạm</value></data>
+  <data name="Osk_Control_PointerClick_Format" xml:space="preserve"><value>Con trỏ {0} nhấp</value></data>
+  <data name="Menu_Keyboard_Deadzone_Tip" xml:space="preserve"><value>Phải đẩy một điều khiển điều hướng bao xa thì vùng tô sáng mới di chuyển. Một nút hoặc đầu vào bật/tắt khác di chuyển nó ngay lập tức.</value></data>
+  <data name="Menu_Keyboard_Threshold_Name_Format" xml:space="preserve"><value>{0} Vùng chết trục thành nút</value></data>
+  <data name="Menu_Keyboard_RecordingAxisPrompt" xml:space="preserve"><value>Di chuyển một trục trên bất kỳ thiết bị nào được gán cho slot này</value></data>
+  <data name="Menu_Keyboard_OpenPress_Press_Desc" xml:space="preserve"><value>Mở hoặc đóng bàn phím ngay khi Mở bằng được nhấn.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Release_Desc" xml:space="preserve"><value>Mở hoặc đóng bàn phím khi Mở bằng được thả ra.</value></data>
+  <data name="Menu_Keyboard_OpenPress_WhileHeld_Desc" xml:space="preserve"><value>Mở bàn phím trong khi Mở bằng được giữ và đóng nó khi thả ra.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Mở hoặc đóng bàn phím khi Mở bằng được thả ra trước thời gian giữ. Nhấn lâu hơn thì không làm gì.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Mở hoặc đóng bàn phím khi Mở bằng được nhấn ba lần trong khoảng thời gian nhấn.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Mở hoặc đóng bàn phím khi khoảng thời gian nhấn kết thúc sau một lần nhấn Mở bằng. Nhấn lần thứ hai trong khoảng đó sẽ hủy.</value></data>
 </root>

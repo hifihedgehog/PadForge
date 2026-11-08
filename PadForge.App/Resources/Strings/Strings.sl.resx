@@ -5108,20 +5108,15 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>Kolo marjetica: izberite eno od osmih skupin, nato enega od njenih štirih znakov.</value></data>
   <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>Ponastavi postavitev</value></data>
   <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>Odpre se z</value></data>
-  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Kateri koli vnos na napravi, dodeljeni tej reži, ali dva hkrati držana. Isti vnos tipkovnico tudi zapre, razen če ga uporablja tudi kakšen kontrolnik tipkovnice. Prazno pomeni, da je ne odpre noben vnos.</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Kateri koli vnos na napravi, dodeljeni tej reži, vključno s kretnjo na sledilni ploščici ali celico menija, ali dva hkrati držana. Isti vnos tipkovnico tudi zapre, razen če ga uporablja tudi kakšen kontrolnik tipkovnice. Prazno pomeni, da je ne odpre noben vnos.</value></data>
   <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>Ponastavi „Odpre se z“</value></data>
   <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>Odpri, ko je izbrano besedilno polje</value></data>
   <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>V aplikacijah Windows in brskalnikih, brez gumba. Igre rišejo lastna besedilna polja, zato se v igri odpre z zgornjim vnosom ali z njegovo plastjo, ko je vklopljeno „Plast drži meni odprt“.</value></data>
-  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>Vnos, ki premika označitev po tipkah, prebran s fizičnih krmilnikov, dodeljenih reži.</value></data>
-  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>Upravljaj levo polovico z</value></data>
-  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>Upravljaj desno polovico z</value></data>
-  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>Izberi skupino z</value></data>
-  <data name="Menu_Reset_Host2" xml:space="preserve"><value>Ponastavi „Upravljaj desno polovico z“</value></data>
   <data name="Menu_Host_DPad" xml:space="preserve"><value>Smerni križ</value></data>
   <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>Akcijski gumbi</value></data>
   <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>Kontrolniki tipkovnice</value></data>
   <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>Postavitev {0}, kontrolnikov: {1}</value></data>
-  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Prebrano s fizičnih krmilnikov, dodeljenih tej reži. Vsak kontrolnik sprejme kateri koli vnos na katerem koli od njih: gumb, smer osi, smerno stikalo, sledilno ploščico ali dva hkrati držana. Kliknite gumb za snemanje in pritisnite vnos ali držite en vnos in pritisnite drugega za kombinacijo. „Preslikaj vse“ jih posname po vrsti.</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Prebrano s fizičnih krmilnikov, dodeljenih tej reži. Vsak kontrolnik sprejme gumb, smer osi, smerno stikalo, sledilno ploščico ali dva hkrati držana na katerem koli od njih. Os pritisne tipko pri svojem „Mrtvo območje osi za gumb“. Kretnje in celice menija se ustavijo, medtem ko tipkovnica drži krmilnik v mirovanju, zato jih sprejme samo „Odpre se z“. Kliknite gumb za snemanje in pritisnite vnos ali držite en vnos in pritisnite drugega za kombinacijo. „Preslikaj vse“ jih posname po vrsti.</value></data>
   <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>Preslikaj vse</value></data>
   <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>Posname vse kontrolnike postavitve po vrsti. Vrstica stanja navede kontrolnik, za katerega pritisnite vnos.</value></data>
   <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>Pritisnite vnos za {0} ({1} od {2})</value></data>
@@ -5179,4 +5174,23 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>Ponastavi „Odpre se ob“</value></data>
   <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>Tipkovnico odpre ali zapre, ko je „Odpre se z“ držano toliko časa, kot je čas držanja. Krajši pritisk ne naredi nič.</value></data>
   <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>Tipkovnico odpre ali zapre, ko je „Odpre se z“ pritisnjeno dvakrat znotraj okna pritiska.</value></data>
+  <data name="Osk_Control_SteerUp" xml:space="preserve"><value>Krmarjenje navzgor</value></data>
+  <data name="Osk_Control_SteerDown" xml:space="preserve"><value>Krmarjenje navzdol</value></data>
+  <data name="Osk_Control_SteerLeft" xml:space="preserve"><value>Krmarjenje levo</value></data>
+  <data name="Osk_Control_SteerRight" xml:space="preserve"><value>Krmarjenje desno</value></data>
+  <data name="Osk_Control_LeftHand_Format" xml:space="preserve"><value>{0}, leva roka</value></data>
+  <data name="Osk_Control_RightHand_Format" xml:space="preserve"><value>{0}, desna roka</value></data>
+  <data name="Osk_Control_PointerX_Format" xml:space="preserve"><value>Kazalec {0} X</value></data>
+  <data name="Osk_Control_PointerY_Format" xml:space="preserve"><value>Kazalec {0} Y</value></data>
+  <data name="Osk_Control_PointerTouch_Format" xml:space="preserve"><value>Kazalec {0} dotik</value></data>
+  <data name="Osk_Control_PointerClick_Format" xml:space="preserve"><value>Kazalec {0} klik</value></data>
+  <data name="Menu_Keyboard_Deadzone_Tip" xml:space="preserve"><value>Kako daleč je treba potisniti kontrolnik za krmarjenje, preden se označitev premakne. Gumb ali drug vnos vklop/izklop jo premakne takoj.</value></data>
+  <data name="Menu_Keyboard_Threshold_Name_Format" xml:space="preserve"><value>{0}: Mrtvo območje osi za gumb</value></data>
+  <data name="Menu_Keyboard_RecordingAxisPrompt" xml:space="preserve"><value>Premaknite os na kateri koli napravi, dodeljeni tej reži</value></data>
+  <data name="Menu_Keyboard_OpenPress_Press_Desc" xml:space="preserve"><value>Tipkovnico odpre ali zapre takoj, ko je „Odpre se z“ pritisnjeno.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Release_Desc" xml:space="preserve"><value>Tipkovnico odpre ali zapre, ko je „Odpre se z“ spuščeno.</value></data>
+  <data name="Menu_Keyboard_OpenPress_WhileHeld_Desc" xml:space="preserve"><value>Tipkovnico odpre, dokler je „Odpre se z“ držano, in jo zapre, ko je pritisk spuščen.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Tipkovnico odpre ali zapre, ko je „Odpre se z“ spuščeno pred časom držanja. Daljši pritisk ne naredi nič.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Tipkovnico odpre ali zapre, ko je „Odpre se z“ pritisnjeno trikrat znotraj okna pritiska.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Tipkovnico odpre ali zapre, ko se okno pritiska izteče po enem pritisku „Odpre se z“. Drugi pritisk znotraj okna to prekliče.</value></data>
 </root>

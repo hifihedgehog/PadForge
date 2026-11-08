@@ -5108,20 +5108,15 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>Papatya çarkı: sekiz gruptan birini, sonra grubun dört karakterinden birini seçersiniz.</value></data>
   <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>Düzeni sıfırla</value></data>
   <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>Açan giriş</value></data>
-  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Bu yuvaya atanmış bir cihazdaki herhangi bir giriş ya da birlikte basılı tutulan iki giriş. Aynı giriş klavyeyi kapatır, ancak bir klavye denetimi de onu kullanıyorsa kapatmaz. Boş olması, hiçbir girişin klavyeyi açmadığı anlamına gelir.</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Bu yuvaya atanmış bir cihazdaki herhangi bir giriş (dokunmatik yüzey hareketi veya menü hücresi dahil) ya da birlikte basılı tutulan iki giriş. Aynı giriş klavyeyi kapatır, ancak bir klavye denetimi de onu kullanıyorsa kapatmaz. Boş olması, hiçbir girişin klavyeyi açmadığı anlamına gelir.</value></data>
   <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>Açan girişi sıfırla</value></data>
   <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>Metin kutusu seçilince aç</value></data>
   <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>Windows uygulamalarında ve tarayıcılarda, düğmeye basmadan açılır. Oyunlar metin kutularını kendileri çizdiği için oyunda klavye yukarıdaki girişle açılır, Katman menüyü açık tutar açıksa katmanıyla açılır.</value></data>
-  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>Vurguyu tuşlar üzerinde hareket ettiren giriş. Yuvaya atanmış fiziksel kontrolcülerden okunur.</value></data>
-  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>Sol yarıyı yönlendiren giriş</value></data>
-  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>Sağ yarıyı yönlendiren giriş</value></data>
-  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>Grubu seçen giriş</value></data>
-  <data name="Menu_Reset_Host2" xml:space="preserve"><value>Sağ yarıyı yönlendiren girişi sıfırla</value></data>
   <data name="Menu_Host_DPad" xml:space="preserve"><value>Yön tuşları</value></data>
   <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>Yüz düğmeleri</value></data>
   <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>Klavye denetimleri</value></data>
   <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>{0} düzeni, {1} denetim</value></data>
-  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Bu yuvaya atanmış fiziksel kontrolcülerden okunur. Her denetim bunlardan herhangi birindeki herhangi bir girişi alır: bir düğme, bir eksen yönü, bir hat, bir dokunmatik yüzey ya da birlikte basılı tutulan iki giriş. Bir kayıt düğmesine tıklayıp girişe basın ya da kombinasyon için bir girişi basılı tutup ikincisine basın. Tümünü eşle bunları sırayla kaydeder.</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Bu yuvaya atanmış fiziksel kontrolcülerden okunur. Her denetim bunlardan herhangi birindeki herhangi bir girişi alır: bir düğme, bir eksen yönü, bir hat, bir dokunmatik yüzey ya da birlikte basılı tutulan iki giriş. Bir eksen, Eksenden düğmeye ölü bölgesi değerinde bir tuşa basar. Hareketler ve menü hücreleri klavye kontrolcüyü boşta tutarken durur, bu yüzden onları yalnızca Açan giriş alır. Bir kayıt düğmesine tıklayıp girişe basın ya da kombinasyon için bir girişi basılı tutup ikincisine basın. Tümünü eşle bunları sırayla kaydeder.</value></data>
   <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>Tümünü eşle</value></data>
   <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>Düzenin her denetimini sırayla kaydeder. Durum satırı, hangi denetim için giriş yapılacağını belirtir.</value></data>
   <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>{0} için girişe basın ({1}/{2})</value></data>
@@ -5179,4 +5174,23 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>Açılma şeklini sıfırla</value></data>
   <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>Açan giriş basılı tutma süresi boyunca tutulunca klavyeyi açar veya kapatır. Daha kısa bir basış hiçbir şey yapmaz.</value></data>
   <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>Açan giriş basma penceresi içinde iki kez basılınca klavyeyi açar veya kapatır.</value></data>
+  <data name="Osk_Control_SteerUp" xml:space="preserve"><value>Yukarı yönlendir</value></data>
+  <data name="Osk_Control_SteerDown" xml:space="preserve"><value>Aşağı yönlendir</value></data>
+  <data name="Osk_Control_SteerLeft" xml:space="preserve"><value>Sola yönlendir</value></data>
+  <data name="Osk_Control_SteerRight" xml:space="preserve"><value>Sağa yönlendir</value></data>
+  <data name="Osk_Control_LeftHand_Format" xml:space="preserve"><value>{0}, sol el</value></data>
+  <data name="Osk_Control_RightHand_Format" xml:space="preserve"><value>{0}, sağ el</value></data>
+  <data name="Osk_Control_PointerX_Format" xml:space="preserve"><value>İşaretçi {0} X</value></data>
+  <data name="Osk_Control_PointerY_Format" xml:space="preserve"><value>İşaretçi {0} Y</value></data>
+  <data name="Osk_Control_PointerTouch_Format" xml:space="preserve"><value>İşaretçi {0} dokunuşu</value></data>
+  <data name="Osk_Control_PointerClick_Format" xml:space="preserve"><value>İşaretçi {0} tıklaması</value></data>
+  <data name="Menu_Keyboard_Deadzone_Tip" xml:space="preserve"><value>Vurgu hareket etmeden önce bir yönlendirme denetiminin ne kadar itilmesi gerektiği. Bir düğme veya başka bir açık/kapalı giriş vurguyu hemen hareket ettirir.</value></data>
+  <data name="Menu_Keyboard_Threshold_Name_Format" xml:space="preserve"><value>{0} Eksenden düğmeye ölü bölgesi</value></data>
+  <data name="Menu_Keyboard_RecordingAxisPrompt" xml:space="preserve"><value>Bu yuvaya atanmış herhangi bir cihazda bir eksen hareket ettirin</value></data>
+  <data name="Menu_Keyboard_OpenPress_Press_Desc" xml:space="preserve"><value>Açan giriş basılır basılmaz klavyeyi açar veya kapatır.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Release_Desc" xml:space="preserve"><value>Açan giriş bırakılınca klavyeyi açar veya kapatır.</value></data>
+  <data name="Menu_Keyboard_OpenPress_WhileHeld_Desc" xml:space="preserve"><value>Açan giriş basılı tutulduğu sürece klavyeyi açar, basış bırakılınca kapatır.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Açan giriş basılı tutma süresi dolmadan bırakılınca klavyeyi açar veya kapatır. Daha uzun bir basış hiçbir şey yapmaz.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Açan giriş basma penceresi içinde üç kez basılınca klavyeyi açar veya kapatır.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Açan giriş bir kez basıldıktan sonra basma penceresi bitince klavyeyi açar veya kapatır. Pencere içindeki ikinci basış bunu iptal eder.</value></data>
 </root>

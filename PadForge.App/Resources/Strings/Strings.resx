@@ -5134,20 +5134,15 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>The daisy wheel: pick one of eight groups, then one of its four characters.</value></data>
   <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>Reset Layout</value></data>
   <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>Opens With</value></data>
-  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Any input on a device assigned to this slot, or two held together. The same input closes the keyboard, unless a keyboard control uses it too. Empty means no input opens it.</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Any input on a device assigned to this slot, a touchpad gesture or a menu cell included, or two held together. The same input closes the keyboard, unless a keyboard control uses it too. Empty means no input opens it.</value></data>
   <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>Reset Opens With</value></data>
   <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>Open When a Text Box Is Selected</value></data>
   <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>In Windows apps and browsers, with no button. Games draw their own text boxes, so in a game it opens with the input above, or with its layer when Layer Holds the Menu Open is on.</value></data>
-  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>The input that moves the highlight across the keys, read from the slot's assigned physical controllers.</value></data>
-  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>Steer Left Half With</value></data>
-  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>Steer Right Half With</value></data>
-  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>Pick a Group With</value></data>
-  <data name="Menu_Reset_Host2" xml:space="preserve"><value>Reset Steer Right Half With</value></data>
   <data name="Menu_Host_DPad" xml:space="preserve"><value>D-Pad</value></data>
   <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>Face Buttons</value></data>
   <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>Keyboard Controls</value></data>
   <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>{0} layout, {1} controls</value></data>
-  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Read from the physical controllers assigned to this slot. Each control takes any input on any of them: a button, an axis direction, a hat, a touchpad, or two held together. Click a record button and press the input, or hold one input and press a second for a combination. Map All records them in order.</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Read from the physical controllers assigned to this slot. Each control takes a button, an axis direction, a hat, a touchpad, or two held together, on any of them. An axis presses a key at its Axis-to-Button Deadzone. Gestures and menu cells stop while the keyboard holds the controller at rest, so only Opens With takes them. Click a record button and press the input, or hold one input and press a second for a combination. Map All records them in order.</value></data>
   <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>Map All</value></data>
   <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>Records every control of the layout in order. The status line names the control to press an input for.</value></data>
   <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>Press the input for {0} ({1} of {2})</value></data>
@@ -5205,4 +5200,23 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>Reset Opens On</value></data>
   <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>Opens or closes the keyboard once Opens With is held for the hold time. A shorter press does nothing.</value></data>
   <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>Opens or closes the keyboard when Opens With is pressed twice within the press window.</value></data>
+  <data name="Osk_Control_SteerUp" xml:space="preserve"><value>Steer Up</value></data>
+  <data name="Osk_Control_SteerDown" xml:space="preserve"><value>Steer Down</value></data>
+  <data name="Osk_Control_SteerLeft" xml:space="preserve"><value>Steer Left</value></data>
+  <data name="Osk_Control_SteerRight" xml:space="preserve"><value>Steer Right</value></data>
+  <data name="Osk_Control_LeftHand_Format" xml:space="preserve"><value>{0}, Left Hand</value></data>
+  <data name="Osk_Control_RightHand_Format" xml:space="preserve"><value>{0}, Right Hand</value></data>
+  <data name="Osk_Control_PointerX_Format" xml:space="preserve"><value>Pointer {0} X</value></data>
+  <data name="Osk_Control_PointerY_Format" xml:space="preserve"><value>Pointer {0} Y</value></data>
+  <data name="Osk_Control_PointerTouch_Format" xml:space="preserve"><value>Pointer {0} Touch</value></data>
+  <data name="Osk_Control_PointerClick_Format" xml:space="preserve"><value>Pointer {0} Click</value></data>
+  <data name="Menu_Keyboard_Deadzone_Tip" xml:space="preserve"><value>How far a steering control is pushed before the highlight moves. A button or another on/off input moves it at once.</value></data>
+  <data name="Menu_Keyboard_Threshold_Name_Format" xml:space="preserve"><value>{0} Axis-to-Button Deadzone</value></data>
+  <data name="Menu_Keyboard_RecordingAxisPrompt" xml:space="preserve"><value>Move an axis on any device assigned to this slot</value></data>
+  <data name="Menu_Keyboard_OpenPress_Press_Desc" xml:space="preserve"><value>Opens or closes the keyboard as soon as Opens With is pressed.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Release_Desc" xml:space="preserve"><value>Opens or closes the keyboard when Opens With is let go.</value></data>
+  <data name="Menu_Keyboard_OpenPress_WhileHeld_Desc" xml:space="preserve"><value>Opens the keyboard while Opens With is held and closes it when that press is let go.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Opens or closes the keyboard when Opens With is let go before the hold time. A longer press does nothing.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Opens or closes the keyboard when Opens With is pressed three times within the press window.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Opens or closes the keyboard when the press window ends after one press of Opens With. A second press inside the window cancels it.</value></data>
 </root>

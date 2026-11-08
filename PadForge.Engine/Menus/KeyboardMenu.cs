@@ -19,8 +19,9 @@ namespace PadForge.Engine.Menus
         Wheel = 2,
     }
 
-    /// <summary>The press of Opens With that acts (#566), a macro trigger's
-    /// three press modes. Saved by name, so the names stay.</summary>
+    /// <summary>The press of Opens With that acts (#566): the macro trigger's
+    /// press modes that open and close something, each by the macro trigger's
+    /// rule. Saved by name, so the names stay. Appended: never reorder.</summary>
     public enum KeyboardOpenPress
     {
         Press = 0,
@@ -28,12 +29,24 @@ namespace PadForge.Engine.Menus
         Hold = 1,
         /// <summary>Pressed twice within the window, Steam's Double_Press.</summary>
         DoublePress = 2,
+        /// <summary>Let go, Steam's Release.</summary>
+        Release = 3,
+        /// <summary>Open while the input is held, closed when it is let go.</summary>
+        WhileHeld = 4,
+        /// <summary>Let go before the hold time.</summary>
+        ShortPress = 5,
+        /// <summary>Pressed three times, each within the window of the last.</summary>
+        TriplePress = 6,
+        /// <summary>Pressed once with no second press within the window.</summary>
+        SinglePress = 7,
     }
 
     /// <summary>What one keyboard control does (#566). Saved by name, so the
-    /// names stay. The steering inputs are the menu's hosts, not controls:
-    /// HostDescriptor steers Grid's selection, Split's left half and the
-    /// wheel's group, and Host2Descriptor steers Split's right half.</summary>
+    /// names stay. Appended: never reorder. The steering controls move the
+    /// selection, Split's left half and the wheel's group (Steer), and Split's
+    /// right half (Steer2), from any input on any device, an axis's depth
+    /// kept. The pointer controls point at keys from an absolute position,
+    /// such as a finger on a touchpad.</summary>
     public enum KeyboardControlAction
     {
         TypeKey = 0,
@@ -73,6 +86,27 @@ namespace PadForge.Engine.Menus
         Numbers = 29,
         Home = 30,
         End = 31,
+        SteerUp = 32,
+        SteerDown = 33,
+        SteerLeft = 34,
+        SteerRight = 35,
+        /// <summary>Split's right half.</summary>
+        Steer2Up = 36,
+        Steer2Down = 37,
+        Steer2Left = 38,
+        Steer2Right = 39,
+        /// <summary>Across, read as a position from one edge to the other.</summary>
+        Pointer1X = 40,
+        /// <summary>Down, read the same way, top first.</summary>
+        Pointer1Y = 41,
+        /// <summary>Held while the pointer points, such as a finger's contact.</summary>
+        Pointer1Touch = 42,
+        /// <summary>Types the key the pointer is on.</summary>
+        Pointer1Click = 43,
+        Pointer2X = 44,
+        Pointer2Y = 45,
+        Pointer2Touch = 46,
+        Pointer2Click = 47,
     }
 
     /// <summary>The input a keyboard control or Opens With reads (#566): one
@@ -82,18 +116,32 @@ namespace PadForge.Engine.Menus
     /// left), which SourceCoercion.StripLegacyPrefix splits into the Invert
     /// and HalfAxis flags. A device guid names the controller an input is
     /// read on, and "" reads it on every controller that drives the menu, as
-    /// the device-free "Gamepad ..." names are meant to be read.</summary>
+    /// the device-free "Gamepad ..." names are meant to be read. The
+    /// threshold is where an analog input counts as pressed, in percent, a
+    /// mapping row's per-source Deadzone. 0 takes the default.</summary>
     public readonly record struct KeyboardInput(string Descriptor, string DeviceGuid = "",
-        string AndDescriptor = "", string AndDeviceGuid = "")
+        string AndDescriptor = "", string AndDeviceGuid = "", int Threshold = 0)
     {
         public static readonly KeyboardInput None = new("");
+
+        /// <summary>The press point a 0 threshold takes, a mapping row's
+        /// default (MappingSource.DeadZone).</summary>
+        public const int DefaultThreshold = 50;
 
         public bool IsEmpty => string.IsNullOrWhiteSpace(Descriptor);
 
         public bool HasAnd => !string.IsNullOrWhiteSpace(AndDescriptor);
 
-        /// <summary>The same inputs on the same devices, as text compares.</summary>
-        public bool SameAs(in KeyboardInput o) =>
+        /// <summary>The threshold in percent, the default for 0.</summary>
+        public int ThresholdPercent => Threshold > 0 ? Math.Clamp(Threshold, 1, 99) : DefaultThreshold;
+
+        /// <summary>The same inputs on the same devices with the same press
+        /// point, as text compares.</summary>
+        public bool SameAs(in KeyboardInput o) => SameSource(o) && ThresholdPercent == o.ThresholdPercent;
+
+        /// <summary>The same inputs on the same devices, whatever the press
+        /// point: two controls that read one input.</summary>
+        public bool SameSource(in KeyboardInput o) =>
             Eq(Descriptor, o.Descriptor) && Eq(DeviceGuid, o.DeviceGuid)
             && Eq(AndDescriptor, o.AndDescriptor) && Eq(AndDeviceGuid, o.AndDeviceGuid);
 
@@ -126,7 +174,11 @@ namespace PadForge.Engine.Menus
         [XmlAttribute] public string AndDeviceGuid { get; set; } = "";
         public bool ShouldSerializeAndDeviceGuid() => !string.IsNullOrEmpty(AndDeviceGuid);
 
-        public KeyboardInput Input => new(Descriptor ?? "", DeviceGuid ?? "", AndDescriptor ?? "", AndDeviceGuid ?? "");
+        /// <summary>The press point in percent. 0 takes the default.</summary>
+        [XmlAttribute] public int Threshold { get; set; }
+        public bool ShouldSerializeThreshold() => Threshold > 0;
+
+        public KeyboardInput Input => new(Descriptor ?? "", DeviceGuid ?? "", AndDescriptor ?? "", AndDeviceGuid ?? "", Threshold);
 
         public KeyboardControlEntry Clone() => new()
         {
@@ -136,6 +188,7 @@ namespace PadForge.Engine.Menus
             DeviceGuid = DeviceGuid,
             AndDescriptor = AndDescriptor,
             AndDeviceGuid = AndDeviceGuid,
+            Threshold = Threshold,
         };
     }
 
@@ -147,49 +200,113 @@ namespace PadForge.Engine.Menus
     /// dual-stick keyboard for Split, and daisywheeljs for the wheel.</summary>
     public static class KeyboardMenuDefaults
     {
-        /// <summary>The main steering input's default per layout.</summary>
-        public const string Host = "Gamepad LeftStick";
-
-        /// <summary>Split's right half steering input's default.</summary>
-        public const string Host2 = "Gamepad RightStick";
-
         /// <summary>A keyboard's Screen Position from the top, in percent of
         /// the work area: at the bottom, where the Windows touch keyboard and
         /// Steam's keyboard appear.</summary>
         public const int PosYPercent = 100;
+
+        /// <summary>How far a steering input is pushed before it moves the
+        /// selection, in percent, the menu's Deadzone. Half its travel, past
+        /// a resting stick's drift. It counts as back under 70 percent of
+        /// that.</summary>
+        public const int SteerDeadzonePercent = 50;
 
         /// <summary>The macro trigger's defaults for a long press's hold time
         /// and a double press's window (MacroItem.TriggerHoldMs and
         /// TriggerDoublePressMs), and the longest either takes.</summary>
         public const int DefaultHoldMs = 500, DefaultDoublePressMs = 442, MaxOpenPressMs = 10000;
 
-        /// <summary>Opens With's hold time or double-press window in a menu:
-        /// the saved one, else the press's default. 0 for a plain press.</summary>
+        /// <summary>True for the press modes timed by the hold time.</summary>
+        public static bool UsesHoldTime(KeyboardOpenPress p) => p is KeyboardOpenPress.Hold or KeyboardOpenPress.ShortPress;
+
+        /// <summary>True for the press modes timed by the press window.</summary>
+        public static bool UsesPressWindow(KeyboardOpenPress p)
+            => p is KeyboardOpenPress.DoublePress or KeyboardOpenPress.TriplePress or KeyboardOpenPress.SinglePress;
+
+        /// <summary>Opens With's hold time or press window in a menu: the
+        /// saved one, else the press's default. 0 for a press with no time.</summary>
         public static int OpenPressMs(MenuDefinitionEntry menu)
         {
             if (menu == null) return 0;
             int ms = Math.Clamp(menu.OpenPressMs, 0, MaxOpenPressMs);
-            return menu.OpenPress switch
-            {
-                KeyboardOpenPress.Hold => ms > 0 ? ms : DefaultHoldMs,
-                KeyboardOpenPress.DoublePress => ms > 0 ? ms : DefaultDoublePressMs,
-                _ => 0,
-            };
+            if (UsesHoldTime(menu.OpenPress)) return ms > 0 ? ms : DefaultHoldMs;
+            if (UsesPressWindow(menu.OpenPress)) return ms > 0 ? ms : DefaultDoublePressMs;
+            return 0;
         }
 
-        /// <summary>A new keyboard menu with the keyboard's defaults: the left
-        /// stick steers, it sits at the bottom of the screen, and every control
-        /// takes its layout's default.</summary>
+        /// <summary>A new keyboard menu with the keyboard's defaults: it sits
+        /// at the bottom of the screen, steering waits for half a push, and
+        /// every control takes its layout's default.</summary>
         public static MenuDefinitionEntry Create(int menuId, string name) => new()
         {
             MenuId = menuId,
             Name = name ?? "",
             Kind = MenuKind.Keyboard,
-            HostDescriptor = Host,
             PosYPercent = PosYPercent,
+            EngageDeadzonePercent = SteerDeadzonePercent,
         };
 
-        private static readonly (KeyboardControlAction Action, string Descriptor)[] GridControls =
+        /// <summary>A steering control, whose input's depth moves the selection.</summary>
+        public static bool IsSteer(KeyboardControlAction a)
+            => a >= KeyboardControlAction.SteerUp && a <= KeyboardControlAction.Steer2Right;
+
+        /// <summary>A pointer's position, read across its input's whole range.</summary>
+        public static bool IsPointerAxis(KeyboardControlAction a)
+            => a is KeyboardControlAction.Pointer1X or KeyboardControlAction.Pointer1Y
+                or KeyboardControlAction.Pointer2X or KeyboardControlAction.Pointer2Y;
+
+        /// <summary>Any of a pointer's four controls.</summary>
+        public static bool IsPointer(KeyboardControlAction a)
+            => a >= KeyboardControlAction.Pointer1X && a <= KeyboardControlAction.Pointer2Click;
+
+        /// <summary>A control read as pressed or not, at its press point: a
+        /// key control, and a pointer's touch and click.</summary>
+        public static bool IsPress(KeyboardControlAction a) => !IsSteer(a) && !IsPointerAxis(a);
+
+        /// <summary>A key control: pressed, and neither steering nor pointing.</summary>
+        public static bool IsKey(KeyboardControlAction a) => !IsSteer(a) && !IsPointer(a);
+
+        // The left stick's four directions in the SDL frame, +Y down, as the
+        // halves a press recording takes, and the right stick's.
+        private static readonly (KeyboardControlAction Action, string Descriptor)[] LeftStickSteer =
+        {
+            (KeyboardControlAction.SteerUp, "IHGamepad LeftStickY"),
+            (KeyboardControlAction.SteerDown, "HGamepad LeftStickY"),
+            (KeyboardControlAction.SteerLeft, "IHGamepad LeftStickX"),
+            (KeyboardControlAction.SteerRight, "HGamepad LeftStickX"),
+        };
+
+        private static readonly (KeyboardControlAction Action, string Descriptor)[] RightStickSteer2 =
+        {
+            (KeyboardControlAction.Steer2Up, "IHGamepad RightStickY"),
+            (KeyboardControlAction.Steer2Down, "HGamepad RightStickY"),
+            (KeyboardControlAction.Steer2Left, "IHGamepad RightStickX"),
+            (KeyboardControlAction.Steer2Right, "HGamepad RightStickX"),
+        };
+
+        // Finger 0 on the first and second touchpad of any controller, as the
+        // menu's touchpad hosts read them (MenuRuntime EnsureMenuSources).
+        private static readonly (KeyboardControlAction Action, string Descriptor)[] Pointers =
+        {
+            (KeyboardControlAction.Pointer1X, "Touchpad 0 Finger 0 X"),
+            (KeyboardControlAction.Pointer1Y, "Touchpad 0 Finger 0 Y"),
+            (KeyboardControlAction.Pointer1Touch, "Touchpad 0 Finger 0 Down"),
+            (KeyboardControlAction.Pointer1Click, "Touchpad 0 Click"),
+            (KeyboardControlAction.Pointer2X, "Touchpad 1 Finger 0 X"),
+            (KeyboardControlAction.Pointer2Y, "Touchpad 1 Finger 0 Y"),
+            (KeyboardControlAction.Pointer2Touch, "Touchpad 1 Finger 0 Down"),
+            (KeyboardControlAction.Pointer2Click, "Touchpad 1 Click"),
+        };
+
+        private static (KeyboardControlAction Action, string Descriptor)[] Join(
+            params (KeyboardControlAction Action, string Descriptor)[][] parts)
+        {
+            var all = new List<(KeyboardControlAction, string)>();
+            foreach (var p in parts) all.AddRange(p);
+            return all.ToArray();
+        }
+
+        private static readonly (KeyboardControlAction Action, string Descriptor)[] GridKeys =
         {
             (KeyboardControlAction.MoveUp, "Gamepad DPadUp"),
             (KeyboardControlAction.MoveDown, "Gamepad DPadDown"),
@@ -210,7 +327,7 @@ namespace PadForge.Engine.Menus
             (KeyboardControlAction.MoveKeyboard, "Gamepad ButtonBack"),
         };
 
-        private static readonly (KeyboardControlAction Action, string Descriptor)[] SplitControls =
+        private static readonly (KeyboardControlAction Action, string Descriptor)[] SplitKeys =
         {
             (KeyboardControlAction.TypeLeftHalf, "Gamepad LeftTrigger"),
             (KeyboardControlAction.TypeRightHalf, "Gamepad RightTrigger"),
@@ -230,7 +347,7 @@ namespace PadForge.Engine.Menus
             (KeyboardControlAction.MoveKeyboard, "Gamepad ButtonBack"),
         };
 
-        private static readonly (KeyboardControlAction Action, string Descriptor)[] WheelControls =
+        private static readonly (KeyboardControlAction Action, string Descriptor)[] WheelKeys =
         {
             (KeyboardControlAction.PickWest, "Gamepad ButtonX"),
             (KeyboardControlAction.PickNorth, "Gamepad ButtonY"),
@@ -251,6 +368,17 @@ namespace PadForge.Engine.Menus
             (KeyboardControlAction.Close, "Gamepad ButtonBack"),
             (KeyboardControlAction.MoveKeyboard, "Gamepad ButtonBack"),
         };
+
+        // Each layout in the editor's order: steering first, then the keys,
+        // then the pointers. The wheel has no pointers: it picks by group.
+        private static readonly (KeyboardControlAction Action, string Descriptor)[] GridControls =
+            Join(LeftStickSteer, GridKeys, Pointers);
+
+        private static readonly (KeyboardControlAction Action, string Descriptor)[] SplitControls =
+            Join(LeftStickSteer, RightStickSteer2, SplitKeys, Pointers);
+
+        private static readonly (KeyboardControlAction Action, string Descriptor)[] WheelControls =
+            Join(LeftStickSteer, WheelKeys);
 
         private static (KeyboardControlAction Action, string Descriptor)[] Table(KeyboardLayout layout) => layout switch
         {
@@ -338,6 +466,7 @@ namespace PadForge.Engine.Menus
                     DeviceGuid = input.IsEmpty ? "" : (input.DeviceGuid ?? "").Trim(),
                     AndDescriptor = input.IsEmpty ? "" : (input.AndDescriptor ?? "").Trim(),
                     AndDeviceGuid = input.IsEmpty || !input.HasAnd ? "" : (input.AndDeviceGuid ?? "").Trim(),
+                    Threshold = input.IsEmpty || input.ThresholdPercent == KeyboardInput.DefaultThreshold ? 0 : input.ThresholdPercent,
                 });
             menu.KeyboardControls = next;
         }
@@ -345,7 +474,8 @@ namespace PadForge.Engine.Menus
         /// <summary>Opens With as an input.</summary>
         public static KeyboardInput OpenInput(MenuDefinitionEntry menu) => menu == null
             ? KeyboardInput.None
-            : new(menu.OpenDescriptor ?? "", menu.OpenDeviceGuid ?? "", menu.OpenAndDescriptor ?? "", menu.OpenAndDeviceGuid ?? "");
+            : new(menu.OpenDescriptor ?? "", menu.OpenDeviceGuid ?? "", menu.OpenAndDescriptor ?? "", menu.OpenAndDeviceGuid ?? "",
+                menu.OpenThreshold);
 
         /// <summary>Sets Opens With. Each field is a reference the poll thread
         /// reads on its own, and a combination's two halves change together
@@ -359,6 +489,7 @@ namespace PadForge.Engine.Menus
             menu.OpenAndDeviceGuid = empty || !input.HasAnd ? "" : (input.AndDeviceGuid ?? "").Trim();
             menu.OpenAndDescriptor = empty ? "" : (input.AndDescriptor ?? "").Trim();
             menu.OpenDeviceGuid = empty ? "" : (input.DeviceGuid ?? "").Trim();
+            menu.OpenThreshold = empty || input.ThresholdPercent == KeyboardInput.DefaultThreshold ? 0 : input.ThresholdPercent;
             menu.OpenDescriptor = (input.Descriptor ?? "").Trim();
         }
     }

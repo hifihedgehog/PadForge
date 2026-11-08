@@ -5108,20 +5108,15 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>Koleso Daisy: vyberiete jednu z ôsmich skupín a potom jeden z jej štyroch znakov.</value></data>
   <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>Resetovať rozloženie</value></data>
   <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>Otvára sa pomocou</value></data>
-  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Ľubovoľný vstup na zariadení priradenom k tomuto slotu alebo dva vstupy podržané spolu. Ten istý vstup klávesnicu aj zatvorí, pokiaľ ho nepoužíva aj niektoré ovládanie klávesnice. Prázdne pole znamená, že ju neotvorí žiadny vstup.</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Ľubovoľný vstup na zariadení priradenom k tomuto slotu, vrátane gesta touchpadu alebo bunky ponuky, alebo dva vstupy podržané spolu. Ten istý vstup klávesnicu aj zatvorí, pokiaľ ho nepoužíva aj niektoré ovládanie klávesnice. Prázdne pole znamená, že ju neotvorí žiadny vstup.</value></data>
   <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>Resetovať spôsob otvárania</value></data>
   <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>Otvoriť pri výbere textového poľa</value></data>
   <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>V aplikáciách Windows a v prehliadačoch, bez tlačidla. Hry kreslia vlastné textové polia, preto sa v hre otvára vstupom uvedeným vyššie alebo svojou vrstvou, ak je zapnuté Vrstva drží ponuku otvorenú.</value></data>
-  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>Vstup, ktorý posúva zvýraznenie po klávesoch, čítaný z fyzických ovládačov priradených k slotu.</value></data>
-  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>Ovládať ľavú polovicu pomocou</value></data>
-  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>Ovládať pravú polovicu pomocou</value></data>
-  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>Vybrať skupinu pomocou</value></data>
-  <data name="Menu_Reset_Host2" xml:space="preserve"><value>Resetovať Ovládať pravú polovicu pomocou</value></data>
   <data name="Menu_Host_DPad" xml:space="preserve"><value>D-pad</value></data>
   <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>Tlačidlá na prednej strane</value></data>
   <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>Ovládanie klávesnice</value></data>
   <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>Rozloženie {0}, ovládacie prvky: {1}</value></data>
-  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Čítajú sa z fyzických ovládačov priradených k tomuto slotu. Každé ovládanie prijme ľubovoľný vstup na ktoromkoľvek z nich: tlačidlo, smer osi, hat, touchpad alebo dva vstupy podržané spolu. Kliknite na tlačidlo nahrávania a stlačte vstup, alebo podržte jeden vstup a stlačte druhý pre kombináciu. Mapovať všetko ich nahrá v poradí.</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Čítajú sa z fyzických ovládačov priradených k tomuto slotu. Každé ovládanie prijme ľubovoľný vstup na ktoromkoľvek z nich: tlačidlo, smer osi, hat, touchpad alebo dva vstupy podržané spolu. Os stlačí kláves pri svojej hodnote Mŕtva zóna osi pre tlačidlo. Gestá a bunky ponuky sa zastavia, kým klávesnica drží ovládač v pokojovom stave, preto ich prijíma iba Otvára sa pomocou. Kliknite na tlačidlo nahrávania a stlačte vstup, alebo podržte jeden vstup a stlačte druhý pre kombináciu. Mapovať všetko ich nahrá v poradí.</value></data>
   <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>Mapovať všetko</value></data>
   <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>Nahrá všetky ovládacie prvky rozloženia v poradí. Stavový riadok uvádza ovládanie, pre ktoré treba stlačiť vstup.</value></data>
   <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>Stlačte vstup pre {0} ({1} z {2})</value></data>
@@ -5179,4 +5174,23 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>Resetovať Otvára sa pri</value></data>
   <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>Otvorí alebo zatvorí klávesnicu, keď je Otvára sa pomocou podržané počas času podržania. Kratšie stlačenie nespraví nič.</value></data>
   <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>Otvorí alebo zatvorí klávesnicu, keď sa Otvára sa pomocou stlačí dvakrát v okne stlačenia.</value></data>
+  <data name="Osk_Control_SteerUp" xml:space="preserve"><value>Ovládať hore</value></data>
+  <data name="Osk_Control_SteerDown" xml:space="preserve"><value>Ovládať dole</value></data>
+  <data name="Osk_Control_SteerLeft" xml:space="preserve"><value>Ovládať vľavo</value></data>
+  <data name="Osk_Control_SteerRight" xml:space="preserve"><value>Ovládať vpravo</value></data>
+  <data name="Osk_Control_LeftHand_Format" xml:space="preserve"><value>{0}, ľavá ruka</value></data>
+  <data name="Osk_Control_RightHand_Format" xml:space="preserve"><value>{0}, pravá ruka</value></data>
+  <data name="Osk_Control_PointerX_Format" xml:space="preserve"><value>Ukazovateľ {0} X</value></data>
+  <data name="Osk_Control_PointerY_Format" xml:space="preserve"><value>Ukazovateľ {0} Y</value></data>
+  <data name="Osk_Control_PointerTouch_Format" xml:space="preserve"><value>Ukazovateľ {0} dotyk</value></data>
+  <data name="Osk_Control_PointerClick_Format" xml:space="preserve"><value>Ukazovateľ {0} kliknutie</value></data>
+  <data name="Menu_Keyboard_Deadzone_Tip" xml:space="preserve"><value>Ako ďaleko treba vychýliť ovládací prvok, kým sa zvýraznenie posunie. Tlačidlo alebo iný vstup zapnuté/vypnuté ho posunie okamžite.</value></data>
+  <data name="Menu_Keyboard_Threshold_Name_Format" xml:space="preserve"><value>{0} Mŕtva zóna osi pre tlačidlo</value></data>
+  <data name="Menu_Keyboard_RecordingAxisPrompt" xml:space="preserve"><value>Pohnite osou na ľubovoľnom zariadení priradenom k tomuto slotu</value></data>
+  <data name="Menu_Keyboard_OpenPress_Press_Desc" xml:space="preserve"><value>Otvorí alebo zatvorí klávesnicu hneď, ako sa stlačí Otvára sa pomocou.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Release_Desc" xml:space="preserve"><value>Otvorí alebo zatvorí klávesnicu, keď sa Otvára sa pomocou uvoľní.</value></data>
+  <data name="Menu_Keyboard_OpenPress_WhileHeld_Desc" xml:space="preserve"><value>Otvorí klávesnicu, kým je Otvára sa pomocou podržané, a zatvorí ju, keď sa stlačenie uvoľní.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Otvorí alebo zatvorí klávesnicu, keď sa Otvára sa pomocou uvoľní pred uplynutím času podržania. Dlhšie stlačenie nespraví nič.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Otvorí alebo zatvorí klávesnicu, keď sa Otvára sa pomocou stlačí trikrát v okne stlačenia.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Otvorí alebo zatvorí klávesnicu, keď okno stlačenia skončí po jednom stlačení Otvára sa pomocou. Druhé stlačenie v okne to zruší.</value></data>
 </root>

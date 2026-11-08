@@ -5,18 +5,22 @@ using PadForge.Engine.Menus;
 
 namespace PadForge.Common.Input.OnScreenKeyboard
 {
-    /// <summary>One touchpad's finger and click, normalized 0 to 1.</summary>
+    /// <summary>One pointer: whether it points, where, 0 to 1 from the left
+    /// and the top, and whether its click is held.</summary>
     public readonly record struct OskTouch(bool Down, float X, float Y, bool Click);
 
     /// <summary>What the keyboard's controls read this tick (#566): each
-    /// control held or not, by <see cref="KeyboardControlAction"/>, and the
-    /// two steering inputs. The runtime fills it from the keyboard menu's
-    /// recorded inputs on the real state of the controllers the keyboard
-    /// holds, so any device drives it. Steering runs -1 to 1 with +Y down: a
-    /// stick, two recorded axes, or four buttons read as a direction.</summary>
+    /// control held or not, by <see cref="KeyboardControlAction"/>, the two
+    /// steering inputs and the pointers. The runtime fills it from the
+    /// keyboard menu's recorded inputs on the real state of the controllers
+    /// the keyboard holds, so any device drives it. Steering runs -1 to 1
+    /// with +Y down, from four direction controls, each a button or an
+    /// axis's depth.</summary>
     public sealed class OskControlState
     {
-        public const int ActionCount = (int)KeyboardControlAction.End + 1;
+        /// <summary>One past the last control. The enum is append-only, so
+        /// its last member is the bound.</summary>
+        public const int ActionCount = (int)KeyboardControlAction.Pointer2Click + 1;
 
         public readonly bool[] Down = new bool[ActionCount];
 
@@ -106,7 +110,7 @@ namespace PadForge.Common.Input.OnScreenKeyboard
     }
 
     /// <summary>
-    /// The On-Screen Keyboard's engine (#565). It runs on the poll thread,
+    /// The On-Screen Keyboard's engine (#566). It runs on the poll thread,
     /// reads the owned controllers each tick, moves the selection, types
     /// through <see cref="IOskOutput"/>, and keeps the modifier latches, the
     /// page, the wheel and the word suggestions. It holds no Windows state of
@@ -119,10 +123,14 @@ namespace PadForge.Common.Input.OnScreenKeyboard
         /// <summary>Both split triggers within this window type a space
         /// (CHI 2006: "hitting both triggers simultaneously enters a space").</summary>
         public const int ChordWindowMs = 90;
-        /// <summary>A stick counts as pushed past this, and as back once
-        /// under the release value.</summary>
-        public const float StickPress = 0.55f, StickRelease = 0.4f;
-        public const float PetalPress = 0.5f, PetalRelease = 0.35f;
+        /// <summary>A steering input counts as back under this share of the
+        /// deadzone it was pushed past, so one resting at the deadzone does
+        /// not flicker.</summary>
+        public const float SteerReleaseShare = 0.7f;
+        /// <summary>The menu's deadzone: a steering input moves the selection
+        /// or picks a group once pushed past it.</summary>
+        private float SteerPress => Math.Clamp(Settings.SteerDeadzone, 0.01f, 0.95f);
+        private float SteerRelease => SteerPress * SteerReleaseShare;
         /// <summary>Hold-to-move speed: a full push moves the keyboard this
         /// many percent of the work area per second.</summary>
         public const float MovePercentPerSecond = 60f;
@@ -464,8 +472,8 @@ namespace PadForge.Common.Input.OnScreenKeyboard
             _guardSteer = _guardSteer2 = false;
             if (held == null) return;
             Array.Copy(held.Down, _guard, OskControlState.ActionCount);
-            _guardSteer = Math.Sqrt(held.SX * held.SX + held.SY * held.SY) > StickRelease;
-            _guardSteer2 = Math.Sqrt(held.S2X * held.S2X + held.S2Y * held.S2Y) > StickRelease;
+            _guardSteer = Math.Sqrt(held.SX * held.SX + held.SY * held.SY) > SteerRelease;
+            _guardSteer2 = Math.Sqrt(held.S2X * held.S2X + held.S2Y * held.S2Y) > SteerRelease;
             int pads = held.Touch?.Length ?? 0;
             if (_touchGuard.Length < pads) _touchGuard = new bool[pads];
             Array.Clear(_touchGuard);
@@ -516,7 +524,7 @@ namespace PadForge.Common.Input.OnScreenKeyboard
 
         /// <summary>The direction a steering input points, with hysteresis. A
         /// steering input held at opening reads nothing until it centers.</summary>
-        private string DirSteer(int which, float press = StickPress, float release = StickRelease)
+        private string DirSteer(int which)
         {
             float x, y;
             if (which == 0)
@@ -530,7 +538,7 @@ namespace PadForge.Common.Input.OnScreenKeyboard
                 x = _pad.S2X; y = _pad.S2Y;
             }
             float m = (float)Math.Sqrt(x * x + y * y);
-            if (m < (_steerDir[which] != null ? release : press))
+            if (m < (_steerDir[which] != null ? SteerRelease : SteerPress))
             {
                 _steerDir[which] = null;
                 return null;
@@ -590,7 +598,7 @@ namespace PadForge.Common.Input.OnScreenKeyboard
                 if (Held(KeyboardControlAction.MoveKeyboard) && !_guardSteer)
                 {
                     float m = (float)Math.Sqrt(_pad.SX * _pad.SX + _pad.SY * _pad.SY);
-                    if (m > 0.3f)
+                    if (m > SteerRelease)
                     {
                         float k = MovePercentPerSecond * dt / 1000f;
                         _moveX += _pad.SX * k;
@@ -614,8 +622,8 @@ namespace PadForge.Common.Input.OnScreenKeyboard
         {
             for (int i = 0; i < OskControlState.ActionCount; i++)
                 if (_guard[i] && !_pad.Down[i]) _guard[i] = false;
-            if (_guardSteer && Math.Sqrt(_pad.SX * _pad.SX + _pad.SY * _pad.SY) < StickRelease) _guardSteer = false;
-            if (_guardSteer2 && Math.Sqrt(_pad.S2X * _pad.S2X + _pad.S2Y * _pad.S2Y) < StickRelease) _guardSteer2 = false;
+            if (_guardSteer && Math.Sqrt(_pad.SX * _pad.SX + _pad.SY * _pad.SY) < SteerRelease) _guardSteer = false;
+            if (_guardSteer2 && Math.Sqrt(_pad.S2X * _pad.S2X + _pad.S2Y * _pad.S2Y) < SteerRelease) _guardSteer2 = false;
             var t = _pad.Touch ?? Array.Empty<OskTouch>();
             for (int p = 0; p < _touchGuard.Length; p++)
                 if (_touchGuard[p] && (p >= t.Length || (!t[p].Down && !t[p].Click))) _touchGuard[p] = false;
@@ -707,7 +715,7 @@ namespace PadForge.Common.Input.OnScreenKeyboard
             if (_guardSteer || !SteerFree) return -1;
             float x = _pad.SX, y = _pad.SY;
             float m = (float)Math.Sqrt(x * x + y * y);
-            if (m < (Petal >= 0 ? PetalRelease : PetalPress)) return -1;
+            if (m < (Petal >= 0 ? SteerRelease : SteerPress)) return -1;
             double deg = (Math.Atan2(x, -y) * 180 / Math.PI + 360) % 360;
             return (int)Math.Round(deg / 45) % 8;
         }

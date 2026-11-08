@@ -5108,20 +5108,15 @@
   <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>วงล้อเดซี่: เลือกหนึ่งในแปดกลุ่ม แล้วเลือกหนึ่งในสี่ตัวอักษรของกลุ่มนั้น</value></data>
   <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>รีเซ็ตเลย์เอาต์</value></data>
   <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>เปิดด้วย</value></data>
-  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>อินพุตใดก็ได้บนอุปกรณ์ที่กำหนดให้สล็อตนี้ หรือสองอินพุตที่กดค้างพร้อมกัน อินพุตเดียวกันนี้ปิดคีย์บอร์ดด้วย เว้นแต่ตัวควบคุมของคีย์บอร์ดใช้อินพุตนั้นอยู่ ถ้าเว้นว่างไว้ จะไม่มีอินพุตใดเปิดคีย์บอร์ด</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>อินพุตใดก็ได้บนอุปกรณ์ที่กำหนดให้สล็อตนี้ รวมถึงท่าทางบนทัชแพดหรือเซลล์เมนู หรือสองอินพุตที่กดค้างพร้อมกัน อินพุตเดียวกันนี้ปิดคีย์บอร์ดด้วย เว้นแต่ตัวควบคุมของคีย์บอร์ดใช้อินพุตนั้นอยู่ ถ้าเว้นว่างไว้ จะไม่มีอินพุตใดเปิดคีย์บอร์ด</value></data>
   <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>รีเซ็ต “เปิดด้วย”</value></data>
   <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>เปิดเมื่อเลือกช่องข้อความ</value></data>
   <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>ในแอปและเบราว์เซอร์บน Windows โดยไม่ต้องกดปุ่ม เกมวาดช่องข้อความเอง ดังนั้นในเกมคีย์บอร์ดจะเปิดด้วยอินพุตด้านบน หรือเปิดด้วยเลเยอร์ของมันเมื่อเปิดใช้ เลเยอร์เปิดเมนูค้างไว้</value></data>
-  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>อินพุตที่เลื่อนไฮไลต์ไปตามปุ่ม อ่านจากคอนโทรลเลอร์จริงที่กำหนดให้สล็อต</value></data>
-  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>บังคับครึ่งซ้ายด้วย</value></data>
-  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>บังคับครึ่งขวาด้วย</value></data>
-  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>เลือกกลุ่มด้วย</value></data>
-  <data name="Menu_Reset_Host2" xml:space="preserve"><value>รีเซ็ต “บังคับครึ่งขวาด้วย”</value></data>
   <data name="Menu_Host_DPad" xml:space="preserve"><value>ปุ่มทิศทาง</value></data>
   <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>ปุ่มด้านหน้า</value></data>
   <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>ตัวควบคุมคีย์บอร์ด</value></data>
   <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>เลย์เอาต์ {0}, ตัวควบคุม {1}</value></data>
-  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>อ่านจากคอนโทรลเลอร์จริงที่กำหนดให้สล็อตนี้ ตัวควบคุมแต่ละตัวรับอินพุตใดก็ได้จากคอนโทรลเลอร์เหล่านั้น ได้แก่ ปุ่ม ทิศทางของแกน ปุ่มทิศทาง ทัชแพด หรือสองอินพุตที่กดค้างพร้อมกัน คลิกปุ่มบันทึกแล้วกดอินพุต หรือกดอินพุตหนึ่งค้างไว้แล้วกดอีกอินพุตเพื่อทำเป็นชุดผสม แมปทั้งหมดจะบันทึกตามลำดับ</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>อ่านจากคอนโทรลเลอร์จริงที่กำหนดให้สล็อตนี้ ตัวควบคุมแต่ละตัวรับปุ่ม ทิศทางของแกน ปุ่มทิศทาง ทัชแพด หรือสองอินพุตที่กดค้างพร้อมกัน จากคอนโทรลเลอร์ตัวใดก็ได้เหล่านั้น แกนจะกดปุ่มที่ เดดโซนแกนเป็นปุ่ม ท่าทางและเซลล์เมนูจะหยุดทำงานขณะที่คีย์บอร์ดทำให้คอนโทรลเลอร์อยู่ในสถานะพัก จึงมีเพียง เปิดด้วย เท่านั้นที่รับได้ คลิกปุ่มบันทึกแล้วกดอินพุต หรือกดอินพุตหนึ่งค้างไว้แล้วกดอีกอินพุตเพื่อทำเป็นชุดผสม แมปทั้งหมด จะบันทึกตามลำดับ</value></data>
   <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>แมปทั้งหมด</value></data>
   <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>บันทึกตัวควบคุมทุกตัวของเลย์เอาต์ตามลำดับ บรรทัดสถานะจะบอกชื่อตัวควบคุมที่ต้องกดอินพุตให้</value></data>
   <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>กดอินพุตสำหรับ {0} ({1} จาก {2})</value></data>
@@ -5179,4 +5174,23 @@
   <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>รีเซ็ต “เปิดเมื่อ”</value></data>
   <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>เปิดหรือปิดคีย์บอร์ดเมื่อกด เปิดด้วย ค้างครบเวลากดค้าง การกดที่สั้นกว่านั้นไม่มีผลใดๆ</value></data>
   <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>เปิดหรือปิดคีย์บอร์ดเมื่อกด เปิดด้วย สองครั้งภายในช่วงเวลาการกด</value></data>
+  <data name="Osk_Control_SteerUp" xml:space="preserve"><value>บังคับขึ้น</value></data>
+  <data name="Osk_Control_SteerDown" xml:space="preserve"><value>บังคับลง</value></data>
+  <data name="Osk_Control_SteerLeft" xml:space="preserve"><value>บังคับซ้าย</value></data>
+  <data name="Osk_Control_SteerRight" xml:space="preserve"><value>บังคับขวา</value></data>
+  <data name="Osk_Control_LeftHand_Format" xml:space="preserve"><value>{0} มือซ้าย</value></data>
+  <data name="Osk_Control_RightHand_Format" xml:space="preserve"><value>{0} มือขวา</value></data>
+  <data name="Osk_Control_PointerX_Format" xml:space="preserve"><value>ตัวชี้ {0} X</value></data>
+  <data name="Osk_Control_PointerY_Format" xml:space="preserve"><value>ตัวชี้ {0} Y</value></data>
+  <data name="Osk_Control_PointerTouch_Format" xml:space="preserve"><value>ตัวชี้ {0} สัมผัส</value></data>
+  <data name="Osk_Control_PointerClick_Format" xml:space="preserve"><value>ตัวชี้ {0} คลิก</value></data>
+  <data name="Menu_Keyboard_Deadzone_Tip" xml:space="preserve"><value>ระยะที่ต้องดันตัวควบคุมการบังคับก่อนที่ไฮไลต์จะเลื่อน ปุ่มหรืออินพุตเปิด/ปิดอื่นๆ จะเลื่อนไฮไลต์ทันที</value></data>
+  <data name="Menu_Keyboard_Threshold_Name_Format" xml:space="preserve"><value>{0} เดดโซนแกนเป็นปุ่ม</value></data>
+  <data name="Menu_Keyboard_RecordingAxisPrompt" xml:space="preserve"><value>เลื่อนแกนบนอุปกรณ์ใดก็ได้ที่กำหนดให้สล็อตนี้</value></data>
+  <data name="Menu_Keyboard_OpenPress_Press_Desc" xml:space="preserve"><value>เปิดหรือปิดคีย์บอร์ดทันทีที่กด เปิดด้วย</value></data>
+  <data name="Menu_Keyboard_OpenPress_Release_Desc" xml:space="preserve"><value>เปิดหรือปิดคีย์บอร์ดเมื่อปล่อย เปิดด้วย</value></data>
+  <data name="Menu_Keyboard_OpenPress_WhileHeld_Desc" xml:space="preserve"><value>เปิดคีย์บอร์ดขณะกด เปิดด้วย ค้างไว้ และปิดเมื่อปล่อยการกดนั้น</value></data>
+  <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>เปิดหรือปิดคีย์บอร์ดเมื่อปล่อย เปิดด้วย ก่อนถึงเวลากดค้าง การกดที่นานกว่านั้นไม่มีผลใดๆ</value></data>
+  <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>เปิดหรือปิดคีย์บอร์ดเมื่อกด เปิดด้วย สามครั้งภายในช่วงเวลาการกด</value></data>
+  <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>เปิดหรือปิดคีย์บอร์ดเมื่อช่วงเวลาการกดสิ้นสุดหลังกด เปิดด้วย หนึ่งครั้ง การกดครั้งที่สองภายในช่วงเวลานั้นจะยกเลิก</value></data>
 </root>

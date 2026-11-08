@@ -9621,9 +9621,12 @@ namespace PadForge
         //  Driver install/uninstall helpers
         // ─────────────────────────────────────────────
 
-        /// <summary>Records a press for one keyboard row (#566). During Map
-        /// All, the row's completion records the next control, and the status
-        /// line names each one with its place in the list.</summary>
+        /// <summary>Records one keyboard row (#566): a press, or an axis on a
+        /// pointer's X and Y rows. Opens With records a touchpad gesture too,
+        /// which the controls cannot read while the keyboard holds the
+        /// controller at rest. During Map All, the row's completion records
+        /// the next control, and the status line names each one with its
+        /// place in the list.</summary>
         private void RecordKeyboardRow(PadViewModel pvm, MenuEditorItem menu, KeyboardInputRow row)
         {
             menu.RecordingKeyboardRow = row;
@@ -9631,10 +9634,10 @@ namespace PadForge
             if (menu.KeyboardMapAllActive && index >= 0)
                 _viewModel.SetStatus(string.Format(Strings.Instance.Menu_Keyboard_MapAll_Prompt_Format,
                     row.Label, index + 1, menu.KeyboardControlRows.Count), persist: true);
-            _recorderService.StartRecordingPress(pvm.PadIndex, press =>
+            void Done(bool applied)
             {
                 menu.RecordingKeyboardRow = null;
-                if (menu.TryApplyKeyboardPress(row, press))
+                if (applied)
                     _settingsService.MarkDirty();
                 if (!menu.KeyboardMapAllActive) return;
                 int next = menu.KeyboardControlRows.IndexOf(row) + 1;
@@ -9645,7 +9648,13 @@ namespace PadForge
                     return;
                 }
                 RecordKeyboardRow(pvm, menu, menu.KeyboardControlRows[next]);
-            });
+            }
+            if (row.RecordsAnAxis)
+                _recorderService.StartRecordingFreeform(pvm.PadIndex,
+                    (guid, descriptor) => Done(menu.TryApplyKeyboardAxis(row, descriptor, guid)));
+            else
+                _recorderService.StartRecordingPress(pvm.PadIndex,
+                    press => Done(menu.TryApplyKeyboardPress(row, press)), takesGestures: row.IsOpensWith);
             // No device to record from: the recorder said so on the status
             // line and started nothing.
             if (!_recorderService.IsRecording)

@@ -5053,20 +5053,15 @@ Deseja que o PadForge os desinstale agora? Isso exige elevação e pode levar um
   <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>A daisy wheel: escolha um de oito grupos e depois um dos seus quatro caracteres.</value></data>
   <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>Redefinir Layout</value></data>
   <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>Abre com</value></data>
-  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Qualquer entrada de um dispositivo atribuído a este slot, ou duas seguradas juntas. A mesma entrada fecha o teclado, a menos que um controle do teclado também a use. Vazio significa que nenhuma entrada o abre.</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Qualquer entrada de um dispositivo atribuído a este slot, incluindo um gesto de touchpad ou uma célula de menu, ou duas seguradas juntas. A mesma entrada fecha o teclado, a menos que um controle do teclado também a use. Vazio significa que nenhuma entrada o abre.</value></data>
   <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>Redefinir Abre com</value></data>
   <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>Abrir ao Selecionar uma Caixa de Texto</value></data>
   <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>Em apps e navegadores do Windows, sem botão. Jogos desenham suas próprias caixas de texto, então em um jogo ele abre com a entrada acima, ou com sua camada quando A Camada Mantém o Menu Aberto está ativado.</value></data>
-  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>A entrada que move o destaque pelas teclas, lida dos controles físicos atribuídos ao slot.</value></data>
-  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>Direcionar Metade Esquerda Com</value></data>
-  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>Direcionar Metade Direita Com</value></data>
-  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>Escolher um Grupo Com</value></data>
-  <data name="Menu_Reset_Host2" xml:space="preserve"><value>Redefinir Direcionar Metade Direita Com</value></data>
   <data name="Menu_Host_DPad" xml:space="preserve"><value>D-Pad</value></data>
   <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>Botões Frontais</value></data>
   <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>Controles do Teclado</value></data>
   <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>Layout {0}, {1} controles</value></data>
-  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Lidos dos controles físicos atribuídos a este slot. Cada controle aceita qualquer entrada de qualquer um deles: um botão, uma direção de eixo, um direcional, um touchpad, ou duas seguradas juntas. Clique em um botão de gravação e pressione a entrada, ou segure uma entrada e pressione uma segunda para uma combinação. Mapear Todos grava todos em ordem.</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Lidos dos controles físicos atribuídos a este slot. Cada controle aceita qualquer entrada de qualquer um deles: um botão, uma direção de eixo, um direcional, um touchpad, ou duas seguradas juntas. Um eixo pressiona uma tecla em sua Deadzone Eixo para Botão. Gestos e células de menu param enquanto o teclado mantém o controle em repouso, então só Abre com os aceita. Clique em um botão de gravação e pressione a entrada, ou segure uma entrada e pressione uma segunda para uma combinação. Mapear Todos grava todos em ordem.</value></data>
   <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>Mapear Todos</value></data>
   <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>Grava todos os controles do layout em ordem. A linha de status indica o controle para o qual pressionar uma entrada.</value></data>
   <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>Pressione a entrada para {0} ({1} de {2})</value></data>
@@ -5124,4 +5119,23 @@ Deseja que o PadForge os desinstale agora? Isso exige elevação e pode levar um
   <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>Redefinir Abre ao</value></data>
   <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>Abre ou fecha o teclado quando Abre com é segurado pelo Tempo de Retenção. Um toque mais curto não faz nada.</value></data>
   <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>Abre ou fecha o teclado quando Abre com é pressionado duas vezes dentro da Janela de Pressão.</value></data>
+  <data name="Osk_Control_SteerUp" xml:space="preserve"><value>Direcionar para Cima</value></data>
+  <data name="Osk_Control_SteerDown" xml:space="preserve"><value>Direcionar para Baixo</value></data>
+  <data name="Osk_Control_SteerLeft" xml:space="preserve"><value>Direcionar para a Esquerda</value></data>
+  <data name="Osk_Control_SteerRight" xml:space="preserve"><value>Direcionar para a Direita</value></data>
+  <data name="Osk_Control_LeftHand_Format" xml:space="preserve"><value>{0}, Mão Esquerda</value></data>
+  <data name="Osk_Control_RightHand_Format" xml:space="preserve"><value>{0}, Mão Direita</value></data>
+  <data name="Osk_Control_PointerX_Format" xml:space="preserve"><value>Ponteiro {0} X</value></data>
+  <data name="Osk_Control_PointerY_Format" xml:space="preserve"><value>Ponteiro {0} Y</value></data>
+  <data name="Osk_Control_PointerTouch_Format" xml:space="preserve"><value>Ponteiro {0} Toque</value></data>
+  <data name="Osk_Control_PointerClick_Format" xml:space="preserve"><value>Ponteiro {0} Clique</value></data>
+  <data name="Menu_Keyboard_Deadzone_Tip" xml:space="preserve"><value>O quanto um controle de direção é empurrado antes de o destaque se mover. Um botão ou outra entrada de liga/desliga o move de imediato.</value></data>
+  <data name="Menu_Keyboard_Threshold_Name_Format" xml:space="preserve"><value>{0} Deadzone Eixo para Botão</value></data>
+  <data name="Menu_Keyboard_RecordingAxisPrompt" xml:space="preserve"><value>Mova um eixo em qualquer dispositivo atribuído a este slot</value></data>
+  <data name="Menu_Keyboard_OpenPress_Press_Desc" xml:space="preserve"><value>Abre ou fecha o teclado assim que Abre com é pressionado.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Release_Desc" xml:space="preserve"><value>Abre ou fecha o teclado quando Abre com é solto.</value></data>
+  <data name="Menu_Keyboard_OpenPress_WhileHeld_Desc" xml:space="preserve"><value>Abre o teclado enquanto Abre com é segurado e o fecha quando esse toque é solto.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Abre ou fecha o teclado quando Abre com é solto antes do Tempo de Retenção. Um toque mais longo não faz nada.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Abre ou fecha o teclado quando Abre com é pressionado três vezes dentro da Janela de Pressão.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Abre ou fecha o teclado quando a Janela de Pressão termina após um toque em Abre com. Um segundo toque dentro da janela o cancela.</value></data>
 </root>

@@ -1598,63 +1598,7 @@ namespace PadForge.ViewModels
                 // Check source is axis/slider, on the prefix-stripped body
                 // (the primary keeps the legacy I/H encoding).
                 var desc = StripLegacyPrefix(_sourceDescriptor);
-                if (string.IsNullOrEmpty(desc)) return false;
-
-                // Engine-owned continuous families whose button-thresholding
-                // reads the per-source DeadZone (same set the grid's
-                // MappingSourceItem.IsDeadZoneApplicable exposes, #154).
-                bool engineFamily =
-                    desc.StartsWith("Mouse Motion ", StringComparison.Ordinal)
-                    || desc.StartsWith("IR Pointer ", StringComparison.Ordinal)
-                    || desc.StartsWith("IR Brightness", StringComparison.Ordinal)
-                    || desc.StartsWith("Balance ", StringComparison.Ordinal)
-                    // The four families the extra-source twin already admits and
-                    // this one did not, so the same source hid its deadzone knob
-                    // on the primary row and showed it one row down. Each reads
-                    // the per-source deadzone for a button target: gyro at its
-                    // own scale, mouse position and an absolute control change
-                    // through the shared threshold, and the continuous gesture
-                    // axes the same way. The encoder pulses are edge-fired and
-                    // read no threshold, so they stay out. The gesture test sits
-                    // HERE, ahead of the blanket touchpad exclusion that would
-                    // otherwise swallow it.
-                    || desc.StartsWith("Gyro ", StringComparison.Ordinal)
-                    || desc.StartsWith("Mouse Position ", StringComparison.Ordinal)
-                    || (desc.StartsWith("Midi CC ", StringComparison.Ordinal)
-                        && !desc.EndsWith(" Up", StringComparison.Ordinal)
-                        && !desc.EndsWith(" Down", StringComparison.Ordinal))
-                    || (PadForge.Engine.Common.Mapping.SourceCoercion.IsTouchpadGestureDescriptor(desc)
-                        && PadForge.Engine.Common.Mapping.SourceCoercion.TryParseTouchpadGesture(desc, out _, out string gestureName)
-                        && PadForge.Engine.Common.Mapping.SourceCoercion.IsTouchpadGestureAxis(gestureName))
-                    // Absolute pointer (#9 B-15): continuous position whose
-                    // button coercion thresholds on the per-source DeadZone
-                    // like the IR pointer (same set the grid's
-                    // MappingSourceItem.IsDeadZoneApplicable exposes), so it
-                    // joins the family list ahead of the blanket Touchpad
-                    // exclusion below.
-                    || PadForge.Engine.Common.Mapping.SourceCoercion.IsTouchpadPointerDescriptor(desc)
-                    // Pressure (#239): the bool coercion thresholds on the
-                    // per-source DeadZone (whole pad or zone-windowed), so
-                    // it joins the family ahead of the blanket exclusion.
-                    || PadForge.Engine.Common.Mapping.SourceCoercion.IsTouchpadPressureDescriptor(desc)
-                    // Rings, shake, lean, pitch bend and rumble read the
-                    // per-source DeadZone too and had no slider anywhere.
-                    || PadForge.Engine.Common.Mapping.SourceCoercion.IsThresholdedButtonFamily(desc);
-                if (!engineFamily)
-                {
-                    // Touchpad finger X/Y joined the generic Sensitivity
-                    // family (#9 B-13) but have no axis-to-button threshold
-                    // read (ReadAsBool's touchpad branch reads Click /
-                    // "Finger M Down" / Ring / Pressure only, and Pressure
-                    // is family-listed above), so the remaining touchpad
-                    // descriptors keep the pre-widening hidden column.
-                    if (desc.StartsWith("Touchpad ", StringComparison.Ordinal))
-                        return false;
-                    // Covers "Axis N" / "Slider N" plus the abstract Gamepad
-                    // sticks / triggers that canonicalize to one (#9).
-                    if (!PadForge.Engine.Common.Mapping.SourceCoercion.IsGenericSensitivityDescriptor(desc))
-                        return false;
-                }
+                if (!ButtonReadThresholds(desc)) return false;
 
                 // Check target is a discrete (button-type) output, not an axis.
                 var t = TargetSettingName;
@@ -1674,6 +1618,69 @@ namespace PadForge.ViewModels
 
                 return true;
             }
+        }
+
+        /// <summary>True when a button read of a source, given as its
+        /// prefix-stripped body, presses at the source's deadzone: an axis or
+        /// a slider, the abstract Gamepad sticks and triggers among them, and
+        /// the engine's continuous families. The keyboard menu's press point
+        /// (#566) asks here, so its rows show the control where a Mappings
+        /// row with a button target would.</summary>
+        internal static bool ButtonReadThresholds(string desc)
+        {
+            if (string.IsNullOrEmpty(desc)) return false;
+            // Engine-owned continuous families whose button-thresholding
+            // reads the per-source DeadZone (same set the grid's
+            // MappingSourceItem.IsDeadZoneApplicable exposes, #154).
+            bool engineFamily =
+                desc.StartsWith("Mouse Motion ", StringComparison.Ordinal)
+                || desc.StartsWith("IR Pointer ", StringComparison.Ordinal)
+                || desc.StartsWith("IR Brightness", StringComparison.Ordinal)
+                || desc.StartsWith("Balance ", StringComparison.Ordinal)
+                // The four families the extra-source twin already admits and
+                // this one did not, so the same source hid its deadzone knob
+                // on the primary row and showed it one row down. Each reads
+                // the per-source deadzone for a button target: gyro at its
+                // own scale, mouse position and an absolute control change
+                // through the shared threshold, and the continuous gesture
+                // axes the same way. The encoder pulses are edge-fired and
+                // read no threshold, so they stay out. The gesture test sits
+                // HERE, ahead of the blanket touchpad exclusion that would
+                // otherwise swallow it.
+                || desc.StartsWith("Gyro ", StringComparison.Ordinal)
+                || desc.StartsWith("Mouse Position ", StringComparison.Ordinal)
+                || (desc.StartsWith("Midi CC ", StringComparison.Ordinal)
+                    && !desc.EndsWith(" Up", StringComparison.Ordinal)
+                    && !desc.EndsWith(" Down", StringComparison.Ordinal))
+                || (PadForge.Engine.Common.Mapping.SourceCoercion.IsTouchpadGestureDescriptor(desc)
+                    && PadForge.Engine.Common.Mapping.SourceCoercion.TryParseTouchpadGesture(desc, out _, out string gestureName)
+                    && PadForge.Engine.Common.Mapping.SourceCoercion.IsTouchpadGestureAxis(gestureName))
+                // Absolute pointer (#9 B-15): continuous position whose
+                // button coercion thresholds on the per-source DeadZone
+                // like the IR pointer (same set the grid's
+                // MappingSourceItem.IsDeadZoneApplicable exposes), so it
+                // joins the family list ahead of the blanket Touchpad
+                // exclusion below.
+                || PadForge.Engine.Common.Mapping.SourceCoercion.IsTouchpadPointerDescriptor(desc)
+                // Pressure (#239): the bool coercion thresholds on the
+                // per-source DeadZone (whole pad or zone-windowed), so
+                // it joins the family ahead of the blanket exclusion.
+                || PadForge.Engine.Common.Mapping.SourceCoercion.IsTouchpadPressureDescriptor(desc)
+                // Rings, shake, lean, pitch bend and rumble read the
+                // per-source DeadZone too and had no slider anywhere.
+                || PadForge.Engine.Common.Mapping.SourceCoercion.IsThresholdedButtonFamily(desc);
+            if (engineFamily) return true;
+            // Touchpad finger X/Y joined the generic Sensitivity family
+            // (#9 B-13) but have no axis-to-button threshold read
+            // (ReadAsBool's touchpad branch reads Click / "Finger M Down" /
+            // Ring / Pressure only, and Pressure is family-listed above), so
+            // the remaining touchpad descriptors keep the pre-widening hidden
+            // column.
+            if (desc.StartsWith("Touchpad ", StringComparison.Ordinal))
+                return false;
+            // Covers "Axis N" / "Slider N" plus the abstract Gamepad sticks /
+            // triggers that canonicalize to one (#9).
+            return PadForge.Engine.Common.Mapping.SourceCoercion.IsGenericSensitivityDescriptor(desc);
         }
 
         /// <summary>

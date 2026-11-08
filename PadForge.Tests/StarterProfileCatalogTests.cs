@@ -733,7 +733,7 @@ namespace PadForge.Tests
             Assert.False(keyboard.OpenOnTextFocus);
             Assert.True(keyboard.Enabled);
             Assert.Equal(KeyboardLayout.Grid, keyboard.KeyboardLayout);
-            Assert.Equal(KeyboardMenuDefaults.Host, keyboard.HostDescriptor);
+            Assert.Equal(KeyboardMenuDefaults.SteerDeadzonePercent, keyboard.EngageDeadzonePercent);
             Assert.DoesNotContain(p.Macros, m => m.Actions.Any(a => a.KeyCode == 0x4F));
 
             Assert.Contains(p.Macros, m =>

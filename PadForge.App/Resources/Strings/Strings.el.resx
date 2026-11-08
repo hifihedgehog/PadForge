@@ -5108,20 +5108,15 @@
   <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>Ο τροχός-μαργαρίτα: διαλέγετε μία από οκτώ ομάδες και μετά έναν από τους τέσσερις χαρακτήρες της.</value></data>
   <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>Επαναφορά διάταξης</value></data>
   <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>Ανοίγει με</value></data>
-  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Οποιαδήποτε είσοδος σε συσκευή που έχει ανατεθεί σε αυτήν τη θέση, ή δύο μαζί. Η ίδια είσοδος κλείνει το πληκτρολόγιο, εκτός αν τη χρησιμοποιεί και κάποιο χειριστήριο του πληκτρολογίου. Αν μείνει κενό, καμία είσοδος δεν το ανοίγει.</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Οποιαδήποτε είσοδος σε συσκευή που έχει ανατεθεί σε αυτήν τη θέση, συμπεριλαμβανομένων μιας χειρονομίας επιφάνειας αφής ή ενός κελιού μενού, ή δύο μαζί. Η ίδια είσοδος κλείνει το πληκτρολόγιο, εκτός αν τη χρησιμοποιεί και κάποιο χειριστήριο του πληκτρολογίου. Αν μείνει κενό, καμία είσοδος δεν το ανοίγει.</value></data>
   <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>Επαναφορά του «Ανοίγει με»</value></data>
   <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>Άνοιγμα όταν επιλέγεται πλαίσιο κειμένου</value></data>
   <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>Σε εφαρμογές και προγράμματα περιήγησης των Windows, χωρίς κουμπί. Τα παιχνίδια σχεδιάζουν δικά τους πλαίσια κειμένου, οπότε σε παιχνίδι ανοίγει με την παραπάνω είσοδο ή με το επίπεδό του, όταν είναι ενεργό το «Το επίπεδο κρατά το μενού ανοιχτό».</value></data>
-  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>Η είσοδος που μετακινεί την επισήμανση στα πλήκτρα, από τα φυσικά χειριστήρια που έχουν ανατεθεί στη θέση.</value></data>
-  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>Κατεύθυνση αριστερού μισού με</value></data>
-  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>Κατεύθυνση δεξιού μισού με</value></data>
-  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>Επιλογή ομάδας με</value></data>
-  <data name="Menu_Reset_Host2" xml:space="preserve"><value>Επαναφορά του «Κατεύθυνση δεξιού μισού με»</value></data>
   <data name="Menu_Host_DPad" xml:space="preserve"><value>D-pad</value></data>
   <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>Κουμπιά προσώπου</value></data>
   <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>Χειριστήρια πληκτρολογίου</value></data>
   <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>Διάταξη {0}, {1} χειριστήρια</value></data>
-  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Διαβάζονται από τα φυσικά χειριστήρια που έχουν ανατεθεί σε αυτήν τη θέση. Κάθε χειριστήριο δέχεται οποιαδήποτε είσοδο από οποιοδήποτε από αυτά: κουμπί, κατεύθυνση άξονα, hat, επιφάνεια αφής ή δύο μαζί. Πατήστε ένα κουμπί καταγραφής και μετά την είσοδο, ή κρατήστε μία είσοδο και πατήστε μια δεύτερη για συνδυασμό. Το «Αντιστοίχιση όλων» τις καταγράφει με τη σειρά.</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Διαβάζονται από τα φυσικά χειριστήρια που έχουν ανατεθεί σε αυτήν τη θέση. Κάθε χειριστήριο δέχεται κουμπί, κατεύθυνση άξονα, hat, επιφάνεια αφής ή δύο μαζί, σε οποιοδήποτε από αυτά. Ένας άξονας πατά ένα πλήκτρο στη «Νεκρή ζώνη άξονα σε κουμπί» του. Οι χειρονομίες και τα κελιά μενού σταματούν όσο το πληκτρολόγιο κρατά το χειριστήριο σε ηρεμία, οπότε μόνο το «Ανοίγει με» τα δέχεται. Πατήστε ένα κουμπί καταγραφής και μετά την είσοδο, ή κρατήστε μία είσοδο και πατήστε μια δεύτερη για συνδυασμό. Το «Αντιστοίχιση όλων» τις καταγράφει με τη σειρά.</value></data>
   <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>Αντιστοίχιση όλων</value></data>
   <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>Καταγράφει με τη σειρά όλα τα χειριστήρια της διάταξης. Η γραμμή κατάστασης δείχνει για ποιο χειριστήριο πρέπει να πατήσετε είσοδο.</value></data>
   <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>Πατήστε την είσοδο για: {0} ({1} από {2})</value></data>
@@ -5179,4 +5174,23 @@
   <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>Επαναφορά του «Ανοίγει στο»</value></data>
   <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>Ανοίγει ή κλείνει το πληκτρολόγιο όταν το «Ανοίγει με» κρατηθεί για τον χρόνο κρατήματος. Ένα συντομότερο πάτημα δεν κάνει τίποτα.</value></data>
   <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>Ανοίγει ή κλείνει το πληκτρολόγιο όταν το «Ανοίγει με» πατηθεί δύο φορές μέσα στο χρονικό παράθυρο πατήματος.</value></data>
+  <data name="Osk_Control_SteerUp" xml:space="preserve"><value>Καθοδήγηση πάνω</value></data>
+  <data name="Osk_Control_SteerDown" xml:space="preserve"><value>Καθοδήγηση κάτω</value></data>
+  <data name="Osk_Control_SteerLeft" xml:space="preserve"><value>Καθοδήγηση αριστερά</value></data>
+  <data name="Osk_Control_SteerRight" xml:space="preserve"><value>Καθοδήγηση δεξιά</value></data>
+  <data name="Osk_Control_LeftHand_Format" xml:space="preserve"><value>{0}, αριστερό χέρι</value></data>
+  <data name="Osk_Control_RightHand_Format" xml:space="preserve"><value>{0}, δεξί χέρι</value></data>
+  <data name="Osk_Control_PointerX_Format" xml:space="preserve"><value>Δείκτης {0} X</value></data>
+  <data name="Osk_Control_PointerY_Format" xml:space="preserve"><value>Δείκτης {0} Y</value></data>
+  <data name="Osk_Control_PointerTouch_Format" xml:space="preserve"><value>Δείκτης {0} αφή</value></data>
+  <data name="Osk_Control_PointerClick_Format" xml:space="preserve"><value>Δείκτης {0} κλικ</value></data>
+  <data name="Menu_Keyboard_Deadzone_Tip" xml:space="preserve"><value>Πόσο πρέπει να σπρωχτεί ένα χειριστήριο καθοδήγησης πριν μετακινηθεί η επισήμανση. Ένα κουμπί ή άλλη είσοδος ενεργοποίησης/απενεργοποίησης την μετακινεί αμέσως.</value></data>
+  <data name="Menu_Keyboard_Threshold_Name_Format" xml:space="preserve"><value>{0} Νεκρή ζώνη άξονα σε κουμπί</value></data>
+  <data name="Menu_Keyboard_RecordingAxisPrompt" xml:space="preserve"><value>Μετακινήστε έναν άξονα σε οποιαδήποτε συσκευή που έχει ανατεθεί σε αυτήν τη θέση</value></data>
+  <data name="Menu_Keyboard_OpenPress_Press_Desc" xml:space="preserve"><value>Ανοίγει ή κλείνει το πληκτρολόγιο μόλις πατηθεί το «Ανοίγει με».</value></data>
+  <data name="Menu_Keyboard_OpenPress_Release_Desc" xml:space="preserve"><value>Ανοίγει ή κλείνει το πληκτρολόγιο όταν αφεθεί το «Ανοίγει με».</value></data>
+  <data name="Menu_Keyboard_OpenPress_WhileHeld_Desc" xml:space="preserve"><value>Ανοίγει το πληκτρολόγιο όσο κρατιέται το «Ανοίγει με» και το κλείνει όταν αφεθεί αυτό το πάτημα.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Ανοίγει ή κλείνει το πληκτρολόγιο όταν το «Ανοίγει με» αφεθεί πριν από τον χρόνο κρατήματος. Ένα μεγαλύτερο πάτημα δεν κάνει τίποτα.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Ανοίγει ή κλείνει το πληκτρολόγιο όταν το «Ανοίγει με» πατηθεί τρεις φορές μέσα στο χρονικό παράθυρο πατήματος.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Ανοίγει ή κλείνει το πληκτρολόγιο όταν τελειώσει το χρονικό παράθυρο πατήματος μετά από ένα πάτημα του «Ανοίγει με». Ένα δεύτερο πάτημα μέσα στο παράθυρο το ακυρώνει.</value></data>
 </root>

@@ -5108,20 +5108,15 @@
   <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>Дејзи точак: изаберите једну од осам група, па један од њена четири знака.</value></data>
   <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>Ресетуј распоред</value></data>
   <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>Отвара се помоћу</value></data>
-  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Било који улаз на уређају додељеном овом слоту, или два држана заједно. Исти улаз затвара тастатуру, осим ако га користи и нека контрола тастатуре. Празно значи да је не отвара ниједан улаз.</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Било који улаз на уређају додељеном овом слоту, укључујући покрет на тачпеду или ћелију менија, или два држана заједно. Исти улаз затвара тастатуру, осим ако га користи и нека контрола тастатуре. Празно значи да је не отвара ниједан улаз.</value></data>
   <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>Ресетуј „Отвара се помоћу“</value></data>
   <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>Отвори када је изабрано поље за текст</value></data>
   <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>У Windows апликацијама и прегледачима, без дугмета. Игре цртају сопствена поља за текст, па се у игри отвара помоћу улаза изнад, или помоћу свог слоја када је укључено „Слој држи мени отвореним“.</value></data>
-  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>Улаз који помера истицање преко тастера, чита се са физичких контролера додељених слоту.</value></data>
-  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>Управљај левом половином помоћу</value></data>
-  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>Управљај десном половином помоћу</value></data>
-  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>Изабери групу помоћу</value></data>
-  <data name="Menu_Reset_Host2" xml:space="preserve"><value>Ресетуј „Управљај десном половином помоћу“</value></data>
   <data name="Menu_Host_DPad" xml:space="preserve"><value>D-pad</value></data>
   <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>Дугмад на лицу</value></data>
   <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>Контроле тастатуре</value></data>
   <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>{0} распоред, {1} контрола</value></data>
-  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Чита се са физичких контролера додељених овом слоту. Свака контрола прима било који улаз на било ком од њих: дугме, смер осе, хет, тачпед или два држана заједно. Кликните на дугме за снимање и притисните улаз, или држите један улаз и притисните други за комбинацију. „Мапирај све“ их снима редом.</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Чита се са физичких контролера додељених овом слоту. Свака контрола прима било који улаз на било ком од њих: дугме, смер осе, хет, тачпед или два држана заједно. Оса притиска тастер на својој „Мртва зона осе за дугме“. Покрети и ћелије менија престају док тастатура држи контролер у мировању, па их преузима само „Отвара се помоћу“. Кликните на дугме за снимање и притисните улаз, или држите један улаз и притисните други за комбинацију. „Мапирај све“ их снима редом.</value></data>
   <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>Мапирај све</value></data>
   <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>Снима све контроле распореда редом. Статусни ред именује контролу за коју треба притиснути улаз.</value></data>
   <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>Притисните улаз за {0} ({1} од {2})</value></data>
@@ -5179,4 +5174,23 @@
   <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>Ресетуј „Отвара се при“</value></data>
   <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>Отвара или затвара тастатуру када се „Отвара се помоћу“ држи колико траје време држања. Краћи притисак не ради ништа.</value></data>
   <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>Отвара или затвара тастатуру када се „Отвара се помоћу“ притисне два пута у оквиру прозора притиска.</value></data>
+  <data name="Osk_Control_SteerUp" xml:space="preserve"><value>Управљај горе</value></data>
+  <data name="Osk_Control_SteerDown" xml:space="preserve"><value>Управљај доле</value></data>
+  <data name="Osk_Control_SteerLeft" xml:space="preserve"><value>Управљај лево</value></data>
+  <data name="Osk_Control_SteerRight" xml:space="preserve"><value>Управљај десно</value></data>
+  <data name="Osk_Control_LeftHand_Format" xml:space="preserve"><value>{0}, лева рука</value></data>
+  <data name="Osk_Control_RightHand_Format" xml:space="preserve"><value>{0}, десна рука</value></data>
+  <data name="Osk_Control_PointerX_Format" xml:space="preserve"><value>Показивач {0} X</value></data>
+  <data name="Osk_Control_PointerY_Format" xml:space="preserve"><value>Показивач {0} Y</value></data>
+  <data name="Osk_Control_PointerTouch_Format" xml:space="preserve"><value>Показивач {0} додир</value></data>
+  <data name="Osk_Control_PointerClick_Format" xml:space="preserve"><value>Показивач {0} клик</value></data>
+  <data name="Menu_Keyboard_Deadzone_Tip" xml:space="preserve"><value>Колико треба померити контролу управљања пре него што се истицање помери. Дугме или други улаз који је само укључен или искључен помера га одмах.</value></data>
+  <data name="Menu_Keyboard_Threshold_Name_Format" xml:space="preserve"><value>{0} Мртва зона осе за дугме</value></data>
+  <data name="Menu_Keyboard_RecordingAxisPrompt" xml:space="preserve"><value>Померите осу на било ком уређају додељеном овом слоту</value></data>
+  <data name="Menu_Keyboard_OpenPress_Press_Desc" xml:space="preserve"><value>Отвара или затвара тастатуру чим се притисне „Отвара се помоћу“.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Release_Desc" xml:space="preserve"><value>Отвара или затвара тастатуру када се „Отвара се помоћу“ отпусти.</value></data>
+  <data name="Menu_Keyboard_OpenPress_WhileHeld_Desc" xml:space="preserve"><value>Отвара тастатуру док се „Отвара се помоћу“ држи и затвара је када се тај притисак отпусти.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Отвара или затвара тастатуру када се „Отвара се помоћу“ отпусти пре времена држања. Дужи притисак не ради ништа.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Отвара или затвара тастатуру када се „Отвара се помоћу“ притисне три пута у оквиру прозора притиска.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Отвара или затвара тастатуру када прозор притиска истекне после једног притиска „Отвара се помоћу“. Други притисак унутар прозора то поништава.</value></data>
 </root>

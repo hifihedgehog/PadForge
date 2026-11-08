@@ -181,11 +181,11 @@ namespace PadForge.Services
             return changed;
         }
 
-        /// <summary>A keyboard menu's inputs without the button (#566): Split's
-        /// second Custom axes, Opens With and every control. An input reads
-        /// on its own device, else the menu's. A combination that names the
-        /// button goes whole, as a chord left with one leg would fire on that
-        /// leg alone.</summary>
+        /// <summary>A keyboard menu's inputs without the button (#566): Opens
+        /// With and every control of every layout, steering and pointers
+        /// among them. An input reads on its own device, else the menu's. A
+        /// combination that names the button goes whole, as a chord left with
+        /// one leg would fire on that leg alone.</summary>
         private static bool ClearKeyboardMenu(PadForge.Engine.Menus.MenuDefinitionEntry m, NamesButton names)
         {
             if (m.Kind != PadForge.Engine.Menus.MenuKind.Keyboard) return false;
@@ -194,8 +194,6 @@ namespace PadForge.Services
             bool Names(PadForge.Engine.Menus.KeyboardInput input)
                 => !input.IsEmpty && (names(On(input.DeviceGuid), input.Descriptor)
                     || (input.HasAnd && names(On(input.AndDeviceGuid), input.AndDescriptor)));
-            if (names(m.DeviceGuid, m.Custom2XDescriptor)) { m.Custom2XDescriptor = ""; changed = true; }
-            if (names(m.DeviceGuid, m.Custom2YDescriptor)) { m.Custom2YDescriptor = ""; changed = true; }
             if (Names(PadForge.Engine.Menus.KeyboardMenuDefaults.OpenInput(m)))
             {
                 PadForge.Engine.Menus.KeyboardMenuDefaults.SetOpenInput(m, PadForge.Engine.Menus.KeyboardInput.None);

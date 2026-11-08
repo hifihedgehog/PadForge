@@ -5108,20 +5108,15 @@
   <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>چرخ دیزی: یکی از هشت گروه را انتخاب کنید، سپس یکی از چهار نویسه آن را.</value></data>
   <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>بازنشانی چیدمان</value></data>
   <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>باز شدن با</value></data>
-  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>هر ورودی روی دستگاهی که به این اسلات اختصاص دارد، یا دو ورودی که با هم نگه داشته شوند. همان ورودی صفحه‌کلید را می‌بندد، مگر اینکه یکی از کنترل‌های صفحه‌کلید هم از آن استفاده کند. خالی یعنی هیچ ورودی آن را باز نمی‌کند.</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>هر ورودی روی دستگاهی که به این اسلات اختصاص دارد، از جمله ژست تاچ‌پد یا خانه منو، یا دو ورودی که با هم نگه داشته شوند. همان ورودی صفحه‌کلید را می‌بندد، مگر اینکه یکی از کنترل‌های صفحه‌کلید هم از آن استفاده کند. خالی یعنی هیچ ورودی آن را باز نمی‌کند.</value></data>
   <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>بازنشانی «باز شدن با»</value></data>
   <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>باز شدن هنگام انتخاب کادر متن</value></data>
   <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>در برنامه‌ها و مرورگرهای Windows، بدون نیاز به دکمه. بازی‌ها کادر متن خودشان را می‌کشند، پس در بازی صفحه‌کلید با ورودی بالا باز می‌شود، یا با لایه‌اش وقتی «لایه منو را باز نگه می‌دارد» روشن باشد.</value></data>
-  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>ورودی‌ای که برجسته‌سازی را میان کلیدها جابه‌جا می‌کند و از کنترلرهای فیزیکی اختصاص‌داده‌شده به اسلات خوانده می‌شود.</value></data>
-  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>هدایت نیمه چپ با</value></data>
-  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>هدایت نیمه راست با</value></data>
-  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>انتخاب گروه با</value></data>
-  <data name="Menu_Reset_Host2" xml:space="preserve"><value>بازنشانی «هدایت نیمه راست با»</value></data>
   <data name="Menu_Host_DPad" xml:space="preserve"><value>دکمه‌های جهتی</value></data>
   <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>دکمه‌های اصلی</value></data>
   <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>کنترل‌های صفحه‌کلید</value></data>
   <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>چیدمان {0}، {1} کنترل</value></data>
-  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>از کنترلرهای فیزیکی اختصاص‌داده‌شده به این اسلات خوانده می‌شود. هر کنترل هر ورودی‌ای از هر یک از آن‌ها را می‌پذیرد: دکمه، جهت محور، هت، تاچ‌پد یا دو ورودی که با هم نگه داشته شوند. روی دکمه ضبط کلیک کنید و ورودی را فشار دهید، یا یک ورودی را نگه دارید و ورودی دوم را برای ترکیب فشار دهید. «نگاشت همه» آن‌ها را به‌ترتیب ضبط می‌کند.</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>از کنترلرهای فیزیکی اختصاص‌داده‌شده به این اسلات خوانده می‌شود. هر کنترل هر ورودی‌ای از هر یک از آن‌ها را می‌پذیرد: دکمه، جهت محور، هت، تاچ‌پد یا دو ورودی که با هم نگه داشته شوند. یک محور در «ناحیه مرده محور به دکمه» یک کلید را فشار می‌دهد. ژست‌ها و خانه‌های منو تا وقتی صفحه‌کلید کنترلر را در حالت استراحت نگه می‌دارد متوقف می‌شوند، پس فقط «باز شدن با» آن‌ها را می‌پذیرد. روی دکمه ضبط کلیک کنید و ورودی را فشار دهید، یا یک ورودی را نگه دارید و ورودی دوم را برای ترکیب فشار دهید. «نگاشت همه» آن‌ها را به‌ترتیب ضبط می‌کند.</value></data>
   <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>نگاشت همه</value></data>
   <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>همه کنترل‌های چیدمان را به‌ترتیب ضبط می‌کند. خط وضعیت کنترلی را که باید برایش ورودی فشار دهید نشان می‌دهد.</value></data>
   <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>ورودی {0} را فشار دهید ({1} از {2})</value></data>
@@ -5179,4 +5174,23 @@
   <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>بازنشانی «باز شدن در»</value></data>
   <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>وقتی «باز شدن با» به‌اندازه زمان نگه داشتن نگه داشته شود، صفحه‌کلید را باز یا بسته می‌کند. فشار کوتاه‌تر کاری نمی‌کند.</value></data>
   <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>وقتی «باز شدن با» دو بار در پنجره زمانی فشار فشرده شود، صفحه‌کلید را باز یا بسته می‌کند.</value></data>
+  <data name="Osk_Control_SteerUp" xml:space="preserve"><value>هدایت به بالا</value></data>
+  <data name="Osk_Control_SteerDown" xml:space="preserve"><value>هدایت به پایین</value></data>
+  <data name="Osk_Control_SteerLeft" xml:space="preserve"><value>هدایت به چپ</value></data>
+  <data name="Osk_Control_SteerRight" xml:space="preserve"><value>هدایت به راست</value></data>
+  <data name="Osk_Control_LeftHand_Format" xml:space="preserve"><value>{0}، دست چپ</value></data>
+  <data name="Osk_Control_RightHand_Format" xml:space="preserve"><value>{0}، دست راست</value></data>
+  <data name="Osk_Control_PointerX_Format" xml:space="preserve"><value>اشاره‌گر {0} X</value></data>
+  <data name="Osk_Control_PointerY_Format" xml:space="preserve"><value>اشاره‌گر {0} Y</value></data>
+  <data name="Osk_Control_PointerTouch_Format" xml:space="preserve"><value>لمس اشاره‌گر {0}</value></data>
+  <data name="Osk_Control_PointerClick_Format" xml:space="preserve"><value>کلیک اشاره‌گر {0}</value></data>
+  <data name="Menu_Keyboard_Deadzone_Tip" xml:space="preserve"><value>میزان فشاری که یک کنترل هدایت باید بخورد تا برجستگی جابه‌جا شود. دکمه یا هر ورودی روشن/خاموش دیگر آن را بلافاصله جابه‌جا می‌کند.</value></data>
+  <data name="Menu_Keyboard_Threshold_Name_Format" xml:space="preserve"><value>{0} ناحیه مرده محور به دکمه</value></data>
+  <data name="Menu_Keyboard_RecordingAxisPrompt" xml:space="preserve"><value>یک محور را روی هر دستگاه اختصاص‌داده‌شده به این اسلات حرکت دهید</value></data>
+  <data name="Menu_Keyboard_OpenPress_Press_Desc" xml:space="preserve"><value>به‌محض فشار دادن «باز شدن با»، صفحه‌کلید را باز یا بسته می‌کند.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Release_Desc" xml:space="preserve"><value>وقتی «باز شدن با» رها شود، صفحه‌کلید را باز یا بسته می‌کند.</value></data>
+  <data name="Menu_Keyboard_OpenPress_WhileHeld_Desc" xml:space="preserve"><value>تا وقتی «باز شدن با» نگه داشته شود، صفحه‌کلید را باز نگه می‌دارد و با رها شدن آن فشار، می‌بندد.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>وقتی «باز شدن با» پیش از زمان نگه داشتن رها شود، صفحه‌کلید را باز یا بسته می‌کند. فشار طولانی‌تر کاری نمی‌کند.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>وقتی «باز شدن با» سه بار در پنجره زمانی فشار فشرده شود، صفحه‌کلید را باز یا بسته می‌کند.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>وقتی پنجره زمانی فشار پس از یک بار فشردن «باز شدن با» تمام شود، صفحه‌کلید را باز یا بسته می‌کند. فشار دوم درون پنجره آن را لغو می‌کند.</value></data>
 </root>

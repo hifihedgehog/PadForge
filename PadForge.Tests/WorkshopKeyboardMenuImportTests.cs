@@ -102,6 +102,17 @@ namespace PadForge.Tests
             var trigger = Show("OnPress", "Gamepad RightTrigger");
             trigger.TriggerDescriptorHalfAxis = true;
             Assert.Equal("HGamepad RightTrigger", WorkshopProfileMaterializer.KeyboardMenuFor(trigger, 1).OpenDescriptor);
+            Assert.Equal(0, WorkshopProfileMaterializer.KeyboardMenuFor(trigger, 1).OpenThreshold);
+
+            // A trigger click's own threshold is Opens With's press point, as
+            // it is a macro trigger entry's deadzone.
+            trigger.TriggerDescriptorDeadZonePercent = 75;
+            var click = WorkshopProfileMaterializer.KeyboardMenuFor(trigger, 1);
+            Assert.Equal(new KeyboardInput("HGamepad RightTrigger", "", "", "", 75), KeyboardMenuDefaults.OpenInput(click));
+            // With no half to read, the input has no threshold of its own.
+            var whole = Show("OnPress", "Gamepad ButtonY");
+            whole.TriggerDescriptorDeadZonePercent = 75;
+            Assert.Equal(0, WorkshopProfileMaterializer.KeyboardMenuFor(whole, 1).OpenThreshold);
         }
 
         [Fact]

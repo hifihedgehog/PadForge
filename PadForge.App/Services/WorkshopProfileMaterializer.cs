@@ -678,7 +678,8 @@ namespace PadForge.Services
         /// <summary>A Show Keyboard binding (v10 G7) as a keyboard menu
         /// (#566). Its device-free trigger inputs become Opens With, the first
         /// and the second held with it, with the hosting read's axis half
-        /// (the half a stick-as-dpad member or a trigger pull reads). Steam's
+        /// (the half a stick-as-dpad member or a trigger pull reads) and its
+        /// threshold as the press point. Steam's
         /// Long_Press, Double_Press and Release activators become the matching
         /// press, with their times. The binding's layer gates the menu. Null
         /// when the binding carries no input to open it with.</summary>
@@ -696,8 +697,13 @@ namespace PadForge.Services
                 return axis ? (m.TriggerDescriptorInvert ? "IH" : "H") + d : d;
             }
             var menu = KeyboardMenuDefaults.Create(menuId, string.IsNullOrWhiteSpace(m.Name) ? "Keyboard" : m.Name);
+            // The hosting read's own threshold rides its half (a trigger
+            // click's 75), as it does on a macro's trigger entry
+            // (ApplyDeviceFreeTrigger). It is Opens With's press point.
+            int threshold = m.TriggerDescriptorHalfAxis && m.TriggerDescriptorDeadZonePercent > 0
+                ? Math.Clamp(m.TriggerDescriptorDeadZonePercent, 1, 99) : 0;
             KeyboardMenuDefaults.SetOpenInput(menu, new KeyboardInput(Half(descriptors[0].Trim()), "",
-                descriptors.Count > 1 ? Half(descriptors[1].Trim()) : "", ""));
+                descriptors.Count > 1 ? Half(descriptors[1].Trim()) : "", "", threshold));
             switch (m.TriggerMode)
             {
                 case "OnRelease":

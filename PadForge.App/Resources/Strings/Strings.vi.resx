@@ -4976,4 +4976,207 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD đã chặn chuyển động chuột không đến được Windows. PadForge chặn phím và nút chuột nhưng không chặn chuyển động, nên con trỏ vẫn di chuyển.</value></data>
   <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>Các tay cầm ảo của PadForge chỉ nhận chuyển động từ cảm biến chuyển động của tay cầm.</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows đã quay lại hồ sơ này từ {0} bằng một nút. Để làm điều đó trong PadForge, hãy thêm một Lối tắt hồ sơ cho hồ sơ này trên trang Hồ sơ.</value></data>
+  <data name="Osk_Style_Grid" xml:space="preserve">
+    <value>Lưới</value>
+  </data>
+  <data name="Osk_Style_Split" xml:space="preserve">
+    <value>Chia đôi</value>
+  </data>
+  <data name="Osk_Style_Wheel" xml:space="preserve">
+    <value>Vòng tròn</value>
+  </data>
+  <data name="Osk_CloseKeyboard" xml:space="preserve">
+    <value>Đóng bàn phím</value>
+  </data>
+  <data name="Osk_Drag" xml:space="preserve">
+    <value>Kéo để di chuyển bàn phím</value>
+  </data>
+  <data name="Osk_Wheel_Keys" xml:space="preserve">
+    <value>Phím</value>
+  </data>
+  <data name="Osk_Key_Tab" xml:space="preserve">
+    <value>Tab</value>
+  </data>
+  <data name="Osk_Key_Caps" xml:space="preserve">
+    <value>Caps</value>
+  </data>
+  <data name="Osk_Key_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Osk_Key_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Key_Ctrl" xml:space="preserve">
+    <value>Ctrl</value>
+  </data>
+  <data name="Osk_Key_Win" xml:space="preserve">
+    <value>Win</value>
+  </data>
+  <data name="Osk_Key_Alt" xml:space="preserve">
+    <value>Alt</value>
+  </data>
+  <data name="Osk_Key_AltGr" xml:space="preserve">
+    <value>AltGr</value>
+  </data>
+  <data name="Osk_Key_Symbols" xml:space="preserve">
+    <value>&amp;123</value>
+  </data>
+  <data name="Osk_Key_Letters" xml:space="preserve">
+    <value>aăâ</value>
+  </data>
+  <data name="Osk_Key_Space" xml:space="preserve">
+    <value>Space</value>
+  </data>
+  <data name="Osk_Key_Esc" xml:space="preserve">
+    <value>Esc</value>
+  </data>
+  <data name="Osk_Key_Del" xml:space="preserve">
+    <value>Del</value>
+  </data>
+  <data name="Osk_Key_Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Osk_Key_End" xml:space="preserve">
+    <value>End</value>
+  </data>
+  <data name="Osk_Key_PgUp" xml:space="preserve">
+    <value>PgUp</value>
+  </data>
+  <data name="Osk_Key_PgDn" xml:space="preserve">
+    <value>PgDn</value>
+  </data>
+  <data name="Osk_Key_Ins" xml:space="preserve">
+    <value>Ins</value>
+  </data>
+  <data name="Osk_Key_PrtSc" xml:space="preserve">
+    <value>PrtSc</value>
+  </data>
+  <data name="Osk_Hint_Type" xml:space="preserve">
+    <value>Gõ</value>
+  </data>
+  <data name="Osk_Hint_TypeLeft" xml:space="preserve">
+    <value>Gõ trái</value>
+  </data>
+  <data name="Osk_Hint_TypeRight" xml:space="preserve">
+    <value>Gõ phải</value>
+  </data>
+  <data name="Osk_Hint_Backspace" xml:space="preserve">
+    <value>Xóa lùi</value>
+  </data>
+  <data name="Osk_Hint_Space" xml:space="preserve">
+    <value>Dấu cách</value>
+  </data>
+  <data name="Osk_Hint_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Osk_Hint_Close" xml:space="preserve">
+    <value>Đóng</value>
+  </data>
+  <data name="Osk_Hint_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Hint_Symbols" xml:space="preserve">
+    <value>Ký hiệu</value>
+  </data>
+  <data name="Osk_Hint_Cursor" xml:space="preserve">
+    <value>Con trỏ</value>
+  </data>
+  <data name="Osk_Hint_Suggestion" xml:space="preserve">
+    <value>Gợi ý</value>
+  </data>
+  <data name="Osk_Hint_Capitals" xml:space="preserve">
+    <value>Giữ: chữ hoa</value>
+  </data>
+  <data name="Osk_Hint_Numbers" xml:space="preserve">
+    <value>Giữ: số</value>
+  </data>
+  <data name="Osk_Hint_Keys" xml:space="preserve">
+    <value>Giữ: phím</value>
+  </data>
+  <data name="Osk_Hint_Move" xml:space="preserve">
+    <value>Giữ: di chuyển</value>
+  </data>
+  <data name="Osk_Input_Dpad" xml:space="preserve">
+    <value>D-pad</value>
+  </data>
+  <data name="Menu_Style_Keyboard" xml:space="preserve"><value>Bàn phím</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>Vòng tròn và Lưới cảm ứng kích hoạt các liên kết ô. Bàn phím gõ các phím của bố cục Windows đang dùng.</value></data>
+  <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Bố cục</value></data>
+  <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Cách bàn phím sắp xếp các phím và cách bộ điều khiển chọn chúng.</value></data>
+  <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Một phần tô sáng, di chuyển bằng một cần hoặc bốn đầu vào, là bố cục Windows, Xbox và Steam dùng.</value></data>
+  <data name="Menu_KeyboardLayout_Split_Desc" xml:space="preserve"><value>Mỗi nửa bàn phím có đầu vào điều hướng riêng và đầu vào gõ riêng.</value></data>
+  <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>Bánh xe hoa cúc: chọn một trong tám nhóm, rồi một trong bốn ký tự của nhóm đó.</value></data>
+  <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>Đặt lại bố cục</value></data>
+  <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>Mở bằng</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Bất kỳ đầu vào nào trên thiết bị được gán cho slot này, hoặc hai đầu vào giữ cùng lúc. Chính đầu vào đó cũng đóng bàn phím, trừ khi một điều khiển của bàn phím cũng dùng nó. Để trống nghĩa là không có đầu vào nào mở bàn phím.</value></data>
+  <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>Đặt lại Mở bằng</value></data>
+  <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>Mở khi chọn hộp văn bản</value></data>
+  <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>Trong ứng dụng Windows và trình duyệt, không cần nút nào. Game tự vẽ hộp văn bản, nên trong game bàn phím mở bằng đầu vào ở trên, hoặc bằng lớp của nó khi Lớp giữ menu mở được bật.</value></data>
+  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>Đầu vào di chuyển phần tô sáng qua các phím, đọc từ các bộ điều khiển vật lý được gán cho slot.</value></data>
+  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>Điều hướng nửa trái bằng</value></data>
+  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>Điều hướng nửa phải bằng</value></data>
+  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>Chọn nhóm bằng</value></data>
+  <data name="Menu_Reset_Host2" xml:space="preserve"><value>Đặt lại Điều hướng nửa phải bằng</value></data>
+  <data name="Menu_Host_DPad" xml:space="preserve"><value>D-pad</value></data>
+  <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>Nút mặt</value></data>
+  <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>Điều khiển bàn phím</value></data>
+  <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>Bố cục {0}, {1} điều khiển</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Đọc từ các bộ điều khiển vật lý được gán cho slot này. Mỗi điều khiển nhận bất kỳ đầu vào nào trên chúng: một nút, một hướng trục, một hat, một bàn cảm ứng, hoặc hai đầu vào giữ cùng lúc. Nhấp nút ghi rồi nhấn đầu vào, hoặc giữ một đầu vào và nhấn đầu vào thứ hai để tạo tổ hợp. Ánh xạ tất cả ghi chúng theo thứ tự.</value></data>
+  <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>Ánh xạ tất cả</value></data>
+  <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>Ghi mọi điều khiển của bố cục theo thứ tự. Dòng trạng thái cho biết điều khiển cần nhấn đầu vào.</value></data>
+  <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>Nhấn đầu vào cho {0} ({1}/{2})</value></data>
+  <data name="Menu_Keyboard_MapAll_Done" xml:space="preserve"><value>Đã ghi mọi điều khiển bàn phím.</value></data>
+  <data name="Menu_Reset_KeyboardControls" xml:space="preserve"><value>Đặt lại điều khiển bàn phím</value></data>
+  <data name="Menu_Keyboard_Reset_Format" xml:space="preserve"><value>Đặt lại {0} về {1}</value></data>
+  <data name="Menu_Keyboard_RecordingPrompt" xml:space="preserve"><value>Nhấn một đầu vào trên bất kỳ thiết bị nào được gán cho slot này</value></data>
+  <data name="Menu_Keyboard_Card" xml:space="preserve"><value>Bàn phím</value></data>
+  <data name="Menu_TypesThrough" xml:space="preserve"><value>Gõ qua</value></data>
+  <data name="Menu_TypesThrough_Caption" xml:space="preserve"><value>Nhập liệu Windows gõ từng phím qua Windows, và chương trình có thể biết phím đến từ phần mềm. Bàn phím của slot Bàn phím + chuột gõ theo cách cài đặt Bàn phím của slot đó. Bàn phím ảo HIDMaestro gõ như kiểu bàn phím đó, và chương trình thấy nó là phần cứng. Menu bàn phím tự tạo bàn phím này, nên không cần slot Bàn phím + chuột. Phím mà bàn phím đã chọn không có, và ký tự không phím nào gõ được, vẫn đi qua Nhập liệu Windows.</value></data>
+  <data name="Menu_TypesThrough_Slot_Format" xml:space="preserve"><value>Cùng bàn phím với {0}</value></data>
+  <data name="Menu_Reset_TypesThrough" xml:space="preserve"><value>Đặt lại Gõ qua</value></data>
+  <data name="Menu_FunctionRow" xml:space="preserve"><value>Hàng phím chức năng</value></data>
+  <data name="Menu_FunctionRow_Caption" xml:space="preserve"><value>Esc, F1 đến F12 và Del. Phím Fn trên bàn phím cũng chuyển hàng này.</value></data>
+  <data name="Menu_WordSuggestions" xml:space="preserve"><value>Gợi ý từ</value></data>
+  <data name="Menu_WordSuggestions_Caption" xml:space="preserve"><value>Từ tính năng dự đoán văn bản của Windows, cho các ngôn ngữ đã cài trong Windows.</value></data>
+  <data name="Menu_SymbolsPage" xml:space="preserve"><value>Trang ký hiệu</value></data>
+  <data name="Menu_SymbolsPage_Tip" xml:space="preserve"><value>Các ký tự trên trang ký hiệu của bàn phím. Chúng được gõ dưới dạng ký tự Unicode.</value></data>
+  <data name="Menu_Reset_Symbols" xml:space="preserve"><value>Đặt lại trang ký hiệu</value></data>
+  <data name="Menu_Keyboard_Overlay_Caption" xml:space="preserve"><value>Các hàng mà mọi menu đều có. Kéo thanh trên cùng hoặc tay nắm ở góc của bàn phím, hoặc giữ Di chuyển bàn phím, cũng đặt chúng.</value></data>
+  <data name="Osk_Title" xml:space="preserve"><value>Bàn phím trên màn hình</value></data>
+  <data name="Osk_Control_TypeKey" xml:space="preserve"><value>Gõ phím</value></data>
+  <data name="Osk_Control_Backspace" xml:space="preserve"><value>Backspace</value></data>
+  <data name="Osk_Control_Space" xml:space="preserve"><value>Space</value></data>
+  <data name="Osk_Control_Enter" xml:space="preserve"><value>Enter</value></data>
+  <data name="Osk_Control_Close" xml:space="preserve"><value>Đóng</value></data>
+  <data name="Osk_Control_ShiftNextKey" xml:space="preserve"><value>Shift cho phím kế tiếp</value></data>
+  <data name="Osk_Control_ShiftLeftHand" xml:space="preserve"><value>Shift cho phím kế tiếp, tay trái</value></data>
+  <data name="Osk_Control_ShiftRightHand" xml:space="preserve"><value>Shift cho phím kế tiếp, tay phải</value></data>
+  <data name="Osk_Control_SymbolsPage" xml:space="preserve"><value>Trang ký hiệu</value></data>
+  <data name="Osk_Control_CursorLeft" xml:space="preserve"><value>Con trỏ sang trái</value></data>
+  <data name="Osk_Control_CursorRight" xml:space="preserve"><value>Con trỏ sang phải</value></data>
+  <data name="Osk_Control_MoveUp" xml:space="preserve"><value>Di chuyển lên</value></data>
+  <data name="Osk_Control_MoveDown" xml:space="preserve"><value>Di chuyển xuống</value></data>
+  <data name="Osk_Control_MoveLeft" xml:space="preserve"><value>Di chuyển sang trái</value></data>
+  <data name="Osk_Control_MoveRight" xml:space="preserve"><value>Di chuyển sang phải</value></data>
+  <data name="Osk_Control_Suggestion_Format" xml:space="preserve"><value>Gợi ý {0}</value></data>
+  <data name="Osk_Control_MoveKeyboard" xml:space="preserve"><value>Di chuyển bàn phím (giữ)</value></data>
+  <data name="Osk_Control_TypeLeftHalf" xml:space="preserve"><value>Gõ nửa trái</value></data>
+  <data name="Osk_Control_TypeRightHalf" xml:space="preserve"><value>Gõ nửa phải</value></data>
+  <data name="Osk_Control_ArrowUp" xml:space="preserve"><value>Mũi tên lên</value></data>
+  <data name="Osk_Control_ArrowDown" xml:space="preserve"><value>Mũi tên xuống</value></data>
+  <data name="Osk_Control_ArrowLeft" xml:space="preserve"><value>Mũi tên trái</value></data>
+  <data name="Osk_Control_ArrowRight" xml:space="preserve"><value>Mũi tên phải</value></data>
+  <data name="Osk_Control_PickWest" xml:space="preserve"><value>Chọn hướng tây</value></data>
+  <data name="Osk_Control_PickNorth" xml:space="preserve"><value>Chọn hướng bắc</value></data>
+  <data name="Osk_Control_PickEast" xml:space="preserve"><value>Chọn hướng đông</value></data>
+  <data name="Osk_Control_PickSouth" xml:space="preserve"><value>Chọn hướng nam</value></data>
+  <data name="Osk_Control_Capitals" xml:space="preserve"><value>Chữ hoa và ký hiệu (giữ)</value></data>
+  <data name="Osk_Control_Numbers" xml:space="preserve"><value>Số và dấu ngoặc (giữ)</value></data>
+  <data name="Osk_Control_Home" xml:space="preserve"><value>Home</value></data>
+  <data name="Osk_Control_End" xml:space="preserve"><value>End</value></data>
+  <data name="Menu_Keyboard_OpenPress" xml:space="preserve"><value>Mở khi</value></data>
+  <data name="Menu_Keyboard_OpenPress_Tip" xml:space="preserve"><value>Kiểu nhấn của Mở bằng để mở hoặc đóng bàn phím. Các liên kết nhấn lâu và nhấn đúp của Steam được nhập thành Khi nhấn lâu và Khi nhấn đúp, nên một lần nhấn ngắn cùng đầu vào đó vẫn giữ liên kết riêng.</value></data>
+  <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>Đặt lại Mở khi</value></data>
+  <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>Mở hoặc đóng bàn phím khi Mở bằng được giữ đủ thời gian giữ. Nhấn ngắn hơn thì không làm gì.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>Mở hoặc đóng bàn phím khi Mở bằng được nhấn hai lần trong khoảng thời gian nhấn.</value></data>
 </root>

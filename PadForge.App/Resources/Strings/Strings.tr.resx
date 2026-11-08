@@ -4976,4 +4976,207 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD fare hareketinin Windows'a ulaşmasını engelledi. PadForge tuşları ve fare düğmelerini engeller ama hareketi engellemez, bu yüzden imleç yine de hareket eder.</value></data>
   <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>PadForge'un sanal denetleyicileri hareket verisini yalnızca bir denetleyicinin hareket sensöründen alır.</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows bir düğmeyle {0} profilinden bu profile geri döndü. PadForge'da bunu yapmak için Profiller sayfasında bu profil için bir Profil kısayolu ekleyin.</value></data>
+  <data name="Osk_Style_Grid" xml:space="preserve">
+    <value>Izgara</value>
+  </data>
+  <data name="Osk_Style_Split" xml:space="preserve">
+    <value>Bölünmüş</value>
+  </data>
+  <data name="Osk_Style_Wheel" xml:space="preserve">
+    <value>Çark</value>
+  </data>
+  <data name="Osk_CloseKeyboard" xml:space="preserve">
+    <value>Klavyeyi kapat</value>
+  </data>
+  <data name="Osk_Drag" xml:space="preserve">
+    <value>Klavyeyi taşımak için sürükleyin</value>
+  </data>
+  <data name="Osk_Wheel_Keys" xml:space="preserve">
+    <value>Tuşlar</value>
+  </data>
+  <data name="Osk_Key_Tab" xml:space="preserve">
+    <value>Tab</value>
+  </data>
+  <data name="Osk_Key_Caps" xml:space="preserve">
+    <value>Caps</value>
+  </data>
+  <data name="Osk_Key_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Osk_Key_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Key_Ctrl" xml:space="preserve">
+    <value>Ctrl</value>
+  </data>
+  <data name="Osk_Key_Win" xml:space="preserve">
+    <value>Win</value>
+  </data>
+  <data name="Osk_Key_Alt" xml:space="preserve">
+    <value>Alt</value>
+  </data>
+  <data name="Osk_Key_AltGr" xml:space="preserve">
+    <value>AltGr</value>
+  </data>
+  <data name="Osk_Key_Symbols" xml:space="preserve">
+    <value>&amp;123</value>
+  </data>
+  <data name="Osk_Key_Letters" xml:space="preserve">
+    <value>abc</value>
+  </data>
+  <data name="Osk_Key_Space" xml:space="preserve">
+    <value>Boşluk</value>
+  </data>
+  <data name="Osk_Key_Esc" xml:space="preserve">
+    <value>Esc</value>
+  </data>
+  <data name="Osk_Key_Del" xml:space="preserve">
+    <value>Del</value>
+  </data>
+  <data name="Osk_Key_Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Osk_Key_End" xml:space="preserve">
+    <value>End</value>
+  </data>
+  <data name="Osk_Key_PgUp" xml:space="preserve">
+    <value>PgUp</value>
+  </data>
+  <data name="Osk_Key_PgDn" xml:space="preserve">
+    <value>PgDn</value>
+  </data>
+  <data name="Osk_Key_Ins" xml:space="preserve">
+    <value>Ins</value>
+  </data>
+  <data name="Osk_Key_PrtSc" xml:space="preserve">
+    <value>PrtSc</value>
+  </data>
+  <data name="Osk_Hint_Type" xml:space="preserve">
+    <value>Yaz</value>
+  </data>
+  <data name="Osk_Hint_TypeLeft" xml:space="preserve">
+    <value>Sola yaz</value>
+  </data>
+  <data name="Osk_Hint_TypeRight" xml:space="preserve">
+    <value>Sağa yaz</value>
+  </data>
+  <data name="Osk_Hint_Backspace" xml:space="preserve">
+    <value>Geri sil</value>
+  </data>
+  <data name="Osk_Hint_Space" xml:space="preserve">
+    <value>Boşluk</value>
+  </data>
+  <data name="Osk_Hint_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Osk_Hint_Close" xml:space="preserve">
+    <value>Kapat</value>
+  </data>
+  <data name="Osk_Hint_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Hint_Symbols" xml:space="preserve">
+    <value>Simgeler</value>
+  </data>
+  <data name="Osk_Hint_Cursor" xml:space="preserve">
+    <value>İmleç</value>
+  </data>
+  <data name="Osk_Hint_Suggestion" xml:space="preserve">
+    <value>Öneri</value>
+  </data>
+  <data name="Osk_Hint_Capitals" xml:space="preserve">
+    <value>Basılı tut: büyük</value>
+  </data>
+  <data name="Osk_Hint_Numbers" xml:space="preserve">
+    <value>Basılı tut: sayı</value>
+  </data>
+  <data name="Osk_Hint_Keys" xml:space="preserve">
+    <value>Basılı tut: tuşlar</value>
+  </data>
+  <data name="Osk_Hint_Move" xml:space="preserve">
+    <value>Basılı tut: taşı</value>
+  </data>
+  <data name="Osk_Input_Dpad" xml:space="preserve">
+    <value>Yön tuşları</value>
+  </data>
+  <data name="Menu_Style_Keyboard" xml:space="preserve"><value>Klavye</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>Dairesel halka ve Dokunma ızgarası hücre bağlamalarını tetikler. Klavye, kullanılan Windows düzeninin tuşlarını yazar.</value></data>
+  <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Düzen</value></data>
+  <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Klavyenin tuşları nasıl dizdiği ve bir kontrolcünün bunları nasıl seçtiği.</value></data>
+  <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Bir çubukla veya dört girişle hareket ettirilen tek bir vurgu. Windows, Xbox ve Steam'in kullandığı düzen.</value></data>
+  <data name="Menu_KeyboardLayout_Split_Desc" xml:space="preserve"><value>Klavyenin her yarısının kendi yönlendirme girişi ve kendi yazma girişi vardır.</value></data>
+  <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>Papatya çarkı: sekiz gruptan birini, sonra grubun dört karakterinden birini seçersiniz.</value></data>
+  <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>Düzeni sıfırla</value></data>
+  <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>Açan giriş</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Bu yuvaya atanmış bir cihazdaki herhangi bir giriş ya da birlikte basılı tutulan iki giriş. Aynı giriş klavyeyi kapatır, ancak bir klavye denetimi de onu kullanıyorsa kapatmaz. Boş olması, hiçbir girişin klavyeyi açmadığı anlamına gelir.</value></data>
+  <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>Açan girişi sıfırla</value></data>
+  <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>Metin kutusu seçilince aç</value></data>
+  <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>Windows uygulamalarında ve tarayıcılarda, düğmeye basmadan açılır. Oyunlar metin kutularını kendileri çizdiği için oyunda klavye yukarıdaki girişle açılır, Katman menüyü açık tutar açıksa katmanıyla açılır.</value></data>
+  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>Vurguyu tuşlar üzerinde hareket ettiren giriş. Yuvaya atanmış fiziksel kontrolcülerden okunur.</value></data>
+  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>Sol yarıyı yönlendiren giriş</value></data>
+  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>Sağ yarıyı yönlendiren giriş</value></data>
+  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>Grubu seçen giriş</value></data>
+  <data name="Menu_Reset_Host2" xml:space="preserve"><value>Sağ yarıyı yönlendiren girişi sıfırla</value></data>
+  <data name="Menu_Host_DPad" xml:space="preserve"><value>Yön tuşları</value></data>
+  <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>Yüz düğmeleri</value></data>
+  <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>Klavye denetimleri</value></data>
+  <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>{0} düzeni, {1} denetim</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Bu yuvaya atanmış fiziksel kontrolcülerden okunur. Her denetim bunlardan herhangi birindeki herhangi bir girişi alır: bir düğme, bir eksen yönü, bir hat, bir dokunmatik yüzey ya da birlikte basılı tutulan iki giriş. Bir kayıt düğmesine tıklayıp girişe basın ya da kombinasyon için bir girişi basılı tutup ikincisine basın. Tümünü eşle bunları sırayla kaydeder.</value></data>
+  <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>Tümünü eşle</value></data>
+  <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>Düzenin her denetimini sırayla kaydeder. Durum satırı, hangi denetim için giriş yapılacağını belirtir.</value></data>
+  <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>{0} için girişe basın ({1}/{2})</value></data>
+  <data name="Menu_Keyboard_MapAll_Done" xml:space="preserve"><value>Tüm klavye denetimleri kaydedildi.</value></data>
+  <data name="Menu_Reset_KeyboardControls" xml:space="preserve"><value>Klavye denetimlerini sıfırla</value></data>
+  <data name="Menu_Keyboard_Reset_Format" xml:space="preserve"><value>{0} ayarını {1} değerine sıfırla</value></data>
+  <data name="Menu_Keyboard_RecordingPrompt" xml:space="preserve"><value>Bu yuvaya atanmış herhangi bir cihazda bir girişe basın</value></data>
+  <data name="Menu_Keyboard_Card" xml:space="preserve"><value>Klavye</value></data>
+  <data name="Menu_TypesThrough" xml:space="preserve"><value>Yazma yolu</value></data>
+  <data name="Menu_TypesThrough_Caption" xml:space="preserve"><value>Windows girişi her tuşu Windows üzerinden yazar ve programlar bunun yazılımdan geldiğini anlayabilir. Klavye + Fare yuvasının klavyesi, tuşları o yuvanın Klavye ayarının yaptığı gibi yazar. HIDMaestro sanal klavyesi tuşları o klavye modeli olarak yazar ve programlar bunu donanım olarak görür. Klavye menüsü bunu kendisi oluşturur, bu yüzden Klavye + Fare yuvası gerekmez. Seçilen klavyede bulunmayan bir tuş ve hiçbir tuşun yazmadığı bir karakter yine Windows girişi üzerinden gider.</value></data>
+  <data name="Menu_TypesThrough_Slot_Format" xml:space="preserve"><value>{0} ile aynı klavye</value></data>
+  <data name="Menu_Reset_TypesThrough" xml:space="preserve"><value>Yazma yolunu sıfırla</value></data>
+  <data name="Menu_FunctionRow" xml:space="preserve"><value>Fonksiyon sırası</value></data>
+  <data name="Menu_FunctionRow_Caption" xml:space="preserve"><value>Esc, F1'den F12'ye kadar tuşlar ve Del. Klavyedeki Fn tuşu da bunu değiştirir.</value></data>
+  <data name="Menu_WordSuggestions" xml:space="preserve"><value>Sözcük önerileri</value></data>
+  <data name="Menu_WordSuggestions_Caption" xml:space="preserve"><value>Windows'taki metin tahmininden gelir, Windows'ta yüklü diller için.</value></data>
+  <data name="Menu_SymbolsPage" xml:space="preserve"><value>Simgeler sayfası</value></data>
+  <data name="Menu_SymbolsPage_Tip" xml:space="preserve"><value>Klavyenin simgeler sayfasındaki karakterler. Unicode karakterleri olarak yazılır.</value></data>
+  <data name="Menu_Reset_Symbols" xml:space="preserve"><value>Simgeler sayfasını sıfırla</value></data>
+  <data name="Menu_Keyboard_Overlay_Caption" xml:space="preserve"><value>Her menünün zaten sahip olduğu satırlar. Klavyenin üst çubuğunu ya da köşe tutamacını sürüklemek veya Klavyeyi taşı girişini basılı tutmak da bunları ayarlar.</value></data>
+  <data name="Osk_Title" xml:space="preserve"><value>Ekran klavyesi</value></data>
+  <data name="Osk_Control_TypeKey" xml:space="preserve"><value>Tuşu yaz</value></data>
+  <data name="Osk_Control_Backspace" xml:space="preserve"><value>Geri sil</value></data>
+  <data name="Osk_Control_Space" xml:space="preserve"><value>Boşluk</value></data>
+  <data name="Osk_Control_Enter" xml:space="preserve"><value>Enter</value></data>
+  <data name="Osk_Control_Close" xml:space="preserve"><value>Kapat</value></data>
+  <data name="Osk_Control_ShiftNextKey" xml:space="preserve"><value>Sonraki tuş için Shift</value></data>
+  <data name="Osk_Control_ShiftLeftHand" xml:space="preserve"><value>Sonraki tuş için Shift, sol el</value></data>
+  <data name="Osk_Control_ShiftRightHand" xml:space="preserve"><value>Sonraki tuş için Shift, sağ el</value></data>
+  <data name="Osk_Control_SymbolsPage" xml:space="preserve"><value>Simgeler sayfası</value></data>
+  <data name="Osk_Control_CursorLeft" xml:space="preserve"><value>İmleç sola</value></data>
+  <data name="Osk_Control_CursorRight" xml:space="preserve"><value>İmleç sağa</value></data>
+  <data name="Osk_Control_MoveUp" xml:space="preserve"><value>Yukarı taşı</value></data>
+  <data name="Osk_Control_MoveDown" xml:space="preserve"><value>Aşağı taşı</value></data>
+  <data name="Osk_Control_MoveLeft" xml:space="preserve"><value>Sola taşı</value></data>
+  <data name="Osk_Control_MoveRight" xml:space="preserve"><value>Sağa taşı</value></data>
+  <data name="Osk_Control_Suggestion_Format" xml:space="preserve"><value>Öneri {0}</value></data>
+  <data name="Osk_Control_MoveKeyboard" xml:space="preserve"><value>Klavyeyi taşı (basılı tut)</value></data>
+  <data name="Osk_Control_TypeLeftHalf" xml:space="preserve"><value>Sol yarıyı yaz</value></data>
+  <data name="Osk_Control_TypeRightHalf" xml:space="preserve"><value>Sağ yarıyı yaz</value></data>
+  <data name="Osk_Control_ArrowUp" xml:space="preserve"><value>Yukarı ok</value></data>
+  <data name="Osk_Control_ArrowDown" xml:space="preserve"><value>Aşağı ok</value></data>
+  <data name="Osk_Control_ArrowLeft" xml:space="preserve"><value>Sol ok</value></data>
+  <data name="Osk_Control_ArrowRight" xml:space="preserve"><value>Sağ ok</value></data>
+  <data name="Osk_Control_PickWest" xml:space="preserve"><value>Batıyı seç</value></data>
+  <data name="Osk_Control_PickNorth" xml:space="preserve"><value>Kuzeyi seç</value></data>
+  <data name="Osk_Control_PickEast" xml:space="preserve"><value>Doğuyu seç</value></data>
+  <data name="Osk_Control_PickSouth" xml:space="preserve"><value>Güneyi seç</value></data>
+  <data name="Osk_Control_Capitals" xml:space="preserve"><value>Büyük harfler ve simgeler (basılı tut)</value></data>
+  <data name="Osk_Control_Numbers" xml:space="preserve"><value>Sayılar ve parantezler (basılı tut)</value></data>
+  <data name="Osk_Control_Home" xml:space="preserve"><value>Home</value></data>
+  <data name="Osk_Control_End" xml:space="preserve"><value>End</value></data>
+  <data name="Menu_Keyboard_OpenPress" xml:space="preserve"><value>Açılma şekli</value></data>
+  <data name="Menu_Keyboard_OpenPress_Tip" xml:space="preserve"><value>Klavyeyi açan veya kapatan Açan giriş basışı. Steam'in Uzun basış ve Çift basış bağlamaları Uzun basınca ve Çift basınca olarak içe aktarılır, böylece aynı girişe kısa basış kendi bağlamasını korur.</value></data>
+  <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>Açılma şeklini sıfırla</value></data>
+  <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>Açan giriş basılı tutma süresi boyunca tutulunca klavyeyi açar veya kapatır. Daha kısa bir basış hiçbir şey yapmaz.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>Açan giriş basma penceresi içinde iki kez basılınca klavyeyi açar veya kapatır.</value></data>
 </root>

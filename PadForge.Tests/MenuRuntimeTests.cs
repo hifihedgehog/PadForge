@@ -433,14 +433,18 @@ namespace PadForge.Tests
                 HostDescriptor = "Touchpad 1",
             });
             var opts = editor.HostOptions;
-            Assert.Equal(5, opts.Count);
+            // The D-pad and the face buttons, the button-pair hosts the runtime
+            // has run since translator v25, are listed for every menu (#566).
+            Assert.Equal(7, opts.Count);
             Assert.Equal("Gamepad LeftStick", opts[0].Descriptor);
             Assert.Equal("Gamepad RightStick", opts[1].Descriptor);
-            Assert.Equal("Touchpad 0", opts[2].Descriptor);
-            Assert.Equal("Touchpad 1", opts[3].Descriptor);
-            Assert.Equal("Custom", opts[4].Descriptor);
-            Assert.True(opts[2].IsTouchpad);
-            Assert.True(opts[3].IsTouchpad);
+            Assert.Equal("Gamepad DPad", opts[2].Descriptor);
+            Assert.Equal("Gamepad Diamond", opts[3].Descriptor);
+            Assert.Equal("Touchpad 0", opts[4].Descriptor);
+            Assert.Equal("Touchpad 1", opts[5].Descriptor);
+            Assert.Equal("Custom", opts[6].Descriptor);
+            Assert.True(opts[4].IsTouchpad);
+            Assert.True(opts[5].IsTouchpad);
             Assert.Equal("Touchpad 1", editor.SelectedHost.Descriptor);
 
             // An authored descriptor outside the grammar (a typeless
@@ -449,10 +453,10 @@ namespace PadForge.Tests
             // selection never silently lies or falls back.
             editor.Entry.HostDescriptor = "Touchpad 2";
             opts = editor.HostOptions;
-            Assert.Equal(6, opts.Count);
-            Assert.Equal("Touchpad 2", opts[5].Descriptor);
-            Assert.True(opts[5].IsTouchpad);
-            Assert.Contains("3", opts[5].Label);
+            Assert.Equal(8, opts.Count);
+            Assert.Equal("Touchpad 2", opts[7].Descriptor);
+            Assert.True(opts[7].IsTouchpad);
+            Assert.Contains("3", opts[7].Label);
             Assert.Equal("Touchpad 2", editor.SelectedHost.Descriptor);
         }
 

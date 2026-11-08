@@ -1824,6 +1824,9 @@ namespace PadForge.Common.Input
                     _pendingConnectTask[i] = null;
                 }
             }
+            // A keyboard menu's own HIDMaestro keyboard (#566) takes the same
+            // one-create-at-a-time turn.
+            if (!anyConnectPending && MenuKeyboardLifecyclePending) anyConnectPending = true;
             // Connect-gate watchdog: mirror of the dispose watchdog above.
             if (anyConnectPending)
             {
@@ -4180,6 +4183,8 @@ namespace PadForge.Common.Input
                         asyncDispose: _virtualControllers[i] is MidiVirtualController);
                     _virtualControllers[i] = null;
                 }
+                // The keyboard menus' own keyboards (#566) go with the slots'.
+                DestroyMenuKeyboardsLocked();
             }
         }
 
@@ -4202,6 +4207,7 @@ namespace PadForge.Common.Input
                 if (dispose != null) tasks.Add(dispose);
                 if (connect != null) tasks.Add(connect);
             }
+            AddMenuKeyboardTasks(tasks);
             if (tasks.Count == 0) return;
 
             try

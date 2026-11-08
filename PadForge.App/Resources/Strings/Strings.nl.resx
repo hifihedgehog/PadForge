@@ -4947,4 +4947,207 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD hield muisbeweging tegen voordat die Windows bereikte. PadForge houdt toetsen en muisknoppen tegen, maar geen beweging, dus de aanwijzer beweegt nog steeds.</value></data>
   <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>De virtuele controllers van PadForge nemen bewegingsinvoer alleen over van de bewegingssensor van een controller.</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows schakelde met een knop vanuit {0} terug naar dit profiel. Om dat in PadForge te doen, voeg je op de pagina Profielen een Profiel-snelkoppeling voor dit profiel toe.</value></data>
+  <data name="Osk_Style_Grid" xml:space="preserve">
+    <value>Raster</value>
+  </data>
+  <data name="Osk_Style_Split" xml:space="preserve">
+    <value>Gesplitst</value>
+  </data>
+  <data name="Osk_Style_Wheel" xml:space="preserve">
+    <value>Wiel</value>
+  </data>
+  <data name="Osk_CloseKeyboard" xml:space="preserve">
+    <value>Toetsenbord sluiten</value>
+  </data>
+  <data name="Osk_Drag" xml:space="preserve">
+    <value>Sleep om het toetsenbord te verplaatsen</value>
+  </data>
+  <data name="Osk_Wheel_Keys" xml:space="preserve">
+    <value>Toetsen</value>
+  </data>
+  <data name="Osk_Key_Tab" xml:space="preserve">
+    <value>Tab</value>
+  </data>
+  <data name="Osk_Key_Caps" xml:space="preserve">
+    <value>Caps</value>
+  </data>
+  <data name="Osk_Key_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Osk_Key_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Key_Ctrl" xml:space="preserve">
+    <value>Ctrl</value>
+  </data>
+  <data name="Osk_Key_Win" xml:space="preserve">
+    <value>Win</value>
+  </data>
+  <data name="Osk_Key_Alt" xml:space="preserve">
+    <value>Alt</value>
+  </data>
+  <data name="Osk_Key_AltGr" xml:space="preserve">
+    <value>AltGr</value>
+  </data>
+  <data name="Osk_Key_Symbols" xml:space="preserve">
+    <value>&amp;123</value>
+  </data>
+  <data name="Osk_Key_Letters" xml:space="preserve">
+    <value>abc</value>
+  </data>
+  <data name="Osk_Key_Space" xml:space="preserve">
+    <value>Spatie</value>
+  </data>
+  <data name="Osk_Key_Esc" xml:space="preserve">
+    <value>Esc</value>
+  </data>
+  <data name="Osk_Key_Del" xml:space="preserve">
+    <value>Del</value>
+  </data>
+  <data name="Osk_Key_Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Osk_Key_End" xml:space="preserve">
+    <value>End</value>
+  </data>
+  <data name="Osk_Key_PgUp" xml:space="preserve">
+    <value>PgUp</value>
+  </data>
+  <data name="Osk_Key_PgDn" xml:space="preserve">
+    <value>PgDn</value>
+  </data>
+  <data name="Osk_Key_Ins" xml:space="preserve">
+    <value>Ins</value>
+  </data>
+  <data name="Osk_Key_PrtSc" xml:space="preserve">
+    <value>PrtSc</value>
+  </data>
+  <data name="Osk_Hint_Type" xml:space="preserve">
+    <value>Typen</value>
+  </data>
+  <data name="Osk_Hint_TypeLeft" xml:space="preserve">
+    <value>Links typen</value>
+  </data>
+  <data name="Osk_Hint_TypeRight" xml:space="preserve">
+    <value>Rechts typen</value>
+  </data>
+  <data name="Osk_Hint_Backspace" xml:space="preserve">
+    <value>Backspace</value>
+  </data>
+  <data name="Osk_Hint_Space" xml:space="preserve">
+    <value>Spatie</value>
+  </data>
+  <data name="Osk_Hint_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Osk_Hint_Close" xml:space="preserve">
+    <value>Sluiten</value>
+  </data>
+  <data name="Osk_Hint_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Hint_Symbols" xml:space="preserve">
+    <value>Symbolen</value>
+  </data>
+  <data name="Osk_Hint_Cursor" xml:space="preserve">
+    <value>Cursor</value>
+  </data>
+  <data name="Osk_Hint_Suggestion" xml:space="preserve">
+    <value>Suggestie</value>
+  </data>
+  <data name="Osk_Hint_Capitals" xml:space="preserve">
+    <value>Vasthouden: hoofdletters</value>
+  </data>
+  <data name="Osk_Hint_Numbers" xml:space="preserve">
+    <value>Vasthouden: cijfers</value>
+  </data>
+  <data name="Osk_Hint_Keys" xml:space="preserve">
+    <value>Vasthouden: toetsen</value>
+  </data>
+  <data name="Osk_Hint_Move" xml:space="preserve">
+    <value>Vasthouden: verplaatsen</value>
+  </data>
+  <data name="Osk_Input_Dpad" xml:space="preserve">
+    <value>D-pad</value>
+  </data>
+  <data name="Menu_Style_Keyboard" xml:space="preserve"><value>Toetsenbord</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>Radiale ring en Touch-raster activeren celtoewijzingen. Toetsenbord typt de toetsen van de Windows-indeling die in gebruik is.</value></data>
+  <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Indeling</value></data>
+  <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Hoe het toetsenbord zijn toetsen indeelt en hoe een controller ze kiest.</value></data>
+  <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Eén markering, verplaatst met een stick of vier invoeren, de indeling die Windows, Xbox en Steam gebruiken.</value></data>
+  <data name="Menu_KeyboardLayout_Split_Desc" xml:space="preserve"><value>Elke helft van het toetsenbord krijgt een eigen stuurinvoer en een eigen typinvoer.</value></data>
+  <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>Het margrietwiel: kies een van acht groepen en daarna een van de vier tekens.</value></data>
+  <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>Indeling herstellen</value></data>
+  <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>Opent met</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Elke invoer op een apparaat dat aan deze slot is toegewezen, of twee tegelijk ingehouden. Dezelfde invoer sluit het toetsenbord, tenzij een toetsenbordbesturing hem ook gebruikt. Leeg betekent dat geen invoer het opent.</value></data>
+  <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>Opent met herstellen</value></data>
+  <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>Openen bij geselecteerd tekstvak</value></data>
+  <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>In Windows-apps en browsers, zonder knop. Games tekenen hun eigen tekstvakken, dus in een game opent het met de invoer hierboven, of met de bijbehorende laag als Laag houdt het menu open aanstaat.</value></data>
+  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>De invoer die de markering over de toetsen beweegt, gelezen van de fysieke controllers die aan de slot zijn toegewezen.</value></data>
+  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>Linkerhelft sturen met</value></data>
+  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>Rechterhelft sturen met</value></data>
+  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>Groep kiezen met</value></data>
+  <data name="Menu_Reset_Host2" xml:space="preserve"><value>Rechterhelft sturen met herstellen</value></data>
+  <data name="Menu_Host_DPad" xml:space="preserve"><value>D-Pad</value></data>
+  <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>Actieknoppen</value></data>
+  <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>Toetsenbordbesturing</value></data>
+  <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>Indeling {0}, {1} besturingen</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Gelezen van de fysieke controllers die aan deze slot zijn toegewezen. Elke besturing neemt elke invoer van elk van die controllers: een knop, een asrichting, een hat, een touchpad, of twee tegelijk ingehouden. Klik op een opnameknop en druk op de invoer, of houd één invoer vast en druk op een tweede voor een combinatie. Alles toewijzen neemt ze op volgorde op.</value></data>
+  <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>Alles toewijzen</value></data>
+  <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>Neemt elke besturing van de indeling op volgorde op. De statusregel noemt de besturing waarvoor je op een invoer moet drukken.</value></data>
+  <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>Druk op de invoer voor {0} ({1} van {2})</value></data>
+  <data name="Menu_Keyboard_MapAll_Done" xml:space="preserve"><value>Alle toetsenbordbesturingen zijn opgenomen.</value></data>
+  <data name="Menu_Reset_KeyboardControls" xml:space="preserve"><value>Toetsenbordbesturing herstellen</value></data>
+  <data name="Menu_Keyboard_Reset_Format" xml:space="preserve"><value>{0} herstellen naar {1}</value></data>
+  <data name="Menu_Keyboard_RecordingPrompt" xml:space="preserve"><value>Druk op een invoer van een apparaat dat aan deze slot is toegewezen</value></data>
+  <data name="Menu_Keyboard_Card" xml:space="preserve"><value>Toetsenbord</value></data>
+  <data name="Menu_TypesThrough" xml:space="preserve"><value>Typt via</value></data>
+  <data name="Menu_TypesThrough_Caption" xml:space="preserve"><value>Windows-invoer typt elke toets via Windows, en programma's kunnen zien dat het van software komt. Het toetsenbord van een slot Toetsenbord + Muis typt zoals de toetsenbordinstelling van die slot. Een virtueel HIDMaestro-toetsenbord typt als dat model toetsenbord, dat programma's als hardware zien. Het toetsenbordmenu maakt dat zelf aan, dus een slot Toetsenbord + Muis is niet nodig. Een toets die het gekozen toetsenbord mist, en een teken dat geen toets typt, gaan nog steeds via Windows-invoer.</value></data>
+  <data name="Menu_TypesThrough_Slot_Format" xml:space="preserve"><value>Zelfde toetsenbord als {0}</value></data>
+  <data name="Menu_Reset_TypesThrough" xml:space="preserve"><value>Typt via herstellen</value></data>
+  <data name="Menu_FunctionRow" xml:space="preserve"><value>Functierij</value></data>
+  <data name="Menu_FunctionRow_Caption" xml:space="preserve"><value>Esc, F1 tot en met F12 en Del. De Fn-toets op het toetsenbord schakelt de rij ook.</value></data>
+  <data name="Menu_WordSuggestions" xml:space="preserve"><value>Woordsuggesties</value></data>
+  <data name="Menu_WordSuggestions_Caption" xml:space="preserve"><value>Van de tekstvoorspelling in Windows, voor de talen die in Windows zijn geïnstalleerd.</value></data>
+  <data name="Menu_SymbolsPage" xml:space="preserve"><value>Symbolenpagina</value></data>
+  <data name="Menu_SymbolsPage_Tip" xml:space="preserve"><value>De tekens op de symbolenpagina van het toetsenbord. Ze worden getypt als Unicode-tekens.</value></data>
+  <data name="Menu_Reset_Symbols" xml:space="preserve"><value>Symbolenpagina herstellen</value></data>
+  <data name="Menu_Keyboard_Overlay_Caption" xml:space="preserve"><value>De rijen die elk menu al heeft. Ook door de bovenbalk of het hoekgreepje van het toetsenbord te slepen, of door Toetsenbord verplaatsen ingedrukt te houden, worden ze ingesteld.</value></data>
+  <data name="Osk_Title" xml:space="preserve"><value>Schermtoetsenbord</value></data>
+  <data name="Osk_Control_TypeKey" xml:space="preserve"><value>Toets typen</value></data>
+  <data name="Osk_Control_Backspace" xml:space="preserve"><value>Backspace</value></data>
+  <data name="Osk_Control_Space" xml:space="preserve"><value>Spatie</value></data>
+  <data name="Osk_Control_Enter" xml:space="preserve"><value>Enter</value></data>
+  <data name="Osk_Control_Close" xml:space="preserve"><value>Sluiten</value></data>
+  <data name="Osk_Control_ShiftNextKey" xml:space="preserve"><value>Shift voor de volgende toets</value></data>
+  <data name="Osk_Control_ShiftLeftHand" xml:space="preserve"><value>Shift voor de volgende toets, linkerhand</value></data>
+  <data name="Osk_Control_ShiftRightHand" xml:space="preserve"><value>Shift voor de volgende toets, rechterhand</value></data>
+  <data name="Osk_Control_SymbolsPage" xml:space="preserve"><value>Symbolenpagina</value></data>
+  <data name="Osk_Control_CursorLeft" xml:space="preserve"><value>Cursor naar links</value></data>
+  <data name="Osk_Control_CursorRight" xml:space="preserve"><value>Cursor naar rechts</value></data>
+  <data name="Osk_Control_MoveUp" xml:space="preserve"><value>Omhoog</value></data>
+  <data name="Osk_Control_MoveDown" xml:space="preserve"><value>Omlaag</value></data>
+  <data name="Osk_Control_MoveLeft" xml:space="preserve"><value>Naar links</value></data>
+  <data name="Osk_Control_MoveRight" xml:space="preserve"><value>Naar rechts</value></data>
+  <data name="Osk_Control_Suggestion_Format" xml:space="preserve"><value>Suggestie {0}</value></data>
+  <data name="Osk_Control_MoveKeyboard" xml:space="preserve"><value>Toetsenbord verplaatsen (vasthouden)</value></data>
+  <data name="Osk_Control_TypeLeftHalf" xml:space="preserve"><value>Linkerhelft typen</value></data>
+  <data name="Osk_Control_TypeRightHalf" xml:space="preserve"><value>Rechterhelft typen</value></data>
+  <data name="Osk_Control_ArrowUp" xml:space="preserve"><value>Pijl omhoog</value></data>
+  <data name="Osk_Control_ArrowDown" xml:space="preserve"><value>Pijl omlaag</value></data>
+  <data name="Osk_Control_ArrowLeft" xml:space="preserve"><value>Pijl naar links</value></data>
+  <data name="Osk_Control_ArrowRight" xml:space="preserve"><value>Pijl naar rechts</value></data>
+  <data name="Osk_Control_PickWest" xml:space="preserve"><value>West kiezen</value></data>
+  <data name="Osk_Control_PickNorth" xml:space="preserve"><value>Noord kiezen</value></data>
+  <data name="Osk_Control_PickEast" xml:space="preserve"><value>Oost kiezen</value></data>
+  <data name="Osk_Control_PickSouth" xml:space="preserve"><value>Zuid kiezen</value></data>
+  <data name="Osk_Control_Capitals" xml:space="preserve"><value>Hoofdletters en symbolen (vasthouden)</value></data>
+  <data name="Osk_Control_Numbers" xml:space="preserve"><value>Cijfers en haakjes (vasthouden)</value></data>
+  <data name="Osk_Control_Home" xml:space="preserve"><value>Home</value></data>
+  <data name="Osk_Control_End" xml:space="preserve"><value>End</value></data>
+  <data name="Menu_Keyboard_OpenPress" xml:space="preserve"><value>Opent bij</value></data>
+  <data name="Menu_Keyboard_OpenPress_Tip" xml:space="preserve"><value>De druk op Opent met die het toetsenbord opent of sluit. De Steam-bindingen voor lang en dubbel indrukken worden geïmporteerd als Bij lang indrukken en Bij dubbel indrukken, zodat een korte druk op dezelfde invoer zijn eigen binding houdt.</value></data>
+  <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>Opent bij herstellen</value></data>
+  <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>Opent of sluit het toetsenbord zodra Opent met de vasthoudtijd is ingehouden. Een kortere druk doet niets.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>Opent of sluit het toetsenbord als Opent met twee keer binnen het tijdvenster wordt ingedrukt.</value></data>
 </root>

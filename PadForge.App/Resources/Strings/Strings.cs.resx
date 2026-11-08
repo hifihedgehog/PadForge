@@ -4976,4 +4976,207 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD bránil pohybu myši v dosažení Windows. PadForge blokuje klávesy a tlačítka myši, ale ne pohyb, takže se ukazatel stále hýbe.</value></data>
   <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>Virtuální ovladače PadForge přebírají pohyb pouze z pohybového senzoru ovladače.</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows se z profilu {0} vrátil k tomuto profilu tlačítkem. Chcete-li totéž v PadForge, přidejte pro tento profil Zkratku profilu na stránce Profily.</value></data>
+  <data name="Osk_Style_Grid" xml:space="preserve">
+    <value>Mřížka</value>
+  </data>
+  <data name="Osk_Style_Split" xml:space="preserve">
+    <value>Rozdělená</value>
+  </data>
+  <data name="Osk_Style_Wheel" xml:space="preserve">
+    <value>Kolo</value>
+  </data>
+  <data name="Osk_CloseKeyboard" xml:space="preserve">
+    <value>Zavřít klávesnici</value>
+  </data>
+  <data name="Osk_Drag" xml:space="preserve">
+    <value>Přetažením přesunete klávesnici</value>
+  </data>
+  <data name="Osk_Wheel_Keys" xml:space="preserve">
+    <value>Klávesy</value>
+  </data>
+  <data name="Osk_Key_Tab" xml:space="preserve">
+    <value>Tab</value>
+  </data>
+  <data name="Osk_Key_Caps" xml:space="preserve">
+    <value>Caps</value>
+  </data>
+  <data name="Osk_Key_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Osk_Key_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Key_Ctrl" xml:space="preserve">
+    <value>Ctrl</value>
+  </data>
+  <data name="Osk_Key_Win" xml:space="preserve">
+    <value>Win</value>
+  </data>
+  <data name="Osk_Key_Alt" xml:space="preserve">
+    <value>Alt</value>
+  </data>
+  <data name="Osk_Key_AltGr" xml:space="preserve">
+    <value>AltGr</value>
+  </data>
+  <data name="Osk_Key_Symbols" xml:space="preserve">
+    <value>&amp;123</value>
+  </data>
+  <data name="Osk_Key_Letters" xml:space="preserve">
+    <value>abc</value>
+  </data>
+  <data name="Osk_Key_Space" xml:space="preserve">
+    <value>Mezera</value>
+  </data>
+  <data name="Osk_Key_Esc" xml:space="preserve">
+    <value>Esc</value>
+  </data>
+  <data name="Osk_Key_Del" xml:space="preserve">
+    <value>Del</value>
+  </data>
+  <data name="Osk_Key_Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Osk_Key_End" xml:space="preserve">
+    <value>End</value>
+  </data>
+  <data name="Osk_Key_PgUp" xml:space="preserve">
+    <value>PgUp</value>
+  </data>
+  <data name="Osk_Key_PgDn" xml:space="preserve">
+    <value>PgDn</value>
+  </data>
+  <data name="Osk_Key_Ins" xml:space="preserve">
+    <value>Ins</value>
+  </data>
+  <data name="Osk_Key_PrtSc" xml:space="preserve">
+    <value>PrtSc</value>
+  </data>
+  <data name="Osk_Hint_Type" xml:space="preserve">
+    <value>Psát</value>
+  </data>
+  <data name="Osk_Hint_TypeLeft" xml:space="preserve">
+    <value>Psát vlevo</value>
+  </data>
+  <data name="Osk_Hint_TypeRight" xml:space="preserve">
+    <value>Psát vpravo</value>
+  </data>
+  <data name="Osk_Hint_Backspace" xml:space="preserve">
+    <value>Backspace</value>
+  </data>
+  <data name="Osk_Hint_Space" xml:space="preserve">
+    <value>Mezera</value>
+  </data>
+  <data name="Osk_Hint_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Osk_Hint_Close" xml:space="preserve">
+    <value>Zavřít</value>
+  </data>
+  <data name="Osk_Hint_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Hint_Symbols" xml:space="preserve">
+    <value>Symboly</value>
+  </data>
+  <data name="Osk_Hint_Cursor" xml:space="preserve">
+    <value>Kurzor</value>
+  </data>
+  <data name="Osk_Hint_Suggestion" xml:space="preserve">
+    <value>Návrh</value>
+  </data>
+  <data name="Osk_Hint_Capitals" xml:space="preserve">
+    <value>Podržet: velká</value>
+  </data>
+  <data name="Osk_Hint_Numbers" xml:space="preserve">
+    <value>Podržet: čísla</value>
+  </data>
+  <data name="Osk_Hint_Keys" xml:space="preserve">
+    <value>Podržet: klávesy</value>
+  </data>
+  <data name="Osk_Hint_Move" xml:space="preserve">
+    <value>Podržet: přesun</value>
+  </data>
+  <data name="Osk_Input_Dpad" xml:space="preserve">
+    <value>Směrový kříž</value>
+  </data>
+  <data name="Menu_Style_Keyboard" xml:space="preserve"><value>Klávesnice</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>Radiální prstenec a Dotyková mřížka spouštějí vazby buněk. Klávesnice píše klávesy používaného rozložení Windows.</value></data>
+  <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Rozložení</value></data>
+  <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Jak klávesnice uspořádá klávesy a jak je ovladač vybírá.</value></data>
+  <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Jedno zvýraznění, posouvané páčkou nebo čtyřmi vstupy, rozložení, které používají Windows, Xbox a Steam.</value></data>
+  <data name="Menu_KeyboardLayout_Split_Desc" xml:space="preserve"><value>Každá polovina klávesnice má vlastní vstup pro řízení a vlastní vstup pro psaní.</value></data>
+  <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>Kolo Daisy: vyberete jednu z osmi skupin a pak jeden z jejích čtyř znaků.</value></data>
+  <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>Resetovat rozložení</value></data>
+  <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>Otevírá se pomocí</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Libovolný vstup na zařízení přiřazeném k tomuto slotu, nebo dva držené současně. Stejný vstup klávesnici zavře, pokud ho nepoužívá i některé ovládání klávesnice. Prázdné pole znamená, že ji žádný vstup neotevře.</value></data>
+  <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>Resetovat „Otevírá se pomocí“</value></data>
+  <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>Otevřít při výběru textového pole</value></data>
+  <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>V aplikacích Windows a v prohlížečích, bez tlačítka. Hry vykreslují vlastní textová pole, takže se ve hře otevře vstupem výše, nebo jeho vrstvou, když je zapnuto „Vrstva drží nabídku otevřenou“.</value></data>
+  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>Vstup, který posouvá zvýraznění po klávesách, čtený z fyzických ovladačů přiřazených ke slotu.</value></data>
+  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>Řídit levou polovinu pomocí</value></data>
+  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>Řídit pravou polovinu pomocí</value></data>
+  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>Vybrat skupinu pomocí</value></data>
+  <data name="Menu_Reset_Host2" xml:space="preserve"><value>Resetovat „Řídit pravou polovinu pomocí“</value></data>
+  <data name="Menu_Host_DPad" xml:space="preserve"><value>Směrový kříž</value></data>
+  <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>Čelní tlačítka</value></data>
+  <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>Ovládání klávesnice</value></data>
+  <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>Rozložení {0}, ovládání: {1}</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Čtou se z fyzických ovladačů přiřazených k tomuto slotu. Každé ovládání přijme libovolný vstup na kterémkoli z nich: tlačítko, směr osy, hat, touchpad, nebo dva vstupy držené současně. Klikněte na tlačítko záznamu a stiskněte vstup, nebo podržte jeden vstup a stiskněte druhý pro kombinaci. Namapovat vše je zaznamená popořadě.</value></data>
+  <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>Namapovat vše</value></data>
+  <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>Zaznamená popořadě všechna ovládání rozložení. Stavový řádek uvádí ovládání, pro které se má stisknout vstup.</value></data>
+  <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>Stiskněte vstup pro {0} ({1} z {2})</value></data>
+  <data name="Menu_Keyboard_MapAll_Done" xml:space="preserve"><value>Všechna ovládání klávesnice jsou zaznamenána.</value></data>
+  <data name="Menu_Reset_KeyboardControls" xml:space="preserve"><value>Resetovat ovládání klávesnice</value></data>
+  <data name="Menu_Keyboard_Reset_Format" xml:space="preserve"><value>Resetovat {0} na {1}</value></data>
+  <data name="Menu_Keyboard_RecordingPrompt" xml:space="preserve"><value>Stiskněte vstup na libovolném zařízení přiřazeném k tomuto slotu</value></data>
+  <data name="Menu_Keyboard_Card" xml:space="preserve"><value>Klávesnice</value></data>
+  <data name="Menu_TypesThrough" xml:space="preserve"><value>Píše přes</value></data>
+  <data name="Menu_TypesThrough_Caption" xml:space="preserve"><value>Vstup Windows píše každou klávesu přes Windows a programy poznají, že pochází ze softwaru. Klávesnice slotu Klávesnice + myš píše tak, jak určuje nastavení Klávesnice tohoto slotu. Virtuální klávesnice HIDMaestro píše jako tento model klávesnice, který programy vidí jako hardware. Nabídka klávesnice si ji vytvoří sama, takže slot Klávesnice + myš nepotřebuje. Klávesa, kterou zvolená klávesnice nemá, a znak, který žádná klávesa nepíše, stále procházejí přes Vstup Windows.</value></data>
+  <data name="Menu_TypesThrough_Slot_Format" xml:space="preserve"><value>Stejná klávesnice jako {0}</value></data>
+  <data name="Menu_Reset_TypesThrough" xml:space="preserve"><value>Resetovat „Píše přes“</value></data>
+  <data name="Menu_FunctionRow" xml:space="preserve"><value>Funkční řada</value></data>
+  <data name="Menu_FunctionRow_Caption" xml:space="preserve"><value>Esc, F1 až F12 a Del. Přepíná ji také klávesa Fn na klávesnici.</value></data>
+  <data name="Menu_WordSuggestions" xml:space="preserve"><value>Návrhy slov</value></data>
+  <data name="Menu_WordSuggestions_Caption" xml:space="preserve"><value>Z predikce textu ve Windows, pro jazyky nainstalované ve Windows.</value></data>
+  <data name="Menu_SymbolsPage" xml:space="preserve"><value>Stránka symbolů</value></data>
+  <data name="Menu_SymbolsPage_Tip" xml:space="preserve"><value>Znaky na stránce symbolů klávesnice. Píší se jako znaky Unicode.</value></data>
+  <data name="Menu_Reset_Symbols" xml:space="preserve"><value>Resetovat stránku symbolů</value></data>
+  <data name="Menu_Keyboard_Overlay_Caption" xml:space="preserve"><value>Řádky, které má každá nabídka. Nastaví je také přetažení horní lišty nebo rohového úchytu klávesnice, případně podržení ovládání „Přesunout klávesnici (podržet)“.</value></data>
+  <data name="Osk_Title" xml:space="preserve"><value>Klávesnice na obrazovce</value></data>
+  <data name="Osk_Control_TypeKey" xml:space="preserve"><value>Napsat klávesu</value></data>
+  <data name="Osk_Control_Backspace" xml:space="preserve"><value>Backspace</value></data>
+  <data name="Osk_Control_Space" xml:space="preserve"><value>Mezera</value></data>
+  <data name="Osk_Control_Enter" xml:space="preserve"><value>Enter</value></data>
+  <data name="Osk_Control_Close" xml:space="preserve"><value>Zavřít</value></data>
+  <data name="Osk_Control_ShiftNextKey" xml:space="preserve"><value>Shift pro další klávesu</value></data>
+  <data name="Osk_Control_ShiftLeftHand" xml:space="preserve"><value>Shift pro další klávesu, levá ruka</value></data>
+  <data name="Osk_Control_ShiftRightHand" xml:space="preserve"><value>Shift pro další klávesu, pravá ruka</value></data>
+  <data name="Osk_Control_SymbolsPage" xml:space="preserve"><value>Stránka symbolů</value></data>
+  <data name="Osk_Control_CursorLeft" xml:space="preserve"><value>Kurzor vlevo</value></data>
+  <data name="Osk_Control_CursorRight" xml:space="preserve"><value>Kurzor vpravo</value></data>
+  <data name="Osk_Control_MoveUp" xml:space="preserve"><value>Posunout nahoru</value></data>
+  <data name="Osk_Control_MoveDown" xml:space="preserve"><value>Posunout dolů</value></data>
+  <data name="Osk_Control_MoveLeft" xml:space="preserve"><value>Posunout doleva</value></data>
+  <data name="Osk_Control_MoveRight" xml:space="preserve"><value>Posunout doprava</value></data>
+  <data name="Osk_Control_Suggestion_Format" xml:space="preserve"><value>Návrh {0}</value></data>
+  <data name="Osk_Control_MoveKeyboard" xml:space="preserve"><value>Přesunout klávesnici (podržet)</value></data>
+  <data name="Osk_Control_TypeLeftHalf" xml:space="preserve"><value>Psát levou polovinou</value></data>
+  <data name="Osk_Control_TypeRightHalf" xml:space="preserve"><value>Psát pravou polovinou</value></data>
+  <data name="Osk_Control_ArrowUp" xml:space="preserve"><value>Šipka nahoru</value></data>
+  <data name="Osk_Control_ArrowDown" xml:space="preserve"><value>Šipka dolů</value></data>
+  <data name="Osk_Control_ArrowLeft" xml:space="preserve"><value>Šipka doleva</value></data>
+  <data name="Osk_Control_ArrowRight" xml:space="preserve"><value>Šipka doprava</value></data>
+  <data name="Osk_Control_PickWest" xml:space="preserve"><value>Vybrat západ</value></data>
+  <data name="Osk_Control_PickNorth" xml:space="preserve"><value>Vybrat sever</value></data>
+  <data name="Osk_Control_PickEast" xml:space="preserve"><value>Vybrat východ</value></data>
+  <data name="Osk_Control_PickSouth" xml:space="preserve"><value>Vybrat jih</value></data>
+  <data name="Osk_Control_Capitals" xml:space="preserve"><value>Velká písmena a symboly (podržet)</value></data>
+  <data name="Osk_Control_Numbers" xml:space="preserve"><value>Číslice a závorky (podržet)</value></data>
+  <data name="Osk_Control_Home" xml:space="preserve"><value>Home</value></data>
+  <data name="Osk_Control_End" xml:space="preserve"><value>End</value></data>
+  <data name="Menu_Keyboard_OpenPress" xml:space="preserve"><value>Otevírá se při</value></data>
+  <data name="Menu_Keyboard_OpenPress_Tip" xml:space="preserve"><value>Stisk vstupu „Otevírá se pomocí“, který klávesnici otevře nebo zavře. Vazby Long Press a Double Press ze Steam se importují jako „Při dlouhém stisku“ a „Při dvojitém stisku“, takže krátký stisk téhož vstupu si ponechá vlastní vazbu.</value></data>
+  <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>Resetovat „Otevírá se při“</value></data>
+  <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>Otevře nebo zavře klávesnici, jakmile je „Otevírá se pomocí“ podrženo po dobu podržení. Kratší stisk nic neudělá.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>Otevře nebo zavře klávesnici, když je „Otevírá se pomocí“ stisknuto dvakrát v časovém okně stisku.</value></data>
 </root>

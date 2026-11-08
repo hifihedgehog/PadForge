@@ -4976,4 +4976,207 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD మౌస్ కదలిక Windowsకు చేరకుండా ఆపింది. PadForge కీలు మరియు మౌస్ బటన్లను ఆపుతుంది కానీ కదలికను ఆపదు, కాబట్టి పాయింటర్ ఇంకా కదులుతుంది.</value></data>
   <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>PadForge వర్చువల్ కంట్రోలర్‌లు మోషన్‌ను కంట్రోలర్ మోషన్ సెన్సార్ నుండి మాత్రమే తీసుకుంటాయి.</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows ఒక బటన్ ద్వారా {0} నుండి ఈ ప్రొఫైల్‌కు తిరిగి వచ్చింది. PadForge-లో అలా చేయడానికి, ప్రొఫైళ్లు పేజీలో ఈ ప్రొఫైల్ కోసం ఒక ప్రొఫైల్ షార్ట్కట్ జోడించండి.</value></data>
+  <data name="Osk_Style_Grid" xml:space="preserve">
+    <value>గ్రిడ్</value>
+  </data>
+  <data name="Osk_Style_Split" xml:space="preserve">
+    <value>స్ప్లిట్</value>
+  </data>
+  <data name="Osk_Style_Wheel" xml:space="preserve">
+    <value>వీల్</value>
+  </data>
+  <data name="Osk_CloseKeyboard" xml:space="preserve">
+    <value>కీబోర్డ్‌ను మూసివేయి</value>
+  </data>
+  <data name="Osk_Drag" xml:space="preserve">
+    <value>కీబోర్డ్‌ను జరపడానికి లాగండి</value>
+  </data>
+  <data name="Osk_Wheel_Keys" xml:space="preserve">
+    <value>కీలు</value>
+  </data>
+  <data name="Osk_Key_Tab" xml:space="preserve">
+    <value>Tab</value>
+  </data>
+  <data name="Osk_Key_Caps" xml:space="preserve">
+    <value>Caps</value>
+  </data>
+  <data name="Osk_Key_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Osk_Key_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Key_Ctrl" xml:space="preserve">
+    <value>Ctrl</value>
+  </data>
+  <data name="Osk_Key_Win" xml:space="preserve">
+    <value>Win</value>
+  </data>
+  <data name="Osk_Key_Alt" xml:space="preserve">
+    <value>Alt</value>
+  </data>
+  <data name="Osk_Key_AltGr" xml:space="preserve">
+    <value>AltGr</value>
+  </data>
+  <data name="Osk_Key_Symbols" xml:space="preserve">
+    <value>&amp;123</value>
+  </data>
+  <data name="Osk_Key_Letters" xml:space="preserve">
+    <value>అఆఇ</value>
+  </data>
+  <data name="Osk_Key_Space" xml:space="preserve">
+    <value>Space</value>
+  </data>
+  <data name="Osk_Key_Esc" xml:space="preserve">
+    <value>Esc</value>
+  </data>
+  <data name="Osk_Key_Del" xml:space="preserve">
+    <value>Del</value>
+  </data>
+  <data name="Osk_Key_Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Osk_Key_End" xml:space="preserve">
+    <value>End</value>
+  </data>
+  <data name="Osk_Key_PgUp" xml:space="preserve">
+    <value>PgUp</value>
+  </data>
+  <data name="Osk_Key_PgDn" xml:space="preserve">
+    <value>PgDn</value>
+  </data>
+  <data name="Osk_Key_Ins" xml:space="preserve">
+    <value>Ins</value>
+  </data>
+  <data name="Osk_Key_PrtSc" xml:space="preserve">
+    <value>PrtSc</value>
+  </data>
+  <data name="Osk_Hint_Type" xml:space="preserve">
+    <value>టైప్</value>
+  </data>
+  <data name="Osk_Hint_TypeLeft" xml:space="preserve">
+    <value>ఎడమ టైప్</value>
+  </data>
+  <data name="Osk_Hint_TypeRight" xml:space="preserve">
+    <value>కుడి టైప్</value>
+  </data>
+  <data name="Osk_Hint_Backspace" xml:space="preserve">
+    <value>బ్యాక్‌స్పేస్</value>
+  </data>
+  <data name="Osk_Hint_Space" xml:space="preserve">
+    <value>స్పేస్</value>
+  </data>
+  <data name="Osk_Hint_Enter" xml:space="preserve">
+    <value>ఎంటర్</value>
+  </data>
+  <data name="Osk_Hint_Close" xml:space="preserve">
+    <value>మూసివేయి</value>
+  </data>
+  <data name="Osk_Hint_Shift" xml:space="preserve">
+    <value>షిఫ్ట్</value>
+  </data>
+  <data name="Osk_Hint_Symbols" xml:space="preserve">
+    <value>చిహ్నాలు</value>
+  </data>
+  <data name="Osk_Hint_Cursor" xml:space="preserve">
+    <value>కర్సర్</value>
+  </data>
+  <data name="Osk_Hint_Suggestion" xml:space="preserve">
+    <value>సూచన</value>
+  </data>
+  <data name="Osk_Hint_Capitals" xml:space="preserve">
+    <value>పట్టుకో: క్యాపిటల్స్</value>
+  </data>
+  <data name="Osk_Hint_Numbers" xml:space="preserve">
+    <value>పట్టుకో: సంఖ్యలు</value>
+  </data>
+  <data name="Osk_Hint_Keys" xml:space="preserve">
+    <value>పట్టుకో: కీలు</value>
+  </data>
+  <data name="Osk_Hint_Move" xml:space="preserve">
+    <value>పట్టుకో: జరుపు</value>
+  </data>
+  <data name="Osk_Input_Dpad" xml:space="preserve">
+    <value>D-ప్యాడ్</value>
+  </data>
+  <data name="Menu_Style_Keyboard" xml:space="preserve"><value>కీబోర్డ్</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>రేడియల్ రింగ్ మరియు టచ్ గ్రిడ్ సెల్ బైండింగ్‌లను అమలు చేస్తాయి. కీబోర్డ్ వాడుకలో ఉన్న Windows లేఅవుట్ కీలను టైప్ చేస్తుంది.</value></data>
+  <data name="Menu_KeyboardLayout" xml:space="preserve"><value>లేఅవుట్</value></data>
+  <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>కీబోర్డ్ తన కీలను ఎలా అమర్చుతుందో, కంట్రోలర్ వాటిని ఎలా ఎంచుకుంటుందో.</value></data>
+  <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>ఒక స్టిక్ లేదా నాలుగు ఇన్పుట్లతో కదిలే ఒకే హైలైట్, Windows, Xbox మరియు Steam వాడే లేఅవుట్.</value></data>
+  <data name="Menu_KeyboardLayout_Split_Desc" xml:space="preserve"><value>కీబోర్డ్ ప్రతి సగానికి దాని సొంత నడిపించే ఇన్పుట్ మరియు దాని సొంత టైప్ ఇన్పుట్ ఉంటాయి.</value></data>
+  <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>డైజీ వీల్: ఎనిమిది గుంపులలో ఒకదాన్ని, ఆపై దాని నాలుగు అక్షరాలలో ఒకదాన్ని ఎంచుకోండి.</value></data>
+  <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>లేఅవుట్‌ను రీసెట్ చేయి</value></data>
+  <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>దీనితో తెరుచుకుంటుంది</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>ఈ స్లాట్‌కు కేటాయించిన పరికరంలోని ఏదైనా ఇన్పుట్, లేదా రెండు కలిపి పట్టుకున్నవి. కీబోర్డ్ నియంత్రణ కూడా అదే ఇన్పుట్ వాడితే తప్ప, అదే ఇన్పుట్ కీబోర్డ్‌ను మూసివేస్తుంది. ఖాళీగా ఉంటే ఏ ఇన్పుట్ దీన్ని తెరవదు.</value></data>
+  <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>దీనితో తెరుచుకోవడాన్ని రీసెట్ చేయి</value></data>
+  <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>టెక్స్ట్ బాక్స్ ఎంచుకున్నప్పుడు తెరువు</value></data>
+  <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>Windows యాప్‌లలో మరియు బ్రౌజర్‌లలో, బటన్ లేకుండా. గేమ్‌లు తమ సొంత టెక్స్ట్ బాక్స్‌లను గీస్తాయి, కాబట్టి గేమ్‌లో ఇది పైన ఉన్న ఇన్పుట్‌తో తెరుచుకుంటుంది, లేదా లేయర్ మెనును తెరిచి ఉంచుతుంది ఆన్‌లో ఉంటే దాని లేయర్‌తో.</value></data>
+  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>కీలపై హైలైట్‌ను కదిలించే ఇన్పుట్, స్లాట్‌కు కేటాయించిన భౌతిక కంట్రోలర్ల నుండి చదవబడుతుంది.</value></data>
+  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>ఎడమ సగాన్ని దీనితో నడిపించు</value></data>
+  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>కుడి సగాన్ని దీనితో నడిపించు</value></data>
+  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>గుంపును దీనితో ఎంచుకో</value></data>
+  <data name="Menu_Reset_Host2" xml:space="preserve"><value>కుడి సగాన్ని దీనితో నడిపించడాన్ని రీసెట్ చేయి</value></data>
+  <data name="Menu_Host_DPad" xml:space="preserve"><value>D-ప్యాడ్</value></data>
+  <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>ఫేస్ బటన్లు</value></data>
+  <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>కీబోర్డ్ నియంత్రణలు</value></data>
+  <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>{0} లేఅవుట్, {1} నియంత్రణలు</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>ఈ స్లాట్‌కు కేటాయించిన భౌతిక కంట్రోలర్ల నుండి చదవబడుతుంది. ప్రతి నియంత్రణ వాటిలో దేనిలోనైనా ఏ ఇన్పుట్‌నైనా తీసుకుంటుంది: బటన్, అక్షం దిశ, హ్యాట్, టచ్ ప్యాడ్, లేదా రెండు కలిపి పట్టుకున్నవి. రికార్డ్ బటన్‌ను క్లిక్ చేసి ఇన్పుట్‌ను నొక్కండి, లేదా కలయిక కోసం ఒక ఇన్పుట్‌ను పట్టుకుని రెండవదాన్ని నొక్కండి. అన్నీ మ్యాప్ చేయి వాటిని వరుసగా రికార్డ్ చేస్తుంది.</value></data>
+  <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>అన్నీ మ్యాప్ చేయి</value></data>
+  <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>లేఅవుట్‌లోని ప్రతి నియంత్రణను వరుసగా రికార్డ్ చేస్తుంది. ఏ నియంత్రణకు ఇన్పుట్ నొక్కాలో స్థితి పంక్తి చెబుతుంది.</value></data>
+  <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>{0} కోసం ఇన్పుట్‌ను నొక్కండి ({2} లో {1})</value></data>
+  <data name="Menu_Keyboard_MapAll_Done" xml:space="preserve"><value>కీబోర్డ్ నియంత్రణలన్నీ రికార్డ్ అయ్యాయి.</value></data>
+  <data name="Menu_Reset_KeyboardControls" xml:space="preserve"><value>కీబోర్డ్ నియంత్రణలను రీసెట్ చేయి</value></data>
+  <data name="Menu_Keyboard_Reset_Format" xml:space="preserve"><value>{0} ను {1} కు రీసెట్ చేయి</value></data>
+  <data name="Menu_Keyboard_RecordingPrompt" xml:space="preserve"><value>ఈ స్లాట్‌కు కేటాయించిన ఏదైనా పరికరంలో ఒక ఇన్పుట్‌ను నొక్కండి</value></data>
+  <data name="Menu_Keyboard_Card" xml:space="preserve"><value>కీబోర్డ్</value></data>
+  <data name="Menu_TypesThrough" xml:space="preserve"><value>దీని ద్వారా టైప్ అవుతుంది</value></data>
+  <data name="Menu_TypesThrough_Caption" xml:space="preserve"><value>Windows ఇన్పుట్ ప్రతి కీని Windows ద్వారా టైప్ చేస్తుంది, అది సాఫ్ట్‌వేర్ నుండి వచ్చిందని ప్రోగ్రామ్‌లు గుర్తించగలవు. కీబోర్డ్ + మౌస్ స్లాట్ కీబోర్డ్ దాన్ని ఆ స్లాట్ కీబోర్డ్ సెట్టింగ్ టైప్ చేసే విధంగానే టైప్ చేస్తుంది. HIDMaestro వర్చువల్ కీబోర్డ్ దాన్ని ఆ మోడల్ కీబోర్డ్‌గా టైప్ చేస్తుంది, దాన్ని ప్రోగ్రామ్‌లు హార్డ్‌వేర్‌గా చూస్తాయి. కీబోర్డ్ మెను దాన్ని తానే తయారు చేస్తుంది, కాబట్టి దానికి కీబోర్డ్ + మౌస్ స్లాట్ అవసరం లేదు. ఎంచుకున్న కీబోర్డ్‌లో లేని కీ, మరియు ఏ కీ టైప్ చేయని అక్షరం, ఇప్పటికీ Windows ఇన్పుట్ ద్వారా వెళ్తాయి.</value></data>
+  <data name="Menu_TypesThrough_Slot_Format" xml:space="preserve"><value>{0} వలె అదే కీబోర్డ్</value></data>
+  <data name="Menu_Reset_TypesThrough" xml:space="preserve"><value>దీని ద్వారా టైప్ అవ్వడాన్ని రీసెట్ చేయి</value></data>
+  <data name="Menu_FunctionRow" xml:space="preserve"><value>ఫంక్షన్ వరుస</value></data>
+  <data name="Menu_FunctionRow_Caption" xml:space="preserve"><value>Esc, F1 నుండి F12 వరకు మరియు Del. కీబోర్డ్‌లోని Fn కీ కూడా దీన్ని మారుస్తుంది.</value></data>
+  <data name="Menu_WordSuggestions" xml:space="preserve"><value>పదాల సూచనలు</value></data>
+  <data name="Menu_WordSuggestions_Caption" xml:space="preserve"><value>Windows లోని టెక్స్ట్ అంచనా నుండి, Windows లో ఇన్‌స్టాల్ చేసిన భాషల కోసం.</value></data>
+  <data name="Menu_SymbolsPage" xml:space="preserve"><value>చిహ్నాల పేజీ</value></data>
+  <data name="Menu_SymbolsPage_Tip" xml:space="preserve"><value>కీబోర్డ్ చిహ్నాల పేజీలోని అక్షరాలు. అవి యూనికోడ్ అక్షరాలుగా టైప్ అవుతాయి.</value></data>
+  <data name="Menu_Reset_Symbols" xml:space="preserve"><value>చిహ్నాల పేజీని రీసెట్ చేయి</value></data>
+  <data name="Menu_Keyboard_Overlay_Caption" xml:space="preserve"><value>ప్రతి మెనుకు ఇప్పటికే ఉన్న వరుసలు. కీబోర్డ్ పై పట్టీని లేదా మూల గ్రిప్‌ను లాగడం, లేదా కీబోర్డ్‌ను జరుపు (పట్టుకో) నొక్కి ఉంచడం కూడా వాటిని సెట్ చేస్తుంది.</value></data>
+  <data name="Osk_Title" xml:space="preserve"><value>ఆన్-స్క్రీన్ కీబోర్డ్</value></data>
+  <data name="Osk_Control_TypeKey" xml:space="preserve"><value>కీని టైప్ చేయి</value></data>
+  <data name="Osk_Control_Backspace" xml:space="preserve"><value>బ్యాక్ స్పేస్</value></data>
+  <data name="Osk_Control_Space" xml:space="preserve"><value>స్పేస్</value></data>
+  <data name="Osk_Control_Enter" xml:space="preserve"><value>ఎంటర్</value></data>
+  <data name="Osk_Control_Close" xml:space="preserve"><value>మూసివేయి</value></data>
+  <data name="Osk_Control_ShiftNextKey" xml:space="preserve"><value>తదుపరి కీకి షిఫ్ట్</value></data>
+  <data name="Osk_Control_ShiftLeftHand" xml:space="preserve"><value>తదుపరి కీకి షిఫ్ట్, ఎడమ చేయి</value></data>
+  <data name="Osk_Control_ShiftRightHand" xml:space="preserve"><value>తదుపరి కీకి షిఫ్ట్, కుడి చేయి</value></data>
+  <data name="Osk_Control_SymbolsPage" xml:space="preserve"><value>చిహ్నాల పేజీ</value></data>
+  <data name="Osk_Control_CursorLeft" xml:space="preserve"><value>కర్సర్ ఎడమ</value></data>
+  <data name="Osk_Control_CursorRight" xml:space="preserve"><value>కర్సర్ కుడి</value></data>
+  <data name="Osk_Control_MoveUp" xml:space="preserve"><value>పైకి జరుపు</value></data>
+  <data name="Osk_Control_MoveDown" xml:space="preserve"><value>కిందికి జరుపు</value></data>
+  <data name="Osk_Control_MoveLeft" xml:space="preserve"><value>ఎడమకు జరుపు</value></data>
+  <data name="Osk_Control_MoveRight" xml:space="preserve"><value>కుడికి జరుపు</value></data>
+  <data name="Osk_Control_Suggestion_Format" xml:space="preserve"><value>సూచన {0}</value></data>
+  <data name="Osk_Control_MoveKeyboard" xml:space="preserve"><value>కీబోర్డ్‌ను జరుపు (పట్టుకో)</value></data>
+  <data name="Osk_Control_TypeLeftHalf" xml:space="preserve"><value>ఎడమ సగం టైప్ చేయి</value></data>
+  <data name="Osk_Control_TypeRightHalf" xml:space="preserve"><value>కుడి సగం టైప్ చేయి</value></data>
+  <data name="Osk_Control_ArrowUp" xml:space="preserve"><value>పైకి బాణం</value></data>
+  <data name="Osk_Control_ArrowDown" xml:space="preserve"><value>కిందికి బాణం</value></data>
+  <data name="Osk_Control_ArrowLeft" xml:space="preserve"><value>ఎడమ బాణం</value></data>
+  <data name="Osk_Control_ArrowRight" xml:space="preserve"><value>కుడి బాణం</value></data>
+  <data name="Osk_Control_PickWest" xml:space="preserve"><value>పడమరను ఎంచుకో</value></data>
+  <data name="Osk_Control_PickNorth" xml:space="preserve"><value>ఉత్తరాన్ని ఎంచుకో</value></data>
+  <data name="Osk_Control_PickEast" xml:space="preserve"><value>తూర్పును ఎంచుకో</value></data>
+  <data name="Osk_Control_PickSouth" xml:space="preserve"><value>దక్షిణాన్ని ఎంచుకో</value></data>
+  <data name="Osk_Control_Capitals" xml:space="preserve"><value>క్యాపిటల్స్ మరియు చిహ్నాలు (పట్టుకో)</value></data>
+  <data name="Osk_Control_Numbers" xml:space="preserve"><value>సంఖ్యలు మరియు బ్రాకెట్లు (పట్టుకో)</value></data>
+  <data name="Osk_Control_Home" xml:space="preserve"><value>హోమ్</value></data>
+  <data name="Osk_Control_End" xml:space="preserve"><value>ఎండ్</value></data>
+  <data name="Menu_Keyboard_OpenPress" xml:space="preserve"><value>దీనిపై తెరుచుకుంటుంది</value></data>
+  <data name="Menu_Keyboard_OpenPress_Tip" xml:space="preserve"><value>కీబోర్డ్‌ను తెరిచే లేదా మూసివేసే దీనితో తెరుచుకుంటుంది యొక్క నొక్కు. Steam యొక్క లాంగ్ ప్రెస్ మరియు డబుల్ ప్రెస్ బైండింగ్‌లు ఎక్కువసేపు నొక్కినప్పుడు మరియు రెండుసార్లు నొక్కినప్పుడు గా దిగుమతి అవుతాయి, కాబట్టి అదే ఇన్పుట్ యొక్క చిన్న నొక్కు తన సొంత బైండింగ్‌ను ఉంచుకుంటుంది.</value></data>
+  <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>దీనిపై తెరుచుకోవడాన్ని రీసెట్ చేయి</value></data>
+  <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>దీనితో తెరుచుకుంటుంది హోల్డ్ సమయం వరకు పట్టుకున్నప్పుడు కీబోర్డ్‌ను తెరుస్తుంది లేదా మూసివేస్తుంది. చిన్న నొక్కు ఏమీ చేయదు.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>దీనితో తెరుచుకుంటుంది నొక్కు విండో లోపల రెండుసార్లు నొక్కినప్పుడు కీబోర్డ్‌ను తెరుస్తుంది లేదా మూసివేస్తుంది.</value></data>
 </root>

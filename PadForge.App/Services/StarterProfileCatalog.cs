@@ -226,8 +226,8 @@ namespace PadForge.Services
                 Row(Key(VkReturn), Src(PadA)),
                 Row(Key(VkEscape), Src(PadB), Src(PadStart)),
                 Row(Key(VkSpace), Src(PadY)),
-                // X is Show Keyboard, which Valve's desktop scheme puts here.
-                // It rides a macro because the Windows key is not a row target.
+                // X is Show Keyboard, which Valve's desktop scheme puts here:
+                // the keyboard menu below opens on it.
 
                 Row(Key(VkUp), Src(PadUp)),
                 Row(Key(VkDown), Src(PadDown)),
@@ -246,22 +246,24 @@ namespace PadForge.Services
                 Row(Key(VkPageUp), Src("Gamepad Paddle4")),
             });
             AddQuietLayer(set);
+            // The On-Screen Keyboard (#566): Show Keyboard on X, where Valve's
+            // desktop scheme puts it. Its controls are the Grid layout's
+            // defaults. X is also Backspace there, and a press a control
+            // takes stays the control's, so B closes it, as Steam's keyboard
+            // closes.
+            var keyboard = KeyboardMenuDefaults.Create(1, "Keyboard");
+            KeyboardMenuDefaults.SetOpenInput(keyboard, new KeyboardInput(PadX));
+            set.Menus.Add(keyboard);
             return set;
         }
 
-        /// <summary>Desktop's two system keys, both unreachable as rows.
-        /// X opens the on-screen keyboard the way Windows does it
-        /// (Win+Ctrl+O), matching the Show Keyboard that Valve's desktop
-        /// scheme puts on X.
-        ///
-        /// <para>The Windows key sits on Paddle 1, which is Valve's own Deck
-        /// assignment. It stays off Start deliberately: the quiet layer is a
-        /// long press of Start, and a macro there would open the Start menu
-        /// every time the user reached for silence.</para>
-        /// </summary>
+        /// <summary>Desktop's system key, unreachable as a row. The Windows
+        /// key sits on Paddle 1, which is Valve's own Deck assignment. It
+        /// stays off Start deliberately: the quiet layer is a long press of
+        /// Start, and a macro there would open the Start menu every time the
+        /// user reached for silence.</summary>
         private static IEnumerable<MacroData> DesktopMacros() => new[]
         {
-            Tap("Show Keyboard", PadX, VkLWin, VkControl, VkO),
             Tap("Windows Key", "Gamepad Paddle1", VkLWin),
         };
 
@@ -1310,7 +1312,7 @@ namespace PadForge.Services
         private const byte VkMediaNextTrack = 0xB0, VkMediaPrevTrack = 0xB1;
         private const byte VkVolumeMute = 0xAD, VkVolumeDown = 0xAE, VkVolumeUp = 0xAF;
         private const byte VkBrowserBack = 0xA6;
-        private const byte VkLWin = 0x5B, VkO = 0x4F;
+        private const byte VkLWin = 0x5B;
 
         // ── Shared structure ────────────────────────────────────────────
 

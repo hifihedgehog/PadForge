@@ -4976,4 +4976,207 @@
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD เคยกันการเคลื่อนที่ของเมาส์ไม่ให้ไปถึง Windows PadForge กันได้เฉพาะปุ่มคีย์บอร์ดและปุ่มเมาส์ แต่กันการเคลื่อนที่ไม่ได้ ตัวชี้จึงยังเคลื่อนที่อยู่</value></data>
   <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>คอนโทรลเลอร์เสมือนของ PadForge รับข้อมูลการเคลื่อนไหวจากเซ็นเซอร์การเคลื่อนไหวของคอนโทรลเลอร์เท่านั้น</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows เคยสลับกลับมาที่โปรไฟล์นี้จาก {0} ด้วยปุ่มหนึ่ง หากต้องการทำแบบนี้ใน PadForge ให้เพิ่มทางลัดโปรไฟล์สำหรับโปรไฟล์นี้ในหน้าโปรไฟล์</value></data>
+  <data name="Osk_Style_Grid" xml:space="preserve">
+    <value>ตาราง</value>
+  </data>
+  <data name="Osk_Style_Split" xml:space="preserve">
+    <value>แยกครึ่ง</value>
+  </data>
+  <data name="Osk_Style_Wheel" xml:space="preserve">
+    <value>วงล้อ</value>
+  </data>
+  <data name="Osk_CloseKeyboard" xml:space="preserve">
+    <value>ปิดแป้นพิมพ์</value>
+  </data>
+  <data name="Osk_Drag" xml:space="preserve">
+    <value>ลากเพื่อย้ายแป้นพิมพ์</value>
+  </data>
+  <data name="Osk_Wheel_Keys" xml:space="preserve">
+    <value>คีย์</value>
+  </data>
+  <data name="Osk_Key_Tab" xml:space="preserve">
+    <value>Tab</value>
+  </data>
+  <data name="Osk_Key_Caps" xml:space="preserve">
+    <value>Caps</value>
+  </data>
+  <data name="Osk_Key_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Osk_Key_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Key_Ctrl" xml:space="preserve">
+    <value>Ctrl</value>
+  </data>
+  <data name="Osk_Key_Win" xml:space="preserve">
+    <value>Win</value>
+  </data>
+  <data name="Osk_Key_Alt" xml:space="preserve">
+    <value>Alt</value>
+  </data>
+  <data name="Osk_Key_AltGr" xml:space="preserve">
+    <value>AltGr</value>
+  </data>
+  <data name="Osk_Key_Symbols" xml:space="preserve">
+    <value>&amp;123</value>
+  </data>
+  <data name="Osk_Key_Letters" xml:space="preserve">
+    <value>กขค</value>
+  </data>
+  <data name="Osk_Key_Space" xml:space="preserve">
+    <value>Space</value>
+  </data>
+  <data name="Osk_Key_Esc" xml:space="preserve">
+    <value>Esc</value>
+  </data>
+  <data name="Osk_Key_Del" xml:space="preserve">
+    <value>Del</value>
+  </data>
+  <data name="Osk_Key_Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Osk_Key_End" xml:space="preserve">
+    <value>End</value>
+  </data>
+  <data name="Osk_Key_PgUp" xml:space="preserve">
+    <value>PgUp</value>
+  </data>
+  <data name="Osk_Key_PgDn" xml:space="preserve">
+    <value>PgDn</value>
+  </data>
+  <data name="Osk_Key_Ins" xml:space="preserve">
+    <value>Ins</value>
+  </data>
+  <data name="Osk_Key_PrtSc" xml:space="preserve">
+    <value>PrtSc</value>
+  </data>
+  <data name="Osk_Hint_Type" xml:space="preserve">
+    <value>พิมพ์</value>
+  </data>
+  <data name="Osk_Hint_TypeLeft" xml:space="preserve">
+    <value>พิมพ์ซ้าย</value>
+  </data>
+  <data name="Osk_Hint_TypeRight" xml:space="preserve">
+    <value>พิมพ์ขวา</value>
+  </data>
+  <data name="Osk_Hint_Backspace" xml:space="preserve">
+    <value>ลบถอย</value>
+  </data>
+  <data name="Osk_Hint_Space" xml:space="preserve">
+    <value>เว้นวรรค</value>
+  </data>
+  <data name="Osk_Hint_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Osk_Hint_Close" xml:space="preserve">
+    <value>ปิด</value>
+  </data>
+  <data name="Osk_Hint_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Hint_Symbols" xml:space="preserve">
+    <value>สัญลักษณ์</value>
+  </data>
+  <data name="Osk_Hint_Cursor" xml:space="preserve">
+    <value>เคอร์เซอร์</value>
+  </data>
+  <data name="Osk_Hint_Suggestion" xml:space="preserve">
+    <value>คำแนะนำ</value>
+  </data>
+  <data name="Osk_Hint_Capitals" xml:space="preserve">
+    <value>กดค้าง: ตัวพิมพ์ใหญ่</value>
+  </data>
+  <data name="Osk_Hint_Numbers" xml:space="preserve">
+    <value>กดค้าง: ตัวเลข</value>
+  </data>
+  <data name="Osk_Hint_Keys" xml:space="preserve">
+    <value>กดค้าง: คีย์</value>
+  </data>
+  <data name="Osk_Hint_Move" xml:space="preserve">
+    <value>กดค้าง: ย้าย</value>
+  </data>
+  <data name="Osk_Input_Dpad" xml:space="preserve">
+    <value>D-pad</value>
+  </data>
+  <data name="Menu_Style_Keyboard" xml:space="preserve"><value>คีย์บอร์ด</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>วงแหวนรัศมีและตารางสัมผัสจะสั่งงานตามการผูกของแต่ละเซลล์ ส่วนคีย์บอร์ดจะพิมพ์ตัวอักษรตามเลย์เอาต์ Windows ที่ใช้อยู่</value></data>
+  <data name="Menu_KeyboardLayout" xml:space="preserve"><value>เลย์เอาต์</value></data>
+  <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>รูปแบบการจัดวางปุ่มของคีย์บอร์ด และวิธีที่คอนโทรลเลอร์เลือกปุ่มเหล่านั้น</value></data>
+  <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>ไฮไลต์เดียว เลื่อนด้วยสติ๊กหรืออินพุตสี่ตัว เป็นเลย์เอาต์ที่ Windows, Xbox และ Steam ใช้</value></data>
+  <data name="Menu_KeyboardLayout_Split_Desc" xml:space="preserve"><value>คีย์บอร์ดแต่ละครึ่งมีอินพุตสำหรับบังคับและอินพุตสำหรับพิมพ์เป็นของตัวเอง</value></data>
+  <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>วงล้อเดซี่: เลือกหนึ่งในแปดกลุ่ม แล้วเลือกหนึ่งในสี่ตัวอักษรของกลุ่มนั้น</value></data>
+  <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>รีเซ็ตเลย์เอาต์</value></data>
+  <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>เปิดด้วย</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>อินพุตใดก็ได้บนอุปกรณ์ที่กำหนดให้สล็อตนี้ หรือสองอินพุตที่กดค้างพร้อมกัน อินพุตเดียวกันนี้ปิดคีย์บอร์ดด้วย เว้นแต่ตัวควบคุมของคีย์บอร์ดใช้อินพุตนั้นอยู่ ถ้าเว้นว่างไว้ จะไม่มีอินพุตใดเปิดคีย์บอร์ด</value></data>
+  <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>รีเซ็ต “เปิดด้วย”</value></data>
+  <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>เปิดเมื่อเลือกช่องข้อความ</value></data>
+  <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>ในแอปและเบราว์เซอร์บน Windows โดยไม่ต้องกดปุ่ม เกมวาดช่องข้อความเอง ดังนั้นในเกมคีย์บอร์ดจะเปิดด้วยอินพุตด้านบน หรือเปิดด้วยเลเยอร์ของมันเมื่อเปิดใช้ เลเยอร์เปิดเมนูค้างไว้</value></data>
+  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>อินพุตที่เลื่อนไฮไลต์ไปตามปุ่ม อ่านจากคอนโทรลเลอร์จริงที่กำหนดให้สล็อต</value></data>
+  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>บังคับครึ่งซ้ายด้วย</value></data>
+  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>บังคับครึ่งขวาด้วย</value></data>
+  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>เลือกกลุ่มด้วย</value></data>
+  <data name="Menu_Reset_Host2" xml:space="preserve"><value>รีเซ็ต “บังคับครึ่งขวาด้วย”</value></data>
+  <data name="Menu_Host_DPad" xml:space="preserve"><value>ปุ่มทิศทาง</value></data>
+  <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>ปุ่มด้านหน้า</value></data>
+  <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>ตัวควบคุมคีย์บอร์ด</value></data>
+  <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>เลย์เอาต์ {0}, ตัวควบคุม {1}</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>อ่านจากคอนโทรลเลอร์จริงที่กำหนดให้สล็อตนี้ ตัวควบคุมแต่ละตัวรับอินพุตใดก็ได้จากคอนโทรลเลอร์เหล่านั้น ได้แก่ ปุ่ม ทิศทางของแกน ปุ่มทิศทาง ทัชแพด หรือสองอินพุตที่กดค้างพร้อมกัน คลิกปุ่มบันทึกแล้วกดอินพุต หรือกดอินพุตหนึ่งค้างไว้แล้วกดอีกอินพุตเพื่อทำเป็นชุดผสม แมปทั้งหมดจะบันทึกตามลำดับ</value></data>
+  <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>แมปทั้งหมด</value></data>
+  <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>บันทึกตัวควบคุมทุกตัวของเลย์เอาต์ตามลำดับ บรรทัดสถานะจะบอกชื่อตัวควบคุมที่ต้องกดอินพุตให้</value></data>
+  <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>กดอินพุตสำหรับ {0} ({1} จาก {2})</value></data>
+  <data name="Menu_Keyboard_MapAll_Done" xml:space="preserve"><value>บันทึกตัวควบคุมคีย์บอร์ดครบทุกตัวแล้ว</value></data>
+  <data name="Menu_Reset_KeyboardControls" xml:space="preserve"><value>รีเซ็ตตัวควบคุมคีย์บอร์ด</value></data>
+  <data name="Menu_Keyboard_Reset_Format" xml:space="preserve"><value>รีเซ็ต {0} เป็น {1}</value></data>
+  <data name="Menu_Keyboard_RecordingPrompt" xml:space="preserve"><value>กดอินพุตบนอุปกรณ์ใดก็ได้ที่กำหนดให้สล็อตนี้</value></data>
+  <data name="Menu_Keyboard_Card" xml:space="preserve"><value>คีย์บอร์ด</value></data>
+  <data name="Menu_TypesThrough" xml:space="preserve"><value>พิมพ์ผ่าน</value></data>
+  <data name="Menu_TypesThrough_Caption" xml:space="preserve"><value>อินพุต Windows พิมพ์แต่ละปุ่มผ่าน Windows และโปรแกรมต่างๆ ตรวจได้ว่ามาจากซอฟต์แวร์ คีย์บอร์ดของสล็อตคีย์บอร์ด + เมาส์ จะพิมพ์แบบเดียวกับการตั้งค่าคีย์บอร์ดของสล็อตนั้น คีย์บอร์ดเสมือน HIDMaestro จะพิมพ์เป็นคีย์บอร์ดรุ่นนั้น ซึ่งโปรแกรมมองเห็นเป็นฮาร์ดแวร์ เมนูคีย์บอร์ดสร้างตัวนั้นขึ้นเอง จึงไม่ต้องมีสล็อตคีย์บอร์ด + เมาส์ ปุ่มที่คีย์บอร์ดที่เลือกไม่มี และตัวอักษรที่ไม่มีปุ่มใดพิมพ์ได้ ยังคงส่งผ่านอินพุต Windows</value></data>
+  <data name="Menu_TypesThrough_Slot_Format" xml:space="preserve"><value>คีย์บอร์ดเดียวกับ {0}</value></data>
+  <data name="Menu_Reset_TypesThrough" xml:space="preserve"><value>รีเซ็ต “พิมพ์ผ่าน”</value></data>
+  <data name="Menu_FunctionRow" xml:space="preserve"><value>แถวฟังก์ชัน</value></data>
+  <data name="Menu_FunctionRow_Caption" xml:space="preserve"><value>Esc, F1 ถึง F12 และ Del ปุ่ม Fn บนคีย์บอร์ดก็สลับแถวนี้ได้เช่นกัน</value></data>
+  <data name="Menu_WordSuggestions" xml:space="preserve"><value>คำแนะนำ</value></data>
+  <data name="Menu_WordSuggestions_Caption" xml:space="preserve"><value>มาจากการคาดเดาข้อความของ Windows สำหรับภาษาที่ติดตั้งใน Windows</value></data>
+  <data name="Menu_SymbolsPage" xml:space="preserve"><value>หน้าสัญลักษณ์</value></data>
+  <data name="Menu_SymbolsPage_Tip" xml:space="preserve"><value>ตัวอักษรบนหน้าสัญลักษณ์ของคีย์บอร์ด พิมพ์เป็นอักขระ Unicode</value></data>
+  <data name="Menu_Reset_Symbols" xml:space="preserve"><value>รีเซ็ตหน้าสัญลักษณ์</value></data>
+  <data name="Menu_Keyboard_Overlay_Caption" xml:space="preserve"><value>แถวที่ทุกเมนูมีอยู่แล้ว การลากแถบด้านบนหรือมุมจับของคีย์บอร์ด หรือการกดค้าง ย้ายคีย์บอร์ด ก็ตั้งค่าเหล่านี้ได้เช่นกัน</value></data>
+  <data name="Osk_Title" xml:space="preserve"><value>คีย์บอร์ดบนหน้าจอ</value></data>
+  <data name="Osk_Control_TypeKey" xml:space="preserve"><value>พิมพ์ปุ่ม</value></data>
+  <data name="Osk_Control_Backspace" xml:space="preserve"><value>Backspace</value></data>
+  <data name="Osk_Control_Space" xml:space="preserve"><value>Space</value></data>
+  <data name="Osk_Control_Enter" xml:space="preserve"><value>Enter</value></data>
+  <data name="Osk_Control_Close" xml:space="preserve"><value>ปิด</value></data>
+  <data name="Osk_Control_ShiftNextKey" xml:space="preserve"><value>Shift สำหรับปุ่มถัดไป</value></data>
+  <data name="Osk_Control_ShiftLeftHand" xml:space="preserve"><value>Shift สำหรับปุ่มถัดไป มือซ้าย</value></data>
+  <data name="Osk_Control_ShiftRightHand" xml:space="preserve"><value>Shift สำหรับปุ่มถัดไป มือขวา</value></data>
+  <data name="Osk_Control_SymbolsPage" xml:space="preserve"><value>หน้าสัญลักษณ์</value></data>
+  <data name="Osk_Control_CursorLeft" xml:space="preserve"><value>เคอร์เซอร์ซ้าย</value></data>
+  <data name="Osk_Control_CursorRight" xml:space="preserve"><value>เคอร์เซอร์ขวา</value></data>
+  <data name="Osk_Control_MoveUp" xml:space="preserve"><value>เลื่อนขึ้น</value></data>
+  <data name="Osk_Control_MoveDown" xml:space="preserve"><value>เลื่อนลง</value></data>
+  <data name="Osk_Control_MoveLeft" xml:space="preserve"><value>เลื่อนซ้าย</value></data>
+  <data name="Osk_Control_MoveRight" xml:space="preserve"><value>เลื่อนขวา</value></data>
+  <data name="Osk_Control_Suggestion_Format" xml:space="preserve"><value>คำแนะนำ {0}</value></data>
+  <data name="Osk_Control_MoveKeyboard" xml:space="preserve"><value>ย้ายคีย์บอร์ด (กดค้าง)</value></data>
+  <data name="Osk_Control_TypeLeftHalf" xml:space="preserve"><value>พิมพ์ครึ่งซ้าย</value></data>
+  <data name="Osk_Control_TypeRightHalf" xml:space="preserve"><value>พิมพ์ครึ่งขวา</value></data>
+  <data name="Osk_Control_ArrowUp" xml:space="preserve"><value>ลูกศรขึ้น</value></data>
+  <data name="Osk_Control_ArrowDown" xml:space="preserve"><value>ลูกศรลง</value></data>
+  <data name="Osk_Control_ArrowLeft" xml:space="preserve"><value>ลูกศรซ้าย</value></data>
+  <data name="Osk_Control_ArrowRight" xml:space="preserve"><value>ลูกศรขวา</value></data>
+  <data name="Osk_Control_PickWest" xml:space="preserve"><value>เลือกตะวันตก</value></data>
+  <data name="Osk_Control_PickNorth" xml:space="preserve"><value>เลือกเหนือ</value></data>
+  <data name="Osk_Control_PickEast" xml:space="preserve"><value>เลือกตะวันออก</value></data>
+  <data name="Osk_Control_PickSouth" xml:space="preserve"><value>เลือกใต้</value></data>
+  <data name="Osk_Control_Capitals" xml:space="preserve"><value>ตัวพิมพ์ใหญ่และสัญลักษณ์ (กดค้าง)</value></data>
+  <data name="Osk_Control_Numbers" xml:space="preserve"><value>ตัวเลขและวงเล็บ (กดค้าง)</value></data>
+  <data name="Osk_Control_Home" xml:space="preserve"><value>Home</value></data>
+  <data name="Osk_Control_End" xml:space="preserve"><value>End</value></data>
+  <data name="Menu_Keyboard_OpenPress" xml:space="preserve"><value>เปิดเมื่อ</value></data>
+  <data name="Menu_Keyboard_OpenPress_Tip" xml:space="preserve"><value>การกด เปิดด้วย ที่เปิดหรือปิดคีย์บอร์ด การผูก Long Press และ Double Press ของ Steam จะนำเข้าเป็น เมื่อกดค้างนาน และ เมื่อกดสองครั้ง ดังนั้นการกดอินพุตเดียวกันแบบสั้นยังคงใช้การผูกของมันเอง</value></data>
+  <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>รีเซ็ต “เปิดเมื่อ”</value></data>
+  <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>เปิดหรือปิดคีย์บอร์ดเมื่อกด เปิดด้วย ค้างครบเวลากดค้าง การกดที่สั้นกว่านั้นไม่มีผลใดๆ</value></data>
+  <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>เปิดหรือปิดคีย์บอร์ดเมื่อกด เปิดด้วย สองครั้งภายในช่วงเวลาการกด</value></data>
 </root>

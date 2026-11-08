@@ -4976,4 +4976,207 @@
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD је спречавао да кретање миша стигне до система Windows. PadForge блокира тастере и дугмад миша, али не и кретање, па се показивач и даље креће.</value></data>
   <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>Виртуелни контролери програма PadForge примају покрете само од сензора покрета на контролеру.</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows се на дугме вратио на овај профил са профила {0}. Да бисте то постигли у програму PadForge, додајте пречицу за профил за овај профил на страници Профили.</value></data>
+  <data name="Osk_Style_Grid" xml:space="preserve">
+    <value>Мрежа</value>
+  </data>
+  <data name="Osk_Style_Split" xml:space="preserve">
+    <value>Подељено</value>
+  </data>
+  <data name="Osk_Style_Wheel" xml:space="preserve">
+    <value>Точак</value>
+  </data>
+  <data name="Osk_CloseKeyboard" xml:space="preserve">
+    <value>Затвори тастатуру</value>
+  </data>
+  <data name="Osk_Drag" xml:space="preserve">
+    <value>Превуците да бисте померили тастатуру</value>
+  </data>
+  <data name="Osk_Wheel_Keys" xml:space="preserve">
+    <value>Тастери</value>
+  </data>
+  <data name="Osk_Key_Tab" xml:space="preserve">
+    <value>Tab</value>
+  </data>
+  <data name="Osk_Key_Caps" xml:space="preserve">
+    <value>Caps</value>
+  </data>
+  <data name="Osk_Key_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Osk_Key_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Key_Ctrl" xml:space="preserve">
+    <value>Ctrl</value>
+  </data>
+  <data name="Osk_Key_Win" xml:space="preserve">
+    <value>Win</value>
+  </data>
+  <data name="Osk_Key_Alt" xml:space="preserve">
+    <value>Alt</value>
+  </data>
+  <data name="Osk_Key_AltGr" xml:space="preserve">
+    <value>AltGr</value>
+  </data>
+  <data name="Osk_Key_Symbols" xml:space="preserve">
+    <value>&amp;123</value>
+  </data>
+  <data name="Osk_Key_Letters" xml:space="preserve">
+    <value>абв</value>
+  </data>
+  <data name="Osk_Key_Space" xml:space="preserve">
+    <value>Размак</value>
+  </data>
+  <data name="Osk_Key_Esc" xml:space="preserve">
+    <value>Esc</value>
+  </data>
+  <data name="Osk_Key_Del" xml:space="preserve">
+    <value>Del</value>
+  </data>
+  <data name="Osk_Key_Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Osk_Key_End" xml:space="preserve">
+    <value>End</value>
+  </data>
+  <data name="Osk_Key_PgUp" xml:space="preserve">
+    <value>PgUp</value>
+  </data>
+  <data name="Osk_Key_PgDn" xml:space="preserve">
+    <value>PgDn</value>
+  </data>
+  <data name="Osk_Key_Ins" xml:space="preserve">
+    <value>Ins</value>
+  </data>
+  <data name="Osk_Key_PrtSc" xml:space="preserve">
+    <value>PrtSc</value>
+  </data>
+  <data name="Osk_Hint_Type" xml:space="preserve">
+    <value>Куцај</value>
+  </data>
+  <data name="Osk_Hint_TypeLeft" xml:space="preserve">
+    <value>Куцај лево</value>
+  </data>
+  <data name="Osk_Hint_TypeRight" xml:space="preserve">
+    <value>Куцај десно</value>
+  </data>
+  <data name="Osk_Hint_Backspace" xml:space="preserve">
+    <value>Backspace</value>
+  </data>
+  <data name="Osk_Hint_Space" xml:space="preserve">
+    <value>Размак</value>
+  </data>
+  <data name="Osk_Hint_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Osk_Hint_Close" xml:space="preserve">
+    <value>Затвори</value>
+  </data>
+  <data name="Osk_Hint_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Hint_Symbols" xml:space="preserve">
+    <value>Симболи</value>
+  </data>
+  <data name="Osk_Hint_Cursor" xml:space="preserve">
+    <value>Курсор</value>
+  </data>
+  <data name="Osk_Hint_Suggestion" xml:space="preserve">
+    <value>Предлог</value>
+  </data>
+  <data name="Osk_Hint_Capitals" xml:space="preserve">
+    <value>Држи: велика</value>
+  </data>
+  <data name="Osk_Hint_Numbers" xml:space="preserve">
+    <value>Држи: бројеви</value>
+  </data>
+  <data name="Osk_Hint_Keys" xml:space="preserve">
+    <value>Држи: тастери</value>
+  </data>
+  <data name="Osk_Hint_Move" xml:space="preserve">
+    <value>Држи: помери</value>
+  </data>
+  <data name="Osk_Input_Dpad" xml:space="preserve">
+    <value>D-pad</value>
+  </data>
+  <data name="Menu_Style_Keyboard" xml:space="preserve"><value>Тастатура</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>Радијални прстен и Мрежа на додир активирају везе ћелија. Тастатура куца тастере Windows распореда који је у употреби.</value></data>
+  <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Распоред</value></data>
+  <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Како тастатура распоређује тастере и како их контролер бира.</value></data>
+  <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Једно истицање, које се помера палицом или са четири улаза, распоред који користе Windows, Xbox и Steam.</value></data>
+  <data name="Menu_KeyboardLayout_Split_Desc" xml:space="preserve"><value>Свака половина тастатуре има свој улаз за управљање и свој улаз за куцање.</value></data>
+  <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>Дејзи точак: изаберите једну од осам група, па један од њена четири знака.</value></data>
+  <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>Ресетуј распоред</value></data>
+  <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>Отвара се помоћу</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Било који улаз на уређају додељеном овом слоту, или два држана заједно. Исти улаз затвара тастатуру, осим ако га користи и нека контрола тастатуре. Празно значи да је не отвара ниједан улаз.</value></data>
+  <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>Ресетуј „Отвара се помоћу“</value></data>
+  <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>Отвори када је изабрано поље за текст</value></data>
+  <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>У Windows апликацијама и прегледачима, без дугмета. Игре цртају сопствена поља за текст, па се у игри отвара помоћу улаза изнад, или помоћу свог слоја када је укључено „Слој држи мени отвореним“.</value></data>
+  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>Улаз који помера истицање преко тастера, чита се са физичких контролера додељених слоту.</value></data>
+  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>Управљај левом половином помоћу</value></data>
+  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>Управљај десном половином помоћу</value></data>
+  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>Изабери групу помоћу</value></data>
+  <data name="Menu_Reset_Host2" xml:space="preserve"><value>Ресетуј „Управљај десном половином помоћу“</value></data>
+  <data name="Menu_Host_DPad" xml:space="preserve"><value>D-pad</value></data>
+  <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>Дугмад на лицу</value></data>
+  <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>Контроле тастатуре</value></data>
+  <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>{0} распоред, {1} контрола</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Чита се са физичких контролера додељених овом слоту. Свака контрола прима било који улаз на било ком од њих: дугме, смер осе, хет, тачпед или два држана заједно. Кликните на дугме за снимање и притисните улаз, или држите један улаз и притисните други за комбинацију. „Мапирај све“ их снима редом.</value></data>
+  <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>Мапирај све</value></data>
+  <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>Снима све контроле распореда редом. Статусни ред именује контролу за коју треба притиснути улаз.</value></data>
+  <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>Притисните улаз за {0} ({1} од {2})</value></data>
+  <data name="Menu_Keyboard_MapAll_Done" xml:space="preserve"><value>Све контроле тастатуре су снимљене.</value></data>
+  <data name="Menu_Reset_KeyboardControls" xml:space="preserve"><value>Ресетуј контроле тастатуре</value></data>
+  <data name="Menu_Keyboard_Reset_Format" xml:space="preserve"><value>Ресетуј {0} на {1}</value></data>
+  <data name="Menu_Keyboard_RecordingPrompt" xml:space="preserve"><value>Притисните улаз на било ком уређају додељеном овом слоту</value></data>
+  <data name="Menu_Keyboard_Card" xml:space="preserve"><value>Тастатура</value></data>
+  <data name="Menu_TypesThrough" xml:space="preserve"><value>Куца преко</value></data>
+  <data name="Menu_TypesThrough_Caption" xml:space="preserve"><value>„Windows улаз“ куца сваки тастер преко Windows-а, а програми могу да виде да долази из софтвера. Тастатура слота „Тастатура + миш“ куца онако како то ради подешавање тастатуре тог слота. Виртуелна HIDMaestro тастатура куца као тај модел тастатуре, који програми виде као хардвер. Мени тастатуре сам прави такву тастатуру, па му није потребан слот „Тастатура + миш“. Тастер који изабрана тастатура нема и знак који ниједан тастер не куца и даље иду преко „Windows улаза“.</value></data>
+  <data name="Menu_TypesThrough_Slot_Format" xml:space="preserve"><value>Иста тастатура као {0}</value></data>
+  <data name="Menu_Reset_TypesThrough" xml:space="preserve"><value>Ресетуј „Куца преко“</value></data>
+  <data name="Menu_FunctionRow" xml:space="preserve"><value>Ред функцијских тастера</value></data>
+  <data name="Menu_FunctionRow_Caption" xml:space="preserve"><value>Esc, F1 до F12 и Del. Тастер Fn на тастатури их такође пребацује.</value></data>
+  <data name="Menu_WordSuggestions" xml:space="preserve"><value>Предлози речи</value></data>
+  <data name="Menu_WordSuggestions_Caption" xml:space="preserve"><value>Из предвиђања текста у Windows-у, за језике инсталиране у Windows-у.</value></data>
+  <data name="Menu_SymbolsPage" xml:space="preserve"><value>Страница симбола</value></data>
+  <data name="Menu_SymbolsPage_Tip" xml:space="preserve"><value>Знакови на страници симбола тастатуре. Куцају се као Unicode знакови.</value></data>
+  <data name="Menu_Reset_Symbols" xml:space="preserve"><value>Ресетуј страницу симбола</value></data>
+  <data name="Menu_Keyboard_Overlay_Caption" xml:space="preserve"><value>Редови које сваки мени већ има. Повлачење горње траке или угаоног хвата тастатуре, или држање „Помери тастатуру“, такође их поставља.</value></data>
+  <data name="Osk_Title" xml:space="preserve"><value>Тастатура на екрану</value></data>
+  <data name="Osk_Control_TypeKey" xml:space="preserve"><value>Куцај тастер</value></data>
+  <data name="Osk_Control_Backspace" xml:space="preserve"><value>Backspace</value></data>
+  <data name="Osk_Control_Space" xml:space="preserve"><value>Размак</value></data>
+  <data name="Osk_Control_Enter" xml:space="preserve"><value>Enter</value></data>
+  <data name="Osk_Control_Close" xml:space="preserve"><value>Затвори</value></data>
+  <data name="Osk_Control_ShiftNextKey" xml:space="preserve"><value>Shift за следећи тастер</value></data>
+  <data name="Osk_Control_ShiftLeftHand" xml:space="preserve"><value>Shift за следећи тастер, лева рука</value></data>
+  <data name="Osk_Control_ShiftRightHand" xml:space="preserve"><value>Shift за следећи тастер, десна рука</value></data>
+  <data name="Osk_Control_SymbolsPage" xml:space="preserve"><value>Страница симбола</value></data>
+  <data name="Osk_Control_CursorLeft" xml:space="preserve"><value>Курсор улево</value></data>
+  <data name="Osk_Control_CursorRight" xml:space="preserve"><value>Курсор удесно</value></data>
+  <data name="Osk_Control_MoveUp" xml:space="preserve"><value>Помери горе</value></data>
+  <data name="Osk_Control_MoveDown" xml:space="preserve"><value>Помери доле</value></data>
+  <data name="Osk_Control_MoveLeft" xml:space="preserve"><value>Помери лево</value></data>
+  <data name="Osk_Control_MoveRight" xml:space="preserve"><value>Помери десно</value></data>
+  <data name="Osk_Control_Suggestion_Format" xml:space="preserve"><value>Предлог {0}</value></data>
+  <data name="Osk_Control_MoveKeyboard" xml:space="preserve"><value>Помери тастатуру (држи)</value></data>
+  <data name="Osk_Control_TypeLeftHalf" xml:space="preserve"><value>Куцај левом половином</value></data>
+  <data name="Osk_Control_TypeRightHalf" xml:space="preserve"><value>Куцај десном половином</value></data>
+  <data name="Osk_Control_ArrowUp" xml:space="preserve"><value>Стрелица горе</value></data>
+  <data name="Osk_Control_ArrowDown" xml:space="preserve"><value>Стрелица доле</value></data>
+  <data name="Osk_Control_ArrowLeft" xml:space="preserve"><value>Стрелица лево</value></data>
+  <data name="Osk_Control_ArrowRight" xml:space="preserve"><value>Стрелица десно</value></data>
+  <data name="Osk_Control_PickWest" xml:space="preserve"><value>Изабери запад</value></data>
+  <data name="Osk_Control_PickNorth" xml:space="preserve"><value>Изабери север</value></data>
+  <data name="Osk_Control_PickEast" xml:space="preserve"><value>Изабери исток</value></data>
+  <data name="Osk_Control_PickSouth" xml:space="preserve"><value>Изабери југ</value></data>
+  <data name="Osk_Control_Capitals" xml:space="preserve"><value>Велика слова и симболи (држи)</value></data>
+  <data name="Osk_Control_Numbers" xml:space="preserve"><value>Бројеви и заграде (држи)</value></data>
+  <data name="Osk_Control_Home" xml:space="preserve"><value>Home</value></data>
+  <data name="Osk_Control_End" xml:space="preserve"><value>End</value></data>
+  <data name="Menu_Keyboard_OpenPress" xml:space="preserve"><value>Отвара се при</value></data>
+  <data name="Menu_Keyboard_OpenPress_Tip" xml:space="preserve"><value>Притисак „Отвара се помоћу“ који отвара или затвара тастатуру. Steam везе за дуги и двоструки притисак увозе се као „При дугом притиску“ и „При двоструком притиску“, па кратак притисак истог улаза задржава своју везу.</value></data>
+  <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>Ресетуј „Отвара се при“</value></data>
+  <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>Отвара или затвара тастатуру када се „Отвара се помоћу“ држи колико траје време држања. Краћи притисак не ради ништа.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>Отвара или затвара тастатуру када се „Отвара се помоћу“ притисне два пута у оквиру прозора притиска.</value></data>
 </root>

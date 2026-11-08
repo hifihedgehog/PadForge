@@ -4976,4 +4976,207 @@
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>Το reWASD εμπόδιζε την κίνηση του ποντικιού να φτάνει στα Windows. Το PadForge κατακρατά πλήκτρα και κουμπιά του ποντικιού, όχι όμως την κίνηση, οπότε ο δείκτης εξακολουθεί να κινείται.</value></data>
   <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>Τα εικονικά χειριστήρια του PadForge λαμβάνουν κίνηση μόνο από τον αισθητήρα κίνησης ενός χειριστηρίου.</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>Το DS4Windows επέστρεφε σε αυτό το προφίλ από το {0} με ένα κουμπί. Για να γίνει αυτό στο PadForge, προσθέστε μια Συντόμευση προφίλ για αυτό το προφίλ στη σελίδα Προφίλ.</value></data>
+  <data name="Osk_Style_Grid" xml:space="preserve">
+    <value>Πλέγμα</value>
+  </data>
+  <data name="Osk_Style_Split" xml:space="preserve">
+    <value>Διαιρεμένο</value>
+  </data>
+  <data name="Osk_Style_Wheel" xml:space="preserve">
+    <value>Τροχός</value>
+  </data>
+  <data name="Osk_CloseKeyboard" xml:space="preserve">
+    <value>Κλείσιμο του πληκτρολογίου</value>
+  </data>
+  <data name="Osk_Drag" xml:space="preserve">
+    <value>Σύρετε για μετακίνηση του πληκτρολογίου</value>
+  </data>
+  <data name="Osk_Wheel_Keys" xml:space="preserve">
+    <value>Πλήκτρα</value>
+  </data>
+  <data name="Osk_Key_Tab" xml:space="preserve">
+    <value>Tab</value>
+  </data>
+  <data name="Osk_Key_Caps" xml:space="preserve">
+    <value>Caps</value>
+  </data>
+  <data name="Osk_Key_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Osk_Key_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Key_Ctrl" xml:space="preserve">
+    <value>Ctrl</value>
+  </data>
+  <data name="Osk_Key_Win" xml:space="preserve">
+    <value>Win</value>
+  </data>
+  <data name="Osk_Key_Alt" xml:space="preserve">
+    <value>Alt</value>
+  </data>
+  <data name="Osk_Key_AltGr" xml:space="preserve">
+    <value>AltGr</value>
+  </data>
+  <data name="Osk_Key_Symbols" xml:space="preserve">
+    <value>&amp;123</value>
+  </data>
+  <data name="Osk_Key_Letters" xml:space="preserve">
+    <value>αβγ</value>
+  </data>
+  <data name="Osk_Key_Space" xml:space="preserve">
+    <value>Διάστημα</value>
+  </data>
+  <data name="Osk_Key_Esc" xml:space="preserve">
+    <value>Esc</value>
+  </data>
+  <data name="Osk_Key_Del" xml:space="preserve">
+    <value>Del</value>
+  </data>
+  <data name="Osk_Key_Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Osk_Key_End" xml:space="preserve">
+    <value>End</value>
+  </data>
+  <data name="Osk_Key_PgUp" xml:space="preserve">
+    <value>PgUp</value>
+  </data>
+  <data name="Osk_Key_PgDn" xml:space="preserve">
+    <value>PgDn</value>
+  </data>
+  <data name="Osk_Key_Ins" xml:space="preserve">
+    <value>Ins</value>
+  </data>
+  <data name="Osk_Key_PrtSc" xml:space="preserve">
+    <value>PrtSc</value>
+  </data>
+  <data name="Osk_Hint_Type" xml:space="preserve">
+    <value>Πληκτρολόγηση</value>
+  </data>
+  <data name="Osk_Hint_TypeLeft" xml:space="preserve">
+    <value>Αριστερά</value>
+  </data>
+  <data name="Osk_Hint_TypeRight" xml:space="preserve">
+    <value>Δεξιά</value>
+  </data>
+  <data name="Osk_Hint_Backspace" xml:space="preserve">
+    <value>Backspace</value>
+  </data>
+  <data name="Osk_Hint_Space" xml:space="preserve">
+    <value>Διάστημα</value>
+  </data>
+  <data name="Osk_Hint_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Osk_Hint_Close" xml:space="preserve">
+    <value>Κλείσιμο</value>
+  </data>
+  <data name="Osk_Hint_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Hint_Symbols" xml:space="preserve">
+    <value>Σύμβολα</value>
+  </data>
+  <data name="Osk_Hint_Cursor" xml:space="preserve">
+    <value>Δρομέας</value>
+  </data>
+  <data name="Osk_Hint_Suggestion" xml:space="preserve">
+    <value>Πρόταση</value>
+  </data>
+  <data name="Osk_Hint_Capitals" xml:space="preserve">
+    <value>Κράτημα: κεφαλαία</value>
+  </data>
+  <data name="Osk_Hint_Numbers" xml:space="preserve">
+    <value>Κράτημα: αριθμοί</value>
+  </data>
+  <data name="Osk_Hint_Keys" xml:space="preserve">
+    <value>Κράτημα: πλήκτρα</value>
+  </data>
+  <data name="Osk_Hint_Move" xml:space="preserve">
+    <value>Κράτημα: μετακίνηση</value>
+  </data>
+  <data name="Osk_Input_Dpad" xml:space="preserve">
+    <value>D-pad</value>
+  </data>
+  <data name="Menu_Style_Keyboard" xml:space="preserve"><value>Πληκτρολόγιο</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>Ο «Ακτινικός δακτύλιος» και το «Πλέγμα αφής» ενεργοποιούν τις αντιστοιχίσεις των κελιών. Το «Πληκτρολόγιο» πληκτρολογεί τα πλήκτρα της διάταξης των Windows που χρησιμοποιείται.</value></data>
+  <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Διάταξη</value></data>
+  <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Πώς το πληκτρολόγιο τακτοποιεί τα πλήκτρα του και πώς τα επιλέγει ένα χειριστήριο.</value></data>
+  <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Μία επισήμανση, που μετακινείται με έναν μοχλό ή τέσσερις εισόδους, η διάταξη που χρησιμοποιούν τα Windows, το Xbox και το Steam.</value></data>
+  <data name="Menu_KeyboardLayout_Split_Desc" xml:space="preserve"><value>Κάθε μισό του πληκτρολογίου έχει τη δική του είσοδο κατεύθυνσης και τη δική του είσοδο πληκτρολόγησης.</value></data>
+  <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>Ο τροχός-μαργαρίτα: διαλέγετε μία από οκτώ ομάδες και μετά έναν από τους τέσσερις χαρακτήρες της.</value></data>
+  <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>Επαναφορά διάταξης</value></data>
+  <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>Ανοίγει με</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Οποιαδήποτε είσοδος σε συσκευή που έχει ανατεθεί σε αυτήν τη θέση, ή δύο μαζί. Η ίδια είσοδος κλείνει το πληκτρολόγιο, εκτός αν τη χρησιμοποιεί και κάποιο χειριστήριο του πληκτρολογίου. Αν μείνει κενό, καμία είσοδος δεν το ανοίγει.</value></data>
+  <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>Επαναφορά του «Ανοίγει με»</value></data>
+  <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>Άνοιγμα όταν επιλέγεται πλαίσιο κειμένου</value></data>
+  <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>Σε εφαρμογές και προγράμματα περιήγησης των Windows, χωρίς κουμπί. Τα παιχνίδια σχεδιάζουν δικά τους πλαίσια κειμένου, οπότε σε παιχνίδι ανοίγει με την παραπάνω είσοδο ή με το επίπεδό του, όταν είναι ενεργό το «Το επίπεδο κρατά το μενού ανοιχτό».</value></data>
+  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>Η είσοδος που μετακινεί την επισήμανση στα πλήκτρα, από τα φυσικά χειριστήρια που έχουν ανατεθεί στη θέση.</value></data>
+  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>Κατεύθυνση αριστερού μισού με</value></data>
+  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>Κατεύθυνση δεξιού μισού με</value></data>
+  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>Επιλογή ομάδας με</value></data>
+  <data name="Menu_Reset_Host2" xml:space="preserve"><value>Επαναφορά του «Κατεύθυνση δεξιού μισού με»</value></data>
+  <data name="Menu_Host_DPad" xml:space="preserve"><value>D-pad</value></data>
+  <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>Κουμπιά προσώπου</value></data>
+  <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>Χειριστήρια πληκτρολογίου</value></data>
+  <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>Διάταξη {0}, {1} χειριστήρια</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Διαβάζονται από τα φυσικά χειριστήρια που έχουν ανατεθεί σε αυτήν τη θέση. Κάθε χειριστήριο δέχεται οποιαδήποτε είσοδο από οποιοδήποτε από αυτά: κουμπί, κατεύθυνση άξονα, hat, επιφάνεια αφής ή δύο μαζί. Πατήστε ένα κουμπί καταγραφής και μετά την είσοδο, ή κρατήστε μία είσοδο και πατήστε μια δεύτερη για συνδυασμό. Το «Αντιστοίχιση όλων» τις καταγράφει με τη σειρά.</value></data>
+  <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>Αντιστοίχιση όλων</value></data>
+  <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>Καταγράφει με τη σειρά όλα τα χειριστήρια της διάταξης. Η γραμμή κατάστασης δείχνει για ποιο χειριστήριο πρέπει να πατήσετε είσοδο.</value></data>
+  <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>Πατήστε την είσοδο για: {0} ({1} από {2})</value></data>
+  <data name="Menu_Keyboard_MapAll_Done" xml:space="preserve"><value>Όλα τα χειριστήρια του πληκτρολογίου έχουν καταγραφεί.</value></data>
+  <data name="Menu_Reset_KeyboardControls" xml:space="preserve"><value>Επαναφορά χειριστηρίων πληκτρολογίου</value></data>
+  <data name="Menu_Keyboard_Reset_Format" xml:space="preserve"><value>Επαναφορά του {0} σε {1}</value></data>
+  <data name="Menu_Keyboard_RecordingPrompt" xml:space="preserve"><value>Πατήστε μια είσοδο σε οποιαδήποτε συσκευή που έχει ανατεθεί σε αυτήν τη θέση</value></data>
+  <data name="Menu_Keyboard_Card" xml:space="preserve"><value>Πληκτρολόγιο</value></data>
+  <data name="Menu_TypesThrough" xml:space="preserve"><value>Πληκτρολόγηση μέσω</value></data>
+  <data name="Menu_TypesThrough_Caption" xml:space="preserve"><value>Η «Είσοδος Windows» πληκτρολογεί κάθε πλήκτρο μέσω των Windows, και τα προγράμματα μπορούν να διακρίνουν ότι προέρχεται από λογισμικό. Το πληκτρολόγιο μιας θέσης «Πληκτρολόγιο + ποντίκι» πληκτρολογεί με τον τρόπο που ορίζει η ρύθμιση πληκτρολογίου της θέσης. Ένα εικονικό πληκτρολόγιο HIDMaestro πληκτρολογεί ως αυτό το μοντέλο πληκτρολογίου, που τα προγράμματα το βλέπουν ως υλικό. Το μενού πληκτρολογίου το δημιουργεί μόνο του, οπότε δεν χρειάζεται θέση «Πληκτρολόγιο + ποντίκι». Ένα πλήκτρο που λείπει από το επιλεγμένο πληκτρολόγιο, και ένας χαρακτήρας που κανένα πλήκτρο δεν πληκτρολογεί, περνούν και πάλι από την «Είσοδος Windows».</value></data>
+  <data name="Menu_TypesThrough_Slot_Format" xml:space="preserve"><value>Το ίδιο πληκτρολόγιο με το {0}</value></data>
+  <data name="Menu_Reset_TypesThrough" xml:space="preserve"><value>Επαναφορά του «Πληκτρολόγηση μέσω»</value></data>
+  <data name="Menu_FunctionRow" xml:space="preserve"><value>Γραμμή λειτουργιών</value></data>
+  <data name="Menu_FunctionRow_Caption" xml:space="preserve"><value>Esc, F1 έως F12 και Del. Το πλήκτρο Fn του πληκτρολογίου την εναλλάσσει επίσης.</value></data>
+  <data name="Menu_WordSuggestions" xml:space="preserve"><value>Προτάσεις λέξεων</value></data>
+  <data name="Menu_WordSuggestions_Caption" xml:space="preserve"><value>Από την πρόβλεψη κειμένου των Windows, για τις γλώσσες που είναι εγκατεστημένες στα Windows.</value></data>
+  <data name="Menu_SymbolsPage" xml:space="preserve"><value>Σελίδα συμβόλων</value></data>
+  <data name="Menu_SymbolsPage_Tip" xml:space="preserve"><value>Οι χαρακτήρες στη σελίδα συμβόλων του πληκτρολογίου. Πληκτρολογούνται ως χαρακτήρες Unicode.</value></data>
+  <data name="Menu_Reset_Symbols" xml:space="preserve"><value>Επαναφορά σελίδας συμβόλων</value></data>
+  <data name="Menu_Keyboard_Overlay_Caption" xml:space="preserve"><value>Οι γραμμές που έχει ήδη κάθε μενού. Τις ορίζει και η μεταφορά της πάνω γραμμής ή της γωνιακής λαβής του πληκτρολογίου, ή το κράτημα του «Μετακίνηση πληκτρολογίου».</value></data>
+  <data name="Osk_Title" xml:space="preserve"><value>Πληκτρολόγιο οθόνης</value></data>
+  <data name="Osk_Control_TypeKey" xml:space="preserve"><value>Πληκτρολόγηση πλήκτρου</value></data>
+  <data name="Osk_Control_Backspace" xml:space="preserve"><value>Backspace</value></data>
+  <data name="Osk_Control_Space" xml:space="preserve"><value>Διάστημα</value></data>
+  <data name="Osk_Control_Enter" xml:space="preserve"><value>Enter</value></data>
+  <data name="Osk_Control_Close" xml:space="preserve"><value>Κλείσιμο</value></data>
+  <data name="Osk_Control_ShiftNextKey" xml:space="preserve"><value>Shift για το επόμενο πλήκτρο</value></data>
+  <data name="Osk_Control_ShiftLeftHand" xml:space="preserve"><value>Shift για το επόμενο πλήκτρο, αριστερό χέρι</value></data>
+  <data name="Osk_Control_ShiftRightHand" xml:space="preserve"><value>Shift για το επόμενο πλήκτρο, δεξί χέρι</value></data>
+  <data name="Osk_Control_SymbolsPage" xml:space="preserve"><value>Σελίδα συμβόλων</value></data>
+  <data name="Osk_Control_CursorLeft" xml:space="preserve"><value>Δρομέας αριστερά</value></data>
+  <data name="Osk_Control_CursorRight" xml:space="preserve"><value>Δρομέας δεξιά</value></data>
+  <data name="Osk_Control_MoveUp" xml:space="preserve"><value>Μετακίνηση πάνω</value></data>
+  <data name="Osk_Control_MoveDown" xml:space="preserve"><value>Μετακίνηση κάτω</value></data>
+  <data name="Osk_Control_MoveLeft" xml:space="preserve"><value>Μετακίνηση αριστερά</value></data>
+  <data name="Osk_Control_MoveRight" xml:space="preserve"><value>Μετακίνηση δεξιά</value></data>
+  <data name="Osk_Control_Suggestion_Format" xml:space="preserve"><value>Πρόταση {0}</value></data>
+  <data name="Osk_Control_MoveKeyboard" xml:space="preserve"><value>Μετακίνηση πληκτρολογίου (κράτημα)</value></data>
+  <data name="Osk_Control_TypeLeftHalf" xml:space="preserve"><value>Πληκτρολόγηση αριστερού μισού</value></data>
+  <data name="Osk_Control_TypeRightHalf" xml:space="preserve"><value>Πληκτρολόγηση δεξιού μισού</value></data>
+  <data name="Osk_Control_ArrowUp" xml:space="preserve"><value>Βέλος πάνω</value></data>
+  <data name="Osk_Control_ArrowDown" xml:space="preserve"><value>Βέλος κάτω</value></data>
+  <data name="Osk_Control_ArrowLeft" xml:space="preserve"><value>Βέλος αριστερά</value></data>
+  <data name="Osk_Control_ArrowRight" xml:space="preserve"><value>Βέλος δεξιά</value></data>
+  <data name="Osk_Control_PickWest" xml:space="preserve"><value>Επιλογή δυτικά</value></data>
+  <data name="Osk_Control_PickNorth" xml:space="preserve"><value>Επιλογή βόρεια</value></data>
+  <data name="Osk_Control_PickEast" xml:space="preserve"><value>Επιλογή ανατολικά</value></data>
+  <data name="Osk_Control_PickSouth" xml:space="preserve"><value>Επιλογή νότια</value></data>
+  <data name="Osk_Control_Capitals" xml:space="preserve"><value>Κεφαλαία και σύμβολα (κράτημα)</value></data>
+  <data name="Osk_Control_Numbers" xml:space="preserve"><value>Αριθμοί και αγκύλες (κράτημα)</value></data>
+  <data name="Osk_Control_Home" xml:space="preserve"><value>Home</value></data>
+  <data name="Osk_Control_End" xml:space="preserve"><value>End</value></data>
+  <data name="Menu_Keyboard_OpenPress" xml:space="preserve"><value>Ανοίγει στο</value></data>
+  <data name="Menu_Keyboard_OpenPress_Tip" xml:space="preserve"><value>Το πάτημα του «Ανοίγει με» που ανοίγει ή κλείνει το πληκτρολόγιο. Οι αντιστοιχίσεις Long Press και Double Press του Steam εισάγονται ως «Στο παρατεταμένο πάτημα» και «Στο διπλό πάτημα», ώστε ένα σύντομο πάτημα της ίδιας εισόδου να κρατά τη δική του αντιστοίχιση.</value></data>
+  <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>Επαναφορά του «Ανοίγει στο»</value></data>
+  <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>Ανοίγει ή κλείνει το πληκτρολόγιο όταν το «Ανοίγει με» κρατηθεί για τον χρόνο κρατήματος. Ένα συντομότερο πάτημα δεν κάνει τίποτα.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>Ανοίγει ή κλείνει το πληκτρολόγιο όταν το «Ανοίγει με» πατηθεί δύο φορές μέσα στο χρονικό παράθυρο πατήματος.</value></data>
 </root>

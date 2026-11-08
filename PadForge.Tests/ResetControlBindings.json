@@ -1063,6 +1063,24 @@
   },
   {
     "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MenuEditorItem_OpenOnTextFocus",
+    "Owner": "PadForge.ViewModels.MenuEditorItem",
+    "Property": "OpenOnTextFocus"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MenuEditorItem_FunctionRow",
+    "Owner": "PadForge.ViewModels.MenuEditorItem",
+    "Property": "FunctionRow"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MenuEditorItem_Suggestions",
+    "Owner": "PadForge.ViewModels.MenuEditorItem",
+    "Property": "Suggestions"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
     "Id": "Reset_MenuEditorItem_PosXPercent_12937",
     "Owner": "PadForge.ViewModels.MenuEditorItem",
     "Property": "PosXPercent"

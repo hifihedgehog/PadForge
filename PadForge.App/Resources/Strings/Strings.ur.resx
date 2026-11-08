@@ -4976,4 +4976,207 @@
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD نے ماؤس کی حرکت کو Windows تک پہنچنے سے روکا تھا۔ PadForge کیز اور ماؤس بٹن روک لیتا ہے لیکن حرکت نہیں روکتا، اس لیے پوائنٹر پھر بھی حرکت کرتا ہے۔</value></data>
   <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>PadForge کے ورچوئل کنٹرولرز موشن صرف کنٹرولر کے موشن سینسر سے لیتے ہیں۔</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows ایک بٹن دبانے پر {0} سے اس پروفائل پر واپس آتا تھا۔ PadForge میں ایسا کرنے کے لیے پروفائلز کے صفحے پر اس پروفائل کے لیے پروفائل شارٹ کٹ شامل کریں۔</value></data>
+  <data name="Osk_Style_Grid" xml:space="preserve">
+    <value>گرڈ</value>
+  </data>
+  <data name="Osk_Style_Split" xml:space="preserve">
+    <value>اسپلٹ</value>
+  </data>
+  <data name="Osk_Style_Wheel" xml:space="preserve">
+    <value>وہیل</value>
+  </data>
+  <data name="Osk_CloseKeyboard" xml:space="preserve">
+    <value>کی بورڈ بند کریں</value>
+  </data>
+  <data name="Osk_Drag" xml:space="preserve">
+    <value>کی بورڈ کو ہلانے کے لیے گھسیٹیں</value>
+  </data>
+  <data name="Osk_Wheel_Keys" xml:space="preserve">
+    <value>کلیدیں</value>
+  </data>
+  <data name="Osk_Key_Tab" xml:space="preserve">
+    <value>Tab</value>
+  </data>
+  <data name="Osk_Key_Caps" xml:space="preserve">
+    <value>Caps</value>
+  </data>
+  <data name="Osk_Key_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Osk_Key_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Key_Ctrl" xml:space="preserve">
+    <value>Ctrl</value>
+  </data>
+  <data name="Osk_Key_Win" xml:space="preserve">
+    <value>Win</value>
+  </data>
+  <data name="Osk_Key_Alt" xml:space="preserve">
+    <value>Alt</value>
+  </data>
+  <data name="Osk_Key_AltGr" xml:space="preserve">
+    <value>AltGr</value>
+  </data>
+  <data name="Osk_Key_Symbols" xml:space="preserve">
+    <value>&amp;123</value>
+  </data>
+  <data name="Osk_Key_Letters" xml:space="preserve">
+    <value>ابپ</value>
+  </data>
+  <data name="Osk_Key_Space" xml:space="preserve">
+    <value>Space</value>
+  </data>
+  <data name="Osk_Key_Esc" xml:space="preserve">
+    <value>Esc</value>
+  </data>
+  <data name="Osk_Key_Del" xml:space="preserve">
+    <value>Del</value>
+  </data>
+  <data name="Osk_Key_Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Osk_Key_End" xml:space="preserve">
+    <value>End</value>
+  </data>
+  <data name="Osk_Key_PgUp" xml:space="preserve">
+    <value>PgUp</value>
+  </data>
+  <data name="Osk_Key_PgDn" xml:space="preserve">
+    <value>PgDn</value>
+  </data>
+  <data name="Osk_Key_Ins" xml:space="preserve">
+    <value>Ins</value>
+  </data>
+  <data name="Osk_Key_PrtSc" xml:space="preserve">
+    <value>PrtSc</value>
+  </data>
+  <data name="Osk_Hint_Type" xml:space="preserve">
+    <value>ٹائپ</value>
+  </data>
+  <data name="Osk_Hint_TypeLeft" xml:space="preserve">
+    <value>بایاں ٹائپ</value>
+  </data>
+  <data name="Osk_Hint_TypeRight" xml:space="preserve">
+    <value>دایاں ٹائپ</value>
+  </data>
+  <data name="Osk_Hint_Backspace" xml:space="preserve">
+    <value>بیک اسپیس</value>
+  </data>
+  <data name="Osk_Hint_Space" xml:space="preserve">
+    <value>اسپیس</value>
+  </data>
+  <data name="Osk_Hint_Enter" xml:space="preserve">
+    <value>اینٹر</value>
+  </data>
+  <data name="Osk_Hint_Close" xml:space="preserve">
+    <value>بند</value>
+  </data>
+  <data name="Osk_Hint_Shift" xml:space="preserve">
+    <value>شفٹ</value>
+  </data>
+  <data name="Osk_Hint_Symbols" xml:space="preserve">
+    <value>علامات</value>
+  </data>
+  <data name="Osk_Hint_Cursor" xml:space="preserve">
+    <value>کرسر</value>
+  </data>
+  <data name="Osk_Hint_Suggestion" xml:space="preserve">
+    <value>تجویز</value>
+  </data>
+  <data name="Osk_Hint_Capitals" xml:space="preserve">
+    <value>دبائیں: بڑے حروف</value>
+  </data>
+  <data name="Osk_Hint_Numbers" xml:space="preserve">
+    <value>دبائیں: ہندسے</value>
+  </data>
+  <data name="Osk_Hint_Keys" xml:space="preserve">
+    <value>دبائیں: کلیدیں</value>
+  </data>
+  <data name="Osk_Hint_Move" xml:space="preserve">
+    <value>دبائیں: حرکت</value>
+  </data>
+  <data name="Osk_Input_Dpad" xml:space="preserve">
+    <value>ڈی پیڈ</value>
+  </data>
+  <data name="Menu_Style_Keyboard" xml:space="preserve"><value>کی بورڈ</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>ریڈیل حلقہ اور ٹچ گرڈ خانوں کی بائنڈنگز چلاتے ہیں۔ کی بورڈ اس Windows لے آؤٹ کی کلیدیں ٹائپ کرتا ہے جو استعمال میں ہے۔</value></data>
+  <data name="Menu_KeyboardLayout" xml:space="preserve"><value>لے آؤٹ</value></data>
+  <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>کی بورڈ اپنی کلیدیں کیسے ترتیب دیتا ہے اور کنٹرولر انہیں کیسے منتخب کرتا ہے۔</value></data>
+  <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>ایک نمایاں خانہ، جو ایک اسٹک یا چار ان پٹ سے چلتا ہے۔ Windows، Xbox اور Steam یہی لے آؤٹ استعمال کرتے ہیں۔</value></data>
+  <data name="Menu_KeyboardLayout_Split_Desc" xml:space="preserve"><value>کی بورڈ کے ہر نصف کا اپنا چلانے والا ان پٹ اور اپنا ٹائپ ان پٹ ہوتا ہے۔</value></data>
+  <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>ڈیزی وہیل: آٹھ گروپوں میں سے ایک چنیں، پھر اس کے چار حروف میں سے ایک۔</value></data>
+  <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>لے آؤٹ ری سیٹ کریں</value></data>
+  <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>اس سے کھلتا ہے</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>اس سلاٹ کو دیے گئے کسی بھی آلے کا کوئی بھی ان پٹ، یا دو ان پٹ ایک ساتھ دبائے ہوئے۔ وہی ان پٹ کی بورڈ کو بند بھی کرتا ہے، جب تک کوئی کی بورڈ کنٹرول بھی اسے استعمال نہ کرے۔ خالی کا مطلب ہے کوئی ان پٹ اسے نہیں کھولتا۔</value></data>
+  <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>"اس سے کھلتا ہے" ری سیٹ کریں</value></data>
+  <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>ٹیکسٹ باکس منتخب ہونے پر کھولیں</value></data>
+  <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>Windows ایپس اور براؤزرز میں، بغیر کسی بٹن کے۔ گیمز اپنے ٹیکسٹ باکس خود بناتی ہیں، اس لیے گیم میں یہ اوپر والے ان پٹ سے کھلتا ہے، یا اس کی لیئر سے جب "لیئر مینو کو کھلا رکھتی ہے" آن ہو۔</value></data>
+  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>وہ ان پٹ جو نمایاں خانے کو کلیدوں پر چلاتا ہے، اس سلاٹ کے مقرر کردہ فزیکل کنٹرولرز سے پڑھا جاتا ہے۔</value></data>
+  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>بایاں نصف اس سے چلائیں</value></data>
+  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>دایاں نصف اس سے چلائیں</value></data>
+  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>گروپ اس سے چنیں</value></data>
+  <data name="Menu_Reset_Host2" xml:space="preserve"><value>"دایاں نصف اس سے چلائیں" ری سیٹ کریں</value></data>
+  <data name="Menu_Host_DPad" xml:space="preserve"><value>ڈی پیڈ</value></data>
+  <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>فیس بٹن</value></data>
+  <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>کی بورڈ کنٹرولز</value></data>
+  <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>{0} لے آؤٹ، {1} کنٹرولز</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>اس سلاٹ کو دیے گئے فزیکل کنٹرولرز سے پڑھا جاتا ہے۔ ہر کنٹرول ان میں سے کسی بھی ان پٹ کو لیتا ہے: بٹن، محور کی سمت، ہیٹ، ٹچ پیڈ، یا دو ان پٹ ایک ساتھ دبائے ہوئے۔ ریکارڈ بٹن پر کلک کریں اور ان پٹ دبائیں، یا ایک ان پٹ دبائے رکھ کر دوسرا دبائیں تاکہ مجموعہ بنے۔ "سب میپ کریں" انہیں ترتیب سے ریکارڈ کرتا ہے۔</value></data>
+  <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>سب میپ کریں</value></data>
+  <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>لے آؤٹ کے ہر کنٹرول کو ترتیب سے ریکارڈ کرتا ہے۔ اسٹیٹس لائن اس کنٹرول کا نام بتاتی ہے جس کے لیے ان پٹ دبانا ہے۔</value></data>
+  <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>{0} کے لیے ان پٹ دبائیں ({2} میں سے {1})</value></data>
+  <data name="Menu_Keyboard_MapAll_Done" xml:space="preserve"><value>کی بورڈ کے تمام کنٹرولز ریکارڈ ہو گئے ہیں۔</value></data>
+  <data name="Menu_Reset_KeyboardControls" xml:space="preserve"><value>کی بورڈ کنٹرولز ری سیٹ کریں</value></data>
+  <data name="Menu_Keyboard_Reset_Format" xml:space="preserve"><value>{0} کو {1} پر ری سیٹ کریں</value></data>
+  <data name="Menu_Keyboard_RecordingPrompt" xml:space="preserve"><value>اس سلاٹ کو دیے گئے کسی بھی آلے پر ان پٹ دبائیں</value></data>
+  <data name="Menu_Keyboard_Card" xml:space="preserve"><value>کی بورڈ</value></data>
+  <data name="Menu_TypesThrough" xml:space="preserve"><value>اس کے ذریعے ٹائپ کرتا ہے</value></data>
+  <data name="Menu_TypesThrough_Caption" xml:space="preserve"><value>Windows ان پٹ ہر کلید Windows کے ذریعے ٹائپ کرتا ہے، اور پروگرام جان سکتے ہیں کہ یہ سافٹ ویئر سے آیا ہے۔ کی بورڈ + ماؤس سلاٹ کا کی بورڈ اسے اسی طرح ٹائپ کرتا ہے جیسے اس سلاٹ کی کی بورڈ سیٹنگ کرتی ہے۔ HIDMaestro کا ورچوئل کی بورڈ اسے اسی ماڈل کے کی بورڈ کے طور پر ٹائپ کرتا ہے، جسے پروگرام ہارڈ ویئر سمجھتے ہیں۔ کی بورڈ مینو اسے خود بنا لیتا ہے، اس لیے اسے کی بورڈ + ماؤس سلاٹ کی ضرورت نہیں۔ جو کلید منتخب کی بورڈ میں نہ ہو، اور جو حرف کوئی کلید ٹائپ نہ کرتی ہو، وہ پھر بھی Windows ان پٹ سے جاتے ہیں۔</value></data>
+  <data name="Menu_TypesThrough_Slot_Format" xml:space="preserve"><value>{0} والا ہی کی بورڈ</value></data>
+  <data name="Menu_Reset_TypesThrough" xml:space="preserve"><value>"اس کے ذریعے ٹائپ کرتا ہے" ری سیٹ کریں</value></data>
+  <data name="Menu_FunctionRow" xml:space="preserve"><value>فنکشن قطار</value></data>
+  <data name="Menu_FunctionRow_Caption" xml:space="preserve"><value>Esc، F1 سے F12 اور Del۔ کی بورڈ کی Fn کلید بھی اسے بدل دیتی ہے۔</value></data>
+  <data name="Menu_WordSuggestions" xml:space="preserve"><value>الفاظ کی تجاویز</value></data>
+  <data name="Menu_WordSuggestions_Caption" xml:space="preserve"><value>Windows کی ٹیکسٹ پریڈکشن سے، ان زبانوں کے لیے جو Windows میں انسٹال ہیں۔</value></data>
+  <data name="Menu_SymbolsPage" xml:space="preserve"><value>علامات کا صفحہ</value></data>
+  <data name="Menu_SymbolsPage_Tip" xml:space="preserve"><value>کی بورڈ کے علامات والے صفحے کے حروف۔ یہ Unicode حروف کے طور پر ٹائپ ہوتے ہیں۔</value></data>
+  <data name="Menu_Reset_Symbols" xml:space="preserve"><value>علامات کا صفحہ ری سیٹ کریں</value></data>
+  <data name="Menu_Keyboard_Overlay_Caption" xml:space="preserve"><value>وہ قطاریں جو ہر مینو میں پہلے سے ہوتی ہیں۔ کی بورڈ کی اوپر والی پٹی یا کونے کی گرفت کو گھسیٹنے سے، یا "کی بورڈ کو ہلائیں (دبائے رکھیں)" دبانے سے بھی یہ طے ہوتی ہیں۔</value></data>
+  <data name="Osk_Title" xml:space="preserve"><value>اسکرین پر کی بورڈ</value></data>
+  <data name="Osk_Control_TypeKey" xml:space="preserve"><value>کلید ٹائپ کریں</value></data>
+  <data name="Osk_Control_Backspace" xml:space="preserve"><value>Backspace</value></data>
+  <data name="Osk_Control_Space" xml:space="preserve"><value>Space</value></data>
+  <data name="Osk_Control_Enter" xml:space="preserve"><value>Enter</value></data>
+  <data name="Osk_Control_Close" xml:space="preserve"><value>بند کریں</value></data>
+  <data name="Osk_Control_ShiftNextKey" xml:space="preserve"><value>اگلی کلید کے لیے شفٹ</value></data>
+  <data name="Osk_Control_ShiftLeftHand" xml:space="preserve"><value>اگلی کلید کے لیے شفٹ، بایاں ہاتھ</value></data>
+  <data name="Osk_Control_ShiftRightHand" xml:space="preserve"><value>اگلی کلید کے لیے شفٹ، دایاں ہاتھ</value></data>
+  <data name="Osk_Control_SymbolsPage" xml:space="preserve"><value>علامات کا صفحہ</value></data>
+  <data name="Osk_Control_CursorLeft" xml:space="preserve"><value>کرسر بائیں</value></data>
+  <data name="Osk_Control_CursorRight" xml:space="preserve"><value>کرسر دائیں</value></data>
+  <data name="Osk_Control_MoveUp" xml:space="preserve"><value>اوپر جائیں</value></data>
+  <data name="Osk_Control_MoveDown" xml:space="preserve"><value>نیچے جائیں</value></data>
+  <data name="Osk_Control_MoveLeft" xml:space="preserve"><value>بائیں جائیں</value></data>
+  <data name="Osk_Control_MoveRight" xml:space="preserve"><value>دائیں جائیں</value></data>
+  <data name="Osk_Control_Suggestion_Format" xml:space="preserve"><value>تجویز {0}</value></data>
+  <data name="Osk_Control_MoveKeyboard" xml:space="preserve"><value>کی بورڈ کو ہلائیں (دبائے رکھیں)</value></data>
+  <data name="Osk_Control_TypeLeftHalf" xml:space="preserve"><value>بایاں نصف ٹائپ کریں</value></data>
+  <data name="Osk_Control_TypeRightHalf" xml:space="preserve"><value>دایاں نصف ٹائپ کریں</value></data>
+  <data name="Osk_Control_ArrowUp" xml:space="preserve"><value>اوپر کا تیر</value></data>
+  <data name="Osk_Control_ArrowDown" xml:space="preserve"><value>نیچے کا تیر</value></data>
+  <data name="Osk_Control_ArrowLeft" xml:space="preserve"><value>بائیں کا تیر</value></data>
+  <data name="Osk_Control_ArrowRight" xml:space="preserve"><value>دائیں کا تیر</value></data>
+  <data name="Osk_Control_PickWest" xml:space="preserve"><value>مغرب چنیں</value></data>
+  <data name="Osk_Control_PickNorth" xml:space="preserve"><value>شمال چنیں</value></data>
+  <data name="Osk_Control_PickEast" xml:space="preserve"><value>مشرق چنیں</value></data>
+  <data name="Osk_Control_PickSouth" xml:space="preserve"><value>جنوب چنیں</value></data>
+  <data name="Osk_Control_Capitals" xml:space="preserve"><value>بڑے حروف اور علامات (دبائے رکھیں)</value></data>
+  <data name="Osk_Control_Numbers" xml:space="preserve"><value>ہندسے اور قوسین (دبائے رکھیں)</value></data>
+  <data name="Osk_Control_Home" xml:space="preserve"><value>Home</value></data>
+  <data name="Osk_Control_End" xml:space="preserve"><value>End</value></data>
+  <data name="Menu_Keyboard_OpenPress" xml:space="preserve"><value>اس پر کھلتا ہے</value></data>
+  <data name="Menu_Keyboard_OpenPress_Tip" xml:space="preserve"><value>"اس سے کھلتا ہے" کا وہ دبانا جو کی بورڈ کو کھولتا یا بند کرتا ہے۔ Steam کی لانگ پریس اور ڈبل پریس بائنڈنگز "دیر تک دبانے پر" اور "دو بار دبانے پر" کے طور پر امپورٹ ہوتی ہیں، اس لیے اسی ان پٹ کے مختصر دبانے کی اپنی بائنڈنگ برقرار رہتی ہے۔</value></data>
+  <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>"اس پر کھلتا ہے" ری سیٹ کریں</value></data>
+  <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>جب "اس سے کھلتا ہے" کو دبائے رکھنے کے وقت تک دبایا جائے تو کی بورڈ کھلتا یا بند ہوتا ہے۔ اس سے مختصر دبانے پر کچھ نہیں ہوتا۔</value></data>
+  <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>جب "اس سے کھلتا ہے" کو دبانے کی مہلت کے اندر دو بار دبایا جائے تو کی بورڈ کھلتا یا بند ہوتا ہے۔</value></data>
 </root>

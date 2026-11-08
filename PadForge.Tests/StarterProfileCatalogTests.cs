@@ -722,18 +722,19 @@ namespace PadForge.Tests
             var p = StarterProfileCatalog.Find("desktop").Build();
             Assert.NotEmpty(p.Macros);
 
-            // ONE press action carrying all three keys, not three actions. The
-            // executor releases a press at its own duration before it advances,
-            // so a press per key made the chord three sequential taps with the
-            // modifiers never down alongside the final key.
-            var chord = p.Macros.FirstOrDefault(m =>
-                m.Actions.Any(a => a.Type == MacroActionType.KeyPress
-                                   && ChordKeys(a).Count == 3));
-            Assert.True(chord != null, "Desktop has no Show Keyboard chord");
-            var pressed = ChordKeys(chord.Actions.First(a => a.Type == MacroActionType.KeyPress));
-            Assert.Contains(0x5B, pressed);   // Win
-            Assert.Contains(0xA2, pressed);   // Ctrl
-            Assert.Contains(0x4F, pressed);   // O
+            // Show Keyboard is PadForge's On-Screen Keyboard (#566): a keyboard
+            // menu on X, where Valve's desktop scheme puts it. Opening on text
+            // boxes is not a default until its cost in browsers is measured.
+            // No macro sends Win+Ctrl+O any more.
+            var keyboard = Assert.Single(p.SlotMappingSets.Where(s => s != null).SelectMany(s => s.Menus),
+                m => m.Kind == MenuKind.Keyboard);
+            Assert.Equal("Gamepad ButtonX", keyboard.OpenDescriptor);
+            Assert.Equal("", keyboard.OpenDeviceGuid);
+            Assert.False(keyboard.OpenOnTextFocus);
+            Assert.True(keyboard.Enabled);
+            Assert.Equal(KeyboardLayout.Grid, keyboard.KeyboardLayout);
+            Assert.Equal(KeyboardMenuDefaults.Host, keyboard.HostDescriptor);
+            Assert.DoesNotContain(p.Macros, m => m.Actions.Any(a => a.KeyCode == 0x4F));
 
             Assert.Contains(p.Macros, m =>
                 m.Actions.Count(a => a.Type == MacroActionType.KeyPress) == 1

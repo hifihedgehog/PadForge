@@ -167,6 +167,7 @@ namespace PadForge.Tests
         private const string Macros = Input + "InputManager.Step4b.EvaluateMacros.cs";
         private const string Kbm = Input + "KeyboardMouseVirtualController.cs";
         private const string Cursor = Services + "CursorControlService.cs";
+        private const string Osk = Input + "OnScreenKeyboard/OskWindows.cs";
         private const string WiiPairing = Services + "WiiPairingService.cs";
         private const string Passthrough = Input + "AudioPassthroughService.cs";
         private const string RumbleAudio = Input + "RumbleAudioService.cs";
@@ -607,7 +608,7 @@ namespace PadForge.Tests
         [Fact]
         public void EveryInjectionAndHook_GoesThroughItsWrapper()
         {
-            var imports = Map((Hooks, 2), (Macros, 1), (Kbm, 2), (Cursor, 1));
+            var imports = Map((Hooks, 2), (Macros, 1), (Kbm, 2), (Cursor, 1), (Osk, 1));
             Assert.Equal(imports, FenceSource.Census(@"\bextern\b.*\b(SendInput|SetCursorPos|SetWindowsHookEx|keybd_event|mouse_event)[A-Za-z]*\("));
             Assert.Equal(imports, FenceSource.Census(@"\bextern\b.*\b(SendInputNative|SetCursorPosNative|SetWindowsHookExNative)\("));
             Assert.Equal(imports, FenceSource.Census(@"(=>|\?|:|&&)[^;]*\b(SendInputNative|SetCursorPosNative|SetWindowsHookExNative)\("));

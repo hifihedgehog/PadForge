@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -145,6 +146,11 @@ namespace PadForge.ViewModels
                 // The sidebar and Dashboard cards print the slot's Preset,
                 // which the Pad page changes without touching the slot set.
                 pad.PropertyChanged += OnPadPresetChanged;
+                // A keyboard menu on any slot can type through a Keyboard +
+                // Mouse slot's keyboard (#566), so every Types Through list
+                // reads the slots again when one changes type.
+                pad.PropertyChanged += OnPadOutputTypeChanged;
+                pad.KbmSlotChoicesProvider = KeyboardMouseSlots;
                 Pads.Add(pad);
             }
 
@@ -157,6 +163,28 @@ namespace PadForge.ViewModels
 
             // Default to Dashboard page.
             _selectedNavTag = "Dashboard";
+        }
+
+        /// <summary>Every slot that exists and is Keyboard + Mouse, by pad
+        /// index, which a reorder never moves (InputService.SwapSlots).</summary>
+        private IReadOnlyList<KbmSlotChoice> KeyboardMouseSlots()
+        {
+            var list = new List<KbmSlotChoice>();
+            foreach (var p in Pads)
+            {
+                int i = p.PadIndex;
+                if (i < 0 || i >= SettingsManager.SlotCreated.Length || !SettingsManager.SlotCreated[i]) continue;
+                if (p.IsKeyboardMouseSlot) list.Add(new KbmSlotChoice(i, p.SlotLabel));
+            }
+            return list;
+        }
+
+        private void OnPadOutputTypeChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != nameof(PadViewModel.OutputType)) return;
+            foreach (var p in Pads)
+                foreach (var m in p.Menus)
+                    m.RefreshTypesThrough();
         }
 
         protected override void OnCultureChanged()

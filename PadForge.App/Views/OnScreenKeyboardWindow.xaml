@@ -1,0 +1,60 @@
+<Window x:Class="PadForge.Views.OnScreenKeyboardWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:PadForge.Controls"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        ResizeMode="NoResize"
+        Topmost="True"
+        ShowInTaskbar="False"
+        ShowActivated="False"
+        Focusable="False"
+        SizeToContent="WidthAndHeight"
+        WindowStartupLocation="Manual"
+        Background="Transparent">
+
+    <!--
+        On-Screen Keyboard (#566). MenuOverlayWindow's never-activated window
+        (WS_EX_NOACTIVATE | WS_EX_TOOLWINDOW, WM_MOUSEACTIVATE refused) without
+        its WS_EX_TRANSPARENT, so a mouse or a touch screen can press its keys
+        while the window being typed into keeps focus. The keys, the wheel and
+        the hint bar are built in code from the poll thread's snapshot.
+    -->
+    <Border x:Name="Root" CornerRadius="14" Padding="10,8,10,10" BorderThickness="1">
+        <Border.LayoutTransform>
+            <ScaleTransform x:Name="Scale" ScaleX="1" ScaleY="1"/>
+        </Border.LayoutTransform>
+        <Grid>
+            <StackPanel FlowDirection="LeftToRight">
+                <Grid x:Name="TopBar" Margin="0,0,0,8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <controls:GlyphText x:Name="Grip" Grid.Column="0" Text="&#xE76F;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
+                                        FontSize="14" Padding="4,2,10,2" VerticalAlignment="Center" Cursor="SizeAll"/>
+                    <TextBlock x:Name="TitleText" Grid.Column="1" FontSize="12" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                    <Border x:Name="CloseButton" Grid.Column="2" Width="26" Height="24" CornerRadius="6" BorderThickness="1" Cursor="Hand">
+                        <controls:GlyphText Text="&#xE711;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="11"
+                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </Grid>
+                <ContentControl x:Name="KeysHost" Focusable="False" IsTabStop="False"/>
+                <WrapPanel x:Name="Hints" Margin="0,8,0,0" MaxWidth="720"/>
+            </StackPanel>
+            <!-- Size: the Screen Overlay's corner grip, scaling the keyboard. -->
+            <Path FlowDirection="LeftToRight" x:Name="ResizeGrip"
+                  Data="M 0,10 L 10,0 L 10,10 Z"
+                  Fill="{DynamicResource EmberBrush}"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Bottom"
+                  Margin="0,0,-6,-6"
+                  Cursor="SizeNWSE"
+                  MouseLeftButtonDown="ResizeGrip_MouseLeftButtonDown"
+                  MouseMove="ResizeGrip_MouseMove"
+                  MouseLeftButtonUp="ResizeGrip_MouseLeftButtonUp"
+                  LostMouseCapture="ResizeGrip_LostMouseCapture"/>
+        </Grid>
+    </Border>
+</Window>

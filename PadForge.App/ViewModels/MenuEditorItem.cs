@@ -90,12 +90,14 @@ namespace PadForge.ViewModels
             HostHalfOptionsBacking = BuildHostHalfOptions();
             FireOptionsBacking = BuildFireOptions();
             LayerHoldFireOptionsBacking = BuildLayerHoldFireOptions();
+            KeyboardLayoutOptionsBacking = BuildKeyboardLayoutOptions();
+            OpenPressOptionsBacking = BuildOpenPressOptions();
         }
 
         /// <summary>Which input the freeform recorder is currently aimed
         /// at: the opener fold, one of the Custom steer axes, or the
         /// Click input.</summary>
-        public enum MenuRecordTarget { Host, CustomX, CustomY, Click }
+        public enum MenuRecordTarget { Host, CustomX, CustomY, Click, Custom2X, Custom2Y, Host2 }
 
         public MenuEditorItem(MenuDefinitionEntry entry)
         {
@@ -104,6 +106,7 @@ namespace PadForge.ViewModels
             // lists still stamped for the previous culture.
             EnsureOptionsCultureCurrent();
             RebuildCells();
+            RebuildKeyboardControls();
             // Weak event (Strings.CultureChanged): no unsubscribe needed.
             Strings.CultureChanged += OnCultureChanged;
         }
@@ -220,6 +223,19 @@ namespace PadForge.ViewModels
             RefreshInputChoices();
             foreach (var cell in Cells)
                 cell.RefreshCulture();
+            OnPropertyChanged(nameof(KeyboardLayoutOptions));
+            OnPropertyChanged(nameof(KeyboardLayoutIndex));
+            OnPropertyChanged(nameof(OpenPressOptions));
+            OnPropertyChanged(nameof(OpenPressIndex));
+            OnPropertyChanged(nameof(OpenPressMsLabel));
+            OnPropertyChanged(nameof(KeyboardLayoutDescription));
+            OnPropertyChanged(nameof(Host2Options));
+            OnPropertyChanged(nameof(SelectedHost2));
+            OnPropertyChanged(nameof(MapAllText));
+            RefreshTypesThrough();
+            // The rows carry their labels, so they are made again in the new
+            // language.
+            RebuildKeyboardControls();
         }
 
         private void OnEdited()
@@ -272,16 +288,19 @@ namespace PadForge.ViewModels
         /// row's rule).</summary>
         public bool ShowWebControllerRow => IsGrid || Entry.ShowOnWebController;
 
-        /// <summary>0 = Radial, 1 = Grid (combo index = enum value).</summary>
+        /// <summary>0 = Radial, 1 = Grid, 2 = Keyboard (combo index = enum
+        /// value). A Selector losing its items pushes -1, which is no edit.</summary>
         public int KindIndex
         {
             get => (int)Entry.Kind;
             set
             {
-                var kind = value == 1 ? MenuKind.Grid : MenuKind.Radial;
+                if (value < 0) return;
+                var kind = value switch { 1 => MenuKind.Grid, 2 => MenuKind.Keyboard, _ => MenuKind.Radial };
                 if (Entry.Kind == kind) return;
                 Entry.Kind = kind;
-                if (kind == MenuKind.Grid) Entry.HasCenter = false;
+                if (kind != MenuKind.Radial) Entry.HasCenter = false;
+                if (kind == MenuKind.Keyboard) ApplyKeyboardDefaults();
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(IsRadial));
                 OnPropertyChanged(nameof(IsGrid));
@@ -289,6 +308,7 @@ namespace PadForge.ViewModels
                 OnPropertyChanged(nameof(IsButtonPairGrid));
                 OnPropertyChanged(nameof(SelectedFireDescription));
                 RebuildCells();
+                RaiseKeyboardDependents();
                 OnEdited();
                 StructureChanged?.Invoke();
             }
@@ -526,11 +546,15 @@ namespace PadForge.ViewModels
         /// <summary>The host row's label: "Opens With" in surface mode, where
         /// the surface opens the menu, and "Steer With" in stay-open mode, where
         /// the layer opens it and the surface only moves the highlight.</summary>
-        public string HostInputLabel => EffectiveLayerHoldsOpen
+        public string HostInputLabel => IsKeyboard ? KeyboardHostLabel
+            : EffectiveLayerHoldsOpen
             ? Strings.Instance.Menu_Host_SteerWith
             : Strings.Instance.Menu_HostInput;
 
-        public string HostInputTip => EffectiveLayerHoldsOpen
+        /// <summary>A keyboard menu opens with its own input, so its steering
+        /// row only steers (#566).</summary>
+        public string HostInputTip => IsKeyboard ? Strings.Instance.Menu_Keyboard_Steer_Tip
+            : EffectiveLayerHoldsOpen
             ? Strings.Instance.Menu_Host_SteerWith_Tip
             : Strings.Instance.Menu_HostInput_Tip;
 
@@ -553,6 +577,7 @@ namespace PadForge.ViewModels
         {
             new MenuIntOption { Value = 0, Label = Strings.Instance.Menu_Style_Radial },
             new MenuIntOption { Value = 1, Label = Strings.Instance.Menu_Style_Grid },
+            new MenuIntOption { Value = 2, Label = Strings.Instance.Menu_Style_Keyboard },
         };
 
         public IReadOnlyList<MenuIntOption> KindOptions => KindOptionsBacking;
@@ -562,54 +587,59 @@ namespace PadForge.ViewModels
         /// <summary>Pickable openers: the full device-agnostic grammar,
         /// always. Mirrors the mapping picker's "(Any device)" convention
         /// (MappingDisplayResolver.BuildDeviceAgnosticChoices): two sticks,
-        /// touchpads 0 and 1 (everything the Workshop translator emits for
-        /// real hardware), and Custom Axes. Never gated on assignment or
+        /// the D-pad and the face buttons, touchpads 0 and 1 (everything the
+        /// Workshop translator emits for real hardware), and Custom Axes. Never gated on assignment or
         /// online state: imported profiles land on slots with nothing
         /// assigned yet, and the menu must be fully editable before any
         /// device exists. An authored descriptor outside the grammar
         /// (hand-edited XML, a typeless config's center_trackpad third
         /// pad) is still listed so the selection never silently lies.</summary>
-        public IReadOnlyList<MenuHostOption> HostOptions
+        public IReadOnlyList<MenuHostOption> HostOptions => HostOptionsFor(Entry.HostDescriptor);
+
+        /// <summary>The opener list with <paramref name="current"/> listed:
+        /// the two sticks, the D-pad and the face buttons (the button-pair
+        /// hosts the runtime has run since translator v25, #566), two
+        /// touchpads and Custom Axes.</summary>
+        internal IReadOnlyList<MenuHostOption> HostOptionsFor(string current)
         {
-            get
+            var s = Strings.Instance;
+            var list = new List<MenuHostOption>(8)
             {
-                var s = Strings.Instance;
-                var list = new List<MenuHostOption>(6)
+                new MenuHostOption { Descriptor = "Gamepad LeftStick", Label = s.Menu_Host_LeftStick },
+                new MenuHostOption { Descriptor = "Gamepad RightStick", Label = s.Menu_Host_RightStick },
+                new MenuHostOption { Descriptor = "Gamepad DPad", Label = s.Menu_Host_DPad },
+                new MenuHostOption { Descriptor = "Gamepad Diamond", Label = s.Menu_Host_FaceButtons },
+            };
+            for (int n = 0; n < 2; n++)
+                list.Add(new MenuHostOption
                 {
-                    new MenuHostOption { Descriptor = "Gamepad LeftStick", Label = s.Menu_Host_LeftStick },
-                    new MenuHostOption { Descriptor = "Gamepad RightStick", Label = s.Menu_Host_RightStick },
-                };
-                for (int n = 0; n < 2; n++)
-                    list.Add(new MenuHostOption
-                    {
-                        Descriptor = $"Touchpad {n}",
-                        Label = string.Format(s.Menu_Host_Touchpad_Format, n + 1),
-                        IsTouchpad = true,
-                    });
-                // Custom Axes: exists precisely for devices the named
-                // surfaces cannot describe (joysticks, wheels, anything
-                // not detected as a gamepad).
-                list.Add(new MenuHostOption { Descriptor = "Custom", Label = s.Menu_Host_Custom });
-                bool found = false;
-                foreach (var o in list)
-                    if (string.Equals(o.Descriptor, Entry.HostDescriptor, StringComparison.Ordinal))
-                    { found = true; break; }
-                if (!found && !string.IsNullOrEmpty(Entry.HostDescriptor))
+                    Descriptor = $"Touchpad {n}",
+                    Label = string.Format(s.Menu_Host_Touchpad_Format, n + 1),
+                    IsTouchpad = true,
+                });
+            // Custom Axes: exists precisely for devices the named
+            // surfaces cannot describe (joysticks, wheels, anything
+            // not detected as a gamepad).
+            list.Add(new MenuHostOption { Descriptor = "Custom", Label = s.Menu_Host_Custom });
+            bool found = false;
+            foreach (var o in list)
+                if (string.Equals(o.Descriptor, current, StringComparison.Ordinal))
+                { found = true; break; }
+            if (!found && !string.IsNullOrEmpty(current))
+            {
+                bool touch = current.StartsWith("Touchpad ", StringComparison.Ordinal);
+                string label = current;
+                var parts = current.Split(' ');
+                if (touch && parts.Length == 2 && int.TryParse(parts[1], out int pad) && pad >= 0)
+                    label = string.Format(s.Menu_Host_Touchpad_Format, pad + 1);
+                list.Add(new MenuHostOption
                 {
-                    bool touch = Entry.HostDescriptor.StartsWith("Touchpad ", StringComparison.Ordinal);
-                    string label = Entry.HostDescriptor;
-                    var parts = Entry.HostDescriptor.Split(' ');
-                    if (touch && parts.Length == 2 && int.TryParse(parts[1], out int pad) && pad >= 0)
-                        label = string.Format(s.Menu_Host_Touchpad_Format, pad + 1);
-                    list.Add(new MenuHostOption
-                    {
-                        Descriptor = Entry.HostDescriptor,
-                        Label = label,
-                        IsTouchpad = touch,
-                    });
-                }
-                return list;
+                    Descriptor = current,
+                    Label = label,
+                    IsTouchpad = touch,
+                });
             }
+            return list;
         }
 
         /// <summary>Re-raises the opener list and selection after a direct
@@ -620,6 +650,8 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(HostOptions));
             OnPropertyChanged(nameof(SelectedHost));
             OnPropertyChanged(nameof(HostIsTouchpad));
+            OnPropertyChanged(nameof(ShowsHostHalfRow));
+            OnPropertyChanged(nameof(IsCustomHost)); OnPropertyChanged(nameof(ShowsCustomAxesRows));
             // The fire caption follows the host: a hotbar's D-pad host says
             // Fire Mode does not apply, a recorded axis host says it does.
             OnPropertyChanged(nameof(IsButtonPairGrid));
@@ -642,8 +674,9 @@ namespace PadForge.ViewModels
                 if (!value.IsTouchpad) Entry.HostHalf = 0;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(HostIsTouchpad));
+                OnPropertyChanged(nameof(ShowsHostHalfRow));
                 OnPropertyChanged(nameof(HostHalfIndex));
-                OnPropertyChanged(nameof(IsCustomHost));
+                OnPropertyChanged(nameof(IsCustomHost)); OnPropertyChanged(nameof(ShowsCustomAxesRows));
                 OnPropertyChanged(nameof(IsButtonPairGrid));
                 OnPropertyChanged(nameof(SelectedFireDescription));
                 RefreshInputChoices();
@@ -676,39 +709,22 @@ namespace PadForge.ViewModels
         /// input has no host surface (buttons, gyro, keys).</summary>
         public bool TryApplyRecordedHost(string descriptor)
         {
-            string d = (descriptor ?? "").Trim();
-            if (d.Length == 0) return false;
-            string canonical = PadForge.Engine.Common.Mapping.SourceCoercion.ResolveGamepadAlias(d) ?? d;
-
-            string host = null;
-            if (d.Contains("LeftStick", StringComparison.OrdinalIgnoreCase)
-                || canonical is "Axis 0" or "Axis 1")
-                host = "Gamepad LeftStick";
-            else if (d.Contains("RightStick", StringComparison.OrdinalIgnoreCase)
-                || canonical is "Axis 3" or "Axis 4")
-                host = "Gamepad RightStick";
-            else if (d.StartsWith("Touchpad ", StringComparison.Ordinal))
-            {
-                var parts = d.Split(' ');
-                if (parts.Length >= 2 && int.TryParse(parts[1], out int pad) && pad >= 0 && pad <= 2)
-                    host = $"Touchpad {pad}";
-            }
-            else if (IsAnalogDescriptor(canonical))
+            string host = FoldHost(descriptor, out string customAxis);
+            if (host == null) return false;
+            if (customAxis != null)
             {
                 // A flight stick, wheel, or throttle axis has no gamepad
                 // stick to fold onto: it becomes a Custom Axes opener with
                 // the recorded axis as Steer X.
                 Entry.HostDescriptor = "Custom";
-                Entry.CustomXDescriptor = canonical;
+                Entry.CustomXDescriptor = customAxis;
                 RefreshHostOptions();
-                OnPropertyChanged(nameof(IsCustomHost));
+                OnPropertyChanged(nameof(IsCustomHost)); OnPropertyChanged(nameof(ShowsCustomAxesRows));
                 RaiseCustomInput(MenuRecordTarget.CustomX);
                 RaiseCustomInput(MenuRecordTarget.Click);
                 OnEdited();
                 return true;
             }
-            if (host == null) return false;
-
             foreach (var h in HostOptions)
             {
                 if (h.Descriptor == host)
@@ -718,6 +734,65 @@ namespace PadForge.ViewModels
                 }
             }
             return false;
+        }
+
+        /// <summary>Split's right half (#566), folded the same way.</summary>
+        public bool TryApplyRecordedHost2(string descriptor)
+        {
+            string host = FoldHost(descriptor, out string customAxis);
+            if (host == null) return false;
+            if (customAxis != null)
+            {
+                Entry.Host2Descriptor = "Custom";
+                Entry.Custom2XDescriptor = customAxis;
+                RefreshHost2Options();
+                RaiseCustomInput(MenuRecordTarget.Custom2X);
+                OnEdited();
+                return true;
+            }
+            foreach (var h in Host2Options)
+            {
+                if (h.Descriptor == host)
+                {
+                    SelectedHost2 = h;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>The host a recorded input folds onto: a stick axis or
+        /// click picks the stick, a touchpad read the pad, a D-pad press the
+        /// D-pad and a face button the four face buttons (the button-pair
+        /// hosts, #566). Any other axis picks Custom Axes with the axis in
+        /// <paramref name="customAxis"/>. Null when the input has no surface
+        /// to steer with (gyro, keys).</summary>
+        private static string FoldHost(string descriptor, out string customAxis)
+        {
+            customAxis = null;
+            string d = (descriptor ?? "").Trim();
+            if (d.Length == 0) return null;
+            string canonical = PadForge.Engine.Common.Mapping.SourceCoercion.ResolveGamepadAlias(d) ?? d;
+            if (d.Contains("LeftStick", StringComparison.OrdinalIgnoreCase)
+                || canonical is "Axis 0" or "Axis 1")
+                return "Gamepad LeftStick";
+            if (d.Contains("RightStick", StringComparison.OrdinalIgnoreCase)
+                || canonical is "Axis 3" or "Axis 4")
+                return "Gamepad RightStick";
+            if (d.StartsWith("Touchpad ", StringComparison.Ordinal))
+            {
+                var parts = d.Split(' ');
+                return parts.Length >= 2 && int.TryParse(parts[1], out int pad) && pad >= 0 && pad <= 2
+                    ? $"Touchpad {pad}" : null;
+            }
+            if (canonical.StartsWith("POV 0 ", StringComparison.Ordinal)) return "Gamepad DPad";
+            if (canonical is "Button 0" or "Button 1" or "Button 2" or "Button 3") return "Gamepad Diamond";
+            if (IsAnalogDescriptor(canonical))
+            {
+                customAxis = canonical;
+                return "Custom";
+            }
+            return null;
         }
 
         /// <summary>Applies a freeform-recorded descriptor to the given
@@ -734,11 +809,21 @@ namespace PadForge.ViewModels
                 case MenuRecordTarget.Host:
                     return TryApplyRecordedHost(descriptor);
 
+                case MenuRecordTarget.Host2:
+                    return TryApplyRecordedHost2(descriptor);
+
                 case MenuRecordTarget.CustomX:
                 case MenuRecordTarget.CustomY:
+                case MenuRecordTarget.Custom2X:
+                case MenuRecordTarget.Custom2Y:
                     if (!IsAnalogDescriptor(canonical)) return false;
-                    if (target == MenuRecordTarget.CustomX) Entry.CustomXDescriptor = canonical;
-                    else Entry.CustomYDescriptor = canonical;
+                    switch (target)
+                    {
+                        case MenuRecordTarget.CustomX: Entry.CustomXDescriptor = canonical; break;
+                        case MenuRecordTarget.CustomY: Entry.CustomYDescriptor = canonical; break;
+                        case MenuRecordTarget.Custom2X: Entry.Custom2XDescriptor = canonical; break;
+                        default: Entry.Custom2YDescriptor = canonical; break;
+                    }
                     RaiseCustomInput(target);
                     OnEdited();
                     return true;
@@ -958,6 +1043,14 @@ namespace PadForge.ViewModels
                     if ((Entry.CustomYDescriptor ?? "") == v) return;
                     Entry.CustomYDescriptor = v;
                     break;
+                case MenuRecordTarget.Custom2X:
+                    if ((Entry.Custom2XDescriptor ?? "") == v) return;
+                    Entry.Custom2XDescriptor = v;
+                    break;
+                case MenuRecordTarget.Custom2Y:
+                    if ((Entry.Custom2YDescriptor ?? "") == v) return;
+                    Entry.Custom2YDescriptor = v;
+                    break;
                 default:
                     if ((Entry.ClickDescriptor ?? "") == v) return;
                     Entry.ClickDescriptor = v;
@@ -990,6 +1083,18 @@ namespace PadForge.ViewModels
                         OnPropertyChanged(nameof(CustomYSelected));
                         OnPropertyChanged(nameof(CustomYSubtitle));
                         break;
+                    case MenuRecordTarget.Custom2X:
+                        OnPropertyChanged(nameof(Custom2XChoices));
+                        OnPropertyChanged(nameof(Custom2XChoicesView));
+                        OnPropertyChanged(nameof(Custom2XSelected));
+                        OnPropertyChanged(nameof(Custom2XSubtitle));
+                        break;
+                    case MenuRecordTarget.Custom2Y:
+                        OnPropertyChanged(nameof(Custom2YChoices));
+                        OnPropertyChanged(nameof(Custom2YChoicesView));
+                        OnPropertyChanged(nameof(Custom2YSelected));
+                        OnPropertyChanged(nameof(Custom2YSubtitle));
+                        break;
                     default:
                         OnPropertyChanged(nameof(ClickChoices));
                         OnPropertyChanged(nameof(ClickChoicesView));
@@ -1013,6 +1118,11 @@ namespace PadForge.ViewModels
             RaiseCustomInput(MenuRecordTarget.CustomX);
             RaiseCustomInput(MenuRecordTarget.CustomY);
             RaiseCustomInput(MenuRecordTarget.Click);
+            RaiseCustomInput(MenuRecordTarget.Custom2X);
+            RaiseCustomInput(MenuRecordTarget.Custom2Y);
+            // The keyboard rows' lists come from the same picker.
+            OpenRow.Refresh();
+            foreach (var row in KeyboardControlRows) row.Refresh();
         }
 
         public RelayCommand ResetClickCommand => _resetClick ??= new RelayCommand(
@@ -1065,6 +1175,9 @@ namespace PadForge.ViewModels
                 OnPropertyChanged(nameof(CustomXRecordIcon));
                 OnPropertyChanged(nameof(CustomYRecordIcon));
                 OnPropertyChanged(nameof(ClickRecordIcon));
+                OnPropertyChanged(nameof(Custom2XRecordIcon));
+                OnPropertyChanged(nameof(Custom2YRecordIcon));
+                OnPropertyChanged(nameof(Host2RecordIcon));
                 RaiseRecordTexts();
             }
         }
@@ -1075,6 +1188,9 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(CustomXRecordText));
             OnPropertyChanged(nameof(CustomYRecordText));
             OnPropertyChanged(nameof(ClickRecordText));
+            OnPropertyChanged(nameof(Custom2XRecordText));
+            OnPropertyChanged(nameof(Custom2YRecordText));
+            OnPropertyChanged(nameof(Host2RecordText));
         }
 
         internal void BeginRecord(MenuRecordTarget target)
@@ -1082,6 +1198,11 @@ namespace PadForge.ViewModels
             PendingRecordTarget = target;
             RecordingTarget = target;
         }
+
+        /// <summary>Segoe MDL2's Stop and Record glyphs, which every record
+        /// button on this tab shows (#566's rows share them).</summary>
+        internal static readonly string StopGlyph = ((char)0xE71A).ToString();
+        internal static readonly string RecordGlyph = ((char)0xE7C8).ToString();
 
         private string IconFor(MenuRecordTarget t)
             => _recordingTarget == t ? "" : "";
@@ -1257,15 +1378,16 @@ namespace PadForge.ViewModels
             // Write the MODEL default directly, never by list index: a
             // never-lie entry for an out-of-grammar descriptor can extend
             // the list, so positions are not fixed.
-            Entry.HostDescriptor = "Gamepad RightStick";
+            Entry.HostDescriptor = IsKeyboard ? KeyboardMenuDefaults.Host : "Gamepad RightStick";
             Entry.HostHalf = 0;
             Entry.CustomXDescriptor = "";
             Entry.CustomYDescriptor = "";
             OnPropertyChanged(nameof(SelectedHost));
             OnPropertyChanged(nameof(HostOptions));
             OnPropertyChanged(nameof(HostIsTouchpad));
+            OnPropertyChanged(nameof(ShowsHostHalfRow));
             OnPropertyChanged(nameof(HostHalfIndex));
-            OnPropertyChanged(nameof(IsCustomHost));
+            OnPropertyChanged(nameof(IsCustomHost)); OnPropertyChanged(nameof(ShowsCustomAxesRows));
             OnPropertyChanged(nameof(IsButtonPairGrid));
             OnPropertyChanged(nameof(SelectedFireDescription));
             RefreshInputChoices();
@@ -1292,7 +1414,8 @@ namespace PadForge.ViewModels
         public RelayCommand ResetGeometryCommand => _resetGeometry ??= new RelayCommand(() =>
         {
             PosXPercent = 50;
-            PosYPercent = 50;
+            // A keyboard (#566) sits at the bottom by default.
+            PosYPercent = IsKeyboard ? KeyboardMenuDefaults.PosYPercent : 50;
             ScalePercent = 100;
             OpacityPercent = 90;
             ShowLabels = true;
@@ -1313,6 +1436,9 @@ namespace PadForge.ViewModels
         internal void RebuildCells()
         {
             Cells.Clear();
+            // A keyboard (#566) has no cells. Items a ring or a grid left keep
+            // their data, as an out-of-reach cell does below, for a flip back.
+            if (Entry.Kind == MenuKind.Keyboard) return;
 
             var byIndex = new Dictionary<int, MenuItemDefinition>();
             if (Entry.Items != null)

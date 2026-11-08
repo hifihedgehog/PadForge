@@ -4976,4 +4976,207 @@
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD не пропускал движение мыши в Windows. PadForge перехватывает клавиши и кнопки мыши, но не движение, поэтому указатель по-прежнему перемещается.</value></data>
   <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>Виртуальные контроллеры PadForge получают данные движения только от датчика движения контроллера.</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows возвращался к этому профилю из профиля {0} по кнопке. Чтобы сделать то же в PadForge, добавьте сочетание кнопок для этого профиля на странице «Профили».</value></data>
+  <data name="Osk_Style_Grid" xml:space="preserve">
+    <value>Сетка</value>
+  </data>
+  <data name="Osk_Style_Split" xml:space="preserve">
+    <value>Раздельная</value>
+  </data>
+  <data name="Osk_Style_Wheel" xml:space="preserve">
+    <value>Колесо</value>
+  </data>
+  <data name="Osk_CloseKeyboard" xml:space="preserve">
+    <value>Закрыть клавиатуру</value>
+  </data>
+  <data name="Osk_Drag" xml:space="preserve">
+    <value>Перетащите, чтобы переместить клавиатуру</value>
+  </data>
+  <data name="Osk_Wheel_Keys" xml:space="preserve">
+    <value>Клавиши</value>
+  </data>
+  <data name="Osk_Key_Tab" xml:space="preserve">
+    <value>Tab</value>
+  </data>
+  <data name="Osk_Key_Caps" xml:space="preserve">
+    <value>Caps</value>
+  </data>
+  <data name="Osk_Key_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Osk_Key_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Key_Ctrl" xml:space="preserve">
+    <value>Ctrl</value>
+  </data>
+  <data name="Osk_Key_Win" xml:space="preserve">
+    <value>Win</value>
+  </data>
+  <data name="Osk_Key_Alt" xml:space="preserve">
+    <value>Alt</value>
+  </data>
+  <data name="Osk_Key_AltGr" xml:space="preserve">
+    <value>AltGr</value>
+  </data>
+  <data name="Osk_Key_Symbols" xml:space="preserve">
+    <value>&amp;123</value>
+  </data>
+  <data name="Osk_Key_Letters" xml:space="preserve">
+    <value>абв</value>
+  </data>
+  <data name="Osk_Key_Space" xml:space="preserve">
+    <value>Пробел</value>
+  </data>
+  <data name="Osk_Key_Esc" xml:space="preserve">
+    <value>Esc</value>
+  </data>
+  <data name="Osk_Key_Del" xml:space="preserve">
+    <value>Del</value>
+  </data>
+  <data name="Osk_Key_Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Osk_Key_End" xml:space="preserve">
+    <value>End</value>
+  </data>
+  <data name="Osk_Key_PgUp" xml:space="preserve">
+    <value>PgUp</value>
+  </data>
+  <data name="Osk_Key_PgDn" xml:space="preserve">
+    <value>PgDn</value>
+  </data>
+  <data name="Osk_Key_Ins" xml:space="preserve">
+    <value>Ins</value>
+  </data>
+  <data name="Osk_Key_PrtSc" xml:space="preserve">
+    <value>PrtSc</value>
+  </data>
+  <data name="Osk_Hint_Type" xml:space="preserve">
+    <value>Ввод</value>
+  </data>
+  <data name="Osk_Hint_TypeLeft" xml:space="preserve">
+    <value>Ввод слева</value>
+  </data>
+  <data name="Osk_Hint_TypeRight" xml:space="preserve">
+    <value>Ввод справа</value>
+  </data>
+  <data name="Osk_Hint_Backspace" xml:space="preserve">
+    <value>Стереть</value>
+  </data>
+  <data name="Osk_Hint_Space" xml:space="preserve">
+    <value>Пробел</value>
+  </data>
+  <data name="Osk_Hint_Enter" xml:space="preserve">
+    <value>Ввод строки</value>
+  </data>
+  <data name="Osk_Hint_Close" xml:space="preserve">
+    <value>Закрыть</value>
+  </data>
+  <data name="Osk_Hint_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Hint_Symbols" xml:space="preserve">
+    <value>Символы</value>
+  </data>
+  <data name="Osk_Hint_Cursor" xml:space="preserve">
+    <value>Курсор</value>
+  </data>
+  <data name="Osk_Hint_Suggestion" xml:space="preserve">
+    <value>Подсказка</value>
+  </data>
+  <data name="Osk_Hint_Capitals" xml:space="preserve">
+    <value>Удерживать: заглавные</value>
+  </data>
+  <data name="Osk_Hint_Numbers" xml:space="preserve">
+    <value>Удерживать: цифры</value>
+  </data>
+  <data name="Osk_Hint_Keys" xml:space="preserve">
+    <value>Удерживать: клавиши</value>
+  </data>
+  <data name="Osk_Hint_Move" xml:space="preserve">
+    <value>Удерживать: сдвиг</value>
+  </data>
+  <data name="Osk_Input_Dpad" xml:space="preserve">
+    <value>Крестовина</value>
+  </data>
+  <data name="Menu_Style_Keyboard" xml:space="preserve"><value>Клавиатура</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>Радиальное кольцо и Сенсорная сетка запускают назначения ячеек. Клавиатура печатает клавиши используемой раскладки Windows.</value></data>
+  <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Раскладка</value></data>
+  <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Как клавиатура располагает клавиши и как контроллер их выбирает.</value></data>
+  <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Одно выделение, которое двигается стиком или четырьмя вводами. Так устроены клавиатуры Windows, Xbox и Steam.</value></data>
+  <data name="Menu_KeyboardLayout_Split_Desc" xml:space="preserve"><value>У каждой половины клавиатуры свой ввод для управления и свой ввод для печати.</value></data>
+  <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>Колесо с группами: выберите одну из восьми групп, затем один из четырех её символов.</value></data>
+  <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>Сбросить раскладку</value></data>
+  <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>Чем открывать</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Любой ввод на устройстве, назначенном этому слоту, или два ввода одновременно. Тот же ввод закрывает клавиатуру, если его не использует и элемент управления клавиатурой. Если поле пустое, клавиатуру не открывает ни один ввод.</value></data>
+  <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>Сбросить «Чем открывать»</value></data>
+  <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>Открывать при выборе текстового поля</value></data>
+  <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>В приложениях Windows и браузерах, без нажатия кнопки. Игры рисуют текстовые поля сами, поэтому в игре клавиатура открывается заданным выше вводом или своим слоем, если включено «Слой держит меню открытым».</value></data>
+  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>Ввод, который двигает выделение по клавишам. Читается с физических контроллеров, назначенных слоту.</value></data>
+  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>Чем управлять левой половиной</value></data>
+  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>Чем управлять правой половиной</value></data>
+  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>Чем выбирать группу</value></data>
+  <data name="Menu_Reset_Host2" xml:space="preserve"><value>Сбросить «Чем управлять правой половиной»</value></data>
+  <data name="Menu_Host_DPad" xml:space="preserve"><value>Крестовина</value></data>
+  <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>Лицевые кнопки</value></data>
+  <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>Управление клавиатурой</value></data>
+  <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>Раскладка: {0}, элементов управления: {1}</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Читается с физических контроллеров, назначенных этому слоту. Каждому элементу подходит любой ввод на любом из них: кнопка, направление оси, крестовина, тачпад или два ввода одновременно. Нажмите кнопку записи и подайте ввод либо удерживайте один ввод и нажмите второй, чтобы записать сочетание. «Назначить все» записывает их по порядку.</value></data>
+  <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>Назначить все</value></data>
+  <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>Записывает по порядку все элементы управления раскладки. Строка состояния называет элемент, для которого нужно подать ввод.</value></data>
+  <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>Подайте ввод для «{0}» ({1} из {2})</value></data>
+  <data name="Menu_Keyboard_MapAll_Done" xml:space="preserve"><value>Все элементы управления клавиатурой записаны.</value></data>
+  <data name="Menu_Reset_KeyboardControls" xml:space="preserve"><value>Сбросить управление клавиатурой</value></data>
+  <data name="Menu_Keyboard_Reset_Format" xml:space="preserve"><value>Сбросить «{0}» на «{1}»</value></data>
+  <data name="Menu_Keyboard_RecordingPrompt" xml:space="preserve"><value>Подайте ввод на любом устройстве, назначенном этому слоту</value></data>
+  <data name="Menu_Keyboard_Card" xml:space="preserve"><value>Клавиатура</value></data>
+  <data name="Menu_TypesThrough" xml:space="preserve"><value>Чем печатать</value></data>
+  <data name="Menu_TypesThrough_Caption" xml:space="preserve"><value>«Ввод Windows» печатает каждую клавишу средствами Windows, и программы могут определить, что она пришла от программы. Клавиатура слота «Клавиатура + мышь» печатает так, как задано в настройке клавиатуры этого слота. Виртуальная клавиатура HIDMaestro печатает как выбранная модель клавиатуры, и программы видят в ней оборудование. Меню клавиатуры создает её само, поэтому слот «Клавиатура + мышь» не нужен. Клавиша, которой нет на выбранной клавиатуре, и символ, который не печатает ни одна клавиша, всё равно проходят через «Ввод Windows».</value></data>
+  <data name="Menu_TypesThrough_Slot_Format" xml:space="preserve"><value>Та же клавиатура, что у {0}</value></data>
+  <data name="Menu_Reset_TypesThrough" xml:space="preserve"><value>Сбросить «Чем печатать»</value></data>
+  <data name="Menu_FunctionRow" xml:space="preserve"><value>Функциональный ряд</value></data>
+  <data name="Menu_FunctionRow_Caption" xml:space="preserve"><value>Esc, от F1 до F12 и Del. Клавиша Fn на клавиатуре тоже переключает его.</value></data>
+  <data name="Menu_WordSuggestions" xml:space="preserve"><value>Подсказки слов</value></data>
+  <data name="Menu_WordSuggestions_Caption" xml:space="preserve"><value>Из предиктивного ввода Windows для языков, установленных в Windows.</value></data>
+  <data name="Menu_SymbolsPage" xml:space="preserve"><value>Страница символов</value></data>
+  <data name="Menu_SymbolsPage_Tip" xml:space="preserve"><value>Символы на странице символов клавиатуры. Они печатаются как символы Юникода.</value></data>
+  <data name="Menu_Reset_Symbols" xml:space="preserve"><value>Сбросить страницу символов</value></data>
+  <data name="Menu_Keyboard_Overlay_Caption" xml:space="preserve"><value>Строки, которые есть у каждого меню. Их задает и перетаскивание верхней панели или углового уголка клавиатуры, и удержание «Переместить клавиатуру».</value></data>
+  <data name="Osk_Title" xml:space="preserve"><value>Экранная клавиатура</value></data>
+  <data name="Osk_Control_TypeKey" xml:space="preserve"><value>Напечатать клавишу</value></data>
+  <data name="Osk_Control_Backspace" xml:space="preserve"><value>Backspace</value></data>
+  <data name="Osk_Control_Space" xml:space="preserve"><value>Пробел</value></data>
+  <data name="Osk_Control_Enter" xml:space="preserve"><value>Enter</value></data>
+  <data name="Osk_Control_Close" xml:space="preserve"><value>Закрыть</value></data>
+  <data name="Osk_Control_ShiftNextKey" xml:space="preserve"><value>Shift для следующей клавиши</value></data>
+  <data name="Osk_Control_ShiftLeftHand" xml:space="preserve"><value>Shift для следующей клавиши, левая рука</value></data>
+  <data name="Osk_Control_ShiftRightHand" xml:space="preserve"><value>Shift для следующей клавиши, правая рука</value></data>
+  <data name="Osk_Control_SymbolsPage" xml:space="preserve"><value>Страница символов</value></data>
+  <data name="Osk_Control_CursorLeft" xml:space="preserve"><value>Курсор влево</value></data>
+  <data name="Osk_Control_CursorRight" xml:space="preserve"><value>Курсор вправо</value></data>
+  <data name="Osk_Control_MoveUp" xml:space="preserve"><value>Сдвиг вверх</value></data>
+  <data name="Osk_Control_MoveDown" xml:space="preserve"><value>Сдвиг вниз</value></data>
+  <data name="Osk_Control_MoveLeft" xml:space="preserve"><value>Сдвиг влево</value></data>
+  <data name="Osk_Control_MoveRight" xml:space="preserve"><value>Сдвиг вправо</value></data>
+  <data name="Osk_Control_Suggestion_Format" xml:space="preserve"><value>Подсказка {0}</value></data>
+  <data name="Osk_Control_MoveKeyboard" xml:space="preserve"><value>Переместить клавиатуру (удерживать)</value></data>
+  <data name="Osk_Control_TypeLeftHalf" xml:space="preserve"><value>Ввод левой половины</value></data>
+  <data name="Osk_Control_TypeRightHalf" xml:space="preserve"><value>Ввод правой половины</value></data>
+  <data name="Osk_Control_ArrowUp" xml:space="preserve"><value>Стрелка вверх</value></data>
+  <data name="Osk_Control_ArrowDown" xml:space="preserve"><value>Стрелка вниз</value></data>
+  <data name="Osk_Control_ArrowLeft" xml:space="preserve"><value>Стрелка влево</value></data>
+  <data name="Osk_Control_ArrowRight" xml:space="preserve"><value>Стрелка вправо</value></data>
+  <data name="Osk_Control_PickWest" xml:space="preserve"><value>Выбрать запад</value></data>
+  <data name="Osk_Control_PickNorth" xml:space="preserve"><value>Выбрать север</value></data>
+  <data name="Osk_Control_PickEast" xml:space="preserve"><value>Выбрать восток</value></data>
+  <data name="Osk_Control_PickSouth" xml:space="preserve"><value>Выбрать юг</value></data>
+  <data name="Osk_Control_Capitals" xml:space="preserve"><value>Заглавные и символы (удерживать)</value></data>
+  <data name="Osk_Control_Numbers" xml:space="preserve"><value>Цифры и скобки (удерживать)</value></data>
+  <data name="Osk_Control_Home" xml:space="preserve"><value>Home</value></data>
+  <data name="Osk_Control_End" xml:space="preserve"><value>End</value></data>
+  <data name="Menu_Keyboard_OpenPress" xml:space="preserve"><value>Когда открывать</value></data>
+  <data name="Menu_Keyboard_OpenPress_Tip" xml:space="preserve"><value>Нажатие «Чем открывать», которое открывает или закрывает клавиатуру. Привязки Steam «долгое нажатие» и «двойное нажатие» импортируются как «При долгом нажатии» и «При двойном нажатии», поэтому короткое нажатие того же ввода сохраняет свою привязку.</value></data>
+  <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>Сбросить «Когда открывать»</value></data>
+  <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>Открывает или закрывает клавиатуру, когда «Чем открывать» удерживается в течение времени удержания. Более короткое нажатие ничего не делает.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>Открывает или закрывает клавиатуру, когда «Чем открывать» нажимается дважды в пределах окна нажатия.</value></data>
 </root>

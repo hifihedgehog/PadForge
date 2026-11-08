@@ -4976,4 +4976,207 @@ PadForge ले तिनलाई अहिले अनइन्स्टल �
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD ले माउसको चाललाई Windows सम्म पुग्न रोकेको थियो। PadForge ले कुञ्जीहरू र माउस बटनहरू रोक्छ तर चाल रोक्दैन, त्यसैले पोइन्टर अझै सर्छ।</value></data>
   <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>PadForge का भर्चुअल कन्ट्रोलरहरूले मोसन केवल कन्ट्रोलरको मोसन सेन्सरबाट लिन्छन्।</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows एउटा बटनबाट {0} बाट यो प्रोफाइलमा फर्किन्थ्यो। PadForge मा त्यसो गर्न, प्रोफाइलहरू पृष्ठमा यो प्रोफाइलका लागि एउटा प्रोफाइल सर्टकट थप्नुहोस्।</value></data>
+  <data name="Osk_Style_Grid" xml:space="preserve">
+    <value>ग्रिड</value>
+  </data>
+  <data name="Osk_Style_Split" xml:space="preserve">
+    <value>विभाजित</value>
+  </data>
+  <data name="Osk_Style_Wheel" xml:space="preserve">
+    <value>चक्र</value>
+  </data>
+  <data name="Osk_CloseKeyboard" xml:space="preserve">
+    <value>किबोर्ड बन्द गर्नुहोस्</value>
+  </data>
+  <data name="Osk_Drag" xml:space="preserve">
+    <value>किबोर्ड सार्न तान्नुहोस्</value>
+  </data>
+  <data name="Osk_Wheel_Keys" xml:space="preserve">
+    <value>कुञ्जीहरू</value>
+  </data>
+  <data name="Osk_Key_Tab" xml:space="preserve">
+    <value>Tab</value>
+  </data>
+  <data name="Osk_Key_Caps" xml:space="preserve">
+    <value>Caps</value>
+  </data>
+  <data name="Osk_Key_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Osk_Key_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Key_Ctrl" xml:space="preserve">
+    <value>Ctrl</value>
+  </data>
+  <data name="Osk_Key_Win" xml:space="preserve">
+    <value>Win</value>
+  </data>
+  <data name="Osk_Key_Alt" xml:space="preserve">
+    <value>Alt</value>
+  </data>
+  <data name="Osk_Key_AltGr" xml:space="preserve">
+    <value>AltGr</value>
+  </data>
+  <data name="Osk_Key_Symbols" xml:space="preserve">
+    <value>&amp;123</value>
+  </data>
+  <data name="Osk_Key_Letters" xml:space="preserve">
+    <value>कखग</value>
+  </data>
+  <data name="Osk_Key_Space" xml:space="preserve">
+    <value>Space</value>
+  </data>
+  <data name="Osk_Key_Esc" xml:space="preserve">
+    <value>Esc</value>
+  </data>
+  <data name="Osk_Key_Del" xml:space="preserve">
+    <value>Del</value>
+  </data>
+  <data name="Osk_Key_Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Osk_Key_End" xml:space="preserve">
+    <value>End</value>
+  </data>
+  <data name="Osk_Key_PgUp" xml:space="preserve">
+    <value>PgUp</value>
+  </data>
+  <data name="Osk_Key_PgDn" xml:space="preserve">
+    <value>PgDn</value>
+  </data>
+  <data name="Osk_Key_Ins" xml:space="preserve">
+    <value>Ins</value>
+  </data>
+  <data name="Osk_Key_PrtSc" xml:space="preserve">
+    <value>PrtSc</value>
+  </data>
+  <data name="Osk_Hint_Type" xml:space="preserve">
+    <value>टाइप</value>
+  </data>
+  <data name="Osk_Hint_TypeLeft" xml:space="preserve">
+    <value>बायाँ टाइप</value>
+  </data>
+  <data name="Osk_Hint_TypeRight" xml:space="preserve">
+    <value>दायाँ टाइप</value>
+  </data>
+  <data name="Osk_Hint_Backspace" xml:space="preserve">
+    <value>ब्याकस्पेस</value>
+  </data>
+  <data name="Osk_Hint_Space" xml:space="preserve">
+    <value>स्पेस</value>
+  </data>
+  <data name="Osk_Hint_Enter" xml:space="preserve">
+    <value>इन्टर</value>
+  </data>
+  <data name="Osk_Hint_Close" xml:space="preserve">
+    <value>बन्द</value>
+  </data>
+  <data name="Osk_Hint_Shift" xml:space="preserve">
+    <value>सिफ्ट</value>
+  </data>
+  <data name="Osk_Hint_Symbols" xml:space="preserve">
+    <value>चिह्नहरू</value>
+  </data>
+  <data name="Osk_Hint_Cursor" xml:space="preserve">
+    <value>कर्सर</value>
+  </data>
+  <data name="Osk_Hint_Suggestion" xml:space="preserve">
+    <value>सुझाव</value>
+  </data>
+  <data name="Osk_Hint_Capitals" xml:space="preserve">
+    <value>थिचिराख्दा: ठूला अक्षर</value>
+  </data>
+  <data name="Osk_Hint_Numbers" xml:space="preserve">
+    <value>थिचिराख्दा: अङ्क</value>
+  </data>
+  <data name="Osk_Hint_Keys" xml:space="preserve">
+    <value>थिचिराख्दा: कुञ्जी</value>
+  </data>
+  <data name="Osk_Hint_Move" xml:space="preserve">
+    <value>थिचिराख्दा: सार्ने</value>
+  </data>
+  <data name="Osk_Input_Dpad" xml:space="preserve">
+    <value>डी-प्याड</value>
+  </data>
+  <data name="Menu_Style_Keyboard" xml:space="preserve"><value>किबोर्ड</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>"रेडियल रिङ" र "टच ग्रिड" ले सेलका बाइन्डिङहरू चलाउँछन्। "किबोर्ड" ले प्रयोगमा रहेको Windows लेआउटका कुञ्जीहरू टाइप गर्छ।</value></data>
+  <data name="Menu_KeyboardLayout" xml:space="preserve"><value>लेआउट</value></data>
+  <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>किबोर्डले आफ्ना कुञ्जीहरू कसरी मिलाउँछ र कन्ट्रोलरले तिनलाई कसरी छान्छ।</value></data>
+  <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>एउटै हाइलाइट, जुन स्टिक वा चार इनपुटले सारिन्छ। यो Windows, Xbox र Steam-ले प्रयोग गर्ने लेआउट हो।</value></data>
+  <data name="Menu_KeyboardLayout_Split_Desc" xml:space="preserve"><value>किबोर्डको प्रत्येक आधा भागको आफ्नै सार्ने इनपुट र आफ्नै टाइप इनपुट हुन्छ।</value></data>
+  <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>डेजी ह्वील: आठ समूहमध्ये एउटा छान्नुहोस्, त्यसपछि त्यसका चार अक्षरमध्ये एउटा।</value></data>
+  <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>लेआउट रिसेट गर्नुहोस्</value></data>
+  <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>खोल्ने इनपुट</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>यस स्लटमा तोकिएको यन्त्रको कुनै पनि इनपुट, वा सँगै थिचिराखिएका दुई इनपुट। उही इनपुटले किबोर्ड बन्द गर्छ, यदि कुनै किबोर्ड नियन्त्रणले पनि त्यसलाई प्रयोग गर्दैन भने। खाली भए कुनै पनि इनपुटले यसलाई खोल्दैन।</value></data>
+  <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>खोल्ने इनपुट रिसेट गर्नुहोस्</value></data>
+  <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>पाठ बाकस चयन हुँदा खोल्नुहोस्</value></data>
+  <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>Windows एपहरू र ब्राउजरहरूमा, कुनै बटन बिना। खेलहरूले आफ्नै पाठ बाकस बनाउँछन्, त्यसैले खेलमा यो माथिको इनपुटले खुल्छ, वा "लेयरले मेनु खुला राख्छ" सक्रिय हुँदा त्यसको लेयरले।</value></data>
+  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>कुञ्जीहरूमा हाइलाइट सार्ने इनपुट, जुन स्लटमा तोकिएका भौतिक कन्ट्रोलरहरूबाट पढिन्छ।</value></data>
+  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>बायाँ आधा सार्ने इनपुट</value></data>
+  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>दायाँ आधा सार्ने इनपुट</value></data>
+  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>समूह छान्ने इनपुट</value></data>
+  <data name="Menu_Reset_Host2" xml:space="preserve"><value>दायाँ आधा सार्ने इनपुट रिसेट गर्नुहोस्</value></data>
+  <data name="Menu_Host_DPad" xml:space="preserve"><value>डी-प्याड</value></data>
+  <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>फेस बटनहरू</value></data>
+  <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>किबोर्ड नियन्त्रणहरू</value></data>
+  <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>{0} लेआउट, {1} नियन्त्रण</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>यस स्लटमा तोकिएका भौतिक कन्ट्रोलरहरूबाट पढिन्छ। प्रत्येक नियन्त्रणले तीमध्ये कुनैको पनि कुनै पनि इनपुट लिन्छ: बटन, अक्षको दिशा, ह्याट, टचप्याड, वा सँगै थिचिराखिएका दुई इनपुट। रेकर्ड बटन क्लिक गरी इनपुट थिच्नुहोस्, वा संयोजनका लागि एउटा इनपुट थिचिराखेर दोस्रो थिच्नुहोस्। "सबै म्याप गर्नुहोस्" ले तिनलाई क्रमैसँग रेकर्ड गर्छ।</value></data>
+  <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>सबै म्याप गर्नुहोस्</value></data>
+  <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>लेआउटका सबै नियन्त्रणहरू क्रमैसँग रेकर्ड गर्छ। स्थिति पङ्क्तिले इनपुट थिच्नुपर्ने नियन्त्रणको नाम देखाउँछ।</value></data>
+  <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>{0} का लागि इनपुट थिच्नुहोस् ({2} मध्ये {1})</value></data>
+  <data name="Menu_Keyboard_MapAll_Done" xml:space="preserve"><value>सबै किबोर्ड नियन्त्रणहरू रेकर्ड भए।</value></data>
+  <data name="Menu_Reset_KeyboardControls" xml:space="preserve"><value>किबोर्ड नियन्त्रणहरू रिसेट गर्नुहोस्</value></data>
+  <data name="Menu_Keyboard_Reset_Format" xml:space="preserve"><value>{0} लाई {1} मा रिसेट गर्नुहोस्</value></data>
+  <data name="Menu_Keyboard_RecordingPrompt" xml:space="preserve"><value>यस स्लटमा तोकिएको कुनै पनि यन्त्रमा एउटा इनपुट थिच्नुहोस्</value></data>
+  <data name="Menu_Keyboard_Card" xml:space="preserve"><value>किबोर्ड</value></data>
+  <data name="Menu_TypesThrough" xml:space="preserve"><value>टाइप गर्ने माध्यम</value></data>
+  <data name="Menu_TypesThrough_Caption" xml:space="preserve"><value>"Windows इनपुट" ले प्रत्येक कुञ्जी Windows मार्फत टाइप गर्छ, र प्रोग्रामहरूले यो सफ्टवेयरबाट आएको थाहा पाउन सक्छन्। "किबोर्ड + माउस" स्लटको किबोर्डले त्यो स्लटको किबोर्ड सेटिङले जस्तै टाइप गर्छ। HIDMaestro भर्चुअल किबोर्डले त्यस मोडेलको किबोर्डका रूपमा टाइप गर्छ, जसलाई प्रोग्रामहरूले हार्डवेयर देख्छन्। किबोर्ड मेनुले त्यो आफैँ बनाउँछ, त्यसैले यसलाई "किबोर्ड + माउस" स्लट चाहिँदैन। छानिएको किबोर्डमा नभएको कुञ्जी, र कुनै कुञ्जीले टाइप नगर्ने अक्षर, अझै "Windows इनपुट" मार्फत जान्छन्।</value></data>
+  <data name="Menu_TypesThrough_Slot_Format" xml:space="preserve"><value>{0} जस्तै उही किबोर्ड</value></data>
+  <data name="Menu_Reset_TypesThrough" xml:space="preserve"><value>टाइप गर्ने माध्यम रिसेट गर्नुहोस्</value></data>
+  <data name="Menu_FunctionRow" xml:space="preserve"><value>फङ्सन पङ्क्ति</value></data>
+  <data name="Menu_FunctionRow_Caption" xml:space="preserve"><value>Esc, F1 देखि F12 र Del। किबोर्डको Fn कुञ्जीले पनि यसलाई बदल्छ।</value></data>
+  <data name="Menu_WordSuggestions" xml:space="preserve"><value>शब्द सुझावहरू</value></data>
+  <data name="Menu_WordSuggestions_Caption" xml:space="preserve"><value>Windows-को पाठ पूर्वानुमानबाट, Windows-मा स्थापित भाषाहरूका लागि।</value></data>
+  <data name="Menu_SymbolsPage" xml:space="preserve"><value>चिह्न पृष्ठ</value></data>
+  <data name="Menu_SymbolsPage_Tip" xml:space="preserve"><value>किबोर्डको चिह्न पृष्ठमा भएका अक्षरहरू। तिनीहरू युनिकोड अक्षरका रूपमा टाइप हुन्छन्।</value></data>
+  <data name="Menu_Reset_Symbols" xml:space="preserve"><value>चिह्न पृष्ठ रिसेट गर्नुहोस्</value></data>
+  <data name="Menu_Keyboard_Overlay_Caption" xml:space="preserve"><value>हरेक मेनुमा पहिले नै भएका पङ्क्तिहरू। किबोर्डको माथिल्लो पट्टी वा कुनाको ग्रिप तान्दा, वा "किबोर्ड सार्नुहोस्" थिचिराख्दा पनि यी सेट हुन्छन्।</value></data>
+  <data name="Osk_Title" xml:space="preserve"><value>अन-स्क्रिन किबोर्ड</value></data>
+  <data name="Osk_Control_TypeKey" xml:space="preserve"><value>कुञ्जी टाइप गर्नुहोस्</value></data>
+  <data name="Osk_Control_Backspace" xml:space="preserve"><value>ब्याकस्पेस</value></data>
+  <data name="Osk_Control_Space" xml:space="preserve"><value>स्पेस</value></data>
+  <data name="Osk_Control_Enter" xml:space="preserve"><value>इन्टर</value></data>
+  <data name="Osk_Control_Close" xml:space="preserve"><value>बन्द गर्नुहोस्</value></data>
+  <data name="Osk_Control_ShiftNextKey" xml:space="preserve"><value>अर्को कुञ्जीका लागि सिफ्ट</value></data>
+  <data name="Osk_Control_ShiftLeftHand" xml:space="preserve"><value>अर्को कुञ्जीका लागि सिफ्ट, बायाँ हात</value></data>
+  <data name="Osk_Control_ShiftRightHand" xml:space="preserve"><value>अर्को कुञ्जीका लागि सिफ्ट, दायाँ हात</value></data>
+  <data name="Osk_Control_SymbolsPage" xml:space="preserve"><value>चिह्न पृष्ठ</value></data>
+  <data name="Osk_Control_CursorLeft" xml:space="preserve"><value>कर्सर बायाँ</value></data>
+  <data name="Osk_Control_CursorRight" xml:space="preserve"><value>कर्सर दायाँ</value></data>
+  <data name="Osk_Control_MoveUp" xml:space="preserve"><value>माथि सार्नुहोस्</value></data>
+  <data name="Osk_Control_MoveDown" xml:space="preserve"><value>तल सार्नुहोस्</value></data>
+  <data name="Osk_Control_MoveLeft" xml:space="preserve"><value>बायाँ सार्नुहोस्</value></data>
+  <data name="Osk_Control_MoveRight" xml:space="preserve"><value>दायाँ सार्नुहोस्</value></data>
+  <data name="Osk_Control_Suggestion_Format" xml:space="preserve"><value>सुझाव {0}</value></data>
+  <data name="Osk_Control_MoveKeyboard" xml:space="preserve"><value>किबोर्ड सार्नुहोस् (थिचिराख्नुहोस्)</value></data>
+  <data name="Osk_Control_TypeLeftHalf" xml:space="preserve"><value>बायाँ आधा टाइप गर्नुहोस्</value></data>
+  <data name="Osk_Control_TypeRightHalf" xml:space="preserve"><value>दायाँ आधा टाइप गर्नुहोस्</value></data>
+  <data name="Osk_Control_ArrowUp" xml:space="preserve"><value>माथिको एरो</value></data>
+  <data name="Osk_Control_ArrowDown" xml:space="preserve"><value>तलको एरो</value></data>
+  <data name="Osk_Control_ArrowLeft" xml:space="preserve"><value>बायाँको एरो</value></data>
+  <data name="Osk_Control_ArrowRight" xml:space="preserve"><value>दायाँको एरो</value></data>
+  <data name="Osk_Control_PickWest" xml:space="preserve"><value>पश्चिम छान्नुहोस्</value></data>
+  <data name="Osk_Control_PickNorth" xml:space="preserve"><value>उत्तर छान्नुहोस्</value></data>
+  <data name="Osk_Control_PickEast" xml:space="preserve"><value>पूर्व छान्नुहोस्</value></data>
+  <data name="Osk_Control_PickSouth" xml:space="preserve"><value>दक्षिण छान्नुहोस्</value></data>
+  <data name="Osk_Control_Capitals" xml:space="preserve"><value>ठूला अक्षर र चिह्नहरू (थिचिराख्नुहोस्)</value></data>
+  <data name="Osk_Control_Numbers" xml:space="preserve"><value>अङ्क र कोष्ठकहरू (थिचिराख्नुहोस्)</value></data>
+  <data name="Osk_Control_Home" xml:space="preserve"><value>होम</value></data>
+  <data name="Osk_Control_End" xml:space="preserve"><value>एन्ड</value></data>
+  <data name="Menu_Keyboard_OpenPress" xml:space="preserve"><value>खोल्ने थिचाइ</value></data>
+  <data name="Menu_Keyboard_OpenPress_Tip" xml:space="preserve"><value>"खोल्ने इनपुट" को त्यो थिचाइ जसले किबोर्ड खोल्छ वा बन्द गर्छ। Steam-का लामो थिचाइ र डबल थिचाइ बाइन्डिङहरू "लामो थिचाइमा" र "डबल थिचाइमा" का रूपमा आयात हुन्छन्, त्यसैले उही इनपुटको छोटो थिचाइले आफ्नै बाइन्डिङ राख्छ।</value></data>
+  <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>खोल्ने थिचाइ रिसेट गर्नुहोस्</value></data>
+  <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>"खोल्ने इनपुट" थिचिराख्ने समयसम्म थिचिराखेपछि किबोर्ड खोल्छ वा बन्द गर्छ। त्योभन्दा छोटो थिचाइले केही गर्दैन।</value></data>
+  <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>थिचाइ अवधिभित्र "खोल्ने इनपुट" दुई पटक थिचिँदा किबोर्ड खोल्छ वा बन्द गर्छ।</value></data>
 </root>

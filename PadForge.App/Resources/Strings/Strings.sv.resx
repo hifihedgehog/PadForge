@@ -4976,4 +4976,207 @@ Vill du att PadForge avinstallerar dem nu? Detta kräver förhöjd behörighet o
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD stoppade musrörelser från att nå Windows. PadForge håller tillbaka tangenter och musknappar men inte rörelser, så pekaren rör sig ändå.</value></data>
   <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>De virtuella handkontrollerna i PadForge tar emot rörelse bara från en handkontrolls rörelsesensor.</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows gick tillbaka till den här profilen från {0} med en knapp. För att göra det i PadForge lägger du till en profilgenväg för den här profilen på sidan Profiler.</value></data>
+  <data name="Osk_Style_Grid" xml:space="preserve">
+    <value>Rutnät</value>
+  </data>
+  <data name="Osk_Style_Split" xml:space="preserve">
+    <value>Delat</value>
+  </data>
+  <data name="Osk_Style_Wheel" xml:space="preserve">
+    <value>Hjul</value>
+  </data>
+  <data name="Osk_CloseKeyboard" xml:space="preserve">
+    <value>Stäng tangentbordet</value>
+  </data>
+  <data name="Osk_Drag" xml:space="preserve">
+    <value>Dra för att flytta tangentbordet</value>
+  </data>
+  <data name="Osk_Wheel_Keys" xml:space="preserve">
+    <value>Tangenter</value>
+  </data>
+  <data name="Osk_Key_Tab" xml:space="preserve">
+    <value>Tab</value>
+  </data>
+  <data name="Osk_Key_Caps" xml:space="preserve">
+    <value>Caps</value>
+  </data>
+  <data name="Osk_Key_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Osk_Key_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Key_Ctrl" xml:space="preserve">
+    <value>Ctrl</value>
+  </data>
+  <data name="Osk_Key_Win" xml:space="preserve">
+    <value>Win</value>
+  </data>
+  <data name="Osk_Key_Alt" xml:space="preserve">
+    <value>Alt</value>
+  </data>
+  <data name="Osk_Key_AltGr" xml:space="preserve">
+    <value>AltGr</value>
+  </data>
+  <data name="Osk_Key_Symbols" xml:space="preserve">
+    <value>&amp;123</value>
+  </data>
+  <data name="Osk_Key_Letters" xml:space="preserve">
+    <value>abc</value>
+  </data>
+  <data name="Osk_Key_Space" xml:space="preserve">
+    <value>Mellanslag</value>
+  </data>
+  <data name="Osk_Key_Esc" xml:space="preserve">
+    <value>Esc</value>
+  </data>
+  <data name="Osk_Key_Del" xml:space="preserve">
+    <value>Del</value>
+  </data>
+  <data name="Osk_Key_Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Osk_Key_End" xml:space="preserve">
+    <value>End</value>
+  </data>
+  <data name="Osk_Key_PgUp" xml:space="preserve">
+    <value>PgUp</value>
+  </data>
+  <data name="Osk_Key_PgDn" xml:space="preserve">
+    <value>PgDn</value>
+  </data>
+  <data name="Osk_Key_Ins" xml:space="preserve">
+    <value>Ins</value>
+  </data>
+  <data name="Osk_Key_PrtSc" xml:space="preserve">
+    <value>PrtSc</value>
+  </data>
+  <data name="Osk_Hint_Type" xml:space="preserve">
+    <value>Skriv</value>
+  </data>
+  <data name="Osk_Hint_TypeLeft" xml:space="preserve">
+    <value>Skriv vänster</value>
+  </data>
+  <data name="Osk_Hint_TypeRight" xml:space="preserve">
+    <value>Skriv höger</value>
+  </data>
+  <data name="Osk_Hint_Backspace" xml:space="preserve">
+    <value>Backsteg</value>
+  </data>
+  <data name="Osk_Hint_Space" xml:space="preserve">
+    <value>Mellanslag</value>
+  </data>
+  <data name="Osk_Hint_Enter" xml:space="preserve">
+    <value>Retur</value>
+  </data>
+  <data name="Osk_Hint_Close" xml:space="preserve">
+    <value>Stäng</value>
+  </data>
+  <data name="Osk_Hint_Shift" xml:space="preserve">
+    <value>Skift</value>
+  </data>
+  <data name="Osk_Hint_Symbols" xml:space="preserve">
+    <value>Symboler</value>
+  </data>
+  <data name="Osk_Hint_Cursor" xml:space="preserve">
+    <value>Markör</value>
+  </data>
+  <data name="Osk_Hint_Suggestion" xml:space="preserve">
+    <value>Förslag</value>
+  </data>
+  <data name="Osk_Hint_Capitals" xml:space="preserve">
+    <value>Håll: versaler</value>
+  </data>
+  <data name="Osk_Hint_Numbers" xml:space="preserve">
+    <value>Håll: siffror</value>
+  </data>
+  <data name="Osk_Hint_Keys" xml:space="preserve">
+    <value>Håll: tangenter</value>
+  </data>
+  <data name="Osk_Hint_Move" xml:space="preserve">
+    <value>Håll: flytta</value>
+  </data>
+  <data name="Osk_Input_Dpad" xml:space="preserve">
+    <value>Styrkors</value>
+  </data>
+  <data name="Menu_Style_Keyboard" xml:space="preserve"><value>Tangentbord</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>Radiell ring och Pekrutnät utlöser cellbindningar. Tangentbord skriver tangenterna i den Windows-layout som används.</value></data>
+  <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Layout</value></data>
+  <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Hur tangentbordet ordnar sina tangenter och hur en handkontroll väljer dem.</value></data>
+  <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>En markering som flyttas med en spak eller fyra inmatningar, den layout som Windows, Xbox och Steam använder.</value></data>
+  <data name="Menu_KeyboardLayout_Split_Desc" xml:space="preserve"><value>Varje halva av tangentbordet får en egen styrinmatning och en egen skrivinmatning.</value></data>
+  <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>Tugghjulet: välj en av åtta grupper och sedan ett av dess fyra tecken.</value></data>
+  <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>Återställ layout</value></data>
+  <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>Öppnas med</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Valfri inmatning på en enhet som är tilldelad den här platsen, eller två som hålls ned samtidigt. Samma inmatning stänger tangentbordet, om inte en tangentbordskontroll också använder den. Tomt betyder att ingen inmatning öppnar det.</value></data>
+  <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>Återställ Öppnas med</value></data>
+  <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>Öppna när en textruta är markerad</value></data>
+  <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>I Windows-appar och webbläsare, utan knapp. Spel ritar sina egna textrutor, så i ett spel öppnas det med inmatningen ovan, eller med sitt lager när Lagret håller menyn öppen är på.</value></data>
+  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>Inmatningen som flyttar markeringen över tangenterna, avläst från platsens tilldelade fysiska handkontroller.</value></data>
+  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>Styr vänster halva med</value></data>
+  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>Styr höger halva med</value></data>
+  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>Välj en grupp med</value></data>
+  <data name="Menu_Reset_Host2" xml:space="preserve"><value>Återställ Styr höger halva med</value></data>
+  <data name="Menu_Host_DPad" xml:space="preserve"><value>Styrkors</value></data>
+  <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>Frontknappar</value></data>
+  <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>Tangentbordskontroller</value></data>
+  <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>Layout {0}, {1} kontroller</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Avläses från de fysiska handkontroller som är tilldelade den här platsen. Varje kontroll tar valfri inmatning på någon av dem: en knapp, en axelriktning, ett styrkors, en styrplatta eller två som hålls ned samtidigt. Klicka på en inspelningsknapp och tryck på inmatningen, eller håll en inmatning och tryck på en andra för en kombination. Mappa alla spelar in dem i ordning.</value></data>
+  <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>Mappa alla</value></data>
+  <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>Spelar in varje kontroll i layouten i ordning. Statusraden anger kontrollen som du ska trycka en inmatning för.</value></data>
+  <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>Tryck på inmatningen för {0} ({1} av {2})</value></data>
+  <data name="Menu_Keyboard_MapAll_Done" xml:space="preserve"><value>Varje tangentbordskontroll är inspelad.</value></data>
+  <data name="Menu_Reset_KeyboardControls" xml:space="preserve"><value>Återställ tangentbordskontroller</value></data>
+  <data name="Menu_Keyboard_Reset_Format" xml:space="preserve"><value>Återställ {0} till {1}</value></data>
+  <data name="Menu_Keyboard_RecordingPrompt" xml:space="preserve"><value>Tryck på en inmatning på valfri enhet som är tilldelad den här platsen</value></data>
+  <data name="Menu_Keyboard_Card" xml:space="preserve"><value>Tangentbord</value></data>
+  <data name="Menu_TypesThrough" xml:space="preserve"><value>Skriver via</value></data>
+  <data name="Menu_TypesThrough_Caption" xml:space="preserve"><value>Windows-inmatning skriver varje tangent via Windows, och program kan se att det kommer från programvara. Tangentbordet på en plats av typen Tangentbord + mus skriver på samma sätt som platsens tangentbordsinställning. Ett virtuellt HIDMaestro-tangentbord skriver som den tangentbordsmodellen, som program ser som hårdvara. Tangentbordsmenyn skapar det själv, så det behöver ingen plats av typen Tangentbord + mus. En tangent som det valda tangentbordet saknar, och ett tecken som ingen tangent skriver, går fortfarande via Windows-inmatning.</value></data>
+  <data name="Menu_TypesThrough_Slot_Format" xml:space="preserve"><value>Samma tangentbord som {0}</value></data>
+  <data name="Menu_Reset_TypesThrough" xml:space="preserve"><value>Återställ Skriver via</value></data>
+  <data name="Menu_FunctionRow" xml:space="preserve"><value>Funktionsrad</value></data>
+  <data name="Menu_FunctionRow_Caption" xml:space="preserve"><value>Esc, F1 till F12 och Del. Fn-tangenten på tangentbordet växlar den också.</value></data>
+  <data name="Menu_WordSuggestions" xml:space="preserve"><value>Ordförslag</value></data>
+  <data name="Menu_WordSuggestions_Caption" xml:space="preserve"><value>Från textförslagen i Windows, för de språk som är installerade i Windows.</value></data>
+  <data name="Menu_SymbolsPage" xml:space="preserve"><value>Symbolsida</value></data>
+  <data name="Menu_SymbolsPage_Tip" xml:space="preserve"><value>Tecknen på tangentbordets symbolsida. De skrivs som Unicode-tecken.</value></data>
+  <data name="Menu_Reset_Symbols" xml:space="preserve"><value>Återställ symbolsida</value></data>
+  <data name="Menu_Keyboard_Overlay_Caption" xml:space="preserve"><value>Raderna som varje meny redan har. Att dra i tangentbordets övre list eller hörngrepp, eller hålla Flytta tangentbordet (håll), ställer in dem också.</value></data>
+  <data name="Osk_Title" xml:space="preserve"><value>Skärmtangentbord</value></data>
+  <data name="Osk_Control_TypeKey" xml:space="preserve"><value>Skriv tangent</value></data>
+  <data name="Osk_Control_Backspace" xml:space="preserve"><value>Backsteg</value></data>
+  <data name="Osk_Control_Space" xml:space="preserve"><value>Mellanslag</value></data>
+  <data name="Osk_Control_Enter" xml:space="preserve"><value>Retur</value></data>
+  <data name="Osk_Control_Close" xml:space="preserve"><value>Stäng</value></data>
+  <data name="Osk_Control_ShiftNextKey" xml:space="preserve"><value>Skift för nästa tangent</value></data>
+  <data name="Osk_Control_ShiftLeftHand" xml:space="preserve"><value>Skift för nästa tangent, vänster hand</value></data>
+  <data name="Osk_Control_ShiftRightHand" xml:space="preserve"><value>Skift för nästa tangent, höger hand</value></data>
+  <data name="Osk_Control_SymbolsPage" xml:space="preserve"><value>Symbolsida</value></data>
+  <data name="Osk_Control_CursorLeft" xml:space="preserve"><value>Markör vänster</value></data>
+  <data name="Osk_Control_CursorRight" xml:space="preserve"><value>Markör höger</value></data>
+  <data name="Osk_Control_MoveUp" xml:space="preserve"><value>Flytta upp</value></data>
+  <data name="Osk_Control_MoveDown" xml:space="preserve"><value>Flytta ned</value></data>
+  <data name="Osk_Control_MoveLeft" xml:space="preserve"><value>Flytta vänster</value></data>
+  <data name="Osk_Control_MoveRight" xml:space="preserve"><value>Flytta höger</value></data>
+  <data name="Osk_Control_Suggestion_Format" xml:space="preserve"><value>Förslag {0}</value></data>
+  <data name="Osk_Control_MoveKeyboard" xml:space="preserve"><value>Flytta tangentbordet (håll)</value></data>
+  <data name="Osk_Control_TypeLeftHalf" xml:space="preserve"><value>Skriv vänster halva</value></data>
+  <data name="Osk_Control_TypeRightHalf" xml:space="preserve"><value>Skriv höger halva</value></data>
+  <data name="Osk_Control_ArrowUp" xml:space="preserve"><value>Pil upp</value></data>
+  <data name="Osk_Control_ArrowDown" xml:space="preserve"><value>Pil ned</value></data>
+  <data name="Osk_Control_ArrowLeft" xml:space="preserve"><value>Pil vänster</value></data>
+  <data name="Osk_Control_ArrowRight" xml:space="preserve"><value>Pil höger</value></data>
+  <data name="Osk_Control_PickWest" xml:space="preserve"><value>Välj väst</value></data>
+  <data name="Osk_Control_PickNorth" xml:space="preserve"><value>Välj nord</value></data>
+  <data name="Osk_Control_PickEast" xml:space="preserve"><value>Välj öst</value></data>
+  <data name="Osk_Control_PickSouth" xml:space="preserve"><value>Välj syd</value></data>
+  <data name="Osk_Control_Capitals" xml:space="preserve"><value>Versaler och symboler (håll)</value></data>
+  <data name="Osk_Control_Numbers" xml:space="preserve"><value>Siffror och parenteser (håll)</value></data>
+  <data name="Osk_Control_Home" xml:space="preserve"><value>Home</value></data>
+  <data name="Osk_Control_End" xml:space="preserve"><value>End</value></data>
+  <data name="Menu_Keyboard_OpenPress" xml:space="preserve"><value>Öppnas vid</value></data>
+  <data name="Menu_Keyboard_OpenPress_Tip" xml:space="preserve"><value>Trycket på Öppnas med som öppnar eller stänger tangentbordet. Bindningarna för långt tryck och dubbeltryck i Steam importeras som Vid långt tryck och Vid dubbeltryck, så ett kort tryck på samma inmatning behåller sin egen bindning.</value></data>
+  <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>Återställ Öppnas vid</value></data>
+  <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>Öppnar eller stänger tangentbordet när Öppnas med hållits ned under hålltiden. Ett kortare tryck gör ingenting.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>Öppnar eller stänger tangentbordet när Öppnas med trycks två gånger inom tryckfönstret.</value></data>
 </root>

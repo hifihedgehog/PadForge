@@ -57,6 +57,12 @@ namespace PadForge.Common.Input
                + padIndex.ToString(System.Globalization.CultureInfo.InvariantCulture)
                + ":KeyboardMouse:" + (keyboard ? "keyboard" : "mouse");
 
+        /// <summary>The identity key the keyboard half is made under when it
+        /// is not a slot's: the virtual keyboard a keyboard menu makes for
+        /// itself (#566, InputManager.MenuKeyboardIdentityKey). Null for a
+        /// slot's own.</summary>
+        internal string KeyboardIdentityKey { get; init; }
+
         /// <summary>Test seam for the HIDMaestro call that makes a virtual
         /// keyboard or mouse, null in production. The test host makes no
         /// device (<see cref="HMaestroVirtualController.OffLimitsForTest"/>),
@@ -280,7 +286,7 @@ namespace PadForge.Common.Input
         /// <see cref="CreateSinkSeam"/> in a test.</summary>
         private IKbmHidSink CreateSink(HMProfile profile, bool keyboard)
         {
-            string key = IdentityKeyFor(_padIndex, keyboard);
+            string key = keyboard && KeyboardIdentityKey != null ? KeyboardIdentityKey : IdentityKeyFor(_padIndex, keyboard);
             var seam = CreateSinkSeam;
             if (seam != null) return seam(profile, key);
             if (HMaestroVirtualController.OffLimitsForTest)

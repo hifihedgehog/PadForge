@@ -223,10 +223,10 @@ namespace PadForge.SteamWorkshop.Translation
         /// MouseButtonPress / MouseButtonRelease.</summary>
         HoldMouseButton = 14,
 
-        /// <summary>Launch the Windows on-screen keyboard
-        /// (<c>controller_action SHOW_KEYBOARD</c>, v10 G7). Lowers to a
-        /// RunProgram action; the materializer resolves TabTip.exe and
-        /// falls back to osk.exe.</summary>
+        /// <summary>Show the on-screen keyboard
+        /// (<c>controller_action SHOW_KEYBOARD</c>, v10 G7). The
+        /// materializer turns it into a keyboard menu on the slot, opened by
+        /// the same input on the same layer (#566).</summary>
         ShowOnScreenKeyboard = 15,
 
         /// <summary>One timed assert of a virtual-controller axis (v15):

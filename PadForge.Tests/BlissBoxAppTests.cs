@@ -425,9 +425,12 @@ namespace PadForge.Tests
         {
             string step2 = Repo("PadForge.App", "Common", "Input", "InputManager.Step2.UpdateInputStates.cs");
             int merge = step2.IndexOf("BlissBoxRuntime.Merge(ud, newState);", StringComparison.Ordinal);
-            int idle = step2.IndexOf("UpdateIdleDisconnect(ud, newState);", StringComparison.Ordinal);
+            // The idle timer reads the state before the On-Screen Keyboard
+            // holds it at rest (#566), which the merge has already reached.
+            int raw = step2.IndexOf("var rawState = newState;", StringComparison.Ordinal);
+            int idle = step2.IndexOf("UpdateIdleDisconnect(ud, rawState);", StringComparison.Ordinal);
             int publish = step2.IndexOf("ud.InputState = newState;", StringComparison.Ordinal);
-            Assert.True(merge > 0 && merge < publish && publish < idle, "the merge must land before the state is published");
+            Assert.True(merge > 0 && merge < raw && raw < publish && publish < idle, "the merge must land before the state is published");
         }
 
         // ── Settings ──

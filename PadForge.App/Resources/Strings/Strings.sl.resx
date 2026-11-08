@@ -4976,4 +4976,207 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD je preprečil, da bi gibanje miške doseglo Windows. PadForge zadrži tipke in gumbe miške, ne pa gibanja, zato se kazalec še vedno premika.</value></data>
   <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>Virtualni krmilniki PadForge-a prejemajo gibanje samo iz senzorja gibanja krmilnika.</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows se je s profila {0} na gumb vrnil na ta profil. Če želite isto narediti v PadForge-u, dodajte Bližnjico za profil za ta profil na strani Profili.</value></data>
+  <data name="Osk_Style_Grid" xml:space="preserve">
+    <value>Mreža</value>
+  </data>
+  <data name="Osk_Style_Split" xml:space="preserve">
+    <value>Razdeljena</value>
+  </data>
+  <data name="Osk_Style_Wheel" xml:space="preserve">
+    <value>Kolo</value>
+  </data>
+  <data name="Osk_CloseKeyboard" xml:space="preserve">
+    <value>Zapri tipkovnico</value>
+  </data>
+  <data name="Osk_Drag" xml:space="preserve">
+    <value>Povlecite za premik tipkovnice</value>
+  </data>
+  <data name="Osk_Wheel_Keys" xml:space="preserve">
+    <value>Tipke</value>
+  </data>
+  <data name="Osk_Key_Tab" xml:space="preserve">
+    <value>Tab</value>
+  </data>
+  <data name="Osk_Key_Caps" xml:space="preserve">
+    <value>Caps</value>
+  </data>
+  <data name="Osk_Key_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Osk_Key_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Key_Ctrl" xml:space="preserve">
+    <value>Ctrl</value>
+  </data>
+  <data name="Osk_Key_Win" xml:space="preserve">
+    <value>Win</value>
+  </data>
+  <data name="Osk_Key_Alt" xml:space="preserve">
+    <value>Alt</value>
+  </data>
+  <data name="Osk_Key_AltGr" xml:space="preserve">
+    <value>AltGr</value>
+  </data>
+  <data name="Osk_Key_Symbols" xml:space="preserve">
+    <value>&amp;123</value>
+  </data>
+  <data name="Osk_Key_Letters" xml:space="preserve">
+    <value>abc</value>
+  </data>
+  <data name="Osk_Key_Space" xml:space="preserve">
+    <value>Presl.</value>
+  </data>
+  <data name="Osk_Key_Esc" xml:space="preserve">
+    <value>Esc</value>
+  </data>
+  <data name="Osk_Key_Del" xml:space="preserve">
+    <value>Del</value>
+  </data>
+  <data name="Osk_Key_Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Osk_Key_End" xml:space="preserve">
+    <value>End</value>
+  </data>
+  <data name="Osk_Key_PgUp" xml:space="preserve">
+    <value>PgUp</value>
+  </data>
+  <data name="Osk_Key_PgDn" xml:space="preserve">
+    <value>PgDn</value>
+  </data>
+  <data name="Osk_Key_Ins" xml:space="preserve">
+    <value>Ins</value>
+  </data>
+  <data name="Osk_Key_PrtSc" xml:space="preserve">
+    <value>PrtSc</value>
+  </data>
+  <data name="Osk_Hint_Type" xml:space="preserve">
+    <value>Vtipkaj</value>
+  </data>
+  <data name="Osk_Hint_TypeLeft" xml:space="preserve">
+    <value>Vtipkaj levo</value>
+  </data>
+  <data name="Osk_Hint_TypeRight" xml:space="preserve">
+    <value>Vtipkaj desno</value>
+  </data>
+  <data name="Osk_Hint_Backspace" xml:space="preserve">
+    <value>Vračalka</value>
+  </data>
+  <data name="Osk_Hint_Space" xml:space="preserve">
+    <value>Presledek</value>
+  </data>
+  <data name="Osk_Hint_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Osk_Hint_Close" xml:space="preserve">
+    <value>Zapri</value>
+  </data>
+  <data name="Osk_Hint_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Hint_Symbols" xml:space="preserve">
+    <value>Simboli</value>
+  </data>
+  <data name="Osk_Hint_Cursor" xml:space="preserve">
+    <value>Kazalec</value>
+  </data>
+  <data name="Osk_Hint_Suggestion" xml:space="preserve">
+    <value>Predlog</value>
+  </data>
+  <data name="Osk_Hint_Capitals" xml:space="preserve">
+    <value>Drži: velike črke</value>
+  </data>
+  <data name="Osk_Hint_Numbers" xml:space="preserve">
+    <value>Drži: številke</value>
+  </data>
+  <data name="Osk_Hint_Keys" xml:space="preserve">
+    <value>Drži: tipke</value>
+  </data>
+  <data name="Osk_Hint_Move" xml:space="preserve">
+    <value>Drži: premik</value>
+  </data>
+  <data name="Osk_Input_Dpad" xml:space="preserve">
+    <value>Smerni križ</value>
+  </data>
+  <data name="Menu_Style_Keyboard" xml:space="preserve"><value>Tipkovnica</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>„Radialni obroč“ in „Mreža na dotik“ sprožita vezave celic. „Tipkovnica“ tipka tipke postavitve, ki jo uporablja Windows.</value></data>
+  <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Postavitev</value></data>
+  <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Kako tipkovnica razporedi tipke in kako jih izbere krmilnik.</value></data>
+  <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Ena označitev, premikana s palico ali štirimi vnosi, postavitev, ki jo uporabljajo Windows, Xbox in Steam.</value></data>
+  <data name="Menu_KeyboardLayout_Split_Desc" xml:space="preserve"><value>Vsaka polovica tipkovnice ima svoj vnos za upravljanje in svoj vnos za tipkanje.</value></data>
+  <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>Kolo marjetica: izberite eno od osmih skupin, nato enega od njenih štirih znakov.</value></data>
+  <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>Ponastavi postavitev</value></data>
+  <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>Odpre se z</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Kateri koli vnos na napravi, dodeljeni tej reži, ali dva hkrati držana. Isti vnos tipkovnico tudi zapre, razen če ga uporablja tudi kakšen kontrolnik tipkovnice. Prazno pomeni, da je ne odpre noben vnos.</value></data>
+  <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>Ponastavi „Odpre se z“</value></data>
+  <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>Odpri, ko je izbrano besedilno polje</value></data>
+  <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>V aplikacijah Windows in brskalnikih, brez gumba. Igre rišejo lastna besedilna polja, zato se v igri odpre z zgornjim vnosom ali z njegovo plastjo, ko je vklopljeno „Plast drži meni odprt“.</value></data>
+  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>Vnos, ki premika označitev po tipkah, prebran s fizičnih krmilnikov, dodeljenih reži.</value></data>
+  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>Upravljaj levo polovico z</value></data>
+  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>Upravljaj desno polovico z</value></data>
+  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>Izberi skupino z</value></data>
+  <data name="Menu_Reset_Host2" xml:space="preserve"><value>Ponastavi „Upravljaj desno polovico z“</value></data>
+  <data name="Menu_Host_DPad" xml:space="preserve"><value>Smerni križ</value></data>
+  <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>Akcijski gumbi</value></data>
+  <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>Kontrolniki tipkovnice</value></data>
+  <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>Postavitev {0}, kontrolnikov: {1}</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Prebrano s fizičnih krmilnikov, dodeljenih tej reži. Vsak kontrolnik sprejme kateri koli vnos na katerem koli od njih: gumb, smer osi, smerno stikalo, sledilno ploščico ali dva hkrati držana. Kliknite gumb za snemanje in pritisnite vnos ali držite en vnos in pritisnite drugega za kombinacijo. „Preslikaj vse“ jih posname po vrsti.</value></data>
+  <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>Preslikaj vse</value></data>
+  <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>Posname vse kontrolnike postavitve po vrsti. Vrstica stanja navede kontrolnik, za katerega pritisnite vnos.</value></data>
+  <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>Pritisnite vnos za {0} ({1} od {2})</value></data>
+  <data name="Menu_Keyboard_MapAll_Done" xml:space="preserve"><value>Vsi kontrolniki tipkovnice so posneti.</value></data>
+  <data name="Menu_Reset_KeyboardControls" xml:space="preserve"><value>Ponastavi kontrolnike tipkovnice</value></data>
+  <data name="Menu_Keyboard_Reset_Format" xml:space="preserve"><value>Ponastavi {0} na {1}</value></data>
+  <data name="Menu_Keyboard_RecordingPrompt" xml:space="preserve"><value>Pritisnite vnos na kateri koli napravi, dodeljeni tej reži</value></data>
+  <data name="Menu_Keyboard_Card" xml:space="preserve"><value>Tipkovnica</value></data>
+  <data name="Menu_TypesThrough" xml:space="preserve"><value>Tipka prek</value></data>
+  <data name="Menu_TypesThrough_Caption" xml:space="preserve"><value>„Vnos Windows“ vtipka vsako tipko prek sistema Windows, programi pa lahko ugotovijo, da prihaja iz programske opreme. Tipkovnica reže „Tipkovnica + miška“ tipka tako, kot to določa nastavitev tipkovnice te reže. Navidezna tipkovnica HIDMaestro tipka kot ta model tipkovnice, ki ga programi vidijo kot strojno opremo. Meni tipkovnice jo ustvari sam, zato reža „Tipkovnica + miška“ ni potrebna. Tipka, ki je izbrana tipkovnica nima, in znak, ki ga ne tipka nobena tipka, še vedno gresta prek vnosa Windows.</value></data>
+  <data name="Menu_TypesThrough_Slot_Format" xml:space="preserve"><value>Enaka tipkovnica kot {0}</value></data>
+  <data name="Menu_Reset_TypesThrough" xml:space="preserve"><value>Ponastavi „Tipka prek“</value></data>
+  <data name="Menu_FunctionRow" xml:space="preserve"><value>Funkcijska vrstica</value></data>
+  <data name="Menu_FunctionRow_Caption" xml:space="preserve"><value>Esc, F1 do F12 in Del. Tipka Fn na tipkovnici jo prav tako preklopi.</value></data>
+  <data name="Menu_WordSuggestions" xml:space="preserve"><value>Predlogi besed</value></data>
+  <data name="Menu_WordSuggestions_Caption" xml:space="preserve"><value>Iz napovedovanja besedila v sistemu Windows za jezike, nameščene v sistemu Windows.</value></data>
+  <data name="Menu_SymbolsPage" xml:space="preserve"><value>Stran s simboli</value></data>
+  <data name="Menu_SymbolsPage_Tip" xml:space="preserve"><value>Znaki na strani s simboli na tipkovnici. Tipkajo se kot znaki Unicode.</value></data>
+  <data name="Menu_Reset_Symbols" xml:space="preserve"><value>Ponastavi stran s simboli</value></data>
+  <data name="Menu_Keyboard_Overlay_Caption" xml:space="preserve"><value>Vrstice, ki jih ima že vsak meni. Nastavi jih tudi vlečenje zgornje vrstice ali ročaja v kotu tipkovnice ali držanje „Premakni tipkovnico“.</value></data>
+  <data name="Osk_Title" xml:space="preserve"><value>Zaslonska tipkovnica</value></data>
+  <data name="Osk_Control_TypeKey" xml:space="preserve"><value>Vtipkaj tipko</value></data>
+  <data name="Osk_Control_Backspace" xml:space="preserve"><value>Vračalka</value></data>
+  <data name="Osk_Control_Space" xml:space="preserve"><value>Presledek</value></data>
+  <data name="Osk_Control_Enter" xml:space="preserve"><value>Enter</value></data>
+  <data name="Osk_Control_Close" xml:space="preserve"><value>Zapri</value></data>
+  <data name="Osk_Control_ShiftNextKey" xml:space="preserve"><value>Shift za naslednjo tipko</value></data>
+  <data name="Osk_Control_ShiftLeftHand" xml:space="preserve"><value>Shift za naslednjo tipko, leva roka</value></data>
+  <data name="Osk_Control_ShiftRightHand" xml:space="preserve"><value>Shift za naslednjo tipko, desna roka</value></data>
+  <data name="Osk_Control_SymbolsPage" xml:space="preserve"><value>Stran s simboli</value></data>
+  <data name="Osk_Control_CursorLeft" xml:space="preserve"><value>Kazalec levo</value></data>
+  <data name="Osk_Control_CursorRight" xml:space="preserve"><value>Kazalec desno</value></data>
+  <data name="Osk_Control_MoveUp" xml:space="preserve"><value>Premik navzgor</value></data>
+  <data name="Osk_Control_MoveDown" xml:space="preserve"><value>Premik navzdol</value></data>
+  <data name="Osk_Control_MoveLeft" xml:space="preserve"><value>Premik levo</value></data>
+  <data name="Osk_Control_MoveRight" xml:space="preserve"><value>Premik desno</value></data>
+  <data name="Osk_Control_Suggestion_Format" xml:space="preserve"><value>Predlog {0}</value></data>
+  <data name="Osk_Control_MoveKeyboard" xml:space="preserve"><value>Premakni tipkovnico (drži)</value></data>
+  <data name="Osk_Control_TypeLeftHalf" xml:space="preserve"><value>Vtipkaj levo polovico</value></data>
+  <data name="Osk_Control_TypeRightHalf" xml:space="preserve"><value>Vtipkaj desno polovico</value></data>
+  <data name="Osk_Control_ArrowUp" xml:space="preserve"><value>Puščica gor</value></data>
+  <data name="Osk_Control_ArrowDown" xml:space="preserve"><value>Puščica dol</value></data>
+  <data name="Osk_Control_ArrowLeft" xml:space="preserve"><value>Puščica levo</value></data>
+  <data name="Osk_Control_ArrowRight" xml:space="preserve"><value>Puščica desno</value></data>
+  <data name="Osk_Control_PickWest" xml:space="preserve"><value>Izberi zahod</value></data>
+  <data name="Osk_Control_PickNorth" xml:space="preserve"><value>Izberi sever</value></data>
+  <data name="Osk_Control_PickEast" xml:space="preserve"><value>Izberi vzhod</value></data>
+  <data name="Osk_Control_PickSouth" xml:space="preserve"><value>Izberi jug</value></data>
+  <data name="Osk_Control_Capitals" xml:space="preserve"><value>Velike črke in simboli (drži)</value></data>
+  <data name="Osk_Control_Numbers" xml:space="preserve"><value>Številke in oklepaji (drži)</value></data>
+  <data name="Osk_Control_Home" xml:space="preserve"><value>Home</value></data>
+  <data name="Osk_Control_End" xml:space="preserve"><value>End</value></data>
+  <data name="Menu_Keyboard_OpenPress" xml:space="preserve"><value>Odpre se ob</value></data>
+  <data name="Menu_Keyboard_OpenPress_Tip" xml:space="preserve"><value>Pritisk „Odpre se z“, ki tipkovnico odpre ali zapre. Vezave Steam za dolgi in dvojni pritisk se uvozijo kot „Ob dolgem pritisku“ in „Ob dvojnem pritisku“, tako da kratek pritisk istega vnosa obdrži svojo vezavo.</value></data>
+  <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>Ponastavi „Odpre se ob“</value></data>
+  <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>Tipkovnico odpre ali zapre, ko je „Odpre se z“ držano toliko časa, kot je čas držanja. Krajši pritisk ne naredi nič.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>Tipkovnico odpre ali zapre, ko je „Odpre se z“ pritisnjeno dvakrat znotraj okna pritiska.</value></data>
 </root>

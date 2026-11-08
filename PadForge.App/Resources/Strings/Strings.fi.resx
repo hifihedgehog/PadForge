@@ -4976,4 +4976,207 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD esti hiiren liikkeen pääsemästä Windowsiin. PadForge estää näppäimet ja hiiren painikkeet mutta ei liikettä, joten osoitin liikkuu silti.</value></data>
   <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>PadForge-n virtuaaliset ohjaimet saavat liikedataa vain ohjaimen omasta liikeanturista.</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows palasi tähän profiiliin profiilista {0} painikkeella. Voit tehdä saman PadForge-ssa lisäämällä tälle profiilille profiilin pikavalinnan Profiilit-sivulla.</value></data>
+  <data name="Osk_Style_Grid" xml:space="preserve">
+    <value>Ruudukko</value>
+  </data>
+  <data name="Osk_Style_Split" xml:space="preserve">
+    <value>Jaettu</value>
+  </data>
+  <data name="Osk_Style_Wheel" xml:space="preserve">
+    <value>Kehä</value>
+  </data>
+  <data name="Osk_CloseKeyboard" xml:space="preserve">
+    <value>Sulje näppäimistö</value>
+  </data>
+  <data name="Osk_Drag" xml:space="preserve">
+    <value>Siirrä näppäimistöä vetämällä</value>
+  </data>
+  <data name="Osk_Wheel_Keys" xml:space="preserve">
+    <value>Näppäimet</value>
+  </data>
+  <data name="Osk_Key_Tab" xml:space="preserve">
+    <value>Tab</value>
+  </data>
+  <data name="Osk_Key_Caps" xml:space="preserve">
+    <value>Caps</value>
+  </data>
+  <data name="Osk_Key_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Osk_Key_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Key_Ctrl" xml:space="preserve">
+    <value>Ctrl</value>
+  </data>
+  <data name="Osk_Key_Win" xml:space="preserve">
+    <value>Win</value>
+  </data>
+  <data name="Osk_Key_Alt" xml:space="preserve">
+    <value>Alt</value>
+  </data>
+  <data name="Osk_Key_AltGr" xml:space="preserve">
+    <value>AltGr</value>
+  </data>
+  <data name="Osk_Key_Symbols" xml:space="preserve">
+    <value>&amp;123</value>
+  </data>
+  <data name="Osk_Key_Letters" xml:space="preserve">
+    <value>abc</value>
+  </data>
+  <data name="Osk_Key_Space" xml:space="preserve">
+    <value>Väli</value>
+  </data>
+  <data name="Osk_Key_Esc" xml:space="preserve">
+    <value>Esc</value>
+  </data>
+  <data name="Osk_Key_Del" xml:space="preserve">
+    <value>Del</value>
+  </data>
+  <data name="Osk_Key_Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Osk_Key_End" xml:space="preserve">
+    <value>End</value>
+  </data>
+  <data name="Osk_Key_PgUp" xml:space="preserve">
+    <value>PgUp</value>
+  </data>
+  <data name="Osk_Key_PgDn" xml:space="preserve">
+    <value>PgDn</value>
+  </data>
+  <data name="Osk_Key_Ins" xml:space="preserve">
+    <value>Ins</value>
+  </data>
+  <data name="Osk_Key_PrtSc" xml:space="preserve">
+    <value>PrtSc</value>
+  </data>
+  <data name="Osk_Hint_Type" xml:space="preserve">
+    <value>Kirjoita</value>
+  </data>
+  <data name="Osk_Hint_TypeLeft" xml:space="preserve">
+    <value>Kirjoita vas.</value>
+  </data>
+  <data name="Osk_Hint_TypeRight" xml:space="preserve">
+    <value>Kirjoita oik.</value>
+  </data>
+  <data name="Osk_Hint_Backspace" xml:space="preserve">
+    <value>Askelpalautin</value>
+  </data>
+  <data name="Osk_Hint_Space" xml:space="preserve">
+    <value>Väli</value>
+  </data>
+  <data name="Osk_Hint_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Osk_Hint_Close" xml:space="preserve">
+    <value>Sulje</value>
+  </data>
+  <data name="Osk_Hint_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Hint_Symbols" xml:space="preserve">
+    <value>Symbolit</value>
+  </data>
+  <data name="Osk_Hint_Cursor" xml:space="preserve">
+    <value>Kohdistin</value>
+  </data>
+  <data name="Osk_Hint_Suggestion" xml:space="preserve">
+    <value>Ehdotus</value>
+  </data>
+  <data name="Osk_Hint_Capitals" xml:space="preserve">
+    <value>Pidä: isot</value>
+  </data>
+  <data name="Osk_Hint_Numbers" xml:space="preserve">
+    <value>Pidä: numerot</value>
+  </data>
+  <data name="Osk_Hint_Keys" xml:space="preserve">
+    <value>Pidä: näppäimet</value>
+  </data>
+  <data name="Osk_Hint_Move" xml:space="preserve">
+    <value>Pidä: siirrä</value>
+  </data>
+  <data name="Osk_Input_Dpad" xml:space="preserve">
+    <value>Ristiohjain</value>
+  </data>
+  <data name="Menu_Style_Keyboard" xml:space="preserve"><value>Näppäimistö</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>Säteittäinen rengas ja Kosketusruudukko laukaisevat solujen sidonnat. Näppäimistö kirjoittaa käytössä olevan Windows-asettelun näppäimet.</value></data>
+  <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Asettelu</value></data>
+  <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Miten näppäimistö asettelee näppäimensä ja miten ohjain valitsee ne.</value></data>
+  <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Yksi korostus, jota liikutetaan sauvalla tai neljällä syötteellä. Asettelu, jota Windows, Xbox ja Steam käyttävät.</value></data>
+  <data name="Menu_KeyboardLayout_Split_Desc" xml:space="preserve"><value>Näppäimistön kummallakin puoliskolla on oma ohjaava syöte ja oma kirjoitussyöte.</value></data>
+  <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>Daisy-kehä: valitse yksi kahdeksasta ryhmästä ja sitten yksi sen neljästä merkistä.</value></data>
+  <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>Palauta asettelu</value></data>
+  <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>Avaava syöte</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Mikä tahansa syöte tähän paikkaan määritetyllä laitteella tai kaksi yhdessä pidettyä. Sama syöte sulkee näppäimistön, ellei jokin näppäimistön ohjaus käytä sitä myös. Tyhjä tarkoittaa, ettei mikään syöte avaa sitä.</value></data>
+  <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>Palauta avaava syöte</value></data>
+  <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>Avaa, kun tekstikenttä on valittuna</value></data>
+  <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>Windows-sovelluksissa ja selaimissa ilman painiketta. Pelit piirtävät omat tekstikenttänsä, joten pelissä näppäimistö avautuu yllä olevalla syötteellä tai sen kerroksella, kun Kerros pitää valikon auki on käytössä.</value></data>
+  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>Syöte, joka liikuttaa korostusta näppäinten yli. Se luetaan paikkaan määritetyistä fyysisistä ohjaimista.</value></data>
+  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>Vasemman puoliskon ohjaava syöte</value></data>
+  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>Oikean puoliskon ohjaava syöte</value></data>
+  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>Ryhmän valitseva syöte</value></data>
+  <data name="Menu_Reset_Host2" xml:space="preserve"><value>Palauta oikean puoliskon ohjaava syöte</value></data>
+  <data name="Menu_Host_DPad" xml:space="preserve"><value>Ristiohjain</value></data>
+  <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>Etupainikkeet</value></data>
+  <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>Näppäimistön ohjaus</value></data>
+  <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>Asettelu {0}, {1} ohjausta</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Luetaan tähän paikkaan määritetyistä fyysisistä ohjaimista. Jokainen ohjaus ottaa minkä tahansa syötteen miltä tahansa niistä: painikkeen, akselin suunnan, hatun, kosketuslevyn tai kaksi yhdessä pidettyä. Napsauta nauhoituspainiketta ja paina syötettä tai pidä yhtä syötettä ja paina toista yhdistelmää varten. Määritä kaikki nauhoittaa ne järjestyksessä.</value></data>
+  <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>Määritä kaikki</value></data>
+  <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>Nauhoittaa asettelun jokaisen ohjauksen järjestyksessä. Tilarivi kertoo, minkä ohjauksen syötettä painetaan.</value></data>
+  <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>Paina syötettä kohteelle {0} ({1}/{2})</value></data>
+  <data name="Menu_Keyboard_MapAll_Done" xml:space="preserve"><value>Kaikki näppäimistön ohjaukset on nauhoitettu.</value></data>
+  <data name="Menu_Reset_KeyboardControls" xml:space="preserve"><value>Palauta näppäimistön ohjaus</value></data>
+  <data name="Menu_Keyboard_Reset_Format" xml:space="preserve"><value>Palauta {0} arvoon {1}</value></data>
+  <data name="Menu_Keyboard_RecordingPrompt" xml:space="preserve"><value>Paina syötettä millä tahansa tähän paikkaan määritetyllä laitteella</value></data>
+  <data name="Menu_Keyboard_Card" xml:space="preserve"><value>Näppäimistö</value></data>
+  <data name="Menu_TypesThrough" xml:space="preserve"><value>Kirjoitustapa</value></data>
+  <data name="Menu_TypesThrough_Caption" xml:space="preserve"><value>Windows-syöte kirjoittaa jokaisen näppäimen Windows-järjestelmän kautta, ja ohjelmat voivat havaita sen tulevan ohjelmistosta. Näppäimistö + hiiri -paikan näppäimistö kirjoittaa sen samalla tavalla kuin kyseisen paikan Näppäimistö-asetus. HIDMaestro-virtuaalinäppäimistö kirjoittaa sen kyseisenä näppäimistömallina, jonka ohjelmat näkevät laitteistona. Näppäimistövalikko tekee sellaisen itse, joten se ei tarvitse Näppäimistö + hiiri -paikkaa. Näppäin, jota valitulla näppäimistöllä ei ole, ja merkki, jota mikään näppäin ei kirjoita, kulkevat silti Windows-syötteen kautta.</value></data>
+  <data name="Menu_TypesThrough_Slot_Format" xml:space="preserve"><value>Sama näppäimistö kuin {0}</value></data>
+  <data name="Menu_Reset_TypesThrough" xml:space="preserve"><value>Palauta kirjoitustapa</value></data>
+  <data name="Menu_FunctionRow" xml:space="preserve"><value>Toimintonäppäinrivi</value></data>
+  <data name="Menu_FunctionRow_Caption" xml:space="preserve"><value>Esc, F1-F12 ja Del. Myös näppäimistön Fn-näppäin vaihtaa sitä.</value></data>
+  <data name="Menu_WordSuggestions" xml:space="preserve"><value>Sanaehdotukset</value></data>
+  <data name="Menu_WordSuggestions_Caption" xml:space="preserve"><value>Windows-tekstiennakoinnista, Windows-järjestelmään asennetuille kielille.</value></data>
+  <data name="Menu_SymbolsPage" xml:space="preserve"><value>Symbolisivu</value></data>
+  <data name="Menu_SymbolsPage_Tip" xml:space="preserve"><value>Näppäimistön symbolisivun merkit. Ne kirjoitetaan Unicode-merkkeinä.</value></data>
+  <data name="Menu_Reset_Symbols" xml:space="preserve"><value>Palauta symbolisivu</value></data>
+  <data name="Menu_Keyboard_Overlay_Caption" xml:space="preserve"><value>Rivit, jotka jokaisella valikolla jo on. Myös näppäimistön yläpalkin tai kulmaotteen vetäminen tai Siirrä näppäimistöä (pito) -syötteen pitäminen asettaa ne.</value></data>
+  <data name="Osk_Title" xml:space="preserve"><value>Näytönäppäimistö</value></data>
+  <data name="Osk_Control_TypeKey" xml:space="preserve"><value>Kirjoita näppäin</value></data>
+  <data name="Osk_Control_Backspace" xml:space="preserve"><value>Askelpalautin</value></data>
+  <data name="Osk_Control_Space" xml:space="preserve"><value>Väli</value></data>
+  <data name="Osk_Control_Enter" xml:space="preserve"><value>Enter</value></data>
+  <data name="Osk_Control_Close" xml:space="preserve"><value>Sulje</value></data>
+  <data name="Osk_Control_ShiftNextKey" xml:space="preserve"><value>Shift seuraavalle näppäimelle</value></data>
+  <data name="Osk_Control_ShiftLeftHand" xml:space="preserve"><value>Shift seuraavalle näppäimelle, vasen käsi</value></data>
+  <data name="Osk_Control_ShiftRightHand" xml:space="preserve"><value>Shift seuraavalle näppäimelle, oikea käsi</value></data>
+  <data name="Osk_Control_SymbolsPage" xml:space="preserve"><value>Symbolisivu</value></data>
+  <data name="Osk_Control_CursorLeft" xml:space="preserve"><value>Kohdistin vasemmalle</value></data>
+  <data name="Osk_Control_CursorRight" xml:space="preserve"><value>Kohdistin oikealle</value></data>
+  <data name="Osk_Control_MoveUp" xml:space="preserve"><value>Siirry ylös</value></data>
+  <data name="Osk_Control_MoveDown" xml:space="preserve"><value>Siirry alas</value></data>
+  <data name="Osk_Control_MoveLeft" xml:space="preserve"><value>Siirry vasemmalle</value></data>
+  <data name="Osk_Control_MoveRight" xml:space="preserve"><value>Siirry oikealle</value></data>
+  <data name="Osk_Control_Suggestion_Format" xml:space="preserve"><value>Ehdotus {0}</value></data>
+  <data name="Osk_Control_MoveKeyboard" xml:space="preserve"><value>Siirrä näppäimistöä (pito)</value></data>
+  <data name="Osk_Control_TypeLeftHalf" xml:space="preserve"><value>Kirjoita vasen puolisko</value></data>
+  <data name="Osk_Control_TypeRightHalf" xml:space="preserve"><value>Kirjoita oikea puolisko</value></data>
+  <data name="Osk_Control_ArrowUp" xml:space="preserve"><value>Nuoli ylös</value></data>
+  <data name="Osk_Control_ArrowDown" xml:space="preserve"><value>Nuoli alas</value></data>
+  <data name="Osk_Control_ArrowLeft" xml:space="preserve"><value>Nuoli vasemmalle</value></data>
+  <data name="Osk_Control_ArrowRight" xml:space="preserve"><value>Nuoli oikealle</value></data>
+  <data name="Osk_Control_PickWest" xml:space="preserve"><value>Valitse länsi</value></data>
+  <data name="Osk_Control_PickNorth" xml:space="preserve"><value>Valitse pohjoinen</value></data>
+  <data name="Osk_Control_PickEast" xml:space="preserve"><value>Valitse itä</value></data>
+  <data name="Osk_Control_PickSouth" xml:space="preserve"><value>Valitse etelä</value></data>
+  <data name="Osk_Control_Capitals" xml:space="preserve"><value>Isot kirjaimet ja symbolit (pito)</value></data>
+  <data name="Osk_Control_Numbers" xml:space="preserve"><value>Numerot ja sulut (pito)</value></data>
+  <data name="Osk_Control_Home" xml:space="preserve"><value>Home</value></data>
+  <data name="Osk_Control_End" xml:space="preserve"><value>End</value></data>
+  <data name="Menu_Keyboard_OpenPress" xml:space="preserve"><value>Avaava painallus</value></data>
+  <data name="Menu_Keyboard_OpenPress_Tip" xml:space="preserve"><value>Avaava syöte -asetuksen painallus, joka avaa tai sulkee näppäimistön. Steam-sidonnat Pitkä painallus ja Kaksoispainallus tuodaan muodossa Pitkästi painettaessa ja Kahdesti painettaessa, joten saman syötteen lyhyt painallus säilyttää oman sidontansa.</value></data>
+  <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>Palauta avaava painallus</value></data>
+  <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>Avaa tai sulkee näppäimistön, kun Avaava syöte on pidetty pohjassa pitoajan. Lyhyempi painallus ei tee mitään.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>Avaa tai sulkee näppäimistön, kun Avaava syöte painetaan kahdesti painallusikkunan sisällä.</value></data>
 </root>

@@ -4976,4 +4976,207 @@ Vil du at PadForge skal avinstallere dem nå? Dette krever administratorrettighe
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD hindret musebevegelse i å nå Windows. PadForge blokkerer taster og museknapper, men ikke bevegelse, så pekeren beveger seg fortsatt.</value></data>
   <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>De virtuelle kontrollerne i PadForge henter bevegelse bare fra en kontrollers bevegelsessensor.</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows byttet tilbake til denne profilen fra {0} med en knapp. For å gjøre det i PadForge, legg til en profilsnarvei for denne profilen på Profiler-siden.</value></data>
+  <data name="Osk_Style_Grid" xml:space="preserve">
+    <value>Rutenett</value>
+  </data>
+  <data name="Osk_Style_Split" xml:space="preserve">
+    <value>Delt</value>
+  </data>
+  <data name="Osk_Style_Wheel" xml:space="preserve">
+    <value>Hjul</value>
+  </data>
+  <data name="Osk_CloseKeyboard" xml:space="preserve">
+    <value>Lukk tastaturet</value>
+  </data>
+  <data name="Osk_Drag" xml:space="preserve">
+    <value>Dra for å flytte tastaturet</value>
+  </data>
+  <data name="Osk_Wheel_Keys" xml:space="preserve">
+    <value>Taster</value>
+  </data>
+  <data name="Osk_Key_Tab" xml:space="preserve">
+    <value>Tab</value>
+  </data>
+  <data name="Osk_Key_Caps" xml:space="preserve">
+    <value>Caps</value>
+  </data>
+  <data name="Osk_Key_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Osk_Key_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Key_Ctrl" xml:space="preserve">
+    <value>Ctrl</value>
+  </data>
+  <data name="Osk_Key_Win" xml:space="preserve">
+    <value>Win</value>
+  </data>
+  <data name="Osk_Key_Alt" xml:space="preserve">
+    <value>Alt</value>
+  </data>
+  <data name="Osk_Key_AltGr" xml:space="preserve">
+    <value>AltGr</value>
+  </data>
+  <data name="Osk_Key_Symbols" xml:space="preserve">
+    <value>&amp;123</value>
+  </data>
+  <data name="Osk_Key_Letters" xml:space="preserve">
+    <value>abc</value>
+  </data>
+  <data name="Osk_Key_Space" xml:space="preserve">
+    <value>Mellomrom</value>
+  </data>
+  <data name="Osk_Key_Esc" xml:space="preserve">
+    <value>Esc</value>
+  </data>
+  <data name="Osk_Key_Del" xml:space="preserve">
+    <value>Del</value>
+  </data>
+  <data name="Osk_Key_Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Osk_Key_End" xml:space="preserve">
+    <value>End</value>
+  </data>
+  <data name="Osk_Key_PgUp" xml:space="preserve">
+    <value>PgUp</value>
+  </data>
+  <data name="Osk_Key_PgDn" xml:space="preserve">
+    <value>PgDn</value>
+  </data>
+  <data name="Osk_Key_Ins" xml:space="preserve">
+    <value>Ins</value>
+  </data>
+  <data name="Osk_Key_PrtSc" xml:space="preserve">
+    <value>PrtSc</value>
+  </data>
+  <data name="Osk_Hint_Type" xml:space="preserve">
+    <value>Skriv</value>
+  </data>
+  <data name="Osk_Hint_TypeLeft" xml:space="preserve">
+    <value>Skriv venstre</value>
+  </data>
+  <data name="Osk_Hint_TypeRight" xml:space="preserve">
+    <value>Skriv høyre</value>
+  </data>
+  <data name="Osk_Hint_Backspace" xml:space="preserve">
+    <value>Tilbake</value>
+  </data>
+  <data name="Osk_Hint_Space" xml:space="preserve">
+    <value>Mellomrom</value>
+  </data>
+  <data name="Osk_Hint_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Osk_Hint_Close" xml:space="preserve">
+    <value>Lukk</value>
+  </data>
+  <data name="Osk_Hint_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Hint_Symbols" xml:space="preserve">
+    <value>Symboler</value>
+  </data>
+  <data name="Osk_Hint_Cursor" xml:space="preserve">
+    <value>Markør</value>
+  </data>
+  <data name="Osk_Hint_Suggestion" xml:space="preserve">
+    <value>Forslag</value>
+  </data>
+  <data name="Osk_Hint_Capitals" xml:space="preserve">
+    <value>Hold: store</value>
+  </data>
+  <data name="Osk_Hint_Numbers" xml:space="preserve">
+    <value>Hold: tall</value>
+  </data>
+  <data name="Osk_Hint_Keys" xml:space="preserve">
+    <value>Hold: taster</value>
+  </data>
+  <data name="Osk_Hint_Move" xml:space="preserve">
+    <value>Hold: flytt</value>
+  </data>
+  <data name="Osk_Input_Dpad" xml:space="preserve">
+    <value>D-pad</value>
+  </data>
+  <data name="Menu_Style_Keyboard" xml:space="preserve"><value>Tastatur</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>Radiell ring og Berøringsrutenett utløser celletilordninger. Tastatur skriver tastene i Windows-oppsettet som er i bruk.</value></data>
+  <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Oppsett</value></data>
+  <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Hvordan tastaturet legger ut tastene, og hvordan en kontroller velger dem.</value></data>
+  <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Én markering, flyttet med en stikke eller fire inndata, oppsettet Windows, Xbox og Steam bruker.</value></data>
+  <data name="Menu_KeyboardLayout_Split_Desc" xml:space="preserve"><value>Hver halvdel av tastaturet får sin egen styringsinndata og sin egen skriveinndata.</value></data>
+  <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>Tastaturhjulet: velg én av åtte grupper, deretter ett av de fire tegnene i den.</value></data>
+  <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>Tilbakestill oppsett</value></data>
+  <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>Åpnes med</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Hvilken som helst inndata på en enhet som er tilordnet dette sporet, eller to holdt samtidig. Den samme inndataen lukker tastaturet, med mindre en tastaturkontroll bruker den også. Tom betyr at ingen inndata åpner det.</value></data>
+  <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>Tilbakestill Åpnes med</value></data>
+  <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>Åpne når et tekstfelt er valgt</value></data>
+  <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>I Windows-apper og nettlesere, uten knapp. Spill tegner sine egne tekstfelt, så i et spill åpnes det med inndataen ovenfor, eller med laget sitt når Laget holder menyen åpen er slått på.</value></data>
+  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>Inndataen som flytter markeringen over tastene, lest fra de fysiske kontrollerne som er tilordnet sporet.</value></data>
+  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>Styr venstre halvdel med</value></data>
+  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>Styr høyre halvdel med</value></data>
+  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>Velg en gruppe med</value></data>
+  <data name="Menu_Reset_Host2" xml:space="preserve"><value>Tilbakestill Styr høyre halvdel med</value></data>
+  <data name="Menu_Host_DPad" xml:space="preserve"><value>D-pad</value></data>
+  <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>Frontknapper</value></data>
+  <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>Tastaturkontroller</value></data>
+  <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>Oppsett: {0}, {1} kontroller</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Leses fra de fysiske kontrollerne som er tilordnet dette sporet. Hver kontroll tar imot hvilken som helst inndata på hvilken som helst av dem: en knapp, en akseretning, en hatt, en berøringsplate eller to holdt samtidig. Klikk på en opptaksknapp og trykk inndataen, eller hold én inndata og trykk en andre for en kombinasjon. Tilordne alle tar dem opp i rekkefølge.</value></data>
+  <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>Tilordne alle</value></data>
+  <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>Tar opp alle kontrollene i oppsettet i rekkefølge. Statuslinjen oppgir kontrollen du skal trykke en inndata for.</value></data>
+  <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>Trykk inndataen for {0} ({1} av {2})</value></data>
+  <data name="Menu_Keyboard_MapAll_Done" xml:space="preserve"><value>Alle tastaturkontrollene er tatt opp.</value></data>
+  <data name="Menu_Reset_KeyboardControls" xml:space="preserve"><value>Tilbakestill tastaturkontroller</value></data>
+  <data name="Menu_Keyboard_Reset_Format" xml:space="preserve"><value>Tilbakestill {0} til {1}</value></data>
+  <data name="Menu_Keyboard_RecordingPrompt" xml:space="preserve"><value>Trykk en inndata på en hvilken som helst enhet som er tilordnet dette sporet</value></data>
+  <data name="Menu_Keyboard_Card" xml:space="preserve"><value>Tastatur</value></data>
+  <data name="Menu_TypesThrough" xml:space="preserve"><value>Skriver via</value></data>
+  <data name="Menu_TypesThrough_Caption" xml:space="preserve"><value>Windows-inndata skriver hver tast via Windows, og programmer kan se at den kom fra programvare. Tastaturet til et Tastatur + mus-spor skriver slik innstillingen Tastatur på det sporet gjør. Et virtuelt HIDMaestro-tastatur skriver som den tastaturmodellen, som programmer ser som maskinvare. Tastaturmenyen lager det selv, så den trenger ikke noe Tastatur + mus-spor. En tast det valgte tastaturet mangler, og et tegn ingen tast skriver, går fortsatt via Windows-inndata.</value></data>
+  <data name="Menu_TypesThrough_Slot_Format" xml:space="preserve"><value>Samme tastatur som {0}</value></data>
+  <data name="Menu_Reset_TypesThrough" xml:space="preserve"><value>Tilbakestill Skriver via</value></data>
+  <data name="Menu_FunctionRow" xml:space="preserve"><value>Funksjonsrad</value></data>
+  <data name="Menu_FunctionRow_Caption" xml:space="preserve"><value>Esc, F1 til F12 og Del. Fn-tasten på tastaturet bytter den også.</value></data>
+  <data name="Menu_WordSuggestions" xml:space="preserve"><value>Ordforslag</value></data>
+  <data name="Menu_WordSuggestions_Caption" xml:space="preserve"><value>Fra tekstprediksjonen i Windows, for språkene som er installert i Windows.</value></data>
+  <data name="Menu_SymbolsPage" xml:space="preserve"><value>Symbolside</value></data>
+  <data name="Menu_SymbolsPage_Tip" xml:space="preserve"><value>Tegnene på tastaturets symbolside. De skrives som Unicode-tegn.</value></data>
+  <data name="Menu_Reset_Symbols" xml:space="preserve"><value>Tilbakestill symbolside</value></data>
+  <data name="Menu_Keyboard_Overlay_Caption" xml:space="preserve"><value>Radene hver meny allerede har. Å dra tastaturets toppstolpe eller hjørnegrep, eller holde Flytt tastaturet (hold), setter dem også.</value></data>
+  <data name="Osk_Title" xml:space="preserve"><value>Skjermtastatur</value></data>
+  <data name="Osk_Control_TypeKey" xml:space="preserve"><value>Skriv tast</value></data>
+  <data name="Osk_Control_Backspace" xml:space="preserve"><value>Backspace</value></data>
+  <data name="Osk_Control_Space" xml:space="preserve"><value>Mellomrom</value></data>
+  <data name="Osk_Control_Enter" xml:space="preserve"><value>Enter</value></data>
+  <data name="Osk_Control_Close" xml:space="preserve"><value>Lukk</value></data>
+  <data name="Osk_Control_ShiftNextKey" xml:space="preserve"><value>Shift for neste tast</value></data>
+  <data name="Osk_Control_ShiftLeftHand" xml:space="preserve"><value>Shift for neste tast, venstre hånd</value></data>
+  <data name="Osk_Control_ShiftRightHand" xml:space="preserve"><value>Shift for neste tast, høyre hånd</value></data>
+  <data name="Osk_Control_SymbolsPage" xml:space="preserve"><value>Symbolside</value></data>
+  <data name="Osk_Control_CursorLeft" xml:space="preserve"><value>Markør til venstre</value></data>
+  <data name="Osk_Control_CursorRight" xml:space="preserve"><value>Markør til høyre</value></data>
+  <data name="Osk_Control_MoveUp" xml:space="preserve"><value>Flytt opp</value></data>
+  <data name="Osk_Control_MoveDown" xml:space="preserve"><value>Flytt ned</value></data>
+  <data name="Osk_Control_MoveLeft" xml:space="preserve"><value>Flytt til venstre</value></data>
+  <data name="Osk_Control_MoveRight" xml:space="preserve"><value>Flytt til høyre</value></data>
+  <data name="Osk_Control_Suggestion_Format" xml:space="preserve"><value>Forslag {0}</value></data>
+  <data name="Osk_Control_MoveKeyboard" xml:space="preserve"><value>Flytt tastaturet (hold)</value></data>
+  <data name="Osk_Control_TypeLeftHalf" xml:space="preserve"><value>Skriv venstre halvdel</value></data>
+  <data name="Osk_Control_TypeRightHalf" xml:space="preserve"><value>Skriv høyre halvdel</value></data>
+  <data name="Osk_Control_ArrowUp" xml:space="preserve"><value>Pil opp</value></data>
+  <data name="Osk_Control_ArrowDown" xml:space="preserve"><value>Pil ned</value></data>
+  <data name="Osk_Control_ArrowLeft" xml:space="preserve"><value>Pil venstre</value></data>
+  <data name="Osk_Control_ArrowRight" xml:space="preserve"><value>Pil høyre</value></data>
+  <data name="Osk_Control_PickWest" xml:space="preserve"><value>Velg vest</value></data>
+  <data name="Osk_Control_PickNorth" xml:space="preserve"><value>Velg nord</value></data>
+  <data name="Osk_Control_PickEast" xml:space="preserve"><value>Velg øst</value></data>
+  <data name="Osk_Control_PickSouth" xml:space="preserve"><value>Velg sør</value></data>
+  <data name="Osk_Control_Capitals" xml:space="preserve"><value>Store bokstaver og symboler (hold)</value></data>
+  <data name="Osk_Control_Numbers" xml:space="preserve"><value>Tall og parenteser (hold)</value></data>
+  <data name="Osk_Control_Home" xml:space="preserve"><value>Home</value></data>
+  <data name="Osk_Control_End" xml:space="preserve"><value>End</value></data>
+  <data name="Menu_Keyboard_OpenPress" xml:space="preserve"><value>Åpnes ved</value></data>
+  <data name="Menu_Keyboard_OpenPress_Tip" xml:space="preserve"><value>Trykket på Åpnes med som åpner eller lukker tastaturet. Tilordninger for langt trykk og dobbelttrykk fra Steam importeres som Ved langt trykk og Ved dobbelttrykk, så et kort trykk på den samme inndataen beholder sin egen tilordning.</value></data>
+  <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>Tilbakestill Åpnes ved</value></data>
+  <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>Åpner eller lukker tastaturet når Åpnes med holdes i holdetiden. Et kortere trykk gjør ingenting.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>Åpner eller lukker tastaturet når Åpnes med trykkes to ganger innenfor trykkvinduet.</value></data>
 </root>

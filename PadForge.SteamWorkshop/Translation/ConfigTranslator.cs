@@ -6033,10 +6033,10 @@ namespace PadForge.SteamWorkshop.Translation
 
                 case "SHOW_KEYBOARD":
                 {
-                    // v10 G7: Steam's overlay keyboard has no client here;
-                    // launch the Windows on-screen keyboard instead (the
-                    // materializer resolves TabTip.exe, falling back to
-                    // osk.exe). Silent since v17, the SCREENSHOT ruling.
+                    // v10 G7: Steam's overlay keyboard becomes PadForge's
+                    // On-Screen Keyboard: the materializer turns this macro
+                    // into a keyboard menu opened by the same input (#566).
+                    // Silent since v17, the SCREENSHOT ruling.
                     var osk = new TranslatedMacro
                     {
                         Name = $"On-screen keyboard ({SteamVocabulary.MemberLabel(source?.Descriptor, inputName)})",

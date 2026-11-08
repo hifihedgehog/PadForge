@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using PadForge.Common.Input;
 using PadForge.Engine;
 using PadForge.Engine.Data;
+using PadForge.Engine.Menus;
 using PadForge.SteamWorkshop.Translation;
 using PadForge.ViewModels;
 
@@ -134,7 +135,33 @@ namespace PadForge.Services
                 }
             }
 
-            var macros = BuildMacros(translated.Macros, Math.Max(xboxSlot, 0),
+            // Steam's Show Keyboard (#566) becomes a keyboard menu, opened by
+            // the binding's input on the binding's layer. It goes on one slot,
+            // the Xbox slot when there is one: a menu on each slot of a split
+            // config would answer one press twice, each taking the keyboard
+            // from the other.
+            int keyboardSlot = xboxSlot >= 0 ? xboxSlot : kbmSlot;
+            var macroSource = translated.Macros;
+            if (macroSource != null && keyboardSlot >= 0)
+            {
+                macroSource = new List<TranslatedMacro>(translated.Macros.Count);
+                foreach (var m in translated.Macros)
+                {
+                    if (m?.Action != TranslatedMacroAction.ShowOnScreenKeyboard)
+                    {
+                        macroSource.Add(m);
+                        continue;
+                    }
+                    var set = mappingSets[keyboardSlot];
+                    int id = 1;
+                    foreach (var existing in set.Menus)
+                        if (existing != null && existing.MenuId >= id) id = existing.MenuId + 1;
+                    var keyboard = KeyboardMenuFor(m, id);
+                    if (keyboard != null) set.Menus.Add(keyboard);
+                }
+            }
+
+            var macros = BuildMacros(macroSource, Math.Max(xboxSlot, 0),
                 translated.Report?.ControllerType);
 
             return new ProfileData
@@ -265,13 +292,6 @@ namespace PadForge.Services
                     Type = MacroActionType.ButtonPress,
                     ButtonFlags = m.TargetXboxButtons,
                     DurationMs = m.TapDurationMs > 0 ? m.TapDurationMs : 50,
-                },
-                // SHOW_KEYBOARD (v10 G7): launch the Windows touch keyboard,
-                // falling back to the classic osk.exe when TabTip is absent.
-                TranslatedMacroAction.ShowOnScreenKeyboard => new ActionData
-                {
-                    Type = MacroActionType.RunProgram,
-                    ProgramPath = ResolveOnScreenKeyboardPath(),
                 },
                 // HoldVcButton: ButtonPress ORs its flags into the combined
                 // output every frame while it is the current action, and the
@@ -655,15 +675,44 @@ namespace PadForge.Services
             };
         }
 
-        /// <summary>The Windows touch keyboard when present, else the
-        /// classic on-screen keyboard (v10 G7). Resolved at import time so
-        /// the RunProgram action carries a concrete path.</summary>
-        private static string ResolveOnScreenKeyboardPath()
+        /// <summary>A Show Keyboard binding (v10 G7) as a keyboard menu
+        /// (#566). Its device-free trigger inputs become Opens With, the first
+        /// and the second held with it, with the hosting read's axis half
+        /// (the half a stick-as-dpad member or a trigger pull reads). Steam's
+        /// Long_Press and Double_Press activators become the matching press,
+        /// with their times, and Release acts on the press. The binding's layer
+        /// gates the menu. Null when the binding carries no input to open it
+        /// with.</summary>
+        internal static MenuDefinitionEntry KeyboardMenuFor(TranslatedMacro m, int menuId)
         {
-            string tabTip = System.IO.Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.CommonProgramFiles),
-                "microsoft shared", "ink", "TabTip.exe");
-            return System.IO.File.Exists(tabTip) ? tabTip : "osk.exe";
+            var descriptors = m?.TriggerInputDescriptors;
+            if (descriptors == null || descriptors.Count == 0 || string.IsNullOrWhiteSpace(descriptors[0])) return null;
+            string Half(string d)
+            {
+                if (!m.TriggerDescriptorHalfAxis || string.IsNullOrEmpty(d)) return d;
+                string canonical = PadForge.Engine.Common.Mapping.SourceCoercion.ResolveGamepadAlias(d) ?? d;
+                bool axis = canonical.StartsWith("Axis ", StringComparison.Ordinal)
+                    || canonical.StartsWith("Slider ", StringComparison.Ordinal)
+                    || d.StartsWith("Gyro ", StringComparison.Ordinal);
+                return axis ? (m.TriggerDescriptorInvert ? "IH" : "H") + d : d;
+            }
+            var menu = KeyboardMenuDefaults.Create(menuId, string.IsNullOrWhiteSpace(m.Name) ? "Keyboard" : m.Name);
+            KeyboardMenuDefaults.SetOpenInput(menu, new KeyboardInput(Half(descriptors[0].Trim()), "",
+                descriptors.Count > 1 ? Half(descriptors[1].Trim()) : "", ""));
+            switch (m.TriggerMode)
+            {
+                case "HoldForMs":
+                    menu.OpenPress = KeyboardOpenPress.Hold;
+                    menu.OpenPressMs = Math.Clamp(m.TriggerHoldMs, 50, KeyboardMenuDefaults.MaxOpenPressMs);
+                    break;
+                case "DoublePress":
+                    menu.OpenPress = KeyboardOpenPress.DoublePress;
+                    menu.OpenPressMs = m.TriggerDoublePressMs > 0
+                        ? Math.Clamp(m.TriggerDoublePressMs, 50, KeyboardMenuDefaults.MaxOpenPressMs) : 0;
+                    break;
+            }
+            menu.LayerMask = m.LayerMask ?? "";
+            return menu;
         }
 
         /// <summary>Lowers a translated mouse_region clamp to the engine's

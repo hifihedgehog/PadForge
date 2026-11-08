@@ -137,6 +137,27 @@ namespace PadForge.Engine
         /// the DualSense passthrough dispatcher.</summary>
         public IntPtr GamepadHandle => GameController;
 
+        private readonly int[] _faceLabels = { -1, -1, -1, -1 };
+
+        /// <summary>The label SDL gives one of this gamepad's face buttons,
+        /// SDL_GAMEPAD_BUTTON_SOUTH to NORTH (<c>SDL_GetGamepadButtonLabel</c>),
+        /// one of the SDL_GAMEPAD_BUTTON_LABEL_* values. South is A on an Xbox
+        /// or a GameCube pad, CROSS on a PlayStation pad and B on a Nintendo
+        /// pad. East is X on a GameCube pad and B on an Xbox pad. UNKNOWN for
+        /// a device opened as a raw joystick. Each is read once, on the poll
+        /// thread, since a pad's face style never changes while it is open
+        /// (SDL_gamepad.c keeps it on the gamepad).</summary>
+        public int FaceButtonLabel(int button)
+        {
+            if (button < SDL_GAMEPAD_BUTTON_SOUTH || button > SDL_GAMEPAD_BUTTON_NORTH) return SDL_GAMEPAD_BUTTON_LABEL_UNKNOWN;
+            if (_faceLabels[button] >= 0) return _faceLabels[button];
+            var pad = GameController;
+            if (pad == IntPtr.Zero) return SDL_GAMEPAD_BUTTON_LABEL_UNKNOWN;
+            try { _faceLabels[button] = SDL_GetGamepadButtonLabel(pad, button); }
+            catch (EntryPointNotFoundException) { _faceLabels[button] = SDL_GAMEPAD_BUTTON_LABEL_UNKNOWN; }
+            return _faceLabels[button];
+        }
+
         /// <summary>Whether the device has a gyroscope sensor.</summary>
         public bool HasGyro { get; private set; }
 
@@ -520,6 +541,7 @@ namespace PadForge.Engine
                     SDL_GetJoystickVendorForID(instanceId), SDL_GetJoystickProductForID(instanceId)))
             {
                 GameController = SDL_OpenGamepad(instanceId);
+                Array.Fill(_faceLabels, -1);
                 if (GameController != IntPtr.Zero)
                 {
                     Joystick = SDL_GetGamepadJoystick(GameController);
@@ -851,6 +873,7 @@ namespace PadForge.Engine
             {
                 SDL_CloseGamepad(GameController);
                 GameController = IntPtr.Zero;
+                Array.Fill(_faceLabels, -1);
                 // CloseGamepad also closes the underlying joystick.
                 Joystick = IntPtr.Zero;
             }

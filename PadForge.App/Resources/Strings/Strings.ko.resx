@@ -4927,4 +4927,207 @@
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD가 마우스 움직임이 Windows에 전달되지 않게 막았습니다. PadForge는 키와 마우스 버튼은 차단하지만 움직임은 차단하지 않으므로 포인터는 계속 움직입니다.</value></data>
   <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>PadForge의 가상 컨트롤러는 컨트롤러의 모션 센서에서만 모션 값을 받습니다.</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows는 버튼 하나로 {0}에서 이 프로필로 돌아왔습니다. PadForge에서 같은 동작을 하려면 프로필 페이지에서 이 프로필의 프로필 단축키를 추가하세요.</value></data>
+  <data name="Osk_Style_Grid" xml:space="preserve">
+    <value>그리드</value>
+  </data>
+  <data name="Osk_Style_Split" xml:space="preserve">
+    <value>분할</value>
+  </data>
+  <data name="Osk_Style_Wheel" xml:space="preserve">
+    <value>휠</value>
+  </data>
+  <data name="Osk_CloseKeyboard" xml:space="preserve">
+    <value>키보드 닫기</value>
+  </data>
+  <data name="Osk_Drag" xml:space="preserve">
+    <value>끌어서 키보드 이동</value>
+  </data>
+  <data name="Osk_Wheel_Keys" xml:space="preserve">
+    <value>키</value>
+  </data>
+  <data name="Osk_Key_Tab" xml:space="preserve">
+    <value>Tab</value>
+  </data>
+  <data name="Osk_Key_Caps" xml:space="preserve">
+    <value>Caps</value>
+  </data>
+  <data name="Osk_Key_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Osk_Key_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Key_Ctrl" xml:space="preserve">
+    <value>Ctrl</value>
+  </data>
+  <data name="Osk_Key_Win" xml:space="preserve">
+    <value>Win</value>
+  </data>
+  <data name="Osk_Key_Alt" xml:space="preserve">
+    <value>Alt</value>
+  </data>
+  <data name="Osk_Key_AltGr" xml:space="preserve">
+    <value>AltGr</value>
+  </data>
+  <data name="Osk_Key_Symbols" xml:space="preserve">
+    <value>&amp;123</value>
+  </data>
+  <data name="Osk_Key_Letters" xml:space="preserve">
+    <value>가나다</value>
+  </data>
+  <data name="Osk_Key_Space" xml:space="preserve">
+    <value>Space</value>
+  </data>
+  <data name="Osk_Key_Esc" xml:space="preserve">
+    <value>Esc</value>
+  </data>
+  <data name="Osk_Key_Del" xml:space="preserve">
+    <value>Del</value>
+  </data>
+  <data name="Osk_Key_Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Osk_Key_End" xml:space="preserve">
+    <value>End</value>
+  </data>
+  <data name="Osk_Key_PgUp" xml:space="preserve">
+    <value>PgUp</value>
+  </data>
+  <data name="Osk_Key_PgDn" xml:space="preserve">
+    <value>PgDn</value>
+  </data>
+  <data name="Osk_Key_Ins" xml:space="preserve">
+    <value>Ins</value>
+  </data>
+  <data name="Osk_Key_PrtSc" xml:space="preserve">
+    <value>PrtSc</value>
+  </data>
+  <data name="Osk_Hint_Type" xml:space="preserve">
+    <value>입력</value>
+  </data>
+  <data name="Osk_Hint_TypeLeft" xml:space="preserve">
+    <value>왼쪽 입력</value>
+  </data>
+  <data name="Osk_Hint_TypeRight" xml:space="preserve">
+    <value>오른쪽 입력</value>
+  </data>
+  <data name="Osk_Hint_Backspace" xml:space="preserve">
+    <value>Backspace</value>
+  </data>
+  <data name="Osk_Hint_Space" xml:space="preserve">
+    <value>Space</value>
+  </data>
+  <data name="Osk_Hint_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Osk_Hint_Close" xml:space="preserve">
+    <value>닫기</value>
+  </data>
+  <data name="Osk_Hint_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Hint_Symbols" xml:space="preserve">
+    <value>기호</value>
+  </data>
+  <data name="Osk_Hint_Cursor" xml:space="preserve">
+    <value>커서</value>
+  </data>
+  <data name="Osk_Hint_Suggestion" xml:space="preserve">
+    <value>추천 단어</value>
+  </data>
+  <data name="Osk_Hint_Capitals" xml:space="preserve">
+    <value>누르기: 대문자</value>
+  </data>
+  <data name="Osk_Hint_Numbers" xml:space="preserve">
+    <value>누르기: 숫자</value>
+  </data>
+  <data name="Osk_Hint_Keys" xml:space="preserve">
+    <value>누르기: 키</value>
+  </data>
+  <data name="Osk_Hint_Move" xml:space="preserve">
+    <value>누르기: 이동</value>
+  </data>
+  <data name="Osk_Input_Dpad" xml:space="preserve">
+    <value>D-Pad</value>
+  </data>
+  <data name="Menu_Style_Keyboard" xml:space="preserve"><value>키보드</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>방사형 링과 터치 그리드는 셀에 지정한 바인딩을 실행합니다. 키보드는 사용 중인 Windows 레이아웃의 키를 입력합니다.</value></data>
+  <data name="Menu_KeyboardLayout" xml:space="preserve"><value>레이아웃</value></data>
+  <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>키보드의 키 배열과 컨트롤러로 키를 고르는 방식입니다.</value></data>
+  <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>스틱이나 입력 네 개로 움직이는 강조 표시 하나. Windows, Xbox, Steam 방식의 레이아웃입니다.</value></data>
+  <data name="Menu_KeyboardLayout_Split_Desc" xml:space="preserve"><value>키보드의 양쪽 절반마다 조작 입력과 입력 키가 따로 있습니다.</value></data>
+  <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>데이지 휠: 여덟 그룹 중 하나를 고른 다음 그 안의 문자 네 개 중 하나를 고릅니다.</value></data>
+  <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>레이아웃 초기화</value></data>
+  <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>여는 입력</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>이 슬롯에 할당된 장치의 입력 하나 또는 동시에 누른 입력 두 개입니다. 키보드 컨트롤이 같은 입력을 쓰지 않는 한 같은 입력으로 키보드를 닫습니다. 비워 두면 키보드를 여는 입력이 없습니다.</value></data>
+  <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>여는 입력 초기화</value></data>
+  <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>텍스트 상자를 선택하면 열기</value></data>
+  <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>Windows 앱과 브라우저에서는 버튼 없이 열립니다. 게임은 텍스트 상자를 직접 그리므로 게임에서는 위의 입력으로 열리며, 레이어가 메뉴를 열어 둠이 켜져 있으면 해당 레이어로 열립니다.</value></data>
+  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>강조 표시를 키 위에서 움직이는 입력입니다. 슬롯에 할당된 물리 컨트롤러에서 읽습니다.</value></data>
+  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>왼쪽 절반 조작 입력</value></data>
+  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>오른쪽 절반 조작 입력</value></data>
+  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>그룹 선택 입력</value></data>
+  <data name="Menu_Reset_Host2" xml:space="preserve"><value>오른쪽 절반 조작 입력 초기화</value></data>
+  <data name="Menu_Host_DPad" xml:space="preserve"><value>D-Pad</value></data>
+  <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>페이스 버튼</value></data>
+  <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>키보드 컨트롤</value></data>
+  <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>{0} 레이아웃, 컨트롤 {1}개</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>이 슬롯에 할당된 물리 컨트롤러에서 읽습니다. 컨트롤마다 그중 어느 컨트롤러의 입력이든 지정할 수 있습니다. 버튼, 축 방향, 햇 스위치, 터치패드 또는 동시에 누른 입력 두 개가 가능합니다. 기록 버튼을 누르고 입력을 누르세요. 조합은 입력 하나를 누른 채 두 번째 입력을 누르면 됩니다. 전체 매핑은 컨트롤을 순서대로 기록합니다.</value></data>
+  <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>전체 매핑</value></data>
+  <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>레이아웃의 모든 컨트롤을 순서대로 기록합니다. 상태 표시줄에 입력을 누를 컨트롤의 이름이 나옵니다.</value></data>
+  <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>{0}에 사용할 입력을 누르세요 ({1}/{2})</value></data>
+  <data name="Menu_Keyboard_MapAll_Done" xml:space="preserve"><value>모든 키보드 컨트롤을 기록했습니다.</value></data>
+  <data name="Menu_Reset_KeyboardControls" xml:space="preserve"><value>키보드 컨트롤 초기화</value></data>
+  <data name="Menu_Keyboard_Reset_Format" xml:space="preserve"><value>{0}을(를) {1}(으)로 초기화</value></data>
+  <data name="Menu_Keyboard_RecordingPrompt" xml:space="preserve"><value>이 슬롯에 할당된 장치에서 입력을 누르세요</value></data>
+  <data name="Menu_Keyboard_Card" xml:space="preserve"><value>키보드</value></data>
+  <data name="Menu_TypesThrough" xml:space="preserve"><value>입력 방식</value></data>
+  <data name="Menu_TypesThrough_Caption" xml:space="preserve"><value>Windows 입력은 각 키를 Windows를 통해 입력하며, 프로그램은 소프트웨어에서 온 입력임을 알 수 있습니다. 키보드 + 마우스 슬롯의 키보드는 해당 슬롯의 키보드 설정과 같은 방식으로 입력합니다. HIDMaestro 가상 키보드는 그 키보드 모델로 입력하며, 프로그램에는 하드웨어로 보입니다. 키보드 메뉴가 그 키보드를 직접 만들므로 키보드 + 마우스 슬롯이 필요 없습니다. 선택한 키보드에 없는 키와 어떤 키로도 입력할 수 없는 문자는 계속 Windows 입력으로 처리됩니다.</value></data>
+  <data name="Menu_TypesThrough_Slot_Format" xml:space="preserve"><value>{0}와(과) 같은 키보드</value></data>
+  <data name="Menu_Reset_TypesThrough" xml:space="preserve"><value>입력 방식 초기화</value></data>
+  <data name="Menu_FunctionRow" xml:space="preserve"><value>기능 키 줄</value></data>
+  <data name="Menu_FunctionRow_Caption" xml:space="preserve"><value>Esc, F1부터 F12, Del입니다. 키보드의 Fn 키로도 전환합니다.</value></data>
+  <data name="Menu_WordSuggestions" xml:space="preserve"><value>단어 추천</value></data>
+  <data name="Menu_WordSuggestions_Caption" xml:space="preserve"><value>Windows 텍스트 예측을 사용하며, Windows에 설치된 언어를 지원합니다.</value></data>
+  <data name="Menu_SymbolsPage" xml:space="preserve"><value>기호 페이지</value></data>
+  <data name="Menu_SymbolsPage_Tip" xml:space="preserve"><value>키보드 기호 페이지에 있는 문자입니다. 유니코드 문자로 입력됩니다.</value></data>
+  <data name="Menu_Reset_Symbols" xml:space="preserve"><value>기호 페이지 초기화</value></data>
+  <data name="Menu_Keyboard_Overlay_Caption" xml:space="preserve"><value>모든 메뉴에 이미 있는 항목입니다. 키보드의 상단 막대나 모서리 손잡이를 끌거나 키보드 이동 (누르고 있기)를 누르고 있어도 설정됩니다.</value></data>
+  <data name="Osk_Title" xml:space="preserve"><value>화상 키보드</value></data>
+  <data name="Osk_Control_TypeKey" xml:space="preserve"><value>키 입력</value></data>
+  <data name="Osk_Control_Backspace" xml:space="preserve"><value>Backspace</value></data>
+  <data name="Osk_Control_Space" xml:space="preserve"><value>Space</value></data>
+  <data name="Osk_Control_Enter" xml:space="preserve"><value>Enter</value></data>
+  <data name="Osk_Control_Close" xml:space="preserve"><value>닫기</value></data>
+  <data name="Osk_Control_ShiftNextKey" xml:space="preserve"><value>다음 키 Shift</value></data>
+  <data name="Osk_Control_ShiftLeftHand" xml:space="preserve"><value>다음 키 Shift, 왼손</value></data>
+  <data name="Osk_Control_ShiftRightHand" xml:space="preserve"><value>다음 키 Shift, 오른손</value></data>
+  <data name="Osk_Control_SymbolsPage" xml:space="preserve"><value>기호 페이지</value></data>
+  <data name="Osk_Control_CursorLeft" xml:space="preserve"><value>커서 왼쪽</value></data>
+  <data name="Osk_Control_CursorRight" xml:space="preserve"><value>커서 오른쪽</value></data>
+  <data name="Osk_Control_MoveUp" xml:space="preserve"><value>위로 이동</value></data>
+  <data name="Osk_Control_MoveDown" xml:space="preserve"><value>아래로 이동</value></data>
+  <data name="Osk_Control_MoveLeft" xml:space="preserve"><value>왼쪽으로 이동</value></data>
+  <data name="Osk_Control_MoveRight" xml:space="preserve"><value>오른쪽으로 이동</value></data>
+  <data name="Osk_Control_Suggestion_Format" xml:space="preserve"><value>추천 단어 {0}</value></data>
+  <data name="Osk_Control_MoveKeyboard" xml:space="preserve"><value>키보드 이동 (누르고 있기)</value></data>
+  <data name="Osk_Control_TypeLeftHalf" xml:space="preserve"><value>왼쪽 절반 입력</value></data>
+  <data name="Osk_Control_TypeRightHalf" xml:space="preserve"><value>오른쪽 절반 입력</value></data>
+  <data name="Osk_Control_ArrowUp" xml:space="preserve"><value>위쪽 화살표</value></data>
+  <data name="Osk_Control_ArrowDown" xml:space="preserve"><value>아래쪽 화살표</value></data>
+  <data name="Osk_Control_ArrowLeft" xml:space="preserve"><value>왼쪽 화살표</value></data>
+  <data name="Osk_Control_ArrowRight" xml:space="preserve"><value>오른쪽 화살표</value></data>
+  <data name="Osk_Control_PickWest" xml:space="preserve"><value>서쪽 선택</value></data>
+  <data name="Osk_Control_PickNorth" xml:space="preserve"><value>북쪽 선택</value></data>
+  <data name="Osk_Control_PickEast" xml:space="preserve"><value>동쪽 선택</value></data>
+  <data name="Osk_Control_PickSouth" xml:space="preserve"><value>남쪽 선택</value></data>
+  <data name="Osk_Control_Capitals" xml:space="preserve"><value>대문자와 기호 (누르고 있기)</value></data>
+  <data name="Osk_Control_Numbers" xml:space="preserve"><value>숫자와 괄호 (누르고 있기)</value></data>
+  <data name="Osk_Control_Home" xml:space="preserve"><value>Home</value></data>
+  <data name="Osk_Control_End" xml:space="preserve"><value>End</value></data>
+  <data name="Menu_Keyboard_OpenPress" xml:space="preserve"><value>여는 방식</value></data>
+  <data name="Menu_Keyboard_OpenPress_Tip" xml:space="preserve"><value>키보드를 열거나 닫는 여는 입력의 누르기 방식입니다. Steam 길게 누르기와 두 번 누르기 바인딩은 길게 누를 때와 두 번 누를 때로 가져오므로, 같은 입력을 짧게 누르면 그 입력의 기존 바인딩이 유지됩니다.</value></data>
+  <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>여는 방식 초기화</value></data>
+  <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>여는 입력을 유지 시간 동안 누르고 있으면 키보드를 열거나 닫습니다. 더 짧게 누르면 아무 일도 일어나지 않습니다.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>연속 누르기 시간 안에 여는 입력을 두 번 누르면 키보드를 열거나 닫습니다.</value></data>
 </root>

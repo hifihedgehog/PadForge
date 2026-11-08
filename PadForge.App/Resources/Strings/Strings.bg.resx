@@ -4976,4 +4976,207 @@
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD пречеше на движението на мишката да стига до Windows. PadForge задържа клавишите и бутоните на мишката, но не и движението, така че показалецът пак се движи.</value></data>
   <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>Виртуалните контролери на PadForge получават движение само от сензора за движение на контролера.</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows се върна към този профил от {0} с бутон. За да направите същото в PadForge, добавете бърза комбинация за профил за този профил на страницата Профили.</value></data>
+  <data name="Osk_Style_Grid" xml:space="preserve">
+    <value>Мрежа</value>
+  </data>
+  <data name="Osk_Style_Split" xml:space="preserve">
+    <value>Разделена</value>
+  </data>
+  <data name="Osk_Style_Wheel" xml:space="preserve">
+    <value>Колело</value>
+  </data>
+  <data name="Osk_CloseKeyboard" xml:space="preserve">
+    <value>Затваряне на клавиатурата</value>
+  </data>
+  <data name="Osk_Drag" xml:space="preserve">
+    <value>Плъзнете, за да преместите клавиатурата</value>
+  </data>
+  <data name="Osk_Wheel_Keys" xml:space="preserve">
+    <value>Клавиши</value>
+  </data>
+  <data name="Osk_Key_Tab" xml:space="preserve">
+    <value>Tab</value>
+  </data>
+  <data name="Osk_Key_Caps" xml:space="preserve">
+    <value>Caps</value>
+  </data>
+  <data name="Osk_Key_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Osk_Key_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Key_Ctrl" xml:space="preserve">
+    <value>Ctrl</value>
+  </data>
+  <data name="Osk_Key_Win" xml:space="preserve">
+    <value>Win</value>
+  </data>
+  <data name="Osk_Key_Alt" xml:space="preserve">
+    <value>Alt</value>
+  </data>
+  <data name="Osk_Key_AltGr" xml:space="preserve">
+    <value>AltGr</value>
+  </data>
+  <data name="Osk_Key_Symbols" xml:space="preserve">
+    <value>&amp;123</value>
+  </data>
+  <data name="Osk_Key_Letters" xml:space="preserve">
+    <value>абв</value>
+  </data>
+  <data name="Osk_Key_Space" xml:space="preserve">
+    <value>Интервал</value>
+  </data>
+  <data name="Osk_Key_Esc" xml:space="preserve">
+    <value>Esc</value>
+  </data>
+  <data name="Osk_Key_Del" xml:space="preserve">
+    <value>Del</value>
+  </data>
+  <data name="Osk_Key_Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Osk_Key_End" xml:space="preserve">
+    <value>End</value>
+  </data>
+  <data name="Osk_Key_PgUp" xml:space="preserve">
+    <value>PgUp</value>
+  </data>
+  <data name="Osk_Key_PgDn" xml:space="preserve">
+    <value>PgDn</value>
+  </data>
+  <data name="Osk_Key_Ins" xml:space="preserve">
+    <value>Ins</value>
+  </data>
+  <data name="Osk_Key_PrtSc" xml:space="preserve">
+    <value>PrtSc</value>
+  </data>
+  <data name="Osk_Hint_Type" xml:space="preserve">
+    <value>Въвеждане</value>
+  </data>
+  <data name="Osk_Hint_TypeLeft" xml:space="preserve">
+    <value>Въвеждане вляво</value>
+  </data>
+  <data name="Osk_Hint_TypeRight" xml:space="preserve">
+    <value>Въвеждане вдясно</value>
+  </data>
+  <data name="Osk_Hint_Backspace" xml:space="preserve">
+    <value>Backspace</value>
+  </data>
+  <data name="Osk_Hint_Space" xml:space="preserve">
+    <value>Интервал</value>
+  </data>
+  <data name="Osk_Hint_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Osk_Hint_Close" xml:space="preserve">
+    <value>Затваряне</value>
+  </data>
+  <data name="Osk_Hint_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Hint_Symbols" xml:space="preserve">
+    <value>Символи</value>
+  </data>
+  <data name="Osk_Hint_Cursor" xml:space="preserve">
+    <value>Курсор</value>
+  </data>
+  <data name="Osk_Hint_Suggestion" xml:space="preserve">
+    <value>Предложение</value>
+  </data>
+  <data name="Osk_Hint_Capitals" xml:space="preserve">
+    <value>Задръжте: главни</value>
+  </data>
+  <data name="Osk_Hint_Numbers" xml:space="preserve">
+    <value>Задръжте: цифри</value>
+  </data>
+  <data name="Osk_Hint_Keys" xml:space="preserve">
+    <value>Задръжте: клавиши</value>
+  </data>
+  <data name="Osk_Hint_Move" xml:space="preserve">
+    <value>Задръжте: преместване</value>
+  </data>
+  <data name="Osk_Input_Dpad" xml:space="preserve">
+    <value>Кръстачка</value>
+  </data>
+  <data name="Menu_Style_Keyboard" xml:space="preserve"><value>Клавиатура</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>„Радиален пръстен“ и „Сензорна мрежа“ задействат връзките на клетките. „Клавиатура“ въвежда клавишите на използваната подредба на Windows.</value></data>
+  <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Подредба</value></data>
+  <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Как клавиатурата подрежда клавишите си и как контролерът ги избира.</value></data>
+  <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Едно маркиране, премествано със стик или с четири входа, подредбата на Windows, Xbox и Steam.</value></data>
+  <data name="Menu_KeyboardLayout_Split_Desc" xml:space="preserve"><value>Всяка половина на клавиатурата има собствен вход за управление и собствен вход за въвеждане.</value></data>
+  <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>Колелото с осем групи: изберете една от осем групи, после един от четирите ѝ знака.</value></data>
+  <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>Нулиране на подредбата</value></data>
+  <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>Отваря се с</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Всеки вход на устройство, зададено на този слот, или два входа, задържани заедно. Същият вход затваря клавиатурата, освен ако контрол на клавиатурата го ползва също. Празно означава, че никой вход не я отваря.</value></data>
+  <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>Нулиране на „Отваря се с“</value></data>
+  <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>Отваряне при избрано текстово поле</value></data>
+  <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>В приложения на Windows и в браузъри, без бутон. Игрите рисуват свои текстови полета, затова в игра клавиатурата се отваря с входа по-горе или със своя слой, когато „Слоят държи менюто отворено“ е включено.</value></data>
+  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>Входът, който премества маркирането по клавишите, чете се от физическите контролери, зададени на слота.</value></data>
+  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>Управление на лявата половина с</value></data>
+  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>Управление на дясната половина с</value></data>
+  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>Избор на група с</value></data>
+  <data name="Menu_Reset_Host2" xml:space="preserve"><value>Нулиране на „Управление на дясната половина с“</value></data>
+  <data name="Menu_Host_DPad" xml:space="preserve"><value>Кръстачка</value></data>
+  <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>Лицеви бутони</value></data>
+  <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>Контроли на клавиатурата</value></data>
+  <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>Подредба: {0}, контроли: {1}</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Чете се от физическите контролери, зададени на този слот. Всеки контрол приема всеки вход на всеки от тях: бутон, посока на ос, хат, тъчпад или два входа, задържани заедно. Щракнете бутона за запис и натиснете входа или задръжте един вход и натиснете втори за комбинация. „Съпостави всички“ ги записва по ред.</value></data>
+  <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>Съпостави всички</value></data>
+  <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>Записва по ред всеки контрол на подредбата. Редът за състояние назовава контрола, за който да натиснете вход.</value></data>
+  <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>Натиснете входа за {0} ({1} от {2})</value></data>
+  <data name="Menu_Keyboard_MapAll_Done" xml:space="preserve"><value>Всеки контрол на клавиатурата е записан.</value></data>
+  <data name="Menu_Reset_KeyboardControls" xml:space="preserve"><value>Нулиране на контролите на клавиатурата</value></data>
+  <data name="Menu_Keyboard_Reset_Format" xml:space="preserve"><value>Нулиране на {0} до {1}</value></data>
+  <data name="Menu_Keyboard_RecordingPrompt" xml:space="preserve"><value>Натиснете вход на всяко устройство, зададено на този слот</value></data>
+  <data name="Menu_Keyboard_Card" xml:space="preserve"><value>Клавиатура</value></data>
+  <data name="Menu_TypesThrough" xml:space="preserve"><value>Въвежда през</value></data>
+  <data name="Menu_TypesThrough_Caption" xml:space="preserve"><value>„Въвеждане през Windows“ въвежда всеки клавиш през Windows и програмите могат да познаят, че идва от софтуер. Клавиатурата на слот „Клавиатура + мишка“ го въвежда така, както настройката за клавиатура на този слот. Виртуална клавиатура на HIDMaestro го въвежда като този модел клавиатура, която програмите виждат като хардуер. Менюто на клавиатурата създава такава само, затова не изисква слот „Клавиатура + мишка“. Клавиш, който избраната клавиатура няма, и знак, който никой клавиш не въвежда, пак минават през „Въвеждане през Windows“.</value></data>
+  <data name="Menu_TypesThrough_Slot_Format" xml:space="preserve"><value>Същата клавиатура като {0}</value></data>
+  <data name="Menu_Reset_TypesThrough" xml:space="preserve"><value>Нулиране на „Въвежда през“</value></data>
+  <data name="Menu_FunctionRow" xml:space="preserve"><value>Функционален ред</value></data>
+  <data name="Menu_FunctionRow_Caption" xml:space="preserve"><value>Esc, F1 до F12 и Del. Клавишът Fn на клавиатурата също го превключва.</value></data>
+  <data name="Menu_WordSuggestions" xml:space="preserve"><value>Предложения за думи</value></data>
+  <data name="Menu_WordSuggestions_Caption" xml:space="preserve"><value>От предвиждането на текст в Windows, за езиците, инсталирани в Windows.</value></data>
+  <data name="Menu_SymbolsPage" xml:space="preserve"><value>Страница със символи</value></data>
+  <data name="Menu_SymbolsPage_Tip" xml:space="preserve"><value>Знаците на страницата със символи на клавиатурата. Въвеждат се като знаци на Unicode.</value></data>
+  <data name="Menu_Reset_Symbols" xml:space="preserve"><value>Нулиране на страницата със символи</value></data>
+  <data name="Menu_Keyboard_Overlay_Caption" xml:space="preserve"><value>Редовете, които вече има всяко меню. Плъзгането на горната лента или ъгловата дръжка на клавиатурата, или задържането на „Преместване на клавиатурата“, също ги задава.</value></data>
+  <data name="Osk_Title" xml:space="preserve"><value>Екранна клавиатура</value></data>
+  <data name="Osk_Control_TypeKey" xml:space="preserve"><value>Въвеждане на клавиш</value></data>
+  <data name="Osk_Control_Backspace" xml:space="preserve"><value>Backspace</value></data>
+  <data name="Osk_Control_Space" xml:space="preserve"><value>Интервал</value></data>
+  <data name="Osk_Control_Enter" xml:space="preserve"><value>Enter</value></data>
+  <data name="Osk_Control_Close" xml:space="preserve"><value>Затваряне</value></data>
+  <data name="Osk_Control_ShiftNextKey" xml:space="preserve"><value>Shift за следващия клавиш</value></data>
+  <data name="Osk_Control_ShiftLeftHand" xml:space="preserve"><value>Shift за следващия клавиш, лява ръка</value></data>
+  <data name="Osk_Control_ShiftRightHand" xml:space="preserve"><value>Shift за следващия клавиш, дясна ръка</value></data>
+  <data name="Osk_Control_SymbolsPage" xml:space="preserve"><value>Страница със символи</value></data>
+  <data name="Osk_Control_CursorLeft" xml:space="preserve"><value>Курсор наляво</value></data>
+  <data name="Osk_Control_CursorRight" xml:space="preserve"><value>Курсор надясно</value></data>
+  <data name="Osk_Control_MoveUp" xml:space="preserve"><value>Преместване нагоре</value></data>
+  <data name="Osk_Control_MoveDown" xml:space="preserve"><value>Преместване надолу</value></data>
+  <data name="Osk_Control_MoveLeft" xml:space="preserve"><value>Преместване наляво</value></data>
+  <data name="Osk_Control_MoveRight" xml:space="preserve"><value>Преместване надясно</value></data>
+  <data name="Osk_Control_Suggestion_Format" xml:space="preserve"><value>Предложение {0}</value></data>
+  <data name="Osk_Control_MoveKeyboard" xml:space="preserve"><value>Преместване на клавиатурата (задържане)</value></data>
+  <data name="Osk_Control_TypeLeftHalf" xml:space="preserve"><value>Въвеждане на лявата половина</value></data>
+  <data name="Osk_Control_TypeRightHalf" xml:space="preserve"><value>Въвеждане на дясната половина</value></data>
+  <data name="Osk_Control_ArrowUp" xml:space="preserve"><value>Стрелка нагоре</value></data>
+  <data name="Osk_Control_ArrowDown" xml:space="preserve"><value>Стрелка надолу</value></data>
+  <data name="Osk_Control_ArrowLeft" xml:space="preserve"><value>Стрелка наляво</value></data>
+  <data name="Osk_Control_ArrowRight" xml:space="preserve"><value>Стрелка надясно</value></data>
+  <data name="Osk_Control_PickWest" xml:space="preserve"><value>Избор на запад</value></data>
+  <data name="Osk_Control_PickNorth" xml:space="preserve"><value>Избор на север</value></data>
+  <data name="Osk_Control_PickEast" xml:space="preserve"><value>Избор на изток</value></data>
+  <data name="Osk_Control_PickSouth" xml:space="preserve"><value>Избор на юг</value></data>
+  <data name="Osk_Control_Capitals" xml:space="preserve"><value>Главни букви и символи (задържане)</value></data>
+  <data name="Osk_Control_Numbers" xml:space="preserve"><value>Цифри и скоби (задържане)</value></data>
+  <data name="Osk_Control_Home" xml:space="preserve"><value>Home</value></data>
+  <data name="Osk_Control_End" xml:space="preserve"><value>End</value></data>
+  <data name="Menu_Keyboard_OpenPress" xml:space="preserve"><value>Отваря се при</value></data>
+  <data name="Menu_Keyboard_OpenPress_Tip" xml:space="preserve"><value>Натискането на „Отваря се с“, което отваря или затваря клавиатурата. Връзките на Steam „Дълго натискане“ и „Двойно натискане“ се внасят като „При продължително натискане“ и „При двойно натискане“, така че кратко натискане на същия вход запазва собствената си връзка.</value></data>
+  <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>Нулиране на „Отваря се при“</value></data>
+  <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>Отваря или затваря клавиатурата, щом „Отваря се с“ е задържан за времето за задържане. По-кратко натискане не прави нищо.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>Отваря или затваря клавиатурата, когато „Отваря се с“ е натиснат два пъти в рамките на прозореца за натискане.</value></data>
 </root>

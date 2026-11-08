@@ -173,6 +173,16 @@ namespace PadForge.Services
         /// (deviceGuidLowerInvariant, descriptor) on success.</summary>
         private Action<string, string> _freeformCallback;
 
+        // ── Press recording (On-Screen Keyboard controls, #566) ──
+        // A freeform session whose input is read as a press, and which takes
+        // a second input held with the first as a combination. It ends when
+        // the first input is let go, or when a second one goes down.
+        private bool _pressMode;
+        private Action<RecordedPress> _pressCallback;
+        private string _pressFirstRaw, _pressFirst, _pressFirstGuid;
+        private Guid _pressFirstDevice;
+        private PadForge.Engine.Data.MappingSource _pressFirstSource;
+
         /// <summary>Whether recording is currently active.</summary>
         public bool IsRecording => _activeMapping != null || _freeformCallback != null;
 
@@ -322,6 +332,135 @@ namespace PadForge.Services
             };
             _timer.Tick += PollTick;
             _timer.Start();
+        }
+
+        /// <summary>One recorded press for a keyboard control or Opens With
+        /// (#566): an input read as pressed or not, the device it is read on
+        /// ("" for every controller on the slot), and an optional second input
+        /// held with it.</summary>
+        public readonly record struct RecordedPress(string Descriptor, string DeviceGuid,
+            string AndDescriptor, string AndDeviceGuid);
+
+        /// <summary>Records a press for a keyboard control (#566). Press one
+        /// input and let go, or hold one and press a second for a
+        /// combination. An axis records the half it was pushed toward, as a
+        /// mapping row's button does (<see cref="RecordsAHalf"/>). A
+        /// gamepad's buttons, D-pad, sticks and triggers record by position,
+        /// the device-free "Gamepad ..." names the keyboard's defaults use,
+        /// so a control works on any controller on the slot. Any other
+        /// device's input keeps its device. Touchpad gestures are left out:
+        /// the keyboard holds the touchpad at rest, so a gesture never fires
+        /// while it is open.</summary>
+        public void StartRecordingPress(int padIndex, Action<RecordedPress> onComplete)
+        {
+            if (onComplete == null) return;
+            StartRecordingFreeform(padIndex, (_, _) => { });
+            if (_freeformCallback == null) return;
+            _pressMode = true;
+            _pressCallback = onComplete;
+            _pressFirstRaw = _pressFirst = _pressFirstGuid = null;
+            _pressFirstDevice = Guid.Empty;
+            _pressFirstSource = null;
+        }
+
+        /// <summary>A recorded input in the form a press reads: an axis as the
+        /// half pushed toward, with the same rule as a mapping row's button.</summary>
+        private string PressDescriptor(MapType type, int index, string povDirection, bool axisPositive, Guid device)
+        {
+            string d = BuildDescriptor(type, index, povDirection);
+            if (type != MapType.Axis && type != MapType.Slider) return d;
+            bool inverted = !axisPositive;
+            bool isMouse = _isMouseByDevice.TryGetValue(device, out bool m) && m;
+            bool half = type == MapType.Axis
+                && (isMouse ? inverted : !InputManager.AxisRestsAtZero(d, FindUserDevice(device)));
+            return (inverted ? "I" : "") + (half ? "H" : "") + d;
+        }
+
+        /// <summary>A gamepad input as its device-free position name, with its
+        /// device dropped. A device that places the family its own way (a
+        /// Bliss-Box port) and any other device keep the input and the device.</summary>
+        private static (string Descriptor, string DeviceGuid) PressInput(string descriptor, Guid device)
+        {
+            string guid = device == Guid.Empty ? "" : device.ToString().ToLowerInvariant();
+            var ud = FindUserDevice(device);
+            if (ud == null || ud.CapType != PadForge.Engine.InputDeviceType.Gamepad || ud.ForceRawJoystickMode
+                || PadForge.Engine.Common.Mapping.SourceCoercion.GamepadPlacementProvider?.Invoke(guid) != null)
+                return (descriptor, guid);
+            string clean = PadForge.Engine.Common.Mapping.SourceCoercion.StripLegacyPrefix(descriptor, out bool inv, out bool half);
+            foreach (var (member, canonical) in PadForge.Engine.Common.Mapping.SourceCoercion.GamepadAliasTable)
+                if (string.Equals(canonical, clean, StringComparison.Ordinal))
+                    return ((inv ? "I" : "") + (half ? "H" : "") + "Gamepad " + member, "");
+            return (descriptor, guid);
+        }
+
+        /// <summary>One input of a press recording. The first waits for a
+        /// second, against a baseline that holds the first, so only an input
+        /// that goes down after it counts. The second ends the recording.</summary>
+        private void PressLeg(string descriptor, Guid device)
+        {
+            if (string.IsNullOrEmpty(descriptor)) return;
+            string clean = PadForge.Engine.Common.Mapping.SourceCoercion.StripLegacyPrefix(descriptor, out _, out _);
+            if (_pressFirstRaw == null)
+            {
+                _pressFirstRaw = descriptor;
+                _pressFirstDevice = device;
+                (_pressFirst, _pressFirstGuid) = PressInput(descriptor, device);
+                string firstClean = PadForge.Engine.Common.Mapping.SourceCoercion.StripLegacyPrefix(descriptor, out bool inv, out bool half);
+                _pressFirstSource = new PadForge.Engine.Data.MappingSource { Descriptor = firstClean, Invert = inv, HalfAxis = half };
+                foreach (var kv in _activeDevices)
+                {
+                    var state = kv.Value?.InputState;
+                    if (state != null) _baselines[kv.Key] = state.Clone();
+                    if (_axisCandidates.TryGetValue(kv.Key, out var ac))
+                    {
+                        ac.Type = MapType.None;
+                        ac.Index = -1;
+                        ac.HoldCounter = 0;
+                    }
+                }
+                _recordingStartTime = DateTime.UtcNow;
+                return;
+            }
+            // The first input moving further or coming back is not a second.
+            string firstCleanAgain = PadForge.Engine.Common.Mapping.SourceCoercion.StripLegacyPrefix(_pressFirstRaw, out _, out _);
+            if (device == _pressFirstDevice && string.Equals(clean, firstCleanAgain, StringComparison.Ordinal)) return;
+            var (second, secondGuid) = PressInput(descriptor, device);
+            FinishPress(second, secondGuid);
+        }
+
+        /// <summary>Ends a press recording with the first input and the
+        /// second, or the first alone.</summary>
+        private void FinishPress(string second, string secondGuid)
+        {
+            var cb = _pressCallback;
+            var result = new RecordedPress(_pressFirst ?? "", _pressFirstGuid ?? "", second ?? "", second == null ? "" : secondGuid ?? "");
+            CleanupTimer();
+            _freeformCallback = null;
+            _activePadIndex = -1;
+            _activeDevices.Clear();
+            _baselines.Clear();
+            _isMouseByDevice.Clear();
+            _axisCandidates.Clear();
+            ClearPress();
+            cb?.Invoke(result);
+        }
+
+        private void ClearPress()
+        {
+            _pressMode = false;
+            _pressCallback = null;
+            _pressFirstRaw = _pressFirst = _pressFirstGuid = null;
+            _pressFirstDevice = Guid.Empty;
+            _pressFirstSource = null;
+        }
+
+        /// <summary>A press recording's first input, still held: the trigger
+        /// read of it on its device, under the keyboard's release level.</summary>
+        private bool PressFirstHeld()
+        {
+            if (!_activeDevices.TryGetValue(_pressFirstDevice, out var ud) || ud?.InputState == null) return false;
+            return PadForge.Engine.Common.Mapping.SourceCoercion.EvaluateForTriggerTarget(
+                ud.InputState, _pressFirstSource, _activePadIndex, ud.InstanceGuidString) > 0.35f;
         }
 
         /// <summary>Which motion a Motion row records (#475): 0 for any other
@@ -570,6 +709,7 @@ namespace PadForge.Services
             _baselines.Clear();
             _isMouseByDevice.Clear();
             _axisCandidates.Clear();
+            ClearPress();
 
             _mainVm.StatusText = Strings.Instance.Status_RecordingCanceled;
         }
@@ -697,6 +837,16 @@ namespace PadForge.Services
             if ((_activeMapping == null && _freeformCallback == null) || _baselines.Count == 0)
             {
                 CancelRecording();
+                return;
+            }
+
+            // A press recording (#566) whose first input was let go ends with
+            // that input alone, and one that waited out the timeout for a
+            // second keeps the first rather than nothing.
+            if (_pressMode && _pressFirstRaw != null
+                && (!PressFirstHeld() || (DateTime.UtcNow - _recordingStartTime).TotalSeconds >= TimeoutSeconds))
+            {
+                FinishPress(null, null);
                 return;
             }
 
@@ -917,7 +1067,7 @@ namespace PadForge.Services
                 //     detects exactly the descriptors the mapping picker
                 //     offers. Checked after buttons / POVs so a deliberate
                 //     press wins the tick over an incidental touch. ──
-                if (digital && (hasTouchpad || ud.IsTouchpad))
+                if (digital && !_pressMode && (hasTouchpad || ud.IsTouchpad))
                 {
                     string gestureDesc = DetectNewGestureFire(dg);
                     if (gestureDesc != null)
@@ -1134,6 +1284,11 @@ namespace PadForge.Services
             // callback and tear down. Doesn't touch MappingItem state.
             if (_freeformCallback != null && _activeMapping == null)
             {
+                if (_pressMode)
+                {
+                    PressLeg(PressDescriptor(type, index, povDirection, axisPositive, winningDevice), winningDevice);
+                    return;
+                }
                 var fb = _freeformCallback;
                 string fbDesc = BuildDescriptor(type, index, povDirection);
                 string fbGuid = winningDevice == Guid.Empty
@@ -1406,6 +1561,11 @@ namespace PadForge.Services
             // click, etc.).
             if (_freeformCallback != null && _activeMapping == null)
             {
+                if (_pressMode)
+                {
+                    PressLeg(descriptor, winningDevice);
+                    return;
+                }
                 var fb = _freeformCallback;
                 string fbGuid = winningDevice == Guid.Empty
                     ? "" : winningDevice.ToString().ToLowerInvariant();

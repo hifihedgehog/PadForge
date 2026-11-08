@@ -142,6 +142,14 @@ namespace PadForge.Common.Input
                         DevicesUpdated?.Invoke(this, EventArgs.Empty);
                     }
 
+                    // On-Screen Keyboard (#566): a controller it drives reads
+                    // at rest for everything else, and one let go at the
+                    // close keeps what it held silent until released.
+                    // Keyboard menus and the idle timer keep the real state.
+                    var rawState = newState;
+                    if (_oskMasks.Count > 0)
+                        newState = OnScreenKeyboardFilter(ud, newState);
+
                     // Atomic reference swap, safe for cross-thread reading.
                     ud.InputState = newState;
                     ud.InputStateSeq++;
@@ -154,7 +162,7 @@ namespace PadForge.Common.Input
                     // poll rate, checks the countdown ~1 Hz, and hands the
                     // radio I/O to the thread pool. Charging does not block
                     // the idle timeout.
-                    UpdateIdleDisconnect(ud, newState);
+                    UpdateIdleDisconnect(ud, rawState);
 
                     // Touchpad gesture engine — runs once per device per
                     // tick, across every touchpad surface this device
@@ -169,8 +177,9 @@ namespace PadForge.Common.Input
                     UpdateMouseGestureContexts(ud, newState);
 
                     // Radial / touch menu hover-commit state (#9 B-17).
-                    // Not gated on touchpads: sticks host menus too.
-                    UpdateMenuContexts(ud, newState);
+                    // Not gated on touchpads: sticks host menus too. Keyboard
+                    // menus (#566) read the real state.
+                    UpdateMenuContexts(ud, newState, rawState);
 
                     // Two-stage trigger pulls (#561): the hip fire and hair
                     // trigger state DS4Windows keeps per trigger, stepped here

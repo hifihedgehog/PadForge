@@ -4976,4 +4976,207 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD neļāva peles kustībai nonākt līdz Windows. PadForge aptur taustiņus un peles pogas, bet ne kustību, tāpēc kursors joprojām kustas.</value></data>
   <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>PadForge virtuālie kontrolieri saņem kustības datus tikai no kontroliera kustību sensora.</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows ar pogu atgriezās šajā profilā no profila {0}. Lai to izdarītu programmā PadForge, lapā Profili pievienojiet šim profilam profila īsinājumu.</value></data>
+  <data name="Osk_Style_Grid" xml:space="preserve">
+    <value>Režģis</value>
+  </data>
+  <data name="Osk_Style_Split" xml:space="preserve">
+    <value>Sadalīta</value>
+  </data>
+  <data name="Osk_Style_Wheel" xml:space="preserve">
+    <value>Ritenis</value>
+  </data>
+  <data name="Osk_CloseKeyboard" xml:space="preserve">
+    <value>Aizvērt tastatūru</value>
+  </data>
+  <data name="Osk_Drag" xml:space="preserve">
+    <value>Velciet, lai pārvietotu tastatūru</value>
+  </data>
+  <data name="Osk_Wheel_Keys" xml:space="preserve">
+    <value>Taustiņi</value>
+  </data>
+  <data name="Osk_Key_Tab" xml:space="preserve">
+    <value>Tab</value>
+  </data>
+  <data name="Osk_Key_Caps" xml:space="preserve">
+    <value>Caps</value>
+  </data>
+  <data name="Osk_Key_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Osk_Key_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Key_Ctrl" xml:space="preserve">
+    <value>Ctrl</value>
+  </data>
+  <data name="Osk_Key_Win" xml:space="preserve">
+    <value>Win</value>
+  </data>
+  <data name="Osk_Key_Alt" xml:space="preserve">
+    <value>Alt</value>
+  </data>
+  <data name="Osk_Key_AltGr" xml:space="preserve">
+    <value>AltGr</value>
+  </data>
+  <data name="Osk_Key_Symbols" xml:space="preserve">
+    <value>&amp;123</value>
+  </data>
+  <data name="Osk_Key_Letters" xml:space="preserve">
+    <value>abc</value>
+  </data>
+  <data name="Osk_Key_Space" xml:space="preserve">
+    <value>Atstarpe</value>
+  </data>
+  <data name="Osk_Key_Esc" xml:space="preserve">
+    <value>Esc</value>
+  </data>
+  <data name="Osk_Key_Del" xml:space="preserve">
+    <value>Del</value>
+  </data>
+  <data name="Osk_Key_Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Osk_Key_End" xml:space="preserve">
+    <value>End</value>
+  </data>
+  <data name="Osk_Key_PgUp" xml:space="preserve">
+    <value>PgUp</value>
+  </data>
+  <data name="Osk_Key_PgDn" xml:space="preserve">
+    <value>PgDn</value>
+  </data>
+  <data name="Osk_Key_Ins" xml:space="preserve">
+    <value>Ins</value>
+  </data>
+  <data name="Osk_Key_PrtSc" xml:space="preserve">
+    <value>PrtSc</value>
+  </data>
+  <data name="Osk_Hint_Type" xml:space="preserve">
+    <value>Rakstīt</value>
+  </data>
+  <data name="Osk_Hint_TypeLeft" xml:space="preserve">
+    <value>Rakstīt pa kreisi</value>
+  </data>
+  <data name="Osk_Hint_TypeRight" xml:space="preserve">
+    <value>Rakstīt pa labi</value>
+  </data>
+  <data name="Osk_Hint_Backspace" xml:space="preserve">
+    <value>Atpakaļtaustiņš</value>
+  </data>
+  <data name="Osk_Hint_Space" xml:space="preserve">
+    <value>Atstarpe</value>
+  </data>
+  <data name="Osk_Hint_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Osk_Hint_Close" xml:space="preserve">
+    <value>Aizvērt</value>
+  </data>
+  <data name="Osk_Hint_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Hint_Symbols" xml:space="preserve">
+    <value>Simboli</value>
+  </data>
+  <data name="Osk_Hint_Cursor" xml:space="preserve">
+    <value>Kursors</value>
+  </data>
+  <data name="Osk_Hint_Suggestion" xml:space="preserve">
+    <value>Ieteikums</value>
+  </data>
+  <data name="Osk_Hint_Capitals" xml:space="preserve">
+    <value>Turēt: lielie burti</value>
+  </data>
+  <data name="Osk_Hint_Numbers" xml:space="preserve">
+    <value>Turēt: cipari</value>
+  </data>
+  <data name="Osk_Hint_Keys" xml:space="preserve">
+    <value>Turēt: taustiņi</value>
+  </data>
+  <data name="Osk_Hint_Move" xml:space="preserve">
+    <value>Turēt: pārvietot</value>
+  </data>
+  <data name="Osk_Input_Dpad" xml:space="preserve">
+    <value>D-pad</value>
+  </data>
+  <data name="Menu_Style_Keyboard" xml:space="preserve"><value>Tastatūra</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>„Radiāls aplis” un „Skāriena režģis” aktivizē šūnu piesaistes. „Tastatūra” raksta lietotā Windows izkārtojuma taustiņus.</value></data>
+  <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Izkārtojums</value></data>
+  <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Kā tastatūra izkārto taustiņus un kā kontrolieris tos izvēlas.</value></data>
+  <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Viens iezīmējums, ko pārvieto ar sviru vai četrām ievadēm. Šādu izkārtojumu izmanto Windows, Xbox un Steam.</value></data>
+  <data name="Menu_KeyboardLayout_Split_Desc" xml:space="preserve"><value>Katrai tastatūras pusei ir sava vadības ievade un sava rakstīšanas ievade.</value></data>
+  <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>Margrietiņas ritenis: izvēlieties vienu no astoņām grupām, tad vienu no tās četrām rakstzīmēm.</value></data>
+  <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>Atiestatīt izkārtojumu</value></data>
+  <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>Atver ar</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Jebkura ievade ierīcē, kas piešķirta šim slotam, vai divas kopā turētas ievades. Tā pati ievade tastatūru arī aizver, ja vien to neizmanto kāda tastatūras vadīkla. Ja lauks ir tukšs, tastatūru neatver neviena ievade.</value></data>
+  <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>Atiestatīt „Atver ar”</value></data>
+  <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>Atvērt, kad atlasīts teksta lodziņš</value></data>
+  <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>Windows lietotnēs un pārlūkos, bez pogas. Spēles zīmē savus teksta lodziņus, tāpēc spēlē tastatūra atveras ar iepriekš norādīto ievadi vai ar savu slāni, ja ir ieslēgts „Slānis notur izvēlni atvērtu”.</value></data>
+  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>Ievade, kas pārvieto iezīmējumu pa taustiņiem. To nolasa no slota piešķirtajiem fiziskajiem kontrolieriem.</value></data>
+  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>Vadīt kreiso pusi ar</value></data>
+  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>Vadīt labo pusi ar</value></data>
+  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>Izvēlēties grupu ar</value></data>
+  <data name="Menu_Reset_Host2" xml:space="preserve"><value>Atiestatīt „Vadīt labo pusi ar”</value></data>
+  <data name="Menu_Host_DPad" xml:space="preserve"><value>D-pad</value></data>
+  <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>Darbības pogas</value></data>
+  <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>Tastatūras vadīklas</value></data>
+  <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>Izkārtojums: {0}, vadīklas: {1}</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Nolasa no fiziskajiem kontrolieriem, kas piešķirti šim slotam. Katrai vadīklai var izmantot jebkuru ievadi jebkurā no tiem: pogu, ass virzienu, hat slēdzi, skārienpaliktni vai divas kopā turētas ievades. Noklikšķiniet uz ierakstīšanas pogas un nospiediet ievadi vai turiet vienu ievadi un nospiediet otru, lai iegūtu kombināciju. „Piesaistīt visu” ieraksta tās pēc kārtas.</value></data>
+  <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>Piesaistīt visu</value></data>
+  <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>Ieraksta visas izkārtojuma vadīklas pēc kārtas. Statusa rindā ir norādīta vadīkla, kurai jānospiež ievade.</value></data>
+  <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>Nospiediet ievadi vadīklai {0} ({1} no {2})</value></data>
+  <data name="Menu_Keyboard_MapAll_Done" xml:space="preserve"><value>Visas tastatūras vadīklas ir ierakstītas.</value></data>
+  <data name="Menu_Reset_KeyboardControls" xml:space="preserve"><value>Atiestatīt tastatūras vadīklas</value></data>
+  <data name="Menu_Keyboard_Reset_Format" xml:space="preserve"><value>Atiestatīt {0} uz {1}</value></data>
+  <data name="Menu_Keyboard_RecordingPrompt" xml:space="preserve"><value>Nospiediet ievadi jebkurā ierīcē, kas piešķirta šim slotam</value></data>
+  <data name="Menu_Keyboard_Card" xml:space="preserve"><value>Tastatūra</value></data>
+  <data name="Menu_TypesThrough" xml:space="preserve"><value>Raksta, izmantojot</value></data>
+  <data name="Menu_TypesThrough_Caption" xml:space="preserve"><value>„Windows ievade” raksta katru taustiņu caur Windows, un programmas var noteikt, ka tas nācis no programmatūras. Slota „Tastatūra + pele” tastatūra raksta tā, kā nosaka šī slota tastatūras iestatījums. HIDMaestro virtuālā tastatūra raksta kā attiecīgā modeļa tastatūra, ko programmas redz kā aparatūru. Tastatūras izvēlne to izveido pati, tāpēc slots „Tastatūra + pele” nav vajadzīgs. Taustiņš, kura izvēlētajai tastatūrai nav, un rakstzīme, ko neraksta neviens taustiņš, tāpat tiek nosūtīti caur „Windows ievade”.</value></data>
+  <data name="Menu_TypesThrough_Slot_Format" xml:space="preserve"><value>Tā pati tastatūra kā {0}</value></data>
+  <data name="Menu_Reset_TypesThrough" xml:space="preserve"><value>Atiestatīt „Raksta, izmantojot”</value></data>
+  <data name="Menu_FunctionRow" xml:space="preserve"><value>Funkciju rinda</value></data>
+  <data name="Menu_FunctionRow_Caption" xml:space="preserve"><value>Esc, F1 līdz F12 un Del. Tos pārslēdz arī tastatūras taustiņš Fn.</value></data>
+  <data name="Menu_WordSuggestions" xml:space="preserve"><value>Vārdu ieteikumi</value></data>
+  <data name="Menu_WordSuggestions_Caption" xml:space="preserve"><value>No Windows teksta prognozēšanas, valodām, kas instalētas sistēmā Windows.</value></data>
+  <data name="Menu_SymbolsPage" xml:space="preserve"><value>Simbolu lapa</value></data>
+  <data name="Menu_SymbolsPage_Tip" xml:space="preserve"><value>Rakstzīmes tastatūras simbolu lapā. Tās tiek rakstītas kā Unicode rakstzīmes.</value></data>
+  <data name="Menu_Reset_Symbols" xml:space="preserve"><value>Atiestatīt simbolu lapu</value></data>
+  <data name="Menu_Keyboard_Overlay_Caption" xml:space="preserve"><value>Rindas, kas jau ir katrā izvēlnē. Tās iestata arī tastatūras augšējās joslas vai stūra turekļa vilkšana, kā arī „Pārvietot tastatūru” turēšana.</value></data>
+  <data name="Osk_Title" xml:space="preserve"><value>Ekrāna tastatūra</value></data>
+  <data name="Osk_Control_TypeKey" xml:space="preserve"><value>Rakstīt taustiņu</value></data>
+  <data name="Osk_Control_Backspace" xml:space="preserve"><value>Backspace</value></data>
+  <data name="Osk_Control_Space" xml:space="preserve"><value>Atstarpe</value></data>
+  <data name="Osk_Control_Enter" xml:space="preserve"><value>Enter</value></data>
+  <data name="Osk_Control_Close" xml:space="preserve"><value>Aizvērt</value></data>
+  <data name="Osk_Control_ShiftNextKey" xml:space="preserve"><value>Shift nākamajam taustiņam</value></data>
+  <data name="Osk_Control_ShiftLeftHand" xml:space="preserve"><value>Shift nākamajam taustiņam, kreisā roka</value></data>
+  <data name="Osk_Control_ShiftRightHand" xml:space="preserve"><value>Shift nākamajam taustiņam, labā roka</value></data>
+  <data name="Osk_Control_SymbolsPage" xml:space="preserve"><value>Simbolu lapa</value></data>
+  <data name="Osk_Control_CursorLeft" xml:space="preserve"><value>Kursors pa kreisi</value></data>
+  <data name="Osk_Control_CursorRight" xml:space="preserve"><value>Kursors pa labi</value></data>
+  <data name="Osk_Control_MoveUp" xml:space="preserve"><value>Pārvietot uz augšu</value></data>
+  <data name="Osk_Control_MoveDown" xml:space="preserve"><value>Pārvietot uz leju</value></data>
+  <data name="Osk_Control_MoveLeft" xml:space="preserve"><value>Pārvietot pa kreisi</value></data>
+  <data name="Osk_Control_MoveRight" xml:space="preserve"><value>Pārvietot pa labi</value></data>
+  <data name="Osk_Control_Suggestion_Format" xml:space="preserve"><value>Ieteikums {0}</value></data>
+  <data name="Osk_Control_MoveKeyboard" xml:space="preserve"><value>Pārvietot tastatūru (turēt)</value></data>
+  <data name="Osk_Control_TypeLeftHalf" xml:space="preserve"><value>Rakstīt kreiso pusi</value></data>
+  <data name="Osk_Control_TypeRightHalf" xml:space="preserve"><value>Rakstīt labo pusi</value></data>
+  <data name="Osk_Control_ArrowUp" xml:space="preserve"><value>Bulta uz augšu</value></data>
+  <data name="Osk_Control_ArrowDown" xml:space="preserve"><value>Bulta uz leju</value></data>
+  <data name="Osk_Control_ArrowLeft" xml:space="preserve"><value>Bulta pa kreisi</value></data>
+  <data name="Osk_Control_ArrowRight" xml:space="preserve"><value>Bulta pa labi</value></data>
+  <data name="Osk_Control_PickWest" xml:space="preserve"><value>Izvēlēties rietumus</value></data>
+  <data name="Osk_Control_PickNorth" xml:space="preserve"><value>Izvēlēties ziemeļus</value></data>
+  <data name="Osk_Control_PickEast" xml:space="preserve"><value>Izvēlēties austrumus</value></data>
+  <data name="Osk_Control_PickSouth" xml:space="preserve"><value>Izvēlēties dienvidus</value></data>
+  <data name="Osk_Control_Capitals" xml:space="preserve"><value>Lielie burti un simboli (turēt)</value></data>
+  <data name="Osk_Control_Numbers" xml:space="preserve"><value>Cipari un iekavas (turēt)</value></data>
+  <data name="Osk_Control_Home" xml:space="preserve"><value>Home</value></data>
+  <data name="Osk_Control_End" xml:space="preserve"><value>End</value></data>
+  <data name="Menu_Keyboard_OpenPress" xml:space="preserve"><value>Atver pie</value></data>
+  <data name="Menu_Keyboard_OpenPress_Tip" xml:space="preserve"><value>Nospiešanas veids „Atver ar” ievadei, kas atver vai aizver tastatūru. Steam ilgās un dubultās nospiešanas piesaistes tiek importētas kā „Ilgi nospiežot” un „Divreiz nospiežot”, tāpēc īsa tās pašas ievades nospiešana saglabā savu piesaisti.</value></data>
+  <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>Atiestatīt „Atver pie”</value></data>
+  <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>Atver vai aizver tastatūru, kad „Atver ar” ir turēta tik ilgi, cik ilgs ir turēšanas laiks. Īsāka nospiešana neko nedara.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>Atver vai aizver tastatūru, kad „Atver ar” tiek nospiesta divreiz nospiešanas loga laikā.</value></data>
 </root>

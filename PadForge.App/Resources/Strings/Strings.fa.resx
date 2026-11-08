@@ -4976,4 +4976,207 @@
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD جلوی رسیدن حرکت ماوس به Windows را می‌گرفت. PadForge کلیدها و دکمه‌های ماوس را مسدود می‌کند اما حرکت را نه، بنابراین اشاره‌گر همچنان حرکت می‌کند.</value></data>
   <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>کنترلرهای مجازی PadForge حرکت را فقط از حسگر حرکت یک کنترلر دریافت می‌کنند.</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows با یک دکمه از {0} به این پروفایل برمی‌گشت. برای انجام همین کار در PadForge، یک میانبر پروفایل برای این پروفایل در صفحه پروفایل‌ها اضافه کنید.</value></data>
+  <data name="Osk_Style_Grid" xml:space="preserve">
+    <value>شبکه‌ای</value>
+  </data>
+  <data name="Osk_Style_Split" xml:space="preserve">
+    <value>دو نیمه</value>
+  </data>
+  <data name="Osk_Style_Wheel" xml:space="preserve">
+    <value>چرخ</value>
+  </data>
+  <data name="Osk_CloseKeyboard" xml:space="preserve">
+    <value>بستن صفحه‌کلید</value>
+  </data>
+  <data name="Osk_Drag" xml:space="preserve">
+    <value>برای جابه‌جایی صفحه‌کلید بکشید</value>
+  </data>
+  <data name="Osk_Wheel_Keys" xml:space="preserve">
+    <value>کلیدها</value>
+  </data>
+  <data name="Osk_Key_Tab" xml:space="preserve">
+    <value>Tab</value>
+  </data>
+  <data name="Osk_Key_Caps" xml:space="preserve">
+    <value>Caps</value>
+  </data>
+  <data name="Osk_Key_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Osk_Key_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Key_Ctrl" xml:space="preserve">
+    <value>Ctrl</value>
+  </data>
+  <data name="Osk_Key_Win" xml:space="preserve">
+    <value>Win</value>
+  </data>
+  <data name="Osk_Key_Alt" xml:space="preserve">
+    <value>Alt</value>
+  </data>
+  <data name="Osk_Key_AltGr" xml:space="preserve">
+    <value>AltGr</value>
+  </data>
+  <data name="Osk_Key_Symbols" xml:space="preserve">
+    <value>&amp;123</value>
+  </data>
+  <data name="Osk_Key_Letters" xml:space="preserve">
+    <value>ابپ</value>
+  </data>
+  <data name="Osk_Key_Space" xml:space="preserve">
+    <value>فاصله</value>
+  </data>
+  <data name="Osk_Key_Esc" xml:space="preserve">
+    <value>Esc</value>
+  </data>
+  <data name="Osk_Key_Del" xml:space="preserve">
+    <value>Del</value>
+  </data>
+  <data name="Osk_Key_Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Osk_Key_End" xml:space="preserve">
+    <value>End</value>
+  </data>
+  <data name="Osk_Key_PgUp" xml:space="preserve">
+    <value>PgUp</value>
+  </data>
+  <data name="Osk_Key_PgDn" xml:space="preserve">
+    <value>PgDn</value>
+  </data>
+  <data name="Osk_Key_Ins" xml:space="preserve">
+    <value>Ins</value>
+  </data>
+  <data name="Osk_Key_PrtSc" xml:space="preserve">
+    <value>PrtSc</value>
+  </data>
+  <data name="Osk_Hint_Type" xml:space="preserve">
+    <value>تایپ</value>
+  </data>
+  <data name="Osk_Hint_TypeLeft" xml:space="preserve">
+    <value>تایپ چپ</value>
+  </data>
+  <data name="Osk_Hint_TypeRight" xml:space="preserve">
+    <value>تایپ راست</value>
+  </data>
+  <data name="Osk_Hint_Backspace" xml:space="preserve">
+    <value>پاک‌کردن</value>
+  </data>
+  <data name="Osk_Hint_Space" xml:space="preserve">
+    <value>فاصله</value>
+  </data>
+  <data name="Osk_Hint_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Osk_Hint_Close" xml:space="preserve">
+    <value>بستن</value>
+  </data>
+  <data name="Osk_Hint_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Hint_Symbols" xml:space="preserve">
+    <value>نمادها</value>
+  </data>
+  <data name="Osk_Hint_Cursor" xml:space="preserve">
+    <value>مکان‌نما</value>
+  </data>
+  <data name="Osk_Hint_Suggestion" xml:space="preserve">
+    <value>پیشنهاد</value>
+  </data>
+  <data name="Osk_Hint_Capitals" xml:space="preserve">
+    <value>نگه‌داشتن: بزرگ</value>
+  </data>
+  <data name="Osk_Hint_Numbers" xml:space="preserve">
+    <value>نگه‌داشتن: اعداد</value>
+  </data>
+  <data name="Osk_Hint_Keys" xml:space="preserve">
+    <value>نگه‌داشتن: کلیدها</value>
+  </data>
+  <data name="Osk_Hint_Move" xml:space="preserve">
+    <value>نگه‌داشتن: جابه‌جایی</value>
+  </data>
+  <data name="Osk_Input_Dpad" xml:space="preserve">
+    <value>دکمه‌های جهتی</value>
+  </data>
+  <data name="Menu_Style_Keyboard" xml:space="preserve"><value>صفحه‌کلید</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>حلقه شعاعی و شبکه لمسی، اتصال‌های خانه‌ها را اجرا می‌کنند. صفحه‌کلید، کلیدهای چیدمان فعلی Windows را تایپ می‌کند.</value></data>
+  <data name="Menu_KeyboardLayout" xml:space="preserve"><value>چیدمان</value></data>
+  <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>نحوه چیدمان کلیدهای صفحه‌کلید و نحوه انتخاب آن‌ها با کنترلر.</value></data>
+  <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>یک برجسته‌سازی که با یک استیک یا چهار ورودی جابه‌جا می‌شود؛ چیدمانی که Windows، Xbox و Steam استفاده می‌کنند.</value></data>
+  <data name="Menu_KeyboardLayout_Split_Desc" xml:space="preserve"><value>هر نیمه صفحه‌کلید ورودی هدایت و ورودی تایپ جداگانه دارد.</value></data>
+  <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>چرخ دیزی: یکی از هشت گروه را انتخاب کنید، سپس یکی از چهار نویسه آن را.</value></data>
+  <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>بازنشانی چیدمان</value></data>
+  <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>باز شدن با</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>هر ورودی روی دستگاهی که به این اسلات اختصاص دارد، یا دو ورودی که با هم نگه داشته شوند. همان ورودی صفحه‌کلید را می‌بندد، مگر اینکه یکی از کنترل‌های صفحه‌کلید هم از آن استفاده کند. خالی یعنی هیچ ورودی آن را باز نمی‌کند.</value></data>
+  <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>بازنشانی «باز شدن با»</value></data>
+  <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>باز شدن هنگام انتخاب کادر متن</value></data>
+  <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>در برنامه‌ها و مرورگرهای Windows، بدون نیاز به دکمه. بازی‌ها کادر متن خودشان را می‌کشند، پس در بازی صفحه‌کلید با ورودی بالا باز می‌شود، یا با لایه‌اش وقتی «لایه منو را باز نگه می‌دارد» روشن باشد.</value></data>
+  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>ورودی‌ای که برجسته‌سازی را میان کلیدها جابه‌جا می‌کند و از کنترلرهای فیزیکی اختصاص‌داده‌شده به اسلات خوانده می‌شود.</value></data>
+  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>هدایت نیمه چپ با</value></data>
+  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>هدایت نیمه راست با</value></data>
+  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>انتخاب گروه با</value></data>
+  <data name="Menu_Reset_Host2" xml:space="preserve"><value>بازنشانی «هدایت نیمه راست با»</value></data>
+  <data name="Menu_Host_DPad" xml:space="preserve"><value>دکمه‌های جهتی</value></data>
+  <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>دکمه‌های اصلی</value></data>
+  <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>کنترل‌های صفحه‌کلید</value></data>
+  <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>چیدمان {0}، {1} کنترل</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>از کنترلرهای فیزیکی اختصاص‌داده‌شده به این اسلات خوانده می‌شود. هر کنترل هر ورودی‌ای از هر یک از آن‌ها را می‌پذیرد: دکمه، جهت محور، هت، تاچ‌پد یا دو ورودی که با هم نگه داشته شوند. روی دکمه ضبط کلیک کنید و ورودی را فشار دهید، یا یک ورودی را نگه دارید و ورودی دوم را برای ترکیب فشار دهید. «نگاشت همه» آن‌ها را به‌ترتیب ضبط می‌کند.</value></data>
+  <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>نگاشت همه</value></data>
+  <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>همه کنترل‌های چیدمان را به‌ترتیب ضبط می‌کند. خط وضعیت کنترلی را که باید برایش ورودی فشار دهید نشان می‌دهد.</value></data>
+  <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>ورودی {0} را فشار دهید ({1} از {2})</value></data>
+  <data name="Menu_Keyboard_MapAll_Done" xml:space="preserve"><value>همه کنترل‌های صفحه‌کلید ضبط شدند.</value></data>
+  <data name="Menu_Reset_KeyboardControls" xml:space="preserve"><value>بازنشانی کنترل‌های صفحه‌کلید</value></data>
+  <data name="Menu_Keyboard_Reset_Format" xml:space="preserve"><value>بازنشانی {0} به {1}</value></data>
+  <data name="Menu_Keyboard_RecordingPrompt" xml:space="preserve"><value>یک ورودی روی هر دستگاه اختصاص‌داده‌شده به این اسلات فشار دهید</value></data>
+  <data name="Menu_Keyboard_Card" xml:space="preserve"><value>صفحه‌کلید</value></data>
+  <data name="Menu_TypesThrough" xml:space="preserve"><value>تایپ از طریق</value></data>
+  <data name="Menu_TypesThrough_Caption" xml:space="preserve"><value>«ورودی Windows» هر کلید را از طریق Windows تایپ می‌کند و برنامه‌ها می‌توانند تشخیص دهند که از نرم‌افزار آمده است. صفحه‌کلید اسلات «صفحه‌کلید + ماوس» را همان‌طور تایپ می‌کند که تنظیم صفحه‌کلید آن اسلات تایپ می‌کند. صفحه‌کلید مجازی HIDMaestro را به‌صورت همان مدل صفحه‌کلید تایپ می‌کند که برنامه‌ها آن را سخت‌افزار می‌بینند. منوی صفحه‌کلید خودش آن را می‌سازد، پس به اسلات «صفحه‌کلید + ماوس» نیازی ندارد. کلیدی که صفحه‌کلید انتخاب‌شده ندارد، و نویسه‌ای که هیچ کلیدی تایپ نمی‌کند، همچنان از طریق «ورودی Windows» می‌روند.</value></data>
+  <data name="Menu_TypesThrough_Slot_Format" xml:space="preserve"><value>همان صفحه‌کلید {0}</value></data>
+  <data name="Menu_Reset_TypesThrough" xml:space="preserve"><value>بازنشانی «تایپ از طریق»</value></data>
+  <data name="Menu_FunctionRow" xml:space="preserve"><value>ردیف عملکرد</value></data>
+  <data name="Menu_FunctionRow_Caption" xml:space="preserve"><value>Esc، F1 تا F12 و Del. کلید Fn روی صفحه‌کلید هم آن را تغییر می‌دهد.</value></data>
+  <data name="Menu_WordSuggestions" xml:space="preserve"><value>پیشنهاد واژه</value></data>
+  <data name="Menu_WordSuggestions_Caption" xml:space="preserve"><value>از پیش‌بینی متن در Windows، برای زبان‌های نصب‌شده در Windows.</value></data>
+  <data name="Menu_SymbolsPage" xml:space="preserve"><value>صفحه نمادها</value></data>
+  <data name="Menu_SymbolsPage_Tip" xml:space="preserve"><value>نویسه‌های صفحه نمادهای صفحه‌کلید. به‌صورت نویسه‌های یونیکد تایپ می‌شوند.</value></data>
+  <data name="Menu_Reset_Symbols" xml:space="preserve"><value>بازنشانی صفحه نمادها</value></data>
+  <data name="Menu_Keyboard_Overlay_Caption" xml:space="preserve"><value>ردیف‌هایی که هر منویی از قبل دارد. کشیدن نوار بالا یا دستگیره گوشه صفحه‌کلید، یا نگه داشتن «جابه‌جایی صفحه‌کلید»، آن‌ها را هم تنظیم می‌کند.</value></data>
+  <data name="Osk_Title" xml:space="preserve"><value>صفحه‌کلید روی صفحه</value></data>
+  <data name="Osk_Control_TypeKey" xml:space="preserve"><value>تایپ کلید</value></data>
+  <data name="Osk_Control_Backspace" xml:space="preserve"><value>Backspace</value></data>
+  <data name="Osk_Control_Space" xml:space="preserve"><value>فاصله</value></data>
+  <data name="Osk_Control_Enter" xml:space="preserve"><value>Enter</value></data>
+  <data name="Osk_Control_Close" xml:space="preserve"><value>بستن</value></data>
+  <data name="Osk_Control_ShiftNextKey" xml:space="preserve"><value>Shift برای کلید بعدی</value></data>
+  <data name="Osk_Control_ShiftLeftHand" xml:space="preserve"><value>Shift برای کلید بعدی، دست چپ</value></data>
+  <data name="Osk_Control_ShiftRightHand" xml:space="preserve"><value>Shift برای کلید بعدی، دست راست</value></data>
+  <data name="Osk_Control_SymbolsPage" xml:space="preserve"><value>صفحه نمادها</value></data>
+  <data name="Osk_Control_CursorLeft" xml:space="preserve"><value>مکان‌نما به چپ</value></data>
+  <data name="Osk_Control_CursorRight" xml:space="preserve"><value>مکان‌نما به راست</value></data>
+  <data name="Osk_Control_MoveUp" xml:space="preserve"><value>حرکت به بالا</value></data>
+  <data name="Osk_Control_MoveDown" xml:space="preserve"><value>حرکت به پایین</value></data>
+  <data name="Osk_Control_MoveLeft" xml:space="preserve"><value>حرکت به چپ</value></data>
+  <data name="Osk_Control_MoveRight" xml:space="preserve"><value>حرکت به راست</value></data>
+  <data name="Osk_Control_Suggestion_Format" xml:space="preserve"><value>پیشنهاد {0}</value></data>
+  <data name="Osk_Control_MoveKeyboard" xml:space="preserve"><value>جابه‌جایی صفحه‌کلید (نگه‌داشتن)</value></data>
+  <data name="Osk_Control_TypeLeftHalf" xml:space="preserve"><value>تایپ نیمه چپ</value></data>
+  <data name="Osk_Control_TypeRightHalf" xml:space="preserve"><value>تایپ نیمه راست</value></data>
+  <data name="Osk_Control_ArrowUp" xml:space="preserve"><value>پیکان بالا</value></data>
+  <data name="Osk_Control_ArrowDown" xml:space="preserve"><value>پیکان پایین</value></data>
+  <data name="Osk_Control_ArrowLeft" xml:space="preserve"><value>پیکان چپ</value></data>
+  <data name="Osk_Control_ArrowRight" xml:space="preserve"><value>پیکان راست</value></data>
+  <data name="Osk_Control_PickWest" xml:space="preserve"><value>انتخاب غرب</value></data>
+  <data name="Osk_Control_PickNorth" xml:space="preserve"><value>انتخاب شمال</value></data>
+  <data name="Osk_Control_PickEast" xml:space="preserve"><value>انتخاب شرق</value></data>
+  <data name="Osk_Control_PickSouth" xml:space="preserve"><value>انتخاب جنوب</value></data>
+  <data name="Osk_Control_Capitals" xml:space="preserve"><value>حروف بزرگ و نمادها (نگه‌داشتن)</value></data>
+  <data name="Osk_Control_Numbers" xml:space="preserve"><value>اعداد و پرانتزها (نگه‌داشتن)</value></data>
+  <data name="Osk_Control_Home" xml:space="preserve"><value>Home</value></data>
+  <data name="Osk_Control_End" xml:space="preserve"><value>End</value></data>
+  <data name="Menu_Keyboard_OpenPress" xml:space="preserve"><value>باز شدن در</value></data>
+  <data name="Menu_Keyboard_OpenPress_Tip" xml:space="preserve"><value>نوع فشار «باز شدن با» که صفحه‌کلید را باز یا بسته می‌کند. اتصال‌های فشار طولانی و دو بار فشار Steam به‌صورت «هنگام فشار طولانی» و «هنگام دو بار فشار» وارد می‌شوند، پس فشار کوتاه همان ورودی اتصال خودش را نگه می‌دارد.</value></data>
+  <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>بازنشانی «باز شدن در»</value></data>
+  <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>وقتی «باز شدن با» به‌اندازه زمان نگه داشتن نگه داشته شود، صفحه‌کلید را باز یا بسته می‌کند. فشار کوتاه‌تر کاری نمی‌کند.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>وقتی «باز شدن با» دو بار در پنجره زمانی فشار فشرده شود، صفحه‌کلید را باز یا بسته می‌کند.</value></data>
 </root>

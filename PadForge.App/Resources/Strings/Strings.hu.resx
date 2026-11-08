@@ -4976,4 +4976,207 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>A reWASD megakadályozta, hogy az egérmozgás eljusson a Windowsig. A PadForge a billentyűket és az egérgombokat elnyeli, a mozgást nem, ezért a mutató továbbra is mozog.</value></data>
   <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>A PadForge virtuális vezérlői a mozgásadatokat csak a vezérlő mozgásérzékelőjéből kapják.</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>A DS4Windows egy gombnyomásra visszatért ehhez a profilhoz a(z) {0} profilból. Ennek PadForge-ban történő megvalósításához adjon hozzá egy Profil-gyorsparancsot ehhez a profilhoz a Profilok oldalon.</value></data>
+  <data name="Osk_Style_Grid" xml:space="preserve">
+    <value>Rács</value>
+  </data>
+  <data name="Osk_Style_Split" xml:space="preserve">
+    <value>Osztott</value>
+  </data>
+  <data name="Osk_Style_Wheel" xml:space="preserve">
+    <value>Kerék</value>
+  </data>
+  <data name="Osk_CloseKeyboard" xml:space="preserve">
+    <value>A billentyűzet bezárása</value>
+  </data>
+  <data name="Osk_Drag" xml:space="preserve">
+    <value>Húzással mozgathatja a billentyűzetet</value>
+  </data>
+  <data name="Osk_Wheel_Keys" xml:space="preserve">
+    <value>Billentyűk</value>
+  </data>
+  <data name="Osk_Key_Tab" xml:space="preserve">
+    <value>Tab</value>
+  </data>
+  <data name="Osk_Key_Caps" xml:space="preserve">
+    <value>Caps</value>
+  </data>
+  <data name="Osk_Key_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Osk_Key_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Key_Ctrl" xml:space="preserve">
+    <value>Ctrl</value>
+  </data>
+  <data name="Osk_Key_Win" xml:space="preserve">
+    <value>Win</value>
+  </data>
+  <data name="Osk_Key_Alt" xml:space="preserve">
+    <value>Alt</value>
+  </data>
+  <data name="Osk_Key_AltGr" xml:space="preserve">
+    <value>AltGr</value>
+  </data>
+  <data name="Osk_Key_Symbols" xml:space="preserve">
+    <value>&amp;123</value>
+  </data>
+  <data name="Osk_Key_Letters" xml:space="preserve">
+    <value>abc</value>
+  </data>
+  <data name="Osk_Key_Space" xml:space="preserve">
+    <value>Szóköz</value>
+  </data>
+  <data name="Osk_Key_Esc" xml:space="preserve">
+    <value>Esc</value>
+  </data>
+  <data name="Osk_Key_Del" xml:space="preserve">
+    <value>Del</value>
+  </data>
+  <data name="Osk_Key_Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Osk_Key_End" xml:space="preserve">
+    <value>End</value>
+  </data>
+  <data name="Osk_Key_PgUp" xml:space="preserve">
+    <value>PgUp</value>
+  </data>
+  <data name="Osk_Key_PgDn" xml:space="preserve">
+    <value>PgDn</value>
+  </data>
+  <data name="Osk_Key_Ins" xml:space="preserve">
+    <value>Ins</value>
+  </data>
+  <data name="Osk_Key_PrtSc" xml:space="preserve">
+    <value>PrtSc</value>
+  </data>
+  <data name="Osk_Hint_Type" xml:space="preserve">
+    <value>Beírás</value>
+  </data>
+  <data name="Osk_Hint_TypeLeft" xml:space="preserve">
+    <value>Beírás balra</value>
+  </data>
+  <data name="Osk_Hint_TypeRight" xml:space="preserve">
+    <value>Beírás jobbra</value>
+  </data>
+  <data name="Osk_Hint_Backspace" xml:space="preserve">
+    <value>Backspace</value>
+  </data>
+  <data name="Osk_Hint_Space" xml:space="preserve">
+    <value>Szóköz</value>
+  </data>
+  <data name="Osk_Hint_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Osk_Hint_Close" xml:space="preserve">
+    <value>Bezárás</value>
+  </data>
+  <data name="Osk_Hint_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Hint_Symbols" xml:space="preserve">
+    <value>Szimbólumok</value>
+  </data>
+  <data name="Osk_Hint_Cursor" xml:space="preserve">
+    <value>Kurzor</value>
+  </data>
+  <data name="Osk_Hint_Suggestion" xml:space="preserve">
+    <value>Javaslat</value>
+  </data>
+  <data name="Osk_Hint_Capitals" xml:space="preserve">
+    <value>Tartva: nagybetűk</value>
+  </data>
+  <data name="Osk_Hint_Numbers" xml:space="preserve">
+    <value>Tartva: számok</value>
+  </data>
+  <data name="Osk_Hint_Keys" xml:space="preserve">
+    <value>Tartva: billentyűk</value>
+  </data>
+  <data name="Osk_Hint_Move" xml:space="preserve">
+    <value>Tartva: mozgatás</value>
+  </data>
+  <data name="Osk_Input_Dpad" xml:space="preserve">
+    <value>D-pad</value>
+  </data>
+  <data name="Menu_Style_Keyboard" xml:space="preserve"><value>Billentyűzet</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>A Radiális gyűrű és az Érintőrács a cellákhoz rendelt műveleteket váltja ki. A Billentyűzet a használatban lévő Windows-kiosztás billentyűit írja be.</value></data>
+  <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Elrendezés</value></data>
+  <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Hogyan rendezi el a billentyűzet a billentyűit, és hogyan választ közülük a kontroller.</value></data>
+  <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Egyetlen kijelölés, amelyet egy kar vagy négy bemenet mozgat, ahogy a Windows, az Xbox és a Steam teszi.</value></data>
+  <data name="Menu_KeyboardLayout_Split_Desc" xml:space="preserve"><value>A billentyűzet mindkét fele külön irányító bemenetet és külön beíró bemenetet kap.</value></data>
+  <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>A margaréta-kerék: kiválaszt egyet a nyolc csoportból, majd annak négy karaktere közül egyet.</value></data>
+  <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>Elrendezés visszaállítása</value></data>
+  <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>Megnyitás ezzel</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Bármely, a tárolóhoz rendelt eszköz bármely bemenete, vagy kettő egyszerre lenyomva. Ugyanez a bemenet zárja be a billentyűzetet, kivéve ha az egyik billentyűzetvezérlő is ezt használja. Ha üres, semmilyen bemenet nem nyitja meg.</value></data>
+  <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>A „Megnyitás ezzel” visszaállítása</value></data>
+  <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>Megnyitás szövegmező kijelölésekor</value></data>
+  <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>Windows-alkalmazásokban és böngészőkben, gomb nélkül. A játékok saját szövegmezőket rajzolnak, ezért játékban a fenti bemenettel nyílik meg, vagy a rétegével, ha a „A réteg nyitva tartja a menüt” be van kapcsolva.</value></data>
+  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>A bemenet, amely a kijelölést mozgatja a billentyűk között; a tárolóhoz rendelt fizikai kontrollerekről olvassa.</value></data>
+  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>Bal fél irányítása ezzel</value></data>
+  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>Jobb fél irányítása ezzel</value></data>
+  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>Csoport választása ezzel</value></data>
+  <data name="Menu_Reset_Host2" xml:space="preserve"><value>A „Jobb fél irányítása ezzel” visszaállítása</value></data>
+  <data name="Menu_Host_DPad" xml:space="preserve"><value>D-pad</value></data>
+  <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>Főgombok</value></data>
+  <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>Billentyűzetvezérlők</value></data>
+  <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>{0} elrendezés, {1} vezérlő</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>A tárolóhoz rendelt fizikai kontrollerekről olvassa. Minden vezérlő bármelyikük bármely bemenetét fogadja: gombot, tengelyirányt, hatgombot, érintőpadot, vagy kettőt egyszerre lenyomva. Kattintson egy rögzítés gombra, és nyomja meg a bemenetet, vagy tartson lenyomva egy bemenetet, és nyomjon meg egy másodikat a kombinációhoz. Az Összes hozzárendelése sorrendben rögzíti őket.</value></data>
+  <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>Összes hozzárendelése</value></data>
+  <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>Sorrendben rögzíti az elrendezés minden vezérlőjét. Az állapotsor megnevezi a vezérlőt, amelyhez bemenetet kell megnyomni.</value></data>
+  <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>Nyomja meg a bemenetet ehhez: {0} ({1}/{2})</value></data>
+  <data name="Menu_Keyboard_MapAll_Done" xml:space="preserve"><value>Minden billentyűzetvezérlő rögzítve van.</value></data>
+  <data name="Menu_Reset_KeyboardControls" xml:space="preserve"><value>Billentyűzetvezérlők visszaállítása</value></data>
+  <data name="Menu_Keyboard_Reset_Format" xml:space="preserve"><value>{0} visszaállítása erre: {1}</value></data>
+  <data name="Menu_Keyboard_RecordingPrompt" xml:space="preserve"><value>Nyomjon meg egy bemenetet a tárolóhoz rendelt bármely eszközön</value></data>
+  <data name="Menu_Keyboard_Card" xml:space="preserve"><value>Billentyűzet</value></data>
+  <data name="Menu_TypesThrough" xml:space="preserve"><value>Beírás módja</value></data>
+  <data name="Menu_TypesThrough_Caption" xml:space="preserve"><value>A Windows-bemenet minden billentyűt a Windowson keresztül ír be, és a programok felismerhetik, hogy szoftverből érkezett. A Billentyűzet + egér tároló billentyűzete úgy írja be, ahogy a tároló Billentyűzet beállítása. A HIDMaestro virtuális billentyűzet az adott billentyűzetmodellként írja be, amelyet a programok hardvernek látnak. A billentyűzetmenü ezt maga hozza létre, ezért nincs szükség Billentyűzet + egér tárolóra. Az a billentyű, amely a kiválasztott billentyűzeten nincs meg, és az a karakter, amelyet egy billentyű sem ír be, továbbra is a Windows-bemeneten át megy.</value></data>
+  <data name="Menu_TypesThrough_Slot_Format" xml:space="preserve"><value>Ugyanaz a billentyűzet, mint {0}</value></data>
+  <data name="Menu_Reset_TypesThrough" xml:space="preserve"><value>A „Beírás módja” visszaállítása</value></data>
+  <data name="Menu_FunctionRow" xml:space="preserve"><value>Funkciósor</value></data>
+  <data name="Menu_FunctionRow_Caption" xml:space="preserve"><value>Esc, F1–F12 és Del. A billentyűzeten lévő Fn billentyű is átkapcsolja.</value></data>
+  <data name="Menu_WordSuggestions" xml:space="preserve"><value>Szójavaslatok</value></data>
+  <data name="Menu_WordSuggestions_Caption" xml:space="preserve"><value>A Windows szövegjóslásából, a Windowsban telepített nyelvekhez.</value></data>
+  <data name="Menu_SymbolsPage" xml:space="preserve"><value>Szimbólumoldal</value></data>
+  <data name="Menu_SymbolsPage_Tip" xml:space="preserve"><value>A billentyűzet szimbólumoldalán lévő karakterek. Unicode-karakterként íródnak be.</value></data>
+  <data name="Menu_Reset_Symbols" xml:space="preserve"><value>Szimbólumoldal visszaállítása</value></data>
+  <data name="Menu_Keyboard_Overlay_Caption" xml:space="preserve"><value>A sorok, amelyekkel minden menü már rendelkezik. A billentyűzet felső sávjának vagy sarokfogantyújának húzása, illetve a Billentyűzet mozgatása (tartva) nyomva tartása is beállítja őket.</value></data>
+  <data name="Osk_Title" xml:space="preserve"><value>Képernyő-billentyűzet</value></data>
+  <data name="Osk_Control_TypeKey" xml:space="preserve"><value>Billentyű beírása</value></data>
+  <data name="Osk_Control_Backspace" xml:space="preserve"><value>Backspace</value></data>
+  <data name="Osk_Control_Space" xml:space="preserve"><value>Szóköz</value></data>
+  <data name="Osk_Control_Enter" xml:space="preserve"><value>Enter</value></data>
+  <data name="Osk_Control_Close" xml:space="preserve"><value>Bezárás</value></data>
+  <data name="Osk_Control_ShiftNextKey" xml:space="preserve"><value>Shift a következő billentyűhöz</value></data>
+  <data name="Osk_Control_ShiftLeftHand" xml:space="preserve"><value>Shift a következő billentyűhöz, bal kéz</value></data>
+  <data name="Osk_Control_ShiftRightHand" xml:space="preserve"><value>Shift a következő billentyűhöz, jobb kéz</value></data>
+  <data name="Osk_Control_SymbolsPage" xml:space="preserve"><value>Szimbólumoldal</value></data>
+  <data name="Osk_Control_CursorLeft" xml:space="preserve"><value>Kurzor balra</value></data>
+  <data name="Osk_Control_CursorRight" xml:space="preserve"><value>Kurzor jobbra</value></data>
+  <data name="Osk_Control_MoveUp" xml:space="preserve"><value>Mozgatás felfelé</value></data>
+  <data name="Osk_Control_MoveDown" xml:space="preserve"><value>Mozgatás lefelé</value></data>
+  <data name="Osk_Control_MoveLeft" xml:space="preserve"><value>Mozgatás balra</value></data>
+  <data name="Osk_Control_MoveRight" xml:space="preserve"><value>Mozgatás jobbra</value></data>
+  <data name="Osk_Control_Suggestion_Format" xml:space="preserve"><value>{0}. javaslat</value></data>
+  <data name="Osk_Control_MoveKeyboard" xml:space="preserve"><value>Billentyűzet mozgatása (tartva)</value></data>
+  <data name="Osk_Control_TypeLeftHalf" xml:space="preserve"><value>Bal fél beírása</value></data>
+  <data name="Osk_Control_TypeRightHalf" xml:space="preserve"><value>Jobb fél beírása</value></data>
+  <data name="Osk_Control_ArrowUp" xml:space="preserve"><value>Felfelé nyíl</value></data>
+  <data name="Osk_Control_ArrowDown" xml:space="preserve"><value>Lefelé nyíl</value></data>
+  <data name="Osk_Control_ArrowLeft" xml:space="preserve"><value>Balra nyíl</value></data>
+  <data name="Osk_Control_ArrowRight" xml:space="preserve"><value>Jobbra nyíl</value></data>
+  <data name="Osk_Control_PickWest" xml:space="preserve"><value>Nyugat választása</value></data>
+  <data name="Osk_Control_PickNorth" xml:space="preserve"><value>Észak választása</value></data>
+  <data name="Osk_Control_PickEast" xml:space="preserve"><value>Kelet választása</value></data>
+  <data name="Osk_Control_PickSouth" xml:space="preserve"><value>Dél választása</value></data>
+  <data name="Osk_Control_Capitals" xml:space="preserve"><value>Nagybetűk és szimbólumok (tartva)</value></data>
+  <data name="Osk_Control_Numbers" xml:space="preserve"><value>Számok és zárójelek (tartva)</value></data>
+  <data name="Osk_Control_Home" xml:space="preserve"><value>Home</value></data>
+  <data name="Osk_Control_End" xml:space="preserve"><value>End</value></data>
+  <data name="Menu_Keyboard_OpenPress" xml:space="preserve"><value>Megnyitás módja</value></data>
+  <data name="Menu_Keyboard_OpenPress_Tip" xml:space="preserve"><value>A Megnyitás ezzel bemenet lenyomása, amely megnyitja vagy bezárja a billentyűzetet. A Steam hosszú és dupla lenyomási kötései Hosszú lenyomáskor és Dupla lenyomáskor néven kerülnek importálásra, így ugyanannak a bemenetnek a rövid lenyomása megtartja a saját kötését.</value></data>
+  <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>A „Megnyitás módja” visszaállítása</value></data>
+  <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>Megnyitja vagy bezárja a billentyűzetet, amint a Megnyitás ezzel bemenetet a Tartási idő alatt nyomva tartják. A rövidebb lenyomás nem csinál semmit.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>Megnyitja vagy bezárja a billentyűzetet, ha a Megnyitás ezzel bemenetet kétszer nyomják meg a Lenyomási időablakon belül.</value></data>
 </root>

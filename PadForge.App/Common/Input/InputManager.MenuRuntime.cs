@@ -411,8 +411,12 @@ namespace PadForge.Common.Input
         /// is assigned to. Runs on the poll thread from Step 2, beside
         /// <see cref="UpdateGestureContexts"/>, and unlike that walk it is
         /// NOT gated on the device having touchpads (sticks host menus
-        /// too).</summary>
-        internal void UpdateMenuContexts(Engine.Data.UserDevice ud, CustomInputState newState)
+        /// too). <paramref name="rawState"/> is the device's real state,
+        /// which differs from <paramref name="newState"/> while the On-Screen
+        /// Keyboard holds the device at rest (#566). Keyboard menus read it,
+        /// every other menu reads the state at rest. Null: the two are one.</summary>
+        internal void UpdateMenuContexts(Engine.Data.UserDevice ud, CustomInputState newState,
+            CustomInputState rawState = null)
         {
             // A Web Menus phone (#471) fires cells by tap and hosts no menu.
             // Its axes rest at zero, which a stick host reads as a full push.
@@ -464,6 +468,17 @@ namespace PadForge.Common.Input
                         if (MenuContexts.ContainsKey((slot, ud.InstanceGuid, def.MenuId))
                             || _menuDrivers.ContainsKey((slot, def.MenuId)))
                             ClearMenuRuntimeForMenu(slot, def.MenuId);
+                        continue;
+                    }
+                    // A keyboard menu (#566) has no cells and no overlay of
+                    // its own: the On-Screen Keyboard's tick reads it, from
+                    // the devices noted here on their real state. A menu that
+                    // turned into one drops its hover state.
+                    if (def.Kind == MenuKind.Keyboard)
+                    {
+                        if (MenuContexts.ContainsKey((slot, ud.InstanceGuid, def.MenuId)))
+                            ClearMenuRuntimeForMenu(slot, def.MenuId);
+                        NoteKeyboardMenu(slot, def, ud, rawState ?? newState);
                         continue;
                     }
                     // (#431) A device-free menu runs on whichever controller

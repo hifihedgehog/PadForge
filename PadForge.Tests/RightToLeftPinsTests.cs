@@ -183,6 +183,7 @@ namespace PadForge.Tests
                 ["MarqueeLabel.cs"] = 1,
                 ["MenuOverlayWindow.xaml.cs"] = 2,
                 ["MouseGlyph.cs"] = 3,
+                ["OnScreenKeyboardWindow.xaml.cs"] = 2,
                 ["PadPage.xaml.cs"] = 4,
                 ["TouchpadGestureRecorderDialog.xaml.cs"] = 1,
                 ["TriggerEffectGraph.xaml.cs"] = 2,

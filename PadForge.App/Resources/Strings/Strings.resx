@@ -5002,4 +5002,207 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD stopped mouse movement reaching Windows. PadForge holds back keys and mouse buttons but not movement, so the pointer still moves.</value></data>
   <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>PadForge's virtual controllers take motion only from a controller's motion sensor.</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows came back to this profile from {0} on a button. To do that in PadForge, add a Profile Shortcut for this profile on the Profiles page.</value></data>
+  <data name="Osk_Style_Grid" xml:space="preserve">
+    <value>Grid</value>
+  </data>
+  <data name="Osk_Style_Split" xml:space="preserve">
+    <value>Split</value>
+  </data>
+  <data name="Osk_Style_Wheel" xml:space="preserve">
+    <value>Wheel</value>
+  </data>
+  <data name="Osk_CloseKeyboard" xml:space="preserve">
+    <value>Close the keyboard</value>
+  </data>
+  <data name="Osk_Drag" xml:space="preserve">
+    <value>Drag to move the keyboard</value>
+  </data>
+  <data name="Osk_Wheel_Keys" xml:space="preserve">
+    <value>Keys</value>
+  </data>
+  <data name="Osk_Key_Tab" xml:space="preserve">
+    <value>Tab</value>
+  </data>
+  <data name="Osk_Key_Caps" xml:space="preserve">
+    <value>Caps</value>
+  </data>
+  <data name="Osk_Key_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Osk_Key_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Key_Ctrl" xml:space="preserve">
+    <value>Ctrl</value>
+  </data>
+  <data name="Osk_Key_Win" xml:space="preserve">
+    <value>Win</value>
+  </data>
+  <data name="Osk_Key_Alt" xml:space="preserve">
+    <value>Alt</value>
+  </data>
+  <data name="Osk_Key_AltGr" xml:space="preserve">
+    <value>AltGr</value>
+  </data>
+  <data name="Osk_Key_Symbols" xml:space="preserve">
+    <value>&amp;123</value>
+  </data>
+  <data name="Osk_Key_Letters" xml:space="preserve">
+    <value>abc</value>
+  </data>
+  <data name="Osk_Key_Space" xml:space="preserve">
+    <value>Space</value>
+  </data>
+  <data name="Osk_Key_Esc" xml:space="preserve">
+    <value>Esc</value>
+  </data>
+  <data name="Osk_Key_Del" xml:space="preserve">
+    <value>Del</value>
+  </data>
+  <data name="Osk_Key_Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Osk_Key_End" xml:space="preserve">
+    <value>End</value>
+  </data>
+  <data name="Osk_Key_PgUp" xml:space="preserve">
+    <value>PgUp</value>
+  </data>
+  <data name="Osk_Key_PgDn" xml:space="preserve">
+    <value>PgDn</value>
+  </data>
+  <data name="Osk_Key_Ins" xml:space="preserve">
+    <value>Ins</value>
+  </data>
+  <data name="Osk_Key_PrtSc" xml:space="preserve">
+    <value>PrtSc</value>
+  </data>
+  <data name="Osk_Hint_Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="Osk_Hint_TypeLeft" xml:space="preserve">
+    <value>Type left</value>
+  </data>
+  <data name="Osk_Hint_TypeRight" xml:space="preserve">
+    <value>Type right</value>
+  </data>
+  <data name="Osk_Hint_Backspace" xml:space="preserve">
+    <value>Backspace</value>
+  </data>
+  <data name="Osk_Hint_Space" xml:space="preserve">
+    <value>Space</value>
+  </data>
+  <data name="Osk_Hint_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Osk_Hint_Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="Osk_Hint_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Hint_Symbols" xml:space="preserve">
+    <value>Symbols</value>
+  </data>
+  <data name="Osk_Hint_Cursor" xml:space="preserve">
+    <value>Cursor</value>
+  </data>
+  <data name="Osk_Hint_Suggestion" xml:space="preserve">
+    <value>Suggestion</value>
+  </data>
+  <data name="Osk_Hint_Capitals" xml:space="preserve">
+    <value>Hold: capitals</value>
+  </data>
+  <data name="Osk_Hint_Numbers" xml:space="preserve">
+    <value>Hold: numbers</value>
+  </data>
+  <data name="Osk_Hint_Keys" xml:space="preserve">
+    <value>Hold: keys</value>
+  </data>
+  <data name="Osk_Hint_Move" xml:space="preserve">
+    <value>Hold: move</value>
+  </data>
+  <data name="Osk_Input_Dpad" xml:space="preserve">
+    <value>D-pad</value>
+  </data>
+  <data name="Menu_Style_Keyboard" xml:space="preserve"><value>Keyboard</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>Radial Ring and Touch Grid fire cell bindings. Keyboard types the keys of the Windows layout in use.</value></data>
+  <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Layout</value></data>
+  <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>How the keyboard lays out its keys and how a controller picks them.</value></data>
+  <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>One highlight, moved with a stick or four inputs, the layout Windows, Xbox and Steam use.</value></data>
+  <data name="Menu_KeyboardLayout_Split_Desc" xml:space="preserve"><value>Each half of the keyboard gets its own steering input and its own type input.</value></data>
+  <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>The daisy wheel: pick one of eight groups, then one of its four characters.</value></data>
+  <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>Reset Layout</value></data>
+  <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>Opens With</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Any input on a device assigned to this slot, or two held together. The same input closes the keyboard, unless a keyboard control uses it too. Empty means no input opens it.</value></data>
+  <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>Reset Opens With</value></data>
+  <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>Open When a Text Box Is Selected</value></data>
+  <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>In Windows apps and browsers, with no button. Games draw their own text boxes, so in a game it opens with the input above, or with its layer when Layer Holds the Menu Open is on.</value></data>
+  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>The input that moves the highlight across the keys, read from the slot's assigned physical controllers.</value></data>
+  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>Steer Left Half With</value></data>
+  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>Steer Right Half With</value></data>
+  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>Pick a Group With</value></data>
+  <data name="Menu_Reset_Host2" xml:space="preserve"><value>Reset Steer Right Half With</value></data>
+  <data name="Menu_Host_DPad" xml:space="preserve"><value>D-Pad</value></data>
+  <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>Face Buttons</value></data>
+  <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>Keyboard Controls</value></data>
+  <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>{0} layout, {1} controls</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Read from the physical controllers assigned to this slot. Each control takes any input on any of them: a button, an axis direction, a hat, a touchpad, or two held together. Click a record button and press the input, or hold one input and press a second for a combination. Map All records them in order.</value></data>
+  <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>Map All</value></data>
+  <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>Records every control of the layout in order. The status line names the control to press an input for.</value></data>
+  <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>Press the input for {0} ({1} of {2})</value></data>
+  <data name="Menu_Keyboard_MapAll_Done" xml:space="preserve"><value>Every keyboard control is recorded.</value></data>
+  <data name="Menu_Reset_KeyboardControls" xml:space="preserve"><value>Reset Keyboard Controls</value></data>
+  <data name="Menu_Keyboard_Reset_Format" xml:space="preserve"><value>Reset {0} to {1}</value></data>
+  <data name="Menu_Keyboard_RecordingPrompt" xml:space="preserve"><value>Press an input on any device assigned to this slot</value></data>
+  <data name="Menu_Keyboard_Card" xml:space="preserve"><value>Keyboard</value></data>
+  <data name="Menu_TypesThrough" xml:space="preserve"><value>Types Through</value></data>
+  <data name="Menu_TypesThrough_Caption" xml:space="preserve"><value>Windows Input types each key through Windows, and programs can tell it came from software. A Keyboard + Mouse slot's keyboard types it the way that slot's Keyboard setting does. A HIDMaestro virtual keyboard types it as that model of keyboard, which programs see as hardware. The keyboard menu makes that one itself, so it needs no Keyboard + Mouse slot. A key the chosen keyboard lacks, and a character no key types, still go through Windows Input.</value></data>
+  <data name="Menu_TypesThrough_Slot_Format" xml:space="preserve"><value>Same Keyboard as {0}</value></data>
+  <data name="Menu_Reset_TypesThrough" xml:space="preserve"><value>Reset Types Through</value></data>
+  <data name="Menu_FunctionRow" xml:space="preserve"><value>Function Row</value></data>
+  <data name="Menu_FunctionRow_Caption" xml:space="preserve"><value>Esc, F1 to F12 and Delete. The Fn key on the keyboard switches it too.</value></data>
+  <data name="Menu_WordSuggestions" xml:space="preserve"><value>Word Suggestions</value></data>
+  <data name="Menu_WordSuggestions_Caption" xml:space="preserve"><value>From the text prediction in Windows, for the languages installed in Windows.</value></data>
+  <data name="Menu_SymbolsPage" xml:space="preserve"><value>Symbols Page</value></data>
+  <data name="Menu_SymbolsPage_Tip" xml:space="preserve"><value>The characters on the keyboard's symbols page. They type as Unicode characters.</value></data>
+  <data name="Menu_Reset_Symbols" xml:space="preserve"><value>Reset Symbols Page</value></data>
+  <data name="Menu_Keyboard_Overlay_Caption" xml:space="preserve"><value>The rows every menu already has. Dragging the keyboard's top bar or corner grip, or holding Move the Keyboard, sets them too.</value></data>
+  <data name="Osk_Title" xml:space="preserve"><value>On-Screen Keyboard</value></data>
+  <data name="Osk_Control_TypeKey" xml:space="preserve"><value>Type Key</value></data>
+  <data name="Osk_Control_Backspace" xml:space="preserve"><value>Backspace</value></data>
+  <data name="Osk_Control_Space" xml:space="preserve"><value>Space</value></data>
+  <data name="Osk_Control_Enter" xml:space="preserve"><value>Enter</value></data>
+  <data name="Osk_Control_Close" xml:space="preserve"><value>Close</value></data>
+  <data name="Osk_Control_ShiftNextKey" xml:space="preserve"><value>Shift for the Next Key</value></data>
+  <data name="Osk_Control_ShiftLeftHand" xml:space="preserve"><value>Shift for the Next Key, Left Hand</value></data>
+  <data name="Osk_Control_ShiftRightHand" xml:space="preserve"><value>Shift for the Next Key, Right Hand</value></data>
+  <data name="Osk_Control_SymbolsPage" xml:space="preserve"><value>Symbols Page</value></data>
+  <data name="Osk_Control_CursorLeft" xml:space="preserve"><value>Cursor Left</value></data>
+  <data name="Osk_Control_CursorRight" xml:space="preserve"><value>Cursor Right</value></data>
+  <data name="Osk_Control_MoveUp" xml:space="preserve"><value>Move Up</value></data>
+  <data name="Osk_Control_MoveDown" xml:space="preserve"><value>Move Down</value></data>
+  <data name="Osk_Control_MoveLeft" xml:space="preserve"><value>Move Left</value></data>
+  <data name="Osk_Control_MoveRight" xml:space="preserve"><value>Move Right</value></data>
+  <data name="Osk_Control_Suggestion_Format" xml:space="preserve"><value>Suggestion {0}</value></data>
+  <data name="Osk_Control_MoveKeyboard" xml:space="preserve"><value>Move the Keyboard (Hold)</value></data>
+  <data name="Osk_Control_TypeLeftHalf" xml:space="preserve"><value>Type Left Half</value></data>
+  <data name="Osk_Control_TypeRightHalf" xml:space="preserve"><value>Type Right Half</value></data>
+  <data name="Osk_Control_ArrowUp" xml:space="preserve"><value>Arrow Up</value></data>
+  <data name="Osk_Control_ArrowDown" xml:space="preserve"><value>Arrow Down</value></data>
+  <data name="Osk_Control_ArrowLeft" xml:space="preserve"><value>Arrow Left</value></data>
+  <data name="Osk_Control_ArrowRight" xml:space="preserve"><value>Arrow Right</value></data>
+  <data name="Osk_Control_PickWest" xml:space="preserve"><value>Pick West</value></data>
+  <data name="Osk_Control_PickNorth" xml:space="preserve"><value>Pick North</value></data>
+  <data name="Osk_Control_PickEast" xml:space="preserve"><value>Pick East</value></data>
+  <data name="Osk_Control_PickSouth" xml:space="preserve"><value>Pick South</value></data>
+  <data name="Osk_Control_Capitals" xml:space="preserve"><value>Capitals and Symbols (Hold)</value></data>
+  <data name="Osk_Control_Numbers" xml:space="preserve"><value>Numbers and Brackets (Hold)</value></data>
+  <data name="Osk_Control_Home" xml:space="preserve"><value>Home</value></data>
+  <data name="Osk_Control_End" xml:space="preserve"><value>End</value></data>
+  <data name="Menu_Keyboard_OpenPress" xml:space="preserve"><value>Opens On</value></data>
+  <data name="Menu_Keyboard_OpenPress_Tip" xml:space="preserve"><value>The press of Opens With that opens or closes the keyboard. Steam's Long Press and Double Press bindings import as On Long Press and On Double Press, so a short press of the same input keeps its own binding.</value></data>
+  <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>Reset Opens On</value></data>
+  <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>Opens or closes the keyboard once Opens With is held for the hold time. A shorter press does nothing.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>Opens or closes the keyboard when Opens With is pressed twice within the press window.</value></data>
 </root>

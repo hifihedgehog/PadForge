@@ -4949,4 +4949,207 @@ Vuoi che PadForge li disinstalli ora? L'operazione richiede privilegi elevati e 
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD impediva al movimento del mouse di raggiungere Windows. PadForge blocca i tasti e i pulsanti del mouse ma non il movimento, quindi il puntatore si muove comunque.</value></data>
   <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>I controller virtuali di PadForge ricevono il movimento solo dal sensore di movimento di un controller.</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows tornava a questo profilo da {0} con un pulsante. Per farlo in PadForge, aggiungi una Scorciatoia profilo per questo profilo nella pagina Profili.</value></data>
+  <data name="Osk_Style_Grid" xml:space="preserve">
+    <value>Griglia</value>
+  </data>
+  <data name="Osk_Style_Split" xml:space="preserve">
+    <value>Divisa</value>
+  </data>
+  <data name="Osk_Style_Wheel" xml:space="preserve">
+    <value>Ruota</value>
+  </data>
+  <data name="Osk_CloseKeyboard" xml:space="preserve">
+    <value>Chiudi la tastiera</value>
+  </data>
+  <data name="Osk_Drag" xml:space="preserve">
+    <value>Trascina per spostare la tastiera</value>
+  </data>
+  <data name="Osk_Wheel_Keys" xml:space="preserve">
+    <value>Tasti</value>
+  </data>
+  <data name="Osk_Key_Tab" xml:space="preserve">
+    <value>Tab</value>
+  </data>
+  <data name="Osk_Key_Caps" xml:space="preserve">
+    <value>Bloc Maiusc</value>
+  </data>
+  <data name="Osk_Key_Enter" xml:space="preserve">
+    <value>Invio</value>
+  </data>
+  <data name="Osk_Key_Shift" xml:space="preserve">
+    <value>Maiusc</value>
+  </data>
+  <data name="Osk_Key_Ctrl" xml:space="preserve">
+    <value>Ctrl</value>
+  </data>
+  <data name="Osk_Key_Win" xml:space="preserve">
+    <value>Win</value>
+  </data>
+  <data name="Osk_Key_Alt" xml:space="preserve">
+    <value>Alt</value>
+  </data>
+  <data name="Osk_Key_AltGr" xml:space="preserve">
+    <value>AltGr</value>
+  </data>
+  <data name="Osk_Key_Symbols" xml:space="preserve">
+    <value>&amp;123</value>
+  </data>
+  <data name="Osk_Key_Letters" xml:space="preserve">
+    <value>abc</value>
+  </data>
+  <data name="Osk_Key_Space" xml:space="preserve">
+    <value>Spazio</value>
+  </data>
+  <data name="Osk_Key_Esc" xml:space="preserve">
+    <value>Esc</value>
+  </data>
+  <data name="Osk_Key_Del" xml:space="preserve">
+    <value>Canc</value>
+  </data>
+  <data name="Osk_Key_Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Osk_Key_End" xml:space="preserve">
+    <value>Fine</value>
+  </data>
+  <data name="Osk_Key_PgUp" xml:space="preserve">
+    <value>Pag↑</value>
+  </data>
+  <data name="Osk_Key_PgDn" xml:space="preserve">
+    <value>Pag↓</value>
+  </data>
+  <data name="Osk_Key_Ins" xml:space="preserve">
+    <value>Ins</value>
+  </data>
+  <data name="Osk_Key_PrtSc" xml:space="preserve">
+    <value>Stamp</value>
+  </data>
+  <data name="Osk_Hint_Type" xml:space="preserve">
+    <value>Scrivi</value>
+  </data>
+  <data name="Osk_Hint_TypeLeft" xml:space="preserve">
+    <value>Scrivi sinistra</value>
+  </data>
+  <data name="Osk_Hint_TypeRight" xml:space="preserve">
+    <value>Scrivi destra</value>
+  </data>
+  <data name="Osk_Hint_Backspace" xml:space="preserve">
+    <value>Backspace</value>
+  </data>
+  <data name="Osk_Hint_Space" xml:space="preserve">
+    <value>Spazio</value>
+  </data>
+  <data name="Osk_Hint_Enter" xml:space="preserve">
+    <value>Invio</value>
+  </data>
+  <data name="Osk_Hint_Close" xml:space="preserve">
+    <value>Chiudi</value>
+  </data>
+  <data name="Osk_Hint_Shift" xml:space="preserve">
+    <value>Maiusc</value>
+  </data>
+  <data name="Osk_Hint_Symbols" xml:space="preserve">
+    <value>Simboli</value>
+  </data>
+  <data name="Osk_Hint_Cursor" xml:space="preserve">
+    <value>Cursore</value>
+  </data>
+  <data name="Osk_Hint_Suggestion" xml:space="preserve">
+    <value>Suggerimento</value>
+  </data>
+  <data name="Osk_Hint_Capitals" xml:space="preserve">
+    <value>Tieni: maiuscole</value>
+  </data>
+  <data name="Osk_Hint_Numbers" xml:space="preserve">
+    <value>Tieni: numeri</value>
+  </data>
+  <data name="Osk_Hint_Keys" xml:space="preserve">
+    <value>Tieni: tasti</value>
+  </data>
+  <data name="Osk_Hint_Move" xml:space="preserve">
+    <value>Tieni: sposta</value>
+  </data>
+  <data name="Osk_Input_Dpad" xml:space="preserve">
+    <value>D-Pad</value>
+  </data>
+  <data name="Menu_Style_Keyboard" xml:space="preserve"><value>Tastiera</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>Anello radiale e Griglia touch attivano le assegnazioni delle celle. Tastiera digita i tasti del layout di Windows in uso.</value></data>
+  <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Layout</value></data>
+  <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Come la tastiera dispone i tasti e come un controller li sceglie.</value></data>
+  <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Una sola evidenziazione, mossa con una levetta o con quattro input, il layout usato da Windows, Xbox e Steam.</value></data>
+  <data name="Menu_KeyboardLayout_Split_Desc" xml:space="preserve"><value>Ogni metà della tastiera ha il proprio input di guida e il proprio input di digitazione.</value></data>
+  <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>La daisy wheel: si sceglie uno degli otto gruppi, poi uno dei suoi quattro caratteri.</value></data>
+  <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>Reimposta Layout</value></data>
+  <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>Si apre con</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Qualsiasi input di un dispositivo assegnato a questo slot, oppure due tenuti premuti insieme. Lo stesso input chiude la tastiera, a meno che lo usi anche un controllo della tastiera. Vuoto significa che nessun input la apre.</value></data>
+  <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>Reimposta Si apre con</value></data>
+  <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>Apri quando è selezionata una casella di testo</value></data>
+  <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>Nelle app di Windows e nei browser, senza alcun pulsante. I giochi disegnano le proprie caselle di testo, quindi in un gioco si apre con l'input indicato sopra, oppure con il suo livello quando «Il livello tiene aperto il menu» è attivo.</value></data>
+  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>L'input che sposta l'evidenziazione sui tasti, letto dai controller fisici assegnati allo slot.</value></data>
+  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>Guida metà sinistra con</value></data>
+  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>Guida metà destra con</value></data>
+  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>Scegli un gruppo con</value></data>
+  <data name="Menu_Reset_Host2" xml:space="preserve"><value>Reimposta Guida metà destra con</value></data>
+  <data name="Menu_Host_DPad" xml:space="preserve"><value>D-Pad</value></data>
+  <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>Pulsanti frontali</value></data>
+  <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>Controlli della tastiera</value></data>
+  <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>Layout {0}, controlli {1}</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Letti dai controller fisici assegnati a questo slot. Ogni controllo accetta qualsiasi input di uno qualsiasi di essi: un pulsante, la direzione di un asse, un hat, un touchpad, oppure due input tenuti premuti insieme. Fai clic su un pulsante di registrazione e premi l'input, oppure tieni premuto un input e premine un secondo per una combinazione. «Mappa tutto» li registra in ordine.</value></data>
+  <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>Mappa tutto</value></data>
+  <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>Registra in ordine ogni controllo del layout. La riga di stato indica il controllo per cui premere un input.</value></data>
+  <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>Premi l'input per {0} ({1} di {2})</value></data>
+  <data name="Menu_Keyboard_MapAll_Done" xml:space="preserve"><value>Tutti i controlli della tastiera sono registrati.</value></data>
+  <data name="Menu_Reset_KeyboardControls" xml:space="preserve"><value>Reimposta Controlli della tastiera</value></data>
+  <data name="Menu_Keyboard_Reset_Format" xml:space="preserve"><value>Reimposta {0} su {1}</value></data>
+  <data name="Menu_Keyboard_RecordingPrompt" xml:space="preserve"><value>Premi un input su un dispositivo qualsiasi assegnato a questo slot</value></data>
+  <data name="Menu_Keyboard_Card" xml:space="preserve"><value>Tastiera</value></data>
+  <data name="Menu_TypesThrough" xml:space="preserve"><value>Digita tramite</value></data>
+  <data name="Menu_TypesThrough_Caption" xml:space="preserve"><value>«Input di Windows» digita ogni tasto tramite Windows, e i programmi possono riconoscere che proviene da un software. La tastiera di uno slot «Tastiera + Mouse» digita come fa l'impostazione Tastiera di quello slot. Una tastiera virtuale HIDMaestro digita come quel modello di tastiera, che i programmi vedono come hardware. Il menu della tastiera la crea da sé, quindi non serve uno slot «Tastiera + Mouse». Un tasto che la tastiera scelta non ha, e un carattere che nessun tasto digita, passano comunque da «Input di Windows».</value></data>
+  <data name="Menu_TypesThrough_Slot_Format" xml:space="preserve"><value>Stessa tastiera di {0}</value></data>
+  <data name="Menu_Reset_TypesThrough" xml:space="preserve"><value>Reimposta Digita tramite</value></data>
+  <data name="Menu_FunctionRow" xml:space="preserve"><value>Riga delle funzioni</value></data>
+  <data name="Menu_FunctionRow_Caption" xml:space="preserve"><value>Esc, da F1 a F12 e Canc. Li attiva anche il tasto Fn della tastiera.</value></data>
+  <data name="Menu_WordSuggestions" xml:space="preserve"><value>Suggerimenti di parole</value></data>
+  <data name="Menu_WordSuggestions_Caption" xml:space="preserve"><value>Dalla previsione del testo di Windows, per le lingue installate in Windows.</value></data>
+  <data name="Menu_SymbolsPage" xml:space="preserve"><value>Pagina dei simboli</value></data>
+  <data name="Menu_SymbolsPage_Tip" xml:space="preserve"><value>I caratteri della pagina dei simboli della tastiera. Vengono digitati come caratteri Unicode.</value></data>
+  <data name="Menu_Reset_Symbols" xml:space="preserve"><value>Reimposta Pagina dei simboli</value></data>
+  <data name="Menu_Keyboard_Overlay_Caption" xml:space="preserve"><value>Le righe che ogni menu ha già. Le imposta anche trascinare la barra superiore o l'angolo di presa della tastiera, o tenere premuto «Sposta la tastiera».</value></data>
+  <data name="Osk_Title" xml:space="preserve"><value>Tastiera su schermo</value></data>
+  <data name="Osk_Control_TypeKey" xml:space="preserve"><value>Digita tasto</value></data>
+  <data name="Osk_Control_Backspace" xml:space="preserve"><value>Backspace</value></data>
+  <data name="Osk_Control_Space" xml:space="preserve"><value>Spazio</value></data>
+  <data name="Osk_Control_Enter" xml:space="preserve"><value>Invio</value></data>
+  <data name="Osk_Control_Close" xml:space="preserve"><value>Chiudi</value></data>
+  <data name="Osk_Control_ShiftNextKey" xml:space="preserve"><value>Maiusc per il tasto successivo</value></data>
+  <data name="Osk_Control_ShiftLeftHand" xml:space="preserve"><value>Maiusc per il tasto successivo, mano sinistra</value></data>
+  <data name="Osk_Control_ShiftRightHand" xml:space="preserve"><value>Maiusc per il tasto successivo, mano destra</value></data>
+  <data name="Osk_Control_SymbolsPage" xml:space="preserve"><value>Pagina dei simboli</value></data>
+  <data name="Osk_Control_CursorLeft" xml:space="preserve"><value>Cursore a sinistra</value></data>
+  <data name="Osk_Control_CursorRight" xml:space="preserve"><value>Cursore a destra</value></data>
+  <data name="Osk_Control_MoveUp" xml:space="preserve"><value>Sposta su</value></data>
+  <data name="Osk_Control_MoveDown" xml:space="preserve"><value>Sposta giù</value></data>
+  <data name="Osk_Control_MoveLeft" xml:space="preserve"><value>Sposta a sinistra</value></data>
+  <data name="Osk_Control_MoveRight" xml:space="preserve"><value>Sposta a destra</value></data>
+  <data name="Osk_Control_Suggestion_Format" xml:space="preserve"><value>Suggerimento {0}</value></data>
+  <data name="Osk_Control_MoveKeyboard" xml:space="preserve"><value>Sposta la tastiera (tieni premuto)</value></data>
+  <data name="Osk_Control_TypeLeftHalf" xml:space="preserve"><value>Digita metà sinistra</value></data>
+  <data name="Osk_Control_TypeRightHalf" xml:space="preserve"><value>Digita metà destra</value></data>
+  <data name="Osk_Control_ArrowUp" xml:space="preserve"><value>Freccia su</value></data>
+  <data name="Osk_Control_ArrowDown" xml:space="preserve"><value>Freccia giù</value></data>
+  <data name="Osk_Control_ArrowLeft" xml:space="preserve"><value>Freccia sinistra</value></data>
+  <data name="Osk_Control_ArrowRight" xml:space="preserve"><value>Freccia destra</value></data>
+  <data name="Osk_Control_PickWest" xml:space="preserve"><value>Scegli ovest</value></data>
+  <data name="Osk_Control_PickNorth" xml:space="preserve"><value>Scegli nord</value></data>
+  <data name="Osk_Control_PickEast" xml:space="preserve"><value>Scegli est</value></data>
+  <data name="Osk_Control_PickSouth" xml:space="preserve"><value>Scegli sud</value></data>
+  <data name="Osk_Control_Capitals" xml:space="preserve"><value>Maiuscole e simboli (tieni premuto)</value></data>
+  <data name="Osk_Control_Numbers" xml:space="preserve"><value>Numeri e parentesi (tieni premuto)</value></data>
+  <data name="Osk_Control_Home" xml:space="preserve"><value>Home</value></data>
+  <data name="Osk_Control_End" xml:space="preserve"><value>Fine</value></data>
+  <data name="Menu_Keyboard_OpenPress" xml:space="preserve"><value>Si apre con la</value></data>
+  <data name="Menu_Keyboard_OpenPress_Tip" xml:space="preserve"><value>La pressione di «Si apre con» che apre o chiude la tastiera. Le assegnazioni Pressione prolungata e Doppia pressione di Steam vengono importate come «Alla pressione prolungata» e «Alla doppia pressione», così una pressione breve dello stesso input mantiene la propria assegnazione.</value></data>
+  <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>Reimposta Si apre con la</value></data>
+  <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>Apre o chiude la tastiera quando «Si apre con» resta premuto per il tempo di mantenimento. Una pressione più breve non fa nulla.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>Apre o chiude la tastiera quando «Si apre con» viene premuto due volte entro la finestra di pressione.</value></data>
 </root>

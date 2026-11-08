@@ -4927,4 +4927,207 @@
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASDはマウスの動きがWindowsに届かないようにしていました。PadForgeはキーとマウスボタンは届かないようにしますが、動きは対象外のため、ポインターは引き続き動きます。</value></data>
   <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>PadForgeの仮想コントローラーは、コントローラーのモーションセンサーからのみモーションを受け取ります。</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windowsは、ボタンの操作で{0}からこのプロファイルに戻っていました。PadForgeで同じことをするには、プロファイルページでこのプロファイル用のプロファイルショートカットを追加してください。</value></data>
+  <data name="Osk_Style_Grid" xml:space="preserve">
+    <value>グリッド</value>
+  </data>
+  <data name="Osk_Style_Split" xml:space="preserve">
+    <value>分割</value>
+  </data>
+  <data name="Osk_Style_Wheel" xml:space="preserve">
+    <value>ホイール</value>
+  </data>
+  <data name="Osk_CloseKeyboard" xml:space="preserve">
+    <value>キーボードを閉じる</value>
+  </data>
+  <data name="Osk_Drag" xml:space="preserve">
+    <value>ドラッグしてキーボードを移動</value>
+  </data>
+  <data name="Osk_Wheel_Keys" xml:space="preserve">
+    <value>キー</value>
+  </data>
+  <data name="Osk_Key_Tab" xml:space="preserve">
+    <value>Tab</value>
+  </data>
+  <data name="Osk_Key_Caps" xml:space="preserve">
+    <value>Caps</value>
+  </data>
+  <data name="Osk_Key_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Osk_Key_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Key_Ctrl" xml:space="preserve">
+    <value>Ctrl</value>
+  </data>
+  <data name="Osk_Key_Win" xml:space="preserve">
+    <value>Win</value>
+  </data>
+  <data name="Osk_Key_Alt" xml:space="preserve">
+    <value>Alt</value>
+  </data>
+  <data name="Osk_Key_AltGr" xml:space="preserve">
+    <value>AltGr</value>
+  </data>
+  <data name="Osk_Key_Symbols" xml:space="preserve">
+    <value>&amp;123</value>
+  </data>
+  <data name="Osk_Key_Letters" xml:space="preserve">
+    <value>abc</value>
+  </data>
+  <data name="Osk_Key_Space" xml:space="preserve">
+    <value>Space</value>
+  </data>
+  <data name="Osk_Key_Esc" xml:space="preserve">
+    <value>Esc</value>
+  </data>
+  <data name="Osk_Key_Del" xml:space="preserve">
+    <value>Del</value>
+  </data>
+  <data name="Osk_Key_Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Osk_Key_End" xml:space="preserve">
+    <value>End</value>
+  </data>
+  <data name="Osk_Key_PgUp" xml:space="preserve">
+    <value>PgUp</value>
+  </data>
+  <data name="Osk_Key_PgDn" xml:space="preserve">
+    <value>PgDn</value>
+  </data>
+  <data name="Osk_Key_Ins" xml:space="preserve">
+    <value>Ins</value>
+  </data>
+  <data name="Osk_Key_PrtSc" xml:space="preserve">
+    <value>PrtSc</value>
+  </data>
+  <data name="Osk_Hint_Type" xml:space="preserve">
+    <value>入力</value>
+  </data>
+  <data name="Osk_Hint_TypeLeft" xml:space="preserve">
+    <value>左を入力</value>
+  </data>
+  <data name="Osk_Hint_TypeRight" xml:space="preserve">
+    <value>右を入力</value>
+  </data>
+  <data name="Osk_Hint_Backspace" xml:space="preserve">
+    <value>Backspace</value>
+  </data>
+  <data name="Osk_Hint_Space" xml:space="preserve">
+    <value>スペース</value>
+  </data>
+  <data name="Osk_Hint_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Osk_Hint_Close" xml:space="preserve">
+    <value>閉じる</value>
+  </data>
+  <data name="Osk_Hint_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Hint_Symbols" xml:space="preserve">
+    <value>記号</value>
+  </data>
+  <data name="Osk_Hint_Cursor" xml:space="preserve">
+    <value>カーソル</value>
+  </data>
+  <data name="Osk_Hint_Suggestion" xml:space="preserve">
+    <value>候補</value>
+  </data>
+  <data name="Osk_Hint_Capitals" xml:space="preserve">
+    <value>長押し: 大文字</value>
+  </data>
+  <data name="Osk_Hint_Numbers" xml:space="preserve">
+    <value>長押し: 数字</value>
+  </data>
+  <data name="Osk_Hint_Keys" xml:space="preserve">
+    <value>長押し: キー</value>
+  </data>
+  <data name="Osk_Hint_Move" xml:space="preserve">
+    <value>長押し: 移動</value>
+  </data>
+  <data name="Osk_Input_Dpad" xml:space="preserve">
+    <value>十字キー</value>
+  </data>
+  <data name="Menu_Style_Keyboard" xml:space="preserve"><value>キーボード</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>ラジアルリングとタッチグリッドはセルの割り当てを実行します。キーボードは、使用中の Windows のレイアウトのキーを入力します。</value></data>
+  <data name="Menu_KeyboardLayout" xml:space="preserve"><value>レイアウト</value></data>
+  <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>キーボードのキーの並べ方と、コントローラーでキーを選ぶ方法です。</value></data>
+  <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>ハイライトは1つで、スティックまたは4つの入力で動かします。Windows、Xbox、Steam と同じレイアウトです。</value></data>
+  <data name="Menu_KeyboardLayout_Split_Desc" xml:space="preserve"><value>キーボードの左右それぞれに、専用の操作入力と入力用の入力があります。</value></data>
+  <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>デイジーホイール: 8つのグループから1つ選び、その4文字から1つ選びます。</value></data>
+  <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>レイアウトをリセット</value></data>
+  <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>開く操作</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>このスロットに割り当てたデバイスの任意の入力、または2つの同時押しです。同じ入力でキーボードを閉じます。ただし、その入力をキーボードの操作にも使っている場合は閉じません。空の場合、キーボードを開く入力はありません。</value></data>
+  <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>開く操作をリセット</value></data>
+  <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>テキストボックス選択時に開く</value></data>
+  <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>Windows アプリとブラウザーで、ボタンなしで開きます。ゲームは独自のテキストボックスを描画するため、ゲームでは上の入力で開くか、レイヤーがメニューを開いたままにするがオンの場合はそのレイヤーで開きます。</value></data>
+  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>ハイライトをキー上で動かす入力です。このスロットに割り当てた物理コントローラーから読み取ります。</value></data>
+  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>左半分の操作入力</value></data>
+  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>右半分の操作入力</value></data>
+  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>グループ選択入力</value></data>
+  <data name="Menu_Reset_Host2" xml:space="preserve"><value>右半分の操作入力をリセット</value></data>
+  <data name="Menu_Host_DPad" xml:space="preserve"><value>十字キー</value></data>
+  <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>フェイスボタン</value></data>
+  <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>キーボード操作</value></data>
+  <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>{0} レイアウト、操作 {1} 個</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>このスロットに割り当てた物理コントローラーから読み取ります。各操作には、そのどれかの任意の入力を割り当てられます。ボタン、軸の方向、ハット、タッチパッド、または2つの同時押しです。記録ボタンをクリックして入力を押すか、1つの入力を押したままもう1つを押すと組み合わせになります。すべてマッピングで順番にすべて記録します。</value></data>
+  <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>すべてマッピング</value></data>
+  <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>レイアウトのすべての操作を順番に記録します。ステータス行に、入力を押す操作の名前が表示されます。</value></data>
+  <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>{0} の入力を押してください ({1}/{2})</value></data>
+  <data name="Menu_Keyboard_MapAll_Done" xml:space="preserve"><value>キーボードのすべての操作を記録しました。</value></data>
+  <data name="Menu_Reset_KeyboardControls" xml:space="preserve"><value>キーボード操作をリセット</value></data>
+  <data name="Menu_Keyboard_Reset_Format" xml:space="preserve"><value>{0} を {1} にリセット</value></data>
+  <data name="Menu_Keyboard_RecordingPrompt" xml:space="preserve"><value>このスロットに割り当てたデバイスの入力を押してください</value></data>
+  <data name="Menu_Keyboard_Card" xml:space="preserve"><value>キーボード</value></data>
+  <data name="Menu_TypesThrough" xml:space="preserve"><value>入力経路</value></data>
+  <data name="Menu_TypesThrough_Caption" xml:space="preserve"><value>Windows 入力は各キーを Windows 経由で入力します。プログラムはそれがソフトウェアからの入力だと判別できます。キーボード + マウスのスロットのキーボードは、そのスロットのキーボード設定と同じ方法で入力します。HIDMaestro の仮想キーボードはそのキーボードのモデルとして入力し、プログラムからはハードウェアとして見えます。キーボードメニューが自動でこれを作成するので、キーボード + マウスのスロットは不要です。選んだキーボードにないキーと、どのキーでも入力できない文字は、引き続き Windows 入力経由で入力します。</value></data>
+  <data name="Menu_TypesThrough_Slot_Format" xml:space="preserve"><value>{0} と同じキーボード</value></data>
+  <data name="Menu_Reset_TypesThrough" xml:space="preserve"><value>入力経路をリセット</value></data>
+  <data name="Menu_FunctionRow" xml:space="preserve"><value>ファンクション行</value></data>
+  <data name="Menu_FunctionRow_Caption" xml:space="preserve"><value>Esc、F1 から F12、Del です。キーボードの Fn キーでも切り替えられます。</value></data>
+  <data name="Menu_WordSuggestions" xml:space="preserve"><value>単語の候補</value></data>
+  <data name="Menu_WordSuggestions_Caption" xml:space="preserve"><value>Windows のテキスト予測から取得します。Windows にインストールされている言語が対象です。</value></data>
+  <data name="Menu_SymbolsPage" xml:space="preserve"><value>記号ページ</value></data>
+  <data name="Menu_SymbolsPage_Tip" xml:space="preserve"><value>キーボードの記号ページの文字です。Unicode 文字として入力されます。</value></data>
+  <data name="Menu_Reset_Symbols" xml:space="preserve"><value>記号ページをリセット</value></data>
+  <data name="Menu_Keyboard_Overlay_Caption" xml:space="preserve"><value>すべてのメニューに共通の行です。キーボードの上部バーまたは角のグリップをドラッグするか、キーボードを移動を長押しして設定することもできます。</value></data>
+  <data name="Osk_Title" xml:space="preserve"><value>スクリーンキーボード</value></data>
+  <data name="Osk_Control_TypeKey" xml:space="preserve"><value>キーを入力</value></data>
+  <data name="Osk_Control_Backspace" xml:space="preserve"><value>Backspace</value></data>
+  <data name="Osk_Control_Space" xml:space="preserve"><value>Space</value></data>
+  <data name="Osk_Control_Enter" xml:space="preserve"><value>Enter</value></data>
+  <data name="Osk_Control_Close" xml:space="preserve"><value>閉じる</value></data>
+  <data name="Osk_Control_ShiftNextKey" xml:space="preserve"><value>次のキーに Shift</value></data>
+  <data name="Osk_Control_ShiftLeftHand" xml:space="preserve"><value>次のキーに Shift (左手)</value></data>
+  <data name="Osk_Control_ShiftRightHand" xml:space="preserve"><value>次のキーに Shift (右手)</value></data>
+  <data name="Osk_Control_SymbolsPage" xml:space="preserve"><value>記号ページ</value></data>
+  <data name="Osk_Control_CursorLeft" xml:space="preserve"><value>カーソルを左へ</value></data>
+  <data name="Osk_Control_CursorRight" xml:space="preserve"><value>カーソルを右へ</value></data>
+  <data name="Osk_Control_MoveUp" xml:space="preserve"><value>上へ移動</value></data>
+  <data name="Osk_Control_MoveDown" xml:space="preserve"><value>下へ移動</value></data>
+  <data name="Osk_Control_MoveLeft" xml:space="preserve"><value>左へ移動</value></data>
+  <data name="Osk_Control_MoveRight" xml:space="preserve"><value>右へ移動</value></data>
+  <data name="Osk_Control_Suggestion_Format" xml:space="preserve"><value>候補 {0}</value></data>
+  <data name="Osk_Control_MoveKeyboard" xml:space="preserve"><value>キーボードを移動 (長押し)</value></data>
+  <data name="Osk_Control_TypeLeftHalf" xml:space="preserve"><value>左半分を入力</value></data>
+  <data name="Osk_Control_TypeRightHalf" xml:space="preserve"><value>右半分を入力</value></data>
+  <data name="Osk_Control_ArrowUp" xml:space="preserve"><value>上矢印</value></data>
+  <data name="Osk_Control_ArrowDown" xml:space="preserve"><value>下矢印</value></data>
+  <data name="Osk_Control_ArrowLeft" xml:space="preserve"><value>左矢印</value></data>
+  <data name="Osk_Control_ArrowRight" xml:space="preserve"><value>右矢印</value></data>
+  <data name="Osk_Control_PickWest" xml:space="preserve"><value>西を選択</value></data>
+  <data name="Osk_Control_PickNorth" xml:space="preserve"><value>北を選択</value></data>
+  <data name="Osk_Control_PickEast" xml:space="preserve"><value>東を選択</value></data>
+  <data name="Osk_Control_PickSouth" xml:space="preserve"><value>南を選択</value></data>
+  <data name="Osk_Control_Capitals" xml:space="preserve"><value>大文字と記号 (長押し)</value></data>
+  <data name="Osk_Control_Numbers" xml:space="preserve"><value>数字と括弧 (長押し)</value></data>
+  <data name="Osk_Control_Home" xml:space="preserve"><value>Home</value></data>
+  <data name="Osk_Control_End" xml:space="preserve"><value>End</value></data>
+  <data name="Menu_Keyboard_OpenPress" xml:space="preserve"><value>開く押し方</value></data>
+  <data name="Menu_Keyboard_OpenPress_Tip" xml:space="preserve"><value>キーボードを開閉する、開く操作の押し方です。Steam の長押しとダブルプレスの割り当ては長押し時とダブルプレス時としてインポートされるので、同じ入力の短押しは別の割り当てのまま使えます。</value></data>
+  <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>開く押し方をリセット</value></data>
+  <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>開く操作を保持時間のあいだ押し続けると、キーボードを開閉します。それより短い押し方では何も起きません。</value></data>
+  <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>開く操作を連続プレス時間内に2回押すと、キーボードを開閉します。</value></data>
 </root>

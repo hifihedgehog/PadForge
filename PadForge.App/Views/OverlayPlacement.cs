@@ -6,8 +6,8 @@ using System.Windows.Interop;
 namespace PadForge.Views
 {
     /// <summary>
-    /// Where an overlay window sits, for the Touchpad Overlay and the Screen
-    /// Overlay. Window.Left/Top/Width/Height are DIPs scaled to the target
+    /// Where an overlay window sits, for the Touchpad Overlay, the Screen
+    /// Overlay and the On-Screen Keyboard. Window.Left/Top/Width/Height are DIPs scaled to the target
     /// monitor's DPI. Screen.Bounds and WorkingArea are physical pixels. Mixing
     /// them silently breaks on non-100% displays (e.g. on a 250% 4K monitor a
     /// centered-by-px window lands ~1.5x past the edge).
@@ -84,9 +84,16 @@ namespace PadForge.Views
         /// </summary>
         public static void EnsureOnScreen(Window window, int preferredMonitor)
         {
+            if (!IsOnScreen(window)) MoveToMonitor(window, preferredMonitor);
+        }
+
+        /// <summary>True when the window's physical-px rect overlaps any
+        /// monitor's working area, or when it has no window rect yet.</summary>
+        public static bool IsOnScreen(Window window)
+        {
             var hwnd = new WindowInteropHelper(window).Handle;
             if (hwnd == IntPtr.Zero || !GetWindowRect(hwnd, out RECT r))
-                return;
+                return true;
 
             var screens = System.Windows.Forms.Screen.AllScreens;
             foreach (var screen in screens)
@@ -94,10 +101,9 @@ namespace PadForge.Views
                 var b = screen.WorkingArea;
                 if (r.Right > b.Left && r.Left < b.Right &&
                     r.Bottom > b.Top && r.Top < b.Bottom)
-                    return; // any overlap is enough
+                    return true; // any overlap is enough
             }
-
-            MoveToMonitor(window, preferredMonitor);
+            return false;
         }
 
         /// <summary>Returns the monitor index the window's center point is on.</summary>

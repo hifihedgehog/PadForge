@@ -4976,4 +4976,207 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD a împiedicat mișcarea mouse-ului să ajungă în Windows. PadForge blochează tastele și butoanele mouse-ului, dar nu și mișcarea, deci cursorul se mișcă în continuare.</value></data>
   <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>Controllerele virtuale din PadForge preiau mișcarea doar de la senzorul de mișcare al unui controller.</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows revenea la acest profil din {0} la apăsarea unui buton. Pentru a face acest lucru în PadForge, adăugați o comandă rapidă pentru profiluri pentru acest profil în pagina Profiluri.</value></data>
+  <data name="Osk_Style_Grid" xml:space="preserve">
+    <value>Grilă</value>
+  </data>
+  <data name="Osk_Style_Split" xml:space="preserve">
+    <value>Divizat</value>
+  </data>
+  <data name="Osk_Style_Wheel" xml:space="preserve">
+    <value>Roată</value>
+  </data>
+  <data name="Osk_CloseKeyboard" xml:space="preserve">
+    <value>Închide tastatura</value>
+  </data>
+  <data name="Osk_Drag" xml:space="preserve">
+    <value>Trageți pentru a muta tastatura</value>
+  </data>
+  <data name="Osk_Wheel_Keys" xml:space="preserve">
+    <value>Taste</value>
+  </data>
+  <data name="Osk_Key_Tab" xml:space="preserve">
+    <value>Tab</value>
+  </data>
+  <data name="Osk_Key_Caps" xml:space="preserve">
+    <value>Caps</value>
+  </data>
+  <data name="Osk_Key_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Osk_Key_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Key_Ctrl" xml:space="preserve">
+    <value>Ctrl</value>
+  </data>
+  <data name="Osk_Key_Win" xml:space="preserve">
+    <value>Win</value>
+  </data>
+  <data name="Osk_Key_Alt" xml:space="preserve">
+    <value>Alt</value>
+  </data>
+  <data name="Osk_Key_AltGr" xml:space="preserve">
+    <value>AltGr</value>
+  </data>
+  <data name="Osk_Key_Symbols" xml:space="preserve">
+    <value>&amp;123</value>
+  </data>
+  <data name="Osk_Key_Letters" xml:space="preserve">
+    <value>abc</value>
+  </data>
+  <data name="Osk_Key_Space" xml:space="preserve">
+    <value>Spațiu</value>
+  </data>
+  <data name="Osk_Key_Esc" xml:space="preserve">
+    <value>Esc</value>
+  </data>
+  <data name="Osk_Key_Del" xml:space="preserve">
+    <value>Del</value>
+  </data>
+  <data name="Osk_Key_Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Osk_Key_End" xml:space="preserve">
+    <value>End</value>
+  </data>
+  <data name="Osk_Key_PgUp" xml:space="preserve">
+    <value>PgUp</value>
+  </data>
+  <data name="Osk_Key_PgDn" xml:space="preserve">
+    <value>PgDn</value>
+  </data>
+  <data name="Osk_Key_Ins" xml:space="preserve">
+    <value>Ins</value>
+  </data>
+  <data name="Osk_Key_PrtSc" xml:space="preserve">
+    <value>PrtSc</value>
+  </data>
+  <data name="Osk_Hint_Type" xml:space="preserve">
+    <value>Tastare</value>
+  </data>
+  <data name="Osk_Hint_TypeLeft" xml:space="preserve">
+    <value>Tastare stânga</value>
+  </data>
+  <data name="Osk_Hint_TypeRight" xml:space="preserve">
+    <value>Tastare dreapta</value>
+  </data>
+  <data name="Osk_Hint_Backspace" xml:space="preserve">
+    <value>Backspace</value>
+  </data>
+  <data name="Osk_Hint_Space" xml:space="preserve">
+    <value>Spațiu</value>
+  </data>
+  <data name="Osk_Hint_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Osk_Hint_Close" xml:space="preserve">
+    <value>Închidere</value>
+  </data>
+  <data name="Osk_Hint_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Hint_Symbols" xml:space="preserve">
+    <value>Simboluri</value>
+  </data>
+  <data name="Osk_Hint_Cursor" xml:space="preserve">
+    <value>Cursor</value>
+  </data>
+  <data name="Osk_Hint_Suggestion" xml:space="preserve">
+    <value>Sugestie</value>
+  </data>
+  <data name="Osk_Hint_Capitals" xml:space="preserve">
+    <value>Țineți: majuscule</value>
+  </data>
+  <data name="Osk_Hint_Numbers" xml:space="preserve">
+    <value>Țineți: cifre</value>
+  </data>
+  <data name="Osk_Hint_Keys" xml:space="preserve">
+    <value>Țineți: taste</value>
+  </data>
+  <data name="Osk_Hint_Move" xml:space="preserve">
+    <value>Țineți: mutare</value>
+  </data>
+  <data name="Osk_Input_Dpad" xml:space="preserve">
+    <value>D-pad</value>
+  </data>
+  <data name="Menu_Style_Keyboard" xml:space="preserve"><value>Tastatură</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>Inel radial și Grilă tactilă declanșează asocierile celulelor. Tastatură introduce tastele aspectului Windows în uz.</value></data>
+  <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Aspect</value></data>
+  <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Cum își aranjează tastatura tastele și cum le alege un controler.</value></data>
+  <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>O singură evidențiere, mutată cu un stick sau cu patru intrări, aspectul folosit de Windows, Xbox și Steam.</value></data>
+  <data name="Menu_KeyboardLayout_Split_Desc" xml:space="preserve"><value>Fiecare jumătate a tastaturii are propria intrare de control și propria intrare de tastare.</value></data>
+  <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>Roata daisy: alegeți unul din opt grupuri, apoi unul din cele patru caractere ale sale.</value></data>
+  <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>Resetare aspect</value></data>
+  <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>Se deschide cu</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Orice intrare de pe un dispozitiv atribuit acestui slot, sau două apăsate împreună. Aceeași intrare închide tastatura, dacă o comandă a tastaturii nu o folosește și ea. Gol înseamnă că nicio intrare nu o deschide.</value></data>
+  <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>Resetare „Se deschide cu”</value></data>
+  <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>Se deschide când o casetă de text este selectată</value></data>
+  <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>În aplicațiile Windows și în browsere, fără niciun buton. Jocurile își desenează propriile casete de text, deci într-un joc se deschide cu intrarea de mai sus sau cu stratul ei, când „Stratul menține meniul deschis” este activat.</value></data>
+  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>Intrarea care mută evidențierea peste taste, citită de la controlerele fizice atribuite slotului.</value></data>
+  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>Jumătatea stângă controlată cu</value></data>
+  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>Jumătatea dreaptă controlată cu</value></data>
+  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>Alegerea grupului cu</value></data>
+  <data name="Menu_Reset_Host2" xml:space="preserve"><value>Resetare „Jumătatea dreaptă controlată cu”</value></data>
+  <data name="Menu_Host_DPad" xml:space="preserve"><value>D-pad</value></data>
+  <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>Butoane frontale</value></data>
+  <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>Comenzi tastatură</value></data>
+  <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>Aspect {0}, {1} comenzi</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Citite de la controlerele fizice atribuite acestui slot. Fiecare comandă acceptă orice intrare de pe oricare dintre ele: un buton, o direcție de axă, un hat, un touchpad sau două apăsate împreună. Faceți clic pe un buton de înregistrare și apăsați intrarea, sau mențineți o intrare și apăsați a doua pentru o combinație. Mapare completă le înregistrează în ordine.</value></data>
+  <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>Mapare completă</value></data>
+  <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>Înregistrează în ordine fiecare comandă a aspectului. Linia de stare numește comanda pentru care apăsați o intrare.</value></data>
+  <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>Apăsați intrarea pentru {0} ({1} din {2})</value></data>
+  <data name="Menu_Keyboard_MapAll_Done" xml:space="preserve"><value>Toate comenzile tastaturii sunt înregistrate.</value></data>
+  <data name="Menu_Reset_KeyboardControls" xml:space="preserve"><value>Resetare comenzi tastatură</value></data>
+  <data name="Menu_Keyboard_Reset_Format" xml:space="preserve"><value>Resetare {0} la {1}</value></data>
+  <data name="Menu_Keyboard_RecordingPrompt" xml:space="preserve"><value>Apăsați o intrare pe orice dispozitiv atribuit acestui slot</value></data>
+  <data name="Menu_Keyboard_Card" xml:space="preserve"><value>Tastatură</value></data>
+  <data name="Menu_TypesThrough" xml:space="preserve"><value>Tastează prin</value></data>
+  <data name="Menu_TypesThrough_Caption" xml:space="preserve"><value>Intrare Windows tastează fiecare tastă prin Windows, iar programele pot vedea că provine din software. Tastatura unui slot Tastatură + mouse tastează așa cum o face setarea Tastatură a slotului respectiv. O tastatură virtuală HIDMaestro tastează ca acel model de tastatură, pe care programele îl văd ca hardware. Meniul tastaturii o creează singur, deci nu are nevoie de un slot Tastatură + mouse. O tastă pe care tastatura aleasă nu o are și un caracter pe care nicio tastă nu îl scrie trec totuși prin Intrare Windows.</value></data>
+  <data name="Menu_TypesThrough_Slot_Format" xml:space="preserve"><value>Aceeași tastatură ca {0}</value></data>
+  <data name="Menu_Reset_TypesThrough" xml:space="preserve"><value>Resetare „Tastează prin”</value></data>
+  <data name="Menu_FunctionRow" xml:space="preserve"><value>Rândul de funcții</value></data>
+  <data name="Menu_FunctionRow_Caption" xml:space="preserve"><value>Esc, F1 până la F12 și Del. Tasta Fn de pe tastatură le comută și ea.</value></data>
+  <data name="Menu_WordSuggestions" xml:space="preserve"><value>Sugestii de cuvinte</value></data>
+  <data name="Menu_WordSuggestions_Caption" xml:space="preserve"><value>Din predicția de text din Windows, pentru limbile instalate în Windows.</value></data>
+  <data name="Menu_SymbolsPage" xml:space="preserve"><value>Pagina de simboluri</value></data>
+  <data name="Menu_SymbolsPage_Tip" xml:space="preserve"><value>Caracterele de pe pagina de simboluri a tastaturii. Se tastează ca caractere Unicode.</value></data>
+  <data name="Menu_Reset_Symbols" xml:space="preserve"><value>Resetare pagină de simboluri</value></data>
+  <data name="Menu_Keyboard_Overlay_Caption" xml:space="preserve"><value>Rândurile pe care le are deja fiecare meniu. Trasarea barei de sus sau a mânerului de colț al tastaturii, ori menținerea apăsată a comenzii Mută tastatura, le setează și ea.</value></data>
+  <data name="Osk_Title" xml:space="preserve"><value>Tastatură pe ecran</value></data>
+  <data name="Osk_Control_TypeKey" xml:space="preserve"><value>Tastare tastă</value></data>
+  <data name="Osk_Control_Backspace" xml:space="preserve"><value>Backspace</value></data>
+  <data name="Osk_Control_Space" xml:space="preserve"><value>Spațiu</value></data>
+  <data name="Osk_Control_Enter" xml:space="preserve"><value>Enter</value></data>
+  <data name="Osk_Control_Close" xml:space="preserve"><value>Închidere</value></data>
+  <data name="Osk_Control_ShiftNextKey" xml:space="preserve"><value>Shift pentru tasta următoare</value></data>
+  <data name="Osk_Control_ShiftLeftHand" xml:space="preserve"><value>Shift pentru tasta următoare, mâna stângă</value></data>
+  <data name="Osk_Control_ShiftRightHand" xml:space="preserve"><value>Shift pentru tasta următoare, mâna dreaptă</value></data>
+  <data name="Osk_Control_SymbolsPage" xml:space="preserve"><value>Pagina de simboluri</value></data>
+  <data name="Osk_Control_CursorLeft" xml:space="preserve"><value>Cursor la stânga</value></data>
+  <data name="Osk_Control_CursorRight" xml:space="preserve"><value>Cursor la dreapta</value></data>
+  <data name="Osk_Control_MoveUp" xml:space="preserve"><value>Mutare în sus</value></data>
+  <data name="Osk_Control_MoveDown" xml:space="preserve"><value>Mutare în jos</value></data>
+  <data name="Osk_Control_MoveLeft" xml:space="preserve"><value>Mutare la stânga</value></data>
+  <data name="Osk_Control_MoveRight" xml:space="preserve"><value>Mutare la dreapta</value></data>
+  <data name="Osk_Control_Suggestion_Format" xml:space="preserve"><value>Sugestia {0}</value></data>
+  <data name="Osk_Control_MoveKeyboard" xml:space="preserve"><value>Mutare tastatură (mențineți)</value></data>
+  <data name="Osk_Control_TypeLeftHalf" xml:space="preserve"><value>Tastare jumătatea stângă</value></data>
+  <data name="Osk_Control_TypeRightHalf" xml:space="preserve"><value>Tastare jumătatea dreaptă</value></data>
+  <data name="Osk_Control_ArrowUp" xml:space="preserve"><value>Săgeată sus</value></data>
+  <data name="Osk_Control_ArrowDown" xml:space="preserve"><value>Săgeată jos</value></data>
+  <data name="Osk_Control_ArrowLeft" xml:space="preserve"><value>Săgeată stânga</value></data>
+  <data name="Osk_Control_ArrowRight" xml:space="preserve"><value>Săgeată dreapta</value></data>
+  <data name="Osk_Control_PickWest" xml:space="preserve"><value>Alegere vest</value></data>
+  <data name="Osk_Control_PickNorth" xml:space="preserve"><value>Alegere nord</value></data>
+  <data name="Osk_Control_PickEast" xml:space="preserve"><value>Alegere est</value></data>
+  <data name="Osk_Control_PickSouth" xml:space="preserve"><value>Alegere sud</value></data>
+  <data name="Osk_Control_Capitals" xml:space="preserve"><value>Majuscule și simboluri (mențineți)</value></data>
+  <data name="Osk_Control_Numbers" xml:space="preserve"><value>Cifre și paranteze (mențineți)</value></data>
+  <data name="Osk_Control_Home" xml:space="preserve"><value>Home</value></data>
+  <data name="Osk_Control_End" xml:space="preserve"><value>End</value></data>
+  <data name="Menu_Keyboard_OpenPress" xml:space="preserve"><value>Se deschide la</value></data>
+  <data name="Menu_Keyboard_OpenPress_Tip" xml:space="preserve"><value>Apăsarea lui „Se deschide cu” care deschide sau închide tastatura. Asocierile Steam „Apăsare lungă” și „Apăsare dublă” se importă ca La apăsare lungă și La apăsare dublă, astfel încât o apăsare scurtă a aceleiași intrări își păstrează asocierea proprie.</value></data>
+  <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>Resetare „Se deschide la”</value></data>
+  <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>Deschide sau închide tastatura după ce „Se deschide cu” este menținut cât timpul de menținere. O apăsare mai scurtă nu face nimic.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>Deschide sau închide tastatura când „Se deschide cu” este apăsat de două ori în fereastra de apăsare.</value></data>
 </root>

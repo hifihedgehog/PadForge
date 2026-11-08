@@ -352,6 +352,23 @@ namespace SDL3
         public static bool SDL_GetGamepadButton(IntPtr gamepad, int button) =>
             _SDL_GetGamepadButton(gamepad, button);
 
+        /// <summary>The label SDL gives a face button for this gamepad's face
+        /// style (SDL_gamepad.h, since SDL 3.2): A B X Y, Cross Circle Square
+        /// Triangle, or a Nintendo pad's B at the south position. One of the
+        /// SDL_GAMEPAD_BUTTON_LABEL_* values.</summary>
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
+        public static extern int SDL_GetGamepadButtonLabel(IntPtr gamepad, int button);
+
+        public const int SDL_GAMEPAD_BUTTON_LABEL_UNKNOWN = 0;
+        public const int SDL_GAMEPAD_BUTTON_LABEL_A = 1;
+        public const int SDL_GAMEPAD_BUTTON_LABEL_B = 2;
+        public const int SDL_GAMEPAD_BUTTON_LABEL_X = 3;
+        public const int SDL_GAMEPAD_BUTTON_LABEL_Y = 4;
+        public const int SDL_GAMEPAD_BUTTON_LABEL_CROSS = 5;
+        public const int SDL_GAMEPAD_BUTTON_LABEL_CIRCLE = 6;
+        public const int SDL_GAMEPAD_BUTTON_LABEL_SQUARE = 7;
+        public const int SDL_GAMEPAD_BUTTON_LABEL_TRIANGLE = 8;
+
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GamepadHasButton")]
         [return: MarshalAs(UnmanagedType.U1)]
         private static extern bool _SDL_GamepadHasButton(IntPtr gamepad, int button);

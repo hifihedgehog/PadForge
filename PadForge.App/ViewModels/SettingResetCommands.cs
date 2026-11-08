@@ -975,7 +975,10 @@ namespace PadForge.ViewModels
             nameof(PosXPercent) or
             nameof(PosYPercent) or
             nameof(ScalePercent) or
-            nameof(OpacityPercent);
+            nameof(OpacityPercent) or
+            nameof(OpenOnTextFocus) or
+            nameof(FunctionRow) or
+            nameof(Suggestions);
 
         private void ResetSetting(string name)
         {
@@ -984,6 +987,21 @@ namespace PadForge.ViewModels
                 case nameof(Enabled):
                 {
                     Enabled = true;
+                    break;
+                }
+                case nameof(OpenOnTextFocus):
+                {
+                    OpenOnTextFocus = false;
+                    break;
+                }
+                case nameof(FunctionRow):
+                {
+                    FunctionRow = false;
+                    break;
+                }
+                case nameof(Suggestions):
+                {
+                    Suggestions = true;
                     break;
                 }
                 case nameof(ShowLabels):
@@ -1003,7 +1021,8 @@ namespace PadForge.ViewModels
                 }
                 case nameof(PosYPercent):
                 {
-                    PosYPercent = 50;
+                    // A keyboard (#566) sits at the bottom by default.
+                    PosYPercent = IsKeyboard ? PadForge.Engine.Menus.KeyboardMenuDefaults.PosYPercent : 50;
                     break;
                 }
                 case nameof(ScalePercent):

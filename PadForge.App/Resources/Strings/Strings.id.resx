@@ -4976,4 +4976,207 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD mencegah gerakan mouse mencapai Windows. PadForge menahan tombol keyboard dan tombol mouse, tetapi tidak gerakannya, jadi penunjuk tetap bergerak.</value></data>
   <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>Kontroler virtual PadForge hanya menerima gerakan dari sensor gerak kontroler.</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows kembali ke profil ini dari {0} lewat sebuah tombol. Untuk melakukannya di PadForge, tambahkan Pintasan profil untuk profil ini di halaman Profil.</value></data>
+  <data name="Osk_Style_Grid" xml:space="preserve">
+    <value>Kisi</value>
+  </data>
+  <data name="Osk_Style_Split" xml:space="preserve">
+    <value>Terbagi</value>
+  </data>
+  <data name="Osk_Style_Wheel" xml:space="preserve">
+    <value>Roda</value>
+  </data>
+  <data name="Osk_CloseKeyboard" xml:space="preserve">
+    <value>Tutup keyboard</value>
+  </data>
+  <data name="Osk_Drag" xml:space="preserve">
+    <value>Seret untuk memindahkan keyboard</value>
+  </data>
+  <data name="Osk_Wheel_Keys" xml:space="preserve">
+    <value>Tombol</value>
+  </data>
+  <data name="Osk_Key_Tab" xml:space="preserve">
+    <value>Tab</value>
+  </data>
+  <data name="Osk_Key_Caps" xml:space="preserve">
+    <value>Caps</value>
+  </data>
+  <data name="Osk_Key_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Osk_Key_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Key_Ctrl" xml:space="preserve">
+    <value>Ctrl</value>
+  </data>
+  <data name="Osk_Key_Win" xml:space="preserve">
+    <value>Win</value>
+  </data>
+  <data name="Osk_Key_Alt" xml:space="preserve">
+    <value>Alt</value>
+  </data>
+  <data name="Osk_Key_AltGr" xml:space="preserve">
+    <value>AltGr</value>
+  </data>
+  <data name="Osk_Key_Symbols" xml:space="preserve">
+    <value>&amp;123</value>
+  </data>
+  <data name="Osk_Key_Letters" xml:space="preserve">
+    <value>abc</value>
+  </data>
+  <data name="Osk_Key_Space" xml:space="preserve">
+    <value>Spasi</value>
+  </data>
+  <data name="Osk_Key_Esc" xml:space="preserve">
+    <value>Esc</value>
+  </data>
+  <data name="Osk_Key_Del" xml:space="preserve">
+    <value>Del</value>
+  </data>
+  <data name="Osk_Key_Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Osk_Key_End" xml:space="preserve">
+    <value>End</value>
+  </data>
+  <data name="Osk_Key_PgUp" xml:space="preserve">
+    <value>PgUp</value>
+  </data>
+  <data name="Osk_Key_PgDn" xml:space="preserve">
+    <value>PgDn</value>
+  </data>
+  <data name="Osk_Key_Ins" xml:space="preserve">
+    <value>Ins</value>
+  </data>
+  <data name="Osk_Key_PrtSc" xml:space="preserve">
+    <value>PrtSc</value>
+  </data>
+  <data name="Osk_Hint_Type" xml:space="preserve">
+    <value>Ketik</value>
+  </data>
+  <data name="Osk_Hint_TypeLeft" xml:space="preserve">
+    <value>Ketik kiri</value>
+  </data>
+  <data name="Osk_Hint_TypeRight" xml:space="preserve">
+    <value>Ketik kanan</value>
+  </data>
+  <data name="Osk_Hint_Backspace" xml:space="preserve">
+    <value>Backspace</value>
+  </data>
+  <data name="Osk_Hint_Space" xml:space="preserve">
+    <value>Spasi</value>
+  </data>
+  <data name="Osk_Hint_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Osk_Hint_Close" xml:space="preserve">
+    <value>Tutup</value>
+  </data>
+  <data name="Osk_Hint_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Hint_Symbols" xml:space="preserve">
+    <value>Simbol</value>
+  </data>
+  <data name="Osk_Hint_Cursor" xml:space="preserve">
+    <value>Kursor</value>
+  </data>
+  <data name="Osk_Hint_Suggestion" xml:space="preserve">
+    <value>Saran</value>
+  </data>
+  <data name="Osk_Hint_Capitals" xml:space="preserve">
+    <value>Tahan: kapital</value>
+  </data>
+  <data name="Osk_Hint_Numbers" xml:space="preserve">
+    <value>Tahan: angka</value>
+  </data>
+  <data name="Osk_Hint_Keys" xml:space="preserve">
+    <value>Tahan: tombol</value>
+  </data>
+  <data name="Osk_Hint_Move" xml:space="preserve">
+    <value>Tahan: pindah</value>
+  </data>
+  <data name="Osk_Input_Dpad" xml:space="preserve">
+    <value>D-pad</value>
+  </data>
+  <data name="Menu_Style_Keyboard" xml:space="preserve"><value>Keyboard</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>Cincin radial dan Kisi sentuh menjalankan pengikatan sel. Keyboard mengetik tombol dari tata letak Windows yang sedang dipakai.</value></data>
+  <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Tata letak</value></data>
+  <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Cara keyboard menata tombolnya dan cara kontroler memilihnya.</value></data>
+  <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Satu sorotan, digerakkan dengan stik atau empat input, tata letak yang dipakai Windows, Xbox, dan Steam.</value></data>
+  <data name="Menu_KeyboardLayout_Split_Desc" xml:space="preserve"><value>Setiap paruh keyboard punya input kendali sendiri dan input ketik sendiri.</value></data>
+  <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>Daisy wheel: pilih satu dari delapan grup, lalu satu dari empat karakternya.</value></data>
+  <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>Atur ulang tata letak</value></data>
+  <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>Dibuka dengan</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Input apa pun pada perangkat yang ditetapkan ke slot ini, atau dua input yang ditahan bersamaan. Input yang sama menutup keyboard, kecuali kontrol keyboard juga memakainya. Kosong berarti tidak ada input yang membukanya.</value></data>
+  <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>Atur ulang Dibuka dengan</value></data>
+  <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>Buka saat kotak teks dipilih</value></data>
+  <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>Di aplikasi Windows dan browser, tanpa tombol. Game menggambar kotak teksnya sendiri, jadi di dalam game keyboard terbuka dengan input di atas, atau dengan lapisannya saat Lapisan menahan menu tetap terbuka aktif.</value></data>
+  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>Input yang menggerakkan sorotan di antara tombol, dibaca dari kontroler fisik yang ditetapkan ke slot.</value></data>
+  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>Kendalikan paruh kiri dengan</value></data>
+  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>Kendalikan paruh kanan dengan</value></data>
+  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>Pilih grup dengan</value></data>
+  <data name="Menu_Reset_Host2" xml:space="preserve"><value>Atur ulang Kendalikan paruh kanan dengan</value></data>
+  <data name="Menu_Host_DPad" xml:space="preserve"><value>D-pad</value></data>
+  <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>Tombol depan</value></data>
+  <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>Kontrol keyboard</value></data>
+  <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>Tata letak {0}, {1} kontrol</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Dibaca dari kontroler fisik yang ditetapkan ke slot ini. Setiap kontrol menerima input apa pun dari kontroler tersebut: tombol, arah sumbu, hat, panel sentuh, atau dua input yang ditahan bersamaan. Klik tombol rekam lalu tekan inputnya, atau tahan satu input dan tekan input kedua untuk kombinasi. Petakan semua merekamnya secara berurutan.</value></data>
+  <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>Petakan semua</value></data>
+  <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>Merekam setiap kontrol tata letak secara berurutan. Baris status menyebut kontrol yang perlu ditekan inputnya.</value></data>
+  <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>Tekan input untuk {0} ({1} dari {2})</value></data>
+  <data name="Menu_Keyboard_MapAll_Done" xml:space="preserve"><value>Semua kontrol keyboard sudah direkam.</value></data>
+  <data name="Menu_Reset_KeyboardControls" xml:space="preserve"><value>Atur ulang kontrol keyboard</value></data>
+  <data name="Menu_Keyboard_Reset_Format" xml:space="preserve"><value>Atur ulang {0} ke {1}</value></data>
+  <data name="Menu_Keyboard_RecordingPrompt" xml:space="preserve"><value>Tekan input pada perangkat mana pun yang ditetapkan ke slot ini</value></data>
+  <data name="Menu_Keyboard_Card" xml:space="preserve"><value>Keyboard</value></data>
+  <data name="Menu_TypesThrough" xml:space="preserve"><value>Mengetik lewat</value></data>
+  <data name="Menu_TypesThrough_Caption" xml:space="preserve"><value>Input Windows mengetik setiap tombol lewat Windows, dan program bisa tahu bahwa itu berasal dari perangkat lunak. Keyboard pada slot Keyboard + mouse mengetik dengan cara pengaturan Keyboard slot itu. Keyboard virtual HIDMaestro mengetik sebagai model keyboard tersebut, yang dilihat program sebagai perangkat keras. Menu keyboard membuatnya sendiri, jadi tidak perlu slot Keyboard + mouse. Tombol yang tidak dimiliki keyboard terpilih, dan karakter yang tidak diketik tombol mana pun, tetap lewat Input Windows.</value></data>
+  <data name="Menu_TypesThrough_Slot_Format" xml:space="preserve"><value>Keyboard yang sama dengan {0}</value></data>
+  <data name="Menu_Reset_TypesThrough" xml:space="preserve"><value>Atur ulang Mengetik lewat</value></data>
+  <data name="Menu_FunctionRow" xml:space="preserve"><value>Baris fungsi</value></data>
+  <data name="Menu_FunctionRow_Caption" xml:space="preserve"><value>Esc, F1 sampai F12, dan Del. Tombol Fn pada keyboard juga mengalihkannya.</value></data>
+  <data name="Menu_WordSuggestions" xml:space="preserve"><value>Saran kata</value></data>
+  <data name="Menu_WordSuggestions_Caption" xml:space="preserve"><value>Dari prediksi teks di Windows, untuk bahasa yang terpasang di Windows.</value></data>
+  <data name="Menu_SymbolsPage" xml:space="preserve"><value>Halaman simbol</value></data>
+  <data name="Menu_SymbolsPage_Tip" xml:space="preserve"><value>Karakter pada halaman simbol keyboard. Karakter ini diketik sebagai karakter Unicode.</value></data>
+  <data name="Menu_Reset_Symbols" xml:space="preserve"><value>Atur ulang halaman simbol</value></data>
+  <data name="Menu_Keyboard_Overlay_Caption" xml:space="preserve"><value>Baris yang sudah ada di setiap menu. Menyeret bilah atas atau gagang sudut keyboard, atau menahan Pindahkan keyboard, juga mengaturnya.</value></data>
+  <data name="Osk_Title" xml:space="preserve"><value>Keyboard di layar</value></data>
+  <data name="Osk_Control_TypeKey" xml:space="preserve"><value>Ketik tombol</value></data>
+  <data name="Osk_Control_Backspace" xml:space="preserve"><value>Backspace</value></data>
+  <data name="Osk_Control_Space" xml:space="preserve"><value>Spasi</value></data>
+  <data name="Osk_Control_Enter" xml:space="preserve"><value>Enter</value></data>
+  <data name="Osk_Control_Close" xml:space="preserve"><value>Tutup</value></data>
+  <data name="Osk_Control_ShiftNextKey" xml:space="preserve"><value>Shift untuk tombol berikutnya</value></data>
+  <data name="Osk_Control_ShiftLeftHand" xml:space="preserve"><value>Shift untuk tombol berikutnya, tangan kiri</value></data>
+  <data name="Osk_Control_ShiftRightHand" xml:space="preserve"><value>Shift untuk tombol berikutnya, tangan kanan</value></data>
+  <data name="Osk_Control_SymbolsPage" xml:space="preserve"><value>Halaman simbol</value></data>
+  <data name="Osk_Control_CursorLeft" xml:space="preserve"><value>Kursor ke kiri</value></data>
+  <data name="Osk_Control_CursorRight" xml:space="preserve"><value>Kursor ke kanan</value></data>
+  <data name="Osk_Control_MoveUp" xml:space="preserve"><value>Pindah ke atas</value></data>
+  <data name="Osk_Control_MoveDown" xml:space="preserve"><value>Pindah ke bawah</value></data>
+  <data name="Osk_Control_MoveLeft" xml:space="preserve"><value>Pindah ke kiri</value></data>
+  <data name="Osk_Control_MoveRight" xml:space="preserve"><value>Pindah ke kanan</value></data>
+  <data name="Osk_Control_Suggestion_Format" xml:space="preserve"><value>Saran {0}</value></data>
+  <data name="Osk_Control_MoveKeyboard" xml:space="preserve"><value>Pindahkan keyboard (tahan)</value></data>
+  <data name="Osk_Control_TypeLeftHalf" xml:space="preserve"><value>Ketik paruh kiri</value></data>
+  <data name="Osk_Control_TypeRightHalf" xml:space="preserve"><value>Ketik paruh kanan</value></data>
+  <data name="Osk_Control_ArrowUp" xml:space="preserve"><value>Panah atas</value></data>
+  <data name="Osk_Control_ArrowDown" xml:space="preserve"><value>Panah bawah</value></data>
+  <data name="Osk_Control_ArrowLeft" xml:space="preserve"><value>Panah kiri</value></data>
+  <data name="Osk_Control_ArrowRight" xml:space="preserve"><value>Panah kanan</value></data>
+  <data name="Osk_Control_PickWest" xml:space="preserve"><value>Pilih barat</value></data>
+  <data name="Osk_Control_PickNorth" xml:space="preserve"><value>Pilih utara</value></data>
+  <data name="Osk_Control_PickEast" xml:space="preserve"><value>Pilih timur</value></data>
+  <data name="Osk_Control_PickSouth" xml:space="preserve"><value>Pilih selatan</value></data>
+  <data name="Osk_Control_Capitals" xml:space="preserve"><value>Kapital dan simbol (tahan)</value></data>
+  <data name="Osk_Control_Numbers" xml:space="preserve"><value>Angka dan tanda kurung (tahan)</value></data>
+  <data name="Osk_Control_Home" xml:space="preserve"><value>Home</value></data>
+  <data name="Osk_Control_End" xml:space="preserve"><value>End</value></data>
+  <data name="Menu_Keyboard_OpenPress" xml:space="preserve"><value>Dibuka saat</value></data>
+  <data name="Menu_Keyboard_OpenPress_Tip" xml:space="preserve"><value>Penekanan Dibuka dengan yang membuka atau menutup keyboard. Pengikatan tekan lama dan tekan dua kali dari Steam diimpor sebagai Saat tekan lama dan Saat tekan dua kali, sehingga penekanan singkat pada input yang sama tetap punya pengikatannya sendiri.</value></data>
+  <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>Atur ulang Dibuka saat</value></data>
+  <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>Membuka atau menutup keyboard setelah Dibuka dengan ditahan selama waktu tahan. Penekanan yang lebih singkat tidak melakukan apa pun.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>Membuka atau menutup keyboard saat Dibuka dengan ditekan dua kali dalam jendela penekanan.</value></data>
 </root>

@@ -10,6 +10,10 @@ namespace PadForge.Engine.Menus
     {
         Radial = 0,
         Grid = 1,
+        /// <summary>The On-Screen Keyboard (#566): types the keys of the
+        /// Windows layout in use, with every control a recorded input.
+        /// Appended: the numbers are saved, never reorder.</summary>
+        Keyboard = 2,
     }
 
     /// <summary>When a hovered menu item fires. Values are Steam Input's
@@ -260,6 +264,86 @@ namespace PadForge.Engine.Menus
 
         [XmlElement("Item")] public List<MenuItemDefinition> Items { get; set; } = new();
 
+        // ── Keyboard menus (#566). Schema append-only, and written only for
+        // a keyboard menu, so a radial or grid menu saves as it did. ──
+
+        /// <summary>The keyboard's layout.</summary>
+        [XmlAttribute] public KeyboardLayout KeyboardLayout { get; set; } = KeyboardLayout.Grid;
+        public bool ShouldSerializeKeyboardLayout() => Kind == MenuKind.Keyboard;
+
+        /// <summary>Opens With: an input that opens the keyboard and closes
+        /// it on the next press, in the descriptor form a keyboard control
+        /// takes. Empty: no input opens it.</summary>
+        [XmlAttribute] public string OpenDescriptor { get; set; } = "";
+        public bool ShouldSerializeOpenDescriptor() => Kind == MenuKind.Keyboard;
+
+        /// <summary>The device Opens With reads, or "" for every device that
+        /// drives the menu.</summary>
+        [XmlAttribute] public string OpenDeviceGuid { get; set; } = "";
+        public bool ShouldSerializeOpenDeviceGuid() => Kind == MenuKind.Keyboard && !string.IsNullOrEmpty(OpenDeviceGuid);
+
+        /// <summary>A second input held with Opens With, which makes it a
+        /// combination. Empty: none.</summary>
+        [XmlAttribute] public string OpenAndDescriptor { get; set; } = "";
+        public bool ShouldSerializeOpenAndDescriptor() => Kind == MenuKind.Keyboard && !string.IsNullOrEmpty(OpenAndDescriptor);
+
+        [XmlAttribute] public string OpenAndDeviceGuid { get; set; } = "";
+        public bool ShouldSerializeOpenAndDeviceGuid() => Kind == MenuKind.Keyboard && !string.IsNullOrEmpty(OpenAndDeviceGuid);
+
+        /// <summary>What press of Opens With opens or closes the keyboard:
+        /// the press, a long press or a double press, as a macro trigger
+        /// takes them. Steam's Long_Press and Double_Press activators on a
+        /// Show Keyboard binding import here, so a short press of the same
+        /// button keeps its own binding.</summary>
+        [XmlAttribute] public KeyboardOpenPress OpenPress { get; set; } = KeyboardOpenPress.Press;
+        public bool ShouldSerializeOpenPress() => Kind == MenuKind.Keyboard && OpenPress != KeyboardOpenPress.Press;
+
+        /// <summary>The long press's hold time or the double press's window,
+        /// in milliseconds. 0 takes the macro trigger's default for the press.</summary>
+        [XmlAttribute] public int OpenPressMs { get; set; }
+        public bool ShouldSerializeOpenPressMs() => Kind == MenuKind.Keyboard && OpenPressMs > 0;
+
+        /// <summary>Opens the keyboard when a text box in a Windows app or a
+        /// browser takes focus, and closes it when focus leaves text boxes.</summary>
+        [XmlAttribute] public bool OpenOnTextFocus { get; set; }
+        public bool ShouldSerializeOpenOnTextFocus() => Kind == MenuKind.Keyboard;
+
+        /// <summary>Split's right-half steering input, in the
+        /// <see cref="HostDescriptor"/> grammar.</summary>
+        [XmlAttribute] public string Host2Descriptor { get; set; } = KeyboardMenuDefaults.Host2;
+        public bool ShouldSerializeHost2Descriptor() => Kind == MenuKind.Keyboard;
+
+        [XmlAttribute] public string Custom2XDescriptor { get; set; } = "";
+        public bool ShouldSerializeCustom2XDescriptor() => Kind == MenuKind.Keyboard;
+
+        [XmlAttribute] public string Custom2YDescriptor { get; set; } = "";
+        public bool ShouldSerializeCustom2YDescriptor() => Kind == MenuKind.Keyboard;
+
+        /// <summary>Where the keys go: "" Windows Input, "slot:N" the
+        /// Keyboard device of the Keyboard + Mouse slot at pad index N, or a
+        /// HIDMaestro keyboard profile id for a virtual keyboard the menu
+        /// makes itself.</summary>
+        [XmlAttribute] public string TypesThrough { get; set; } = "";
+        public bool ShouldSerializeTypesThrough() => Kind == MenuKind.Keyboard && !string.IsNullOrEmpty(TypesThrough);
+
+        /// <summary>The function row: Esc, F1 to F12 and Delete.</summary>
+        [XmlAttribute] public bool FunctionRow { get; set; }
+        public bool ShouldSerializeFunctionRow() => Kind == MenuKind.Keyboard;
+
+        /// <summary>Word suggestions from Windows' text prediction.</summary>
+        [XmlAttribute] public bool Suggestions { get; set; } = true;
+        public bool ShouldSerializeSuggestions() => Kind == MenuKind.Keyboard;
+
+        /// <summary>The symbols page's characters, as text. Empty: the
+        /// default set.</summary>
+        [XmlAttribute] public string Symbols { get; set; } = "";
+        public bool ShouldSerializeSymbols() => Kind == MenuKind.Keyboard && !string.IsNullOrEmpty(Symbols);
+
+        /// <summary>The controls whose input differs from their layout's
+        /// default (<see cref="KeyboardMenuDefaults"/>).</summary>
+        [XmlElement("KeyboardControl")] public List<KeyboardControlEntry> KeyboardControls { get; set; } = new();
+        public bool ShouldSerializeKeyboardControls() => Kind == MenuKind.Keyboard && KeyboardControls != null && KeyboardControls.Count > 0;
+
         /// <summary>Deep copy. Every clone site (profile apply, slot copy,
         /// editor round-trips) must use this so item lists never alias.</summary>
         public MenuDefinitionEntry Clone()
@@ -293,7 +377,25 @@ namespace PadForge.Engine.Menus
                 Enabled = Enabled,
                 LayerHoldsOpen = LayerHoldsOpen,
                 ShowOnWebController = ShowOnWebController,
+                KeyboardLayout = KeyboardLayout,
+                OpenDescriptor = OpenDescriptor,
+                OpenDeviceGuid = OpenDeviceGuid,
+                OpenAndDescriptor = OpenAndDescriptor,
+                OpenAndDeviceGuid = OpenAndDeviceGuid,
+                OpenPress = OpenPress,
+                OpenPressMs = OpenPressMs,
+                OpenOnTextFocus = OpenOnTextFocus,
+                Host2Descriptor = Host2Descriptor,
+                Custom2XDescriptor = Custom2XDescriptor,
+                Custom2YDescriptor = Custom2YDescriptor,
+                TypesThrough = TypesThrough,
+                FunctionRow = FunctionRow,
+                Suggestions = Suggestions,
+                Symbols = Symbols,
             };
+            if (KeyboardControls != null)
+                foreach (var c in KeyboardControls)
+                    if (c != null) copy.KeyboardControls.Add(c.Clone());
             if (Items != null)
             {
                 foreach (var it in Items)

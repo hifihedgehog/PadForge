@@ -1232,6 +1232,47 @@ namespace PadForge
                     });
                 };
 
+                // A keyboard menu's rows (#566): a press, or two inputs held
+                // together, for a control or for Opens With. A second click
+                // on the row that records stops it, and a click on another
+                // row moves the recording there.
+                pad.MenuKeyboardRecordRequested += (s, row) =>
+                {
+                    if (s is not PadViewModel pvm) return;
+                    var menu = pvm.SelectedMenu;
+                    if (menu == null || row == null) return;
+                    bool same = ReferenceEquals(menu.RecordingKeyboardRow, row) && !menu.KeyboardMapAllActive;
+                    if (menu.RecordingKeyboardRow != null || menu.HostRecording)
+                    {
+                        _recorderService.CancelRecording();
+                        menu.HostRecording = false;
+                        menu.RecordingKeyboardRow = null;
+                        menu.KeyboardMapAllActive = false;
+                        if (same) return;
+                    }
+                    RecordKeyboardRow(pvm, menu, row);
+                };
+
+                // Map All: each control of the layout in turn, the Mappings
+                // tab's Map All for the keyboard. A click while it runs stops it.
+                pad.MenuKeyboardMapAllRequested += (s, e) =>
+                {
+                    if (s is not PadViewModel pvm) return;
+                    var menu = pvm.SelectedMenu;
+                    if (menu == null || !menu.IsKeyboard) return;
+                    if (menu.KeyboardMapAllActive || menu.RecordingKeyboardRow != null || menu.HostRecording)
+                    {
+                        _recorderService.CancelRecording();
+                        menu.HostRecording = false;
+                        menu.RecordingKeyboardRow = null;
+                        menu.KeyboardMapAllActive = false;
+                        return;
+                    }
+                    if (menu.KeyboardControlRows.Count == 0) return;
+                    menu.KeyboardMapAllActive = true;
+                    RecordKeyboardRow(pvm, menu, menu.KeyboardControlRows[0]);
+                };
+
                 // Record button on the Mouse Gestures card's custom
                 // activation picker (discussion #216). Same freeform-recorder
                 // toggle as the Aim Engage picker above; the VM setters push
@@ -2055,6 +2096,12 @@ namespace PadForge
                     // (round 34).
                     if (activePad.SelectedMenu != null && activePad.SelectedMenu.HostRecording)
                         activePad.SelectedMenu.HostRecording = false;
+                    // A keyboard row's recording and Map All (#566) stop with it.
+                    if (activePad.SelectedMenu != null)
+                    {
+                        activePad.SelectedMenu.RecordingKeyboardRow = null;
+                        activePad.SelectedMenu.KeyboardMapAllActive = false;
+                    }
                 }
             };
 
@@ -9573,6 +9620,40 @@ namespace PadForge
         // ─────────────────────────────────────────────
         //  Driver install/uninstall helpers
         // ─────────────────────────────────────────────
+
+        /// <summary>Records a press for one keyboard row (#566). During Map
+        /// All, the row's completion records the next control, and the status
+        /// line names each one with its place in the list.</summary>
+        private void RecordKeyboardRow(PadViewModel pvm, MenuEditorItem menu, KeyboardInputRow row)
+        {
+            menu.RecordingKeyboardRow = row;
+            int index = menu.KeyboardControlRows.IndexOf(row);
+            if (menu.KeyboardMapAllActive && index >= 0)
+                _viewModel.SetStatus(string.Format(Strings.Instance.Menu_Keyboard_MapAll_Prompt_Format,
+                    row.Label, index + 1, menu.KeyboardControlRows.Count), persist: true);
+            _recorderService.StartRecordingPress(pvm.PadIndex, press =>
+            {
+                menu.RecordingKeyboardRow = null;
+                if (menu.TryApplyKeyboardPress(row, press))
+                    _settingsService.MarkDirty();
+                if (!menu.KeyboardMapAllActive) return;
+                int next = menu.KeyboardControlRows.IndexOf(row) + 1;
+                if (next <= 0 || next >= menu.KeyboardControlRows.Count)
+                {
+                    menu.KeyboardMapAllActive = false;
+                    _viewModel.SetStatus(Strings.Instance.Menu_Keyboard_MapAll_Done, persist: false);
+                    return;
+                }
+                RecordKeyboardRow(pvm, menu, menu.KeyboardControlRows[next]);
+            });
+            // No device to record from: the recorder said so on the status
+            // line and started nothing.
+            if (!_recorderService.IsRecording)
+            {
+                menu.RecordingKeyboardRow = null;
+                menu.KeyboardMapAllActive = false;
+            }
+        }
 
         /// <summary>
         /// What went wrong in a driver operation, worded for the user. An

@@ -174,14 +174,17 @@ namespace PadForge.Common.Input
         internal static HidKey Resolve(int index) => Resolve(index, ForegroundLayout());
 
         /// <summary><see cref="Resolve(int)"/> on a given layout handle (0 is
-        /// the caller's own layout), so a test can pin one.</summary>
+        /// the caller's own layout), so a test can pin one. A key outside both
+        /// tables resolves through its scan code the same way, or to None when
+        /// the layout puts it on no character key. No row sends such a key. The
+        /// On-Screen Keyboard does, from a layout's own keys, such as ABNT2's
+        /// /? key (VK_ABNT_C1).</summary>
         internal static HidKey Resolve(int index, IntPtr layout)
         {
             if (index < 0 || index > 255) return None;
             var f = s_fixed[index];
             if (!f.IsNone) return f;
             var us = s_usPositional[index];
-            if (us.IsNone) return None;
             uint scan = LayoutScanCode((uint)index, layout);
             if (scan != 0)
             {

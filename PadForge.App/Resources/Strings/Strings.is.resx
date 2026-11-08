@@ -4976,4 +4976,207 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD kom í veg fyrir að hreyfing músar næði til Windows. PadForge heldur lyklum og músarhnöppum til baka en ekki hreyfingu, svo bendillinn hreyfist áfram.</value></data>
   <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>Sýndarstýripinnar PadForge taka við hreyfingu eingöngu frá hreyfiskynjara stýripinna.</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows sneri aftur í þetta snið úr {0} með hnappi. Til að gera það í PadForge skaltu bæta við flýtileið sniðs fyrir þetta snið á síðunni Snið.</value></data>
+  <data name="Osk_Style_Grid" xml:space="preserve">
+    <value>Rist</value>
+  </data>
+  <data name="Osk_Style_Split" xml:space="preserve">
+    <value>Skipt</value>
+  </data>
+  <data name="Osk_Style_Wheel" xml:space="preserve">
+    <value>Hjól</value>
+  </data>
+  <data name="Osk_CloseKeyboard" xml:space="preserve">
+    <value>Loka lyklaborðinu</value>
+  </data>
+  <data name="Osk_Drag" xml:space="preserve">
+    <value>Dragðu til að færa lyklaborðið</value>
+  </data>
+  <data name="Osk_Wheel_Keys" xml:space="preserve">
+    <value>Lyklar</value>
+  </data>
+  <data name="Osk_Key_Tab" xml:space="preserve">
+    <value>Tab</value>
+  </data>
+  <data name="Osk_Key_Caps" xml:space="preserve">
+    <value>Caps</value>
+  </data>
+  <data name="Osk_Key_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Osk_Key_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Key_Ctrl" xml:space="preserve">
+    <value>Ctrl</value>
+  </data>
+  <data name="Osk_Key_Win" xml:space="preserve">
+    <value>Win</value>
+  </data>
+  <data name="Osk_Key_Alt" xml:space="preserve">
+    <value>Alt</value>
+  </data>
+  <data name="Osk_Key_AltGr" xml:space="preserve">
+    <value>AltGr</value>
+  </data>
+  <data name="Osk_Key_Symbols" xml:space="preserve">
+    <value>&amp;123</value>
+  </data>
+  <data name="Osk_Key_Letters" xml:space="preserve">
+    <value>aáb</value>
+  </data>
+  <data name="Osk_Key_Space" xml:space="preserve">
+    <value>Bil</value>
+  </data>
+  <data name="Osk_Key_Esc" xml:space="preserve">
+    <value>Esc</value>
+  </data>
+  <data name="Osk_Key_Del" xml:space="preserve">
+    <value>Del</value>
+  </data>
+  <data name="Osk_Key_Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Osk_Key_End" xml:space="preserve">
+    <value>End</value>
+  </data>
+  <data name="Osk_Key_PgUp" xml:space="preserve">
+    <value>PgUp</value>
+  </data>
+  <data name="Osk_Key_PgDn" xml:space="preserve">
+    <value>PgDn</value>
+  </data>
+  <data name="Osk_Key_Ins" xml:space="preserve">
+    <value>Ins</value>
+  </data>
+  <data name="Osk_Key_PrtSc" xml:space="preserve">
+    <value>PrtSc</value>
+  </data>
+  <data name="Osk_Hint_Type" xml:space="preserve">
+    <value>Slá inn</value>
+  </data>
+  <data name="Osk_Hint_TypeLeft" xml:space="preserve">
+    <value>Slá inn vinstra</value>
+  </data>
+  <data name="Osk_Hint_TypeRight" xml:space="preserve">
+    <value>Slá inn hægra</value>
+  </data>
+  <data name="Osk_Hint_Backspace" xml:space="preserve">
+    <value>Backspace</value>
+  </data>
+  <data name="Osk_Hint_Space" xml:space="preserve">
+    <value>Bil</value>
+  </data>
+  <data name="Osk_Hint_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Osk_Hint_Close" xml:space="preserve">
+    <value>Loka</value>
+  </data>
+  <data name="Osk_Hint_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Hint_Symbols" xml:space="preserve">
+    <value>Tákn</value>
+  </data>
+  <data name="Osk_Hint_Cursor" xml:space="preserve">
+    <value>Bendill</value>
+  </data>
+  <data name="Osk_Hint_Suggestion" xml:space="preserve">
+    <value>Tillaga</value>
+  </data>
+  <data name="Osk_Hint_Capitals" xml:space="preserve">
+    <value>Halda: hástafir</value>
+  </data>
+  <data name="Osk_Hint_Numbers" xml:space="preserve">
+    <value>Halda: tölur</value>
+  </data>
+  <data name="Osk_Hint_Keys" xml:space="preserve">
+    <value>Halda: lyklar</value>
+  </data>
+  <data name="Osk_Hint_Move" xml:space="preserve">
+    <value>Halda: færa</value>
+  </data>
+  <data name="Osk_Input_Dpad" xml:space="preserve">
+    <value>Stefnuhnappar</value>
+  </data>
+  <data name="Menu_Style_Keyboard" xml:space="preserve"><value>Lyklaborð</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>„Hringur“ og „Snertinet“ ræsa bindingar reita. „Lyklaborð“ slær inn lykla þeirrar Windows-uppsetningar sem er í notkun.</value></data>
+  <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Uppsetning</value></data>
+  <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Hvernig lyklaborðið raðar lyklum sínum og hvernig stýripinni velur þá.</value></data>
+  <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Ein auðkenning, færð með pinna eða fjórum inntökum, uppsetningin sem Windows, Xbox og Steam nota.</value></data>
+  <data name="Menu_KeyboardLayout_Split_Desc" xml:space="preserve"><value>Hvor helmingur lyklaborðsins fær sitt eigið stýringarinntak og sitt eigið innsláttarinntak.</value></data>
+  <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>Stafahjólið: veldu einn af átta hópum og síðan einn af fjórum stöfum hans.</value></data>
+  <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>Endurstilla uppsetningu</value></data>
+  <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>Opnast með</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>Hvaða inntak sem er á tæki sem er úthlutað á þessa rauf, eða tvö inntök haldin saman. Sama inntak lokar lyklaborðinu, nema stýring lyklaborðsins noti það líka. Tómt þýðir að ekkert inntak opnar það.</value></data>
+  <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>Endurstilla „Opnast með“</value></data>
+  <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>Opna þegar textareitur er valinn</value></data>
+  <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>Í Windows-forritum og vöfrum, án hnapps. Leikir teikna sína eigin textareiti, svo í leik opnast það með inntakinu hér að ofan, eða með laginu sínu þegar kveikt er á „Lagið heldur valmyndinni opinni“.</value></data>
+  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>Inntakið sem færir auðkenninguna yfir lyklana, lesið úr raunverulegum stýripinnum sem eru úthlutaðir á raufina.</value></data>
+  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>Stýra vinstri helmingi með</value></data>
+  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>Stýra hægri helmingi með</value></data>
+  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>Velja hóp með</value></data>
+  <data name="Menu_Reset_Host2" xml:space="preserve"><value>Endurstilla „Stýra hægri helmingi með“</value></data>
+  <data name="Menu_Host_DPad" xml:space="preserve"><value>Stefnuhnappar</value></data>
+  <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>Aðalhnappar</value></data>
+  <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>Stýringar lyklaborðs</value></data>
+  <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>Uppsetning: {0}, stýringar: {1}</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>Lesið úr raunverulegum stýripinnum sem eru úthlutaðir á þessa rauf. Hver stýring tekur við hvaða inntaki sem er á hverjum þeirra: hnappi, ásstefnu, stefnuhnappi, snertifleti eða tveimur inntökum haldnum saman. Smelltu á upptökuhnapp og ýttu á inntakið, eða haltu einu inntaki og ýttu á annað til að fá samsetningu. „Varpa öllu“ tekur þau upp í röð.</value></data>
+  <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>Varpa öllu</value></data>
+  <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>Tekur upp hverja stýringu uppsetningarinnar í röð. Stöðulínan nefnir stýringuna sem á að ýta á inntak fyrir.</value></data>
+  <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>Ýttu á inntakið fyrir {0} ({1} af {2})</value></data>
+  <data name="Menu_Keyboard_MapAll_Done" xml:space="preserve"><value>Allar lyklaborðsstýringar eru teknar upp.</value></data>
+  <data name="Menu_Reset_KeyboardControls" xml:space="preserve"><value>Endurstilla stýringar lyklaborðs</value></data>
+  <data name="Menu_Keyboard_Reset_Format" xml:space="preserve"><value>Endurstilla {0} á {1}</value></data>
+  <data name="Menu_Keyboard_RecordingPrompt" xml:space="preserve"><value>Ýttu á inntak á hvaða tæki sem er úthlutað á þessa rauf</value></data>
+  <data name="Menu_Keyboard_Card" xml:space="preserve"><value>Lyklaborð</value></data>
+  <data name="Menu_TypesThrough" xml:space="preserve"><value>Slær inn um</value></data>
+  <data name="Menu_TypesThrough_Caption" xml:space="preserve"><value>„Windows-inntak“ slær hvern lykil inn um Windows og forrit geta séð að hann kemur frá hugbúnaði. Lyklaborð raufar af gerðinni „Lyklaborð + mús“ slær inn eins og Lyklaborðsstillingin á þeirri rauf. Sýndarlyklaborð frá HIDMaestro slær inn sem sú gerð lyklaborðs, sem forrit sjá sem vélbúnað. Lyklaborðsvalmyndin býr það til sjálf, svo hún þarf enga rauf af gerðinni „Lyklaborð + mús“. Lykill sem valið lyklaborð hefur ekki, og stafur sem enginn lykill slær inn, fara áfram um „Windows-inntak“.</value></data>
+  <data name="Menu_TypesThrough_Slot_Format" xml:space="preserve"><value>Sama lyklaborð og {0}</value></data>
+  <data name="Menu_Reset_TypesThrough" xml:space="preserve"><value>Endurstilla „Slær inn um“</value></data>
+  <data name="Menu_FunctionRow" xml:space="preserve"><value>Aðgerðalína</value></data>
+  <data name="Menu_FunctionRow_Caption" xml:space="preserve"><value>Esc, F1 til F12 og Del. Fn-lykillinn á lyklaborðinu víxlar henni líka.</value></data>
+  <data name="Menu_WordSuggestions" xml:space="preserve"><value>Orðatillögur</value></data>
+  <data name="Menu_WordSuggestions_Caption" xml:space="preserve"><value>Frá textaspá Windows, fyrir tungumálin sem eru uppsett í Windows.</value></data>
+  <data name="Menu_SymbolsPage" xml:space="preserve"><value>Táknasíða</value></data>
+  <data name="Menu_SymbolsPage_Tip" xml:space="preserve"><value>Stafirnir á táknasíðu lyklaborðsins. Þeir eru slegnir inn sem Unicode-stafir.</value></data>
+  <data name="Menu_Reset_Symbols" xml:space="preserve"><value>Endurstilla táknasíðu</value></data>
+  <data name="Menu_Keyboard_Overlay_Caption" xml:space="preserve"><value>Línurnar sem hver valmynd hefur nú þegar. Þær stillast líka þegar efri stika lyklaborðsins eða horngripið er dregið, eða þegar „Færa lyklaborðið“ er haldið.</value></data>
+  <data name="Osk_Title" xml:space="preserve"><value>Skjályklaborð</value></data>
+  <data name="Osk_Control_TypeKey" xml:space="preserve"><value>Slá inn lykil</value></data>
+  <data name="Osk_Control_Backspace" xml:space="preserve"><value>Backspace</value></data>
+  <data name="Osk_Control_Space" xml:space="preserve"><value>Bil</value></data>
+  <data name="Osk_Control_Enter" xml:space="preserve"><value>Enter</value></data>
+  <data name="Osk_Control_Close" xml:space="preserve"><value>Loka</value></data>
+  <data name="Osk_Control_ShiftNextKey" xml:space="preserve"><value>Shift fyrir næsta lykil</value></data>
+  <data name="Osk_Control_ShiftLeftHand" xml:space="preserve"><value>Shift fyrir næsta lykil, vinstri hönd</value></data>
+  <data name="Osk_Control_ShiftRightHand" xml:space="preserve"><value>Shift fyrir næsta lykil, hægri hönd</value></data>
+  <data name="Osk_Control_SymbolsPage" xml:space="preserve"><value>Táknasíða</value></data>
+  <data name="Osk_Control_CursorLeft" xml:space="preserve"><value>Bendill til vinstri</value></data>
+  <data name="Osk_Control_CursorRight" xml:space="preserve"><value>Bendill til hægri</value></data>
+  <data name="Osk_Control_MoveUp" xml:space="preserve"><value>Færa upp</value></data>
+  <data name="Osk_Control_MoveDown" xml:space="preserve"><value>Færa niður</value></data>
+  <data name="Osk_Control_MoveLeft" xml:space="preserve"><value>Færa til vinstri</value></data>
+  <data name="Osk_Control_MoveRight" xml:space="preserve"><value>Færa til hægri</value></data>
+  <data name="Osk_Control_Suggestion_Format" xml:space="preserve"><value>Tillaga {0}</value></data>
+  <data name="Osk_Control_MoveKeyboard" xml:space="preserve"><value>Færa lyklaborðið (halda)</value></data>
+  <data name="Osk_Control_TypeLeftHalf" xml:space="preserve"><value>Slá inn vinstri helming</value></data>
+  <data name="Osk_Control_TypeRightHalf" xml:space="preserve"><value>Slá inn hægri helming</value></data>
+  <data name="Osk_Control_ArrowUp" xml:space="preserve"><value>Ör upp</value></data>
+  <data name="Osk_Control_ArrowDown" xml:space="preserve"><value>Ör niður</value></data>
+  <data name="Osk_Control_ArrowLeft" xml:space="preserve"><value>Ör til vinstri</value></data>
+  <data name="Osk_Control_ArrowRight" xml:space="preserve"><value>Ör til hægri</value></data>
+  <data name="Osk_Control_PickWest" xml:space="preserve"><value>Velja vestur</value></data>
+  <data name="Osk_Control_PickNorth" xml:space="preserve"><value>Velja norður</value></data>
+  <data name="Osk_Control_PickEast" xml:space="preserve"><value>Velja austur</value></data>
+  <data name="Osk_Control_PickSouth" xml:space="preserve"><value>Velja suður</value></data>
+  <data name="Osk_Control_Capitals" xml:space="preserve"><value>Hástafir og tákn (halda)</value></data>
+  <data name="Osk_Control_Numbers" xml:space="preserve"><value>Tölur og svigar (halda)</value></data>
+  <data name="Osk_Control_Home" xml:space="preserve"><value>Home</value></data>
+  <data name="Osk_Control_End" xml:space="preserve"><value>End</value></data>
+  <data name="Menu_Keyboard_OpenPress" xml:space="preserve"><value>Opnast við</value></data>
+  <data name="Menu_Keyboard_OpenPress_Tip" xml:space="preserve"><value>Ýtingin á „Opnast með“ sem opnar eða lokar lyklaborðinu. Steam-bindingar fyrir langa ýtingu og tvöfalda ýtingu flytjast inn sem „Við langa ýtingu“ og „Við tvöfalda ýtingu“, svo stutt ýting á sama inntak heldur sinni bindingu.</value></data>
+  <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>Endurstilla „Opnast við“</value></data>
+  <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>Opnar eða lokar lyklaborðinu þegar „Opnast með“ hefur verið haldið í haldtímann. Styttri ýting gerir ekkert.</value></data>
+  <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>Opnar eða lokar lyklaborðinu þegar ýtt er tvisvar á „Opnast með“ innan tímaglugga ýtinga.</value></data>
 </root>

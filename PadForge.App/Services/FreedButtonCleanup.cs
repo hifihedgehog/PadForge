@@ -175,8 +175,39 @@ namespace PadForge.Services
                     if (names(m.DeviceGuid, m.ClickDescriptor)) { m.ClickDescriptor = ""; changed = true; }
                     if (names(m.DeviceGuid, m.CustomXDescriptor)) { m.CustomXDescriptor = ""; changed = true; }
                     if (names(m.DeviceGuid, m.CustomYDescriptor)) { m.CustomYDescriptor = ""; changed = true; }
+                    changed |= ClearKeyboardMenu(m, names);
                 }
             }
+            return changed;
+        }
+
+        /// <summary>A keyboard menu's inputs without the button (#566): Split's
+        /// second Custom axes, Opens With and every control. An input reads
+        /// on its own device, else the menu's. A combination that names the
+        /// button goes whole, as a chord left with one leg would fire on that
+        /// leg alone.</summary>
+        private static bool ClearKeyboardMenu(PadForge.Engine.Menus.MenuDefinitionEntry m, NamesButton names)
+        {
+            if (m.Kind != PadForge.Engine.Menus.MenuKind.Keyboard) return false;
+            bool changed = false;
+            string On(string device) => string.IsNullOrEmpty(device) ? m.DeviceGuid : device;
+            bool Names(PadForge.Engine.Menus.KeyboardInput input)
+                => !input.IsEmpty && (names(On(input.DeviceGuid), input.Descriptor)
+                    || (input.HasAnd && names(On(input.AndDeviceGuid), input.AndDescriptor)));
+            if (names(m.DeviceGuid, m.Custom2XDescriptor)) { m.Custom2XDescriptor = ""; changed = true; }
+            if (names(m.DeviceGuid, m.Custom2YDescriptor)) { m.Custom2YDescriptor = ""; changed = true; }
+            if (Names(PadForge.Engine.Menus.KeyboardMenuDefaults.OpenInput(m)))
+            {
+                PadForge.Engine.Menus.KeyboardMenuDefaults.SetOpenInput(m, PadForge.Engine.Menus.KeyboardInput.None);
+                changed = true;
+            }
+            foreach (PadForge.Engine.Menus.KeyboardLayout layout in Enum.GetValues(typeof(PadForge.Engine.Menus.KeyboardLayout)))
+                foreach (var a in PadForge.Engine.Menus.KeyboardMenuDefaults.Actions(layout))
+                    if (Names(PadForge.Engine.Menus.KeyboardMenuDefaults.Effective(m, layout, a)))
+                    {
+                        PadForge.Engine.Menus.KeyboardMenuDefaults.Set(m, layout, a, PadForge.Engine.Menus.KeyboardInput.None);
+                        changed = true;
+                    }
             return changed;
         }
 

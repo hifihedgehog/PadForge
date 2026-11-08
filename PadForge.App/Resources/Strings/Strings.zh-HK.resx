@@ -4976,4 +4976,207 @@
   <data name="Import_Tr_MouseMovement" xml:space="preserve"><value>reWASD 曾阻止滑鼠移動傳到 Windows。PadForge 會攔截按鍵和滑鼠按鈕，但不會攔截移動，因此指標仍會移動。</value></data>
   <data name="Import_Tr_MotionOutput" xml:space="preserve"><value>PadForge 的虛擬控制器只會從控制器的動作感應器取得動作。</value></data>
   <data name="Import_Tr_UnloadTrigger" xml:space="preserve"><value>DS4Windows 曾透過按鈕從 {0} 切換回此設定檔。若要在 PadForge 中做到這一點，請在設定檔頁面為此設定檔加入設定檔快捷鍵。</value></data>
+  <data name="Osk_Style_Grid" xml:space="preserve">
+    <value>格狀</value>
+  </data>
+  <data name="Osk_Style_Split" xml:space="preserve">
+    <value>分割</value>
+  </data>
+  <data name="Osk_Style_Wheel" xml:space="preserve">
+    <value>轉輪</value>
+  </data>
+  <data name="Osk_CloseKeyboard" xml:space="preserve">
+    <value>關閉鍵盤</value>
+  </data>
+  <data name="Osk_Drag" xml:space="preserve">
+    <value>拖曳以移動鍵盤</value>
+  </data>
+  <data name="Osk_Wheel_Keys" xml:space="preserve">
+    <value>按鍵</value>
+  </data>
+  <data name="Osk_Key_Tab" xml:space="preserve">
+    <value>Tab</value>
+  </data>
+  <data name="Osk_Key_Caps" xml:space="preserve">
+    <value>Caps</value>
+  </data>
+  <data name="Osk_Key_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Osk_Key_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Key_Ctrl" xml:space="preserve">
+    <value>Ctrl</value>
+  </data>
+  <data name="Osk_Key_Win" xml:space="preserve">
+    <value>Win</value>
+  </data>
+  <data name="Osk_Key_Alt" xml:space="preserve">
+    <value>Alt</value>
+  </data>
+  <data name="Osk_Key_AltGr" xml:space="preserve">
+    <value>AltGr</value>
+  </data>
+  <data name="Osk_Key_Symbols" xml:space="preserve">
+    <value>&amp;123</value>
+  </data>
+  <data name="Osk_Key_Letters" xml:space="preserve">
+    <value>abc</value>
+  </data>
+  <data name="Osk_Key_Space" xml:space="preserve">
+    <value>Space</value>
+  </data>
+  <data name="Osk_Key_Esc" xml:space="preserve">
+    <value>Esc</value>
+  </data>
+  <data name="Osk_Key_Del" xml:space="preserve">
+    <value>Del</value>
+  </data>
+  <data name="Osk_Key_Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Osk_Key_End" xml:space="preserve">
+    <value>End</value>
+  </data>
+  <data name="Osk_Key_PgUp" xml:space="preserve">
+    <value>PgUp</value>
+  </data>
+  <data name="Osk_Key_PgDn" xml:space="preserve">
+    <value>PgDn</value>
+  </data>
+  <data name="Osk_Key_Ins" xml:space="preserve">
+    <value>Ins</value>
+  </data>
+  <data name="Osk_Key_PrtSc" xml:space="preserve">
+    <value>PrtSc</value>
+  </data>
+  <data name="Osk_Hint_Type" xml:space="preserve">
+    <value>輸入</value>
+  </data>
+  <data name="Osk_Hint_TypeLeft" xml:space="preserve">
+    <value>輸入左側</value>
+  </data>
+  <data name="Osk_Hint_TypeRight" xml:space="preserve">
+    <value>輸入右側</value>
+  </data>
+  <data name="Osk_Hint_Backspace" xml:space="preserve">
+    <value>退格</value>
+  </data>
+  <data name="Osk_Hint_Space" xml:space="preserve">
+    <value>空格</value>
+  </data>
+  <data name="Osk_Hint_Enter" xml:space="preserve">
+    <value>確認</value>
+  </data>
+  <data name="Osk_Hint_Close" xml:space="preserve">
+    <value>關閉</value>
+  </data>
+  <data name="Osk_Hint_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Osk_Hint_Symbols" xml:space="preserve">
+    <value>符號</value>
+  </data>
+  <data name="Osk_Hint_Cursor" xml:space="preserve">
+    <value>游標</value>
+  </data>
+  <data name="Osk_Hint_Suggestion" xml:space="preserve">
+    <value>建議字詞</value>
+  </data>
+  <data name="Osk_Hint_Capitals" xml:space="preserve">
+    <value>按住：大寫</value>
+  </data>
+  <data name="Osk_Hint_Numbers" xml:space="preserve">
+    <value>按住：數字</value>
+  </data>
+  <data name="Osk_Hint_Keys" xml:space="preserve">
+    <value>按住：按鍵</value>
+  </data>
+  <data name="Osk_Hint_Move" xml:space="preserve">
+    <value>按住：移動</value>
+  </data>
+  <data name="Osk_Input_Dpad" xml:space="preserve">
+    <value>十字鍵</value>
+  </data>
+  <data name="Menu_Style_Keyboard" xml:space="preserve"><value>鍵盤</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>徑向環和觸控格會觸發格子綁定。鍵盤則輸入目前使用的 Windows 鍵盤佈局上的按鍵。</value></data>
+  <data name="Menu_KeyboardLayout" xml:space="preserve"><value>佈局</value></data>
+  <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>鍵盤排列按鍵的方式，以及控制器揀選按鍵的方式。</value></data>
+  <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>只有一個醒目提示，以搖桿或四個輸入移動，即 Windows、Xbox 和 Steam 使用的佈局。</value></data>
+  <data name="Menu_KeyboardLayout_Split_Desc" xml:space="preserve"><value>鍵盤的左右兩半各有自己的操控輸入和輸入鍵。</value></data>
+  <data name="Menu_KeyboardLayout_Wheel_Desc" xml:space="preserve"><value>轉輪鍵盤：先揀八組其中一組，再揀該組四個字元其中一個。</value></data>
+  <data name="Menu_Reset_KeyboardLayout" xml:space="preserve"><value>重設佈局</value></data>
+  <data name="Menu_Keyboard_OpensWith" xml:space="preserve"><value>開啟方式</value></data>
+  <data name="Menu_Keyboard_OpensWith_Caption" xml:space="preserve"><value>指派給此插槽的任何裝置上的任何輸入，或同時按住的兩個輸入。同一個輸入亦會關閉鍵盤，除非有鍵盤控制項同樣使用它。留空表示沒有輸入可以開啟。</value></data>
+  <data name="Menu_Reset_OpensWith" xml:space="preserve"><value>重設開啟方式</value></data>
+  <data name="Menu_OpenOnTextFocus" xml:space="preserve"><value>選取文字方塊時開啟</value></data>
+  <data name="Menu_OpenOnTextFocus_Caption" xml:space="preserve"><value>在 Windows 應用程式和瀏覽器中，無需按鈕。遊戲會自行繪製文字方塊，所以在遊戲中會以上面的輸入開啟，或在開啟「由層保持選單開啟」時以其層開啟。</value></data>
+  <data name="Menu_Keyboard_Steer_Tip" xml:space="preserve"><value>在按鍵之間移動醒目提示的輸入，讀取自此插槽所指派的實體控制器。</value></data>
+  <data name="Menu_Keyboard_SteerLeftHalf" xml:space="preserve"><value>左半邊操控輸入</value></data>
+  <data name="Menu_Keyboard_SteerRightHalf" xml:space="preserve"><value>右半邊操控輸入</value></data>
+  <data name="Menu_Keyboard_PickGroup" xml:space="preserve"><value>揀選組別輸入</value></data>
+  <data name="Menu_Reset_Host2" xml:space="preserve"><value>重設右半邊操控輸入</value></data>
+  <data name="Menu_Host_DPad" xml:space="preserve"><value>十字鍵</value></data>
+  <data name="Menu_Host_FaceButtons" xml:space="preserve"><value>正面按鈕</value></data>
+  <data name="Menu_Keyboard_Controls" xml:space="preserve"><value>鍵盤控制項</value></data>
+  <data name="Menu_Keyboard_Controls_Summary_Format" xml:space="preserve"><value>{0} 佈局，{1} 個控制項</value></data>
+  <data name="Menu_Keyboard_Controls_Desc" xml:space="preserve"><value>讀取自指派給此插槽的實體控制器。每個控制項可接受當中任何一部的任何輸入：按鈕、軸方向、方向鍵、觸控板，或同時按住的兩個輸入。按一下錄製按鈕再按輸入，或按住一個輸入再按第二個來組成組合。「全部對應」會按次序錄製所有控制項。</value></data>
+  <data name="Menu_Keyboard_MapAll" xml:space="preserve"><value>全部對應</value></data>
+  <data name="Menu_Keyboard_MapAll_Tip" xml:space="preserve"><value>按次序錄製佈局的所有控制項。狀態列會顯示要按輸入的控制項名稱。</value></data>
+  <data name="Menu_Keyboard_MapAll_Prompt_Format" xml:space="preserve"><value>請按 {0} 的輸入（第 {1} 個，共 {2} 個）</value></data>
+  <data name="Menu_Keyboard_MapAll_Done" xml:space="preserve"><value>所有鍵盤控制項已錄製。</value></data>
+  <data name="Menu_Reset_KeyboardControls" xml:space="preserve"><value>重設鍵盤控制項</value></data>
+  <data name="Menu_Keyboard_Reset_Format" xml:space="preserve"><value>將 {0} 重設為 {1}</value></data>
+  <data name="Menu_Keyboard_RecordingPrompt" xml:space="preserve"><value>請在指派給此插槽的任何裝置上按一個輸入</value></data>
+  <data name="Menu_Keyboard_Card" xml:space="preserve"><value>鍵盤</value></data>
+  <data name="Menu_TypesThrough" xml:space="preserve"><value>輸入途徑</value></data>
+  <data name="Menu_TypesThrough_Caption" xml:space="preserve"><value>Windows 輸入會透過 Windows 輸入每個按鍵，程式可以得知這是來自軟件。鍵盤 + 滑鼠插槽的鍵盤會按該插槽的鍵盤設定輸入。HIDMaestro 虛擬鍵盤會以該款鍵盤型號輸入，程式會視之為硬件。鍵盤選單會自行建立這個鍵盤，所以不需要鍵盤 + 滑鼠插槽。所選鍵盤沒有的按鍵，以及沒有按鍵可以輸入的字元，仍會經 Windows 輸入處理。</value></data>
+  <data name="Menu_TypesThrough_Slot_Format" xml:space="preserve"><value>與 {0} 使用同一個鍵盤</value></data>
+  <data name="Menu_Reset_TypesThrough" xml:space="preserve"><value>重設輸入途徑</value></data>
+  <data name="Menu_FunctionRow" xml:space="preserve"><value>功能鍵列</value></data>
+  <data name="Menu_FunctionRow_Caption" xml:space="preserve"><value>Esc、F1 至 F12 和 Del。鍵盤上的 Fn 鍵亦可切換這一列。</value></data>
+  <data name="Menu_WordSuggestions" xml:space="preserve"><value>字詞建議</value></data>
+  <data name="Menu_WordSuggestions_Caption" xml:space="preserve"><value>來自 Windows 的文字預測，適用於 Windows 已安裝的語言。</value></data>
+  <data name="Menu_SymbolsPage" xml:space="preserve"><value>符號頁</value></data>
+  <data name="Menu_SymbolsPage_Tip" xml:space="preserve"><value>鍵盤符號頁上的字元，會以 Unicode 字元輸入。</value></data>
+  <data name="Menu_Reset_Symbols" xml:space="preserve"><value>重設符號頁</value></data>
+  <data name="Menu_Keyboard_Overlay_Caption" xml:space="preserve"><value>每個選單本來就有的列。拖曳鍵盤的頂列或角落握把，或按住「移動鍵盤」，亦可設定這些列。</value></data>
+  <data name="Osk_Title" xml:space="preserve"><value>熒幕鍵盤</value></data>
+  <data name="Osk_Control_TypeKey" xml:space="preserve"><value>輸入按鍵</value></data>
+  <data name="Osk_Control_Backspace" xml:space="preserve"><value>Backspace</value></data>
+  <data name="Osk_Control_Space" xml:space="preserve"><value>Space</value></data>
+  <data name="Osk_Control_Enter" xml:space="preserve"><value>Enter</value></data>
+  <data name="Osk_Control_Close" xml:space="preserve"><value>關閉</value></data>
+  <data name="Osk_Control_ShiftNextKey" xml:space="preserve"><value>下一個按鍵使用 Shift</value></data>
+  <data name="Osk_Control_ShiftLeftHand" xml:space="preserve"><value>下一個按鍵使用 Shift（左手）</value></data>
+  <data name="Osk_Control_ShiftRightHand" xml:space="preserve"><value>下一個按鍵使用 Shift（右手）</value></data>
+  <data name="Osk_Control_SymbolsPage" xml:space="preserve"><value>符號頁</value></data>
+  <data name="Osk_Control_CursorLeft" xml:space="preserve"><value>游標向左</value></data>
+  <data name="Osk_Control_CursorRight" xml:space="preserve"><value>游標向右</value></data>
+  <data name="Osk_Control_MoveUp" xml:space="preserve"><value>向上移動</value></data>
+  <data name="Osk_Control_MoveDown" xml:space="preserve"><value>向下移動</value></data>
+  <data name="Osk_Control_MoveLeft" xml:space="preserve"><value>向左移動</value></data>
+  <data name="Osk_Control_MoveRight" xml:space="preserve"><value>向右移動</value></data>
+  <data name="Osk_Control_Suggestion_Format" xml:space="preserve"><value>建議 {0}</value></data>
+  <data name="Osk_Control_MoveKeyboard" xml:space="preserve"><value>移動鍵盤（按住）</value></data>
+  <data name="Osk_Control_TypeLeftHalf" xml:space="preserve"><value>輸入左半邊</value></data>
+  <data name="Osk_Control_TypeRightHalf" xml:space="preserve"><value>輸入右半邊</value></data>
+  <data name="Osk_Control_ArrowUp" xml:space="preserve"><value>向上箭咀</value></data>
+  <data name="Osk_Control_ArrowDown" xml:space="preserve"><value>向下箭咀</value></data>
+  <data name="Osk_Control_ArrowLeft" xml:space="preserve"><value>向左箭咀</value></data>
+  <data name="Osk_Control_ArrowRight" xml:space="preserve"><value>向右箭咀</value></data>
+  <data name="Osk_Control_PickWest" xml:space="preserve"><value>揀選西</value></data>
+  <data name="Osk_Control_PickNorth" xml:space="preserve"><value>揀選北</value></data>
+  <data name="Osk_Control_PickEast" xml:space="preserve"><value>揀選東</value></data>
+  <data name="Osk_Control_PickSouth" xml:space="preserve"><value>揀選南</value></data>
+  <data name="Osk_Control_Capitals" xml:space="preserve"><value>大寫和符號（按住）</value></data>
+  <data name="Osk_Control_Numbers" xml:space="preserve"><value>數字和括號（按住）</value></data>
+  <data name="Osk_Control_Home" xml:space="preserve"><value>Home</value></data>
+  <data name="Osk_Control_End" xml:space="preserve"><value>End</value></data>
+  <data name="Menu_Keyboard_OpenPress" xml:space="preserve"><value>開啟時機</value></data>
+  <data name="Menu_Keyboard_OpenPress_Tip" xml:space="preserve"><value>按下「開啟方式」的哪種按法會開啟或關閉鍵盤。Steam 的長按和連按兩下綁定會匯入為「長按時」和「按兩下時」，所以同一輸入的短按仍保留自己的綁定。</value></data>
+  <data name="Menu_Reset_OpenPress" xml:space="preserve"><value>重設開啟時機</value></data>
+  <data name="Menu_Keyboard_OpenPress_Hold_Desc" xml:space="preserve"><value>按住「開啟方式」達到按住時間後，開啟或關閉鍵盤。較短的按壓不會有任何作用。</value></data>
+  <data name="Menu_Keyboard_OpenPress_Double_Desc" xml:space="preserve"><value>在按下時限內按兩次「開啟方式」，便會開啟或關閉鍵盤。</value></data>
 </root>

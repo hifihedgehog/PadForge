@@ -1861,6 +1861,12 @@ namespace PadForge.Common.Input
             // The last stop handed the Sony pads' audio routes back (#546).
             UserEffectsDispatcher.ResumeAudioRoutes();
 
+            // The On-Screen Keyboard starts closed with nothing held at rest
+            // (#566), and its text-focus watcher listens only while a
+            // keyboard menu asks.
+            ResetOnScreenKeyboardRuntime();
+            StartTextFocusWatcher();
+
             // The last stop closed the Bliss-Box runtime (#469).
             BlissBoxRuntime.Open();
 
@@ -1989,6 +1995,7 @@ namespace PadForge.Common.Input
             }
 
             RawInputListener.Stop();
+            StopTextFocusWatcher();
 
             DetachTouchpadCaptures(_ptpReader);
             _ptpReader?.Stop();
@@ -2181,6 +2188,10 @@ namespace PadForge.Common.Input
                                 // so the user can switch away from an empty profile.
                                 EvaluateGlobalMacros();
 
+                                // An open On-Screen Keyboard (#566) keeps
+                                // working, and closing, with no slot active.
+                                TickOnScreenKeyboard(step5Runs: false);
+
                                 // The slot macro evaluator (and its ToggleKey
                                 // reconcile) doesn't run in idle, so release any
                                 // latched macro key (issue #9 wave 1b) rather
@@ -2279,6 +2290,11 @@ namespace PadForge.Common.Input
                             UpdateOutputStates();
                             CombineOutputStates();
                             EvaluateMacros();
+                            // The On-Screen Keyboard (#566) runs after the
+                            // macro pass, which may switch the layer that
+                            // holds it open, and before Step 5, which sends
+                            // a slot's keyboard the keys it typed.
+                            TickOnScreenKeyboard(step5Runs: true);
                             // The Motion Pitch, Yaw and Roll rows (#475) are
                             // evaluated in Step 3, so their motion composes
                             // here, after the macro pass's Gyro Recenter, and

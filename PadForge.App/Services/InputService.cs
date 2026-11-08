@@ -2625,6 +2625,11 @@ namespace PadForge.Services
                     _menuOverlay.Close();
                     _menuOverlay = null;
                 }
+                if (_oskWindow != null)
+                {
+                    _oskWindow.Close();
+                    _oskWindow = null;
+                }
             });
 
             // Background-safe: foreground monitor, servers, audio detector,
@@ -3273,6 +3278,11 @@ namespace PadForge.Services
             //    highlight / hide accordingly. Optional (default on);
             //    menus keep committing blind when disabled.
             UpdateMenuOverlayWindow();
+
+            // ── Drive the On-Screen Keyboard (#566): timing and the
+            //    foreground layout to the poll thread, its snapshot to the
+            //    window, and the keyboard's own changes to its menu.
+            UpdateOnScreenKeyboard();
 
             // ── Update Devices page (only if visible) ──
             // Nav-tag visibility does not flip on minimize; gate on the
@@ -7971,6 +7981,8 @@ namespace PadForge.Services
                 foreach (var menu in slotMenus)
                 {
                     if (menu == null || !menu.Enabled) continue;
+                    // A keyboard menu (#566) has no cells.
+                    if (menu.Kind == PadForge.Engine.Menus.MenuKind.Keyboard) continue;
                     int cells = System.Math.Clamp(menu.CellCount, 1, 20);
                     int first = menu.Kind == PadForge.Engine.Menus.MenuKind.Radial
                         ? (menu.HasCenter ? 0 : 1) : 0;
@@ -19880,7 +19892,28 @@ namespace PadForge.Services
                 if (ms.Menus != null)
                 {
                     foreach (var m in ms.Menus)
-                        if (m != null) m.DeviceGuid = Map(m.DeviceGuid);
+                    {
+                        if (m == null) continue;
+                        m.DeviceGuid = Map(m.DeviceGuid);
+                        // A keyboard menu's inputs each name their device
+                        // (#566). The controls' list is swapped whole, as
+                        // KeyboardMenuDefaults.Set swaps it.
+                        m.OpenDeviceGuid = Map(m.OpenDeviceGuid);
+                        m.OpenAndDeviceGuid = Map(m.OpenAndDeviceGuid);
+                        if (m.KeyboardControls != null && m.KeyboardControls.Count > 0)
+                        {
+                            var moved = new List<PadForge.Engine.Menus.KeyboardControlEntry>(m.KeyboardControls.Count);
+                            foreach (var c in m.KeyboardControls)
+                            {
+                                if (c == null) continue;
+                                var copy = c.Clone();
+                                copy.DeviceGuid = Map(copy.DeviceGuid);
+                                copy.AndDeviceGuid = Map(copy.AndDeviceGuid);
+                                moved.Add(copy);
+                            }
+                            m.KeyboardControls = moved;
+                        }
+                    }
                 }
             }
         }

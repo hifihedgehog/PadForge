@@ -7035,6 +7035,9 @@ namespace PadForge.ViewModels
                 or VirtualControllerType.Extended;
             vm.DescriptorDisplayProvider = ResolveInputDisplayName;
             vm.InputChoicesProvider = () => SlotAvailableInputs;
+            // A keyboard menu (#566) types through Windows Input, a Keyboard +
+            // Mouse slot's keyboard, or a HIDMaestro keyboard of its own.
+            vm.KbmSlotsProvider = KbmSlotChoices;
             vm.RowBoundProvider = IsMenuItemRowBound;
             vm.StructureChanged = () => MenusStructureChanged?.Invoke();
             vm.RuntimeEdit = edit => InputService.TryEditMenuConfiguration(PadIndex, edit, vm.Entry.MenuId);

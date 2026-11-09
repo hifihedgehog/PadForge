@@ -3692,8 +3692,12 @@ namespace PadForge.Tests
             board.OnCall = null;
             board.Take();
 
-            // Lamps 0 to 31 have gone, the last eight wait to close.
+            // Lamps 0 to 31 have gone, the last eight wait to close. The worker
+            // takes the new colors before the clock moves: a pass that read the
+            // old ones, where only the last eight were due, and then the clock
+            // would close them alone.
             Color(board, 0x010101, EachLamp(40, 0x300000));
+            Passes(backend);
             Advance(40);
             Passes(backend);
             var next = board.Take();

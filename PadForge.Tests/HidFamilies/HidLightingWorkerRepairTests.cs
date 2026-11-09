@@ -2105,7 +2105,11 @@ namespace PadForge.Tests
         /// <summary>A program of a unit's model starts, or OpenRGB takes its
         /// path, while another unit's session waits. Nothing goes to that unit
         /// from inside the wait, and no picture on its turn after it. A third
-        /// unit in the same wait is the proof the keep-alives ran.</summary>
+        /// unit in the same wait is the proof the keep-alives ran. The waiting
+        /// unit is lit from a device row of its own, and the other two take
+        /// their new color inside the wait. On one shared row, a pass already
+        /// past the waiting unit when the color changed painted the other two
+        /// before the take (one full run on 2026-11-05).</summary>
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
@@ -2129,10 +2133,12 @@ namespace PadForge.Tests
                     else
                         PeripheralOutputs.PublishLinks(new LinkTable(new[]
                         {
-                            new DeviceLinks { Device = Device, Lighting = new[] { PathOf(slow), PathOf(other) }, TakenByOpenRgb = new[] { PathOf(kept) } },
+                            new DeviceLinks { Device = Device, Lighting = new[] { PathOf(slow) } },
+                            new DeviceLinks { Device = SecondRow, Lighting = new[] { PathOf(other) }, TakenByOpenRgb = new[] { PathOf(kept) } },
                         }));
                     keptBefore = log.Calls().Count(c => c.StartsWith("kept "));
                     otherBefore = log.Calls().Count(c => c.StartsWith("other "));
+                    PeripheralOutputs.SetLighting(SecondRow, slot: 1, player: 2, 0x44, 0x55, 0x66);
                     wait(600);
                     return true;
                 }),
@@ -2149,8 +2155,12 @@ namespace PadForge.Tests
                 Begin = (io, _) => new FakeWorkerSession(log, io) { KeepAliveLine = "other" },
             };
             using var backend = Started(new IHidLightingFamily[] { family }, slow, kept, other);
-            Link(slow, kept, other);
-            Light(0x112233);
+            PeripheralOutputs.PublishLinks(new LinkTable(new[]
+            {
+                new DeviceLinks { Device = Device, Lighting = new[] { PathOf(slow) } },
+                new DeviceLinks { Device = SecondRow, Lighting = new[] { PathOf(kept), PathOf(other) } },
+            }));
+            LightBoth(0x112233);
             Passes(backend);
             Assert.Equal(3, log.Calls().Count(c => c == "paint 112233,112233"));
 

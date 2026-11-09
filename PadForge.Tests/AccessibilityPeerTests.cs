@@ -46,6 +46,17 @@ namespace PadForge.Tests
         private static AutomationPeer PeerOf(UIElement element)
             => UIElementAutomationPeer.CreatePeerForElement(element);
 
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern bool SetKeyboardState(byte[] keys);
+
+        /// <summary>Clears this thread's key state before keys are sent.
+        /// ClickBorder and CurveEditor read Keyboard.Modifiers, which is this
+        /// thread's state (GetKeyState), and while it holds a modifier both
+        /// leave Enter, Space and the arrows to the page. Both key tests failed
+        /// together that way in one full run on 2026-11-07. SetKeyboardState
+        /// writes this thread's table only and sends nothing to Windows.</summary>
+        private static void NoKeysHeld() => Assert.True(SetKeyboardState(new byte[256]));
+
         [Fact]
         public void ASegmentButton_ReadsAsARadioButton_SelectedWhenItsChoiceIsCurrent() => RunSta(() =>
         {
@@ -368,6 +379,7 @@ namespace PadForge.Tests
             try
             {
                 window.Show();
+                NoKeysHeld();
                 var source = PresentationSource.FromVisual(release);
                 System.Windows.Input.KeyEventArgs KeyDown(System.Windows.Input.Key key)
                     => new(System.Windows.Input.Keyboard.PrimaryDevice, source, 0, key) { RoutedEvent = System.Windows.Input.Keyboard.KeyDownEvent };
@@ -594,6 +606,7 @@ namespace PadForge.Tests
                     PadForge.Resources.Strings.Strings.Instance.CurveEditor_PointFormat, n, count, x, y);
                 Assert.Equal(Point(1, 3, 0, 0), value.Value);
 
+                NoKeysHeld();
                 var source = PresentationSource.FromVisual(editor);
                 System.Windows.Input.KeyEventArgs Key(System.Windows.Input.Key key)
                     => new(System.Windows.Input.Keyboard.PrimaryDevice, source, 0, key) { RoutedEvent = System.Windows.Input.Keyboard.KeyDownEvent };

@@ -612,6 +612,12 @@ Some browsers refuse PadForge's self-signed certificate, and a tunnel brings a c
 
 ![The Plain HTTP Address section on the Dashboard](screenshots/dashboard-web-plain.jpg)
 
+### Your stream's chat, at the controls.
+
+Turn on Read Twitch Chat on the Dashboard and enter your channel's name. Viewers type ! and a word in your chat, and each word is a button on the Twitch Chat row on the Devices page, mapped like any controller's: !a500ms holds A for 500 ms, !a+b presses both, and !a b presses one after the other. Viewers take turns with !claim, approved by viewers or by moderators as you choose, and skip a command with !skip, which takes two viewers or one moderator. Only the newest 20 commands wait in line, and a command plays for at most 10 seconds. The controller picture for your broadcast is an address you add to OBS as a browser source. It has not run against a live channel yet.
+
+![The Twitch Chat card on the Dashboard](screenshots/twitch-chat.jpg)
+
 ---
 
 ## Every device: local co-op without limits.
@@ -655,6 +661,16 @@ Turn on Read Bliss-Box Adapters and each port of a Bliss-Box adapter names the c
 Logitech's GamePanel devices, the G15, G19, G510 and G13 among them, the Mad Catz S.T.R.I.K.E. 7, and a phone running Logitech Arx Control each get a row of their own. The screen shows the profile, a clock, play time, a stopwatch, a picture, or a PlayStation controller's lightbar color, and the keys beside it map as buttons. A macro can play pictures on a screen, switch its mode and run its stopwatch.
 
 ![The Keyboard Screens card in Settings](screenshots/settings-keyboard-screens.jpg)
+
+### A keyboard screen, without the keyboard.
+
+The Screen Overlay card on the Dashboard shows what a keyboard screen shows, a picture, a timer, the time or a lightbar's color, in a window above your game on any PC. Add several, zoom and pan a picture, and place each one: while PadForge is in front, drag it with the right mouse button and size it from its corner, and while another program is in front, clicks pass through it. The macros that drive a keyboard screen drive an overlay too.
+
+![The Screen Overlay card on the Dashboard](screenshots/screen-overlay.jpg)
+
+### A keyboard or mouse for PadForge alone.
+
+Use Only in PadForge on a USB keyboard's or mouse's row moves it to Windows' WinUSB driver, so it stops typing or moving the pointer in every other program, and its keys and buttons reach only your mappings and macros: a second keyboard becomes a macro pad. A laptop's precision touchpad works the same way while PadForge runs, through HidHide. A 15-second Keep prompt gives the device back to Windows unless you keep it, and its row restores the Windows driver at any time.
 
 ### 2,667 devices by name, and the ones Windows can't read.
 

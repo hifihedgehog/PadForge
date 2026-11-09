@@ -26,7 +26,7 @@ Free Windows app. No subscription. No paywall. No nag screens. Built on HelixToo
 
 PadForge is for sim racers running wheels in games that only understand Xbox controllers. For DualSense owners who want adaptive triggers and lightbar effects in Steam games that ignore them. For accessibility users mapping whatever hardware they can use. For anyone whose controller doesn't match what their game expects.
 
-<p align="center"><b>16</b> virtual controllers at once · <b>1,110</b> devices known by USB identity · <b>337</b> device profiles · <b>1000 Hz</b> polling · <b>$0</b> forever</p>
+<p align="center"><b>16</b> virtual controllers at once · <b>2,667</b> devices known by USB identity · <b>337</b> device profiles · <b>1000 Hz</b> polling · <b>$0</b> forever</p>
 
 ![Dashboard](screenshots/dashboard.jpg)
 
@@ -49,6 +49,21 @@ PadForge is for sim racers running wheels in games that only understand Xbox con
   <br>
   <em>Powered by HIDMaestro. One driver, 337 device profiles.</em>
 </p>
+
+<details>
+<summary><b>New in 5.3.0:</b> reWASD and DS4Windows profiles imported whole, key-by-key lighting on 1,563 RGB devices, lights that follow your screen, a keyboard you type on with the controller, and Twitch chat at the controls</summary>
+
+- reWASD configs and DS4Windows profiles import as ordinary PadForge profiles. Before anything changes, the preview lists every binding as Clean, Partial or Skipped with its reason, and names every program the profile would run. reWASD's shifts become shift layers, and its single, double, triple and long presses become macros that keep the file's wait times. A DS4Windows profile brings its shift modifiers, special actions, gyro and touchpad modes, lightbar, adaptive trigger effects and two-stage triggers ([#561](https://github.com/hifihedgehog/PadForge/issues/561)).
+- PadForge lights 1,563 RGB keyboards, mice, headsets and other devices by itself, in the protocols OpenRGB, OpenRazer, SignalRGB's plugins and QMK document. The Supported Devices page lists each by name, and they join the count of devices PadForge knows by USB identity, now 2,667. Where a device's lights are known one by one, the Key Colors card paints them key by key on each shift layer, Set Key Colors and Clear Key Colors macros color chosen keys, and Map Key Lights names a light by the key you press under it. The ASUS Aura, MSI Mystic Light and Corsair iCUE rows light through those makers' SDKs. Most of these devices have not run against PadForge yet ([#557](https://github.com/hifihedgehog/PadForge/issues/557)).
+- Screen Color lights a device with the colors on one display, and a keyboard whose lights are known one by one spreads the screen across its keys ([#559](https://github.com/hifihedgehog/PadForge/issues/559)). The Screen Overlay shows what a keyboard screen shows, a picture, a timer, the time or a lightbar's color, in windows above your game on any PC ([#560](https://github.com/hifihedgehog/PadForge/issues/560)).
+- Keyboard is a new menu style: the controller types into any Windows program on a Grid, a Split keyboard or a daisy Wheel, opened by any input you pick or by a text box taking focus, with word suggestions from Windows ([#566](https://github.com/hifihedgehog/PadForge/issues/566)). Hotbar is another, Steam Input's hotbar, and a Steam config's Show Keyboard and hotbars import as these two.
+- Twitch Chat lets your stream's viewers play a slot by typing commands such as !a, !a+b or !a500ms in chat, taking turns with !claim, while the controller shows on stream as an OBS browser source. It has not run against a live channel yet ([#555](https://github.com/hifihedgehog/PadForge/issues/555)).
+- Use Only in PadForge takes a USB keyboard or mouse away from Windows, so its keys and buttons reach only your mappings and macros, and takes a precision touchpad the same way while PadForge runs ([#549](https://github.com/hifihedgehog/PadForge/issues/549)).
+- A second-model DualShock 4 on a cable, or on Sony's USB wireless adapter, plays PadForge's sound through its speaker as well as its headphone jack, not yet run on such a pad ([#546](https://github.com/hifihedgehog/PadForge/issues/546)). Sony pads get their headset route back when PadForge lets them go. A DualSense can show its battery charge on its player lights, Battery Alerts can repeat the low notice and announce a full charge, and the Device Dossier shows a pad's firmware version. Slot cards show a type chip and the Preset name in place of the seven type tiles ([#545](https://github.com/hifihedgehog/PadForge/issues/545)).
+- Fixes. A Mayflash DolphinBar's empty slots no longer become Wii Remotes, and a remote keeps its slot assignment in any bar slot. No DolphinBar has run the fix yet ([#562](https://github.com/hifihedgehog/PadForge/issues/562)). A keyboard key or mouse button that alone triggers a macro no longer reaches other programs when its device has Consume Mapped Inputs on. A device event while PadForge exits no longer hangs it, and a new install that turns on Twitch Chat starts with the usual chat words.
+- Bundled: HIDMaestro 2.1.0 with 337 device profiles, and BthPS3 3.2.1.
+
+</details>
 
 <details>
 <summary><b>New in 5.2.0:</b> driving games' telemetry as controller inputs, DSX game mods with no DSX installed, the Novint Falcon as a force-feedback stick, keyboard screens, and DualSense haptics on every rumble pad</summary>
@@ -356,6 +371,12 @@ Point PadForge at a game and it browses the community controller configs publish
 
 ![Steam Workshop config browser](screenshots/workshop-configs.jpg)
 
+### Bring your reWASD or DS4Windows profile.
+
+Open a reWASD config or a DS4Windows profile from the Profiles page, or drop the file on it. Before anything changes, the preview lists every binding as Clean, Partial or Skipped, each with its reason, and names any program the profile would run. One click makes it an ordinary PadForge profile. reWASD's shifts become shift layers, its single, double, triple and long presses become macros that keep the file's wait times, and turbo, toggles, radial menus and the lightbar on each layer come across. A DS4Windows profile brings its shift modifiers, the special actions in its Actions.xml, its gyro and touchpad output modes, its lightbar, its adaptive trigger effects and its two-stage triggers. Keyboard and mouse inputs read the merged keyboard and mouse rows, so they work the moment the profile loads.
+
+![The import preview for a reWASD config](screenshots/import-preview.jpg)
+
 ### Caps Lock for your controller.
 
 Each slot can carry extra mapping tables that turn on while a button, chord, or axis fires. Six activation modes: Hold, Toggle, Latch, Cycle, Sticky, and No Button. Latch presses a layer on and leaves it on. Press it again for Base, or press a different Latch button to switch. Cycle puts a queue of layers under one control. The activator steps forward, a second Previous button steps back through the same list, and that Previous button can sit on another device. Wrap Around loops past the last layer to the first. Include Base folds the resting layer into the rotation or leaves it out. A No Button layer has no activator of its own and exists only to ride a Cycle queue. Each layer carries its own color and emoji icon, and a Win11-style flyout confirms the active layer the moment it engages.
@@ -400,6 +421,14 @@ Drop a Text Block into a macro's action sequence and it types out plain text, on
 
 A slot's radial and grid menus put a page of actions under one button, and a cell can run a macro instead of pressing a button. The icons are yours to supply: an icon package is one zip of PNG, JPG, BMP, or GIF images with a `.pficons` extension, added from the Icon Packages card on the Menus tab. PadForge reads straight from the file and never unpacks it, so keeping a package next to `PadForge.exe` keeps the setup portable. SVG is not read.
 
+A menu can also be a hotbar, Steam Input's: one row of cells that one input shows and hides, two step through and a fourth fires, with Steam's fire modes and its Wrap Around, Hide After Firing and Re-Center Each Time switches.
+
+### Type with the controller.
+
+Set a menu's style to Keyboard and the controller types into any Windows program, in the keyboard layout of the window you type into. Grid moves one highlight, Split gives each thumb its own half of the keyboard, and Wheel is a daisy wheel of eight letter groups. Any input on the slot's devices opens it, and Open When a Text Box Is Selected opens it when a text box takes focus. Word suggestions come from Windows' own text prediction, and the keys can type through a HIDMaestro keyboard that programs take for hardware. While the keyboard is open, the rest of the controller rests. The Desktop starter profile opens one on X, and a Steam config's Show Keyboard imports as one.
+
+![A Keyboard menu on the Menus tab](screenshots/menus-keyboard.jpg)
+
 ---
 
 ## Feel: your wheel fights back.
@@ -420,7 +449,7 @@ The Bass Shakers tab routes the game rumble and force feedback a virtual control
 
 ### Adaptive triggers and lightbar that don't need the game's blessing.
 
-Seven adaptive trigger modes with a live preview that draws the resistance curve as you drag. Fourteen lightbar modes, six of them tied to your system audio (three Audio Pulse variants, three Audio Bands variants). The lightbar and adaptive triggers work in games that have never heard of a DualSense.
+Seven adaptive trigger modes with a live preview that draws the resistance curve as you drag. Fifteen lightbar modes, six of them tied to your system audio (three Audio Pulse variants, three Audio Bands variants), and one that follows your screen. The lightbar and adaptive triggers work in games that have never heard of a DualSense.
 
 | ![Adaptive Triggers tab](screenshots/adaptive-triggers.jpg) | ![Lighting tab](screenshots/lighting.jpg) |
 |:---:|:---:|
@@ -445,9 +474,19 @@ PadForge sets the Guide button LED brightness on an Xbox One, Elite, or Series p
 
 ### The desk lights up with the pad.
 
-Mice and keyboards light the way a DualSense does. Assign one to a virtual controller, turn on Control This Device's Lighting on its Lighting tab, and it takes that controller's lighting with the same modes a lightbar has: Player Number, Static, Breathing, Strobe, Rainbow, Color Cycle, Battery, the six audio modes, the input-reactive overlay and the lightbar macros. On a PlayStation virtual controller, a game that writes the lightbar takes over as it does on a DualSense. While its vendor's software is closed, PadForge lights a device on its own, and each device shows its own virtual controller's color. Logitech mice and keyboards light straight over HID++ where they report lighting feature 0x8070 or 0x8071, per-key keyboards included, and Battery mode reads their charge. A Logitech device that can be held more firmly gets a Lighting Hold picker, for one that dims its lights or shows its saved profile over the color. Razer mice, keyboards and keypads light through their own feature reports, 180 product IDs in all, and SteelSeries mice and keyboards through their control collection, 82 product IDs. A device Windows Dynamic Lighting drives lights through HID LampArray once Dynamic Lighting is turned off for it in Windows Settings. While G HUB, Logitech Gaming Software, Razer Synapse or SteelSeries GG runs, that program has its brand's devices, and they light through it: Logitech's LED engine, which PadForge loads rather than ships, the REST server Razer Synapse hosts, and GameSense in SteelSeries GG. Those three light every device of a kind at once, so when two virtual controllers light the same kind, the one with the smaller player number sets it. The Razer Chroma, Logitech LIGHTSYNC and SteelSeries GG rows appear on the Devices page once that software is installed. They light what PadForge does not read: Razer headsets, mousepads and Chroma Link strips, Logitech headsets, mousepads and speakers, and SteelSeries headsets. They also light any mouse or keyboard of their brand that no virtual controller lights on its own, and a device lit from its own Lighting tab outranks them whatever the player numbers. Turning off Control This Device's Lighting stops that virtual controller from lighting the device, though a vendor row or another device of its kind can still set its color, and a Set Chroma Color macro on that virtual controller still paints a Razer device. Earlier versions mirrored the lightbar to Chroma and LIGHTSYNC from two Dashboard toggles, and a toggle that was on now assigns its row to the first DualSense or DualShock 4 virtual controller, if there is one.
+Mice and keyboards light the way a DualSense does. Assign one to a virtual controller, turn on Control This Device's Lighting on its Lighting tab, and it takes that controller's lighting with the same modes a lightbar has: Player Number, Static, Breathing, Strobe, Rainbow, Color Cycle, Battery, the six audio modes, the input-reactive overlay and the lightbar macros. On a PlayStation virtual controller, a game that writes the lightbar takes over as it does on a DualSense. While its vendor's software is closed, PadForge lights a device on its own, and each device shows its own virtual controller's color. Logitech mice and keyboards light straight over HID++ where they report lighting feature 0x8070 or 0x8071, per-key keyboards included, and Battery mode reads their charge. A Logitech device that can be held more firmly gets a Lighting Hold picker, for one that dims its lights or shows its saved profile over the color. Razer mice, keyboards and keypads light through their own feature reports, 221 product IDs in all, and SteelSeries mice and keyboards through their control collection, 102 product IDs. A device Windows Dynamic Lighting drives lights through HID LampArray once Dynamic Lighting is turned off for it in Windows Settings. While G HUB, Logitech Gaming Software, Razer Synapse or SteelSeries GG runs, that program has its brand's devices, and they light through it: Logitech's LED engine, which PadForge loads rather than ships, the REST server Razer Synapse hosts, and GameSense in SteelSeries GG. Those three light every device of a kind at once, so when two virtual controllers light the same kind, the one with the smaller player number sets it. The Razer Chroma, Logitech LIGHTSYNC and SteelSeries GG rows appear on the Devices page once that software is installed. They light what PadForge does not read: Razer headsets, mousepads and Chroma Link strips, Logitech headsets, mousepads and speakers, and SteelSeries headsets. They also light any mouse or keyboard of their brand that no virtual controller lights on its own, and a device lit from its own Lighting tab outranks them whatever the player numbers. Turning off Control This Device's Lighting stops that virtual controller from lighting the device, though a vendor row or another device of its kind can still set its color, and a Set Chroma Color macro on that virtual controller still paints a Razer device. Earlier versions mirrored the lightbar to Chroma and LIGHTSYNC from two Dashboard toggles, and a toggle that was on now assigns its row to the first DualSense or DualShock 4 virtual controller, if there is one.
 
 Haptic mice rumble the way a gamepad does. Assign a Logitech MX Master 4, or a SteelSeries Rival 500, 700 or 710, to a virtual controller, and it takes that controller's rumble through its own Force Feedback tab, the tab a gamepad gets. The MX Master 4 plays Logitech's own haptic waveforms over HID++ and needs no Logitech software. The Rivals vibrate through the tactile handler in SteelSeries GG, which drives every Rival at once, so the one on the virtual controller with the lowest player number sets their rumble. A Logitech iFeel Mouse or iFeel MouseMan rumbles as well, once Play Rumble on This Mouse on the Devices page has moved it to Windows' WinUSB driver. Windows then stops using it as a pointer until Restore the Windows Driver brings its own driver back, and PadForge moves the pointer from it while it is assigned to a Keyboard + Mouse virtual controller. Razer Sensa HD hardware works the same way through the Razer Sensa row, which appears on the Devices page once Razer Synapse is installed and plays through the Interhaptics engine bundled inside the executable.
+
+Beyond those three brands, PadForge lights 1,563 RGB keyboards, mice, headsets and other devices by USB identity, in the protocols OpenRGB, OpenRazer, SignalRGB's plugins and QMK document: Corsair, ASUS, Keychron, Wooting, MSI, HyperX, Roccat and many more, each listed by name on the [Supported Devices](https://padforge.org/docs/devices/supported/#rgb-keyboards-mice-and-other-lit-devices) page. Where a device's lights are known one by one, the Lighting tab's Key Colors card paints them key by key on each shift layer, Set Key Colors and Clear Key Colors macros color chosen keys for as long as you set, and Map Key Lights names a light by the key you press under it, once for every device of that model. The ASUS Aura, MSI Mystic Light and Corsair iCUE rows join the vendor rows and light through those makers' SDKs while Armoury Crate, MSI Center or iCUE runs. Most of these devices have not run against PadForge yet: their frames follow the references' own code, checked by running those references against PadForge's tables.
+
+![Map Key Lights](screenshots/map-key-lights.jpg)
+
+### Lights that follow your screen.
+
+Screen Color is a lighting mode that follows one display: the whole screen, an edge, a corner, the center or an area you set, read as its most common color or its average, with saturation, brightness and smoothing of your own. A keyboard or mouse whose lights are known one by one spreads the screen across them, so each key takes the color of the screen at its own place. On an HDR display PadForge reads the desktop against the white level Windows draws SDR content at. It reads the finished picture Windows composes, keeps none of it, and changes nothing in any game.
+
+![Screen Color on the Lighting tab](screenshots/screen-color.jpg)
 
 ### Sound from the speaker in your hands.
 
@@ -617,7 +656,7 @@ Logitech's GamePanel devices, the G15, G19, G510 and G13 among them, the Mad Cat
 
 ![The Keyboard Screens card in Settings](screenshots/settings-keyboard-screens.jpg)
 
-### 1,110 devices by name, and the ones Windows can't read.
+### 2,667 devices by name, and the ones Windows can't read.
 
 PadForge's SDL3 build adds 289 pads from the community SDL_GameControllerDB to the pads SDL knows on its own, and it reads controllers Windows gives no usable input: Bluetooth LE pads, the iCade, serial I-Force wheels with their force feedback, DJI RC remotes, clone Xbox 360 receivers, the Ring-Con, the PS Move Sharp Shooter and Racing Wheel, Namco USIO arcade boards and more. The [Supported Devices](https://padforge.org/docs/devices/supported/) page names every one.
 
@@ -750,7 +789,11 @@ Seven trigger effect modes. Off, Feedback, Weapon, Vibration, Multiple-Position 
 
 ### DualSense lightbar
 ![Lighting](screenshots/lighting.jpg)
-Fourteen lightbar modes including three Audio Pulse variants and three Audio Bands variants that react to system audio in real time. A separate Input Reactive overlay flashes on button presses in three variants (Random Color per Press, Cycle Through Palette, Base Color per Press). Strobe is a square-wave flash at the period you set. Battery paints the bar by charge level (red at low, yellow at mid, green at full). Plus the indicator-LED card for player pattern, mute LED, and brightness.
+Fifteen lightbar modes including three Audio Pulse variants and three Audio Bands variants that react to system audio in real time, and Screen Color. A separate Input Reactive overlay flashes on button presses in three variants (Random Color per Press, Cycle Through Palette, Base Color per Press). Strobe is a square-wave flash at the period you set. Battery paints the bar by charge level (red at low, yellow at mid, green at full). Plus the indicator-LED card for player pattern, mute LED, and brightness.
+
+### Screen Color
+![Screen Color on the Lighting tab](screenshots/screen-color.jpg)
+The display to read, the part of it, Most Common Color or Average Color, and saturation, brightness and smoothing. A device whose lights are known one by one spreads the screen across them.
 
 ### Guide button LED
 ![Guide LED](screenshots/guide-led.jpg)
@@ -758,7 +801,7 @@ Xbox Guide button LED brightness on an Xbox One, Elite, or Series pad over USB, 
 
 ### Audio
 ![Audio](screenshots/audio.jpg)
-Controller speaker output for the DualSense and DualShock 4. Pick a Windows audio output to mirror, route a slot's macro sounds to the pad, and set a master volume. DualSense over USB or Bluetooth, DualShock 4 over Bluetooth, and the second-model DualShock 4 through its headphone jack on a cable.
+Controller speaker output for the DualSense and DualShock 4. Pick a Windows audio output to mirror, route a slot's macro sounds to the pad, and set a master volume. DualSense over USB or Bluetooth, DualShock 4 over Bluetooth, and the second-model DualShock 4 on a cable through its speaker or its headphone jack.
 
 ### Touchpad
 ![Touchpad](screenshots/touchpad.jpg)
@@ -784,6 +827,14 @@ Paints the Razer devices assigned to its virtual controller, and every other Raz
 ![A radial menu cell bound to a macro](screenshots/menu-macro-cell.jpg)
 A cell in a radial or grid menu can run a macro instead of pressing a button.
 
+### Keyboard menu
+![A Keyboard menu on the Menus tab](screenshots/menus-keyboard.jpg)
+A menu set to the Keyboard style: its layout, what opens it, its controls and where its keys type.
+
+### Hotbar menu
+![A Hotbar menu on the Menus tab](screenshots/menus-hotbar.jpg)
+A menu set to the Hotbar style: Show or Hide, Previous, Next and Fire, and Steam's three switches.
+
 ### Menu icon packages
 ![The Icon Packages card on the Menus tab](screenshots/menu-icon-packs.jpg)
 An icon package is one zip of images with a .pficons extension. Add one and its icons are available on any menu cell. PadForge reads straight from the file and never unpacks it.
@@ -807,6 +858,10 @@ A profile can override the Settings polling interval: 1000, 500, 250, 125, or 62
 ### Steam Workshop config import
 ![Steam Workshop config browser](screenshots/workshop-search.jpg)
 Browse community controller configs from the Steam Workshop over an anonymous Steam connection with no account, and translate the one you pick into a PadForge profile. A per-import report lists what came across clean, what was approximated, and what was skipped. Off by default until you enable community config lookup in Settings.
+
+### reWASD and DS4Windows import
+![The import preview for a reWASD config](screenshots/import-preview.jpg)
+Every binding of the file, Clean, Partial or Skipped with its reason, before you click Import.
 
 ### Keyboard + Mouse virtual controller
 ![KBM Preview](screenshots/kbm-preview.jpg)
@@ -851,6 +906,14 @@ Pick the virtual controller type. Buttons dim when you hit the per-type limit.
 ### Devices
 ![Devices](screenshots/devices.jpg)
 Every detected gamepad, joystick, keyboard, mouse, and touchpad as a card. Live raw axes, buttons, POV compass, gyro / accelerometer values, and touchpad finger positions for the selected device. Per-device HidHide toggle and Force Raw Joystick mode for when SDL3 guesses the gamepad layout wrong.
+
+### Map Key Lights
+![The Map Key Lights window](screenshots/map-key-lights.jpg)
+One key light lit at a time: press the key under it to name it, for every keyboard of that model.
+
+### Twitch Chat
+![The Chat Commands window over the Twitch Chat row](screenshots/twitch-chat-commands.jpg)
+The Twitch Chat row, a button per chat word, and the Chat Commands window that adds words and restores the usual ones.
 
 ### Analog keyboard
 ![An analog keyboard on the Devices page](screenshots/devices-analog-keyboard.jpg)
@@ -945,6 +1008,10 @@ Read Analog Keyboards and Read Bliss-Box Adapters, each with a line that says wh
 ### Keyboard screens
 ![The Keyboard Screens card in Settings](screenshots/settings-keyboard-screens.jpg)
 Drive Keyboard Screens, the lines that say what a PC without a screen is missing, and the S.T.R.I.K.E. 7 library's buttons.
+
+### Screen Overlay
+![The Screen Overlay card on the Dashboard](screenshots/screen-overlay.jpg)
+Enable Screen Overlay, its opacity, Choose What It Shows and Add Overlay.
 
 ### Novint Falcon library
 ![The Novint Falcon card in Settings](screenshots/settings-novint-falcon.jpg)

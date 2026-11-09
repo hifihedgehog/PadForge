@@ -525,6 +525,83 @@ namespace PadForge.Tests
         }
 
         /// <summary>
+        /// The features of 5.3.0 follow other projects and say so beside the
+        /// code: the reWASD and DS4Windows import, the On-Screen Keyboard and
+        /// radial menus, Screen Color, the speaker of a wired DualShock 4, the
+        /// battery on a DualSense's player lights, the Media Remote starter,
+        /// the OBS address and the lighting families #557 added. Each project
+        /// a source file cites is credited in the README's credit table, in
+        /// its license list, in LICENSE and in the About text of every
+        /// complete locale. Most of them had no credit on any surface before
+        /// the 5.3.0 prep.
+        /// </summary>
+        [Fact]
+        public void TheFiveThreeReferencesAreCredited()
+        {
+            // The source file, what it cites the project as, the name every
+            // credit carries, and the About key that carries it.
+            var cited = new (string[] File, string InSource, string Credit, string About)[]
+            {
+                (new[] { "Common", "Input", "OnScreenKeyboard", "OskModel.cs" }, "daisywheeljs", "daisywheeljs", "About_MenuRefsDesc"),
+                (new[] { "Common", "Input", "InputManager.MenuRuntime.cs" }, "sc-controller", "sc-controller", "About_MenuRefsDesc"),
+                (new[] { "Common", "ConfigImport", "RewasdTranslator.cs" }, "shunt's enum dump", "shunt", "About_ProfileImportRefsDesc"),
+                (new[] { "Common", "ConfigImport", "RewasdTranslator.cs" }, "reWASD-Powertools", "reWASD-Powertools", "About_ProfileImportRefsDesc"),
+                (new[] { "Common", "ConfigImport", "Ds4WindowsTranslator.cs" }, "Schmaldeo's fork", "Schmaldeo", "About_ProfileImportRefsDesc"),
+                (new[] { "Common", "Input", "ScreenColor", "ScreenCaptureWorker.cs" }, "Prismatik", "Prismatik", "About_ScreenColorRefsDesc"),
+                (new[] { "Common", "Input", "ScreenColor", "WindowsCaptureGrabber.cs" }, "Sunshine", "foundation-sunshine", "About_ScreenColorRefsDesc"),
+                (new[] { "Common", "Input", "ScreenColor", "ScreenDxgi.cs" }, "ScreenCapture.NET", "ScreenCapture.NET", "About_ScreenColorRefsDesc"),
+                (new[] { "Common", "Input", "ScreenColor", "ScreenColorMath.cs" }, "RazerAmbilight", "RazerAmbilight", "About_ScreenColorRefsDesc"),
+                (new[] { "Common", "Input", "ScreenColor", "ScreenColorMath.cs" }, "OpenRGBEffectsPlugin", "OpenRGBEffectsPlugin", "About_ScreenColorRefsDesc"),
+                (new[] { "Common", "Input", "ScreenColor", "ScreenCaptureWorker.cs" }, "Aurora's", "Aurora", "About_ScreenColorRefsDesc"),
+                (new[] { "Common", "Input", "ScreenColor", "WindowsCaptureGrabber.cs" }, "AlienFX Tools", "alienfx-tools", "About_ScreenColorRefsDesc"),
+                (new[] { "Common", "Input", "Ds4UsbAudio.cs" }, "NFSU2-SplitScreen", "NFSU2-SplitScreen", "About_Ds4HeadsetRefsDesc"),
+                (new[] { "Common", "Input", "Ds4UsbAudio.cs" }, "Controllers Wiki", "Controllers Wiki", "About_Ds4HeadsetRefsDesc"),
+                (new[] { "Common", "Input", "Ds5EffectSynthesizer.cs" }, "DualSense-Windows", "DualSense-Windows", "About_DualSenseWindows"),
+                (new[] { "Services", "StarterProfileCatalog.cs" }, "Kodi", "Kodi", "About_Kodi"),
+                (new[] { "Services", "WebControllerServer.cs" }, "obs-browser", "obs-browser", "About_ObsBrowser"),
+                (new[] { "Common", "Input", "Peripherals", "HidFamilies", "QmkLighting.cs" }, "vial-qmk", "vial-qmk", "About_LightingRefsDesc"),
+                (new[] { "Common", "Input", "Peripherals", "HidFamilies", "BlinkyTapeLighting.cs" }, "BlinkyTape_Arduino", "BlinkyTape_Arduino", "About_LightingRefsDesc"),
+                (new[] { "Common", "Input", "Peripherals", "HidFamilies", "ThingMBlinkLighting.cs" }, "blink1-tool", "blink1-tool", "About_LightingRefsDesc"),
+                (new[] { "Common", "Input", "Peripherals", "VendorPrograms.cs" }, "Blink1Control2", "Blink1Control2", "About_LightingRefsDesc"),
+                (new[] { "Common", "Input", "Peripherals", "VendorPrograms.cs" }, "LuxaforOnAir", "LuxaforOnAir", "About_LightingRefsDesc"),
+                (new[] { "Common", "Input", "Peripherals", "VendorPrograms.cs" }, "elgatosf/cli", "elgatosf/cli", "About_LightingRefsDesc"),
+                (new[] { "Common", "Input", "Peripherals", "VendorPrograms.cs" }, "LenovoLegionToolkit-Team", "LenovoLegionToolkit-Team", "About_LightingRefsDesc"),
+                (new[] { "Common", "Input", "Peripherals", "OpenRgbClient.cs" }, "OpenRGB.NET", "OpenRGB.NET", "About_LightingRefsDesc"),
+                (new[] { "Common", "Input", "Peripherals", "PeripheralProductIds.cs" }, "CSDK_ChromaModSample", "CSDK_ChromaModSample", "About_LightingRefsDesc"),
+                (new[] { "Common", "Input", "Peripherals", "ChromaLayouts.cs" }, "WyvrnChroma", "WyvrnChroma", "About_LightingRefsDesc"),
+                (new[] { "Common", "Input", "Peripherals", "HidFamilies", "AnnePro2Lighting.cs" }, "Annemone", "Annemone", "About_LightingRefsDesc"),
+                (new[] { "Common", "Input", "Peripherals", "HidFamilies", "PluginDevices.cs" }, "Nexus-Manager", "Nexus-Manager", "About_LightingRefsDesc"),
+                (new[] { "Common", "Input", "Peripherals", "LenovoLegionLighting.cs" }, "legion-spectrum-control", "legion-spectrum-control", "About_LightingRefsDesc"),
+            };
+
+            string readme = Text("README.md").Replace("\r\n", "\n");
+            int tableStart = readme.IndexOf("## Built on the work of these projects", StringComparison.Ordinal);
+            int tableEnd = readme.IndexOf("## Donations", tableStart + 1, StringComparison.Ordinal);
+            int listStart = readme.IndexOf("## License", StringComparison.Ordinal);
+            int listEnd = readme.IndexOf("## Trademark", listStart + 1, StringComparison.Ordinal);
+            // Positive control: the sections are still where they were.
+            Assert.True(tableStart >= 0 && tableEnd > tableStart, "the README has no credit table section");
+            Assert.True(listStart > tableEnd && listEnd > listStart, "the README has no license list section");
+            string table = readme.Substring(tableStart, tableEnd - tableStart);
+            string list = readme.Substring(listStart, listEnd - listStart);
+            string license = Regex.Replace(Text("LICENSE"), @"\s+", " ");
+
+            foreach (var (file, inSource, credit, about) in cited)
+            {
+                string source = Text(new[] { "PadForge.App" }.Concat(file).ToArray());
+                Assert.True(source.Contains(inSource, StringComparison.Ordinal), $"{file[^1]} no longer cites {inSource}");
+                Assert.True(table.Contains(credit, StringComparison.Ordinal), $"README's credit table does not credit {credit}");
+                Assert.True(list.Contains(credit, StringComparison.Ordinal), $"README's license list does not credit {credit}");
+                Assert.True(license.Contains(credit, StringComparison.Ordinal), $"LICENSE does not credit {credit}");
+                foreach (string locale in Locales)
+                {
+                    string value = ResxValue(Text("PadForge.App", "Resources", "Strings", locale), about);
+                    Assert.True(value.Contains(credit, StringComparison.Ordinal), $"{locale}: {about} does not credit {credit}");
+                }
+            }
+        }
+
+        /// <summary>
         /// The legacy MIDI backend says whose WinMM sequences it follows:
         /// RtMidi, PortMidi and NAudio (the MidiBackendLegacy summary). The
         /// project credits every source it follows on README, LICENSE and the
@@ -557,7 +634,8 @@ namespace PadForge.Tests
             Assert.Contains("Documentation only, no code ships", readme[row]);
             Assert.EndsWith("| MIT (PortMidi), MIT-style RtMidi license |", readme[row]);
             Assert.StartsWith("| Peripheral output references |", readme[row - 1]);
-            Assert.StartsWith("| [protobuf-net](", readme[row + 1]);
+            Assert.StartsWith("| Profile import references |", readme[row + 1]);
+            Assert.StartsWith("| [protobuf-net](", readme[row + 2]);
 
             int bullet = readme.FindIndex(l => l.StartsWith("- **PortMidi**", StringComparison.Ordinal));
             Assert.True(bullet >= 0, "README's license list has no PortMidi and RtMidi entry");
@@ -568,7 +646,8 @@ namespace PadForge.Tests
                      })
                 Assert.Contains(part, readme[bullet]);
             Assert.StartsWith("- **Peripheral output references**", readme[bullet - 1]);
-            Assert.StartsWith("- **protobuf-net**", readme[bullet + 1]);
+            Assert.StartsWith("- **Profile import references**", readme[bullet + 1]);
+            Assert.StartsWith("- **protobuf-net**", readme[bullet + 2]);
 
             foreach (string start in new[] { "| [NAudio](", "- **NAudio**" })
             {

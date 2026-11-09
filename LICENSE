@@ -693,6 +693,9 @@ Protocol documentation references (no code from these projects ships)
   and the DSX server in hbashton's DS4Windows fork
   (https://github.com/hbashton/DS4Windows, GPL-3.0). DSX itself is closed
   source.
+  DualSense-Windows (https://github.com/Ohjurot/DualSense-Windows, MIT, Ludwig
+  Füchsl): the player light bit order behind a DualSense's battery level on
+  its player lights.
   DualSenseSupport (https://github.com/Mxater/DualSenseSupport, no license
   published): the GameCube adaptive-trigger preset values.
   DualShock 4 headset references: the headphone and speaker routing, volume
@@ -707,7 +710,11 @@ Protocol documentation references (no code from these projects ships)
   second model and Sony's adapter read from DJm00n's ControllersInfo
   descriptor dumps (https://github.com/DJm00n/ControllersInfo, no license
   published) and linux-hardware.org's LsUSB probes
-  (https://github.com/linuxhw/LsUSB, CC BY 4.0).
+  (https://github.com/linuxhw/LsUSB, CC BY 4.0). The speaker route of a
+  DualShock 4 on a cable comes from the Controllers Wiki
+  (https://controllers.fandom.com/wiki/Sony_DualShock_4, CC BY-SA) and
+  mihaits' NFSU2-SplitScreen (https://github.com/mihaits/NFSU2-SplitScreen,
+  MIT).
   Eden (https://git.eden-emu.dev/eden-emu/eden, GPL-3.0-or-later): the DSU
   motion axis signs, checked against its UDP decoder.
   EDRefCard2 (https://github.com/brammmers/edrefcard2, MIT): the Elite
@@ -832,6 +839,8 @@ Protocol documentation references (no code from these projects ships)
   (https://github.com/MagicMau/G19USB, Apache-2.0). PadForge loads Logitech
   Gaming Software's libraries and the Strike7API.dll the user downloads or
   chooses.
+  Kodi (https://github.com/xbmc/xbmc, GPL-2.0-or-later): the fullscreen video
+  controls in its joystick keymap, behind the Media Remote starter profile.
   Lenovo Legion Toolkit (https://github.com/BartoszCichecki/LenovoLegionToolkit,
   GPL-3.0): the Lenovo WMI utility-event class the handheld hidden-button
   learner subscribes to, and the elevated IPC server pattern behind
@@ -842,11 +851,19 @@ Protocol documentation references (no code from these projects ships)
   Linux kernel (https://github.com/torvalds/linux, GPL-2.0-or-later): the
   hid-sony, hid-playstation, hid-steam and hid-pidff report and force-feedback
   facts, and the ACPI WMI _WDG block layout in drivers/platform/x86/wmi.c.
-  PadForge reads keyboard and mouse descriptors by hid-core.c's rules.
+  PadForge reads keyboard and mouse descriptors by hid-core.c's rules, and the
+  keyboard and mouse reports it reads by itself as hid-core.c, hid-input.c and
+  usbmouse.c read them.
   linuxmotehook (https://github.com/v1993/linuxmotehook, Apache-2.0) and
   WiimoteHook (https://github.com/epigramx/WiimoteHook, closed source, read
   through its documentation): the Wii Remote hold-orientation presets the
   Grip setting mirrors.
+  Menu references: the On-Screen Keyboard's Wheel layout and its first three
+  character sets, from daisywheeljs
+  (https://github.com/likethemammal/daisywheeljs, MIT, Christopher J.
+  Dolphin), and the stick deflections that engage and release a radial menu's
+  selection, from sc-controller (https://github.com/kozec/sc-controller,
+  GPL-2.0).
   Mumble (https://github.com/mumble-voip/mumble, BSD 3-Clause): the
   Logitech G-key SDK library search order and shutdown lifecycle, read
   alongside LogitechGkeyLib.h from the SDK itself, which defines the event
@@ -867,10 +884,14 @@ Protocol documentation references (no code from these projects ships)
   no license published, CHAI3D (https://github.com/chai3d/chai3d, BSD
   3-Clause) and libnifalcon (https://github.com/libnifalcon/libnifalcon, BSD).
   PadForge loads the Force Dimension library the user installs.
+  obs-browser (https://github.com/obsproject/obs-browser, GPL-2.0-or-later):
+  OBS's browser cancels a page whose certificate it does not trust, so the
+  controller picture page for an OBS browser source is served on the plain
+  address.
   OpenRGB (https://gitlab.com/CalcProgrammer1/OpenRGB, GPL-2.0-or-later):
   detection rules, report frames, LED tables and key layouts for the lighting
   families PadForge drives directly, ported and generated from OpenRGB at commit
-  c6fc8016, DualSense and DualShock 4 lightbar output-report byte usage, and the
+  b9d903b5, DualSense and DualShock 4 lightbar output-report byte usage, and the
   Logitech HID++ 0x8070 lighting frames and collection layout.
   The generated tables, whose header comments name OpenRGB, and the family
   classes that cite OpenRGB source lines are GPL-2.0-or-later. PadForge's
@@ -880,41 +901,60 @@ Protocol documentation references (no code from these projects ships)
   (https://gitlab.com/signalrgb/signal-plugins, no license published, facts
   only, no code taken), qmk-plugins (https://github.com/SRGBmods/qmk-plugins,
   GPL-2.0), SRGBmods plugins (https://github.com/SRGBmods/plugins, no license
-  published, facts only), uchroma (https://github.com/cyanogen/uchroma, LGPL-3.0),
-  Polychromatic (https://github.com/polychromatic/polychromatic, GPL-3.0),
-  ckb-next (https://github.com/ckb-next/ckb-next, GPL-2.0), libratbag
-  (https://github.com/libratbag/libratbag, MIT), tuxedo-drivers
+  published, facts only), uchroma (https://github.com/cyanogen/uchroma,
+  LGPL-3.0), Polychromatic (https://github.com/polychromatic/polychromatic,
+  GPL-3.0), ckb-next (https://github.com/ckb-next/ckb-next, GPL-2.0),
+  libratbag (https://github.com/libratbag/libratbag, MIT), tuxedo-drivers
   (https://github.com/tuxedocomputers/tuxedo-drivers, GPL-2.0-or-later),
+  vial-qmk (https://github.com/vial-kb/vial-qmk, GPL-2.0-or-later),
   ite8291r3-ctl (https://github.com/pobrn/ite8291r3-ctl, GPL-2.0), libcmmk
   (https://github.com/chmod222/libcmmk, LGPL-3.0), Eruption
   (https://github.com/eruption-project/eruption, GPL-3.0-or-later),
   roccat-vulcan-api-rs (https://github.com/ChickenStorm/roccat-vulcan-api-rs,
-  MIT, ChickenStorm), roccat-vulcan (https://github.com/duncanthrax/roccat-vulcan,
-  GPL-3.0), cherryrgb-rs (https://github.com/skraus-dev/cherryrgb-rs, MIT,
-  Sebastian Kraus), node-lib (https://github.com/diefarbe/node-lib, MIT, The 5Q
-  Reversers), wooting-rgb-sdk (https://github.com/WootingKb/wooting-rgb-sdk,
-  MPL-2.0), asusctl (https://gitlab.com/asus-linux/asusctl, MPL-2.0), g-helper
+  MIT, ChickenStorm), roccat-vulcan
+  (https://github.com/duncanthrax/roccat-vulcan, GPL-3.0), cherryrgb-rs
+  (https://github.com/skraus-dev/cherryrgb-rs, MIT, Sebastian Kraus), node-lib
+  (https://github.com/diefarbe/node-lib, MIT, The 5Q Reversers),
+  wooting-rgb-sdk (https://github.com/WootingKb/wooting-rgb-sdk, MPL-2.0),
+  asusctl (https://gitlab.com/asus-linux/asusctl, MPL-2.0), g-helper
   (https://github.com/seerge/g-helper, GPL-3.0), Lenovo Legion Toolkit
-  (https://github.com/BartoszCichecki/LenovoLegionToolkit, GPL-3.0),
+  (https://github.com/BartoszCichecki/LenovoLegionToolkit, GPL-3.0) and its
+  LenovoLegionToolkit-Team continuation
+  (https://github.com/LenovoLegionToolkit-Team/LenovoLegionToolkit, GPL-3.0),
   L5P-Keyboard-RGB (https://github.com/4JX/L5P-Keyboard-RGB, GPL-3.0), OmenMon
   (https://github.com/OmenMon/OmenMon, GPL-3.0), Kaleidoscope
-  (https://github.com/keyboardio/Kaleidoscope, GPL-3.0), Bazecor
+  (https://github.com/keyboardio/Kaleidoscope, GPL-3.0) and Dygma's fork of it
+  (https://github.com/Dygmalab/Kaleidoscope, GPL-3.0), Bazecor
   (https://github.com/Dygmalab/Bazecor, GPL-3.0-only), mouse_m908
-  (https://github.com/dokutan/mouse_m908, GPL-3.0), legion-spectrum-control
-  (https://github.com/alstergee/legion-spectrum-control, MIT, alstergee), alienfx-tools (https://github.com/T-Troll/alienfx-tools, MIT),
-  msi-perkeyrgb (https://github.com/Askannz/msi-perkeyrgb, MIT), Aurora
+  (https://github.com/dokutan/mouse_m908, GPL-3.0), Nexus-Manager
+  (https://github.com/codingncaffeine/Nexus-Manager, GPL-3.0),
+  legion-spectrum-control
+  (https://github.com/alstergee/legion-spectrum-control, MIT, alstergee),
+  alienfx-tools (https://github.com/T-Troll/alienfx-tools, MIT), msi-perkeyrgb
+  (https://github.com/Askannz/msi-perkeyrgb, MIT), Aurora
   (https://github.com/Aurora-RGB/Aurora, MIT, Anton Pupkov), Colore
   (https://github.com/chroma-sdk/Colore, MIT), cooler_master_sdk
   (https://github.com/FrankvdStam/cooler_master_sdk, MIT), RGB.NET
   (https://github.com/DarthAffe/RGB.NET, LGPL-2.1), mystic-light-sdk
   (https://github.com/meskill/mystic-light-sdk, Apache-2.0),
-  python-elgato-streamdeck (https://github.com/abcminiuser/python-elgato-streamdeck,
-  a permissive license of its own, Dean Camera), stb_image_write
-  (https://github.com/nothings/stb, public domain or MIT, Sean Barrett), hidapi
-  (https://github.com/libusb/hidapi, BSD-3-Clause or GPL-3.0 or its original
-  license), and the firmware of the MNT Reform keyboards
-  (https://source.mnt.re/reform/reform, CERN-OHL-S-2.0), read for why those
-  keyboards are not lit on Windows.
+  python-elgato-streamdeck
+  (https://github.com/abcminiuser/python-elgato-streamdeck, a permissive
+  license of its own, Dean Camera), stb_image_write
+  (https://github.com/nothings/stb, public domain or MIT, Sean Barrett),
+  hidapi (https://github.com/libusb/hidapi, BSD-3-Clause or GPL-3.0 or its
+  original license), BlinkyTape_Arduino
+  (https://github.com/Blinkinlabs/BlinkyTape_Arduino, MIT, Blinkinlabs, LLC),
+  blink1-tool (https://github.com/todbot/blink1-tool, CC BY-SA 4.0, ThingM),
+  Blink1Control2 (https://github.com/todbot/Blink1Control2, Apache-2.0),
+  LuxaforOnAir (https://github.com/jschlackman/LuxaforOnAir, MIT, James
+  Schlackman), Elgato's cli (https://github.com/elgatosf/cli, MIT, Corsair
+  Memory Inc.), OpenRGB.NET (https://github.com/diogotr7/OpenRGB.NET, MIT,
+  Diogo Trindade), Razer's CSDK_ChromaModSample
+  (https://github.com/razerofficial/CSDK_ChromaModSample, MIT, Razer Inc.),
+  WyvrnChroma (https://github.com/moeilijk/WyvrnChroma, MIT, cvdveer),
+  Annemone (https://github.com/manualmanul/Annemone, MIT, illixion), and the
+  firmware of the MNT Reform keyboards (https://source.mnt.re/reform/reform,
+  CERN-OHL-S-2.0), read for why those keyboards are not lit on Windows.
   OpenTabletDriver (https://github.com/OpenTabletDriver/OpenTabletDriver,
   LGPL-3.0): the elevated update-verb pattern behind the in-app updater's
   helper.
@@ -1003,6 +1043,13 @@ Protocol documentation references (no code from these projects ships)
   Burk and Roger B. Dannenberg) and RtMidi (https://github.com/thestk/rtmidi,
   MIT-style RtMidi license, Gary P. Scavone): the WinMM call sequences behind
   the legacy MIDI API, which open a port, send to it and close it.
+  Profile import references: the reWASD profile format, read from hcn1z1's
+  shunt schema dump (https://github.com/hcn1z1/shunt, MIT by its README, which
+  ships no license file), DatMoshu's reWASD-Powertools docs
+  (https://github.com/DatMoshu/Claude-Code-reWASD-Powertools, MIT) and
+  reWASD's help (https://help.rewasd.com/, no license published), and the
+  DS4Windows profile format, read from Schmaldeo's DS4Windows fork
+  (https://github.com/schmaldeo/DS4Windows, GPL-3.0-or-later).
   Racing telemetry references: the shared-memory and UDP layouts behind Game
   Telemetry and the wheel RPM shift LEDs, read from CMTelemetry
   (https://github.com/gazz/CMTelemetry, no license published),
@@ -1046,6 +1093,17 @@ Protocol documentation references (no code from these projects ships)
   MIT), Ringcon-Driver (https://github.com/ringrunnermg/Ringcon-Driver, MIT)
   and RingconProtocolDebug
   (https://github.com/nobu-e758/RingconProtocolDebug, Apache-2.0).
+  Screen Color references: the capture behind Screen Color lighting, read from
+  Prismatik (https://github.com/psieg/Lightpack, GPL-2.0-or-later),
+  AlkaidLab's foundation-sunshine fork of Sunshine
+  (https://github.com/AlkaidLab/foundation-sunshine, GPL-3.0),
+  ScreenCapture.NET (https://github.com/DarthAffe/ScreenCapture.NET,
+  LGPL-2.1), RazerAmbilight (https://github.com/nicojeske/RazerAmbilight, MIT,
+  Nico Jeske), OpenRGBEffectsPlugin
+  (https://gitlab.com/OpenRGBDevelopers/OpenRGBEffectsPlugin,
+  GPL-2.0-or-later), Aurora (https://github.com/Aurora-RGB/Aurora, MIT, Anton
+  Pupkov) and alienfx-tools (https://github.com/T-Troll/alienfx-tools, MIT,
+  Rik Lain).
   Serial controller references: the protocols behind the SDL fork's serial
   drivers for six-axis controllers, gamepads, flight sticks, RC
   transmitters, flight panels and ergometers, read from Async.fi

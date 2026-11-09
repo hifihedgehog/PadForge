@@ -693,6 +693,8 @@ namespace PadForge.Common.ConfigImport
 
             var lt = TuningOf(shift, "trigger:left");
             var rt = TuningOf(shift, "trigger:right");
+            // The ids are reWASD's gamepad buttonIds as reWASD-Powertools
+            // lists them (docs/gamepad-buttons.md).
             return id switch
             {
                 1 => Btn("Gamepad ButtonA", "A"),

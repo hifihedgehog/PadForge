@@ -222,6 +222,12 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <TextBlock Grid.Row="0" common:BidiText.Text="{Binding About_3doverstock, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,0,16,0" TextWrapping="Wrap"/>
@@ -352,447 +358,471 @@
                     <TextBlock Grid.Row="31" Grid.Column="1"
                                common:BidiText.Text="{Binding About_DsTesterDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="32" common:BidiText.Text="{Binding About_DualSenseSupport, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="32" common:BidiText.Text="{Binding About_DualSenseWindows, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
                     <TextBlock Grid.Row="32" Grid.Column="1"
+                               common:BidiText.Text="{Binding About_DualSenseWindowsDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+
+                    <TextBlock Grid.Row="33" common:BidiText.Text="{Binding About_DualSenseSupport, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="33" Grid.Column="1"
                                common:BidiText.Text="{Binding About_DualSenseSupportDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="33" common:BidiText.Text="{Binding About_DualSenseY, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="33" Grid.Column="1"
+                    <TextBlock Grid.Row="34" common:BidiText.Text="{Binding About_DualSenseY, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="34" Grid.Column="1"
                                common:BidiText.Text="{Binding About_DualSenseYDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="34" common:BidiText.Text="{Binding About_Ds4HeadsetRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="34" Grid.Column="1"
+                    <TextBlock Grid.Row="35" common:BidiText.Text="{Binding About_Ds4HeadsetRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="35" Grid.Column="1"
                                common:BidiText.Text="{Binding About_Ds4HeadsetRefsDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="35" common:BidiText.Text="{Binding About_Eden, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="35" Grid.Column="1"
+                    <TextBlock Grid.Row="36" common:BidiText.Text="{Binding About_Eden, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="36" Grid.Column="1"
                                common:BidiText.Text="{Binding About_EdenDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="36" common:BidiText.Text="{Binding About_EdRefCard2, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="36" Grid.Column="1"
+                    <TextBlock Grid.Row="37" common:BidiText.Text="{Binding About_EdRefCard2, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="37" Grid.Column="1"
                                common:BidiText.Text="{Binding About_EdRefCard2Desc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="37" common:BidiText.Text="{Binding About_FFmpeg, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="37" Grid.Column="1"
+                    <TextBlock Grid.Row="38" common:BidiText.Text="{Binding About_FFmpeg, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="38" Grid.Column="1"
                                common:BidiText.Text="{Binding About_FFmpegDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="38" common:BidiText.Text="{Binding About_ForgePlay, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="38" Grid.Column="1"
+                    <TextBlock Grid.Row="39" common:BidiText.Text="{Binding About_ForgePlay, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="39" Grid.Column="1"
                                common:BidiText.Text="{Binding About_ForgePlayDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="39" common:BidiText.Text="{Binding About_Fusion, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="39" Grid.Column="1"
+                    <TextBlock Grid.Row="40" common:BidiText.Text="{Binding About_Fusion, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="40" Grid.Column="1"
                                common:BidiText.Text="{Binding About_FusionDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="40" common:BidiText.Text="{Binding About_GamepadBatteryMonitor, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="40" Grid.Column="1"
+                    <TextBlock Grid.Row="41" common:BidiText.Text="{Binding About_GamepadBatteryMonitor, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="41" Grid.Column="1"
                                common:BidiText.Text="{Binding About_GamepadBatteryMonitorDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="41" common:BidiText.Text="{Binding About_GamepadAssetPack, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="41" Grid.Column="1"
+                    <TextBlock Grid.Row="42" common:BidiText.Text="{Binding About_GamepadAssetPack, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="42" Grid.Column="1"
                                common:BidiText.Text="{Binding About_GamepadAssetPackDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="42" common:BidiText.Text="{Binding About_GamepadMotionHelpers, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="42" Grid.Column="1"
+                    <TextBlock Grid.Row="43" common:BidiText.Text="{Binding About_GamepadMotionHelpers, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="43" Grid.Column="1"
                                common:BidiText.Text="{Binding About_GamepadMotionHelpersDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="43" common:BidiText.Text="{Binding About_GestureSign, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="43" Grid.Column="1"
+                    <TextBlock Grid.Row="44" common:BidiText.Text="{Binding About_GestureSign, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="44" Grid.Column="1"
                                common:BidiText.Text="{Binding About_GestureSignDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="44" common:BidiText.Text="{Binding About_GunConRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="44" Grid.Column="1"
+                    <TextBlock Grid.Row="45" common:BidiText.Text="{Binding About_GunConRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="45" Grid.Column="1"
                                common:BidiText.Text="{Binding About_GunConRefsDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="45" common:BidiText.Text="{Binding About_Hado, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="45" Grid.Column="1"
+                    <TextBlock Grid.Row="46" common:BidiText.Text="{Binding About_Hado, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="46" Grid.Column="1"
                                common:BidiText.Text="{Binding About_HadoDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="46" common:BidiText.Text="{Binding About_AnalogKeyboardRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="46" Grid.Column="1"
+                    <TextBlock Grid.Row="47" common:BidiText.Text="{Binding About_AnalogKeyboardRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="47" Grid.Column="1"
                                common:BidiText.Text="{Binding About_AnalogKeyboardRefsDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="47" common:BidiText.Text="{Binding About_HandheldCompanion, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="47" Grid.Column="1"
+                    <TextBlock Grid.Row="48" common:BidiText.Text="{Binding About_HandheldCompanion, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="48" Grid.Column="1"
                                common:BidiText.Text="{Binding About_HandheldCompanionDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="48" common:BidiText.Text="{Binding About_HelixToolkit, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="48" Grid.Column="1"
+                    <TextBlock Grid.Row="49" common:BidiText.Text="{Binding About_HelixToolkit, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="49" Grid.Column="1"
                                common:BidiText.Text="{Binding About_HelixToolkitDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="49" common:BidiText.Text="{Binding About_HidDeviceRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="49" Grid.Column="1"
+                    <TextBlock Grid.Row="50" common:BidiText.Text="{Binding About_HidDeviceRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="50" Grid.Column="1"
                                common:BidiText.Text="{Binding About_HidDeviceRefsDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="50" common:BidiText.Text="{Binding About_Hidapi, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="50" Grid.Column="1"
+                    <TextBlock Grid.Row="51" common:BidiText.Text="{Binding About_Hidapi, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="51" Grid.Column="1"
                                common:BidiText.Text="{Binding About_HidapiDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="51" common:BidiText.Text="{Binding About_HidHide, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="51" Grid.Column="1"
+                    <TextBlock Grid.Row="52" common:BidiText.Text="{Binding About_HidHide, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="52" Grid.Column="1"
                                common:BidiText.Text="{Binding About_HidHideDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="52" common:BidiText.Text="{Binding About_HIDMaestro, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="52" Grid.Column="1"
+                    <TextBlock Grid.Row="53" common:BidiText.Text="{Binding About_HIDMaestro, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="53" Grid.Column="1"
                                common:BidiText.Text="{Binding About_HIDMaestroDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="53" common:BidiText.Text="{Binding About_Hitboxer, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="53" Grid.Column="1"
+                    <TextBlock Grid.Row="54" common:BidiText.Text="{Binding About_Hitboxer, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="54" Grid.Column="1"
                                common:BidiText.Text="{Binding About_HitboxerDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="54" common:BidiText.Text="{Binding About_IForceRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="54" Grid.Column="1"
+                    <TextBlock Grid.Row="55" common:BidiText.Text="{Binding About_IForceRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="55" Grid.Column="1"
                                common:BidiText.Text="{Binding About_IForceRefsDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="55" common:BidiText.Text="{Binding About_IconSources, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="55" Grid.Column="1"
+                    <TextBlock Grid.Row="56" common:BidiText.Text="{Binding About_IconSources, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="56" Grid.Column="1"
                                common:BidiText.Text="{Binding About_IconSourcesDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="56" common:BidiText.Text="{Binding About_IcueSdk, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="56" Grid.Column="1"
+                    <TextBlock Grid.Row="57" common:BidiText.Text="{Binding About_IcueSdk, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="57" Grid.Column="1"
                                common:BidiText.Text="{Binding About_IcueSdkDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
 
-                    <TextBlock Grid.Row="57" common:BidiText.Text="{Binding About_InputPlumber, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="57" Grid.Column="1"
+                    <TextBlock Grid.Row="58" common:BidiText.Text="{Binding About_InputPlumber, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="58" Grid.Column="1"
                                common:BidiText.Text="{Binding About_InputPlumberDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="58" common:BidiText.Text="{Binding About_InstrumentRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="58" Grid.Column="1"
+                    <TextBlock Grid.Row="59" common:BidiText.Text="{Binding About_InstrumentRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="59" Grid.Column="1"
                                common:BidiText.Text="{Binding About_InstrumentRefsDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="59" common:BidiText.Text="{Binding About_Interhaptics, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="59" Grid.Column="1"
+                    <TextBlock Grid.Row="60" common:BidiText.Text="{Binding About_Interhaptics, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="60" Grid.Column="1"
                                common:BidiText.Text="{Binding About_InterhapticsDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="60" common:BidiText.Text="{Binding About_IrohFlexInput, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="60" Grid.Column="1"
+                    <TextBlock Grid.Row="61" common:BidiText.Text="{Binding About_IrohFlexInput, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="61" Grid.Column="1"
                                common:BidiText.Text="{Binding About_IrohFlexInputDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="61" common:BidiText.Text="{Binding About_Jc2Mouse, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="61" Grid.Column="1"
+                    <TextBlock Grid.Row="62" common:BidiText.Text="{Binding About_Jc2Mouse, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="62" Grid.Column="1"
                                common:BidiText.Text="{Binding About_Jc2MouseDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="62" common:BidiText.Text="{Binding About_JoyconSinger, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="62" Grid.Column="1"
+                    <TextBlock Grid.Row="63" common:BidiText.Text="{Binding About_JoyconSinger, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="63" Grid.Column="1"
                                common:BidiText.Text="{Binding About_JoyconSingerDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="63" common:BidiText.Text="{Binding About_JoyShockMapper, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="63" Grid.Column="1"
+                    <TextBlock Grid.Row="64" common:BidiText.Text="{Binding About_JoyShockMapper, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="64" Grid.Column="1"
                                common:BidiText.Text="{Binding About_JoyShockMapperDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="64" common:BidiText.Text="{Binding About_Kaldi, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="64" Grid.Column="1"
+                    <TextBlock Grid.Row="65" common:BidiText.Text="{Binding About_Kaldi, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="65" Grid.Column="1"
                                common:BidiText.Text="{Binding About_KaldiDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="65" common:BidiText.Text="{Binding About_KeyboardScreenRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="65" Grid.Column="1"
+                    <TextBlock Grid.Row="66" common:BidiText.Text="{Binding About_KeyboardScreenRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="66" Grid.Column="1"
                                common:BidiText.Text="{Binding About_KeyboardScreenRefsDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="66" common:BidiText.Text="{Binding About_LegionToolkit, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="66" Grid.Column="1"
+                    <TextBlock Grid.Row="67" common:BidiText.Text="{Binding About_Kodi, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="67" Grid.Column="1"
+                               common:BidiText.Text="{Binding About_KodiDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+
+                    <TextBlock Grid.Row="68" common:BidiText.Text="{Binding About_LegionToolkit, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="68" Grid.Column="1"
                                common:BidiText.Text="{Binding About_LegionToolkitDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="67" common:BidiText.Text="{Binding About_Libinput, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="67" Grid.Column="1"
+                    <TextBlock Grid.Row="69" common:BidiText.Text="{Binding About_Libinput, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="69" Grid.Column="1"
                                common:BidiText.Text="{Binding About_LibinputDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="68" common:BidiText.Text="{Binding About_Libusb, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="68" Grid.Column="1"
+                    <TextBlock Grid.Row="70" common:BidiText.Text="{Binding About_Libusb, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="70" Grid.Column="1"
                                common:BidiText.Text="{Binding About_LibusbDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="69" common:BidiText.Text="{Binding About_Libwdi, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="69" Grid.Column="1"
+                    <TextBlock Grid.Row="71" common:BidiText.Text="{Binding About_Libwdi, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="71" Grid.Column="1"
                                common:BidiText.Text="{Binding About_LibwdiDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="70" common:BidiText.Text="{Binding About_LightingRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="70" Grid.Column="1"
+                    <TextBlock Grid.Row="72" common:BidiText.Text="{Binding About_LightingRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="72" Grid.Column="1"
                                common:BidiText.Text="{Binding About_LightingRefsDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
 
-                    <TextBlock Grid.Row="71" common:BidiText.Text="{Binding About_LinuxKernel, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="71" Grid.Column="1"
+                    <TextBlock Grid.Row="73" common:BidiText.Text="{Binding About_LinuxKernel, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="73" Grid.Column="1"
                                common:BidiText.Text="{Binding About_LinuxKernelDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="72" common:BidiText.Text="{Binding About_Linuxmotehook, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="72" Grid.Column="1"
+                    <TextBlock Grid.Row="74" common:BidiText.Text="{Binding About_Linuxmotehook, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="74" Grid.Column="1"
                                common:BidiText.Text="{Binding About_LinuxmotehookDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="73" common:BidiText.Text="{Binding About_LogitechGKeyRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="73" Grid.Column="1"
+                    <TextBlock Grid.Row="75" common:BidiText.Text="{Binding About_LogitechGKeyRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="75" Grid.Column="1"
                                common:BidiText.Text="{Binding About_LogitechGKeyRefsDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="74" common:BidiText.Text="{Binding About_LogitechLedRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="74" Grid.Column="1"
+                    <TextBlock Grid.Row="76" common:BidiText.Text="{Binding About_LogitechLedRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="76" Grid.Column="1"
                                common:BidiText.Text="{Binding About_LogitechLedRefsDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="75" common:BidiText.Text="{Binding About_GameInput, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="75" Grid.Column="1"
+                    <TextBlock Grid.Row="77" common:BidiText.Text="{Binding About_MenuRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="77" Grid.Column="1"
+                               common:BidiText.Text="{Binding About_MenuRefsDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+
+                    <TextBlock Grid.Row="78" common:BidiText.Text="{Binding About_GameInput, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="78" Grid.Column="1"
                                common:BidiText.Text="{Binding About_GameInputDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="76" common:BidiText.Text="{Binding About_VcRuntime, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="76" Grid.Column="1"
+                    <TextBlock Grid.Row="79" common:BidiText.Text="{Binding About_VcRuntime, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="79" Grid.Column="1"
                                common:BidiText.Text="{Binding About_VcRuntimeDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="77" common:BidiText.Text="{Binding About_MidiServices, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="77" Grid.Column="1"
+                    <TextBlock Grid.Row="80" common:BidiText.Text="{Binding About_MidiServices, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="80" Grid.Column="1"
                                common:BidiText.Text="{Binding About_MidiServicesDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="78" common:BidiText.Text="{Binding About_MingwRuntime, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="78" Grid.Column="1"
+                    <TextBlock Grid.Row="81" common:BidiText.Text="{Binding About_MingwRuntime, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="81" Grid.Column="1"
                                common:BidiText.Text="{Binding About_MingwRuntimeDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="79" common:BidiText.Text="{Binding About_Monado, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="79" Grid.Column="1"
+                    <TextBlock Grid.Row="82" common:BidiText.Text="{Binding About_Monado, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="82" Grid.Column="1"
                                common:BidiText.Text="{Binding About_MonadoDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="80" common:BidiText.Text="{Binding About_MvvmToolkit, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="80" Grid.Column="1"
+                    <TextBlock Grid.Row="83" common:BidiText.Text="{Binding About_MvvmToolkit, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="83" Grid.Column="1"
                                common:BidiText.Text="{Binding About_MvvmToolkitDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="81" common:BidiText.Text="{Binding About_MysticLightSdk, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="81" Grid.Column="1"
+                    <TextBlock Grid.Row="84" common:BidiText.Text="{Binding About_MysticLightSdk, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="84" Grid.Column="1"
                                common:BidiText.Text="{Binding About_MysticLightSdkDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
 
-                    <TextBlock Grid.Row="82" common:BidiText.Text="{Binding About_NAudio, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="82" Grid.Column="1"
+                    <TextBlock Grid.Row="85" common:BidiText.Text="{Binding About_NAudio, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="85" Grid.Column="1"
                                common:BidiText.Text="{Binding About_NAudioDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="83" common:BidiText.Text="{Binding About_NefariusDevMgmt, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="83" Grid.Column="1"
+                    <TextBlock Grid.Row="86" common:BidiText.Text="{Binding About_NefariusDevMgmt, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="86" Grid.Column="1"
                                common:BidiText.Text="{Binding About_NefariusDevMgmtDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="84" common:BidiText.Text="{Binding About_Nefcon, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="84" Grid.Column="1"
+                    <TextBlock Grid.Row="87" common:BidiText.Text="{Binding About_Nefcon, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="87" Grid.Column="1"
                                common:BidiText.Text="{Binding About_NefconDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="85" common:BidiText.Text="{Binding About_DotNet10, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="85" Grid.Column="1"
+                    <TextBlock Grid.Row="88" common:BidiText.Text="{Binding About_DotNet10, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="88" Grid.Column="1"
                                common:BidiText.Text="{Binding About_DotNet10Desc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="86" common:BidiText.Text="{Binding About_SwitchResearch, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="86" Grid.Column="1"
+                    <TextBlock Grid.Row="89" common:BidiText.Text="{Binding About_SwitchResearch, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="89" Grid.Column="1"
                                common:BidiText.Text="{Binding About_SwitchResearchDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="87" common:BidiText.Text="{Binding About_Nipplejs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="87" Grid.Column="1"
+                    <TextBlock Grid.Row="90" common:BidiText.Text="{Binding About_Nipplejs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="90" Grid.Column="1"
                                common:BidiText.Text="{Binding About_NipplejsDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="88" common:BidiText.Text="{Binding About_FalconRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="88" Grid.Column="1"
+                    <TextBlock Grid.Row="91" common:BidiText.Text="{Binding About_FalconRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="91" Grid.Column="1"
                                common:BidiText.Text="{Binding About_FalconRefsDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="89" common:BidiText.Text="{Binding About_OpenHmd, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="89" Grid.Column="1"
+                    <TextBlock Grid.Row="92" common:BidiText.Text="{Binding About_ObsBrowser, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="92" Grid.Column="1"
+                               common:BidiText.Text="{Binding About_ObsBrowserDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+
+                    <TextBlock Grid.Row="93" common:BidiText.Text="{Binding About_OpenHmd, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="93" Grid.Column="1"
                                common:BidiText.Text="{Binding About_OpenHmdDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="90" common:BidiText.Text="{Binding About_OpenRgb, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="90" Grid.Column="1"
+                    <TextBlock Grid.Row="94" common:BidiText.Text="{Binding About_OpenRgb, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="94" Grid.Column="1"
                                common:BidiText.Text="{Binding About_OpenRgbDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="91" common:BidiText.Text="{Binding About_OpenTabletDriver, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="91" Grid.Column="1"
+                    <TextBlock Grid.Row="95" common:BidiText.Text="{Binding About_OpenTabletDriver, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="95" Grid.Column="1"
                                common:BidiText.Text="{Binding About_OpenTabletDriverDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="92" common:BidiText.Text="{Binding About_Opentrack, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="92" Grid.Column="1"
+                    <TextBlock Grid.Row="96" common:BidiText.Text="{Binding About_Opentrack, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="96" Grid.Column="1"
                                common:BidiText.Text="{Binding About_OpentrackDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="93" common:BidiText.Text="{Binding About_OpenVR, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="93" Grid.Column="1"
+                    <TextBlock Grid.Row="97" common:BidiText.Text="{Binding About_OpenVR, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="97" Grid.Column="1"
                                common:BidiText.Text="{Binding About_OpenVRDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="94" common:BidiText.Text="{Binding About_OpenXInput, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="94" Grid.Column="1"
+                    <TextBlock Grid.Row="98" common:BidiText.Text="{Binding About_OpenXInput, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="98" Grid.Column="1"
                                common:BidiText.Text="{Binding About_OpenXInputDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="95" common:BidiText.Text="{Binding About_OpenXrRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="95" Grid.Column="1"
+                    <TextBlock Grid.Row="99" common:BidiText.Text="{Binding About_OpenXrRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="99" Grid.Column="1"
                                common:BidiText.Text="{Binding About_OpenXrRefsDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="96" common:BidiText.Text="{Binding About_PcscSharp, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="96" Grid.Column="1"
+                    <TextBlock Grid.Row="100" common:BidiText.Text="{Binding About_PcscSharp, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="100" Grid.Column="1"
                                common:BidiText.Text="{Binding About_PcscSharpDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="97" common:BidiText.Text="{Binding About_PeripheralOutputRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="97" Grid.Column="1"
+                    <TextBlock Grid.Row="101" common:BidiText.Text="{Binding About_PeripheralOutputRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="101" Grid.Column="1"
                                common:BidiText.Text="{Binding About_PeripheralOutputRefsDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="98" common:BidiText.Text="{Binding About_PortMidiRtMidi, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="98" Grid.Column="1"
+                    <TextBlock Grid.Row="102" common:BidiText.Text="{Binding About_PortMidiRtMidi, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="102" Grid.Column="1"
                                common:BidiText.Text="{Binding About_PortMidiRtMidiDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="99" common:BidiText.Text="{Binding About_ProtobufNet, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="99" Grid.Column="1"
+                    <TextBlock Grid.Row="103" common:BidiText.Text="{Binding About_ProfileImportRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="103" Grid.Column="1"
+                               common:BidiText.Text="{Binding About_ProfileImportRefsDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+
+                    <TextBlock Grid.Row="104" common:BidiText.Text="{Binding About_ProtobufNet, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="104" Grid.Column="1"
                                common:BidiText.Text="{Binding About_ProtobufNetDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="100" common:BidiText.Text="{Binding About_Psmoveapi, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="100" Grid.Column="1"
+                    <TextBlock Grid.Row="105" common:BidiText.Text="{Binding About_Psmoveapi, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="105" Grid.Column="1"
                                common:BidiText.Text="{Binding About_PsmoveapiDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="101" common:BidiText.Text="{Binding About_QDollar, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="101" Grid.Column="1"
+                    <TextBlock Grid.Row="106" common:BidiText.Text="{Binding About_QDollar, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="106" Grid.Column="1"
                                common:BidiText.Text="{Binding About_QDollarDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="102" common:BidiText.Text="{Binding About_Qmk, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="102" Grid.Column="1"
+                    <TextBlock Grid.Row="107" common:BidiText.Text="{Binding About_Qmk, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="107" Grid.Column="1"
                                common:BidiText.Text="{Binding About_QmkDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="103" common:BidiText.Text="{Binding About_QrCodeGen, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="103" Grid.Column="1"
+                    <TextBlock Grid.Row="108" common:BidiText.Text="{Binding About_QrCodeGen, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="108" Grid.Column="1"
                                common:BidiText.Text="{Binding About_QrCodeGenDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="104" common:BidiText.Text="{Binding About_TelemetryRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="104" Grid.Column="1"
+                    <TextBlock Grid.Row="109" common:BidiText.Text="{Binding About_TelemetryRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="109" Grid.Column="1"
                                common:BidiText.Text="{Binding About_TelemetryRefsDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="105" common:BidiText.Text="{Binding About_RawInput, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="105" Grid.Column="1"
+                    <TextBlock Grid.Row="110" common:BidiText.Text="{Binding About_RawInput, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="110" Grid.Column="1"
                                common:BidiText.Text="{Binding About_RawInputDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="106" common:BidiText.Text="{Binding About_RingConRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="106" Grid.Column="1"
+                    <TextBlock Grid.Row="111" common:BidiText.Text="{Binding About_RingConRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="111" Grid.Column="1"
                                common:BidiText.Text="{Binding About_RingConRefsDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="107" common:BidiText.Text="{Binding About_SAxense, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="107" Grid.Column="1"
+                    <TextBlock Grid.Row="112" common:BidiText.Text="{Binding About_SAxense, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="112" Grid.Column="1"
                                common:BidiText.Text="{Binding About_SAxenseDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="108" common:BidiText.Text="{Binding About_Ds3Research, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="108" Grid.Column="1"
+                    <TextBlock Grid.Row="113" common:BidiText.Text="{Binding About_Ds3Research, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="113" Grid.Column="1"
                                common:BidiText.Text="{Binding About_Ds3ResearchDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="109" common:BidiText.Text="{Binding About_SDL3, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="109" Grid.Column="1"
+                    <TextBlock Grid.Row="114" common:BidiText.Text="{Binding About_ScreenColorRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="114" Grid.Column="1"
+                               common:BidiText.Text="{Binding About_ScreenColorRefsDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+
+                    <TextBlock Grid.Row="115" common:BidiText.Text="{Binding About_SDL3, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="115" Grid.Column="1"
                                common:BidiText.Text="{Binding About_SDL3Desc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="110" common:BidiText.Text="{Binding About_GameControllerDb, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="110" Grid.Column="1"
+                    <TextBlock Grid.Row="116" common:BidiText.Text="{Binding About_GameControllerDb, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="116" Grid.Column="1"
                                common:BidiText.Text="{Binding About_GameControllerDbDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="111" common:BidiText.Text="{Binding About_SerialControllerRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="111" Grid.Column="1"
+                    <TextBlock Grid.Row="117" common:BidiText.Text="{Binding About_SerialControllerRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="117" Grid.Column="1"
                                common:BidiText.Text="{Binding About_SerialControllerRefsDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="112" common:BidiText.Text="{Binding About_SipSorcery, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="112" Grid.Column="1"
+                    <TextBlock Grid.Row="118" common:BidiText.Text="{Binding About_SipSorcery, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="118" Grid.Column="1"
                                common:BidiText.Text="{Binding About_SipSorceryDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="113" common:BidiText.Text="{Binding About_SpaceMouseRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="113" Grid.Column="1"
+                    <TextBlock Grid.Row="119" common:BidiText.Text="{Binding About_SpaceMouseRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="119" Grid.Column="1"
                                common:BidiText.Text="{Binding About_SpaceMouseRefsDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="114" common:BidiText.Text="{Binding About_SpecialK, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="114" Grid.Column="1"
+                    <TextBlock Grid.Row="120" common:BidiText.Text="{Binding About_SpecialK, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="120" Grid.Column="1"
                                common:BidiText.Text="{Binding About_SpecialKDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="115" common:BidiText.Text="{Binding About_SpecialtyUsbRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="115" Grid.Column="1"
+                    <TextBlock Grid.Row="121" common:BidiText.Text="{Binding About_SpecialtyUsbRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="121" Grid.Column="1"
                                common:BidiText.Text="{Binding About_SpecialtyUsbRefsDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="116" common:BidiText.Text="{Binding About_SteamControllerRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="116" Grid.Column="1"
+                    <TextBlock Grid.Row="122" common:BidiText.Text="{Binding About_SteamControllerRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="122" Grid.Column="1"
                                common:BidiText.Text="{Binding About_SteamControllerRefsDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="117" common:BidiText.Text="{Binding About_SteamControllerSinger, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="117" Grid.Column="1"
+                    <TextBlock Grid.Row="123" common:BidiText.Text="{Binding About_SteamControllerSinger, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="123" Grid.Column="1"
                                common:BidiText.Text="{Binding About_SteamControllerSingerDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="118" common:BidiText.Text="{Binding About_SteamHapticsSinger, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="118" Grid.Column="1"
+                    <TextBlock Grid.Row="124" common:BidiText.Text="{Binding About_SteamHapticsSinger, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="124" Grid.Column="1"
                                common:BidiText.Text="{Binding About_SteamHapticsSingerDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="119" common:BidiText.Text="{Binding About_SteamKit2, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="119" Grid.Column="1"
+                    <TextBlock Grid.Row="125" common:BidiText.Text="{Binding About_SteamKit2, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="125" Grid.Column="1"
                                common:BidiText.Text="{Binding About_SteamKit2Desc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="120" common:BidiText.Text="{Binding About_ThumbstickDeadzones, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="120" Grid.Column="1"
+                    <TextBlock Grid.Row="126" common:BidiText.Text="{Binding About_ThumbstickDeadzones, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="126" Grid.Column="1"
                                common:BidiText.Text="{Binding About_ThumbstickDeadzonesDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="121" common:BidiText.Text="{Binding About_Touchmote, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="121" Grid.Column="1"
+                    <TextBlock Grid.Row="127" common:BidiText.Text="{Binding About_Touchmote, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="127" Grid.Column="1"
                                common:BidiText.Text="{Binding About_TouchmoteDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="122" common:BidiText.Text="{Binding About_TrainControllerRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="122" Grid.Column="1"
+                    <TextBlock Grid.Row="128" common:BidiText.Text="{Binding About_TrainControllerRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="128" Grid.Column="1"
                                common:BidiText.Text="{Binding About_TrainControllerRefsDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="123" common:BidiText.Text="{Binding About_TriggerEffectGenerator, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="123" Grid.Column="1"
+                    <TextBlock Grid.Row="129" common:BidiText.Text="{Binding About_TriggerEffectGenerator, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="129" Grid.Column="1"
                                common:BidiText.Text="{Binding About_TriggerEffectGeneratorDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="124" common:BidiText.Text="{Binding About_TritonLib, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="124" Grid.Column="1"
+                    <TextBlock Grid.Row="130" common:BidiText.Text="{Binding About_TritonLib, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="130" Grid.Column="1"
                                common:BidiText.Text="{Binding About_TritonLibDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="125" common:BidiText.Text="{Binding About_TwitchChatRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="125" Grid.Column="1"
+                    <TextBlock Grid.Row="131" common:BidiText.Text="{Binding About_TwitchChatRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="131" Grid.Column="1"
                                common:BidiText.Text="{Binding About_TwitchChatRefsDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="126" common:BidiText.Text="{Binding About_UsbipWin2, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="126" Grid.Column="1"
+                    <TextBlock Grid.Row="132" common:BidiText.Text="{Binding About_UsbipWin2, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="132" Grid.Column="1"
                                common:BidiText.Text="{Binding About_UsbipWin2Desc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="127" common:BidiText.Text="{Binding About_ValveCad, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="127" Grid.Column="1"
+                    <TextBlock Grid.Row="133" common:BidiText.Text="{Binding About_ValveCad, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="133" Grid.Column="1"
                                common:BidiText.Text="{Binding About_ValveCadDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="128" common:BidiText.Text="{Binding About_ViGEmClient, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="128" Grid.Column="1"
+                    <TextBlock Grid.Row="134" common:BidiText.Text="{Binding About_ViGEmClient, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="134" Grid.Column="1"
                                common:BidiText.Text="{Binding About_ViGEmClientDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="129" common:BidiText.Text="{Binding About_ViiperHbashton, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="129" Grid.Column="1"
+                    <TextBlock Grid.Row="135" common:BidiText.Text="{Binding About_ViiperHbashton, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="135" Grid.Column="1"
                                common:BidiText.Text="{Binding About_ViiperHbashtonDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="130" common:BidiText.Text="{Binding About_Vosk, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="130" Grid.Column="1"
+                    <TextBlock Grid.Row="136" common:BidiText.Text="{Binding About_Vosk, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="136" Grid.Column="1"
                                common:BidiText.Text="{Binding About_VoskDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="131" common:BidiText.Text="{Binding About_WheelRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="131" Grid.Column="1"
+                    <TextBlock Grid.Row="137" common:BidiText.Text="{Binding About_WheelRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="137" Grid.Column="1"
                                common:BidiText.Text="{Binding About_WheelRefsDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="132" common:BidiText.Text="{Binding About_WiiBrew, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="132" Grid.Column="1"
+                    <TextBlock Grid.Row="138" common:BidiText.Text="{Binding About_WiiBrew, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="138" Grid.Column="1"
                                common:BidiText.Text="{Binding About_WiiBrewDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="133" common:BidiText.Text="{Binding About_WiimoteLib, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="133" Grid.Column="1"
+                    <TextBlock Grid.Row="139" common:BidiText.Text="{Binding About_WiimoteLib, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="139" Grid.Column="1"
                                common:BidiText.Text="{Binding About_WiimoteLibDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="134" common:BidiText.Text="{Binding About_ModernWpf, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="134" Grid.Column="1"
+                    <TextBlock Grid.Row="140" common:BidiText.Text="{Binding About_ModernWpf, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="140" Grid.Column="1"
                                common:BidiText.Text="{Binding About_ModernWpfDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="135" common:BidiText.Text="{Binding About_X1nput, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="135" Grid.Column="1"
+                    <TextBlock Grid.Row="141" common:BidiText.Text="{Binding About_X1nput, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="141" Grid.Column="1"
                                common:BidiText.Text="{Binding About_X1nputDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="136" common:BidiText.Text="{Binding About_Xbledctl, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="136" Grid.Column="1"
+                    <TextBlock Grid.Row="142" common:BidiText.Text="{Binding About_Xbledctl, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="142" Grid.Column="1"
                                common:BidiText.Text="{Binding About_XbledctlDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="137" common:BidiText.Text="{Binding About_XboxControllerRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="137" Grid.Column="1"
+                    <TextBlock Grid.Row="143" common:BidiText.Text="{Binding About_XboxControllerRefs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="143" Grid.Column="1"
                                common:BidiText.Text="{Binding About_XboxControllerRefsDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="138" common:BidiText.Text="{Binding About_XoneXow, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="138" Grid.Column="1"
+                    <TextBlock Grid.Row="144" common:BidiText.Text="{Binding About_XoneXow, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="144" Grid.Column="1"
                                common:BidiText.Text="{Binding About_XoneXowDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="139" common:BidiText.Text="{Binding About_ZackslyIcons, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="139" Grid.Column="1"
+                    <TextBlock Grid.Row="145" common:BidiText.Text="{Binding About_ZackslyIcons, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="145" Grid.Column="1"
                                common:BidiText.Text="{Binding About_ZackslyIconsDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="140" common:BidiText.Text="{Binding About_MouseArt, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="140" Grid.Column="1"
+                    <TextBlock Grid.Row="146" common:BidiText.Text="{Binding About_MouseArt, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="146" Grid.Column="1"
                                common:BidiText.Text="{Binding About_MouseArtDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="141" common:BidiText.Text="{Binding About_ZstdSharp, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="141" Grid.Column="1"
+                    <TextBlock Grid.Row="147" common:BidiText.Text="{Binding About_ZstdSharp, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="147" Grid.Column="1"
                                common:BidiText.Text="{Binding About_ZstdSharpDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
                 </Grid>
             </Border>

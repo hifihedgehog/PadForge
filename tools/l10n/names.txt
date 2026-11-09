@@ -34,6 +34,8 @@ ADPCM
 AGPL
 AGPL-3.0
 AL2009man
+alienfx-tools
+AlkaidLab
 Alt+F4
 American Truck Simulator
 ams2
@@ -42,6 +44,7 @@ AnalogSense
 android-bluez-ime
 AndunHH
 AngularMarginRecognizer
+Annemone
 AntiMicroX
 Apache-2.0
 apex-3-tkl
@@ -67,6 +70,9 @@ Automobilista 2
 B
 BeamNG.drive
 BGP100
+blink1-tool
+Blink1Control2
+BlinkyTape_Arduino
 Bliss-Box
 Bluepad32
 BMP
@@ -83,6 +89,7 @@ CAD
 CasperH2O
 CaYaLight
 CC
+CC BY-SA
 CDN
 CemuHook
 CGTrader
@@ -97,9 +104,13 @@ ComeUntoChrist.org
 ComfyJS
 CommunityToolkit.Mvvm
 ConToJREts
+Controllers Wiki
 CRC
 Cricetus-Imperator
+CSDK_ChromaModSample
 Cxbx-Reloaded
+daisywheeljs
+DatMoshu
 daydream2hid
 dB
 DCL
@@ -132,15 +143,18 @@ DSU
 duaLib
 DualSense
 DualSense Edge
+DualSense-Windows
 DualSenseSupport
 DualSenseY-v2
 DualShock
 DUML
 DX1
 dx1-studio
+Dygmalab/Kaleidoscope
 EA SPORTS WRC
 Ed25519
 EDRefCard2
+elgatosf/cli
 ergodex-dx1-linux
 ets2-telemetry-udp
 Euro Truck Simulator 2
@@ -166,6 +180,7 @@ Forza Motorsport
 forza-data-web
 forza-telemetry
 Forza-Telemetry-Splitter
+foundation-sunshine
 FPS
 FreeTrack
 G300
@@ -208,6 +223,7 @@ HallEffectAnalogMapper
 HallJoy
 HaloDaemon-plugins
 HAR.dll
+hcn1z1
 HD
 HelixToolkit
 HEX
@@ -260,6 +276,7 @@ kettlerUSB2BLE
 KeyAxis
 kHz
 KLAVIATURKIN
+Kodi
 L1
 L2
 L3
@@ -268,6 +285,7 @@ LaunchBox
 LE
 Leclowndu93150
 LeiterConsulting
+LenovoLegionToolkit-Team
 LGPL
 LGPL-2.0-or-later
 LGPL-2.1
@@ -290,10 +308,13 @@ LogiLed2Corsair
 Logitech-iFeel-Vibration-POC
 Logitech-LED
 LogitechGkeyLib.h
+Ludwig Füchsl
+LuxaforOnAir
 MAME
 mDjiController
 MFIGamepadFeeder
 MIDI
+mihaits
 MinGW-w64
 mingw-w64
 miniDjiController
@@ -316,7 +337,9 @@ NAudio.Midi
 NE
 Nefarius.Utilities.DeviceManagement
 new-lg4ff
+Nexus-Manager
 NFC
+NFSU2-SplitScreen
 NIA
 nia4linux
 Nielk1
@@ -325,6 +348,7 @@ NuGet
 NuPhy
 NuPhyIO
 OBS
+obs-browser
 OculusGo-Air-Mouse-4-macOS
 OCZ
 OEM
@@ -340,6 +364,8 @@ OpenPuck
 OpenRazer
 OpenRGB
 OpenRGB-Fixed
+OpenRGB.NET
+OpenRGBEffectsPlugin
 OpenSynapse
 OpenTabletDriver
 OpenTrack
@@ -376,6 +402,7 @@ PolyForm
 PortMidi
 POV
 PowerShell
+Prismatik
 Project CARS 2
 project-cars-2-udp
 PS
@@ -390,6 +417,7 @@ QR-Code-generator
 R1
 R2
 R3
+RazerAmbilight
 rb3
 RB4InstrumentMapper
 RC-N1
@@ -398,6 +426,7 @@ RCNx
 REPORT
 REST
 RetroArch
+reWASD-Powertools
 rF2SharedMemoryMapPlugin
 rFactorSharedMemoryMap
 RFCOMM
@@ -415,9 +444,12 @@ rust_ams2_sharedmem
 Ryochan7
 SAxense
 SBC
+sc-controller
 sc2-research
 scePad
+Schmaldeo
 ScpToolkit
+ScreenCapture.NET
 scs-sdk-plugin
 SDK
 SDL
@@ -430,6 +462,7 @@ Sera486
 Sergey004
 SHA-256
 ShapeRecognizer
+shunt
 SideWinder
 simapi
 SimHub
@@ -454,6 +487,7 @@ STEP
 StepMania
 STUN
 SundayMoments
+Sunshine
 SVG
 SwiftControl
 switch2
@@ -486,6 +520,7 @@ v3
 vAzhureRacingHub
 vcruntime140
 vcruntime140.dll
+vial-qmk
 VID
 ViGEmBus
 ViGEmClient
@@ -512,6 +547,7 @@ WPF
 Wpf.Ui.dll
 WTFPL
 WujekFoliarz
+WyvrnChroma
 X
 X/Y
 X1

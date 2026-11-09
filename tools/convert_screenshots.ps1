@@ -88,7 +88,6 @@ $map = @{
     "macro-add-from-list"         = "macro-add-from-list"
     "pad-audio-haptic-controls"   = "audio-haptic-controls"
     "pad-motor-activity"          = "motor-activity"
-    "touchpad-gesture-recorder"   = "touchpad-gesture-recorder"
     "wii-pointer-mode"            = "wii-pointer-mode"
     "nfc-live-preview"            = "nfc-live-preview"
     "midi-input-mode-devices-page" = "midi-input-mode-devices-page"
@@ -166,6 +165,16 @@ $map = @{
     "pad-steering-angle-rumble"     = "steering-angle-rumble"
     "settings-novint-falcon"        = "settings-novint-falcon"
     "settings-keyboard-screens"     = "settings-keyboard-screens"
+    # v5.3.0 additions
+    "import-preview"                = "import-preview"
+    "pad-menus-keyboard"            = "menus-keyboard"
+    "pad-menus-hotbar"              = "menus-hotbar"
+    "pad-lighting-screen-color"     = "screen-color"
+    "dashboard-screen-overlay"      = "screen-overlay"
+    "dashboard-twitch-chat"         = "twitch-chat"
+    "devices-twitch-chat"           = "devices-twitch-chat"
+    "twitch-chat-commands"          = "twitch-chat-commands"
+    "map-key-lights"                = "map-key-lights"
 }
 
 $jpgEncoder = [System.Drawing.Imaging.ImageCodecInfo]::GetImageEncoders() | Where-Object { $_.MimeType -eq "image/jpeg" }

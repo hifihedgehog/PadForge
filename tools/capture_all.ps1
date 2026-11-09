@@ -1258,6 +1258,39 @@ function Write-SlotStructures {
         Write-Host "  wrote the Combat Wheel menu (cell 2 bound to the Quick Combo macro) onto slot 0" -ForegroundColor Green
     }
 
+    # The two 5.3.0 menu styles, after the Combat Wheel, so the Menus tab
+    # lists three menus and pad-menus-keyboard and pad-menus-hotbar each open
+    # their own (Capture-MenuStyleShots). Neither can open during the run:
+    # the keyboard (#566) has no Opens With input, and the hotbar's controls
+    # fall back to the D-pad of devices that send nothing. Hotbar cells
+    # number from 0 (MenuHotbar.Step).
+    if ($set.SelectSingleNode("Menu[@Name='Text Chat']")) {
+        Write-Host "  slot 0 already carries the Text Chat keyboard"
+    } else {
+        $kf = $Doc.CreateDocumentFragment()
+        $kf.InnerXml = '<Menu DeviceGuid="" MenuId="2" Name="Text Chat" Kind="Keyboard" KeyboardLayout="Grid" HostDescriptor="Gamepad LeftStick" LayerMask="" FireType="Click" PosXPercent="50" PosYPercent="70" ScalePercent="100" OpacityPercent="90" Suggestions="true" FunctionRow="false" Enabled="true" />'
+        $set.AppendChild($kf) | Out-Null
+        Write-Host "  wrote the Text Chat keyboard menu onto slot 0" -ForegroundColor Green
+    }
+    if ($set.SelectSingleNode("Menu[@Name='Ability Bar']")) {
+        Write-Host "  slot 0 already carries the Ability Bar hotbar"
+    } else {
+        $hotbarXml = @'
+<Menu DeviceGuid="" MenuId="3" Name="Ability Bar" Kind="Hotbar" HostDescriptor="Gamepad DPad" LayerMask="" FireType="Click" CellCount="6" ShowLabels="true" PosXPercent="50" PosYPercent="85" ScalePercent="100" OpacityPercent="90" HotbarWrap="false" HotbarDismissOnFire="true" HotbarRecenter="true" Enabled="true">
+  <Item Index="0" Label="Potion" VirtualKey="49" XboxButtons="0" ExtendedButton="0" MacroName="" Icon="" />
+  <Item Index="1" Label="Shield" VirtualKey="50" XboxButtons="0" ExtendedButton="0" MacroName="" Icon="" />
+  <Item Index="2" Label="Dash" VirtualKey="51" XboxButtons="0" ExtendedButton="0" MacroName="" Icon="" />
+  <Item Index="3" Label="Fireball" VirtualKey="52" XboxButtons="0" ExtendedButton="0" MacroName="" Icon="" />
+  <Item Index="4" Label="Mount" VirtualKey="53" XboxButtons="0" ExtendedButton="0" MacroName="" Icon="" />
+  <Item Index="5" Label="Map" VirtualKey="77" XboxButtons="0" ExtendedButton="0" MacroName="" Icon="" />
+</Menu>
+'@
+        $hf = $Doc.CreateDocumentFragment()
+        $hf.InnerXml = $hotbarXml.Trim()
+        $set.AppendChild($hf) | Out-Null
+        Write-Host "  wrote the Ability Bar hotbar onto slot 0" -ForegroundColor Green
+    }
+
     # Three mapping editors, written as data so each shot opens on a row
     # that already holds its setting. The editors' combos sit in the pad
     # page tab body, which this harness cannot drive (the 4.4.0 Stick Trim
@@ -3937,6 +3970,18 @@ if ($appSettings) {
         $swNode.InnerText = "true"
         Write-Host "  Set $sw=true"
     }
+
+    # 5.3.0: the Twitch Chat row (#555) exists only while EnableTwitchChat is
+    # on. No channel is written, so nothing connects to Twitch, and the row
+    # and the Dashboard card show what a first setup shows. The owner's value
+    # rides the backup and is restored in STEP 4.
+    $twNode = $appSettings.SelectSingleNode("EnableTwitchChat")
+    if (-not $twNode) {
+        $twNode = $xml.CreateElement("EnableTwitchChat")
+        $appSettings.AppendChild($twNode) | Out-Null
+    }
+    $twNode.InnerText = "true"
+    Write-Host "  Set EnableTwitchChat=true"
 
     # One custom telemetry format (#531), so the Custom Formats window opens
     # on a format with its fields rather than an empty list. The shape is
@@ -6622,6 +6667,328 @@ function Capture-Ds3Preset {
 }
 
 # ==============================================================================
+# 5.3.0 RECIPES. The import preview, the Twitch Chat and Screen Overlay cards,
+# the Twitch Chat row and its Chat Commands window, Map Key Lights, the
+# Keyboard and Hotbar menu styles and Screen Color lighting. Each is a
+# function, so the full pass and the focused pass run the same steps.
+# ==============================================================================
+
+# The profile import-preview reads (#561). It belongs to no game: a reWASD
+# file in the shape the importer reads whole (a hold layer, single, double
+# and long presses, a macro on the layer, the lightbar) with one input it
+# cannot read, a gyro tilt zone, so the preview shows a Skipped row and its
+# reason. Written into the capture folder at run time.
+$script:ImportSample = @'
+{
+  "schemaVersion": "3.0",
+  "appVersion": "9.5.0",
+  "config": { "appName": "Star Courier", "processNames": ["starcourier.exe"], "led": { "default": { "mode": "shimmer", "colors": [[255, 120, 0]] } } },
+  "devices": {
+    "hardware": [
+      { "id": 1, "name": "gamepad", "convertToVirtual": true },
+      { "id": 11, "name": "keyboard" },
+      { "id": 23, "name": "mouse" }
+    ],
+    "virtual": { "gamepads": [{ "id": 1, "type": "360" }] }
+  },
+  "shifts": [{ "id": 1, "type": "default", "description": "Flight" }],
+  "masks": [
+    { "id": 1, "set": [{ "deviceId": 1, "buttonId": 1 }] },
+    { "id": 2, "set": [{ "deviceId": 1, "buttonId": 2 }] },
+    { "id": 3, "set": [{ "deviceId": 1, "buttonId": 5 }] },
+    { "id": 4, "set": [{ "deviceId": 1, "buttonId": 3 }] },
+    { "id": 5, "set": [{ "deviceId": 1, "buttonId": 4 }] },
+    { "id": 6, "set": [{ "deviceId": 23, "buttonId": 1 }] },
+    { "id": 7, "set": [{ "deviceId": 1, "buttonId": 74, "description": "Gyro Tilt Low" }] }
+  ],
+  "mappings": [
+    { "condition": { "mask": { "id": 3, "activator": { "type": "single", "mode": "hold_until_release" } } }, "jumpToLayer": { "layer": 1 } },
+    { "condition": { "mask": { "id": 1, "activator": { "type": "single", "mode": "hold_until_release" } } }, "macros": [{ "keyboard": { "buttonId": 57 } }] },
+    { "condition": { "mask": { "id": 2, "activator": { "type": "single", "mode": "hold_until_release" } } }, "macros": [{ "keyboard": { "buttonId": 18 } }] },
+    { "condition": { "mask": { "id": 2, "activator": { "type": "double", "mode": "onetime" } } }, "macros": [{ "keyboard": { "buttonId": 15 } }] },
+    { "condition": { "mask": { "id": 4, "activator": { "type": "long", "mode": "onetime" } } }, "macros": [{ "keyboard": { "buttonId": 19 } }] },
+    { "condition": { "mask": { "id": 5, "activator": { "type": "single", "mode": "hold_until_release" } } }, "macros": [{ "keyboard": { "buttonId": 33 } }] },
+    { "condition": { "mask": { "id": 6, "activator": { "type": "single", "mode": "hold_until_release" } } }, "macros": [{ "gamepad": { "id": 1, "buttonId": 55 } }] },
+    { "condition": { "mask": { "id": 7, "activator": { "type": "single", "mode": "hold_until_release" } } }, "macros": [{ "keyboard": { "buttonId": 16 } }] },
+    { "condition": { "shiftId": 1, "mask": { "id": 1, "activator": { "type": "single", "mode": "onetime" } } }, "macros": [{ "keyboard": { "buttonId": 42, "action": "down" } }, { "pause": { "value": 40 } }, { "keyboard": { "buttonId": 17 } }, { "keyboard": { "buttonId": 42, "action": "up" } }] }
+  ]
+}
+'@
+
+# A common Open dialog's file name box and Open button, set by messages
+# (WM_SETTEXT, then BM_CLICK on IDOK), the way the #561 arc's preview check
+# chose its file. Class and title reads find PadForge's own windows by kind.
+if (-not ('CapFileDialog' -as [type])) {
+    Add-Type @'
+using System;
+using System.Runtime.InteropServices;
+using System.Text;
+public static class CapFileDialog {
+    [DllImport("user32.dll", CharSet = CharSet.Unicode)] static extern IntPtr FindWindowEx(IntPtr p, IntPtr a, string c, string w);
+    [DllImport("user32.dll")] static extern IntPtr GetDlgItem(IntPtr h, int id);
+    [DllImport("user32.dll", CharSet = CharSet.Unicode)] static extern IntPtr SendMessage(IntPtr h, uint m, IntPtr w, string l);
+    [DllImport("user32.dll")] static extern bool PostMessage(IntPtr h, uint m, IntPtr w, IntPtr l);
+    [DllImport("user32.dll", CharSet = CharSet.Unicode)] static extern int GetClassName(IntPtr h, StringBuilder s, int n);
+    [DllImport("user32.dll", CharSet = CharSet.Unicode)] static extern int GetWindowText(IntPtr h, StringBuilder s, int n);
+    public static string ClassOf(IntPtr h) { var s = new StringBuilder(64); GetClassName(h, s, 64); return s.ToString(); }
+    public static string TitleOf(IntPtr h) { var s = new StringBuilder(256); GetWindowText(h, s, 256); return s.ToString(); }
+    public static bool Choose(IntPtr dlg, string path) {
+        IntPtr cbx = FindWindowEx(dlg, IntPtr.Zero, "ComboBoxEx32", null);
+        IntPtr box = FindWindowEx(cbx, IntPtr.Zero, "ComboBox", null);
+        IntPtr edit = FindWindowEx(box, IntPtr.Zero, "Edit", null);
+        IntPtr open = GetDlgItem(dlg, 1);
+        if (edit == IntPtr.Zero || open == IntPtr.Zero) return false;
+        SendMessage(edit, 0x000C, IntPtr.Zero, path);
+        System.Threading.Thread.Sleep(300);
+        PostMessage(open, 0x00F5, IntPtr.Zero, IntPtr.Zero);
+        return true;
+    }
+}
+'@
+}
+
+# A visible top-level window of PadForge's process other than the main one,
+# by window class or by exact title. Zero when none came up in time.
+function Find-PadForgeWindow {
+    param([string]$Class, [string]$Title, [int]$Retries = 20, [int]$DelayMs = 250)
+    for ($i = 0; $i -lt $Retries; $i++) {
+        foreach ($h in [Win32]::WindowsForPid([uint32]$script:proc.Id)) {
+            if ([IntPtr]$h -eq [IntPtr]$script:hwnd) { continue }
+            if (-not [Win32]::IsWindowVisible($h)) { continue }
+            if ($Class -and [CapFileDialog]::ClassOf($h) -ne $Class) { continue }
+            if ($Title -and [CapFileDialog]::TitleOf($h) -ne $Title) { continue }
+            return $h
+        }
+        Start-Sleep -Milliseconds $DelayMs
+    }
+    return [IntPtr]::Zero
+}
+
+# Leaves the run's PadForge shots refused when a dialog would not close, the
+# rule Capture-UninstallPreviews keeps.
+function Assert-MainWindowBack {
+    param([string]$What)
+    if ([Win32]::IsWindowEnabled([IntPtr]$script:hwnd)) { return $true }
+    $script:ViewUnknown = $true
+    $script:StateFailures += "$What did not close"
+    Write-Host "  !! $What is still open. No more PadForge shots are saved." -ForegroundColor Red
+    return $false
+}
+
+# The import preview (#561): the Profiles page's Import button, its Open
+# dialog given the sample file, and the preview that opens on it, taken over
+# the page and closed by WM_CLOSE, which imports nothing.
+function Capture-ImportPreview {
+    if (-not (Want "import-preview")) { return }
+    Write-Host "[5.3.0] Profiles: import preview"
+    $sample = Join-Path (Join-Path $env:TEMP "PadForge_Capture") "Star Courier.rewasd"
+    [System.IO.File]::WriteAllText($sample, $script:ImportSample, (New-Object System.Text.UTF8Encoding($false)))
+    Nav "Profiles"; Start-Sleep -Milliseconds 1000
+    $imp = Find-UIA -Name "Import$([char]0x2026)" -CT ([System.Windows.Automation.ControlType]::Button)
+    if (-not $imp) { Refuse-Shots @("import-preview") "the Profiles page has no Import button"; return }
+    # A click, not an Invoke: the Open dialog is modal, and an Invoke waits
+    # until it closes.
+    Click-El $imp -Label "Import" -Delay 1200 | Out-Null
+    $fd = Find-PadForgeWindow -Class "#32770"
+    if ($fd -eq [IntPtr]::Zero) { Refuse-Shots @("import-preview") "the Open dialog did not come up"; Close-AnyModal | Out-Null; return }
+    if (-not [CapFileDialog]::Choose($fd, $sample)) {
+        Refuse-Shots @("import-preview") "the Open dialog has no file name box"
+        Close-DialogHwnd $fd; Close-AnyModal | Out-Null
+        return
+    }
+    $pv = Find-PadForgeWindow -Title "Import Profile" -Retries 40
+    if ($pv -eq [IntPtr]::Zero) { Refuse-Shots @("import-preview") "the preview did not open on the sample"; Close-AnyModal | Out-Null; return }
+    Start-Sleep -Milliseconds 900
+    Cap "import-preview" -AllowModal
+    Close-DialogHwnd $pv
+    Close-AnyModal | Out-Null
+    Assert-MainWindowBack "the import preview" | Out-Null
+}
+
+# Twitch Chat (#555): its Dashboard card, the Devices row STEP 0 turns on
+# with no channel, and the Chat Commands window that row opens, closed by
+# WM_CLOSE with nothing changed.
+function Capture-TwitchChatShots {
+    if (Want "dashboard-twitch-chat") {
+        Write-Host "[5.3.0] Dashboard: Twitch Chat card"
+        Nav "Dashboard"; Start-Sleep -Milliseconds 900
+        ScrollContent -Clicks 90
+        $framed = (Scroll-AnchorToTop -Anchor "TWITCH CHAT") -or (Scroll-AnchorToTop -Anchor "Twitch Chat")
+        if ($framed -and (Test-InFrame "Who approves !claim")) { Cap "dashboard-twitch-chat" }
+        else { Refuse-Shots @("dashboard-twitch-chat") "the Twitch Chat card never fit one frame" }
+        ScrollContent -Clicks 90
+    }
+    $rowShots = @(@("devices-twitch-chat", "twitch-chat-commands") | Where-Object { Want $_ })
+    if ((Get-Count $rowShots) -eq 0) { return }
+    Write-Host "[5.3.0] Devices: Twitch Chat row"
+    Nav "Devices"; Start-Sleep -Milliseconds 700
+    if (-not (Select-DeviceByName36 "Twitch Chat")) { Refuse-Shots $rowShots "no Twitch Chat row (AppSettings/EnableTwitchChat)"; return }
+    if (Want "devices-twitch-chat") { Cap "devices-twitch-chat" }
+    if (-not (Want "twitch-chat-commands")) { return }
+    $btn = Find-UIA -Name "Manage Chat Commands" -CT ([System.Windows.Automation.ControlType]::Button)
+    if (-not $btn) { Refuse-Shots @("twitch-chat-commands") "the Twitch Chat row has no Manage Chat Commands button"; return }
+    Click-El $btn -Label "Manage Chat Commands" -Delay 1200 | Out-Null
+    $dlg = Find-PadForgeWindow -Title "Chat Commands"
+    if ($dlg -eq [IntPtr]::Zero) { Refuse-Shots @("twitch-chat-commands") "the Chat Commands window did not open"; Close-AnyModal | Out-Null; return }
+    Start-Sleep -Milliseconds 700
+    Cap "twitch-chat-commands" -AllowModal
+    Close-DialogHwnd $dlg
+    Close-AnyModal | Out-Null
+    Assert-MainWindowBack "the Chat Commands window" | Out-Null
+}
+
+# The Dashboard's Screen Overlay card (#560), as it is with no overlay on.
+function Capture-ScreenOverlayCard {
+    if (-not (Want "dashboard-screen-overlay")) { return }
+    Write-Host "[5.3.0] Dashboard: Screen Overlay card"
+    Nav "Dashboard"; Start-Sleep -Milliseconds 900
+    ScrollContent -Clicks 90
+    $framed = (Scroll-AnchorToTop -Anchor "SCREEN OVERLAY") -or (Scroll-AnchorToTop -Anchor "Screen Overlay")
+    if ($framed -and ((Test-InFrame "Add Overlay") -or (Test-InFrame "Choose What It Shows$([char]0x2026)"))) { Cap "dashboard-screen-overlay" }
+    else { Refuse-Shots @("dashboard-screen-overlay") "the Screen Overlay card never fit one frame" }
+    ScrollContent -Clicks 90
+}
+
+# Map Key Lights (#557), opened from the first of this PC's lit keyboards
+# whose row offers it and closed by WM_CLOSE. Nothing in it is pressed, so no
+# light changes. The button needs a live lighting link
+# (DeviceRowViewModel.ShowMapKeyLights), so it shows only for a connected
+# keyboard.
+$script:MapKeyLightsRows = @("ITE Device", "Standard PS/2 Keyboard")
+function Capture-MapKeyLights {
+    if (-not (Want "map-key-lights")) { return }
+    Write-Host "[5.3.0] Devices: Map Key Lights"
+    Nav "Devices"; Start-Sleep -Milliseconds 700
+    $btn = $null
+    foreach ($row in $script:MapKeyLightsRows) {
+        if (-not (Select-DeviceByName36 $row)) { continue }
+        Start-Sleep -Milliseconds 600
+        $b = Find-UIA -Name "Map Key Lights" -CT ([System.Windows.Automation.ControlType]::Button)
+        if ($b -and -not $b.Current.IsOffscreen) { $btn = $b; Write-Host "  '$row' offers Map Key Lights" -ForegroundColor Green; break }
+    }
+    if (-not $btn) { Refuse-Shots @("map-key-lights") "no connected keyboard row offers Map Key Lights ($($script:MapKeyLightsRows -join ', '))"; return }
+    Click-El $btn -Label "Map Key Lights" -Delay 1200 | Out-Null
+    $dlg = Find-PadForgeWindow -Title "Map Key Lights"
+    if ($dlg -eq [IntPtr]::Zero) { Refuse-Shots @("map-key-lights") "the Map Key Lights window did not open"; Close-AnyModal | Out-Null; return }
+    Start-Sleep -Milliseconds 900
+    Cap "map-key-lights" -AllowModal
+    Close-DialogHwnd $dlg
+    Close-AnyModal | Out-Null
+    Assert-MainWindowBack "the Map Key Lights window" | Out-Null
+}
+
+# The Keyboard and Hotbar menu styles, the second and third menus
+# Write-SlotStructures puts on slot 0. Runs right after Capture-MenuShots,
+# whose first-row click left the keyboard focus in the menu list, so the
+# Down key selects the next menu. The editor column's pixels prove the
+# editor changed, as Open-MenuEditor proves it opened.
+$script:MenuStyleShots = @(
+    @{ Shot = "pad-menus-keyboard"; Name = "Text Chat" },
+    @{ Shot = "pad-menus-hotbar";   Name = "Ability Bar" }
+)
+function Capture-MenuStyleShots {
+    if ((Get-Count @($script:MenuStyleShots | Where-Object { Want $_.Shot })) -eq 0) { return }
+    foreach ($m in $script:MenuStyleShots) {
+        $wr = New-Object Win32+RECT
+        [Win32]::GetWindowRect($script:hwnd, [ref]$wr) | Out-Null
+        $w = $wr.Right - $wr.Left; $h = $wr.Bottom - $wr.Top
+        $ex = [int]($wr.Left + 0.32 * $w); $ey = [int]($wr.Top + 0.14 * $h)
+        $ew = [int](0.60 * $w); $eh = [int](0.30 * $h)
+        [Win32]::ForceFG($script:hwnd)
+        Park-Pointer; Start-Sleep -Milliseconds 200
+        $before = Get-ScreenStripHash $ex $ey $ew $eh
+        [System.Windows.Forms.SendKeys]::SendWait("{DOWN}")
+        Start-Sleep -Milliseconds 1300
+        $after = Get-ScreenStripHash $ex $ey $ew $eh
+        if ($after -eq $before) {
+            if (Want $m.Shot) { Refuse-Shots @($m.Shot) "the Down key did not move the menu list to '$($m.Name)'" }
+            return
+        }
+        Write-Host "  menu editor moved to '$($m.Name)'" -ForegroundColor Green
+        if (Want $m.Shot) { Cap $m.Shot }
+    }
+}
+
+# One device's lighting mode on one slot, written the way Seed-AudioDsp
+# writes its EQ: the <Config> row keyed by SlotIndex and DeviceGuid, with the
+# app closed, then a restart. Returns the mode the row had, "" for none, or
+# $null when the write failed.
+function Seed-LightbarMode {
+    param([string]$DeviceNamePart, [int]$PadIndex, [string]$Mode, [string]$XmlPath, [string]$ExePath)
+    Get-Process PadForge -EA SilentlyContinue | Stop-Process -Force
+    Wait-PadForgeGone
+    $was = $null
+    try {
+        $ax = Read-SettingsXml $XmlPath
+        $root = $ax.PadForgeSettings
+        $guid = $null
+        foreach ($d in @($root.SelectNodes("Devices/Device"))) {
+            $nameNode = $d.SelectSingleNode("InstanceName")
+            if ($nameNode -and $nameNode.InnerText -like "*$DeviceNamePart*") { $guid = $d.SelectSingleNode("InstanceGuid").InnerText; break }
+        }
+        $appNode = $root.SelectSingleNode("AppSettings")
+        if (-not $guid -or -not $appNode) { throw "no '$DeviceNamePart' row or no <AppSettings>" }
+        $cfgs = $appNode.SelectSingleNode("DeviceSlotConfigs")
+        if (-not $cfgs) { $cfgs = $ax.CreateElement("DeviceSlotConfigs"); $appNode.AppendChild($cfgs) | Out-Null }
+        $row = $null
+        foreach ($c in $cfgs.ChildNodes) {
+            if ($c.GetAttribute("DeviceGuid") -eq $guid -and $c.GetAttribute("SlotIndex") -eq "$PadIndex") { $row = $c; break }
+        }
+        if (-not $row) {
+            $row = $ax.CreateElement("Config")
+            $row.SetAttribute("SlotIndex", "$PadIndex")
+            $row.SetAttribute("DeviceGuid", $guid)
+            $cfgs.AppendChild($row) | Out-Null
+        }
+        $was = $row.GetAttribute("LightbarMode")
+        if ($Mode) { $row.SetAttribute("LightbarMode", $Mode) } else { $row.RemoveAttribute("LightbarMode") }
+        $kept = Save-SettingsXml $ax $XmlPath
+        Write-Host "  lighting mode on pad $PadIndex / $($guid.Substring(0,8)): '$was' to '$Mode' (the file before that write: $kept)" -ForegroundColor Green
+    } catch {
+        Write-Host "  !! lighting mode write failed: $($_.Exception.Message)" -ForegroundColor Red
+        $was = $null
+    }
+    Start-Process $ExePath
+    $pr = Wait-PadForgeReady
+    if (-not $pr) { Write-Host "  !! PadForge did not come back up" -ForegroundColor Red; return $null }
+    $script:proc = $pr
+    $script:hwnd = $pr.MainWindowHandle
+    Reset-KnownState
+    $script:uiaWin = [System.Windows.Automation.AutomationElement]::FromHandle($script:hwnd)
+    [Win32]::ForceFG($script:hwnd)
+    Start-Sleep -Milliseconds 800
+    return $was
+}
+
+# Screen Color lighting (#559) on the PlayStation slot's DualSense, the
+# device pad-lighting shows. The mode goes back to what it was after the
+# shot, so later Lighting frames show the staged mode. Two restarts, so it
+# runs after every other shot of that slot.
+function Capture-ScreenColorLighting {
+    if (-not (Want "pad-lighting-screen-color")) { return }
+    Write-Host "[5.3.0] PlayStation slot: Screen Color lighting"
+    $was = Seed-LightbarMode -DeviceNamePart "DualSense Wireless Controller" -PadIndex 1 -Mode "ScreenColor" `
+        -XmlPath $PadForgeXml -ExePath $PadForgeExe
+    if ($null -eq $was) { Refuse-Shots @("pad-lighting-screen-color") "the Screen Color mode could not be written"; return }
+    Start-Sleep -Milliseconds 2000
+    Nav "Dashboard"; Start-Sleep -Milliseconds 1500
+    $shS = Find-UIA -Aid "SlotsItemsControl"
+    $cdS = @()
+    if ($shS) { try { $cdS = @($shS.FindAll($TC, [System.Windows.Automation.Condition]::TrueCondition)) } catch { $cdS = @() } }
+    $ppS = if ((Get-Count $cdS) -ge 2) { Open-SlotCard $cdS[1] "PlayStation slot card (Screen Color)" } else { $null }
+    if (-not $ppS) { Refuse-Shots @("pad-lighting-screen-color") "the PlayStation slot did not open" }
+    else {
+        Dismiss-AssignBanner | Out-Null
+        if ((Select-MappedDevice "DualSense") -and (Tab "Lighting")) {
+            Start-Sleep -Milliseconds 1200
+            Cap "pad-lighting-screen-color"
+        } else { Refuse-Shots @("pad-lighting-screen-color") "the DualSense's Lighting tab did not open" }
+    }
+    Seed-LightbarMode -DeviceNamePart "DualSense Wireless Controller" -PadIndex 1 -Mode $was `
+        -XmlPath $PadForgeXml -ExePath $PadForgeExe | Out-Null
+}
+
+# ==============================================================================
 # FOCUSED PASS: -Only goes STRAIGHT to its targets, then stops
 # ==============================================================================
 # -Only used to filter Cap and nothing else, so asking for six images still
@@ -6822,6 +7189,11 @@ if ($Only.Count -gt 0) {
     Capture-TelemetryFormatEditor
     Capture-FalconSettingsCard
     Capture-KeyboardScreensCard
+    # The 5.3.0 cards, rows and windows. Each checks Want.
+    Capture-TwitchChatShots
+    Capture-ScreenOverlayCard
+    Capture-MapKeyLights
+    Capture-ImportPreview
 
     # Unscrolled whole-page shots.
     $pageTargets = @(
@@ -7142,7 +7514,7 @@ if ($Only.Count -gt 0) {
                 [System.Windows.Forms.SendKeys]::SendWait("{ESC}"); Start-Sleep -Milliseconds 300
             } else { Write-Host "  !! the Xbox slot's Macros tab did not open -- SKIPPED macro-add-from-list" -ForegroundColor Red }
         }
-        $menuWanted = @(@("pad-menus", "menu-macro-cell", "menu-icon-packs") | Where-Object { Want $_ })
+        $menuWanted = @(@("pad-menus", "menu-macro-cell", "menu-icon-packs", "pad-menus-keyboard", "pad-menus-hotbar") | Where-Object { Want $_ })
         if ($menuWanted.Count -gt 0) {
             Nav "Dashboard"; Start-Sleep -Milliseconds 1500
             $shM = Find-UIA -Aid "SlotsItemsControl"
@@ -7151,7 +7523,7 @@ if ($Only.Count -gt 0) {
             $ppM = if ((Get-Count $cdM) -ge 1) { Open-SlotCard $cdM[0] "Xbox slot card (Menus)" } else { $null }
             if ($ppM -and (Tab "Menus")) {
                 Start-Sleep -Milliseconds 900
-                if (Open-MenuEditor -Name "Combat Wheel") { Capture-MenuShots }
+                if (Open-MenuEditor -Name "Combat Wheel") { Capture-MenuShots; Capture-MenuStyleShots }
                 else { Write-Host "  !! SKIPPED $($menuWanted -join ', ')" -ForegroundColor Red }
             } else { Write-Host "  !! the Xbox slot's Menus tab did not open -- SKIPPED $($menuWanted -join ', ')" -ForegroundColor Red }
         }
@@ -7475,6 +7847,7 @@ if ($Only.Count -gt 0) {
     Capture-WebShots
     Capture-UninstallPreviews
     Capture-PeripheralTabs
+    Capture-ScreenColorLighting
     Capture-FalconPadShots
     Capture-LanguageShots
     Capture-Colorways
@@ -8260,73 +8633,6 @@ if ($slotsHost) {
                 }
             }
 
-            # Custom gesture recorder dialog (Touchpad.md): the "+ Record New
-            # Gesture" button in the Touchpad tab's Custom Gestures section opens
-            # a modal recorder. The section is near the bottom of the tab, so land
-            # on Touchpad, scroll down, click the button, capture the dialog, then
-            # close it (a low Close/Cancel button, else ESC), like the NFC/pair
-            # modals. Done LAST on the PS slot since it opens a modal.
-            Write-Host "  PlayStation: custom gesture recorder"
-            $tpTab = ($padPage.FindAll($TC, $rbCond)) | Where-Object { $_.Current.Name -eq "Touchpad" } | Select-Object -First 1
-            if ($tpTab) { Click-El $tpTab -Label "Touchpad Tab (recorder)" -Delay 800 | Out-Null }
-            Start-Sleep -Milliseconds 600
-            # Enable gestures FIRST. The Custom Gestures section (the StackPanel holding
-            # the "+ Record New Gesture" button) is IsEnabled-bound to
-            # TouchpadCustomSectionEnabled = _touchpadGesturesEnabled && mode != InBoxOnly
-            # (PadViewModel.Touchpad.cs). With gestures off (the default) that section is
-            # DISABLED and the record button is unclickable. UIA Name lookups fail for the
-            # touchpad-tab content controls (the 2026-07-12 run could not find the
-            # "Enable Gestures on This Touchpad" checkbox OR the record button by Name), so
-            # drive by COORDINATE off the pad-touchpad geometry: on the fresh (unscrolled)
-            # Touchpad tab the checkbox/label sits at ~0.19 W, 0.807 H of the window.
-            $wrTp = New-Object Win32+RECT
-            [Win32]::GetWindowRect($script:hwnd, [ref]$wrTp) | Out-Null
-            $tpw = $wrTp.Right - $wrTp.Left; $tph = $wrTp.Bottom - $wrTp.Top
-            [Win32]::ForceFG($script:hwnd); Start-Sleep -Milliseconds 150
-            Click-At ([int]($wrTp.Left + 0.19 * $tpw)) ([int]($wrTp.Top + 0.807 * $tph)); Start-Sleep -Milliseconds 700
-            # Scroll to the bottom so the Custom Gestures card realizes on-screen, then find
-            # the record button by POSITION: its Name isn't matchable, but after
-            # scroll-to-bottom the empty CustomTouchpadGestures ItemsControl leaves the
-            # record button as the BOTTOM-MOST content button (X past the ~280px sidebar,
-            # Y below the tab strip). Name-match still wins if it ever resolves.
-            ScrollContent -Clicks -90
-            $recBtnCT = New-Object System.Windows.Automation.PropertyCondition(
-                [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
-                [System.Windows.Automation.ControlType]::Button)
-            $recBtn = $null; $recByName = $null; $bestY = -1e9
-            foreach ($b in $script:uiaWin.FindAll($TD, $recBtnCT)) {
-                $rb = Get-Rect $b
-                if ($null -eq $rb) { continue }
-                if ($b.Current.Name -match "Record New Gesture") { $recByName = $b }
-                if ($rb.X -gt ($wrTp.Left + 0.14 * $tpw) -and $rb.Y -gt ($wrTp.Top + 0.16 * $tph)) {
-                    $by = $rb.Y + $rb.Height
-                    if ($by -gt $bestY) { $bestY = $by; $recBtn = $b }
-                }
-            }
-            if ($recByName) { $recBtn = $recByName; Write-Host "  recorder: found record button by Name" }
-            elseif ($recBtn) {
-                $rbR = Get-Rect $recBtn
-                if ($null -ne $rbR) { Write-Host ("  recorder: bottom-most content button '{0}' [{1}x{2}] at ({3},{4})" -f $recBtn.Current.Name, [int]$rbR.Width, [int]$rbR.Height, [int]$rbR.X, [int]$rbR.Y) }
-            }
-            if ($recBtn) {
-                Click-El $recBtn -Label "Record New Gesture" -Delay 1500 | Out-Null
-                # Recorder is a wpf-ui FluentWindow modal; grab its hwnd at open time.
-                # Only capture if a modal actually opened (a wrong button = no modal = skip,
-                # so we never save a non-recorder frame as touchpad-gesture-recorder.png).
-                $recDlg = Get-ForegroundDialogHwnd
-                if ($recDlg -ne [IntPtr]::Zero) {
-                    Cap "touchpad-gesture-recorder" -AllowModal
-                    Close-DialogHwnd $recDlg
-                } else {
-                    Write-Host "  !! recorder dialog did not open (no foreground modal)" -ForegroundColor Yellow
-                }
-                Close-AnyModal | Out-Null
-            } else {
-                Write-Host "  !! Record New Gesture button not found" -ForegroundColor Yellow
-            }
-            ScrollContent -Clicks 140
-            Close-AnyModal | Out-Null
-
             # The Motion Roll row's editor (#475), LAST on this slot: it
             # selects a mapping row, and the next block re-navs via the
             # Dashboard.
@@ -8941,7 +9247,7 @@ Capture-Ds3Preset
 # ListItem peers at all: a presence gate built on UIA counting reported an
 # empty list with five macros plainly on screen and skipped five good shots.
 # The file answers it definitively.
-$menuShots = @("pad-menus", "menu-macro-cell", "menu-icon-packs")
+$menuShots = @("pad-menus", "menu-macro-cell", "menu-icon-packs", "pad-menus-keyboard", "pad-menus-hotbar")
 Write-Host "[3b] Menus: $($menuShots -join ', ') (#390)"
 $menuSeen = 0
 try {
@@ -8967,7 +9273,7 @@ if ($menuSeen -lt 1) {
         Start-Sleep -Milliseconds 900
         # The editor is hidden behind HasSelectedMenu, so an unselected tab
         # is the cold empty-state pane and nothing these shots name.
-        if (Open-MenuEditor -Name "Combat Wheel") { Capture-MenuShots }
+        if (Open-MenuEditor -Name "Combat Wheel") { Capture-MenuShots; Capture-MenuStyleShots }
         else { Write-Host "  !! SKIPPED $($menuShots -join ', ')" -ForegroundColor Red }
     }
 }
@@ -9223,6 +9529,12 @@ Capture-WebPlainSection
 Capture-GameModsCard
 Capture-GameTelemetryCard
 Capture-TelemetryFormatEditor
+# The 5.3.0 cards, rows and windows: Twitch Chat, Screen Overlay, Map Key
+# Lights and the import preview.
+Capture-TwitchChatShots
+Capture-ScreenOverlayCard
+Capture-MapKeyLights
+Capture-ImportPreview
 
 # The Pair dialog, every family it offers (Capture-PairDialog).
 Capture-PairDialog
@@ -9514,6 +9826,7 @@ Write-Host "=== 5.1.0 surfaces ===" -ForegroundColor Cyan
 try {
     Capture-UninstallPreviews
     Capture-PeripheralTabs
+    Capture-ScreenColorLighting
     Capture-FalconPadShots
     Capture-LanguageShots
 } catch {

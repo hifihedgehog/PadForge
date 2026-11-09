@@ -246,7 +246,10 @@ namespace PadForge.Tests
                 if (!IsLit((ushort)vendor, (ushort)product)) return;
                 named.TryAdd(((ushort)vendor, (ushort)product), (name.Trim(), source));
             }
-            foreach (var r in OpenRgbRegistrations.All.Where(r => r.Transport == OpenRgbTransport.Hid && !r.FromSettings))
+            // A USB serial device has a USB identity too: BlinkyTape, the HYTE CNVS and Skydimo's
+            // serial strips are lit over their COM ports (BlinkyTapeLighting, HyteMousematLighting,
+            // SkydimoSerialLighting).
+            foreach (var r in OpenRgbRegistrations.All.Where(r => (r.Transport is OpenRgbTransport.Hid or OpenRgbTransport.UsbSerial) && !r.FromSettings))
                 Add(r.VendorId, r.ProductId, r.Name, "OpenRGB " + r.Family);
             foreach (var r in RazerDirectTable.Rows.Where(r => r.Family != RazerFamily.None))
                 Add(PeripheralLinker.RazerVid, r.ProductId, r.Name, "openrazer");

@@ -1084,7 +1084,7 @@ namespace PadForge.Tests
         {
             var run = ReadTree("settings");
             Assert.Equal(
-                new[] { "Ensure-DeviceAssigned", "Ensure-MacrosLoaded", "Seed-AudioDsp", "Set-SlotPreset", "Write-StagedScene" },
+                new[] { "Ensure-DeviceAssigned", "Ensure-MacrosLoaded", "Seed-AudioDsp", "Seed-LightbarMode", "Set-SlotPreset", "Write-StagedScene" },
                 run.Strings("XmlPathWriters"));
             // Positive control: the reach holds a function that only calls one.
             Assert.Contains("Capture-Ds3Preset", run.Strings("ReachTheWriters"));

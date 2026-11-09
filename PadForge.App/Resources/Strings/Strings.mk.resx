@@ -3818,7 +3818,7 @@
   <data name="Menu_Binding_None" xml:space="preserve"><value>Ништо</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Тастер на тастатура</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>Копче на контролер</value></data>
-  <data name="Menu_Style_Tip" xml:space="preserve"><value>„Радијален прстен“ избира ќелија според насоката, како тркало за оружје. „Мрежа на допир“ избира ќелија според позицијата: каде е прстот на таблата или каде покажува палката.</value></data>
+  <data name="Menu_Style_Tip" xml:space="preserve"><value>„Радијален прстен“ избира ќелија според насоката, како тркало за оружје. „Мрежа на допир“ избира ќелија според позицијата: каде е прстот на таблата или каде покажува палката. „Лента со дејства“ прикажува ред ќелии, чекори по него и ја активира избраната ќелија, секое со своја контрола.</value></data>
   <data name="Menu_HostInput_Tip" xml:space="preserve"><value>Влезот што го отвора и управува ова мени, читан од доделените физички контролери на слотот. Палката го отвора кога ќе се турне над мртвата зона за активирање. Допирната табла го отвора при допир.</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>Ограничете го ова мени на една половина од тракпедот, за две менија да можат да ја делат таблата.</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>Кога означената ќелија го извршува своето поврзување. Секој избор е објаснет подолу.</value></data>
@@ -4248,7 +4248,7 @@
   <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>Се извршува еднаш кога „Влез за клик“ ќе се пушти. Ако површината се пушти во истиот миг, се извршува претходниот избор.</value></data>
   <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>Се извршува еднаш кога ќе го кренете прстот или ќе ја вратите палката во мртвата зона за активирање, додека менито останува отворено. Излегувањето од слојот исто така го потврдува изборот што сѐ уште се управува.</value></data>
   <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>Го држи поврзувањето додека неговата ќелија е означена. Радијалниот центар може да се изврши веднаш кога слојот ќе се отвори.</value></data>
-  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Притисоците на насоките минуваат низ ќелиите и ја извршуваат секоја новоизбрана ќелија. Ова однесување на лента со дејства не користи „Режим на активирање“ ни „Влез за клик“.</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Притисоците на насоките минуваат низ ќелиите и ја извршуваат секоја новоизбрана ќелија, без „Режим на активирање“ или „Влез за клик“. Стилот „Лента со дејства“ чекори без активирање и активира со сопствена контрола „Активирај“.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Подобрен протокол Flydigi</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Овозможува дополнителни копчиња и сензори за движење на поддржаните контролери Flydigi.</value></data>
   <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Работи софтвер на Flydigi: {0}. Може да го користи истиот интерфејс на контролерот како PadForge, а пријавено е дека Vader 5 Pro постојано се исклучувал додека и двата имале пристап. Ако овој контролер се исклучува и повторно се поврзува, запрете ја услугата додека го користите PadForge, држете го контролерот скриен и отстранете ја услугата од списокот дозволени апликации на HidHide, или обидете се да го исклучите „Подобрен протокол Flydigi“ во Поставки, што не е потврдено дека помага.</value></data>
@@ -5099,7 +5099,28 @@
     <value>D-pad</value>
   </data>
   <data name="Menu_Style_Keyboard" xml:space="preserve"><value>Тастатура</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>„Радијален прстен“ и „Мрежа на допир“ ги активираат врзувањата на ќелиите. „Тастатура“ ги пишува тастерите на распоредот на Windows што се користи.</value></data>
+  <data name="Menu_Style_Hotbar" xml:space="preserve"><value>Лента со дејства</value></data>
+  <data name="Menu_Hotbar_Show" xml:space="preserve"><value>Прикажи или скриј</value></data>
+  <data name="Menu_Hotbar_Show_Tip" xml:space="preserve"><value>Ја прикажува лентата, а при следниот притисок ја скрива. Лента скриена на овој начин следниот пат се отвора на средната ќелија.</value></data>
+  <data name="Menu_Hotbar_Previous" xml:space="preserve"><value>Претходна</value></data>
+  <data name="Menu_Hotbar_Previous_Tip" xml:space="preserve"><value>Ја избира ќелијата лево, прескокнувајќи ги ќелиите без ништо поставено.</value></data>
+  <data name="Menu_Hotbar_Next" xml:space="preserve"><value>Следна</value></data>
+  <data name="Menu_Hotbar_Next_Tip" xml:space="preserve"><value>Ја избира ќелијата десно, прескокнувајќи ги ќелиите без ништо поставено.</value></data>
+  <data name="Menu_Hotbar_Fire" xml:space="preserve"><value>Активирај</value></data>
+  <data name="Menu_Hotbar_Fire_Tip" xml:space="preserve"><value>Ја активира избраната ќелија, како што одредува „Режим на активирање“.</value></data>
+  <data name="Menu_Hotbar_Caption" xml:space="preserve"><value>„Прикажи или скриј“ извлекува ред ќелии, „Претходна“ и „Следна“ се движат по него, а „Активирај“ ја активира избраната ќелија. Контрола оставена празна го зема правецот од „Се отвора со“: надолу, лево, десно или нагоре.</value></data>
+  <data name="Menu_Hotbar_Wrap" xml:space="preserve"><value>Кружно движење</value></data>
+  <data name="Menu_Hotbar_Wrap_Tip" xml:space="preserve"><value>Чекорот по последната ќелија оди на првата, и обратно. Кога е исклучено, изборот запира на двата краја.</value></data>
+  <data name="Menu_Hotbar_DismissOnFire" xml:space="preserve"><value>Скриј по активирање</value></data>
+  <data name="Menu_Hotbar_DismissOnFire_Tip" xml:space="preserve"><value>„Активирај“ ја скрива лентата. Кога е исклучено, лентата останува и истата ќелија може повторно да се активира.</value></data>
+  <data name="Menu_Hotbar_Recenter" xml:space="preserve"><value>Центрирај повторно секој пат</value></data>
+  <data name="Menu_Hotbar_Recenter_Tip" xml:space="preserve"><value>Додека лентата е скриена, изборот се враќа на средната ќелија. Кога е исклучено, лента што ја скрило „Активирај“ се отвора на ќелијата што ја активирала.</value></data>
+  <data name="Menu_Reset_HotbarControl" xml:space="preserve"><value>Ресетирај ја контролата</value></data>
+  <data name="Menu_Fire_Click_Hotbar_Desc" xml:space="preserve"><value>„Активирај“ ја притиска избраната ќелија и ја држи додека се држи „Активирај“. Кога е вклучено „Скриј по активирање“, притисокот е краток допир.</value></data>
+  <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>Избраната ќелија се активира еднаш, како краток допир, кога ќе се пушти „Активирај“. Кога е вклучено „Скриј по активирање“, се активира штом „Активирај“ ја скрие лентата.</value></data>
+  <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>Ќелија се активира еднаш, како краток допир, кога „Активирај“ ја скрива лентата при вклучено „Скриј по активирање“. Кога е вклучено „Центрирај повторно секој пат“, се активира средната ќелија.</value></data>
+  <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>Избраната ќелија се држи цело време додека лентата е прикажана. Чекорењето ја пушта една ќелија и ја држи следната.</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>„Радијален прстен“, „Мрежа на допир“ и „Лента со дејства“ ги активираат врзувањата на ќелиите. „Тастатура“ ги пишува тастерите на распоредот на Windows што се користи.</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Распоред</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Како тастатурата ги распоредува тастерите и како контролерот ги избира.</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Едно означување, движено со палка или четири влеза, распоредот што го користат Windows, Xbox и Steam.</value></data>
@@ -5219,6 +5240,12 @@
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (не е на овој компјутер)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (не е на овој слот)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>жироскопот Laser Pointer се чита како вртење (PadForge нема претворање за ласерски покажувач)</value></data>
+  <data name="Workshop_Tr_GyroRollFromHorizon" xml:space="preserve"><value>навалувањето е центрирано таму каде што контролерот мирува на почетокот или при „Повторно центрирање на жироскопот“, а не според хоризонтот</value></data>
+  <data name="Workshop_Tr_GyroPitchFromHorizon" xml:space="preserve"><value>наклонот е центриран таму каде што контролерот мирува на почетокот или при „Повторно центрирање на жироскопот“, а не на {0}° од рамна положба</value></data>
+  <data name="Workshop_Tr_GyroTiltRangeCapped" xml:space="preserve"><value>целосно отклонување при 90° накривување, а не при {0}°</value></data>
+  <data name="Workshop_Tr_OutputJoystickUnrouted" xml:space="preserve"><value>output_joystick {0} го праќа парот оски ни кон палката ни кон глушецот, па ништо не се мапира</value></data>
+  <data name="Workshop_Tr_DpadPulseHeld" xml:space="preserve"><value>секоја насока се држи додека е притисната (аналогната емулација на Steam ја вклучува и исклучува во пулсови, подолги колку што е притисната подалеку)</value></data>
+  <data name="Workshop_Tr_SoftPressNoAnalog" xml:space="preserve"><value>активатор за благ притисок на влез без аналогно читање (Steam никогаш не го активира)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>Во reWASD, {0} сè уште стигнува до Windows бидејќи датотеката го мапира без отмапирање. Кога е вклучено Блокирај мапирани влезови, PadForge го запира.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows ги обликува {0} на радијалниот стик според аголот на притисокот. Картичката на стикот во PadForge го игра правиот притисок исто, а дијагоналниот поинаку.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows ја намалува мртвата зона на жироскопот на секоја оска според аголот на движењето. PadForge ја одзема целата мртва зона од секоја оска, па правото движење се игра исто, а бавното дијагонално почнува подоцна.</value></data>

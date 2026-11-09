@@ -1,7 +1,7 @@
 name: Pan's Steam Deck & Steam Controller (2026)
 description: Your modified layout for this game.
 slots: xbox kbm
-gyroRatchet: Touchpad 1 Finger 0 Down
+gyroEngage: Touchpad 1 Finger 0 Down
 xbox rows: 32
   Base | ButtonA
     <- Gamepad ButtonA
@@ -31,7 +31,7 @@ xbox rows: 32
     <- Gamepad LeftStickY
   Base | LeftTrigger
     <- Gamepad LeftTrigger
-    <- Gamepad LeftTrigger [upper-half] dz=75
+    <- Gamepad LeftTrigger [upper-half] dz=90
   Base | RightShoulder
     <- Gamepad RightShoulder
   Base | RightThumbAxisX
@@ -42,7 +42,7 @@ xbox rows: 32
     <- Gamepad RightStick
   Base | RightTrigger
     <- Gamepad RightTrigger
-    <- Gamepad RightTrigger [upper-half] dz=75
+    <- Gamepad RightTrigger [upper-half] dz=90
   Layer_3725174032_1 | ButtonY
     <- Gamepad ButtonA
     <- Gamepad ButtonB
@@ -86,8 +86,8 @@ kbm rows: 3
     <- Touchpad 1 Finger 0 Y
 macros: 9
   macro HoldVcButton DoublePress | Double press LeftThumbButton (LeftStick) | btns=0x0000 in=[Gamepad LeftStick] dbl=442ms layer=Base target=0x0040
-  macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 layer=Base strength=66%
-  macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=90 layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=90 layer=Base strength=66%
   macro HoldVcButton HoldForMs | Long press ButtonY (Paddle2) | btns=0x0000 in=[Gamepad Paddle2] hold=500ms layer=Base target=0x8000
   macro HoldVcButton DoublePress | Double press ButtonY (Paddle3) | btns=0x0000 in=[Gamepad Paddle3] dbl=442ms layer=Base target=0x8000
   macro HoldVcButton DoublePress | Double press RightShoulder (Paddle3) | btns=0x0000 in=[Gamepad Paddle3] dbl=442ms layer=Base target=0x0200

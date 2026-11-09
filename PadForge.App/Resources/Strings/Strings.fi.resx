@@ -3818,7 +3818,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>Ei mitään</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Näppäimistön näppäin</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>Ohjaimen painike</value></data>
-  <data name="Menu_Style_Tip" xml:space="preserve"><value>Säteittäinen rengas valitsee solun suunnan perusteella, kuten aseympyrä. Kosketusruudukko valitsee solun sijainnin perusteella: missä sormi on levyllä tai mihin sauva osoittaa.</value></data>
+  <data name="Menu_Style_Tip" xml:space="preserve"><value>Säteittäinen rengas valitsee solun suunnan perusteella, kuten aseympyrä. Kosketusruudukko valitsee solun sijainnin perusteella: missä sormi on levyllä tai mihin sauva osoittaa. Pikapalkki näyttää solurivin, siirtyy sitä pitkin ja laukaisee valitun solun, kukin omalla ohjauksellaan.</value></data>
   <data name="Menu_HostInput_Tip" xml:space="preserve"><value>Syöte, joka avaa ja ohjaa tätä valikkoa, luettuna paikkaan liitetyistä fyysisistä ohjaimista. Sauva avaa sen, kun sitä työnnetään aktivoinnin kuolleen alueen yli. Kosketuslevy avaa sen kosketuksesta.</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>Rajoita tämä valikko kosketuslevyn toiselle puoliskolle, jotta kaksi valikkoa voi jakaa levyn.</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>Milloin korostettu solu laukaisee sidontansa. Kukin vaihtoehto selitetään alla.</value></data>
@@ -4248,7 +4248,7 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>Laukeaa kerran, kun napsautussyöte vapautetaan. Jos pinta vapautuu samalla hetkellä, laukaisee edellisen valinnan.</value></data>
   <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>Laukeaa kerran, kun nostat sormen tai palautat sauvan aktivoinnin kuolleen alueen sisälle, ja valikko pysyy auki. Kerroksesta poistuminen vahvistaa myös vielä ohjattavana olevan valinnan.</value></data>
   <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>Pitää sidonnan päällä, kun sen solu on korostettuna. Säteittäinen keskusta voi laueta heti, kun kerros avautuu.</value></data>
-  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Suuntapainallukset siirtyvät solujen läpi ja laukaisevat jokaisen uuden valitun solun. Tämä pikapalkkitoiminto ei käytä laukaisutilaa eikä napsautussyötettä.</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Suuntapainallukset siirtyvät solujen läpi ja laukaisevat jokaisen uuden valitun solun ilman ”Laukaisutila”- tai ”Napsautussyöte”-asetusta. Pikapalkki-tyyli siirtyy laukaisematta ja laukaisee oman ”Laukaise”-ohjauksensa kautta.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Flydigin laajennettu protokolla</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Ottaa käyttöön lisäpainikkeet ja liikeanturit tuetuissa Flydigi-ohjaimissa.</value></data>
   <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi-ohjelmisto on käynnissä: {0}. Se voi käyttää samaa ohjainrajapintaa kuin PadForge, ja Vader 5 Pron on raportoitu katkeilevan toistuvasti, kun molemmilla on ollut pääsy siihen. Jos tämä ohjain katkeaa ja yhdistyy uudelleen, pysäytä palvelu PadForge-sovelluksen käytön ajaksi, pidä ohjain piilotettuna ja poista palvelu HidHide-ajurin sallittujen luettelosta tai kokeile poistaa Asetuksista käytöstä ”Flydigin laajennettu protokolla”, vaikka sen auttamisesta ei ole varmuutta.</value></data>
@@ -5099,7 +5099,28 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
     <value>Ristiohjain</value>
   </data>
   <data name="Menu_Style_Keyboard" xml:space="preserve"><value>Näppäimistö</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>Säteittäinen rengas ja Kosketusruudukko laukaisevat solujen sidonnat. Näppäimistö kirjoittaa käytössä olevan Windows-asettelun näppäimet.</value></data>
+  <data name="Menu_Style_Hotbar" xml:space="preserve"><value>Pikapalkki</value></data>
+  <data name="Menu_Hotbar_Show" xml:space="preserve"><value>Näytä tai piilota</value></data>
+  <data name="Menu_Hotbar_Show_Tip" xml:space="preserve"><value>Näyttää palkin ja piilottaa sen seuraavalla painalluksella. Näin piilotettu palkki avautuu seuraavalla kerralla keskisoluunsa.</value></data>
+  <data name="Menu_Hotbar_Previous" xml:space="preserve"><value>Edellinen</value></data>
+  <data name="Menu_Hotbar_Previous_Tip" xml:space="preserve"><value>Valitsee vasemmalla olevan solun ja ohittaa solut, joihin ei ole asetettu mitään.</value></data>
+  <data name="Menu_Hotbar_Next" xml:space="preserve"><value>Seuraava</value></data>
+  <data name="Menu_Hotbar_Next_Tip" xml:space="preserve"><value>Valitsee oikealla olevan solun ja ohittaa solut, joihin ei ole asetettu mitään.</value></data>
+  <data name="Menu_Hotbar_Fire" xml:space="preserve"><value>Laukaise</value></data>
+  <data name="Menu_Hotbar_Fire_Tip" xml:space="preserve"><value>Laukaisee valitun solun ”Laukaisutila”-asetuksen mukaan.</value></data>
+  <data name="Menu_Hotbar_Caption" xml:space="preserve"><value>”Näytä tai piilota” tuo esiin solurivin, ”Edellinen” ja ”Seuraava” siirtyvät sitä pitkin ja ”Laukaise” laukaisee valitun solun. Tyhjäksi jätetty ohjaus käyttää ”Avaava syöte” -asetuksen suuntaa: alas, vasemmalle, oikealle tai ylös.</value></data>
+  <data name="Menu_Hotbar_Wrap" xml:space="preserve"><value>Kiertävä valinta</value></data>
+  <data name="Menu_Hotbar_Wrap_Tip" xml:space="preserve"><value>Viimeisen solun ohi siirtyminen vie ensimmäiseen ja takaisin. Pois päältä valinta pysähtyy kumpaankin päähän.</value></data>
+  <data name="Menu_Hotbar_DismissOnFire" xml:space="preserve"><value>Piilota laukaisun jälkeen</value></data>
+  <data name="Menu_Hotbar_DismissOnFire_Tip" xml:space="preserve"><value>”Laukaise” piilottaa palkin. Pois päältä palkki pysyy esillä ja saman solun voi laukaista uudelleen.</value></data>
+  <data name="Menu_Hotbar_Recenter" xml:space="preserve"><value>Keskitä uudelleen joka kerta</value></data>
+  <data name="Menu_Hotbar_Recenter_Tip" xml:space="preserve"><value>Kun palkki on piilotettuna, valinta palaa keskisoluun. Pois päältä palkki, jonka ”Laukaise” piilotti, avautuu solulle, jonka se laukaisi.</value></data>
+  <data name="Menu_Reset_HotbarControl" xml:space="preserve"><value>Palauta ohjaus</value></data>
+  <data name="Menu_Fire_Click_Hotbar_Desc" xml:space="preserve"><value>”Laukaise” painaa valittua solua ja pitää sitä painettuna, kun ”Laukaise” on pohjassa. Kun ”Piilota laukaisun jälkeen” on päällä, painallus on lyhyt napautus.</value></data>
+  <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>Valittu solu laukeaa kerran lyhyenä napautuksena, kun ”Laukaise” vapautetaan. Kun ”Piilota laukaisun jälkeen” on päällä, se laukeaa heti, kun ”Laukaise” piilottaa palkin.</value></data>
+  <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>Solu laukeaa kerran lyhyenä napautuksena, kun ”Laukaise” piilottaa palkin ja ”Piilota laukaisun jälkeen” on päällä. Kun ”Keskitä uudelleen joka kerta” on päällä, laukeava solu on keskisolu.</value></data>
+  <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>Valittua solua pidetään painettuna koko ajan, kun palkki on näkyvissä. Siirtyminen päästää yhden solun irti ja ottaa seuraavan pitoon.</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>Säteittäinen rengas, Kosketusruudukko ja Pikapalkki laukaisevat solujen sidonnat. Näppäimistö kirjoittaa käytössä olevan Windows-asettelun näppäimet.</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Asettelu</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Miten näppäimistö asettelee näppäimensä ja miten ohjain valitsee ne.</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Yksi korostus, jota liikutetaan sauvalla tai neljällä syötteellä. Asettelu, jota Windows, Xbox ja Steam käyttävät.</value></data>
@@ -5219,6 +5240,12 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (ei tässä tietokoneessa)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (ei tällä paikalla)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>Laserosoitin-gyro luettu kiertymänä (PadForge-ssa ei ole laserosoittimen muunnosta)</value></data>
+  <data name="Workshop_Tr_GyroRollFromHorizon" xml:space="preserve"><value>kallistus keskitetty ohjaimen lepoasentoon alussa tai ”Gyron keskitys” -toiminnolla, ei horisonttiin</value></data>
+  <data name="Workshop_Tr_GyroPitchFromHorizon" xml:space="preserve"><value>nyökkäys keskitetty ohjaimen lepoasentoon alussa tai ”Gyron keskitys” -toiminnolla, ei kohtaan {0}° vaakatasosta</value></data>
+  <data name="Workshop_Tr_GyroTiltRangeCapped" xml:space="preserve"><value>täysi poikkeama, kun kaltevuus on 90°, ei {0}°</value></data>
+  <data name="Workshop_Tr_OutputJoystickUnrouted" xml:space="preserve"><value>output_joystick {0} ei ohjaa paria sauvalle eikä hiirelle, joten mitään ei määritetä</value></data>
+  <data name="Workshop_Tr_DpadPulseHeld" xml:space="preserve"><value>kukin suunta pidetään päällä, kun sitä painetaan (Steam-asetus analoginen emulointi kytkee suuntaa päälle ja pois pulsseina, jotka pitenevät mitä kauemmas painetaan)</value></data>
+  <data name="Workshop_Tr_SoftPressNoAnalog" xml:space="preserve"><value>kevyen painalluksen aktivoija syötteellä, jolla ei ole analogista lukemaa (Steam ei laukaise sitä koskaan)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>reWASD-issa {0} pääsee silti Windows-iin, koska tiedosto määrittää sen ilman määrityksen poistoa. Kun Estä määritetyt syötteet on käytössä, PadForge estää sen.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows muotoilee säteittäisen sauvan asetuksia {0} työnnön kulman mukaan. PadForge-n sauvakortti toistaa suoran työnnön samoin ja vinon eri tavalla.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows skaalaa gyron kuolleen alueen kullakin akselilla liikkeen kulman mukaan. PadForge poistaa koko kuolleen alueen jokaiselta akselilta, joten suora liike toistuu samoin ja hidas vino liike alkaa myöhemmin.</value></data>

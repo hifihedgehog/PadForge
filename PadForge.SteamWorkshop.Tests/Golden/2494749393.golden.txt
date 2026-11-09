@@ -1,7 +1,7 @@
 name: Dualsence for Skyrim: SE
 description: The template works best for games that are designed with a gamepad in mind, but also support a deskt...
 slots: xbox kbm
-gyroEngage: Gamepad DPadRight
+gyroEngage: Level 94.9965 94.9965 out - - Gamepad RightTrigger
 xbox rows: 20
   Base | ButtonA
     <- Gamepad Paddle2
@@ -37,7 +37,7 @@ xbox rows: 20
     <- Gamepad LeftStick
   Base | LeftTrigger
     <- Gamepad LeftTrigger
-    <- Gamepad LeftTrigger [upper-half] dz=75
+    <- Gamepad LeftTrigger [upper-half] dz=90
   Base | RightShoulder
     <- Gamepad RightShoulder
   Base | RightThumbAxisX
@@ -50,7 +50,7 @@ xbox rows: 20
     <- Gamepad RightStick
   Base | RightTrigger
     <- Gamepad RightTrigger
-    <- Gamepad RightTrigger [upper-half] dz=75
+    <- Gamepad RightTrigger [upper-half] dz=90
 kbm rows: 1
   Base | KbmKey74
     <- Gamepad ButtonStart
@@ -60,8 +60,8 @@ macros: 10
   macro RumblePulse OnPress | Haptic pulse (DPadDown) | btns=0x0000 in=[Gamepad DPadDown] layer=Base strength=33%
   macro RumblePulse OnPress | Haptic pulse (DPadLeft) | btns=0x0000 in=[Gamepad DPadLeft] layer=Base strength=33%
   macro RumblePulse OnPress | Haptic pulse (LeftStick) | btns=0x0000 in=[Gamepad LeftStick] layer=Base strength=66%
-  macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 layer=Base strength=66%
-  macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=90 layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=90 layer=Base strength=66%
   macro RumblePulse OnPress | Haptic pulse (ButtonStart) | btns=0x0000 in=[Gamepad ButtonStart] layer=Base strength=33%
   macro HoldKey DoublePress | Hold F9 (ButtonStart) | btns=0x0010 dbl=442ms layer=Base vk=0x78
   macro KeyTap OnPress | Screenshot key (ButtonBack) | btns=0x0000 in=[Gamepad ButtonBack] layer=Base vk=0x2C

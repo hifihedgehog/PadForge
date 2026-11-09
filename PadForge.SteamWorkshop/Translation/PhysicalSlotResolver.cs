@@ -652,9 +652,15 @@ namespace PadForge.SteamWorkshop.Translation
                     // positive = tilt right, Lean Y positive = nose up =
                     // stick pulled back), so north = tilt the top edge
                     // away (push the "stick" forward), south = tilt it
-                    // back, east / west = tilt right / left. Diamond
-                    // cells fold onto their seats first, the stick hosts'
-                    // rule.
+                    // back, east / west = tilt right / left. The gyro dpad
+                    // reads through SteamPadRead, so these are the
+                    // four_buttons cells, which fold by position. Steam's
+                    // four_buttons on the gyro presses its north cell (Y)
+                    // for the tilt its dpad calls south and its south cell
+                    // (A) for the dpad's north (steamclient64.dll
+                    // 0x1388b6bf7: the north cell is the tilt's Y below
+                    // zero, where the dpad's north is Y above it), so A
+                    // and Y take the opposite wedges.
                     if (nintendoLabels)
                     {
                         name = name switch
@@ -668,10 +674,10 @@ namespace PadForge.SteamWorkshop.Translation
                     }
                     name = name switch
                     {
-                        "button_a" => "dpad_south",
+                        "button_a" => "dpad_north",
                         "button_b" => "dpad_east",
                         "button_x" => "dpad_west",
-                        "button_y" => "dpad_north",
+                        "button_y" => "dpad_south",
                         _ => name,
                     };
                     string leanX = PadForge.Engine.Common.Mapping.SourceCoercion.GyroLeanXDescriptor;
@@ -720,14 +726,14 @@ namespace PadForge.SteamWorkshop.Translation
                                 };
                             }
                             return new ResolvedSource { Descriptor = $"Touchpad {p} Finger 0 Down" };
-                        // Trackpad-as-dpad rides the anchor-relative D-pad
-                        // gesture channel ("Touchpad {p} DPadUp" etc., read
-                        // through TouchpadGestureFiredProvider). The
-                        // joystick-output feature self-arms at apply since
-                        // v14, so emitted rows are Clean. On a half-hosted
-                        // group the wedge is whole-pad (the anchor gesture
-                        // has no half window); the translator adds one
-                        // TrackpadHalfApproximated note per group.
+                        // A Steam dpad group on a trackpad reads through
+                        // ConfigTranslator.SteamPadRead (the finger's place
+                        // from the pad's center, as Steam's dpad mode reads
+                        // it). A dpad member of any other group lowers to
+                        // these anchor-relative D-pad gesture reads
+                        // ("Touchpad {p} DPadUp" etc., through
+                        // TouchpadGestureFiredProvider, the joystick-output
+                        // feature self-arming at apply since v14).
                         case "dpad_north":
                             return TrackpadDpad(p, "DPadUp");
                         case "dpad_south":
@@ -781,30 +787,11 @@ namespace PadForge.SteamWorkshop.Translation
 
                 case SteamSlot.LeftTrigger:
                 case SteamSlot.RightTrigger:
-                {
-                    bool left = slot == SteamSlot.LeftTrigger;
-                    string axis = left ? "Gamepad LeftTrigger" : "Gamepad RightTrigger";
-                    string target = left ? "LeftTrigger" : "RightTrigger";
-                    switch (name)
-                    {
-                        case "click":
-                            return TriggerClick(left);
-                        case "edge":
-                            // Soft-pull edge: same read at the lowest useful
-                            // threshold (~57% physical pull; 50% is the floor
-                            // of the upper-half read).
-                            return new ResolvedSource
-                            {
-                                Descriptor = axis,
-                                HalfAxis = true,
-                                DeadZone = 15,
-                                MacroAxisTarget = target,
-                                IsAnalogTriggerPull = true,
-                            };
-                        default:
-                            return null;
-                    }
-                }
+                    // The edge member is the trigger mode's Soft Pull, which
+                    // ConfigTranslator.SteamTriggerRead reads through the
+                    // mode's own trigger and style. No other mode on a
+                    // trigger fires an edge.
+                    return name == "click" ? TriggerClick(slot == SteamSlot.LeftTrigger) : null;
 
                 default:
                     return null;
@@ -839,23 +826,30 @@ namespace PadForge.SteamWorkshop.Translation
             };
         }
 
-        /// <summary>The soft-pull threshold crossing ("Soft Pull" in the
-        /// shipped configurator strings), shared by the trigger slot's
-        /// <c>edge</c> member and the <c>left/right_trigger_threshold</c>
-        /// members of switches groups: the same analog read at the lowest
-        /// useful threshold (~57% physical pull; 50% is the floor of the
-        /// upper-half read).</summary>
+        /// <summary>The trigger's Soft Pull button, the
+        /// <c>left/right_trigger_threshold</c> members of switches groups: the
+        /// pull past 1600 of 32767, the Soft Pull Steam's trigger source keeps
+        /// for every controller (CTriggerSource, 0x1386730c7), "barely pulled"
+        /// in the client's own words.</summary>
         private static ResolvedSource TriggerSoftPull(bool left)
+            => new() { Descriptor = TriggerSoftPullDescriptor(left ? "Gamepad LeftTrigger" : "Gamepad RightTrigger") };
+
+        /// <summary>The Soft Pull button of a trigger as a descriptor: the pull
+        /// past 1600 of 32767, with no hold-back.</summary>
+        public static string TriggerSoftPullDescriptor(string axis)
         {
-            string target = left ? "LeftTrigger" : "RightTrigger";
-            return new ResolvedSource
-            {
-                Descriptor = left ? "Gamepad LeftTrigger" : "Gamepad RightTrigger",
-                HalfAxis = true,
-                DeadZone = 15,
-                MacroAxisTarget = target,
-                IsAnalogTriggerPull = true,
-            };
+            const double softPull = 1600.0 / 32767.0 * 100.0;
+            return PadForge.Engine.Common.Mapping.BoundedReads.Level(softPull, softPull, false, "-",
+                PadForge.Engine.Common.Mapping.BoundedGate.None, axis);
+        }
+
+        /// <summary>The Full Pull button of a trigger as a descriptor: the pull
+        /// at 31128 of 32767 or past it (steamclient64.dll 0x1386795c4).</summary>
+        public static string TriggerFullPullDescriptor(string axis)
+        {
+            const double fullPull = (PadForge.Engine.Common.Mapping.BoundedReads.FullPullRaw - 0.5) / 32767.0 * 100.0;
+            return PadForge.Engine.Common.Mapping.BoundedReads.Level(fullPull, fullPull, false, "-",
+                PadForge.Engine.Common.Mapping.BoundedGate.None, axis);
         }
 
         /// <summary>A switch-slot pad click ("left_click" / "right_click").
@@ -881,10 +875,11 @@ namespace PadForge.SteamWorkshop.Translation
 
         /// <summary>Full-pull trigger switch, shared by the trigger slot's
         /// <c>click</c> member and the <c>left_trigger</c>/<c>right_trigger</c>
-        /// members of switches groups. The button coercion of an "Axis N"
-        /// source reads the UPPER half of the 0..65535 range, so the
-        /// reachable physical-pull window is 50..100%; DeadZone 75 fires at
-        /// roughly 87% pull (the end-of-travel click).</summary>
+        /// members of switches groups. Steam gives the controllers it reads
+        /// as generic gamepads (Xbox, PlayStation and the rest) their trigger
+        /// click at 95 percent of the pull (31128 of 32767,
+        /// steamclient64.dll 0x1386795c4). The half-axis read takes the
+        /// upper half of the pull, so DeadZone 90 is 95 percent.</summary>
         private static ResolvedSource TriggerClick(bool left)
         {
             string target = left ? "LeftTrigger" : "RightTrigger";
@@ -892,7 +887,7 @@ namespace PadForge.SteamWorkshop.Translation
             {
                 Descriptor = left ? "Gamepad LeftTrigger" : "Gamepad RightTrigger",
                 HalfAxis = true,
-                DeadZone = 75,
+                DeadZone = 90,
                 AutomapTarget = target,
                 MacroAxisTarget = target,
                 IsAnalogTriggerPull = true,

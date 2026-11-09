@@ -3818,7 +3818,7 @@
   <data name="Menu_Binding_None" xml:space="preserve"><value>कुनै पनि होइन</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>किबोर्ड कुञ्जी</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>कन्ट्रोलर बटन</value></data>
-  <data name="Menu_Style_Tip" xml:space="preserve"><value>रेडियल रिङले दिशाअनुसार सेल छान्छ, हतियार ह्विलजस्तै। टच ग्रिडले स्थितिअनुसार सेल छान्छ: औंला प्याडमा जहाँ छ, वा स्टिक जता देखाउँछ।</value></data>
+  <data name="Menu_Style_Tip" xml:space="preserve"><value>"रेडियल रिङ" ले दिशाअनुसार सेल छान्छ, हतियार ह्विलजस्तै। "टच ग्रिड" ले स्थितिअनुसार सेल छान्छ: औंला प्याडमा जहाँ छ, वा स्टिक जता देखाउँछ। "हटबार" ले सेलहरूको एउटा पङ्क्ति देखाउँछ, त्यसमा सेल सार्छ र छानिएको सेल चलाउँछ, प्रत्येक काम आफ्नै नियन्त्रणले।</value></data>
   <data name="Menu_HostInput_Tip" xml:space="preserve"><value>यो मेनु खोल्ने र चलाउने इनपुट, स्लटमा तोकिएका भौतिक कन्ट्रोलरहरूबाट पढिन्छ। स्टिकले सक्रियता डेडजोनभन्दा पर धकेलिँदा यसलाई खोल्छ। टचप्याडले छुँदा खोल्छ।</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>यो मेनुलाई ट्र्याकप्याडको एउटा आधामा सीमित गर्नुहोस्, ताकि दुई मेनुले प्याड बाँड्न सकून्।</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>हाइलाइट गरिएको सेलले आफ्नो बाइन्डिङ कहिले चलाउँछ। प्रत्येक विकल्प तल व्याख्या गरिएको छ।</value></data>
@@ -4248,7 +4248,7 @@ PadForge ले तिनलाई अहिले अनइन्स्टल �
   <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>"क्लिक इनपुट" छोडिँदा एक पटक सक्रिय हुन्छ। सतह पनि उही क्षणमा छोडिएमा, अघिल्लो चयन सक्रिय हुन्छ।</value></data>
   <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>मेनु खुला रहँदा तपाईंले औँला उठाउँदा वा स्टिकलाई "संलग्न डेडजोन" भित्र फर्काउँदा एक पटक सक्रिय हुन्छ। लेयर छोड्दा अझै सारिँदै गरेको चयन पनि लागू हुन्छ।</value></data>
   <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>सेल हाइलाइट रहँदासम्म त्यसको बाइन्डिङ थिचिराख्छ। लेयर खुल्नेबित्तिकै रेडियल केन्द्र सक्रिय हुन सक्छ।</value></data>
-  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>दिशा थिच्दा सेलहरूमा क्रमशः सरिन्छ र प्रत्येक नयाँ चयन गरिएको सेल सक्रिय हुन्छ। यो हटबार व्यवहारले "फायर मोड" वा "क्लिक इनपुट" प्रयोग गर्दैन।</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>दिशा थिच्दा सेलहरूमा क्रमशः सरिन्छ र प्रत्येक नयाँ चयन गरिएको सेल चल्छ, "चल्ने मोड" वा "क्लिक इनपुट" बिना। "हटबार" शैलीले नचलाई सार्छ र आफ्नै "चलाउने" नियन्त्रणले चलाउँछ।</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Flydigi विस्तारित प्रोटोकल</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>समर्थित Flydigi कन्ट्रोलरहरूमा थप बटनहरू र मोसन सेन्सरहरू सक्षम गर्छ।</value></data>
   <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi सफ्टवेयर चलिरहेको छ: {0}। यसले PadForge ले प्रयोग गर्ने उही कन्ट्रोलर इन्टरफेस प्रयोग गर्न सक्छ, र दुवैको पहुँच हुँदा Vader 5 Pro बारम्बार विच्छेद भएको रिपोर्ट गरिएको छ। यो कन्ट्रोलर छुटेर फेरि जडान भइरहन्छ भने, PadForge प्रयोग गर्दा सेवा रोक्नुहोस्, कन्ट्रोलरलाई लुकाइएको राख्नुहोस् र सेवालाई HidHide को अनुमति सूचीबाट हटाउनुहोस्, वा सेटिङहरूमा "Flydigi विस्तारित प्रोटोकल" बन्द गरेर हेर्नुहोस्, यद्यपि यसले मद्दत गर्छ भन्ने पुष्टि भएको छैन।</value></data>
@@ -5099,7 +5099,28 @@ PadForge ले तिनलाई अहिले अनइन्स्टल �
     <value>डी-प्याड</value>
   </data>
   <data name="Menu_Style_Keyboard" xml:space="preserve"><value>किबोर्ड</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>"रेडियल रिङ" र "टच ग्रिड" ले सेलका बाइन्डिङहरू चलाउँछन्। "किबोर्ड" ले प्रयोगमा रहेको Windows लेआउटका कुञ्जीहरू टाइप गर्छ।</value></data>
+  <data name="Menu_Style_Hotbar" xml:space="preserve"><value>हटबार</value></data>
+  <data name="Menu_Hotbar_Show" xml:space="preserve"><value>देखाउने वा लुकाउने</value></data>
+  <data name="Menu_Hotbar_Show_Tip" xml:space="preserve"><value>बार देखाउँछ, र अर्को पटक थिच्दा लुकाउँछ। यसरी लुकाइएको बार अर्को पटक आफ्नो बीचको सेलमा खुल्छ।</value></data>
+  <data name="Menu_Hotbar_Previous" xml:space="preserve"><value>अघिल्लो</value></data>
+  <data name="Menu_Hotbar_Previous_Tip" xml:space="preserve"><value>बायाँपट्टिको सेल छान्छ, केही पनि सेट नगरिएका सेलहरू छोडेर।</value></data>
+  <data name="Menu_Hotbar_Next" xml:space="preserve"><value>अर्को</value></data>
+  <data name="Menu_Hotbar_Next_Tip" xml:space="preserve"><value>दायाँपट्टिको सेल छान्छ, केही पनि सेट नगरिएका सेलहरू छोडेर।</value></data>
+  <data name="Menu_Hotbar_Fire" xml:space="preserve"><value>चलाउने</value></data>
+  <data name="Menu_Hotbar_Fire_Tip" xml:space="preserve"><value>"चल्ने मोड" अनुसार छानिएको सेल चलाउँछ।</value></data>
+  <data name="Menu_Hotbar_Caption" xml:space="preserve"><value>"देखाउने वा लुकाउने" ले सेलहरूको एउटा पङ्क्ति ल्याउँछ, "अघिल्लो" र "अर्को" ले त्यसमा एक-एक सेल सार्छन्, र "चलाउने" ले छानिएको सेल चलाउँछ। खाली छोडिएको नियन्त्रणले "खोल्ने इनपुट" को दिशा लिन्छ: तल, बायाँ, दायाँ वा माथि।</value></data>
+  <data name="Menu_Hotbar_Wrap" xml:space="preserve"><value>घुमेर फर्कने</value></data>
+  <data name="Menu_Hotbar_Wrap_Tip" xml:space="preserve"><value>अन्तिम सेलभन्दा पर जाँदा पहिलो सेलमा पुगिन्छ, र उल्टो पनि। बन्द हुँदा, चयन दुवै छेउमा रोकिन्छ।</value></data>
+  <data name="Menu_Hotbar_DismissOnFire" xml:space="preserve"><value>चलाएपछि लुकाउने</value></data>
+  <data name="Menu_Hotbar_DismissOnFire_Tip" xml:space="preserve"><value>"चलाउने" ले बार लुकाउँछ। बन्द हुँदा, बार देखिइरहन्छ र उही सेल फेरि चल्न सक्छ।</value></data>
+  <data name="Menu_Hotbar_Recenter" xml:space="preserve"><value>हरेक पटक बीचमा फर्काउने</value></data>
+  <data name="Menu_Hotbar_Recenter_Tip" xml:space="preserve"><value>बार लुकेको बेला, चयन बीचको सेलमा फर्कन्छ। बन्द हुँदा, "चलाउने" ले लुकाएको बार आफूले चलाएको सेलमा खुल्छ।</value></data>
+  <data name="Menu_Reset_HotbarControl" xml:space="preserve"><value>नियन्त्रण रिसेट गर्नुहोस्</value></data>
+  <data name="Menu_Fire_Click_Hotbar_Desc" xml:space="preserve"><value>"चलाउने" ले छानिएको सेल थिच्छ र "चलाउने" थिचिराखिएसम्म थिचिराख्छ। "चलाएपछि लुकाउने" सक्रिय हुँदा, थिचाइ छोटो ट्याप हुन्छ।</value></data>
+  <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>"चलाउने" छोडिँदा छानिएको सेल छोटो ट्यापका रूपमा एक पटक चल्छ। "चलाएपछि लुकाउने" सक्रिय हुँदा, "चलाउने" ले बार लुकाउनेबित्तिकै यो चल्छ।</value></data>
+  <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>"चलाएपछि लुकाउने" सक्रिय हुँदा "चलाउने" ले बार लुकाएपछि एउटा सेल छोटो ट्यापका रूपमा एक पटक चल्छ। "हरेक पटक बीचमा फर्काउने" सक्रिय हुँदा, बीचको सेल नै चल्छ।</value></data>
+  <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>बार देखिएसम्म छानिएको सेल थिचिएको रहन्छ। सार्दा एउटा सेल छोडिन्छ र अर्को सेल थिचिन्छ।</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>"रेडियल रिङ", "टच ग्रिड" र "हटबार" ले सेलका बाइन्डिङहरू चलाउँछन्। "किबोर्ड" ले प्रयोगमा रहेको Windows लेआउटका कुञ्जीहरू टाइप गर्छ।</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>लेआउट</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>किबोर्डले आफ्ना कुञ्जीहरू कसरी मिलाउँछ र कन्ट्रोलरले तिनलाई कसरी छान्छ।</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>एउटै हाइलाइट, जुन स्टिक वा चार इनपुटले सारिन्छ। यो Windows, Xbox र Steam-ले प्रयोग गर्ने लेआउट हो।</value></data>
@@ -5219,6 +5240,12 @@ PadForge ले तिनलाई अहिले अनइन्स्टल �
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (यो PC मा छैन)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (यो स्लटमा छैन)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>Laser Pointer जाइरोलाई याउका रूपमा पढियो (PadForge-मा लेजर पोइन्टर रूपान्तरण छैन)</value></data>
+  <data name="Workshop_Tr_GyroRollFromHorizon" xml:space="preserve"><value>रोल सुरुमा वा जाइरो रिसेन्टर गर्दा कन्ट्रोलर रहेको स्थितिमा केन्द्रित, क्षितिजमा होइन</value></data>
+  <data name="Workshop_Tr_GyroPitchFromHorizon" xml:space="preserve"><value>पिच सुरुमा वा जाइरो रिसेन्टर गर्दा कन्ट्रोलर रहेको स्थितिमा केन्द्रित, समतलबाट {0}° मा होइन</value></data>
+  <data name="Workshop_Tr_GyroTiltRangeCapped" xml:space="preserve"><value>ढल्काइको 90° मा पूर्ण विचलन, {0}° मा होइन</value></data>
+  <data name="Workshop_Tr_OutputJoystickUnrouted" xml:space="preserve"><value>output_joystick {0} ले जोडीलाई न स्टिकमा न माउसमा पठाउँछ, त्यसैले केही पनि म्याप गरिँदैन</value></data>
+  <data name="Workshop_Tr_DpadPulseHeld" xml:space="preserve"><value>धकेलिएसम्म हरेक दिशा थिचिराखिन्छ (Steam-को एनालग इमुलेसनले यसलाई बारम्बार खोल्छ र बन्द गर्छ, जति टाढा धकेलियो उति लामो गरी)</value></data>
+  <data name="Workshop_Tr_SoftPressNoAnalog" xml:space="preserve"><value>एनालग रिडिङ नभएको इनपुटमा हल्का थिचाइ एक्टिभेटर (Steam-ले यसलाई कहिल्यै चलाउँदैन)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>reWASD-मा {0} अझै Windows-सम्म पुग्छ, किनभने फाइलले यसलाई अनम्याप नगरी म्याप गर्छ। म्याप गरिएका इनपुटहरू रोक्नुहोस् सक्रिय हुँदा PadForge-ले यसलाई रोक्छ।</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows-ले रेडियल स्टिकको {0} लाई धक्काको कोणअनुसार आकार दिन्छ। PadForge-को स्टिक कार्डले सीधा धक्कालाई उस्तै र विकर्ण धक्कालाई फरक तरिकाले चलाउँछ।</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows-ले प्रत्येक अक्षमा जाइरोको डेडजोनलाई चालको कोणअनुसार घटबढ गर्छ। PadForge-ले प्रत्येक अक्षबाट पूरै डेडजोन हटाउँछ, त्यसैले सीधा चाल उस्तै चल्छ र ढिलो विकर्ण चाल पछि सुरु हुन्छ।</value></data>

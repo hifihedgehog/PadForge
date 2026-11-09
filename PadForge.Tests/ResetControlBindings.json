@@ -1069,6 +1069,24 @@
   },
   {
     "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MenuEditorItem_HotbarWrap",
+    "Owner": "PadForge.ViewModels.MenuEditorItem",
+    "Property": "HotbarWrap"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MenuEditorItem_HotbarDismissOnFire",
+    "Owner": "PadForge.ViewModels.MenuEditorItem",
+    "Property": "HotbarDismissOnFire"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MenuEditorItem_HotbarRecenter",
+    "Owner": "PadForge.ViewModels.MenuEditorItem",
+    "Property": "HotbarRecenter"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
     "Id": "Reset_MenuEditorItem_FunctionRow",
     "Owner": "PadForge.ViewModels.MenuEditorItem",
     "Property": "FunctionRow"

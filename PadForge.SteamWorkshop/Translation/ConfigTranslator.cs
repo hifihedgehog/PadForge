@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using PadForge.Engine.Common.Mapping;
 using PadForge.Engine.Data;
 using PadForge.SteamWorkshop.Model;
 
@@ -197,6 +198,38 @@ namespace PadForge.SteamWorkshop.Translation
             /// doubled for these types, and unchanged for the rest.</summary>
             public readonly bool SwitchGyroDoubling;
 
+            /// <summary>Controller types whose gyro button defaults to the
+            /// right trackpad or right stick touch (legacy gyro_button 23),
+            /// not the right trackpad touch alone: the client's check takes
+            /// types 4 and 5 (controller_neptune), 10 (controller_triton),
+            /// 100 (controller_steamos_handheld) and 130
+            /// (controller_zotac_zone), per its own type table.</summary>
+            public readonly bool HandheldGyroButtons;
+
+            /// <summary>controller_hori_steam (type 49): the client starts its
+            /// gyro button mask on the right stick touch alone.</summary>
+            public readonly bool HoriSteamController;
+
+            /// <summary>Nintendo pads with digital triggers (types 38, 42, 51,
+            /// 52): the client moves a legacy gyro_button full trigger pull
+            /// (9, 10) onto the trigger's threshold (11, 12).</summary>
+            public readonly bool NintendoGyroTriggers;
+
+            /// <summary>A single Joy-Con (types 39, 40): the client clears a
+            /// legacy gyro_button the Joy-Con has no control for.</summary>
+            public readonly bool SingleJoyCon;
+
+            /// <summary>Types whose deflection World Tilt Offset defaults to
+            /// 85 degrees, not 15: 4 and 5, 43 (controller_mobile_touch), 100,
+            /// 101 (controller_legion_go), 102 (controller_legion_go_s), 120
+            /// (controller_rog_ally) and 130.</summary>
+            public readonly bool HandheldWorldTilt;
+
+            /// <summary>Each layer's gyro activation, from its first active
+            /// gyro group (ApplyGyroActivation), for FinalizeGyroActivation.</summary>
+            public readonly Dictionary<string, TranslatedGyroActivation> GyroActivationsByLayer
+                = new(StringComparer.Ordinal);
+
             public Run(SteamInputConfig config, TranslationOptions options)
             {
                 Config = config;
@@ -216,6 +249,15 @@ namespace PadForge.SteamWorkshop.Translation
                     or "controller_switch2_pro" or "controller_switch2_pro_generic"
                     or "controller_switch_joycon_left" or "controller_switch_joycon_right"
                     or "controller_switch_joycon_pair";
+                HandheldGyroButtons = type is "controller_neptune" or "controller_triton"
+                    or "controller_steamos_handheld" or "controller_zotac_zone";
+                HoriSteamController = type is "controller_hori_steam";
+                NintendoGyroTriggers = type is "controller_switch_pro" or "controller_switch_pro_generic"
+                    or "controller_switch2_pro" or "controller_switch2_pro_generic";
+                SingleJoyCon = type is "controller_switch_joycon_left" or "controller_switch_joycon_right";
+                HandheldWorldTilt = type is "controller_neptune" or "controller_mobile_touch"
+                    or "controller_steamos_handheld" or "controller_legion_go" or "controller_legion_go_s"
+                    or "controller_rog_ally" or "controller_zotac_zone";
                 foreach (var g in config.Groups)
                     if (!GroupsById.ContainsKey(g.Id))
                         GroupsById[g.Id] = g;
@@ -444,7 +486,7 @@ namespace PadForge.SteamWorkshop.Translation
             // instead of silence, but only on modes that otherwise
             // translate (a wholly-skipped group's own entry covers it).
             if (ProductiveModes.Contains(mode))
-                ReportDroppedGroupSettings(run, settings, path, slot, mode,
+                ReportDroppedGroupSettings(run, settings, path, slot, mode, layer,
                     reportMouseTuning: MouseTuningModes.Contains(mode));
 
             switch (mode)
@@ -456,6 +498,7 @@ namespace PadForge.SteamWorkshop.Translation
                 // button. Its click and touch members resolve like any
                 // other member ("Touchpad {p} Click" / "Finger 0 Down").
                 case "single_button":
+                    ReportSteamPadDifferences(run, slot, mode, effective, path, settings);
                     TranslateMemberGroup(run, preset, effective, slot, layer, path, settings);
                     break;
 
@@ -469,18 +512,48 @@ namespace PadForge.SteamWorkshop.Translation
 
                 case "joystick_mouse":
                 case "joystick_camera":
-                    EmitMouseAxes(run, slot, layer, path, settings, mode, StickMouseBaseline,
-                        curveChannel: CurveChannelApplies(slot, mode));
+                {
+                    // Both send output_joystick 2 to the mouse and 0 or 1 to
+                    // a stick (OutputJoystick). joystick_mouse is the
+                    // client's joystick class with its output set to the
+                    // mouse, so a file that sends it to a stick gets the
+                    // joystick_move pair. Joystick Camera "sends camera stick
+                    // input" (the client's own mode text): with no key its
+                    // camera value goes straight to the stick on the input's
+                    // side, clamped (steamclient64.dll), and only output 2
+                    // scales the same value into mouse motion. Its stick
+                    // output lowers through the "As Joystick (Mouse-like)"
+                    // emitter, the same surface read the same way, onto the
+                    // thumb axes. The gyro reads its tilt as the stick
+                    // position in both classes.
+                    var output = OutputJoystick(settings, mode, slot);
+                    if (mode == "joystick_mouse" && output != StickOutput.Mouse)
+                    {
+                        TranslateJoystickMove(run, preset, effective, slot, layer, path, settings, mode);
+                        break;
+                    }
+                    if (output == StickOutput.None)
+                        ReportOutputUnrouted(run, path,
+                            settings.TryGetValue("output_joystick", out var ojRaw) ? (ojRaw ?? "").Trim() : "");
+                    else if (slot == SteamSlot.Gyro)
+                        EmitGyroTiltPair(run, layer, path, settings, output, mode);
+                    else if (output == StickOutput.Mouse)
+                        EmitMouseAxes(run, slot, layer, path, settings, mode, StickMouseBaseline,
+                            curveChannel: CurveChannelApplies(slot, mode));
+                    else
+                        EmitMouseJoystickAxes(run, slot, layer, path, settings, mode, StickMouseBaseline,
+                            curveChannel: CurveChannelApplies(slot, mode));
                     TranslateMemberGroup(run, preset, effective, slot, layer, path, settings);
                     break;
+                }
 
                 case "mouse_joystick":
                     // "As Joystick (Mouse-like)" OUTPUTS a stick, not the
                     // cursor: sc-controller's proven importer lowers the
                     // mode to ABS_RX/ABS_RY (scc/foreign/vdf.py,
                     // mode == "mouse_joystick"), so the host's analog pair
-                    // lands on the right-stick axes (output_joystick 1
-                    // redirects to the left).
+                    // lands on the right-stick axes, and output_joystick 0
+                    // sends it to the left (OutputJoystick).
                     EmitMouseJoystickAxes(run, slot, layer, path, settings, mode, StickMouseBaseline,
                         curveChannel: CurveChannelApplies(slot, mode));
                     TranslateMemberGroup(run, preset, effective, slot, layer, path, settings);
@@ -517,18 +590,21 @@ namespace PadForge.SteamWorkshop.Translation
                 case "gyro_to_joystick_deflection":
                     // The deflection sibling (v26): sustained TILT maps to
                     // stick deflection (position, not rate), which is the
-                    // engine's gravity-lean pair. Signs are the physical
-                    // stick's own frame by construction (Lean X positive =
-                    // tilt right, Lean Y positive = nose up = stick pulled
+                    // engine's gravity-tilt pair. Signs are the physical
+                    // stick's own frame by construction (Tilt X positive =
+                    // tilt right, Tilt Y positive = nose up = stick pulled
                     // back), so the pair lowers 1:1 onto the thumb axes.
                     // The controller is the stick: Valve's 10/25/23 client
                     // notes call the mode "most appropriate for simulating
-                    // Steering and Flight Yokes", and JoyShockMapper's
-                    // motion stick, the same tilt-to-stick read, pulls the
-                    // stick back for the nose up (main.cpp, calY =
-                    // -grav.z). This is the opposite of gyro_to_joystick,
-                    // the camera mode, whose Y row is negated.
-                    EmitGyroLeanJoystickAxes(run, layer, path, settings);
+                    // Steering and Flight Yokes", the client's own text
+                    // "Turns the controller's motion into stick deflection,
+                    // as though you were pushing a stick that far", and
+                    // JoyShockMapper's motion stick, the same tilt-to-stick
+                    // read, pulls the stick back for the nose up (main.cpp,
+                    // calY = -grav.z). This is the opposite of
+                    // gyro_to_joystick, the camera mode, whose Y row is
+                    // negated.
+                    EmitGyroDeflection(run, layer, path, settings);
                     TranslateMemberGroup(run, preset, effective, slot, layer, path, settings);
                     break;
 
@@ -598,12 +674,16 @@ namespace PadForge.SteamWorkshop.Translation
                     break;
 
                 case "touch_menu":
-                // hotbar serializes exactly like touch_menu
-                // (touch_menu_button_{n} cells; corpus 2494749393), so it
-                // lowers through the same grid-menu path (v10 G15).
-                case "hotbar":
                     TranslateMenuGroup(run, preset, effective, slot, layer, path, settings,
                         radial: false);
+                    break;
+
+                // hotbar serializes its cells as touch_menu does
+                // (touch_menu_button_{n}, corpus 2494749393), and runs as
+                // the client's D-pad mode with a bar on top: the Hotbar style.
+                case "hotbar":
+                    TranslateMenuGroup(run, preset, effective, slot, layer, path, settings,
+                        radial: false, hotbar: true);
                     break;
 
                 case "radial_menu":
@@ -756,6 +836,57 @@ namespace PadForge.SteamWorkshop.Translation
         /// runtime overlays onto the VC stick processing).</summary>
         private static bool DeadZoneShapeApplies(string mode)
             => mode == "joystick_move" || mode == "mouse_joystick";
+
+        /// <summary>Where a group's pair goes: one of the two sticks, the
+        /// mouse, or nowhere.</summary>
+        internal enum StickOutput { Left, Right, Mouse, None }
+
+        /// <summary>Where a group's output_joystick (setting 8) sends its
+        /// pair, read the way the Steam client reads it (steamclient64.dll).
+        /// Every stick class writes a value under 2 onto the axis pair
+        /// 2 + 2 * value, the left stick's for 0 and the right stick's for 1.
+        /// The joystick class behind joystick_move and joystick_mouse, and
+        /// the Joystick Camera class, send 2 to the mouse and route nothing
+        /// else. The absolute pointer belongs to mouse_region's own mode, not
+        /// to a value. The configurator offers the same lists (steamui/sp.js:
+        /// Left 0, Right 1, Relative Mouse 2 for joystick_move and
+        /// joystick_camera, Left 0 and Right 1 for mouse_joystick and the two
+        /// gyro joystick modes), and Valve's templates agree: the gamepad
+        /// templates send the right trackpad to 1, the PS4 and PS5 WASD
+        /// templates the right stick to 2. A file that leaves the key out
+        /// gets the mode's default, set by each class: joystick_move and
+        /// joystick_camera start on the input's own side (right for the
+        /// right trackpad, the face buttons, the right trigger and the right
+        /// stick, left for everything else, the gyro included),
+        /// joystick_mouse on the mouse, mouse_joystick and gyro_to_joystick
+        /// on the right stick, and gyro_to_joystick_deflection on the
+        /// left.</summary>
+        internal static StickOutput OutputJoystick(Dictionary<string, string> settings, string mode,
+            SteamSlot slot)
+        {
+            bool stickClass = mode is "joystick_move" or "joystick_mouse" or "joystick_camera";
+            if (settings.TryGetValue("output_joystick", out var raw)
+                && int.TryParse((raw ?? "").Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture,
+                    out int value))
+            {
+                return value switch
+                {
+                    0 => StickOutput.Left,
+                    1 => StickOutput.Right,
+                    2 when stickClass => StickOutput.Mouse,
+                    _ => StickOutput.None,
+                };
+            }
+            return mode switch
+            {
+                "joystick_mouse" => StickOutput.Mouse,
+                "joystick_move" or "joystick_camera" => slot is SteamSlot.RightJoystick or SteamSlot.RightTrackpad
+                    or SteamSlot.ButtonDiamond or SteamSlot.RightTrigger
+                    ? StickOutput.Right : StickOutput.Left,
+                "gyro_to_joystick_deflection" => StickOutput.Left,
+                _ => StickOutput.Right,
+            };
+        }
 
         /// <summary>Per-group curve/range channel values (v11), parsed once
         /// and stamped onto both member rows of the emitted axis pair.
@@ -1023,29 +1154,29 @@ namespace PadForge.SteamWorkshop.Translation
         /// override feeds the per-config aggregate.</summary>
         private void ReportDroppedGroupSettings(Run run,
             Dictionary<string, string> settings, string path,
-            SteamSlot slot, string mode, bool reportMouseTuning = false)
+            SteamSlot slot, string mode, string layer, bool reportMouseTuning = false)
         {
             // deadzone_shape (v18): thumb-pair outputs consume it into the
             // slot-level DeadZoneShape stamp (Steam 0 = Cross and 2 =
             // Square are per-axis checks, the engine's Axial; 1 = Circle
             // is the radial check, the engine's ScaledRadial default).
             bool shapeConsumed = false;
-            if (DeadZoneShapeApplies(mode)
+            // The pair the group FEEDS (OutputJoystick): joystick_move and
+            // a joystick_mouse sent to a stick are thumb-pair outputs, and so
+            // is mouse_joystick.
+            var feeds = OutputJoystick(settings, mode, slot);
+            bool feedsStick = feeds is StickOutput.Left or StickOutput.Right;
+            bool thumbPair = (mode is "joystick_move" or "joystick_mouse" && feedsStick)
+                || (DeadZoneShapeApplies(mode) && mode != "joystick_move");
+            if (thumbPair
                 && settings.TryGetValue("deadzone_shape", out var shapeRaw)
                 && int.TryParse((shapeRaw ?? "").Trim(), NumberStyles.Integer,
                     CultureInfo.InvariantCulture, out int shapeVal))
             {
                 string stamp = shapeVal == 1 ? "2" : "0";
-                // The pair the group FEEDS: joystick_move redirects via
-                // output_joystick (1 = left, 2 = right, 0 = matched side);
-                // mouse_joystick defaults right, output_joystick 1 = left.
-                int oj = ParseIntSetting(settings, "output_joystick", 0);
-                bool left = mode == "joystick_move"
-                    ? (oj == 1 || (oj != 2 && slot != SteamSlot.RightJoystick))
-                    : oj == 1;
-                if (left) run.Profile.LeftStickDeadZoneShape = stamp;
-                else run.Profile.RightStickDeadZoneShape = stamp;
-                shapeConsumed = true;
+                if (feeds == StickOutput.Left) run.Profile.LeftStickDeadZoneShape = stamp;
+                else if (feeds == StickOutput.Right) run.Profile.RightStickDeadZoneShape = stamp;
+                shapeConsumed = feedsStick;
             }
 
             // Stick-hosted mouse modes consume deadzone_shape into the
@@ -1053,15 +1184,26 @@ namespace PadForge.SteamWorkshop.Translation
             // ParamStickDeadZoneShape onto the emitted pair, and the
             // engine's bipolar Axis read applies the inner/outer rescale
             // radially (Steam Circle) or per axis (Cross / Square).
+            // Joystick Camera stamps its stick hosts the same way whichever
+            // output it has (EmitMouseJoystickAxes is the twin), and so do
+            // joystick_move and joystick_mouse sent to the mouse.
             if (!shapeConsumed
                 && settings.ContainsKey("deadzone_shape")
                 && PhysicalSlotResolver.IsStick(slot)
-                && (mode == "joystick_mouse" || mode == "joystick_camera"
+                && ((mode is "joystick_move" or "joystick_mouse" && feeds == StickOutput.Mouse)
+                    || mode == "joystick_camera"
                     // Round eight (R18): the stick-hosted gyro-as-stick
                     // pair consumes the shape (and the outer radius) via
                     // the same per-source geometry stamp, rounds
                     // seven/eight.
                     || mode == "gyro_to_joystick"))
+            {
+                shapeConsumed = true;
+            }
+
+            // A pair the client routes nowhere has no shape to apply.
+            if (feeds == StickOutput.None
+                && mode is "joystick_move" or "joystick_mouse" or "joystick_camera" or "mouse_joystick")
             {
                 shapeConsumed = true;
             }
@@ -1104,108 +1246,166 @@ namespace PadForge.SteamWorkshop.Translation
                 }
             }
 
-            // gyro_button (v18, full enum since v23): the value INDEXES
-            // Steam's k_eGamepadButtonBitMask enum, the same bit space
-            // the v22 ratchet grounding read out of the shipped
-            // configurator JS (the GyroEnableButton picker renders
-            // through the same GyroButtonPicker visualizer and enum
-            // glyph map as the ratchet mask. Corpus cross-check:
-            // 2374887917, a DualSense config, authors 20, the right pad
-            // touch, the classic gyro engage). Value 0 is the format's
-            // none/default sentinel (Steam's own picker reads mask 0 as
-            // no-button-selected) and keeps the v18 pad-touch default
-            // engage (the SC right-pad touch; the single physical pad's
-            // right half on DS4 / DualSense). Every other index lowers
-            // through RatchetBitDescriptor onto the slot-level
-            // device-free engage stamp, with gyro_button_invert 1 as
-            // the engage-while-NOT-held flip. Only indices with no
-            // grounded read (enum holes, macro buttons, CapSense aux)
-            // keep the named note. The ratchet BITMASK builds since
-            // v22: grounded bits lower onto the slot-level ratchet
-            // clutch lane, and only genuinely ungrounded bits keep the
-            // note (args carry the residual mask).
-            foreach (var key in new[] { "gyro_button", "gyro_ratchet_button_mask", "gyro_button_invert" })
+            // The gyro activation (ResolveGyroActivation): Steam consults it
+            // only for the gyro source, so other hosts' leftover keys shape
+            // nothing.
+            if (slot == SteamSlot.Gyro) ApplyGyroActivation(run, settings, path, layer);
+        }
+
+        /// <summary>The legacy gyro_button list (steamui/sp.js: GyroNone 0,
+        /// GyroTouchRight 1, GyroTouchLeft 2, GyroClickRight 3, GyroClickLeft
+        /// 4, GyroBumperRight 5, GyroBumperLeft 6, GyroR5 7, GyroL5 8,
+        /// GyroRightTrigger 9, GyroLeftTrigger 10, the two trigger thresholds
+        /// 11 and 12, GyroA 13, GyroB 14, GyroX 15, GyroY 16, GyroL3 17,
+        /// GyroR3 18 ... GyroRightStickDeflectOrTouchRightOrRPadTouch 37) as
+        /// the k_eGamepadButtonBitMask bits the client converts each value
+        /// into, read out of steamclient64.dll's own conversion table.</summary>
+        private static readonly ulong[] LegacyGyroButtonMask =
+        {
+            0, 1UL << 20, 1UL << 19, 1UL << 18, 1UL << 17, 1UL << 2, 1UL << 3, 1UL << 16, 1UL << 15,
+            1UL << 0, 1UL << 1, 1UL << 24, 1UL << 25, 1UL << 7, 1UL << 5, 1UL << 6, 1UL << 4,
+            1UL << 22, 1UL << 26, 1UL << 29, 1UL << 27, 1UL << 46, 1UL << 47, (1UL << 20) | (1UL << 47),
+            1UL << 42, 1UL << 41, 1UL << 14, 1UL << 12, 1UL << 8, 1UL << 11, 1UL << 10, 1UL << 9,
+            1UL << 30, 1UL << 31, (1UL << 30) | (1UL << 46), (1UL << 31) | (1UL << 47),
+            (1UL << 19) | (1UL << 30) | (1UL << 46), (1UL << 20) | (1UL << 31) | (1UL << 47),
+        };
+
+        /// <summary>The gyro buttons a group turns its gyro on with, and how,
+        /// resolved the way the Steam client does it (steamclient64.dll's
+        /// gyro activation). Only the button mask counts at run time: no
+        /// button means the gyro is always on. Otherwise gyro_button_invert
+        /// picks the behavior, the configurator's GyroEnableButtonBehavior
+        /// (sp.js: GyroOn 1, the default, "Gyro is off unless any assigned
+        /// button is held", GyroOff 0, "Gyro is on unless any assigned
+        /// button is held", GyroToggle 2), and
+        /// gyro_ratchet_button_requireany_or_all picks any (0) or all (1)
+        /// of the buttons. The default 1 is never written: across the 2,344
+        /// corpus files gyro_button_invert appears 123 times, always 0 or 2.
+        /// The mask is gyro_ratchet_button_mask, the configurator's "Choose
+        /// Gyro Button(s)". A legacy gyro_button the file sets away from its
+        /// default converts into the mask through
+        /// <see cref="LegacyGyroButtonMask"/> while the mask is still at its
+        /// own default, and gyro_button 0 converts nothing. With neither key
+        /// the mask is the default button's, the right trackpad touch, or on
+        /// the handheld types the right trackpad or right stick touch, and
+        /// the right stick touch on the HORI Steam controller.</summary>
+        internal readonly struct GyroActivation
+        {
+            public readonly ulong Mask;
+            public readonly int Behavior;
+            public readonly bool RequireAll;
+
+            public GyroActivation(ulong mask, int behavior, bool requireAll)
             {
-                if (!settings.TryGetValue(key, out var v)) continue;
-                string val = (v ?? "").Trim();
-                if ((key == "gyro_ratchet_button_mask" || key == "gyro_button_invert")
-                    && val == "0")
-                {
-                    continue;
-                }
-                if (key == "gyro_button" && val == "0")
-                {
-                    run.Profile.GyroEngageDescriptor = run.SinglePadTrackpads
-                        ? "Touchpad 0 Finger 0 Down Right"
-                        : "Touchpad 1 Finger 0 Down";
-                    continue;
-                }
-                if (key == "gyro_button"
-                    && int.TryParse(val, NumberStyles.Integer, CultureInfo.InvariantCulture, out int engageIdx)
-                    && engageIdx > 0 && engageIdx < 64
-                    && RatchetBitDescriptor(engageIdx, run.SinglePadTrackpads) is string engageDesc)
-                {
-                    run.Profile.GyroEngageDescriptor = engageDesc;
-                    continue;
-                }
-                if (key == "gyro_button_invert" && val == "1")
-                {
-                    run.Profile.GyroEngageInvert = true;
-                    continue;
-                }
-                // gyro_button_invert is Steam's three-state "Gyro Button
-                // Behavior" enum (shipped ControllerBinding_GyroButtonInvert*
-                // strings): On (0, engage while held), Off (1, "gyro will
-                // turn off when the button is pressed", the invert above),
-                // Toggle (2, "toggle its state each time the button is
-                // pressed"). 2 lands on the slot engage machinery's own
-                // Toggle mode (UpdateGyroEngageStates flips a sticky bit
-                // per rising edge), stamped beside the engage descriptor.
-                if (key == "gyro_button_invert" && val == "2")
-                {
-                    run.Profile.GyroEngageToggle = true;
-                    continue;
-                }
-                if (key == "gyro_ratchet_button_mask"
-                    && ulong.TryParse(val, NumberStyles.Integer, CultureInfo.InvariantCulture, out ulong mask)
-                    && mask != 0)
-                {
-                    // Hold-to-disengage clutch (v22). Lowered onto the
-                    // dedicated slot-level ratchet lane, NOT SetGyroEngaged
-                    // Off/On macros and NOT the engage-invert channel: the
-                    // engage read ORs the button bit with the macro bit
-                    // (and Hold mode's empty descriptor reads always-on),
-                    // so a macro Off could never clutch and would fight a
-                    // configured engage button, and the invert flag owns
-                    // the single engage descriptor, so it composes with
-                    // neither an authored gyro_button nor a multi-bit
-                    // mask. The AND-NOT lane cannot fight the engage gate
-                    // by construction. Multiple gyro groups union their
-                    // masks (a clutch surface too many is the safe
-                    // approximation; the list is sorted for deterministic
-                    // goldens).
-                    ulong ungrounded = 0;
-                    for (int bit = 0; bit < 64; bit++)
-                    {
-                        if ((mask & (1UL << bit)) == 0) continue;
-                        string desc = RatchetBitDescriptor(bit, run.SinglePadTrackpads);
-                        if (desc == null)
-                        {
-                            ungrounded |= 1UL << bit;
-                            continue;
-                        }
-                        if (!run.Profile.GyroRatchetDescriptors.Contains(desc))
-                            run.Profile.GyroRatchetDescriptors.Add(desc);
-                    }
-                    run.Profile.GyroRatchetDescriptors.Sort(StringComparer.Ordinal);
-                    if (ungrounded == 0) continue;
-                    run.Report.Add(TranslationStatus.Partial, TranslationReasons.GyroButtonMaskDropped,
-                        path, args: new[] { key, ungrounded.ToString(CultureInfo.InvariantCulture) });
-                    continue;
-                }
-                run.Report.Add(TranslationStatus.Partial, TranslationReasons.GyroButtonMaskDropped,
-                    path, args: new[] { key, v ?? "" });
+                Mask = mask;
+                Behavior = behavior;
+                RequireAll = requireAll;
             }
+        }
+
+        private static GyroActivation ResolveGyroActivation(Run run, Dictionary<string, string> settings)
+        {
+            int defaultButton = run.HandheldGyroButtons ? 23 : 1;
+            ulong defaultMask = run.HoriSteamController ? 1UL << 47 : LegacyGyroButtonMask[defaultButton];
+            ulong mask = defaultMask;
+            if (settings.TryGetValue("gyro_ratchet_button_mask", out var maskRaw)
+                && ulong.TryParse((maskRaw ?? "").Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture,
+                    out ulong fileMask))
+            {
+                mask = fileMask;
+            }
+            if (settings.TryGetValue("gyro_button", out var buttonRaw)
+                && int.TryParse((buttonRaw ?? "").Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture,
+                    out int button))
+            {
+                // The client's per-type corrections run first: a digital
+                // trigger has no full pull apart from its threshold, and a
+                // single Joy-Con keeps only the controls it has.
+                if (run.NintendoGyroTriggers) button = button switch { 9 => 11, 10 => 12, _ => button };
+                if (run.SingleJoyCon && (button < 0 || button > 32 || ((0x10403e060UL >> button) & 1) == 0))
+                    button = 0;
+                if (button != defaultButton && mask == defaultMask && button >= 1 && button <= 37)
+                    mask = LegacyGyroButtonMask[button];
+            }
+            int behavior = ParseIntSetting(settings, "gyro_button_invert", 1);
+            bool all = ParseIntSetting(settings, "gyro_ratchet_button_requireany_or_all", 0) == 1;
+            return new GyroActivation(mask, behavior, all);
+        }
+
+        /// <summary>Collects a gyro group's activation
+        /// (<see cref="ResolveGyroActivation"/>) for its layer: the buttons
+        /// as device-free descriptors in mask bit order, none for a gyro that
+        /// is always on, and the behavior. Mask bits PadForge cannot read are
+        /// named, and a set with none left keeps the gyro always on. The first
+        /// gyro group of each layer counts. <see cref="FinalizeGyroActivation"/>
+        /// picks the stamps once every group is seen.</summary>
+        private void ApplyGyroActivation(Run run, Dictionary<string, string> settings, string path, string layer)
+        {
+            var act = ResolveGyroActivation(run, settings);
+            if (act.Behavior is < 0 or > 2)
+            {
+                run.Report.Add(TranslationStatus.Partial, TranslationReasons.GyroButtonMaskDropped,
+                    path, args: new[] { "gyro_button_invert", act.Behavior.ToString(CultureInfo.InvariantCulture) });
+            }
+            var buttons = new List<string>();
+            ulong ungrounded = 0;
+            for (int bit = 0; bit < 64; bit++)
+            {
+                if ((act.Mask & (1UL << bit)) == 0) continue;
+                string desc = RatchetBitDescriptor(bit, run.SinglePadTrackpads);
+                if (desc == null) ungrounded |= 1UL << bit;
+                else if (!buttons.Contains(desc)) buttons.Add(desc);
+            }
+            if (ungrounded != 0)
+            {
+                run.Report.Add(TranslationStatus.Partial, TranslationReasons.GyroButtonMaskDropped,
+                    path, args: new[] { "gyro_ratchet_button_mask", ungrounded.ToString(CultureInfo.InvariantCulture) });
+            }
+            string key = string.IsNullOrEmpty(layer) ? "Base" : layer;
+            if (run.GyroActivationsByLayer.ContainsKey(key)) return;
+            run.GyroActivationsByLayer[key] = new TranslatedGyroActivation
+            {
+                Buttons = buttons,
+                Mode = act.Behavior switch { 0 => "Release", 2 => "Toggle", _ => "Hold" },
+                All = act.RequireAll && buttons.Count > 1,
+            };
+        }
+
+        /// <summary>Picks the gyro engage stamps from every layer's
+        /// activation. When every gyro layer turns the gyro on the same way,
+        /// one stamp carries it: nothing for a gyro that is always on, the
+        /// engage button the device's Gyro card takes for one button that
+        /// turns it on or toggles it (Hold or Toggle), the ratchet for
+        /// buttons that suppress it while any is held, and the activation
+        /// lane's Base entry for anything else. When layers differ, the lane
+        /// carries each layer's own, and a layer with none takes Base's.</summary>
+        private static void FinalizeGyroActivation(Run run)
+        {
+            var seen = run.GyroActivationsByLayer;
+            if (seen.Count == 0) return;
+            var first = seen.Values.First();
+            bool uniform = seen.Values.All(a => a.SameAs(first));
+            if (uniform)
+            {
+                if (first.Buttons.Count == 0) return;
+                if (first.Mode == "Release" && !first.All)
+                {
+                    run.Profile.GyroRatchetDescriptors.AddRange(first.Buttons);
+                    run.Profile.GyroRatchetDescriptors.Sort(StringComparer.Ordinal);
+                    return;
+                }
+                if (first.Buttons.Count == 1)
+                {
+                    run.Profile.GyroEngageDescriptor = first.Buttons[0];
+                    run.Profile.GyroEngageToggle = first.Mode == "Toggle";
+                    run.Profile.GyroEngageInvert = false;
+                    return;
+                }
+                run.Profile.GyroActivationByLayer["Base"] = first;
+                return;
+            }
+            foreach (var kv in seen)
+                run.Profile.GyroActivationByLayer[kv.Key] = kv.Value;
         }
 
         /// <summary>Maps one k_eGamepadButtonBitMask position to its
@@ -1234,15 +1434,14 @@ namespace PadForge.SteamWorkshop.Translation
         /// while pressing buttons" shape. Enum holes (21, 23, 40, 43) and
         /// surfaces PadForge cannot read (macro buttons 32-39 and 48+,
         /// CapSense aux / stick touches 44-47, the center pad on multi-pad
-        /// families) return null and keep the named note. Trigger bits read
-        /// through the engage lane's 50 percent bool threshold (soft and
-        /// full pull collapse onto the same read; the clutch fires slightly
-        /// early on a full-pull bit, never late). Single-pad half clicks
-        /// (17/18) approximate onto the one physical click.</summary>
+        /// families) return null and keep the named note. The trigger bits
+        /// read as Steam sets them: the full pull at 95 percent (0x1386795c4)
+        /// and the soft pull past 1600 of 32767 (0x1386730c7). Single-pad
+        /// half clicks (17/18) approximate onto the one physical click.</summary>
         private static string RatchetBitDescriptor(int bit, bool singlePad) => bit switch
         {
-            0 => "Gamepad RightTrigger",
-            1 => "Gamepad LeftTrigger",
+            0 => PhysicalSlotResolver.TriggerFullPullDescriptor("Gamepad RightTrigger"),
+            1 => PhysicalSlotResolver.TriggerFullPullDescriptor("Gamepad LeftTrigger"),
             2 => "Gamepad RightShoulder",
             3 => "Gamepad LeftShoulder",
             4 => "Gamepad ButtonY",   // North (positional, SDL's frame)
@@ -1263,8 +1462,8 @@ namespace PadForge.SteamWorkshop.Translation
             19 => singlePad ? "Touchpad 0 Finger 0 Down Left" : "Touchpad 0 Finger 0 Down",
             20 => singlePad ? "Touchpad 0 Finger 0 Down Right" : "Touchpad 1 Finger 0 Down",
             22 => "Gamepad LeftStick",
-            24 => "Gamepad RightTrigger", // soft pull: same 50% bool read
-            25 => "Gamepad LeftTrigger",
+            24 => PhysicalSlotResolver.TriggerSoftPullDescriptor("Gamepad RightTrigger"),
+            25 => PhysicalSlotResolver.TriggerSoftPullDescriptor("Gamepad LeftTrigger"),
             26 => "Gamepad RightStick",
             27 => singlePad ? "Touchpad 0 Finger 0 Down" : null,
             28 => singlePad ? "Touchpad 0 Click" : null,
@@ -1297,12 +1496,13 @@ namespace PadForge.SteamWorkshop.Translation
         };
 
         /// <summary>Steam's group-level inner deadzone (0..32767 of full
-        /// deflection) as a PadForge DeadZone percent. 0 / absent / junk
+        /// deflection) as a PadForge DeadZone percent, for the half-axis
+        /// member reads of the modes that are not Steam's dpad or
+        /// four_buttons (those read through SteamPadRead). 0 / absent / junk
         /// return 0 (keep the engine default; Steam's 0 is region geometry,
-        /// not a hair-trigger request). v19 (T3): the stick-hosted D-pad
-        /// family stores the same knob under the bare "deadzone" key
-        /// (same 0..32767 scale); deadzone_inner_radius wins when both
-        /// are present.</summary>
+        /// not a hair-trigger request). A group that stores the knob under
+        /// the bare "deadzone" key reads it on the same 0..32767 scale, and
+        /// deadzone_inner_radius wins when both are present.</summary>
         private static int GroupDeadZonePercent(Dictionary<string, string> settings)
         {
             if (!TryParseDeadZoneRaw(settings, "deadzone_inner_radius", out int v)
@@ -1365,27 +1565,6 @@ namespace PadForge.SteamWorkshop.Translation
                     TranslationReasons.DeadZoneRadialResidual, path,
                     args: string.Join(", ", keys));
             }
-        }
-
-        /// <summary>True when the group's Outer Ring zone covers the whole
-        /// trackpad (v16): edge_binding_invert set with the radius at the
-        /// 32767 ceiling ("inside the radius" = anywhere on the pad), or
-        /// an un-inverted radius of 0 ("outside" = anywhere). Radius scale
-        /// is the pad's own 0..32767 (corpus 3456927474 carries 32767
-        /// alongside invert 1 on its mouse_region and joystick_mouse
-        /// groups, and bare 0 on its trigger groups. The wild default
-        /// rings sit near 25000). An absent radius is NOT degenerate:
-        /// Steam's default is a partial ring.</summary>
-        private static bool IsWholePadEdgeZone(Dictionary<string, string> settings)
-        {
-            bool invert = settings.TryGetValue("edge_binding_invert", out var inv)
-                && (inv ?? "").Trim() != "0";
-            if (!settings.TryGetValue("edge_binding_radius", out var raw)
-                || !int.TryParse(raw, NumberStyles.Integer, CultureInfo.InvariantCulture, out int radius))
-            {
-                return false;
-            }
-            return invert ? radius >= 32767 : radius <= 0;
         }
 
         /// <summary>Copy of <paramref name="s"/> carrying the group inner
@@ -1562,93 +1741,33 @@ namespace PadForge.SteamWorkshop.Translation
 
                 var source = PhysicalSlotResolver.Resolve(slot, inputName, run.NintendoLabels,
                     run.SinglePadTrackpads, run.FourRearButtons);
-                // Outer Ring edge members (v16 whole-pad, v17 sticks, v26
-                // trackpad rings): Steam's edge member fires while the
-                // finger / stick is outside edge_binding_radius, or inside
-                // it with edge_binding_invert ("If set, the command will
-                // be sent when inside the radius instead of outside",
-                // shipped EdgeBindingInvert strings).
-                //
-                // Trackpads: a zone that covers the WHOLE pad (invert with
-                // the radius at the 32767 ceiling, or radius 0 un-inverted)
-                // IS the touch read (corpus 3456927474 authors its
-                // mouse_delta nudge this way). A PARTIAL ring BUILDS on
-                // the engine's finger-ring read (v26, "Touchpad {p}
-                // Finger 0 Ring", the stick ring's contract on the touch
-                // surface): the authored radius rides DeadZone as a
-                // percent and edge_binding_invert rides Invert, so the
-                // geometry keys are CONSUMED and the old
-                // MouseRegionTuningDropped ring note is gone.
-                if (source == null
-                    && inputName.Equals("edge", StringComparison.OrdinalIgnoreCase)
-                    && PhysicalSlotResolver.IsTrackpad(slot))
-                {
-                    if (IsWholePadEdgeZone(settings))
-                    {
-                        source = PhysicalSlotResolver.Resolve(slot, "touch", run.NintendoLabels,
-                            run.SinglePadTrackpads, run.FourRearButtons);
-                    }
-                    else
-                    {
-                        int tpIdx = PhysicalSlotResolver.TrackpadIndex(slot, run.SinglePadTrackpads);
-                        string tpSfx = PhysicalSlotResolver.HalfSuffix(half);
-                        int radiusRaw = ParseIntSetting(settings, "edge_binding_radius", 25000);
-                        bool ringInvert = settings.TryGetValue("edge_binding_invert", out var inv)
-                            && (inv ?? "").Trim() != "0";
-                        source = new ResolvedSource
-                        {
-                            Descriptor = $"Touchpad {tpIdx} Finger 0 Ring{tpSfx}",
-                            Invert = ringInvert,
-                            DeadZone = Math.Clamp(
-                                (int)Math.Round(radiusRaw * 100.0 / 32767.0), 1, 100),
-                        };
-                    }
-                }
-                // Triggers (v26): the edge member is the pull-threshold
-                // crossing, and edge_binding_radius is WHERE along the
-                // travel it fires (0..32767 of full pull), so an authored
-                // radius overrides the soft-pull default threshold
-                // instead of dropping silently.
-                if (source != null && source.IsAnalogTriggerPull
-                    && inputName.Equals("edge", StringComparison.OrdinalIgnoreCase)
-                    && TryParseDeadZoneRaw(settings, "edge_binding_radius", out int trigRadius))
-                {
-                    source = WithDeadZone(source, Math.Clamp(
-                        (int)Math.Round(trigRadius * 100.0 / 32767.0), 1, 100));
-                }
-                // Sticks (v17): the ring member resolves onto the
-                // deflection-magnitude family ("Gamepad Left/RightStickRing",
-                // the flick-stick pair read). The authored radius
-                // (deadzone_outer_radius's 0..32767 scale, the v11
-                // grounding) rides the source DeadZone as a percent and
-                // edge_binding_invert rides Invert (inner ring: deflected
-                // but inside the radius, gated by the engine's ring read
-                // on its rest floor). An absent radius takes Steam's untouched
-                // slider default, which the serializer writes as
-                // 24995..24999 across the corpus and Valve's own templates:
-                // 25000, 76 percent.
-                if (source == null
-                    && inputName.Equals("edge", StringComparison.OrdinalIgnoreCase)
-                    && PhysicalSlotResolver.IsStick(slot))
-                {
-                    int radiusRaw = ParseIntSetting(settings, "edge_binding_radius", 25000);
-                    bool ringInvert = settings.TryGetValue("edge_binding_invert", out var inv)
-                        && (inv ?? "").Trim() != "0";
-                    source = new ResolvedSource
-                    {
-                        Descriptor = slot == SteamSlot.Joystick
-                            ? "Gamepad LeftStickRing"
-                            : "Gamepad RightStickRing",
-                        HalfAxis = true,
-                        Invert = ringInvert,
-                        DeadZone = Math.Clamp(
-                            (int)Math.Round(radiusRaw * 100.0 / 32767.0), 1, 100),
-                    };
-                }
+                // Steam's dpad and four_buttons on a stick, a trackpad or the
+                // gyro read the position through their own triggers, the
+                // click included (SteamPadRead).
+                var padRead = SteamPadRead(run, slot, group.Mode, inputName, settings, half);
+                if (padRead != null) source = padRead;
+                // four_buttons on the gyro presses a cell past a fixed 22.5
+                // degrees whatever the group's dead zone (0x1388b6b99).
+                if (source != null && source.HalfAxis && slot == SteamSlot.Gyro
+                    && string.Equals(group.Mode, "four_buttons", StringComparison.OrdinalIgnoreCase))
+                    source = WithDeadZone(source, 25);
+                // The edge member (the Outer Ring Command) fires only on the
+                // modes whose class has one (binding 15 in the class's
+                // constructor), through that mode's own trigger: the dpad's
+                // (SteamPadRead), the joystick modes' and the flick stick's
+                // (SteamEdgeRead), the trigger's Soft Pull (SteamTriggerRead).
+                // An edge on any other mode is never fired.
+                if (padRead == null && source == null && inputName.Equals("edge", StringComparison.OrdinalIgnoreCase))
+                    source = SteamEdgeRead(run, slot, group.Mode, settings, half);
+                var triggerRead = SteamTriggerRead(slot, group.Mode, inputName, group, settings);
+                if (triggerRead != null) source = triggerRead;
+                // Steam's gyro modes press dpad_east and dpad_west by the roll
+                // and never fire the other directions.
+                var tiltRead = SteamGyroTiltRead(run, slot, group.Mode, inputName, settings, out bool tiltMember);
+                if (tiltMember) source = tiltRead;
                 // The group inner deadzone lands on the axis-natured member
-                // reads (stick-as-dpad wedges). Explicit thresholds (the
-                // trigger click's 75 / edge's 15) encode reachable-range
-                // semantics and stay.
+                // reads (stick-as-dpad wedges). An explicit threshold (the
+                // trigger click's full pull) stays.
                 if (source != null && groupDeadZonePct > 0
                     && source.HalfAxis && source.DeadZone == 0)
                 {
@@ -1693,7 +1812,7 @@ namespace PadForge.SteamWorkshop.Translation
                 // requires a click, else the half's contact window
                 // ("Touchpad 0 Finger 0 Down Left"), so only the hosting
                 // half's finger fires the group.
-                bool isWedge = inputName.StartsWith("dpad_", StringComparison.OrdinalIgnoreCase);
+                bool isWedge = padRead == null && inputName.StartsWith("dpad_", StringComparison.OrdinalIgnoreCase);
                 string clickGate = null;
                 if (isWedge && PhysicalSlotResolver.IsTrackpad(slot))
                 {
@@ -1721,8 +1840,318 @@ namespace PadForge.SteamWorkshop.Translation
                 // #254 A-2: the AddMacro funnel stamps every emitted
                 // macro with the current action-set layer, superseding the
                 // old always-on-only stamping loop that lived here.
-                TranslateInput(run, preset, input, source, clickGate, layer, inputPath);
+                TranslateInput(run, preset, input, source, clickGate, layer, inputPath, slot);
             }
+        }
+
+        /// <summary>One of Steam's hold-back triggers as a read takes it
+        /// (steamclient64.dll 0x1386698d0): a threshold T and a hold-back of
+        /// pct percent of 32767, with T pulled in so neither edge leaves the
+        /// range. Returns the two edges, percent of full travel: the upper one
+        /// a rising position crosses, the lower one a falling position does.</summary>
+        internal static (double Upper, double Lower) SteamTriggerEdges(double t, double pct)
+        {
+            double h = 32767.0 * pct / 100.0;
+            if (t - h < 0) t = h + 1.1920929e-7;
+            if (t + h > 32767.0) t = 32767.0 - h - 1.1920929e-7;
+            return ((t + h) / 32767.0 * 100.0, Math.Max(0, (t - h) / 32767.0 * 100.0));
+        }
+
+        /// <summary>The read for a direction of Steam's dpad, or a cell of its
+        /// four_buttons, on a stick, a trackpad or (dpad) the gyro: the
+        /// position through the mode's own triggers, as steamclient64.dll's
+        /// dpad mode (update 0x1388b2d30, directions 0x1388b3390) and
+        /// four_buttons mode (0x1388b6ad0) test it. Null for any other member,
+        /// mode or host, which keeps its own lowering.
+        /// <list type="bullet">
+        /// <item>dpad: engaged once the position passes deadzone (default
+        /// 10000) plus 1.25 percent, until it falls below it less 1.25
+        /// percent. Layout 0 is four 90-degree spans, layouts 1 (the default)
+        /// and 2 widen each by 180000 / overlap_region degrees (default 4000),
+        /// so a diagonal presses both neighbors, each span with a margin of a
+        /// fiftieth of its width. Layout 3 is the cross gate: each component
+        /// past 20 percent, held down to zero.</item>
+        /// <item>four_buttons: a cell presses within button_size (default
+        /// 18000) less 2 percent of its center, button_dist (default 20000)
+        /// along its axis, and releases past button_size plus 2 percent.</item>
+        /// <item>requires_click: on by default for four_buttons everywhere
+        /// and for the dpad on the left and right trackpads (the dpad's mode
+        /// defaults turn it off for sticks, the gyro and the center pad).</item>
+        /// <item>The gyro dpad reads the tilt past the dead zone's angle
+        /// (deadzone / 32767 * 90 degrees) out to 90, and rests while the
+        /// group's gyro buttons say off.</item>
+        /// </list></summary>
+        private static ResolvedSource SteamPadRead(Run run, SteamSlot slot, string mode, string inputName,
+            Dictionary<string, string> settings, TrackpadHalf half)
+        {
+            bool dpad = string.Equals(mode, "dpad", StringComparison.OrdinalIgnoreCase);
+            bool four = string.Equals(mode, "four_buttons", StringComparison.OrdinalIgnoreCase);
+            if (!dpad && !four) return null;
+            bool gyro = slot == SteamSlot.Gyro;
+            if (gyro && !dpad) return null;
+            string pair;
+            if (slot == SteamSlot.Joystick) pair = SourceCoercion.LeftStickRingDescriptor;
+            else if (slot == SteamSlot.RightJoystick) pair = SourceCoercion.RightStickRingDescriptor;
+            else if (PhysicalSlotResolver.IsTrackpad(slot))
+                pair = $"Touchpad {PhysicalSlotResolver.TrackpadIndex(slot, run.SinglePadTrackpads)} Finger 0 Ring{PhysicalSlotResolver.HalfSuffix(half)}";
+            else if (gyro)
+            {
+                int dzRaw = Math.Clamp(ParseIntSetting(settings, "deadzone", 10000), 0, 32767);
+                double inner = Math.Min(dzRaw / 32767.0 * 90.0, 89.9);
+                pair = string.Create(CultureInfo.InvariantCulture, $"Gyro Tilt {Math.Round(inner, 4)} 90");
+            }
+            else return null;
+
+            string name = inputName.ToLowerInvariant();
+            int deadzone = Math.Clamp(ParseIntSetting(settings, "deadzone", 10000), 0, 32767);
+            var (press, release) = SteamTriggerEdges(deadzone, 1.25);
+
+            // The dpad's edge: its own trigger on the position's length,
+            // edge_binding_radius (default 25000) with a 10 percent hold-back,
+            // inside the radius when edge_binding_invert is set, and no click
+            // (0x1388b319e steps it before and apart from the click test).
+            if (dpad && name == "edge")
+            {
+                double radius = 25000;
+                if (settings.TryGetValue("edge_binding_radius", out var rr)
+                    && double.TryParse((rr ?? "").Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out double parsed)
+                    && double.IsFinite(parsed))
+                    radius = Math.Clamp(parsed, 0, 32767);
+                bool inverted = settings.TryGetValue("edge_binding_invert", out var iv) && (iv ?? "").Trim() != "0";
+                var edgeGate = gyro && ResolveGyroActivation(run, settings).Mask != 0 ? BoundedGate.Engaged : BoundedGate.None;
+                // The dpad's triggers hold a change for 1/120 s (0x1388b2451),
+                // and its inverted edge lets go when the dpad disengages.
+                const double debounceMs = 1000.0 / 120.0;
+                double h = 32767.0 * 0.10;
+                var (outerPress, outerRelease) = SteamTriggerEdges(radius, 10.0);
+                return new ResolvedSource
+                {
+                    Descriptor = inverted
+                        ? BoundedReads.Ring((radius - h) / 32767.0 * 100.0, (radius + h) / 32767.0 * 100.0, true,
+                            debounceMs, edgeGate, pair, press, release)
+                        : BoundedReads.Ring(outerPress, outerRelease, false, debounceMs, edgeGate, pair),
+                };
+            }
+
+            // Members to the direction they read, the four_buttons cells by
+            // position: Nintendo-labeled configs name the cells by label.
+            if (four && run.NintendoLabels)
+            {
+                name = name switch
+                {
+                    "button_a" => "button_b",
+                    "button_b" => "button_a",
+                    "button_x" => "button_y",
+                    "button_y" => "button_x",
+                    _ => name,
+                };
+            }
+            int way = (dpad ? name : null) switch
+            {
+                "dpad_east" => 0,
+                "dpad_north" => 1,
+                "dpad_west" => 2,
+                "dpad_south" => 3,
+                _ => (four ? name : null) switch
+                {
+                    "button_b" => 0,
+                    "button_y" => 1,
+                    "button_x" => 2,
+                    "button_a" => 3,
+                    _ => -1,
+                },
+            };
+            if (way < 0) return null;
+
+            bool clickDefault = four || slot is SteamSlot.LeftTrackpad or SteamSlot.RightTrackpad;
+            bool click = !gyro && (settings.TryGetValue("requires_click", out var rc)
+                ? (rc ?? "").Trim() != "0"
+                : clickDefault);
+            var gate = click ? BoundedGate.Click
+                : gyro && ResolveGyroActivation(run, settings).Mask != 0 ? BoundedGate.Engaged
+                : BoundedGate.None;
+
+            if (four)
+            {
+                double size = Math.Clamp(ParseIntSetting(settings, "button_size", 18000), 1, 32767);
+                double dist = Math.Clamp(ParseIntSetting(settings, "button_dist", 20000), 1, 32767) / 32767.0 * 100.0;
+                var (outer, innerEdge) = SteamTriggerEdges(size, 2.0);
+                double cx = way switch { 0 => dist, 2 => -dist, _ => 0 };
+                double cy = way switch { 1 => -dist, 3 => dist, _ => 0 };
+                return new ResolvedSource { Descriptor = BoundedReads.Disc(cx, cy, innerEdge, outer, gate, pair) };
+            }
+
+            int layout = Math.Clamp(ParseIntSetting(settings, "layout", 1), 0, 3);
+            if (layout == 3)
+            {
+                var (componentPress, componentRelease) = SteamTriggerEdges(1.0, 10.0);
+                int axis = way is 0 or 2 ? 0 : 1;
+                int sign = way is 2 or 1 ? -1 : 1;
+                return new ResolvedSource
+                {
+                    Descriptor = BoundedReads.Hold(componentPress, componentRelease, press, release, axis, sign, gate, pair),
+                };
+            }
+            double overlap = Math.Clamp(ParseIntSetting(settings, "overlap_region", 4000), 2000, 16000);
+            double width = layout == 0 ? 90.0 : 90.0 + 180000.0 / overlap;
+            return new ResolvedSource
+            {
+                Descriptor = BoundedReads.Wedge(way * 90.0, width / 2, width / 50, press, release, gate, pair),
+            };
+        }
+
+        /// <summary>The stick ring or the trackpad finger ring a stick or
+        /// trackpad group reads its position from, else null.</summary>
+        private static string PairFor(Run run, SteamSlot slot, TrackpadHalf half)
+        {
+            if (slot == SteamSlot.Joystick) return SourceCoercion.LeftStickRingDescriptor;
+            if (slot == SteamSlot.RightJoystick) return SourceCoercion.RightStickRingDescriptor;
+            if (PhysicalSlotResolver.IsTrackpad(slot))
+                return $"Touchpad {PhysicalSlotResolver.TrackpadIndex(slot, run.SinglePadTrackpads)} Finger 0 Ring{PhysicalSlotResolver.HalfSuffix(half)}";
+            return null;
+        }
+
+        /// <summary>The Outer Ring Command (the edge member) of Steam's
+        /// joystick modes and of its flick stick, on a stick or a trackpad:
+        /// the position's length through the mode's own trigger, with no
+        /// debounce and no click, inside the radius instead of outside when
+        /// edge_binding_invert is set. joystick_move, joystick_mouse and
+        /// mouse_region share the client's joystick class (0x1388c5fd0), whose
+        /// edge is edge_binding_radius (default 25000) with 3 percent of
+        /// hold-back (0x1388c70c7). The flick stick (0x1388b3aa0) takes its
+        /// edge from flickstick_command_binding_radius instead (20 to 100,
+        /// default 80), as 1000 + 31000 * (radius - 20) / 80 with 10 percent of
+        /// hold-back (0x1388b45fb), and reads no edge_binding_radius. Null for
+        /// any other mode or host.</summary>
+        private static ResolvedSource SteamEdgeRead(Run run, SteamSlot slot, string mode,
+            Dictionary<string, string> settings, TrackpadHalf half)
+        {
+            bool flick = string.Equals(mode, "flickstick", StringComparison.OrdinalIgnoreCase);
+            bool joystick = mode is "joystick_move" or "joystick_mouse" or "mouse_region";
+            if (!flick && !joystick) return null;
+            string pair = PairFor(run, slot, half);
+            if (pair == null) return null;
+            bool inverted = settings.TryGetValue("edge_binding_invert", out var iv) && (iv ?? "").Trim() != "0";
+            double t, pct;
+            if (flick)
+            {
+                int command = ParseIntSetting(settings, "flickstick_command_binding_radius", 80);
+                t = 1000.0 + 31000.0 * Math.Clamp((command - 20) / 80.0, 0.0, 1.0);
+                pct = 10.0;
+            }
+            else
+            {
+                t = 25000;
+                if (settings.TryGetValue("edge_binding_radius", out var rr)
+                    && double.TryParse((rr ?? "").Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out double parsed)
+                    && double.IsFinite(parsed))
+                    t = Math.Clamp(parsed, 0, 32767);
+                pct = 3.0;
+            }
+            double h = 32767.0 * pct / 100.0;
+            var (outerPress, outerRelease) = SteamTriggerEdges(t, pct);
+            return new ResolvedSource
+            {
+                Descriptor = inverted
+                    ? BoundedReads.Ring((t - h) / 32767.0 * 100.0, (t + h) / 32767.0 * 100.0, true, 0, BoundedGate.None, pair)
+                    : BoundedReads.Ring(outerPress, outerRelease, false, 0, BoundedGate.None, pair),
+            };
+        }
+
+        /// <summary>The Soft Pull (the edge member) of Steam's trigger mode, or
+        /// its click while Hip Fire Exclusive holds the click off: the pull
+        /// through the mode's own trigger (0x1388de720), edge_binding_radius
+        /// (default 10000) with 7.5 percent of hold-back, and the Threshold
+        /// Trigger Style adaptive_threshold (0 Simple, 1 Hair Trigger by
+        /// default, 2 to 4 Hip Fire, 5 Hip Fire Exclusive). Steam runs the
+        /// click's part only when the group binds the click. Null for any other
+        /// member, mode or host.</summary>
+        private static ResolvedSource SteamTriggerRead(SteamSlot slot, string mode, string inputName,
+            SteamInputGroup group, Dictionary<string, string> settings)
+        {
+            if (slot is not (SteamSlot.LeftTrigger or SteamSlot.RightTrigger)
+                || !string.Equals(mode, "trigger", StringComparison.OrdinalIgnoreCase))
+                return null;
+            string axis = slot == SteamSlot.LeftTrigger ? "Gamepad LeftTrigger" : "Gamepad RightTrigger";
+            int style = Math.Clamp(ParseIntSetting(settings, "adaptive_threshold", 1), 0, 5);
+            double radius = Math.Clamp(ParseIntSetting(settings, "edge_binding_radius", 10000), 0, 32767);
+            string name = inputName.ToLowerInvariant();
+            if (name == "edge")
+                return new ResolvedSource
+                {
+                    Descriptor = BoundedReads.Pull(style, false, radius, MemberBound(group, "click"), axis),
+                };
+            if (name == "click" && style == 5 && MemberBound(group, "edge"))
+                return new ResolvedSource { Descriptor = BoundedReads.Pull(5, true, radius, true, axis) };
+            return null;
+        }
+
+        /// <summary>True when the group's member carries a binding, the count
+        /// Steam's modes test before they step a member's part.</summary>
+        private static bool MemberBound(SteamInputGroup group, string member)
+            => group.Inputs.TryGetValue(member, out var input)
+               && input.Activators.Any(a => a.Bindings.Count > 0);
+
+        /// <summary>The tilt members of Steam's gyro modes: dpad_east and
+        /// dpad_west, the only directions those classes register (gyro_to_mouse
+        /// and its siblings at 0x1388b82cc, absolute_mouse and mouse_joystick
+        /// at 0x1388abcfd). The roll leaves the horizon past
+        /// deadzone_outer_radius (default 2000 of 32767, of 90 degrees) and
+        /// scales to 90, and a trigger at 2000 with 1.25 percent of hold-back
+        /// presses the side the roll points to (0x1388bb27e, 0x1388b0e5e),
+        /// while the gyro is on. Null for dpad_north and dpad_south, which
+        /// those classes never fire, and for any other mode.</summary>
+        private static ResolvedSource SteamGyroTiltRead(Run run, SteamSlot slot, string mode, string inputName,
+            Dictionary<string, string> settings, out bool handled)
+        {
+            handled = false;
+            if (slot != SteamSlot.Gyro
+                || mode is not ("gyro_to_mouse" or "gyro_to_joystick" or "gyro_to_joystick_deflection"
+                    or "absolute_mouse" or "mouse_joystick"))
+                return null;
+            string name = inputName.ToLowerInvariant();
+            if (!name.StartsWith("dpad_", StringComparison.Ordinal)) return null;
+            handled = true;
+            if (name is not ("dpad_east" or "dpad_west")) return null;
+            int dz = Math.Clamp(ParseIntSetting(settings, "deadzone_outer_radius", 2000), 0, 32767);
+            double inner = Math.Min(dz / 32767.0 * 90.0, 89.9);
+            string pair = string.Create(CultureInfo.InvariantCulture, $"Gyro Tilt {Math.Round(inner, 4)} 90");
+            var gate = ResolveGyroActivation(run, settings).Mask != 0 ? BoundedGate.Engaged : BoundedGate.None;
+            double h = 32767.0 * 1.25 / 100.0;
+            return new ResolvedSource
+            {
+                Descriptor = BoundedReads.Level((2000 + h) / 32767.0 * 100.0, (2000 - h) / 32767.0 * 100.0, false,
+                    name == "dpad_east" ? "X+" : "X-", gate, pair),
+            };
+        }
+
+        /// <summary>What a dpad or four_buttons group on the gyro, or a dpad
+        /// in analog emulation, does that PadForge does differently, named
+        /// once per group that binds a direction. The gyro reads roll from
+        /// the horizon and pitch from gyro_neutral (four_buttons: a fixed 45
+        /// degrees, 0x1388b6b99) where PadForge reads both from where the
+        /// controller rests. Layout 2 pulses each direction by how far it is
+        /// pushed (0x1388b3610), and PadForge holds it.</summary>
+        private static void ReportSteamPadDifferences(Run run, SteamSlot slot, string mode, SteamInputGroup group,
+            string path, Dictionary<string, string> settings)
+        {
+            bool dpad = string.Equals(mode, "dpad", StringComparison.OrdinalIgnoreCase);
+            bool four = string.Equals(mode, "four_buttons", StringComparison.OrdinalIgnoreCase);
+            if (!dpad && !four) return;
+            bool binds = group.Inputs.Any(kv => kv.Value.Activators.Count > 0
+                && (dpad ? kv.Key.StartsWith("dpad_", StringComparison.OrdinalIgnoreCase)
+                         : kv.Key.StartsWith("button_", StringComparison.OrdinalIgnoreCase)));
+            if (!binds) return;
+            bool analog = PhysicalSlotResolver.IsStick(slot) || PhysicalSlotResolver.IsTrackpad(slot)
+                || slot == SteamSlot.Gyro;
+            if (dpad && analog && Math.Clamp(ParseIntSetting(settings, "layout", 1), 0, 3) == 2)
+                run.Report.Add(TranslationStatus.Partial, TranslationReasons.DpadPulseHeld, path);
+            if (slot != SteamSlot.Gyro) return;
+            double neutral = four ? 45.0
+                : Math.Clamp(ParseIntSetting(settings, "gyro_neutral", 16384), 0, 32767) / 32767.0 * 90.0;
+            run.Report.Add(TranslationStatus.Partial, TranslationReasons.GyroRollFromHorizon, path);
+            run.Report.Add(TranslationStatus.Partial, TranslationReasons.GyroPitchFromHorizon, path,
+                args: Math.Round(neutral).ToString("0", CultureInfo.InvariantCulture));
         }
 
         private static bool RequiresClick(SteamSlot slot, SteamInputGroup group,
@@ -1963,8 +2392,11 @@ namespace PadForge.SteamWorkshop.Translation
                     TranslationReasons.ScrollWheelApproximated, path);
             }
 
+            // The scroll wheel's class registers a click and a touch beside its
+            // two scroll members (0x138667380), and both fire as plain
+            // surface inputs.
             TranslateMemberGroup(run, preset, group, slot, layer, path, settings,
-                onlyInputs: new[] { "click" });
+                onlyInputs: new[] { "click", "touch" });
         }
 
         /// <summary>2dscroll on a trackpad (v10 G3): Steam's directional
@@ -2003,7 +2435,7 @@ namespace PadForge.SteamWorkshop.Translation
                         run.NintendoLabels, run.SinglePadTrackpads, run.FourRearButtons);
                     if (member != null)
                     {
-                        TranslateInput(run, preset, input, member, clickGate: null, layer, inputPath);
+                        TranslateInput(run, preset, input, member, clickGate: null, layer, inputPath, slot);
                         continue;
                     }
                     foreach (var act in input.Activators)
@@ -2020,7 +2452,7 @@ namespace PadForge.SteamWorkshop.Translation
                     Descriptor = $"Touchpad {p} {dir}{swipeSfx}",
                     TrackpadFeature = PhysicalSlotResolver.FeatureSwipes,
                 };
-                TranslateInput(run, preset, input, source, clickGate: null, layer, inputPath);
+                TranslateInput(run, preset, input, source, clickGate: null, layer, inputPath, slot);
             }
         }
 
@@ -2070,7 +2502,7 @@ namespace PadForge.SteamWorkshop.Translation
                 {
                     // The mode's own click command is a plain button and
                     // keeps continuous press semantics.
-                    TranslateInput(run, preset, input, source, clickGate: null, layer, inputPath);
+                    TranslateInput(run, preset, input, source, clickGate: null, layer, inputPath, slot);
                     continue;
                 }
 
@@ -2313,20 +2745,18 @@ namespace PadForge.SteamWorkshop.Translation
         /// and unbound slots stay empty wedges.</summary>
         private void TranslateMenuGroup(Run run, SteamInputPreset preset, SteamInputGroup group,
             SteamSlot slot, string layer, string path, Dictionary<string, string> settings,
-            bool radial)
+            bool radial, bool hotbar = false)
         {
             // Host surface: a stick (deflection hovers), a trackpad (touch
             // position hovers), the physical dpad / face diamond
-            // (button-pair hosts: v25 for radials, v26 for hotbar grids,
-            // where direction presses STEP the persistent selection
-            // through MenuEvaluator.StepButtonPairGrid, matching Steam's
-            // own hotbar strings: "the menu will remember the selected
-            // command from the previous time it was invoked"), or, since
-            // v26, the GYRO through the gravity-lean pair: a gyro-hosted
-            // touch_menu hovers by TILTING the controller, which is the
-            // Custom opener with "Gyro Lean X/Y" as the steering axes
-            // (deflection-engaged like a stick host). Only a host with no
-            // direction read at all keeps the named skip.
+            // (button-pair hosts, v25), or, since v26, the GYRO through the
+            // gravity-lean pair: a gyro-hosted touch_menu hovers by TILTING
+            // the controller, which is the Custom opener with "Gyro Lean
+            // X/Y" as the steering axes (deflection-engaged like a stick
+            // host). A hotbar reads no hover at all: the client builds it on
+            // its D-pad mode (CHotbarMode, 0x1388bee00), so the host's four
+            // directions show, step and fire it (MenuHotbar). Only a host
+            // with no direction read at all keeps the named skip.
             string host;
             int hostHalf = 0;
             string customX = "", customY = "";
@@ -2350,8 +2780,11 @@ namespace PadForge.SteamWorkshop.Translation
             else if (slot == SteamSlot.Gyro)
             {
                 host = "Custom";
-                customX = PadForge.Engine.Common.Mapping.SourceCoercion.GyroLeanXDescriptor;
-                customY = PadForge.Engine.Common.Mapping.SourceCoercion.GyroLeanYDescriptor;
+                if (!hotbar)
+                {
+                    customX = PadForge.Engine.Common.Mapping.SourceCoercion.GyroLeanXDescriptor;
+                    customY = PadForge.Engine.Common.Mapping.SourceCoercion.GyroLeanYDescriptor;
+                }
             }
             else
             {
@@ -2381,9 +2814,30 @@ namespace PadForge.SteamWorkshop.Translation
             // the configurator can author; the OVERLAY renderer carries its
             // own sanity cap so a hand-hacked config cannot demand an
             // unbounded window).
+            // A hotbar's bar ends at its last bound cell, and a button count
+            // set lower cuts it: the client takes the smaller
+            // (0x1388bfbf7, 0x1388c1656).
+            int buttonCount = ParseIntSetting(settings, "touch_menu_button_count", 0);
             int cellCount = radial
                 ? maxIndex // ring slots, center (index 0) excluded
-                : Math.Max(ParseIntSetting(settings, "touch_menu_button_count", 0), maxIndex + 1);
+                : hotbar
+                    ? (buttonCount > 0 ? Math.Min(Math.Min(buttonCount, 16), maxIndex + 1) : maxIndex + 1)
+                    : Math.Max(buttonCount, maxIndex + 1);
+
+            // The hotbar's D-pad read takes the hotbar's own defaults, four
+            // 90-degree spans and a dead zone of 20000 (0x1388c265d,
+            // 0x1388c266a), where the group sets neither.
+            Dictionary<string, string> hotbarDpad = null;
+            if (hotbar)
+            {
+                hotbarDpad = new Dictionary<string, string>(settings, settings.Comparer);
+                if (!hotbarDpad.ContainsKey("layout")) hotbarDpad["layout"] = "0";
+                if (!hotbarDpad.ContainsKey("deadzone")) hotbarDpad["deadzone"] = "20000";
+            }
+            // The client's hotbar sits at the bottom of the screen, on the
+            // left for the left trackpad, the left stick and the D-pad and on
+            // the right for every other host (0x1388bf067, 0x1388c2694).
+            bool leftSide = slot is SteamSlot.LeftTrackpad or SteamSlot.Joystick or SteamSlot.Dpad;
 
             int menuId = run.NextMenuId++;
 
@@ -2403,6 +2857,7 @@ namespace PadForge.SteamWorkshop.Translation
                 // own menu.
                 Name = MenuDisplayName(run, preset, group, radial, menuId, layer),
                 Kind = radial ? PadForge.Engine.Menus.MenuKind.Radial
+                     : hotbar ? PadForge.Engine.Menus.MenuKind.Hotbar
                               : PadForge.Engine.Menus.MenuKind.Grid,
                 HostDescriptor = host,
                 HostHalf = hostHalf,
@@ -2413,28 +2868,60 @@ namespace PadForge.SteamWorkshop.Translation
                 // Steam has no stay-open menu, so a mask alone must never
                 // opt an import into it (#413).
                 LayerHoldsOpen = false,
+                // The client's radial menu defaults to Touch Release on a
+                // joystick and to Click elsewhere (0x1388ccd10). Its touch
+                // menu defaults to Click on every host (0x1388d41b0).
                 FireType = (PadForge.Engine.Menus.MenuFireType)Math.Clamp(
-                    ParseIntSetting(settings, "touchmenu_button_fire_type", 0), 0, 3),
+                    ParseIntSetting(settings, "touchmenu_button_fire_type",
+                        radial && PhysicalSlotResolver.IsStick(slot) ? 2 : 0), 0, 3),
                 CellCount = cellCount,
                 HasCenter = hasCenter,
                 ShowLabels = !(settings.TryGetValue("touch_menu_show_labels", out var sl)
                     && (sl ?? "").Trim() == "0"),
-                PosXPercent = Math.Clamp(ParseIntSetting(settings, "touch_menu_position_x", 50), 0, 100),
-                PosYPercent = Math.Clamp(ParseIntSetting(settings, "touch_menu_position_y", 50), 0, 100),
+                PosXPercent = Math.Clamp(ParseIntSetting(settings, "touch_menu_position_x",
+                    hotbar ? (leftSide ? 10 : 90) : 50), 0, 100),
+                PosYPercent = Math.Clamp(ParseIntSetting(settings, "touch_menu_position_y", hotbar ? 80 : 50), 0, 100),
                 ScalePercent = Math.Clamp(ParseIntSetting(settings, "touch_menu_scale", 100), 10, 400),
                 OpacityPercent = Math.Clamp(ParseIntSetting(settings, "touch_menu_opacity", 90), 5, 100),
             };
             // Cap at the runtime's own clamp (menus engage-clamp 1..95):
             // storing 96-100 while reporting the conversion Clean hid a
             // silent runtime change of the imported value.
-            int engageDz = GroupDeadZonePercent(settings);
+            int engageDz = GroupDeadZonePercent(hotbarDpad ?? settings);
             if (engageDz > 0) entry.EngageDeadzonePercent = Math.Min(engageDz, 95);
-            // In-Menu Sensitivity (v26): the "sensitivity" key scales the
-            // hover vector before selection (MenuDefinitionEntry
-            // .SensitivityPercent, 100 = identity; wild witness 2846236146
-            // authors 150), so the old MenuTuningDropped note is gone.
-            int menuSens = ParseIntSetting(settings, "sensitivity", 0);
-            if (menuSens > 0) entry.SensitivityPercent = Math.Clamp(menuSens, 10, 400);
+            if (hotbar)
+            {
+                // The four directions the client's D-pad mode reads on this
+                // host, through its own triggers (SteamPadRead). The D-pad and
+                // the face buttons read their buttons, the hotbar's host
+                // default, so those stay empty.
+                if (PhysicalSlotResolver.IsStick(slot) || PhysicalSlotResolver.IsTrackpad(slot)
+                    || slot == SteamSlot.Gyro)
+                {
+                    var half = PhysicalSlotResolver.HalfFor(slot, run.SinglePadTrackpads);
+                    string Read(string member)
+                        => SteamPadRead(run, slot, "dpad", member, hotbarDpad, half)?.Descriptor ?? "";
+                    entry.HotbarShowDescriptor = Read("dpad_south");
+                    entry.HotbarPreviousDescriptor = Read("dpad_west");
+                    entry.HotbarNextDescriptor = Read("dpad_east");
+                    entry.HotbarFireDescriptor = Read("dpad_north");
+                }
+                // scroll_wrap (off), test_param_0 Dismiss After Activation and
+                // test_param_1 Re-Center Each Time (both on), the hotbar's
+                // registrations at 0x1388bf1b2, 0x1388bf253 and 0x1388bf2a4.
+                entry.HotbarWrap = ParseIntSetting(settings, "scroll_wrap", 0) != 0;
+                entry.HotbarDismissOnFire = ParseIntSetting(settings, "test_param_0", 1) != 0;
+                entry.HotbarRecenter = ParseIntSetting(settings, "test_param_1", 1) != 0;
+            }
+            else
+            {
+                // In-Menu Sensitivity (v26): the "sensitivity" key scales the
+                // hover vector before selection (MenuDefinitionEntry
+                // .SensitivityPercent, 100 = identity, and wild witness 2846236146
+                // authors 150), so the old MenuTuningDropped note is gone.
+                int menuSens = ParseIntSetting(settings, "sensitivity", 0);
+                if (menuSens > 0) entry.SensitivityPercent = Math.Clamp(menuSens, 10, 400);
+            }
 
             foreach (var cell in cells)
             {
@@ -2462,7 +2949,7 @@ namespace PadForge.SteamWorkshop.Translation
             run.Profile.Menus.Add(entry);
 
             run.Report.Add(TranslationStatus.Clean, TranslationReasons.MenuEmitted, path,
-                emitted: MacroEmit($"{(radial ? "Radial" : "Grid")} menu {menuId}: "
+                emitted: MacroEmit($"{(radial ? "Radial" : hotbar ? "Hotbar" : "Grid")} menu {menuId}: "
                     + $"{cells.Count} bound cells", host),
                 args: cells.Count.ToString(CultureInfo.InvariantCulture));
 
@@ -2474,7 +2961,7 @@ namespace PadForge.SteamWorkshop.Translation
             {
                 var source = new ResolvedSource { Descriptor = $"Menu {menuId} Item {cell.Index}" };
                 TranslateInput(run, preset, cell.Input, source, null, layer,
-                    $"{path}/touch_menu_button_{cell.Index}");
+                    $"{path}/touch_menu_button_{cell.Index}", slot);
             }
 
             // The configurator also offers menu-level Click / Touch
@@ -2898,16 +3385,43 @@ namespace PadForge.SteamWorkshop.Translation
 
         /// <summary>joystick_move: stick passthrough. Both sides emit the
         /// explicit axis pair (authoritative sets spell out every output
-        /// Steam produces): output_joystick redirects to the other stick
-        /// here, the matched side via the Finalize matched-analog pass.
-        /// Trackpad-as-stick rides the gesture StickX/StickY channel,
-        /// self-armed at apply since v14.</summary>
+        /// Steam produces): output_joystick (<see cref="OutputJoystick"/>)
+        /// sends the pair to the other stick here, the matched side via the
+        /// Finalize matched-analog pass. Trackpad-as-stick rides the gesture
+        /// StickX/StickY channel, self-armed at apply since v14. The gyro
+        /// reads its tilt as the stick position (<see cref="EmitGyroTiltPair"/>).
+        /// Output 2 is the mouse, which the client's joystick class drives
+        /// for joystick_move exactly as for joystick_mouse, so it lowers
+        /// through the same emitter. joystick_mouse sent to a stick comes
+        /// here with its own mode name.</summary>
         private void TranslateJoystickMove(Run run, SteamInputPreset preset, SteamInputGroup group,
-            SteamSlot slot, string layer, string path, Dictionary<string, string> settings)
+            SteamSlot slot, string layer, string path, Dictionary<string, string> settings,
+            string mode = "joystick_move")
         {
-            int output = settings.TryGetValue("output_joystick", out var raw)
-                && int.TryParse(raw, NumberStyles.Integer, CultureInfo.InvariantCulture, out int o)
-                    ? o : 0;
+            var target = OutputJoystick(settings, mode, slot);
+            string output = settings.TryGetValue("output_joystick", out var raw) ? (raw ?? "").Trim() : "";
+            if (target == StickOutput.None)
+            {
+                ReportOutputUnrouted(run, path, output);
+                TranslateMemberGroup(run, preset, group, slot, layer, path, settings);
+                return;
+            }
+            if (target == StickOutput.Mouse)
+            {
+                if (slot == SteamSlot.Gyro)
+                    EmitGyroTiltPair(run, layer, path, settings, StickOutput.Mouse, "joystick_mouse");
+                else
+                    EmitMouseAxes(run, slot, layer, path, settings, "joystick_mouse", StickMouseBaseline,
+                        curveChannel: CurveChannelApplies(slot, "joystick_mouse"));
+                TranslateMemberGroup(run, preset, group, slot, layer, path, settings);
+                return;
+            }
+            if (slot == SteamSlot.Gyro)
+            {
+                EmitGyroTiltPair(run, layer, path, settings, target, mode);
+                TranslateMemberGroup(run, preset, group, slot, layer, path, settings);
+                return;
+            }
             int dzPct = GroupDeadZonePercent(settings);
 
             // Stick-hosted pairs consume the authored radii FOR REAL via the
@@ -2987,7 +3501,7 @@ namespace PadForge.SteamWorkshop.Translation
             if (PhysicalSlotResolver.IsStick(slot))
             {
                 bool left = slot == SteamSlot.Joystick;
-                bool crossed = (output == 1 && !left) || (output == 2 && left);
+                bool crossed = (target == StickOutput.Right && left) || (target == StickOutput.Left && !left);
                 string src = left ? "LeftStick" : "RightStick";
                 // v11: the group's response-curve cluster rides the emitted
                 // pair as per-source params (both member rows, X and Y).
@@ -3026,8 +3540,7 @@ namespace PadForge.SteamWorkshop.Translation
             {
                 int p = PhysicalSlotResolver.TrackpadIndex(slot, run.SinglePadTrackpads);
                 var half = PhysicalSlotResolver.HalfFor(slot, run.SinglePadTrackpads);
-                // 2 = right stick, anything else lands on the left.
-                string dst = output == 2 ? "Right" : "Left";
+                string dst = target == StickOutput.Right ? "Right" : "Left";
                 // v18: the trackpad-as-stick lanes (absolute finger reads
                 // and the gesture Stick channel) ride the same per-source
                 // curve/range shaping as the stick hosts.
@@ -3103,9 +3616,10 @@ namespace PadForge.SteamWorkshop.Translation
         /// 10000 and returns the length of the two, signed by roll, or
         /// sqrt(yaw^2 - roll^2) signed by yaw when they disagree and yaw is
         /// the larger. PadForge adds them, and the line says so.
-        /// joystick_camera keeps the axis as an on/off setting, roll for
-        /// anything but 0, and the relative mouse class registers no axis,
-        /// so it turns with yaw. The 3DOF to 2D class adds roll times
+        /// The relative mouse class registers no axis, so it turns with
+        /// yaw. The joystick classes on the gyro (joystick_move,
+        /// joystick_mouse, Joystick Camera) read its tilt instead
+        /// (EmitGyroTiltPair) and never come here. The 3DOF to 2D class adds roll times
         /// gyro_roll_scale / 10000 to yaw for style 2, and for style 3 first
         /// turns the sample by -gyro_mouse_sample_angle_offset degrees about
         /// the pitch axis, so both are exact sums of yaw and roll. It never
@@ -3156,8 +3670,6 @@ namespace PadForge.SteamWorkshop.Translation
             int axis = ParseIntSetting(settings, "gyro_axis", mouseClass && run.HandheldGyroDefaults ? 2 : 0);
             if (mode == "relative_mouse")
                 return Legs((yaw, false, 1.0));
-            if (mode == "joystick_camera")
-                return Legs(axis != 0 ? (roll, true, 1.0) : (yaw, false, 1.0));
             switch (axis)
             {
                 case 1:
@@ -3443,9 +3955,10 @@ namespace PadForge.SteamWorkshop.Translation
         /// ratio, deadzone, and inversion handling as
         /// <see cref="EmitMouseAxes"/>, targeting the thumb axes on the Xbox
         /// slot, except that the gyro's Y row is negated so the nose up
-        /// pushes the stick up. output_joystick 1 redirects to the left stick
-        /// (the value joystick_move reads as "left"). Anything else keeps the
-        /// mode's right-stick default. gyro_to_joystick runs at
+        /// pushes the stick up. The stick is <see cref="OutputJoystick"/>'s:
+        /// output_joystick 0 is the left stick and 1 the right, and with no
+        /// key mouse_joystick and gyro_to_joystick keep the right stick and
+        /// Joystick Camera the input's own side. gyro_to_joystick runs at
         /// <see cref="GyroNaturalSensitivity"/>: the client multiplies the
         /// gyro by it before its own deflection stage, so a file's value
         /// scales the stick against the client's default of 250, which keeps
@@ -3456,6 +3969,13 @@ namespace PadForge.SteamWorkshop.Translation
         {
             var pair = PhysicalSlotResolver.MouseAxisPair(slot, run.SinglePadTrackpads);
             if (pair == null) return;
+            var target = OutputJoystick(settings, mode, slot);
+            if (target is not (StickOutput.Left or StickOutput.Right))
+            {
+                ReportOutputUnrouted(run, path,
+                    settings.TryGetValue("output_joystick", out var ojRaw) ? (ojRaw ?? "").Trim() : "");
+                return;
+            }
             var turns = pair.Value.Family == 2
                 ? GyroTurningSources(run, path, settings, mode, conversionStyle)
                 : new[] { (pair.Value.X, false, 1.0) };
@@ -3496,7 +4016,7 @@ namespace PadForge.SteamWorkshop.Translation
             // stick Y row as the stick down, so the row is flipped here. The
             // stick and trackpad pairs are already in the stick's frame.
             bool flipGyroY = family == 2;
-            string dst = ParseIntSetting(settings, "output_joystick", 0) == 1 ? "Left" : "Right";
+            string dst = target == StickOutput.Left ? "Left" : "Right";
             // v11 (every analog host since v18): same curve-channel stamps
             // as EmitMouseAxes.
             var curve = curveChannel
@@ -3616,60 +4136,196 @@ namespace PadForge.SteamWorkshop.Translation
                 ReportUnappliedInversion(run, path, "invert_z");
         }
 
-        /// <summary>gyro_to_joystick_deflection (v26): sustained TILT maps
-        /// to stick deflection through the engine's gravity-lean pair
-        /// ("Gyro Lean X/Y", 90 degrees = full scale, physical-stick
-        /// signs). The default Sensitivity 2.0 anchors full deflection at
-        /// 45 degrees of tilt, the JSM motion-stick envelope the engine's
-        /// MotionLean channel already ships (ParamMotionInnerDz /
-        /// OuterDz defaults 15 / 135: output saturates 45 degrees from
-        /// level); an authored "sensitivity" scales it through the same
-        /// baseline ratio the rate emitters use. output_joystick /
-        /// invert_x / invert_y follow EmitMouseJoystickAxes exactly.</summary>
-        private void EmitGyroLeanJoystickAxes(Run run, string layer, string path,
-            Dictionary<string, string> settings)
+        /// <summary>A group whose output_joystick the client routes to
+        /// neither stick nor the mouse (<see cref="OutputJoystick"/>): the
+        /// pair maps to nothing, as in Steam, and the line says why.</summary>
+        private static void ReportOutputUnrouted(Run run, string path, string value)
+            => run.Report.Add(TranslationStatus.Partial, TranslationReasons.OutputJoystickUnrouted,
+                path, args: value);
+
+        /// <summary>Emits the engine's degree-ranged gravity tilt pair
+        /// ("Gyro Tilt X/Y", <see cref="SourceCoercion.ReadGyroLean"/>)
+        /// onto a stick or the mouse. Tilt X is positive for the right edge
+        /// down and Tilt Y for the nose up, the physical stick's own frame
+        /// (the stick pulled back), so the pair lowers 1:1 onto the thumb
+        /// axes, and the mouse moves the way that stick would push it. The
+        /// read maps |angle| to (|angle| - inner) / (range - inner), clamped,
+        /// per axis. A group with gyro buttons gates both rows on the slot's
+        /// gyro engage state ("Gyro Engaged"): the client centers the stick
+        /// while its gyro is off.</summary>
+        private void AddGyroTiltRows(Run run, string layer, string path, Dictionary<string, string> settings,
+            StickOutput target, double rangeDeg, double innerDeg, double exponent, double anti)
         {
-            double ratio = 1.0;
-            if (settings.TryGetValue("sensitivity", out var sensRaw)
-                && double.TryParse(sensRaw, NumberStyles.Float, CultureInfo.InvariantCulture, out double sens)
-                && sens > 0)
-            {
-                ratio = Math.Clamp(sens / GenericBaseline, 0.05, 20.0);
-            }
-            string dst = ParseIntSetting(settings, "output_joystick", 0) == 1 ? "Left" : "Right";
             bool invertX = SettingIsOn(settings, "invert_x");
             bool invertY = SettingIsOn(settings, "invert_y");
-            int dzPct = GroupDeadZonePercent(settings);
-            // Round six (R5): the deflection pair reads Gyro Lean X/Y,
-            // which is not an Axis-path read, so the v25 geometry stamp
-            // cannot land and the authored radii ride the per-source
-            // DeadZone like every other non-stick pair host. This was
-            // the one pair emitter that dropped them with NO note; the
-            // residual (a no-op when the group authored no deadzone
-            // keys) keeps the import report honest.
-            ReportRadialDeadZoneResidual(run, settings, path);
-
-            MappingSource MakeLean(string descriptor, bool invert)
+            bool gated = ResolveGyroActivation(run, settings).Mask != 0;
+            MappingSource Make(string descriptor, bool invert)
             {
                 var src = new MappingSource
                 {
                     Descriptor = descriptor,
-                    Sensitivity = 2.0 * ratio,
+                    ParamTiltRangeDeg = rangeDeg,
+                    ParamTiltInnerDz = innerDeg,
                 };
-                if (dzPct > 0) src.DeadZone = dzPct;
+                if (gated) src.GateDescriptor = PadForge.Engine.Common.Mapping.SourceCoercion.GyroEngagedDescriptor;
+                if (exponent > 0 && exponent != 1.0) src.ParamCurveExponent = exponent;
+                if (anti > 0 && anti < 1.0) src.ParamAntiDeadzone = anti;
                 if (invert) src.Invert = true;
                 return src;
             }
-
-            AddRowSource(run, isKbm: false, layer, $"{dst}ThumbAxisX",
-                MakeLean(PadForge.Engine.Common.Mapping.SourceCoercion.GyroLeanXDescriptor, invertX),
+            bool kbm = target == StickOutput.Mouse;
+            string x = kbm ? "KbmMouseX" : (target == StickOutput.Left ? "LeftThumbAxisX" : "RightThumbAxisX");
+            string y = kbm ? "KbmMouseY" : (target == StickOutput.Left ? "LeftThumbAxisY" : "RightThumbAxisY");
+            AddRowSource(run, isKbm: kbm, layer, x,
+                Make(PadForge.Engine.Common.Mapping.SourceCoercion.GyroTiltXDescriptor, invertX),
                 isAxis: true, TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
-            AddRowSource(run, isKbm: false, layer, $"{dst}ThumbAxisY",
-                MakeLean(PadForge.Engine.Common.Mapping.SourceCoercion.GyroLeanYDescriptor, invertY),
+            AddRowSource(run, isKbm: kbm, layer, y,
+                Make(PadForge.Engine.Common.Mapping.SourceCoercion.GyroTiltYDescriptor, invertY),
                 isAxis: true, TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
-
             if (SettingIsOn(settings, "invert_z"))
                 ReportUnappliedInversion(run, path, "invert_z");
+        }
+
+        /// <summary>A joystick-class group on the gyro (joystick_move,
+        /// joystick_mouse, Joystick Camera): the client reads the gyro as
+        /// a stick POSITION, the controller's tilt (steamclient64.dll's gyro
+        /// read for those classes: "Deflects a virtual joystick, using your
+        /// gyro position directly", the client's own mode text). X is the
+        /// roll measured from the horizon and Y the pitch measured from
+        /// gyro_neutral (0 to 32767 for 0 to 90 degrees, default 16384, 45
+        /// degrees). Each axis is 0 inside deadzone_inner_radius / 32767 *
+        /// 90 degrees and full at 2.8125 + deadzone_outer_radius / 32767 *
+        /// 87.1875 degrees, the outer radius starting at 16000 off a stick,
+        /// so 45.4 degrees. That is the tilt pair's own envelope, so the
+        /// radii land on it exactly. PadForge measures tilt from the pose the
+        /// controller rests in at the start and on Gyro Recenter, and both
+        /// lines say so. The curve cluster rides the pair (the exponent and
+        /// the anti-deadzone, the read's own shaping). The tilt read takes
+        /// no sensitivity, so a set speed or axis scale is named.</summary>
+        private void EmitGyroTiltPair(Run run, string layer, string path, Dictionary<string, string> settings,
+            StickOutput target, string mode)
+        {
+            double Fraction(string key, int fallback)
+                => Math.Clamp(ParseIntSetting(settings, key, fallback) / 32767.0, 0.0, 1.0);
+            double inner = Fraction("deadzone_inner_radius", 0) * 90.0;
+            double range = 2.8125 + Fraction("deadzone_outer_radius", 16000) * 87.1875;
+            double neutral = Fraction("gyro_neutral", 16384) * 90.0;
+            var curve = CurveRangeChannel.FromSettings(settings);
+            AddGyroTiltRows(run, layer, path, settings, target, range, inner, curve.Exponent, curve.Anti);
+
+            var unread = new List<string>();
+            if (settings.ContainsKey("sensitivity") && (target == StickOutput.Mouse || mode == "joystick_camera"))
+                unread.Add("sensitivity");
+            foreach (var key in new[] { "sensitivity_horiz_scale", "sensitivity_vert_scale" })
+                if (ParseIntSetting(settings, key, 100) != 100) unread.Add(key);
+            if (unread.Count > 0)
+            {
+                run.Report.Add(TranslationStatus.Partial, TranslationReasons.ResponseCurveNotSupported,
+                    path, args: string.Join(", ", unread));
+            }
+            run.Report.Add(TranslationStatus.Partial, TranslationReasons.GyroRollFromHorizon, path);
+            run.Report.Add(TranslationStatus.Partial, TranslationReasons.GyroPitchFromHorizon, path,
+                args: Math.Round(neutral).ToString("0", CultureInfo.InvariantCulture));
+        }
+
+        /// <summary>gyro_to_joystick_deflection, as the client runs it
+        /// (steamclient64.dll's deflection mode). The tilt from a reference
+        /// pose is 0 at or below gyro_deflection_to_joystick_min (default
+        /// 2 degrees) and reaches gyro_to_joystick_out_min + (out_max -
+        /// out_min) * t ^ (gyro_to_joystick_power_curve / 100) at t = (angle
+        /// - min) / (max - min), full at gyro_deflection_to_joystick_max
+        /// (default 45 degrees). The output range is a tenth of a percent
+        /// (0 to 1000, default 0 and 1000). That is the tilt pair's read
+        /// exactly, per axis: range = max, inner = min, the exponent the
+        /// power and the anti-deadzone floor the minimum output
+        /// (anti + (1 - anti) * shaped). Steam differs in three defaults,
+        /// each named. Its Response Axis Style (acceleration_axis_style,
+        /// default 1, Circular) maps the length of the tilt vector, not each
+        /// axis. Its Drag Center Point (gyro_to_joystick_enable_angle_catchup,
+        /// default on) drags the reference along past the maximum. And with
+        /// no gyro button, or with Use Relative Pitch or Roll
+        /// (gyro_to_joystick_deflection_use_gravity, _use_gravity_roll,
+        /// default on) off, it measures that axis from the horizon, the
+        /// pitch from the World Tilt Offset
+        /// (gyro_to_joystick_deflection_neutral_angle, 15 degrees on a
+        /// standalone controller and 85 on a handheld). With a gyro button
+        /// and Use Relative on it takes the controller's pose each time the
+        /// gyro turns on ("Each time the Gyro Button is pressed, the current
+        /// orientation of the controller is used as the new resting point"),
+        /// which the import reproduces by re-centering the gyro when it
+        /// engages (<see cref="TranslatedProfile.GyroRecenterOnEngage"/>).
+        /// The default output stick is the left one (OutputJoystick).</summary>
+        private void EmitGyroDeflection(Run run, string layer, string path, Dictionary<string, string> settings)
+        {
+            var target = OutputJoystick(settings, "gyro_to_joystick_deflection", SteamSlot.Gyro);
+            if (target is not (StickOutput.Left or StickOutput.Right))
+            {
+                ReportOutputUnrouted(run, path,
+                    settings.TryGetValue("output_joystick", out var ojRaw) ? (ojRaw ?? "").Trim() : "");
+                return;
+            }
+
+            double min = Math.Clamp(ParseIntSetting(settings, "gyro_deflection_to_joystick_min", 2), 0, 180);
+            double max = Math.Clamp(ParseIntSetting(settings, "gyro_deflection_to_joystick_max", 45), 0, 180);
+            if (min > max) (min, max) = (max, min);
+            if (max > 90)
+            {
+                run.Report.Add(TranslationStatus.Partial, TranslationReasons.GyroTiltRangeCapped, path,
+                    args: max.ToString("0", CultureInfo.InvariantCulture));
+            }
+            // The read's range runs 1 to 90 degrees. A maximum at 0 makes the
+            // client's map a step, which a 1-degree range comes nearest to.
+            double range = Math.Clamp(max, 1.0, 90.0);
+            double inner = Math.Min(min, range);
+            double power = Math.Clamp(ParseIntSetting(settings, "gyro_to_joystick_power_curve", 100), 10, 400) / 100.0;
+            double outMin = Math.Clamp(ParseIntSetting(settings, "gyro_to_joystick_out_min", 0), 0, 1000) / 1000.0;
+            double outMax = Math.Clamp(ParseIntSetting(settings, "gyro_to_joystick_out_max", 1000), 0, 1000) / 1000.0;
+            if (outMin > outMax) (outMin, outMax) = (outMax, outMin);
+            AddGyroTiltRows(run, layer, path, settings, target, range, inner, power, outMin);
+
+            bool drag = ParseIntSetting(settings, "gyro_to_joystick_enable_angle_catchup", 1) != 0;
+            bool circular = ParseIntSetting(settings, "acceleration_axis_style", 1) != 0;
+            bool lockEdges = ParseIntSetting(settings, "gyro_lock_extents", 0) != 0;
+            var dropped = new List<string>();
+            if (outMax < 1.0) dropped.Add("gyro_to_joystick_out_max");
+            if (drag) dropped.Add("gyro_to_joystick_enable_angle_catchup");
+            if (dropped.Count > 0)
+            {
+                run.Report.Add(TranslationStatus.Partial, TranslationReasons.ResponseCurveNotSupported,
+                    path, args: string.Join(", ", dropped));
+            }
+            // A circular map with no dead zone, a linear curve and no floor
+            // is the per-axis map. Lock at Edges clamps the vector radially
+            // in either style.
+            var radial = new List<string>();
+            if (circular && (inner > 0 || power != 1.0 || outMin > 0))
+            {
+                radial.Add("gyro_deflection_to_joystick_min");
+                radial.Add("gyro_deflection_to_joystick_max");
+                if (power != 1.0) radial.Add("gyro_to_joystick_power_curve");
+                if (outMin > 0) radial.Add("gyro_to_joystick_out_min");
+            }
+            if (lockEdges) radial.Add("gyro_lock_extents");
+            if (radial.Count > 0)
+            {
+                run.Report.Add(TranslationStatus.Partial, TranslationReasons.DeadZoneRadialResidual,
+                    path, args: string.Join(", ", radial));
+            }
+
+            bool buttons = ResolveGyroActivation(run, settings).Mask != 0;
+            bool relativePitch = buttons
+                && ParseIntSetting(settings, "gyro_to_joystick_deflection_use_gravity", 1) != 0;
+            bool relativeRoll = buttons
+                && ParseIntSetting(settings, "gyro_to_joystick_deflection_use_gravity_roll", 1) != 0;
+            if (relativePitch || relativeRoll) run.Profile.GyroRecenterOnEngage = true;
+            if (!relativeRoll) run.Report.Add(TranslationStatus.Partial, TranslationReasons.GyroRollFromHorizon, path);
+            if (!relativePitch)
+            {
+                int worldTilt = ParseIntSetting(settings, "gyro_to_joystick_deflection_neutral_angle",
+                    run.HandheldWorldTilt ? 85 : 15);
+                run.Report.Add(TranslationStatus.Partial, TranslationReasons.GyroPitchFromHorizon, path,
+                    args: Math.Clamp(worldTilt, -90, 90).ToString(CultureInfo.InvariantCulture));
+            }
         }
 
         /// <summary>flickstick groups (#225, widened in v26): the host
@@ -3776,9 +4432,22 @@ namespace PadForge.SteamWorkshop.Translation
         // ─────────────────────────────────────────────
 
         private void TranslateInput(Run run, SteamInputPreset preset, SteamInputInput input,
-            ResolvedSource source, string clickGate, string layer, string path)
+            ResolvedSource source, string clickGate, string layer, string path, SteamSlot? slot = null)
         {
             run.CurrentLayer = layer; // #254 A-2: macro emitters stamp this
+            // A Soft Press on Hip Fire Exclusive holds its member's other
+            // presses off while it is held. On a trigger's click those presses
+            // are the full pull, which the same machine reads.
+            ResolvedSource exclusiveFull = null;
+            if (slot is SteamSlot.LeftTrigger or SteamSlot.RightTrigger
+                && string.Equals(input.Name, "click", StringComparison.OrdinalIgnoreCase))
+            {
+                var exclusive = input.Activators.FirstOrDefault(a =>
+                    string.Equals((a.Type ?? "").Trim(), "soft_press", StringComparison.OrdinalIgnoreCase)
+                    && SoftPressStyle(a) == 5);
+                if (exclusive != null)
+                    exclusiveFull = SoftPressSource(run, slot, input.Name, exclusive, source, full: true);
+            }
             foreach (var activator in input.Activators)
             {
                 string type = (activator.Type ?? "").Trim();
@@ -3791,9 +4460,17 @@ namespace PadForge.SteamWorkshop.Translation
                 {
                     case "full_press":
                     case "start_press":
+                        if (exclusiveFull != null) hostSource = exclusiveFull;
                         break;
                     case "soft_press":
                         soft = true;
+                        hostSource = SoftPressSource(run, slot, input.Name, activator, source, full: false);
+                        if (hostSource == null)
+                        {
+                            foreach (var b in activator.Bindings)
+                                ReportSkipUnlessSilent(run, TranslationReasons.SoftPressNoAnalog, actPath, b);
+                            continue;
+                        }
                         break;
                     case "release":
                         onRelease = true;
@@ -3891,6 +4568,73 @@ namespace PadForge.SteamWorkshop.Translation
                 EmitHapticPulse(run, activator, hostSource, input.Name, actPath,
                     onRelease ? "OnRelease" : "OnPress", holdMs: 0);
                 ConsumeActivatorDelays(run, activator, actPath, macrosBefore, activatorsBefore);
+            }
+        }
+
+        private static int SoftPressStyle(SteamInputActivator activator)
+            => activator.Settings.TryGetValue("soft_press_sytle", out var raw)
+               && int.TryParse((raw ?? "").Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int v)
+                ? Math.Clamp(v, 0, 5) : 0;
+
+        /// <summary><para>Steam's Soft Press activator reads one analog value,
+        /// picked by its table (steamclient64.dll 0x1392dc500) from the
+        /// hosting input and the member: a trigger's pull for its click or
+        /// edge, a stick's or a side trackpad's component toward a dpad
+        /// direction, the position's length for an edge, and the pad's pressure
+        /// for a side trackpad's click. The value passes activation_threshold
+        /// (default 4096) through a trigger with 5 percent of 32255 as
+        /// hold-back (0x138627c50), inside it when the activator's
+        /// edge_binding_invert is set, by the style soft_press_sytle (default
+        /// Simple). A Hip Fire style lets the full pull cancel a waiting press.
+        /// Null for any other input, which reads no value, so Steam never
+        /// fires it.</para>
+        /// <para>A side trackpad's click keeps the click: Steam fills pad
+        /// pressure only on the Steam Controller and the Steam Deck
+        /// (0x138679f7d), and SDL reports a touch as full pressure on the other
+        /// pads, so a pressure read would fire on any touch there.</para></summary>
+        private static ResolvedSource SoftPressSource(Run run, SteamSlot? slot, string inputName,
+            SteamInputActivator activator, ResolvedSource source, bool full)
+        {
+            if (slot == null) return source;
+            string name = (inputName ?? "").ToLowerInvariant();
+            int threshold = activator.Settings.TryGetValue("activation_threshold", out var at)
+                && int.TryParse((at ?? "").Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int atv)
+                    ? Math.Clamp(atv, 0, 32767) : 4096;
+            int style = SoftPressStyle(activator);
+            bool inner = activator.Settings.TryGetValue("edge_binding_invert", out var iv) && (iv ?? "").Trim() != "0";
+            switch (slot.Value)
+            {
+                case SteamSlot.LeftTrigger:
+                case SteamSlot.RightTrigger:
+                    if (name is not ("click" or "edge")) return null;
+                    string axis = slot == SteamSlot.LeftTrigger ? "Gamepad LeftTrigger" : "Gamepad RightTrigger";
+                    return new ResolvedSource
+                    {
+                        Descriptor = BoundedReads.Press(style, full, threshold, inner, style >= 2, "-", axis),
+                    };
+                case SteamSlot.Joystick:
+                case SteamSlot.RightJoystick:
+                case SteamSlot.LeftTrackpad:
+                case SteamSlot.RightTrackpad:
+                    if (name == "click")
+                        return slot is SteamSlot.LeftTrackpad or SteamSlot.RightTrackpad ? source : null;
+                    string component = name switch
+                    {
+                        "dpad_north" => "Y-",
+                        "dpad_south" => "Y+",
+                        "dpad_east" => "X+",
+                        "dpad_west" => "X-",
+                        "edge" => "len",
+                        _ => null,
+                    };
+                    if (component == null) return null;
+                    string pair = PairFor(run, slot.Value, PhysicalSlotResolver.HalfFor(slot.Value, run.SinglePadTrackpads));
+                    return new ResolvedSource
+                    {
+                        Descriptor = BoundedReads.Press(style, false, threshold, inner, false, component, pair),
+                    };
+                default:
+                    return null;
             }
         }
 
@@ -4930,7 +5674,7 @@ namespace PadForge.SteamWorkshop.Translation
                             inputName, intervalMs);
                         break;
                     }
-                    var src = BuildSource(source, soft);
+                    var src = BuildSource(source);
                     // Compose the wheel direction with a member-level
                     // output flip (a scrollwheel counterclockwise drag,
                     // v10 G4). On a non-half source Invert IS the output
@@ -5165,7 +5909,7 @@ namespace PadForge.SteamWorkshop.Translation
             ResolvedSource source, string clickGate, string layer, string path, bool soft,
             XInputTargetTable.XInputTarget xt)
         {
-            var src = BuildSource(source, soft);
+            var src = BuildSource(source);
             bool memberFlip = !src.HalfAxis && src.Invert;
             if (memberFlip) src.Invert = false;
             SetOutputInvert(src, xt.StickAxisNegative ^ memberFlip);
@@ -5641,7 +6385,13 @@ namespace PadForge.SteamWorkshop.Translation
             {
                 macro.TriggerXboxButtons = source.XboxButtonBit;
                 macro.TriggerAxisTarget = source.XboxButtonBit == 0 ? source.MacroAxisTarget ?? "" : "";
-                macro.TriggerAxisThresholdPercent = source.DeadZone > 0 ? source.DeadZone : 50;
+                // The combined output carries the pull itself, and a trigger
+                // pull's half-axis read fires past the upper half's dead zone,
+                // so the output threshold is 50 + DeadZone / 2 percent: the
+                // macro fires at the pull its rows fire at.
+                macro.TriggerAxisThresholdPercent = source.IsAnalogTriggerPull && source.HalfAxis
+                    ? 50 + source.DeadZone / 2
+                    : source.DeadZone > 0 ? source.DeadZone : 50;
                 // Keep the hosting input's own descriptor. A combined-output
                 // trigger only fires if some row actually FEEDS that bit, and
                 // the macro-backed key forms (autofire / on-release) emit no
@@ -6759,7 +7509,7 @@ namespace PadForge.SteamWorkshop.Translation
         // self-arms every referenced gesture family at apply. Soft_Press
         // rows report Clean since v17: "approximated as a press
         // threshold" described exactly what a soft press is, so the note
-        // was noise. The threshold lowering stays in BuildSource.
+        // was noise. The read itself is SoftPressSource's.
         private static TranslationStatus StatusFor(ResolvedSource source)
             => source.PartialReasonKey != null ? TranslationStatus.Partial
              : TranslationStatus.Clean;
@@ -6767,7 +7517,7 @@ namespace PadForge.SteamWorkshop.Translation
         private static string ReasonFor(ResolvedSource source)
             => source.PartialReasonKey ?? TranslationReasons.RowEmitted;
 
-        private static MappingSource BuildSource(ResolvedSource source, bool soft)
+        private static MappingSource BuildSource(ResolvedSource source)
         {
             var src = new MappingSource
             {
@@ -6776,7 +7526,6 @@ namespace PadForge.SteamWorkshop.Translation
                 Invert = source.Invert,
             };
             if (source.DeadZone > 0) src.DeadZone = source.DeadZone;
-            if (soft && source.IsAnalogTriggerPull) src.DeadZone = 15;
             // The AND companion rides the source itself since v18
             // (MappingSource.GateDescriptor, evaluated like the chord
             // second leg), so multi-source rows keep every gate. The
@@ -6793,7 +7542,7 @@ namespace PadForge.SteamWorkshop.Translation
             ResolvedSource source, string clickGate, bool isAxis, bool soft,
             string path, string binding)
         {
-            var src = BuildSource(source, soft);
+            var src = BuildSource(source);
             // The group-level requires_click gate (trackpad D-pad wedges)
             // and the source's own GateDescriptor (a single-pad click gated
             // on its half's touch spot, #9 B-1) never co-occur: wedges
@@ -7160,7 +7909,7 @@ namespace PadForge.SteamWorkshop.Translation
                 var key = (false, id.Layer, id.Target);
                 if (run.Rows.TryGetValue(key, out var row))
                 {
-                    var src = BuildSource(id.Source, soft: false);
+                    var src = BuildSource(id.Source);
                     row.Sources.Add(src);
                     run.Report.Add(TranslationStatus.Clean, TranslationReasons.RowEmitted,
                         id.Path, id.Binding, $"{id.Target} <- {src.Descriptor}");
@@ -7171,7 +7920,7 @@ namespace PadForge.SteamWorkshop.Translation
                     // identity for the same target absorbs above) and emits
                     // the Clean RowEmitted entry.
                     AddRowSource(run, isKbm: false, id.Layer, id.Target,
-                        BuildSource(id.Source, soft: false), id.IsAxis,
+                        BuildSource(id.Source), id.IsAxis,
                         TranslationStatus.Clean, TranslationReasons.RowEmitted,
                         id.Path, id.Binding);
                 }
@@ -7210,6 +7959,9 @@ namespace PadForge.SteamWorkshop.Translation
             // counts and NeedsXboxSlot below: rewriting a trigger off the Xbox
             // output can be what decides a macro no longer needs an Xbox slot.
             FinalizeMacroTriggers(run);
+
+            // Every gyro group is seen, so the engage stamps can be picked.
+            FinalizeGyroActivation(run);
 
             // Haptics carry no note since v22: activator-level intensities
             // became RumblePulse macros in v10 (G1) and the group-level

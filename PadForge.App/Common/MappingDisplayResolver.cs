@@ -1085,9 +1085,41 @@ namespace PadForge.Common
         private static string BoundedReadText(PadForge.Engine.Common.Mapping.BoundedRead read, DeviceObjectItem[] objects, bool padPrefixAlways)
         {
             var si = Strings.Instance;
-            string inner = ResolveDescriptorText(read.Inner, objects, padPrefixAlways) ?? read.Inner;
+            string inner = PadForge.Engine.Common.Mapping.SourceCoercion.TryParseGyroTiltPair(read.Inner, out _, out _)
+                ? si.Pad_GyroTilt_Header
+                : ResolveDescriptorText(read.Inner, objects, padPrefixAlways) ?? read.Inner;
             switch (read.Kind)
             {
+                case PadForge.Engine.Common.Mapping.BoundedReadKind.Wedge:
+                    return string.Format(si.Mapping_Sector_Format, inner, ResolvePovDirection(NearestDirection(read.Center)));
+                case PadForge.Engine.Common.Mapping.BoundedReadKind.Disc:
+                    double bearing = System.Math.Atan2(-read.CenterY, read.CenterX) * 180.0 / System.Math.PI;
+                    return string.Format(si.Mapping_Sector_Format, inner,
+                        ResolvePovDirection(NearestDirection(bearing < 0 ? bearing + 360.0 : bearing)));
+                case PadForge.Engine.Common.Mapping.BoundedReadKind.Ring:
+                    return inner;
+                case PadForge.Engine.Common.Mapping.BoundedReadKind.Hold:
+                    return string.Format(si.Mapping_Sector_Format, inner, ResolvePovDirection(ComponentWay(read)));
+                case PadForge.Engine.Common.Mapping.BoundedReadKind.Level:
+                case PadForge.Engine.Common.Mapping.BoundedReadKind.Pull:
+                case PadForge.Engine.Common.Mapping.BoundedReadKind.Press:
+                    // A pair's length is its edge, a component the way it
+                    // points, and a trigger its pull and style.
+                    if (read.ComponentAxis == 2) return inner;
+                    if (read.ComponentAxis >= 0)
+                        return string.Format(si.Mapping_Sector_Format, inner, ResolvePovDirection(ComponentWay(read)));
+                    if (read.Kind == PadForge.Engine.Common.Mapping.BoundedReadKind.Level)
+                        return string.Format(si.Mapping_Sector_Format, inner,
+                            read.PressRadius < 50 ? si.Mapping_Stage_Soft : si.Mapping_Stage_Full);
+                    string pull = read.IsFull ? si.Mapping_Stage_Full : si.Mapping_Stage_Soft;
+                    return read.Style switch
+                    {
+                        0 => string.Format(si.Mapping_Sector_Format, inner, pull),
+                        1 => string.Format(si.Mapping_StageNoWait_Format, inner, si.Mapping_Stage_HairTrigger, pull),
+                        _ => string.Format(si.Mapping_Stage_Format, inner,
+                            read.Style == 5 ? si.Mapping_Stage_HipFireExclusive : si.Mapping_Stage_HipFire, pull,
+                            PadForge.Engine.Common.Mapping.BoundedReads.HipFireWindowMs(read.Style)),
+                    };
                 case PadForge.Engine.Common.Mapping.BoundedReadKind.Between:
                     string half = read.HalfAxis ? HalfDirection(read.Inner, read.Invert) : null;
                     if (half != null) inner = string.Format(si.Mapping_Sector_Format, inner, ResolvePovDirection(half));
@@ -1110,6 +1142,13 @@ namespace PadForge.Common
                         : string.Format(si.Mapping_Stage_Format, inner, mode, stage, read.WaitMs);
             }
         }
+
+        /// <summary>The way a component read points: X is right and left, Y
+        /// down and up (the pair's frame, +Y down).</summary>
+        private static string ComponentWay(PadForge.Engine.Common.Mapping.BoundedRead read)
+            => read.ComponentAxis == 0
+                ? (read.ComponentSign < 0 ? "Left" : "Right")
+                : (read.ComponentSign < 0 ? "Up" : "Down");
 
         /// <summary>The way a half-axis read of a stick or the gyro points, in
         /// the import tables' convention (Invert is up on a stick's Y, and down

@@ -70,14 +70,19 @@ namespace PadForge.SteamWorkshop.Tests
 
         // ─── Gyro-hosted dpad: lean wedges ──────────────────────────────
 
+        private static string TiltPair(int deadzone)
+            => "Gyro Tilt " + System.Math.Round(deadzone / 32767.0 * 90.0, 4)
+                .ToString(System.Globalization.CultureInfo.InvariantCulture) + " 90";
+
         [Fact]
-        public void GyroDpad_LowersOntoLeanWedges_WithTheStickTable()
+        public void GyroDpad_ReadsSteamsWedges_OnTheTiltPastTheDeadZonesAngle()
         {
-            // Wild witness 707592150: gyro dpad members bind keys. The
-            // wedge table mirrors the stick-as-dpad table exactly: north =
-            // Lean Y negative half (tilt the top edge away = push the
-            // "stick" forward), south = positive (nose up = pull back),
-            // east / west = Lean X halves.
+            // Wild witness 707592150: gyro dpad members bind keys. Steam's
+            // dpad on the gyro (steamclient64.dll 0x1388b2b90) reads the
+            // tilt past deadzone / 32767 * 90 degrees (27.5 by default) out to
+            // 90 and engages and picks the direction as on a stick. With no
+            // gyro button key the Steam Controller's right pad touch turns
+            // the gyro on, so the reads rest while it is off.
             string vdf = Head
                 + Group(1, "dpad", Inputs(
                     Inp("dpad_north", "key_press W"),
@@ -87,58 +92,57 @@ namespace PadForge.SteamWorkshop.Tests
                 + Preset(0, "Default", (1, "gyro active"))
                 + "}\n";
             var p = Translate(vdf);
-
-            var leanSources = p.KbmMappingSet.Rows
-                .SelectMany(r => r.Sources)
-                .Where(s => (s.Descriptor ?? "").StartsWith("Gyro Lean"))
-                .ToList();
-            Assert.Equal(4, leanSources.Count);
-            Assert.All(leanSources, s => Assert.True(s.HalfAxis));
-            // Unauthored deadzone: the 22.5-degree tilt default.
-            Assert.All(leanSources, s => Assert.Equal(25, s.DeadZone));
-            var shapes = leanSources
-                .Select(s => (s.Descriptor, s.Invert))
-                .OrderBy(t => t.Descriptor).ThenBy(t => t.Invert)
-                .ToArray();
-            Assert.Equal(new[]
-            {
-                ("Gyro Lean X", false), // east
-                ("Gyro Lean X", true),  // west
-                ("Gyro Lean Y", false), // south (nose up = pull back)
-                ("Gyro Lean Y", true),  // north (tilt away = push forward)
-            }, shapes);
+            string pair = TiltPair(10000);
+            var reads = p.KbmMappingSet.Rows.SelectMany(r => r.Sources).Select(s => s.Descriptor).OrderBy(d => d).ToArray();
+            Assert.Equal(new[] { 0.0, 90.0, 180.0, 270.0 }
+                .Select(b => SteamPadExpect.Wedge(b, PadForge.Engine.Common.Mapping.BoundedGate.Engaged, pair))
+                .OrderBy(d => d).ToArray(), reads);
+            Assert.Contains(p.Report.Entries, e => e.ReasonKey == TranslationReasons.GyroRollFromHorizon);
+            var pitch = Assert.Single(p.Report.Entries, e => e.ReasonKey == TranslationReasons.GyroPitchFromHorizon);
+            Assert.Equal("45", Assert.Single(pitch.ReasonArgs));
             Assert.DoesNotContain(p.Report.Entries,
                 e => e.ReasonKey == TranslationReasons.UnknownPhysicalInput);
         }
 
         [Fact]
-        public void GyroDpad_AuthoredDeadzone_OverridesTheTiltDefault()
+        public void GyroDpad_AuthoredDeadzone_SetsTheTiltAngleAndTheEngage()
         {
-            // 707592150-style authored deadzone 14010 = 43% = a 38-degree
-            // wedge.
+            // 707592150-style authored deadzone 14010: the tilt reads past
+            // 38.5 degrees, and the dpad engages past 14010 plus 1.25 percent.
             string vdf = Head
                 + Group(1, "dpad",
                     Inputs(Inp("dpad_east", "key_press E"))
+                    + Settings(("deadzone", "14010"), ("gyro_ratchet_button_mask", "0")))
+                + Preset(0, "Default", (1, "gyro active"))
+                + "}\n";
+            var p = Translate(vdf);
+            var src = Assert.Single(Assert.Single(p.KbmMappingSet.Rows).Sources);
+            Assert.Equal(SteamPadExpect.Wedge(0, PadForge.Engine.Common.Mapping.BoundedGate.None, TiltPair(14010), deadzone: 14010),
+                src.Descriptor);
+        }
+
+        [Fact]
+        public void GyroFourButtons_PressesPast22AndAHalfDegrees_TheNorthCellOnTheDpadsSouthTilt()
+        {
+            // Steam's four_buttons on the gyro (0x1388b6b99) presses a cell
+            // past a fixed 22.5 degrees whatever the dead zone, its north cell
+            // (Y) for the tilt the gyro dpad calls south and its south cell
+            // (A) for the dpad's north.
+            string vdf = Head
+                + Group(1, "four_buttons", Inputs(Inp("button_a", "key_press 1"), Inp("button_y", "key_press 2"))
                     + Settings(("deadzone", "14010")))
                 + Preset(0, "Default", (1, "gyro active"))
                 + "}\n";
             var p = Translate(vdf);
-            var src = Assert.Single(Assert.Single(p.KbmMappingSet.Rows).Sources);
-            Assert.Equal(43, src.DeadZone);
-        }
-
-        [Fact]
-        public void GyroFourButtons_FoldOntoLeanSeats()
-        {
-            string vdf = Head
-                + Group(1, "four_buttons", Inputs(Inp("button_a", "key_press 1")))
-                + Preset(0, "Default", (1, "gyro active"))
-                + "}\n";
-            var p = Translate(vdf);
-            var src = Assert.Single(Assert.Single(p.KbmMappingSet.Rows).Sources);
-            Assert.Equal("Gyro Lean Y", src.Descriptor); // A = south seat
-            Assert.True(src.HalfAxis);
-            Assert.False(src.Invert);
+            var a = Assert.Single(Assert.Single(p.KbmMappingSet.Rows, r => r.Target == "KbmKey31").Sources);
+            Assert.Equal("Gyro Lean Y", a.Descriptor);
+            Assert.True(a.HalfAxis);
+            Assert.True(a.Invert);
+            Assert.Equal(25, a.DeadZone);
+            var y = Assert.Single(Assert.Single(p.KbmMappingSet.Rows, r => r.Target == "KbmKey32").Sources);
+            Assert.False(y.Invert);
+            var pitch = Assert.Single(p.Report.Entries, e => e.ReasonKey == TranslationReasons.GyroPitchFromHorizon);
+            Assert.Equal("45", Assert.Single(pitch.ReasonArgs));
         }
 
         // ─── gyro_to_joystick / _deflection ─────────────────────────────
@@ -160,24 +164,28 @@ namespace PadForge.SteamWorkshop.Tests
         }
 
         [Fact]
-        public void GyroToJoystickDeflection_EmitsTheLeanPair()
+        public void GyroToJoystickDeflection_EmitsTheTiltPair()
         {
+            // output_joystick 1 is the right stick (the configurator's
+            // LeftJoystick 0, RightJoystick 1).
             string vdf = Head
                 + Group(1, "gyro_to_joystick_deflection",
                     Inputs() + Settings(("output_joystick", "1")))
                 + Preset(0, "Default", (1, "gyro active"))
                 + "}\n";
             var p = Translate(vdf);
-            var x = Assert.Single(p.XboxMappingSet.Rows, r => r.Target == "LeftThumbAxisX");
-            var y = Assert.Single(p.XboxMappingSet.Rows, r => r.Target == "LeftThumbAxisY");
-            var sx = Assert.Single(x.Sources);
-            var sy = Assert.Single(y.Sources);
-            Assert.Equal("Gyro Lean X", sx.Descriptor);
-            Assert.Equal("Gyro Lean Y", sy.Descriptor);
-            // Full deflection at 45 degrees of tilt (the JSM motion-stick
-            // envelope): Sensitivity 2.0 on the 90-degree lean scale.
-            Assert.Equal(2.0, sx.Sensitivity, 3);
-            Assert.Equal(2.0, sy.Sensitivity, 3);
+            var x = Assert.Single(p.XboxMappingSet.Rows, r => r.Target == "RightThumbAxisX");
+            var y = Assert.Single(p.XboxMappingSet.Rows, r => r.Target == "RightThumbAxisY");
+            var sx = x.Sources.Single(s => s.Descriptor.StartsWith("Gyro Tilt"));
+            var sy = y.Sources.Single(s => s.Descriptor.StartsWith("Gyro Tilt"));
+            Assert.Equal("Gyro Tilt X", sx.Descriptor);
+            Assert.Equal("Gyro Tilt Y", sy.Descriptor);
+            // Full deflection at the client's default maximum of 45
+            // degrees, nothing inside its default minimum of 2.
+            Assert.Equal(45.0, sx.ParamTiltRangeDeg, 3);
+            Assert.Equal(2.0, sx.ParamTiltInnerDz, 3);
+            Assert.Equal(45.0, sy.ParamTiltRangeDeg, 3);
+            Assert.Equal(2.0, sy.ParamTiltInnerDz, 3);
             Assert.DoesNotContain(p.Report.Entries,
                 e => e.ReasonKey == TranslationReasons.UnknownGroupMode);
         }
@@ -223,9 +231,11 @@ namespace PadForge.SteamWorkshop.Tests
         [Fact]
         public void GyroButton_CapsenseBit_GroundsOnTheCapsenseRead()
         {
-            // gyro_button 46 = CapSenseLeftStick in the shipped enum.
+            // gyro_button 21 = GyroLStickTouch in the configurator's legacy
+            // list, which the client converts to mask bit 46, the left
+            // stick's capacitive touch.
             string vdf = Head
-                + Group(1, "gyro_to_mouse", Inputs() + Settings(("gyro_button", "46")))
+                + Group(1, "gyro_to_mouse", Inputs() + Settings(("gyro_button", "21")))
                 + Preset(0, "Default", (1, "gyro active"))
                 + "}\n";
             var p = Translate(vdf);
@@ -300,9 +310,7 @@ namespace PadForge.SteamWorkshop.Tests
             var p = Translate(vdf);
             var row = Assert.Single(p.KbmMappingSet.Rows, r => r.Target == "KbmKey45");
             var src = Assert.Single(row.Sources);
-            Assert.Equal("Touchpad 0 Finger 0 Ring Right", src.Descriptor);
-            Assert.True(src.Invert);
-            Assert.Equal(76, src.DeadZone); // 24999/32767
+            Assert.Equal(SteamPadExpect.Edge("Touchpad 0 Finger 0 Ring Right", 24999, inverted: true), src.Descriptor);
             Assert.DoesNotContain(p.Report.Entries,
                 e => e.ReasonKey == TranslationReasons.MouseRegionTuningDropped);
         }
@@ -345,10 +353,10 @@ namespace PadForge.SteamWorkshop.Tests
         // ─── Hotbar on button-pair hosts ────────────────────────────────
 
         [Fact]
-        public void Hotbar_OnTheDpad_BuildsAButtonPairGrid()
+        public void Hotbar_OnTheDpad_BuildsAHotbar()
         {
             // Wild witnesses 3256894758 / 3371006087 (dpad) and
-            // 2793649185 (diamond).
+            // 2793649185 (diamond). SteamHotbarImportTests pins the rest.
             string vdf = Head
                 + Group(1, "hotbar", Inputs(
                     Inp("touch_menu_button_0", "key_press 1"),
@@ -357,7 +365,7 @@ namespace PadForge.SteamWorkshop.Tests
                 + "}\n";
             var p = Translate(vdf);
             var menu = Assert.Single(p.Menus);
-            Assert.Equal(PadForge.Engine.Menus.MenuKind.Grid, menu.Kind);
+            Assert.Equal(PadForge.Engine.Menus.MenuKind.Hotbar, menu.Kind);
             Assert.Equal("Gamepad DPad", menu.HostDescriptor);
             Assert.DoesNotContain(p.Report.Entries,
                 e => e.ReasonKey == TranslationReasons.MenuSurfaceNotSupported);
@@ -369,9 +377,9 @@ namespace PadForge.SteamWorkshop.Tests
         public void WedgeFullPress_ChangePreset_LowersWithTheContactGate()
         {
             // Wild witness 2890096314: dpad_south/Full_Press CHANGE_PRESET
-            // on a single-pad trackpad dpad group. The wedge is the anchor
-            // D-pad gesture gated on its half's contact; the activator
-            // carries both legs (Kind=Chord: gesture bool + gate).
+            // on a single-pad trackpad dpad group. The activator reads Steam's
+            // dpad direction on the half, the click (on by default for a
+            // trackpad dpad) inside the read.
             string vdf = HeadPs5
                 + Group(1, "dpad", Inputs(
                     Inp("dpad_south", "controller_action CHANGE_PRESET 2 0 0")))
@@ -384,11 +392,8 @@ namespace PadForge.SteamWorkshop.Tests
                 e => e.ReasonKey == TranslationReasons.ActivatorInputNotSupported);
             var act = p.XboxMappingSet.ShiftActivators
                 .Concat(p.KbmMappingSet.ShiftActivators)
-                .First(a => a.Descriptor == "Touchpad 0 DPadDown");
-            Assert.Equal("Chord", act.Kind);
-            // requires_click defaults ON for dpad groups, so the gate is
-            // the half-windowed click (click + half in one composed read).
-            Assert.Equal("Touchpad 0 Click Left", act.ChordSecondDescriptor);
+                .Single(a => a.Descriptor == SteamPadExpect.Wedge(270, PadForge.Engine.Common.Mapping.BoundedGate.Click, "Touchpad 0 Finger 0 Ring Left"));
+            Assert.NotEqual("Chord", act.Kind);
         }
 
         [Fact]
@@ -417,9 +422,9 @@ namespace PadForge.SteamWorkshop.Tests
         [Fact]
         public void Chord_OnAGatedWedge_RidesTheSecondCompanion()
         {
-            // Wild witness 3290233831: single-pad trackpad D-pad wedges
-            // chorded with the right bumper. The half-contact gate keeps
-            // the primary slot; the partner rides Gate2.
+            // Wild witness 3290233831: single-pad trackpad D-pad
+            // directions chorded with the right bumper. The direction's read
+            // carries its click, and the bumper ANDs in as the gate.
             string vdf = HeadPs5
                 + Group(1, "dpad", Inputs(
                     Inp("dpad_north", "mouse_wheel SCROLL_UP", "chord",
@@ -429,20 +434,16 @@ namespace PadForge.SteamWorkshop.Tests
             var p = Translate(vdf);
             Assert.DoesNotContain(p.Report.Entries,
                 e => e.ReasonKey == TranslationReasons.UnknownActivatorType);
-            // requires_click defaults ON for dpad groups, so the direction
-            // carries TWO gates: the half-windowed click and the chord
-            // partner. Both are real sources, ANDed in order.
-            GateAssert.Gated(p.KbmMappingSet, "Touchpad 0 DPadUp",
-                "Touchpad 0 Click Left", "Gamepad RightShoulder");
+            GateAssert.Gated(p.KbmMappingSet, SteamPadExpect.Wedge(90, PadForge.Engine.Common.Mapping.BoundedGate.Click, "Touchpad 0 Finger 0 Ring Left"),
+                "Gamepad RightShoulder");
         }
 
         [Fact]
         public void ALayerVerbOnAGatedChordKeepsThePartnerToo()
         {
             // The same wild shape as the row case above, with a layer verb
-            // instead of a scroll. The activator path copied one gate where
-            // the row and macro paths copied two, so this engaged on the
-            // wedge and its click alone and the bumper was never required.
+            // instead of a scroll. The activator ANDs the direction's read,
+            // which carries its click, with the bumper.
             string vdf = HeadPs5
                 + Group(1, "dpad", Inputs(
                     Inp("dpad_north", "controller_action HOLD_LAYER 2 0 0", "chord",
@@ -457,20 +458,17 @@ namespace PadForge.SteamWorkshop.Tests
 
             var act = p.XboxMappingSet.ShiftActivators
                 .Concat(p.KbmMappingSet.ShiftActivators)
-                .First(a => a.Descriptor == "Touchpad 0 DPadUp");
+                .Single(a => a.Descriptor == SteamPadExpect.Wedge(90, PadForge.Engine.Common.Mapping.BoundedGate.Click, "Touchpad 0 Finger 0 Ring Left"));
             Assert.Equal("Chord", act.Kind);
-            Assert.Equal("Touchpad 0 Click Left", act.ChordSecondDescriptor);
-            Assert.Equal("Gamepad RightShoulder", act.Gate2Descriptor);
+            Assert.Equal("Gamepad RightShoulder", act.ChordSecondDescriptor);
         }
 
         [Fact]
         public void BothHalvesKeepTheirOwnChordPartner()
         {
-            // Two gated wedges on one physical pad, one per half, each
-            // chorded with a different shoulder. They share a descriptor and
-            // a layer and differ only in their two AND legs, so the trigger
-            // identity has to carry both legs or the second is folded into
-            // the first and one half stops needing its partner.
+            // Two directions on one physical pad, one per half, each chorded
+            // with a different shoulder. Each half reads its own direction
+            // and keeps its own partner.
             string vdf = HeadPs5
                 + Group(1, "dpad", Inputs(
                     Inp("dpad_north", "controller_action HOLD_LAYER 2 0 0", "chord",
@@ -484,18 +482,13 @@ namespace PadForge.SteamWorkshop.Tests
                 + "}\n";
             var p = Translate(vdf);
 
-            var wedges = p.XboxMappingSet.ShiftActivators
-                .Concat(p.KbmMappingSet.ShiftActivators)
-                .Where(a => a.Descriptor == "Touchpad 0 DPadUp")
-                .ToList();
-
-            Assert.Equal(2, wedges.Count);
-            // Each half kept its own click window...
-            Assert.Contains(wedges, a => a.ChordSecondDescriptor == "Touchpad 0 Click Left");
-            Assert.Contains(wedges, a => a.ChordSecondDescriptor == "Touchpad 0 Click Right");
-            // ...and neither lost its partner on the third leg.
-            Assert.All(wedges, a => Assert.StartsWith("Gamepad ", a.Gate2Descriptor));
-            Assert.Equal(2, wedges.Select(a => a.Gate2Descriptor).Distinct().Count());
+            var acts = p.XboxMappingSet.ShiftActivators.Concat(p.KbmMappingSet.ShiftActivators).ToList();
+            var left = Assert.Single(acts, a => a.Descriptor == SteamPadExpect.Wedge(90,
+                PadForge.Engine.Common.Mapping.BoundedGate.Click, "Touchpad 0 Finger 0 Ring Left"));
+            var right = Assert.Single(acts, a => a.Descriptor == SteamPadExpect.Wedge(90,
+                PadForge.Engine.Common.Mapping.BoundedGate.Click, "Touchpad 0 Finger 0 Ring Right"));
+            Assert.Equal("Gamepad RightShoulder", left.ChordSecondDescriptor);
+            Assert.Equal("Gamepad LeftShoulder", right.ChordSecondDescriptor);
         }
 
         // ─── Analog activator ───────────────────────────────────────────

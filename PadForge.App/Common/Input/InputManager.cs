@@ -670,10 +670,43 @@ namespace PadForge.Common.Input
         /// say.</summary>
         public volatile bool[] GyroRatchetHeld = new bool[MaxPads];
 
+        /// <summary>Per-slot Steam gyro activation lane: false while the
+        /// authoritative set's <c>WorkshopGyroActivation</c> entry says the
+        /// gyro is off for the engaged layer (or Base), true
+        /// otherwise and when the set has no lane. ANDed into
+        /// <see cref="SourceCoercion.AimEngageStateProvider"/> beside the
+        /// ratchet. Settled once per tick by
+        /// <see cref="UpdateGyroEngageStates"/>.</summary>
+        public volatile bool[] GyroActivationOn = CreateAllTrue();
+
+        private static bool[] CreateAllTrue()
+        {
+            var on = new bool[MaxPads];
+            System.Array.Fill(on, true);
+            return on;
+        }
+
+        /// <summary>The slot's resolved gyro engage state, what
+        /// <see cref="SourceCoercion.AimEngageStateProvider"/> answers: the
+        /// engage button or the macro on, no ratchet held, and the activation
+        /// lane on. A slot out of range reads as engaged.</summary>
+        public bool IsGyroEngaged(int slot)
+            => (uint)slot >= MaxPads
+                || ((GyroEngagedFromButton[slot] || GyroEngagedFromMacro[slot])
+                    && !GyroRatchetHeld[slot] && GyroActivationOn[slot]);
+
         /// <summary>Previous-tick button state for each slot's engage
         /// button. Owned by <see cref="UpdateGyroEngageStates"/> as the
         /// edge-detection input for Toggle mode.</summary>
         private readonly bool[] _prevAimEngageButtonDown = new bool[MaxPads];
+
+        /// <summary>Each slot's activation lane state per layer entry (the
+        /// previous tick's held state and the sticky Toggle bit), and the
+        /// slot's previous resolved engage state for the re-center on each
+        /// activation. Polling thread only.</summary>
+        private readonly Dictionary<MappingSet.GyroActivationEntry, (bool Prev, bool On)>[] _activationToggled
+            = new Dictionary<MappingSet.GyroActivationEntry, (bool Prev, bool On)>[MaxPads];
+        private readonly bool[] _prevGyroEngagedResolved = new bool[MaxPads];
 
         /// <summary>Reused scratch for the device-free gyro-engage walk
         /// (P1): filled under the settings lock, read outside it, cleared
@@ -2624,6 +2657,9 @@ namespace PadForge.Common.Input
             public string DeviceGuid = "";
             public string Mode = "Hold";
             public string[] Ratchets;
+            public Dictionary<string, MappingSet.GyroActivationEntry> Activation;
+            public MappingSet ActivationSet;
+            public bool RecenterOnEngage;
             public string[] SlotGuids = System.Array.Empty<string>();
         }
         private readonly GyroEngageCfg[] _gyroEngageCfg = new GyroEngageCfg[MaxPads];
@@ -2674,6 +2710,17 @@ namespace PadForge.Common.Input
                 var ratchets = wsSet?.WorkshopGyroRatchetList;
                 cfg.Ratchets = ratchets != null && ratchets.Length > 0 ? ratchets : null;
 
+                // Workshop activation lane (Steam gyro activations the engage
+                // button and the ratchet cannot carry, by layer) and the
+                // re-center on each activation.
+                cfg.Activation = wsSet?.WorkshopGyroActivationByLayer;
+                cfg.ActivationSet = cfg.Activation != null ? wsSet : null;
+                cfg.RecenterOnEngage = wsSet?.WorkshopGyroRecenterOnEngage ?? false;
+                // Toggle states key on the entries of the stamp in force, so a
+                // replaced stamp drops them rather than keeping them forever.
+                if (!ReferenceEquals(_gyroEngageCfg[slot]?.Activation, cfg.Activation))
+                    _activationToggled[slot] = null;
+
                 _gyroEngageCfg[slot] = cfg;
             }
         }
@@ -2716,7 +2763,10 @@ namespace PadForge.Common.Input
                 {
                     GyroEngagedFromButton[slot] = false;
                     GyroRatchetHeld[slot] = false;
+                    GyroActivationOn[slot] = true;
                     _prevAimEngageButtonDown[slot] = false;
+                    _activationToggled[slot] = null;
+                    _prevGyroEngagedResolved[slot] = false;
                     continue;
                 }
 
@@ -2784,6 +2834,61 @@ namespace PadForge.Common.Input
                                 guids[g], ratchets[r], slot) ?? false;
                 }
                 GyroRatchetHeld[slot] = ratchetHeld;
+
+                // Workshop activation lane: the engaged layer's entry, else
+                // Base's. Any (or all) of its buttons held on any slot
+                // device, under Hold, Release or Toggle, Steam's gyro
+                // activation for what the single engage button cannot carry.
+                // A layer with no buttons is always on. Each layer keeps its
+                // own Toggle state, as each Steam preset's gyro group does.
+                bool activationOn = true;
+                var byLayer = cfg.Activation;
+                if (byLayer != null)
+                {
+                    string layer = GetEngagedLayerMask(slot, cfg.ActivationSet);
+                    if (!byLayer.TryGetValue(layer, out var entry)
+                        && !string.Equals(layer, "Base", StringComparison.Ordinal))
+                        byLayer.TryGetValue("Base", out entry);
+                    if (entry != null && entry.Buttons.Length > 0)
+                    {
+                        bool held = entry.All;
+                        var guids = cfg.SlotGuids;
+                        for (int a = 0; a < entry.Buttons.Length; a++)
+                        {
+                            bool one = false;
+                            for (int g = 0; g < guids.Length && !one; g++)
+                                one = SourceCoercion.ButtonHeldProvider?.Invoke(guids[g], entry.Buttons[a], slot) ?? false;
+                            if (entry.All && !one) { held = false; break; }
+                            if (!entry.All && one) { held = true; break; }
+                        }
+                        var toggles = _activationToggled[slot] ??= new Dictionary<MappingSet.GyroActivationEntry, (bool Prev, bool On)>();
+                        toggles.TryGetValue(entry, out var state);
+                        switch (entry.Mode)
+                        {
+                            case "Release":
+                                activationOn = !held;
+                                break;
+                            case "Toggle":
+                                if (held && !state.Prev) state.On = !state.On;
+                                activationOn = state.On;
+                                break;
+                            default:
+                                activationOn = held;
+                                break;
+                        }
+                        state.Prev = held;
+                        toggles[entry] = state;
+                    }
+                }
+                GyroActivationOn[slot] = activationOn;
+
+                // Re-center on each activation: the slot's resolved engage
+                // state (with the macro bit from the last macro pass) going
+                // from off to on re-takes the gyro's resting pose.
+                bool engaged = IsGyroEngaged(slot);
+                if (cfg.RecenterOnEngage && engaged && !_prevGyroEngagedResolved[slot])
+                    GyroRecenterApply?.Invoke(slot);
+                _prevGyroEngagedResolved[slot] = engaged;
             }
         }
 
@@ -3198,7 +3303,10 @@ namespace PadForge.Common.Input
                 GyroEngagedFromButton[i] = false;
                 GyroEngagedFromMacro[i] = false;
                 GyroRatchetHeld[i] = false;
+                GyroActivationOn[i] = true;
                 _prevAimEngageButtonDown[i] = false;
+                _activationToggled[i] = null;
+                _prevGyroEngagedResolved[i] = false;
             }
             // Force an immediate re-snapshot on the next poll, the same
             // reason ResetTriggerRouteEngageStates does: the engage config

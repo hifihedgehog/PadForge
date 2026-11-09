@@ -787,6 +787,16 @@ namespace PadForge.Tests
             ms.Rows.Add(custom);
             ms.ShiftActivators.Add(new ShiftActivator { DeviceGuid = Chat, Descriptor = B3, ChordSecondDeviceGuid = Chat, ChordSecondDescriptor = B3, CyclePrevDeviceGuid = Chat, CyclePrevDescriptor = "Button 4" });
             ms.Menus.Add(new PadForge.Engine.Menus.MenuDefinitionEntry { DeviceGuid = Chat, ClickDescriptor = B3 });
+            // A hotbar's four controls are the menu's inputs too.
+            ms.Menus.Add(new PadForge.Engine.Menus.MenuDefinitionEntry
+            {
+                DeviceGuid = Chat,
+                Kind = PadForge.Engine.Menus.MenuKind.Hotbar,
+                HotbarShowDescriptor = B3,
+                HotbarPreviousDescriptor = B3,
+                HotbarNextDescriptor = "Button 4",
+                HotbarFireDescriptor = B3,
+            });
 
             Assert.True(FreedButtonCleanup.ClearSet(ms, (d, n) => d == Chat && (PadForge.Services.SettingsService.StripSourcePrefix(n) == B3)));
 
@@ -802,6 +812,10 @@ namespace PadForge.Tests
             Assert.Equal("", ms.ShiftActivators[0].ChordSecondDescriptor);
             Assert.Equal("Button 4", ms.ShiftActivators[0].CyclePrevDescriptor);
             Assert.Equal("", ms.Menus[0].ClickDescriptor);
+            Assert.Equal("", ms.Menus[1].HotbarShowDescriptor);
+            Assert.Equal("", ms.Menus[1].HotbarPreviousDescriptor);
+            Assert.Equal("Button 4", ms.Menus[1].HotbarNextDescriptor);
+            Assert.Equal("", ms.Menus[1].HotbarFireDescriptor);
         }
 
         [Fact]

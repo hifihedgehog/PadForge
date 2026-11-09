@@ -193,7 +193,7 @@ namespace PadForge.SteamWorkshop.Tests
             var src = Assert.Single(row.Sources);
             Assert.Equal("Gamepad LeftTrigger", src.Descriptor);
             Assert.True(src.HalfAxis);
-            Assert.Equal(75, src.DeadZone); // end-of-travel click
+            Assert.Equal(90, src.DeadZone); // the full pull, 95 percent
         }
 
         [Fact]
@@ -310,8 +310,11 @@ namespace PadForge.SteamWorkshop.Tests
         // ─── B-14a inner deadzone ───────────────────────────────────────
 
         [Fact]
-        public void InnerDeadzone_StickAsDpad_SetsWedgeDeadZonePercent()
+        public void InnerRadiusKey_OnADpad_LeavesTheDpadsOwnDeadZone()
         {
+            // Steam's dpad mode registers deadzone, not
+            // deadzone_inner_radius (steamclient64.dll 0x1388b1a0f), so a
+            // leftover inner radius key changes nothing.
             string vdf = Head
                 + Group(1, "dpad",
                     Inputs(Inp("dpad_north", "key_press Q"))
@@ -320,16 +323,14 @@ namespace PadForge.SteamWorkshop.Tests
                 + "}\n";
             var p = Translate(vdf);
             var src = Assert.Single(Assert.Single(p.KbmMappingSet.Rows).Sources);
-            Assert.Equal("Gamepad LeftStickY", src.Descriptor);
-            Assert.True(src.HalfAxis);
-            Assert.Equal(5, src.DeadZone); // 1600 / 32767 = 4.88% -> 5
+            Assert.Equal(SteamPadExpect.Wedge(90, PadForge.Engine.Common.Mapping.BoundedGate.None, "Gamepad LeftStickRing"), src.Descriptor);
         }
 
         [Fact]
         public void InnerDeadzone_TriggerClickThresholdStaysExplicit()
         {
-            // The click's 75 encodes the reachable-range end-of-travel
-            // point; the group deadzone must not clobber it.
+            // The click is Steam's full pull at 95 percent (DeadZone 90 on the
+            // upper half), and the group deadzone must not clobber it.
             string vdf = Head
                 + Group(1, "trigger",
                     Inputs(Inp("click", "key_press Q"))
@@ -338,7 +339,7 @@ namespace PadForge.SteamWorkshop.Tests
                 + "}\n";
             var p = Translate(vdf);
             var row = p.KbmMappingSet.Rows.Single(r => r.Target == "KbmKey51");
-            Assert.Equal(75, Assert.Single(row.Sources).DeadZone);
+            Assert.Equal(90, Assert.Single(row.Sources).DeadZone);
         }
 
         [Fact]
@@ -722,10 +723,9 @@ namespace PadForge.SteamWorkshop.Tests
         [Fact]
         public void SetLed_TouchpadHosted_RidesWedgeDescriptorTrigger()
         {
-            // Wave 3: the trackpad-wedge-hosted set_led triggers on the
-            // wedge gesture descriptor (empty-guid InputDevice entry).
-            // The wedge's joystick-output feature self-arms at apply
-            // since v14, so the macro reports Clean.
+            // The trackpad dpad direction's set_led triggers on the
+            // direction's read (an empty-guid InputDevice entry), which needs
+            // no touchpad feature, so the macro reports Clean.
             string vdf = Head
                 + Group(1, "dpad", Inputs(Inp("dpad_north", "controller_action set_led 255 0 0 100 255 1")))
                 + Preset(0, "Default", (1, "left_trackpad active"))
@@ -734,9 +734,8 @@ namespace PadForge.SteamWorkshop.Tests
             var m = Assert.Single(p.Macros);
             Assert.Equal(TranslatedMacroAction.SetLightbarColor, m.Action);
             // requires_click is absent on the dpad group, which defaults to
-            // require: the wedge's click gate rides the trigger as its AND
-            // companion.
-            Assert.Equal(new[] { "Touchpad 0 DPadUp", "Touchpad 0 Click" },
+            // require on a trackpad: the read carries the click.
+            Assert.Equal(new[] { SteamPadExpect.Wedge(90, PadForge.Engine.Common.Mapping.BoundedGate.Click, "Touchpad 0 Finger 0 Ring") },
                 m.TriggerInputDescriptors.ToArray());
             Assert.Equal(0, (int)m.TriggerXboxButtons);
             Assert.Contains(p.Report.Entries, e =>
@@ -759,7 +758,7 @@ namespace PadForge.SteamWorkshop.Tests
             var m = Assert.Single(p.Macros);
             Assert.Equal(0, (int)m.TriggerXboxButtons);
             Assert.Equal("LeftTrigger", m.TriggerAxisTarget);
-            Assert.Equal(75, m.TriggerAxisThresholdPercent);
+            Assert.Equal(95, m.TriggerAxisThresholdPercent);
         }
 
         [Theory]

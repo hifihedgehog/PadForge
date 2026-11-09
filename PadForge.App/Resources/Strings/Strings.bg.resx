@@ -3818,7 +3818,7 @@
   <data name="Menu_Binding_None" xml:space="preserve"><value>Няма</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Клавиш на клавиатурата</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>Бутон на контролера</value></data>
-  <data name="Menu_Style_Tip" xml:space="preserve"><value>„Радиален пръстен“ избира клетка по посока, като колело за оръжия. „Сензорна мрежа“ избира клетка по позиция: къде е пръстът върху тъчпада или накъде сочи стикът.</value></data>
+  <data name="Menu_Style_Tip" xml:space="preserve"><value>„Радиален пръстен“ избира клетка по посока, като колело за оръжия. „Сензорна мрежа“ избира клетка по позиция: къде е пръстът върху тъчпада или накъде сочи стикът. „Лента с умения“ показва ред от клетки, движи се по него и задейства избраната клетка, всяка със собствен контрол.</value></data>
   <data name="Menu_HostInput_Tip" xml:space="preserve"><value>Входът, който отваря и управлява това меню, прочетен от назначените към слота физически контролери. Стикът го отваря, когато бъде отклонен извън „Мъртва зона за активиране“. Тъчпадът го отваря при докосване.</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>Ограничава това меню до едната половина на тъчпада, така че две менюта да могат да го споделят.</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>Кога маркираната клетка изпълнява присвояването си. Всеки вариант е обяснен по-долу.</value></data>
@@ -4248,7 +4248,7 @@
   <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>Задейства се веднъж при отпускане на „Вход за щракване“. Ако повърхността бъде отпусната в същия миг, се задейства предишният избор.</value></data>
   <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>Задейства се веднъж, когато вдигнете пръста си или върнете стика в „Мъртва зона за активиране“, докато менюто остава отворено. Напускането на слоя също потвърждава избор, който все още се управлява.</value></data>
   <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>Задържа присвояването, докато клетката му е маркирана. Радиалният център може да се задейства веднага при отваряне на слоя.</value></data>
-  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Натисканията на посоки преминават през клетките и задействат всяка новоизбрана клетка. Това поведение на лентата с умения не използва „Режим на задействане“ и „Вход за щракване“.</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Натисканията на посоки преминават през клетките и задействат всяка новоизбрана клетка, без „Режим на задействане“ и „Вход за щракване“. Стилът „Лента с умения“ преминава без задействане и задейства със собствения си контрол „Задействане“.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Разширен протокол на Flydigi</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Включва допълнителните бутони и сензорите за движение на поддържаните контролери Flydigi.</value></data>
   <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Работи софтуер на Flydigi: {0}. Той може да използва същия интерфейс на контролера като PadForge и има съобщения, че Vader 5 Pro многократно прекъсва връзката, когато и двете програми имат достъп. Ако този контролер прекъсва и се свързва отново, спрете услугата, докато използвате PadForge, дръжте контролера скрит и премахнете услугата от списъка с разрешени приложения в HidHide или опитайте да изключите „Разширен протокол на Flydigi“ в „Настройки“, което не е потвърдено, че помага.</value></data>
@@ -5099,7 +5099,28 @@
     <value>Кръстачка</value>
   </data>
   <data name="Menu_Style_Keyboard" xml:space="preserve"><value>Клавиатура</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>„Радиален пръстен“ и „Сензорна мрежа“ задействат връзките на клетките. „Клавиатура“ въвежда клавишите на използваната подредба на Windows.</value></data>
+  <data name="Menu_Style_Hotbar" xml:space="preserve"><value>Лента с умения</value></data>
+  <data name="Menu_Hotbar_Show" xml:space="preserve"><value>Показване или скриване</value></data>
+  <data name="Menu_Hotbar_Show_Tip" xml:space="preserve"><value>Показва лентата и я скрива при следващото натискане. Скрита по този начин, лентата се отваря следващия път върху средната клетка.</value></data>
+  <data name="Menu_Hotbar_Previous" xml:space="preserve"><value>Предишна</value></data>
+  <data name="Menu_Hotbar_Previous_Tip" xml:space="preserve"><value>Избира клетката отляво, като прескача клетките без нищо зададено.</value></data>
+  <data name="Menu_Hotbar_Next" xml:space="preserve"><value>Следваща</value></data>
+  <data name="Menu_Hotbar_Next_Tip" xml:space="preserve"><value>Избира клетката отдясно, като прескача клетките без нищо зададено.</value></data>
+  <data name="Menu_Hotbar_Fire" xml:space="preserve"><value>Задействане</value></data>
+  <data name="Menu_Hotbar_Fire_Tip" xml:space="preserve"><value>Задейства избраната клетка според „Режим на задействане“.</value></data>
+  <data name="Menu_Hotbar_Caption" xml:space="preserve"><value>„Показване или скриване“ показва ред от клетки, „Предишна“ и „Следваща“ се движат по него, а „Задействане“ задейства избраната клетка. Контрол, оставен празен, приема посоката от „Отваря се с“: надолу, наляво, надясно или нагоре.</value></data>
+  <data name="Menu_Hotbar_Wrap" xml:space="preserve"><value>Циклично превъртане</value></data>
+  <data name="Menu_Hotbar_Wrap_Tip" xml:space="preserve"><value>Стъпването след последната клетка води към първата и обратно. Когато е изключено, изборът спира в двата края.</value></data>
+  <data name="Menu_Hotbar_DismissOnFire" xml:space="preserve"><value>Скриване след задействане</value></data>
+  <data name="Menu_Hotbar_DismissOnFire_Tip" xml:space="preserve"><value>„Задействане“ скрива лентата. Когато е изключено, лентата остава и същата клетка може да се задейства отново.</value></data>
+  <data name="Menu_Hotbar_Recenter" xml:space="preserve"><value>Центриране всеки път</value></data>
+  <data name="Menu_Hotbar_Recenter_Tip" xml:space="preserve"><value>Докато лентата е скрита, изборът се връща към средната клетка. Когато е изключено, лента, скрита от „Задействане“, се отваря върху клетката, която е задействала.</value></data>
+  <data name="Menu_Reset_HotbarControl" xml:space="preserve"><value>Нулиране на контрола</value></data>
+  <data name="Menu_Fire_Click_Hotbar_Desc" xml:space="preserve"><value>„Задействане“ натиска избраната клетка и я задържа, докато „Задействане“ е задържано. При включено „Скриване след задействане“ натискането е кратко докосване.</value></data>
+  <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>Избраната клетка се задейства веднъж, като кратко докосване, когато „Задействане“ бъде отпуснато. При включено „Скриване след задействане“ се задейства веднага щом „Задействане“ скрие лентата.</value></data>
+  <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>Клетка се задейства веднъж, като кратко докосване, когато „Задействане“ скрие лентата при включено „Скриване след задействане“. При включено „Центриране всеки път“ се задейства средната клетка.</value></data>
+  <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>Избраната клетка се задържа през цялото време, докато лентата е показана. Стъпването пуска една клетка и задържа следващата.</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>„Радиален пръстен“, „Сензорна мрежа“ и „Лента с умения“ задействат връзките на клетките. „Клавиатура“ въвежда клавишите на използваната подредба на Windows.</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Подредба</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Как клавиатурата подрежда клавишите си и как контролерът ги избира.</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Едно маркиране, премествано със стик или с четири входа, подредбата на Windows, Xbox и Steam.</value></data>
@@ -5219,6 +5240,12 @@
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (не е на този компютър)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (не е на този слот)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>жироскопът в режим Лазерна показалка се чете като завъртане (PadForge няма преобразуване за лазерна показалка)</value></data>
+  <data name="Workshop_Tr_GyroRollFromHorizon" xml:space="preserve"><value>кренът е центриран там, където контролерът е в покой при старта или при „Повторно центриране на жироскопа“, а не спрямо хоризонта</value></data>
+  <data name="Workshop_Tr_GyroPitchFromHorizon" xml:space="preserve"><value>наклонът е центриран там, където контролерът е в покой при старта или при „Повторно центриране на жироскопа“, а не на {0}° от хоризонтално положение</value></data>
+  <data name="Workshop_Tr_GyroTiltRangeCapped" xml:space="preserve"><value>пълно отклонение при 90° наклон, а не при {0}°</value></data>
+  <data name="Workshop_Tr_OutputJoystickUnrouted" xml:space="preserve"><value>output_joystick {0} не насочва двойката нито към стик, нито към мишката, затова нищо не се съпоставя</value></data>
+  <data name="Workshop_Tr_DpadPulseHeld" xml:space="preserve"><value>всяка посока се задържа, докато е натисната (аналоговата емулация на Steam я включва и изключва на импулси, които стават по-дълги, колкото по-далеч е натисната)</value></data>
+  <data name="Workshop_Tr_SoftPressNoAnalog" xml:space="preserve"><value>активатор при леко натискане върху вход без аналогово отчитане (Steam никога не го задейства)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>В reWASD {0} все още стига до Windows, защото файлът го съпоставя без отмяна на съпоставянето. При включено Поглъщане на съпоставените входове PadForge го задържа.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows оформя {0} на радиален стик според ъгъла на натиска. Картата на стика в PadForge възпроизвежда еднакво прав натиск, а диагоналния по различен начин.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows мащабира мъртвата зона на жироскопа по всяка ос според ъгъла на движението. PadForge сваля цялата мъртва зона от всяка ос, така че прякото движение се възпроизвежда еднакво, а бавното диагонално започва по-късно.</value></data>

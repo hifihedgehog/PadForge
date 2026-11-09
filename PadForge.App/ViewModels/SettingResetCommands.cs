@@ -978,7 +978,10 @@ namespace PadForge.ViewModels
             nameof(OpacityPercent) or
             nameof(OpenOnTextFocus) or
             nameof(FunctionRow) or
-            nameof(Suggestions);
+            nameof(Suggestions) or
+            nameof(HotbarWrap) or
+            nameof(HotbarDismissOnFire) or
+            nameof(HotbarRecenter);
 
         private void ResetSetting(string name)
         {
@@ -987,6 +990,23 @@ namespace PadForge.ViewModels
                 case nameof(Enabled):
                 {
                     Enabled = true;
+                    break;
+                }
+                // Steam's hotbar defaults: no wrap, Dismiss After Activation
+                // and Re-Center Each Time on (0x1388bf1b2 to 0x1388bf2a4).
+                case nameof(HotbarWrap):
+                {
+                    HotbarWrap = false;
+                    break;
+                }
+                case nameof(HotbarDismissOnFire):
+                {
+                    HotbarDismissOnFire = true;
+                    break;
+                }
+                case nameof(HotbarRecenter):
+                {
+                    HotbarRecenter = true;
                     break;
                 }
                 case nameof(OpenOnTextFocus):

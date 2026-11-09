@@ -2729,6 +2729,17 @@ namespace PadForge.Engine.Common.Mapping
         /// set is active.</summary>
         public const string AlwaysOnDescriptor = "Always On";
 
+        /// <summary>The slot's resolved gyro engage state: on while the
+        /// slot's gyro is on (its engage button under Hold, Toggle or
+        /// Release To Engage, or the SetGyroEngaged macro bit) and no ratchet
+        /// is held, the same per-slot bit the gyro rate read gates on
+        /// (<see cref="AimEngageStateProvider"/>). A Steam import gates its
+        /// gyro tilt rows on it as a source gate: the client centers a
+        /// gyro-held stick while the gyro is off (steamclient64.dll's
+        /// deflection and joystick classes output zero when the gyro
+        /// activation reads inactive).</summary>
+        public const string GyroEngagedDescriptor = "Gyro Engaged";
+
         /// <summary>Stick deflection-ring descriptors (translator v17,
         /// Steam's joystick Outer Ring Binding). The value is the stick
         /// pair's deflection magnitude, sqrt(x*x + y*y) clamped to [0..1],
@@ -2980,6 +2991,96 @@ namespace PadForge.Engine.Common.Mapping
             double off = Math.Abs(angle - center);
             if (off > 180.0) off = 360.0 - off;
             return off <= halfWidth;
+        }
+
+        /// <summary>True for an input <see cref="TryReadPair"/> reads: a stick
+        /// ring, a touchpad finger ring, or a gyro tilt pair
+        /// <c>"Gyro Tilt {inner} {range}"</c>.</summary>
+        public static bool IsPairDescriptor(string pair)
+            => IsStickRingDescriptor(pair)
+               || (pair != null && pair.StartsWith("Touchpad ", StringComparison.Ordinal)
+                   && TryParseTouchpadRing(pair, out _, out _, out _))
+               || TryParseGyroTiltPair(pair, out _, out _);
+
+        private static readonly ConcurrentDictionary<string, (MappingSource X, MappingSource Y)> s_tiltPairs = new();
+
+        /// <summary>Parses <c>"Gyro Tilt {inner} {range}"</c>: the tilt read's
+        /// inner dead zone and full-deflection angle, in degrees.</summary>
+        public static bool TryParseGyroTiltPair(string pair, out double inner, out double range)
+        {
+            inner = range = 0;
+            if (pair == null || !pair.StartsWith("Gyro Tilt ", StringComparison.Ordinal)) return false;
+            string[] p = pair.Split(' ');
+            return p.Length == 4
+                && double.TryParse(p[2], NumberStyles.Float, CultureInfo.InvariantCulture, out inner)
+                && double.TryParse(p[3], NumberStyles.Float, CultureInfo.InvariantCulture, out range)
+                && inner >= 0 && range > inner && range <= 90;
+        }
+
+        /// <summary>The two-axis position a bounded read tests, -1 to +1 on
+        /// each axis in a stick's frame (+X right, +Y down): a stick ring's
+        /// stick, a touchpad finger's offset from the center of its surface
+        /// (a lifted finger reads the center), or the gyro tilt pair, each
+        /// axis past the inner angle scaled to the range as the Gyro Tilt
+        /// read scales it. False for an input of another family.</summary>
+        internal static bool TryReadPair(CustomInputState state, string pair, int slotIndex, string deviceGuid,
+            out double x, out double y)
+        {
+            x = y = 0;
+            if (IsStickRingDescriptor(pair))
+            {
+                if (!TryReadRingStick(state, pair, out float sx, out float sy)) return false;
+                x = sx;
+                y = sy;
+                return true;
+            }
+            if (pair != null && pair.StartsWith("Touchpad ", StringComparison.Ordinal)
+                && TryParseTouchpadRing(pair, out int padIdx, out int fingerIdx, out int half))
+            {
+                var pads = state?.Touchpads;
+                if (pads == null || padIdx < 0 || padIdx >= pads.Length) return true;
+                var pad = pads[padIdx];
+                if (pad == null || fingerIdx < 0 || fingerIdx >= pad.MaxFingers) return true;
+                if (!pad.FingerDown[fingerIdx] || !FingerInTouchpadHalf(pad, fingerIdx, half)) return true;
+                x = Math.Clamp((RenormalizeTouchpadHalf(pad.FingerX[fingerIdx], 0, half) - 0.5f) * 2f, -1f, 1f);
+                y = Math.Clamp((RenormalizeTouchpadHalf(pad.FingerY[fingerIdx], 1, half) - 0.5f) * 2f, -1f, 1f);
+                return true;
+            }
+            if (TryParseGyroTiltPair(pair, out double inner, out double range))
+            {
+                var sources = s_tiltPairs.GetOrAdd(pair, _ => (
+                    new MappingSource { Descriptor = GyroTiltXDescriptor, ParamTiltRangeDeg = range, ParamTiltInnerDz = inner },
+                    new MappingSource { Descriptor = GyroTiltYDescriptor, ParamTiltRangeDeg = range, ParamTiltInnerDz = inner }));
+                x = ReadGyroLean(sources.X, GyroTiltXDescriptor, deviceGuid, slotIndex);
+                y = ReadGyroLean(sources.Y, GyroTiltYDescriptor, deviceGuid, slotIndex);
+                return true;
+            }
+            return false;
+        }
+
+        private static readonly ConcurrentDictionary<string, string> s_pairClicks = new();
+        private static readonly MappingSource s_leftStickClick = new() { Descriptor = "Gamepad LeftStick" };
+        private static readonly MappingSource s_rightStickClick = new() { Descriptor = "Gamepad RightStick" };
+
+        /// <summary>True while a pair's own click is held: a stick ring's stick
+        /// click, or a touchpad finger ring's pad click ("Touchpad N Click",
+        /// or "Touchpad N Click {half}" for a ring with a half window). The
+        /// gyro has no click and reads false.</summary>
+        internal static bool IsPairClicked(CustomInputState state, string pair, int slotIndex, string deviceGuid)
+        {
+            if (string.Equals(pair, LeftStickRingDescriptor, StringComparison.OrdinalIgnoreCase))
+                return EvaluateForButtonTarget(state, s_leftStickClick, 50, slotIndex, deviceGuid);
+            if (string.Equals(pair, RightStickRingDescriptor, StringComparison.OrdinalIgnoreCase))
+                return EvaluateForButtonTarget(state, s_rightStickClick, 50, slotIndex, deviceGuid);
+            if (pair == null || !pair.StartsWith("Touchpad ", StringComparison.Ordinal)
+                || !TryParseTouchpadRing(pair, out _, out _, out _))
+                return false;
+            string click = s_pairClicks.GetOrAdd(pair, p =>
+            {
+                string[] parts = p.Split(' ');
+                return parts.Length == 6 ? $"Touchpad {parts[1]} Click {parts[5]}" : $"Touchpad {parts[1]} Click";
+            });
+            return ReadTouchpadBool(state, click);
         }
 
         /// <summary>An ellipse's radius toward a push, as a fraction of full
@@ -5701,6 +5802,11 @@ namespace PadForge.Engine.Common.Mapping
             // gate; the read itself is unconditionally on.
             if (s.Equals(AlwaysOnDescriptor, StringComparison.Ordinal)) return true;
 
+            // The slot's gyro engage state, a Steam import's tilt gate. Off
+            // a slot (a preview read) there is no engage state to gate on.
+            if (s.Equals(GyroEngagedDescriptor, StringComparison.Ordinal))
+                return slotIndex < 0 || (AimEngageStateProvider?.Invoke(slotIndex) ?? true);
+
             // A zone, a stick sector or a two-stage pull (BoundedReads): two
             // thresholds or some memory, read on this same device.
             if (BoundedReads.IsBounded(s)) return BoundedReads.Read(state, s, slotIndex, deviceGuid);
@@ -6077,6 +6183,11 @@ namespace PadForge.Engine.Common.Mapping
             // Constant-true source (translator v25): full assert, the
             // ReadAsBool contract on the analog lanes.
             if (s.Equals(AlwaysOnDescriptor, StringComparison.Ordinal)) return 1f;
+            // The slot's gyro engage state, full or nothing (ReadAsBool).
+            if (s.Equals(GyroEngagedDescriptor, StringComparison.Ordinal))
+                return slotIndex < 0 || (AimEngageStateProvider?.Invoke(slotIndex) ?? true) ? 1f : 0f;
+            // A zone, a sector, a two-stage pull or a Steam dpad read, full or nothing (ReadAsBool), so a Custom row's AND reads it.
+            if (BoundedReads.IsBounded(s)) return BoundedReads.Read(state, s, slotIndex, deviceGuid) ? 1f : 0f;
 
             // Touchpad-gesture sources: continuous axes (PinchAxis,
             // RotateAxis) read their bipolar value from the gesture
@@ -6390,6 +6501,11 @@ namespace PadForge.Engine.Common.Mapping
             // Constant-true source (translator v25): full pull, the
             // ReadAsBool contract on the trigger lane.
             if (s.Equals(AlwaysOnDescriptor, StringComparison.Ordinal)) return 1f;
+            // The slot's gyro engage state, full or nothing (ReadAsBool).
+            if (s.Equals(GyroEngagedDescriptor, StringComparison.Ordinal))
+                return slotIndex < 0 || (AimEngageStateProvider?.Invoke(slotIndex) ?? true) ? 1f : 0f;
+            // A zone, a sector, a two-stage pull or a Steam dpad read, full or nothing (ReadAsBool), so a Custom row's AND reads it.
+            if (BoundedReads.IsBounded(s)) return BoundedReads.Read(state, s, slotIndex, deviceGuid) ? 1f : 0f;
 
             // Touchpad-gesture sources: continuous-axis variants use
             // the absolute value of their bipolar reading (a trigger

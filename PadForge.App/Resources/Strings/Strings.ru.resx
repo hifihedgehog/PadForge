@@ -3818,7 +3818,7 @@
   <data name="Menu_Binding_None" xml:space="preserve"><value>Нет</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Клавиша клавиатуры</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>Кнопка контроллера</value></data>
-  <data name="Menu_Style_Tip" xml:space="preserve"><value>«Радиальное кольцо» выбирает ячейку по направлению, как колесо оружия. «Сенсорная сетка» выбирает ячейку по положению: где палец лежит на тачпаде или куда указывает стик.</value></data>
+  <data name="Menu_Style_Tip" xml:space="preserve"><value>«Радиальное кольцо» выбирает ячейку по направлению, как колесо оружия. «Сенсорная сетка» выбирает ячейку по положению: где палец лежит на тачпаде или куда указывает стик. «Хотбар» показывает ряд ячеек, перемещает по нему выбор и запускает выбранную ячейку, у каждого действия свой элемент управления.</value></data>
   <data name="Menu_HostInput_Tip" xml:space="preserve"><value>Ввод, который открывает это меню и управляет им. Он читается с физических контроллеров, назначенных слоту. Стик открывает меню при отклонении дальше мертвой зоны срабатывания. Тачпад открывает его при прикосновении.</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>Ограничивает это меню одной половиной тачпада, чтобы два меню могли делить один тачпад.</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>Когда выделенная ячейка выполняет свою привязку. Каждый вариант объяснен ниже.</value></data>
@@ -4248,7 +4248,7 @@
   <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>Срабатывает один раз при отпускании «Ввода нажатия». Если поверхность отпущена в тот же момент, срабатывает предыдущий выбор.</value></data>
   <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>Срабатывает один раз, когда вы убираете палец или возвращаете стик в мертвую зону срабатывания, при этом меню остается открытым. Выход из слоя также подтверждает выбор, которым вы еще управляете.</value></data>
   <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>Удерживает привязку, пока ее ячейка выделена. Центр радиального меню может сработать сразу при открытии слоя.</value></data>
-  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Нажатия направлений перебирают ячейки и запускают каждую вновь выбранную ячейку. Такое поведение хотбара не использует «Режим срабатывания» и «Ввод нажатия».</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Нажатия направлений перебирают ячейки и запускают каждую вновь выбранную ячейку, без «Режим срабатывания» и «Ввод нажатия». Стиль «Хотбар» перемещает выбор без запуска и запускает ячейку своим элементом «Сработать».</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Расширенный протокол Flydigi</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Включает дополнительные кнопки и датчики движения на поддерживаемых контроллерах Flydigi.</value></data>
   <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Работает программа Flydigi: {0}. Она может использовать тот же интерфейс контроллера, что и PadForge, и сообщалось, что Vader 5 Pro многократно отключался, пока доступ был у обеих программ. Если этот контроллер отключается и подключается снова, остановите эту службу на время работы с PadForge, оставьте контроллер скрытым и уберите службу из белого списка HidHide либо попробуйте отключить «Расширенный протокол Flydigi» в настройках, хотя не подтверждено, что это помогает.</value></data>
@@ -5099,7 +5099,28 @@
     <value>Крестовина</value>
   </data>
   <data name="Menu_Style_Keyboard" xml:space="preserve"><value>Клавиатура</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>Радиальное кольцо и Сенсорная сетка запускают назначения ячеек. Клавиатура печатает клавиши используемой раскладки Windows.</value></data>
+  <data name="Menu_Style_Hotbar" xml:space="preserve"><value>Хотбар</value></data>
+  <data name="Menu_Hotbar_Show" xml:space="preserve"><value>Показать или скрыть</value></data>
+  <data name="Menu_Hotbar_Show_Tip" xml:space="preserve"><value>Показывает панель, а при следующем нажатии скрывает ее. Скрытая так панель в следующий раз открывается на средней ячейке.</value></data>
+  <data name="Menu_Hotbar_Previous" xml:space="preserve"><value>Предыдущая</value></data>
+  <data name="Menu_Hotbar_Previous_Tip" xml:space="preserve"><value>Выбирает ячейку слева, пропуская ячейки, в которых ничего не задано.</value></data>
+  <data name="Menu_Hotbar_Next" xml:space="preserve"><value>Следующая</value></data>
+  <data name="Menu_Hotbar_Next_Tip" xml:space="preserve"><value>Выбирает ячейку справа, пропуская ячейки, в которых ничего не задано.</value></data>
+  <data name="Menu_Hotbar_Fire" xml:space="preserve"><value>Сработать</value></data>
+  <data name="Menu_Hotbar_Fire_Tip" xml:space="preserve"><value>Запускает выбранную ячейку так, как задано в «Режим срабатывания».</value></data>
+  <data name="Menu_Hotbar_Caption" xml:space="preserve"><value>«Показать или скрыть» открывает ряд ячеек, «Предыдущая» и «Следующая» перемещают по нему выбор, а «Сработать» запускает выбранную ячейку. Элемент управления, оставленный пустым, берет направление из «Чем открывать»: вниз, влево, вправо или вверх.</value></data>
+  <data name="Menu_Hotbar_Wrap" xml:space="preserve"><value>По кругу</value></data>
+  <data name="Menu_Hotbar_Wrap_Tip" xml:space="preserve"><value>Шаг за последнюю ячейку переходит к первой, и наоборот. Если выключено, выбор останавливается на любом из краев.</value></data>
+  <data name="Menu_Hotbar_DismissOnFire" xml:space="preserve"><value>Скрывать после срабатывания</value></data>
+  <data name="Menu_Hotbar_DismissOnFire_Tip" xml:space="preserve"><value>«Сработать» скрывает панель. Если выключено, панель остается на экране, и ту же ячейку можно запустить снова.</value></data>
+  <data name="Menu_Hotbar_Recenter" xml:space="preserve"><value>Возвращать в центр</value></data>
+  <data name="Menu_Hotbar_Recenter_Tip" xml:space="preserve"><value>Пока панель скрыта, выбор возвращается на среднюю ячейку. Если выключено, панель, скрытая кнопкой «Сработать», открывается на той ячейке, которая сработала.</value></data>
+  <data name="Menu_Reset_HotbarControl" xml:space="preserve"><value>Сбросить элемент управления</value></data>
+  <data name="Menu_Fire_Click_Hotbar_Desc" xml:space="preserve"><value>«Сработать» нажимает выбранную ячейку и удерживает ее, пока удерживается «Сработать». Если включено «Скрывать после срабатывания», нажатие короткое.</value></data>
+  <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>Выбранная ячейка срабатывает один раз, коротким нажатием, когда «Сработать» отпускается. Если включено «Скрывать после срабатывания», она срабатывает, как только «Сработать» скрывает панель.</value></data>
+  <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>Ячейка срабатывает один раз, коротким нажатием, когда «Сработать» скрывает панель при включенном «Скрывать после срабатывания». Если включено «Возвращать в центр», срабатывает средняя ячейка.</value></data>
+  <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>Выбранная ячейка удерживается все время, пока панель показана. При переходе на другую ячейку прежняя отпускается, а следующая удерживается.</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>«Радиальное кольцо», «Сенсорная сетка» и «Хотбар» запускают привязки ячеек. «Клавиатура» печатает клавиши используемой раскладки Windows.</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Раскладка</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Как клавиатура располагает клавиши и как контроллер их выбирает.</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Одно выделение, которое двигается стиком или четырьмя вводами. Так устроены клавиатуры Windows, Xbox и Steam.</value></data>
@@ -5219,6 +5240,12 @@
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (нет на этом ПК)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (нет в этом слоте)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>гироскоп в режиме «Лазерная указка» читается как рыскание (в PadForge нет преобразования лазерной указки)</value></data>
+  <data name="Workshop_Tr_GyroRollFromHorizon" xml:space="preserve"><value>крен центрируется по положению покоя контроллера при старте или при действии «Центровка гироскопа», а не по горизонту</value></data>
+  <data name="Workshop_Tr_GyroPitchFromHorizon" xml:space="preserve"><value>тангаж центрируется по положению покоя контроллера при старте или при действии «Центровка гироскопа», а не на {0}° от горизонтали</value></data>
+  <data name="Workshop_Tr_GyroTiltRangeCapped" xml:space="preserve"><value>полное отклонение при наклоне на 90°, а не на {0}°</value></data>
+  <data name="Workshop_Tr_OutputJoystickUnrouted" xml:space="preserve"><value>output_joystick {0} направляет пару осей ни на стик, ни на мышь, поэтому ничего не назначено</value></data>
+  <data name="Workshop_Tr_DpadPulseHeld" xml:space="preserve"><value>каждое направление удерживается, пока оно нажато (аналоговая эмуляция Steam включает и выключает его импульсами, тем более долгими, чем дальше отклонение)</value></data>
+  <data name="Workshop_Tr_SoftPressNoAnalog" xml:space="preserve"><value>активатор мягкого нажатия на вводе без аналогового значения (Steam его там не запускает)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>В reWASD {0} по-прежнему доходит до Windows, потому что файл назначает его без снятия назначения. Когда включено «Поглощать назначенный ввод», PadForge его перехватывает.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows формирует параметры радиального стика {0} по углу отклонения. Карточка стика в PadForge одинаково обрабатывает отклонение по прямой и по-разному диагональное.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows масштабирует мертвую зону гироскопа по каждой оси в зависимости от угла движения. PadForge вычитает мертвую зону по каждой оси целиком, поэтому движение по прямой обрабатывается одинаково, а медленное диагональное начинается позже.</value></data>

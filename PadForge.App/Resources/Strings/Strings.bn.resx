@@ -3818,7 +3818,7 @@
   <data name="Menu_Binding_None" xml:space="preserve"><value>কোনোটিই নয়</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>কীবোর্ডের কী</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>কন্ট্রোলারের বোতাম</value></data>
-  <data name="Menu_Style_Tip" xml:space="preserve"><value>“রেডিয়াল রিং” দিক অনুযায়ী সেল বেছে নেয়, ওয়েপন হুইলের মতো। “টাচ গ্রিড” অবস্থান অনুযায়ী সেল বেছে নেয়: আঙুল প্যাডের যেখানে আছে, অথবা স্টিক যেদিকে তাক করা।</value></data>
+  <data name="Menu_Style_Tip" xml:space="preserve"><value>“রেডিয়াল রিং” দিক অনুযায়ী সেল বেছে নেয়, ওয়েপন হুইলের মতো। “টাচ গ্রিড” অবস্থান অনুযায়ী সেল বেছে নেয়: আঙুল প্যাডের যেখানে আছে, অথবা স্টিক যেদিকে তাক করা। “হটবার” একটি সেলের সারি দেখায়, তার ওপর দিয়ে এগোয় এবং নির্বাচিত সেল চালু করে, প্রতিটির জন্য আলাদা কন্ট্রোল দিয়ে।</value></data>
   <data name="Menu_HostInput_Tip" xml:space="preserve"><value>যে ইনপুট এই মেনু খোলে ও চালায়, যা স্লটে বরাদ্দ করা ফিজিক্যাল কন্ট্রোলার থেকে পড়া হয়। স্টিক “সক্রিয় হওয়ার ডেডজোন” পেরিয়ে ঠেললে মেনু খোলে। টাচপ্যাড স্পর্শ করলেই খোলে।</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>এই মেনুকে ট্র্যাকপ্যাডের একটি অর্ধেকে সীমিত রাখুন, যাতে দুটি মেনু প্যাডটি ভাগ করে নিতে পারে।</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>হাইলাইট করা সেল কখন তার বাইন্ডিং চালু করে। প্রতিটি বিকল্প নিচে ব্যাখ্যা করা আছে।</value></data>
@@ -4248,7 +4248,7 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>ক্লিক ইনপুট ছেড়ে দিলে একবার চালু হয়। একই মুহূর্তে সারফেসও ছেড়ে দিলে আগের নির্বাচনটি চালু হয়।</value></data>
   <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>মেনু খোলা থাকা অবস্থায় আঙুল তুললে বা স্টিককে “সক্রিয় হওয়ার ডেডজোন”-এর ভেতরে ফিরিয়ে আনলে একবার চালু হয়। লেয়ার থেকে বেরিয়ে গেলেও তখনো চালানো হচ্ছে এমন নির্বাচনটি কার্যকর হয়।</value></data>
   <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>সেলটি হাইলাইট থাকা অবস্থায় বাইন্ডিং ধরে রাখে। লেয়ার খোলামাত্র রেডিয়াল কেন্দ্র চালু হতে পারে।</value></data>
-  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>দিকের চাপে সেলগুলোর মধ্যে এক ধাপ করে এগোয় এবং নতুন নির্বাচিত প্রতিটি সেল চালু করে। এই হটবার আচরণে ফায়ার মোড বা ক্লিক ইনপুট ব্যবহার হয় না।</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>দিকের চাপে সেলগুলোর মধ্যে এক ধাপ করে এগোয় এবং নতুন নির্বাচিত প্রতিটি সেল চালু করে, “ফায়ার মোড” বা “ক্লিক ইনপুট” ছাড়াই। “হটবার” স্টাইল চালু না করেই এগোয় এবং নিজের “ফায়ার” কন্ট্রোল দিয়ে চালু করে।</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Flydigi এনহান্সড প্রোটোকল</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>সমর্থিত Flydigi কন্ট্রোলারে অতিরিক্ত বোতাম ও মোশন সেন্সর সক্ষম করে।</value></data>
   <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi সফটওয়্যার চলছে: {0}। এটি PadForge-এর মতো একই কন্ট্রোলার ইন্টারফেস ব্যবহার করতে পারে, আর দুটিরই অ্যাক্সেস থাকা অবস্থায় একটি Vader 5 Pro বারবার বিচ্ছিন্ন হওয়ার খবর পাওয়া গেছে। এই কন্ট্রোলারের সংযোগ কেটে গিয়ে আবার সংযুক্ত হলে PadForge ব্যবহারের সময় সার্ভিসটি থামান, কন্ট্রোলারটি লুকিয়ে রাখুন এবং HidHide হোয়াইটলিস্ট থেকে সার্ভিসটি সরান, অথবা সেটিংসে "Flydigi এনহান্সড প্রোটোকল" বন্ধ করে দেখুন, যদিও এতে কাজ হয় কি না তা নিশ্চিত নয়।</value></data>
@@ -5099,7 +5099,28 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
     <value>ডি-প্যাড</value>
   </data>
   <data name="Menu_Style_Keyboard" xml:space="preserve"><value>কীবোর্ড</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>রেডিয়াল রিং ও টাচ গ্রিড সেলের বাইন্ডিং চালায়। কীবোর্ড ব্যবহৃত Windows লেআউটের কী টাইপ করে।</value></data>
+  <data name="Menu_Style_Hotbar" xml:space="preserve"><value>হটবার</value></data>
+  <data name="Menu_Hotbar_Show" xml:space="preserve"><value>দেখান বা লুকান</value></data>
+  <data name="Menu_Hotbar_Show_Tip" xml:space="preserve"><value>বার দেখায়, পরের চাপে লুকিয়ে ফেলে। এভাবে লুকানো বার পরের বার মাঝের সেলে খোলে।</value></data>
+  <data name="Menu_Hotbar_Previous" xml:space="preserve"><value>আগেরটি</value></data>
+  <data name="Menu_Hotbar_Previous_Tip" xml:space="preserve"><value>বাঁ দিকের সেল নির্বাচন করে, কিছু সেট করা নেই এমন সেল বাদ দিয়ে।</value></data>
+  <data name="Menu_Hotbar_Next" xml:space="preserve"><value>পরেরটি</value></data>
+  <data name="Menu_Hotbar_Next_Tip" xml:space="preserve"><value>ডান দিকের সেল নির্বাচন করে, কিছু সেট করা নেই এমন সেল বাদ দিয়ে।</value></data>
+  <data name="Menu_Hotbar_Fire" xml:space="preserve"><value>ফায়ার</value></data>
+  <data name="Menu_Hotbar_Fire_Tip" xml:space="preserve"><value>নির্বাচিত সেল চালু করে, “ফায়ার মোড” যেমন বলে সেভাবে।</value></data>
+  <data name="Menu_Hotbar_Caption" xml:space="preserve"><value>“দেখান বা লুকান” একটি সেলের সারি খোলে, “আগেরটি” ও “পরেরটি” তার ওপর দিয়ে এগোয়, আর “ফায়ার” নির্বাচিত সেল চালু করে। কোনো কন্ট্রোল ফাঁকা থাকলে “যা দিয়ে খোলে”-এর দিকটি নেয়: নিচ, বাঁ, ডান বা ওপর।</value></data>
+  <data name="Menu_Hotbar_Wrap" xml:space="preserve"><value>ঘুরে আসা</value></data>
+  <data name="Menu_Hotbar_Wrap_Tip" xml:space="preserve"><value>শেষ সেল পেরোলে প্রথম সেলে যায়, উল্টো দিকেও একই। বন্ধ থাকলে নির্বাচন দুই প্রান্তের কোনোটিতে গিয়ে থামে।</value></data>
+  <data name="Menu_Hotbar_DismissOnFire" xml:space="preserve"><value>ফায়ারের পর লুকান</value></data>
+  <data name="Menu_Hotbar_DismissOnFire_Tip" xml:space="preserve"><value>“ফায়ার” বার লুকিয়ে ফেলে। বন্ধ থাকলে বার খোলা থাকে এবং একই সেল আবার চালু করা যায়।</value></data>
+  <data name="Menu_Hotbar_Recenter" xml:space="preserve"><value>প্রতিবার মাঝে ফেরা</value></data>
+  <data name="Menu_Hotbar_Recenter_Tip" xml:space="preserve"><value>বার লুকানো থাকা অবস্থায় নির্বাচন মাঝের সেলে ফিরে যায়। বন্ধ থাকলে “ফায়ার” যে বার লুকিয়েছে, সেটি যে সেল চালু করেছিল সেখানেই খোলে।</value></data>
+  <data name="Menu_Reset_HotbarControl" xml:space="preserve"><value>কন্ট্রোল রিসেট করুন</value></data>
+  <data name="Menu_Fire_Click_Hotbar_Desc" xml:space="preserve"><value>“ফায়ার” নির্বাচিত সেল চাপে এবং “ফায়ার” ধরে রাখা পর্যন্ত সেটি ধরে রাখে। “ফায়ারের পর লুকান” চালু থাকলে চাপটি হয় একটি ছোট ট্যাপ।</value></data>
+  <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>“ফায়ার” ছাড়লে নির্বাচিত সেল একবার চালু হয়, একটি ছোট ট্যাপ হিসেবে। “ফায়ারের পর লুকান” চালু থাকলে “ফায়ার” বার লুকানোমাত্র সেটি চালু হয়।</value></data>
+  <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>“ফায়ারের পর লুকান” চালু থাকা অবস্থায় “ফায়ার” বার লুকালে একটি সেল একবার চালু হয়, একটি ছোট ট্যাপ হিসেবে। “প্রতিবার মাঝে ফেরা” চালু থাকলে মাঝের সেলটিই চালু হয়।</value></data>
+  <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>বার দেখানো থাকার পুরো সময় নির্বাচিত সেল ধরে রাখা থাকে। এক ধাপ এগোলে একটি সেল ছেড়ে দেওয়া হয় এবং পরেরটি ধরা হয়।</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>“রেডিয়াল রিং”, “টাচ গ্রিড” ও “হটবার” সেলের বাইন্ডিং চালায়। “কীবোর্ড” ব্যবহৃত Windows লেআউটের কী টাইপ করে।</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>লেআউট</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>কীবোর্ডে কী কীভাবে সাজানো থাকে এবং কন্ট্রোলার দিয়ে কীভাবে বাছা হয়।</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>একটিমাত্র হাইলাইট, একটি স্টিক বা চারটি ইনপুটে সরে। Windows, Xbox ও Steam এই লেআউট ব্যবহার করে।</value></data>
@@ -5219,6 +5240,12 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (এই পিসিতে নেই)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (এই স্লটে নেই)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>Laser Pointer জাইরো ইয়ো হিসেবে পড়া হয়েছে (PadForge-এ লেজার পয়েন্টার রূপান্তর নেই)</value></data>
+  <data name="Workshop_Tr_GyroRollFromHorizon" xml:space="preserve"><value>রোল দিগন্ত থেকে নয়, শুরুতে বা জাইরো কেন্দ্রে আনা চালানোর সময় কন্ট্রোলার যে অবস্থানে থাকে সেখানেই কেন্দ্রে ধরা হয়</value></data>
+  <data name="Workshop_Tr_GyroPitchFromHorizon" xml:space="preserve"><value>পিচ সমতল থেকে {0}° ধরে নয়, শুরুতে বা জাইরো কেন্দ্রে আনা চালানোর সময় কন্ট্রোলার যে অবস্থানে থাকে সেখানেই কেন্দ্রে ধরা হয়</value></data>
+  <data name="Workshop_Tr_GyroTiltRangeCapped" xml:space="preserve"><value>কাতের 90° কোণে স্টিক পুরো সরে যায়, {0}° কোণে নয়</value></data>
+  <data name="Workshop_Tr_OutputJoystickUnrouted" xml:space="preserve"><value>output_joystick {0} জোড়াটিকে স্টিক বা মাউস কোনোটিতেই পাঠায় না, তাই কিছু ম্যাপ করা হয়নি</value></data>
+  <data name="Workshop_Tr_DpadPulseHeld" xml:space="preserve"><value>প্রতিটি দিক ঠেলে ধরে রাখা পর্যন্ত চালু থাকে (Steam-এর অ্যানালগ ইমুলেশন দিকটিকে বারবার চালু-বন্ধ করে, যত বেশি ঠেলা হয় তত দীর্ঘ সময়ের জন্য)</value></data>
+  <data name="Workshop_Tr_SoftPressNoAnalog" xml:space="preserve"><value>অ্যানালগ রিডিং নেই এমন ইনপুটে হালকা চাপের অ্যাক্টিভেটর (Steam এটি কখনো চালু করে না)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>reWASD-এ {0} তবুও Windows-এ পৌঁছায়, কারণ ফাইলটি এটিকে আনম্যাপ ছাড়াই ম্যাপ করে। ম্যাপ করা ইনপুট আটকে দিন চালু থাকলে PadForge এটি আটকে রাখে।</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows রেডিয়াল স্টিকের {0} ঠেলার কোণ অনুযায়ী গড়ে। PadForge-এর স্টিক কার্ডে সোজা ঠেলা একরকম আর কোনাকুনি ঠেলা অন্যরকম চলে।</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows জাইরোর ডেডজোন প্রতিটি অক্ষে নড়াচড়ার কোণ অনুযায়ী কমায়। PadForge প্রতিটি অক্ষ থেকে পুরো ডেডজোন বাদ দেয়, তাই সোজা নড়াচড়া একইরকম চলে আর ধীর কোনাকুনি নড়াচড়া দেরিতে শুরু হয়।</value></data>

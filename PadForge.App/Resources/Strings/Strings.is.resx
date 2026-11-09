@@ -3818,7 +3818,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>Ekkert</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Lykill á lyklaborði</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>Hnappur á leikjastýringu</value></data>
-  <data name="Menu_Style_Tip" xml:space="preserve"><value>„Hringur“ velur reit eftir stefnu, eins og vopnahjól. „Snertinet“ velur reit eftir staðsetningu: hvar fingurinn er á fletinum eða hvert pinninn bendir.</value></data>
+  <data name="Menu_Style_Tip" xml:space="preserve"><value>„Hringur“ velur reit eftir stefnu, eins og vopnahjól. „Snertinet“ velur reit eftir staðsetningu: hvar fingurinn er á fletinum eða hvert pinninn bendir. „Flýtistika“ sýnir röð reita, fer eftir henni og ræsir valda reitinn, hver með sína eigin stýringu.</value></data>
   <data name="Menu_HostInput_Tip" xml:space="preserve"><value>Inntakið sem opnar og stýrir þessari valmynd, lesið úr raunverulegum leikjastýringum sem úthlutað er á raufina. Pinni opnar hana þegar honum er ýtt út fyrir „Dautt svæði virkjunar“. Snertiflötur opnar hana við snertingu.</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>Takmarka þessa valmynd við annan helming snertiflatarins, svo tvær valmyndir geti deilt fletinum.</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>Hvenær auðkenndi reiturinn virkjar bindingu sína. Hver valkostur er útskýrður hér fyrir neðan.</value></data>
@@ -4248,7 +4248,7 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>Virkjast einu sinni þegar smellinntakinu er sleppt. Ef fletinum er sleppt á sama augnabliki virkjast fyrra valið.</value></data>
   <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>Virkjast einu sinni þegar þú lyftir fingrinum eða færir pinnann aftur inn fyrir „Dautt svæði virkjunar“, á meðan valmyndin helst opin. Ef farið er úr laginu staðfestist einnig val sem enn er verið að stýra.</value></data>
   <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>Heldur bindingunni á meðan reitur hennar er auðkenndur. Miðja hringvalmyndar getur virkjast strax þegar lagið opnast.</value></data>
-  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Stefnuýtingar fara í gegnum reitina og virkja hvern nývalinn reit. Þessi hegðun flýtistiku notar hvorki „Ræsihamur“ né „Smellinntak“.</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Stefnuýtingar fara í gegnum reitina og ræsa hvern nývalinn reit, án „Ræsihamur“ eða „Smellinntak“. Stíllinn „Flýtistika“ fer eftir reitum án þess að ræsa og ræsir með sinni eigin stýringu „Ræsa“.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Útvíkkaðar samskiptareglur Flydigi</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Virkjar aukahnappa og hreyfiskynjara á studdum Flydigi-leikjastýringum.</value></data>
   <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Hugbúnaður frá Flydigi er í gangi: {0}. Hann getur notað sama viðmót leikjastýringar og PadForge, og tilkynnt hefur verið að Vader 5 Pro hafi ítrekað aftengst á meðan bæði höfðu aðgang. Ef þessi leikjastýring dettur út og tengist aftur skaltu stöðva þjónustuna á meðan þú notar PadForge, halda leikjastýringunni falinni og fjarlægja þjónustuna af lista HidHide yfir leyfð forrit, eða prófa að slökkva á „Útvíkkaðar samskiptareglur Flydigi“ í stillingum, en ekki er staðfest að það hjálpi.</value></data>
@@ -5099,7 +5099,28 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
     <value>Stefnuhnappar</value>
   </data>
   <data name="Menu_Style_Keyboard" xml:space="preserve"><value>Lyklaborð</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>„Hringur“ og „Snertinet“ ræsa bindingar reita. „Lyklaborð“ slær inn lykla þeirrar Windows-uppsetningar sem er í notkun.</value></data>
+  <data name="Menu_Style_Hotbar" xml:space="preserve"><value>Flýtistika</value></data>
+  <data name="Menu_Hotbar_Show" xml:space="preserve"><value>Sýna eða fela</value></data>
+  <data name="Menu_Hotbar_Show_Tip" xml:space="preserve"><value>Sýnir stikuna og felur hana við næstu ýtingu. Stika sem er falin þannig opnast næst á miðjureitnum.</value></data>
+  <data name="Menu_Hotbar_Previous" xml:space="preserve"><value>Fyrra</value></data>
+  <data name="Menu_Hotbar_Previous_Tip" xml:space="preserve"><value>Velur reitinn til vinstri og sleppir reitum sem ekkert er stillt á.</value></data>
+  <data name="Menu_Hotbar_Next" xml:space="preserve"><value>Næsta</value></data>
+  <data name="Menu_Hotbar_Next_Tip" xml:space="preserve"><value>Velur reitinn til hægri og sleppir reitum sem ekkert er stillt á.</value></data>
+  <data name="Menu_Hotbar_Fire" xml:space="preserve"><value>Ræsa</value></data>
+  <data name="Menu_Hotbar_Fire_Tip" xml:space="preserve"><value>Ræsir valda reitinn, eins og „Ræsihamur“ segir til um.</value></data>
+  <data name="Menu_Hotbar_Caption" xml:space="preserve"><value>„Sýna eða fela“ kallar fram röð reita, „Fyrra“ og „Næsta“ fara eftir henni og „Ræsa“ ræsir valda reitinn. Stýring sem er skilin eftir auð tekur stefnu „Opnast með“: niður, til vinstri, til hægri eða upp.</value></data>
+  <data name="Menu_Hotbar_Wrap" xml:space="preserve"><value>Fletta í hring</value></data>
+  <data name="Menu_Hotbar_Wrap_Tip" xml:space="preserve"><value>Þegar farið er framhjá síðasta reit er farið á þann fyrsta, og öfugt. Slökkt: valið stoppar í báðum endum.</value></data>
+  <data name="Menu_Hotbar_DismissOnFire" xml:space="preserve"><value>Fela eftir ræsingu</value></data>
+  <data name="Menu_Hotbar_DismissOnFire_Tip" xml:space="preserve"><value>„Ræsa“ felur stikuna. Slökkt: stikan helst uppi og sami reitur getur ræst aftur.</value></data>
+  <data name="Menu_Hotbar_Recenter" xml:space="preserve"><value>Miðja aftur í hvert sinn</value></data>
+  <data name="Menu_Hotbar_Recenter_Tip" xml:space="preserve"><value>Á meðan stikan er falin fer valið aftur á miðjureitinn. Slökkt: stika sem „Ræsa“ faldi opnast á reitnum sem hún ræsti.</value></data>
+  <data name="Menu_Reset_HotbarControl" xml:space="preserve"><value>Endurstilla stýringu</value></data>
+  <data name="Menu_Fire_Click_Hotbar_Desc" xml:space="preserve"><value>„Ræsa“ ýtir á valda reitinn og heldur honum á meðan „Ræsa“ er haldið. Þegar kveikt er á „Fela eftir ræsingu“ er ýtingin stutt snerting.</value></data>
+  <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>Valinn reitur ræsist einu sinni, sem stutt snerting, þegar „Ræsa“ er sleppt. Þegar kveikt er á „Fela eftir ræsingu“ ræsist hann um leið og „Ræsa“ felur stikuna.</value></data>
+  <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>Reitur ræsist einu sinni, sem stutt snerting, þegar „Ræsa“ felur stikuna og kveikt er á „Fela eftir ræsingu“. Þegar kveikt er á „Miðja aftur í hvert sinn“ er það miðjureiturinn sem ræsist.</value></data>
+  <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>Valinn reitur er haldinn allan tímann sem stikan er sýnd. Þegar skipt er um reit er einum sleppt og næsta haldið.</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>„Hringur“, „Snertinet“ og „Flýtistika“ ræsa bindingar reita. „Lyklaborð“ slær inn lykla þeirrar Windows-uppsetningar sem er í notkun.</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Uppsetning</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Hvernig lyklaborðið raðar lyklum sínum og hvernig stýripinni velur þá.</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Ein auðkenning, færð með pinna eða fjórum inntökum, uppsetningin sem Windows, Xbox og Steam nota.</value></data>
@@ -5219,6 +5240,12 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (ekki í þessari tölvu)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (ekki í þessari rauf)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>Laser Pointer-snúningsskynjari lesinn sem snúningur (PadForge hefur enga leysibendilsumbreytingu)</value></data>
+  <data name="Workshop_Tr_GyroRollFromHorizon" xml:space="preserve"><value>velta miðjuð þar sem leikjastýringin hvílir í upphafi eða við „Miðjusetja snúningsskynjara“, ekki út frá sjóndeildarhring</value></data>
+  <data name="Workshop_Tr_GyroPitchFromHorizon" xml:space="preserve"><value>halli miðjaður þar sem leikjastýringin hvílir í upphafi eða við „Miðjusetja snúningsskynjara“, ekki við {0}° frá láréttu</value></data>
+  <data name="Workshop_Tr_GyroTiltRangeCapped" xml:space="preserve"><value>fullt útslag við 90° halla, ekki {0}°</value></data>
+  <data name="Workshop_Tr_OutputJoystickUnrouted" xml:space="preserve"><value>output_joystick {0} sendir parið hvorki á pinna né á músina, svo ekkert er varpað</value></data>
+  <data name="Workshop_Tr_DpadPulseHeld" xml:space="preserve"><value>hver stefna haldin á meðan ýtt er (hliðræn hermun hjá Steam púlsar henni, lengur eftir því sem lengra er ýtt)</value></data>
+  <data name="Workshop_Tr_SoftPressNoAnalog" xml:space="preserve"><value>virkir með léttri ýtingu á inntaki án hliðræns gildis (Steam virkjar hann aldrei)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>Í reWASD nær {0} enn til Windows því skráin varpar honum án afvörpunar. Með Gleypa varpað inntak kveikt heldur PadForge honum til baka.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows mótar {0} hringlaga stýripinna eftir horni hreyfingarinnar. Stillingaspjald stýripinna í PadForge spilar beina hreyfingu eins en skáhreyfingu á annan hátt.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows mótar dautt svæði snúningsskynjarans á hverjum ási eftir horni hreyfingarinnar. PadForge tekur allt dauða svæðið af hverjum ási, svo bein hreyfing spilar eins en hæg skáhreyfing byrjar síðar.</value></data>

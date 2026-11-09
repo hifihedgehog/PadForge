@@ -142,14 +142,14 @@ namespace PadForge.SteamWorkshop.Tests
         }
 
         /// <summary>The stick emitter has TWO paths and both must stamp. The
-        /// tests above drive the matched (uncrossed) one; output_joystick 2 on
+        /// tests above drive the matched (uncrossed) one. output_joystick 1 on
         /// the left stick crosses the pair to the right thumb and takes the
         /// other emitter entirely. Mutation testing caught that the first pass
         /// only covered one of them.</summary>
         [Fact]
         public void CrossedStickPair_AlsoStampsTheGeometry()
         {
-            var p = Translate(StickVdf(("output_joystick", "2"),
+            var p = Translate(StickVdf(("output_joystick", "1"),
                 ("deadzone_shape", "1"), ("deadzone_inner_radius", "8192")));
 
             var crossed = p.XboxMappingSet.Rows
@@ -322,14 +322,16 @@ namespace PadForge.SteamWorkshop.Tests
                 e => e.ReasonKey == TranslationReasons.ResponseCurveNotSupported);
         }
 
-        /// <summary>Round six (R5): gyro_to_joystick_deflection reads the
-        /// gravity-lean pair, which is not an Axis-path read, so the
-        /// geometry stamp cannot land there. It used to drop an authored
-        /// deadzone with NO note, the one pair host that lost the radii
-        /// silently; it now files the same residual as every other
-        /// non-stick pair host.</summary>
+        /// <summary>gyro_to_joystick_deflection reads the gravity tilt pair,
+        /// and the client's gyro classes register no stick dead zone radius
+        /// (steamclient64.dll), so a deadzone_inner_radius left on a
+        /// deflection group shapes nothing in Steam and nothing here. The
+        /// pair's own dead zone is gyro_deflection_to_joystick_min, and the
+        /// residual names the deflection's keys: Steam maps the length of
+        /// the tilt (its Response Axis Style starts Circular), PadForge each
+        /// axis.</summary>
         [Fact]
-        public void DeflectionHost_ReportsTheResidual()
+        public void DeflectionHost_IgnoresTheStickRadius_AndNamesItsCircularMap()
         {
             string vdf = Head
                 + Group(1, "gyro_to_joystick_deflection",
@@ -339,8 +341,13 @@ namespace PadForge.SteamWorkshop.Tests
                 + "}\n";
             var p = Translate(vdf);
 
-            Assert.Contains(p.Report.Entries,
+            var src = Assert.Single(p.XboxMappingSet.Rows, r => r.Target == "LeftThumbAxisX").Sources.Single(s => s.Descriptor.StartsWith("Gyro Tilt"));
+            Assert.Equal(50, src.DeadZone);
+            Assert.Equal(2.0, src.ParamTiltInnerDz, 3);
+            var residual = Assert.Single(p.Report.Entries,
                 e => e.ReasonKey == TranslationReasons.DeadZoneRadialResidual);
+            Assert.DoesNotContain("deadzone_inner_radius", string.Join(",", residual.ReasonArgs));
+            Assert.Contains("gyro_deflection_to_joystick_min", string.Join(",", residual.ReasonArgs));
         }
     }
 }

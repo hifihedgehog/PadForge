@@ -3818,7 +3818,7 @@
   <data name="Menu_Binding_None" xml:space="preserve"><value>ఏదీ కాదు</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>కీబోర్డ్ కీ</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>కంట్రోలర్ బటన్</value></data>
-  <data name="Menu_Style_Tip" xml:space="preserve"><value>రేడియల్ రింగ్ వెపన్ వీల్ లాగా దిశ ఆధారంగా సెల్ను ఎంచుకుంటుంది. టచ్ గ్రిడ్ స్థానం ఆధారంగా సెల్ను ఎంచుకుంటుంది: ప్యాడ్పై వేలు ఉన్న చోటు, లేదా స్టిక్ చూపే చోటు.</value></data>
+  <data name="Menu_Style_Tip" xml:space="preserve"><value>రేడియల్ రింగ్ వెపన్ వీల్ లాగా దిశ ఆధారంగా సెల్ను ఎంచుకుంటుంది. టచ్ గ్రిడ్ స్థానం ఆధారంగా సెల్ను ఎంచుకుంటుంది: ప్యాడ్పై వేలు ఉన్న చోటు, లేదా స్టిక్ చూపే చోటు. హాట్ బార్ సెల్ల వరుసను చూపి, దాని వెంట కదులుతూ ఎంచుకున్న సెల్ను అమలు చేస్తుంది, దేనికి దాని సొంత నియంత్రణతో.</value></data>
   <data name="Menu_HostInput_Tip" xml:space="preserve"><value>ఈ మెనూను తెరిచి నడిపే ఇన్పుట్, స్లాట్కు కేటాయించిన భౌతిక కంట్రోలర్ల నుండి చదవబడుతుంది. ఎంగేజ్ డెడ్ జోన్ దాటి నెట్టినప్పుడు స్టిక్ దాన్ని తెరుస్తుంది. తాకినప్పుడు టచ్ ప్యాడ్ దాన్ని తెరుస్తుంది.</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>ఈ మెనూను ట్రాక్ప్యాడ్ ఒక సగానికి పరిమితం చేయండి, కాబట్టి రెండు మెనూలు ప్యాడ్ను పంచుకోగలవు.</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>హైలైట్ చేసిన సెల్ తన బైండింగ్ను ఎప్పుడు అమలు చేస్తుంది. ప్రతి ఎంపిక కింద వివరించబడింది.</value></data>
@@ -4248,7 +4248,7 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>క్లిక్ ఇన్పుట్ విడుదలైనప్పుడు ఒకసారి పనిచేస్తుంది. ఉపరితలం అదే క్షణంలో విడుదలైతే, మునుపటి ఎంపిక పనిచేస్తుంది.</value></data>
   <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>మెను తెరిచి ఉండగా, మీరు వేలిని ఎత్తినప్పుడు లేదా స్టిక్ను ఎంగేజ్ డెడ్ జోన్ లోపలికి తెచ్చినప్పుడు ఒకసారి పనిచేస్తుంది. లేయర్ నుండి వెళ్లడం కూడా ఇంకా నడిపించబడుతున్న ఎంపికను ఖరారు చేస్తుంది.</value></data>
   <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>సెల్ హైలైట్ అయి ఉన్నంతసేపు బైండింగ్ను నొక్కి ఉంచుతుంది. లేయర్ తెరిచినప్పుడు రేడియల్ కేంద్రం వెంటనే పనిచేయవచ్చు.</value></data>
-  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>దిశ నొక్కులు సెల్ల గుండా అడుగులు వేస్తూ కొత్తగా ఎంచుకున్న ప్రతి సెల్ను అమలు చేస్తాయి. ఈ హాట్ బార్ ప్రవర్తన ఫైర్ మోడ్ లేదా క్లిక్ ఇన్పుట్ను ఉపయోగించదు.</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>దిశ నొక్కులు సెల్ల గుండా అడుగులు వేస్తూ కొత్తగా ఎంచుకున్న ప్రతి సెల్ను అమలు చేస్తాయి, ఫైర్ మోడ్ లేదా క్లిక్ ఇన్పుట్ లేకుండా. హాట్ బార్ శైలి అమలు చేయకుండా ముందుకు కదులుతుంది, దాని సొంత ఫైర్ నియంత్రణతో అమలు చేస్తుంది.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Flydigi మెరుగైన ప్రోటోకాల్</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>మద్దతు ఉన్న Flydigi కంట్రోలర్లలో అదనపు బటన్లు మరియు మోషన్ సెన్సార్లను ప్రారంభిస్తుంది.</value></data>
   <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi సాఫ్ట్వేర్ నడుస్తోంది: {0}. ఇది PadForge వలె అదే కంట్రోలర్ ఇంటర్ఫేస్ను ఉపయోగించవచ్చు, మరియు రెండింటికీ యాక్సెస్ ఉన్నప్పుడు Vader 5 Pro పదే పదే డిస్కనెక్ట్ అవుతున్నట్లు నివేదించబడింది. ఈ కంట్రోలర్ ఆగి మళ్లీ కనెక్ట్ అయితే, PadForge ఉపయోగిస్తున్నప్పుడు సర్వీస్ను ఆపండి, కంట్రోలర్ను దాచి ఉంచి సర్వీస్ను HidHide వైట్లిస్ట్ నుండి తొలగించండి, లేదా సెట్టింగులలో "Flydigi మెరుగైన ప్రోటోకాల్" ను ఆఫ్ చేసి చూడండి. అది సహాయపడుతుందని నిర్ధారణ కాలేదు.</value></data>
@@ -5099,7 +5099,28 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
     <value>D-ప్యాడ్</value>
   </data>
   <data name="Menu_Style_Keyboard" xml:space="preserve"><value>కీబోర్డ్</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>రేడియల్ రింగ్ మరియు టచ్ గ్రిడ్ సెల్ బైండింగ్‌లను అమలు చేస్తాయి. కీబోర్డ్ వాడుకలో ఉన్న Windows లేఅవుట్ కీలను టైప్ చేస్తుంది.</value></data>
+  <data name="Menu_Style_Hotbar" xml:space="preserve"><value>హాట్ బార్</value></data>
+  <data name="Menu_Hotbar_Show" xml:space="preserve"><value>చూపు లేదా దాచు</value></data>
+  <data name="Menu_Hotbar_Show_Tip" xml:space="preserve"><value>బార్ను చూపుతుంది, తర్వాతి నొక్కులో దాచేస్తుంది. ఇలా దాచిన బార్ మళ్లీ తెరిచినప్పుడు మధ్య సెల్ వద్ద తెరుచుకుంటుంది.</value></data>
+  <data name="Menu_Hotbar_Previous" xml:space="preserve"><value>మునుపటి</value></data>
+  <data name="Menu_Hotbar_Previous_Tip" xml:space="preserve"><value>ఏమీ సెట్ చేయని సెల్లను దాటవేసి, ఎడమ వైపు ఉన్న సెల్ను ఎంచుకుంటుంది.</value></data>
+  <data name="Menu_Hotbar_Next" xml:space="preserve"><value>తర్వాతి</value></data>
+  <data name="Menu_Hotbar_Next_Tip" xml:space="preserve"><value>ఏమీ సెట్ చేయని సెల్లను దాటవేసి, కుడి వైపు ఉన్న సెల్ను ఎంచుకుంటుంది.</value></data>
+  <data name="Menu_Hotbar_Fire" xml:space="preserve"><value>ఫైర్</value></data>
+  <data name="Menu_Hotbar_Fire_Tip" xml:space="preserve"><value>ఎంచుకున్న సెల్ను ఫైర్ మోడ్ చెప్పినట్లు అమలు చేస్తుంది.</value></data>
+  <data name="Menu_Hotbar_Caption" xml:space="preserve"><value>చూపు లేదా దాచు సెల్ల వరుసను తెస్తుంది, మునుపటి, తర్వాతి దాని వెంట కదులుతాయి, ఫైర్ ఎంచుకున్న సెల్ను అమలు చేస్తుంది. ఖాళీగా వదిలిన నియంత్రణ “దీనితో తెరుచుకుంటుంది” దిశను తీసుకుంటుంది: కిందికి, ఎడమ, కుడి లేదా పైకి.</value></data>
+  <data name="Menu_Hotbar_Wrap" xml:space="preserve"><value>చుట్టూ తిరుగు</value></data>
+  <data name="Menu_Hotbar_Wrap_Tip" xml:space="preserve"><value>చివరి సెల్ దాటి వెళ్తే మొదటి సెల్కు వస్తుంది, వెనక్కి వెళ్తే కూడా అంతే. ఆఫ్ చేస్తే, ఎంపిక రెండు చివర్లలో ఆగిపోతుంది.</value></data>
+  <data name="Menu_Hotbar_DismissOnFire" xml:space="preserve"><value>ఫైర్ చేసిన తర్వాత దాచు</value></data>
+  <data name="Menu_Hotbar_DismissOnFire_Tip" xml:space="preserve"><value>ఫైర్ బార్ను దాచేస్తుంది. ఆఫ్ చేస్తే, బార్ అలాగే ఉండి అదే సెల్ మళ్లీ అమలు కావచ్చు.</value></data>
+  <data name="Menu_Hotbar_Recenter" xml:space="preserve"><value>ప్రతిసారి మధ్యకు తెచ్చు</value></data>
+  <data name="Menu_Hotbar_Recenter_Tip" xml:space="preserve"><value>బార్ దాగి ఉన్నప్పుడు ఎంపిక మధ్య సెల్కు తిరిగి వెళ్తుంది. ఆఫ్ చేస్తే, ఫైర్ దాచిన బార్ ఏ సెల్ను అమలు చేసిందో అక్కడే తెరుచుకుంటుంది.</value></data>
+  <data name="Menu_Reset_HotbarControl" xml:space="preserve"><value>నియంత్రణను రీసెట్ చేయి</value></data>
+  <data name="Menu_Fire_Click_Hotbar_Desc" xml:space="preserve"><value>ఫైర్ ఎంచుకున్న సెల్ను నొక్కి, ఫైర్ పట్టుకున్నంతసేపు దాన్ని నొక్కి ఉంచుతుంది. ఫైర్ చేసిన తర్వాత దాచు ఆన్‌లో ఉంటే, ఆ నొక్కు ఒక చిన్న ట్యాప్ అవుతుంది.</value></data>
+  <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>ఫైర్ విడిచినప్పుడు ఎంచుకున్న సెల్ ఒక చిన్న ట్యాప్‌గా ఒకసారి అమలవుతుంది. ఫైర్ చేసిన తర్వాత దాచు ఆన్‌లో ఉంటే, ఫైర్ బార్ను దాచగానే అది అమలవుతుంది.</value></data>
+  <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>ఫైర్ చేసిన తర్వాత దాచు ఆన్‌లో ఉండగా ఫైర్ బార్ను దాచినప్పుడు, ఒక సెల్ ఒక చిన్న ట్యాప్‌గా ఒకసారి అమలవుతుంది. ప్రతిసారి మధ్యకు తెచ్చు ఆన్‌లో ఉంటే, అమలయ్యేది మధ్య సెల్.</value></data>
+  <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>బార్ చూపుతున్నంతసేపు ఎంచుకున్న సెల్ నొక్కి ఉంచబడుతుంది. ముందుకు కదిలితే ఒక సెల్ను వదిలి తర్వాతి సెల్ను నొక్కి ఉంచుతుంది.</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>రేడియల్ రింగ్, టచ్ గ్రిడ్ మరియు హాట్ బార్ సెల్ బైండింగ్‌లను అమలు చేస్తాయి. కీబోర్డ్ వాడుకలో ఉన్న Windows లేఅవుట్ కీలను టైప్ చేస్తుంది.</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>లేఅవుట్</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>కీబోర్డ్ తన కీలను ఎలా అమర్చుతుందో, కంట్రోలర్ వాటిని ఎలా ఎంచుకుంటుందో.</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>ఒక స్టిక్ లేదా నాలుగు ఇన్పుట్లతో కదిలే ఒకే హైలైట్, Windows, Xbox మరియు Steam వాడే లేఅవుట్.</value></data>
@@ -5219,6 +5240,12 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (ఈ PCలో లేదు)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (ఈ స్లాట్‌లో లేదు)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>Laser Pointer గైరో యాగా చదవబడింది (PadForge-లో లేజర్ పాయింటర్ మార్పిడి లేదు)</value></data>
+  <data name="Workshop_Tr_GyroRollFromHorizon" xml:space="preserve"><value>రోల్ క్షితిజం నుండి కాక, ప్రారంభంలో లేదా గైరో రీసెంటర్ చేసినప్పుడు కంట్రోలర్ ఉన్న స్థానం వద్ద కేంద్రీకరించబడింది</value></data>
+  <data name="Workshop_Tr_GyroPitchFromHorizon" xml:space="preserve"><value>పిచ్ చదునుగా ఉన్న స్థితి నుండి {0}° వద్ద కాక, ప్రారంభంలో లేదా గైరో రీసెంటర్ చేసినప్పుడు కంట్రోలర్ ఉన్న స్థానం వద్ద కేంద్రీకరించబడింది</value></data>
+  <data name="Workshop_Tr_GyroTiltRangeCapped" xml:space="preserve"><value>పూర్తి విక్షేపం {0}° వద్ద కాక 90° వంపు వద్ద</value></data>
+  <data name="Workshop_Tr_OutputJoystickUnrouted" xml:space="preserve"><value>output_joystick {0} జతను స్టిక్కు గానీ మౌస్కు గానీ పంపదు, కాబట్టి ఏదీ మ్యాప్ చేయబడదు</value></data>
+  <data name="Workshop_Tr_DpadPulseHeld" xml:space="preserve"><value>ప్రతి దిశ నొక్కి ఉంచినంతసేపు ఆన్‌లో ఉంటుంది (Steam అనలాగ్ ఎమ్యులేషన్ దాన్ని పల్స్ చేస్తుంది, ఎంత ఎక్కువ నొక్కితే అంత ఎక్కువసేపు)</value></data>
+  <data name="Workshop_Tr_SoftPressNoAnalog" xml:space="preserve"><value>అనలాగ్ రీడింగ్ లేని ఇన్పుట్‌పై సాఫ్ట్-ప్రెస్ యాక్టివేటర్ (Steam దీన్ని ఎప్పుడూ ప్రేరేపించదు)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>reWASD-లో {0} ఇంకా Windows-కు చేరుతుంది, ఎందుకంటే ఫైల్ దాన్ని మ్యాప్ తొలగింపు లేకుండా మ్యాప్ చేస్తుంది. మ్యాప్ చేసిన ఇన్పుట్లను వినియోగించు ఆన్ చేసినప్పుడు, PadForge దాన్ని ఆపుతుంది.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows రేడియల్ స్టిక్ {0} ను నెట్టిన కోణాన్ని బట్టి ఆకృతి చేస్తుంది. PadForge-లో స్టిక్ కార్డ్ నేరుగా నెట్టడాన్ని ఒకేలా, వికర్ణ నెట్టడాన్ని వేరుగా ప్లే చేస్తుంది.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows ప్రతి అక్షంపై గైరో డెడ్ జోన్ ను కదలిక కోణాన్ని బట్టి తీసివేస్తుంది. PadForge-లో ప్రతి అక్షంపై పూర్తి డెడ్ జోన్ తీసివేయబడుతుంది, కాబట్టి నేరుగా కదలిక ఒకేలా పనిచేస్తుంది, నెమ్మదైన వికర్ణ కదలిక ఆలస్యంగా మొదలవుతుంది.</value></data>

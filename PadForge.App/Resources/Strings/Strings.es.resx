@@ -3756,7 +3756,7 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>Ninguna</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Tecla de teclado</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>Botón del mando</value></data>
-  <data name="Menu_Style_Tip" xml:space="preserve"><value>Anillo radial elige una celda por dirección, como una rueda de armas. Cuadrícula táctil elige una celda por posición: donde está el dedo en el panel o hacia dónde apunta el stick.</value></data>
+  <data name="Menu_Style_Tip" xml:space="preserve"><value>Anillo radial elige una celda por dirección, como una rueda de armas. Cuadrícula táctil elige una celda por posición: donde está el dedo en el panel o hacia dónde apunta el stick. Barra rápida muestra una fila de celdas, avanza por ella y dispara la celda seleccionada, cada paso con su propio control.</value></data>
   <data name="Menu_HostInput_Tip" xml:space="preserve"><value>La entrada que abre y dirige este menú, leída de los mandos físicos asignados a la ranura. Un stick lo abre al empujarlo más allá de la zona muerta de activación. Un panel táctil lo abre al tocarlo.</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>Limita este menú a una mitad del panel táctil, para que dos menús puedan compartir el panel.</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>Cuándo la celda resaltada dispara su asignación. Cada opción se explica abajo.</value></data>
@@ -4199,7 +4199,7 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>Dispara una vez al soltar la entrada de clic. Si la superficie se suelta en el mismo instante, dispara la selección anterior.</value></data>
   <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>Dispara una vez al levantar el dedo o al devolver el stick a la zona muerta de activación, mientras el menú sigue abierto. Salir de la capa también confirma una selección aún dirigida.</value></data>
   <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>Mantiene la asignación mientras su celda esté resaltada. Un centro radial puede disparar de inmediato al abrirse la capa.</value></data>
-  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Las pulsaciones de dirección recorren las celdas y disparan cada celda nueva seleccionada. Este comportamiento de barra rápida no usa el modo de disparo ni la entrada de clic.</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Las pulsaciones de dirección recorren las celdas y disparan cada celda nueva seleccionada, sin usar Modo de disparo ni Entrada de clic. El estilo Barra rápida avanza sin disparar y dispara con su propio control Disparar.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Protocolo mejorado de Flydigi</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Activa los botones adicionales y los sensores de movimiento de los mandos Flydigi compatibles.</value></data>
   <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Hay software de Flydigi en ejecución: {0}. Puede usar la misma interfaz del mando que PadForge, y se ha informado de un Vader 5 Pro que se desconectaba repetidamente mientras ambos tenían acceso. Si este mando se desconecta y reconecta, detenga el servicio mientras usa PadForge, mantenga el mando oculto y quite el servicio de la lista blanca de HidHide, o pruebe a desactivar «Protocolo mejorado de Flydigi» en Configuración, aunque no está confirmado que ayude.</value></data>
@@ -5050,7 +5050,28 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
     <value>Cruceta</value>
   </data>
   <data name="Menu_Style_Keyboard" xml:space="preserve"><value>Teclado</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>Anillo radial y Cuadrícula táctil activan los enlaces de las celdas. Teclado escribe las teclas de la distribución de Windows en uso.</value></data>
+  <data name="Menu_Style_Hotbar" xml:space="preserve"><value>Barra rápida</value></data>
+  <data name="Menu_Hotbar_Show" xml:space="preserve"><value>Mostrar u ocultar</value></data>
+  <data name="Menu_Hotbar_Show_Tip" xml:space="preserve"><value>Muestra la barra y la oculta en la siguiente pulsación. Una barra ocultada así se abre en su celda central la próxima vez.</value></data>
+  <data name="Menu_Hotbar_Previous" xml:space="preserve"><value>Anterior</value></data>
+  <data name="Menu_Hotbar_Previous_Tip" xml:space="preserve"><value>Selecciona la celda de la izquierda, saltando las celdas sin nada definido.</value></data>
+  <data name="Menu_Hotbar_Next" xml:space="preserve"><value>Siguiente</value></data>
+  <data name="Menu_Hotbar_Next_Tip" xml:space="preserve"><value>Selecciona la celda de la derecha, saltando las celdas sin nada definido.</value></data>
+  <data name="Menu_Hotbar_Fire" xml:space="preserve"><value>Disparar</value></data>
+  <data name="Menu_Hotbar_Fire_Tip" xml:space="preserve"><value>Dispara la celda seleccionada, según indica Modo de disparo.</value></data>
+  <data name="Menu_Hotbar_Caption" xml:space="preserve"><value>Mostrar u ocultar abre una fila de celdas, Anterior y Siguiente avanzan por ella y Disparar dispara la celda seleccionada. Un control vacío toma la dirección de Se abre con: abajo, izquierda, derecha o arriba.</value></data>
+  <data name="Menu_Hotbar_Wrap" xml:space="preserve"><value>Dar la vuelta</value></data>
+  <data name="Menu_Hotbar_Wrap_Tip" xml:space="preserve"><value>Pasar de la última celda lleva a la primera, y viceversa. Desactivado, la selección se detiene en cada extremo.</value></data>
+  <data name="Menu_Hotbar_DismissOnFire" xml:space="preserve"><value>Ocultar tras disparar</value></data>
+  <data name="Menu_Hotbar_DismissOnFire_Tip" xml:space="preserve"><value>Disparar oculta la barra. Desactivado, la barra sigue visible y la misma celda puede dispararse de nuevo.</value></data>
+  <data name="Menu_Hotbar_Recenter" xml:space="preserve"><value>Recentrar cada vez</value></data>
+  <data name="Menu_Hotbar_Recenter_Tip" xml:space="preserve"><value>Mientras la barra está oculta, la selección vuelve a la celda central. Desactivado, una barra que Disparar ocultó se abre en la celda que disparó.</value></data>
+  <data name="Menu_Reset_HotbarControl" xml:space="preserve"><value>Restablecer Control</value></data>
+  <data name="Menu_Fire_Click_Hotbar_Desc" xml:space="preserve"><value>Disparar pulsa la celda seleccionada y la mantiene mientras se mantiene Disparar. Con Ocultar tras disparar activado, la pulsación es un toque breve.</value></data>
+  <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>La celda seleccionada se dispara una vez, con un toque breve, al soltar Disparar. Con Ocultar tras disparar activado, se dispara en cuanto Disparar oculta la barra.</value></data>
+  <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>Una celda se dispara una vez, con un toque breve, cuando Disparar oculta la barra con Ocultar tras disparar activado. Con Recentrar cada vez activado, la celda que se dispara es la central.</value></data>
+  <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>La celda seleccionada se mantiene todo el tiempo que la barra esté visible. Al avanzar, se suelta una celda y se mantiene la siguiente.</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>Anillo radial, Cuadrícula táctil y Barra rápida activan los enlaces de las celdas. Teclado escribe las teclas de la distribución de Windows en uso.</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Distribución</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Cómo dispone el teclado sus teclas y cómo las elige un mando.</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Un solo resaltado, movido con una palanca o cuatro entradas, la distribución que usan Windows, Xbox y Steam.</value></data>
@@ -5170,6 +5191,12 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (no está en este PC)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (no está en esta ranura)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>giroscopio en Puntero láser leído como guiñada (PadForge no convierte el puntero láser)</value></data>
+  <data name="Workshop_Tr_GyroRollFromHorizon" xml:space="preserve"><value>alabeo centrado donde reposa el mando al empezar o con Recentrar giroscopio, no en el horizonte</value></data>
+  <data name="Workshop_Tr_GyroPitchFromHorizon" xml:space="preserve"><value>cabeceo centrado donde reposa el mando al empezar o con Recentrar giroscopio, no a {0}° de la horizontal</value></data>
+  <data name="Workshop_Tr_GyroTiltRangeCapped" xml:space="preserve"><value>desviación completa a 90° de inclinación, no a {0}°</value></data>
+  <data name="Workshop_Tr_OutputJoystickUnrouted" xml:space="preserve"><value>output_joystick {0} no envía el par ni al stick ni al ratón, por lo que no se asigna nada</value></data>
+  <data name="Workshop_Tr_DpadPulseHeld" xml:space="preserve"><value>cada dirección se mantiene mientras se empuja (la emulación analógica de Steam la pulsa a intervalos, más largos cuanto más se empuja)</value></data>
+  <data name="Workshop_Tr_SoftPressNoAnalog" xml:space="preserve"><value>activador de pulsación suave en una entrada sin lectura analógica (Steam nunca lo activa)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>En reWASD, {0} sigue llegando a Windows porque el archivo la asigna sin una desasignación. Con Consumir entradas asignadas activado, PadForge la bloquea.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows da forma a {0} de un stick radial según el ángulo del empuje. La tarjeta del stick de PadForge trata igual un empuje recto y distinto uno diagonal.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows ajusta la zona muerta del giroscopio en cada eje según el ángulo del movimiento. PadForge quita la zona muerta entera de cada eje, así que un movimiento recto se comporta igual y uno diagonal lento empieza más tarde.</value></data>

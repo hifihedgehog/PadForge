@@ -34,7 +34,7 @@ xbox rows: 20
     <- Gamepad LeftStick
   Base | LeftTrigger
     <- Gamepad LeftTrigger
-    <- Gamepad LeftTrigger [upper-half] dz=75
+    <- Gamepad LeftTrigger [upper-half] dz=90
   Base | RightShoulder
     <- Gamepad RightShoulder
   Base | RightThumbAxisX
@@ -45,7 +45,7 @@ xbox rows: 20
     <- Gamepad RightStick
   Base | RightTrigger
     <- Gamepad RightTrigger
-    <- Gamepad RightTrigger [upper-half] dz=75
+    <- Gamepad RightTrigger [upper-half] dz=90
 kbm rows: 2
   Base | KbmKey74
     <- Menu 1 Item 0
@@ -59,18 +59,18 @@ macros: 19
   macro RumblePulse OnPress | Haptic pulse (LeftStick) | btns=0x0000 in=[Gamepad LeftStick] layer=Base strength=66%
   macro RumblePulse OnPress | Haptic pulse (Menu 1 Item 0) | btns=0x0000 in=[Menu 1 Item 0] layer=Base strength=66%
   macro RumblePulse OnPress | Haptic pulse (Menu 1 Item 1) | btns=0x0000 in=[Menu 1 Item 1] layer=Base strength=66%
-  macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 layer=Base strength=66%
-  macro KeyTap OnPress | Screenshot key (Touchpad 0 DPadRight) | btns=0x0000 in=[Touchpad 0 DPadRight; Touchpad 0 Click Right] layer=Base vk=0x2C
-  macro RumblePulse OnPress | Haptic pulse (Touchpad 0 DPadRight) | btns=0x0000 in=[Touchpad 0 DPadRight; Touchpad 0 Click Right] layer=Base strength=33%
-  macro KeyTap OnPress | Screenshot key (Touchpad 0 DPadUp) | btns=0x0000 in=[Touchpad 0 DPadUp; Touchpad 0 Click Right] layer=Base vk=0x2C
-  macro RumblePulse OnPress | Haptic pulse (Touchpad 0 DPadUp) | btns=0x0000 in=[Touchpad 0 DPadUp; Touchpad 0 Click Right] layer=Base strength=33%
-  macro KeyTap OnPress | Screenshot key (Touchpad 0 DPadDown) | btns=0x0000 in=[Touchpad 0 DPadDown; Touchpad 0 Click Right] layer=Base vk=0x2C
-  macro RumblePulse OnPress | Haptic pulse (Touchpad 0 DPadDown) | btns=0x0000 in=[Touchpad 0 DPadDown; Touchpad 0 Click Right] layer=Base strength=33%
-  macro KeyTap OnPress | Screenshot key (Touchpad 0 DPadLeft) | btns=0x0000 in=[Touchpad 0 DPadLeft; Touchpad 0 Click Right] layer=Base vk=0x2C
-  macro RumblePulse OnPress | Haptic pulse (Touchpad 0 DPadLeft) | btns=0x0000 in=[Touchpad 0 DPadLeft; Touchpad 0 Click Right] layer=Base strength=33%
-  macro KeyTap OnPress | Screenshot key (Touchpad 0 DPadUp) | btns=0x0000 in=[Touchpad 0 DPadUp; Touchpad 0 Click Right] layer=Layer_793611331_0_MS_right_trackpad_20 vk=0x2C
-  macro RumblePulse OnPress | Haptic pulse (Touchpad 0 DPadUp) | btns=0x0000 in=[Touchpad 0 DPadUp; Touchpad 0 Click Right] layer=Layer_793611331_0_MS_right_trackpad_20 strength=33%
-  macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=90 layer=Base strength=66%
+  macro KeyTap OnPress | Screenshot key (Touchpad 0 Right Right) | btns=0x0000 in=[Wedge 0 67.5 2.7 31.7685 29.2685 click Touchpad 0 Finger 0 Ring Right] layer=Base vk=0x2C
+  macro RumblePulse OnPress | Haptic pulse (Touchpad 0 Right Right) | btns=0x0000 in=[Wedge 0 67.5 2.7 31.7685 29.2685 click Touchpad 0 Finger 0 Ring Right] layer=Base strength=33%
+  macro KeyTap OnPress | Screenshot key (Touchpad 0 Right Up) | btns=0x0000 in=[Wedge 90 67.5 2.7 31.7685 29.2685 click Touchpad 0 Finger 0 Ring Right] layer=Base vk=0x2C
+  macro RumblePulse OnPress | Haptic pulse (Touchpad 0 Right Up) | btns=0x0000 in=[Wedge 90 67.5 2.7 31.7685 29.2685 click Touchpad 0 Finger 0 Ring Right] layer=Base strength=33%
+  macro KeyTap OnPress | Screenshot key (Touchpad 0 Right Down) | btns=0x0000 in=[Wedge 270 67.5 2.7 31.7685 29.2685 click Touchpad 0 Finger 0 Ring Right] layer=Base vk=0x2C
+  macro RumblePulse OnPress | Haptic pulse (Touchpad 0 Right Down) | btns=0x0000 in=[Wedge 270 67.5 2.7 31.7685 29.2685 click Touchpad 0 Finger 0 Ring Right] layer=Base strength=33%
+  macro KeyTap OnPress | Screenshot key (Touchpad 0 Right Left) | btns=0x0000 in=[Wedge 180 67.5 2.7 31.7685 29.2685 click Touchpad 0 Finger 0 Ring Right] layer=Base vk=0x2C
+  macro RumblePulse OnPress | Haptic pulse (Touchpad 0 Right Left) | btns=0x0000 in=[Wedge 180 67.5 2.7 31.7685 29.2685 click Touchpad 0 Finger 0 Ring Right] layer=Base strength=33%
+  macro KeyTap OnPress | Screenshot key (Touchpad 0 Right Up) | btns=0x0000 in=[Wedge 90 67.5 2.7 31.7685 29.2685 click Touchpad 0 Finger 0 Ring Right] layer=Layer_793611331_0_MS_right_trackpad_20 vk=0x2C
+  macro RumblePulse OnPress | Haptic pulse (Touchpad 0 Right Up) | btns=0x0000 in=[Wedge 90 67.5 2.7 31.7685 29.2685 click Touchpad 0 Finger 0 Ring Right] layer=Layer_793611331_0_MS_right_trackpad_20 strength=33%
+  macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=90 layer=Base strength=66%
 menus: 1
   menu 1 Grid | Touchpad 0 [left half] | Base | fire=Click cells=2 | name=Touch Menu 1
     [0] Quicksave icon=ghost_030_inv_0100.png

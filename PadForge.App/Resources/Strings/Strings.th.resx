@@ -3818,7 +3818,7 @@
   <data name="Menu_Binding_None" xml:space="preserve"><value>ไม่มี</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>คีย์ของคีย์บอร์ด</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>ปุ่มคอนโทรลเลอร์</value></data>
-  <data name="Menu_Style_Tip" xml:space="preserve"><value>“วงแหวนรัศมี” เลือกเซลล์ตามทิศทาง เหมือนวงล้ออาวุธ “ตารางสัมผัส” เลือกเซลล์ตามตำแหน่ง: จุดที่นิ้ววางอยู่บนแพด หรือจุดที่สติ๊กชี้ไป</value></data>
+  <data name="Menu_Style_Tip" xml:space="preserve"><value>“วงแหวนรัศมี” เลือกเซลล์ตามทิศทาง เหมือนวงล้ออาวุธ “ตารางสัมผัส” เลือกเซลล์ตามตำแหน่ง: จุดที่นิ้ววางอยู่บนแพด หรือจุดที่สติ๊กชี้ไป “ฮอตบาร์” แสดงแถวของเซลล์ เลื่อนไปตามแถว และสั่งงานเซลล์ที่เลือก โดยแต่ละอย่างมีตัวควบคุมของตัวเอง</value></data>
   <data name="Menu_HostInput_Tip" xml:space="preserve"><value>อินพุตที่ใช้เปิดและบังคับเมนูนี้ โดยอ่านจากคอนโทรลเลอร์จริงที่กำหนดให้ช่อง สติ๊กจะเปิดเมนูเมื่อโยกเกินเดดโซนการเริ่มทำงาน ทัชแพดจะเปิดเมนูเมื่อสัมผัส</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>จำกัดเมนูนี้ไว้ที่ครึ่งหนึ่งของแทร็กแพด เพื่อให้สองเมนูใช้แพดร่วมกันได้</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>กำหนดว่าเซลล์ที่ไฮไลต์อยู่จะสั่งงานการผูกเมื่อใด แต่ละตัวเลือกมีคำอธิบายด้านล่าง</value></data>
@@ -4248,7 +4248,7 @@
   <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>ทำงานหนึ่งครั้งเมื่อปล่อยอินพุตคลิก หากพื้นผิวถูกปล่อยในจังหวะเดียวกัน จะสั่งงานรายการที่เลือกก่อนหน้า</value></data>
   <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>ทำงานหนึ่งครั้งเมื่อคุณยกนิ้วหรือคืนสติ๊กเข้าสู่เดดโซนการเริ่มทำงาน ขณะที่เมนูยังเปิดอยู่ การออกจากเลเยอร์จะยืนยันรายการที่ยังบังคับอยู่ด้วย</value></data>
   <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>กดการผูกค้างไว้ขณะที่เซลล์ของการผูกนั้นไฮไลต์อยู่ เซลล์กึ่งกลางของวงแหวนสามารถทำงานทันทีเมื่อเลเยอร์เปิด</value></data>
-  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>การกดทิศทางจะเลื่อนไปทีละเซลล์และสั่งงานแต่ละเซลล์ที่เพิ่งถูกเลือก การทำงานแบบฮอตบาร์นี้ไม่ใช้โหมดการสั่งงานหรืออินพุตคลิก</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>การกดทิศทางจะเลื่อนไปทีละเซลล์และสั่งงานแต่ละเซลล์ที่เพิ่งถูกเลือก โดยไม่ใช้โหมดการสั่งงานหรืออินพุตคลิก สไตล์ “ฮอตบาร์” เลื่อนโดยไม่สั่งงาน และสั่งงานด้วยตัวควบคุม สั่งงาน ของตัวเอง</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>โปรโตคอลขั้นสูงของ Flydigi</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>เปิดใช้ปุ่มเพิ่มเติมและเซนเซอร์ตรวจจับการเคลื่อนไหวบนคอนโทรลเลอร์ Flydigi ที่รองรับ</value></data>
   <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>ซอฟต์แวร์ Flydigi กำลังทำงานอยู่: {0} ซอฟต์แวร์นี้อาจใช้อินเทอร์เฟซคอนโทรลเลอร์เดียวกับ PadForge และมีรายงานว่า Vader 5 Pro ตัดการเชื่อมต่อซ้ำ ๆ ขณะที่ทั้งสองโปรแกรมเข้าถึงพร้อมกัน หากคอนโทรลเลอร์นี้หลุดแล้วเชื่อมต่อใหม่ ให้หยุดบริการนั้นขณะใช้ PadForge ซ่อนคอนโทรลเลอร์ไว้และนำบริการนั้นออกจากรายการที่อนุญาตของ HidHide หรือลองปิด "โปรโตคอลขั้นสูงของ Flydigi" ในการตั้งค่า ซึ่งยังไม่ยืนยันว่าช่วยได้</value></data>
@@ -5099,7 +5099,28 @@
     <value>D-pad</value>
   </data>
   <data name="Menu_Style_Keyboard" xml:space="preserve"><value>คีย์บอร์ด</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>วงแหวนรัศมีและตารางสัมผัสจะสั่งงานตามการผูกของแต่ละเซลล์ ส่วนคีย์บอร์ดจะพิมพ์ตัวอักษรตามเลย์เอาต์ Windows ที่ใช้อยู่</value></data>
+  <data name="Menu_Style_Hotbar" xml:space="preserve"><value>ฮอตบาร์</value></data>
+  <data name="Menu_Hotbar_Show" xml:space="preserve"><value>แสดงหรือซ่อน</value></data>
+  <data name="Menu_Hotbar_Show_Tip" xml:space="preserve"><value>แสดงแถบ และซ่อนแถบเมื่อกดครั้งถัดไป แถบที่ซ่อนด้วยวิธีนี้จะเปิดที่เซลล์กึ่งกลางในครั้งหน้า</value></data>
+  <data name="Menu_Hotbar_Previous" xml:space="preserve"><value>ก่อนหน้า</value></data>
+  <data name="Menu_Hotbar_Previous_Tip" xml:space="preserve"><value>เลือกเซลล์ทางซ้าย โดยข้ามเซลล์ที่ไม่ได้ตั้งค่าไว้</value></data>
+  <data name="Menu_Hotbar_Next" xml:space="preserve"><value>ถัดไป</value></data>
+  <data name="Menu_Hotbar_Next_Tip" xml:space="preserve"><value>เลือกเซลล์ทางขวา โดยข้ามเซลล์ที่ไม่ได้ตั้งค่าไว้</value></data>
+  <data name="Menu_Hotbar_Fire" xml:space="preserve"><value>สั่งงาน</value></data>
+  <data name="Menu_Hotbar_Fire_Tip" xml:space="preserve"><value>สั่งงานเซลล์ที่เลือก ตามที่โหมดการสั่งงานกำหนด</value></data>
+  <data name="Menu_Hotbar_Caption" xml:space="preserve"><value>แสดงหรือซ่อน เรียกแถวของเซลล์ขึ้นมา ก่อนหน้า และ ถัดไป เลื่อนไปตามแถว และ สั่งงาน จะสั่งงานเซลล์ที่เลือก ตัวควบคุมที่เว้นว่างไว้จะใช้ทิศทางของ เปิดด้วย ได้แก่ ลง ซ้าย ขวา หรือขึ้น</value></data>
+  <data name="Menu_Hotbar_Wrap" xml:space="preserve"><value>วนรอบ</value></data>
+  <data name="Menu_Hotbar_Wrap_Tip" xml:space="preserve"><value>เมื่อเลื่อนเลยเซลล์สุดท้ายจะไปที่เซลล์แรก และย้อนกลับเช่นกัน เมื่อปิด การเลือกจะหยุดที่ปลายทั้งสองด้าน</value></data>
+  <data name="Menu_Hotbar_DismissOnFire" xml:space="preserve"><value>ซ่อนหลังสั่งงาน</value></data>
+  <data name="Menu_Hotbar_DismissOnFire_Tip" xml:space="preserve"><value>สั่งงาน จะซ่อนแถบ เมื่อปิด แถบจะยังค้างอยู่และสั่งงานเซลล์เดิมซ้ำได้</value></data>
+  <data name="Menu_Hotbar_Recenter" xml:space="preserve"><value>กลับกึ่งกลางทุกครั้ง</value></data>
+  <data name="Menu_Hotbar_Recenter_Tip" xml:space="preserve"><value>ขณะที่แถบถูกซ่อน การเลือกจะกลับไปที่เซลล์กึ่งกลาง เมื่อปิด แถบที่ สั่งงาน ซ่อนไว้จะเปิดที่เซลล์ที่เพิ่งสั่งงาน</value></data>
+  <data name="Menu_Reset_HotbarControl" xml:space="preserve"><value>รีเซ็ตตัวควบคุม</value></data>
+  <data name="Menu_Fire_Click_Hotbar_Desc" xml:space="preserve"><value>สั่งงาน จะกดเซลล์ที่เลือกและกดค้างไว้ตราบที่ สั่งงาน ถูกกดค้างอยู่ เมื่อเปิด ซ่อนหลังสั่งงาน การกดจะเป็นการแตะสั้นๆ</value></data>
+  <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>เซลล์ที่เลือกจะทำงานหนึ่งครั้งแบบแตะสั้นๆ เมื่อปล่อย สั่งงาน เมื่อเปิด ซ่อนหลังสั่งงาน เซลล์จะทำงานทันทีที่ สั่งงาน ซ่อนแถบ</value></data>
+  <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>เซลล์หนึ่งจะทำงานหนึ่งครั้งแบบแตะสั้นๆ เมื่อ สั่งงาน ซ่อนแถบขณะที่เปิด ซ่อนหลังสั่งงาน เมื่อเปิด กลับกึ่งกลางทุกครั้ง เซลล์กึ่งกลางคือเซลล์ที่จะทำงาน</value></data>
+  <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>เซลล์ที่เลือกจะถูกกดค้างตลอดเวลาที่แถบแสดงอยู่ การเลื่อนจะปล่อยเซลล์หนึ่งและกดเซลล์ถัดไปค้างไว้</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>“วงแหวนรัศมี” “ตารางสัมผัส” และ “ฮอตบาร์” จะสั่งงานตามการผูกของแต่ละเซลล์ ส่วน “คีย์บอร์ด” จะพิมพ์ตัวอักษรตามเลย์เอาต์ Windows ที่ใช้อยู่</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>เลย์เอาต์</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>รูปแบบการจัดวางปุ่มของคีย์บอร์ด และวิธีที่คอนโทรลเลอร์เลือกปุ่มเหล่านั้น</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>ไฮไลต์เดียว เลื่อนด้วยสติ๊กหรืออินพุตสี่ตัว เป็นเลย์เอาต์ที่ Windows, Xbox และ Steam ใช้</value></data>
@@ -5219,6 +5240,12 @@
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (ไม่มีบนพีซีเครื่องนี้)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (ไม่มีบนช่องนี้)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>ไจโรแบบตัวชี้เลเซอร์ถูกอ่านเป็นยอว์ (PadForge ไม่มีการแปลงแบบตัวชี้เลเซอร์)</value></data>
+  <data name="Workshop_Tr_GyroRollFromHorizon" xml:space="preserve"><value>โรลกึ่งกลางอยู่ที่ท่าพักของคอนโทรลเลอร์ตอนเริ่มอ่านค่าหรือตอนใช้จัดไจโรกลับกึ่งกลาง ไม่ใช่ที่เส้นขอบฟ้า</value></data>
+  <data name="Workshop_Tr_GyroPitchFromHorizon" xml:space="preserve"><value>พิตช์กึ่งกลางอยู่ที่ท่าพักของคอนโทรลเลอร์ตอนเริ่มอ่านค่าหรือตอนใช้จัดไจโรกลับกึ่งกลาง ไม่ใช่ที่ {0}° จากแนวราบ</value></data>
+  <data name="Workshop_Tr_GyroTiltRangeCapped" xml:space="preserve"><value>สติ๊กเอียงสุดที่การเอียง 90° ไม่ใช่ {0}°</value></data>
+  <data name="Workshop_Tr_OutputJoystickUnrouted" xml:space="preserve"><value>output_joystick {0} ไม่ส่งคู่แกนนี้ไปที่สติ๊กหรือเมาส์ จึงไม่มีการแมปอะไร</value></data>
+  <data name="Workshop_Tr_DpadPulseHeld" xml:space="preserve"><value>แต่ละทิศทางถูกกดค้างไว้ขณะที่ดันอยู่ (การจำลองแอนะล็อกของ Steam จะสั่งทิศทางเป็นจังหวะเปิดปิดซ้ำ ๆ และยิ่งดันไกลจังหวะก็ยิ่งยาว)</value></data>
+  <data name="Workshop_Tr_SoftPressNoAnalog" xml:space="preserve"><value>ตัวเปิดใช้งานแบบกดเบาบนอินพุตที่ไม่มีค่าแอนะล็อก (Steam ไม่สั่งให้ทำงานเลย)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>ใน reWASD {0} ยังไปถึง Windows เพราะไฟล์แมปไว้โดยไม่ยกเลิกการแมป เมื่อเปิด ดักอินพุตที่แมปไว้ PadForge จะกันไว้</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows ปรับ {0} ของสติ๊กแบบรัศมีตามมุมที่ดัน การ์ดสติ๊กของ PadForge ถือว่าการดันตรงเหมือนกัน และการดันทแยงต่างออกไป</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows ปรับเดดโซนของไจโรในแต่ละแกนตามมุมของการเคลื่อนไหว PadForge หักเดดโซนทั้งหมดออกจากแต่ละแกน การเคลื่อนไหวตรงจึงเหมือนกัน ส่วนการเคลื่อนไหวทแยงช้าๆ จะเริ่มขยับช้ากว่า</value></data>

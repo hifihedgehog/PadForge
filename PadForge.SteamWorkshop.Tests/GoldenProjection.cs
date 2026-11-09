@@ -46,6 +46,7 @@ namespace PadForge.SteamWorkshop.Tests
             {
                 sb.Append("gyroEngage: ").Append(p.GyroEngageDescriptor);
                 if (p.GyroEngageInvert) sb.Append(" [inverted]");
+                if (p.GyroEngageToggle) sb.Append(" [toggle]");
                 sb.Append('\n');
             }
             // Ratchet clutch stamp (v22): non-default only, so pre-v22
@@ -55,6 +56,11 @@ namespace PadForge.SteamWorkshop.Tests
                 sb.Append("gyroRatchet: ")
                   .Append(string.Join("; ", p.GyroRatchetDescriptors)).Append('\n');
             }
+            // Activation lane by layer and the re-center on each activation:
+            // non-default only, like the ratchet.
+            foreach (var kv in p.GyroActivationByLayer)
+                sb.Append("gyroActivation: ").Append(kv.Key).Append(" = ").Append(kv.Value.Encode()).Append('\n');
+            if (p.GyroRecenterOnEngage) sb.Append("gyroRecenterOnEngage\n");
 
             RenderSet(sb, "xbox", p.XboxMappingSet);
             RenderSet(sb, "kbm", p.KbmMappingSet);

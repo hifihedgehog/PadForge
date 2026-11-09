@@ -3818,7 +3818,7 @@
   <data name="Menu_Binding_None" xml:space="preserve"><value>هیچ‌کدام</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>کلید صفحه‌کلید</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>دکمه کنترلر</value></data>
-  <data name="Menu_Style_Tip" xml:space="preserve"><value>«حلقه شعاعی» خانه را بر اساس جهت انتخاب می‌کند، مانند چرخ سلاح. «شبکه لمسی» خانه را بر اساس موقعیت انتخاب می‌کند: جایی که انگشت روی پد قرار دارد، یا جهتی که استیک نشان می‌دهد.</value></data>
+  <data name="Menu_Style_Tip" xml:space="preserve"><value>«حلقه شعاعی» خانه را بر اساس جهت انتخاب می‌کند، مانند چرخ سلاح. «شبکه لمسی» خانه را بر اساس موقعیت انتخاب می‌کند: جایی که انگشت روی پد قرار دارد، یا جهتی که استیک نشان می‌دهد. «نوار میانبر» ردیفی از خانه‌ها را نشان می‌دهد، در آن جلو و عقب می‌رود و خانه انتخاب‌شده را اجرا می‌کند، هر کدام با کنترل خودش.</value></data>
   <data name="Menu_HostInput_Tip" xml:space="preserve"><value>ورودی‌ای که این منو را باز و هدایت می‌کند و از کنترلرهای فیزیکی اختصاص‌یافته به اسلات خوانده می‌شود. استیک وقتی از «ناحیه مرده فعال‌سازی» فراتر برود آن را باز می‌کند. تاچ‌پد با لمس آن را باز می‌کند.</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>این منو را به یک نیمه ترک‌پد محدود می‌کند تا دو منو بتوانند پد را با هم به کار ببرند.</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>خانه برجسته‌شده چه زمانی نگاشت خود را اجرا کند. هر گزینه در زیر توضیح داده شده است.</value></data>
@@ -4248,7 +4248,7 @@
   <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>با رها شدن «ورودی کلیک» یک بار اجرا می‌شود. اگر سطح در همان لحظه رها شود، انتخاب قبلی اجرا می‌شود.</value></data>
   <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>وقتی انگشت خود را بردارید یا استیک را به درون «ناحیه مرده فعال‌سازی» برگردانید، یک بار اجرا می‌شود و منو باز می‌ماند. خروج از لایه نیز انتخابی را که هنوز در حال هدایت است قطعی می‌کند.</value></data>
   <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>تا وقتی خانه برجسته است، نگاشت آن را نگه می‌دارد. مرکز شعاعی می‌تواند بی‌درنگ با باز شدن لایه اجرا شود.</value></data>
-  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>فشار دکمه‌های جهت، خانه‌ها را یکی‌یکی طی می‌کند و هر خانه تازه انتخاب‌شده را اجرا می‌کند. این رفتار نوار میانبر از «حالت فعال شدن» یا «ورودی کلیک» استفاده نمی‌کند.</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>فشار دکمه‌های جهت، خانه‌ها را یکی‌یکی طی می‌کند و هر خانه تازه انتخاب‌شده را اجرا می‌کند، بدون «حالت فعال شدن» یا «ورودی کلیک». سبک «نوار میانبر» بدون اجرا جلو و عقب می‌رود و با کنترل «اجرا»ی خودش اجرا می‌کند.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>پروتکل پیشرفته Flydigi</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>دکمه‌های اضافی و حسگرهای حرکتی را در کنترلرهای پشتیبانی‌شده Flydigi فعال می‌کند.</value></data>
   <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>نرم‌افزار Flydigi در حال اجراست: {0}. این نرم‌افزار می‌تواند از همان رابط کنترلری استفاده کند که PadForge به کار می‌برد و گزارش شده است که یک Vader 5 Pro وقتی هر دو به آن دسترسی داشتند بارها قطع شده است. اگر این کنترلر قطع و دوباره وصل می‌شود، هنگام استفاده از PadForge سرویس را متوقف کنید، کنترلر را پنهان نگه دارید و سرویس را از فهرست مجاز HidHide بردارید، یا «پروتکل پیشرفته Flydigi» را در تنظیمات خاموش کنید، هرچند تأیید نشده که کمکی بکند.</value></data>
@@ -5099,7 +5099,28 @@
     <value>دکمه‌های جهتی</value>
   </data>
   <data name="Menu_Style_Keyboard" xml:space="preserve"><value>صفحه‌کلید</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>حلقه شعاعی و شبکه لمسی، اتصال‌های خانه‌ها را اجرا می‌کنند. صفحه‌کلید، کلیدهای چیدمان فعلی Windows را تایپ می‌کند.</value></data>
+  <data name="Menu_Style_Hotbar" xml:space="preserve"><value>نوار میانبر</value></data>
+  <data name="Menu_Hotbar_Show" xml:space="preserve"><value>نمایش یا پنهان کردن</value></data>
+  <data name="Menu_Hotbar_Show_Tip" xml:space="preserve"><value>نوار را نمایش می‌دهد و با فشار بعدی پنهانش می‌کند. نواری که این‌گونه پنهان شود، دفعه بعد روی خانه میانی باز می‌شود.</value></data>
+  <data name="Menu_Hotbar_Previous" xml:space="preserve"><value>قبلی</value></data>
+  <data name="Menu_Hotbar_Previous_Tip" xml:space="preserve"><value>خانه سمت چپ را انتخاب می‌کند و از خانه‌هایی که چیزی برایشان تنظیم نشده می‌گذرد.</value></data>
+  <data name="Menu_Hotbar_Next" xml:space="preserve"><value>بعدی</value></data>
+  <data name="Menu_Hotbar_Next_Tip" xml:space="preserve"><value>خانه سمت راست را انتخاب می‌کند و از خانه‌هایی که چیزی برایشان تنظیم نشده می‌گذرد.</value></data>
+  <data name="Menu_Hotbar_Fire" xml:space="preserve"><value>اجرا</value></data>
+  <data name="Menu_Hotbar_Fire_Tip" xml:space="preserve"><value>خانه انتخاب‌شده را همان‌طور که «حالت فعال شدن» تعیین می‌کند اجرا می‌کند.</value></data>
+  <data name="Menu_Hotbar_Caption" xml:space="preserve"><value>«نمایش یا پنهان کردن» ردیفی از خانه‌ها را باز می‌کند، «قبلی» و «بعدی» در آن جلو و عقب می‌روند و «اجرا» خانه انتخاب‌شده را اجرا می‌کند. کنترلی که خالی بماند، جهت «باز شدن با» را می‌گیرد: پایین، چپ، راست یا بالا.</value></data>
+  <data name="Menu_Hotbar_Wrap" xml:space="preserve"><value>چرخش حلقه‌ای</value></data>
+  <data name="Menu_Hotbar_Wrap_Tip" xml:space="preserve"><value>گذشتن از آخرین خانه به اولین خانه می‌رود و برعکس. وقتی خاموش باشد، انتخاب در هر دو سر نوار می‌ایستد.</value></data>
+  <data name="Menu_Hotbar_DismissOnFire" xml:space="preserve"><value>پنهان شدن پس از اجرا</value></data>
+  <data name="Menu_Hotbar_DismissOnFire_Tip" xml:space="preserve"><value>«اجرا» نوار را پنهان می‌کند. وقتی خاموش باشد، نوار باز می‌ماند و همان خانه دوباره قابل اجراست.</value></data>
+  <data name="Menu_Hotbar_Recenter" xml:space="preserve"><value>مرکزگیری مجدد هر بار</value></data>
+  <data name="Menu_Hotbar_Recenter_Tip" xml:space="preserve"><value>تا وقتی نوار پنهان است، انتخاب به خانه میانی برمی‌گردد. وقتی خاموش باشد، نواری که «اجرا» پنهانش کرده روی خانه‌ای باز می‌شود که اجرا شده بود.</value></data>
+  <data name="Menu_Reset_HotbarControl" xml:space="preserve"><value>بازنشانی کنترل</value></data>
+  <data name="Menu_Fire_Click_Hotbar_Desc" xml:space="preserve"><value>«اجرا» خانه انتخاب‌شده را فشار می‌دهد و تا وقتی «اجرا» نگه داشته شود آن را نگه می‌دارد. با روشن بودن «پنهان شدن پس از اجرا»، این فشار یک ضربه کوتاه است.</value></data>
+  <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>خانه انتخاب‌شده با رها شدن «اجرا» یک بار و به‌صورت یک ضربه کوتاه اجرا می‌شود. با روشن بودن «پنهان شدن پس از اجرا»، به‌محض اینکه «اجرا» نوار را پنهان کند اجرا می‌شود.</value></data>
+  <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>وقتی «اجرا» با روشن بودن «پنهان شدن پس از اجرا» نوار را پنهان کند، یک خانه یک بار و به‌صورت یک ضربه کوتاه اجرا می‌شود. با روشن بودن «مرکزگیری مجدد هر بار»، خانه میانی همانی است که اجرا می‌شود.</value></data>
+  <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>خانه انتخاب‌شده در تمام مدتی که نوار نمایش داده می‌شود نگه داشته می‌شود. با جابه‌جا شدن انتخاب، یک خانه رها و خانه بعدی نگه داشته می‌شود.</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>حلقه شعاعی، شبکه لمسی و نوار میانبر، اتصال‌های خانه‌ها را اجرا می‌کنند. صفحه‌کلید، کلیدهای چیدمان فعلی Windows را تایپ می‌کند.</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>چیدمان</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>نحوه چیدمان کلیدهای صفحه‌کلید و نحوه انتخاب آن‌ها با کنترلر.</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>یک برجسته‌سازی که با یک استیک یا چهار ورودی جابه‌جا می‌شود؛ چیدمانی که Windows، Xbox و Steam استفاده می‌کنند.</value></data>
@@ -5219,6 +5240,12 @@
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (روی این رایانه نیست)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (روی این اسلات نیست)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>ژیروسکوپ Laser Pointer به‌صورت یاو خوانده شد (PadForge تبدیل لیزر پوینتر ندارد)</value></data>
+  <data name="Workshop_Tr_GyroRollFromHorizon" xml:space="preserve"><value>رول در جایی که کنترلر هنگام شروع یا با بازگرداندن ژیروسکوپ به مرکز قرار دارد مرکز می‌شود، نه نسبت به افق</value></data>
+  <data name="Workshop_Tr_GyroPitchFromHorizon" xml:space="preserve"><value>پیچ در جایی که کنترلر هنگام شروع یا با بازگرداندن ژیروسکوپ به مرکز قرار دارد مرکز می‌شود، نه در {0}° از حالت تخت</value></data>
+  <data name="Workshop_Tr_GyroTiltRangeCapped" xml:space="preserve"><value>انحراف کامل در 90° شیب، نه {0}°</value></data>
+  <data name="Workshop_Tr_OutputJoystickUnrouted" xml:space="preserve"><value>output_joystick {0} جفت محور را نه به استیک می‌فرستد و نه به ماوس، بنابراین چیزی نگاشت نمی‌شود</value></data>
+  <data name="Workshop_Tr_DpadPulseHeld" xml:space="preserve"><value>هر جهت تا زمانی که فشار داده می‌شود روشن نگه داشته می‌شود (شبیه‌سازی آنالوگ Steam آن را به‌صورت پالس روشن و خاموش می‌کند و هرچه بیشتر فشار داده شود پالس‌ها طولانی‌تر می‌شوند)</value></data>
+  <data name="Workshop_Tr_SoftPressNoAnalog" xml:space="preserve"><value>فعال‌ساز فشار نرم روی ورودی بدون خوانش آنالوگ (Steam هرگز آن را اجرا نمی‌کند)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>در reWASD، {0} همچنان به Windows می‌رسد، چون فایل آن را بدون لغو نگاشت نگاشت کرده است. وقتی مصرف ورودی‌های نگاشت‌شده روشن باشد، PadForge جلوی آن را می‌گیرد.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows {0} استیک شعاعی را بر اساس زاویه فشار شکل می‌دهد. کارت استیک در PadForge فشار مستقیم را یکسان و فشار مورب را متفاوت اجرا می‌کند.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows ناحیه مرده ژیروسکوپ را در هر محور بر اساس زاویه حرکت کم می‌کند. PadForge کل ناحیه مرده را از هر محور کم می‌کند، بنابراین حرکت مستقیم یکسان اجرا می‌شود و حرکت مورب آهسته دیرتر شروع می‌شود.</value></data>

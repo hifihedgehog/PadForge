@@ -96,19 +96,20 @@ namespace PadForge.SteamWorkshop.Tests
         }
 
         [Fact]
-        public void TriggerThresholds_AreTheSoftPullRead()
+        public void TriggerThresholds_AreTheSoftPullButton()
         {
-            // "Soft Pull" (ControllerBinding_TriggerAnalogThresholdBinding
-            // in the shipped strings): the trigger slot's edge shape.
+            // "Soft Pull", "barely pulled" in the client's own strings: the
+            // trigger past 1600 of 32767, which Steam's trigger source keeps
+            // for every controller (0x1386730c7).
             string vdf = Head
                 + Group(1, "switches", Inputs(Inp("left_trigger_threshold", "key_press E")))
                 + Preset(0, "Default", (1, "switch active"))
                 + "}\n";
             var p = Translate(vdf);
             var src = p.KbmMappingSet.Rows.Single().Sources.Single();
-            Assert.Equal("Gamepad LeftTrigger", src.Descriptor);
-            Assert.True(src.HalfAxis);
-            Assert.Equal(15, src.DeadZone);
+            double soft = 1600.0 / 32767 * 100;
+            Assert.Equal(PadForge.Engine.Common.Mapping.BoundedReads.Level(soft, soft, false, "-",
+                PadForge.Engine.Common.Mapping.BoundedGate.None, "Gamepad LeftTrigger"), src.Descriptor);
             AssertNoUnknownInput(p);
         }
 
@@ -314,7 +315,8 @@ namespace PadForge.SteamWorkshop.Tests
                 + Preset(0, "Default", (1, "gyro active"))
                 + "}\n";
             var p = Translate(vdf);
-            Assert.Equal("Gamepad LeftShoulder", p.GyroEngageDescriptor); // bit 3 = left bumper
+            // gyro_button 3 = GyroClickRight, the right trackpad click.
+            Assert.Equal("Touchpad 1 Click", p.GyroEngageDescriptor);
             Assert.True(p.GyroEngageToggle);
             Assert.False(p.GyroEngageInvert);
             Assert.DoesNotContain(p.Report.Entries,
@@ -324,10 +326,11 @@ namespace PadForge.SteamWorkshop.Tests
         // ─── Ratchet enum: single-pad center bits + macro buttons ───────
 
         [Fact]
-        public void RatchetCenterPadBit_GroundsOnSinglePadTypes()
+        public void CenterPadBit_GroundsOnSinglePadTypes()
         {
-            // 2^27 = CapSenseCenterTouchPad; controller_ps5_edge is a
+            // 2^27 = CapSenseCenterTouchPad. controller_ps5_edge is a
             // single-pad type (SDL_hidapi_ps5.c registers one touchpad).
+            // With no behavior key the button turns the gyro on.
             string vdf = HeadPs5Edge
                 + Group(1, "gyro_to_mouse",
                     Inputs()
@@ -335,15 +338,18 @@ namespace PadForge.SteamWorkshop.Tests
                 + Preset(0, "Default", (1, "gyro active"))
                 + "}\n";
             var p = Translate(vdf);
-            Assert.Equal(new[] { "Touchpad 0 Finger 0 Down" }, p.GyroRatchetDescriptors);
+            Assert.Equal("Touchpad 0 Finger 0 Down", p.GyroEngageDescriptor);
+            Assert.Empty(p.GyroRatchetDescriptors);
             Assert.DoesNotContain(p.Report.Entries,
                 e => e.ReasonKey == TranslationReasons.GyroButtonMaskDropped);
         }
 
         [Fact]
-        public void GyroButton_MacroBit_GroundsOnTheV24MacroButtons()
+        public void GyroButton33_IsTheRightStickDeflection()
         {
-            // gyro_button 33 = ButtonMacro1 = SDL misc3 = raw Button 18.
+            // gyro_button 33 = GyroRightStickDeflect in the configurator's
+            // legacy list, which the client converts to mask bit 31, the
+            // right stick's deflection.
             string vdf = Head
                 + Group(1, "gyro_to_mouse",
                     Inputs()
@@ -351,7 +357,7 @@ namespace PadForge.SteamWorkshop.Tests
                 + Preset(0, "Default", (1, "gyro active"))
                 + "}\n";
             var p = Translate(vdf);
-            Assert.Equal("Button 18", p.GyroEngageDescriptor);
+            Assert.Equal("Gamepad RightStickRing", p.GyroEngageDescriptor);
             Assert.DoesNotContain(p.Report.Entries,
                 e => e.ReasonKey == TranslationReasons.GyroButtonMaskDropped);
         }

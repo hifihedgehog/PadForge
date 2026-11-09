@@ -3756,7 +3756,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Menu_Binding_None" xml:space="preserve"><value>Aucune</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Touche du clavier</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>Bouton de manette</value></data>
-  <data name="Menu_Style_Tip" xml:space="preserve"><value>Anneau radial choisit une cellule par direction, comme une roue d'armes. Grille tactile choisit une cellule par position : là où le doigt se pose sur le pavé, ou là où pointe le stick.</value></data>
+  <data name="Menu_Style_Tip" xml:space="preserve"><value>« Anneau radial » choisit une cellule par direction, comme une roue d'armes. « Grille tactile » choisit une cellule par position : là où le doigt se pose sur le pavé, ou là où pointe le stick. « Barre rapide » affiche une rangée de cellules, la parcourt et déclenche la cellule sélectionnée, chaque étape ayant sa propre commande.</value></data>
   <data name="Menu_HostInput_Tip" xml:space="preserve"><value>L'entrée qui ouvre et dirige ce menu, lue sur les manettes physiques assignées à l'emplacement. Un stick l'ouvre quand on le pousse au-delà de la zone morte d'activation. Un pavé tactile l'ouvre au toucher.</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>Limite ce menu à une moitié du pavé tactile, pour que deux menus puissent se partager le pavé.</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>Quand la cellule en surbrillance déclenche son affectation. Chaque choix est expliqué ci-dessous.</value></data>
@@ -4199,7 +4199,7 @@ Voulez-vous que PadForge les désinstalle maintenant ? Cette opération nécessi
   <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>Se déclenche une fois au relâchement de l'entrée de clic. Si la surface est relâchée au même instant, déclenche la sélection précédente.</value></data>
   <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>Se déclenche une fois quand vous levez le doigt ou ramenez le stick dans la zone morte d'activation, le menu restant ouvert. Quitter le calque valide aussi une sélection encore dirigée.</value></data>
   <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>Maintient l'affectation tant que sa cellule est en surbrillance. Un centre radial peut se déclencher dès l'ouverture du calque.</value></data>
-  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Les pressions directionnelles parcourent les cellules et déclenchent chaque cellule nouvellement sélectionnée. Ce comportement de barre rapide n'utilise ni le mode de déclenchement ni l'entrée de clic.</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Les pressions directionnelles parcourent les cellules et déclenchent chaque cellule nouvellement sélectionnée, sans « Mode de déclenchement » ni « Entrée de clic ». Le style « Barre rapide » parcourt sans déclencher et déclenche avec sa propre commande « Déclencher ».</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Protocole avancé Flydigi</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Active les boutons supplémentaires et les capteurs de mouvement des manettes Flydigi compatibles.</value></data>
   <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Un logiciel Flydigi est en cours d'exécution : {0}. Il peut utiliser la même interface de manette que PadForge, et une Vader 5 Pro a été signalée se déconnectant à répétition pendant que les deux y avaient accès. Si cette manette se déconnecte et se reconnecte, arrêtez le service pendant l'utilisation de PadForge, gardez la manette masquée et retirez le service de la liste blanche HidHide, ou essayez de désactiver « Protocole avancé Flydigi » dans les Paramètres, sans garantie que cela aide.</value></data>
@@ -5050,7 +5050,28 @@ Voulez-vous que PadForge les désinstalle maintenant ? Cette opération nécessi
     <value>Croix dir.</value>
   </data>
   <data name="Menu_Style_Keyboard" xml:space="preserve"><value>Clavier</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>Anneau radial et Grille tactile déclenchent les liaisons des cellules. Clavier saisit les touches de la disposition Windows en cours.</value></data>
+  <data name="Menu_Style_Hotbar" xml:space="preserve"><value>Barre rapide</value></data>
+  <data name="Menu_Hotbar_Show" xml:space="preserve"><value>Afficher ou masquer</value></data>
+  <data name="Menu_Hotbar_Show_Tip" xml:space="preserve"><value>Affiche la barre, puis la masque à l'appui suivant. Une barre masquée ainsi s'ouvre la fois suivante sur sa cellule centrale.</value></data>
+  <data name="Menu_Hotbar_Previous" xml:space="preserve"><value>Précédent</value></data>
+  <data name="Menu_Hotbar_Previous_Tip" xml:space="preserve"><value>Sélectionne la cellule de gauche, en sautant les cellules sans rien de défini.</value></data>
+  <data name="Menu_Hotbar_Next" xml:space="preserve"><value>Suivant</value></data>
+  <data name="Menu_Hotbar_Next_Tip" xml:space="preserve"><value>Sélectionne la cellule de droite, en sautant les cellules sans rien de défini.</value></data>
+  <data name="Menu_Hotbar_Fire" xml:space="preserve"><value>Déclencher</value></data>
+  <data name="Menu_Hotbar_Fire_Tip" xml:space="preserve"><value>Déclenche la cellule sélectionnée, comme l'indique « Mode de déclenchement ».</value></data>
+  <data name="Menu_Hotbar_Caption" xml:space="preserve"><value>« Afficher ou masquer » fait apparaître une rangée de cellules, « Précédent » et « Suivant » avancent le long de celle-ci, et « Déclencher » déclenche la cellule sélectionnée. Une commande laissée vide prend la direction de « S'ouvre avec » : bas, gauche, droite ou haut.</value></data>
+  <data name="Menu_Hotbar_Wrap" xml:space="preserve"><value>Boucler</value></data>
+  <data name="Menu_Hotbar_Wrap_Tip" xml:space="preserve"><value>Dépasser la dernière cellule ramène à la première, et inversement. Désactivé, la sélection s'arrête à chaque extrémité.</value></data>
+  <data name="Menu_Hotbar_DismissOnFire" xml:space="preserve"><value>Masquer après déclenchement</value></data>
+  <data name="Menu_Hotbar_DismissOnFire_Tip" xml:space="preserve"><value>« Déclencher » masque la barre. Désactivé, la barre reste affichée et la même cellule peut se déclencher de nouveau.</value></data>
+  <data name="Menu_Hotbar_Recenter" xml:space="preserve"><value>Recentrer à chaque fois</value></data>
+  <data name="Menu_Hotbar_Recenter_Tip" xml:space="preserve"><value>Tant que la barre est masquée, la sélection revient à la cellule du milieu. Désactivé, une barre masquée par « Déclencher » s'ouvre sur la cellule qu'elle a déclenchée.</value></data>
+  <data name="Menu_Reset_HotbarControl" xml:space="preserve"><value>Réinitialiser la commande</value></data>
+  <data name="Menu_Fire_Click_Hotbar_Desc" xml:space="preserve"><value>« Déclencher » appuie sur la cellule sélectionnée et la maintient tant que « Déclencher » est maintenu. Avec « Masquer après déclenchement » activé, l'appui est un bref tapotement.</value></data>
+  <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>La cellule sélectionnée se déclenche une fois, en bref tapotement, au relâchement de « Déclencher ». Avec « Masquer après déclenchement » activé, elle se déclenche dès que « Déclencher » masque la barre.</value></data>
+  <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>Une cellule se déclenche une fois, en bref tapotement, quand « Déclencher » masque la barre avec « Masquer après déclenchement » activé. Avec « Recentrer à chaque fois » activé, c'est la cellule du milieu qui se déclenche.</value></data>
+  <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>La cellule sélectionnée est maintenue tant que la barre est affichée. Passer d'une cellule à l'autre relâche la première et maintient la suivante.</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>« Anneau radial », « Grille tactile » et « Barre rapide » déclenchent les liaisons des cellules. « Clavier » saisit les touches de la disposition Windows en cours.</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Disposition</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>La façon dont le clavier dispose ses touches et dont une manette les sélectionne.</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Une seule surbrillance, déplacée avec un stick ou quatre entrées, comme la disposition de Windows, Xbox et Steam.</value></data>
@@ -5170,6 +5191,12 @@ Voulez-vous que PadForge les désinstalle maintenant ? Cette opération nécessi
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (absent de ce PC)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (absent de cet emplacement)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>gyro Pointeur laser lu comme lacet (PadForge n'a pas de conversion en pointeur laser)</value></data>
+  <data name="Workshop_Tr_GyroRollFromHorizon" xml:space="preserve"><value>roulis centré sur la position de repos de la manette au démarrage ou avec Recentrer le gyroscope, pas sur l'horizon</value></data>
+  <data name="Workshop_Tr_GyroPitchFromHorizon" xml:space="preserve"><value>tangage centré sur la position de repos de la manette au démarrage ou avec Recentrer le gyroscope, pas à {0}° de l'horizontale</value></data>
+  <data name="Workshop_Tr_GyroTiltRangeCapped" xml:space="preserve"><value>déflexion maximale à 90° d'inclinaison, pas à {0}°</value></data>
+  <data name="Workshop_Tr_OutputJoystickUnrouted" xml:space="preserve"><value>output_joystick {0} n'envoie la paire ni vers un stick ni vers la souris, donc rien n'est mappé</value></data>
+  <data name="Workshop_Tr_DpadPulseHeld" xml:space="preserve"><value>chaque direction maintenue tant qu'elle est poussée (l'émulation analogique de Steam la pulse, des impulsions plus longues à mesure qu'on pousse plus loin)</value></data>
+  <data name="Workshop_Tr_SoftPressNoAnalog" xml:space="preserve"><value>activateur de pression légère sur une entrée sans lecture analogique (Steam ne le déclenche jamais)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>Dans reWASD, {0} atteint toujours Windows, car le fichier l'assigne sans le désassigner. Avec Consommer les entrées assignées activé, PadForge le bloque.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows façonne le réglage {0} d'un stick radial selon l'angle de la poussée. Les réglages du stick de PadForge traitent pareil une poussée droite et une poussée en diagonale.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows ajuste la zone morte du gyro sur chaque axe selon l'angle du mouvement. PadForge retire la zone morte entière de chaque axe : un mouvement droit se comporte donc pareil, et un mouvement diagonal lent démarre plus tard.</value></data>

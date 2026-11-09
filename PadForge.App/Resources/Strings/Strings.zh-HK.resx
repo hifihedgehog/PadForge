@@ -3818,7 +3818,7 @@
   <data name="Menu_Binding_None" xml:space="preserve"><value>無</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>鍵盤按鍵</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>控制器按鈕</value></data>
-  <data name="Menu_Style_Tip" xml:space="preserve"><value>「徑向環」按方向選擇格子，就像武器輪盤。「觸控格」按位置選擇格子：手指在觸控板上的位置，或搖桿所指的方向。</value></data>
+  <data name="Menu_Style_Tip" xml:space="preserve"><value>「徑向環」按方向選擇格子，就像武器輪盤。「觸控格」按位置選擇格子：手指在觸控板上的位置，或搖桿所指的方向。「快捷列」顯示一列格子，沿著它移動並觸發所選取的格子，各有自己的控制項。</value></data>
   <data name="Menu_HostInput_Tip" xml:space="preserve"><value>用來開啟和操控此選單的輸入，從指派到插槽的實體控制器讀取。搖桿推過啟動死區時便會開啟選單。觸控板則一經觸碰便會開啟。</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>把此選單限制在軌跡板的其中一半，讓兩個選單可共用同一塊板。</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>醒目提示的格子何時觸發其綁定。每個選項在下方均有說明。</value></data>
@@ -4248,7 +4248,7 @@
   <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>放開「點擊輸入」時觸發一次。若表面在同一瞬間放開，則觸發上一個選擇。</value></data>
   <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>提起手指或把搖桿移回啟動死區內時觸發一次，而選單會保持開啟。離開該層時，亦會確認仍在操控中的選擇。</value></data>
   <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>格子被醒目提示期間保持其綁定。層開啟時，徑向中央格可即時觸發。</value></data>
-  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>按方向會逐格移動，並觸發每個新選取的格子。這種快捷列行為不使用「觸發模式」或「點擊輸入」。</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>按方向會逐格移動，並觸發每個新選取的格子，不使用「觸發模式」或「點擊輸入」。「快捷列」樣式移動時不會觸發，而是以自己的「觸發」控制項觸發。</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Flydigi 增強協定</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>在支援的 Flydigi 控制器上啟用額外按鈕和體感感應器。</value></data>
   <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi 軟件正在執行：{0}。它可能使用與 PadForge 相同的控制器介面，而曾有報告指 Vader 5 Pro 在兩者同時存取時反覆中斷連接。若此控制器出現斷線又重新連接的情況，請在使用 PadForge 時停止該服務，或保持控制器隱藏並把該服務從 HidHide 白名單移除，或嘗試在「設定」中關閉「Flydigi 增強協定」，但此方法未經證實有效。</value></data>
@@ -5099,7 +5099,28 @@
     <value>十字鍵</value>
   </data>
   <data name="Menu_Style_Keyboard" xml:space="preserve"><value>鍵盤</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>徑向環和觸控格會觸發格子綁定。鍵盤則輸入目前使用的 Windows 鍵盤佈局上的按鍵。</value></data>
+  <data name="Menu_Style_Hotbar" xml:space="preserve"><value>快捷列</value></data>
+  <data name="Menu_Hotbar_Show" xml:space="preserve"><value>顯示或隱藏</value></data>
+  <data name="Menu_Hotbar_Show_Tip" xml:space="preserve"><value>顯示快捷列，下次按下時隱藏。以這種方式隱藏的快捷列，下次會在中央格開啟。</value></data>
+  <data name="Menu_Hotbar_Previous" xml:space="preserve"><value>上一個</value></data>
+  <data name="Menu_Hotbar_Previous_Tip" xml:space="preserve"><value>選取左邊的格子，並略過未設定任何內容的格子。</value></data>
+  <data name="Menu_Hotbar_Next" xml:space="preserve"><value>下一個</value></data>
+  <data name="Menu_Hotbar_Next_Tip" xml:space="preserve"><value>選取右邊的格子，並略過未設定任何內容的格子。</value></data>
+  <data name="Menu_Hotbar_Fire" xml:space="preserve"><value>觸發</value></data>
+  <data name="Menu_Hotbar_Fire_Tip" xml:space="preserve"><value>按「觸發模式」的設定觸發所選取的格子。</value></data>
+  <data name="Menu_Hotbar_Caption" xml:space="preserve"><value>「顯示或隱藏」會顯示一列格子，「上一個」和「下一個」沿著這一列移動，「觸發」則觸發所選取的格子。留空的控制項會使用「開啟方式」的方向：下、左、右或上。</value></data>
+  <data name="Menu_Hotbar_Wrap" xml:space="preserve"><value>循環選取</value></data>
+  <data name="Menu_Hotbar_Wrap_Tip" xml:space="preserve"><value>移過最後一格會回到第一格，反向亦然。關閉時，選取會停在兩端。</value></data>
+  <data name="Menu_Hotbar_DismissOnFire" xml:space="preserve"><value>觸發後隱藏</value></data>
+  <data name="Menu_Hotbar_DismissOnFire_Tip" xml:space="preserve"><value>「觸發」會隱藏快捷列。關閉時，快捷列會保持顯示，同一格可再次觸發。</value></data>
+  <data name="Menu_Hotbar_Recenter" xml:space="preserve"><value>每次重新置中</value></data>
+  <data name="Menu_Hotbar_Recenter_Tip" xml:space="preserve"><value>快捷列隱藏期間，選取會回到中央格。關閉時，由「觸發」隱藏的快捷列會在剛觸發的格子上開啟。</value></data>
+  <data name="Menu_Reset_HotbarControl" xml:space="preserve"><value>重設控制項</value></data>
+  <data name="Menu_Fire_Click_Hotbar_Desc" xml:space="preserve"><value>「觸發」會按下所選取的格子，並在按住「觸發」期間保持。開啟「觸發後隱藏」時，按下只是短按一下。</value></data>
+  <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>放開「觸發」時，所選取的格子會以短按一下的方式觸發一次。開啟「觸發後隱藏」時，「觸發」一隱藏快捷列便會觸發。</value></data>
+  <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>開啟「觸發後隱藏」時，「觸發」隱藏快捷列後，有一格會以短按一下的方式觸發一次。開啟「每次重新置中」時，觸發的會是中央格。</value></data>
+  <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>快捷列顯示期間，所選取的格子會一直保持。移動選取時會放開一格，並保持下一格。</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>「徑向環」、「觸控格」和「快捷列」會觸發格子綁定。「鍵盤」則輸入目前使用的 Windows 鍵盤佈局上的按鍵。</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>佈局</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>鍵盤排列按鍵的方式，以及控制器揀選按鍵的方式。</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>只有一個醒目提示，以搖桿或四個輸入移動，即 Windows、Xbox 和 Steam 使用的佈局。</value></data>
@@ -5219,6 +5240,12 @@
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0}（不在這部電腦上）</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0}（不在此插槽上）</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>雷射指標陀螺儀以偏航讀取（PadForge 沒有雷射指標轉換）</value></data>
+  <data name="Workshop_Tr_GyroRollFromHorizon" xml:space="preserve"><value>橫滾以控制器開始讀取時或執行陀螺儀重新置中時的靜止姿勢為中心，而非以水平線為準</value></data>
+  <data name="Workshop_Tr_GyroPitchFromHorizon" xml:space="preserve"><value>俯仰以控制器開始讀取時或執行陀螺儀重新置中時的靜止姿勢為中心，而非以平放起計 {0}° 為中心</value></data>
+  <data name="Workshop_Tr_GyroTiltRangeCapped" xml:space="preserve"><value>傾斜 90° 時達到全幅偏轉，而非 {0}°</value></data>
+  <data name="Workshop_Tr_OutputJoystickUnrouted" xml:space="preserve"><value>output_joystick {0} 既不把這對軸送到搖桿，也不送到滑鼠，因此沒有作任何對應</value></data>
+  <data name="Workshop_Tr_DpadPulseHeld" xml:space="preserve"><value>每個方向在推動期間會保持按住（Steam 的類比模擬會以脈衝方式開關該方向，推得愈遠脈衝愈長）</value></data>
+  <data name="Workshop_Tr_SoftPressNoAnalog" xml:space="preserve"><value>輕按啟動器設在沒有類比讀數的輸入上（Steam 不會觸發）</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>在 reWASD 中，{0} 仍會傳到 Windows，因為檔案對應了它但沒有取消對應。開啟攔截已對應的輸入後，PadForge 會攔截它。</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows 按推動的角度來調整放射狀搖桿的 {0}。PadForge 的搖桿卡片對直推和斜推一視同仁。</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows 按移動的角度來調整陀螺儀每個軸的死區。PadForge 會在每個軸扣除整個死區，因此直向移動兩邊一視同仁，緩慢的斜向移動則較遲才開始。</value></data>

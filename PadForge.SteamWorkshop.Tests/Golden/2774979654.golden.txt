@@ -31,7 +31,7 @@ xbox rows: 19
     <- Gamepad LeftStickY
   Base | LeftTrigger
     <- Gamepad LeftTrigger
-    <- Gamepad LeftTrigger [upper-half] dz=75
+    <- Gamepad LeftTrigger [upper-half] dz=90
   Base | RightShoulder
     <- Gamepad RightShoulder
   Base | RightThumbAxisX
@@ -42,13 +42,13 @@ xbox rows: 19
     <- Gamepad RightStick
   Base | RightTrigger
     <- Gamepad RightTrigger
-    <- Gamepad RightTrigger [upper-half] dz=75
+    <- Gamepad RightTrigger [upper-half] dz=90
 kbm rows: 0
 macros: 4
   macro HoldVcButton DoublePress | Double press LeftThumbButton (ButtonY) | btns=0x8000 dbl=442ms layer=Base consume target=0x0040
   macro ToggleVcButton OnPress | Toggle ButtonB (LeftStick) | btns=0x2000 layer=Base target=0x2000
-  macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 layer=Base strength=66%
-  macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=90 layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=90 layer=Base strength=66%
 report: v26 rows:x19+k0 macros:4 menus:0 layers:0 clean:23 partial:1 skipped:0 errors:0
   Clean MacroEmitted @ Default/button_diamond/group 3 (four_buttons)/button_y/Double_Press => Double press LeftThumbButton <- Gamepad ButtonY
   Partial ToggleLatchEmitted(ButtonB) @ Default/joystick/group 6 (joystick_move)/click/Full_Press => Toggle ButtonB <- Gamepad LeftStick

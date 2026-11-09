@@ -157,7 +157,15 @@ namespace PadForge.SteamWorkshop.Tests
             var macro = Assert.Single(p.Macros);
             Assert.Equal(TranslatedMacroAction.KeyTap, macro.Action);
             Assert.Equal(0, (int)macro.TriggerXboxButtons);
-            Assert.Equal(new[] { "Gamepad RightShoulder", "Gamepad LeftTrigger" },
+            // chord_button 1 is the left trigger's full pull, at 95 percent of
+            // the pull as Steam sets it (0x1386795c4).
+            double full = 31127.5 / 32767 * 100;
+            Assert.Equal(new[]
+                {
+                    "Gamepad RightShoulder",
+                    PadForge.Engine.Common.Mapping.BoundedReads.Level(full, full, false, "-",
+                        PadForge.Engine.Common.Mapping.BoundedGate.None, "Gamepad LeftTrigger"),
+                },
                 macro.TriggerInputDescriptors);
         }
 

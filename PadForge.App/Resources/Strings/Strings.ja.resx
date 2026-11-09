@@ -3756,7 +3756,7 @@
   <data name="Menu_Binding_None" xml:space="preserve"><value>なし</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>キーボードのキー</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>コントローラーボタン</value></data>
-  <data name="Menu_Style_Tip" xml:space="preserve"><value>放射リングは方向でセルを選びます(武器ホイールのように)。タッチグリッドは位置でセルを選びます。パッド上の指の位置、またはスティックの倒した先です。</value></data>
+  <data name="Menu_Style_Tip" xml:space="preserve"><value>ラジアルリングは方向でセルを選びます(武器ホイールのように)。タッチグリッドは位置でセルを選びます。パッド上の指の位置、またはスティックの倒した先です。ホットバーはセルの列を表示し、その上を移動して選択中のセルを発動します。それぞれ専用の操作があります。</value></data>
   <data name="Menu_HostInput_Tip" xml:space="preserve"><value>このメニューを開いて操作する入力で、スロットに割り当てられた物理コントローラーから読み取られます。スティックは作動デッドゾーンを超えて倒すと開き、タッチパッドは触れると開きます。</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>このメニューをトラックパッドの半分に限定します。2つのメニューで1つのパッドを分け合えます。</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>ハイライトされたセルの割り当てがいつ発動するかです。各選択肢は下で説明されます。</value></data>
@@ -4199,7 +4199,7 @@
   <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>クリック入力を離したときに一度発動します。同時にサーフェスも離した場合は、直前の選択を発動します。</value></data>
   <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>メニューを開いたまま、指を離すかスティックを有効デッドゾーン内に戻したときに一度発動します。レイヤーを離れたときも、操作中の選択を確定します。</value></data>
   <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>そのセルがハイライトされている間、割り当てを保持します。レイヤーが開くと、ラジアル中央がすぐに発動することがあります。</value></data>
-  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>方向入力でセルを順に移動し、新しく選ばれたセルを発動します。このホットバー動作は発動モードやクリック入力を使いません。</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>方向入力でセルを順に移動し、新しく選ばれたセルを発動します。発動モードやクリック入力は使いません。ホットバースタイルは発動せずに移動し、専用の発動操作で発動します。</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Flydigi 拡張プロトコル</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>対応するFlydigiコントローラーの追加ボタンとモーションセンサーを有効にします。</value></data>
   <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi のソフトウェアが実行中です: {0}。PadForge と同じコントローラーインターフェイスを使用できます。両方がアクセスできる状態で Vader 5 Pro が繰り返し切断されたという報告があります。このコントローラーが切断と再接続を繰り返す場合は、PadForge の使用中にサービスを停止する、コントローラーを非表示のままにして HidHide のホワイトリストからサービスを削除する、または設定の「Flydigi 拡張プロトコル」をオフにして試してください。効果は確認されていません。</value></data>
@@ -5050,7 +5050,28 @@
     <value>十字キー</value>
   </data>
   <data name="Menu_Style_Keyboard" xml:space="preserve"><value>キーボード</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>ラジアルリングとタッチグリッドはセルの割り当てを実行します。キーボードは、使用中の Windows のレイアウトのキーを入力します。</value></data>
+  <data name="Menu_Style_Hotbar" xml:space="preserve"><value>ホットバー</value></data>
+  <data name="Menu_Hotbar_Show" xml:space="preserve"><value>表示/非表示</value></data>
+  <data name="Menu_Hotbar_Show_Tip" xml:space="preserve"><value>バーを表示し、次に押すと隠します。こうして隠したバーは、次回は中央のセルから開きます。</value></data>
+  <data name="Menu_Hotbar_Previous" xml:space="preserve"><value>前へ</value></data>
+  <data name="Menu_Hotbar_Previous_Tip" xml:space="preserve"><value>左隣のセルを選択します。何も設定されていないセルは飛ばします。</value></data>
+  <data name="Menu_Hotbar_Next" xml:space="preserve"><value>次へ</value></data>
+  <data name="Menu_Hotbar_Next_Tip" xml:space="preserve"><value>右隣のセルを選択します。何も設定されていないセルは飛ばします。</value></data>
+  <data name="Menu_Hotbar_Fire" xml:space="preserve"><value>発動</value></data>
+  <data name="Menu_Hotbar_Fire_Tip" xml:space="preserve"><value>選択中のセルを、発動モードの設定に従って発動します。</value></data>
+  <data name="Menu_Hotbar_Caption" xml:space="preserve"><value>表示/非表示でセルの列が現れ、前へと次へでその上を移動し、発動で選択中のセルを発動します。空のままの操作は、開く操作の方向(下、左、右、上)を使います。</value></data>
+  <data name="Menu_Hotbar_Wrap" xml:space="preserve"><value>循環</value></data>
+  <data name="Menu_Hotbar_Wrap_Tip" xml:space="preserve"><value>最後のセルを過ぎると最初のセルへ移り、逆方向も同様です。オフの場合、選択は両端で止まります。</value></data>
+  <data name="Menu_Hotbar_DismissOnFire" xml:space="preserve"><value>発動後に隠す</value></data>
+  <data name="Menu_Hotbar_DismissOnFire_Tip" xml:space="preserve"><value>発動するとバーを隠します。オフの場合、バーは表示されたままになり、同じセルをもう一度発動できます。</value></data>
+  <data name="Menu_Hotbar_Recenter" xml:space="preserve"><value>毎回中央に戻す</value></data>
+  <data name="Menu_Hotbar_Recenter_Tip" xml:space="preserve"><value>バーが隠れている間、選択は中央のセルに戻ります。オフの場合、発動で隠れたバーは、発動したセルから開きます。</value></data>
+  <data name="Menu_Reset_HotbarControl" xml:space="preserve"><value>操作をリセット</value></data>
+  <data name="Menu_Fire_Click_Hotbar_Desc" xml:space="preserve"><value>発動は選択中のセルを押し、発動を押している間は押したままにします。発動後に隠すがオンの場合、押す動作は短いタップになります。</value></data>
+  <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>発動を離したときに、選択中のセルが短いタップとして1回発動します。発動後に隠すがオンの場合は、発動がバーを隠した時点で発動します。</value></data>
+  <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>発動後に隠すがオンのとき、発動がバーを隠した時点で、セルが短いタップとして1回発動します。毎回中央に戻すがオンの場合、発動するのは中央のセルです。</value></data>
+  <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>バーが表示されている間ずっと、選択中のセルが押されたままになります。移動すると、1つのセルを離して次のセルを押します。</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>ラジアルリング、タッチグリッド、ホットバーはセルの割り当てを実行します。キーボードは、使用中の Windows のレイアウトのキーを入力します。</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>レイアウト</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>キーボードのキーの並べ方と、コントローラーでキーを選ぶ方法です。</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>ハイライトは1つで、スティックまたは4つの入力で動かします。Windows、Xbox、Steam と同じレイアウトです。</value></data>
@@ -5170,6 +5191,12 @@
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0}（このPCにはありません）</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0}（このスロットにはありません）</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>レーザーポインターのジャイロはヨーとして読み取り (PadForgeにはレーザーポインター変換がありません)</value></data>
+  <data name="Workshop_Tr_GyroRollFromHorizon" xml:space="preserve"><value>ロールは水平ではなく、開始時またはジャイロを再センタリングしたときのコントローラーの静止姿勢を中心に計測</value></data>
+  <data name="Workshop_Tr_GyroPitchFromHorizon" xml:space="preserve"><value>ピッチは水平から {0}° ではなく、開始時またはジャイロを再センタリングしたときのコントローラーの静止姿勢を中心に計測</value></data>
+  <data name="Workshop_Tr_GyroTiltRangeCapped" xml:space="preserve"><value>傾き 90° で最大まで倒れる ({0}° ではない)</value></data>
+  <data name="Workshop_Tr_OutputJoystickUnrouted" xml:space="preserve"><value>output_joystick {0} ではこのペアがスティックにもマウスにも送られないため、割り当てはありません</value></data>
+  <data name="Workshop_Tr_DpadPulseHeld" xml:space="preserve"><value>各方向は押している間オンのまま保持 (Steam のアナログエミュレーションは方向をパルス状にオンオフし、倒すほどパルスが長くなります)</value></data>
+  <data name="Workshop_Tr_SoftPressNoAnalog" xml:space="preserve"><value>アナログ値のない入力に設定された浅押しアクティベーター (Steam では発動しません)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>reWASDでは、ファイルがマッピングのみでマップ解除を指定していないため、{0}は引き続きWindowsに届きます。マッピング済み入力を消費するをオンにすると、PadForgeは届かないようにします。</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windowsは、放射状スティックの{0}を倒した角度に応じて調整します。PadForgeのスティックカードでは、まっすぐ倒した場合と斜めに倒した場合で動作が異なります。</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windowsは、ジャイロのデッドゾーンを動きの角度に応じて各軸で調整します。PadForgeは各軸からデッドゾーン全体を取り除くため、まっすぐな動きは同じように動作し、ゆっくりした斜めの動きは動き始めが遅くなります。</value></data>

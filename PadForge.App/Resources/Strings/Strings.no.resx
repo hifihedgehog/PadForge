@@ -3818,7 +3818,7 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>Ingen</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Tastaturtast</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>Kontrollerknapp</value></data>
-  <data name="Menu_Style_Tip" xml:space="preserve"><value>Radiell ring velger en celle etter retning, som et våpenhjul. Berøringsrutenett velger en celle etter posisjon: der fingeren ligger på platen, eller der stikken peker.</value></data>
+  <data name="Menu_Style_Tip" xml:space="preserve"><value>Radiell ring velger en celle etter retning, som et våpenhjul. Berøringsrutenett velger en celle etter posisjon: der fingeren ligger på platen, eller der stikken peker. Hurtiglinje viser en rad med celler, går langs den og utløser den valgte cellen, hver med sin egen kontroll.</value></data>
   <data name="Menu_HostInput_Tip" xml:space="preserve"><value>Inndatakilden som åpner og styrer denne menyen, lest fra de fysiske kontrollerne som er tilordnet sporet. En stikke åpner den når den skyves forbi Dødsone for aktivering. En berøringsplate åpner den ved berøring.</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>Begrens denne menyen til én halvdel av styreflaten, slik at to menyer kan dele platen.</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>Når den markerte cellen utløser bindingen sin. Hvert valg forklares nedenfor.</value></data>
@@ -4248,7 +4248,7 @@ Vil du at PadForge skal avinstallere dem nå? Dette krever administratorrettighe
   <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>Utløses én gang når Klikkinndata slippes. Slippes flaten i samme øyeblikk, utløses det forrige valget.</value></data>
   <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>Utløses én gang når du løfter fingeren eller fører stikken tilbake innenfor Dødsone for aktivering, mens menyen forblir åpen. Å forlate laget bekrefter også et valg som fortsatt styres.</value></data>
   <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>Holder bindingen mens cellen er markert. Et radielt midtpunkt kan utløses umiddelbart når laget åpnes.</value></data>
-  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Retningstrykk går gjennom cellene og utløser hver celle som blir valgt. Denne hurtiglinjeoppførselen bruker ikke Utløsningsmodus eller Klikkinndata.</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Retningstrykk går gjennom cellene og utløser hver celle som blir valgt, uten Utløsningsmodus eller Klikkinndata. Stilen Hurtiglinje går gjennom cellene uten å utløse, og utløser med sin egen kontroll Utløs.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Utvidet Flydigi-protokoll</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Aktiverer ekstra knapper og bevegelsessensorer på støttede Flydigi-kontrollere.</value></data>
   <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi-programvare kjører: {0}. Den kan bruke det samme kontrollergrensesnittet som PadForge, og det er rapportert at en Vader 5 Pro koblet seg fra gjentatte ganger mens begge hadde tilgang. Hvis denne kontrolleren faller ut og kobler seg til igjen, kan du stoppe tjenesten mens du bruker PadForge, holde kontrolleren skjult og fjerne tjenesten fra listen over tillatte programmer i HidHide, eller prøve å slå av «Utvidet Flydigi-protokoll» i Innstillinger, noe som ikke er bekreftet å hjelpe.</value></data>
@@ -5099,7 +5099,28 @@ Vil du at PadForge skal avinstallere dem nå? Dette krever administratorrettighe
     <value>D-pad</value>
   </data>
   <data name="Menu_Style_Keyboard" xml:space="preserve"><value>Tastatur</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>Radiell ring og Berøringsrutenett utløser celletilordninger. Tastatur skriver tastene i Windows-oppsettet som er i bruk.</value></data>
+  <data name="Menu_Style_Hotbar" xml:space="preserve"><value>Hurtiglinje</value></data>
+  <data name="Menu_Hotbar_Show" xml:space="preserve"><value>Vis eller skjul</value></data>
+  <data name="Menu_Hotbar_Show_Tip" xml:space="preserve"><value>Viser linjen og skjuler den ved neste trykk. En linje som er skjult på denne måten, åpnes på midtcellen neste gang.</value></data>
+  <data name="Menu_Hotbar_Previous" xml:space="preserve"><value>Forrige</value></data>
+  <data name="Menu_Hotbar_Previous_Tip" xml:space="preserve"><value>Velger cellen til venstre og hopper over celler uten noe angitt.</value></data>
+  <data name="Menu_Hotbar_Next" xml:space="preserve"><value>Neste</value></data>
+  <data name="Menu_Hotbar_Next_Tip" xml:space="preserve"><value>Velger cellen til høyre og hopper over celler uten noe angitt.</value></data>
+  <data name="Menu_Hotbar_Fire" xml:space="preserve"><value>Utløs</value></data>
+  <data name="Menu_Hotbar_Fire_Tip" xml:space="preserve"><value>Utløser den valgte cellen, slik Utløsningsmodus sier.</value></data>
+  <data name="Menu_Hotbar_Caption" xml:space="preserve"><value>Vis eller skjul henter fram en rad med celler, Forrige og Neste går langs den, og Utløs utløser den valgte cellen. En kontroll som står tom, bruker retningen fra Åpnes med: ned, venstre, høyre eller opp.</value></data>
+  <data name="Menu_Hotbar_Wrap" xml:space="preserve"><value>Gå rundt</value></data>
+  <data name="Menu_Hotbar_Wrap_Tip" xml:space="preserve"><value>Når du går forbi den siste cellen, havner du på den første, og omvendt. Når av, stopper valget i begge ender.</value></data>
+  <data name="Menu_Hotbar_DismissOnFire" xml:space="preserve"><value>Skjul etter utløsning</value></data>
+  <data name="Menu_Hotbar_DismissOnFire_Tip" xml:space="preserve"><value>Utløs skjuler linjen. Når av, blir linjen stående, og den samme cellen kan utløses igjen.</value></data>
+  <data name="Menu_Hotbar_Recenter" xml:space="preserve"><value>Sentrer hver gang</value></data>
+  <data name="Menu_Hotbar_Recenter_Tip" xml:space="preserve"><value>Mens linjen er skjult, går valget tilbake til midtcellen. Når av, åpnes en linje som Utløs skjulte, på cellen den utløste.</value></data>
+  <data name="Menu_Reset_HotbarControl" xml:space="preserve"><value>Tilbakestill kontroll</value></data>
+  <data name="Menu_Fire_Click_Hotbar_Desc" xml:space="preserve"><value>Utløs trykker på den valgte cellen og holder den inne så lenge Utløs holdes. Med Skjul etter utløsning på er trykket en kort tapp.</value></data>
+  <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>Den valgte cellen utløses én gang, som en kort tapp, når Utløs slippes. Med Skjul etter utløsning på utløses den så snart Utløs skjuler linjen.</value></data>
+  <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>En celle utløses én gang, som en kort tapp, når Utløs skjuler linjen med Skjul etter utløsning på. Med Sentrer hver gang på er det midtcellen som utløses.</value></data>
+  <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>Den valgte cellen holdes hele tiden linjen vises. Å gå videre slipper én celle og holder den neste.</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>Radiell ring, Berøringsrutenett og Hurtiglinje utløser celletilordninger. Tastatur skriver tastene i Windows-oppsettet som er i bruk.</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Oppsett</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Hvordan tastaturet legger ut tastene, og hvordan en kontroller velger dem.</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Én markering, flyttet med en stikke eller fire inndata, oppsettet Windows, Xbox og Steam bruker.</value></data>
@@ -5219,6 +5240,12 @@ Vil du at PadForge skal avinstallere dem nå? Dette krever administratorrettighe
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (ikke på denne PC-en)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (ikke på dette sporet)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>gyro i Laserpeker lest som giring (PadForge har ingen konvertering for laserpeker)</value></data>
+  <data name="Workshop_Tr_GyroRollFromHorizon" xml:space="preserve"><value>rulling sentrert der kontrolleren hviler ved start eller ved «Sentrer gyro», ikke på horisonten</value></data>
+  <data name="Workshop_Tr_GyroPitchFromHorizon" xml:space="preserve"><value>stamping sentrert der kontrolleren hviler ved start eller ved «Sentrer gyro», ikke ved {0}° fra flatt</value></data>
+  <data name="Workshop_Tr_GyroTiltRangeCapped" xml:space="preserve"><value>fullt utslag ved 90° helning, ikke {0}°</value></data>
+  <data name="Workshop_Tr_OutputJoystickUnrouted" xml:space="preserve"><value>output_joystick {0} sender paret verken til en stikke eller musen, så ingenting tilordnes</value></data>
+  <data name="Workshop_Tr_DpadPulseHeld" xml:space="preserve"><value>hver retning holdes på så lenge den skyves (analog emulering i Steam pulserer den, med lengre pulser jo lenger den skyves)</value></data>
+  <data name="Workshop_Tr_SoftPressNoAnalog" xml:space="preserve"><value>aktivator for lett trykk på en inndatakilde uten analog avlesning (Steam utløser den aldri)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>I reWASD når {0} fortsatt Windows fordi filen tilordner den uten å oppheve den. Med Blokker tilordnede inndata slått på blokkerer PadForge den.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows former {0} for en radial stikke etter vinkelen på skyvet. stikkekortet i PadForge spiller et rett skyv likt og et diagonalt skyv annerledes.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows skalerer dødsonen til gyroen på hver akse etter vinkelen på bevegelsen. PadForge trekker hele dødsonen fra hver akse, så en rett bevegelse spilles likt og en langsom diagonal en starter senere.</value></data>

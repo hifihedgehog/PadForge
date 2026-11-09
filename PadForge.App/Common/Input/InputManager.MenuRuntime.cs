@@ -110,6 +110,11 @@ namespace PadForge.Common.Input
             /// ARE the selector (an 8-way direction with diagonals on the
             /// D-pad, 4-way on the diamond).</summary>
             public bool IsButtonPair;
+            /// <summary>A hotbar: SrcDown shows or hides the bar, SrcLeft and
+            /// SrcRight step it, SrcUp fires (Steam's directions).</summary>
+            public bool IsHotbar;
+            public MenuKind HostSigKind;
+            public string HostSigHotbar;
             public MappingSource SrcUp, SrcDown, SrcLeft, SrcRight;
             public MappingSource SrcX, SrcY, SrcEngage, SrcClick;
             /// <summary>Last tick timestamp. The fired provider treats a
@@ -577,6 +582,23 @@ namespace PadForge.Common.Input
                     // NoteMenuCommitLayer, which records a commit the layer
                     // ending made so its rows and macros can read it.
                     int pulseSeqBefore = ctx.State.PulseSeq;
+                    if (ctx.IsHotbar)
+                    {
+                        // A hotbar (Steam's hotbar mode): four inputs show,
+                        // step and fire, and the bar stays up between presses
+                        // until Show or Hide, or a Fire with Dismiss On Fire,
+                        // takes it down. A control that reads a stick on a
+                        // device without one reads nothing (#431).
+                        bool HotbarHeld(MappingSource src)
+                            => src != null
+                               && (!deviceFree || HasAxesFor(ud, src, newState))
+                               && SourceCoercion.EvaluateForButtonTarget(newState, src, 50, slot, ud.InstanceGuidString);
+                        MenuHotbar.Step(ctx.State, def, layerOk,
+                            HotbarHeld(ctx.SrcDown), HotbarHeld(ctx.SrcLeft),
+                            HotbarHeld(ctx.SrcRight), HotbarHeld(ctx.SrcUp), nowMs);
+                        PublishMenuOverlay(slot, ud.InstanceGuid, def, ctx.State, ctx.State.HotbarShown, nowMs, engagedLayer);
+                        continue;
+                    }
                     if (ctx.IsButtonPair)
                     {
                         // Button-pair host (v25): the hover vector composes
@@ -802,11 +824,49 @@ namespace PadForge.Common.Input
         /// non-gamepad devices do not share.</summary>
         private static void EnsureMenuSources(MenuTickContext ctx, MenuDefinitionEntry def)
         {
-            if (string.Equals(ctx.HostSigHost, def.HostDescriptor, StringComparison.Ordinal)
+            bool wasHotbar = ctx.HostSigKind == MenuKind.Hotbar;
+            bool isHotbar = def.Kind == MenuKind.Hotbar;
+            string hotbarSig = isHotbar ? HotbarSignature(def) : null;
+            if (wasHotbar == isHotbar
+                && string.Equals(ctx.HostSigHost, def.HostDescriptor, StringComparison.Ordinal)
                 && string.Equals(ctx.HostSigCustomX, def.CustomXDescriptor, StringComparison.Ordinal)
                 && string.Equals(ctx.HostSigCustomY, def.CustomYDescriptor, StringComparison.Ordinal)
                 && string.Equals(ctx.HostSigClick, def.ClickDescriptor, StringComparison.Ordinal)
-                && ctx.HostSigHalf == def.HostHalf) return;
+                && ctx.HostSigHalf == def.HostHalf
+                && string.Equals(ctx.HostSigHotbar, hotbarSig, StringComparison.Ordinal))
+            {
+                // A ring turning into a grid keeps its sources and its pending
+                // press, as it always has.
+                ctx.HostSigKind = def.Kind;
+                return;
+            }
+            // A menu that turns into a hotbar, or out of one, starts over: a
+            // hotbar's shown bar and stepped selection mean nothing to a ring
+            // or a grid, and back.
+            if (wasHotbar != isHotbar) ctx.State.Reset();
+            ctx.HostSigKind = def.Kind;
+            ctx.HostSigHotbar = hotbarSig;
+            ctx.IsHotbar = false;
+            if (def.Kind == MenuKind.Hotbar)
+            {
+                ctx.HostSigHost = def.HostDescriptor;
+                ctx.HostSigCustomX = def.CustomXDescriptor;
+                ctx.HostSigCustomY = def.CustomYDescriptor;
+                ctx.HostSigClick = def.ClickDescriptor;
+                ctx.HostSigHalf = def.HostHalf;
+                ctx.IsHotbar = true;
+                ctx.IsStick = false;
+                ctx.IsButtonPair = false;
+                ctx.SrcDown = HotbarSource(def, HotbarControl.Show);
+                ctx.SrcLeft = HotbarSource(def, HotbarControl.Previous);
+                ctx.SrcRight = HotbarSource(def, HotbarControl.Next);
+                ctx.SrcUp = HotbarSource(def, HotbarControl.Fire);
+                ctx.SrcX = null;
+                ctx.SrcY = null;
+                ctx.SrcEngage = null;
+                ctx.SrcClick = null;
+                return;
+            }
             // A host / axis / click reassignment on a stay-open menu (#413)
             // must not complete the previous physical interaction through
             // the new sources. Surface-mode menus never hold state across a
@@ -882,6 +942,21 @@ namespace PadForge.Common.Input
             {
                 Descriptor = clickOverride.Length > 0 ? clickOverride : $"{host} Click",
             };
+        }
+
+        /// <summary>The four inputs a hotbar reads, resolved: a control the
+        /// menu names, else its host's. A change to any of them, the host,
+        /// its half or the dead zone a host's directions take, shows here.</summary>
+        private static string HotbarSignature(MenuDefinitionEntry def)
+            => MenuHotbar.ControlDescriptor(def, HotbarControl.Show) + "\n"
+               + MenuHotbar.ControlDescriptor(def, HotbarControl.Previous) + "\n"
+               + MenuHotbar.ControlDescriptor(def, HotbarControl.Next) + "\n"
+               + MenuHotbar.ControlDescriptor(def, HotbarControl.Fire);
+
+        private static MappingSource HotbarSource(MenuDefinitionEntry def, HotbarControl control)
+        {
+            string d = MenuHotbar.ControlDescriptor(def, control);
+            return d.Length > 0 ? new MappingSource { Descriptor = d } : null;
         }
 
         /// <summary>The SourceCoercion.MenuItemFiredProvider body: true

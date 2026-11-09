@@ -101,7 +101,10 @@ namespace PadForge.Tests
         [Fact]
         public void JoystickCamera_HasNoRotation()
         {
-            var p = Translate("controller_ps4", "joystick_camera", "right_joystick", ("rotation_2", "30"), ("rotation", "30"));
+            // Joystick Camera sends its camera value to a stick unless
+            // output_joystick is 2, the mouse. Either way it reads no rotation.
+            var p = Translate("controller_ps4", "joystick_camera", "right_joystick", ("rotation_2", "30"), ("rotation", "30"),
+                ("output_joystick", "2"));
             Assert.Single(p.KbmMappingSet.Rows.Single(r => r.Target == "KbmMouseX").Sources);
         }
 

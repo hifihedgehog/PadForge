@@ -3818,7 +3818,7 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>Nav</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Tastatūras taustiņš</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>Kontrollera poga</value></data>
-  <data name="Menu_Style_Tip" xml:space="preserve"><value>„Radiāls aplis” izvēlas šūnu pēc virziena, kā ieroču rats. „Skāriena režģis” izvēlas šūnu pēc pozīcijas: kur pirksts atrodas uz paliktņa vai kur norāda svira.</value></data>
+  <data name="Menu_Style_Tip" xml:space="preserve"><value>„Radiāls aplis” izvēlas šūnu pēc virziena, kā ieroču rats. „Skāriena režģis” izvēlas šūnu pēc pozīcijas: kur pirksts atrodas uz paliktņa vai kur norāda svira. „Ātrās piekļuves josla” rāda šūnu rindu, pārvietojas pa to un izpilda atlasīto šūnu, katrai darbībai izmantojot savu vadīklu.</value></data>
   <data name="Menu_HostInput_Tip" xml:space="preserve"><value>Ievade, kas atver un vada šo izvēlni, nolasīta no slotam piešķirtajiem fiziskajiem kontrolleriem. Svira to atver, kad tiek novirzīta pāri aktivizēšanas nejutības zonai. Skārienpaliktnis to atver pieskaroties.</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>Ierobežot šo izvēlni ar vienu skārienpaliktņa pusi, lai divas izvēlnes varētu koplietot paliktni.</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>Kad iezīmētā šūna izpilda savu piesaisti. Katra izvēle ir paskaidrota tālāk.</value></data>
@@ -4248,7 +4248,7 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>Izpildās vienreiz, kad klikšķa ievade tiek atlaista. Ja virsma tiek atlaista tajā pašā brīdī, izpildās iepriekšējā izvēle.</value></data>
   <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>Izpildās vienreiz, kad paceļat pirkstu vai atgriežat sviru aktivizēšanas nejutības zonā, kamēr izvēlne paliek atvērta. Izejot no slāņa, tiek apstiprināta arī izvēle, kas vēl tiek vadīta.</value></data>
   <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>Notur piesaisti, kamēr tās šūna ir iezīmēta. Radiālās izvēlnes centrs var izpildīties uzreiz, kad slānis atver izvēlni.</value></data>
-  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Virziena nospiešanas pārvietojas pa šūnām un izpilda katru jaunatlasīto šūnu. Šī ātrās piekļuves joslas darbība neizmanto izpildes režīmu vai klikšķa ievadi.</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Virziena nospiešanas pārvietojas pa šūnām un izpilda katru jaunatlasīto šūnu, neizmantojot „Izpildes režīms” vai „Klikšķa ievade”. Stils „Ātrās piekļuves josla” pārvietojas bez izpildes un izpilda ar savu vadīklu „Izpildīt”.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Flydigi paplašinātais protokols</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Iespējo papildu pogas un kustību sensorus atbalstītajos Flydigi kontrolleros.</value></data>
   <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Darbojas Flydigi programmatūra: {0}. Tā var izmantot to pašu kontrollera saskarni kā PadForge, un ir ziņots, ka Vader 5 Pro atkārtoti atvienojās, kad piekļuve bija abām programmām. Ja šis kontrolleris atvienojas un atkal pievienojas, apturiet pakalpojumu, kamēr izmantojat PadForge, turiet kontrolleri paslēptu un noņemiet pakalpojumu no HidHide atļauto saraksta, vai mēģiniet iestatījumos izslēgt „Flydigi paplašinātais protokols”, lai gan nav apstiprināts, ka tas palīdz.</value></data>
@@ -5099,7 +5099,28 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
     <value>D-pad</value>
   </data>
   <data name="Menu_Style_Keyboard" xml:space="preserve"><value>Tastatūra</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>„Radiāls aplis” un „Skāriena režģis” aktivizē šūnu piesaistes. „Tastatūra” raksta lietotā Windows izkārtojuma taustiņus.</value></data>
+  <data name="Menu_Style_Hotbar" xml:space="preserve"><value>Ātrās piekļuves josla</value></data>
+  <data name="Menu_Hotbar_Show" xml:space="preserve"><value>Rādīt vai paslēpt</value></data>
+  <data name="Menu_Hotbar_Show_Tip" xml:space="preserve"><value>Parāda joslu un paslēpj to nākamajā nospiešanā. Šādi paslēpta josla nākamreiz atveras ar vidējo šūnu.</value></data>
+  <data name="Menu_Hotbar_Previous" xml:space="preserve"><value>Iepriekšējā</value></data>
+  <data name="Menu_Hotbar_Previous_Tip" xml:space="preserve"><value>Atlasa šūnu pa kreisi, izlaižot šūnas, kurām nekas nav iestatīts.</value></data>
+  <data name="Menu_Hotbar_Next" xml:space="preserve"><value>Nākamā</value></data>
+  <data name="Menu_Hotbar_Next_Tip" xml:space="preserve"><value>Atlasa šūnu pa labi, izlaižot šūnas, kurām nekas nav iestatīts.</value></data>
+  <data name="Menu_Hotbar_Fire" xml:space="preserve"><value>Izpildīt</value></data>
+  <data name="Menu_Hotbar_Fire_Tip" xml:space="preserve"><value>Izpilda atlasīto šūnu, kā nosaka „Izpildes režīms”.</value></data>
+  <data name="Menu_Hotbar_Caption" xml:space="preserve"><value>„Rādīt vai paslēpt” parāda šūnu rindu, „Iepriekšējā” un „Nākamā” pārvietojas pa to, un „Izpildīt” izpilda atlasīto šūnu. Vadīklai, kas atstāta tukša, tiek izmantots virziens no „Atver ar”: uz leju, pa kreisi, pa labi vai uz augšu.</value></data>
+  <data name="Menu_Hotbar_Wrap" xml:space="preserve"><value>Cikliska pārslēgšana</value></data>
+  <data name="Menu_Hotbar_Wrap_Tip" xml:space="preserve"><value>Pārsniedzot pēdējo šūnu, atlase pāriet uz pirmo, un otrādi. Ja izslēgts, atlase apstājas abos galos.</value></data>
+  <data name="Menu_Hotbar_DismissOnFire" xml:space="preserve"><value>Paslēpt pēc izpildes</value></data>
+  <data name="Menu_Hotbar_DismissOnFire_Tip" xml:space="preserve"><value>„Izpildīt” paslēpj joslu. Ja izslēgts, josla paliek redzama un to pašu šūnu var izpildīt vēlreiz.</value></data>
+  <data name="Menu_Hotbar_Recenter" xml:space="preserve"><value>Centrēt katru reizi</value></data>
+  <data name="Menu_Hotbar_Recenter_Tip" xml:space="preserve"><value>Kamēr josla ir paslēpta, atlase atgriežas vidējā šūnā. Ja izslēgts, josla, ko paslēpa „Izpildīt”, atveras ar šūnu, kas tika izpildīta.</value></data>
+  <data name="Menu_Reset_HotbarControl" xml:space="preserve"><value>Atiestatīt vadīklu</value></data>
+  <data name="Menu_Fire_Click_Hotbar_Desc" xml:space="preserve"><value>„Izpildīt” nospiež atlasīto šūnu un tur to, kamēr „Izpildīt” tiek turēta. Ja ieslēgts „Paslēpt pēc izpildes”, nospiešana ir īss pieskāriens.</value></data>
+  <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>Atlasītā šūna izpildās vienreiz kā īss pieskāriens, kad „Izpildīt” tiek atlaista. Ja ieslēgts „Paslēpt pēc izpildes”, tā izpildās, tiklīdz „Izpildīt” paslēpj joslu.</value></data>
+  <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>Šūna izpildās vienreiz kā īss pieskāriens, kad „Izpildīt” paslēpj joslu un ir ieslēgts „Paslēpt pēc izpildes”. Ja ieslēgts „Centrēt katru reizi”, izpildās vidējā šūna.</value></data>
+  <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>Atlasītā šūna tiek turēta visu laiku, kamēr josla ir redzama. Pārvietojoties atlase atlaiž vienu šūnu un notur nākamo.</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>„Radiāls aplis”, „Skāriena režģis” un „Ātrās piekļuves josla” aktivizē šūnu piesaistes. „Tastatūra” raksta lietotā Windows izkārtojuma taustiņus.</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Izkārtojums</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Kā tastatūra izkārto taustiņus un kā kontrolieris tos izvēlas.</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Viens iezīmējums, ko pārvieto ar sviru vai četrām ievadēm. Šādu izkārtojumu izmanto Windows, Xbox un Steam.</value></data>
@@ -5219,6 +5240,12 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (nav šajā datorā)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (nav šajā slotā)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>žiroskops režīmā Laser Pointer nolasīts kā pagrieziens (PadForge nav lāzera rādītāja pārveidošanas)</value></data>
+  <data name="Workshop_Tr_GyroRollFromHorizon" xml:space="preserve"><value>sānsvere tiek centrēta pozā, kurā kontrolleris atrodas sākumā vai pēc darbības „Žiroskopa centrēšana”, nevis pēc horizonta</value></data>
+  <data name="Workshop_Tr_GyroPitchFromHorizon" xml:space="preserve"><value>slīpums tiek centrēts pozā, kurā kontrolleris atrodas sākumā vai pēc darbības „Žiroskopa centrēšana”, nevis {0}° no horizontāla stāvokļa</value></data>
+  <data name="Workshop_Tr_GyroTiltRangeCapped" xml:space="preserve"><value>pilna novirze pie 90° sasvēruma, nevis {0}°</value></data>
+  <data name="Workshop_Tr_OutputJoystickUnrouted" xml:space="preserve"><value>output_joystick {0} novirza asu pāri ne uz sviru, ne uz peli, tāpēc nekas netiek piesaistīts</value></data>
+  <data name="Workshop_Tr_DpadPulseHeld" xml:space="preserve"><value>katrs virziens tiek turēts, kamēr to spiež (Steam analogā emulācija to ieslēdz un izslēdz impulsos, kas kļūst garāki, jo tālāk to spiež)</value></data>
+  <data name="Workshop_Tr_SoftPressNoAnalog" xml:space="preserve"><value>mīkstā nospiediena aktivators ievadei bez analogā nolasījuma (Steam to nekad neaktivizē)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>Programmā reWASD {0} joprojām nonāk līdz Windows, jo fails to piesaista bez atcelšanas. Ja ir ieslēgts Pārtvert piesaistīto ievadi, PadForge to aptur.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows veido radiālās kursorsviras {0} pēc grūdiena leņķa. PadForge kursorsviras iestatījumi taisnu grūdienu atskaņo vienādi, bet diagonālu citādi.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows žiroskopa nejutības zonu katrai asij pielāgo pēc kustības leņķa. PadForge no katras ass atņem visu nejutības zonu, tāpēc taisna kustība darbojas vienādi, bet lēna diagonāla sākas vēlāk.</value></data>

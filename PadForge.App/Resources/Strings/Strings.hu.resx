@@ -3818,7 +3818,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Menu_Binding_None" xml:space="preserve"><value>Nincs</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Billentyűzet billentyűje</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>Kontroller gombja</value></data>
-  <data name="Menu_Style_Tip" xml:space="preserve"><value>A Radiális gyűrű irány alapján választ cellát, mint egy fegyverkerék. Az Érintőrács pozíció alapján választ cellát: aszerint, hogy hol van az ujj az érintőpadon, vagy merre mutat a kar.</value></data>
+  <data name="Menu_Style_Tip" xml:space="preserve"><value>A Radiális gyűrű irány alapján választ cellát, mint egy fegyverkerék. Az Érintőrács pozíció alapján választ cellát: aszerint, hogy hol van az ujj az érintőpadon, vagy merre mutat a kar. A Gyorssáv egy cellasort jelenít meg, végiglép rajta, és kiváltja a kijelölt cellát, mindezt saját vezérlőkkel.</value></data>
   <data name="Menu_HostInput_Tip" xml:space="preserve"><value>Az a bemenet, amely megnyitja és irányítja ezt a menüt, a foglalathoz rendelt fizikai kontrollerekről olvasva. A kar akkor nyitja meg, ha az Aktiválási holtzónán túl tolják. Az érintőpad érintésre nyitja meg.</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>A menü korlátozása az érintőpad egyik felére, hogy két menü osztozhasson az érintőpadon.</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>Mikor váltja ki a kijelölt cella a hozzárendelését. Az egyes lehetőségek magyarázata alább olvasható.</value></data>
@@ -4248,7 +4248,7 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>Egyszer aktiválódik, amikor a Kattintási bemenetet felengedik. Ha a felületet ugyanabban a pillanatban engedik fel, az előző kijelölés aktiválódik.</value></data>
   <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>Egyszer aktiválódik, amikor felemeli az ujját, vagy a kart visszaengedi az Aktiválási holtzónán belülre, miközben a menü nyitva marad. A rétegből való kilépés a még irányítás alatt álló kijelölést is véglegesíti.</value></data>
   <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>Nyomva tartja a hozzárendelést, amíg a cellája ki van jelölve. A radiális közép a réteg megnyílásakor azonnal aktiválódhat.</value></data>
-  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Az iránygombok lenyomása végiglépked a cellákon, és minden újonnan kijelölt cellát aktivál. Ez a gyorssáv-viselkedés nem használja a Kiváltási módot és a Kattintási bemenetet.</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Az iránygombok lenyomása végiglépked a cellákon, és minden újonnan kijelölt cellát aktivál, a Kiváltási mód és a Kattintási bemenet nélkül. A Gyorssáv stílus kiváltás nélkül lépked, és a saját Kiváltás vezérlőjével vált ki.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Flydigi bővített protokoll</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Engedélyezi a további gombokat és mozgásérzékelőket a támogatott Flydigi kontrollereken.</value></data>
   <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi szoftver fut: {0}. Ugyanazt a kontrollerinterfészt használhatja, mint a PadForge, és egy bejelentés szerint egy Vader 5 Pro ismételten megszakította a kapcsolatot, amíg mindkettő hozzáfért. Ha ez a kontroller lecsatlakozik, majd újracsatlakozik, állítsa le a szolgáltatást, amíg a PadForge programot használja, tartsa a kontrollert elrejtve, és távolítsa el a szolgáltatást a HidHide engedélyezőlistájáról, vagy próbálja meg kikapcsolni a Beállításokban a „Flydigi bővített protokoll” lehetőséget, bár nem igazolt, hogy ez segít.</value></data>
@@ -5099,7 +5099,28 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
     <value>D-pad</value>
   </data>
   <data name="Menu_Style_Keyboard" xml:space="preserve"><value>Billentyűzet</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>A Radiális gyűrű és az Érintőrács a cellákhoz rendelt műveleteket váltja ki. A Billentyűzet a használatban lévő Windows-kiosztás billentyűit írja be.</value></data>
+  <data name="Menu_Style_Hotbar" xml:space="preserve"><value>Gyorssáv</value></data>
+  <data name="Menu_Hotbar_Show" xml:space="preserve"><value>Megjelenítés vagy elrejtés</value></data>
+  <data name="Menu_Hotbar_Show_Tip" xml:space="preserve"><value>Megjeleníti a sávot, a következő lenyomásra pedig elrejti. Az így elrejtett sáv legközelebb a középső cellán nyílik meg.</value></data>
+  <data name="Menu_Hotbar_Previous" xml:space="preserve"><value>Előző</value></data>
+  <data name="Menu_Hotbar_Previous_Tip" xml:space="preserve"><value>A bal oldali cellát jelöli ki, kihagyva azokat a cellákat, amelyeken nincs semmi beállítva.</value></data>
+  <data name="Menu_Hotbar_Next" xml:space="preserve"><value>Következő</value></data>
+  <data name="Menu_Hotbar_Next_Tip" xml:space="preserve"><value>A jobb oldali cellát jelöli ki, kihagyva azokat a cellákat, amelyeken nincs semmi beállítva.</value></data>
+  <data name="Menu_Hotbar_Fire" xml:space="preserve"><value>Kiváltás</value></data>
+  <data name="Menu_Hotbar_Fire_Tip" xml:space="preserve"><value>Kiváltja a kijelölt cellát, ahogy a Kiváltási mód meghatározza.</value></data>
+  <data name="Menu_Hotbar_Caption" xml:space="preserve"><value>A Megjelenítés vagy elrejtés egy cellasort hoz elő, az Előző és a Következő végiglép rajta, a Kiváltás pedig kiváltja a kijelölt cellát. Az üresen hagyott vezérlő a Megnyitás ezzel irányát veszi át: le, balra, jobbra vagy fel.</value></data>
+  <data name="Menu_Hotbar_Wrap" xml:space="preserve"><value>Körbeforgás</value></data>
+  <data name="Menu_Hotbar_Wrap_Tip" xml:space="preserve"><value>Az utolsó cellán túllépve az elsőre ugrik, és fordítva. Kikapcsolva a kijelölés bármelyik végén megáll.</value></data>
+  <data name="Menu_Hotbar_DismissOnFire" xml:space="preserve"><value>Elrejtés kiváltás után</value></data>
+  <data name="Menu_Hotbar_DismissOnFire_Tip" xml:space="preserve"><value>A Kiváltás elrejti a sávot. Kikapcsolva a sáv látható marad, és ugyanaz a cella újra kiváltható.</value></data>
+  <data name="Menu_Hotbar_Recenter" xml:space="preserve"><value>Újraközpontosítás minden alkalommal</value></data>
+  <data name="Menu_Hotbar_Recenter_Tip" xml:space="preserve"><value>Amíg a sáv el van rejtve, a kijelölés visszaáll a középső cellára. Kikapcsolva a Kiváltás által elrejtett sáv azon a cellán nyílik meg, amelyet kiváltott.</value></data>
+  <data name="Menu_Reset_HotbarControl" xml:space="preserve"><value>Vezérlő visszaállítása</value></data>
+  <data name="Menu_Fire_Click_Hotbar_Desc" xml:space="preserve"><value>A Kiváltás lenyomja a kijelölt cellát, és nyomva tartja, amíg a Kiváltás nyomva van. Ha az „Elrejtés kiváltás után” be van kapcsolva, a lenyomás rövid érintés.</value></data>
+  <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>A kijelölt cella egyszer, rövid érintésként aktiválódik, amikor a Kiváltást felengedik. Ha az „Elrejtés kiváltás után” be van kapcsolva, azonnal aktiválódik, amint a Kiváltás elrejti a sávot.</value></data>
+  <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>Egy cella egyszer, rövid érintésként aktiválódik, amikor a Kiváltás elrejti a sávot, ha az „Elrejtés kiváltás után” be van kapcsolva. Ha az „Újraközpontosítás minden alkalommal” be van kapcsolva, a középső cella aktiválódik.</value></data>
+  <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>A kijelölt cella végig nyomva marad, amíg a sáv látható. Lépéskor az egyik cella felengedésre kerül, és a következő marad nyomva.</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>A Radiális gyűrű, az Érintőrács és a Gyorssáv a cellákhoz rendelt műveleteket váltja ki. A Billentyűzet a használatban lévő Windows-kiosztás billentyűit írja be.</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Elrendezés</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Hogyan rendezi el a billentyűzet a billentyűit, és hogyan választ közülük a kontroller.</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Egyetlen kijelölés, amelyet egy kar vagy négy bemenet mozgat, ahogy a Windows, az Xbox és a Steam teszi.</value></data>
@@ -5219,6 +5240,12 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (nincs ezen a számítógépen)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (nincs ezen a foglalaton)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>a Lézermutató giroszkóp legyezésként olvasva (a PadForge-ban nincs lézermutató-átalakítás)</value></data>
+  <data name="Workshop_Tr_GyroRollFromHorizon" xml:space="preserve"><value>az orsózás középpontja a kontroller induláskori nyugalmi helyzete vagy a „Giroszkóp középre igazítása” művelet helye, nem a horizont</value></data>
+  <data name="Workshop_Tr_GyroPitchFromHorizon" xml:space="preserve"><value>a bólintás középpontja a kontroller induláskori nyugalmi helyzete vagy a „Giroszkóp középre igazítása” művelet helye, nem a vízszintestől mért {0}°</value></data>
+  <data name="Workshop_Tr_GyroTiltRangeCapped" xml:space="preserve"><value>teljes kitérés 90°-os döntésnél, nem {0}°-nál</value></data>
+  <data name="Workshop_Tr_OutputJoystickUnrouted" xml:space="preserve"><value>az output_joystick {0} értéke a párt sem a karra, sem az egérre nem küldi, ezért semmi sincs hozzárendelve</value></data>
+  <data name="Workshop_Tr_DpadPulseHeld" xml:space="preserve"><value>minden irány nyomva tartva, amíg el van tolva (a Steam analóg emulációja impulzusokban kapcsolgatja, annál hosszabbakban, minél messzebb van eltolva)</value></data>
+  <data name="Workshop_Tr_SoftPressNoAnalog" xml:space="preserve"><value>könnyű lenyomásos aktivátor analóg leolvasás nélküli bemeneten (a Steam sosem váltja ki)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>A reWASD-ban a(z) {0} még így is eljut a Windows-ig, mert a fájl hozzárendeli, de nem szünteti meg az eredeti funkcióját. Ha a Hozzárendelt bemenetek elnyelése be van kapcsolva, a PadForge visszatartja.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>A DS4Windows a radiális kar {0} beállítását a kitérítés szöge szerint alakítja. A PadForge kar kártyája az egyenes kitérítést ugyanúgy, az átlósat másképp játssza le.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>A DS4Windows a giroszkóp holtzónáját tengelyenként a mozgás szöge szerint méretezi. A PadForge a teljes holtzónát levonja minden tengelyről, ezért az egyenes mozgást ugyanúgy játssza le, a lassú átlós mozgás viszont később indul.</value></data>

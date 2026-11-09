@@ -1,7 +1,7 @@
 name: RCT3 Weno V0.1
 description: Track pad radial menu don't fully works
 slots: xbox kbm
-gyroRatchet: Gamepad Paddle4
+gyroEngage: Gamepad Paddle4
 xbox rows: 0
 xbox activators: 4
   Toggle Layer_3456927474_1 | Gamepad RightShoulder | inherit | name=Deactivate trackpad
@@ -16,17 +16,17 @@ kbm rows: 19
   Base | KbmKey1B
     <- Gamepad ButtonStart
   Base | KbmKey41
-    <- Gamepad LeftStickX [lower-half]
+    <- Wedge 180 67.5 2.7 31.7685 29.2685 - Gamepad LeftStickRing
   Base | KbmKey44
-    <- Gamepad LeftStickX [upper-half]
+    <- Wedge 0 67.5 2.7 31.7685 29.2685 - Gamepad LeftStickRing
   Base | KbmKey45
     <- Gamepad ButtonX
   Base | KbmKey46
     <- Gamepad ButtonY
   Base | KbmKey53
-    <- Gamepad LeftStickY [upper-half]
+    <- Wedge 270 67.5 2.7 31.7685 29.2685 - Gamepad LeftStickRing
   Base | KbmKey57
-    <- Gamepad LeftStickY [lower-half]
+    <- Wedge 90 67.5 2.7 31.7685 29.2685 - Gamepad LeftStickRing
   Base | KbmKeyA0
     <- Gamepad DPadDown
   Base | KbmKeyA2
@@ -49,7 +49,7 @@ kbm rows: 19
     <- Gamepad ButtonB
     <- Gamepad Paddle1
   Base | KbmMBtn2
-    <- Gamepad RightStickRing [lower-half] dz=100
+    <- Ring 97 103 in 0 - - - Gamepad RightStickRing
   Base | KbmMouseX | Sum
     <- Gyro Yaw
     <- Gyro Roll [inverted]
@@ -101,18 +101,18 @@ macros: 67
   macro MoveMouseToScreenPosition OnPress | Warp cursor (Menu 1 Item 12) | btns=0x0000 in=[Menu 1 Item 12] layer=Base norm=(269,32031)
   macro RumblePulse OnPress | Haptic pulse (Menu 1 Item 12) | btns=0x0000 in=[Menu 1 Item 12] layer=Base strength=66%
   macro RumblePulse OnPress | Haptic pulse (Menu 1 Item 12) | btns=0x0000 in=[Menu 1 Item 12] layer=Base strength=66%
-  macro RepeatWheelWhileHeld WhileHeld | Turbo wheel (LeftTrigger) | btns=0x0000 axis=LeftTrigger@75% layer=Base ticks=-1 interval=125ms
-  macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 layer=Base strength=66%
-  macro RepeatWheelWhileHeld WhileHeld | Turbo wheel (LeftTrigger) | btns=0x0000 axis=LeftTrigger@15% layer=Base ticks=-1 interval=250ms
-  macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=15 layer=Base strength=66%
+  macro RepeatWheelWhileHeld WhileHeld | Turbo wheel (LeftTrigger) | btns=0x0000 axis=LeftTrigger@95% layer=Base ticks=-1 interval=125ms
+  macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=90 layer=Base strength=66%
+  macro RepeatWheelWhileHeld WhileHeld | Turbo wheel (LeftTrigger Soft Pull) | btns=0x0000 in=[Pull 1 Soft 0 click Gamepad LeftTrigger] layer=Base ticks=-1 interval=250ms
+  macro RumblePulse OnPress | Haptic pulse (LeftTrigger Soft Pull) | btns=0x0000 in=[Pull 1 Soft 0 click Gamepad LeftTrigger] layer=Base strength=66%
   macro HoldMouseButton OnPress | Hold mouse Left (RightStick) | btns=0x0080 layer=Base mbtn=0 delayStart=25ms
   macro RumblePulse OnPress | Haptic pulse (RightStick) | btns=0x0000 in=[Gamepad RightStick] layer=Base strength=33% delayStart=25ms
   macro RumblePulse OnPress | Haptic pulse (Touchpad 1 Click) | btns=0x0000 in=[Touchpad 1 Click] layer=Base strength=33%
-  macro MouseNudge OnPress | Nudge cursor (Touchpad 1 Finger 0 Down) | btns=0x0000 in=[Touchpad 1 Finger 0 Down] layer=Base delta=(100,0)
-  macro RumblePulse OnPress | Haptic pulse (Touchpad 1 Finger 0 Down) | btns=0x0000 in=[Touchpad 1 Finger 0 Down] layer=Base strength=33%
-  macro RepeatWheelWhileHeld WhileHeld | Turbo wheel (RightTrigger) | btns=0x0000 axis=RightTrigger@75% layer=Base ticks=1 interval=125ms
-  macro RepeatWheelWhileHeld WhileHeld | Turbo wheel (RightTrigger) | btns=0x0000 axis=RightTrigger@15% layer=Base ticks=1 interval=250ms
-  macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=15 layer=Base strength=66%
+  macro MouseNudge OnPress | Nudge cursor (Touchpad 1 Inner Edge) | btns=0x0000 in=[Ring 97 103 in 0 - - - Touchpad 1 Finger 0 Ring] layer=Base delta=(100,0)
+  macro RumblePulse OnPress | Haptic pulse (Touchpad 1 Inner Edge) | btns=0x0000 in=[Ring 97 103 in 0 - - - Touchpad 1 Finger 0 Ring] layer=Base strength=33%
+  macro RepeatWheelWhileHeld WhileHeld | Turbo wheel (RightTrigger) | btns=0x0000 axis=RightTrigger@95% layer=Base ticks=1 interval=125ms
+  macro RepeatWheelWhileHeld WhileHeld | Turbo wheel (RightTrigger Soft Pull) | btns=0x0000 in=[Pull 1 Soft 0 click Gamepad RightTrigger] layer=Base ticks=1 interval=250ms
+  macro RumblePulse OnPress | Haptic pulse (RightTrigger Soft Pull) | btns=0x0000 in=[Pull 1 Soft 0 click Gamepad RightTrigger] layer=Base strength=66%
   macro MoveMouseToScreenPosition OnPress | Warp cursor (Paddle2) | btns=0x0000 in=[Gamepad Paddle2] layer=Base norm=(16384,16384)
   macro KeyTap OnRelease | Screenshot key (Button 11) | btns=0x0000 in=[Button 11] layer=Base vk=0x2C
   macro KeyTap OnRelease | Screenshot key (Button 11) | btns=0x0000 in=[Button 11] layer=Layer_3456927474_1 vk=0x2C
@@ -175,10 +175,10 @@ report: v26 rows:x0+k19 macros:67 menus:2 layers:8 clean:82 partial:5 skipped:0 
   Clean RowEmitted @ Default/gyro/group 14 (absolute_mouse) => KbmMouseX <- Gyro Yaw
   Clean RowEmitted @ Default/gyro/group 14 (absolute_mouse) => KbmMouseX <- Gyro Roll (inverted)
   Clean RowEmitted @ Default/gyro/group 14 (absolute_mouse) => KbmMouseY <- Gyro Pitch
-  Clean RowEmitted @ Default/joystick/group 1 (dpad)/dpad_east/Full_Press => KbmKey44 <- Gamepad LeftStickX (upper half)
-  Clean RowEmitted @ Default/joystick/group 1 (dpad)/dpad_north/Full_Press => KbmKey57 <- Gamepad LeftStickY (lower half)
-  Clean RowEmitted @ Default/joystick/group 1 (dpad)/dpad_south/Full_Press => KbmKey53 <- Gamepad LeftStickY (upper half)
-  Clean RowEmitted @ Default/joystick/group 1 (dpad)/dpad_west/Full_Press => KbmKey41 <- Gamepad LeftStickX (lower half)
+  Clean RowEmitted @ Default/joystick/group 1 (dpad)/dpad_east/Full_Press => KbmKey44 <- Wedge 0 67.5 2.7 31.7685 29.2685 - Gamepad LeftStickRing
+  Clean RowEmitted @ Default/joystick/group 1 (dpad)/dpad_north/Full_Press => KbmKey57 <- Wedge 90 67.5 2.7 31.7685 29.2685 - Gamepad LeftStickRing
+  Clean RowEmitted @ Default/joystick/group 1 (dpad)/dpad_south/Full_Press => KbmKey53 <- Wedge 270 67.5 2.7 31.7685 29.2685 - Gamepad LeftStickRing
+  Clean RowEmitted @ Default/joystick/group 1 (dpad)/dpad_west/Full_Press => KbmKey41 <- Wedge 180 67.5 2.7 31.7685 29.2685 - Gamepad LeftStickRing
   Clean MenuEmitted(8) @ Default/left_trackpad/group 16 (radial_menu) => Radial menu 1: 8 bound cells <- Touchpad 0
   Clean MacroEmitted @ Default/left_trackpad/group 16 (radial_menu)/touch_menu_button_1/Full_Press => Warp cursor <- Menu 1 Item 1
   Clean MacroEmitted @ Default/left_trackpad/group 16 (radial_menu)/touch_menu_button_1/Full_Press => Hold mouse Left <- Menu 1 Item 1
@@ -202,17 +202,17 @@ report: v26 rows:x0+k19 macros:67 menus:2 layers:8 clean:82 partial:5 skipped:0 
   Clean MacroEmitted @ Default/left_trackpad/group 16 (radial_menu)/touch_menu_button_12/Full_Press => Warp cursor <- Menu 1 Item 12
   Clean RowEmitted @ Default/left_trackpad/group 16 (radial_menu)/touch_menu_button_12/Full_Press => KbmMBtn0 <- Menu 1 Item 12
   Clean MacroEmitted @ Default/left_trigger/group 4 (trigger)/click/Full_Press => Turbo wheel <- Gamepad LeftTrigger
-  Clean MacroEmitted @ Default/left_trigger/group 4 (trigger)/edge/Full_Press => Turbo wheel <- Gamepad LeftTrigger
+  Clean MacroEmitted @ Default/left_trigger/group 4 (trigger)/edge/Full_Press => Turbo wheel <- Pull 1 Soft 0 click Gamepad LeftTrigger
   Clean RowEmitted @ Default/right_joystick/group 10 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX
   Clean RowEmitted @ Default/right_joystick/group 10 (joystick_mouse) => KbmMouseY <- Gamepad RightStickY
   Clean MacroEmitted @ Default/right_joystick/group 10 (joystick_mouse)/click/Full_Press => Hold mouse Left <- Gamepad RightStick
-  Clean RowEmitted @ Default/right_joystick/group 10 (joystick_mouse)/edge/Full_Press => KbmMBtn2 <- Gamepad RightStickRing (lower half)
+  Clean RowEmitted @ Default/right_joystick/group 10 (joystick_mouse)/edge/Full_Press => KbmMBtn2 <- Ring 97 103 in 0 - - - Gamepad RightStickRing
   Clean RowEmitted @ Default/right_trackpad/group 12 (mouse_region) => KbmMouseX <- Touchpad 1 Pointer X
   Clean RowEmitted @ Default/right_trackpad/group 12 (mouse_region) => KbmMouseY <- Touchpad 1 Pointer Y
   Clean RowEmitted @ Default/right_trackpad/group 12 (mouse_region)/click/Soft_Press => KbmMBtn0 <- Touchpad 1 Click
-  Clean MacroEmitted @ Default/right_trackpad/group 12 (mouse_region)/edge/Full_Press => Nudge cursor <- Touchpad 1 Finger 0 Down
+  Clean MacroEmitted @ Default/right_trackpad/group 12 (mouse_region)/edge/Full_Press => Nudge cursor <- Ring 97 103 in 0 - - - Touchpad 1 Finger 0 Ring
   Clean MacroEmitted @ Default/right_trigger/group 5 (trigger)/click/Full_Press => Turbo wheel <- Gamepad RightTrigger
-  Clean MacroEmitted @ Default/right_trigger/group 5 (trigger)/edge/Full_Press => Turbo wheel <- Gamepad RightTrigger
+  Clean MacroEmitted @ Default/right_trigger/group 5 (trigger)/edge/Full_Press => Turbo wheel <- Pull 1 Soft 0 click Gamepad RightTrigger
   Partial RemoveLayerApproximated @ Default/switch/group 8 (switches)/button_back_left/Full_Press :: controller_action remove_layer 3 1 1, , 
   Clean MacroEmitted @ Default/switch/group 8 (switches)/button_back_left_upper/Full_Press => Warp cursor <- Gamepad Paddle2
   Clean RowEmitted @ Default/switch/group 8 (switches)/button_back_left_upper/Full_Press => KbmMBtn0 <- Gamepad Paddle2

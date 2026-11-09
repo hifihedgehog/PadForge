@@ -142,7 +142,7 @@ namespace PadForge.SteamWorkshop.Tests
             // Trigger-click host rides the axis trigger, not a button bit.
             Assert.Equal(0, (int)m.TriggerXboxButtons);
             Assert.Equal("LeftTrigger", m.TriggerAxisTarget);
-            Assert.Equal(75, m.TriggerAxisThresholdPercent);
+            Assert.Equal(95, m.TriggerAxisThresholdPercent);
         }
 
         [Fact]
@@ -560,7 +560,7 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.Equal(TranslatedMacroAction.MouseLimitRegion, m.Action);
             Assert.Equal("WhileHeld", m.TriggerMode);
             Assert.Equal("LeftTrigger", m.TriggerAxisTarget);
-            Assert.Equal(75, m.TriggerAxisThresholdPercent);
+            Assert.Equal(95, m.TriggerAxisThresholdPercent);
             Assert.Equal(40, m.RegionScalePercent);
             Assert.Equal(25, m.RegionXPercent);
             Assert.Equal(75, m.RegionYPercent);

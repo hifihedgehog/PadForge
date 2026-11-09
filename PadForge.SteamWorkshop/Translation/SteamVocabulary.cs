@@ -110,6 +110,29 @@ namespace PadForge.SteamWorkshop.Translation
         /// that resolved to nothing.</para></summary>
         public static string MemberLabel(string descriptor, string inputToken)
         {
+            // A Steam dpad direction or four_buttons cell read names its input
+            // and the way it points ("LeftStick Up", "Touchpad 0 Right Down"),
+            // a trigger read its pull ("LeftTrigger Soft Pull").
+            var read = PadForge.Engine.Common.Mapping.BoundedReads.Parse(descriptor);
+            if (read != null && read.Kind == PadForge.Engine.Common.Mapping.BoundedReadKind.Ring)
+                return PairLabel(read.Inner) + (read.InnerEdge ? " Inner Edge" : " Edge");
+            if (read != null && read.Kind is PadForge.Engine.Common.Mapping.BoundedReadKind.Wedge
+                    or PadForge.Engine.Common.Mapping.BoundedReadKind.Disc
+                    or PadForge.Engine.Common.Mapping.BoundedReadKind.Hold)
+                return PairLabel(read.Inner) + " " + Way(read);
+            if (read != null && read.Kind is PadForge.Engine.Common.Mapping.BoundedReadKind.Level
+                    or PadForge.Engine.Common.Mapping.BoundedReadKind.Pull
+                    or PadForge.Engine.Common.Mapping.BoundedReadKind.Press)
+            {
+                string label = PairLabel(read.Inner);
+                if (read.ComponentAxis == 2) return label + " Edge";
+                if (read.ComponentAxis >= 0) return label + " " + Way(read);
+                string pull = read.Kind == PadForge.Engine.Common.Mapping.BoundedReadKind.Level
+                    ? (read.PressRadius < 50 ? "Soft Pull" : "Full Pull")
+                    : read.IsFull ? "Full Pull"
+                    : read.Kind == PadForge.Engine.Common.Mapping.BoundedReadKind.Press ? "Soft Press" : "Soft Pull";
+                return label + " " + pull;
+            }
             if (!string.IsNullOrWhiteSpace(descriptor))
             {
                 // "Gamepad ButtonY" reads as "ButtonY" here: the macro name
@@ -120,6 +143,40 @@ namespace PadForge.SteamWorkshop.Translation
                     : descriptor;
             }
             return SpellToken(inputToken);
+        }
+
+        private static string PairLabel(string pair)
+        {
+            if (pair.StartsWith("Gamepad ", StringComparison.Ordinal) && pair.EndsWith("Ring", StringComparison.Ordinal))
+                return pair.Substring(8, pair.Length - 12);
+            if (pair.StartsWith("Gamepad ", StringComparison.Ordinal)) return pair.Substring(8);
+            if (pair.StartsWith("Gyro Tilt ", StringComparison.Ordinal)) return "Gyro Tilt";
+            string[] p = pair.Split(' ');
+            return p.Length >= 5 && p[0] == "Touchpad"
+                ? "Touchpad " + p[1] + (p.Length == 6 ? " " + p[5] : "")
+                : pair;
+        }
+
+        private static string Way(PadForge.Engine.Common.Mapping.BoundedRead read)
+        {
+            double x, y;
+            switch (read.Kind)
+            {
+                case PadForge.Engine.Common.Mapping.BoundedReadKind.Wedge:
+                    double r = read.Center * Math.PI / 180.0;
+                    x = Math.Cos(r);
+                    y = -Math.Sin(r);
+                    break;
+                case PadForge.Engine.Common.Mapping.BoundedReadKind.Disc:
+                    x = read.CenterX;
+                    y = read.CenterY;
+                    break;
+                default:
+                    x = read.ComponentAxis == 0 ? read.ComponentSign : 0;
+                    y = read.ComponentAxis == 1 ? read.ComponentSign : 0;
+                    break;
+            }
+            return Math.Abs(x) >= Math.Abs(y) ? (x >= 0 ? "Right" : "Left") : (y < 0 ? "Up" : "Down");
         }
     }
 }

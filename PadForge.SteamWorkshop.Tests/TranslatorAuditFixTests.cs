@@ -141,10 +141,13 @@ namespace PadForge.SteamWorkshop.Tests
         }
 
         [Fact]
-        public void MouseJoystick_OutputJoystick1_RedirectsToLeftStick()
+        public void MouseJoystick_OutputJoystick0_RedirectsToLeftStick()
         {
+            // The configurator's list for mouse_joystick: LeftJoystick 0,
+            // RightJoystick 1 (steamui/sp.js), and the client starts the
+            // setting at 1.
             string vdf = Head
-                + Group(1, "mouse_joystick", Settings(("output_joystick", "1")))
+                + Group(1, "mouse_joystick", Settings(("output_joystick", "0")))
                 + Preset(0, "Default", (1, "gyro active"))
                 + "}\n";
             var p = Translate(vdf);
@@ -157,8 +160,12 @@ namespace PadForge.SteamWorkshop.Tests
         // ─── F6: stick-hosted diamond cells ─────────────────────────────
 
         [Fact]
-        public void JoystickFourButtons_ResolvePositionallyOntoWedges()
+        public void JoystickFourButtons_ReadSteamsCells_ByPosition()
         {
+            // Steam's four_buttons cell discs on the stick, A the south one.
+            // four_buttons needs its stick clicked unless the file says not
+            // (steamclient64.dll registers requires_click on and its mode
+            // defaults leave it on).
             string vdf = Head
                 + Group(1, "four_buttons", Inputs(("button_a", "key_press E")))
                 + Preset(0, "Default", (1, "joystick active"))
@@ -168,13 +175,12 @@ namespace PadForge.SteamWorkshop.Tests
             var row = Assert.Single(p.KbmMappingSet.Rows);
             Assert.Equal("KbmKey45", row.Target);
             var src = Assert.Single(row.Sources);
-            Assert.Equal("Gamepad LeftStickY", src.Descriptor); // A = south = Y upper half
-            Assert.True(src.HalfAxis);
-            Assert.False(src.Invert);
+            Assert.Equal(SteamPadExpect.Disc(0, SteamPadExpect.Dist(), PadForge.Engine.Common.Mapping.BoundedGate.Click, "Gamepad LeftStickRing"),
+                src.Descriptor);
         }
 
         [Fact]
-        public void JoystickFourButtons_NintendoLabelsFoldOntoPosition()
+        public void JoystickFourButtons_NintendoLabelsReadTheirPositionsCell()
         {
             string vdf = HeadSwitch
                 + Group(1, "four_buttons", Inputs(("button_a", "key_press E")))
@@ -184,9 +190,9 @@ namespace PadForge.SteamWorkshop.Tests
 
             var row = Assert.Single(p.KbmMappingSet.Rows);
             var src = Assert.Single(row.Sources);
-            Assert.Equal("Gamepad LeftStickX", src.Descriptor); // A label sits east on Switch
-            Assert.True(src.HalfAxis);
-            Assert.False(src.Invert);
+            // The A label sits east on a Switch controller.
+            Assert.Equal(SteamPadExpect.Disc(SteamPadExpect.Dist(), 0, PadForge.Engine.Common.Mapping.BoundedGate.Click, "Gamepad LeftStickRing"),
+                src.Descriptor);
         }
 
         // ─── F7 (re-adjudicated in v25): center_trackpad reads pad 0
@@ -207,7 +213,9 @@ namespace PadForge.SteamWorkshop.Tests
 
             Assert.NotEmpty(p.KbmMappingSet.Rows);
             var src = p.KbmMappingSet.Rows.SelectMany(r => r.Sources).First();
-            Assert.StartsWith("Touchpad 0 ", src.Descriptor);
+            // Pad 0 whole, and Steam's dpad mode defaults leave the center
+            // pad's requires_click off.
+            Assert.Equal(SteamPadExpect.Wedge(90, PadForge.Engine.Common.Mapping.BoundedGate.None, "Touchpad 0 Finger 0 Ring"), src.Descriptor);
             Assert.DoesNotContain(p.Report.Entries,
                 e => e.ReasonKey == TranslationReasons.UnknownPhysicalInput);
         }

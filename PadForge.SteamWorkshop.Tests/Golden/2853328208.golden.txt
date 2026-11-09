@@ -18,9 +18,8 @@ kbm rows: 23
   Base | KbmKey47
     <- Gamepad ButtonY
     <- Gamepad DPadDown
-  Base | KbmKey48 | Custom | (s[0] && s[1])
-    <- Touchpad 0 DPadDown
-    <- Touchpad 0 Click
+  Base | KbmKey48
+    <- Wedge 270 45 1.8 31.7685 29.2685 click Touchpad 0 Finger 0 Ring
   Base | KbmKey49
     <- Gamepad DPadLeft
   Base | KbmKey4C
@@ -31,9 +30,8 @@ kbm rows: 23
     <- Gamepad ButtonStart
   Base | KbmKey53
     <- Gamepad LeftStick
-  Base | KbmKey54 | Custom | (s[0] && s[1])
-    <- Touchpad 0 DPadUp
-    <- Touchpad 0 Click
+  Base | KbmKey54
+    <- Wedge 90 45 1.8 31.7685 29.2685 click Touchpad 0 Finger 0 Ring
   Base | KbmKey55
     <- Gamepad DPadRight
   Base | KbmKey57
@@ -46,9 +44,9 @@ kbm rows: 23
     <- Touchpad 1 Click
     <- Gamepad Paddle4
   Base | KbmMBtn0
-    <- Gamepad RightTrigger [upper-half] dz=15
+    <- Pull 1 Soft 10000 - Gamepad RightTrigger
   Base | KbmMBtn1
-    <- Gamepad LeftTrigger [upper-half] dz=15
+    <- Pull 1 Soft 10000 - Gamepad LeftTrigger
   Base | KbmMouseX | Sum
     <- Gamepad LeftStickX
     <- Gamepad RightStickX sens=0.313
@@ -62,10 +60,10 @@ macros: 9
   macro RumblePulse OnPress | Haptic pulse (DPadUp) | btns=0x0000 in=[Gamepad DPadUp] layer=Base strength=33%
   macro RumblePulse OnPress | Haptic pulse (DPadDown) | btns=0x0000 in=[Gamepad DPadDown] layer=Base strength=33%
   macro RumblePulse OnPress | Haptic pulse (DPadLeft) | btns=0x0000 in=[Gamepad DPadLeft] layer=Base strength=33%
-  macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=15 layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (LeftTrigger Soft Pull) | btns=0x0000 in=[Pull 1 Soft 10000 - Gamepad LeftTrigger] layer=Base strength=66%
   macro RumblePulse OnPress | Haptic pulse (RightStick) | btns=0x0000 in=[Gamepad RightStick] layer=Base strength=33%
   macro RumblePulse OnPress | Haptic pulse (Touchpad 1 Click) | btns=0x0000 in=[Touchpad 1 Click] layer=Base strength=33%
-  macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=15 layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (RightTrigger Soft Pull) | btns=0x0000 in=[Pull 1 Soft 10000 - Gamepad RightTrigger] layer=Base strength=66%
   macro KeyTap OnRelease | Screenshot key (Button 11) | btns=0x0000 in=[Button 11] layer=Base vk=0x2C
 report: v26 rows:x0+k23 macros:9 menus:0 layers:0 clean:29 partial:0 skipped:0 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey57 <- Gamepad ButtonA
@@ -79,16 +77,16 @@ report: v26 rows:x0+k23 macros:9 menus:0 layers:0 clean:29 partial:0 skipped:0 e
   Clean RowEmitted @ Default/joystick/group 13 (joystick_mouse) => KbmMouseX <- Gamepad LeftStickX
   Clean RowEmitted @ Default/joystick/group 13 (joystick_mouse) => KbmMouseY <- Gamepad LeftStickY
   Clean RowEmitted @ Default/joystick/group 13 (joystick_mouse)/click/Full_Press => KbmKey53 <- Gamepad LeftStick
-  Clean RowEmitted @ Default/left_trackpad/group 1 (dpad)/dpad_north/Full_Press => KbmKey54 <- Touchpad 0 DPadUp
-  Clean RowEmitted @ Default/left_trackpad/group 1 (dpad)/dpad_south/Full_Press => KbmKey48 <- Touchpad 0 DPadDown
-  Clean RowEmitted @ Default/left_trigger/group 4 (trigger)/edge/Full_Press => KbmMBtn1 <- Gamepad LeftTrigger (upper half)
+  Clean RowEmitted @ Default/left_trackpad/group 1 (dpad)/dpad_north/Full_Press => KbmKey54 <- Wedge 90 45 1.8 31.7685 29.2685 click Touchpad 0 Finger 0 Ring
+  Clean RowEmitted @ Default/left_trackpad/group 1 (dpad)/dpad_south/Full_Press => KbmKey48 <- Wedge 270 45 1.8 31.7685 29.2685 click Touchpad 0 Finger 0 Ring
+  Clean RowEmitted @ Default/left_trigger/group 4 (trigger)/edge/Full_Press => KbmMBtn1 <- Pull 1 Soft 10000 - Gamepad LeftTrigger
   Clean RowEmitted @ Default/right_joystick/group 9 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX
   Clean RowEmitted @ Default/right_joystick/group 9 (joystick_mouse) => KbmMouseY <- Gamepad RightStickY
   Clean RowEmitted @ Default/right_joystick/group 9 (joystick_mouse)/click/Full_Press => KbmKey4C <- Gamepad RightStick
   Clean RowEmitted @ Default/right_trackpad/group 2 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Clean RowEmitted @ Default/right_trackpad/group 2 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
   Clean RowEmitted @ Default/right_trackpad/group 2 (absolute_mouse)/click/Soft_Press => KbmKeyA4 <- Touchpad 1 Click
-  Clean RowEmitted @ Default/right_trigger/group 5 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
+  Clean RowEmitted @ Default/right_trigger/group 5 (trigger)/edge/Full_Press => KbmMBtn0 <- Pull 1 Soft 10000 - Gamepad RightTrigger
   Clean RowEmitted @ Default/switch/group 6 (switches)/button_back_left/Full_Press => KbmKeyA4 <- Gamepad Paddle4
   Clean RowEmitted @ Default/switch/group 6 (switches)/button_back_left_upper/Full_Press => KbmKeyA2 <- Gamepad Paddle2
   Clean RowEmitted @ Default/switch/group 6 (switches)/button_back_right/Full_Press => KbmKey20 <- Gamepad Paddle3

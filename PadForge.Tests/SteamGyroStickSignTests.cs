@@ -106,7 +106,6 @@ namespace PadForge.Tests
 
         [Theory]
         [InlineData("absolute_mouse")]
-        [InlineData("joystick_camera")]
         public void GyroAxisRoll_TurnsTheCursorWithARollToTheRight(string mode)
         {
             var p = Translate(Vdf(mode, ("gyro_axis", "1")));
@@ -164,13 +163,17 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void JoystickCameraAxis_IsRollForAnythingButZero()
+        public void JoystickCamera_OnTheGyro_ReadsTheTilt_WhateverTheAxis()
         {
-            // The camera class keeps setting 64 as an on/off setting.
+            // The client's joystick classes read the gyro as a tilt
+            // position (X the roll, Y the pitch) and never consult
+            // gyro_axis there (steamclient64.dll), so the pair is the tilt
+            // pair and a rate moves nothing.
             var p = Translate(Vdf("joystick_camera", ("gyro_axis", "2")));
-            Assert.True(CursorX(p, roll: -1f) > 1f);
+            var x = p.XboxMappingSet.Rows.Single(r => r.Target == "LeftThumbAxisX");
+            Assert.Contains(x.Sources, s => s.Descriptor == "Gyro Tilt X");
+            Assert.Equal(0f, CursorX(p, roll: -1f));
             Assert.Equal(0f, CursorX(p, yaw: 1f));
-            Assert.DoesNotContain(p.Report.Entries, e => e.Status == TranslationStatus.Partial);
         }
 
         [Fact]
@@ -292,7 +295,7 @@ namespace PadForge.Tests
             float moved = CursorX(Translate(Vdf("gyro_to_mouse", settings)), yaw: -1f);
             Assert.InRange(moved / at250, ofDefault - 0.01, ofDefault + 0.01);
             float natural100 = CursorX(Translate(Vdf("gyro_to_mouse", ("gyro_natural_sensitivity", "100"))), yaw: -1f);
-            float oneX = CursorX(Translate(Vdf("joystick_camera", ("sensitivity", "80"))), yaw: -1f);
+            float oneX = CursorX(Translate(Vdf("absolute_mouse", ("sensitivity", "50"))), yaw: -1f);
             Assert.InRange(natural100 / oneX, 0.99, 1.01);   // 100 stays PadForge's 1.0x
         }
 
@@ -412,27 +415,35 @@ namespace PadForge.Tests
         }
 
         /// <summary>gyro_to_joystick_deflection holds the controller as the
-        /// stick itself. Valve's 10/25/23 client notes call the mode "most
-        /// appropriate for simulating Steering and Flight Yokes", and
-        /// JoyShockMapper's motion stick, the same tilt-to-stick read, writes
-        /// calY = -grav.z (main.cpp), so tilting back, the nose up, is the
-        /// stick back (README: "MUP, MDOWN, MLEFT, MRIGHT: Motion stick
-        /// tilted forward, back, left or right"). The right edge down is the
-        /// stick right.</summary>
+        /// stick itself. The client's deflection mode (steamclient64.dll
+        /// 0x1388bd670) reads the tilt as -(gx, gy) / |(gx, gy)| times
+        /// acos(gz) in degrees, from the gravity vector in the Steam
+        /// Controller's frame: x right, y toward the nose, z up out of the
+        /// face (SDL_hidapi_steam.c sends that pad's accelerometer as x, z,
+        /// -y). The nose up is a negative Y, the right edge down a positive
+        /// X. With no gyro button the client centers pitch at minus the World
+        /// Tilt Offset (0x1388be6f0), a resting grip with the nose up, and it
+        /// sends both axes times 32767 to a stick whose Y is up (that pad's
+        /// stick Y is up, SDL_hidapi_steam.c inverts it). So the nose up
+        /// pulls the stick back and the right edge down pushes it right, as
+        /// JoyShockMapper's motion stick does (calY = -grav.z, main.cpp). The
+        /// mode's stick starts on the left (the client sets its
+        /// output_joystick default to 0), and the pair is the tilt pair at
+        /// the client's default angles, full at 45 degrees.</summary>
         [Fact]
         public void Deflection_TheNoseUpPullsTheStickBack_AndTheRightEdgeDownPushesRight()
         {
             var p = Translate(Vdf("gyro_to_joystick_deflection"));
-            MappingSource Lean(string target) => p.XboxMappingSet.Rows
+            MappingSource Tilt(string target) => p.XboxMappingSet.Rows
                 .Single(r => r.Target == target && (r.LayerMask ?? "Base") == "Base")
-                .Sources.Single(s => (s.Descriptor ?? "").StartsWith("Gyro Lean", StringComparison.Ordinal));
+                .Sources.Single(s => (s.Descriptor ?? "").StartsWith("Gyro Tilt", StringComparison.Ordinal));
             float s30 = MathF.Sin(30 * MathF.PI / 180f), c30 = MathF.Cos(30 * MathF.PI / 180f);
             const float G = 9.81f;
             // The accelerometer reads up: flat is +Y, the nose up leans it to
             // -Z, the right edge down to -X.
-            short back = AtTilt(s => GyroStickSignProbe.Written(s, Lean("RightThumbAxisY"), "RightThumbAxisY"), (0f, G * c30, -G * s30));
+            short back = AtTilt(s => GyroStickSignProbe.Written(s, Tilt("LeftThumbAxisY"), "LeftThumbAxisY"), (0f, G * c30, -G * s30));
             Assert.True(back < -10000, $"the nose up should pull the stick back, wrote {back}");
-            short right = AtTilt(s => GyroStickSignProbe.Written(s, Lean("RightThumbAxisX"), "RightThumbAxisX"), (-G * s30, G * c30, 0f));
+            short right = AtTilt(s => GyroStickSignProbe.Written(s, Tilt("LeftThumbAxisX"), "LeftThumbAxisX"), (-G * s30, G * c30, 0f));
             Assert.True(right > 10000, $"the right edge down should push the stick right, wrote {right}");
         }
 

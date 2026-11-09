@@ -3818,7 +3818,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>Fără</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Tastă de tastatură</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>Buton de controler</value></data>
-  <data name="Menu_Style_Tip" xml:space="preserve"><value>Inel radial alege o celulă după direcție, ca o roată de arme. Grilă tactilă alege o celulă după poziție: unde se află degetul pe touchpad sau unde indică stickul.</value></data>
+  <data name="Menu_Style_Tip" xml:space="preserve"><value>Inel radial alege o celulă după direcție, ca o roată de arme. Grilă tactilă alege o celulă după poziție: unde se află degetul pe touchpad sau unde indică stickul. Bară rapidă afișează un rând de celule, se deplasează de-a lungul lui și declanșează celula selectată, fiecare cu propria comandă.</value></data>
   <data name="Menu_HostInput_Tip" xml:space="preserve"><value>Intrarea care deschide și controlează acest meniu, citită de pe controlerele fizice atribuite slotului. Un stick îl deschide când este împins dincolo de Zona moartă de activare. Un touchpad îl deschide la atingere.</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>Limitează acest meniu la o jumătate a trackpadului, astfel încât două meniuri să poată împărți padul.</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>Când își declanșează legătura celula evidențiată. Fiecare opțiune este explicată mai jos.</value></data>
@@ -4248,7 +4248,7 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>Se declanșează o dată când Intrarea de clic este eliberată. Dacă suprafața este eliberată în același moment, se declanșează selecția anterioară.</value></data>
   <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>Se declanșează o dată când ridicați degetul sau readuceți stickul în Zona moartă de activare, cât timp meniul rămâne deschis. Părăsirea stratului confirmă și o selecție aflată încă în curs de control.</value></data>
   <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>Menține legătura cât timp celula ei este evidențiată. Un centru radial se poate declanșa imediat când se deschide stratul.</value></data>
-  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Apăsările de direcție parcurg celulele și declanșează fiecare celulă nou selectată. Acest comportament de bară rapidă nu folosește Mod de declanșare sau Intrare de clic.</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Apăsările de direcție parcurg celulele și declanșează fiecare celulă nou selectată, fără „Mod de declanșare” sau „Intrare de clic”. Stilul Bară rapidă se deplasează fără a declanșa și declanșează cu propria comandă „Declanșare”.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Protocol îmbunătățit Flydigi</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Activează butoane suplimentare și senzori de mișcare pe controlerele Flydigi acceptate.</value></data>
   <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Software-ul Flydigi rulează: {0}. Poate folosi aceeași interfață a controlerului ca PadForge, iar un Vader 5 Pro a fost raportat ca deconectându-se în mod repetat când ambele aveau acces. Dacă acest controler se deconectează și se reconectează, opriți serviciul cât timp folosiți PadForge, mențineți controlerul ascuns și eliminați serviciul din lista de aplicații permise HidHide sau încercați să dezactivați „Protocol îmbunătățit Flydigi” din Setări, deși nu este confirmat că ajută.</value></data>
@@ -5099,7 +5099,28 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
     <value>D-pad</value>
   </data>
   <data name="Menu_Style_Keyboard" xml:space="preserve"><value>Tastatură</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>Inel radial și Grilă tactilă declanșează asocierile celulelor. Tastatură introduce tastele aspectului Windows în uz.</value></data>
+  <data name="Menu_Style_Hotbar" xml:space="preserve"><value>Bară rapidă</value></data>
+  <data name="Menu_Hotbar_Show" xml:space="preserve"><value>Afișare sau ascundere</value></data>
+  <data name="Menu_Hotbar_Show_Tip" xml:space="preserve"><value>Afișează bara și o ascunde la apăsarea următoare. O bară ascunsă astfel se deschide data viitoare pe celula din mijloc.</value></data>
+  <data name="Menu_Hotbar_Previous" xml:space="preserve"><value>Anterior</value></data>
+  <data name="Menu_Hotbar_Previous_Tip" xml:space="preserve"><value>Selectează celula din stânga, sărind peste celulele fără nicio setare.</value></data>
+  <data name="Menu_Hotbar_Next" xml:space="preserve"><value>Următor</value></data>
+  <data name="Menu_Hotbar_Next_Tip" xml:space="preserve"><value>Selectează celula din dreapta, sărind peste celulele fără nicio setare.</value></data>
+  <data name="Menu_Hotbar_Fire" xml:space="preserve"><value>Declanșare</value></data>
+  <data name="Menu_Hotbar_Fire_Tip" xml:space="preserve"><value>Declanșează celula selectată, după cum stabilește „Mod de declanșare”.</value></data>
+  <data name="Menu_Hotbar_Caption" xml:space="preserve"><value>„Afișare sau ascundere” aduce un rând de celule, „Anterior” și „Următor” se deplasează de-a lungul lui, iar „Declanșare” declanșează celula selectată. O comandă lăsată goală preia direcția din „Se deschide cu”: jos, stânga, dreapta sau sus.</value></data>
+  <data name="Menu_Hotbar_Wrap" xml:space="preserve"><value>Parcurgere circulară</value></data>
+  <data name="Menu_Hotbar_Wrap_Tip" xml:space="preserve"><value>Trecerea de ultima celulă duce la prima, și invers. Dezactivată, selecția se oprește la oricare capăt.</value></data>
+  <data name="Menu_Hotbar_DismissOnFire" xml:space="preserve"><value>Ascundere după declanșare</value></data>
+  <data name="Menu_Hotbar_DismissOnFire_Tip" xml:space="preserve"><value>„Declanșare” ascunde bara. Dezactivată, bara rămâne afișată și aceeași celulă poate fi declanșată din nou.</value></data>
+  <data name="Menu_Hotbar_Recenter" xml:space="preserve"><value>Recentrare de fiecare dată</value></data>
+  <data name="Menu_Hotbar_Recenter_Tip" xml:space="preserve"><value>Cât timp bara este ascunsă, selecția revine la celula din mijloc. Dezactivată, o bară ascunsă de „Declanșare” se deschide pe celula pe care a declanșat-o.</value></data>
+  <data name="Menu_Reset_HotbarControl" xml:space="preserve"><value>Resetare comandă</value></data>
+  <data name="Menu_Fire_Click_Hotbar_Desc" xml:space="preserve"><value>„Declanșare” apasă celula selectată și o menține cât timp „Declanșare” este ținută apăsată. Cu „Ascundere după declanșare” activată, apăsarea este o atingere scurtă.</value></data>
+  <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>Celula selectată se declanșează o dată, ca o atingere scurtă, când „Declanșare” este eliberată. Cu „Ascundere după declanșare” activată, se declanșează de îndată ce „Declanșare” ascunde bara.</value></data>
+  <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>O celulă se declanșează o dată, ca o atingere scurtă, când „Declanșare” ascunde bara cu „Ascundere după declanșare” activată. Cu „Recentrare de fiecare dată” activată, celula din mijloc este cea care se declanșează.</value></data>
+  <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>Celula selectată este menținută tot timpul cât bara este afișată. Deplasarea eliberează o celulă și o menține pe următoarea.</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>Inel radial, Grilă tactilă și Bară rapidă declanșează asocierile celulelor. Tastatură introduce tastele aspectului Windows în uz.</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Aspect</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Cum își aranjează tastatura tastele și cum le alege un controler.</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>O singură evidențiere, mutată cu un stick sau cu patru intrări, aspectul folosit de Windows, Xbox și Steam.</value></data>
@@ -5219,6 +5240,12 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (nu există pe acest PC)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (nu există pe acest slot)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>giroscop Indicator laser citit ca girație (PadForge nu are conversie pentru indicatorul laser)</value></data>
+  <data name="Workshop_Tr_GyroRollFromHorizon" xml:space="preserve"><value>ruliul este centrat unde se află controlerul în repaus la pornire sau la acțiunea „Recentrare giroscop”, nu pe orizont</value></data>
+  <data name="Workshop_Tr_GyroPitchFromHorizon" xml:space="preserve"><value>tangajul este centrat unde se află controlerul în repaus la pornire sau la acțiunea „Recentrare giroscop”, nu la {0}° față de orizontală</value></data>
+  <data name="Workshop_Tr_GyroTiltRangeCapped" xml:space="preserve"><value>deviere completă la 90° de înclinare, nu la {0}°</value></data>
+  <data name="Workshop_Tr_OutputJoystickUnrouted" xml:space="preserve"><value>output_joystick {0} trimite perechea nici către stick, nici către mouse, așa că nu se mapează nimic</value></data>
+  <data name="Workshop_Tr_DpadPulseHeld" xml:space="preserve"><value>fiecare direcție este ținută activă cât timp este apăsată (emularea analogică din Steam o pornește și o oprește în pulsuri, tot mai lungi cu cât este apăsată mai departe)</value></data>
+  <data name="Workshop_Tr_SoftPressNoAnalog" xml:space="preserve"><value>activator cu apăsare ușoară pe o intrare fără citire analogică (Steam nu îl declanșează niciodată)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>În reWASD, {0} ajunge totuși în Windows, deoarece fișierul îl mapează fără o demapare. Cu Blocare intrări mapate activată, PadForge îl blochează.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows modelează {0} ale unei manete radiale după unghiul împingerii. Cardul manetei din PadForge tratează la fel o împingere dreaptă și diferit una diagonală.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows modelează zona moartă a giroscopului pe fiecare axă după unghiul mișcării. PadForge scoate întreaga zonă moartă de pe fiecare axă, deci o mișcare dreaptă se comportă la fel, iar una diagonală lentă începe mai târziu.</value></data>

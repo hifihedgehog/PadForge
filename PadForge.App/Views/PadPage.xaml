@@ -15082,6 +15082,280 @@
                                 </StackPanel>
                             </Grid>
 
+                            <!-- Hotbar: the four controls Steam's hotbar runs on, Down,
+                                 Left, Right and Up of its opener. Each records any button
+                                 on the slot's devices, and an empty one reads the
+                                 opener's own direction. -->
+                            <Grid Margin="0,0,0,8"
+                                  Visibility="{Binding IsHotbar, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="MenuEditorLabel"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           Text="{Binding Menu_Hotbar_Show, Source={x:Static strings:Strings.Instance}}"
+                                           ToolTip="{Binding Menu_Hotbar_Show_Tip, Source={x:Static strings:Strings.Instance}}"
+                                           Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="260"/>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                    <StackPanel Orientation="Vertical">
+                                        <ComboBox MinWidth="260" ItemsSource="{Binding HotbarShowChoicesView}"
+                                                  AutomationProperties.AutomationId="MenuHotbar_Show"
+                                                  ToolTip="{Binding Menu_Hotbar_Show_Tip, Source={x:Static strings:Strings.Instance}}"
+                                                  DisplayMemberPath="DisplayName" SelectedValuePath="Descriptor"
+                                                  SelectedValue="{Binding HotbarShowSelected, Mode=TwoWay}">
+                                            <ComboBox.GroupStyle>
+                                                <GroupStyle>
+                                                    <GroupStyle.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}" Padding="6,3,6,3">
+                                                                <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
+                                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                                           TextTrimming="CharacterEllipsis"/>
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </GroupStyle.HeaderTemplate>
+                                                </GroupStyle>
+                                            </ComboBox.GroupStyle>
+                                        </ComboBox>
+                                        <TextBlock FontSize="10"
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                   Margin="4,1,0,0" TextTrimming="CharacterEllipsis"
+                                                   Text="{Binding HotbarShowSubtitle}">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding HotbarShowSelected}" Value="">
+                                                            <Setter Property="FontStyle" Value="Italic"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </StackPanel>
+                                    <ui:Button AutomationProperties.Name="{Binding HotbarShowRecordText, TargetNullValue=''}" Command="{Binding DataContext.MenuRecordTargetCommand,
+                                                   RelativeSource={RelativeSource AncestorType=TabItem}}"
+                                               CommandParameter="HotbarShow"
+                                               Style="{StaticResource EmberIconButtonHot}" Margin="6,0,0,0"
+                                               VerticalAlignment="Top">
+                                        <controls:GlyphText Text="{Binding HotbarShowRecordIcon}" FontFamily="Segoe MDL2 Assets"
+                                                   Foreground="{DynamicResource EmberBrush}"/>
+                                    </ui:Button>
+                                    <ui:Button Command="{Binding ResetHotbarShowCommand}" Style="{StaticResource ResetButton}" VerticalAlignment="Top" ToolTip="{Binding Menu_Reset_HotbarControl, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                            </Grid>
+                            <Grid Margin="0,0,0,8"
+                                  Visibility="{Binding IsHotbar, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="MenuEditorLabel"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           Text="{Binding Menu_Hotbar_Previous, Source={x:Static strings:Strings.Instance}}"
+                                           ToolTip="{Binding Menu_Hotbar_Previous_Tip, Source={x:Static strings:Strings.Instance}}"
+                                           Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="260"/>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                    <StackPanel Orientation="Vertical">
+                                        <ComboBox MinWidth="260" ItemsSource="{Binding HotbarPreviousChoicesView}"
+                                                  AutomationProperties.AutomationId="MenuHotbar_Previous"
+                                                  ToolTip="{Binding Menu_Hotbar_Previous_Tip, Source={x:Static strings:Strings.Instance}}"
+                                                  DisplayMemberPath="DisplayName" SelectedValuePath="Descriptor"
+                                                  SelectedValue="{Binding HotbarPreviousSelected, Mode=TwoWay}">
+                                            <ComboBox.GroupStyle>
+                                                <GroupStyle>
+                                                    <GroupStyle.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}" Padding="6,3,6,3">
+                                                                <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
+                                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                                           TextTrimming="CharacterEllipsis"/>
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </GroupStyle.HeaderTemplate>
+                                                </GroupStyle>
+                                            </ComboBox.GroupStyle>
+                                        </ComboBox>
+                                        <TextBlock FontSize="10"
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                   Margin="4,1,0,0" TextTrimming="CharacterEllipsis"
+                                                   Text="{Binding HotbarPreviousSubtitle}">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding HotbarPreviousSelected}" Value="">
+                                                            <Setter Property="FontStyle" Value="Italic"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </StackPanel>
+                                    <ui:Button AutomationProperties.Name="{Binding HotbarPreviousRecordText, TargetNullValue=''}" Command="{Binding DataContext.MenuRecordTargetCommand,
+                                                   RelativeSource={RelativeSource AncestorType=TabItem}}"
+                                               CommandParameter="HotbarPrevious"
+                                               Style="{StaticResource EmberIconButtonHot}" Margin="6,0,0,0"
+                                               VerticalAlignment="Top">
+                                        <controls:GlyphText Text="{Binding HotbarPreviousRecordIcon}" FontFamily="Segoe MDL2 Assets"
+                                                   Foreground="{DynamicResource EmberBrush}"/>
+                                    </ui:Button>
+                                    <ui:Button Command="{Binding ResetHotbarPreviousCommand}" Style="{StaticResource ResetButton}" VerticalAlignment="Top" ToolTip="{Binding Menu_Reset_HotbarControl, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                            </Grid>
+                            <Grid Margin="0,0,0,8"
+                                  Visibility="{Binding IsHotbar, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="MenuEditorLabel"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           Text="{Binding Menu_Hotbar_Next, Source={x:Static strings:Strings.Instance}}"
+                                           ToolTip="{Binding Menu_Hotbar_Next_Tip, Source={x:Static strings:Strings.Instance}}"
+                                           Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="260"/>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                    <StackPanel Orientation="Vertical">
+                                        <ComboBox MinWidth="260" ItemsSource="{Binding HotbarNextChoicesView}"
+                                                  AutomationProperties.AutomationId="MenuHotbar_Next"
+                                                  ToolTip="{Binding Menu_Hotbar_Next_Tip, Source={x:Static strings:Strings.Instance}}"
+                                                  DisplayMemberPath="DisplayName" SelectedValuePath="Descriptor"
+                                                  SelectedValue="{Binding HotbarNextSelected, Mode=TwoWay}">
+                                            <ComboBox.GroupStyle>
+                                                <GroupStyle>
+                                                    <GroupStyle.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}" Padding="6,3,6,3">
+                                                                <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
+                                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                                           TextTrimming="CharacterEllipsis"/>
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </GroupStyle.HeaderTemplate>
+                                                </GroupStyle>
+                                            </ComboBox.GroupStyle>
+                                        </ComboBox>
+                                        <TextBlock FontSize="10"
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                   Margin="4,1,0,0" TextTrimming="CharacterEllipsis"
+                                                   Text="{Binding HotbarNextSubtitle}">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding HotbarNextSelected}" Value="">
+                                                            <Setter Property="FontStyle" Value="Italic"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </StackPanel>
+                                    <ui:Button AutomationProperties.Name="{Binding HotbarNextRecordText, TargetNullValue=''}" Command="{Binding DataContext.MenuRecordTargetCommand,
+                                                   RelativeSource={RelativeSource AncestorType=TabItem}}"
+                                               CommandParameter="HotbarNext"
+                                               Style="{StaticResource EmberIconButtonHot}" Margin="6,0,0,0"
+                                               VerticalAlignment="Top">
+                                        <controls:GlyphText Text="{Binding HotbarNextRecordIcon}" FontFamily="Segoe MDL2 Assets"
+                                                   Foreground="{DynamicResource EmberBrush}"/>
+                                    </ui:Button>
+                                    <ui:Button Command="{Binding ResetHotbarNextCommand}" Style="{StaticResource ResetButton}" VerticalAlignment="Top" ToolTip="{Binding Menu_Reset_HotbarControl, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                            </Grid>
+                            <Grid Margin="0,0,0,4"
+                                  Visibility="{Binding IsHotbar, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="MenuEditorLabel"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           Text="{Binding Menu_Hotbar_Fire, Source={x:Static strings:Strings.Instance}}"
+                                           ToolTip="{Binding Menu_Hotbar_Fire_Tip, Source={x:Static strings:Strings.Instance}}"
+                                           Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="260"/>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                    <StackPanel Orientation="Vertical">
+                                        <ComboBox MinWidth="260" ItemsSource="{Binding HotbarFireChoicesView}"
+                                                  AutomationProperties.AutomationId="MenuHotbar_Fire"
+                                                  ToolTip="{Binding Menu_Hotbar_Fire_Tip, Source={x:Static strings:Strings.Instance}}"
+                                                  DisplayMemberPath="DisplayName" SelectedValuePath="Descriptor"
+                                                  SelectedValue="{Binding HotbarFireSelected, Mode=TwoWay}">
+                                            <ComboBox.GroupStyle>
+                                                <GroupStyle>
+                                                    <GroupStyle.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}" Padding="6,3,6,3">
+                                                                <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
+                                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                                           TextTrimming="CharacterEllipsis"/>
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </GroupStyle.HeaderTemplate>
+                                                </GroupStyle>
+                                            </ComboBox.GroupStyle>
+                                        </ComboBox>
+                                        <TextBlock FontSize="10"
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                   Margin="4,1,0,0" TextTrimming="CharacterEllipsis"
+                                                   Text="{Binding HotbarFireSubtitle}">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding HotbarFireSelected}" Value="">
+                                                            <Setter Property="FontStyle" Value="Italic"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </StackPanel>
+                                    <ui:Button AutomationProperties.Name="{Binding HotbarFireRecordText, TargetNullValue=''}" Command="{Binding DataContext.MenuRecordTargetCommand,
+                                                   RelativeSource={RelativeSource AncestorType=TabItem}}"
+                                               CommandParameter="HotbarFire"
+                                               Style="{StaticResource EmberIconButtonHot}" Margin="6,0,0,0"
+                                               VerticalAlignment="Top">
+                                        <controls:GlyphText Text="{Binding HotbarFireRecordIcon}" FontFamily="Segoe MDL2 Assets"
+                                                   Foreground="{DynamicResource EmberBrush}"/>
+                                    </ui:Button>
+                                    <ui:Button Command="{Binding ResetHotbarFireCommand}" Style="{StaticResource ResetButton}" VerticalAlignment="Top" ToolTip="{Binding Menu_Reset_HotbarControl, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                            </Grid>
+                            <Grid Margin="0,0,0,10"
+                                  Visibility="{Binding IsHotbar, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="MenuEditorLabel"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="1" Text="{Binding Menu_Hotbar_Caption, Source={x:Static strings:Strings.Instance}}"
+                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                           TextWrapping="Wrap" MaxWidth="520" HorizontalAlignment="Left"
+                                           Margin="0,2,0,0" FontSize="12"/>
+                            </Grid>
+                            <Grid Margin="0,0,0,10"
+                                  Visibility="{Binding IsHotbar, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="MenuEditorLabel"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="1" Orientation="Vertical">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                        <CheckBox VerticalAlignment="Center" Content="{Binding Menu_Hotbar_Wrap, Source={x:Static strings:Strings.Instance}}"
+                                                  AutomationProperties.AutomationId="MenuHotbar_Wrap"
+                                                  ToolTip="{Binding Menu_Hotbar_Wrap_Tip, Source={x:Static strings:Strings.Instance}}"
+                                                  IsChecked="{Binding HotbarWrap, Mode=TwoWay}"/>
+                                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="HotbarWrap" SettingLabel="{Binding Menu_Hotbar_Wrap, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MenuEditorItem_HotbarWrap"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                        <CheckBox VerticalAlignment="Center" Content="{Binding Menu_Hotbar_DismissOnFire, Source={x:Static strings:Strings.Instance}}"
+                                                  AutomationProperties.AutomationId="MenuHotbar_DismissOnFire"
+                                                  ToolTip="{Binding Menu_Hotbar_DismissOnFire_Tip, Source={x:Static strings:Strings.Instance}}"
+                                                  IsChecked="{Binding HotbarDismissOnFire, Mode=TwoWay}"/>
+                                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="HotbarDismissOnFire" SettingLabel="{Binding Menu_Hotbar_DismissOnFire, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MenuEditorItem_HotbarDismissOnFire"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <CheckBox VerticalAlignment="Center" Content="{Binding Menu_Hotbar_Recenter, Source={x:Static strings:Strings.Instance}}"
+                                                  AutomationProperties.AutomationId="MenuHotbar_Recenter"
+                                                  ToolTip="{Binding Menu_Hotbar_Recenter_Tip, Source={x:Static strings:Strings.Instance}}"
+                                                  IsChecked="{Binding HotbarRecenter, Mode=TwoWay}"/>
+                                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="HotbarRecenter" SettingLabel="{Binding Menu_Hotbar_Recenter, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MenuEditorItem_HotbarRecenter"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Grid>
+
                             <!-- Pad half (touchpad hosts only). A keyboard points with
                                  the whole pad (#566). -->
                             <Grid Margin="0,0,0,8"

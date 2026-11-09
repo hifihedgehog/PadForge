@@ -3818,7 +3818,7 @@
   <data name="Menu_Binding_None" xml:space="preserve"><value>Καμία</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Πλήκτρο πληκτρολογίου</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>Κουμπί χειριστηρίου</value></data>
-  <data name="Menu_Style_Tip" xml:space="preserve"><value>Ο «Ακτινικός δακτύλιος» επιλέγει κελί με βάση την κατεύθυνση, όπως ένας τροχός όπλων. Το «Πλέγμα αφής» επιλέγει κελί με βάση τη θέση: εκεί όπου βρίσκεται το δάχτυλο στην επιφάνεια ή εκεί όπου δείχνει ο μοχλός.</value></data>
+  <data name="Menu_Style_Tip" xml:space="preserve"><value>Ο «Ακτινικός δακτύλιος» επιλέγει κελί με βάση την κατεύθυνση, όπως ένας τροχός όπλων. Το «Πλέγμα αφής» επιλέγει κελί με βάση τη θέση: εκεί όπου βρίσκεται το δάχτυλο στην επιφάνεια ή εκεί όπου δείχνει ο μοχλός. Η «Γραμμή ενεργειών» εμφανίζει μια σειρά κελιών, μετακινείται κατά μήκος της και ενεργοποιεί το επιλεγμένο κελί, καθένα με το δικό του χειριστήριο.</value></data>
   <data name="Menu_HostInput_Tip" xml:space="preserve"><value>Η είσοδος που ανοίγει και κατευθύνει αυτό το μενού, η οποία διαβάζεται από τα φυσικά χειριστήρια που έχουν ανατεθεί στην υποδοχή. Ένας μοχλός το ανοίγει όταν σπρωχτεί πέρα από τη «Νεκρή ζώνη ενεργοποίησης». Μια επιφάνεια αφής το ανοίγει με την επαφή.</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>Περιορίζει αυτό το μενού στο ένα μισό του trackpad, ώστε δύο μενού να μοιράζονται την επιφάνεια.</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>Πότε το επισημασμένο κελί εκτελεί την αντιστοίχισή του. Κάθε επιλογή εξηγείται παρακάτω.</value></data>
@@ -4248,7 +4248,7 @@
   <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>Εκτελείται μία φορά όταν απελευθερωθεί η «Είσοδος κλικ». Αν η επιφάνεια απελευθερωθεί την ίδια στιγμή, εκτελείται η προηγούμενη επιλογή.</value></data>
   <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>Εκτελείται μία φορά όταν σηκώσετε το δάχτυλό σας ή επιστρέψετε τον μοχλό μέσα στη «Νεκρή ζώνη ενεργοποίησης», ενώ το μενού μένει ανοιχτό. Η αποχώρηση από το επίπεδο οριστικοποιεί επίσης μια επιλογή που κατευθύνεται ακόμη.</value></data>
   <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>Κρατά την αντιστοίχιση όσο το κελί της είναι επισημασμένο. Ένα ακτινικό κέντρο μπορεί να εκτελεστεί αμέσως μόλις ανοίξει το επίπεδο.</value></data>
-  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Τα πατήματα κατεύθυνσης μετακινούνται βήμα βήμα στα κελιά και εκτελούν κάθε νέο επιλεγμένο κελί. Αυτή η συμπεριφορά γραμμής ενεργειών δεν χρησιμοποιεί τη «Λειτουργία ενεργοποίησης» ή την «Είσοδο κλικ».</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Τα πατήματα κατεύθυνσης μετακινούνται βήμα βήμα στα κελιά και ενεργοποιούν κάθε νέο επιλεγμένο κελί, χωρίς «Λειτουργία ενεργοποίησης» ή «Είσοδος κλικ». Το στιλ «Γραμμή ενεργειών» μετακινείται χωρίς να ενεργοποιεί και ενεργοποιεί με το δικό του χειριστήριο «Ενεργοποίηση».</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Βελτιωμένο πρωτόκολλο Flydigi</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Ενεργοποιεί επιπλέον κουμπιά και αισθητήρες κίνησης σε υποστηριζόμενα χειριστήρια Flydigi.</value></data>
   <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Εκτελείται λογισμικό της Flydigi: {0}. Μπορεί να χρησιμοποιεί την ίδια διεπαφή χειριστηρίου με το PadForge, και έχει αναφερθεί ότι ένα Vader 5 Pro αποσυνδεόταν επανειλημμένα όσο είχαν πρόσβαση και τα δύο. Αν αυτό το χειριστήριο αποσυνδέεται και επανασυνδέεται, σταματήστε την υπηρεσία όσο χρησιμοποιείτε το PadForge, κρατήστε το χειριστήριο κρυμμένο και αφαιρέστε την υπηρεσία από τη λίστα επιτρεπόμενων του HidHide ή δοκιμάστε να απενεργοποιήσετε το «Βελτιωμένο πρωτόκολλο Flydigi» στις Ρυθμίσεις, κάτι που δεν έχει επιβεβαιωθεί ότι βοηθά.</value></data>
@@ -5099,7 +5099,28 @@
     <value>D-pad</value>
   </data>
   <data name="Menu_Style_Keyboard" xml:space="preserve"><value>Πληκτρολόγιο</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>Ο «Ακτινικός δακτύλιος» και το «Πλέγμα αφής» ενεργοποιούν τις αντιστοιχίσεις των κελιών. Το «Πληκτρολόγιο» πληκτρολογεί τα πλήκτρα της διάταξης των Windows που χρησιμοποιείται.</value></data>
+  <data name="Menu_Style_Hotbar" xml:space="preserve"><value>Γραμμή ενεργειών</value></data>
+  <data name="Menu_Hotbar_Show" xml:space="preserve"><value>Εμφάνιση ή απόκρυψη</value></data>
+  <data name="Menu_Hotbar_Show_Tip" xml:space="preserve"><value>Εμφανίζει τη γραμμή και την αποκρύπτει στο επόμενο πάτημα. Μια γραμμή που αποκρύφθηκε έτσι ανοίγει την επόμενη φορά στο μεσαίο κελί της.</value></data>
+  <data name="Menu_Hotbar_Previous" xml:space="preserve"><value>Προηγούμενο</value></data>
+  <data name="Menu_Hotbar_Previous_Tip" xml:space="preserve"><value>Επιλέγει το κελί στα αριστερά, παραλείποντας τα κελιά χωρίς ορισμένη ενέργεια.</value></data>
+  <data name="Menu_Hotbar_Next" xml:space="preserve"><value>Επόμενο</value></data>
+  <data name="Menu_Hotbar_Next_Tip" xml:space="preserve"><value>Επιλέγει το κελί στα δεξιά, παραλείποντας τα κελιά χωρίς ορισμένη ενέργεια.</value></data>
+  <data name="Menu_Hotbar_Fire" xml:space="preserve"><value>Ενεργοποίηση</value></data>
+  <data name="Menu_Hotbar_Fire_Tip" xml:space="preserve"><value>Ενεργοποιεί το επιλεγμένο κελί, όπως ορίζει η «Λειτουργία ενεργοποίησης».</value></data>
+  <data name="Menu_Hotbar_Caption" xml:space="preserve"><value>Το «Εμφάνιση ή απόκρυψη» ανοίγει μια σειρά κελιών, τα «Προηγούμενο» και «Επόμενο» μετακινούνται κατά μήκος της και η «Ενεργοποίηση» ενεργοποιεί το επιλεγμένο κελί. Ένα κενό χειριστήριο παίρνει την κατεύθυνση του «Ανοίγει με»: κάτω, αριστερά, δεξιά ή πάνω.</value></data>
+  <data name="Menu_Hotbar_Wrap" xml:space="preserve"><value>Κυκλική κίνηση</value></data>
+  <data name="Menu_Hotbar_Wrap_Tip" xml:space="preserve"><value>Η μετακίνηση πέρα από το τελευταίο κελί οδηγεί στο πρώτο, και αντίστροφα. Όταν είναι απενεργοποιημένη, η επιλογή σταματά σε κάθε άκρο.</value></data>
+  <data name="Menu_Hotbar_DismissOnFire" xml:space="preserve"><value>Απόκρυψη μετά την ενεργοποίηση</value></data>
+  <data name="Menu_Hotbar_DismissOnFire_Tip" xml:space="preserve"><value>Η «Ενεργοποίηση» αποκρύπτει τη γραμμή. Όταν είναι απενεργοποιημένη, η γραμμή μένει ανοιχτή και το ίδιο κελί μπορεί να ενεργοποιηθεί ξανά.</value></data>
+  <data name="Menu_Hotbar_Recenter" xml:space="preserve"><value>Επανακέντρωση κάθε φορά</value></data>
+  <data name="Menu_Hotbar_Recenter_Tip" xml:space="preserve"><value>Όσο η γραμμή είναι κρυμμένη, η επιλογή επιστρέφει στο μεσαίο κελί. Όταν είναι απενεργοποιημένη, μια γραμμή που την έκρυψε η «Ενεργοποίηση» ανοίγει στο κελί που ενεργοποιήθηκε.</value></data>
+  <data name="Menu_Reset_HotbarControl" xml:space="preserve"><value>Επαναφορά χειριστηρίου</value></data>
+  <data name="Menu_Fire_Click_Hotbar_Desc" xml:space="preserve"><value>Η «Ενεργοποίηση» πατά το επιλεγμένο κελί και το κρατά όσο κρατιέται η «Ενεργοποίηση». Με ενεργή την «Απόκρυψη μετά την ενεργοποίηση», το πάτημα είναι ένα σύντομο άγγιγμα.</value></data>
+  <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>Το επιλεγμένο κελί ενεργοποιείται μία φορά, ως σύντομο άγγιγμα, όταν αφεθεί η «Ενεργοποίηση». Με ενεργή την «Απόκρυψη μετά την ενεργοποίηση», ενεργοποιείται μόλις η «Ενεργοποίηση» αποκρύψει τη γραμμή.</value></data>
+  <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>Ένα κελί ενεργοποιείται μία φορά, ως σύντομο άγγιγμα, όταν η «Ενεργοποίηση» αποκρύψει τη γραμμή με ενεργή την «Απόκρυψη μετά την ενεργοποίηση». Με ενεργή την «Επανακέντρωση κάθε φορά», ενεργοποιείται το μεσαίο κελί.</value></data>
+  <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>Το επιλεγμένο κελί κρατιέται σε όλη τη διάρκεια που εμφανίζεται η γραμμή. Η μετακίνηση αφήνει ένα κελί και κρατά το επόμενο.</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>Ο «Ακτινικός δακτύλιος», το «Πλέγμα αφής» και η «Γραμμή ενεργειών» ενεργοποιούν τις αντιστοιχίσεις των κελιών. Το «Πληκτρολόγιο» πληκτρολογεί τα πλήκτρα της διάταξης των Windows που χρησιμοποιείται.</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Διάταξη</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Πώς το πληκτρολόγιο τακτοποιεί τα πλήκτρα του και πώς τα επιλέγει ένα χειριστήριο.</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Μία επισήμανση, που μετακινείται με έναν μοχλό ή τέσσερις εισόδους, η διάταξη που χρησιμοποιούν τα Windows, το Xbox και το Steam.</value></data>
@@ -5219,6 +5240,12 @@
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (δεν υπάρχει σε αυτόν τον υπολογιστή)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (δεν υπάρχει σε αυτή την υποδοχή)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>το γυροσκόπιο Δείκτης λέιζερ διαβάστηκε ως εκτροπή (το PadForge δεν έχει μετατροπή δείκτη λέιζερ)</value></data>
+  <data name="Workshop_Tr_GyroRollFromHorizon" xml:space="preserve"><value>ο διατοιχισμός κεντράρεται εκεί που ηρεμεί το χειριστήριο κατά την εκκίνηση ή με την ενέργεια «Επανακεντράρισμα γυροσκοπίου», όχι στον ορίζοντα</value></data>
+  <data name="Workshop_Tr_GyroPitchFromHorizon" xml:space="preserve"><value>η πρόνευση κεντράρεται εκεί που ηρεμεί το χειριστήριο κατά την εκκίνηση ή με την ενέργεια «Επανακεντράρισμα γυροσκοπίου», όχι στις {0}° από την οριζόντια θέση</value></data>
+  <data name="Workshop_Tr_GyroTiltRangeCapped" xml:space="preserve"><value>πλήρης εκτροπή στις 90° κλίσης, όχι στις {0}°</value></data>
+  <data name="Workshop_Tr_OutputJoystickUnrouted" xml:space="preserve"><value>το output_joystick {0} στέλνει το ζεύγος ούτε σε μοχλό ούτε στο ποντίκι, επομένως δεν αντιστοιχίζεται τίποτα</value></data>
+  <data name="Workshop_Tr_DpadPulseHeld" xml:space="preserve"><value>κάθε κατεύθυνση παραμένει ενεργή όσο πιέζεται (η αναλογική εξομοίωση του Steam την ενεργοποιεί και την απενεργοποιεί παλμικά, με μεγαλύτερους παλμούς όσο πιο πολύ πιέζεται)</value></data>
+  <data name="Workshop_Tr_SoftPressNoAnalog" xml:space="preserve"><value>ενεργοποιητής ελαφρού πατήματος σε είσοδο χωρίς αναλογική ανάγνωση (το Steam δεν τον ενεργοποιεί ποτέ)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>Στο reWASD, το {0} εξακολουθεί να φτάνει στα Windows επειδή το αρχείο το αντιστοιχίζει χωρίς αποαντιστοίχιση. Με ενεργή την Κατακράτηση αντιστοιχισμένων εισόδων, το PadForge το κατακρατά.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>Το DS4Windows διαμορφώνει το {0} ενός ακτινικού μοχλού με βάση τη γωνία της ώθησης. Η κάρτα μοχλού του PadForge αντιμετωπίζει μια ευθεία ώθηση με τον ίδιο τρόπο και μια διαγώνια διαφορετικά.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>Το DS4Windows κλιμακώνει τη νεκρή ζώνη του γυροσκοπίου σε κάθε άξονα με βάση τη γωνία της κίνησης. Το PadForge αφαιρεί ολόκληρη τη νεκρή ζώνη από κάθε άξονα, οπότε μια ευθεία κίνηση συμπεριφέρεται με τον ίδιο τρόπο και μια αργή διαγώνια ξεκινά αργότερα.</value></data>

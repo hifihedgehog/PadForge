@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using PadForge.Engine;
+using PadForge.Engine.Common.Mapping;
 using PadForge.SteamWorkshop.Model;
 using PadForge.SteamWorkshop.Translation;
 using PadForge.SteamWorkshop.Vdf;
@@ -227,7 +228,7 @@ namespace PadForge.SteamWorkshop.Tests
         {
             string vdf = HeadPs4
                 + Group(1, "joystick_move", "\t\t\"inputs\"\n\t\t{\n\t\t}\n"
-                    + Settings(("output_joystick", "2")))
+                    + Settings(("output_joystick", "1")))
                 + Preset(0, "Default", (1, "right_trackpad active"))
                 + "}\n";
             var p = Translate(vdf);
@@ -255,11 +256,11 @@ namespace PadForge.SteamWorkshop.Tests
         // ─── B-19: four_buttons hosted on a touch surface ───────────────
 
         [Fact]
-        public void Ps4_FourButtonsOnHalf_ReadsHalfComposedQuadrantWindows()
+        public void Ps4_FourButtonsOnHalf_ReadsSteamsCells_InTheHalf()
         {
-            // v18: each cell reads its diamond quadrant composed with the
-            // hosting half (the quadrant test runs against the half's own
-            // center), exactly Steam's ABXY zones. Clean rows.
+            // Each cell is Steam's four_buttons disc (steamclient64.dll
+            // 0x1388b6ad0) on the finger's place in the hosting half, and a
+            // four_buttons group needs the click unless the file says not.
             string vdf = HeadPs4
                 + Group(1, "four_buttons", Inputs(
                     Inp("button_a", "xinput_button A"),
@@ -268,13 +269,15 @@ namespace PadForge.SteamWorkshop.Tests
                 + "}\n";
             var p = Translate(vdf);
             var a = Assert.Single(p.XboxMappingSet.Rows, r => r.Target == "ButtonA");
-            Assert.Equal("Touchpad 0 Finger 0 Down South Right", Assert.Single(a.Sources).Descriptor);
+            Assert.Equal(SteamPadExpect.Disc(0, SteamPadExpect.Dist(), BoundedGate.Click, "Touchpad 0 Finger 0 Ring Right"),
+                Assert.Single(a.Sources).Descriptor);
             var b = Assert.Single(p.XboxMappingSet.Rows, r => r.Target == "ButtonB");
-            Assert.Equal("Touchpad 0 Finger 0 Down East Right", Assert.Single(b.Sources).Descriptor);
+            Assert.Equal(SteamPadExpect.Disc(SteamPadExpect.Dist(), 0, BoundedGate.Click, "Touchpad 0 Finger 0 Ring Right"),
+                Assert.Single(b.Sources).Descriptor);
         }
 
         [Fact]
-        public void Deck_FourButtonsOnPad_ReadsQuadrantWindows()
+        public void Deck_FourButtonsOnPad_ReadsSteamsCells()
         {
             string vdf = HeadDeck
                 + Group(1, "four_buttons", Inputs(Inp("button_x", "xinput_button X")))
@@ -282,14 +285,17 @@ namespace PadForge.SteamWorkshop.Tests
                 + "}\n";
             var p = Translate(vdf);
             var x = Assert.Single(p.XboxMappingSet.Rows, r => r.Target == "ButtonX");
-            Assert.Equal("Touchpad 1 Finger 0 Down West", Assert.Single(x.Sources).Descriptor);
+            Assert.Equal(SteamPadExpect.Disc(-SteamPadExpect.Dist(), 0, BoundedGate.Click, "Touchpad 1 Finger 0 Ring"),
+                Assert.Single(x.Sources).Descriptor);
         }
 
         // ─── B-1: half-hosted wedges gate on the half window (v18) ──────
 
         [Fact]
-        public void Ps4_HalfDpadWedges_GateOnTheHalfContactWindow()
+        public void Ps4_HalfDpad_ReadsTheFingerInTheHalf()
         {
+            // Steam's dpad reads the finger's place in the hosting half, so
+            // the half itself is the window and no contact gate is needed.
             string vdf = HeadPs4
                 + Group(1, "dpad", Inputs(
                     Inp("dpad_north", "key_press W"),
@@ -299,16 +305,15 @@ namespace PadForge.SteamWorkshop.Tests
                 + "}\n";
             var p = Translate(vdf);
             var w = Assert.Single(p.KbmMappingSet.Rows, r => r.Target == "KbmKey57");
-            Assert.Equal("Touchpad 0 DPadUp", w.Sources[0].Descriptor);
-            GateAssert.Gated(p.KbmMappingSet, "Touchpad 0 DPadUp",
-                "Touchpad 0 Finger 0 Down Right");
+            Assert.Equal(SteamPadExpect.Wedge(90, BoundedGate.None, "Touchpad 0 Finger 0 Ring Right"),
+                Assert.Single(w.Sources).Descriptor);
         }
 
         [Fact]
-        public void Ps4_HalfDpadWithRequiresClick_GatesOnTheWindowedClick()
+        public void Ps4_HalfDpadWithRequiresClick_ReadsTheClickInTheHalf()
         {
-            // requires_click on a half-hosted D-pad composes the click AND
-            // the half into the windowed click read (v18).
+            // requires_click (on by default for the dpad on a trackpad)
+            // needs the half's click, carried by the read itself.
             string vdf = HeadPs4
                 + Group(1, "dpad", Inputs(
                     Inp("dpad_north", "key_press W")))
@@ -316,9 +321,8 @@ namespace PadForge.SteamWorkshop.Tests
                 + "}\n";
             var p = Translate(vdf);
             var w = Assert.Single(p.KbmMappingSet.Rows, r => r.Target == "KbmKey57");
-            Assert.Equal("Touchpad 0 DPadUp", w.Sources[0].Descriptor);
-            GateAssert.Gated(p.KbmMappingSet, "Touchpad 0 DPadUp",
-                "Touchpad 0 Click Right");
+            Assert.Equal(SteamPadExpect.Wedge(90, BoundedGate.Click, "Touchpad 0 Finger 0 Ring Right"),
+                Assert.Single(w.Sources).Descriptor);
         }
 
         // ─── Device-free macro triggers (part 1 conversions) ────────────
@@ -389,9 +393,10 @@ namespace PadForge.SteamWorkshop.Tests
         [Fact]
         public void RequiresClickWedge_MacroTrigger_CarriesTheClickGate()
         {
-            // A set_led on a require-click D-pad wedge fires on wedge AND
-            // click in Steam; the converted macro's entries AND the same
-            // pair (requires_click absent = require, the dpad default).
+            // A set_led on a require-click D-pad direction fires on the
+            // direction AND the click in Steam. The macro's one entry is the
+            // read, which carries the click (requires_click absent = require,
+            // the dpad's default on a trackpad).
             string vdf = HeadDeck
                 + Group(1, "dpad", Inputs(
                     Inp("dpad_north", "controller_action set_led 255 0 0 100 100 1")))
@@ -400,7 +405,7 @@ namespace PadForge.SteamWorkshop.Tests
             var p = Translate(vdf);
             var m = Assert.Single(p.Macros);
             Assert.Equal(TranslatedMacroAction.SetLightbarColor, m.Action);
-            Assert.Equal(new[] { "Touchpad 0 DPadUp", "Touchpad 0 Click" },
+            Assert.Equal(new[] { SteamPadExpect.Wedge(90, BoundedGate.Click, "Touchpad 0 Finger 0 Ring") },
                 m.TriggerInputDescriptors.ToArray());
         }
 

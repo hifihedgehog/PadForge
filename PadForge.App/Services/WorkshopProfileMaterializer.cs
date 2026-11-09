@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using PadForge.Common.Input;
 using PadForge.Engine;
@@ -121,6 +122,19 @@ namespace PadForge.Services
                 string ratchet = string.Join("|", translated.GyroRatchetDescriptors);
                 if (xboxSlot >= 0) mappingSets[xboxSlot].WorkshopGyroRatchetDescriptors = ratchet;
                 if (kbmSlot >= 0) mappingSets[kbmSlot].WorkshopGyroRatchetDescriptors = ratchet;
+            }
+            // The gyro activation lane (several gyro buttons, all of them
+            // required, or layers whose gyro groups differ) and the
+            // re-center on each activation ride every claimed slot like the
+            // ratchet.
+            string activation = translated.GyroActivationByLayer == null
+                ? ""
+                : string.Join(";", translated.GyroActivationByLayer.Select(kv => kv.Key + "=" + kv.Value.Encode()));
+            foreach (int slot in new[] { xboxSlot, kbmSlot })
+            {
+                if (slot < 0) continue;
+                if (activation.Length > 0) mappingSets[slot].WorkshopGyroActivation = activation;
+                if (translated.GyroRecenterOnEngage) mappingSets[slot].WorkshopGyroRecenterOnEngage = true;
             }
             // Unclaimed slots stay non-authoritative on purpose: a slot the
             // user creates later must automap normally.

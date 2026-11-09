@@ -49,9 +49,9 @@ kbm rows: 39
     <- Gamepad DPadUp
   Base | KbmMBtn0
     <- Touchpad 1 Click
-    <- Gamepad RightTrigger [upper-half] dz=75
+    <- Gamepad RightTrigger [upper-half] dz=90
   Base | KbmMBtn1
-    <- Gamepad LeftTrigger [upper-half] dz=75
+    <- Gamepad LeftTrigger [upper-half] dz=90
   Base | KbmMouseX | Sum
     <- Gamepad LeftStickX dz=5 sens=1.25 rangeOuter=0.874 dzShape=axial dzInner=0.05
     <- Gamepad RightStickX dz=5 sens=1.25 curve=2.5 rangeOuter=0.879 dzShape=axial dzInner=0.05
@@ -97,8 +97,8 @@ macros: 14
   macro RumblePulse OnPress | Haptic pulse (Menu 1 Item 2) | btns=0x0000 in=[Menu 1 Item 2] layer=Base strength=66%
   macro RumblePulse OnPress | Haptic pulse (Menu 1 Item 3) | btns=0x0000 in=[Menu 1 Item 3] layer=Base strength=66%
   macro RumblePulse OnPress | Haptic pulse (Menu 1 Item 4) | btns=0x0000 in=[Menu 1 Item 4] layer=Base strength=66%
-  macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 layer=Base strength=66%
-  macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=90 layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=90 layer=Base strength=66%
   macro KeyTap OnRelease | Screenshot key (Button 11) | btns=0x0000 in=[Button 11] layer=Base vk=0x2C
   macro RumblePulse OnPress | Haptic pulse (Menu 2 Item 1) | btns=0x0000 in=[Menu 2 Item 1] layer=Layer_3451446931_1 strength=66%
   macro RumblePulse OnPress | Haptic pulse (Menu 2 Item 2) | btns=0x0000 in=[Menu 2 Item 2] layer=Layer_3451446931_1 strength=66%

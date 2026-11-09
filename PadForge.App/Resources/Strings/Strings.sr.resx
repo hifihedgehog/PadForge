@@ -3818,7 +3818,7 @@
   <data name="Menu_Binding_None" xml:space="preserve"><value>Ништа</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Тастер тастатуре</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>Дугме контролера</value></data>
-  <data name="Menu_Style_Tip" xml:space="preserve"><value>„Радијални прстен“ бира ћелију према смеру, као точак оружја. „Мрежа на додир“ бира ћелију према положају: где се прст налази на тачпеду или куда палица показује.</value></data>
+  <data name="Menu_Style_Tip" xml:space="preserve"><value>„Радијални прстен“ бира ћелију према смеру, као точак оружја. „Мрежа на додир“ бира ћелију према положају: где се прст налази на тачпеду или куда палица показује. „Трака пречица“ приказује ред ћелија, помера избор дуж њега и активира изабрану ћелију, свако својом контролом.</value></data>
   <data name="Menu_HostInput_Tip" xml:space="preserve"><value>Улаз који отвара овај мени и управља њиме, очитан са физичких контролера додељених слоту. Палица га отвара када се помери изван мртве зоне активирања. Тачпед га отвара додиром.</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>Ограничите овај мени на једну половину тачпеда, тако да два менија могу да деле тачпед.</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>Када истакнута ћелија покреће своје повезивање. Свака опција је објашњена испод.</value></data>
@@ -4248,7 +4248,7 @@
   <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>Активира се једном када се „Улаз за клик“ отпусти. Ако се површина отпусти у истом тренутку, активира се претходни избор.</value></data>
   <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>Активира се једном када подигнете прст или вратите палицу унутар мртве зоне активирања, док мени остаје отворен. Излазак из слоја такође потврђује избор који се још помера.</value></data>
   <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>Држи повезивање док је његова ћелија истакнута. Радијални центар може да се активира одмах када се слој отвори.</value></data>
-  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Притисци смера прелазе кроз ћелије и активирају сваку новоизабрану ћелију. Ово понашање траке пречица не користи „Режим активирања“ ни „Улаз за клик“.</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Притисци смера прелазе кроз ћелије и активирају сваку новоизабрану ћелију, без „Режим активирања“ и „Улаз за клик“. „Трака пречица“ помера избор без активирања и активира својом контролом „Активирај“.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Flydigi проширени протокол</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Омогућава додатну дугмад и сензоре покрета на подржаним Flydigi контролерима.</value></data>
   <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi софтвер је покренут: {0}. Може да користи исти интерфејс контролера као PadForge, а пријављено је да се Vader 5 Pro више пута прекидао када су оба имала приступ. Ако се овај контролер прекида и поново повезује, зауставите услугу док користите PadForge, држите контролер сакривеним и уклоните услугу са HidHide листе дозвољених, или покушајте да искључите „Flydigi проширени протокол“ у Подешавањима, мада није потврђено да то помаже.</value></data>
@@ -5099,7 +5099,28 @@
     <value>D-pad</value>
   </data>
   <data name="Menu_Style_Keyboard" xml:space="preserve"><value>Тастатура</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>Радијални прстен и Мрежа на додир активирају везе ћелија. Тастатура куца тастере Windows распореда који је у употреби.</value></data>
+  <data name="Menu_Style_Hotbar" xml:space="preserve"><value>Трака пречица</value></data>
+  <data name="Menu_Hotbar_Show" xml:space="preserve"><value>Прикажи или сакриј</value></data>
+  <data name="Menu_Hotbar_Show_Tip" xml:space="preserve"><value>Приказује траку, а при следећем притиску је сакрива. Трака сакривена на овај начин следећи пут се отвара на средишњој ћелији.</value></data>
+  <data name="Menu_Hotbar_Previous" xml:space="preserve"><value>Претходна</value></data>
+  <data name="Menu_Hotbar_Previous_Tip" xml:space="preserve"><value>Бира ћелију лево, прескачући ћелије без подешене радње.</value></data>
+  <data name="Menu_Hotbar_Next" xml:space="preserve"><value>Следећа</value></data>
+  <data name="Menu_Hotbar_Next_Tip" xml:space="preserve"><value>Бира ћелију десно, прескачући ћелије без подешене радње.</value></data>
+  <data name="Menu_Hotbar_Fire" xml:space="preserve"><value>Активирај</value></data>
+  <data name="Menu_Hotbar_Fire_Tip" xml:space="preserve"><value>Активира изабрану ћелију, како каже „Режим активирања“.</value></data>
+  <data name="Menu_Hotbar_Caption" xml:space="preserve"><value>„Прикажи или сакриј“ приказује ред ћелија, „Претходна“ и „Следећа“ померају избор дуж њега, а „Активирај“ активира изабрану ћелију. Контрола која остане празна користи смер из „Отвара се помоћу“: доле, лево, десно или горе.</value></data>
+  <data name="Menu_Hotbar_Wrap" xml:space="preserve"><value>Кружни прелаз</value></data>
+  <data name="Menu_Hotbar_Wrap_Tip" xml:space="preserve"><value>Корак иза последње ћелије води на прву, и обрнуто. Када је искључено, избор се зауставља на оба краја.</value></data>
+  <data name="Menu_Hotbar_DismissOnFire" xml:space="preserve"><value>Сакриј после активирања</value></data>
+  <data name="Menu_Hotbar_DismissOnFire_Tip" xml:space="preserve"><value>„Активирај“ сакрива траку. Када је искључено, трака остаје приказана и иста ћелија може поново да се активира.</value></data>
+  <data name="Menu_Hotbar_Recenter" xml:space="preserve"><value>Поново центрирај сваки пут</value></data>
+  <data name="Menu_Hotbar_Recenter_Tip" xml:space="preserve"><value>Док је трака сакривена, избор се враћа на средишњу ћелију. Када је искључено, трака коју је сакрило „Активирај“ отвара се на ћелији коју је активирала.</value></data>
+  <data name="Menu_Reset_HotbarControl" xml:space="preserve"><value>Ресетуј контролу</value></data>
+  <data name="Menu_Fire_Click_Hotbar_Desc" xml:space="preserve"><value>„Активирај“ притиска изабрану ћелију и држи је док се „Активирај“ држи. Када је укључено „Сакриј после активирања“, притисак је кратак додир.</value></data>
+  <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>Изабрана ћелија се активира једном, као кратак додир, када се „Активирај“ отпусти. Када је укључено „Сакриј после активирања“, активира се чим „Активирај“ сакрије траку.</value></data>
+  <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>Ћелија се активира једном, као кратак додир, када „Активирај“ сакрије траку уз укључено „Сакриј после активирања“. Када је укључено „Поново центрирај сваки пут“, активира се средишња ћелија.</value></data>
+  <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>Изабрана ћелија се држи све време док је трака приказана. Померање пушта једну ћелију и држи следећу.</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>„Радијални прстен“, „Мрежа на додир“ и „Трака пречица“ активирају везе ћелија. „Тастатура“ куца тастере Windows распореда који је у употреби.</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Распоред</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Како тастатура распоређује тастере и како их контролер бира.</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Једно истицање, које се помера палицом или са четири улаза, распоред који користе Windows, Xbox и Steam.</value></data>
@@ -5219,6 +5240,12 @@
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (није на овом рачунару)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (није на овом слоту)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>жироскоп Laser Pointer прочитан као скретање (PadForge нема претварање у ласерски показивач)</value></data>
+  <data name="Workshop_Tr_GyroRollFromHorizon" xml:space="preserve"><value>ваљање се центрира тамо где контролер мирује на почетку или при радњи „Центрирање жироскопа“, а не на хоризонту</value></data>
+  <data name="Workshop_Tr_GyroPitchFromHorizon" xml:space="preserve"><value>нагиб се центрира тамо где контролер мирује на почетку или при радњи „Центрирање жироскопа“, а не на {0}° од равне позиције</value></data>
+  <data name="Workshop_Tr_GyroTiltRangeCapped" xml:space="preserve"><value>пун отклон при нагнутости од 90°, а не {0}°</value></data>
+  <data name="Workshop_Tr_OutputJoystickUnrouted" xml:space="preserve"><value>output_joystick {0} не шаље пар ни на палицу ни на миш, па ништа није мапирано</value></data>
+  <data name="Workshop_Tr_DpadPulseHeld" xml:space="preserve"><value>сваки смер се држи док је притиснут (аналогна емулација у програму Steam га укључује и искључује у импулсима, све дуже што се даље притисне)</value></data>
+  <data name="Workshop_Tr_SoftPressNoAnalog" xml:space="preserve"><value>активатор лаганог притиска на улазу без аналогног очитавања (Steam га никад не покреће)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>У програму reWASD, {0} и даље стиже до система Windows јер га датотека мапира без поништавања мапирања. Када је укључено Блокирај мапиране улазе, PadForge га задржава.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows обликује {0} радијалног штапића према углу гурања. Картица штапића у програму PadForge једнако изводи право гурање, а дијагонално другачије.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows умањује мртву зону жироскопа на свакој оси сразмерно углу покрета. PadForge одузима целу мртву зону на свакој оси, па се прав покрет понаша једнако, а спор дијагонални почиње касније.</value></data>

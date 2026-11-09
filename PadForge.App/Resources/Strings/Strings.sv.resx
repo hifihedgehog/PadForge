@@ -3818,7 +3818,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Menu_Binding_None" xml:space="preserve"><value>Ingen</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Tangentbordstangent</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>Handkontrollsknapp</value></data>
-  <data name="Menu_Style_Tip" xml:space="preserve"><value>Radiell ring väljer en cell efter riktning, som ett vapenhjul. Pekrutnät väljer en cell efter position: var fingret ligger på plattan, eller vart spaken pekar.</value></data>
+  <data name="Menu_Style_Tip" xml:space="preserve"><value>Radiell ring väljer en cell efter riktning, som ett vapenhjul. Pekrutnät väljer en cell efter position: var fingret ligger på plattan, eller vart spaken pekar. Snabbfält visar en rad med celler, stegar längs den och utlöser den valda cellen, var och en med sin egen kontroll.</value></data>
   <data name="Menu_HostInput_Tip" xml:space="preserve"><value>Den inmatning som öppnar och styr den här menyn, avläst från platsens tilldelade fysiska handkontroller. En spak öppnar den när den förs förbi Aktiveringsdödzon. En styrplatta öppnar den vid beröring.</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>Begränsa den här menyn till ena halvan av styrplattan, så att två menyer kan dela plattan.</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>När den markerade cellen utlöser sin bindning. Varje val förklaras nedan.</value></data>
@@ -4248,7 +4248,7 @@ Vill du att PadForge avinstallerar dem nu? Detta kräver förhöjd behörighet o
   <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>Utlöses en gång när Klickinmatning släpps. Om ytan släpps i samma ögonblick utlöses det föregående valet.</value></data>
   <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>Utlöses en gång när du lyfter fingret eller för tillbaka spaken innanför Aktiveringsdödzon, medan menyn förblir öppen. Om du lämnar lagret bekräftas också ett val som fortfarande styrs.</value></data>
   <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>Håller bindningen medan dess cell är markerad. En radiell mitt kan utlösas direkt när lagret öppnas.</value></data>
-  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Riktningstryck stegar genom cellerna och utlöser varje nyvald cell. Det här snabbfältsbeteendet använder inte Utlösningsläge eller Klickinmatning.</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Riktningstryck stegar genom cellerna och utlöser varje nyvald cell, utan Utlösningsläge eller Klickinmatning. Stilen Snabbfält stegar utan att utlösa och utlöser med sin egen kontroll ”Utlös”.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Utökat Flydigi-protokoll</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Aktiverar extra knappar och rörelsesensorer på Flydigi-handkontroller som stöds.</value></data>
   <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi-programvara körs: {0}. Den kan använda samma handkontrollsgränssnitt som PadForge, och det har rapporterats att en Vader 5 Pro kopplats från upprepade gånger medan båda hade åtkomst. Om den här handkontrollen kopplas från och ansluts igen kan du stoppa tjänsten medan du använder PadForge, hålla handkontrollen dold och ta bort tjänsten från listan över tillåtna program i HidHide, eller prova att stänga av ”Utökat Flydigi-protokoll” i Inställningar, vilket inte är bekräftat att hjälpa.</value></data>
@@ -5099,7 +5099,28 @@ Vill du att PadForge avinstallerar dem nu? Detta kräver förhöjd behörighet o
     <value>Styrkors</value>
   </data>
   <data name="Menu_Style_Keyboard" xml:space="preserve"><value>Tangentbord</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>Radiell ring och Pekrutnät utlöser cellbindningar. Tangentbord skriver tangenterna i den Windows-layout som används.</value></data>
+  <data name="Menu_Style_Hotbar" xml:space="preserve"><value>Snabbfält</value></data>
+  <data name="Menu_Hotbar_Show" xml:space="preserve"><value>Visa eller dölj</value></data>
+  <data name="Menu_Hotbar_Show_Tip" xml:space="preserve"><value>Visar fältet och döljer det vid nästa tryck. Ett fält som döljs på det sättet öppnas nästa gång på sin mittencell.</value></data>
+  <data name="Menu_Hotbar_Previous" xml:space="preserve"><value>Föregående</value></data>
+  <data name="Menu_Hotbar_Previous_Tip" xml:space="preserve"><value>Väljer cellen till vänster och hoppar över celler utan något inställt.</value></data>
+  <data name="Menu_Hotbar_Next" xml:space="preserve"><value>Nästa</value></data>
+  <data name="Menu_Hotbar_Next_Tip" xml:space="preserve"><value>Väljer cellen till höger och hoppar över celler utan något inställt.</value></data>
+  <data name="Menu_Hotbar_Fire" xml:space="preserve"><value>Utlös</value></data>
+  <data name="Menu_Hotbar_Fire_Tip" xml:space="preserve"><value>Utlöser den valda cellen, som Utlösningsläge anger.</value></data>
+  <data name="Menu_Hotbar_Caption" xml:space="preserve"><value>”Visa eller dölj” tar fram en rad med celler, ”Föregående” och ”Nästa” stegar längs den, och ”Utlös” utlöser den valda cellen. En kontroll som lämnas tom tar riktningen från Öppnas med: ned, vänster, höger eller upp.</value></data>
+  <data name="Menu_Hotbar_Wrap" xml:space="preserve"><value>Slinga runt</value></data>
+  <data name="Menu_Hotbar_Wrap_Tip" xml:space="preserve"><value>Att stega förbi den sista cellen leder till den första, och tillbaka. Av: urvalet stannar i vardera änden.</value></data>
+  <data name="Menu_Hotbar_DismissOnFire" xml:space="preserve"><value>Dölj efter utlösning</value></data>
+  <data name="Menu_Hotbar_DismissOnFire_Tip" xml:space="preserve"><value>”Utlös” döljer fältet. Av: fältet förblir uppe och samma cell kan utlösas igen.</value></data>
+  <data name="Menu_Hotbar_Recenter" xml:space="preserve"><value>Centrera om varje gång</value></data>
+  <data name="Menu_Hotbar_Recenter_Tip" xml:space="preserve"><value>Medan fältet är dolt går urvalet tillbaka till mittencellen. Av: ett fält som ”Utlös” dolde öppnas på cellen som utlöstes.</value></data>
+  <data name="Menu_Reset_HotbarControl" xml:space="preserve"><value>Återställ kontroll</value></data>
+  <data name="Menu_Fire_Click_Hotbar_Desc" xml:space="preserve"><value>”Utlös” trycker på den valda cellen och håller den medan ”Utlös” hålls ned. Med ”Dölj efter utlösning” på är trycket ett kort tryck.</value></data>
+  <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>Den valda cellen utlöses en gång, som ett kort tryck, när ”Utlös” släpps. Med ”Dölj efter utlösning” på utlöses den så fort ”Utlös” döljer fältet.</value></data>
+  <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>En cell utlöses en gång, som ett kort tryck, när ”Utlös” döljer fältet med ”Dölj efter utlösning” på. Med ”Centrera om varje gång” på är det mittencellen som utlöses.</value></data>
+  <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>Den valda cellen hålls ned hela tiden fältet visas. Att stega släpper en cell och håller nästa.</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>Radiell ring, Pekrutnät och Snabbfält utlöser cellbindningar. Tangentbord skriver tangenterna i den Windows-layout som används.</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Layout</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Hur tangentbordet ordnar sina tangenter och hur en handkontroll väljer dem.</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>En markering som flyttas med en spak eller fyra inmatningar, den layout som Windows, Xbox och Steam använder.</value></data>
@@ -5219,6 +5240,12 @@ Vill du att PadForge avinstallerar dem nu? Detta kräver förhöjd behörighet o
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (finns inte på den här datorn)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (finns inte på den här platsen)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>gyrot Laserpekare lästes som gir (PadForge har ingen laserpekaromvandling)</value></data>
+  <data name="Workshop_Tr_GyroRollFromHorizon" xml:space="preserve"><value>roll centreras där handkontrollen vilar vid start eller vid ”Centrera gyro”, inte mot horisonten</value></data>
+  <data name="Workshop_Tr_GyroPitchFromHorizon" xml:space="preserve"><value>tipp centreras där handkontrollen vilar vid start eller vid ”Centrera gyro”, inte vid {0}° från plant</value></data>
+  <data name="Workshop_Tr_GyroTiltRangeCapped" xml:space="preserve"><value>fullt utslag vid 90° lutning, inte {0}°</value></data>
+  <data name="Workshop_Tr_OutputJoystickUnrouted" xml:space="preserve"><value>output_joystick {0} skickar paret varken till spak eller mus, så ingenting mappas</value></data>
+  <data name="Workshop_Tr_DpadPulseHeld" xml:space="preserve"><value>varje riktning hålls så länge den trycks åt (analog emulering i Steam pulserar den, med längre pulser ju längre den trycks)</value></data>
+  <data name="Workshop_Tr_SoftPressNoAnalog" xml:space="preserve"><value>aktiverare för mjukt tryck på en inmatning utan analog avläsning (Steam utlöser den aldrig)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>I reWASD når {0} fortfarande Windows eftersom filen mappar den utan att avmappa den. Med Fånga upp mappade inmatningar aktiverat håller PadForge tillbaka den.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows formar en radiell spaks {0} efter tryckets vinkel. Spakkortet i PadForge spelar upp ett rakt tryck likadant och ett diagonalt på ett annat sätt.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows formar gyrots dödzon på varje axel efter rörelsens vinkel. PadForge tar bort hela dödzonen på varje axel, så en rak rörelse spelas upp likadant och en långsam diagonal börjar senare.</value></data>

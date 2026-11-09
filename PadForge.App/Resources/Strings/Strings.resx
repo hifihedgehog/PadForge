@@ -3715,6 +3715,12 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Workshop_Tr_RotationNonlinearWithheld" xml:space="preserve"><value>nonlinear response withheld on rotated axes ({0})</value></data>
   <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>yaw and roll added (Steam combines them by vector length)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>Laser Pointer gyro read as yaw (PadForge has no laser pointer conversion)</value></data>
+  <data name="Workshop_Tr_GyroRollFromHorizon" xml:space="preserve"><value>roll centered where the controller rests at the start or on Gyro Recenter, not on the horizon</value></data>
+  <data name="Workshop_Tr_GyroPitchFromHorizon" xml:space="preserve"><value>pitch centered where the controller rests at the start or on Gyro Recenter, not at {0}° from flat</value></data>
+  <data name="Workshop_Tr_GyroTiltRangeCapped" xml:space="preserve"><value>full deflection at 90° of tilt, not {0}°</value></data>
+  <data name="Workshop_Tr_OutputJoystickUnrouted" xml:space="preserve"><value>output_joystick {0} sends the pair to neither stick nor the mouse, so nothing is mapped</value></data>
+  <data name="Workshop_Tr_DpadPulseHeld" xml:space="preserve"><value>each direction held while pushed (Steam's analog emulation pulses it, longer the farther it is pushed)</value></data>
+  <data name="Workshop_Tr_SoftPressNoAnalog" xml:space="preserve"><value>soft-press activator on an input with no analog reading (Steam never fires it)</value></data>
   <data name="Workshop_Tr_LayerReleaseEdgeApproximated" xml:space="preserve"><value>release-hosted {0} switches on press instead</value></data>
   <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>mouse feel settings dropped ({0})</value></data>
   <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>axis inversion not applied ({0})</value></data>
@@ -3834,7 +3840,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>None</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Keyboard Key</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>Controller Button</value></data>
-  <data name="Menu_Style_Tip" xml:space="preserve"><value>Radial Ring picks a cell by direction, like a weapon wheel. Touch Grid picks a cell by position: where the finger sits on the pad, or where the stick points.</value></data>
+  <data name="Menu_Style_Tip" xml:space="preserve"><value>Radial Ring picks a cell by direction, like a weapon wheel. Touch Grid picks a cell by position: where the finger sits on the pad, or where the stick points. Hotbar shows a row of cells, steps along it and fires the selected cell, each with its own control.</value></data>
   <data name="Menu_HostInput_Tip" xml:space="preserve"><value>The input that opens and steers this menu, read from the slot's assigned physical controllers. A stick opens it when pushed past the Engage Deadzone. A touchpad opens it on touch.</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>Limit this menu to one half of the trackpad, so two menus can share the pad.</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>When the highlighted cell fires its binding. Each choice is explained below.</value></data>
@@ -4290,7 +4296,7 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>Fires once when the Click Input releases. If the surface releases in the same instant, fires the previous selection.</value></data>
   <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>Fires once when you lift your finger or return the stick inside the Engage Deadzone, while the menu stays open. Leaving the layer also commits a selection still being steered.</value></data>
   <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>Holds the binding while its cell is highlighted. A radial center can fire immediately when the layer opens.</value></data>
-  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Direction presses step through the cells and fire each newly selected cell. This hotbar behavior does not use Fire Mode or Click Input.</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Direction presses step through the cells and fire each newly selected cell, without Fire Mode or Click Input. The Hotbar style steps without firing and fires with its own Fire control.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Flydigi Enhanced Protocol</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Enables extra buttons and motion sensors on supported Flydigi controllers.</value></data>
   <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi software is running: {0}. It can use the same controller interface as PadForge, and a Vader 5 Pro has been reported disconnecting repeatedly while both had access. If this controller drops and reconnects, stop the service while using PadForge, keep the controller hidden and remove the service from the HidHide whitelist, or try turning off "Flydigi Enhanced Protocol" in Settings, which is not confirmed to help.</value></data>
@@ -5154,7 +5160,28 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
     <value>D-pad</value>
   </data>
   <data name="Menu_Style_Keyboard" xml:space="preserve"><value>Keyboard</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>Radial Ring and Touch Grid fire cell bindings. Keyboard types the keys of the Windows layout in use.</value></data>
+  <data name="Menu_Style_Hotbar" xml:space="preserve"><value>Hotbar</value></data>
+  <data name="Menu_Hotbar_Show" xml:space="preserve"><value>Show or Hide</value></data>
+  <data name="Menu_Hotbar_Show_Tip" xml:space="preserve"><value>Shows the bar, and hides it on the next press. A bar hidden this way opens on its middle cell next time.</value></data>
+  <data name="Menu_Hotbar_Previous" xml:space="preserve"><value>Previous</value></data>
+  <data name="Menu_Hotbar_Previous_Tip" xml:space="preserve"><value>Selects the cell to the left, skipping cells with nothing set.</value></data>
+  <data name="Menu_Hotbar_Next" xml:space="preserve"><value>Next</value></data>
+  <data name="Menu_Hotbar_Next_Tip" xml:space="preserve"><value>Selects the cell to the right, skipping cells with nothing set.</value></data>
+  <data name="Menu_Hotbar_Fire" xml:space="preserve"><value>Fire</value></data>
+  <data name="Menu_Hotbar_Fire_Tip" xml:space="preserve"><value>Fires the selected cell, as Fire Mode says.</value></data>
+  <data name="Menu_Hotbar_Caption" xml:space="preserve"><value>Show or Hide brings up a row of cells, Previous and Next step along it, and Fire fires the selected cell. A control left empty takes the Opens With direction: down, left, right or up.</value></data>
+  <data name="Menu_Hotbar_Wrap" xml:space="preserve"><value>Wrap Around</value></data>
+  <data name="Menu_Hotbar_Wrap_Tip" xml:space="preserve"><value>Stepping past the last cell goes to the first, and back. Off, the selection stops at either end.</value></data>
+  <data name="Menu_Hotbar_DismissOnFire" xml:space="preserve"><value>Hide After Firing</value></data>
+  <data name="Menu_Hotbar_DismissOnFire_Tip" xml:space="preserve"><value>Fire hides the bar. Off, the bar stays up and the same cell can fire again.</value></data>
+  <data name="Menu_Hotbar_Recenter" xml:space="preserve"><value>Re-Center Each Time</value></data>
+  <data name="Menu_Hotbar_Recenter_Tip" xml:space="preserve"><value>While the bar is hidden, the selection goes back to the middle cell. Off, a bar that Fire hid opens on the cell it fired.</value></data>
+  <data name="Menu_Reset_HotbarControl" xml:space="preserve"><value>Reset Control</value></data>
+  <data name="Menu_Fire_Click_Hotbar_Desc" xml:space="preserve"><value>Fire presses the selected cell and holds it while Fire is held. With Hide After Firing on, the press is a short tap.</value></data>
+  <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>The selected cell fires once, as a short tap, when Fire is released. With Hide After Firing on, it fires as soon as Fire hides the bar.</value></data>
+  <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>A cell fires once, as a short tap, when Fire hides the bar with Hide After Firing on. With Re-Center Each Time on, the middle cell is the one that fires.</value></data>
+  <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>The selected cell is held the whole time the bar is shown. Stepping lets go of one cell and holds the next.</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>Radial Ring, Touch Grid and Hotbar fire cell bindings. Keyboard types the keys of the Windows layout in use.</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Layout</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>How the keyboard lays out its keys and how a controller picks them.</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>One highlight, moved with a stick or four inputs, the layout Windows, Xbox and Steam use.</value></data>

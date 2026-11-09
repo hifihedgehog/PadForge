@@ -100,12 +100,11 @@ namespace PadForge.SteamWorkshop.Tests
         }
 
         [Fact]
-        public void StickDirection_OnStickWedgeHost_KeepsHalfAxisAndRidesInvertOutput()
+        public void StickDirection_OnAStickDpad_TheUpPolarityNegatesTheRead()
         {
-            // A right-stick dpad_north wedge (lower Y half, Invert as the
-            // half SELECTOR) bound to LSTICK_UP: the wedge read survives
-            // and the up polarity lands on InvertOutput, so the half
-            // selection is not destroyed (the engine's own predicate,
+            // A right-stick dpad_north bound to LSTICK_UP: the direction's
+            // read is full or nothing, and the up polarity negates it on the
+            // axis (Invert, since no half read claims it:
             // InvertConsumedByHalfAxisRead).
             string vdf = Head
                 + Group(1, "dpad", Inputs(Inp("dpad_north", "xinput_button LSTICK_UP")))
@@ -116,10 +115,10 @@ namespace PadForge.SteamWorkshop.Tests
             var row = Assert.Single(p.XboxMappingSet.Rows);
             Assert.Equal("LeftThumbAxisY", row.Target);
             var src = Assert.Single(row.Sources);
-            Assert.Equal("Gamepad RightStickY", src.Descriptor);
-            Assert.True(src.HalfAxis);
-            Assert.True(src.Invert);        // still the north-wedge half selector
-            Assert.True(src.InvertOutput);  // the up polarity
+            Assert.Equal(SteamPadExpect.Wedge(90, PadForge.Engine.Common.Mapping.BoundedGate.None, "Gamepad RightStickRing"), src.Descriptor);
+            Assert.False(src.HalfAxis);
+            Assert.True(src.Invert);        // the up polarity
+            Assert.False(src.InvertOutput);
         }
 
         [Fact]
@@ -134,10 +133,10 @@ namespace PadForge.SteamWorkshop.Tests
             var row = Assert.Single(p.XboxMappingSet.Rows);
             Assert.Equal("LeftThumbAxisY", row.Target);
             var src = Assert.Single(row.Sources);
-            Assert.Equal("Gamepad LeftStickY", src.Descriptor);
-            Assert.True(src.HalfAxis);
-            Assert.False(src.Invert);       // south wedge = upper half
-            Assert.False(src.InvertOutput); // down = positive, no flip
+            Assert.Equal(SteamPadExpect.Wedge(270, PadForge.Engine.Common.Mapping.BoundedGate.None, "Gamepad LeftStickRing"), src.Descriptor);
+            Assert.False(src.HalfAxis);
+            Assert.False(src.Invert);       // down = positive, no flip
+            Assert.False(src.InvertOutput);
         }
 
         [Fact]

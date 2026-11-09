@@ -20,13 +20,13 @@ kbm rows: 22
   Base | KbmKey24
     <- Gamepad ButtonBack
   Base | KbmKey25
-    <- Gamepad RightStickX [lower-half]
+    <- Wedge 180 67.5 2.7 31.7685 29.2685 - Gamepad RightStickRing
   Base | KbmKey26
-    <- Gamepad RightStickY [lower-half]
+    <- Wedge 90 67.5 2.7 31.7685 29.2685 - Gamepad RightStickRing
   Base | KbmKey27
-    <- Gamepad RightStickX [upper-half]
+    <- Wedge 0 67.5 2.7 31.7685 29.2685 - Gamepad RightStickRing
   Base | KbmKey28
-    <- Gamepad RightStickY [upper-half]
+    <- Wedge 270 67.5 2.7 31.7685 29.2685 - Gamepad RightStickRing
   Base | KbmKey32
     <- Gamepad ButtonB
   Base | KbmKey33
@@ -34,13 +34,13 @@ kbm rows: 22
   Base | KbmKey42
     <- Gamepad DPadUp
   Base | KbmKey45
-    <- Gamepad RightTrigger [upper-half] dz=75
+    <- Gamepad RightTrigger [upper-half] dz=90
   Base | KbmKey48
     <- Gamepad RightStick
   Base | KbmKey4F
     <- Gamepad DPadDown
   Base | KbmKey51
-    <- Gamepad LeftTrigger [upper-half] dz=75
+    <- Gamepad LeftTrigger [upper-half] dz=90
   Base | KbmKey54
     <- Gamepad DPadLeft
   Base | KbmKey56
@@ -60,8 +60,8 @@ macros: 6
   macro RumblePulse OnPress | Haptic pulse (DPadUp) | btns=0x0000 in=[Gamepad DPadUp] layer=Base strength=33%
   macro RumblePulse OnPress | Haptic pulse (DPadDown) | btns=0x0000 in=[Gamepad DPadDown] layer=Base strength=33%
   macro RumblePulse OnPress | Haptic pulse (DPadLeft) | btns=0x0000 in=[Gamepad DPadLeft] layer=Base strength=33%
-  macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 layer=Base strength=66%
-  macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=90 layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=90 layer=Base strength=66%
 report: v26 rows:x4+k22 macros:6 menus:0 layers:0 clean:26 partial:0 skipped:0 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmMBtn1 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey32 <- Gamepad ButtonB
@@ -76,10 +76,10 @@ report: v26 rows:x4+k22 macros:6 menus:0 layers:0 clean:26 partial:0 skipped:0 e
   Clean RowEmitted @ Default/joystick/group 12 (joystick_mouse)/click/Full_Press => KbmKeyA4 <- Gamepad LeftStick
   Clean RowEmitted @ Default/left_trigger/group 4 (trigger)/click/Full_Press => KbmKey51 <- Gamepad LeftTrigger (upper half)
   Clean RowEmitted @ Default/right_joystick/group 13 (dpad)/click/Full_Press => KbmKey48 <- Gamepad RightStick
-  Clean RowEmitted @ Default/right_joystick/group 13 (dpad)/dpad_east/Full_Press => KbmKey27 <- Gamepad RightStickX (upper half)
-  Clean RowEmitted @ Default/right_joystick/group 13 (dpad)/dpad_north/Full_Press => KbmKey26 <- Gamepad RightStickY (lower half)
-  Clean RowEmitted @ Default/right_joystick/group 13 (dpad)/dpad_south/Full_Press => KbmKey28 <- Gamepad RightStickY (upper half)
-  Clean RowEmitted @ Default/right_joystick/group 13 (dpad)/dpad_west/Full_Press => KbmKey25 <- Gamepad RightStickX (lower half)
+  Clean RowEmitted @ Default/right_joystick/group 13 (dpad)/dpad_east/Full_Press => KbmKey27 <- Wedge 0 67.5 2.7 31.7685 29.2685 - Gamepad RightStickRing
+  Clean RowEmitted @ Default/right_joystick/group 13 (dpad)/dpad_north/Full_Press => KbmKey26 <- Wedge 90 67.5 2.7 31.7685 29.2685 - Gamepad RightStickRing
+  Clean RowEmitted @ Default/right_joystick/group 13 (dpad)/dpad_south/Full_Press => KbmKey28 <- Wedge 270 67.5 2.7 31.7685 29.2685 - Gamepad RightStickRing
+  Clean RowEmitted @ Default/right_joystick/group 13 (dpad)/dpad_west/Full_Press => KbmKey25 <- Wedge 180 67.5 2.7 31.7685 29.2685 - Gamepad RightStickRing
   Clean RowEmitted @ Default/right_trigger/group 5 (trigger)/click/Full_Press => KbmKey45 <- Gamepad RightTrigger (upper half)
   Clean RowEmitted @ Default/switch/group 7 (switches)/button_back_left/Full_Press => ButtonA <- Gamepad Paddle2
   Clean RowEmitted @ Default/switch/group 7 (switches)/button_back_right/Full_Press => ButtonX <- Gamepad Paddle1

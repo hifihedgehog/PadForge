@@ -735,6 +735,39 @@ namespace PadForge.SteamWorkshop.Translation
         /// <summary>gyro_to_2d_conversion_style 6, Steam's Laser Pointer:
         /// PadForge has no counterpart and reads yaw.</summary>
         public const string GyroLaserPointer = "Workshop_Tr_GyroLaserPointer";
+        /// <summary>A gyro tilt pair whose roll Steam measures from the
+        /// horizon (steamclient64.dll: the joystick classes' gyro read, the
+        /// dpad and four_buttons on the gyro, and the deflection mode with
+        /// Use Relative Roll off or no gyro button). PadForge measures tilt
+        /// from the pose the controller rests in when the profile starts and
+        /// at Gyro Recenter.</summary>
+        public const string GyroRollFromHorizon = "Workshop_Tr_GyroRollFromHorizon";
+        /// <summary>The pitch twin of <see cref="GyroRollFromHorizon"/>:
+        /// Steam centers the pitch at a fixed angle from flat (gyro_neutral,
+        /// or the deflection mode's World Tilt Offset). {0} = that angle in
+        /// degrees.</summary>
+        public const string GyroPitchFromHorizon = "Workshop_Tr_GyroPitchFromHorizon";    // {0} degrees
+        /// <summary>A deflection maximum past 90 degrees: PadForge reads
+        /// tilt as the arc sine of one gravity component, which stops at 90,
+        /// so full deflection lands at 90. {0} = the file's angle.</summary>
+        public const string GyroTiltRangeCapped = "Workshop_Tr_GyroTiltRangeCapped";      // {0} degrees
+        /// <summary>An output_joystick value the client routes to neither
+        /// stick nor the mouse (the stick classes take 0 and 1, and the
+        /// joystick and Joystick Camera classes 2 for the mouse), so the pair
+        /// maps to nothing. {0} = the value.</summary>
+        public const string OutputJoystickUnrouted = "Workshop_Tr_OutputJoystickUnrouted"; // {0} value
+        /// <summary>A dpad in layout 2, Steam's analog emulation: it pulses
+        /// each direction on and off, longer the farther it is pushed
+        /// (steamclient64.dll 0x1388b3610). PadForge's rows and macros pulse
+        /// at a fixed rate or not at all, so the direction holds while
+        /// pushed.</summary>
+        public const string DpadPulseHeld = "Workshop_Tr_DpadPulseHeld";
+        /// <summary>A Soft Press activator on an input Steam's Soft Press
+        /// reads no analog value from (its table at steamclient64.dll
+        /// 0x1392dc500 holds the triggers, the sticks, the side trackpads and
+        /// their dpad directions, edges and clicks), so Steam never fires
+        /// it.</summary>
+        public const string SoftPressNoAnalog = "Workshop_Tr_SoftPressNoAnalog";
         // Since v18 the note is the out-of-census net only: gyro_button 0
         // (the none/default sentinel, pad touch) stamps the slot-level
         // engage overlay and gyro_button_invert 1 the inverted hold.

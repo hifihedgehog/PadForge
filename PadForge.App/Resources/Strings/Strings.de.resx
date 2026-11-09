@@ -3756,7 +3756,7 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>Keine</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Tastaturtaste</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>Controller-Taste</value></data>
-  <data name="Menu_Style_Tip" xml:space="preserve"><value>Radialring wählt eine Zelle über die Richtung, wie ein Waffenrad. Touch-Raster wählt eine Zelle über die Position: wo der Finger auf dem Pad liegt oder wohin der Stick zeigt.</value></data>
+  <data name="Menu_Style_Tip" xml:space="preserve"><value>Radialring wählt eine Zelle über die Richtung, wie ein Waffenrad. Touch-Raster wählt eine Zelle über die Position: wo der Finger auf dem Pad liegt oder wohin der Stick zeigt. Hotbar zeigt eine Reihe von Zellen, schaltet darin weiter und löst die gewählte Zelle aus, jeweils mit einem eigenen Steuerelement.</value></data>
   <data name="Menu_HostInput_Tip" xml:space="preserve"><value>Die Eingabe, die dieses Menü öffnet und steuert, gelesen von den dem Slot zugewiesenen physischen Controllern. Ein Stick öffnet es beim Auslenken über die Aktivierungs-Deadzone hinaus. Ein Touchpad öffnet es bei Berührung.</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>Beschränkt dieses Menü auf eine Hälfte des Trackpads, sodass zwei Menüs sich das Pad teilen können.</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>Wann die hervorgehobene Zelle ihre Belegung auslöst. Jede Option wird unten erklärt.</value></data>
@@ -4199,7 +4199,7 @@ Sollen sie jetzt deinstalliert werden? Dies erfordert erhöhte Rechte und kann e
   <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>Löst einmal aus, wenn die Klick-Eingabe losgelassen wird. Wird die Oberfläche im selben Moment losgelassen, löst die vorherige Auswahl aus.</value></data>
   <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>Löst einmal aus, wenn Sie den Finger heben oder den Stick in die Aktivierungs-Totzone zurückführen, während das Menü offen bleibt. Das Verlassen der Ebene bestätigt ebenfalls eine noch gesteuerte Auswahl.</value></data>
   <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>Hält die Belegung, solange ihre Zelle hervorgehoben ist. Eine Radialmitte kann sofort auslösen, wenn die Ebene öffnet.</value></data>
-  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Richtungstasten schalten durch die Zellen und lösen jede neu gewählte Zelle aus. Dieses Hotbar-Verhalten nutzt weder Auslösemodus noch Klick-Eingabe.</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Richtungstasten schalten durch die Zellen und lösen jede neu gewählte Zelle aus, ohne Auslösemodus oder Klick-Eingabe. Der Stil Hotbar schaltet ohne Auslösen weiter und löst mit seinem eigenen Steuerelement „Auslösen“ aus.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Erweitertes Flydigi-Protokoll</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Aktiviert zusätzliche Tasten und Bewegungssensoren bei unterstützten Flydigi-Controllern.</value></data>
   <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi-Software läuft: {0}. Sie kann dieselbe Controller-Schnittstelle wie PadForge nutzen, und ein Vader 5 Pro hat sich laut Bericht wiederholt getrennt, während beide Zugriff hatten. Falls sich dieser Controller trennt und neu verbindet: Beenden Sie den Dienst, während Sie PadForge verwenden, lassen Sie den Controller verborgen und entfernen Sie den Dienst aus der HidHide-Whitelist, oder schalten Sie probeweise die Option „Erweitertes Flydigi-Protokoll“ in den Einstellungen aus. Ob das hilft, ist nicht bestätigt.</value></data>
@@ -5050,7 +5050,28 @@ Sollen sie jetzt deinstalliert werden? Dies erfordert erhöhte Rechte und kann e
     <value>Steuerkreuz</value>
   </data>
   <data name="Menu_Style_Keyboard" xml:space="preserve"><value>Tastatur</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>Radialring und Touch-Raster lösen Zellenbelegungen aus. Tastatur tippt die Tasten des verwendeten Windows-Layouts.</value></data>
+  <data name="Menu_Style_Hotbar" xml:space="preserve"><value>Hotbar</value></data>
+  <data name="Menu_Hotbar_Show" xml:space="preserve"><value>Ein- oder Ausblenden</value></data>
+  <data name="Menu_Hotbar_Show_Tip" xml:space="preserve"><value>Zeigt die Leiste und blendet sie beim nächsten Druck wieder aus. Eine so ausgeblendete Leiste öffnet sich beim nächsten Mal auf ihrer mittleren Zelle.</value></data>
+  <data name="Menu_Hotbar_Previous" xml:space="preserve"><value>Zurück</value></data>
+  <data name="Menu_Hotbar_Previous_Tip" xml:space="preserve"><value>Wählt die Zelle links davon und überspringt Zellen ohne Belegung.</value></data>
+  <data name="Menu_Hotbar_Next" xml:space="preserve"><value>Weiter</value></data>
+  <data name="Menu_Hotbar_Next_Tip" xml:space="preserve"><value>Wählt die Zelle rechts davon und überspringt Zellen ohne Belegung.</value></data>
+  <data name="Menu_Hotbar_Fire" xml:space="preserve"><value>Auslösen</value></data>
+  <data name="Menu_Hotbar_Fire_Tip" xml:space="preserve"><value>Löst die gewählte Zelle aus, so wie es der Auslösemodus festlegt.</value></data>
+  <data name="Menu_Hotbar_Caption" xml:space="preserve"><value>„Ein- oder Ausblenden“ holt eine Reihe von Zellen hervor, „Zurück“ und „Weiter“ schalten darin weiter, und „Auslösen“ löst die gewählte Zelle aus. Ein leeres Steuerelement übernimmt die Richtung von „Öffnet mit“: unten, links, rechts oder oben.</value></data>
+  <data name="Menu_Hotbar_Wrap" xml:space="preserve"><value>Umlaufen</value></data>
+  <data name="Menu_Hotbar_Wrap_Tip" xml:space="preserve"><value>Über die letzte Zelle hinaus geht es zur ersten, und umgekehrt. Ausgeschaltet, bleibt die Auswahl an beiden Enden stehen.</value></data>
+  <data name="Menu_Hotbar_DismissOnFire" xml:space="preserve"><value>Nach dem Auslösen ausblenden</value></data>
+  <data name="Menu_Hotbar_DismissOnFire_Tip" xml:space="preserve"><value>„Auslösen“ blendet die Leiste aus. Ausgeschaltet, bleibt die Leiste sichtbar, und dieselbe Zelle kann erneut ausgelöst werden.</value></data>
+  <data name="Menu_Hotbar_Recenter" xml:space="preserve"><value>Jedes Mal neu zentrieren</value></data>
+  <data name="Menu_Hotbar_Recenter_Tip" xml:space="preserve"><value>Solange die Leiste ausgeblendet ist, springt die Auswahl zurück auf die mittlere Zelle. Ausgeschaltet, öffnet sich eine Leiste, die „Auslösen“ ausgeblendet hat, auf der Zelle, die sie ausgelöst hat.</value></data>
+  <data name="Menu_Reset_HotbarControl" xml:space="preserve"><value>Steuerelement zurücksetzen</value></data>
+  <data name="Menu_Fire_Click_Hotbar_Desc" xml:space="preserve"><value>„Auslösen“ drückt die gewählte Zelle und hält sie, solange „Auslösen“ gehalten wird. Ist „Nach dem Auslösen ausblenden“ eingeschaltet, ist der Druck ein kurzes Antippen.</value></data>
+  <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>Die gewählte Zelle löst einmal als kurzes Antippen aus, wenn „Auslösen“ losgelassen wird. Ist „Nach dem Auslösen ausblenden“ eingeschaltet, löst sie aus, sobald „Auslösen“ die Leiste ausblendet.</value></data>
+  <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>Eine Zelle löst einmal als kurzes Antippen aus, wenn „Auslösen“ die Leiste bei eingeschaltetem „Nach dem Auslösen ausblenden“ ausblendet. Ist „Jedes Mal neu zentrieren“ eingeschaltet, löst die mittlere Zelle aus.</value></data>
+  <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>Die gewählte Zelle wird gehalten, solange die Leiste sichtbar ist. Beim Weiterschalten wird eine Zelle losgelassen und die nächste gehalten.</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>Radialring, Touch-Raster und Hotbar lösen Zellenbelegungen aus. Tastatur tippt die Tasten des verwendeten Windows-Layouts.</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Layout</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Wie die Tastatur ihre Tasten anordnet und wie ein Controller sie auswählt.</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Eine Hervorhebung, bewegt mit einem Stick oder vier Eingaben, das Layout von Windows, Xbox und Steam.</value></data>
@@ -5170,6 +5191,12 @@ Sollen sie jetzt deinstalliert werden? Dies erfordert erhöhte Rechte und kann e
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (nicht an diesem PC)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (nicht an diesem Slot)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>Laserpointer-Gyro als Gieren gelesen (PadForge hat keine Laserpointer-Umrechnung)</value></data>
+  <data name="Workshop_Tr_GyroRollFromHorizon" xml:space="preserve"><value>Rollen zentriert auf die Ruhelage des Controllers beim Start oder bei Gyro zentrieren, nicht auf den Horizont</value></data>
+  <data name="Workshop_Tr_GyroPitchFromHorizon" xml:space="preserve"><value>Nicken zentriert auf die Ruhelage des Controllers beim Start oder bei Gyro zentrieren, nicht bei {0}° zur Waagerechten</value></data>
+  <data name="Workshop_Tr_GyroTiltRangeCapped" xml:space="preserve"><value>volle Auslenkung bei 90° Neigung, nicht bei {0}°</value></data>
+  <data name="Workshop_Tr_OutputJoystickUnrouted" xml:space="preserve"><value>output_joystick {0} leitet das Paar weder auf einen Stick noch auf die Maus, daher wird nichts zugeordnet</value></data>
+  <data name="Workshop_Tr_DpadPulseHeld" xml:space="preserve"><value>jede Richtung gehalten, solange gedrückt (die Analogemulation von Steam pulst sie, je weiter gedrückt, desto länger)</value></data>
+  <data name="Workshop_Tr_SoftPressNoAnalog" xml:space="preserve"><value>Leichtdruck-Aktivator auf einer Eingabe ohne Analogwert (Steam löst ihn dort nie aus)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>In reWASD erreicht {0} weiterhin Windows, weil die Datei es ohne Aufheben der Zuordnung zuordnet. Mit aktivierter Option Zugeordnete Eingaben verbrauchen fängt PadForge es ab.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows formt {0} eines radialen Sticks nach dem Winkel des Ausschlags. Die Stick-Karte von PadForge spielt einen geraden Ausschlag gleich ab und einen diagonalen anders.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows skaliert die Totzone des Gyros auf jeder Achse nach dem Winkel der Bewegung. PadForge zieht auf jeder Achse die ganze Totzone ab, daher wird eine gerade Bewegung gleich abgespielt und eine langsame diagonale beginnt später.</value></data>

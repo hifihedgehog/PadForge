@@ -3818,7 +3818,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>Ingen</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Tastaturtast</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>Controllerknap</value></data>
-  <data name="Menu_Style_Tip" xml:space="preserve"><value>Radial ring vælger en celle efter retning, ligesom et våbenhjul. Berøringsgitter vælger en celle efter position: hvor fingeren er på padden, eller hvor sticken peger.</value></data>
+  <data name="Menu_Style_Tip" xml:space="preserve"><value>Radial ring vælger en celle efter retning, ligesom et våbenhjul. Berøringsgitter vælger en celle efter position: hvor fingeren er på padden, eller hvor sticken peger. Hotbar viser en række celler, går langs den og affyrer den valgte celle, hver med sin egen kontrol.</value></data>
   <data name="Menu_HostInput_Tip" xml:space="preserve"><value>Det input, der åbner og styrer denne menu, læst fra pladsens tildelte fysiske controllere. En stick åbner den, når den skubbes forbi Aktiveringsdødzone. En touchpad åbner den ved berøring.</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>Begræns denne menu til den ene halvdel af touchpadden, så to menuer kan dele padden.</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>Hvornår den markerede celle udløser sin binding. Hvert valg forklares nedenfor.</value></data>
@@ -4248,7 +4248,7 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>Udløses én gang, når Klikinput slippes. Hvis fladen slippes i samme øjeblik, udløses det forrige valg.</value></data>
   <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>Udløses én gang, når du løfter fingeren eller fører sticken tilbage inden for Aktiveringsdødzone, mens menuen forbliver åben. Når du forlader laget, bekræftes også et valg, der stadig styres.</value></data>
   <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>Holder bindingen, mens dens celle er markeret. En radial midte kan udløses med det samme, når laget åbner.</value></data>
-  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Tryk på retninger går gennem cellerne og udløser hver nyvalgt celle. Denne hotbar-adfærd bruger hverken Affyringstilstand eller Klikinput.</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Tryk på retninger går gennem cellerne og udløser hver nyvalgt celle, uden Affyringstilstand eller Klikinput. Stilen Hotbar går igennem uden at affyre og affyrer med sin egen kontrol Affyr.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Udvidet Flydigi-protokol</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Aktiverer ekstra knapper og bevægelsessensorer på understøttede Flydigi-controllere.</value></data>
   <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi-software kører: {0}. Det kan bruge den samme controllergrænseflade som PadForge, og en Vader 5 Pro er blevet rapporteret at afbryde gentagne gange, mens begge havde adgang. Hvis denne controller mister forbindelsen og forbinder igen, så stop tjenesten, mens du bruger PadForge, hold controlleren skjult, og fjern tjenesten fra listen over tilladte programmer i HidHide, eller prøv at slå ”Udvidet Flydigi-protokol” fra i Indstillinger, hvilket ikke er bekræftet at hjælpe.</value></data>
@@ -5099,7 +5099,28 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
     <value>D-pad</value>
   </data>
   <data name="Menu_Style_Keyboard" xml:space="preserve"><value>Tastatur</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>Radial ring og Berøringsgitter udløser cellebindinger. Tastatur skriver tasterne i det Windows-layout, der er i brug.</value></data>
+  <data name="Menu_Style_Hotbar" xml:space="preserve"><value>Hotbar</value></data>
+  <data name="Menu_Hotbar_Show" xml:space="preserve"><value>Vis eller skjul</value></data>
+  <data name="Menu_Hotbar_Show_Tip" xml:space="preserve"><value>Viser baren og skjuler den ved næste tryk. En bar, der er skjult på den måde, åbner næste gang på sin midtercelle.</value></data>
+  <data name="Menu_Hotbar_Previous" xml:space="preserve"><value>Forrige</value></data>
+  <data name="Menu_Hotbar_Previous_Tip" xml:space="preserve"><value>Vælger cellen til venstre og springer celler over, hvor intet er angivet.</value></data>
+  <data name="Menu_Hotbar_Next" xml:space="preserve"><value>Næste</value></data>
+  <data name="Menu_Hotbar_Next_Tip" xml:space="preserve"><value>Vælger cellen til højre og springer celler over, hvor intet er angivet.</value></data>
+  <data name="Menu_Hotbar_Fire" xml:space="preserve"><value>Affyr</value></data>
+  <data name="Menu_Hotbar_Fire_Tip" xml:space="preserve"><value>Affyrer den valgte celle, som Affyringstilstand angiver.</value></data>
+  <data name="Menu_Hotbar_Caption" xml:space="preserve"><value>Vis eller skjul henter en række celler frem, Forrige og Næste går langs den, og Affyr affyrer den valgte celle. En kontrol, der er tom, tager retningen fra Åbnes med: ned, venstre, højre eller op.</value></data>
+  <data name="Menu_Hotbar_Wrap" xml:space="preserve"><value>Fortsæt i den anden ende</value></data>
+  <data name="Menu_Hotbar_Wrap_Tip" xml:space="preserve"><value>Et skridt forbi den sidste celle går til den første, og omvendt. Når den er slået fra, stopper valget i begge ender.</value></data>
+  <data name="Menu_Hotbar_DismissOnFire" xml:space="preserve"><value>Skjul efter affyring</value></data>
+  <data name="Menu_Hotbar_DismissOnFire_Tip" xml:space="preserve"><value>Affyr skjuler baren. Når den er slået fra, bliver baren stående, og den samme celle kan affyres igen.</value></data>
+  <data name="Menu_Hotbar_Recenter" xml:space="preserve"><value>Centrer igen hver gang</value></data>
+  <data name="Menu_Hotbar_Recenter_Tip" xml:space="preserve"><value>Mens baren er skjult, går valget tilbage til midtercellen. Når den er slået fra, åbner en bar, som Affyr skjulte, på den celle, den affyrede.</value></data>
+  <data name="Menu_Reset_HotbarControl" xml:space="preserve"><value>Nulstil kontrol</value></data>
+  <data name="Menu_Fire_Click_Hotbar_Desc" xml:space="preserve"><value>Affyr trykker på den valgte celle og holder den, mens Affyr holdes nede. Når Skjul efter affyring er slået til, er trykket et kort tryk.</value></data>
+  <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>Den valgte celle udløses én gang som et kort tryk, når Affyr slippes. Når Skjul efter affyring er slået til, udløses den, så snart Affyr skjuler baren.</value></data>
+  <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>En celle udløses én gang som et kort tryk, når Affyr skjuler baren med Skjul efter affyring slået til. Når Centrer igen hver gang er slået til, er det midtercellen, der udløses.</value></data>
+  <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>Den valgte celle holdes, hele tiden baren vises. Et skridt slipper én celle og holder den næste.</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>Radial ring, Berøringsgitter og Hotbar udløser cellebindinger. Tastatur skriver tasterne i det Windows-layout, der er i brug.</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Layout</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Hvordan tastaturet opstiller sine taster, og hvordan en controller vælger dem.</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Én markering, flyttet med en stick eller fire input, det layout Windows, Xbox og Steam bruger.</value></data>
@@ -5219,6 +5240,12 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (ikke på denne pc)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (ikke på denne slot)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>gyro i Laserpointer læst som drejning (PadForge har ingen laserpointer-omregning)</value></data>
+  <data name="Workshop_Tr_GyroRollFromHorizon" xml:space="preserve"><value>krængning centreret, hvor controlleren hviler ved start eller ved Gyrocentrering, ikke efter horisonten</value></data>
+  <data name="Workshop_Tr_GyroPitchFromHorizon" xml:space="preserve"><value>tipning centreret, hvor controlleren hviler ved start eller ved Gyrocentrering, ikke ved {0}° fra vandret</value></data>
+  <data name="Workshop_Tr_GyroTiltRangeCapped" xml:space="preserve"><value>fuldt udslag ved 90° hældning, ikke {0}°</value></data>
+  <data name="Workshop_Tr_OutputJoystickUnrouted" xml:space="preserve"><value>output_joystick {0} sender parret hverken til stick eller mus, så intet tildeles</value></data>
+  <data name="Workshop_Tr_DpadPulseHeld" xml:space="preserve"><value>hver retning holdes, mens der trykkes (den analoge emulering i Steam pulserer den, længere jo længere der trykkes)</value></data>
+  <data name="Workshop_Tr_SoftPressNoAnalog" xml:space="preserve"><value>aktivator ved let tryk på et input uden analog aflæsning (Steam udløser den aldrig)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>I reWASD når {0} stadig frem til Windows, fordi filen tildeler den uden en fjernelse af tildelingen. Med Bloker tildelte input slået til blokerer PadForge den.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows former en radial stiks {0} efter skubbets vinkel. Kortet Sticks i PadForge afspiller et lige skub ens og et diagonalt skub forskelligt.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows skalerer gyroens dødzone på hver akse efter bevægelsens vinkel. PadForge trækker hele dødzonen fra hver akse, så en lige bevægelse afspilles ens, og en langsom diagonal begynder senere.</value></data>

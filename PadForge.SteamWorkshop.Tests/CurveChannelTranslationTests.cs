@@ -95,12 +95,12 @@ namespace PadForge.SteamWorkshop.Tests
         [Fact]
         public void JoystickMove_CrossedOutput_StampsBothRows()
         {
-            // output_joystick 2 crosses the left stick onto the right
+            // output_joystick 1 crosses the left stick onto the right
             // thumb pair; the stamps ride the crossed rows the same way.
             string vdf = Head
                 + Group(1, "joystick_move",
                     Inputs(Inp("click", "key_press E"))
-                    + Settings(("output_joystick", "2"), ("curve_exponent", "1")))
+                    + Settings(("output_joystick", "1"), ("curve_exponent", "1")))
                 + Preset(0, "Default", (1, "joystick active"))
                 + "}\n";
             var p = Translate(vdf);
@@ -129,7 +129,7 @@ namespace PadForge.SteamWorkshop.Tests
             string vdf = Head
                 + Group(1, "joystick_move",
                     Inputs(Inp("click", "key_press E"))
-                    + Settings(("output_joystick", "2"), ("curve_exponent", preset)))
+                    + Settings(("output_joystick", "1"), ("curve_exponent", preset)))
                 + Preset(0, "Default", (1, "joystick active"))
                 + "}\n";
             var p = Translate(vdf);
@@ -143,7 +143,7 @@ namespace PadForge.SteamWorkshop.Tests
             string vdf = Head
                 + Group(1, "joystick_move",
                     Inputs(Inp("click", "key_press E"))
-                    + Settings(("output_joystick", "2"), ("curve_exponent", "0")))
+                    + Settings(("output_joystick", "1"), ("curve_exponent", "0")))
                 + Preset(0, "Default", (1, "joystick active"))
                 + "}\n";
             var p = Translate(vdf);
@@ -160,7 +160,7 @@ namespace PadForge.SteamWorkshop.Tests
             string vdf = Head
                 + Group(1, "joystick_move",
                     Inputs(Inp("click", "key_press E"))
-                    + Settings(("output_joystick", "2"),
+                    + Settings(("output_joystick", "1"),
                         ("curve_exponent", "5"), ("custom_curve_exponent", "195")))
                 + Preset(0, "Default", (1, "joystick active"))
                 + "}\n";
@@ -177,7 +177,7 @@ namespace PadForge.SteamWorkshop.Tests
             string vdf = Head
                 + Group(1, "joystick_move",
                     Inputs(Inp("click", "key_press E"))
-                    + Settings(("output_joystick", "2"),
+                    + Settings(("output_joystick", "1"),
                         ("curve_exponent", "4"), ("custom_curve_exponent", "50")))
                 + Preset(0, "Default", (1, "joystick active"))
                 + "}\n";
@@ -196,7 +196,7 @@ namespace PadForge.SteamWorkshop.Tests
             string vdf = Head
                 + Group(1, "joystick_move",
                     Inputs(Inp("click", "key_press E"))
-                    + Settings(("output_joystick", "2"), ("deadzone_outer_radius", "32767")))
+                    + Settings(("output_joystick", "1"), ("deadzone_outer_radius", "32767")))
                 + Preset(0, "Default", (1, "joystick active"))
                 + "}\n";
             var p = Translate(vdf);
@@ -217,7 +217,7 @@ namespace PadForge.SteamWorkshop.Tests
             string vdf = Head
                 + Group(1, "joystick_move",
                     Inputs(Inp("click", "key_press E"))
-                    + Settings(("output_joystick", "2"),
+                    + Settings(("output_joystick", "1"),
                         ("sensitivity_horiz_scale", "110"), ("sensitivity_vert_scale", "70")))
                 + Preset(0, "Default", (1, "joystick active"))
                 + "}\n";
@@ -302,7 +302,7 @@ namespace PadForge.SteamWorkshop.Tests
             string vdf = Head
                 + Group(1, "joystick_move",
                     Inputs(Inp("click", "key_press E"))
-                    + Settings(("output_joystick", "1"),
+                    + Settings(("output_joystick", "0"),
                         ("deadzone_outer_radius", "31999"), ("deadzone_shape", "1")))
                 + Preset(0, "Default", (1, "right_joystick active"))
                 + "}\n";
@@ -310,7 +310,7 @@ namespace PadForge.SteamWorkshop.Tests
 
             Assert.DoesNotContain(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.ResponseCurveNotSupported);
-            Assert.Equal("2", p.LeftStickDeadZoneShape); // output_joystick 1 = left pair
+            Assert.Equal("2", p.LeftStickDeadZoneShape); // output_joystick 0 = left pair
             Assert.Equal("", p.RightStickDeadZoneShape);
             var row = Assert.Single(p.XboxMappingSet.Rows, r => r.Target == "LeftThumbAxisX");
             Assert.Equal(31999 / 32767.0, Assert.Single(row.Sources).ParamRangeOuter, 6);

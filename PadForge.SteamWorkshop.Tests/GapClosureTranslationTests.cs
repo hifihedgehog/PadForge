@@ -540,8 +540,10 @@ namespace PadForge.SteamWorkshop.Tests
         // ─── G15: hotbar + empty_binding ────────────────────────────────
 
         [Fact]
-        public void Hotbar_LowersAsGridMenu()
+        public void Hotbar_LowersAsAHotbarMenu()
         {
+            // The client runs a hotbar as its own mode (CHotbarMode), so it
+            // lowers as the Hotbar style, not as a touch grid.
             string vdf = Head
                 + Group(1, "hotbar", Inputs(
                     Inp("touch_menu_button_0", "key_press F5"),
@@ -550,7 +552,7 @@ namespace PadForge.SteamWorkshop.Tests
                 + "}\n";
             var p = Translate(vdf);
             var menu = Assert.Single(p.Menus);
-            Assert.Equal(PadForge.Engine.Menus.MenuKind.Grid, menu.Kind);
+            Assert.Equal(PadForge.Engine.Menus.MenuKind.Hotbar, menu.Kind);
             Assert.Equal(2, menu.Items.Count);
             Assert.DoesNotContain(p.Report.Entries,
                 e => e.ReasonKey == TranslationReasons.UnknownGroupMode);
@@ -580,12 +582,14 @@ namespace PadForge.SteamWorkshop.Tests
         }
 
         [Fact]
-        public void MouseRegion_WholePadEdge_ResolvesToTheTouchRead()
+        public void MouseRegion_InvertedEdgeAtTheCeiling_ReadsTheFingerOffCenter()
         {
-            // Inverted ring at the 32767 ceiling = anywhere on the pad
-            // (the corpus 3456927474 shape): the edge member IS the touch
-            // read, so its mouse_delta binding lands as a nudge macro and
-            // the two consumed geometry keys leave the tuning note.
+            // The corpus 3456927474 shape: an inverted edge at the 32767
+            // ceiling. mouse_region is the client's joystick class, whose
+            // edge trigger has 3 percent of hold-back (0x1388c70c7), so the
+            // edge presses off center inside 97 percent and holds while the
+            // finger is anywhere off center. Its mouse_delta binding lands as
+            // a nudge macro on that read, and the geometry keys are consumed.
             string vdf = Head
                 + Group(1, "mouse_region",
                     Inputs(Inp("edge", "controller_action mouse_delta 100 0"))
@@ -600,18 +604,17 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.Equal(TranslatedMacroAction.MouseNudge, nudge.Action);
             Assert.Equal(100, nudge.DeltaX);
             Assert.Equal(0, nudge.DeltaY);
-            Assert.Equal("Touchpad 1 Finger 0 Down", Assert.Single(nudge.TriggerInputDescriptors));
+            Assert.Equal(SteamPadExpect.JoystickEdge("Touchpad 1 Finger 0 Ring", 32767, inverted: true),
+                Assert.Single(nudge.TriggerInputDescriptors));
             Assert.DoesNotContain(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.MouseRegionTuningDropped);
         }
 
         [Fact]
-        public void MouseRegion_PartialRingEdge_BuildsOnTheFingerRingRead()
+        public void MouseRegion_InvertedEdge_ReadsTheFingerRingWithTheJoystickHoldBack()
         {
-            // v26: a real ring (radius below the ceiling) BUILDS on the
-            // engine's finger-ring read: the radius rides DeadZone as a
-            // percent, edge_binding_invert rides Invert (inner ring), and
-            // the geometry keys are consumed, so no note remains.
+            // An inverted edge at 20000: pressed off center inside 58.04
+            // percent, held out to 64.04.
             string vdf = Head
                 + Group(1, "mouse_region",
                     Inputs(Inp("edge", "key_press E"))
@@ -624,21 +627,18 @@ namespace PadForge.SteamWorkshop.Tests
 
             var row = Assert.Single(p.KbmMappingSet.Rows, r => r.Target == "KbmKey45");
             var src = Assert.Single(row.Sources);
-            Assert.Equal("Touchpad 1 Finger 0 Ring", src.Descriptor);
-            Assert.True(src.Invert);
-            Assert.Equal(61, src.DeadZone); // 20000/32767 = 61%
+            Assert.Equal(SteamPadExpect.JoystickEdge("Touchpad 1 Finger 0 Ring", 20000, inverted: true), src.Descriptor);
             Assert.DoesNotContain(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.MouseRegionTuningDropped);
         }
 
         [Fact]
-        public void StickHostedEdge_BuildsOnTheRingRead()
+        public void StickHostedEdge_ReadsTheStickRingWithTheJoystickHoldBack()
         {
-            // v17: the stick edge lowers onto the deflection-magnitude ring
-            // family. The inverted full-radius zone of corpus 3456927474
-            // ("middle mouse while the stick is deflected at all") becomes
-            // an inner ring at 100 percent. The engine's rest floor keeps
-            // the centered stick silent.
+            // The inverted full-radius zone of corpus 3456927474 ("middle
+            // mouse while the stick is deflected at all") on joystick_mouse:
+            // the joystick class's edge, held off center past the stick
+            // ring's rest floor.
             string vdf = Head
                 + Group(1, "joystick_mouse",
                     Inputs(Inp("edge", "mouse_button MIDDLE"))
@@ -648,13 +648,64 @@ namespace PadForge.SteamWorkshop.Tests
                 + Preset(0, "Default", (1, "right_joystick active"))
                 + "}\n";
             var p = Translate(vdf);
-            // The joystick_mouse group also emits its own mouse rows; the
-            // edge member's row is the ring-sourced one.
-            var row = Assert.Single(p.KbmMappingSet.Rows,
-                r => r.Sources.Any(s => s.Descriptor == "Gamepad RightStickRing"));
-            var src = Assert.Single(row.Sources);
-            Assert.True(src.Invert);
-            Assert.Equal(100, src.DeadZone);
+            string edge = SteamPadExpect.JoystickEdge("Gamepad RightStickRing", 32767, inverted: true);
+            var row = Assert.Single(p.KbmMappingSet.Rows, r => r.Sources.Any(s => s.Descriptor == edge));
+            Assert.Single(row.Sources);
+        }
+
+        [Theory]
+        [InlineData("joystick_move", "joystick", "Gamepad LeftStickRing")]
+        [InlineData("joystick_mouse", "right_joystick", "Gamepad RightStickRing")]
+        [InlineData("mouse_region", "joystick", "Gamepad LeftStickRing")]
+        [InlineData("joystick_move", "left_trackpad", "Touchpad 0 Finger 0 Ring")]
+        public void JoystickModeEdge_DefaultsTo25000_WithThreePercentOfHoldBack(string mode, string host, string pair)
+        {
+            string vdf = Head
+                + Group(1, mode, Inputs(Inp("edge", "key_press E")))
+                + Preset(0, "Default", (1, host + " active"))
+                + "}\n";
+            var p = Translate(vdf);
+            Assert.Contains(p.KbmMappingSet.Rows, r => r.Sources.Any(s => s.Descriptor == SteamPadExpect.JoystickEdge(pair)));
+        }
+
+        [Fact]
+        public void FlickStickEdge_ReadsTheCommandRadius_NotTheEdgeRadius()
+        {
+            // The flick stick's edge is flickstick_command_binding_radius
+            // (0x1388b3cee, default 80), and it never reads
+            // edge_binding_radius: 60 makes 1000 + 31000 * 40 / 80 = 16500.
+            string vdf = Head
+                + Group(1, "flickstick", Inputs(Inp("edge", "key_press E"))
+                    + GroupSettings(("flickstick_command_binding_radius", "60"), ("edge_binding_radius", "30000")))
+                + Preset(0, "Default", (1, "right_joystick active"))
+                + "}\n";
+            var p = Translate(vdf);
+            Assert.Contains(p.KbmMappingSet.Rows,
+                r => r.Sources.Any(s => s.Descriptor == SteamPadExpect.FlickEdge("Gamepad RightStickRing", 60)));
+            string byDefault = Head
+                + Group(1, "flickstick", Inputs(Inp("edge", "key_press E")))
+                + Preset(0, "Default", (1, "right_joystick active"))
+                + "}\n";
+            Assert.Contains(Translate(byDefault).KbmMappingSet.Rows,
+                r => r.Sources.Any(s => s.Descriptor == SteamPadExpect.FlickEdge("Gamepad RightStickRing")));
+        }
+
+        [Theory]
+        [InlineData("joystick_camera", "right_joystick")]
+        [InlineData("absolute_mouse", "right_trackpad")]
+        [InlineData("mouse_joystick", "left_trackpad")]
+        public void EdgeOnAModeWithNone_IsNeverFired(string mode, string host)
+        {
+            // Only the dpad, the joystick class, the flick stick and the
+            // trigger register an edge (binding 15 in the class's
+            // constructor), so Steam never fires one authored elsewhere.
+            string vdf = Head
+                + Group(1, mode, Inputs(Inp("edge", "key_press E")))
+                + Preset(0, "Default", (1, host + " active"))
+                + "}\n";
+            var p = Translate(vdf);
+            Assert.DoesNotContain(p.KbmMappingSet.Rows, r => r.Target == "KbmKey45");
+            Assert.Contains(p.Report.Entries, e => e.ReasonKey == TranslationReasons.UnknownPhysicalInput);
         }
 
         [Fact]
@@ -662,8 +713,8 @@ namespace PadForge.SteamWorkshop.Tests
         {
             // The 789818086 walk-modifier shape: dpad on the left stick,
             // RCtrl while deflected but inside 74.6 percent of full
-            // deflection (24432/32767). The ring source carries the radius
-            // as its DeadZone percent.
+            // deflection (24432/32767), the inverted edge: pressed inside
+            // 64.6 percent, held out to 84.6.
             string vdf = Head
                 + Group(1, "dpad",
                     Inputs(Inp("edge", "key_press RIGHT_CONTROL"))
@@ -676,17 +727,18 @@ namespace PadForge.SteamWorkshop.Tests
             var row = Assert.Single(p.KbmMappingSet.Rows);
             Assert.Equal("KbmKeyA3", row.Target); // VK 0xA3, Right Ctrl
             var src = Assert.Single(row.Sources);
-            Assert.Equal("Gamepad LeftStickRing", src.Descriptor);
-            Assert.True(src.Invert);
-            Assert.Equal(75, src.DeadZone);
+            Assert.Equal(SteamPadExpect.Edge("Gamepad LeftStickRing", 24432, inverted: true), src.Descriptor);
+            Assert.False(src.Invert);
         }
 
         [Fact]
         public void StickHostedEdge_OuterRingDefaultRadius_UsesTheSerializerDefault()
         {
-            // No authored radius: the untouched-slider default the
-            // serializer writes across the corpus and Valve's templates
-            // (24995..24999) grounds the 76 percent outer ring.
+            // No authored radius: the dpad's edge trigger takes its default
+            // 25000 (the serializer writes 24995..24999 across the corpus and
+            // Valve's templates) with a 10 percent hold-back
+            // (steamclient64.dll 0x1388b23dd): pressed past 86 percent, held
+            // down to 66.
             string vdf = Head
                 + Group(1, "dpad", Inputs(Inp("edge", "key_press E")))
                 + Preset(0, "Default", (1, "joystick active"))
@@ -694,9 +746,8 @@ namespace PadForge.SteamWorkshop.Tests
             var p = Translate(vdf);
             var row = Assert.Single(p.KbmMappingSet.Rows);
             var src = Assert.Single(row.Sources);
-            Assert.Equal("Gamepad LeftStickRing", src.Descriptor);
+            Assert.Equal(SteamPadExpect.Edge("Gamepad LeftStickRing"), src.Descriptor);
             Assert.False(src.Invert);
-            Assert.Equal(76, src.DeadZone);
         }
     }
 }

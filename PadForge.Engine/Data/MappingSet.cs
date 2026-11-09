@@ -283,6 +283,65 @@ namespace PadForge.Engine.Data
                 ? System.Array.Empty<string>()
                 : _workshopGyroRatchetDescriptors.Split('|', System.StringSplitOptions.RemoveEmptyEntries);
 
+        /// <summary>Steam gyro activations the engage button and the ratchet
+        /// cannot carry, by layer, as "layer=Mode,Any|All,button|button"
+        /// entries joined by ";": several device-free buttons that turn the
+        /// gyro on, a set that needs all of them, or layers whose gyro
+        /// groups turn the gyro on differently. Mode is "Hold" (on while
+        /// held), "Release" (on while not held) or "Toggle" (flips on each
+        /// press), and a layer with no buttons is always on. The engaged
+        /// layer's entry applies, else Base's, else none: an AND lane beside
+        /// the engage button and the ratchet like the ratchet itself. Only
+        /// read while <see cref="Authoritative"/>. Empty = no lane.</summary>
+        [XmlAttribute]
+        public string WorkshopGyroActivation
+        {
+            get => _workshopGyroActivation;
+            set { _workshopGyroActivation = value ?? ""; _workshopGyroActivationByLayer = null; }
+        }
+        private string _workshopGyroActivation = "";
+        private System.Collections.Generic.Dictionary<string, GyroActivationEntry> _workshopGyroActivationByLayer;
+
+        /// <summary>One layer's entry of <see cref="WorkshopGyroActivation"/>.</summary>
+        public sealed class GyroActivationEntry
+        {
+            public string Mode = "Hold";
+            public bool All;
+            public string[] Buttons = System.Array.Empty<string>();
+        }
+
+        /// <summary>Parsed, cached view of <see cref="WorkshopGyroActivation"/>
+        /// for the per-tick engage settle. Null when the stamp is empty.</summary>
+        [XmlIgnore]
+        public System.Collections.Generic.Dictionary<string, GyroActivationEntry> WorkshopGyroActivationByLayer
+        {
+            get
+            {
+                if (_workshopGyroActivation.Length == 0) return null;
+                if (_workshopGyroActivationByLayer != null) return _workshopGyroActivationByLayer;
+                var map = new System.Collections.Generic.Dictionary<string, GyroActivationEntry>(System.StringComparer.Ordinal);
+                foreach (string entry in _workshopGyroActivation.Split(';', System.StringSplitOptions.RemoveEmptyEntries))
+                {
+                    int eq = entry.IndexOf('=');
+                    if (eq <= 0) continue;
+                    string[] parts = entry.Substring(eq + 1).Split(',');
+                    if (parts.Length < 3) continue;
+                    map[entry.Substring(0, eq)] = new GyroActivationEntry
+                    {
+                        Mode = parts[0] is "Release" or "Toggle" ? parts[0] : "Hold",
+                        All = parts[1] == "All",
+                        Buttons = parts[2].Split('|', System.StringSplitOptions.RemoveEmptyEntries),
+                    };
+                }
+                return _workshopGyroActivationByLayer = map;
+            }
+        }
+
+        /// <summary>Re-center the slot's gyro each time it turns on: Steam's
+        /// deflection mode with a gyro button and Use Relative on takes the
+        /// controller's pose at each activation as its resting point.</summary>
+        [XmlAttribute] public bool WorkshopGyroRecenterOnEngage { get; set; } = false;
+
         /// <summary>Copies the Workshop slot-level stamps (v18) onto
         /// <paramref name="dst"/>. The ONE seam for every container-copy
         /// helper (profile snapshot deep clone, Copy From Slot, the legacy
@@ -307,6 +366,8 @@ namespace PadForge.Engine.Data
             dst.WorkshopGyroEngageInvert = WorkshopGyroEngageInvert;
             dst.WorkshopGyroEngageToggle = WorkshopGyroEngageToggle;
             dst.WorkshopGyroRatchetDescriptors = WorkshopGyroRatchetDescriptors ?? "";
+            dst.WorkshopGyroActivation = WorkshopGyroActivation ?? "";
+            dst.WorkshopGyroRecenterOnEngage = WorkshopGyroRecenterOnEngage;
         }
     }
 }

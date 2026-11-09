@@ -47,8 +47,24 @@ namespace PadForge.Engine.Menus
         public int StepIndex = -1;
 
         /// <summary>Previous frame's direction bools for the stepping
-        /// edge detector (bit 0 = up, 1 = down, 2 = left, 3 = right).</summary>
+        /// edge detector (bit 0 = up, 1 = down, 2 = left, 3 = right). A
+        /// hotbar keeps its four controls here in Steam's bit order
+        /// (<see cref="MenuHotbar"/>).</summary>
         public int PrevStepMask;
+
+        /// <summary>Hotbar: the bar is shown.</summary>
+        public bool HotbarShown;
+
+        /// <summary>Hotbar: the cell Fire is pressing, -1 = none.</summary>
+        public int HotbarHeld = -1;
+
+        /// <summary>Hotbar: the time, in ms, after which the pressed cell may
+        /// let go, or under Always the next cell may press.</summary>
+        public double HotbarReleaseAtMs;
+
+        /// <summary>Hotbar: last frame's Fire under Release, or last frame's
+        /// shown bar under Touch Release.</summary>
+        public bool HotbarArmed;
 
         public void Reset()
         {
@@ -61,6 +77,10 @@ namespace PadForge.Engine.Menus
             PulseUntilMs = 0;
             StepIndex = -1;
             PrevStepMask = 0;
+            HotbarShown = false;
+            HotbarHeld = -1;
+            HotbarReleaseAtMs = 0;
+            HotbarArmed = false;
         }
     }
 

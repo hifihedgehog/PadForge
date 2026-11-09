@@ -466,6 +466,10 @@
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>camera reset approximated as a gyro recentre</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>mouse region approximated as a centred cursor clamp ({0}% of screen, region centre {1}%, {2}%) while the surface is held</value></data>
   <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>flick stick on a surface with no analogue pair skipped</value></data>
+  <data name="Workshop_Tr_GyroRollFromHorizon" xml:space="preserve"><value>roll centred where the controller rests at the start or on Gyro Recentre, not on the horizon</value></data>
+  <data name="Workshop_Tr_GyroPitchFromHorizon" xml:space="preserve"><value>pitch centred where the controller rests at the start or on Gyro Recentre, not at {0}° from flat</value></data>
+  <data name="Workshop_Tr_DpadPulseHeld" xml:space="preserve"><value>each direction held while pushed (Steam's analogue emulation pulses it, longer the farther it is pushed)</value></data>
+  <data name="Workshop_Tr_SoftPressNoAnalog" xml:space="preserve"><value>soft-press activator on an input with no analogue reading (Steam never fires it)</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Gyro Recentre</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Zeroes the pad's accumulated gyro aim references on press. Smoothing history clears, the Motion Lean neutral re-captures, the gravity estimate re-seeds from the controller's current pose, and the turn the Motion Pitch, Yaw and Roll rows built is undone.</value></data>
   <data name="Menu_HasCenter" xml:space="preserve"><value>Centre Cell</value></data>
@@ -516,7 +520,6 @@
   <data name="About_BlissBoxRefsDesc" xml:space="preserve"><value>The Bliss-Box API behind Read Bliss-Box Adapters, read from Bliss-Box LLC’s API Tool (BSD-style, redistribution free of charge) and DeviceBuddy (source available, Bliss-Box LLC), with button names from the Bliss-Box files in SteveFox1620’s retroarch-joypad-autoconfig fork, Controller Pak checksums checked against libdragon (Unlicense), and the PlayStation pad reply from psx-spx and Linux’s psxpad-spi driver (GPL-2.0-or-later). Controller names and support notes also come from Bliss-Box LLC’s compatibility list, and the adapters’ behaviour was checked against their firmware. Documentation only, no code ships.</value></data>
   <data name="Menu_Fire_Click_LayerHold_Desc" xml:space="preserve"><value>Holds the highlighted cell's binding while the Click Input is held. A highlighted radial centre can fire while the stick rests.</value></data>
   <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>Holds the binding while its cell is highlighted. A radial centre can fire immediately when the layer opens.</value></data>
-  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Direction presses step through the cells and fire each newly selected cell. This hotbar behaviour does not use Fire Mode or Click Input.</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Adds continuous rumble as the selected virtual stick axis moves away from centre. Uses the mapped output from all assigned sources. With Split by Direction, negative movement drives the left motor and positive movement the right. Left Motor or Right Motor puts both directions on that one motor. For Xbox and PlayStation output with rumble devices. Native wheel force feedback is excluded.</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Centre Deadzone</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Reset Centre Deadzone (2%)</value></data>
@@ -588,5 +591,7 @@
   <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>PadForge does not recognise this input: {0}</value></data>
   <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge does not recognise this output: {0}</value></data>
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Commits when the stick re-centres or the layer ends. reWASD's Apply button is not used.</value></data>
+  <data name="Menu_Hotbar_Recenter" xml:space="preserve"><value>Re-Centre Each Time</value></data>
+  <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>A cell fires once, as a short tap, when Fire hides the bar with Hide After Firing on. With Re-Centre Each Time on, the middle cell is the one that fires.</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Analogue key actuation points did not come across.</value></data>
 </root>

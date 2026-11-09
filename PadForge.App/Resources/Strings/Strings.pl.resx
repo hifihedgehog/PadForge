@@ -3818,7 +3818,7 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>Brak</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Klawisz klawiatury</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>Przycisk kontrolera</value></data>
-  <data name="Menu_Style_Tip" xml:space="preserve"><value>Pierścień promieniowy wybiera komórkę według kierunku, jak koło broni. Siatka dotykowa wybiera komórkę według pozycji: miejsca, w którym palec spoczywa na panelu, albo kierunku wskazywanego drążkiem.</value></data>
+  <data name="Menu_Style_Tip" xml:space="preserve"><value>„Pierścień promieniowy” wybiera komórkę według kierunku, jak koło broni. „Siatka dotykowa” wybiera komórkę według pozycji: miejsca, w którym palec spoczywa na panelu, albo kierunku wskazywanego drążkiem. „Pasek umiejętności” pokazuje rząd komórek, przesuwa się po nim i uruchamia wybraną komórkę, a każda z tych czynności ma własny element sterowania.</value></data>
   <data name="Menu_HostInput_Tip" xml:space="preserve"><value>Wejście, które otwiera to menu i nim steruje, odczytywane z fizycznych kontrolerów przypisanych do slotu. Drążek otwiera je po wychyleniu poza Martwą strefę aktywacji. Panel dotykowy otwiera je przy dotknięciu.</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>Ogranicza to menu do jednej połowy panelu dotykowego, aby dwa menu mogły dzielić jeden panel.</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>Kiedy podświetlona komórka uruchamia swoje powiązanie. Każda opcja jest wyjaśniona poniżej.</value></data>
@@ -4248,7 +4248,7 @@ Czy PadForge ma je teraz odinstalować? Wymaga to uprawnień administratora i mo
   <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>Uruchamia się raz przy zwolnieniu Wejścia kliknięcia. Jeśli powierzchnia zostanie zwolniona w tej samej chwili, uruchamia poprzedni wybór.</value></data>
   <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>Uruchamia się raz, gdy oderwiesz palec albo cofniesz drążek do Martwej strefy aktywacji, a menu pozostaje otwarte. Opuszczenie warstwy zatwierdza też wybór, który jest jeszcze wskazywany.</value></data>
   <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>Utrzymuje powiązanie, gdy jego komórka jest podświetlona. Środek menu promieniowego może zadziałać natychmiast po otwarciu warstwy.</value></data>
-  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Naciśnięcia kierunków przechodzą przez kolejne komórki i uruchamiają każdą nowo wybraną komórkę. To zachowanie paska umiejętności nie korzysta z opcji Tryb wyzwalania ani Wejście kliknięcia.</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Naciśnięcia kierunków przechodzą przez kolejne komórki i uruchamiają każdą nowo wybraną komórkę, bez opcji „Tryb wyzwalania” i „Wejście kliknięcia”. Styl „Pasek umiejętności” przesuwa się bez uruchamiania i uruchamia własnym elementem sterowania „Uruchom”.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Rozszerzony protokół Flydigi</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Włącza dodatkowe przyciski i czujniki ruchu w obsługiwanych kontrolerach Flydigi.</value></data>
   <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Działa oprogramowanie Flydigi: {0}. Może ono używać tego samego interfejsu kontrolera co PadForge, a zgłaszano, że Vader 5 Pro wielokrotnie się rozłączał, gdy oba programy miały do niego dostęp. Jeśli ten kontroler rozłącza się i łączy ponownie, zatrzymaj tę usługę na czas korzystania z programu PadForge, pozostaw kontroler ukryty i usuń usługę z białej listy HidHide albo spróbuj wyłączyć w Ustawieniach opcję „Rozszerzony protokół Flydigi”, choć nie potwierdzono, że to pomaga.</value></data>
@@ -5099,7 +5099,28 @@ Czy PadForge ma je teraz odinstalować? Wymaga to uprawnień administratora i mo
     <value>Krzyżak</value>
   </data>
   <data name="Menu_Style_Keyboard" xml:space="preserve"><value>Klawiatura</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>Pierścień promieniowy i Siatka dotykowa uruchamiają przypisania komórek. Klawiatura wpisuje klawisze używanego układu Windows.</value></data>
+  <data name="Menu_Style_Hotbar" xml:space="preserve"><value>Pasek umiejętności</value></data>
+  <data name="Menu_Hotbar_Show" xml:space="preserve"><value>Pokaż lub ukryj</value></data>
+  <data name="Menu_Hotbar_Show_Tip" xml:space="preserve"><value>Pokazuje pasek, a przy następnym naciśnięciu go ukrywa. Pasek ukryty w ten sposób otwiera się następnym razem na środkowej komórce.</value></data>
+  <data name="Menu_Hotbar_Previous" xml:space="preserve"><value>Poprzednia</value></data>
+  <data name="Menu_Hotbar_Previous_Tip" xml:space="preserve"><value>Wybiera komórkę po lewej, pomijając komórki bez ustawienia.</value></data>
+  <data name="Menu_Hotbar_Next" xml:space="preserve"><value>Następna</value></data>
+  <data name="Menu_Hotbar_Next_Tip" xml:space="preserve"><value>Wybiera komórkę po prawej, pomijając komórki bez ustawienia.</value></data>
+  <data name="Menu_Hotbar_Fire" xml:space="preserve"><value>Uruchom</value></data>
+  <data name="Menu_Hotbar_Fire_Tip" xml:space="preserve"><value>Uruchamia wybraną komórkę zgodnie z opcją „Tryb wyzwalania”.</value></data>
+  <data name="Menu_Hotbar_Caption" xml:space="preserve"><value>„Pokaż lub ukryj” wywołuje rząd komórek, „Poprzednia” i „Następna” przesuwają się po nim, a „Uruchom” uruchamia wybraną komórkę. Pusty element sterowania przyjmuje kierunek z opcji „Otwierane przez”: w dół, w lewo, w prawo lub w górę.</value></data>
+  <data name="Menu_Hotbar_Wrap" xml:space="preserve"><value>Zawijanie</value></data>
+  <data name="Menu_Hotbar_Wrap_Tip" xml:space="preserve"><value>Przejście za ostatnią komórkę prowadzi do pierwszej i odwrotnie. Gdy wyłączone, wybór zatrzymuje się na obu końcach.</value></data>
+  <data name="Menu_Hotbar_DismissOnFire" xml:space="preserve"><value>Ukryj po uruchomieniu</value></data>
+  <data name="Menu_Hotbar_DismissOnFire_Tip" xml:space="preserve"><value>„Uruchom” ukrywa pasek. Gdy wyłączone, pasek pozostaje na ekranie i tę samą komórkę można uruchomić ponownie.</value></data>
+  <data name="Menu_Hotbar_Recenter" xml:space="preserve"><value>Wyśrodkuj za każdym razem</value></data>
+  <data name="Menu_Hotbar_Recenter_Tip" xml:space="preserve"><value>Gdy pasek jest ukryty, wybór wraca na środkową komórkę. Gdy wyłączone, pasek ukryty przez „Uruchom” otwiera się na uruchomionej komórce.</value></data>
+  <data name="Menu_Reset_HotbarControl" xml:space="preserve"><value>Resetuj element sterowania</value></data>
+  <data name="Menu_Fire_Click_Hotbar_Desc" xml:space="preserve"><value>„Uruchom” naciska wybraną komórkę i trzyma ją, dopóki „Uruchom” jest przytrzymane. Przy włączonej opcji „Ukryj po uruchomieniu” naciśnięcie jest krótkim stuknięciem.</value></data>
+  <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>Wybrana komórka uruchamia się raz, jako krótkie stuknięcie, po zwolnieniu „Uruchom”. Przy włączonej opcji „Ukryj po uruchomieniu” uruchamia się, gdy tylko „Uruchom” ukryje pasek.</value></data>
+  <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>Komórka uruchamia się raz, jako krótkie stuknięcie, gdy „Uruchom” ukrywa pasek przy włączonej opcji „Ukryj po uruchomieniu”. Przy włączonej opcji „Wyśrodkuj za każdym razem” uruchamia się komórka środkowa.</value></data>
+  <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>Wybrana komórka jest trzymana przez cały czas, gdy pasek jest pokazany. Przejście do kolejnej komórki puszcza poprzednią i trzyma następną.</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>„Pierścień promieniowy”, „Siatka dotykowa” i „Pasek umiejętności” uruchamiają przypisania komórek. „Klawiatura” wpisuje klawisze używanego układu Windows.</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Układ</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Jak klawiatura rozmieszcza klawisze i jak kontroler je wybiera.</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Jedno zaznaczenie, przesuwane drążkiem lub czterema wejściami, czyli układ używany w Windows, Xbox i Steam.</value></data>
@@ -5219,6 +5240,12 @@ Czy PadForge ma je teraz odinstalować? Wymaga to uprawnień administratora i mo
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (brak na tym komputerze)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (brak na tym slocie)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>żyroskop w trybie Wskaźnik laserowy odczytano jako odchylenie (PadForge nie ma konwersji wskaźnika laserowego)</value></data>
+  <data name="Workshop_Tr_GyroRollFromHorizon" xml:space="preserve"><value>przechylenie wyśrodkowane w pozycji spoczynkowej kontrolera na starcie lub po akcji „Wyśrodkowanie żyroskopu”, a nie względem horyzontu</value></data>
+  <data name="Workshop_Tr_GyroPitchFromHorizon" xml:space="preserve"><value>pochylenie wyśrodkowane w pozycji spoczynkowej kontrolera na starcie lub po akcji „Wyśrodkowanie żyroskopu”, a nie na {0}° od poziomu</value></data>
+  <data name="Workshop_Tr_GyroTiltRangeCapped" xml:space="preserve"><value>pełne wychylenie przy 90° przechyłu, a nie przy {0}°</value></data>
+  <data name="Workshop_Tr_OutputJoystickUnrouted" xml:space="preserve"><value>output_joystick {0} kieruje parę osi ani do drążka, ani do myszy, więc nic nie jest mapowane</value></data>
+  <data name="Workshop_Tr_DpadPulseHeld" xml:space="preserve"><value>każdy kierunek jest przytrzymany, dopóki jest wciśnięty (emulacja analogowa w Steam włącza go i wyłącza impulsami, tym dłuższymi, im dalej wychylono)</value></data>
+  <data name="Workshop_Tr_SoftPressNoAnalog" xml:space="preserve"><value>aktywator lekkiego naciśnięcia na wejściu bez odczytu analogowego (Steam nigdy go nie uruchamia)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>W reWASD {0} nadal dociera do Windows, bo plik mapuje go bez odmapowania. Gdy Przechwytuj zmapowane wejścia jest włączone, PadForge go blokuje.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows kształtuje {0} drążka radialnego według kąta wychylenia. Karta Drążki w PadForge traktuje wychylenie na wprost tak samo, a ukośne inaczej.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows skaluje martwą strefę żyroskopu na każdej osi według kąta ruchu. PadForge odejmuje całą martwą strefę od każdej osi, więc ruch na wprost działa tak samo, a wolny ruch ukośny zaczyna działać później.</value></data>

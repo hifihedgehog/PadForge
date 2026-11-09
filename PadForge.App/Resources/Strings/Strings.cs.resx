@@ -3818,7 +3818,7 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>Žádná</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Klávesa klávesnice</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>Tlačítko ovladače</value></data>
-  <data name="Menu_Style_Tip" xml:space="preserve"><value>Radiální prstenec vybírá buňku podle směru, jako kolo zbraní. Dotyková mřížka vybírá buňku podle polohy: podle místa prstu na touchpadu nebo směru páčky.</value></data>
+  <data name="Menu_Style_Tip" xml:space="preserve"><value>Radiální prstenec vybírá buňku podle směru, jako kolo zbraní. Dotyková mřížka vybírá buňku podle polohy: podle místa prstu na touchpadu nebo směru páčky. Hotbar zobrazí řadu buněk, posouvá se po ní a spouští vybranou buňku, přičemž každá z těchto akcí má vlastní ovládání.</value></data>
   <data name="Menu_HostInput_Tip" xml:space="preserve"><value>Vstup, který tuto nabídku otevírá a řídí, čtený z fyzických ovladačů přiřazených ke slotu. Páčka ji otevře po vychýlení za Aktivační mrtvou zónu. Touchpad ji otevře při dotyku.</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>Omezí tuto nabídku na jednu polovinu touchpadu, takže se o něj mohou dělit dvě nabídky.</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>Kdy zvýrazněná buňka spustí svou vazbu. Každá volba je vysvětlena níže.</value></data>
@@ -4248,7 +4248,7 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>Spustí se jednou při uvolnění Vstupu kliknutí. Pokud se ve stejném okamžiku uvolní i plocha, spustí předchozí výběr.</value></data>
   <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>Spustí se jednou, když zvednete prst nebo vrátíte páčku do Aktivační mrtvé zóny, přičemž nabídka zůstává otevřená. Opuštění vrstvy také potvrdí výběr, který se ještě řídí.</value></data>
   <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>Drží vazbu, dokud je její buňka zvýrazněná. Střed radiální nabídky se může spustit hned při otevření vrstvy.</value></data>
-  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Stisky směrů procházejí buňky a spouštějí každou nově vybranou buňku. Toto chování hotbaru nepoužívá Režim spuštění ani Vstup kliknutí.</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Stisky směrů procházejí buňkami a spouštějí každou nově vybranou buňku, bez „Režim spuštění“ a „Vstup kliknutí“. Styl Hotbar se posouvá bez spouštění a spouští vlastním ovládáním „Spustit“.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Rozšířený protokol Flydigi</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Povolí další tlačítka a pohybové senzory na podporovaných ovladačích Flydigi.</value></data>
   <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Běží software Flydigi: {0}. Může používat stejné rozhraní ovladače jako PadForge a u ovladače Vader 5 Pro bylo hlášeno opakované odpojování, když měly přístup oba. Pokud se tento ovladač odpojuje a znovu připojuje, zastavte službu po dobu používání programu PadForge, nechte ovladač skrytý a odeberte službu ze seznamu povolených v HidHide, nebo zkuste v Nastavení vypnout „Rozšířený protokol Flydigi“, u čehož není potvrzeno, že pomůže.</value></data>
@@ -5099,7 +5099,28 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
     <value>Směrový kříž</value>
   </data>
   <data name="Menu_Style_Keyboard" xml:space="preserve"><value>Klávesnice</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>Radiální prstenec a Dotyková mřížka spouštějí vazby buněk. Klávesnice píše klávesy používaného rozložení Windows.</value></data>
+  <data name="Menu_Style_Hotbar" xml:space="preserve"><value>Hotbar</value></data>
+  <data name="Menu_Hotbar_Show" xml:space="preserve"><value>Zobrazit nebo skrýt</value></data>
+  <data name="Menu_Hotbar_Show_Tip" xml:space="preserve"><value>Zobrazí lištu a při dalším stisku ji skryje. Takto skrytá lišta se příště otevře na střední buňce.</value></data>
+  <data name="Menu_Hotbar_Previous" xml:space="preserve"><value>Předchozí</value></data>
+  <data name="Menu_Hotbar_Previous_Tip" xml:space="preserve"><value>Vybere buňku vlevo a přeskočí buňky, které nemají nic nastaveno.</value></data>
+  <data name="Menu_Hotbar_Next" xml:space="preserve"><value>Další</value></data>
+  <data name="Menu_Hotbar_Next_Tip" xml:space="preserve"><value>Vybere buňku vpravo a přeskočí buňky, které nemají nic nastaveno.</value></data>
+  <data name="Menu_Hotbar_Fire" xml:space="preserve"><value>Spustit</value></data>
+  <data name="Menu_Hotbar_Fire_Tip" xml:space="preserve"><value>Spustí vybranou buňku tak, jak určuje „Režim spuštění“.</value></data>
+  <data name="Menu_Hotbar_Caption" xml:space="preserve"><value>„Zobrazit nebo skrýt“ vyvolá řadu buněk, „Předchozí“ a „Další“ po ní posouvají výběr a „Spustit“ spustí vybranou buňku. Ovládání, které zůstane prázdné, převezme směr „Otevírá se pomocí“: dolů, doleva, doprava nebo nahoru.</value></data>
+  <data name="Menu_Hotbar_Wrap" xml:space="preserve"><value>Zacyklit</value></data>
+  <data name="Menu_Hotbar_Wrap_Tip" xml:space="preserve"><value>Krok za poslední buňku přejde na první a zpět. Když je vypnuto, výběr se na obou koncích zastaví.</value></data>
+  <data name="Menu_Hotbar_DismissOnFire" xml:space="preserve"><value>Skrýt po spuštění</value></data>
+  <data name="Menu_Hotbar_DismissOnFire_Tip" xml:space="preserve"><value>„Spustit“ skryje lištu. Když je vypnuto, lišta zůstane zobrazená a stejnou buňku lze spustit znovu.</value></data>
+  <data name="Menu_Hotbar_Recenter" xml:space="preserve"><value>Vždy znovu vystředit</value></data>
+  <data name="Menu_Hotbar_Recenter_Tip" xml:space="preserve"><value>Dokud je lišta skrytá, výběr se vrací na střední buňku. Když je vypnuto, lišta skrytá tlačítkem „Spustit“ se otevře na buňce, kterou spustila.</value></data>
+  <data name="Menu_Reset_HotbarControl" xml:space="preserve"><value>Resetovat ovládání</value></data>
+  <data name="Menu_Fire_Click_Hotbar_Desc" xml:space="preserve"><value>„Spustit“ stiskne vybranou buňku a drží ji, dokud je „Spustit“ drženo. Když je zapnuto „Skrýt po spuštění“, jde o krátké klepnutí.</value></data>
+  <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>Vybraná buňka se spustí jednou, jako krátké klepnutí, když se „Spustit“ uvolní. Když je zapnuto „Skrýt po spuštění“, spustí se hned, jakmile „Spustit“ lištu skryje.</value></data>
+  <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>Buňka se spustí jednou, jako krátké klepnutí, když „Spustit“ skryje lištu při zapnutém „Skrýt po spuštění“. Když je zapnuto „Vždy znovu vystředit“, spustí se střední buňka.</value></data>
+  <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>Vybraná buňka je držená po celou dobu, kdy je lišta zobrazená. Krokem se jedna buňka pustí a drží se další.</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>Radiální prstenec, Dotyková mřížka a Hotbar spouštějí vazby buněk. Klávesnice píše klávesy používaného rozložení Windows.</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Rozložení</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Jak klávesnice uspořádá klávesy a jak je ovladač vybírá.</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Jedno zvýraznění, posouvané páčkou nebo čtyřmi vstupy, rozložení, které používají Windows, Xbox a Steam.</value></data>
@@ -5219,6 +5240,12 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (není v tomto počítači)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (není v tomto slotu)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>gyroskop v režimu Laserové ukazovátko čten jako yaw (PadForge nemá převod laserového ukazovátka)</value></data>
+  <data name="Workshop_Tr_GyroRollFromHorizon" xml:space="preserve"><value>roll se vystředí v klidové poloze ovladače při spuštění nebo při akci „Vystředění gyroskopu“, ne podle horizontu</value></data>
+  <data name="Workshop_Tr_GyroPitchFromHorizon" xml:space="preserve"><value>pitch se vystředí v klidové poloze ovladače při spuštění nebo při akci „Vystředění gyroskopu“, ne při {0}° od vodorovné polohy</value></data>
+  <data name="Workshop_Tr_GyroTiltRangeCapped" xml:space="preserve"><value>plné vychýlení při náklonu 90°, ne {0}°</value></data>
+  <data name="Workshop_Tr_OutputJoystickUnrouted" xml:space="preserve"><value>output_joystick {0} nepošle dvojici os ani na páčku, ani na myš, takže se nic nemapuje</value></data>
+  <data name="Workshop_Tr_DpadPulseHeld" xml:space="preserve"><value>každý směr se drží, dokud je stisknutý (při analogové emulaci Steam směr pulzuje, tím déle, čím dál je stisknutý)</value></data>
+  <data name="Workshop_Tr_SoftPressNoAnalog" xml:space="preserve"><value>aktivátor lehkým stiskem na vstupu bez analogového údaje (Steam ho nikdy nespustí)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>V reWASD se {0} stále dostává do Windows, protože soubor ji mapuje bez zrušení původní funkce. Při zapnuté volbě Pohlcovat namapované vstupy ji PadForge zadrží.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows tvaruje {0} radiální páčky podle úhlu vychýlení. Karta páčky v PadForge přímé vychýlení přehraje stejně a úhlopříčné jinak.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows upravuje mrtvou zónu gyroskopu na každé ose podle úhlu pohybu. PadForge odečítá celou mrtvou zónu na každé ose, takže přímý pohyb se přehraje stejně a pomalý úhlopříčný začne později.</value></data>

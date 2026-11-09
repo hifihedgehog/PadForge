@@ -3776,7 +3776,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>Geen</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Toetsenbordtoets</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>Controllerknop</value></data>
-  <data name="Menu_Style_Tip" xml:space="preserve"><value>Radiale ring kiest een cel op richting, zoals een wapenwiel. Aanraakraster kiest een cel op positie: waar de vinger op het pad ligt, of waar de stick naartoe wijst.</value></data>
+  <data name="Menu_Style_Tip" xml:space="preserve"><value>Radiale ring kiest een cel op richting, zoals een wapenwiel. Touch-raster kiest een cel op positie: waar de vinger op het pad ligt, of waar de stick naartoe wijst. Hotbar toont een rij cellen, stapt erlangs en vuurt de geselecteerde cel af, elk met een eigen besturing.</value></data>
   <data name="Menu_HostInput_Tip" xml:space="preserve"><value>De invoer die dit menu opent en bestuurt, gelezen van de fysieke controllers die aan het slot zijn toegewezen. Een stick opent het wanneer je hem voorbij de activeringsdeadzone duwt. Een touchpad opent het bij aanraking.</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>Beperk dit menu tot één helft van het trackpad, zodat twee menu's het pad kunnen delen.</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>Wanneer de gemarkeerde cel zijn toewijzing activeert. Elke keuze wordt hieronder uitgelegd.</value></data>
@@ -4219,7 +4219,7 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>Vuurt één keer wanneer de klikinvoer wordt losgelaten. Als het oppervlak op hetzelfde moment loskomt, vuurt de vorige selectie.</value></data>
   <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>Vuurt één keer wanneer u uw vinger optilt of de stick terugbrengt in de activeringsdode zone, terwijl het menu open blijft. De laag verlaten bevestigt ook een selectie die nog wordt gestuurd.</value></data>
   <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>Houdt de toewijzing vast zolang de cel is gemarkeerd. Een radiaal midden kan direct vuren wanneer de laag opent.</value></data>
-  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Richtingsdrukken stappen door de cellen en vuren elke nieuw geselecteerde cel. Dit hotbar-gedrag gebruikt geen vuurmodus of klikinvoer.</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Richtingsdrukken stappen door de cellen en vuren elke nieuw geselecteerde cel af, zonder ‘Afvuurmodus’ of ‘Klikinvoer’. De stijl Hotbar stapt zonder af te vuren en vuurt af met een eigen besturing ‘Afvuren’.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Uitgebreid Flydigi-protocol</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Schakelt extra knoppen en bewegingssensoren in op ondersteunde Flydigi-controllers.</value></data>
   <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi-software wordt uitgevoerd: {0}. Het kan dezelfde controllerinterface gebruiken als PadForge, en van een Vader 5 Pro is gemeld dat hij herhaaldelijk de verbinding verloor terwijl beide toegang hadden. Als deze controller wegvalt en opnieuw verbindt: stop de service terwijl u PadForge gebruikt, houd de controller verborgen en verwijder de service uit de HidHide-whitelist, of probeer de optie "Uitgebreid Flydigi-protocol" in Instellingen uit te schakelen. Of dat helpt, is niet bevestigd.</value></data>
@@ -5070,7 +5070,28 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
     <value>D-pad</value>
   </data>
   <data name="Menu_Style_Keyboard" xml:space="preserve"><value>Toetsenbord</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>Radiale ring en Touch-raster activeren celtoewijzingen. Toetsenbord typt de toetsen van de Windows-indeling die in gebruik is.</value></data>
+  <data name="Menu_Style_Hotbar" xml:space="preserve"><value>Hotbar</value></data>
+  <data name="Menu_Hotbar_Show" xml:space="preserve"><value>Tonen of verbergen</value></data>
+  <data name="Menu_Hotbar_Show_Tip" xml:space="preserve"><value>Toont de balk en verbergt hem bij de volgende druk. Een balk die zo is verborgen, opent de volgende keer op de middelste cel.</value></data>
+  <data name="Menu_Hotbar_Previous" xml:space="preserve"><value>Vorige</value></data>
+  <data name="Menu_Hotbar_Previous_Tip" xml:space="preserve"><value>Selecteert de cel links, waarbij cellen zonder instelling worden overgeslagen.</value></data>
+  <data name="Menu_Hotbar_Next" xml:space="preserve"><value>Volgende</value></data>
+  <data name="Menu_Hotbar_Next_Tip" xml:space="preserve"><value>Selecteert de cel rechts, waarbij cellen zonder instelling worden overgeslagen.</value></data>
+  <data name="Menu_Hotbar_Fire" xml:space="preserve"><value>Afvuren</value></data>
+  <data name="Menu_Hotbar_Fire_Tip" xml:space="preserve"><value>Vuurt de geselecteerde cel af, zoals ‘Afvuurmodus’ bepaalt.</value></data>
+  <data name="Menu_Hotbar_Caption" xml:space="preserve"><value>‘Tonen of verbergen’ haalt een rij cellen tevoorschijn, ‘Vorige’ en ‘Volgende’ stappen erlangs en ‘Afvuren’ vuurt de geselecteerde cel af. Een leeg gelaten besturing neemt de richting van ‘Opent met’: omlaag, links, rechts of omhoog.</value></data>
+  <data name="Menu_Hotbar_Wrap" xml:space="preserve"><value>Omlopen</value></data>
+  <data name="Menu_Hotbar_Wrap_Tip" xml:space="preserve"><value>Voorbij de laatste cel stappen gaat naar de eerste, en andersom. Uit: de selectie stopt aan beide uiteinden.</value></data>
+  <data name="Menu_Hotbar_DismissOnFire" xml:space="preserve"><value>Verbergen na afvuren</value></data>
+  <data name="Menu_Hotbar_DismissOnFire_Tip" xml:space="preserve"><value>‘Afvuren’ verbergt de balk. Uit: de balk blijft staan en dezelfde cel kan opnieuw worden afgevuurd.</value></data>
+  <data name="Menu_Hotbar_Recenter" xml:space="preserve"><value>Telkens hercentreren</value></data>
+  <data name="Menu_Hotbar_Recenter_Tip" xml:space="preserve"><value>Zolang de balk verborgen is, gaat de selectie terug naar de middelste cel. Uit: een balk die door ‘Afvuren’ is verborgen, opent op de cel die is afgevuurd.</value></data>
+  <data name="Menu_Reset_HotbarControl" xml:space="preserve"><value>Besturing herstellen</value></data>
+  <data name="Menu_Fire_Click_Hotbar_Desc" xml:space="preserve"><value>‘Afvuren’ drukt de geselecteerde cel in en houdt hem vast zolang ‘Afvuren’ is ingehouden. Met ‘Verbergen na afvuren’ aan is de druk een korte tik.</value></data>
+  <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>De geselecteerde cel wordt één keer afgevuurd, als korte tik, wanneer ‘Afvuren’ wordt losgelaten. Met ‘Verbergen na afvuren’ aan gebeurt dat zodra ‘Afvuren’ de balk verbergt.</value></data>
+  <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>Een cel wordt één keer afgevuurd, als korte tik, wanneer ‘Afvuren’ de balk verbergt met ‘Verbergen na afvuren’ aan. Met ‘Telkens hercentreren’ aan is de middelste cel degene die wordt afgevuurd.</value></data>
+  <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>De geselecteerde cel wordt vastgehouden zolang de balk wordt getoond. Stappen laat een cel los en houdt de volgende vast.</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>Radiale ring, Touch-raster en Hotbar activeren celtoewijzingen. Toetsenbord typt de toetsen van de Windows-indeling die in gebruik is.</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Indeling</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Hoe het toetsenbord zijn toetsen indeelt en hoe een controller ze kiest.</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Eén markering, verplaatst met een stick of vier invoeren, de indeling die Windows, Xbox en Steam gebruiken.</value></data>
@@ -5190,6 +5211,12 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (niet op deze pc)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (niet op dit slot)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>gyro Laserpen gelezen als yaw (PadForge heeft geen laserpenomzetting)</value></data>
+  <data name="Workshop_Tr_GyroRollFromHorizon" xml:space="preserve"><value>roll gecentreerd op de rustpositie van de controller bij het starten of bij Gyro hercentreren, niet op de horizon</value></data>
+  <data name="Workshop_Tr_GyroPitchFromHorizon" xml:space="preserve"><value>pitch gecentreerd op de rustpositie van de controller bij het starten of bij Gyro hercentreren, niet op {0}° ten opzichte van vlak</value></data>
+  <data name="Workshop_Tr_GyroTiltRangeCapped" xml:space="preserve"><value>volledige uitslag bij 90° kanteling, niet bij {0}°</value></data>
+  <data name="Workshop_Tr_OutputJoystickUnrouted" xml:space="preserve"><value>output_joystick {0} stuurt het paar naar geen van beide sticks en ook niet naar de muis, dus er wordt niets toegewezen</value></data>
+  <data name="Workshop_Tr_DpadPulseHeld" xml:space="preserve"><value>elke richting vastgehouden zolang er geduwd wordt (de analoge emulatie van Steam pulseert hem, langer naarmate er verder geduwd wordt)</value></data>
+  <data name="Workshop_Tr_SoftPressNoAnalog" xml:space="preserve"><value>zachte-druk-activator op een invoer zonder analoge waarde (Steam laat hem nooit afgaan)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>In reWASD bereikt {0} nog steeds Windows, omdat het bestand die toewijst zonder de toewijzing op te heffen. Met Toegewezen invoer verbruiken aan houdt PadForge die tegen.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows vormt de {0} van een radiale stick naar de hoek van de duw. De stickkaart van PadForge behandelt een rechte duw gelijk en een diagonale duw anders.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows past de dode zone van de gyro per as aan naar de hoek van de beweging. PadForge haalt de hele dode zone van elke as af, dus een rechte beweging werkt gelijk en een trage diagonale begint later.</value></data>

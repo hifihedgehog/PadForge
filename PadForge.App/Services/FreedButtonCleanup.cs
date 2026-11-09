@@ -175,6 +175,12 @@ namespace PadForge.Services
                     if (names(m.DeviceGuid, m.ClickDescriptor)) { m.ClickDescriptor = ""; changed = true; }
                     if (names(m.DeviceGuid, m.CustomXDescriptor)) { m.CustomXDescriptor = ""; changed = true; }
                     if (names(m.DeviceGuid, m.CustomYDescriptor)) { m.CustomYDescriptor = ""; changed = true; }
+                    // A hotbar's controls read on the menu's device too. An
+                    // emptied one goes back to its opener's direction.
+                    if (names(m.DeviceGuid, m.HotbarShowDescriptor)) { m.HotbarShowDescriptor = ""; changed = true; }
+                    if (names(m.DeviceGuid, m.HotbarPreviousDescriptor)) { m.HotbarPreviousDescriptor = ""; changed = true; }
+                    if (names(m.DeviceGuid, m.HotbarNextDescriptor)) { m.HotbarNextDescriptor = ""; changed = true; }
+                    if (names(m.DeviceGuid, m.HotbarFireDescriptor)) { m.HotbarFireDescriptor = ""; changed = true; }
                     changed |= ClearKeyboardMenu(m, names);
                 }
             }

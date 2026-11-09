@@ -179,8 +179,10 @@ namespace PadForge.SteamWorkshop.Tests
         // ─── T3: the bare "deadzone" key ────────────────────────────────
 
         [Fact]
-        public void DpadDeadzoneKey_ParsesAsInnerRadius()
+        public void DpadDeadzoneKey_SetsTheEngageRadius()
         {
+            // The dpad's dead zone seeds its engage trigger (steamclient64.dll
+            // 0x1388b23dd): engaged past 1638 plus 1.25 percent.
             string vdf = Head
                 + Group(1, "dpad", Settings(("deadzone", "1638"))
                     + Inputs(Inp("dpad_north", "key_press W")))
@@ -189,7 +191,8 @@ namespace PadForge.SteamWorkshop.Tests
             var p = Translate(vdf);
 
             var row = Assert.Single(p.KbmMappingSet.Rows);
-            Assert.Equal(5, Assert.Single(row.Sources).DeadZone); // 1638 / 32767
+            Assert.Equal(SteamPadExpect.Wedge(90, PadForge.Engine.Common.Mapping.BoundedGate.None, "Gamepad LeftStickRing", deadzone: 1638),
+                Assert.Single(row.Sources).Descriptor);
             // Member-only hosts emit no pair, so no radial residual note.
             Assert.DoesNotContain(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.DeadZoneRadialResidual);

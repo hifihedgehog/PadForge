@@ -92,12 +92,13 @@ namespace PadForge.ViewModels
             LayerHoldFireOptionsBacking = BuildLayerHoldFireOptions();
             KeyboardLayoutOptionsBacking = BuildKeyboardLayoutOptions();
             OpenPressOptionsBacking = BuildOpenPressOptions();
+            HotbarFireOptionsBacking = BuildHotbarFireOptions();
         }
 
         /// <summary>Which input the freeform recorder is currently aimed
         /// at: the opener fold, one of the Custom steer axes, or the
         /// Click input.</summary>
-        public enum MenuRecordTarget { Host, CustomX, CustomY, Click }
+        public enum MenuRecordTarget { Host, CustomX, CustomY, Click, HotbarShow, HotbarPrevious, HotbarNext, HotbarFire }
 
         public MenuEditorItem(MenuDefinitionEntry entry)
         {
@@ -286,31 +287,43 @@ namespace PadForge.ViewModels
         /// row's rule).</summary>
         public bool ShowWebControllerRow => IsGrid || Entry.ShowOnWebController;
 
-        /// <summary>0 = Radial, 1 = Grid, 2 = Keyboard (combo index = enum
-        /// value). A Selector losing its items pushes -1, which is no edit.</summary>
+        /// <summary>0 = Radial, 1 = Grid, 2 = Keyboard, 3 = Hotbar (combo index
+        /// = enum value). A Selector losing its items pushes -1, which is no
+        /// edit.</summary>
         public int KindIndex
         {
             get => (int)Entry.Kind;
             set
             {
                 if (value < 0) return;
-                var kind = value switch { 1 => MenuKind.Grid, 2 => MenuKind.Keyboard, _ => MenuKind.Radial };
+                var kind = value switch
+                {
+                    1 => MenuKind.Grid,
+                    2 => MenuKind.Keyboard,
+                    3 => MenuKind.Hotbar,
+                    _ => MenuKind.Radial,
+                };
                 if (Entry.Kind == kind) return;
                 var was = Entry.Kind;
                 Entry.Kind = kind;
-                // A touch grid has no center cell. A keyboard reads none, so
-                // a ring's stays for when it turns back (#566).
-                if (kind == MenuKind.Grid) Entry.HasCenter = false;
+                // A touch grid and a hotbar have no center cell. A keyboard
+                // reads none, so a ring's stays for when it turns back (#566).
+                if (kind is MenuKind.Grid or MenuKind.Hotbar) Entry.HasCenter = false;
+                if (was == MenuKind.Keyboard) LeaveKeyboardDefaults();
+                if (was == MenuKind.Hotbar) LeaveHotbarDefaults();
                 if (kind == MenuKind.Keyboard) ApplyKeyboardDefaults();
-                else if (was == MenuKind.Keyboard) LeaveKeyboardDefaults();
+                if (kind == MenuKind.Hotbar) ApplyHotbarDefaults();
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(IsRadial));
                 OnPropertyChanged(nameof(IsGrid));
                 OnPropertyChanged(nameof(ShowWebControllerRow));
                 OnPropertyChanged(nameof(IsButtonPairGrid));
+                OnPropertyChanged(nameof(FireOptions));
+                OnPropertyChanged(nameof(FireTypeIndex));
                 OnPropertyChanged(nameof(SelectedFireDescription));
                 RebuildCells();
                 RaiseKeyboardDependents();
+                RaiseHotbarDependents();
                 OnEdited();
                 StructureChanged?.Invoke();
             }
@@ -362,8 +375,8 @@ namespace PadForge.ViewModels
 
         /// <summary>The stay-open checkbox shows once a real layer is chosen,
         /// and stays visible while the flag is set so a malformed loaded
-        /// configuration can be reset.</summary>
-        public bool ShowLayerHold => HasNamedLayer || Entry.LayerHoldsOpen;
+        /// configuration can be reset. A hotbar has no use for it.</summary>
+        public bool ShowLayerHold => (HasNamedLayer && !IsHotbar) || Entry.LayerHoldsOpen;
 
         /// <summary>Stay-open mode: the layer holds the menu open and the
         /// surface only steers. Accepts false always and true only with a
@@ -383,7 +396,9 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>What the runtime will actually do with the flag.</summary>
-        public bool EffectiveLayerHoldsOpen => Entry.LayerHoldsOpen && HasNamedLayer;
+        /// <summary>A hotbar never stays open on its layer: its own Show or
+        /// Hide control shows the bar.</summary>
+        public bool EffectiveLayerHoldsOpen => Entry.LayerHoldsOpen && HasNamedLayer && !IsHotbar;
 
         private void RaiseLayerDependents()
         {
@@ -576,6 +591,7 @@ namespace PadForge.ViewModels
             new MenuIntOption { Value = 0, Label = Strings.Instance.Menu_Style_Radial },
             new MenuIntOption { Value = 1, Label = Strings.Instance.Menu_Style_Grid },
             new MenuIntOption { Value = 2, Label = Strings.Instance.Menu_Style_Keyboard },
+            new MenuIntOption { Value = 3, Label = Strings.Instance.Menu_Style_Hotbar },
         };
 
         public IReadOnlyList<MenuIntOption> KindOptions => KindOptionsBacking;
@@ -797,6 +813,17 @@ namespace PadForge.ViewModels
                     RaiseCustomInput(MenuRecordTarget.Click);
                     OnEdited();
                     return true;
+
+                case MenuRecordTarget.HotbarShow:
+                case MenuRecordTarget.HotbarPrevious:
+                case MenuRecordTarget.HotbarNext:
+                case MenuRecordTarget.HotbarFire:
+                    // A hotbar control is pressed or not, as Click Input is.
+                    if (IsAnalogDescriptor(canonical)) return false;
+                    WriteHotbarDescriptor(target, canonical);
+                    RaiseCustomInput(target);
+                    OnEdited();
+                    return true;
             }
             return false;
         }
@@ -996,6 +1023,13 @@ namespace PadForge.ViewModels
         {
             if (_raisingInputChoices) return;
             string v = (value ?? "").Trim();
+            if (IsHotbarTarget(target))
+            {
+                if (!WriteHotbarDescriptor(target, v)) return;
+                RaiseCustomInput(target);
+                OnEdited();
+                return;
+            }
             switch (target)
             {
                 case MenuRecordTarget.CustomX:
@@ -1024,6 +1058,11 @@ namespace PadForge.ViewModels
             {
                 // View before Selected: the Selected re-read must resolve
                 // against the NEW ItemsSource, not the one being replaced.
+                if (IsHotbarTarget(target))
+                {
+                    RaiseHotbarInput(target);
+                    return;
+                }
                 switch (target)
                 {
                     case MenuRecordTarget.CustomX:
@@ -1061,6 +1100,7 @@ namespace PadForge.ViewModels
             RaiseCustomInput(MenuRecordTarget.CustomX);
             RaiseCustomInput(MenuRecordTarget.CustomY);
             RaiseCustomInput(MenuRecordTarget.Click);
+            RaiseHotbarControls();
             // The keyboard rows' lists come from the same picker.
             OpenRow.Refresh();
             foreach (var row in KeyboardControlRows) row.Refresh();
@@ -1126,6 +1166,7 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(CustomXRecordText));
             OnPropertyChanged(nameof(CustomYRecordText));
             OnPropertyChanged(nameof(ClickRecordText));
+            RaiseHotbarRecordGlyphs();
         }
 
         internal void BeginRecord(MenuRecordTarget target)
@@ -1209,7 +1250,8 @@ namespace PadForge.ViewModels
         };
 
         public IReadOnlyList<MenuIntOption> FireOptions =>
-            EffectiveLayerHoldsOpen ? LayerHoldFireOptionsBacking : FireOptionsBacking;
+            IsHotbar ? HotbarFireOptionsBacking
+            : EffectiveLayerHoldsOpen ? LayerHoldFireOptionsBacking : FireOptionsBacking;
 
         /// <summary>The selected fire mode's explanation, rendered as a
         /// persistent caption under the combo. A tooltip alone was not

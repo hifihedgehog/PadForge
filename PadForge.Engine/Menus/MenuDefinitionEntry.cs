@@ -14,6 +14,12 @@ namespace PadForge.Engine.Menus
         /// Windows layout in use, with every control a recorded input.
         /// Appended: the numbers are saved, never reorder.</summary>
         Keyboard = 2,
+        /// <summary>A bar of cells run by four inputs, Steam Input's hotbar
+        /// mode (steamclient64.dll CHotbarMode): Show or Hide opens and
+        /// closes the bar, Previous and Next step the selection, Fire fires
+        /// the selected cell. Appended: the numbers are saved, never
+        /// reorder.</summary>
+        Hotbar = 3,
     }
 
     /// <summary>When a hovered menu item fires. Values are Steam Input's
@@ -339,6 +345,42 @@ namespace PadForge.Engine.Menus
         [XmlElement("KeyboardControl")] public List<KeyboardControlEntry> KeyboardControls { get; set; } = new();
         public bool ShouldSerializeKeyboardControls() => Kind == MenuKind.Keyboard && KeyboardControls != null && KeyboardControls.Count > 0;
 
+        // ── Hotbar menus. Schema append-only, and written only for a hotbar,
+        // so every other menu saves as it did. ──
+
+        /// <summary>The input that shows or hides the bar (Steam's Down).
+        /// Empty: the host's own (<see cref="MenuHotbar.DefaultControl"/>).</summary>
+        [XmlAttribute] public string HotbarShowDescriptor { get; set; } = "";
+        public bool ShouldSerializeHotbarShowDescriptor() => Kind == MenuKind.Hotbar && !string.IsNullOrEmpty(HotbarShowDescriptor);
+
+        /// <summary>The input that selects the previous cell (Steam's Left).</summary>
+        [XmlAttribute] public string HotbarPreviousDescriptor { get; set; } = "";
+        public bool ShouldSerializeHotbarPreviousDescriptor() => Kind == MenuKind.Hotbar && !string.IsNullOrEmpty(HotbarPreviousDescriptor);
+
+        /// <summary>The input that selects the next cell (Steam's Right).</summary>
+        [XmlAttribute] public string HotbarNextDescriptor { get; set; } = "";
+        public bool ShouldSerializeHotbarNextDescriptor() => Kind == MenuKind.Hotbar && !string.IsNullOrEmpty(HotbarNextDescriptor);
+
+        /// <summary>The input that fires the selected cell (Steam's Up).</summary>
+        [XmlAttribute] public string HotbarFireDescriptor { get; set; } = "";
+        public bool ShouldSerializeHotbarFireDescriptor() => Kind == MenuKind.Hotbar && !string.IsNullOrEmpty(HotbarFireDescriptor);
+
+        /// <summary>Stepping past the last cell goes to the first and back
+        /// (Steam's scroll_wrap, off by default).</summary>
+        [XmlAttribute] public bool HotbarWrap { get; set; }
+        public bool ShouldSerializeHotbarWrap() => Kind == MenuKind.Hotbar;
+
+        /// <summary>Fire hides the bar (Steam's Dismiss After Activation,
+        /// test_param_0, on by default).</summary>
+        [XmlAttribute] public bool HotbarDismissOnFire { get; set; } = true;
+        public bool ShouldSerializeHotbarDismissOnFire() => Kind == MenuKind.Hotbar;
+
+        /// <summary>The selection goes back to the middle cell while the bar
+        /// is hidden (Steam's Re-Center Each Time, test_param_1, on by
+        /// default).</summary>
+        [XmlAttribute] public bool HotbarRecenter { get; set; } = true;
+        public bool ShouldSerializeHotbarRecenter() => Kind == MenuKind.Hotbar;
+
         /// <summary>Deep copy. Every clone site (profile apply, slot copy,
         /// editor round-trips) must use this so item lists never alias.</summary>
         public MenuDefinitionEntry Clone()
@@ -385,6 +427,13 @@ namespace PadForge.Engine.Menus
                 FunctionRow = FunctionRow,
                 Suggestions = Suggestions,
                 Symbols = Symbols,
+                HotbarShowDescriptor = HotbarShowDescriptor,
+                HotbarPreviousDescriptor = HotbarPreviousDescriptor,
+                HotbarNextDescriptor = HotbarNextDescriptor,
+                HotbarFireDescriptor = HotbarFireDescriptor,
+                HotbarWrap = HotbarWrap,
+                HotbarDismissOnFire = HotbarDismissOnFire,
+                HotbarRecenter = HotbarRecenter,
             };
             if (KeyboardControls != null)
                 foreach (var c in KeyboardControls)

@@ -25,7 +25,8 @@ namespace PadForge.Tests
         public void TheEnums_KeepTheirSavedNumbers()
         {
             Assert.Equal(2, (int)MenuKind.Keyboard);
-            Assert.Equal(MenuKind.Keyboard, Enum.GetValues<MenuKind>()[^1]);
+            // The Hotbar style came after it (MenuHotbarTests pins its number).
+            Assert.Equal(MenuKind.Hotbar, Enum.GetValues<MenuKind>()[^1]);
             Assert.Equal(new[] { 0, 1, 2 }, Enum.GetValues<KeyboardLayout>().Select(v => (int)v));
             Assert.Equal(KeyboardLayout.Wheel, Enum.GetValues<KeyboardLayout>()[^1]);
             Assert.Equal(Enumerable.Range(0, 8), Enum.GetValues<KeyboardOpenPress>().Select(v => (int)v));

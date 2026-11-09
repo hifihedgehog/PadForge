@@ -1,6 +1,7 @@
 name: DualSense Light Reactive (Shadow) V2
 description: Made a minor mistake with the L2 Trigger
 slots: xbox
+gyroEngage: Touchpad 0 Finger 0 Down Right
 xbox rows: 20
   Base | ButtonA
     <- Gamepad ButtonA
@@ -36,7 +37,7 @@ xbox rows: 20
     <- Gamepad LeftStick
   Base | LeftTrigger
     <- Gamepad LeftTrigger curve=0.5
-    <- Gamepad LeftTrigger [upper-half] dz=75
+    <- Gamepad LeftTrigger [upper-half] dz=90
   Base | RightShoulder
     <- Gamepad RightShoulder
   Base | RightThumbAxisX
@@ -47,7 +48,7 @@ xbox rows: 20
     <- Gamepad RightStick
   Base | RightTrigger
     <- Gamepad RightTrigger curve=0.5
-    <- Gamepad RightTrigger [upper-half] dz=75
+    <- Gamepad RightTrigger [upper-half] dz=90
 xbox activators: 1
   Cycle  cycle=Base | Button 11 | name=When Trigger is pressed
 kbm rows: 0
@@ -59,13 +60,13 @@ macros: 18
   macro RumblePulse OnPress | Haptic pulse (ButtonX) | btns=0x0000 in=[Gamepad ButtonX] layer=Base strength=100%
   macro SetLightbarColor OnPress | Set LED (ButtonY) | btns=0x8000 layer=Base rgb=(217,255,0) bright=100% sat=100% setting=1
   macro SetLightbarColor OnPress | Set LED (LeftStick) | btns=0x0040 layer=Base rgb=(255,0,0) bright=51% sat=100% setting=1
-  macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 layer=Base strength=66%
-  macro SetLightbarColor OnPress | Set LED (LeftTrigger) | btns=0x0000 axis=LeftTrigger@75% layer=Base rgb=(13,255,0) bright=100% sat=100% setting=1
-  macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=90 layer=Base strength=66%
+  macro SetLightbarColor OnPress | Set LED (LeftTrigger) | btns=0x0000 axis=LeftTrigger@95% layer=Base rgb=(13,255,0) bright=100% sat=100% setting=1
+  macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=90 layer=Base strength=66%
   macro SetLightbarColor OnPress | Set LED (RightStick) | btns=0x0080 layer=Base rgb=(255,0,0) bright=51% sat=100% setting=1
-  macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 layer=Base strength=66%
-  macro SetLightbarColor OnPress | Set LED (RightTrigger) | btns=0x0000 axis=RightTrigger@75% layer=Base rgb=(255,0,0) bright=79% sat=100% setting=1
-  macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=90 layer=Base strength=66%
+  macro SetLightbarColor OnPress | Set LED (RightTrigger) | btns=0x0000 axis=RightTrigger@95% layer=Base rgb=(255,0,0) bright=79% sat=100% setting=1
+  macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=90 layer=Base strength=66%
   macro SetLightbarColor OnPress | Set LED (LeftShoulder) | btns=0x0100 layer=Base rgb=(255,0,0) bright=43% sat=100% setting=1
   macro RumblePulse OnPress | Haptic pulse (LeftShoulder) | btns=0x0000 in=[Gamepad LeftShoulder] layer=Base strength=33%
   macro SetLightbarColor OnPress | Set LED (RightShoulder) | btns=0x0200 layer=Base rgb=(255,0,0) bright=43% sat=100% setting=1

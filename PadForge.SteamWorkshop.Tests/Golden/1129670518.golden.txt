@@ -5,9 +5,9 @@ xbox rows: 0
 kbm rows: 29
   Base | KbmMBtn0
     <- Gamepad ButtonA
-    <- Gamepad RightTrigger [upper-half] dz=15
+    <- Pull 0 Soft 10000 - Gamepad RightTrigger
   Base | KbmMBtn1
-    <- Gamepad LeftTrigger [upper-half] dz=15
+    <- Pull 1 Soft 10000 - Gamepad LeftTrigger
   Base | KbmMouseX | Sum
     <- Gamepad LeftStickX [inverted]
     <- Touchpad 0 Finger 0 X [inverted] sens=3.747
@@ -49,7 +49,7 @@ kbm rows: 29
   Layer_1129670518_1 | KbmMBtn0
     <- Gamepad RightStick
     <- Touchpad 1 Click
-    <- Gamepad RightTrigger [upper-half] dz=15
+    <- Pull 0 Soft 10000 - Gamepad RightTrigger
   Layer_1129670518_1 | KbmMouseX | Sum
     <- Gamepad RightStickX sens=1.975
     <- Touchpad 1 Finger 0 X
@@ -59,7 +59,7 @@ kbm rows: 29
   Layer_1129670518_2 | KbmMBtn0
     <- Gamepad RightStick
     <- Touchpad 1 Click
-    <- Gamepad RightTrigger [upper-half] dz=15
+    <- Pull 0 Soft 10000 - Gamepad RightTrigger
   Layer_1129670518_2 | KbmMouseX | Sum
     <- Touchpad 0 Finger 0 X sens=0.934
     <- Touchpad 0 Finger 0 Y sens=0.358
@@ -94,30 +94,30 @@ macros: 29
   macro RumblePulse OnPress | Haptic pulse (DPadDown) | btns=0x0000 in=[Gamepad DPadDown] layer=Base strength=33%
   macro RumblePulse OnPress | Haptic pulse (DPadLeft) | btns=0x0000 in=[Gamepad DPadLeft] layer=Base strength=33%
   macro RumblePulse OnPress | Haptic pulse (Touchpad 0 Click) | btns=0x0000 in=[Touchpad 0 Click] layer=Base strength=66%
-  macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=15 layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (LeftTrigger Soft Pull) | btns=0x0000 in=[Pull 1 Soft 10000 - Gamepad LeftTrigger] layer=Base strength=66%
   macro RumblePulse OnPress | Haptic pulse (RightStick) | btns=0x0000 in=[Gamepad RightStick] layer=Base strength=66%
   macro RumblePulse OnPress | Haptic pulse (Touchpad 1 Click) | btns=0x0000 in=[Touchpad 1 Click] layer=Base strength=66%
-  macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=15 layer=Base strength=66%
-  macro RumblePulse OnPress | Haptic pulse (LeftStickX) | btns=0x0000 in=[Gamepad LeftStickX] in-half=upper layer=Layer_1129670518_1 strength=33%
-  macro RumblePulse OnPress | Haptic pulse (LeftStickY) | btns=0x0000 in=[Gamepad LeftStickY] in-half=lower layer=Layer_1129670518_1 strength=33%
-  macro RumblePulse OnPress | Haptic pulse (LeftStickY) | btns=0x0000 in=[Gamepad LeftStickY] in-half=upper layer=Layer_1129670518_1 strength=33%
-  macro RumblePulse OnPress | Haptic pulse (LeftStickX) | btns=0x0000 in=[Gamepad LeftStickX] in-half=lower layer=Layer_1129670518_1 strength=33%
-  macro RumblePulse OnPress | Haptic pulse (Touchpad 0 DPadRight) | btns=0x0000 in=[Touchpad 0 DPadRight; Touchpad 0 Click] layer=Layer_1129670518_1 strength=33%
-  macro RumblePulse OnPress | Haptic pulse (Touchpad 0 DPadUp) | btns=0x0000 in=[Touchpad 0 DPadUp; Touchpad 0 Click] layer=Layer_1129670518_1 strength=33%
-  macro RumblePulse OnPress | Haptic pulse (Touchpad 0 DPadDown) | btns=0x0000 in=[Touchpad 0 DPadDown; Touchpad 0 Click] layer=Layer_1129670518_1 strength=33%
-  macro RumblePulse OnPress | Haptic pulse (Touchpad 0 DPadLeft) | btns=0x0000 in=[Touchpad 0 DPadLeft; Touchpad 0 Click] layer=Layer_1129670518_1 strength=33%
-  macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=15 layer=Layer_1129670518_1 strength=66%
+  macro RumblePulse OnPress | Haptic pulse (RightTrigger Soft Pull) | btns=0x0000 in=[Pull 0 Soft 10000 - Gamepad RightTrigger] layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (LeftStick Right) | btns=0x0000 in=[Wedge 0 67.5 2.7 31.7685 29.2685 - Gamepad LeftStickRing] layer=Layer_1129670518_1 strength=33%
+  macro RumblePulse OnPress | Haptic pulse (LeftStick Up) | btns=0x0000 in=[Wedge 90 67.5 2.7 31.7685 29.2685 - Gamepad LeftStickRing] layer=Layer_1129670518_1 strength=33%
+  macro RumblePulse OnPress | Haptic pulse (LeftStick Down) | btns=0x0000 in=[Wedge 270 67.5 2.7 31.7685 29.2685 - Gamepad LeftStickRing] layer=Layer_1129670518_1 strength=33%
+  macro RumblePulse OnPress | Haptic pulse (LeftStick Left) | btns=0x0000 in=[Wedge 180 67.5 2.7 31.7685 29.2685 - Gamepad LeftStickRing] layer=Layer_1129670518_1 strength=33%
+  macro RumblePulse OnPress | Haptic pulse (Touchpad 0 Right) | btns=0x0000 in=[Wedge 0 67.5 2.7 31.7685 29.2685 click Touchpad 0 Finger 0 Ring] layer=Layer_1129670518_1 strength=33%
+  macro RumblePulse OnPress | Haptic pulse (Touchpad 0 Up) | btns=0x0000 in=[Wedge 90 67.5 2.7 31.7685 29.2685 click Touchpad 0 Finger 0 Ring] layer=Layer_1129670518_1 strength=33%
+  macro RumblePulse OnPress | Haptic pulse (Touchpad 0 Down) | btns=0x0000 in=[Wedge 270 67.5 2.7 31.7685 29.2685 click Touchpad 0 Finger 0 Ring] layer=Layer_1129670518_1 strength=33%
+  macro RumblePulse OnPress | Haptic pulse (Touchpad 0 Left) | btns=0x0000 in=[Wedge 180 67.5 2.7 31.7685 29.2685 click Touchpad 0 Finger 0 Ring] layer=Layer_1129670518_1 strength=33%
+  macro RumblePulse OnPress | Haptic pulse (LeftTrigger Soft Pull) | btns=0x0000 in=[Pull 0 Soft 10000 - Gamepad LeftTrigger] layer=Layer_1129670518_1 strength=66%
   macro RumblePulse OnPress | Haptic pulse (RightStick) | btns=0x0000 in=[Gamepad RightStick] layer=Layer_1129670518_1 strength=66%
   macro RumblePulse OnPress | Haptic pulse (Touchpad 1 Click) | btns=0x0000 in=[Touchpad 1 Click] layer=Layer_1129670518_1 strength=66%
-  macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=15 layer=Layer_1129670518_1 strength=66%
-  macro RumblePulse OnPress | Haptic pulse (LeftStickX) | btns=0x0000 in=[Gamepad LeftStickX] in-half=upper layer=Layer_1129670518_2 strength=33%
-  macro RumblePulse OnPress | Haptic pulse (LeftStickY) | btns=0x0000 in=[Gamepad LeftStickY] in-half=lower layer=Layer_1129670518_2 strength=33%
-  macro RumblePulse OnPress | Haptic pulse (LeftStickY) | btns=0x0000 in=[Gamepad LeftStickY] in-half=upper layer=Layer_1129670518_2 strength=33%
-  macro RumblePulse OnPress | Haptic pulse (LeftStickX) | btns=0x0000 in=[Gamepad LeftStickX] in-half=lower layer=Layer_1129670518_2 strength=33%
-  macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=15 layer=Layer_1129670518_2 strength=66%
+  macro RumblePulse OnPress | Haptic pulse (RightTrigger Soft Pull) | btns=0x0000 in=[Pull 0 Soft 10000 - Gamepad RightTrigger] layer=Layer_1129670518_1 strength=66%
+  macro RumblePulse OnPress | Haptic pulse (LeftStick Right) | btns=0x0000 in=[Wedge 0 67.5 2.7 31.7685 29.2685 - Gamepad LeftStickRing] layer=Layer_1129670518_2 strength=33%
+  macro RumblePulse OnPress | Haptic pulse (LeftStick Up) | btns=0x0000 in=[Wedge 90 67.5 2.7 31.7685 29.2685 - Gamepad LeftStickRing] layer=Layer_1129670518_2 strength=33%
+  macro RumblePulse OnPress | Haptic pulse (LeftStick Down) | btns=0x0000 in=[Wedge 270 67.5 2.7 31.7685 29.2685 - Gamepad LeftStickRing] layer=Layer_1129670518_2 strength=33%
+  macro RumblePulse OnPress | Haptic pulse (LeftStick Left) | btns=0x0000 in=[Wedge 180 67.5 2.7 31.7685 29.2685 - Gamepad LeftStickRing] layer=Layer_1129670518_2 strength=33%
+  macro RumblePulse OnPress | Haptic pulse (LeftTrigger Soft Pull) | btns=0x0000 in=[Pull 0 Soft 10000 - Gamepad LeftTrigger] layer=Layer_1129670518_2 strength=66%
   macro RumblePulse OnPress | Haptic pulse (RightStick) | btns=0x0000 in=[Gamepad RightStick] layer=Layer_1129670518_2 strength=66%
   macro RumblePulse OnPress | Haptic pulse (Touchpad 1 Click) | btns=0x0000 in=[Touchpad 1 Click] layer=Layer_1129670518_2 strength=66%
-  macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=15 layer=Layer_1129670518_2 strength=66%
+  macro RumblePulse OnPress | Haptic pulse (RightTrigger Soft Pull) | btns=0x0000 in=[Pull 0 Soft 10000 - Gamepad RightTrigger] layer=Layer_1129670518_2 strength=66%
 menus: 1
   menu 1 Grid | Touchpad 1 | Layer_1129670518_0_MS_right_trackpad_20 | fire=Click cells=12 pos=(51%,81%) scale=60% opacity=91% | name=Touch Menu 1 (Tactical)
     [0] 1
@@ -138,7 +138,7 @@ report: v26 rows:x0+k29 macros:29 menus:1 layers:5 clean:56 partial:3 skipped:3 
   Clean RowEmitted @ Tactical/left_trackpad/group 7 (absolute_mouse) => KbmMouseX <- Touchpad 0 Finger 0 Y (inverted)
   Clean RowEmitted @ Tactical/left_trackpad/group 7 (absolute_mouse) => KbmMouseY <- Touchpad 0 Finger 0 X
   Clean RowEmitted @ Tactical/left_trackpad/group 7 (absolute_mouse) => KbmMouseY <- Touchpad 0 Finger 0 Y (inverted)
-  Clean RowEmitted @ Tactical/left_trigger/group 1 (trigger)/edge/Full_Press => KbmMBtn1 <- Gamepad LeftTrigger (upper half)
+  Clean RowEmitted @ Tactical/left_trigger/group 1 (trigger)/edge/Full_Press => KbmMBtn1 <- Pull 1 Soft 10000 - Gamepad LeftTrigger
   Clean RowEmitted @ Tactical/right_joystick/group 46 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX
   Clean RowEmitted @ Tactical/right_joystick/group 46 (joystick_mouse) => KbmMouseY <- Gamepad RightStickY
   Clean RowEmitted @ Tactical/right_joystick/group 47 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX
@@ -156,7 +156,7 @@ report: v26 rows:x0+k29 macros:29 menus:1 layers:5 clean:56 partial:3 skipped:3 
   Clean RowEmitted @ Tactical/right_trackpad/group 20 (touch_menu)/touch_menu_button_7/Full_Press => KbmKey38 <- Menu 1 Item 7
   Clean RowEmitted @ Tactical/right_trackpad/group 20 (touch_menu)/touch_menu_button_8/Full_Press => KbmKey39 <- Menu 1 Item 8
   Clean RowEmitted @ Tactical/right_trackpad/group 20 (touch_menu)/touch_menu_button_9/Full_Press => KbmKey30 <- Menu 1 Item 9
-  Clean RowEmitted @ Tactical/right_trigger/group 2 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
+  Clean RowEmitted @ Tactical/right_trigger/group 2 (trigger)/edge/Full_Press => KbmMBtn0 <- Pull 0 Soft 10000 - Gamepad RightTrigger
   Skipped GameActionsNotSupported(20) @ Tactical
   Clean RowEmitted @ Menus / Base/right_joystick/group 48 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX
   Clean RowEmitted @ Menus / Base/right_joystick/group 48 (joystick_mouse) => KbmMouseY <- Gamepad RightStickY
@@ -164,7 +164,7 @@ report: v26 rows:x0+k29 macros:29 menus:1 layers:5 clean:56 partial:3 skipped:3 
   Clean RowEmitted @ Menus / Base/right_trackpad/group 19 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Clean RowEmitted @ Menus / Base/right_trackpad/group 19 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
   Clean RowEmitted @ Menus / Base/right_trackpad/group 19 (absolute_mouse)/click/Full_Press => KbmMBtn0 <- Touchpad 1 Click
-  Clean RowEmitted @ Menus / Base/right_trigger/group 5 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
+  Clean RowEmitted @ Menus / Base/right_trigger/group 5 (trigger)/edge/Full_Press => KbmMBtn0 <- Pull 0 Soft 10000 - Gamepad RightTrigger
   Clean RowEmitted @ Menus / Base/switch/group 40 (switches)/button_escape/Full_Press => KbmKey1B <- Gamepad ButtonStart
   Skipped GameActionsNotSupported(13) @ Menus / Base
   Clean RowEmitted @ Geoscape/left_trackpad/group 15 (absolute_mouse) => KbmMouseX <- Touchpad 0 Finger 0 X
@@ -183,7 +183,7 @@ report: v26 rows:x0+k29 macros:29 menus:1 layers:5 clean:56 partial:3 skipped:3 
   Clean RowEmitted @ Geoscape/right_trackpad/group 17 (absolute_mouse)/click/Full_Press => KbmMBtn0 <- Touchpad 1 Click
   Clean RowEmitted @ Geoscape/right_trackpad/group 38 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Clean RowEmitted @ Geoscape/right_trackpad/group 38 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
-  Clean RowEmitted @ Geoscape/right_trigger/group 36 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
+  Clean RowEmitted @ Geoscape/right_trigger/group 36 (trigger)/edge/Full_Press => KbmMBtn0 <- Pull 0 Soft 10000 - Gamepad RightTrigger
   Skipped GameActionsNotSupported(13) @ Geoscape
   Clean ShiftLayerEmitted(Right Stick shift) @ Tactical/switch/group 39 (switches)/button_back_left/Full_Press => Hold Right Stick shift <- Gamepad Paddle2
   Clean ShiftLayerEmitted(Right Trackpad shift) @ Tactical/switch/group 39 (switches)/button_back_left/Full_Press => Hold Right Trackpad shift <- Gamepad Paddle2

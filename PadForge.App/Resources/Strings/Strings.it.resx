@@ -3778,7 +3778,7 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Menu_Binding_None" xml:space="preserve"><value>Nessuna</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Tasto della tastiera</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>Pulsante del controller</value></data>
-  <data name="Menu_Style_Tip" xml:space="preserve"><value>Anello radiale sceglie una cella in base alla direzione, come una ruota delle armi. Griglia tattile sceglie una cella in base alla posizione: dove si trova il dito sul pad o dove punta lo stick.</value></data>
+  <data name="Menu_Style_Tip" xml:space="preserve"><value>Anello radiale sceglie una cella in base alla direzione, come una ruota delle armi. Griglia touch sceglie una cella in base alla posizione: dove si trova il dito sul pad o dove punta lo stick. Hotbar mostra una riga di celle, scorre lungo di essa e attiva la cella selezionata, ciascuno con il proprio controllo.</value></data>
   <data name="Menu_HostInput_Tip" xml:space="preserve"><value>L'input che apre e guida questo menu, letto dai controller fisici assegnati allo slot. Uno stick lo apre quando viene spinto oltre la zona morta di attivazione. Un touchpad lo apre al tocco.</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>Limita questo menu a una metà del trackpad, così due menu possono condividere il pad.</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>Quando la cella evidenziata attiva la sua assegnazione. Ogni scelta è spiegata sotto.</value></data>
@@ -4221,7 +4221,7 @@ Vuoi che PadForge li disinstalli ora? L'operazione richiede privilegi elevati e 
   <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>Si attiva una volta al rilascio dell'input di clic. Se la superficie viene rilasciata nello stesso istante, attiva la selezione precedente.</value></data>
   <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>Si attiva una volta quando sollevi il dito o riporti lo stick nella zona morta di attivazione, mentre il menu resta aperto. Uscire dal livello conferma anche una selezione ancora guidata.</value></data>
   <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>Tiene attiva l'assegnazione mentre la sua cella è evidenziata. Un centro radiale può attivarsi subito all'apertura del livello.</value></data>
-  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Le pressioni direzionali scorrono le celle e attivano ogni cella appena selezionata. Questo comportamento da hotbar non usa la modalità di attivazione né l'input di clic.</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Le pressioni direzionali scorrono le celle e attivano ogni cella appena selezionata, senza «Modalità di esecuzione» né «Input di clic». Lo stile Hotbar scorre senza attivare e attiva con il proprio controllo «Attiva».</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Protocollo avanzato Flydigi</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Abilita i pulsanti aggiuntivi e i sensori di movimento sui controller Flydigi supportati.</value></data>
   <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Software Flydigi in esecuzione: {0}. Può usare la stessa interfaccia del controller di PadForge, e un Vader 5 Pro è stato segnalato disconnettersi ripetutamente mentre entrambi vi avevano accesso. Se questo controller si disconnette e si riconnette, arresta il servizio mentre usi PadForge, mantieni il controller nascosto e rimuovi il servizio dalla whitelist di HidHide, oppure prova a disattivare "Protocollo avanzato Flydigi" nelle Impostazioni, senza conferma che aiuti.</value></data>
@@ -5072,7 +5072,28 @@ Vuoi che PadForge li disinstalli ora? L'operazione richiede privilegi elevati e 
     <value>D-Pad</value>
   </data>
   <data name="Menu_Style_Keyboard" xml:space="preserve"><value>Tastiera</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>Anello radiale e Griglia touch attivano le assegnazioni delle celle. Tastiera digita i tasti del layout di Windows in uso.</value></data>
+  <data name="Menu_Style_Hotbar" xml:space="preserve"><value>Hotbar</value></data>
+  <data name="Menu_Hotbar_Show" xml:space="preserve"><value>Mostra o nascondi</value></data>
+  <data name="Menu_Hotbar_Show_Tip" xml:space="preserve"><value>Mostra la barra e la nasconde alla pressione seguente. Una barra nascosta così si riapre sulla cella centrale.</value></data>
+  <data name="Menu_Hotbar_Previous" xml:space="preserve"><value>Precedente</value></data>
+  <data name="Menu_Hotbar_Previous_Tip" xml:space="preserve"><value>Seleziona la cella a sinistra, saltando le celle senza nulla di impostato.</value></data>
+  <data name="Menu_Hotbar_Next" xml:space="preserve"><value>Successivo</value></data>
+  <data name="Menu_Hotbar_Next_Tip" xml:space="preserve"><value>Seleziona la cella a destra, saltando le celle senza nulla di impostato.</value></data>
+  <data name="Menu_Hotbar_Fire" xml:space="preserve"><value>Attiva</value></data>
+  <data name="Menu_Hotbar_Fire_Tip" xml:space="preserve"><value>Attiva la cella selezionata, come stabilisce «Modalità di esecuzione».</value></data>
+  <data name="Menu_Hotbar_Caption" xml:space="preserve"><value>«Mostra o nascondi» fa comparire una riga di celle, «Precedente» e «Successivo» scorrono lungo di essa e «Attiva» attiva la cella selezionata. Un controllo lasciato vuoto prende la direzione di «Si apre con»: giù, sinistra, destra o su.</value></data>
+  <data name="Menu_Hotbar_Wrap" xml:space="preserve"><value>Scorrimento circolare</value></data>
+  <data name="Menu_Hotbar_Wrap_Tip" xml:space="preserve"><value>Superata l'ultima cella si torna alla prima, e viceversa. Disattivato, la selezione si ferma a ciascuna estremità.</value></data>
+  <data name="Menu_Hotbar_DismissOnFire" xml:space="preserve"><value>Nascondi dopo l'attivazione</value></data>
+  <data name="Menu_Hotbar_DismissOnFire_Tip" xml:space="preserve"><value>«Attiva» nasconde la barra. Disattivato, la barra resta visibile e la stessa cella può attivarsi di nuovo.</value></data>
+  <data name="Menu_Hotbar_Recenter" xml:space="preserve"><value>Ricentra ogni volta</value></data>
+  <data name="Menu_Hotbar_Recenter_Tip" xml:space="preserve"><value>Mentre la barra è nascosta, la selezione torna alla cella centrale. Disattivato, una barra nascosta da «Attiva» si riapre sulla cella appena attivata.</value></data>
+  <data name="Menu_Reset_HotbarControl" xml:space="preserve"><value>Reimposta Controllo</value></data>
+  <data name="Menu_Fire_Click_Hotbar_Desc" xml:space="preserve"><value>«Attiva» preme la cella selezionata e la tiene premuta finché «Attiva» è tenuto premuto. Con «Nascondi dopo l'attivazione» attivo, la pressione è un tocco breve.</value></data>
+  <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>La cella selezionata si attiva una volta, con un tocco breve, quando «Attiva» viene rilasciato. Con «Nascondi dopo l'attivazione» attivo, si attiva appena «Attiva» nasconde la barra.</value></data>
+  <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>Una cella si attiva una volta, con un tocco breve, quando «Attiva» nasconde la barra con «Nascondi dopo l'attivazione» attivo. Con «Ricentra ogni volta» attivo, a attivarsi è la cella centrale.</value></data>
+  <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>La cella selezionata resta tenuta per tutto il tempo in cui la barra è mostrata. Spostandosi, si lascia una cella e si tiene la successiva.</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>Anello radiale, Griglia touch e Hotbar attivano le assegnazioni delle celle. Tastiera digita i tasti del layout di Windows in uso.</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Layout</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Come la tastiera dispone i tasti e come un controller li sceglie.</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Una sola evidenziazione, mossa con una levetta o con quattro input, il layout usato da Windows, Xbox e Steam.</value></data>
@@ -5192,6 +5213,12 @@ Vuoi che PadForge li disinstalli ora? L'operazione richiede privilegi elevati e 
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (non su questo PC)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (non su questo slot)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>giroscopio in Puntatore laser letto come imbardata (PadForge non ha la conversione del puntatore laser)</value></data>
+  <data name="Workshop_Tr_GyroRollFromHorizon" xml:space="preserve"><value>rollio centrato dove il controller si trova a riposo all'avvio o con Ricentra giroscopio, non sull'orizzonte</value></data>
+  <data name="Workshop_Tr_GyroPitchFromHorizon" xml:space="preserve"><value>beccheggio centrato dove il controller si trova a riposo all'avvio o con Ricentra giroscopio, non a {0}° dal piano</value></data>
+  <data name="Workshop_Tr_GyroTiltRangeCapped" xml:space="preserve"><value>piena deflessione a 90° di inclinazione, non a {0}°</value></data>
+  <data name="Workshop_Tr_OutputJoystickUnrouted" xml:space="preserve"><value>output_joystick {0} non invia la coppia né alla levetta né al mouse, quindi non viene mappato nulla</value></data>
+  <data name="Workshop_Tr_DpadPulseHeld" xml:space="preserve"><value>ogni direzione resta attiva finché viene premuta (l'emulazione analogica di Steam la attiva a impulsi, più lunghi quanto più si spinge)</value></data>
+  <data name="Workshop_Tr_SoftPressNoAnalog" xml:space="preserve"><value>attivatore a pressione leggera su un input senza lettura analogica (Steam non lo attiva mai)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>In reWASD, {0} raggiunge comunque Windows perché il file lo mappa senza un unmap. Con Consuma input mappati attivo, PadForge lo blocca.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows modella {0} di uno stick radiale in base all'angolo della spinta. La scheda Levette di PadForge tratta allo stesso modo una spinta dritta e in modo diverso una diagonale.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows scala la zona morta del giroscopio su ogni asse in base all'angolo del movimento. PadForge toglie l'intera zona morta da ogni asse, quindi un movimento dritto si comporta allo stesso modo e uno diagonale lento parte più tardi.</value></data>

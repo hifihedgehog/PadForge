@@ -3818,7 +3818,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Menu_Binding_None" xml:space="preserve"><value>Không có</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Phím bàn phím</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>Nút tay cầm</value></data>
-  <data name="Menu_Style_Tip" xml:space="preserve"><value>Vòng tròn chọn ô theo hướng, giống vòng chọn vũ khí. Lưới cảm ứng chọn ô theo vị trí: nơi ngón tay đặt trên bàn cảm ứng, hoặc nơi cần analog chĩa tới.</value></data>
+  <data name="Menu_Style_Tip" xml:space="preserve"><value>Vòng tròn chọn ô theo hướng, giống vòng chọn vũ khí. Lưới cảm ứng chọn ô theo vị trí: nơi ngón tay đặt trên bàn cảm ứng, hoặc nơi cần analog chĩa tới. Hotbar hiện một hàng ô, bước dọc theo hàng và kích hoạt ô đang chọn, mỗi việc có điều khiển riêng.</value></data>
   <data name="Menu_HostInput_Tip" xml:space="preserve"><value>Đầu vào mở và điều hướng menu này, được đọc từ các tay cầm vật lý đã gán cho khe. Cần analog mở menu khi được đẩy vượt quá Vùng chết kích hoạt. Bàn cảm ứng mở menu khi được chạm.</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>Giới hạn menu này trong một nửa của bàn cảm ứng, để hai menu có thể dùng chung bàn cảm ứng.</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>Thời điểm ô đang được tô sáng kích hoạt phép gán của nó. Mỗi lựa chọn được giải thích bên dưới.</value></data>
@@ -4248,7 +4248,7 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>Kích hoạt một lần khi Đầu vào nhấp được thả. Nếu bề mặt được thả cùng lúc, kích hoạt lựa chọn trước đó.</value></data>
   <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>Kích hoạt một lần khi bạn nhấc ngón tay hoặc đưa cần analog về trong Vùng chết kích hoạt, trong khi menu vẫn mở. Rời khỏi lớp cũng xác nhận một lựa chọn đang được điều hướng.</value></data>
   <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>Giữ phép gán trong khi ô của nó được tô sáng. Ô giữa của vòng tròn có thể kích hoạt ngay khi lớp mở.</value></data>
-  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Các lần nhấn hướng sẽ đi lần lượt qua các ô và kích hoạt từng ô mới được chọn. Kiểu hoạt động hotbar này không dùng Thời điểm kích hoạt hay Đầu vào nhấp.</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Các lần nhấn hướng sẽ đi lần lượt qua các ô và kích hoạt từng ô mới được chọn, không dùng Thời điểm kích hoạt hay Đầu vào nhấp. Kiểu Hotbar bước mà không kích hoạt, và kích hoạt bằng điều khiển "Kích hoạt" riêng của nó.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Giao thức nâng cao Flydigi</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Bật các nút bổ sung và cảm biến chuyển động trên các tay cầm Flydigi được hỗ trợ.</value></data>
   <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Phần mềm Flydigi đang chạy: {0}. Nó có thể dùng cùng giao diện tay cầm với PadForge, và đã có báo cáo Vader 5 Pro bị ngắt kết nối liên tục khi cả hai cùng truy cập. Nếu tay cầm này bị rớt rồi kết nối lại, hãy dừng dịch vụ đó khi dùng PadForge, giữ tay cầm ở trạng thái ẩn và gỡ dịch vụ khỏi danh sách cho phép của HidHide, hoặc thử tắt "Giao thức nâng cao Flydigi" trong Thiết lập, dù chưa xác nhận là cách này có ích.</value></data>
@@ -5099,7 +5099,28 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
     <value>D-pad</value>
   </data>
   <data name="Menu_Style_Keyboard" xml:space="preserve"><value>Bàn phím</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>Vòng tròn và Lưới cảm ứng kích hoạt các liên kết ô. Bàn phím gõ các phím của bố cục Windows đang dùng.</value></data>
+  <data name="Menu_Style_Hotbar" xml:space="preserve"><value>Hotbar</value></data>
+  <data name="Menu_Hotbar_Show" xml:space="preserve"><value>Hiện hoặc ẩn</value></data>
+  <data name="Menu_Hotbar_Show_Tip" xml:space="preserve"><value>Hiện thanh, và ẩn nó ở lần nhấn kế tiếp. Thanh bị ẩn theo cách này sẽ mở ở ô giữa vào lần sau.</value></data>
+  <data name="Menu_Hotbar_Previous" xml:space="preserve"><value>Trước</value></data>
+  <data name="Menu_Hotbar_Previous_Tip" xml:space="preserve"><value>Chọn ô bên trái, bỏ qua các ô chưa đặt gì.</value></data>
+  <data name="Menu_Hotbar_Next" xml:space="preserve"><value>Tiếp</value></data>
+  <data name="Menu_Hotbar_Next_Tip" xml:space="preserve"><value>Chọn ô bên phải, bỏ qua các ô chưa đặt gì.</value></data>
+  <data name="Menu_Hotbar_Fire" xml:space="preserve"><value>Kích hoạt</value></data>
+  <data name="Menu_Hotbar_Fire_Tip" xml:space="preserve"><value>Kích hoạt ô đang chọn, theo thiết lập của Thời điểm kích hoạt.</value></data>
+  <data name="Menu_Hotbar_Caption" xml:space="preserve"><value>"Hiện hoặc ẩn" mở ra một hàng ô, "Trước" và "Tiếp" di chuyển dọc theo hàng, còn "Kích hoạt" kích hoạt ô đang chọn. Điều khiển để trống sẽ dùng hướng của Mở bằng: xuống, trái, phải hoặc lên.</value></data>
+  <data name="Menu_Hotbar_Wrap" xml:space="preserve"><value>Quay vòng</value></data>
+  <data name="Menu_Hotbar_Wrap_Tip" xml:space="preserve"><value>Bước qua ô cuối thì sang ô đầu, và ngược lại. Khi tắt, vùng chọn dừng ở mỗi đầu.</value></data>
+  <data name="Menu_Hotbar_DismissOnFire" xml:space="preserve"><value>Ẩn sau khi kích hoạt</value></data>
+  <data name="Menu_Hotbar_DismissOnFire_Tip" xml:space="preserve"><value>"Kích hoạt" ẩn thanh. Khi tắt, thanh vẫn hiện và có thể kích hoạt lại cùng ô đó.</value></data>
+  <data name="Menu_Hotbar_Recenter" xml:space="preserve"><value>Về giữa mỗi lần</value></data>
+  <data name="Menu_Hotbar_Recenter_Tip" xml:space="preserve"><value>Khi thanh bị ẩn, vùng chọn quay về ô giữa. Khi tắt, thanh mà "Kích hoạt" đã ẩn sẽ mở ở ô vừa kích hoạt.</value></data>
+  <data name="Menu_Reset_HotbarControl" xml:space="preserve"><value>Đặt lại điều khiển</value></data>
+  <data name="Menu_Fire_Click_Hotbar_Desc" xml:space="preserve"><value>"Kích hoạt" nhấn ô đang chọn và giữ trong khi "Kích hoạt" được giữ. Khi "Ẩn sau khi kích hoạt" bật, lần nhấn chỉ là một chạm ngắn.</value></data>
+  <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>Ô đang chọn kích hoạt một lần, như một chạm ngắn, khi "Kích hoạt" được thả. Khi "Ẩn sau khi kích hoạt" bật, ô kích hoạt ngay khi "Kích hoạt" ẩn thanh.</value></data>
+  <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>Một ô kích hoạt một lần, như một chạm ngắn, khi "Kích hoạt" ẩn thanh với "Ẩn sau khi kích hoạt" bật. Khi "Về giữa mỗi lần" bật, ô giữa là ô được kích hoạt.</value></data>
+  <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>Ô đang chọn được giữ suốt thời gian thanh hiện. Khi bước sang ô khác, ô cũ được thả và ô mới được giữ.</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>Vòng tròn, Lưới cảm ứng và Hotbar kích hoạt các liên kết ô. Bàn phím gõ các phím của bố cục Windows đang dùng.</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Bố cục</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Cách bàn phím sắp xếp các phím và cách bộ điều khiển chọn chúng.</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Một phần tô sáng, di chuyển bằng một cần hoặc bốn đầu vào, là bố cục Windows, Xbox và Steam dùng.</value></data>
@@ -5219,6 +5240,12 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (không có trên PC này)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (không có trên khe này)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>con quay hồi chuyển Bút laze được đọc như yaw (PadForge không có chuyển đổi bút laze)</value></data>
+  <data name="Workshop_Tr_GyroRollFromHorizon" xml:space="preserve"><value>roll được căn giữa tại tư thế nghỉ của tay cầm lúc bắt đầu hoặc khi chạy "Đưa con quay hồi chuyển về giữa", không căn theo đường chân trời</value></data>
+  <data name="Workshop_Tr_GyroPitchFromHorizon" xml:space="preserve"><value>pitch được căn giữa tại tư thế nghỉ của tay cầm lúc bắt đầu hoặc khi chạy "Đưa con quay hồi chuyển về giữa", không căn ở {0}° so với mặt phẳng ngang</value></data>
+  <data name="Workshop_Tr_GyroTiltRangeCapped" xml:space="preserve"><value>đẩy hết cỡ ở độ nghiêng 90°, không phải {0}°</value></data>
+  <data name="Workshop_Tr_OutputJoystickUnrouted" xml:space="preserve"><value>output_joystick {0} không đưa cặp trục tới cần analog hay chuột, nên không có gì được ánh xạ</value></data>
+  <data name="Workshop_Tr_DpadPulseHeld" xml:space="preserve"><value>mỗi hướng được giữ liên tục khi đang đẩy (tính năng mô phỏng analog của Steam bật tắt hướng đó theo từng nhịp, nhịp càng dài khi càng đẩy xa)</value></data>
+  <data name="Workshop_Tr_SoftPressNoAnalog" xml:space="preserve"><value>bộ kích hoạt nhấn nhẹ đặt trên đầu vào không có giá trị analog (Steam không bao giờ kích hoạt nó)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>Trong reWASD, {0} vẫn đến được Windows vì tệp ánh xạ nó mà không hủy ánh xạ. Khi bật Chặn các đầu vào đã ánh xạ, PadForge sẽ chặn nó.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows định hình {0} của cần analog tròn theo góc đẩy. Thẻ cần analog của PadForge xử lý cú đẩy thẳng như nhau và cú đẩy chéo thì khác.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows điều chỉnh vùng chết của con quay hồi chuyển trên từng trục theo góc của chuyển động. PadForge trừ toàn bộ vùng chết khỏi từng trục, nên chuyển động thẳng hoạt động như nhau còn chuyển động chéo chậm bắt đầu muộn hơn.</value></data>

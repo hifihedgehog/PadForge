@@ -1,6 +1,7 @@
 name: Team Fortress 2 Defaults
 description: Recommended controls for Team Fortress 2
 slots: kbm
+gyroEngage: Touchpad 1 Finger 0 Down
 xbox rows: 0
 kbm rows: 11
   Base | KbmMouseX | Sum
@@ -14,9 +15,9 @@ kbm rows: 11
   Layer_1172518660_1 | KbmMBtn0
     <- Touchpad 1 Click
     <- Gamepad RightShoulder
-    <- Gamepad RightTrigger [upper-half] dz=75
+    <- Gamepad RightTrigger [upper-half] dz=90
   Layer_1172518660_1 | KbmMBtn1
-    <- Gamepad LeftTrigger [upper-half] dz=75
+    <- Gamepad LeftTrigger [upper-half] dz=90
   Layer_1172518660_1 | KbmMBtn2
     <- Gamepad LeftShoulder
   Layer_1172518660_1 | KbmMouseX | Sum
@@ -39,16 +40,16 @@ kbm rows: 11
     <- Touchpad 1 Finger 0 Y sens=0.966
 macros: 11
   macro RumblePulse OnPress | Haptic pulse (LeftStick) | btns=0x0000 in=[Gamepad LeftStick] layer=Base strength=66%
-  macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 layer=Base strength=66%
-  macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=15 layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=90 layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (LeftTrigger Soft Pull) | btns=0x0000 in=[Pull 3 Soft 10000 click Gamepad LeftTrigger] layer=Base strength=66%
   macro RumblePulse OnPress | Haptic pulse (Touchpad 1 Click) | btns=0x0000 in=[Touchpad 1 Click] layer=Base strength=33%
-  macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 layer=Base strength=66%
-  macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=35 layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=90 layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (RightTrigger Soft Pull) | btns=0x0000 in=[Pull 0 Soft 11388 click Gamepad RightTrigger] layer=Base strength=66%
   macro RumblePulse OnPress | Haptic pulse (Touchpad 1 Click) | btns=0x0000 in=[Touchpad 1 Click] layer=Layer_1172518660_1 strength=33%
   macro RumblePulse OnPress | Haptic pulse (Touchpad 1 Click) | btns=0x0000 in=[Touchpad 1 Click] layer=Layer_1172518660_3 strength=33%
   macro RumblePulse OnPress | Haptic pulse (LeftStick) | btns=0x0000 in=[Gamepad LeftStick] layer=Layer_1172518660_5 strength=66%
   macro RumblePulse OnPress | Haptic pulse (Touchpad 1 Click) | btns=0x0000 in=[Touchpad 1 Click] layer=Layer_1172518660_5 strength=33%
-  macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 layer=Layer_1172518660_5 strength=66%
+  macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=90 layer=Layer_1172518660_5 strength=66%
 report: v26 rows:x0+k11 macros:11 menus:0 layers:0 clean:23 partial:3 skipped:4 errors:0
   Clean RowEmitted @ In-Game/gyro/group 48 (absolute_mouse) => KbmMouseX <- Gyro Yaw
   Clean RowEmitted @ In-Game/gyro/group 48 (absolute_mouse) => KbmMouseY <- Gyro Pitch

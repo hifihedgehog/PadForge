@@ -212,21 +212,41 @@ namespace PadForge.SteamWorkshop.Tests
 
         // ─── Settings vocabulary ─────────────────────────────────────────
 
+        /// <summary>The fire type's default depends on the menu and its
+        /// host. The client's radial menu (steamclient64.dll 0x1388ccd10)
+        /// registers touchmenu_button_fire_type with a default of 2, Touch
+        /// Release, on a joystick (sources 3 and 12, and the two newer stick
+        /// sources 17 and 18) and 0, Click, on every other host. Its touch
+        /// menu (0x1388d41b0) defaults to Click everywhere. The corpus agrees
+        /// from the saving side, since a config stores only values that
+        /// differ from the default: radial menus on joysticks store 0 (25
+        /// groups) and never 2, radial menus on trackpads store 2 (64) and
+        /// never 0.</summary>
         [Fact]
-        public void FireType_ParsesSteamValues_AndDefaultsToClick()
+        public void FireType_ParsesSteamValues_AndDefaultsByMenuAndHost()
         {
             string vdf = Head
                 + Group(1, "radial_menu",
                     Inputs((1, "key_press 1"))
-                    + Settings(("touchmenu_button_fire_type", "2")))
+                    + Settings(("touchmenu_button_fire_type", "0")))
                 + Group(2, "radial_menu", Inputs((1, "key_press 2")))
-                + Preset(0, "Default", (1, "joystick active"), (2, "right_joystick active"))
+                + Group(3, "radial_menu", Inputs((1, "key_press 3")))
+                + Group(4, "touch_menu", Inputs((0, "key_press 4")))
+                + Group(5, "radial_menu", Inputs((1, "key_press 5")))
+                + Preset(0, "Default", (1, "joystick active"), (2, "right_joystick active"),
+                    (3, "left_trackpad active"), (4, "dpad active"))
+                + Preset(1, "Second", (5, "joystick active"))
                 + "}\n";
             var p = Translate(vdf);
 
-            Assert.Equal(2, p.Menus.Count);
-            Assert.Equal(MenuFireType.TouchRelease, p.Menus[0].FireType);
-            Assert.Equal(MenuFireType.Click, p.Menus[1].FireType);
+            MenuFireType Fire(int key) => p.Menus.Single(m =>
+                m.Items.Any(i => p.KbmMappingSet.Rows.Any(r => r.Target == $"KbmKey3{key}"
+                    && r.Sources.Any(s => s.Descriptor == $"Menu {m.MenuId} Item {i.Index}")))).FireType;
+            Assert.Equal(MenuFireType.Click, Fire(1));
+            Assert.Equal(MenuFireType.TouchRelease, Fire(2));
+            Assert.Equal(MenuFireType.Click, Fire(3));
+            Assert.Equal(MenuFireType.Click, Fire(4));
+            Assert.Equal(MenuFireType.TouchRelease, Fire(5));
             // #413: an import is surface-engaged with identity icon sizes.
             Assert.All(p.Menus, m =>
             {

@@ -352,7 +352,11 @@ namespace PadForge.Views
             double fontSize = 13 * Math.Max(scale, 0.7);
 
             int cellCount = Math.Clamp(menu.CellCount, 0, MaxRenderCells);
-            var (cols, rows) = MenuSelectionMath.GridShape(cellCount);
+            // A hotbar is one row, Steam's own bar (0x1388c1610 lays its
+            // cells side by side across the full width).
+            var (cols, rows) = menu.Kind == MenuKind.Hotbar
+                ? (cellCount, cellCount > 0 ? 1 : 0)
+                : MenuSelectionMath.GridShape(cellCount);
             if (cols <= 0) { MenuCanvas.Width = 0; MenuCanvas.Height = 0; return; }
             var bound = BoundItems(menu);
             foreach (var pair in bound)

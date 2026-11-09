@@ -30,9 +30,10 @@ namespace PadForge.SteamWorkshop.Tests
             // Round six (R3) closed the emitter that pass missed:
             // EmitMouseJoystickAxes (mouse_joystick / gyro_to_joystick)
             // now stamps its stick hosts and scopes the residual to the
-            // finger / gyro lanes. The gyro-lean deflection pair also
-            // names its dropped radii now (R5) instead of losing them
-            // silently. So the residual CODE PATHS are: trackpad-hosted
+            // finger / gyro lanes. The deflection pair reads the gravity
+            // tilt with its own angles and names Steam's circular map of
+            // them (the client's gyro classes have no stick radius to
+            // drop). So the residual CODE PATHS are: trackpad-hosted
             // pairs, gyro-hosted pairs, and the deflection pair; "only
             // the trackpad remains" below is a statement about the
             // CORPUS, not the code (round seven wording fix).

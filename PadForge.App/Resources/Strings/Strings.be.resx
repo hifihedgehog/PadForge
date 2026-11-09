@@ -3818,7 +3818,7 @@
   <data name="Menu_Binding_None" xml:space="preserve"><value>Няма</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Клавіша клавіятуры</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>Кнопка кантролера</value></data>
-  <data name="Menu_Style_Tip" xml:space="preserve"><value>Радыяльнае кола выбірае ячэйку па напрамку, як кола зброі. Сэнсарная сетка выбірае ячэйку па становішчы: дзе знаходзіцца палец на панэлі або куды паказвае стык.</value></data>
+  <data name="Menu_Style_Tip" xml:space="preserve"><value>«Радыяльнае кола» выбірае ячэйку па напрамку, як кола зброі. «Сэнсарная сетка» выбірае ячэйку па становішчы: дзе знаходзіцца палец на панэлі або куды паказвае стык. «Хот-бар» паказвае шэраг ячэек, перамяшчае па ім вылучэнне і запускае вылучаную ячэйку, кожнае дзеянне са сваім элементам кіравання.</value></data>
   <data name="Menu_HostInput_Tip" xml:space="preserve"><value>Увод, які адкрывае гэтае меню і кіруе ім, чытаецца з фізічных кантролераў, прызначаных слоту. Стык адкрывае яго, калі яго адхіліць за мёртвую зону ўключэння. Сэнсарная панэль адкрывае яго пры дотыку.</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>Абмежаваць гэтае меню адной паловай трэкпада, каб два меню маглі дзяліць панэль.</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>Калі вылучаная ячэйка запускае сваё прызначэнне. Кожны варыянт тлумачыцца ніжэй.</value></data>
@@ -4248,7 +4248,7 @@
   <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>Спрацоўвае адзін раз, калі «Увод пстрычкі» адпускаецца. Калі паверхня адпускаецца ў той жа момант, спрацоўвае папярэдні выбар.</value></data>
   <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>Спрацоўвае адзін раз, калі вы адрываеце палец або вяртаеце стык унутр мёртвай зоны ўключэння, пакуль меню застаецца адкрытым. Выхад са слоя таксама фіксуе выбар, які яшчэ кіруецца.</value></data>
   <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>Утрымлівае прывязку, пакуль яе ячэйка вылучана. Цэнтр радыяльнага меню можа спрацаваць адразу пры адкрыцці слоя.</value></data>
-  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Націскі напрамкаў перабіраюць ячэйкі і спрацоўваюць на кожнай новай вылучанай ячэйцы. Гэтыя паводзіны хот-бара не выкарыстоўваюць «Рэжым спрацоўвання» і «Увод пстрычкі».</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Націскі напрамкаў перабіраюць ячэйкі і запускаюць кожную новую вылучаную ячэйку, без «Рэжым запуску» і «Увод націску». Стыль «Хот-бар» перамяшчае вылучэнне без запуску і запускае праз свой элемент «Запуск».</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Пашыраны пратакол Flydigi</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Уключае дадатковыя кнопкі і датчыкі руху на падтрымоўваных кантролерах Flydigi.</value></data>
   <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Працуе праграма Flydigi: {0}. Яна можа выкарыстоўваць той жа інтэрфейс кантролера, што і PadForge, і паведамлялася, што Vader 5 Pro шматкроць адключаўся, пакуль доступ меў абодва. Калі гэты кантролер адключаецца і падключаецца зноў, спыніце службу на час працы з PadForge, трымайце кантролер схаваным і выдаліце службу з белага спісу HidHide або паспрабуйце выключыць «Пашыраны пратакол Flydigi» ў наладах, хоць дапамога не пацверджана.</value></data>
@@ -5099,7 +5099,28 @@
     <value>Крыжавіна</value>
   </data>
   <data name="Menu_Style_Keyboard" xml:space="preserve"><value>Клавіятура</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>Радыяльнае кола і Сэнсарная сетка запускаюць прывязкі ячэек. Клавіятура набірае клавішы раскладкі Windows, якая выкарыстоўваецца.</value></data>
+  <data name="Menu_Style_Hotbar" xml:space="preserve"><value>Хот-бар</value></data>
+  <data name="Menu_Hotbar_Show" xml:space="preserve"><value>Паказаць або схаваць</value></data>
+  <data name="Menu_Hotbar_Show_Tip" xml:space="preserve"><value>Паказвае хот-бар, а пры наступным націску хавае яго. Схаваны так хот-бар у наступны раз адкрываецца на сярэдняй ячэйцы.</value></data>
+  <data name="Menu_Hotbar_Previous" xml:space="preserve"><value>Папярэдняя</value></data>
+  <data name="Menu_Hotbar_Previous_Tip" xml:space="preserve"><value>Вылучае ячэйку злева, прапускаючы ячэйкі без прызначэння.</value></data>
+  <data name="Menu_Hotbar_Next" xml:space="preserve"><value>Наступная</value></data>
+  <data name="Menu_Hotbar_Next_Tip" xml:space="preserve"><value>Вылучае ячэйку справа, прапускаючы ячэйкі без прызначэння.</value></data>
+  <data name="Menu_Hotbar_Fire" xml:space="preserve"><value>Запуск</value></data>
+  <data name="Menu_Hotbar_Fire_Tip" xml:space="preserve"><value>Запускае вылучаную ячэйку так, як задае «Рэжым запуску».</value></data>
+  <data name="Menu_Hotbar_Caption" xml:space="preserve"><value>«Паказаць або схаваць» паказвае шэраг ячэек, «Папярэдняя» і «Наступная» перамяшчаюць па ім вылучэнне, а «Запуск» запускае вылучаную ячэйку. Пусты элемент кіравання бярэ напрамак з «Адкрываецца праз»: уніз, улева, управа або ўверх.</value></data>
+  <data name="Menu_Hotbar_Wrap" xml:space="preserve"><value>Цыклічны пераход</value></data>
+  <data name="Menu_Hotbar_Wrap_Tip" xml:space="preserve"><value>Пасля апошняй ячэйкі вылучэнне пераходзіць на першую, і наадварот. Калі выключана, вылучэнне спыняецца на любым з краёў.</value></data>
+  <data name="Menu_Hotbar_DismissOnFire" xml:space="preserve"><value>Хаваць пасля запуску</value></data>
+  <data name="Menu_Hotbar_DismissOnFire_Tip" xml:space="preserve"><value>«Запуск» хавае хот-бар. Калі выключана, хот-бар застаецца на экране, і тую самую ячэйку можна запусціць зноў.</value></data>
+  <data name="Menu_Hotbar_Recenter" xml:space="preserve"><value>Вяртаць у цэнтр</value></data>
+  <data name="Menu_Hotbar_Recenter_Tip" xml:space="preserve"><value>Пакуль хот-бар схаваны, вылучэнне вяртаецца на сярэднюю ячэйку. Калі выключана, хот-бар, які схаваў «Запуск», адкрываецца на той ячэйцы, што была запушчана.</value></data>
+  <data name="Menu_Reset_HotbarControl" xml:space="preserve"><value>Скінуць элемент кіравання</value></data>
+  <data name="Menu_Fire_Click_Hotbar_Desc" xml:space="preserve"><value>«Запуск» націскае вылучаную ячэйку і ўтрымлівае яе, пакуль «Запуск» утрымліваецца. Калі ўключана «Хаваць пасля запуску», націск кароткі.</value></data>
+  <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>Вылучаная ячэйка спрацоўвае адзін раз, коратка, калі «Запуск» адпускаецца. Калі ўключана «Хаваць пасля запуску», яна спрацоўвае, як толькі «Запуск» хавае хот-бар.</value></data>
+  <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>Ячэйка спрацоўвае адзін раз, коратка, калі «Запуск» хавае хот-бар пры ўключанай «Хаваць пасля запуску». Калі ўключана «Вяртаць у цэнтр», спрацоўвае сярэдняя ячэйка.</value></data>
+  <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>Вылучаная ячэйка ўтрымліваецца ўвесь час, пакуль хот-бар паказаны. Пераход адпускае адну ячэйку і ўтрымлівае наступную.</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>«Радыяльнае кола», «Сэнсарная сетка» і «Хот-бар» запускаюць прывязкі ячэек. «Клавіятура» набірае клавішы раскладкі Windows, якая выкарыстоўваецца.</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Раскладка</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Як клавіятура размяшчае клавішы і як кантролер іх выбірае.</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Адно вылучэнне, якое рухаецца стыкам або чатырма ўводамі, раскладка Windows, Xbox і Steam.</value></data>
@@ -5219,6 +5240,12 @@
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (няма на гэтым ПК)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (няма на гэтым слоце)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>гіраскоп Laser Pointer чытаецца як рысканне (у PadForge няма пераўтварэння лазернай указкі)</value></data>
+  <data name="Workshop_Tr_GyroRollFromHorizon" xml:space="preserve"><value>крэн цэнтруецца там, дзе кантролер ляжыць пры запуску або пры дзеянні «Паўторнае цэнтраванне гіраскопа», а не па гарызонце</value></data>
+  <data name="Workshop_Tr_GyroPitchFromHorizon" xml:space="preserve"><value>тангаж цэнтруецца там, дзе кантролер ляжыць пры запуску або пры дзеянні «Паўторнае цэнтраванне гіраскопа», а не на {0}° ад гарызантальнага становішча</value></data>
+  <data name="Workshop_Tr_GyroTiltRangeCapped" xml:space="preserve"><value>поўнае адхіленне пры нахіле на 90°, а не на {0}°</value></data>
+  <data name="Workshop_Tr_OutputJoystickUnrouted" xml:space="preserve"><value>output_joystick {0} накіроўвае пару восей ні на стык, ні на мыш, таму нічога не прызначаецца</value></data>
+  <data name="Workshop_Tr_DpadPulseHeld" xml:space="preserve"><value>кожны кірунак утрымліваецца, пакуль ён націснуты (аналагавая эмуляцыя Steam уключае і выключае яго імпульсамі, якія даўжэйшыя пры большым адхіленні)</value></data>
+  <data name="Workshop_Tr_SoftPressNoAnalog" xml:space="preserve"><value>актыватар мяккага націску на ўводзе без аналагавага чытання (Steam ніколі яго не запускае)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>У reWASD {0} усё роўна трапляе ў Windows, бо файл прызначае яго без скасавання. Калі ўключана Паглынаць прызначаныя ўводы, PadForge яго стрымлівае.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows фармуе {0} радыяльнага стыка па вуглу націску. Картка налад стыка ў PadForge прамы націск праводзіць аднолькава, а дыяганальны па-іншаму.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows памяншае мёртвую зону гіраскопа на кожнай восі ў залежнасці ад вугла руху. PadForge здымае мёртвую зону на кожнай восі цалкам, таму прамы рух працуе аднолькава, а павольны дыяганальны пачынаецца пазней.</value></data>

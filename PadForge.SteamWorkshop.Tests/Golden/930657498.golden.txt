@@ -6,7 +6,7 @@ kbm rows: 18
   Base | KbmKey09
     <- Gamepad ButtonBack
   Base | KbmKey0D
-    <- Gamepad RightTrigger [upper-half] dz=75
+    <- Gamepad RightTrigger [upper-half] dz=90
   Base | KbmKey1B
     <- Gamepad ButtonStart
   Base | KbmKey20
@@ -29,7 +29,7 @@ kbm rows: 18
   Base | KbmKeyA2
     <- Gamepad Paddle1
   Base | KbmKeyBF
-    <- Gamepad LeftTrigger [upper-half] dz=75
+    <- Gamepad LeftTrigger [upper-half] dz=90
   Base | KbmMBtn0
     <- Gamepad ButtonA
   Base | KbmMBtn1
@@ -49,8 +49,8 @@ macros: 6
   macro RumblePulse OnPress | Haptic pulse (DPadUp) | btns=0x0000 in=[Gamepad DPadUp] layer=Base strength=33%
   macro RumblePulse OnPress | Haptic pulse (DPadDown) | btns=0x0000 in=[Gamepad DPadDown] layer=Base strength=33%
   macro RumblePulse OnPress | Haptic pulse (DPadLeft) | btns=0x0000 in=[Gamepad DPadLeft] layer=Base strength=33%
-  macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 layer=Base strength=66%
-  macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=90 layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=90 layer=Base strength=66%
 report: v26 rows:x0+k18 macros:6 menus:0 layers:0 clean:23 partial:0 skipped:0 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmMBtn0 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmMBtn1 <- Gamepad ButtonB

@@ -182,6 +182,56 @@ namespace PadForge.Tests
             Assert.False(Fired(im, 0));
         }
 
+        // ── A hotbar through the runtime ──────────────
+
+        /// <summary>A Hotbar style menu on a Custom opener, its four controls
+        /// recorded buttons: the runtime reads each control as a press and
+        /// steps the hotbar (MenuHotbar.Step), the bar's overlay shows only
+        /// while the bar is up, and the fired cell is what the cell bindings
+        /// read.</summary>
+        [Fact]
+        public void Hotbar_ShowsStepsAndFires_ThroughItsFourControls()
+        {
+            var def = ArrangeSlot(MenuFireType.Click, host: "Custom");
+            def.Kind = MenuKind.Hotbar;
+            def.HasCenter = false;
+            def.LayerMask = "";
+            def.LayerHoldsOpen = false;
+            def.CellCount = 3;
+            def.HotbarShowDescriptor = "Button 1";
+            def.HotbarPreviousDescriptor = "Button 2";
+            def.HotbarNextDescriptor = "Button 3";
+            def.HotbarFireDescriptor = "Button 4";
+            var im = WiredManager();
+            var (ud, st) = AddPad(DevA);
+
+            void Tick(int? held = null)
+            {
+                for (int i = 1; i <= 4; i++) st.Buttons[i] = held == i;
+                im.UpdateMenuContexts(ud, st);
+                _now += 5;
+            }
+
+            Tick();
+            Assert.Null(im.ActiveMenuOverlay);
+            Tick(1);
+            Tick();
+            Assert.NotNull(im.ActiveMenuOverlay);
+            Assert.Equal(1, im.ActiveMenuOverlay.HoveredIndex);
+            Tick(3);
+            Tick();
+            Assert.Equal(2, im.ActiveMenuOverlay.HoveredIndex);
+            Assert.False(Fired(im, 2));
+            Tick(4);
+            Assert.True(Fired(im, 2));
+            // Hide After Firing took the bar down.
+            Tick();
+            Assert.Null(im.ActiveMenuOverlay);
+            _now += 40;
+            Tick();
+            Assert.False(Fired(im, 2));
+        }
+
         // ── Two pads on one slot ──────────────
 
         [Fact]

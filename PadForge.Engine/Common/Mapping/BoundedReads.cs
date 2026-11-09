@@ -18,6 +18,36 @@ namespace PadForge.Engine.Common.Mapping
 
         /// <summary>One stage of a two-stage trigger pull.</summary>
         Stage,
+
+        /// <summary>A direction of Steam's dpad: the position is past a radius
+        /// and points within an angle of the direction, each with Steam's
+        /// hold-back (steamclient64.dll's dpad mode).</summary>
+        Wedge,
+
+        /// <summary>A cell of Steam's four_buttons: the position is within a
+        /// radius of the cell's center, with Steam's hold-back.</summary>
+        Disc,
+
+        /// <summary>A direction of Steam's dpad cross gate: the position is
+        /// past a radius and its component toward the direction is past a
+        /// threshold, each with Steam's hold-back.</summary>
+        Hold,
+
+        /// <summary>An edge of one of Steam's modes: the position past a
+        /// radius (or, inverted, off center and inside it), with Steam's
+        /// hold-back.</summary>
+        Ring,
+
+        /// <summary>One value past a threshold with Steam's hold-back: a
+        /// trigger's pull, or one component of a two-axis position.</summary>
+        Level,
+
+        /// <summary>The Soft Pull of Steam's trigger mode, through its
+        /// Threshold Trigger Style.</summary>
+        Pull,
+
+        /// <summary>Steam's Soft Press activator, through its style.</summary>
+        Press,
     }
 
     /// <summary>The two-stage trigger modes that need memory of the pull,
@@ -188,6 +218,246 @@ namespace PadForge.Engine.Common.Mapping
         internal MappingSource LowSource { get; init; }
         internal MappingSource HighSource { get; init; }
         internal MappingSource PressSource { get; init; }
+
+        /// <summary>Wedge: the angle a direction keeps after it presses and
+        /// loses before it does, degrees.</summary>
+        public double Margin { get; init; }
+
+        /// <summary>Wedge and Hold: the radius the position passes to engage
+        /// and the one it stays past while engaged, percent of full travel.
+        /// Disc: the distance from the center a cell presses within, and the
+        /// one it releases past. Hold: the component's two thresholds are
+        /// <see cref="ComponentPress"/> and <see cref="ComponentRelease"/>.</summary>
+        public double PressRadius { get; init; }
+        public double ReleaseRadius { get; init; }
+
+        /// <summary>Disc: the cell's center, percent of full travel, +Y down.</summary>
+        public double CenterX { get; init; }
+        public double CenterY { get; init; }
+
+        /// <summary>Hold: the component read (0 X, 1 Y), its sign, and its two
+        /// thresholds, percent.</summary>
+        public int ComponentAxis { get; init; }
+        public int ComponentSign { get; init; }
+        public double ComponentPress { get; init; }
+        public double ComponentRelease { get; init; }
+
+        /// <summary>Wedge, Disc and Hold: what gates the read. Click needs the
+        /// touchpad clicked. Engaged reads the gyro at rest while the slot's
+        /// gyro is off.</summary>
+        public BoundedGate Gate { get; init; }
+
+        /// <summary>Wedge and Hold: the key of the radius latch, shared by the
+        /// directions of one dpad. Ring (inverted): the key of its dpad's.</summary>
+        internal string EngageKey { get; init; }
+
+        /// <summary>Ring, Level and Press: true for an inverted read, held
+        /// while the value is above zero and inside the threshold. Ring: its
+        /// dpad's engage radii, percent, when it lets go with its dpad.</summary>
+        public bool InnerEdge { get; init; }
+        public double EngagePress { get; init; }
+        public double EngageRelease { get; init; }
+        public bool HasEngage { get; init; }
+
+        /// <summary>Ring: how long a change holds, milliseconds (the
+        /// trigger's debounce).</summary>
+        public double DebounceMs { get; init; }
+
+        /// <summary>Pull and Press: the style (0 Simple, 1 Hair Trigger, 2 to
+        /// 4 Hip Fire, 5 Hip Fire Exclusive), the threshold on Steam's 0 to
+        /// 32767 scale, and whether the full pull takes part. Level and Press
+        /// read a component of a pair (<see cref="ComponentAxis"/> 0 or 1),
+        /// the pair's length (2), or a one-way input (-1).</summary>
+        public int Style { get; init; }
+        public double Threshold { get; init; }
+        public bool ClickBound { get; init; }
+
+        /// <summary>Pull and Press: names the machine both outputs share.</summary>
+        internal string MachineKey { get; init; }
+        internal MappingSource ValueSource { get; init; }
+    }
+
+    /// <summary>One of Steam's threshold styles run on a hold-back trigger
+    /// (steamclient64.dll 0x1386698d0): the trigger mode's Soft Pull
+    /// (CTriggerMode, update 0x1388de540) or the Soft Press activator
+    /// (CSoftPressActivator, 0x13862d240). <see cref="BoundedReads.StepPulls"/>
+    /// steps it once per poll.</summary>
+    internal sealed class SteamThreshold
+    {
+        private const long GapMs = 250;
+        private const double Epsilon = 1.1920929e-7;
+
+        /// <summary>The Hair Trigger averages the last six updates. Steam
+        /// updates a mode once per controller report, every 4 ms on the USB
+        /// pads, so the average takes one sample each 4 ms.</summary>
+        private const long SampleMs = 4;
+        private const int Samples = 6;
+
+        private readonly int _style;
+        private readonly double _threshold;
+        private readonly double _holdBack;
+        private readonly double _range;
+        private readonly double _delta;
+        private readonly bool _inner;
+        private readonly bool _click;
+        private readonly bool _hairClick;
+        private readonly long _windowMs;
+
+        private double _t;
+        private double _pct;
+        private double _rangeNow;
+        private bool _active;
+        private long _pendingMs = long.MaxValue;
+        private readonly double[] _samples = new double[Samples];
+        private int _count;
+        private int _next;
+        private double _prevAvg;
+        private bool _storedClick;
+        private long _nextSampleMs = long.MinValue;
+        private long _lastStepMs = long.MinValue;
+
+        public bool Soft { get; private set; }
+        public bool Full { get; private set; }
+
+        /// <param name="style">0 Simple, 1 Hair Trigger, 2 to 4 Hip Fire
+        /// (40, 70, 100 ms), 5 Hip Fire Exclusive (60 ms).</param>
+        /// <param name="threshold">The threshold, 0 to 32767.</param>
+        /// <param name="holdBack">The hold-back, percent of the range.</param>
+        /// <param name="range">The trigger's range (its T stays inside it).</param>
+        /// <param name="delta">How far the Hair Trigger's threshold sits
+        /// above the average once the pull lets off.</param>
+        /// <param name="inner">Inverted: held while above zero and inside.</param>
+        /// <param name="click">The full pull cancels a waiting press, and
+        /// under Hip Fire Exclusive gives way to a held one.</param>
+        /// <param name="hairClick">The trigger mode's Hair Trigger moves its
+        /// threshold with the full pull's click.</param>
+        public SteamThreshold(int style, double threshold, double holdBack, double range, double delta,
+            bool inner, bool click, bool hairClick)
+        {
+            _style = style;
+            _threshold = threshold;
+            _holdBack = holdBack;
+            _range = range;
+            _delta = delta;
+            _inner = inner;
+            _click = click;
+            _hairClick = hairClick;
+            _windowMs = BoundedReads.HipFireWindowMs(style);
+            Reset();
+        }
+
+        private void Reset()
+        {
+            _t = _threshold;
+            _pct = _holdBack;
+            _rangeNow = _range;
+            _active = false;
+            _pendingMs = long.MaxValue;
+            _count = 0;
+            _next = 0;
+            _prevAvg = 0;
+            _storedClick = false;
+            _nextSampleMs = long.MinValue;
+            Soft = false;
+            Full = false;
+        }
+
+        /// <summary>One update. <paramref name="value"/> is the trigger's
+        /// input (curved for a Soft Press), <paramref name="raw"/> the input
+        /// before the curve, both on Steam's 0 to 32767 scale.</summary>
+        public void Step(double value, double raw, bool click, long nowMs)
+        {
+            if (_lastStepMs != long.MinValue && (nowMs - _lastStepMs > GapMs || nowMs < _lastStepMs)) Reset();
+            _lastStepMs = nowMs;
+
+            bool was = _active;
+            double h = Math.Abs(_rangeNow * _pct) / 100.0;
+            if (_inner) h = -h;
+            double t = _t;
+            if (t - h < 0) t = h + Epsilon;
+            if (h + t > _rangeNow) t = _rangeNow - h - Epsilon;
+            double edge = was ? t - h : t + h;
+            _active = _inner ? value > 0 && edge > value : value > edge;
+
+            // A press waits out the Hip Fire window, and a release drops
+            // whatever waits.
+            if (_active && !was) _pendingMs = nowMs + _windowMs;
+            if (!_active && was)
+            {
+                _pendingMs = long.MaxValue;
+                Soft = false;
+            }
+            if (nowMs >= _pendingMs)
+            {
+                _pendingMs = long.MaxValue;
+                Soft = true;
+            }
+
+            if (_style == 1 && nowMs >= _nextSampleMs)
+            {
+                _nextSampleMs = nowMs + SampleMs;
+                Hair(value, raw, click);
+            }
+
+            bool full = click;
+            if (_click)
+            {
+                if (Soft && _style == 5) full = false;
+                else if (click) _pendingMs = long.MaxValue;
+            }
+            Full = full;
+        }
+
+        /// <summary>The Hair Trigger (0x1388de7eb, 0x13862d54f): letting off
+        /// the pull by more than the delta between two updates moves the
+        /// threshold to just above the average with a quarter of the
+        /// hold-back, so the press lets go and a small pull presses again. A
+        /// pull back to the threshold restores it. In the trigger mode the
+        /// click drops the threshold to the bottom while it is held, and
+        /// lifts it out of reach when it lets go.</summary>
+        private void Hair(double value, double raw, bool click)
+        {
+            _samples[_next] = value;
+            _next = (_next + 1) % Samples;
+            if (_count < Samples) _count++;
+            double sum = 0;
+            for (int i = 0; i < _count; i++) sum += _samples[i];
+            double avg = sum / _count;
+            if (avg > _threshold && _prevAvg > avg + _delta)
+            {
+                _rangeNow = _range;
+                _t = avg + _delta;
+                _pct = _holdBack * 0.25;
+            }
+            else if (_hairClick && click != _storedClick)
+            {
+                if (!click)
+                {
+                    _rangeNow = 100000;
+                    _t = 100000;
+                }
+                else
+                {
+                    _t = 0;
+                }
+                _storedClick = click;
+            }
+            else if (raw <= _threshold && _prevAvg >= _threshold)
+            {
+                _rangeNow = _range;
+                _t = _threshold;
+                _pct = _holdBack;
+            }
+            _prevAvg = avg;
+        }
+    }
+
+    /// <summary>What gates a Wedge, Disc, Hold, Ring or Level read.</summary>
+    public enum BoundedGate
+    {
+        None,
+        Click,
+        Engaged,
     }
 
     /// <summary>Reads that one threshold cannot say: a zone with an upper
@@ -198,7 +468,26 @@ namespace PadForge.Engine.Common.Mapping
     /// <c>Sector {center} {halfWidth} {deadZone} {stick ring}</c>, where the
     /// dead zone is <c>x</c> or <c>x:y</c> for an ellipse, with
     /// <c>~x</c> or <c>~x:y</c> after it for an outer edge,
-    /// <c>Stage {mode} {Soft|Full} {waitMs} {pull} {press} {input}</c>.</summary>
+    /// <c>Stage {mode} {Soft|Full} {waitMs} {pull} {press} {input}</c>.
+    /// Steam's dpad and four_buttons read a two-axis position (a stick ring, a
+    /// touchpad finger ring, or <c>Gyro Tilt {inner} {range}</c>) through
+    /// triggers that hold back:
+    /// <c>Wedge {center} {halfWidth} {margin} {press} {release} {gate} {pair}</c>,
+    /// <c>Disc {x} {y} {press} {release} {gate} {pair}</c> and
+    /// <c>Hold {press} {release} {engagePress} {engageRelease} {component} {gate} {pair}</c>,
+    /// where the gate is <c>-</c>, <c>click</c> or <c>engaged</c> and the
+    /// component is <c>X+</c>, <c>X-</c>, <c>Y+</c> or <c>Y-</c>. An edge of
+    /// a Steam mode is
+    /// <c>Ring {press} {release} {out|in} {debounceMs} {engagePress|-} {engageRelease|-} {gate} {pair}</c>.
+    /// One value through a hold-back trigger is
+    /// <c>Level {press} {release} {out|in} {component} {gate} {input}</c>,
+    /// where the component is one of the four above, <c>len</c> for the
+    /// pair's length, or <c>-</c> for a one-way input such as a trigger.
+    /// Steam's trigger Soft Pull is
+    /// <c>Pull {style} {Soft|Full} {threshold} {click|-} {input}</c> and its
+    /// Soft Press activator
+    /// <c>Press {style} {Soft|Full} {threshold} {out|in} {click|-} {component} {input}</c>,
+    /// the threshold on Steam's 0 to 32767 scale.</summary>
     public static class BoundedReads
     {
         /// <summary>DS4Windows's full pull is a raw 255. A read past this
@@ -233,6 +522,58 @@ namespace PadForge.Engine.Common.Mapping
         private static readonly ConcurrentDictionary<Guid, PullEntry[]> s_pulls = new();
         private static readonly object s_pullsLock = new();
 
+        /// <summary>One of Steam's hold-back triggers as a Wedge, Disc or Hold
+        /// read keeps it: its state and the device poll that last set it.</summary>
+        private sealed class Latch
+        {
+            public bool On;
+            public long Poll = long.MinValue;
+
+            /// <summary>The engage latch holds a change until this timestamp
+            /// (Stopwatch ticks), Steam's 1/120 s debounce.</summary>
+            public long Until;
+
+            /// <summary>Ring (inverted): whether its dpad was engaged when the
+            /// edge last read it.</summary>
+            public bool WasEngaged;
+        }
+
+        private const int LatchCap = 8192;
+        private static readonly ConcurrentDictionary<(Guid Device, int Slot, string Key), Latch> s_latches = new();
+
+        /// <summary>Each device's poll count, advanced by <see cref="StepPulls"/>
+        /// once per poll. A latch last set before the previous poll belonged
+        /// to a read that stopped running (its layer left, its row went
+        /// away), and Steam resets a mode's triggers when the mode comes back,
+        /// so the latch reads as reset.</summary>
+        private static readonly ConcurrentDictionary<Guid, long> s_polls = new();
+
+        /// <summary>The latch for a read on a device and slot, reset when it
+        /// went stale, or null when the read has no device to keep it on (a
+        /// preview), which then reads from the reset state every time.</summary>
+        private static Latch LatchFor(string deviceGuid, int slotIndex, string key, out long poll)
+        {
+            poll = 0;
+            if (!Guid.TryParse(deviceGuid, out Guid device) || device == Guid.Empty) return null;
+            poll = s_polls.TryGetValue(device, out long p) ? p : 0;
+            if (s_latches.Count >= LatchCap) s_latches.Clear();
+            var latch = s_latches.GetOrAdd((device, slotIndex, key), _ => new Latch());
+            if (latch.Poll < poll - 1)
+            {
+                latch.On = false;
+                latch.Until = 0;
+                latch.WasEngaged = false;
+            }
+            return latch;
+        }
+
+        private static void Set(Latch latch, bool on, long poll)
+        {
+            if (latch == null) return;
+            latch.On = on;
+            latch.Poll = poll;
+        }
+
         public static string Between(int low, int high, bool halfAxis, bool invert, string input)
             => string.Create(CultureInfo.InvariantCulture,
                 $"Between {low} {high} {(halfAxis ? 1 : 0)}{(invert ? 1 : 0)} {input}");
@@ -256,11 +597,90 @@ namespace PadForge.Engine.Common.Mapping
             => string.Create(CultureInfo.InvariantCulture,
                 $"Stage {mode} {(full ? "Full" : "Soft")} {waitMs} {pull} {press} {input}");
 
+        public static string Wedge(double center, double halfWidth, double margin, double press, double release,
+            BoundedGate gate, string pair)
+            => string.Create(CultureInfo.InvariantCulture,
+                $"Wedge {N(center)} {N(halfWidth)} {N(margin)} {N(press)} {N(release)} {GateToken(gate)} {pair}");
+
+        public static string Disc(double x, double y, double press, double release, BoundedGate gate, string pair)
+            => string.Create(CultureInfo.InvariantCulture,
+                $"Disc {N(x)} {N(y)} {N(press)} {N(release)} {GateToken(gate)} {pair}");
+
+        public static string Hold(double press, double release, double engagePress, double engageRelease,
+            int axis, int sign, BoundedGate gate, string pair)
+            => string.Create(CultureInfo.InvariantCulture,
+                $"Hold {N(press)} {N(release)} {N(engagePress)} {N(engageRelease)} {(axis == 0 ? "X" : "Y")}{(sign < 0 ? "-" : "+")} {GateToken(gate)} {pair}");
+
+        /// <summary>An edge of a Steam mode. Outer: pressed past the press
+        /// radius, held while past the release radius. Inner (inverted):
+        /// pressed off center inside the press radius, held while off center
+        /// inside the release radius. A change holds for the debounce. With
+        /// engage radii, an inner edge lets go when its dpad disengages.</summary>
+        public static string Ring(double press, double release, bool inner, double debounceMs, BoundedGate gate,
+            string pair, double? engagePress = null, double? engageRelease = null)
+            => string.Create(CultureInfo.InvariantCulture,
+                $"Ring {N(press)} {N(release)} {(inner ? "in" : "out")} {N(debounceMs)} {(engagePress is double ep ? N(ep) : "-")} {(engageRelease is double er ? N(er) : "-")} {GateToken(gate)} {pair}");
+
+        /// <summary>One value through a hold-back trigger: pressed past the
+        /// press threshold and held while past the release threshold, percent
+        /// of full travel. Inverted, it presses above zero inside the press
+        /// threshold and holds above zero inside the release threshold.</summary>
+        public static string Level(double press, double release, bool inner, string component, BoundedGate gate,
+            string input)
+            => string.Create(CultureInfo.InvariantCulture,
+                $"Level {N(press)} {N(release)} {(inner ? "in" : "out")} {component} {GateToken(gate)} {input}");
+
+        /// <summary>The Soft Pull of Steam's trigger mode (Soft) or its click
+        /// under Hip Fire Exclusive (Full): edge_binding_radius as the
+        /// threshold, adaptive_threshold as the style, and whether the group
+        /// binds the click.</summary>
+        public static string Pull(int style, bool full, double threshold, bool click, string input)
+            => string.Create(CultureInfo.InvariantCulture,
+                $"Pull {style} {(full ? "Full" : "Soft")} {N(threshold)} {(click ? "click" : "-")} {input}");
+
+        /// <summary>Steam's Soft Press activator (Soft), or a sibling press its
+        /// Hip Fire Exclusive holds off (Full): activation_threshold as the
+        /// threshold, soft_press_sytle as the style.</summary>
+        public static string Press(int style, bool full, double threshold, bool inner, bool click, string component,
+            string input)
+            => string.Create(CultureInfo.InvariantCulture,
+                $"Press {style} {(full ? "Full" : "Soft")} {N(threshold)} {(inner ? "in" : "out")} {(click ? "click" : "-")} {component} {input}");
+
+        /// <summary>A number as a descriptor writes it: four decimals at most,
+        /// so the string a translation writes is the string it reads back.</summary>
+        private static string N(double v) => Math.Round(v, 4).ToString("0.####", CultureInfo.InvariantCulture);
+
+        private static string GateToken(BoundedGate gate) => gate switch
+        {
+            BoundedGate.Click => "click",
+            BoundedGate.Engaged => "engaged",
+            _ => "-",
+        };
+
+        private static bool TryGate(string token, out BoundedGate gate)
+        {
+            gate = token switch
+            {
+                "-" => BoundedGate.None,
+                "click" => BoundedGate.Click,
+                "engaged" => BoundedGate.Engaged,
+                _ => (BoundedGate)(-1),
+            };
+            return (int)gate >= 0;
+        }
+
         public static bool IsBounded(string descriptor)
             => descriptor != null
                && (descriptor.StartsWith("Between ", StringComparison.Ordinal)
                    || descriptor.StartsWith("Sector ", StringComparison.Ordinal)
-                   || descriptor.StartsWith("Stage ", StringComparison.Ordinal));
+                   || descriptor.StartsWith("Stage ", StringComparison.Ordinal)
+                   || descriptor.StartsWith("Wedge ", StringComparison.Ordinal)
+                   || descriptor.StartsWith("Disc ", StringComparison.Ordinal)
+                   || descriptor.StartsWith("Hold ", StringComparison.Ordinal)
+                   || descriptor.StartsWith("Ring ", StringComparison.Ordinal)
+                   || descriptor.StartsWith("Level ", StringComparison.Ordinal)
+                   || descriptor.StartsWith("Pull ", StringComparison.Ordinal)
+                   || descriptor.StartsWith("Press ", StringComparison.Ordinal));
 
         /// <summary>The parsed read, or null when the descriptor is another
         /// family or is malformed.</summary>
@@ -330,6 +750,177 @@ namespace PadForge.Engine.Common.Mapping
                     OuterY = outerY,
                 };
             }
+            if (d.StartsWith("Wedge ", StringComparison.Ordinal))
+            {
+                var p = d.Split(' ', 8, StringSplitOptions.RemoveEmptyEntries);
+                if (p.Length != 8
+                    || !Num(p[1], out double center) || !Num(p[2], out double width) || !Num(p[3], out double margin)
+                    || !Num(p[4], out double pressR) || !Num(p[5], out double releaseR)
+                    || width <= 0 || margin < 0 || releaseR > pressR
+                    || !TryGate(p[6], out var gate) || !SourceCoercion.IsPairDescriptor(p[7]))
+                    return null;
+                return new BoundedRead
+                {
+                    Kind = BoundedReadKind.Wedge,
+                    Inner = p[7],
+                    Center = center,
+                    HalfWidth = width,
+                    Margin = margin,
+                    PressRadius = pressR,
+                    ReleaseRadius = releaseR,
+                    Gate = gate,
+                    EngageKey = string.Create(c, $"{p[4]} {p[5]} {p[6]} {p[7]}"),
+                };
+            }
+            if (d.StartsWith("Disc ", StringComparison.Ordinal))
+            {
+                var p = d.Split(' ', 7, StringSplitOptions.RemoveEmptyEntries);
+                if (p.Length != 7
+                    || !Num(p[1], out double x) || !Num(p[2], out double y)
+                    || !Num(p[3], out double pressR) || !Num(p[4], out double releaseR)
+                    || pressR > releaseR
+                    || !TryGate(p[5], out var gate) || !SourceCoercion.IsPairDescriptor(p[6]))
+                    return null;
+                return new BoundedRead
+                {
+                    Kind = BoundedReadKind.Disc,
+                    Inner = p[6],
+                    CenterX = x,
+                    CenterY = y,
+                    PressRadius = pressR,
+                    ReleaseRadius = releaseR,
+                    Gate = gate,
+                };
+            }
+            if (d.StartsWith("Hold ", StringComparison.Ordinal))
+            {
+                var p = d.Split(' ', 8, StringSplitOptions.RemoveEmptyEntries);
+                if (p.Length != 8
+                    || !Num(p[1], out double pressR) || !Num(p[2], out double releaseR)
+                    || !Num(p[3], out double engagePress) || !Num(p[4], out double engageRelease)
+                    || releaseR > pressR || engageRelease > engagePress
+                    || p[5].Length != 2 || p[5][0] is not ('X' or 'Y') || p[5][1] is not ('+' or '-')
+                    || !TryGate(p[6], out var gate) || !SourceCoercion.IsPairDescriptor(p[7]))
+                    return null;
+                return new BoundedRead
+                {
+                    Kind = BoundedReadKind.Hold,
+                    Inner = p[7],
+                    ComponentAxis = p[5][0] == 'X' ? 0 : 1,
+                    ComponentSign = p[5][1] == '-' ? -1 : 1,
+                    ComponentPress = pressR,
+                    ComponentRelease = releaseR,
+                    PressRadius = engagePress,
+                    ReleaseRadius = engageRelease,
+                    Gate = gate,
+                    EngageKey = string.Create(c, $"{p[3]} {p[4]} {p[6]} {p[7]}"),
+                };
+            }
+            if (d.StartsWith("Ring ", StringComparison.Ordinal))
+            {
+                var p = d.Split(' ', 9, StringSplitOptions.RemoveEmptyEntries);
+                bool inner = p.Length == 9 && p[3] == "in";
+                bool engage = p.Length == 9 && (p[5] != "-" || p[6] != "-");
+                double engagePress = 0, engageRelease = 0;
+                if (p.Length != 9
+                    || !Num(p[1], out double pressR) || !Num(p[2], out double releaseR)
+                    || p[3] is not ("in" or "out")
+                    || (inner ? pressR > releaseR : releaseR > pressR)
+                    || !Num(p[4], out double debounce) || debounce < 0 || debounce > 1000
+                    || (engage && (!Num(p[5], out engagePress) || !Num(p[6], out engageRelease)
+                        || engageRelease > engagePress))
+                    || !TryGate(p[7], out var gate) || !SourceCoercion.IsPairDescriptor(p[8]))
+                    return null;
+                return new BoundedRead
+                {
+                    Kind = BoundedReadKind.Ring,
+                    Inner = p[8],
+                    PressRadius = pressR,
+                    ReleaseRadius = releaseR,
+                    InnerEdge = inner,
+                    DebounceMs = debounce,
+                    HasEngage = engage,
+                    EngagePress = engagePress,
+                    EngageRelease = engageRelease,
+                    Gate = gate,
+                    EngageKey = engage ? string.Create(c, $"{p[5]} {p[6]} {p[7]} {p[8]}") : null,
+                };
+            }
+            if (d.StartsWith("Level ", StringComparison.Ordinal))
+            {
+                var p = d.Split(' ', 7, StringSplitOptions.RemoveEmptyEntries);
+                bool inner = p.Length == 7 && p[3] == "in";
+                if (p.Length != 7
+                    || !Num(p[1], out double pressR) || !Num(p[2], out double releaseR)
+                    || p[3] is not ("in" or "out")
+                    || (inner ? pressR > releaseR : releaseR > pressR)
+                    || !TryComponent(p[4], p[6], out int axis, out int sign)
+                    || !TryGate(p[5], out var gate) || gate == BoundedGate.Click)
+                    return null;
+                return new BoundedRead
+                {
+                    Kind = BoundedReadKind.Level,
+                    Inner = p[6],
+                    PressRadius = pressR,
+                    ReleaseRadius = releaseR,
+                    InnerEdge = inner,
+                    ComponentAxis = axis,
+                    ComponentSign = sign,
+                    Gate = gate,
+                    ValueSource = axis < 0 ? new MappingSource { Descriptor = p[6] } : null,
+                };
+            }
+            if (d.StartsWith("Pull ", StringComparison.Ordinal))
+            {
+                var p = d.Split(' ', 6, StringSplitOptions.RemoveEmptyEntries);
+                if (p.Length != 6
+                    || !int.TryParse(p[1], NumberStyles.None, c, out int style) || style > 5
+                    || p[2] is not ("Soft" or "Full")
+                    || !Num(p[3], out double threshold) || threshold < 0 || threshold > 32767
+                    || p[4] is not ("click" or "-")
+                    || IsBounded(p[5]) || SourceCoercion.IsPairDescriptor(p[5]))
+                    return null;
+                return new BoundedRead
+                {
+                    Kind = BoundedReadKind.Pull,
+                    Inner = p[5],
+                    Style = style,
+                    IsFull = p[2] == "Full",
+                    Threshold = threshold,
+                    ClickBound = p[4] == "click",
+                    ComponentAxis = -1,
+                    MachineKey = string.Create(c, $"Pull {p[1]} {p[3]} {p[4]} {p[5]}"),
+                    ValueSource = new MappingSource { Descriptor = p[5] },
+                };
+            }
+            if (d.StartsWith("Press ", StringComparison.Ordinal))
+            {
+                var p = d.Split(' ', 8, StringSplitOptions.RemoveEmptyEntries);
+                if (p.Length != 8
+                    || !int.TryParse(p[1], NumberStyles.None, c, out int style) || style > 5
+                    || p[2] is not ("Soft" or "Full")
+                    || !Num(p[3], out double threshold) || threshold < 0 || threshold > 32767
+                    || p[4] is not ("in" or "out")
+                    || p[5] is not ("click" or "-")
+                    || !TryComponent(p[6], p[7], out int axis, out int sign)
+                    // The full pull belongs to a trigger: a pair has none.
+                    || (p[5] == "click" && axis >= 0))
+                    return null;
+                return new BoundedRead
+                {
+                    Kind = BoundedReadKind.Press,
+                    Inner = p[7],
+                    Style = style,
+                    IsFull = p[2] == "Full",
+                    Threshold = threshold,
+                    InnerEdge = p[4] == "in",
+                    ClickBound = p[5] == "click",
+                    ComponentAxis = axis,
+                    ComponentSign = sign,
+                    MachineKey = string.Create(c, $"Press {p[1]} {p[3]} {p[4]} {p[5]} {p[6]} {p[7]}"),
+                    ValueSource = axis < 0 ? new MappingSource { Descriptor = p[7] } : null,
+                };
+            }
             var s = d.Split(' ', 7, StringSplitOptions.RemoveEmptyEntries);
             if (s.Length != 7
                 || !Enum.TryParse(s[1], ignoreCase: false, out TwoStageMode mode)
@@ -356,6 +947,51 @@ namespace PadForge.Engine.Common.Mapping
                 PressSource = Source(s[6], press, false, false),
             };
         }
+
+        private static bool Num(string token, out double value)
+            => double.TryParse(token, NumberStyles.Float, CultureInfo.InvariantCulture, out value)
+               && double.IsFinite(value);
+
+        /// <summary>A component token and the input it reads: <c>X+</c>,
+        /// <c>X-</c>, <c>Y+</c> or <c>Y-</c> of a pair (axis 0 or 1),
+        /// <c>len</c> for the pair's length (axis 2), or <c>-</c> for a one-way
+        /// input (axis -1), which may be neither a pair nor another bounded
+        /// read.</summary>
+        private static bool TryComponent(string token, string input, out int axis, out int sign)
+        {
+            axis = -1;
+            sign = 1;
+            if (token == "-") return input.Length > 0 && !IsBounded(input) && !SourceCoercion.IsPairDescriptor(input);
+            if (!SourceCoercion.IsPairDescriptor(input)) return false;
+            if (token == "len")
+            {
+                axis = 2;
+                return true;
+            }
+            if (token.Length != 2 || token[0] is not ('X' or 'Y') || token[1] is not ('+' or '-')) return false;
+            axis = token[0] == 'X' ? 0 : 1;
+            sign = token[1] == '-' ? -1 : 1;
+            return true;
+        }
+
+        /// <summary>Steam's full pull on the controllers it reads as generic
+        /// gamepads (Xbox, PlayStation and the rest): the pull at 31128 of
+        /// 32767 or past it (steamclient64.dll 0x1386795c4), 95 percent.</summary>
+        public const double FullPullRaw = 31128;
+
+        /// <summary>How long a Hip Fire style waits before its press, in
+        /// milliseconds: 40, 70 and 100 for styles 2 to 4 ((style - 2) * 0.03 +
+        /// 0.04 s) and 60 for Hip Fire Exclusive, as both the trigger mode
+        /// (0x1388de37c) and the Soft Press activator (0x1386281f9) set it.
+        /// Simple and Hair Trigger press at once.</summary>
+        public static int HipFireWindowMs(int style) => style switch
+        {
+            2 => 40,
+            3 => 70,
+            4 => 100,
+            5 => 60,
+            _ => 0,
+        };
 
         /// <summary>A sector's radius token: <c>x</c>, <c>x:y</c>, and an
         /// optional <c>~x</c> or <c>~x:y</c> outer edge, each 0 to 100. A
@@ -402,6 +1038,20 @@ namespace PadForge.Engine.Common.Mapping
                 case BoundedReadKind.Sector:
                     return SourceCoercion.ReadStickSector(state, read.Inner, read.Center, read.HalfWidth, read.DeadZone,
                         read.DeadZoneY, read.OuterX, read.OuterY);
+                case BoundedReadKind.Wedge:
+                    return ReadWedge(state, read, descriptor, slotIndex, deviceGuid);
+                case BoundedReadKind.Disc:
+                    return ReadDisc(state, read, descriptor, slotIndex, deviceGuid);
+                case BoundedReadKind.Hold:
+                    return ReadHold(state, read, descriptor, slotIndex, deviceGuid);
+                case BoundedReadKind.Ring:
+                    return ReadRing(state, read, descriptor, slotIndex, deviceGuid);
+                case BoundedReadKind.Level:
+                    return ReadLevel(state, read, descriptor, slotIndex, deviceGuid);
+                case BoundedReadKind.Pull:
+                case BoundedReadKind.Press:
+                    var machine = MachineFor(read, deviceGuid);
+                    return read.IsFull ? machine.Full : machine.Soft;
                 default:
                     var pull = PullFor(read, deviceGuid);
                     return read.IsFull
@@ -417,14 +1067,101 @@ namespace PadForge.Engine.Common.Mapping
         /// every report.</summary>
         public static void StepPulls(Guid device, string deviceGuid, CustomInputState state, long nowMs)
         {
-            if (state == null || !s_pulls.TryGetValue(device, out var pulls)) return;
-            for (int i = 0; i < pulls.Length; i++)
+            s_polls.AddOrUpdate(device, 1, static (_, n) => n + 1);
+            if (state == null) return;
+            if (s_pulls.TryGetValue(device, out var pulls))
             {
-                var e = pulls[i];
-                e.Pull.Step(e.Mode, e.WaitMs,
-                    Held(state, e.PulledSource, -1, deviceGuid),
-                    Held(state, e.FullSource, -1, deviceGuid),
-                    nowMs);
+                for (int i = 0; i < pulls.Length; i++)
+                {
+                    var e = pulls[i];
+                    e.Pull.Step(e.Mode, e.WaitMs,
+                        Held(state, e.PulledSource, -1, deviceGuid),
+                        Held(state, e.FullSource, -1, deviceGuid),
+                        nowMs);
+                }
+            }
+            if (s_machines.TryGetValue(device, out var machines))
+            {
+                for (int i = 0; i < machines.Length; i++) StepMachine(machines[i], state, deviceGuid, nowMs);
+            }
+        }
+
+        private sealed class MachineEntry
+        {
+            public MachineEntry(BoundedRead read)
+            {
+                Key = read.MachineKey;
+                Press = read.Kind == BoundedReadKind.Press;
+                Input = read.Inner;
+                ValueSource = read.ValueSource;
+                ComponentAxis = read.ComponentAxis;
+                ComponentSign = read.ComponentSign;
+                Machine = Press
+                    // The Soft Press activator (0x138627c50): 5 percent of
+                    // activation_threshold's 32255 maximum as the hold-back,
+                    // and a Hair Trigger delta of 150.
+                    ? new SteamThreshold(read.Style, read.Threshold, 5, 32255, 150, read.InnerEdge, read.ClickBound,
+                        hairClick: false)
+                    // The trigger mode (0x1388de2c6): 7.5 percent of 32767,
+                    // and a Hair Trigger delta of a third of it (0x1388de2f1).
+                    : new SteamThreshold(read.Style, read.Threshold, 7.5, 32767, 7.5 / 3.0 * 32767.0 / 100.0, false,
+                        read.ClickBound, hairClick: true);
+            }
+
+            public readonly string Key;
+            public readonly bool Press;
+            public readonly string Input;
+            public readonly MappingSource ValueSource;
+            public readonly int ComponentAxis;
+            public readonly int ComponentSign;
+            public readonly SteamThreshold Machine;
+        }
+
+        /// <summary>The threshold machines a read has asked for, per device,
+        /// kept as <see cref="s_pulls"/> keeps the two-stage pulls.</summary>
+        private static readonly ConcurrentDictionary<Guid, MachineEntry[]> s_machines = new();
+
+        /// <summary>One update of a machine: the input on Steam's 0 to 32767
+        /// scale, the full pull at 31128 or past it, and for a Soft Press a pull
+        /// or a component curved by a power of 0.75 (0x13862d2f9, kinds below 8
+        /// of the activator's table at 0x1392dc500), a length read straight.</summary>
+        private static void StepMachine(MachineEntry e, CustomInputState state, string deviceGuid, long nowMs)
+        {
+            double raw;
+            if (e.ComponentAxis < 0)
+            {
+                raw = SourceCoercion.EvaluateForTriggerTarget(state, e.ValueSource, -1, deviceGuid);
+            }
+            else
+            {
+                SourceCoercion.TryReadPair(state, e.Input, -1, deviceGuid, out double x, out double y);
+                raw = e.ComponentAxis == 2
+                    ? Math.Sqrt(x * x + y * y)
+                    : e.ComponentSign * (e.ComponentAxis == 0 ? x : y);
+            }
+            raw = Math.Clamp(raw, 0, 1) * 32767.0;
+            double value = e.Press && e.ComponentAxis != 2 ? Math.Pow(raw / 32767.0, 0.75) * 32767.0 : raw;
+            e.Machine.Step(value, raw, e.ComponentAxis < 0 && raw >= FullPullRaw, nowMs);
+        }
+
+        private static SteamThreshold MachineFor(BoundedRead read, string deviceGuid)
+        {
+            Guid.TryParse(deviceGuid, out Guid device);
+            if (s_machines.TryGetValue(device, out var machines))
+            {
+                for (int i = 0; i < machines.Length; i++)
+                    if (string.Equals(machines[i].Key, read.MachineKey, StringComparison.Ordinal)) return machines[i].Machine;
+            }
+            lock (s_pullsLock)
+            {
+                machines = s_machines.TryGetValue(device, out var current) ? current : Array.Empty<MachineEntry>();
+                for (int i = 0; i < machines.Length; i++)
+                    if (string.Equals(machines[i].Key, read.MachineKey, StringComparison.Ordinal)) return machines[i].Machine;
+                var grown = new MachineEntry[machines.Length + 1];
+                Array.Copy(machines, grown, machines.Length);
+                grown[machines.Length] = new MachineEntry(read);
+                s_machines[device] = grown;
+                return grown[machines.Length].Machine;
             }
         }
 
@@ -451,5 +1188,195 @@ namespace PadForge.Engine.Common.Mapping
 
         private static bool Held(CustomInputState state, MappingSource src, int slotIndex, string deviceGuid)
             => SourceCoercion.EvaluateForButtonTarget(state, src, 50, slotIndex, deviceGuid);
+
+        /// <summary>The read's position in percent of full travel, +Y down. A
+        /// pair with no reading, and the gyro while the slot's gyro is off,
+        /// read at rest, as Steam's dpad reads them.</summary>
+        private static (double X, double Y) Position(CustomInputState state, BoundedRead read, int slotIndex, string deviceGuid)
+        {
+            if (read.Gate == BoundedGate.Engaged && slotIndex >= 0
+                && !(SourceCoercion.AimEngageStateProvider?.Invoke(slotIndex) ?? true))
+                return (0, 0);
+            if (!SourceCoercion.TryReadPair(state, read.Inner, slotIndex, deviceGuid, out double x, out double y))
+                return (0, 0);
+            return (x * 100.0, y * 100.0);
+        }
+
+        /// <summary>Steam's dpad engage trigger (steamclient64.dll 0x1386698d0,
+        /// seeded with the dead zone at 0x1388b23dd): once past the press
+        /// radius the position stays engaged while it is past the release
+        /// radius, and a change holds for 1/120 s (the trigger's debounce,
+        /// set at 0x1388b2451). One latch per dpad, which every direction of
+        /// it reads.</summary>
+        private static bool Engaged(BoundedRead read, double length, string deviceGuid, int slotIndex)
+            => Engaged(read.EngageKey, read.PressRadius, read.ReleaseRadius, length, deviceGuid, slotIndex);
+
+        private static bool Engaged(string key, double press, double release, double length, string deviceGuid, int slotIndex)
+        {
+            var latch = LatchFor(deviceGuid, slotIndex, key, out long poll);
+            bool was = latch?.On ?? false;
+            long now = System.Diagnostics.Stopwatch.GetTimestamp();
+            if (latch != null && now < latch.Until)
+            {
+                Set(latch, was, poll);
+                return was;
+            }
+            bool on = was ? length > release : length > press;
+            if (latch != null && on != was) latch.Until = now + System.Diagnostics.Stopwatch.Frequency / 120;
+            Set(latch, on, poll);
+            return on;
+        }
+
+        /// <summary>An edge of a Steam mode: its own trigger, stepped with the
+        /// position's length every update and taking no click. The dpad's
+        /// (0x1388b319e) has 10 percent of hold-back and the 1/120 s debounce,
+        /// the joystick modes' (0x1388c8f34) 3 percent and none, the flick
+        /// stick's (0x1388b4c93) 10 percent and none. An outer edge presses
+        /// past the press radius and holds while past the release radius. An
+        /// inverted edge presses off center inside the press radius and holds
+        /// while off center inside the release radius (0x1386698d0 with its
+        /// invert flag). The dpad lets its inverted edge go, and resets its
+        /// trigger, in the update where its engage trigger lets go. Steam's
+        /// controller dead zone reads a resting stick as centered, so a stick
+        /// counts as off center past the stick ring's rest floor.</summary>
+        private static bool ReadRing(CustomInputState state, BoundedRead read, string descriptor, int slotIndex, string deviceGuid)
+        {
+            var (x, y) = Position(state, read, slotIndex, deviceGuid);
+            double length = Math.Sqrt(x * x + y * y);
+            var latch = LatchFor(deviceGuid, slotIndex, descriptor, out long poll);
+            bool was = latch?.On ?? false;
+            if (read.InnerEdge && read.HasEngage)
+            {
+                bool engaged = Engaged(read.EngageKey, read.EngagePress, read.EngageRelease, length, deviceGuid, slotIndex);
+                bool letGo = latch != null && latch.WasEngaged && !engaged;
+                if (latch != null) latch.WasEngaged = engaged;
+                if (letGo)
+                {
+                    latch.Until = 0;
+                    Set(latch, false, poll);
+                    return false;
+                }
+            }
+            long now = System.Diagnostics.Stopwatch.GetTimestamp();
+            if (latch != null && now < latch.Until)
+            {
+                Set(latch, was, poll);
+                return was;
+            }
+            double floor = SourceCoercion.IsStickRingDescriptor(read.Inner)
+                ? SourceCoercion.StickRingInnerFloorPercent
+                : 0;
+            bool on = read.InnerEdge
+                ? length > floor && (was ? length < read.ReleaseRadius : length < read.PressRadius)
+                : was ? length > read.ReleaseRadius : length > read.PressRadius;
+            if (latch != null && on != was && read.DebounceMs > 0)
+                latch.Until = now + (long)(read.DebounceMs * System.Diagnostics.Stopwatch.Frequency / 1000.0);
+            Set(latch, on, poll);
+            return on;
+        }
+
+        /// <summary>One value through a hold-back trigger: a one-way input
+        /// such as a trigger's pull, or a pair's component toward one way (zero
+        /// the other way) or its length, all in percent. Steam's Soft Pull
+        /// digital input, the trigger past 1600 (CTriggerSource 0x1386730c7),
+        /// and the gyro modes' tilt left and right (0x1388bb32d, 0x1388b0f0d)
+        /// read this way.</summary>
+        private static bool ReadLevel(CustomInputState state, BoundedRead read, string descriptor, int slotIndex, string deviceGuid)
+        {
+            double v;
+            if (read.ComponentAxis < 0)
+            {
+                bool off = read.Gate == BoundedGate.Engaged && slotIndex >= 0
+                    && !(SourceCoercion.AimEngageStateProvider?.Invoke(slotIndex) ?? true);
+                v = off ? 0 : SourceCoercion.EvaluateForTriggerTarget(state, read.ValueSource, slotIndex, deviceGuid) * 100.0;
+            }
+            else
+            {
+                var (x, y) = Position(state, read, slotIndex, deviceGuid);
+                v = read.ComponentAxis == 2
+                    ? Math.Sqrt(x * x + y * y)
+                    : Math.Max(0, read.ComponentSign * (read.ComponentAxis == 0 ? x : y));
+            }
+            var latch = LatchFor(deviceGuid, slotIndex, descriptor, out long poll);
+            bool was = latch?.On ?? false;
+            bool on = read.InnerEdge
+                ? v > 0 && (was ? v < read.ReleaseRadius : v < read.PressRadius)
+                : was ? v > read.ReleaseRadius : v > read.PressRadius;
+            Set(latch, on, poll);
+            return on;
+        }
+
+        /// <summary>One direction of Steam's dpad (0x1388b2d30 and 0x1388b3390):
+        /// engaged, clicked when the gate asks for it, and the position's
+        /// angle inside the direction's span. A direction that pressed keeps
+        /// the margin past each edge, one that did not loses it, and the
+        /// angle off the direction folds to (-270, 90] as Steam folds it.</summary>
+        private static bool ReadWedge(CustomInputState state, BoundedRead read, string descriptor, int slotIndex, string deviceGuid)
+        {
+            var (x, y) = Position(state, read, slotIndex, deviceGuid);
+            bool engaged = Engaged(read, Math.Sqrt(x * x + y * y), deviceGuid, slotIndex);
+            var latch = LatchFor(deviceGuid, slotIndex, descriptor, out long poll);
+            bool was = latch?.On ?? false;
+            bool on = false;
+            if (engaged && (read.Gate != BoundedGate.Click || SourceCoercion.IsPairClicked(state, read.Inner, slotIndex, deviceGuid)))
+            {
+                double angle = Math.Atan2(-y, x) * 180.0 / Math.PI;
+                if (angle < 0) angle += 360.0;
+                double off = angle - read.Center;
+                if (off > 90.0) off -= 360.0;
+                double edge = was ? read.HalfWidth + read.Margin : read.HalfWidth - read.Margin;
+                on = off > -edge && off < edge;
+            }
+            Set(latch, on, poll);
+            return on;
+        }
+
+        /// <summary>One cell of Steam's four_buttons (0x1388b6ad0): a position
+        /// at rest, or a missing click the gate asks for, presses nothing and
+        /// leaves the cell's trigger as it was. Otherwise the cell's trigger
+        /// releases past the release distance from its center and, once
+        /// released, presses again only within the press distance. A trigger
+        /// starts unreleased, as Steam's does.</summary>
+        private static bool ReadDisc(CustomInputState state, BoundedRead read, string descriptor, int slotIndex, string deviceGuid)
+        {
+            var (x, y) = Position(state, read, slotIndex, deviceGuid);
+            var latch = LatchFor(deviceGuid, slotIndex, descriptor, out long poll);
+            bool released = latch?.On ?? false;
+            if ((x == 0 && y == 0)
+                || (read.Gate == BoundedGate.Click && !SourceCoercion.IsPairClicked(state, read.Inner, slotIndex, deviceGuid)))
+            {
+                // Steam skips the cell's trigger here and it keeps its state.
+                Set(latch, released, poll);
+                return false;
+            }
+            double dx = x - read.CenterX, dy = y - read.CenterY;
+            double distance = Math.Sqrt(dx * dx + dy * dy);
+            released = released ? distance > read.PressRadius : distance > read.ReleaseRadius;
+            Set(latch, released, poll);
+            return !released;
+        }
+
+        /// <summary>One direction of Steam's dpad cross gate (0x1388b3390,
+        /// layout 3): engaged, clicked when the gate asks for it, and the
+        /// component's own trigger on. The component trigger moves only
+        /// while the dpad is engaged, as Steam steps it only then.</summary>
+        private static bool ReadHold(CustomInputState state, BoundedRead read, string descriptor, int slotIndex, string deviceGuid)
+        {
+            var (x, y) = Position(state, read, slotIndex, deviceGuid);
+            bool engaged = Engaged(read, Math.Sqrt(x * x + y * y), deviceGuid, slotIndex);
+            var latch = LatchFor(deviceGuid, slotIndex, descriptor, out long poll);
+            bool was = latch?.On ?? false;
+            if (!engaged || (read.Gate == BoundedGate.Click && !SourceCoercion.IsPairClicked(state, read.Inner, slotIndex, deviceGuid)))
+            {
+                // Steam does not step the component's trigger here, and it
+                // keeps its state for when the dpad engages again.
+                Set(latch, was, poll);
+                return false;
+            }
+            double component = read.ComponentSign * (read.ComponentAxis == 0 ? x : y);
+            bool on = was ? component > read.ComponentRelease : component > read.ComponentPress;
+            Set(latch, on, poll);
+            return on;
+        }
     }
 }

@@ -3756,7 +3756,7 @@
   <data name="Menu_Binding_None" xml:space="preserve"><value>없음</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>키보드 키</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>컨트롤러 버튼</value></data>
-  <data name="Menu_Style_Tip" xml:space="preserve"><value>방사형 링은 무기 휠처럼 방향으로 셀을 선택합니다. 터치 그리드는 위치로 셀을 선택합니다. 패드 위 손가락의 위치나 스틱이 가리키는 곳입니다.</value></data>
+  <data name="Menu_Style_Tip" xml:space="preserve"><value>방사형 링은 무기 휠처럼 방향으로 셀을 선택합니다. 터치 그리드는 위치로 셀을 선택합니다. 패드 위 손가락의 위치나 스틱이 가리키는 곳입니다. 핫바는 셀 한 줄을 보여 주고, 그 줄을 따라 이동하며 선택한 셀을 실행합니다. 각각 전용 컨트롤이 있습니다.</value></data>
   <data name="Menu_HostInput_Tip" xml:space="preserve"><value>이 메뉴를 열고 조작하는 입력으로, 슬롯에 할당된 실제 컨트롤러에서 읽습니다. 스틱은 작동 데드존을 넘어 기울이면 열리고, 터치패드는 터치하면 열립니다.</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>이 메뉴를 트랙패드의 한쪽 절반으로 제한합니다. 두 메뉴가 하나의 패드를 나눠 쓸 수 있습니다.</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>강조된 셀의 할당이 언제 실행되는지입니다. 각 선택지는 아래에 설명됩니다.</value></data>
@@ -4199,7 +4199,7 @@
   <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>클릭 입력을 놓을 때 한 번 발동합니다. 같은 순간에 표면도 놓으면 이전 선택을 발동합니다.</value></data>
   <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>메뉴가 열린 상태에서 손가락을 떼거나 스틱을 활성 데드존 안으로 되돌릴 때 한 번 발동합니다. 레이어를 벗어나도 조작 중인 선택이 확정됩니다.</value></data>
   <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>해당 셀이 강조된 동안 바인딩을 유지합니다. 레이어가 열리면 원형 중심이 즉시 발동할 수 있습니다.</value></data>
-  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>방향 입력으로 셀을 차례로 이동하며 새로 선택된 셀을 발동합니다. 이 핫바 동작은 발동 모드나 클릭 입력을 사용하지 않습니다.</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>방향 입력으로 셀을 차례로 이동하며 새로 선택된 셀을 실행합니다. 실행 모드나 클릭 입력은 사용하지 않습니다. 핫바 스타일은 실행하지 않고 이동만 하며, 전용 실행 컨트롤로 실행합니다.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Flydigi 확장 프로토콜</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>지원되는 Flydigi 컨트롤러의 추가 버튼과 모션 센서를 활성화합니다.</value></data>
   <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi 소프트웨어가 실행 중입니다: {0}. PadForge와 같은 컨트롤러 인터페이스를 사용할 수 있으며, 둘이 모두 접근할 수 있는 상태에서 Vader 5 Pro가 반복해서 연결 해제되었다는 보고가 있습니다. 이 컨트롤러가 끊기고 다시 연결된다면 PadForge를 사용하는 동안 서비스를 중지하거나, 컨트롤러를 숨긴 채 HidHide 허용 목록에서 서비스를 제거하거나, 설정의 "Flydigi 확장 프로토콜"을 꺼 보세요. 효과는 확인되지 않았습니다.</value></data>
@@ -5050,7 +5050,28 @@
     <value>D-Pad</value>
   </data>
   <data name="Menu_Style_Keyboard" xml:space="preserve"><value>키보드</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>방사형 링과 터치 그리드는 셀에 지정한 바인딩을 실행합니다. 키보드는 사용 중인 Windows 레이아웃의 키를 입력합니다.</value></data>
+  <data name="Menu_Style_Hotbar" xml:space="preserve"><value>핫바</value></data>
+  <data name="Menu_Hotbar_Show" xml:space="preserve"><value>표시 또는 숨기기</value></data>
+  <data name="Menu_Hotbar_Show_Tip" xml:space="preserve"><value>바를 표시하고, 다음에 누르면 숨깁니다. 이렇게 숨긴 바는 다음에 가운데 셀에서 열립니다.</value></data>
+  <data name="Menu_Hotbar_Previous" xml:space="preserve"><value>이전</value></data>
+  <data name="Menu_Hotbar_Previous_Tip" xml:space="preserve"><value>왼쪽 셀을 선택하며, 아무것도 지정하지 않은 셀은 건너뜁니다.</value></data>
+  <data name="Menu_Hotbar_Next" xml:space="preserve"><value>다음</value></data>
+  <data name="Menu_Hotbar_Next_Tip" xml:space="preserve"><value>오른쪽 셀을 선택하며, 아무것도 지정하지 않은 셀은 건너뜁니다.</value></data>
+  <data name="Menu_Hotbar_Fire" xml:space="preserve"><value>실행</value></data>
+  <data name="Menu_Hotbar_Fire_Tip" xml:space="preserve"><value>실행 모드에 따라 선택한 셀을 실행합니다.</value></data>
+  <data name="Menu_Hotbar_Caption" xml:space="preserve"><value>표시 또는 숨기기는 셀 한 줄을 띄우고, 이전과 다음은 그 줄을 따라 이동하며, 실행은 선택한 셀을 실행합니다. 비워 둔 컨트롤은 여는 입력의 방향을 따릅니다. 아래, 왼쪽, 오른쪽, 위 순서입니다.</value></data>
+  <data name="Menu_Hotbar_Wrap" xml:space="preserve"><value>순환 이동</value></data>
+  <data name="Menu_Hotbar_Wrap_Tip" xml:space="preserve"><value>마지막 셀을 지나 이동하면 첫 셀로 가고, 반대로도 같습니다. 끄면 선택이 양쪽 끝에서 멈춥니다.</value></data>
+  <data name="Menu_Hotbar_DismissOnFire" xml:space="preserve"><value>실행 후 숨기기</value></data>
+  <data name="Menu_Hotbar_DismissOnFire_Tip" xml:space="preserve"><value>실행하면 바를 숨깁니다. 끄면 바가 그대로 남아 같은 셀을 다시 실행할 수 있습니다.</value></data>
+  <data name="Menu_Hotbar_Recenter" xml:space="preserve"><value>매번 중앙으로</value></data>
+  <data name="Menu_Hotbar_Recenter_Tip" xml:space="preserve"><value>바가 숨겨져 있는 동안 선택이 가운데 셀로 돌아갑니다. 끄면 실행이 숨긴 바는 방금 실행한 셀에서 열립니다.</value></data>
+  <data name="Menu_Reset_HotbarControl" xml:space="preserve"><value>컨트롤 초기화</value></data>
+  <data name="Menu_Fire_Click_Hotbar_Desc" xml:space="preserve"><value>실행은 선택한 셀을 누르고, 실행을 누르고 있는 동안 유지합니다. 실행 후 숨기기가 켜져 있으면 짧게 한 번만 누릅니다.</value></data>
+  <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>실행에서 손을 떼면 선택한 셀이 짧게 한 번 실행됩니다. 실행 후 숨기기가 켜져 있으면 실행이 바를 숨기는 즉시 실행됩니다.</value></data>
+  <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>실행 후 숨기기가 켜져 있을 때 실행이 바를 숨기면 셀이 짧게 한 번 실행됩니다. 매번 중앙으로가 켜져 있으면 실행되는 셀은 가운데 셀입니다.</value></data>
+  <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>바가 표시되어 있는 동안 선택한 셀이 계속 눌린 상태로 유지됩니다. 이동하면 한 셀을 놓고 다음 셀을 누릅니다.</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>방사형 링, 터치 그리드, 핫바는 셀 바인딩을 실행합니다. 키보드는 사용 중인 Windows 레이아웃의 키를 입력합니다.</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>레이아웃</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>키보드의 키 배열과 컨트롤러로 키를 고르는 방식입니다.</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>스틱이나 입력 네 개로 움직이는 강조 표시 하나. Windows, Xbox, Steam 방식의 레이아웃입니다.</value></data>
@@ -5170,6 +5191,12 @@
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (이 PC에 없음)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (이 슬롯에 없음)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>레이저 포인터 자이로를 요로 읽음(PadForge에는 레이저 포인터 변환이 없음)</value></data>
+  <data name="Workshop_Tr_GyroRollFromHorizon" xml:space="preserve"><value>롤의 중심은 수평선이 아니라, 시작할 때 또는 자이로 재중심 시 컨트롤러가 놓인 자세</value></data>
+  <data name="Workshop_Tr_GyroPitchFromHorizon" xml:space="preserve"><value>피치의 중심은 평평한 상태에서 {0}°가 아니라, 시작할 때 또는 자이로 재중심 시 컨트롤러가 놓인 자세</value></data>
+  <data name="Workshop_Tr_GyroTiltRangeCapped" xml:space="preserve"><value>경사 90°에서 스틱이 끝까지 기울어짐({0}°가 아님)</value></data>
+  <data name="Workshop_Tr_OutputJoystickUnrouted" xml:space="preserve"><value>output_joystick {0}은(는) 축 쌍을 스틱과 마우스 어디로도 보내지 않으므로 매핑되는 것이 없음</value></data>
+  <data name="Workshop_Tr_DpadPulseHeld" xml:space="preserve"><value>각 방향을 누르는 동안 계속 유지함(Steam의 아날로그 에뮬레이션은 방향을 껐다 켰다 반복하며, 멀리 밀수록 길어짐)</value></data>
+  <data name="Workshop_Tr_SoftPressNoAnalog" xml:space="preserve"><value>아날로그 값이 없는 입력에 설정된 살짝 누르기 활성화 방식(Steam에서는 작동하지 않음)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>reWASD에서는 파일이 {0}을(를) 매핑 해제 없이 매핑하므로 이 키가 여전히 Windows에 전달됩니다. 매핑된 입력 소비를 켜면 PadForge가 이를 차단합니다.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows는 방사형 스틱의 {0}을(를) 미는 각도에 따라 다르게 적용합니다. PadForge의 스틱 카드는 직선으로 미는 입력은 똑같이, 대각선으로 미는 입력은 다르게 처리합니다.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows는 자이로 데드존을 움직임의 각도에 따라 각 축에 나누어 적용합니다. PadForge는 각 축에서 데드존 전체를 제외하므로, 직선 움직임은 똑같이 동작하고 느린 대각선 움직임은 더 늦게 시작됩니다.</value></data>

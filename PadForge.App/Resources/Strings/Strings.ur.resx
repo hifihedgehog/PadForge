@@ -3818,7 +3818,7 @@
   <data name="Menu_Binding_None" xml:space="preserve"><value>کوئی نہیں</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>کی بورڈ کلید</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>کنٹرولر بٹن</value></data>
-  <data name="Menu_Style_Tip" xml:space="preserve"><value>"ریڈیل حلقہ" سمت کے حساب سے خانہ چنتا ہے، ویپن وہیل کی طرح۔ "ٹچ گرڈ" پوزیشن کے حساب سے خانہ چنتا ہے: جہاں انگلی پیڈ پر ہو، یا جس طرف اسٹک کا رخ ہو۔</value></data>
+  <data name="Menu_Style_Tip" xml:space="preserve"><value>"ریڈیل حلقہ" سمت کے حساب سے خانہ چنتا ہے، ویپن وہیل کی طرح۔ "ٹچ گرڈ" پوزیشن کے حساب سے خانہ چنتا ہے: جہاں انگلی پیڈ پر ہو، یا جس طرف اسٹک کا رخ ہو۔ "ہاٹ بار" خانوں کی ایک قطار دکھاتا ہے، اس میں آگے پیچھے چلتا ہے اور منتخب خانے کو چلاتا ہے، اور ہر کام کا اپنا کنٹرول ہوتا ہے۔</value></data>
   <data name="Menu_HostInput_Tip" xml:space="preserve"><value>وہ ان پٹ جو اس مینو کو کھولتا اور چلاتا ہے، اور سلاٹ کو تفویض کردہ فزیکل کنٹرولرز سے پڑھا جاتا ہے۔ اسٹک اسے اس وقت کھولتی ہے جب اسے "فعال ہونے کا ڈیڈ زون" سے آگے دھکیلا جائے۔ ٹچ پیڈ اسے چھونے پر کھولتا ہے۔</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>اس مینو کو ٹریک پیڈ کے ایک نصف تک محدود کریں، تاکہ دو مینوز ایک ہی پیڈ استعمال کر سکیں۔</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>نمایاں خانہ اپنی بائنڈنگ کب چلائے۔ ہر انتخاب کی وضاحت نیچے دی گئی ہے۔</value></data>
@@ -4248,7 +4248,7 @@
   <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>کلک ان پٹ چھوٹنے پر ایک بار چلتا ہے۔ اگر سطح بھی اسی لمحے چھوٹ جائے تو پچھلا انتخاب چلتا ہے۔</value></data>
   <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>جب آپ انگلی اٹھائیں یا اسٹک کو "فعال ہونے کا ڈیڈ زون" کے اندر واپس لائیں تو ایک بار چلتا ہے، جبکہ مینو کھلا رہتا ہے۔ لیئر سے نکلنے پر بھی وہ انتخاب نافذ ہو جاتا ہے جسے ابھی چلایا جا رہا ہو۔</value></data>
   <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>جب تک اس کا خانہ نمایاں ہو بائنڈنگ دبائے رکھتا ہے۔ ریڈیل مرکز لیئر کھلتے ہی فوراً چل سکتا ہے۔</value></data>
-  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>سمت کے بٹن دبانے سے خانوں میں ایک ایک قدم آگے بڑھتے ہیں اور ہر نیا منتخب خانہ چلتا ہے۔ ہاٹ بار کا یہ طرز عمل فائر موڈ یا کلک ان پٹ استعمال نہیں کرتا۔</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>سمت کے بٹن دبانے سے خانوں میں ایک ایک قدم آگے بڑھتے ہیں اور ہر نیا منتخب خانہ چلتا ہے، "فائر موڈ" یا "کلک ان پٹ" کے بغیر۔ "ہاٹ بار" اسٹائل چلائے بغیر آگے بڑھتا ہے اور اپنے "فائر" کنٹرول سے چلاتا ہے۔</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Flydigi بہتر پروٹوکول</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>تعاون یافتہ Flydigi کنٹرولرز پر اضافی بٹن اور موشن سینسرز فعال کرتا ہے۔</value></data>
   <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi سافٹ ویئر چل رہا ہے: {0}۔ یہ وہی کنٹرولر انٹرفیس استعمال کر سکتا ہے جو PadForge کرتا ہے، اور اطلاع ملی ہے کہ جب دونوں کو رسائی حاصل تھی تو ایک Vader 5 Pro بار بار منقطع ہوتا رہا۔ اگر یہ کنٹرولر منقطع ہو کر دوبارہ منسلک ہوتا رہے تو PadForge استعمال کرتے وقت سروس روک دیں، کنٹرولر کو چھپا رکھیں اور سروس کو HidHide کی وائٹ لسٹ سے ہٹا دیں، یا ترتیبات میں "Flydigi بہتر پروٹوکول" آف کر کے دیکھیں، اگرچہ اس سے فائدے کی تصدیق نہیں ہوئی۔</value></data>
@@ -5099,7 +5099,28 @@
     <value>ڈی پیڈ</value>
   </data>
   <data name="Menu_Style_Keyboard" xml:space="preserve"><value>کی بورڈ</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>ریڈیل حلقہ اور ٹچ گرڈ خانوں کی بائنڈنگز چلاتے ہیں۔ کی بورڈ اس Windows لے آؤٹ کی کلیدیں ٹائپ کرتا ہے جو استعمال میں ہے۔</value></data>
+  <data name="Menu_Style_Hotbar" xml:space="preserve"><value>ہاٹ بار</value></data>
+  <data name="Menu_Hotbar_Show" xml:space="preserve"><value>دکھائیں یا چھپائیں</value></data>
+  <data name="Menu_Hotbar_Show_Tip" xml:space="preserve"><value>بار کو دکھاتا ہے، اور اگلی بار دبانے پر چھپا دیتا ہے۔ اس طرح چھپائی گئی بار اگلی بار اپنے درمیانی خانے پر کھلتی ہے۔</value></data>
+  <data name="Menu_Hotbar_Previous" xml:space="preserve"><value>پچھلا</value></data>
+  <data name="Menu_Hotbar_Previous_Tip" xml:space="preserve"><value>بائیں طرف کا خانہ منتخب کرتا ہے، اور جن خانوں میں کچھ سیٹ نہ ہو انہیں چھوڑ دیتا ہے۔</value></data>
+  <data name="Menu_Hotbar_Next" xml:space="preserve"><value>اگلا</value></data>
+  <data name="Menu_Hotbar_Next_Tip" xml:space="preserve"><value>دائیں طرف کا خانہ منتخب کرتا ہے، اور جن خانوں میں کچھ سیٹ نہ ہو انہیں چھوڑ دیتا ہے۔</value></data>
+  <data name="Menu_Hotbar_Fire" xml:space="preserve"><value>فائر</value></data>
+  <data name="Menu_Hotbar_Fire_Tip" xml:space="preserve"><value>منتخب خانے کو چلاتا ہے، جیسا "فائر موڈ" طے کرے۔</value></data>
+  <data name="Menu_Hotbar_Caption" xml:space="preserve"><value>"دکھائیں یا چھپائیں" خانوں کی ایک قطار سامنے لاتا ہے، "پچھلا" اور "اگلا" اس میں آگے پیچھے چلتے ہیں، اور "فائر" منتخب خانے کو چلاتا ہے۔ خالی چھوڑا گیا کنٹرول "اس سے کھلتا ہے" کی سمت لیتا ہے: نیچے، بائیں، دائیں یا اوپر۔</value></data>
+  <data name="Menu_Hotbar_Wrap" xml:space="preserve"><value>گھوم کر چلیں</value></data>
+  <data name="Menu_Hotbar_Wrap_Tip" xml:space="preserve"><value>آخری خانے سے آگے بڑھنے پر پہلے خانے پر پہنچتا ہے، اور اسی طرح الٹی طرف بھی۔ آف ہو تو انتخاب کسی بھی سرے پر رک جاتا ہے۔</value></data>
+  <data name="Menu_Hotbar_DismissOnFire" xml:space="preserve"><value>فائر کے بعد چھپائیں</value></data>
+  <data name="Menu_Hotbar_DismissOnFire_Tip" xml:space="preserve"><value>"فائر" بار کو چھپا دیتا ہے۔ آف ہو تو بار کھلی رہتی ہے اور وہی خانہ دوبارہ چل سکتا ہے۔</value></data>
+  <data name="Menu_Hotbar_Recenter" xml:space="preserve"><value>ہر بار مرکز پر لائیں</value></data>
+  <data name="Menu_Hotbar_Recenter_Tip" xml:space="preserve"><value>بار چھپی ہو تو انتخاب درمیانے خانے پر لوٹ آتا ہے۔ آف ہو تو جس بار کو "فائر" نے چھپایا ہو وہ اسی خانے پر کھلتی ہے جسے اس نے چلایا تھا۔</value></data>
+  <data name="Menu_Reset_HotbarControl" xml:space="preserve"><value>کنٹرول ری سیٹ کریں</value></data>
+  <data name="Menu_Fire_Click_Hotbar_Desc" xml:space="preserve"><value>"فائر" منتخب خانے کو دباتا ہے اور جب تک "فائر" دبا ہو اسے دبائے رکھتا ہے۔ "فائر کے بعد چھپائیں" آن ہو تو دبانا مختصر ٹیپ ہوتا ہے۔</value></data>
+  <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>"فائر" چھوڑنے پر منتخب خانہ مختصر ٹیپ کے طور پر ایک بار چلتا ہے۔ "فائر کے بعد چھپائیں" آن ہو تو جیسے ہی "فائر" بار کو چھپائے، وہ چل جاتا ہے۔</value></data>
+  <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>جب "فائر کے بعد چھپائیں" آن ہو اور "فائر" بار کو چھپائے تو ایک خانہ مختصر ٹیپ کے طور پر ایک بار چلتا ہے۔ "ہر بار مرکز پر لائیں" آن ہو تو درمیانی خانہ ہی چلتا ہے۔</value></data>
+  <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>جب تک بار دکھائی دے، منتخب خانہ دبا رہتا ہے۔ آگے پیچھے چلنے پر ایک خانہ چھوٹ جاتا ہے اور اگلا دبا رہتا ہے۔</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>"ریڈیل حلقہ"، "ٹچ گرڈ" اور "ہاٹ بار" خانوں کی بائنڈنگز چلاتے ہیں۔ "کی بورڈ" اس Windows لے آؤٹ کی کلیدیں ٹائپ کرتا ہے جو استعمال میں ہے۔</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>لے آؤٹ</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>کی بورڈ اپنی کلیدیں کیسے ترتیب دیتا ہے اور کنٹرولر انہیں کیسے منتخب کرتا ہے۔</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>ایک نمایاں خانہ، جو ایک اسٹک یا چار ان پٹ سے چلتا ہے۔ Windows، Xbox اور Steam یہی لے آؤٹ استعمال کرتے ہیں۔</value></data>
@@ -5219,6 +5240,12 @@
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (اس پی سی پر نہیں)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (اس سلاٹ پر نہیں)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>Laser Pointer جائرو کو یاؤ کے طور پر پڑھا گیا (PadForge میں لیزر پوائنٹر کی تبدیلی نہیں ہے)</value></data>
+  <data name="Workshop_Tr_GyroRollFromHorizon" xml:space="preserve"><value>رول کا مرکز وہ پوز ہے جس میں کنٹرولر شروع میں یا جائرو ری سینٹر کے وقت ہوتا ہے، افق نہیں</value></data>
+  <data name="Workshop_Tr_GyroPitchFromHorizon" xml:space="preserve"><value>پچ کا مرکز وہ پوز ہے جس میں کنٹرولر شروع میں یا جائرو ری سینٹر کے وقت ہوتا ہے، سیدھی حالت سے {0}° نہیں</value></data>
+  <data name="Workshop_Tr_GyroTiltRangeCapped" xml:space="preserve"><value>90° ٹلٹ پر اسٹک مکمل انحراف تک پہنچتی ہے، {0}° پر نہیں</value></data>
+  <data name="Workshop_Tr_OutputJoystickUnrouted" xml:space="preserve"><value>output_joystick {0} جوڑے کو نہ اسٹک پر بھیجتا ہے نہ ماؤس پر، اس لیے کچھ میپ نہیں ہوا</value></data>
+  <data name="Workshop_Tr_DpadPulseHeld" xml:space="preserve"><value>ہر سمت دبانے کے دوران برقرار رہتی ہے (Steam کا اینالاگ ایمولیشن اسے بار بار آن آف کرتا ہے، جتنا زیادہ دبائیں اتنا لمبا)</value></data>
+  <data name="Workshop_Tr_SoftPressNoAnalog" xml:space="preserve"><value>اینالاگ ریڈنگ کے بغیر ان پٹ پر ہلکا دبانے والا ایکٹیویٹر (Steam اسے کبھی نہیں چلاتا)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>reWASD میں {0} پھر بھی Windows تک پہنچتی ہے کیونکہ فائل اسے بغیر ان میپ کے میپ کرتی ہے۔ میپ شدہ ان پٹ روک لیں آن ہو تو PadForge اسے روک لیتا ہے۔</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows ریڈیل اسٹک کی {0} کو دھکیلنے کے زاویے کے مطابق ڈھالتا ہے۔ PadForge کا اسٹک کارڈ سیدھے دھکے کو ایک جیسا اور وتری دھکے کو مختلف طور پر چلاتا ہے۔</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows ہر محور پر جائرو کے ڈیڈ زون کو حرکت کے زاویے کے مطابق گھٹاتا بڑھاتا ہے۔ PadForge ہر محور سے پورا ڈیڈ زون ہٹا دیتا ہے، اس لیے سیدھی حرکت ایک جیسی چلتی ہے اور آہستہ وتری حرکت دیر سے شروع ہوتی ہے۔</value></data>

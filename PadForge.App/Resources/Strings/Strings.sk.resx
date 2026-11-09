@@ -3818,7 +3818,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>Žiadne</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Kláves klávesnice</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>Tlačidlo ovládača</value></data>
-  <data name="Menu_Style_Tip" xml:space="preserve"><value>Kruhový prstenec vyberá bunku podľa smeru, ako koleso zbraní. Dotyková mriežka vyberá bunku podľa polohy: kde je prst na touchpade alebo kam mieri páčka.</value></data>
+  <data name="Menu_Style_Tip" xml:space="preserve"><value>Kruhový prstenec vyberá bunku podľa smeru, ako koleso zbraní. Dotyková mriežka vyberá bunku podľa polohy: kde je prst na touchpade alebo kam mieri páčka. Rýchly panel zobrazí rad buniek, posúva sa po ňom a spúšťa vybratú bunku, každé s vlastným ovládaním.</value></data>
   <data name="Menu_HostInput_Tip" xml:space="preserve"><value>Vstup, ktorý otvára a ovláda túto ponuku, čítaný z fyzických ovládačov priradených k slotu. Páčka ju otvorí po vychýlení za mŕtvu zónu aktivácie. Touchpad ju otvorí dotykom.</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>Obmedzí túto ponuku na jednu polovicu touchpadu, aby mohli touchpad zdieľať dve ponuky.</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>Kedy zvýraznená bunka spustí svoju väzbu. Každá možnosť je vysvetlená nižšie.</value></data>
@@ -4248,7 +4248,7 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>Spustí sa raz pri uvoľnení Vstupu kliknutia. Ak sa plocha uvoľní v tom istom okamihu, spustí predchádzajúci výber.</value></data>
   <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>Spustí sa raz, keď zdvihnete prst alebo vrátite páčku do mŕtvej zóny aktivácie, pričom ponuka zostane otvorená. Opustenie vrstvy tiež potvrdí výber, ktorý sa ešte ovláda.</value></data>
   <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>Drží väzbu, kým je jej bunka zvýraznená. Stred kruhovej ponuky sa môže spustiť hneď pri otvorení vrstvy.</value></data>
-  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Stlačenia smerov prechádzajú bunkami a spúšťajú každú novo vybratú bunku. Toto správanie rýchleho panela nepoužíva Režim aktivácie ani Vstup kliknutia.</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Stlačenia smerov prechádzajú bunkami a spúšťajú každú novo vybratú bunku, bez Režim aktivácie alebo Vstup kliknutia. Štýl Rýchly panel sa posúva bez spúšťania a spúšťa vlastným ovládaním „Spustiť“.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Rozšírený protokol Flydigi</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Povolí ďalšie tlačidlá a pohybové senzory na podporovaných ovládačoch Flydigi.</value></data>
   <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Beží softvér Flydigi: {0}. Môže používať rovnaké rozhranie ovládača ako PadForge a pri ovládači Vader 5 Pro bolo hlásené opakované odpájanie, keď k nemu mali prístup oba programy. Ak sa tento ovládač odpája a znova pripája, počas používania programu PadForge zastavte službu, nechajte ovládač skrytý a odstráňte službu zo zoznamu povolených aplikácií HidHide, alebo skúste v Nastaveniach vypnúť „Rozšírený protokol Flydigi“, hoci nie je potvrdené, že to pomôže.</value></data>
@@ -5099,7 +5099,28 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
     <value>D-pad</value>
   </data>
   <data name="Menu_Style_Keyboard" xml:space="preserve"><value>Klávesnica</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>Kruhový prstenec a Dotyková mriežka spúšťajú väzby buniek. Klávesnica píše klávesy používaného rozloženia Windows.</value></data>
+  <data name="Menu_Style_Hotbar" xml:space="preserve"><value>Rýchly panel</value></data>
+  <data name="Menu_Hotbar_Show" xml:space="preserve"><value>Zobraziť alebo skryť</value></data>
+  <data name="Menu_Hotbar_Show_Tip" xml:space="preserve"><value>Zobrazí panel a pri ďalšom stlačení ho skryje. Takto skrytý panel sa nabudúce otvorí na strednej bunke.</value></data>
+  <data name="Menu_Hotbar_Previous" xml:space="preserve"><value>Predchádzajúca</value></data>
+  <data name="Menu_Hotbar_Previous_Tip" xml:space="preserve"><value>Vyberie bunku vľavo a preskočí bunky, v ktorých nie je nič nastavené.</value></data>
+  <data name="Menu_Hotbar_Next" xml:space="preserve"><value>Nasledujúca</value></data>
+  <data name="Menu_Hotbar_Next_Tip" xml:space="preserve"><value>Vyberie bunku vpravo a preskočí bunky, v ktorých nie je nič nastavené.</value></data>
+  <data name="Menu_Hotbar_Fire" xml:space="preserve"><value>Spustiť</value></data>
+  <data name="Menu_Hotbar_Fire_Tip" xml:space="preserve"><value>Spustí vybratú bunku podľa nastavenia Režim aktivácie.</value></data>
+  <data name="Menu_Hotbar_Caption" xml:space="preserve"><value>„Zobraziť alebo skryť“ vyvolá rad buniek, „Predchádzajúca“ a „Nasledujúca“ sa po ňom posúvajú a „Spustiť“ spustí vybratú bunku. Prázdne ovládanie preberie smer z nastavenia Otvára sa pomocou: nadol, doľava, doprava alebo nahor.</value></data>
+  <data name="Menu_Hotbar_Wrap" xml:space="preserve"><value>Cyklický výber</value></data>
+  <data name="Menu_Hotbar_Wrap_Tip" xml:space="preserve"><value>Krok za poslednú bunku prejde na prvú a naopak. Keď je vypnuté, výber sa na oboch koncoch zastaví.</value></data>
+  <data name="Menu_Hotbar_DismissOnFire" xml:space="preserve"><value>Skryť po spustení</value></data>
+  <data name="Menu_Hotbar_DismissOnFire_Tip" xml:space="preserve"><value>„Spustiť“ skryje panel. Keď je vypnuté, panel zostane zobrazený a tú istú bunku možno spustiť znova.</value></data>
+  <data name="Menu_Hotbar_Recenter" xml:space="preserve"><value>Vždy vycentrovať</value></data>
+  <data name="Menu_Hotbar_Recenter_Tip" xml:space="preserve"><value>Kým je panel skrytý, výber sa vráti na strednú bunku. Keď je vypnuté, panel skrytý tlačidlom „Spustiť“ sa otvorí na bunke, ktorú spustil.</value></data>
+  <data name="Menu_Reset_HotbarControl" xml:space="preserve"><value>Resetovať ovládanie</value></data>
+  <data name="Menu_Fire_Click_Hotbar_Desc" xml:space="preserve"><value>„Spustiť“ stlačí vybratú bunku a drží ju, kým je držané „Spustiť“. Keď je zapnuté „Skryť po spustení“, stlačenie je krátke ťuknutie.</value></data>
+  <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>Vybratá bunka sa spustí raz, ako krátke ťuknutie, keď sa „Spustiť“ uvoľní. Keď je zapnuté „Skryť po spustení“, spustí sa hneď, ako „Spustiť“ skryje panel.</value></data>
+  <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>Bunka sa spustí raz, ako krátke ťuknutie, keď „Spustiť“ skryje panel a je zapnuté „Skryť po spustení“. Keď je zapnuté „Vždy vycentrovať“, spustí sa stredná bunka.</value></data>
+  <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>Vybratá bunka je držaná celý čas, kým je panel zobrazený. Posunutie pustí jednu bunku a podrží ďalšiu.</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>Kruhový prstenec, Dotyková mriežka a Rýchly panel spúšťajú väzby buniek. Klávesnica píše klávesy používaného rozloženia Windows.</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Rozloženie</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Ako klávesnica rozloží svoje klávesy a ako ich vyberá ovládač.</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Jedno zvýraznenie, ktoré sa posúva páčkou alebo štyrmi vstupmi, rozloženie používané vo Windows, Xbox a Steam.</value></data>
@@ -5219,6 +5240,12 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (nie je v tomto počítači)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (nie je v tomto slote)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>gyroskop Laser Pointer sa číta ako otáčanie (PadForge nemá prevod laserového ukazovateľa)</value></data>
+  <data name="Workshop_Tr_GyroRollFromHorizon" xml:space="preserve"><value>náklon vycentrovaný tam, kde ovládač spočíva pri spustení alebo pri akcii „Vycentrovať gyroskop“, nie podľa horizontu</value></data>
+  <data name="Workshop_Tr_GyroPitchFromHorizon" xml:space="preserve"><value>sklon vycentrovaný tam, kde ovládač spočíva pri spustení alebo pri akcii „Vycentrovať gyroskop“, nie na {0}° od vodorovnej polohy</value></data>
+  <data name="Workshop_Tr_GyroTiltRangeCapped" xml:space="preserve"><value>plné vychýlenie pri naklonení 90°, nie {0}°</value></data>
+  <data name="Workshop_Tr_OutputJoystickUnrouted" xml:space="preserve"><value>output_joystick {0} nesmeruje dvojicu osí na páčku ani na myš, preto sa nič nemapuje</value></data>
+  <data name="Workshop_Tr_DpadPulseHeld" xml:space="preserve"><value>každý smer sa drží, kým je stlačený (analógová emulácia Steam ho pulzuje, tým dlhšie, čím ďalej je stlačený)</value></data>
+  <data name="Workshop_Tr_SoftPressNoAnalog" xml:space="preserve"><value>aktivátor jemného stlačenia na vstupe bez analógového údaja (Steam ho tam nikdy nespustí)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>V reWASD sa {0} stále dostáva do systému Windows, pretože ho súbor mapuje bez zrušenia mapovania. Keď je zapnuté Pohltiť namapované vstupy, PadForge ho zadrží.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows tvaruje {0} radiálnej páčky podľa uhla vychýlenia. Karta páčky v PadForge hrá priame vychýlenie rovnako a uhlopriečne inak.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows upravuje mŕtvu zónu gyroskopu na každej osi podľa uhla pohybu. PadForge odoberie celú mŕtvu zónu na každej osi, takže priamy pohyb sa správa rovnako a pomalý uhlopriečny sa rozbehne neskôr.</value></data>

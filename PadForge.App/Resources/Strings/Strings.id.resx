@@ -3818,7 +3818,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>Tidak ada</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Tombol keyboard</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>Tombol kontroler</value></data>
-  <data name="Menu_Style_Tip" xml:space="preserve"><value>Cincin radial memilih sel menurut arah, seperti roda senjata. Kisi sentuh memilih sel menurut posisi: tempat jari berada pada panel, atau arah yang ditunjuk stik.</value></data>
+  <data name="Menu_Style_Tip" xml:space="preserve"><value>Cincin radial memilih sel menurut arah, seperti roda senjata. Kisi sentuh memilih sel menurut posisi: tempat jari berada pada panel, atau arah yang ditunjuk stik. Hotbar menampilkan satu baris sel, melangkah di sepanjang baris itu dan memicu sel yang dipilih, masing-masing dengan kontrolnya sendiri.</value></data>
   <data name="Menu_HostInput_Tip" xml:space="preserve"><value>Input yang membuka dan mengendalikan menu ini, dibaca dari kontroler fisik yang ditetapkan ke slot. Stik membukanya saat didorong melewati Zona mati aktivasi. Panel sentuh membukanya saat disentuh.</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>Batasi menu ini pada satu paruh trackpad, sehingga dua menu dapat berbagi panel yang sama.</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>Kapan sel yang disorot memicu ikatannya. Setiap pilihan dijelaskan di bawah.</value></data>
@@ -4248,7 +4248,7 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>Terpicu sekali saat Input klik dilepas. Jika permukaan dilepas pada saat yang sama, pilihan sebelumnya yang dipicu.</value></data>
   <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>Terpicu sekali saat Anda mengangkat jari atau mengembalikan stik ke dalam Zona mati aktivasi, sementara menu tetap terbuka. Meninggalkan lapisan juga menetapkan pilihan yang masih dikendalikan.</value></data>
   <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>Menahan ikatan selama selnya tersorot. Tengah radial dapat langsung terpicu saat lapisan terbuka.</value></data>
-  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Penekanan arah melangkah dari sel ke sel dan memicu setiap sel yang baru dipilih. Perilaku hotbar ini tidak memakai Mode pemicuan atau Input klik.</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Penekanan arah melangkah dari sel ke sel dan memicu setiap sel yang baru dipilih, tanpa Mode pemicuan atau Input klik. Gaya Hotbar melangkah tanpa memicu dan memicu dengan kontrol Picu miliknya sendiri.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Protokol Flydigi yang ditingkatkan</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Mengaktifkan tombol tambahan dan sensor gerak pada kontroler Flydigi yang didukung.</value></data>
   <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Perangkat lunak Flydigi sedang berjalan: {0}. Perangkat lunak itu dapat memakai antarmuka kontroler yang sama dengan PadForge, dan Vader 5 Pro dilaporkan terputus berulang kali saat keduanya memiliki akses. Jika kontroler ini terputus lalu tersambung lagi, hentikan layanan itu selama memakai PadForge, biarkan kontroler tetap disembunyikan dan hapus layanan itu dari daftar putih HidHide, atau coba nonaktifkan "Protokol Flydigi yang ditingkatkan" di Pengaturan, meski belum dipastikan membantu.</value></data>
@@ -5099,7 +5099,28 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
     <value>D-pad</value>
   </data>
   <data name="Menu_Style_Keyboard" xml:space="preserve"><value>Keyboard</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>Cincin radial dan Kisi sentuh menjalankan pengikatan sel. Keyboard mengetik tombol dari tata letak Windows yang sedang dipakai.</value></data>
+  <data name="Menu_Style_Hotbar" xml:space="preserve"><value>Hotbar</value></data>
+  <data name="Menu_Hotbar_Show" xml:space="preserve"><value>Tampilkan atau sembunyikan</value></data>
+  <data name="Menu_Hotbar_Show_Tip" xml:space="preserve"><value>Menampilkan bar, dan menyembunyikannya pada penekanan berikutnya. Bar yang disembunyikan dengan cara ini terbuka pada sel tengahnya lain kali.</value></data>
+  <data name="Menu_Hotbar_Previous" xml:space="preserve"><value>Sebelumnya</value></data>
+  <data name="Menu_Hotbar_Previous_Tip" xml:space="preserve"><value>Memilih sel di sebelah kiri, melewati sel yang belum diatur.</value></data>
+  <data name="Menu_Hotbar_Next" xml:space="preserve"><value>Berikutnya</value></data>
+  <data name="Menu_Hotbar_Next_Tip" xml:space="preserve"><value>Memilih sel di sebelah kanan, melewati sel yang belum diatur.</value></data>
+  <data name="Menu_Hotbar_Fire" xml:space="preserve"><value>Picu</value></data>
+  <data name="Menu_Hotbar_Fire_Tip" xml:space="preserve"><value>Memicu sel yang dipilih, sesuai Mode pemicuan.</value></data>
+  <data name="Menu_Hotbar_Caption" xml:space="preserve"><value>Tampilkan atau sembunyikan memunculkan satu baris sel, Sebelumnya dan Berikutnya bergerak di sepanjang baris itu, dan Picu memicu sel yang dipilih. Kontrol yang dikosongkan memakai arah Dibuka dengan: bawah, kiri, kanan, atau atas.</value></data>
+  <data name="Menu_Hotbar_Wrap" xml:space="preserve"><value>Berputar</value></data>
+  <data name="Menu_Hotbar_Wrap_Tip" xml:space="preserve"><value>Melangkah melewati sel terakhir menuju sel pertama, dan sebaliknya. Jika nonaktif, pilihan berhenti di kedua ujung.</value></data>
+  <data name="Menu_Hotbar_DismissOnFire" xml:space="preserve"><value>Sembunyikan setelah memicu</value></data>
+  <data name="Menu_Hotbar_DismissOnFire_Tip" xml:space="preserve"><value>Picu menyembunyikan bar. Jika nonaktif, bar tetap tampil dan sel yang sama dapat dipicu lagi.</value></data>
+  <data name="Menu_Hotbar_Recenter" xml:space="preserve"><value>Pusatkan ulang setiap kali</value></data>
+  <data name="Menu_Hotbar_Recenter_Tip" xml:space="preserve"><value>Selama bar disembunyikan, pilihan kembali ke sel tengah. Jika nonaktif, bar yang disembunyikan oleh Picu terbuka pada sel yang tadi dipicu.</value></data>
+  <data name="Menu_Reset_HotbarControl" xml:space="preserve"><value>Atur ulang kontrol</value></data>
+  <data name="Menu_Fire_Click_Hotbar_Desc" xml:space="preserve"><value>Picu menekan sel yang dipilih dan menahannya selama Picu ditahan. Jika Sembunyikan setelah memicu aktif, penekanannya berupa ketukan singkat.</value></data>
+  <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>Sel yang dipilih terpicu sekali, sebagai ketukan singkat, saat Picu dilepas. Jika Sembunyikan setelah memicu aktif, sel terpicu segera setelah Picu menyembunyikan bar.</value></data>
+  <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>Sebuah sel terpicu sekali, sebagai ketukan singkat, saat Picu menyembunyikan bar dengan Sembunyikan setelah memicu aktif. Jika Pusatkan ulang setiap kali aktif, sel tengah yang terpicu.</value></data>
+  <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>Sel yang dipilih ditahan selama bar ditampilkan. Melangkah melepas satu sel dan menahan sel berikutnya.</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>Cincin radial, Kisi sentuh, dan Hotbar menjalankan pengikatan sel. Keyboard mengetik tombol dari tata letak Windows yang sedang dipakai.</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Tata letak</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Cara keyboard menata tombolnya dan cara kontroler memilihnya.</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Satu sorotan, digerakkan dengan stik atau empat input, tata letak yang dipakai Windows, Xbox, dan Steam.</value></data>
@@ -5219,6 +5240,12 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (tidak ada di PC ini)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (tidak ada di slot ini)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>giroskop Penunjuk Laser dibaca sebagai yaw (PadForge tidak memiliki konversi penunjuk laser)</value></data>
+  <data name="Workshop_Tr_GyroRollFromHorizon" xml:space="preserve"><value>roll dipusatkan pada posisi diam kontroler saat awal atau saat Pusatkan ulang giroskop, bukan pada horizon</value></data>
+  <data name="Workshop_Tr_GyroPitchFromHorizon" xml:space="preserve"><value>pitch dipusatkan pada posisi diam kontroler saat awal atau saat Pusatkan ulang giroskop, bukan pada {0}° dari posisi datar</value></data>
+  <data name="Workshop_Tr_GyroTiltRangeCapped" xml:space="preserve"><value>defleksi penuh pada kemiringan 90°, bukan {0}°</value></data>
+  <data name="Workshop_Tr_OutputJoystickUnrouted" xml:space="preserve"><value>output_joystick {0} tidak mengirim pasangan sumbu ke stik maupun mouse, sehingga tidak ada yang dipetakan</value></data>
+  <data name="Workshop_Tr_DpadPulseHeld" xml:space="preserve"><value>setiap arah ditahan selama didorong (emulasi analog Steam menyalakan dan mematikannya berulang, dengan denyut yang makin panjang semakin jauh didorong)</value></data>
+  <data name="Workshop_Tr_SoftPressNoAnalog" xml:space="preserve"><value>aktivator tekan ringan pada input tanpa pembacaan analog (Steam tidak pernah memicunya)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>Di reWASD, {0} tetap mencapai Windows karena file memetakannya tanpa unmap. Dengan Serap input yang dipetakan aktif, PadForge menahannya.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows membentuk {0} stik radial menurut sudut dorongan. Kartu stik PadForge memperlakukan dorongan lurus dengan cara yang sama dan dorongan diagonal dengan cara berbeda.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows menyesuaikan zona mati giroskop pada tiap sumbu menurut sudut gerakan. PadForge mengurangi seluruh zona mati pada tiap sumbu, jadi gerakan lurus berperilaku sama dan gerakan diagonal yang lambat mulai bergerak lebih lambat.</value></data>

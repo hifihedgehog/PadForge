@@ -70,10 +70,20 @@ namespace PadForge.SteamWorkshop.Tests
             return sb.ToString();
         }
 
-        // ─── gyro_ratchet_button_mask: grounded bits build ──────────────
+        // ─── gyro activation: buttons, behavior, any or all ─────────────
+        //
+        // steamclient64.dll's gyro activation reads only
+        // gyro_ratchet_button_mask, the configurator's "Choose Gyro
+        // Button(s)": no button is the gyro always on. gyro_button_invert
+        // is the configurator's GyroEnableButtonBehavior (GyroOn 1, the
+        // default, "Gyro is off unless any assigned button is held",
+        // GyroOff 0, GyroToggle 2), and a legacy gyro_button converts into
+        // the mask through the client's own table (GyroTouchRight 1 is the
+        // right trackpad touch, GyroLeftTriggerThreshold 12 the left
+        // trigger's soft pull, and so on).
 
         [Fact]
-        public void RatchetMask_UpperLeftPaddle_StampsPaddle4()
+        public void GyroButtons_UpperLeftPaddle_TurnsTheGyroOnWhileHeld()
         {
             // Fixture 3456927474's live shape: 1<<41 = ButtonBackGripLeftUpper.
             string vdf = Head
@@ -81,13 +91,16 @@ namespace PadForge.SteamWorkshop.Tests
                 + Preset(0, "Default", (1, "gyro active"))
                 + "}\n";
             var p = Translate(vdf);
-            Assert.Equal(new[] { "Gamepad Paddle4" }, p.GyroRatchetDescriptors);
+            Assert.Equal("Gamepad Paddle4", p.GyroEngageDescriptor);
+            Assert.False(p.GyroEngageToggle);
+            Assert.False(p.GyroEngageInvert);
+            Assert.Empty(p.GyroRatchetDescriptors);
             Assert.DoesNotContain(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.GyroButtonMaskDropped);
         }
 
         [Fact]
-        public void RatchetMask_RightPadTouch_MultiPad_StampsPadOneTouch()
+        public void GyroButtons_RightPadTouch_MultiPad_IsPadOnesTouch()
         {
             // Fixture 3725174032's live shape: 1<<20 = CapSenseRightTouchPad.
             string vdf = Head
@@ -95,24 +108,25 @@ namespace PadForge.SteamWorkshop.Tests
                 + Preset(0, "Default", (1, "gyro active"))
                 + "}\n";
             var p = Translate(vdf);
-            Assert.Equal(new[] { "Touchpad 1 Finger 0 Down" }, p.GyroRatchetDescriptors);
+            Assert.Equal("Touchpad 1 Finger 0 Down", p.GyroEngageDescriptor);
+            Assert.Empty(p.GyroRatchetDescriptors);
         }
 
         [Fact]
-        public void RatchetMask_RightPadTouch_SinglePad_StampsRightHalfSpot()
+        public void GyroButtons_RightPadTouch_SinglePad_IsTheRightHalfSpot()
         {
             string vdf = HeadPs5
                 + Group(1, "gyro_to_mouse", Settings(("gyro_ratchet_button_mask", "1048576")))
                 + Preset(0, "Default", (1, "gyro active"))
                 + "}\n";
             var p = Translate(vdf);
-            Assert.Equal(new[] { "Touchpad 0 Finger 0 Down Right" }, p.GyroRatchetDescriptors);
+            Assert.Equal("Touchpad 0 Finger 0 Down Right", p.GyroEngageDescriptor);
         }
 
         [Fact]
-        public void RatchetMask_UngroundedBits_KeepTheNoteWithResidualMask()
+        public void GyroButtons_UngroundedBits_KeepTheNoteWithResidualMask()
         {
-            // 1<<41 grounds (Paddle4); 1<<37 (ButtonMacro5, the Steam Link
+            // 1<<41 grounds (Paddle4). 1<<37 (ButtonMacro5, the Steam Link
             // on-screen button past SDL's misc space) has no read.
             ulong mask = (1UL << 41) | (1UL << 37);
             string vdf = Head
@@ -121,20 +135,19 @@ namespace PadForge.SteamWorkshop.Tests
                 + Preset(0, "Default", (1, "gyro active"))
                 + "}\n";
             var p = Translate(vdf);
-            Assert.Equal(new[] { "Gamepad Paddle4" }, p.GyroRatchetDescriptors);
+            Assert.Equal("Gamepad Paddle4", p.GyroEngageDescriptor);
             var e = Assert.Single(p.Report.Entries, x =>
                 x.ReasonKey == TranslationReasons.GyroButtonMaskDropped);
             Assert.Equal(new[] { "gyro_ratchet_button_mask", (1UL << 37).ToString() }, e.ReasonArgs);
         }
 
         [Fact]
-        public void RatchetMask_CapSenseBits_GroundOnTheCapsenseReads()
+        public void GyroButtons_CapSenseBits_TurnTheGyroOnThroughTheActivationLane()
         {
             // v26: bits 44-47 = CapSenseLeftAux / RightAux / LeftStick /
-            // RightStick in the shipped configurator's
-            // k_eGamepadButtonBitMask, landing on the fork's
-            // SDL_GetGamepadCapSense channels. Wild witnesses 3726651949
-            // (bits 44+45) and 3724212306 (bit 47).
+            // RightStick, on the fork's SDL_GetGamepadCapSense channels.
+            // Four buttons that each turn the gyro on: the activation lane,
+            // any of them.
             ulong mask = (1UL << 44) | (1UL << 45) | (1UL << 46) | (1UL << 47);
             string vdf = Head
                 + Group(1, "gyro_to_mouse", Settings(("gyro_ratchet_button_mask",
@@ -146,43 +159,51 @@ namespace PadForge.SteamWorkshop.Tests
             {
                 "Gamepad LeftGripTouch", "Gamepad LeftStickTouch",
                 "Gamepad RightGripTouch", "Gamepad RightStickTouch",
-            }, p.GyroRatchetDescriptors.OrderBy(d => d, System.StringComparer.Ordinal).ToArray());
+            }, p.GyroActivationByLayer["Base"].Buttons.OrderBy(d => d, System.StringComparer.Ordinal).ToArray());
+            Assert.Equal("Hold", p.GyroActivationByLayer["Base"].Mode);
+            Assert.False(p.GyroActivationByLayer["Base"].All);
+            Assert.Equal("", p.GyroEngageDescriptor);
+            Assert.Empty(p.GyroRatchetDescriptors);
             Assert.DoesNotContain(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.GyroButtonMaskDropped);
         }
 
         [Fact]
-        public void RatchetMask_DualSenseButtonSet_GroundsWhole()
+        public void GyroButtons_Suppress_IsTheRatchet()
         {
-            // Fixture 3353604014's authored mask: triggers + face + D-pad +
-            // View/Options + pad clicks + stick clicks, bits
-            // {0,1,4..12,14,17,18,22,26}. Single-pad host folds both pad
-            // clicks onto the one physical click.
+            // Fixture 3353604014's authored mask with GyroOff: triggers +
+            // face + D-pad + View/Options + pad clicks + stick clicks, bits
+            // {0,1,4..12,14,17,18,22,26}, the "pause gyro while pressing
+            // buttons" shape. Single-pad host folds both pad clicks onto the
+            // one physical click.
             string vdf = HeadPs5
-                + Group(1, "gyro_to_mouse", Settings(("gyro_ratchet_button_mask", "71720947")))
+                + Group(1, "gyro_to_mouse", Settings(("gyro_ratchet_button_mask", "71720947"),
+                    ("gyro_button_invert", "0")))
                 + Preset(0, "Default", (1, "gyro active"))
                 + "}\n";
             var p = Translate(vdf);
             Assert.DoesNotContain(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.GyroButtonMaskDropped);
+            // Bits 0 and 1 are the triggers' full pulls, at 95 percent.
             Assert.Equal(new[]
             {
                 "Gamepad ButtonA", "Gamepad ButtonB", "Gamepad ButtonBack",
                 "Gamepad ButtonStart", "Gamepad ButtonX", "Gamepad ButtonY",
                 "Gamepad DPadDown", "Gamepad DPadLeft", "Gamepad DPadRight",
-                "Gamepad DPadUp", "Gamepad LeftStick", "Gamepad LeftTrigger",
-                "Gamepad RightStick", "Gamepad RightTrigger", "Touchpad 0 Click",
+                "Gamepad DPadUp", "Gamepad LeftStick", "Gamepad RightStick",
+                TriggerBit("full:Gamepad LeftTrigger"), TriggerBit("full:Gamepad RightTrigger"),
+                "Touchpad 0 Click",
             }, p.GyroRatchetDescriptors);
+            Assert.Equal("", p.GyroEngageDescriptor);
+            Assert.Empty(p.GyroActivationByLayer);
         }
 
         [Fact]
-        public void RatchetMask_ComposesWithGyroButtonEngage()
+        public void GyroButtons_AnExplicitMask_OverridesTheLegacyKey()
         {
-            // The ratchet is its own AND-NOT lane, so an authored engage
-            // button and a ratchet mask stamp side by side (the reason the
-            // SetGyroEngaged / engage-invert lowerings were rejected: the
-            // engage read ORs its sources, and the invert flag owns the
-            // single engage descriptor).
+            // The client converts gyro_button into the mask only while the
+            // mask is at its default, and gyro_button 0 converts nothing, so
+            // the authored mask is the gyro button.
             string vdf = Head
                 + Group(1, "gyro_to_mouse", Settings(
                     ("gyro_button", "0"),
@@ -190,46 +211,163 @@ namespace PadForge.SteamWorkshop.Tests
                 + Preset(0, "Default", (1, "gyro active"))
                 + "}\n";
             var p = Translate(vdf);
-            Assert.Equal("Touchpad 1 Finger 0 Down", p.GyroEngageDescriptor);
-            Assert.Equal(new[] { "Gamepad Paddle4" }, p.GyroRatchetDescriptors);
-            Assert.DoesNotContain(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.GyroButtonMaskDropped);
+            Assert.Equal("Gamepad Paddle4", p.GyroEngageDescriptor);
+            Assert.Empty(p.GyroRatchetDescriptors);
         }
 
-        [Fact]
-        public void GyroButton_Index9_LowersTheDPadRightEngage()
+        [Theory]
+        [InlineData("controller_steamcontroller_gordon", "1", "Touchpad 1 Finger 0 Down")]
+        [InlineData("controller_xboxone", "12", "soft:Gamepad LeftTrigger")]
+        [InlineData("controller_xboxone", "10", "full:Gamepad LeftTrigger")]
+        [InlineData("controller_xboxone", "9", "full:Gamepad RightTrigger")]
+        [InlineData("controller_xboxone", "15", "Gamepad ButtonX")]
+        [InlineData("controller_xboxone", "5", "Gamepad RightShoulder")]
+        [InlineData("controller_xboxone", "3", "Touchpad 1 Click")]
+        public void GyroButton_ConvertsThroughTheClientsTable(string type, string value, string engage)
         {
-            // v23: gyro_button=N indexes the same k_eGamepadButtonBitMask
-            // enum the ratchet mask grounds against (the configurator
-            // renders both settings through the one GyroButtonPicker
-            // glyph map). Index 9 = DPadRight, the exact setting the v22
-            // arm dropped.
-            string vdf = Head
-                + Group(1, "gyro_to_mouse", Settings(("gyro_button", "9")))
+            string vdf = "\"controller_mappings\"\n{\n\t\"version\"\t\"3\"\n\t\"title\"\t\"V22\"\n"
+                + "\t\"controller_type\"\t\"" + type + "\"\n"
+                + Group(1, "gyro_to_mouse", Settings(("gyro_button", value)))
                 + Preset(0, "Default", (1, "gyro active"))
                 + "}\n";
             var p = Translate(vdf);
-            Assert.Equal("Gamepad DPadRight", p.GyroEngageDescriptor);
+            Assert.Equal(TriggerBit(engage), p.GyroEngageDescriptor);
+        }
+
+        /// <summary>A trigger's soft pull (past 1600 of 32767) or full pull (95
+        /// percent), the two trigger bits Steam sets.</summary>
+        private static string TriggerBit(string expected)
+        {
+            double at = expected.StartsWith("soft:", System.StringComparison.Ordinal) ? 1600.0 / 32767 * 100
+                : expected.StartsWith("full:", System.StringComparison.Ordinal) ? 31127.5 / 32767 * 100
+                : -1;
+            return at < 0
+                ? expected
+                : PadForge.Engine.Common.Mapping.BoundedReads.Level(at, at, false, "-",
+                    PadForge.Engine.Common.Mapping.BoundedGate.None, expected.Substring(5));
+        }
+
+        [Fact]
+        public void GyroButton_PastTheLegacyList_KeepsTheDefaultButton()
+        {
+            // The table stops at 37: the client converts nothing for 46, and
+            // the default gyro button, the right trackpad touch, stays.
+            string vdf = Head
+                + Group(1, "gyro_to_mouse", Settings(("gyro_button", "46")))
+                + Preset(0, "Default", (1, "gyro active"))
+                + "}\n";
+            var p = Translate(vdf);
+            Assert.Equal("Touchpad 1 Finger 0 Down", p.GyroEngageDescriptor);
             Assert.DoesNotContain(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.GyroButtonMaskDropped);
         }
 
         [Fact]
-        public void GyroButton_OutOfEnumIndex_StillKeepsTheNote()
+        public void GyroButtonBehavior_ZeroSuppresses_TwoToggles_OneHolds()
         {
-            // Index 21 is an enum hole (no k_eGamepadButtonBitMask member,
-            // see RatchetBitDescriptor), so the engage arm may not guess:
-            // the named note survives for genuinely out-of-enum indices.
+            string Vdf(string behavior)
+                => Head
+                    + Group(1, "gyro_to_mouse", Settings(("gyro_button", "1"), ("gyro_button_invert", behavior)))
+                    + Preset(0, "Default", (1, "gyro active"))
+                    + "}\n";
+            var off = Translate(Vdf("0"));
+            Assert.Equal(new[] { "Touchpad 1 Finger 0 Down" }, off.GyroRatchetDescriptors);
+            Assert.Equal("", off.GyroEngageDescriptor);
+            var toggle = Translate(Vdf("2"));
+            Assert.Equal("Touchpad 1 Finger 0 Down", toggle.GyroEngageDescriptor);
+            Assert.True(toggle.GyroEngageToggle);
+            var on = Translate(Vdf("1"));
+            Assert.Equal("Touchpad 1 Finger 0 Down", on.GyroEngageDescriptor);
+            Assert.False(on.GyroEngageToggle);
+            Assert.Empty(on.GyroRatchetDescriptors);
+        }
+
+        [Fact]
+        public void GyroButtons_AllRequired_RideTheActivationLane()
+        {
+            ulong mask = (1UL << 2) | (1UL << 3);
+            string Vdf(string behavior)
+                => Head
+                    + Group(1, "gyro_to_mouse", Settings(
+                        ("gyro_ratchet_button_mask", mask.ToString(System.Globalization.CultureInfo.InvariantCulture)),
+                        ("gyro_ratchet_button_requireany_or_all", "1"),
+                        ("gyro_button_invert", behavior)))
+                    + Preset(0, "Default", (1, "gyro active"))
+                    + "}\n";
+            var on = Translate(Vdf("1"));
+            Assert.Equal(new[] { "Gamepad RightShoulder", "Gamepad LeftShoulder" }, on.GyroActivationByLayer["Base"].Buttons);
+            Assert.Equal("Hold", on.GyroActivationByLayer["Base"].Mode);
+            Assert.True(on.GyroActivationByLayer["Base"].All);
+            var off = Translate(Vdf("0"));
+            Assert.Equal("Release", off.GyroActivationByLayer["Base"].Mode);
+            Assert.True(off.GyroActivationByLayer["Base"].All);
+            Assert.Empty(off.GyroRatchetDescriptors);
+        }
+
+        [Fact]
+        public void GyroButtons_DifferingByPreset_RideTheLaneLayerByLayer()
+        {
+            // Each preset's gyro group turns the gyro on its own way: the
+            // Default preset's while the upper-left paddle is held, the
+            // second preset's toggled by the right bumper. One engage button
+            // cannot carry both, so each layer gets its own lane entry.
             string vdf = Head
-                + Group(1, "gyro_to_mouse", Settings(("gyro_button", "21")))
-                + Preset(0, "Default", (1, "gyro active"))
+                + Group(1, "switches", Inputs(Inp("button_menu", "controller_action add_layer 2 0 0")))
+                + Group(2, "gyro_to_mouse", Settings(("gyro_ratchet_button_mask", "2199023255552")))
+                + Group(3, "gyro_to_mouse", Settings(("gyro_ratchet_button_mask", "4"), ("gyro_button_invert", "2")))
+                + Preset(0, "Default", (1, "switch active"), (2, "gyro active"))
+                + Preset(1, "Aim", (3, "gyro active"))
                 + "}\n";
             var p = Translate(vdf);
             Assert.Equal("", p.GyroEngageDescriptor);
-            var e = Assert.Single(p.Report.Entries, x =>
-                x.ReasonKey == TranslationReasons.GyroButtonMaskDropped);
-            Assert.Equal(new[] { "gyro_button", "21" }, e.ReasonArgs);
             Assert.Empty(p.GyroRatchetDescriptors);
+            Assert.Equal(new[] { "Base", "Layer_42_1" }, p.GyroActivationByLayer.Keys);
+            Assert.Equal(new[] { "Gamepad Paddle4" }, p.GyroActivationByLayer["Base"].Buttons);
+            Assert.Equal("Hold", p.GyroActivationByLayer["Base"].Mode);
+            Assert.Equal(new[] { "Gamepad RightShoulder" }, p.GyroActivationByLayer["Layer_42_1"].Buttons);
+            Assert.Equal("Toggle", p.GyroActivationByLayer["Layer_42_1"].Mode);
+        }
+
+        [Fact]
+        public void GyroButtons_NoKeys_AreTheClientsDefaultButtons()
+        {
+            // No gyro button key: the client's default, the right trackpad
+            // touch, or on the handheld types the right trackpad or right
+            // stick touch, either one. An explicit mask of 0 is no button.
+            var sc = Translate(Head
+                + Group(1, "gyro_to_mouse", "")
+                + Preset(0, "Default", (1, "gyro active"))
+                + "}\n");
+            Assert.Equal("Touchpad 1 Finger 0 Down", sc.GyroEngageDescriptor);
+            var deck = Translate("\"controller_mappings\"\n{\n\t\"version\"\t\"3\"\n\t\"title\"\t\"V22\"\n"
+                + "\t\"controller_type\"\t\"controller_neptune\"\n"
+                + Group(1, "gyro_to_mouse", "")
+                + Preset(0, "Default", (1, "gyro active"))
+                + "}\n");
+            Assert.Equal(2, deck.GyroActivationByLayer["Base"].Buttons.Count);
+            Assert.Contains("Gamepad RightStickTouch", deck.GyroActivationByLayer["Base"].Buttons);
+            Assert.Equal("Hold", deck.GyroActivationByLayer["Base"].Mode);
+            var always = Translate(Head
+                + Group(1, "gyro_to_mouse", Settings(("gyro_ratchet_button_mask", "0")))
+                + Preset(0, "Default", (1, "gyro active"))
+                + "}\n");
+            Assert.Equal("", always.GyroEngageDescriptor);
+            Assert.Empty(always.GyroActivationByLayer);
+            Assert.Empty(always.GyroRatchetDescriptors);
+        }
+
+        [Fact]
+        public void GyroButtonKeys_OffTheGyro_ShapeNothing()
+        {
+            // The client consults the gyro activation only for the gyro.
+            string vdf = Head
+                + Group(1, "absolute_mouse", Settings(("gyro_button", "5")))
+                + Preset(0, "Default", (1, "right_trackpad active"))
+                + "}\n";
+            var p = Translate(vdf);
+            Assert.Equal("", p.GyroEngageDescriptor);
+            Assert.Empty(p.GyroRatchetDescriptors);
+            Assert.Empty(p.GyroActivationByLayer);
         }
 
         // ─── layer delay_end: Hold-mode release linger ──────────────────

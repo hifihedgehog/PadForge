@@ -3818,7 +3818,7 @@
   <data name="Menu_Binding_None" xml:space="preserve"><value>ஏதுமில்லை</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>விசைப்பலகை விசை</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>கட்டுப்படுத்திப் பொத்தான்</value></data>
-  <data name="Menu_Style_Tip" xml:space="preserve"><value>ஆரவழி வளையம், ஆயுதச் சக்கரம் போல, திசையின் மூலம் ஒரு கலத்தைத் தேர்ந்தெடுக்கும். தொடு கட்டம், நிலையின் மூலம் ஒரு கலத்தைத் தேர்ந்தெடுக்கும்: பேடில் விரல் இருக்கும் இடம், அல்லது ஸ்டிக் சுட்டும் இடம்.</value></data>
+  <data name="Menu_Style_Tip" xml:space="preserve"><value>"ஆரவழி வளையம்" திசையின் மூலம் ஒரு கலத்தைத் தேர்ந்தெடுக்கும், ஆயுதச் சக்கரம் போல. "தொடு கட்டம்" நிலையின் மூலம் ஒரு கலத்தைத் தேர்ந்தெடுக்கும்: பேடில் விரல் இருக்கும் இடம், அல்லது ஸ்டிக் சுட்டும் இடம். "ஹாட்பார்" ஒரு வரிசை கலங்களைக் காட்டி, அதில் நகர்ந்து, தேர்ந்தெடுத்த கலத்தைத் தூண்டும், ஒவ்வொன்றுக்கும் தனிக் கட்டுப்பாட்டுடன்.</value></data>
   <data name="Menu_HostInput_Tip" xml:space="preserve"><value>இந்த மெனுவைத் திறந்து செலுத்தும் உள்ளீடு, ஸ்லாட்டுக்கு ஒதுக்கப்பட்ட இயற்பியல் கட்டுப்படுத்திகளிலிருந்து படிக்கப்படும். ஸ்டிக் செயல்பாட்டு டெட்ஜோனைக் கடந்து தள்ளப்படும்போது இதைத் திறக்கும். டச்பேட் தொடும்போது இதைத் திறக்கும்.</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>இரண்டு மெனுக்கள் பேடைப் பகிரும்படி, இந்த மெனுவை டிராக்பேடின் ஒரு பாதிக்கு மட்டும் வரம்பிடும்.</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>தனிப்படுத்தப்பட்ட கலம் எப்போது தன் பிணைப்பைத் தூண்டும் என்பது. ஒவ்வொரு தேர்வும் கீழே விளக்கப்பட்டுள்ளது.</value></data>
@@ -4248,7 +4248,7 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>கிளிக் உள்ளீடு விடப்படும்போது ஒருமுறை தூண்டப்படும். அதே கணத்தில் பரப்பும் விடுவிக்கப்பட்டால், முந்தைய தேர்வு தூண்டப்படும்.</value></data>
   <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>மெனு திறந்திருக்கும்போதே, நீங்கள் விரலை எடுக்கும்போது அல்லது ஸ்டிக்கைச் செயல்பாட்டு டெட்ஜோனுக்குள் திருப்பும்போது ஒருமுறை தூண்டப்படும். அடுக்கிலிருந்து வெளியேறினாலும், இன்னும் செலுத்தப்பட்டுக்கொண்டிருக்கும் தேர்வு உறுதிசெய்யப்படும்.</value></data>
   <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>கலம் தனிப்படுத்தப்பட்டிருக்கும்போது அதன் பிணைப்பைப் பிடித்து வைக்கும். அடுக்கு திறக்கும்போது ஆரவழி மையம் உடனே தூண்டப்படலாம்.</value></data>
-  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>திசை அழுத்தங்கள் கலங்களில் படிப்படியாக நகர்ந்து, புதிதாகத் தேர்ந்தெடுக்கப்படும் ஒவ்வொரு கலத்தையும் தூண்டும். இந்த ஹாட்பார் நடத்தை தூண்டல் பயன்முறையையோ கிளிக் உள்ளீட்டையோ பயன்படுத்தாது.</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>திசை அழுத்தங்கள் கலங்களில் படிப்படியாக நகர்ந்து, புதிதாகத் தேர்ந்தெடுக்கப்படும் ஒவ்வொரு கலத்தையும் தூண்டும், "தூண்டல் பயன்முறை" அல்லது "கிளிக் உள்ளீடு" இல்லாமல். "ஹாட்பார்" பாணி தூண்டாமல் நகரும், தன் சொந்த "தூண்டு" கட்டுப்பாட்டால் தூண்டும்.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Flydigi மேம்படுத்தப்பட்ட நெறிமுறை</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>ஆதரிக்கப்படும் Flydigi கட்டுப்படுத்திகளில் கூடுதல் பொத்தான்களையும் அசைவு சென்சார்களையும் இயக்கும்.</value></data>
   <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi மென்பொருள் இயங்குகிறது: {0}. அது PadForge பயன்படுத்தும் அதே கட்டுப்படுத்தி இடைமுகத்தைப் பயன்படுத்தக்கூடும், இரண்டுக்கும் அணுகல் இருந்தபோது ஒரு Vader 5 Pro மீண்டும் மீண்டும் துண்டிக்கப்பட்டதாகத் தெரிவிக்கப்பட்டுள்ளது. இந்தக் கட்டுப்படுத்தி துண்டிக்கப்பட்டு மீண்டும் இணைந்தால், PadForge-ஐப் பயன்படுத்தும்போது சேவையை நிறுத்தவும், கட்டுப்படுத்தியை மறைத்தே வைத்து சேவையை HidHide அனுமதிப்பட்டியலிலிருந்து அகற்றவும், அல்லது அமைப்புகளில் "Flydigi மேம்படுத்தப்பட்ட நெறிமுறை" என்பதை ஆஃப் செய்து பார்க்கவும், இது உதவும் என்பது உறுதிசெய்யப்படவில்லை.</value></data>
@@ -5099,7 +5099,28 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
     <value>டி-பேட்</value>
   </data>
   <data name="Menu_Style_Keyboard" xml:space="preserve"><value>விசைப்பலகை</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>ஆரவழி வளையம், தொடு கட்டம் ஆகியவை கலப் பிணைப்புகளைத் தூண்டும். விசைப்பலகை, பயன்பாட்டிலுள்ள Windows அமைப்பின் விசைகளைத் தட்டச்சு செய்யும்.</value></data>
+  <data name="Menu_Style_Hotbar" xml:space="preserve"><value>ஹாட்பார்</value></data>
+  <data name="Menu_Hotbar_Show" xml:space="preserve"><value>காட்டு அல்லது மறை</value></data>
+  <data name="Menu_Hotbar_Show_Tip" xml:space="preserve"><value>பட்டியைக் காட்டும், அடுத்த அழுத்தத்தில் மறைக்கும். இப்படி மறைக்கப்பட்ட பட்டி அடுத்த முறை தன் நடுக் கலத்தில் திறக்கும்.</value></data>
+  <data name="Menu_Hotbar_Previous" xml:space="preserve"><value>முந்தையது</value></data>
+  <data name="Menu_Hotbar_Previous_Tip" xml:space="preserve"><value>இடப்புறம் உள்ள கலத்தைத் தேர்ந்தெடுக்கும், எதுவும் அமைக்கப்படாத கலங்களைத் தாண்டிச் செல்லும்.</value></data>
+  <data name="Menu_Hotbar_Next" xml:space="preserve"><value>அடுத்தது</value></data>
+  <data name="Menu_Hotbar_Next_Tip" xml:space="preserve"><value>வலப்புறம் உள்ள கலத்தைத் தேர்ந்தெடுக்கும், எதுவும் அமைக்கப்படாத கலங்களைத் தாண்டிச் செல்லும்.</value></data>
+  <data name="Menu_Hotbar_Fire" xml:space="preserve"><value>தூண்டு</value></data>
+  <data name="Menu_Hotbar_Fire_Tip" xml:space="preserve"><value>தேர்ந்தெடுத்த கலத்தைத் தூண்டும், "தூண்டல் பயன்முறை" சொல்வதுபடி.</value></data>
+  <data name="Menu_Hotbar_Caption" xml:space="preserve"><value>"காட்டு அல்லது மறை" ஒரு வரிசை கலங்களைக் கொண்டுவரும், "முந்தையது", "அடுத்தது" அதில் நகரும், "தூண்டு" தேர்ந்தெடுத்த கலத்தைத் தூண்டும். காலியாக விட்ட கட்டுப்பாடு "திறக்கும் உள்ளீடு" திசையை எடுத்துக்கொள்ளும்: கீழ், இடது, வலது அல்லது மேல்.</value></data>
+  <data name="Menu_Hotbar_Wrap" xml:space="preserve"><value>சுற்றி வா</value></data>
+  <data name="Menu_Hotbar_Wrap_Tip" xml:space="preserve"><value>கடைசிக் கலத்தைக் கடந்து நகர்ந்தால் முதல் கலத்துக்குச் செல்லும், திரும்பவும் அப்படியே. ஆஃப் இருந்தால், தேர்வு இரு முனைகளிலும் நின்றுவிடும்.</value></data>
+  <data name="Menu_Hotbar_DismissOnFire" xml:space="preserve"><value>தூண்டிய பின் மறை</value></data>
+  <data name="Menu_Hotbar_DismissOnFire_Tip" xml:space="preserve"><value>"தூண்டு" பட்டியை மறைக்கும். ஆஃப் இருந்தால், பட்டி திறந்தே இருக்கும், அதே கலத்தை மீண்டும் தூண்டலாம்.</value></data>
+  <data name="Menu_Hotbar_Recenter" xml:space="preserve"><value>ஒவ்வொரு முறையும் மையப்படுத்து</value></data>
+  <data name="Menu_Hotbar_Recenter_Tip" xml:space="preserve"><value>பட்டி மறைந்திருக்கும்போது, தேர்வு நடுக் கலத்துக்குத் திரும்பும். ஆஃப் இருந்தால், "தூண்டு" மறைத்த பட்டி, தூண்டிய கலத்திலேயே திறக்கும்.</value></data>
+  <data name="Menu_Reset_HotbarControl" xml:space="preserve"><value>கட்டுப்பாட்டை மீட்டமை</value></data>
+  <data name="Menu_Fire_Click_Hotbar_Desc" xml:space="preserve"><value>"தூண்டு" தேர்ந்தெடுத்த கலத்தை அழுத்தி, "தூண்டு" பிடிக்கப்பட்டிருக்கும் வரை பிடித்து வைக்கும். "தூண்டிய பின் மறை" ஆன் இருந்தால், அழுத்தம் ஒரு குறுகிய தட்டு.</value></data>
+  <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>"தூண்டு" விடப்படும்போது தேர்ந்தெடுத்த கலம் ஒருமுறை, ஒரு குறுகிய தட்டாகத் தூண்டப்படும். "தூண்டிய பின் மறை" ஆன் இருந்தால், "தூண்டு" பட்டியை மறைத்தவுடனே தூண்டப்படும்.</value></data>
+  <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>"தூண்டிய பின் மறை" ஆன் இருக்கும்போது "தூண்டு" பட்டியை மறைக்கும் கணத்தில், ஒரு கலம் ஒருமுறை, ஒரு குறுகிய தட்டாகத் தூண்டப்படும். "ஒவ்வொரு முறையும் மையப்படுத்து" ஆன் இருந்தால், தூண்டப்படுவது நடுக் கலம்.</value></data>
+  <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>பட்டி காட்டப்பட்டிருக்கும் முழு நேரமும் தேர்ந்தெடுத்த கலம் பிடித்து வைக்கப்படும். நகரும்போது ஒரு கலம் விடுபட்டு அடுத்தது பிடிக்கப்படும்.</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>"ஆரவழி வளையம்", "தொடு கட்டம்", "ஹாட்பார்" ஆகியவை கலப் பிணைப்புகளைத் தூண்டும். "விசைப்பலகை" பயன்பாட்டிலுள்ள Windows அமைப்பின் விசைகளைத் தட்டச்சு செய்யும்.</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>அமைப்பு</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>விசைப்பலகை தன் விசைகளை எப்படி அமைக்கிறது, கட்டுப்படுத்தி அவற்றை எப்படித் தேர்ந்தெடுக்கிறது என்பது.</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>ஒரு ஸ்டிக் அல்லது நான்கு உள்ளீடுகளால் நகர்த்தப்படும் ஒரு தனிப்படுத்தல். Windows, Xbox, Steam பயன்படுத்தும் அமைப்பு.</value></data>
@@ -5219,6 +5240,12 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (இந்தக் கணினியில் இல்லை)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (இந்த ஸ்லாட்டில் இல்லை)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>Laser Pointer கைரோ யா ஆகப் படிக்கப்பட்டது (PadForge-இல் லேசர் சுட்டி மாற்றம் இல்லை)</value></data>
+  <data name="Workshop_Tr_GyroRollFromHorizon" xml:space="preserve"><value>ரோல் மையம், அடிவானத்தில் அல்ல, தொடக்கத்தில் அல்லது "கைரோ மறுமையப்படுத்தல்" செயலின்போது கட்டுப்படுத்தி ஓய்வில் இருக்கும் நிலையில் அமைகிறது</value></data>
+  <data name="Workshop_Tr_GyroPitchFromHorizon" xml:space="preserve"><value>பிட்ச் மையம், தட்டையிலிருந்து {0}° அல்ல, தொடக்கத்தில் அல்லது "கைரோ மறுமையப்படுத்தல்" செயலின்போது கட்டுப்படுத்தி ஓய்வில் இருக்கும் நிலையில் அமைகிறது</value></data>
+  <data name="Workshop_Tr_GyroTiltRangeCapped" xml:space="preserve"><value>முழு சாய்வு 90° சாய்ப்பில் எட்டப்படுகிறது, {0}° அல்ல</value></data>
+  <data name="Workshop_Tr_OutputJoystickUnrouted" xml:space="preserve"><value>output_joystick {0} அச்சு ஜோடியை ஸ்டிக்கிற்கும் சுட்டிக்கும் அனுப்பாது, எனவே எதுவும் மேப் செய்யப்படவில்லை</value></data>
+  <data name="Workshop_Tr_DpadPulseHeld" xml:space="preserve"><value>ஒவ்வொரு திசையும் தள்ளியிருக்கும் வரை இயக்கத்தில் வைக்கப்படும் (Steam-இன் அனலாக் எமுலேஷன் அதைத் துடிப்புகளாக இயக்கி நிறுத்தும், எவ்வளவு தூரம் தள்ளுகிறோமோ அவ்வளவு நீளமாக)</value></data>
+  <data name="Workshop_Tr_SoftPressNoAnalog" xml:space="preserve"><value>அனலாக் அளவீடு இல்லாத உள்ளீட்டில் மென் அழுத்தச் செயல்படுத்தி (Steam அதை ஒருபோதும் தூண்டாது)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>reWASD-இல், கோப்பு {0}-ஐ மேப்பிங் நீக்கம் இல்லாமல் மேப் செய்வதால் அது இன்னும் Windows-ஐ அடைகிறது. மேப் செய்யப்பட்ட உள்ளீடுகளைத் தடு என்பது இயக்கத்தில் இருந்தால், PadForge அதைத் தடுக்கும்.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows ஒரு வட்ட ஸ்டிக்கின் {0}-ஐத் தள்ளும் கோணத்தைக் கொண்டு வடிவமைக்கிறது. PadForge-இன் ஸ்டிக் அட்டை நேர்த் தள்ளலை ஒரே மாதிரியாகவும் மூலைவிட்டத் தள்ளலை வேறுவிதமாகவும் இயக்கும்.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows கைரோ டெட்ஜோனை ஒவ்வொரு அச்சிலும் இயக்கத்தின் கோணத்துக்கு ஏற்ப அளவிடுகிறது. PadForge ஒவ்வொரு அச்சிலிருந்தும் முழு டெட்ஜோனையும் நீக்கும், எனவே நேர் இயக்கம் ஒரே மாதிரியாகவும், மெதுவான மூலைவிட்ட இயக்கம் தாமதமாகவும் தொடங்கும்.</value></data>

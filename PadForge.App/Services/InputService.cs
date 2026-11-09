@@ -1947,16 +1947,14 @@ namespace PadForge.Services
             // workshop ratchet clutch (translator v22): the ratchet is a
             // separate lane the engage sources cannot fight, so holding
             // it always pauses gyro and releasing it always restores
-            // whatever the engage sources say. Returns true (always-on)
-            // when the InputManager isn't wired yet, matching the gyro
-            // evaluator's null-provider fallback.
+            // whatever the engage sources say. The Steam activation lane
+            // (several gyro buttons, or all of them required) ANDs in the
+            // same way. Returns true (always-on) when the InputManager isn't
+            // wired yet, matching the gyro evaluator's null-provider fallback.
             PadForge.Engine.Common.Mapping.SourceCoercion.AimEngageStateProvider = slotIndex =>
             {
-                if (_inputManager == null) return true;
-                if (slotIndex < 0 || slotIndex >= InputManager.MaxPads) return true;
-                return (_inputManager.GyroEngagedFromButton[slotIndex]
-                        || _inputManager.GyroEngagedFromMacro[slotIndex])
-                    && !_inputManager.GyroRatchetHeld[slotIndex];
+                var im = _inputManager;
+                return im == null || im.IsGyroEngaged(slotIndex);
             };
 
             // — touchpad-gesture fire lookup. Reads from the per-

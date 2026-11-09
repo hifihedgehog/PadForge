@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using PadForge.Engine.Data;
 
 namespace PadForge.SteamWorkshop.Translation
@@ -104,7 +106,40 @@ namespace PadForge.SteamWorkshop.Translation
         /// deterministic goldens.</summary>
         public List<string> GyroRatchetDescriptors { get; set; } = new();
 
+        /// <summary>Steam gyro activations the engage button and the ratchet
+        /// cannot carry, by layer: several buttons that turn the gyro on or
+        /// toggle it, a set that needs all of its buttons, or presets and
+        /// mode shifts whose gyro groups turn the gyro on differently. A
+        /// layer with no entry takes Base's. Ordinal by layer for
+        /// deterministic goldens. Empty = none.</summary>
+        public SortedDictionary<string, TranslatedGyroActivation> GyroActivationByLayer { get; set; }
+            = new(StringComparer.Ordinal);
+
+        /// <summary>Re-center the gyro each time the slot's gyro turns on:
+        /// Steam's deflection mode with a gyro button and Use Relative on
+        /// takes the controller's pose at each activation as its new
+        /// resting point.</summary>
+        public bool GyroRecenterOnEngage { get; set; }
+
         public TranslationReport Report { get; set; } = new();
+    }
+
+    /// <summary>One layer's Steam gyro activation: the buttons (device-free
+    /// descriptors, in mask bit order, none for a gyro that is always on),
+    /// "Hold", "Release" or "Toggle", and whether all of the buttons must be
+    /// held.</summary>
+    public sealed class TranslatedGyroActivation
+    {
+        public List<string> Buttons { get; set; } = new();
+        public string Mode { get; set; } = "Hold";
+        public bool All { get; set; }
+
+        /// <summary>The stamp form: "Mode,Any|All,button|button".</summary>
+        public string Encode()
+            => Mode + "," + (All ? "All" : "Any") + "," + string.Join("|", Buttons);
+
+        public bool SameAs(TranslatedGyroActivation other)
+            => other != null && Mode == other.Mode && All == other.All && Buttons.SequenceEqual(other.Buttons);
     }
 
     /// <summary>What a translated macro does when its trigger fires.</summary>

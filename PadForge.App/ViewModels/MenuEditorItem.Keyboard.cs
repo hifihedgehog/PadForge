@@ -56,15 +56,17 @@ namespace PadForge.ViewModels
         /// Mode, Show Labels, the cell bindings and the opener rows.</summary>
         public bool IsCellMenu => !IsKeyboard;
 
-        /// <summary>Click Input: a keyboard types with its own controls.</summary>
-        public bool ShowsClickRow => !IsKeyboard;
+        /// <summary>Click Input: a keyboard types with its own controls, and a
+        /// hotbar fires with its Fire control.</summary>
+        public bool ShowsClickRow => !IsKeyboard && !IsHotbar;
 
         /// <summary>Pad Half: a keyboard points with its own pointer rows.</summary>
         public bool ShowsHostHalfRow => HostIsTouchpad && !IsKeyboard;
 
         /// <summary>The Custom Axes rows under the opener, which a keyboard
-        /// does not have: its steering rows take any axis on any device.</summary>
-        public bool ShowsCustomAxesRows => IsCustomHost && IsCellMenu;
+        /// does not have: its steering rows take any axis on any device. A
+        /// hotbar reads no axes of a Custom opener, only its four controls.</summary>
+        public bool ShowsCustomAxesRows => IsCustomHost && IsCellMenu && !IsHotbar;
 
         /// <summary>The Keyboard Controls card's count: the layout and its rows.</summary>
         public string KeyboardControlsSummary => string.Format(Strings.Instance.Menu_Keyboard_Controls_Summary_Format,

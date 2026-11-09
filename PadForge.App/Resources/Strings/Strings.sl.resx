@@ -3818,7 +3818,7 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>Brez</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Tipka tipkovnice</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>Gumb krmilnika</value></data>
-  <data name="Menu_Style_Tip" xml:space="preserve"><value>„Radialni obroč“ izbere celico po smeri, kot kolo orožij. „Mreža na dotik“ izbere celico po položaju: kje je prst na ploščici ali kam kaže palica.</value></data>
+  <data name="Menu_Style_Tip" xml:space="preserve"><value>„Radialni obroč“ izbere celico po smeri, kot kolo orožij. „Mreža na dotik“ izbere celico po položaju: kje je prst na ploščici ali kam kaže palica. „Hitra vrstica“ prikaže vrstico celic, se pomika po njej in sproži izbrano celico, vsaka s svojim kontrolnikom.</value></data>
   <data name="Menu_HostInput_Tip" xml:space="preserve"><value>Vnos, ki odpre in upravlja ta meni, prebran iz fizičnih krmilnikov, dodeljenih reži. Palica ga odpre, ko je potisnjena čez mrtvo območje za aktivacijo. Sledilna ploščica ga odpre ob dotiku.</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>Ta meni omejite na eno polovico sledilne ploščice, da si lahko ploščico delita dva menija.</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>Kdaj označena celica sproži svojo povezavo. Vsaka možnost je razložena spodaj.</value></data>
@@ -4248,7 +4248,7 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>Sproži se enkrat, ko se vnos za klik sprosti. Če se površina sprosti v istem trenutku, se sproži prejšnja izbira.</value></data>
   <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>Sproži se enkrat, ko dvignete prst ali vrnete palico v mrtvo območje za aktivacijo, meni pa ostane odprt. Izhod iz plasti potrdi tudi izbiro, ki se še upravlja.</value></data>
   <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>Povezavo drži, dokler je njena celica označena. Radialna sredina se lahko sproži takoj, ko se plast odpre.</value></data>
-  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Pritiski smeri se pomikajo po celicah in sprožijo vsako na novo izbrano celico. To delovanje hitre vrstice ne uporablja načina proženja ali vnosa za klik.</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Pritiski smeri se pomikajo po celicah in sprožijo vsako na novo izbrano celico, brez „Način proženja“ ali „Vnos za klik“. Slog „Hitra vrstica“ se pomika brez proženja in sproži s svojim kontrolnikom „Sproži“.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Izboljšani protokol Flydigi</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Omogoči dodatne gumbe in senzorje gibanja na podprtih krmilnikih Flydigi.</value></data>
   <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Programska oprema Flydigi se izvaja: {0}. Uporablja lahko isti vmesnik krmilnika kot PadForge, za krmilnik Vader 5 Pro pa so poročali o ponavljajočih se prekinitvah povezave, ko sta imela dostop oba. Če se ta krmilnik prekinja in znova povezuje, med uporabo programa PadForge ustavite storitev, krmilnik pustite skrit in storitev odstranite s seznama dovoljenih v HidHide ali v nastavitvah poskusite izklopiti „Izboljšani protokol Flydigi“, kar pa ni potrjeno, da pomaga.</value></data>
@@ -5099,7 +5099,28 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
     <value>Smerni križ</value>
   </data>
   <data name="Menu_Style_Keyboard" xml:space="preserve"><value>Tipkovnica</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>„Radialni obroč“ in „Mreža na dotik“ sprožita vezave celic. „Tipkovnica“ tipka tipke postavitve, ki jo uporablja Windows.</value></data>
+  <data name="Menu_Style_Hotbar" xml:space="preserve"><value>Hitra vrstica</value></data>
+  <data name="Menu_Hotbar_Show" xml:space="preserve"><value>Pokaži ali skrij</value></data>
+  <data name="Menu_Hotbar_Show_Tip" xml:space="preserve"><value>Pokaže vrstico in jo ob naslednjem pritisku skrije. Tako skrita vrstica se naslednjič odpre na sredinski celici.</value></data>
+  <data name="Menu_Hotbar_Previous" xml:space="preserve"><value>Prejšnja</value></data>
+  <data name="Menu_Hotbar_Previous_Tip" xml:space="preserve"><value>Izbere celico na levi in preskoči celice brez nastavitve.</value></data>
+  <data name="Menu_Hotbar_Next" xml:space="preserve"><value>Naslednja</value></data>
+  <data name="Menu_Hotbar_Next_Tip" xml:space="preserve"><value>Izbere celico na desni in preskoči celice brez nastavitve.</value></data>
+  <data name="Menu_Hotbar_Fire" xml:space="preserve"><value>Sproži</value></data>
+  <data name="Menu_Hotbar_Fire_Tip" xml:space="preserve"><value>Sproži izbrano celico, kot določa „Način proženja“.</value></data>
+  <data name="Menu_Hotbar_Caption" xml:space="preserve"><value>„Pokaži ali skrij“ prikaže vrstico celic, „Prejšnja“ in „Naslednja“ se pomikata po njej, „Sproži“ pa sproži izbrano celico. Kontrolnik, ki ostane prazen, prevzame smer „Odpre se z“: dol, levo, desno ali gor.</value></data>
+  <data name="Menu_Hotbar_Wrap" xml:space="preserve"><value>Krožno pomikanje</value></data>
+  <data name="Menu_Hotbar_Wrap_Tip" xml:space="preserve"><value>Korak čez zadnjo celico pripelje na prvo in obratno. Če je izklopljeno, se izbira ustavi na obeh koncih.</value></data>
+  <data name="Menu_Hotbar_DismissOnFire" xml:space="preserve"><value>Skrij po proženju</value></data>
+  <data name="Menu_Hotbar_DismissOnFire_Tip" xml:space="preserve"><value>„Sproži“ skrije vrstico. Če je izklopljeno, vrstica ostane prikazana in isto celico je mogoče sprožiti znova.</value></data>
+  <data name="Menu_Hotbar_Recenter" xml:space="preserve"><value>Vsakič na sredino</value></data>
+  <data name="Menu_Hotbar_Recenter_Tip" xml:space="preserve"><value>Dokler je vrstica skrita, se izbira vrne na sredinsko celico. Če je izklopljeno, se vrstica, ki jo je skrila „Sproži“, odpre na celici, ki jo je sprožila.</value></data>
+  <data name="Menu_Reset_HotbarControl" xml:space="preserve"><value>Ponastavi kontrolnik</value></data>
+  <data name="Menu_Fire_Click_Hotbar_Desc" xml:space="preserve"><value>„Sproži“ pritisne izbrano celico in jo drži, dokler je „Sproži“ pridržano. Ko je vklopljeno „Skrij po proženju“, je pritisk kratek dotik.</value></data>
+  <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>Izbrana celica se sproži enkrat, kot kratek dotik, ko se „Sproži“ sprosti. Ko je vklopljeno „Skrij po proženju“, se sproži takoj, ko „Sproži“ skrije vrstico.</value></data>
+  <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>Celica se sproži enkrat, kot kratek dotik, ko „Sproži“ skrije vrstico ob vklopljenem „Skrij po proženju“. Ko je vklopljeno „Vsakič na sredino“, se sproži sredinska celica.</value></data>
+  <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>Izbrana celica je pridržana ves čas, ko je vrstica prikazana. Pomik spusti eno celico in zadrži naslednjo.</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>„Radialni obroč“, „Mreža na dotik“ in „Hitra vrstica“ sprožijo vezave celic. „Tipkovnica“ tipka tipke postavitve, ki jo uporablja Windows.</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Postavitev</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Kako tipkovnica razporedi tipke in kako jih izbere krmilnik.</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Ena označitev, premikana s palico ali štirimi vnosi, postavitev, ki jo uporabljajo Windows, Xbox in Steam.</value></data>
@@ -5219,6 +5240,12 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (ni na tem računalniku)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (ni na tej reži)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>žiroskop Laser Pointer prebran kot zasuk (PadForge nima pretvorbe laserskega kazalca)</value></data>
+  <data name="Workshop_Tr_GyroRollFromHorizon" xml:space="preserve"><value>nagib je središčen tam, kjer krmilnik miruje ob začetku ali ob dejanju „Ponovno središčenje žiroskopa“, ne na obzorju</value></data>
+  <data name="Workshop_Tr_GyroPitchFromHorizon" xml:space="preserve"><value>naklon je središčen tam, kjer krmilnik miruje ob začetku ali ob dejanju „Ponovno središčenje žiroskopa“, ne pri {0}° od vodoravnice</value></data>
+  <data name="Workshop_Tr_GyroTiltRangeCapped" xml:space="preserve"><value>poln odklon pri 90° nagiba, ne pri {0}°</value></data>
+  <data name="Workshop_Tr_OutputJoystickUnrouted" xml:space="preserve"><value>output_joystick {0} pošlje par ne na palico ne na miško, zato ni preslikano nič</value></data>
+  <data name="Workshop_Tr_DpadPulseHeld" xml:space="preserve"><value>vsaka smer je držana, dokler je pritisnjena (analogna emulacija pri Steam jo vklaplja in izklaplja v pulzih, daljših, čim dlje je pritisnjena)</value></data>
+  <data name="Workshop_Tr_SoftPressNoAnalog" xml:space="preserve"><value>aktivator z rahlim pritiskom na vnosu brez analognega odčitka (Steam ga nikoli ne sproži)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>V reWASD {0} še vedno doseže Windows, ker ga datoteka preslika brez preklica preslikave. Če je vklopljeno Zadrži preslikane vnose, ga PadForge zadrži.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows oblikuje {0} radialne palčke glede na kot potiska. Kartica nastavitev palčke v PadForge raven potisk odigra enako, diagonalnega pa drugače.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows mrtvo območje žiroskopa na vsaki osi prilagodi glede na kot gibanja. PadForge na vsaki osi odvzame celotno mrtvo območje, zato raven premik odigra enako, počasen diagonalen pa se začne pozneje.</value></data>

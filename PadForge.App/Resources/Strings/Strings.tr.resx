@@ -3818,7 +3818,7 @@
   <data name="Menu_Binding_None" xml:space="preserve"><value>Yok</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Klavye tuşu</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>Kontrolcü düğmesi</value></data>
-  <data name="Menu_Style_Tip" xml:space="preserve"><value>Dairesel halka, silah çarkı gibi hücreyi yöne göre seçer. Dokunma ızgarası hücreyi konuma göre seçer: parmağın yüzeyde durduğu yer veya çubuğun gösterdiği yer.</value></data>
+  <data name="Menu_Style_Tip" xml:space="preserve"><value>Dairesel halka, silah çarkı gibi hücreyi yöne göre seçer. Dokunma ızgarası hücreyi konuma göre seçer: parmağın yüzeyde durduğu yer veya çubuğun gösterdiği yer. Kısayol çubuğu bir hücre sırası gösterir, onun boyunca ilerler ve seçili hücreyi tetikler, her biri kendi denetimiyle.</value></data>
   <data name="Menu_HostInput_Tip" xml:space="preserve"><value>Bu menüyü açan ve yönlendiren giriş. Yuvaya atanmış fiziksel kontrolcülerden okunur. Çubuk, Devreye girme ölü bölgesinin ötesine itildiğinde menüyü açar. Dokunmatik yüzey ise dokunulduğunda açar.</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>Bu menüyü dokunmatik yüzeyin bir yarısıyla sınırlar, böylece iki menü yüzeyi paylaşabilir.</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>Vurgulanan hücrenin atamasını ne zaman tetikleyeceği. Her seçenek aşağıda açıklanmıştır.</value></data>
@@ -4248,7 +4248,7 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>Tıklama girişi bırakıldığında bir kez tetiklenir. Yüzey aynı anda bırakılırsa önceki seçim tetiklenir.</value></data>
   <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>Parmağınızı kaldırdığınızda veya çubuğu Devreye girme ölü bölgesinin içine döndürdüğünüzde bir kez tetiklenir, menü açık kalır. Katmandan çıkmak da hâlâ yönlendirilmekte olan bir seçimi onaylar.</value></data>
   <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>Hücresi vurgulandığı sürece atamayı basılı tutar. Dairesel bir merkez, katman açıldığında hemen tetiklenebilir.</value></data>
-  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Yön basışları hücreler arasında adım adım ilerler ve yeni seçilen her hücreyi tetikler. Bu kısayol çubuğu davranışı Tetikleme modunu veya Tıklama girişini kullanmaz.</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Yön basışları hücreler arasında adım adım ilerler ve yeni seçilen her hücreyi tetikler, "Tetikleme modu" veya "Tıklama girişi" kullanılmaz. "Kısayol çubuğu" stili tetiklemeden ilerler ve kendi "Tetikle" denetimiyle tetikler.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Flydigi gelişmiş protokolü</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Desteklenen Flydigi kontrolcülerinde ek düğmeleri ve hareket sensörlerini etkinleştirir.</value></data>
   <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi yazılımı çalışıyor: {0}. PadForge ile aynı kontrolcü arayüzünü kullanabilir ve ikisinin de erişimi varken bir Vader 5 Pro'nun tekrar tekrar bağlantısının kesildiği bildirilmiştir. Bu kontrolcünün bağlantısı kopup yeniden kuruluyorsa PadForge'u kullanırken hizmeti durdurun, kontrolcüyü gizli tutup hizmeti HidHide izin verilenler listesinden kaldırın veya Ayarlar'da "Flydigi gelişmiş protokolü" seçeneğini kapatmayı deneyin. Bu son seçeneğin yardımcı olduğu doğrulanmamıştır.</value></data>
@@ -5099,7 +5099,28 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
     <value>Yön tuşları</value>
   </data>
   <data name="Menu_Style_Keyboard" xml:space="preserve"><value>Klavye</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>Dairesel halka ve Dokunma ızgarası hücre bağlamalarını tetikler. Klavye, kullanılan Windows düzeninin tuşlarını yazar.</value></data>
+  <data name="Menu_Style_Hotbar" xml:space="preserve"><value>Kısayol çubuğu</value></data>
+  <data name="Menu_Hotbar_Show" xml:space="preserve"><value>Göster veya gizle</value></data>
+  <data name="Menu_Hotbar_Show_Tip" xml:space="preserve"><value>Çubuğu gösterir, bir sonraki basışta gizler. Bu şekilde gizlenen çubuk bir sonraki açılışta orta hücreyle açılır.</value></data>
+  <data name="Menu_Hotbar_Previous" xml:space="preserve"><value>Önceki</value></data>
+  <data name="Menu_Hotbar_Previous_Tip" xml:space="preserve"><value>Soldaki hücreyi seçer, hiçbir şey ayarlanmamış hücreleri atlar.</value></data>
+  <data name="Menu_Hotbar_Next" xml:space="preserve"><value>Sonraki</value></data>
+  <data name="Menu_Hotbar_Next_Tip" xml:space="preserve"><value>Sağdaki hücreyi seçer, hiçbir şey ayarlanmamış hücreleri atlar.</value></data>
+  <data name="Menu_Hotbar_Fire" xml:space="preserve"><value>Tetikle</value></data>
+  <data name="Menu_Hotbar_Fire_Tip" xml:space="preserve"><value>Seçili hücreyi "Tetikleme modu" ayarının belirttiği gibi tetikler.</value></data>
+  <data name="Menu_Hotbar_Caption" xml:space="preserve"><value>"Göster veya gizle" bir hücre sırası açar, "Önceki" ve "Sonraki" onun boyunca ilerler, "Tetikle" seçili hücreyi tetikler. Boş bırakılan bir denetim "Açan giriş" yönünü alır: aşağı, sol, sağ veya yukarı.</value></data>
+  <data name="Menu_Hotbar_Wrap" xml:space="preserve"><value>Başa sarma</value></data>
+  <data name="Menu_Hotbar_Wrap_Tip" xml:space="preserve"><value>Son hücreyi geçince ilk hücreye gider, tersi de geçerlidir. Kapalıyken seçim iki uçta da durur.</value></data>
+  <data name="Menu_Hotbar_DismissOnFire" xml:space="preserve"><value>Tetikledikten sonra gizle</value></data>
+  <data name="Menu_Hotbar_DismissOnFire_Tip" xml:space="preserve"><value>"Tetikle" çubuğu gizler. Kapalıyken çubuk açık kalır ve aynı hücre yeniden tetiklenebilir.</value></data>
+  <data name="Menu_Hotbar_Recenter" xml:space="preserve"><value>Her seferinde ortala</value></data>
+  <data name="Menu_Hotbar_Recenter_Tip" xml:space="preserve"><value>Çubuk gizliyken seçim orta hücreye döner. Kapalıyken, "Tetikle" ile gizlenen bir çubuk tetiklenen hücrede açılır.</value></data>
+  <data name="Menu_Reset_HotbarControl" xml:space="preserve"><value>Denetimi sıfırla</value></data>
+  <data name="Menu_Fire_Click_Hotbar_Desc" xml:space="preserve"><value>"Tetikle" seçili hücreye basar ve "Tetikle" basılı tutulduğu sürece hücreyi basılı tutar. "Tetikledikten sonra gizle" açıkken basış kısa bir dokunuştur.</value></data>
+  <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>Seçili hücre, "Tetikle" bırakıldığında kısa bir dokunuşla bir kez tetiklenir. "Tetikledikten sonra gizle" açıkken, "Tetikle" çubuğu gizler gizlemez tetiklenir.</value></data>
+  <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>"Tetikledikten sonra gizle" açıkken "Tetikle" çubuğu gizlediğinde bir hücre kısa bir dokunuşla bir kez tetiklenir. "Her seferinde ortala" açıkken tetiklenen hücre orta hücredir.</value></data>
+  <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>Seçili hücre, çubuk gösterildiği sürece basılı tutulur. Adım atmak bir hücreyi bırakır ve sonrakini basılı tutar.</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>Dairesel halka, Dokunma ızgarası ve Kısayol çubuğu hücre bağlamalarını tetikler. Klavye, kullanılan Windows düzeninin tuşlarını yazar.</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Düzen</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Klavyenin tuşları nasıl dizdiği ve bir kontrolcünün bunları nasıl seçtiği.</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Bir çubukla veya dört girişle hareket ettirilen tek bir vurgu. Windows, Xbox ve Steam'in kullandığı düzen.</value></data>
@@ -5219,6 +5240,12 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (bu bilgisayarda yok)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (bu yuvada yok)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>Lazer İşaretçi jiroskobu sapma olarak okundu (PadForge'da lazer işaretçi dönüşümü yok)</value></data>
+  <data name="Workshop_Tr_GyroRollFromHorizon" xml:space="preserve"><value>yuvarlanma, ufka göre değil, başlangıçta ya da "Jiroskopu yeniden ortala" eyleminde kontrolcünün durduğu konuma göre ortalanır</value></data>
+  <data name="Workshop_Tr_GyroPitchFromHorizon" xml:space="preserve"><value>yunuslama, düz konumdan {0}° değil, başlangıçta ya da "Jiroskopu yeniden ortala" eyleminde kontrolcünün durduğu konuma göre ortalanır</value></data>
+  <data name="Workshop_Tr_GyroTiltRangeCapped" xml:space="preserve"><value>çubuk tam sonuna 90° eğimde ulaşır, {0}° değil</value></data>
+  <data name="Workshop_Tr_OutputJoystickUnrouted" xml:space="preserve"><value>output_joystick {0} değeri çifti ne çubuğa ne de fareye gönderir, bu yüzden hiçbir şey eşlenmez</value></data>
+  <data name="Workshop_Tr_DpadPulseHeld" xml:space="preserve"><value>her yön, basılı olduğu sürece basılı tutulur (Steam'in analog öykünmesi yönü darbeler halinde açıp kapatır, ne kadar uzağa itilirse darbeler o kadar uzar)</value></data>
+  <data name="Workshop_Tr_SoftPressNoAnalog" xml:space="preserve"><value>analog okuması olmayan bir girişte hafif basış etkinleştiricisi (Steam bunu hiçbir zaman tetiklemez)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>reWASD'de {0}, dosya onu eşlemeyi kaldırmadan eşlediği için yine de Windows'a ulaşır. Eşlenmiş girişleri tüket açıkken PadForge onu engeller.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows radyal bir çubuğun {0} ayarını itmenin açısına göre şekillendirir. PadForge'un çubuk ayarları düz bir itmeyi aynı, çapraz bir itmeyi farklı oynatır.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows jiroskop ölü bölgesini her eksende hareketin açısına göre ölçekler. PadForge ölü bölgenin tamamını her eksenden düşer, bu yüzden düz bir hareket aynı oynar, yavaş çapraz bir hareket ise daha geç başlar.</value></data>

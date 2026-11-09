@@ -32,7 +32,8 @@ namespace PadForge.Tests
         public void TheStyleList_OffersTheKeyboard_AndTurningAMenuIntoOne_TakesItsDefaults()
         {
             var e = new MenuEditorItem(new MenuDefinitionEntry { MenuId = 1, Kind = MenuKind.Radial, CellCount = 4, HasCenter = true });
-            Assert.Equal(new[] { 0, 1, 2 }, e.KindOptions.Select(o => o.Value));
+            // Radial Ring, Touch Grid, Keyboard and Hotbar (MenuHotbarEditorTests).
+            Assert.Equal(new[] { 0, 1, 2, 3 }, e.KindOptions.Select(o => o.Value));
             Assert.Empty(e.KeyboardControlRows);
             Assert.True(e.IsCellMenu);
 

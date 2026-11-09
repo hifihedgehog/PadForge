@@ -14461,9 +14461,12 @@
                                         <ContentControl Content="{Binding}" ContentTemplate="{StaticResource KeyboardThresholdTemplate}"
                                                         Focusable="False" IsTabStop="False"/>
                                     </StackPanel>
+                                    <!-- The template builds this row while the tab shows,
+                                         inside the tab control's presenter, where the page
+                                         is an ancestor and the TabItem is not. -->
                                     <ui:Button AutomationProperties.Name="{Binding RecordText, TargetNullValue=''}"
                                                Command="{Binding DataContext.MenuKeyboardRecordCommand,
-                                                   RelativeSource={RelativeSource AncestorType=TabItem}}"
+                                                   RelativeSource={RelativeSource AncestorType=UserControl}}"
                                                CommandParameter="{Binding}"
                                                Style="{StaticResource EmberIconButtonHot}" Margin="6,0,0,0" VerticalAlignment="Top">
                                         <controls:GlyphText Text="{Binding RecordIcon}" FontFamily="Segoe MDL2 Assets"

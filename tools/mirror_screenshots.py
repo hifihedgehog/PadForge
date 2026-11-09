@@ -42,6 +42,9 @@ ALIASES = {
     "starter-profiles": "profiles-starter-gallery",
     "wii": "wii-pointer-mode",
     "bass-shakers": "pad-bass-shakers",
+    "screen-color": "pad-lighting-screen-color",
+    "twitch-chat": "dashboard-twitch-chat",
+    "screen-overlay": "dashboard-screen-overlay",
 }
 
 # Site assets that deliberately have no captured source (brand art, awards).

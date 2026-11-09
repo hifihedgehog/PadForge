@@ -43,6 +43,33 @@ namespace PadForge.Tests
             Assert.Equal(16, ChatCommandRegistry.MaxButtonInUse);
         }
 
+        // A first run has no PadForge.xml, so SettingsService.Initialize never
+        // loads the list, and its first save wrote the empty list every later
+        // start then kept. The list a process starts with is the static
+        // initializer's, which no test can run again: a second copy of the
+        // assembly would serve it, and WPF then finds that copy's XAML
+        // resources in place of the dialogs' own. So this reads the
+        // initializer, which has to fill the list from UsualEntries.
+        [Fact]
+        public void TheListStartsWithTheUsualWords_SoAFirstRunSavesThem()
+        {
+            var type = typeof(ChatCommandRegistry);
+            byte[] il = type.TypeInitializer.GetMethodBody().GetILAsByteArray();
+            var called = new List<string>();
+            for (int i = 0; i + 4 < il.Length; i++)
+            {
+                if (il[i] != 0x28) continue; // call
+                try { called.Add(type.Module.ResolveMethod(BitConverter.ToInt32(il, i + 1)).Name); }
+                catch (ArgumentException) { }
+            }
+            Assert.Contains("UsualEntries", called);
+            // And UsualEntries is the list a file that never held one loads.
+            ChatCommandRegistry.LoadRegistry(Array.Empty<(string, int)>());
+            ChatCommandRegistry.LoadRegistry(null);
+            Assert.Equal(ChatCommandRegistry.UsualWords, ChatCommandRegistry.SaveRegistry().Select(w => w.Word));
+            Assert.Equal(Enumerable.Range(1, 16), ChatCommandRegistry.SaveRegistry().Select(w => w.Button));
+        }
+
         [Fact]
         public void TheUsualWordsLeaveOutHomeAndTheTouchpad()
         {

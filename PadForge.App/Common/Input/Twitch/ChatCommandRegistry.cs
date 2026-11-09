@@ -59,8 +59,20 @@ namespace PadForge.Common.Input.Twitch
         private static readonly Regex s_endsInTime = new(@"\d+(?:\.\d+)?(?:ms|s)$", RegexOptions.CultureInvariant);
 
         private static readonly object _lock = new();
-        private static readonly List<CommandEntry> _words = new();
+        // A first run has no PadForge.xml and never calls LoadRegistry, so the
+        // list starts as a file that never held one loads it. Started empty,
+        // the first save wrote an empty list, and every later start kept it.
+        private static readonly List<CommandEntry> _words = UsualEntries();
         private static int _version;
+
+        // The usual words at buttons 1 to 16, in UsualWords order.
+        private static List<CommandEntry> UsualEntries()
+        {
+            var list = new List<CommandEntry>(UsualWords.Count);
+            for (int i = 0; i < UsualWords.Count; i++)
+                list.Add(new CommandEntry { Word = UsualWords[i], Button = i + 1 });
+            return list;
+        }
 
         /// <summary>Raised when the list changes, outside the lock.</summary>
         public static event EventHandler RegistryChanged;
@@ -211,8 +223,7 @@ namespace PadForge.Common.Input.Twitch
                 _words.Clear();
                 if (entries == null)
                 {
-                    for (int i = 0; i < UsualWords.Count; i++)
-                        _words.Add(new CommandEntry { Word = UsualWords[i], Button = i + 1 });
+                    _words.AddRange(UsualEntries());
                 }
                 else
                 {

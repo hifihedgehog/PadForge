@@ -115,12 +115,18 @@ namespace PadForge.Tests
             var colors = new int[126];
             Assert.Equal(HidLightingPaint.Sent, session.Paint(io, _ => { }, model.Map.Lights, colors));
             var calls = io.Calls.ToList();
-            Assert.Equal(16, calls.Count);
-            Assert.Equal(Enumerable.Repeat(new[] { "out", "in" }, 8).SelectMany(x => x), calls.Select(c => c.Kind));
+            Assert.Equal(20, calls.Count);
+            Assert.Equal(Enumerable.Repeat(new[] { "out", "in" }, 10).SelectMany(x => x), calls.Select(c => c.Kind));
             // The Custom mode, brightness 4: 06 + 09 + 55 + 08 + 04 = 0x70.
             Assert.Equal("04 70 00 06 09 00 00 55 00 08 04 00 00 00 00 00 00", Hex(calls[0].Bytes.Take(17)));
+            // The colors go between a begin and an end report, each answered, as CHERRY
+            // Utility sends them (RGBController_CherryKeyboard.cpp:357-370 at b9d903b5,
+            // SendKeyboardBegin and SendKeyboardEnd, CherryKeyboardController.cpp:138-188).
+            Assert.Equal("04 01 00 01 00", Hex(calls[2].Bytes.Take(5)));
+            Assert.All(Enumerable.Range(0, 7), i => Assert.Equal(0x0B, calls[4 + 2 * i].Bytes[3]));
+            Assert.Equal("04 02 00 02 00", Hex(calls[18].Bytes.Take(5)));
             Assert.Equal(HidLightingPaint.Sent, session.Paint(io, _ => { }, model.Map.Lights, colors));
-            Assert.Equal(16 + 14, io.Calls.Count);
+            Assert.Equal(20 + 18, io.Calls.Count);
             Assert.Empty(session.CrashFrames);
             int before = io.Calls.Count;
             Assert.True(session.HandBack(io, _ => { }));

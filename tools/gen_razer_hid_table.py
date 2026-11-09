@@ -45,7 +45,7 @@ import openrgb_cpp as oc  # noqa: E402
 PROJ_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUTPUT = os.path.join(PROJ_ROOT, "PadForge.App", "Common", "Input", "Peripherals", "HidFamilies",
                       "RazerHidTable.g.cs")
-PIN = "c6fc8016"
+PIN = "b9d903b5"
 FAMILY = "RazerController"
 DETECTORS = (
     "DetectRazerKrakenControllers",

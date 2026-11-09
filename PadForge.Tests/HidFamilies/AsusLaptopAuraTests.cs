@@ -24,7 +24,7 @@ namespace PadForge.Tests
         private static AsusLaptopMachine Machine(string product = "ROG Zephyrus G14", string board = "GA402RJ") => new(product, board);
 
         /// <summary>An answer of the firmware: the echo, then the kind at byte 9, the
-        /// layout at 12 and the features at 13 and 14 (Aura.cs:326-330).</summary>
+        /// layout at 12 and the features at 13 and 14 (Aura.cs:332-336).</summary>
         private static byte[] Answered(byte kind, byte layout = 1, byte features1 = 0, byte features2 = 0)
         {
             var answer = new byte[64];
@@ -87,7 +87,7 @@ namespace PadForge.Tests
                         Assert.Null(family.Match(Collection(product)));
         }
 
-        /// <summary>G-Helper lights these through ACPI (isACPI, Aura.cs:105).</summary>
+        /// <summary>G-Helper lights these through ACPI (isACPI, Aura.cs:108).</summary>
         [Theory]
         [InlineData("ASUS TUF Gaming F15 FX507ZM")]
         [InlineData("TX Gaming A15")]
@@ -112,7 +112,7 @@ namespace PadForge.Tests
         }
 
         /// <summary>The Z13's rear light has one light and the stored-write bounds,
-        /// and on any other laptop that product is a keyboard (HasRearLight, AppConfig.cs:584-587).</summary>
+        /// and on any other laptop that product is a keyboard (HasRearLight, AppConfig.cs:599-602).</summary>
         [Fact]
         public void TheRearLight_OfTheZ13_IsOneStoredLight()
         {
@@ -215,7 +215,7 @@ namespace PadForge.Tests
         private static readonly AsusLaptopBoard ZonesRow = new("X", "", "g513i", false, true);
         private static readonly AsusLaptopBoard PlainRow = new("X", "", "ga401q", false, false);
 
-        /// <summary>The firmware's word first (Aura.cs:356-363), then asusctl's list,
+        /// <summary>The firmware's word first (Aura.cs:362-369), then asusctl's list,
         /// then G-Helper's lists of keyboards that take B3.</summary>
         [Fact]
         public void TheKind_GoesByTheFirmware_ThenAsusctl_ThenGHelper()
@@ -237,7 +237,7 @@ namespace PadForge.Tests
             foreach (string name in new[] { "GA503QM", "G533QS", "GU502LU", "GA403UV", "GU605MI", "GA605WI", "GA405", "GU405", "GU606", "GX651" })
                 Assert.Equal(AsusLaptopAura.Kind.Static, AsusLaptopAura.KindOf(Says(4), new AsusLaptopMachine(null, name), null));
             // The same list loses to a keyboard that says per-key: G-Helper's array
-            // path has no such check (Aura.cs:644).
+            // path has no such check (Aura.cs:651).
             Assert.Equal(AsusLaptopAura.Kind.PerKey, AsusLaptopAura.KindOf(Says(3), new AsusLaptopMachine(null, "G533QS"), null));
             // White only, by name or by the firmware's bit when it names a kind.
             foreach (string name in new[] { "GA401QM", "FX517ZM", "FX516PR", "ROG Flow X13", "GZ301VIC", "FA617NS", "FA617XS", "GA502IU", "HN7306", "H7604", "M6500XV" })
@@ -281,14 +281,14 @@ namespace PadForge.Tests
             Assert.Equal(2, message.Count);
             Starts("5D B3 00 00 11 22 33 EB 00 00 11 22 33", message[0], 64);
             Starts("5D B5", message[1], 64);
-            // Black takes FF at byte 9 (Aura.cs:305).
+            // Black takes FF at byte 9 (Aura.cs:311).
             Starts("5D B3 00 00 00 00 00 EB 00 FF", AsusLaptopAura.StaticFrames(0, false, false)[0], 64);
             // A white keyboard's level is the brightest channel, in the red byte.
             Starts("5D B3 00 00 44 00 00 EB 00 00 44 00 00", AsusLaptopAura.StaticFrames(0x114422, true, false)[0], 64);
             Starts("5D B4", AsusLaptopAura.StaticFrames(0x112233, false, true)[2], 64);
         }
 
-        /// <summary>SetLedsDirect's frames (Aura.cs:697-725) and the rear strip's
+        /// <summary>SetLedsDirect's frames (Aura.cs:714-742) and the rear strip's
         /// (lines 752-766).</summary>
         [Fact]
         public void APerKeyPicture_IsTheKeys_ThePast_AndTheRearStrip()
@@ -357,9 +357,10 @@ namespace PadForge.Tests
             Assert.Equal(0xE1, lights.Single(l => l.Address == 106).Usage);
         }
 
-        /// <summary>Four zones open with BC 01, or BC 00 on an old Strix or an S17
-        /// (Aura.cs:372 and 675), and name a lightbar when the firmware does, as an
-        /// old Strix always does (Aura.cs:373).</summary>
+        /// <summary>Four zones open with BC 01, or BC 00 on an old Strix (Aura.cs:378 and
+        /// 688 at 991145fc), and name a lightbar when the firmware does, as an old Strix
+        /// always does (Aura.cs:379). G-Helper's S17 rule went with its per-key commit
+        /// 49dbbe1, so an S17 opens as any other four-zone keyboard.</summary>
         [Fact]
         public void AZonedKeyboard_OpensByItsAge_AndShowsItsLightbar()
         {
@@ -380,10 +381,10 @@ namespace PadForge.Tests
 
             io = Answering(Answered(2, 1, 0x01));
             AsusLaptopAura.Begin(io, _ => { }, 0x19B6, new AsusLaptopMachine("ROG S17", "X"));
-            Assert.Equal(0x00, Sets(io)[3][2]);
+            Assert.Equal(0x01, Sets(io)[3][2]);
         }
 
-        /// <summary>One zone, and the Z13's opening frame (Aura.cs:388-389).</summary>
+        /// <summary>One zone, and the Z13's opening frame (Aura.cs:395-396).</summary>
         [Fact]
         public void OneZone_IsOneLight_AndTheZ13TakesItsOpening()
         {
@@ -402,7 +403,7 @@ namespace PadForge.Tests
             Starts("5D BC 01 01 00 00 00 00 00 11 22 33", Sets(io)[before], 64);
         }
 
-        /// <summary>B3 takes no opening and repaints at G-Helper's interval (Aura.cs:916).</summary>
+        /// <summary>B3 takes no opening and repaints at G-Helper's interval (Aura.cs:966).</summary>
         [Fact]
         public void ANoDirectKeyboard_OpensWithNothing_AndRepaintsSlowly()
         {
@@ -496,7 +497,7 @@ namespace PadForge.Tests
             Assert.Equal(125, AsusLaptopTables.Boards.Length);
             Assert.Equal(38, AsusLaptopTables.Boards.Count(b => b.PerKey));
             Assert.Equal("321b1114a0ac3782d67aa39201682effb749f4d9", AsusLaptopTables.AsusctlCommit);
-            Assert.Equal("f62d584d24d4ea12ff902b873f9127edafbcd742", AsusLaptopTables.GHelperCommit);
+            Assert.Equal("991145fc25c2bd0b3345f334f1fdeb8b4172322a", AsusLaptopTables.GHelperCommit);
             foreach (var board in AsusLaptopTables.Boards.Where(b => b.PerKey))
                 Assert.NotNull(AsusLaptopTables.Layout(board.Layout));
             Assert.Null(AsusLaptopTables.Layout("no such layout"));
@@ -581,7 +582,7 @@ namespace PadForge.Tests
 
         /// <summary>asusctl's g733pz and g814ji files put the number pad's row first, so a
         /// code's first time is not always the main key. The number pad's "/" follows NumLock
-        /// at G-Helper's 60, and the main "/" follows "." at 116 (app/USB/Aura.cs:553-575).</summary>
+        /// at G-Helper's 60, and the main "/" follows "." at 116 (app/USB/Aura.cs:560-582).</summary>
         [Theory]
         [InlineData("g733pz-per-key")]
         [InlineData("g814ji-per-key")]
@@ -613,7 +614,7 @@ namespace PadForge.Tests
 
         /// <summary>asusctl's g513i, g634j and g635l files list MediaNext in the Caps row and
         /// MediaPrev in the Shift row, and its g533q file the other way round. LED 100 is
-        /// Previous and LED 121 Next on G-Helper (PRV15 and NXT15, app/USB/Aura.cs:565-568), on
+        /// Previous and LED 121 Next on G-Helper (PRV15 and NXT15, app/USB/Aura.cs:572-575), on
         /// OpenRGB (AsusAuraCoreLaptopDevices.cpp:95 and 97, :121-122) and on RGB.NET
         /// (AsusKeyboardLedMapping.cs:225-226).</summary>
         [Theory]

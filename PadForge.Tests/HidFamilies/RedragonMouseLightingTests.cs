@@ -41,8 +41,8 @@ namespace PadForge.Tests
         public void EveryRegistration_IsMatched_OnInterface2Page0xFFA0()
         {
             var registrations = OpenRgbRegistrations.Of(R.OpenRgbFamily).ToList();
-            // RedragonControllerDetect.cpp:55-65.
-            Assert.Equal(11, registrations.Count);
+            // RedragonControllerDetect.cpp:56-67 at b9d903b5, the M901-K-2 from fc3aa079.
+            Assert.Equal(12, registrations.Count);
             foreach (var r in registrations)
             {
                 var collection = CollectionFor(r, feature: 16);

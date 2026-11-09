@@ -6,7 +6,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
     internal static class AsusLaptopTables
     {
         internal const string AsusctlCommit = "321b1114a0ac3782d67aa39201682effb749f4d9";
-        internal const string GHelperCommit = "f62d584d24d4ea12ff902b873f9127edafbcd742";
+        internal const string GHelperCommit = "991145fc25c2bd0b3345f334f1fdeb8b4172322a";
 
         /// <summary>aura_support.ron in file order. asusctl walks it from the end.</summary>
         internal static readonly AsusLaptopBoard[] Boards =

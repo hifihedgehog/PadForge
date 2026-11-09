@@ -1,4 +1,4 @@
-openrgb	c6fc8016d215cca17d660c47746a08d7ea6a9175
+openrgb	b9d903b544a40486709c4ca097d0b234b617db9c
 A4TechController	Hid	Bloody B820R	2522	64016	2	65362	528	-1	1
 A4TechController	Hid	Bloody W60 Pro	2522	14314	2	65331	1321	-1	1
 A4TechController	Hid	Bloody W70 Max	2522	31215	2	65331	1304	-1	1
@@ -228,7 +228,6 @@ CorsairPeripheralController	Hid	Corsair Sabre RGB	6940	6959	1	65474	-1	-1	1
 CorsairPeripheralController	Hid	Corsair Sabre RGB Optical	6940	6962	1	65474	-1	-1	1
 CorsairPeripheralController	Hid	Corsair MM800 RGB Polaris	6940	6971	-1	65474	-1	-1	1
 CorsairPeripheralController	Hid	Corsair ST100 RGB	6940	2612	-1	65474	-1	-1	1
-CorsairPeripheralController	Hid	Corsair K65 Mini	6940	7087	1	-1	-1	-1	1
 CorsairPeripheralController	Hid	Corsair K55 RGB PRO XT	6940	7073	1	65346	-1	-1	1
 CorsairPeripheralV2Controller	Hid	Corsair K55 RGB PRO	6940	7076	1	65346	-1	-1	1
 CorsairPeripheralV2Controller	Hid	Corsair K57 RGB (Wired)	6940	7022	1	65346	-1	-1	1
@@ -237,6 +236,7 @@ CorsairPeripheralV2Controller	Hid	Corsair K60 RGB PRO SE	6940	7053	1	65346	-1	-1
 CorsairPeripheralV2Controller	Hid	Corsair K60 RGB PRO Low Profile	6940	7085	1	65346	-1	-1	1
 CorsairPeripheralV2Controller	Hid	Corsair K60 RGB PRO TKL Black	6940	7111	1	65346	-1	-1	1
 CorsairPeripheralV2Controller	Hid	Corsair K60 RGB PRO TKL White	6940	7149	1	65346	-1	-1	1
+CorsairPeripheralV2Controller	Hid	Corsair K65 Mini	6940	7087	1	65346	-1	-1	1
 CorsairPeripheralV2Controller	Hid	Corsair K70 Core RGB	6940	7165	1	65346	-1	-1	1
 CorsairPeripheralV2Controller	Hid	Corsair K70 Core RGB TKL	6940	11009	1	65346	-1	-1	1
 CorsairPeripheralV2Controller	Hid	Corsair K70 RGB PRO	6940	7108	1	65346	-1	-1	1
@@ -365,7 +365,7 @@ MSIKeyboardController	Hid	MSI Keyboard MS_1565	5218	5633	-1	255	1	-1	1
 MSIKeyboardController	Hid	MSI Mystic Light MS_1562	5218	5474	-1	255	1	-1	1
 MSIKeyboardController	Hid	MSI Mystic Light MS_1563	5218	5475	-1	255	1	-1	1
 MSIKeyboardController	Hid	MSI Mystic Light MS_1564	5218	5476	-1	255	1	-1	1
-MSILaptopController	Hid	MSI Laptop Keyboard	4152	4386	-1	-1	-1	-1	1
+MSILaptopController	Hid	MSI Laptop Keyboard	4152	4386	0	-1	-1	-1	1
 MSILaptopController	Hid	MSI Laptop Lightbar	4152	4449	0	-1	-1	-1	1
 MSILaptopController	Hid	MSI GE68HX Keyboard	4152	4410	0	-1	-1	-1	1
 MSILaptopController	Hid	MSI GE68HX Lightbar	4152	4427	0	-1	-1	-1	1
@@ -480,6 +480,8 @@ AresonController	Hid	ZET GAMING Edge Air Elit (Wireless)	9639	64072	1	65282	2	-1
 AresonController	Hid	ZET GAMING Edge Air Elit	9639	64073	1	65282	2	-1	1
 AresonController	Hid	Redragon M914 NIX (Wireless)	9639	64124	1	65282	2	-1	1
 AresonController	Hid	Redragon M914 NIX	9639	64123	1	65282	2	-1	1
+AresonController	Hid	Redragon M901P-KS	9639	64008	1	65282	2	-1	1
+AresonController	Hid	Redragon M901P-KS (Wireless)	9639	64007	1	65282	2	-1	1
 AsusMonitorController	Hid	Asus ROG STRIX XG27AQDMG	2821	7075	1	65394	161	-1	1
 AsusMonitorController	Hid	Asus ROG STRIX XG27ACDNG	2821	7113	1	65394	161	-1	1
 AsusMonitorController	Hid	Asus ROG STRIX XG27UCG	2821	7092	1	65394	161	-1	1
@@ -489,6 +491,10 @@ AsusMonitorController	Hid	Asus ROG SWIFT PG32UCDP	2821	7114	1	65394	161	-1	1
 AsusMonitorController	Hid	Asus ROG Aura Monitor Light Bar	2821	6856	2	65394	161	-1	1
 BlinkyTapeController	UsbSerial	BlinkyTape	7504	24670	-1	-1	-1	-1	1
 ClevoLightbarController	Hid	CLEVO Lightbar	1165	28673	-1	65283	2	-1	1
+CorsairVoidController	Hid	Corsair Void Pro Wireless	6940	2580	-1	65477	1	-1	1
+CorsairVoidController	Hid	Corsair Void Pro Wireless	6940	2586	-1	65477	1	-1	1
+CorsairVoidController	Hid	Corsair Void Pro USB	6940	2583	-1	65477	1	-1	1
+CorsairVoidController	Hid	Corsair Void Pro USB	6940	2589	-1	65477	1	-1	1
 CreativeController	Device	Creative SoundBlaster AE-5	-1	-1	-1	-1	-1	-1	1
 CreativeController	Hid	Creative SoundBlasterX G6	1054	12886	4	-1	-1	-1	1
 DreamCheekyController	Hid	Dream Cheeky Webmail Notifier	7476	4	-1	-1	-1	-1	1
@@ -499,7 +505,7 @@ GigabyteAorusMouseController	Hid	Gigabyte Aorus M2	4164	31296	3	65281	1	-1	1
 HYTEMousematController	UsbSerial	HYTE CNVS	13314	2816	-1	-1	-1	-1	1
 HYTEMousematController	UsbSerial	HYTE CNVS	13314	2817	-1	-1	-1	-1	1
 HoltekController	Hid	Holtek USB Gaming Mouse	1241	41072	1	65280	2	-1	1
-HoltekController	Hid	Holtek Mousemat	1241	41466	2	65280	65280	-1	1
+HoltekController	HidWrapped	Holtek Mousemat	1241	41466	2	65280	65280	-1	1
 HyperXMicrophoneController	HidWrapped	HyperX Quadcast S	2385	5919	0	-1	-1	-1	1
 HyperXMicrophoneController	HidWrapped	HyperX Quadcast S	1008	3979	0	-1	-1	-1	1
 HyperXMicrophoneController	HidWrapped	HyperX Quadcast S	1008	1676	0	-1	-1	-1	1
@@ -551,6 +557,7 @@ RedragonController	Hid	Redragon M810 Taipan	1241	64126	2	65440	-1	-1	1
 RedragonController	Hid	Redragon M987 Reaping	1241	64617	2	65440	-1	-1	1
 RedragonController	Hid	Redragon M921 Azzinoth	1241	64576	2	65440	-1	-1	1
 RedragonController	Hid	Redragon M711-FPS-1 Cobra FPS	1241	64610	2	65440	-1	-1	1
+RedragonController	Hid	Redragon M901-K-2 Perdition	1241	64606	2	65440	-1	-1	1
 RobobloqLightStripController	Hid	Robobloq Monitor Light Strip	6790	65031	-1	65280	1	-1	1
 SkydimoHIDController	Hid	Skydimo SK0902	6790	58134	0	65280	1	-1	1
 SkydimoSerialController	UsbSerial	Skydimo Serial	6790	29987	-1	-1	-1	-1	1

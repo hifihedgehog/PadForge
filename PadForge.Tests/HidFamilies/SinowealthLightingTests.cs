@@ -31,7 +31,7 @@ namespace PadForge.Tests
         [Fact]
         public void TheTables_AreOpenRgbsAtThePinnedCommit()
         {
-            Assert.Equal("c6fc8016d215cca17d660c47746a08d7ea6a9175", SinowealthLayouts.OpenRgbCommit);
+            Assert.Equal("b9d903b544a40486709c4ca097d0b234b617db9c", SinowealthLayouts.OpenRgbCommit);
             // SinowealthKeyboard90Controller.h:22-144: 104 lights, Escape
             // index 0x01 at the top left, the number pad's Enter last with
             // 0x72 at row 5, column 22.

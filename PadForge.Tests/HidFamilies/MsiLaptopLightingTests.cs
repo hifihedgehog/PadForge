@@ -27,7 +27,7 @@ namespace PadForge.Tests.LaptopFamilies
         {
             var registrations = OpenRgbRegistrations.Of(MsiLaptopLighting.OpenRgbFamily).ToList();
             Assert.Equal(4, registrations.Count);
-            foreach (var product in new[] { "Raider A18 HX A9WJG", "Raider 18 HX AI A2XWIG", "Raider GE68HX 13VF" })
+            foreach (var product in new[] { "Raider A18 HX A9WJG", "Raider A18 HX A7VHG", "Raider 18 HX AI A2XWIG", "Raider GE68HX 13VF" })
             {
                 var family = Family(product);
                 foreach (var r in registrations)
@@ -69,9 +69,12 @@ namespace PadForge.Tests.LaptopFamilies
             var bar = regs.Single(r => r.ProductId == 0x114B);
             Assert.Null(family.Match(CollectionOf(bar, feature: 525, output: 64)));
             Assert.NotNull(family.Match(CollectionOf(bar, feature: 525, output: 65)));
-            // The light bar registrations name interface 0.
+            // The light bar registrations name interface 0, and since OpenRGB 21edc05d the
+            // keyboard's does too (MSILaptopControllerDetect.cpp).
             var alc = regs.Single(r => r.ProductId == 0x1161);
             Assert.Null(family.Match(Of(alc) with { InterfaceNumber = 1, Path = Of(alc).Path.Replace("&mi_00", "&mi_01") }));
+            Assert.Equal(0, keyboard.Interface);
+            Assert.Null(family.Match(Of(keyboard) with { InterfaceNumber = 1, Path = Of(keyboard).Path.Replace("&mi_00", "&mi_01") }));
             Assert.Null(family.Match(null));
         }
 
@@ -126,7 +129,7 @@ namespace PadForge.Tests.LaptopFamilies
             var raider = MsiLaptopLighting.Lights(MsiLaptopLighting.DeviceKind.LightBar, MsiLaptopLighting.Models[0]);
             Assert.Equal(new[] { 0, 1, 2, 3 }, raider.Select(l => l.Address));
             Assert.Equal(new[] { LightKind.Edge, LightKind.Edge, LightKind.Edge, LightKind.Logo }, raider.Select(l => l.Kind));
-            var ge68 = MsiLaptopLighting.Lights(MsiLaptopLighting.DeviceKind.KeyboardLightBar, MsiLaptopLighting.Models[2]);
+            var ge68 = MsiLaptopLighting.Lights(MsiLaptopLighting.DeviceKind.KeyboardLightBar, Ge68hx());
             Assert.Equal(53, ge68.Count);
             Assert.Equal(LightKind.Logo, ge68[0].Kind);
             Assert.Equal(Enumerable.Range(0, 53), ge68.Select(l => l.Address));
@@ -161,7 +164,7 @@ namespace PadForge.Tests.LaptopFamilies
         [Fact]
         public void TheGe68hxLightBar_GoesThirtyAtATime_ThenCommits()
         {
-            var lights = MsiLaptopLighting.Lights(MsiLaptopLighting.DeviceKind.KeyboardLightBar, MsiLaptopLighting.Models[2]);
+            var lights = MsiLaptopLighting.Lights(MsiLaptopLighting.DeviceKind.KeyboardLightBar, Ge68hx());
             var colors = Colors(53, n => 0x010203 * (n + 1));
             var frames = MsiLaptopLighting.BarFrames(lights, colors);
             Assert.Equal(2, frames.Count);
@@ -197,19 +200,23 @@ namespace PadForge.Tests.LaptopFamilies
             Assert.Single(io.Log);
             Assert.Equal(HidLightingPaint.Failed, session.Paint(new LoggingHidChannel { FailWrites = true }, io.Wait, lights, colors));
             var bar = new MsiLaptopLighting.Session(MsiLaptopLighting.DeviceKind.KeyboardLightBar);
-            var ge = MsiLaptopLighting.Lights(MsiLaptopLighting.DeviceKind.KeyboardLightBar, MsiLaptopLighting.Models[2]);
+            var ge = MsiLaptopLighting.Lights(MsiLaptopLighting.DeviceKind.KeyboardLightBar, Ge68hx());
             Assert.Equal(HidLightingPaint.Failed, bar.Paint(new LoggingHidChannel { FailAfter = 2 }, io.Wait, ge, Colors(53, n => n)));
         }
+
+        private static MsiLaptopLighting.ModelRow Ge68hx() => MsiLaptopLighting.Models.Single(m => m.Product == "Raider GE68HX 13VF");
 
         [Fact]
         public void TheModelTable_IsOpenRgbs()
         {
             var models = MsiLaptopLighting.Models;
-            Assert.Equal(new[] { "Raider A18 HX A9WJG", "Raider 18 HX AI A2XWIG", "Raider GE68HX 13VF" }, models.Select(m => m.Product));
+            // The Raider A18 HX A7VHG came with OpenRGB b1a684c6 (MSILaptopControllerDetect.cpp).
+            Assert.Equal(new[] { "Raider A18 HX A9WJG", "Raider A18 HX A7VHG", "Raider 18 HX AI A2XWIG", "Raider GE68HX 13VF" },
+                models.Select(m => m.Product));
             Assert.All(models, m => Assert.Equal(Msi, m.Manufacturer));
             Assert.All(models, m => Assert.Equal(6 * 23, m.Grid.Length));
-            Assert.Equal(new[] { 3, 3, 52 }, models.Select(m => m.BarLength));
-            Assert.Equal(new[] { 4, 4, 53 }, models.Select(m => m.BarLeds.Length));
+            Assert.Equal(new[] { 3, 3, 3, 52 }, models.Select(m => m.BarLength));
+            Assert.Equal(new[] { 4, 4, 4, 53 }, models.Select(m => m.BarLeds.Length));
             Assert.True(VendorPrograms.SteelSeriesGG.Owns("SteelSeriesGGClient"));
             Assert.Contains(VendorPrograms.SteelSeriesGG, VendorPrograms.All);
         }

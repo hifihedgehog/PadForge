@@ -101,7 +101,7 @@ namespace PadForge.Tests
     }
     /// <summary>The registrations of the Razer devices OpenRGB lights
     /// through controllers of their own (#557), read from
-    /// RazerControllerDetect.cpp at c6fc8016 into RazerHidTable.</summary>
+    /// RazerControllerDetect.cpp at b9d903b5 into RazerHidTable.</summary>
     public class RazerHidRegistrationTests
     {
         /// <summary>The families, by OpenRGB's detector function.</summary>
@@ -133,7 +133,7 @@ namespace PadForge.Tests
                 "RazerControllerDetect.cpp:444", "RazerControllerDetect.cpp:445", "RazerControllerDetect.cpp:465",
                 "RazerControllerDetect.cpp:466", "RazerControllerDetect.cpp:483",
             }, lines);
-            Assert.Equal("c6fc8016d215cca17d660c47746a08d7ea6a9175", RazerHidTable.OpenRgbCommit);
+            Assert.Equal("b9d903b544a40486709c4ca097d0b234b617db9c", RazerHidTable.OpenRgbCommit);
             Assert.All(RazerHidTable.Registrations, r => Assert.Equal(0x1532, r.VendorId));
             // The registration generator leaves the folder out, so no other
             // family's table holds these.
@@ -212,7 +212,7 @@ namespace PadForge.Tests
         }
 
         /// <summary>The razer_device entries the generator read, against
-        /// RazerDevices.cpp at c6fc8016.</summary>
+        /// RazerDevices.cpp at b9d903b5.</summary>
         [Fact]
         public void TheDeviceEntries_AreOpenRgbs()
         {

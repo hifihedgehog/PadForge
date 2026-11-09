@@ -66,8 +66,9 @@ namespace PadForge.Tests
                                                                     r.Interface, r.UsagePage, r.Usage, r.Bus, r.EnabledByDefault ? 1 : 0);
 
             var families = OpenRgbRegistrations.All.Select(r => r.Family).Distinct().ToList();
-            // The 54 families of the issue's table and the 43 peripheral families.
-            Assert.Equal(97, families.Count);
+            // The 54 families of the issue's table and the 44 peripheral families, the Corsair
+            // Void's among them since OpenRGB added it after c6fc8016.
+            Assert.Equal(98, families.Count);
             foreach (var family in families)
             {
                 var mine = OpenRgbRegistrations.Of(family).Where(r => !r.FromSettings).Select(Key).OrderBy(x => x, StringComparer.Ordinal);
@@ -89,7 +90,8 @@ namespace PadForge.Tests
         /// (SinowealthControllerDetect.cpp:458-459); and QMK's two
         /// registrations inside functions name their device with a variable,
         /// which the inventory did not count (QMKOpenRGBControllerDetect.cpp:172,
-        /// QMKVialRGBControllerDetect.cpp:85). Wooting's 11
+        /// QMKVialRGBControllerDetect.cpp:85). The K65 Mini moved from the first Corsair
+        /// family to the V2 one in OpenRGB 4f2d8920, after the inventory. Wooting's 11
         /// REGISTER_WOOTING_DETECTOR lines make three detectors each
         /// (WootingKeyboardControllerDetect.cpp:182-185).
         /// </summary>
@@ -102,7 +104,7 @@ namespace PadForge.Tests
                 ["AlienwareController"] = 2, ["AlienwareKeyboardController"] = 2, ["AnnePro2Controller"] = 5,
                 ["AsusAuraCoreController"] = 5, ["AsusAuraUSBController"] = 101, ["AsusLegacyUSBController"] = 3,
                 ["AsusTUFLaptopController"] = 2, ["CherryKeyboardController"] = 25, ["ClevoKeyboardController"] = 2,
-                ["CoolerMasterController"] = 38, ["CorsairPeripheralController"] = 39, ["CorsairPeripheralV2Controller"] = 38,
+                ["CoolerMasterController"] = 38, ["CorsairPeripheralController"] = 38, ["CorsairPeripheralV2Controller"] = 39,
                 ["CougarController"] = 2, ["DarkProject"] = 1, ["DasKeyboardController"] = 3, ["DuckyKeyboardController"] = 2,
                 ["DygmaRaiseController"] = 1, ["EVGAUSBController"] = 7, ["EVisionKeyboardController"] = 15,
                 ["FnaticStreakController"] = 3, ["GaiZongGaiKeyboardController"] = 9, ["GigabyteAorusLaptopController"] = 4,
@@ -131,7 +133,7 @@ namespace PadForge.Tests
                 Assert.Equal(family == "WootingKeyboardController" ? 2 + 3 * 11 : lines, rows.Count);
             }
             Assert.Equal(473, OpenRgbRegistrations.All.Count(r => inventory.ContainsKey(r.Family)));
-            Assert.Equal(568, OpenRgbRegistrations.All.Length);
+            Assert.Equal(575, OpenRgbRegistrations.All.Length);
             Assert.DoesNotContain(OpenRgbRegistrations.All, r => r.Family is "HIDLampArrayController" or "LogitechController"
                                                                or "RazerController" or "SteelSeriesController");
         }
@@ -155,8 +157,8 @@ namespace PadForge.Tests
         /// interface 2 and page FF00 (AsusAuraKeyboardControllerDetect.cpp:18,
         /// 46 and 97), the Bloody B820R on interface 2, page FF52, usage 0210
         /// (BloodyB820RControllerDetect.cpp:20 and 40, BloodyB820RController.h:32),
-        /// the MM800 on page FFC2 (CorsairPeripheralControllerDetect.cpp:30, 90
-        /// and 224).</summary>
+        /// the MM800 on page FFC2 (CorsairPeripheralControllerDetect.cpp:29, 89
+        /// and 199).</summary>
         [Fact]
         public void TheInterfacePageAndUsageForms_TakeTheirOwnFields()
         {
@@ -166,7 +168,7 @@ namespace PadForge.Tests
             Assert.Equal(("REGISTER_HID_DETECTOR_IP", "ASUS TUF Gaming K1", 0x0B05, 0x1945, 2, 0xFF00, -1), (k1.Macro, k1.Name, k1.VendorId, k1.ProductId, k1.Interface, k1.UsagePage, k1.Usage));
             var bloody = Row("BloodyB820RControllerDetect.cpp:40");
             Assert.Equal(("REGISTER_HID_DETECTOR_IPU", "DetectBloodyB820R", 0x09DA, 0xFA10, 2, 0xFF52, 0x0210), (bloody.Macro, bloody.Detector, bloody.VendorId, bloody.ProductId, bloody.Interface, bloody.UsagePage, bloody.Usage));
-            var mm800 = Row("CorsairPeripheralControllerDetect.cpp:224");
+            var mm800 = Row("CorsairPeripheralControllerDetect.cpp:199");
             Assert.Equal(("REGISTER_HID_DETECTOR_P", 0x1B1C, 0x1B3B, -1, 0xFFC2, -1), (mm800.Macro, mm800.VendorId, mm800.ProductId, mm800.Interface, mm800.UsagePage, mm800.Usage));
         }
 

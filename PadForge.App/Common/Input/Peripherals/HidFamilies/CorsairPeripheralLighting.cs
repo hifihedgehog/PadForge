@@ -8,13 +8,13 @@ namespace PadForge.Common.Input.Peripherals
     /// <summary>
     /// OpenRGB's CorsairPeripheralController family (#557): the Corsair
     /// keyboards, mice, the MM800 mousemat and the ST100 headset stand of
-    /// Corsair's older protocol, and the K65 Mini and K55 RGB PRO XT, which
-    /// OpenRGB drives with controllers of their own in the same family. The
-    /// collections are OpenRGB's registrations
-    /// (CorsairPeripheralControllerDetect.cpp:182-239, through
+    /// Corsair's older protocol, and the K55 RGB PRO XT, which OpenRGB drives
+    /// with a controller of its own in the same family. The collections are
+    /// OpenRGB's registrations (CorsairPeripheralControllerDetect.cpp, through
     /// <see cref="OpenRgbRegistrations"/>). Every frame is a 65-byte output
-    /// report, report ID 0, except the K65 Mini's 1025-byte one
-    /// (CorsairPeripheralController.h:18, CorsairK65MiniController.h:16).
+    /// report, report ID 0 (CorsairPeripheralController.h:18). The K65 Mini
+    /// left this family for the V2 one in OpenRGB 4f2d8920
+    /// (<see cref="CorsairPeripheralV2Lighting"/>).
     ///
     /// <para>The older protocol. A session asks the device what it is, as
     /// OpenRGB's ReadFirmwareInfo does: 0E 01, read for a second, and when
@@ -63,19 +63,17 @@ namespace PadForge.Common.Input.Peripherals
     /// is left as it set it: ckb-next undoes its own on Linux alone
     /// (device_keyboard.c:70-103).</para>
     ///
-    /// <para>The K65 Mini and K55 RGB PRO XT speak Corsair's newer protocol:
-    /// three writes that put the board in software mode and open its
-    /// lighting (CorsairK65MiniController.cpp:55-90,
-    /// CorsairK55RGBPROXTController.cpp:78-100), and one frame of every key
-    /// for a picture (lines 92-118 and 102-133). Each falls back to its own
-    /// lighting after a minute without a picture, so OpenRGB sends the last
-    /// one again after 50 seconds without one, looking every 3 seconds
-    /// (RGBController_CorsairK65Mini.cpp:157-164 and 238-249,
-    /// RGBController_CorsairK55RGBPROXT.cpp:344-351 and 424-437). Neither
-    /// controller hands the board back. The hand-back is the newer
+    /// <para>The K55 RGB PRO XT speaks Corsair's newer protocol: three writes
+    /// that put the board in software mode and open its lighting
+    /// (CorsairK55RGBPROXTController.cpp:78-100), and one frame of every key
+    /// for a picture (lines 102-133). It falls back to its own lighting after
+    /// a minute without a picture, so OpenRGB sends the last one again after
+    /// 50 seconds without one, looking every 3 seconds
+    /// (RGBController_CorsairK55RGBPROXT.cpp:344-351 and 424-437). Its
+    /// controller does not hand the board back. The hand-back is the newer
     /// protocol's hardware render mode, 08 01 03 00 01, as OpenRGB's V2
     /// controller sends it when it closes a device
-    /// (CorsairPeripheralV2Controller.cpp:140-153 and 213-233) and ckb-next
+    /// (CorsairPeripheralV2Controller.cpp:139-152 and 212-232) and ckb-next
     /// when it goes idle (device_bragi.c:38-50, bragi_common.c:23-36). The
     /// K55 RGB PRO XT's own SwitchMode(false) writes 00 where the protocol
     /// has 08 (CorsairK55RGBPROXTController.cpp:276-285), so it is not
@@ -94,7 +92,6 @@ namespace PadForge.Common.Input.Peripherals
         internal const string OpenRgbFamily = "CorsairPeripheralController";
 
         internal const string DetectPeripheral = "DetectCorsairPeripheralControllers";
-        internal const string DetectK65Mini = "DetectCorsairK65MiniControllers";
         internal const string DetectK55ProXt = "DetectCorsairK55RGBPROXTControllers";
 
         /// <summary>The shortest time between two pictures. No reference
@@ -110,20 +107,12 @@ namespace PadForge.Common.Input.Peripherals
         /// (ckb-next DELAY_30MS).</summary>
         internal const int KeyboardHandBackGapMs = 30;
 
-        /// <summary>The newer protocol's boards: the wait after each open
-        /// write of the K65 Mini (CorsairK65MiniController.cpp:70-89), and
-        /// the keep-alive OpenRGB keeps for both: the last picture again once
+        /// <summary>The K55 RGB PRO XT's keep-alive: the last picture again once
         /// 50 s pass without one, the resend included
-        /// (RGBController_CorsairK65Mini.cpp:219 and 238-250,
-        /// RGBController_CorsairK55RGBPROXT.cpp:394 and 424-437).
+        /// (RGBController_CorsairK55RGBPROXT.cpp:394 and 424-437).
         /// OpenRGB looks every 3 s. The worker sends it at the 50 s
         /// itself.</summary>
-        internal const int K65MiniOpenGapMs = 10;
         internal const int BoardKeepAliveMs = 50000;
-
-        /// <summary>The K65 Mini's report length, PACKET_LENGTH
-        /// (CorsairK65MiniController.h:16).</summary>
-        internal const int K65MiniPacketLength = 1025;
 
         /// <summary>COLOR_BANK_SIZE (CorsairK55RGBPROXTController.cpp:14).</summary>
         internal const int K55ProXtBankSize = 137;
@@ -161,8 +150,7 @@ namespace PadForge.Common.Input.Peripherals
         public string Name => "Corsair (peripherals)";
 
         /// <summary>Other product IDs of devices OpenRGB lists, which SignalRGB's
-        /// plugins list with them and drive with the same frames: the K65 Mini's
-        /// (Corsair_K65_Mini_Keyboard.js:3), the Strafe's
+        /// plugins list with them and drive with the same frames: the Strafe's
         /// (Corsair_Strafe_Keyboard.js:3), the Sabre RGB's
         /// (Corsair_Bragi_Device.js:936-937), and the K70 MKII Rapidfire Red's
         /// (Corsair_Legacy_Keyboard.js:225). ckb-next (src/daemon/usb.h, led_keyboard.c and
@@ -174,9 +162,6 @@ namespace PadForge.Common.Input.Peripherals
             [0x1B40] = 0x1B3F,
             [0x1B19] = 0x1B2F,
             [0x1B22] = 0x1B2F,
-            [0x1BCF] = 0x1BAF,
-            [0x1BC3] = 0x1BAF,
-            [0x1BBD] = 0x1BAF,
             [0x1B15] = 0x1B20,
             [0x1B14] = 0x1B2F,
             [0x1B3A] = 0x1B49,
@@ -194,9 +179,6 @@ namespace PadForge.Common.Input.Peripherals
                 OtherIds.TryGetValue(collection.ProductId, out ushort sameAs) ? collection with { ProductId = sameAs } : collection);
             if (registrations.Count == 0) return null;
             var registration = registrations[0];
-            // The K65 Mini's registration names no usage page, and a collection
-            // with no report as long as its frame cannot carry a picture.
-            if (registration.Detector == DetectK65Mini && collection.OutputReportLength < K65MiniPacketLength) return null;
             lock (_gate)
             {
                 bool oneColor = OneColor.Contains(collection.ProductId);
@@ -214,13 +196,6 @@ namespace PadForge.Common.Input.Peripherals
             string name = registration.Name;
             HidLightingModel model = registration.Detector switch
             {
-                DetectK65Mini => new HidLightingModel
-                {
-                    Map = new LightMap(K65MiniLights(), "OpenRGB RGBController_CorsairK65Mini.cpp") { Product = product },
-                    KeepAliveMs = BoardKeepAliveMs,
-                    KeepAliveIdleMs = BoardKeepAliveMs,
-                    Begin = (io, wait) => BeginK65Mini(io, wait, product),
-                },
                 DetectK55ProXt => new HidLightingModel
                 {
                     Map = new LightMap(K55ProXtLights(), "OpenRGB RGBController_CorsairK55RGBPROXT.cpp") { Product = product },
@@ -395,32 +370,6 @@ namespace PadForge.Common.Input.Peripherals
             Logical.K70LuxRgb => (CorsairLights.LedNamesK70LuxRgb, CorsairLights.KeysK70Mk2, CorsairLights.MatrixMapK70LuxRgb),
             _ => (CorsairLights.LedNames, CorsairLights.Keys, CorsairLights.MatrixMap),
         };
-
-        /// <summary>The K65 Mini's lights in OpenRGB's order, column by
-        /// column, each at its position in the frame
-        /// (RGBController_CorsairK65Mini.cpp:181-215). The two lights OpenRGB
-        /// leaves unnamed are the space bar's left and right lights, by
-        /// their notes and their cells either side of Space (lines 61, 87
-        /// and 20-27).</summary>
-        internal static List<LightInfo> K65MiniLights()
-        {
-            var matrix = CorsairLights.K65MiniMatrixMap;
-            var lights = new List<LightInfo>();
-            for (int col = 0; col < matrix.Cols; col++)
-            {
-                for (int row = 0; row < matrix.Rows; row++)
-                {
-                    int key = matrix.Cells[row * matrix.Cols + col];
-                    if (key < 0) continue;
-                    var (position, name) = CorsairLights.K65MiniKeys[key];
-                    var light = name.Length == 0
-                        ? new LightInfo(position, LightKind.Key, 0x2C, LightKeySource.Generated)
-                        : CorsairLights.Light(position, name, LightKind.Other);
-                    lights.Add(light with { X = col, Y = row, Width = 1, Height = 1, HasPosition = true });
-                }
-            }
-            return lights;
-        }
 
         /// <summary>The K55 RGB PRO XT's lights in OpenRGB's order, each at
         /// its place in the color banks (keys[],
@@ -602,39 +551,6 @@ namespace PadForge.Common.Input.Peripherals
             frame[at + 2] = (byte)color;
         }
 
-        /// <summary>The K65 Mini's open: 08 01 03 00 02, 08 02 6E and 08 0D 01
-        /// 22, each in a 1025-byte report followed by 10 ms
-        /// (CorsairK65MiniController.cpp:55-90).</summary>
-        internal static List<byte[]> K65MiniOpenFrames() => new()
-        {
-            K65MiniFrame(0x08, 0x01, 0x03, 0x00, 0x02),
-            K65MiniFrame(0x08, 0x02, 0x6E),
-            K65MiniFrame(0x08, 0x0D, 0x01, 0x22),
-        };
-
-        /// <summary>The K65 Mini's picture: 08 06 01 73 01 00 00 12 00, then
-        /// red, green and blue at byte 10 plus three times each light's
-        /// position (lines 92-118).</summary>
-        internal static byte[] K65MiniPicture(IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors)
-        {
-            var frame = K65MiniFrame(0x08, 0x06, 0x01, 0x73, 0x01, 0x00, 0x00, 0x12);
-            int count = Math.Min(lights?.Count ?? 0, colors?.Count ?? 0);
-            for (int n = 0; n < count; n++)
-            {
-                int at = 0x0A + lights[n].Address * 3;
-                if (at < 0 || at + 2 >= frame.Length) continue;
-                Put(frame, at, colors[n]);
-            }
-            return frame;
-        }
-
-        private static byte[] K65MiniFrame(params byte[] bytes)
-        {
-            var frame = new byte[K65MiniPacketLength];
-            Array.Copy(bytes, 0, frame, 1, bytes.Length);
-            return frame;
-        }
-
         /// <summary>The K55 RGB PRO XT's open: 08 01 03 00 02, 08 02 5F and
         /// 08 0D 00 01 (CorsairK55RGBPROXTController.cpp:78-100).</summary>
         internal static List<byte[]> K55ProXtOpenFrames() => new()
@@ -725,16 +641,6 @@ namespace PadForge.Common.Input.Peripherals
             return new PeripheralSession(KeyboardProfileBackups.SessionKey(product, io.Path), type, logical, physical, map, keyboard ? 2 : 1, oneColor);
         }
 
-        private HidLightingSession BeginK65Mini(IHidReportChannel io, Action<int> wait, string product)
-        {
-            foreach (var frame in K65MiniOpenFrames())
-            {
-                if (!io.WriteOutput(frame)) return null;
-                wait(K65MiniOpenGapMs);
-            }
-            return new BoardSession(KeyboardProfileBackups.SessionKey(product, io.Path), (lights, colors) => new List<byte[]> { K65MiniPicture(lights, colors) });
-        }
-
         private HidLightingSession BeginK55ProXt(IHidReportChannel io, Action<int> wait, string product)
         {
             foreach (var frame in K55ProXtOpenFrames())
@@ -776,7 +682,7 @@ namespace PadForge.Common.Input.Peripherals
             }
         }
 
-        /// <summary>A session of the K65 Mini or the K55 RGB PRO XT.</summary>
+        /// <summary>A session of the K55 RGB PRO XT.</summary>
         internal sealed class BoardSession : CorsairSession
         {
             private readonly Func<IReadOnlyList<LightInfo>, IReadOnlyList<int>, List<byte[]>> _picture;

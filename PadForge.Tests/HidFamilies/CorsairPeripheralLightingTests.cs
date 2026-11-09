@@ -117,7 +117,7 @@ namespace PadForge.Tests
         [Fact]
         public void TheTables_AreOpenRgbsAtThePinnedCommit()
         {
-            Assert.Equal("c6fc8016d215cca17d660c47746a08d7ea6a9175", CorsairLights.OpenRgbCommit);
+            Assert.Equal("b9d903b544a40486709c4ca097d0b234b617db9c", CorsairLights.OpenRgbCommit);
             // CorsairPeripheralController.cpp:19-26: 113 numbers, Escape 0x00
             // first, then 0x10 and 114 for the two ISO keys.
             Assert.Equal(113, CorsairLights.Keys.Length);
@@ -140,11 +140,8 @@ namespace PadForge.Tests
             Assert.Equal(new[] { "", "", "Logo", "DPI", "Scroll Wheel" }, CorsairLights.CorsairM65EliteLeds.Take(5));
             Assert.Equal((6, 23), (CorsairLights.MatrixMap.Rows, CorsairLights.MatrixMap.Cols));
             Assert.Equal(-1, CorsairLights.MatrixMap.Cells[1]);
-            // RGBController_CorsairK65Mini.cpp:20-124 and the K55 RGB PRO XT's
-            // tables (CorsairK55RGBPROXTController.cpp:19-25,
+            // The K55 RGB PRO XT's tables (CorsairK55RGBPROXTController.cpp:19-25,
             // RGBController_CorsairK55RGBPROXT.cpp:20-188).
-            Assert.Equal(64, CorsairLights.K65MiniKeys.Length);
-            Assert.Equal((41, "Key: Escape"), CorsairLights.K65MiniKeys[0]);
             Assert.Equal(111, CorsairLights.K55ProXtKeys.Length);
             Assert.Equal(111, CorsairLights.K55ProXtKeyNames.Length);
             Assert.Equal(127, CorsairLights.K55ProXtKeys[0]);
@@ -154,7 +151,7 @@ namespace PadForge.Tests
         [Fact]
         public void TheDeviceTypes_AreTheDetectorsSections()
         {
-            // CorsairPeripheralControllerDetect.cpp:179-229.
+            // CorsairPeripheralControllerDetect.cpp:154-209.
             Assert.Equal(CorsairDeviceType.Keyboard, CorsairPeripheralLighting.TypeOf(0x1B2D));
             Assert.Equal(CorsairDeviceType.Mouse, CorsairPeripheralLighting.TypeOf(0x1B5D));
             Assert.Equal(CorsairDeviceType.Mousemat, CorsairPeripheralLighting.TypeOf(0x1B3B));
@@ -193,7 +190,8 @@ namespace PadForge.Tests
         {
             var family = Family();
             var registrations = OpenRgbRegistrations.Of(CorsairPeripheralLighting.OpenRgbFamily).ToList();
-            Assert.Equal(39, registrations.Count);
+            // 38 since the K65 Mini left for the V2 family (OpenRGB 4f2d8920).
+            Assert.Equal(38, registrations.Count);
             foreach (var r in registrations)
             {
                 ushort page = r.UsagePage == OpenRgbRegistration.Any ? (ushort)0xFFC2 : (ushort)r.UsagePage;
@@ -309,18 +307,6 @@ namespace PadForge.Tests
             Assert.Equal(LightKind.Logo, lights[8].Kind);
             Assert.All(lights.Take(8), l => Assert.Equal(LightKind.Edge, l.Kind));
             Assert.All(CorsairPeripheralLighting.Lights(CorsairDeviceType.Mousemat, 0, "x"), l => Assert.Equal(LightKind.Edge, l.Kind));
-        }
-
-        [Fact]
-        public void TheK65Mini_LightsColumnByColumn_AndItsSpaceBarThrice()
-        {
-            var lights = CorsairPeripheralLighting.K65MiniLights();
-            Assert.Equal(64, lights.Count);
-            // Column 0: Escape (41), Tab (43), Caps (57), LShift (106), LCtrl (105).
-            Assert.Equal(new[] { 41, 43, 57, 106, 105 }, lights.Take(5).Select(l => l.Address));
-            Assert.Equal((1f, 0f), (lights[5].X, lights[5].Y));
-            // The space bar's lights: 0 and 1 unnamed, 44 Space (lines 61, 74, 87).
-            Assert.Equal(new[] { 0, 44, 1 }, lights.Where(l => l.Usage == 0x2C).Select(l => l.Address));
         }
 
         [Fact]
@@ -457,22 +443,6 @@ namespace PadForge.Tests
                 CorsairPeripheralLighting.Lights(CorsairDeviceType.Mousemat, 0, "x"), Enumerable.Repeat(0x123456, 15).ToArray()));
             Assert.Equal("00 07 22 0F 00 12 34 56", Hex(mat, 8));
             Assert.Equal("12 34 56 00", Hex(mat, 47, 4));
-        }
-
-        [Fact]
-        public void TheK65MiniFrames_AreOpenRgbs()
-        {
-            var open = CorsairPeripheralLighting.K65MiniOpenFrames();
-            Assert.Equal(new[] { "00 08 01 03 00 02", "00 08 02 6E 00 00", "00 08 0D 01 22 00" }, open.Select(f => Hex(f, 6)));
-            Assert.All(open, f => Assert.Equal(1025, f.Length));
-            var picture = CorsairPeripheralLighting.K65MiniPicture(new[]
-            {
-                new LightInfo(41, LightKind.Key, 0x29, LightKeySource.Generated),
-                new LightInfo(0, LightKind.Key, 0x2C, LightKeySource.Generated),
-            }, new[] { 0x112233, 0x445566 });
-            Assert.Equal("00 08 06 01 73 01 00 00 12 00 44 55 66", Hex(picture, 13));
-            Assert.Equal("11 22 33", Hex(picture, 0x0A + 41 * 3, 3));
-            Assert.Equal(1025, picture.Length);
         }
 
         [Fact]
@@ -625,33 +595,6 @@ namespace PadForge.Tests
                 Assert.False(model.Repair(io, io.Wait));
             }
             Assert.False(model.Owed(null));
-        }
-
-        [Fact]
-        public void TheK65Mini_OpensWithItsWaits_AndKeepsItsPictureAlive()
-        {
-            var model = Family().Match(Collection(0x1BAF, page: 0xFF42));
-            // 50 s with nothing sent, a resend included
-            // (RGBController_CorsairK65Mini.cpp:219 and 238-250).
-            Assert.Equal(50000, model.KeepAliveMs);
-            Assert.Equal(50000, model.KeepAliveIdleMs);
-            Assert.Equal(0, model.RecheckMs);
-            var io = new FakeCorsairChannel { OutputReportLength = 1025 };
-            var session = model.Begin(io, io.Wait);
-            Assert.Equal(new[] { "out 00 08 01 03 00 02", "wait 10", "out 00 08 02 6E 00 00", "wait 10",
-                "out 00 08 0D 01 22 00", "wait 10" }, io.Log);
-            io.Log.Clear();
-            var lights = model.Map.Lights;
-            Assert.Null(session.Map);
-            Assert.Equal(HidLightingPaint.Sent, session.Paint(io, io.Wait, lights, new int[lights.Count]));
-            Assert.Single(io.Outputs.Skip(3));
-            // The keep-alive is the picture again (RGBController_CorsairK65Mini.cpp:242-245).
-            Assert.True(session.KeepAlive(io, io.Wait, lights, new int[lights.Count]));
-            Assert.Equal(5, io.Outputs.Count);
-            Assert.Equal(io.Outputs[3], io.Outputs[4]);
-            io.Log.Clear();
-            Assert.True(session.HandBack(io, io.Wait));
-            Assert.Equal(new[] { "out 00 08 01 03 00 01" }, io.Log);
         }
 
         [Fact]

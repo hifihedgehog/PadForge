@@ -836,6 +836,8 @@ namespace PadForge.Tests
             (0x3434, 0x0150, "QMK/Keychron/Q Series/Standard/Keychron_Q5_QMK_ANSI_Keyboard.js"),
             (0x3434, 0x0153, "QMK/Keychron/Q Series/Standard/Keychron_Q5_QMK_ISO_Encoder_Keyboard.js"),
             (0x3434, 0x01B1, "QMK/Keychron/Q Series/Standard/Keychron_Q65_QMK_ANSI_Encoder_Keyboard.js"),
+            (0x3434, 0x0F60, "QMK/Keychron/V Series/8K/Keychron_V6_8K_QMK_ANSI_Encoder_Keyboard.js"),
+            (0x3434, 0x0F61, "QMK/Keychron/V Series/8K/Keychron_V6_8K_QMK_ISO_Encoder_Keyboard.js"),
             (0x3434, 0x0913, "QMK/Keychron/V Series/Max/Keychron_V1_Max_QMK_ANSI_Encoder_Keyboard.js"),
             (0x3434, 0x0914, "QMK/Keychron/V Series/Max/Keychron_V1_Max_QMK_ISO_Encoder_Keyboard.js"),
             (0x3434, 0x0933, "QMK/Keychron/V Series/Max/Keychron_V3_Max_QMK_ANSI_Encoder_Keyboard.js"),

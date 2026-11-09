@@ -41,7 +41,7 @@ namespace PadForge.Tests
         [Fact]
         public void TheTables_AreOpenRgbsAtThePinnedCommit()
         {
-            Assert.Equal("c6fc8016d215cca17d660c47746a08d7ea6a9175", LenovoLights.OpenRgbCommit);
+            Assert.Equal("b9d903b544a40486709c4ca097d0b234b617db9c", LenovoLights.OpenRgbCommit);
             // LenovoDevices.h:1739-1855: 101 keys, Escape first, Right Arrow last.
             Assert.Equal(101, LenovoLights.Legion7Gen7and8AnsiLeds.Length);
             Assert.Equal(new LenovoLed(0x01, "Key: Escape"), LenovoLights.Legion7Gen7and8AnsiLeds[0]);

@@ -268,6 +268,7 @@ namespace PadForge.Tests
             (0x0B05, 0x18E1, "libratbag asus-rog-strix-impact2.device"),
             (0x0B05, 0x1AD7, "libratbag asus-rog-strix-impact3-wireless.device"),
             (0x0B05, 0x1A88, "libratbag asus-rog-strix-impact3.device"),
+            (0x0B05, 0x1A9B, "libratbag asus-tuf-gaming-m3-gen-ii.device"),
             (0x0B05, 0x1C56, "libratbag asus-tuf-gaming-mini-wl-miku.device"),
             (0x0B05, 0x1C57, "libratbag asus-tuf-gaming-mini-wl-miku.device"),
             (0x258A, 0x0033, "libratbag glorious-model-d.device"),

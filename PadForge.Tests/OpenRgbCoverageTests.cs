@@ -63,7 +63,8 @@ namespace PadForge.Tests
         public void TheTable_HoldsEveryPortedFamily()
         {
             var families = OpenRgbRegistrations.All.Select(r => r.Family).Distinct().ToList();
-            Assert.Equal(97, families.Count);
+            // 98 with CorsairVoidController, which OpenRGB added after c6fc8016.
+            Assert.Equal(98, families.Count);
             Assert.DoesNotContain("RazerController", families);
             Assert.DoesNotContain("SteelSeriesController", families);
             Assert.DoesNotContain("LogitechController", families);

@@ -278,12 +278,12 @@ namespace PadForge.Tests
 
         // ── The collection a row takes ──
 
-        /// <summary>Corsair_Void_Pro_HeadSet_0x0A14.js:53, :99 and :125 write the lights on FFC5.
-        /// FF00 carries the sidetone alone (:74-92).</summary>
+        /// <summary>Corsair_Void_Pro_HeadSet_0x0A19.js:123 takes interface 3, usage 1, page FFC5 for
+        /// the lights. The four IDs OpenRGB drives are CorsairVoidLighting's.</summary>
         [Fact]
-        public void TheVoidPro0A14_TakesTheLightingPageOnly()
+        public void TheVoidPro0A19_TakesTheLightingPageOnly()
         {
-            var row = Device(0x1B1C, 0x0A14);
+            var row = Device(0x1B1C, 0x0A19);
             var collection = PluginRowReach.CollectionOf(row);
             Assert.Equal(0xFFC5, collection.UsagePage);
             Assert.NotNull(F.Instance.Match(collection));

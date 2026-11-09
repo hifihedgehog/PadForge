@@ -14,7 +14,11 @@ its device holds a picture, so such a row sends nothing again either. --starts l
 the row's start, which is mostly its DPI, polling and battery settings.
 
 A row whose keys come from the firmware counts as held when it sends as many frames as its plugin,
-each of the same kind and length with the same first four bytes. Its colors differ by design.
+each of the same kind and length with the same first four bytes. Its colors differ by design. It
+also counts as held when both pictures are QMK runs (00 24, the first LED, the count, the colors)
+that set LED 0 to their last once each, and differ only in how many LEDs there are: the row sets
+what the board's firmware lists, the plugin what its own list names, and the runs break where the
+counts part. Those rows are printed with both counts.
 The exit status is 1 when a row is left to look at or a plugin could not run, otherwise 0.
 """
 import json
@@ -42,6 +46,13 @@ EXPLAINED = {
     "Corsair/Corsair_Nexus_Screen.js": "PadForge fills the screen, the plugin every other pixel",
     "OEM/OEM_Keyboard_Wireless_Controller.js": "the plugin's checksum loop runs off its array and gives 0",
     "Keychron/C Series/Pro/Keychron_C1_Pro_QMK_ANSI_Keyboard.js": "the plugin's product test names the K1 Pro and always picks ISO",
+}
+
+# A plugin that fails on its own lists for the product or model here, for the reason beside it.
+# The row is counted with the explained ones. The generator's LIBRARY_FIXES puts its lists right.
+FAILS = {
+    "EVision/EVision_Keyboard_Controller.js|Kreo Hive98":
+        "the plugin's number row lists LED 37, which its names and places leave out, so it reads a place past its last",
 }
 
 # Queries a plugin sends at the start whose answers a row asks for elsewhere or does not need.
@@ -72,6 +83,30 @@ def same_frames_but_colors(picture, render):
     return True
 
 
+def qmk_leds(frames):
+    """The LED numbers a QMK picture sets: each output report 00 24, the first LED, the count,
+    then that many colors. None when a frame is anything else."""
+    got = []
+    for frame in frames:
+        kind, hexes = frame.split(":", 1)
+        b = bytes.fromhex(hexes)
+        if kind != "O" or len(b) < 4 or b[0] != 0x00 or b[1] != 0x24 or len(b) < 4 + 3 * b[3]:
+            return None
+        got.extend(range(b[2], b[2] + b[3]))
+    return got
+
+
+def firmware_count_differs(picture, render):
+    """Both pictures as runs from LED 0 to their last, each LED once: the two counts, or None."""
+    mine = qmk_leds([x for x in picture.split(";") if x])
+    theirs = qmk_leds(render)
+    if not mine or not theirs:
+        return None
+    if sorted(mine) != list(range(len(mine))) or sorted(theirs) != list(range(len(theirs))):
+        return None
+    return len(mine), len(theirs)
+
+
 def main():
     rows = {}
     for line in open(sys.argv[1], encoding="utf-8"):
@@ -82,7 +117,7 @@ def main():
         o = json.loads(line)
         ran[(o["product"], o["plugin"], o.get("model", ""))] = o
     same = explained = firmware = 0
-    problems, starts, errors, quiet, loud, skipped = [], [], {}, [], [], []
+    problems, starts, errors, quiet, loud, skipped, counted = [], [], {}, [], [], [], []
     for key, row in rows.items():
         product, plugin, model = key
         o = ran.get(key)
@@ -90,6 +125,9 @@ def main():
             continue
         if not o or o.get("error") == "no source" or row["note"]:
             skipped.append((product, plugin, model, row["note"] or "no source"))
+            continue
+        if o.get("error") and (f"{plugin}|{model}" in FAILS or plugin in FAILS):
+            explained += 1
             continue
         if o.get("error"):
             errors.setdefault(o["error"][:80], set()).add(plugin)
@@ -106,8 +144,12 @@ def main():
         extra = [t for t in map(trim, o.get("init", [])) if t not in known and not QMK_QUESTIONS.match(t)]
         if extra:
             starts.append((product, plugin, extra))
+        counts = firmware_count_differs(row["picture"], o.get("render", [])) if row["shading"] == "firmware" else None
         if row["shading"] == "firmware" and mine and theirs and same_frames_but_colors(row["picture"], o.get("render", [])):
             firmware += 1
+        elif counts:
+            firmware += 1
+            counted.append((product, plugin, model) + counts)
         elif mine == theirs:
             same += 1
         elif plugin in EXPLAINED or f"{plugin}|{model}" in EXPLAINED:
@@ -117,6 +159,8 @@ def main():
     print(f"same {same}, keys from the firmware {firmware}, explained {explained}, to look at {len(problems)}, not run {len(skipped)}, quiet where the plugin streams {len(quiet)}, repeating where the plugin does not {len(loud)}")
     for product, plugin, model, note in skipped:
         print(f"not run {product} {plugin} {model}: {note}")
+    for product, plugin, model, here, there in counted:
+        print(f"firmware LEDs {product} {plugin} {model}: {here} from the firmware, {there} in the plugin's list")
     for product, plugin in quiet:
         print(f"quiet {product} {plugin}")
     for product, plugin, model in loud:

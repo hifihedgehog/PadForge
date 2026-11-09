@@ -18,10 +18,10 @@ import sys
 
 PINS = {
     "ckb-next": "e22eaf2fba7f93764b4c6d4413bb83eeca75d10a",
-    "libratbag": "b8d4d3ca1f4d6b23c664ffee2888b8eb669bee21",
-    "g-helper": "f62d584d24d4ea12ff902b873f9127edafbcd742",
+    "libratbag": "8235b5bb6032dea15901ab58a8218956f4494d08",
+    "g-helper": "991145fc25c2bd0b3345f334f1fdeb8b4172322a",
     "asusctl": "321b1114a0ac3782d67aa39201682effb749f4d9",
-    "tuxedo-drivers": "a929f9ce143316b3b18d5f3fbf9cc54f0c1122e2",
+    "tuxedo-drivers": "77de99bc2a4d2333a1a1e70064ec77b175fe93cd",
     "ite8291r3-ctl": "4b43277ce0806c11baf1ab601c3e7734ffb2fedf",
     "aura-loq": "d635dc120d277ce36269a30b0c6620cd3f8a4f21",
 }

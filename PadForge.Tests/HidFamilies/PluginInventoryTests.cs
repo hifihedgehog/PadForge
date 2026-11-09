@@ -35,6 +35,11 @@ namespace PadForge.Tests
             ("HyperX/HyperX_Cloud_Flight", "The plugin says it has no lights and reads the battery alone."),
             ("Razer/Razer_Info_Finder", "A developer's tool, not a device."),
             ("Sony/", "DualSense and DualShock 4 lights go through PadForge's controller path."),
+            // master's ProductId() returns the five-digit literal 0x0A346, and beta dropped the
+            // plugin. The Virtuoso SE is 0A3D and 0A3E, which the headset plugin lights, and
+            // linuxhw/LsUSB holds 30 probes of 1b1c:0a3e and none of 1b1c:a346 (2026-11-09).
+            ("Corsair/Modern_Corsair/Virtuoso_HeadSets/Corsair_Virtuoso_SE_Gaming_Headset.js",
+                "Its product ID is a five-digit typo that names no product."),
         };
 
         /// <summary>The hubs for fans and strips here are parts inside a case too,
@@ -79,8 +84,8 @@ namespace PadForge.Tests
                 case PeripheralLinker.SteelSeriesVid:
                     return SteelSeriesDirectProtocol.Models.Any(m => m.ProductId == product && m.Family != SteelSeriesFamily.None);
                 case CorsairLights.VendorId:
-                    return CorsairPeripheralLighting.OtherIds.ContainsKey(product) || CorsairPeripheralV2Lighting.DeviceOf(product) != null
-                        || CorsairPeripheralV2Lighting.IsReceiver(product);
+                    return CorsairPeripheralLighting.OtherIds.ContainsKey(product) || CorsairPeripheralV2Lighting.OtherIds.ContainsKey(product)
+                        || CorsairPeripheralV2Lighting.DeviceOf(product) != null || CorsairPeripheralV2Lighting.IsReceiver(product);
                 case CoolerMasterLighting.VendorId:
                     return product is CoolerMasterLighting.Sk650Other or CoolerMasterLighting.Sk621;
                 case LgMonitorLighting.VendorId:
@@ -220,6 +225,65 @@ namespace PadForge.Tests
         {
             foreach (var (path, _) in LeftOut)
                 Assert.True(PluginInventory.All.Any(r => r.Plugin.StartsWith(path, StringComparison.Ordinal)), path);
+        }
+
+        /// <summary>Writes every device a lighting family lights, one row per USB identity:
+        /// vendor, product, a name and where the name came from, for the docs site's
+        /// supported-devices page, its device search and its device count. A device counts
+        /// only where this class's other tests prove it lit: an OpenRGB registration of a
+        /// ported family, a row of the plugins' or the other projects' inventories that a
+        /// family lights, and the vendor tables those families read. Does nothing unless the
+        /// release prep names a file in PADFORGE_LIGHTING_DEVICES_TSV.</summary>
+        [Fact]
+        public void WriteTheLitDevices()
+        {
+            string path = Environment.GetEnvironmentVariable("PADFORGE_LIGHTING_DEVICES_TSV");
+            if (string.IsNullOrEmpty(path)) return;
+            var named = new Dictionary<(ushort Vendor, ushort Product), (string Name, string Source)>();
+            void Add(int vendor, int product, string name, string source)
+            {
+                if (vendor <= 0 || vendor > 0xFFFF || product < 0 || product > 0xFFFF || string.IsNullOrWhiteSpace(name)) return;
+                if (!IsLit((ushort)vendor, (ushort)product)) return;
+                named.TryAdd(((ushort)vendor, (ushort)product), (name.Trim(), source));
+            }
+            foreach (var r in OpenRgbRegistrations.All.Where(r => r.Transport == OpenRgbTransport.Hid && !r.FromSettings))
+                Add(r.VendorId, r.ProductId, r.Name, "OpenRGB " + r.Family);
+            foreach (var r in RazerDirectTable.Rows.Where(r => r.Family != RazerFamily.None))
+                Add(PeripheralLinker.RazerVid, r.ProductId, r.Name, "openrazer");
+            foreach (var (product, name, source) in SteelSeriesNames.All)
+                Add(PeripheralLinker.SteelSeriesVid, product, name, source);
+            foreach (var d in PluginDeviceLighting.Devices)
+                Add(d.VendorId, d.ProductId, d.Name, d.Plugin);
+            foreach (var d in CorsairPeripheralV2Lighting.PluginDevices.Value)
+                Add(CorsairLights.VendorId, d.ProductId, d.Name, "SignalRGB Corsair_Bragi_Device.js");
+            foreach (var (name, _, product, _, _) in CorsairLights.V1Sections)
+                Add(CorsairLights.VendorId, product, name, "OpenRGB CorsairPeripheralController");
+            foreach (var (product, (_, name)) in AsusAuraUsbLighting.GHelperProducts)
+                Add(AsusLaptopAura.VendorId, product, name, "G-Helper");
+            // G-Helper's MAIN_AURA_PIDS and REAR_LIGHT_PIDS name no model, and a laptop of any of
+            // them carries the keyboard (AsusLaptopAura.Products).
+            foreach (ushort product in AsusLaptopAura.Products.Append(AsusLaptopAura.RearLightProduct))
+                Add(AsusLaptopAura.VendorId, product, "ASUS laptop keyboard", "G-Helper MAIN_AURA_PIDS");
+            // What is lit through a path with no table of names, HID++ among them, is named
+            // after the file that lists it.
+            foreach (var row in PluginInventory.All.Where(row => !IsLeftOut(row.Plugin) && !NoLights.Contains((row.Vendor, row.Product))
+                         && !PluginCommentedOut.ContainsKey((row.Vendor, row.Product))))
+                Add(row.Vendor, row.Product, FileTitle(row.Plugin), row.Plugin);
+            foreach (var row in OtherProjectsInventory.All.Where(row => !OthersLeftOut.ContainsKey((row.Vendor, row.Product))))
+                Add(row.Vendor, row.Product, FileTitle(row.Source), row.Source);
+            var lines = named.OrderBy(p => p.Key.Vendor).ThenBy(p => p.Key.Product)
+                .Select(p => $"{p.Key.Vendor:X4}\t{p.Key.Product:X4}\t{p.Value.Name}\t{p.Value.Source}");
+            System.IO.File.WriteAllLines(path, lines);
+        }
+
+        /// <summary>A plugin's or a project's file as words: "Plugins/Corsair/Corsair_K70_Keyboard.js"
+        /// reads "Corsair K70 Keyboard".</summary>
+        private static string FileTitle(string source)
+        {
+            string file = source.Split('/', '\\', ' ').Last();
+            int dot = file.LastIndexOf('.');
+            if (dot > 0) file = file.Substring(0, dot);
+            return file.Replace('_', ' ').Replace('-', ' ').Trim();
         }
     }
 }

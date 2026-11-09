@@ -11,7 +11,7 @@ per-key board come from its layout file: the keys it names and the place of each
 A key's LED numbers are not taken from asusctl alone. Its table leaves out the number
 pad and the media keys and reuses the main row's codes on the number pad, and its
 row 11 falls past its eleven packets (rgb_for_led_code,
-rog-aura/src/keyboard/advanced.rs). G-Helper's packetMap (app/USB/Aura.cs:553-575 at
+rog-aura/src/keyboard/advanced.rs). G-Helper's packetMap (app/USB/Aura.cs:560-582 at
 the pin below) numbers every LED, and OpenRGB's AsusAuraCoreLaptopDevices.cpp agrees
 with it where it names the same key. The numbers below follow G-Helper. The script
 reads packetMap and stops on a number here that packetMap lacks, apart from the
@@ -39,7 +39,7 @@ import subprocess
 import sys
 
 ASUSCTL = "321b1114a0ac3782d67aa39201682effb749f4d9"
-GHELPER = "f62d584d24d4ea12ff902b873f9127edafbcd742"
+GHELPER = "991145fc25c2bd0b3345f334f1fdeb8b4172322a"
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "PadForge.App", "Common", "Input", "Peripherals", "HidFamilies",
                    "AsusLaptopTables.g.cs")
 

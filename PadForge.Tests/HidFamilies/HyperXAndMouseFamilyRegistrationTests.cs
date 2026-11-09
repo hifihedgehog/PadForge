@@ -22,8 +22,10 @@ namespace PadForge.Tests
             new object[] { "HyperXMousematController", 3 },
             new object[] { "HyperXMicrophoneController", 8 },
             new object[] { "HyperXMicrophoneV2Controller", 1 },
-            new object[] { "RedragonController", 11 },
-            new object[] { "AresonController", 6 },
+            // The M901-K-2 Perdition came with OpenRGB fc3aa079, and the M901P-KS, wired and on
+            // its dongle, went to the Areson family.
+            new object[] { "RedragonController", 12 },
+            new object[] { "AresonController", 8 },
             new object[] { "InstantMouseController", 4 },
             new object[] { "HoltekController", 2 },
         };

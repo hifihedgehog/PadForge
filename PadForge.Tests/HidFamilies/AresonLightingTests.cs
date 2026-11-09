@@ -22,8 +22,8 @@ namespace PadForge.Tests
         public void EveryRegistration_IsMatched_AsAStoredOneLightMouse()
         {
             var registrations = OpenRgbRegistrations.Of(A.OpenRgbFamily).ToList();
-            // AresonControllerDetect.cpp:49-54.
-            Assert.Equal(6, registrations.Count);
+            // AresonControllerDetect.cpp:51-58 at b9d903b5, the M901P-KS pair from fc3aa079.
+            Assert.Equal(8, registrations.Count);
             foreach (var r in registrations)
             {
                 var collection = CollectionFor(r, feature: 17);

@@ -35,7 +35,7 @@ namespace PadForge.Tests
         [Fact]
         public void TheTables_AreOpenRgbsAtThePinnedCommit()
         {
-            Assert.Equal("c6fc8016d215cca17d660c47746a08d7ea6a9175", QmkTables.OpenRgbCommit);
+            Assert.Equal("b9d903b544a40486709c4ca097d0b234b617db9c", QmkTables.OpenRgbCommit);
             // QMKKeycodes.cpp:16-151: KC_NO "", KC_TRANSPARENT "Key: Right Fn",
             // KC_A "Key: A", and the Space Cadet shifts 216 and 217.
             Assert.Equal("", Q.KeyName(0x0000));

@@ -31,6 +31,15 @@ registers others, is Other.
 Skipped: HIDLampArrayController, LogitechController, RazerController and
 SteelSeriesController, which PadForge lights its own way.
 
+Every other folder of OpenRGB's Controllers has a decision here: a family
+PadForge lights another way (LIT_ANOTHER_WAY), one no Windows build compiles
+(NOT_ON_WINDOWS), or one #557's coverage table left out at OpenRGB c6fc8016
+(DECIDED_IN_557: parts inside a PC, lights on the network, code for Linux or
+testing, and the rest of that table's rows). The folders are read from git at
+the clone's commit, so an empty folder left on disk counts for nothing. The run
+stops on a folder with no decision, so a family OpenRGB adds is named at
+release prep until it is ported or given its reason.
+
 Usage:
     python tools/gen_openrgb_registrations.py OPENRGB_ROOT
     python tools/gen_openrgb_registrations.py OPENRGB_ROOT --check   (compare, write nothing)
@@ -38,6 +47,7 @@ Usage:
 import argparse
 import os
 import re
+import subprocess
 import sys
 
 import openrgb_cpp as oc
@@ -74,7 +84,7 @@ FAMILIES = [
 # on the network are not peripherals and are not listed.
 PERIPHERAL_FAMILIES = [
     "AOCMouseController", "AOCMousematController", "AlienwareMonitorController", "AresonController",
-    "AsusMonitorController", "BlinkyTapeController", "ClevoLightbarController", "CreativeController",
+    "AsusMonitorController", "BlinkyTapeController", "ClevoLightbarController", "CorsairVoidController", "CreativeController",
     "DreamCheekyController", "EdifierHaloController", "GameSirController", "GigabyteAorusMouseController",
     "HYTEMousematController", "HoltekController", "HyperXMicrophoneController", "HyperXMicrophoneV2Controller",
     "HyperXMouseController", "HyperXMousematController", "InstantMouseController", "LGMonitorController",
@@ -87,6 +97,57 @@ PERIPHERAL_FAMILIES = [
 ]
 
 ALL_FAMILIES = FAMILIES + PERIPHERAL_FAMILIES
+
+# The families PadForge lights another way, each with how.
+LIT_ANOTHER_WAY = {
+    "HIDLampArrayController": "any HID LampArray, through LampArrayBackend",
+    "LogitechController": "PadForge's Logitech families",
+    "RazerController": "PadForge's Razer tables",
+    "SteelSeriesController": "PadForge's SteelSeries families",
+    # Added after c6fc8016. Its lamps are a HID LampArray on interface 5
+    # (KLIPSCH_LUMINA_LAMPARRAY_IFACE, KlipschLuminaControllerDetect.cpp:27-28), which
+    # LampArrayBackend lights as it lights any LampArray. OpenRGB writes the vendor
+    # interface on Windows because the system holds the LampArray (lines 40-53 and 91).
+    "KlipschLuminaController": "its HID LampArray, through LampArrayBackend",
+}
+
+# The families no Windows build compiles, each with why.
+NOT_ON_WINDOWS = {
+    # Added after c6fc8016: every file carries _Linux, and it lights through the
+    # kernel's /sys/class/leds (RetroidAYNController_Linux.cpp).
+    "RetroidAYNController": "Linux only",
+}
+
+# The other folders OpenRGB had at c6fc8016, where #557 settled its coverage.
+DECIDED_IN_557 = (
+    "AMBXController", "AMDWraithPrismController", "ASRockPolychromeUSBController", "ASRockSMBusController",
+    "ArcticController", "AsusAuraGPUController", "ColorfulGPUController", "ColorfulTuringGPUController",
+    "CorsairCommanderCoreController", "CorsairController", "CorsairDRAMController", "CorsairHydro2Controller",
+    "CorsairHydroController", "CorsairHydroPlatinumController", "CorsairICueLinkController",
+    "CorsairLightingNodeController", "CorsairVengeanceController", "CrucialController",
+    "CryorigH7QuadLumiController", "DDPController", "DMXController", "DRGBController", "DebugController",
+    "E131Controller", "EKController", "ENESMBusController", "EVGAAmpereGPUController",
+    "EVGAGP102GPUController", "EVGAPascalGPUController", "EVGASMBusController", "EVGATuringGPUController",
+    "ElgatoKeyLightController", "ElgatoLightStripController", "EspurnaController", "FanBusController",
+    "FaustusController", "FrameworkDesktopController", "GalaxGPUController",
+    "GigabyteAorusCPUCoolerController", "GigabyteAorusPCCaseController", "GigabyteCastor3Controller",
+    "GigabyteRGBFusion2BlackwellGPUController", "GigabyteRGBFusion2DRAMController",
+    "GigabyteRGBFusion2GPUController", "GigabyteRGBFusion2SMBusController", "GigabyteRGBFusion2USBController",
+    "GigabyteRGBFusionController", "GigabyteRGBFusionGPUController", "GigabyteSuperIORGBController",
+    "GoveeController", "HPOmen30LController", "HYTENexusController", "HyperXDRAMController",
+    "IntelArcA770LEController", "JGINYUEInternalUSBController", "JGINYUEInternalUSBV2Controller",
+    "KasaSmartController", "KingstonFuryDRAMController", "LEDStripController", "LIFXController",
+    "LenovoMotherboardController", "LianLiController", "LinuxLEDController", "MSIGPUController",
+    "MSIMotherboardController", "MSIRGBController", "ManliGPUController", "NVIDIAIlluminationController",
+    "NZXTHue1Controller", "NZXTHue2Controller", "NZXTHuePlusController", "NZXTKrakenController",
+    "NanoleafController", "NollieController", "NvidiaESAController", "PNYARGBEpicXGPUController",
+    "PNYLovelaceGPUController", "PalitGPUController", "PatriotViperController", "PatriotViperSteelController",
+    "PhilipsHueController", "PhilipsWizController", "PowerColorGPUController", "RealtekARGBController",
+    "RealtekBridgeController", "SRGBmodsController", "SapphireGPUController", "SeagateController",
+    "SonyGamepadController", "TForceXtreemController", "ThermaltakeRiingController",
+    "ValveSteamMachineController", "YeelightController", "ZalmanZSyncController",
+    "ZotacBlackwellGPUController", "ZotacTuringGPUController", "ZotacV2GPUController",
+)
 
 # Macro forms none of the 54 families uses, each decoded from a family that
 # does and held to the values on its source line every run, so a form the
@@ -438,6 +499,17 @@ def main():
     dm_macros = {k: v for k, v in dm.macros.items() if k.startswith("REGISTER_")}
     ctors = constructors(dm)
     hidapi_bus = {k: v for k, v in oc.enum_values(oc.Source(root, HIDAPI), "HID_API_BUS_UNKNOWN").items()}
+    folders = subprocess.run(["git", "-C", root, "ls-tree", "--name-only", "HEAD", "Controllers/"],
+                             capture_output=True, text=True, check=True).stdout.split()
+    folders = [f.split("/", 1)[1] for f in folders if "/" in f]
+    decided = set(ALL_FAMILIES) | set(LIT_ANOTHER_WAY) | set(NOT_ON_WINDOWS) | set(DECIDED_IN_557)
+    new = [f for f in folders if f not in decided]
+    if new:
+        sys.exit("OpenRGB families with no decision: " + ", ".join(new)
+                 + ". Port each, or add it to LIT_ANOTHER_WAY or NOT_ON_WINDOWS with its reason.")
+    gone = sorted(decided - set(folders))
+    if gone:
+        sys.exit("families OpenRGB no longer has: " + ", ".join(gone) + ". Take them out of the lists.")
     regs = []
     for family in ALL_FAMILIES:
         if not os.path.isdir(os.path.join(root, "Controllers", family)):

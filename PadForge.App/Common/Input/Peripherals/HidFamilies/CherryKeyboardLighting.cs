@@ -11,10 +11,13 @@ namespace PadForge.Common.Input.Peripherals
     ///
     /// <para>The keyboard takes no colors as they come. OpenRGB lights it in
     /// its Custom mode: the mode report once (DeviceUpdateMode,
-    /// RGBController_CherryKeyboard.cpp:374-399), then the 126 LEDs' colors in
-    /// seven reports of 54 bytes each (DeviceUpdateLEDs, lines 346-362, and
-    /// SetKeyboardColors, CherryKeyboardController.cpp:51-81), each report
-    /// answered by one the keyboard sends back (lines 190-229). The keyboard
+    /// RGBController_CherryKeyboard.cpp:383-408 at b9d903b5), then the 126 LEDs'
+    /// colors in seven reports of 54 bytes each, between a begin report and an
+    /// end report as CHERRY Utility sends them, since a keyboard the utility set
+    /// last takes only part of the colors without them (DeviceUpdateLEDs, lines
+    /// 346-371, SendKeyboardBegin, SetKeyboardColors and SendKeyboardEnd,
+    /// CherryKeyboardController.cpp:51-81 and 138-188), each report answered by
+    /// one the keyboard sends back (lines 190-229). The keyboard
     /// keeps both, the mode and the colors: OpenRGB marks the Custom mode as
     /// saved by the keyboard (MODE_FLAG_AUTOMATIC_SAVE, line 56), and its
     /// table marks saving as automatic and its Direct support as a problem
@@ -59,6 +62,8 @@ namespace PadForge.Common.Input.Peripherals
         internal const byte BrightnessHighest = 0x04;
 
         /// <summary>The commands (CherryKeyboardController.h:52-59).</summary>
+        internal const byte CommandBegin = 0x01;
+        internal const byte CommandEnd = 0x02;
         internal const byte SetParameter = 0x06;
         internal const byte WriteCustomColors = 0x0B;
 
@@ -101,7 +106,9 @@ namespace PadForge.Common.Input.Peripherals
                 RepaintMs = LenovoLegionLighting.RepaintMs,
                 Begin = (io, wait) => new SonixCustomSession(
                     SonixKeyboard.Parameter(SetParameter, new byte[] { 0x00, ModeCustom, BrightnessHighest, 0, 0, 0, 0, 0, 0 }, cherry: true),
-                    WriteCustomColors, layout.Count),
+                    WriteCustomColors, layout.Count,
+                    SonixKeyboard.Packet(CommandBegin, 0, 0, ReadOnlySpan<byte>.Empty),
+                    SonixKeyboard.Packet(CommandEnd, 0, 0, ReadOnlySpan<byte>.Empty)),
             };
         }
     }
@@ -201,21 +208,27 @@ namespace PadForge.Common.Input.Peripherals
 
     /// <summary>A session on a Sonix keyboard lit in its Custom mode: the
     /// mode report before the first picture, then each picture's color
-    /// reports. Nothing goes out at the hand-back (see
-    /// <see cref="CherryKeyboardLighting"/>).</summary>
+    /// reports, between a begin and an end report where the family sends
+    /// them (the Cherry's, not the EVision's: OpenRGB's EVision path sends its
+    /// colors alone, RGBController_EVisionKeyboard.cpp:336-352). Nothing goes
+    /// out at the hand-back (see <see cref="CherryKeyboardLighting"/>).</summary>
     internal sealed class SonixCustomSession : HidLightingSession
     {
         private readonly byte[] _mode;
         private readonly byte _colorCommand;
         private readonly int _count;
+        private readonly byte[] _begin;
+        private readonly byte[] _end;
         private bool _moded;
         private bool _silent;
 
-        public SonixCustomSession(byte[] mode, byte colorCommand, int count)
+        public SonixCustomSession(byte[] mode, byte colorCommand, int count, byte[] begin = null, byte[] end = null)
         {
             _mode = mode;
             _colorCommand = colorCommand;
             _count = count;
+            _begin = begin;
+            _end = end;
         }
 
         public override bool Feature => false;
@@ -230,8 +243,10 @@ namespace PadForge.Common.Input.Peripherals
                 if (!SonixKeyboard.Exchange(io, _mode, ref _silent)) return HidLightingPaint.Failed;
                 _moded = true;
             }
+            if (_begin != null && !SonixKeyboard.Exchange(io, _begin, ref _silent)) return HidLightingPaint.Failed;
             foreach (var packet in SonixKeyboard.ColorPackets(_colorCommand, SonixKeyboard.ColorData(colors, _count)))
                 if (!SonixKeyboard.Exchange(io, packet, ref _silent)) return HidLightingPaint.Failed;
+            if (_end != null && !SonixKeyboard.Exchange(io, _end, ref _silent)) return HidLightingPaint.Failed;
             return HidLightingPaint.Sent;
         }
 

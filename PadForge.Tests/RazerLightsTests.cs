@@ -14,7 +14,7 @@ namespace PadForge.Tests
     /// and per cell, a receiver's list of paired devices and its replies,
     /// and the light maps against OpenRGB's RazerDevices.cpp and openrazer's
     /// LED IDs. Every expected report is laid out here from the reference,
-    /// as OpenRGB's razer_report is (RazerController.h at c6fc8016) with the
+    /// as OpenRGB's razer_report is (RazerController.h at b9d903b5) with the
     /// checksum of razer_calculate_crc (RazerController.cpp:602-623), never
     /// from the builder under test.
     /// </summary>
@@ -354,7 +354,7 @@ namespace PadForge.Tests
 
         /// <summary>Each product's lights follow OpenRGB's zones in the
         /// order its RazerDevices.cpp lists them, LED n in cell n, at
-        /// c6fc8016: a logo, a scroll wheel or a side panel as zones, strips
+        /// b9d903b5: a logo, a scroll wheel or a side panel as zones, strips
         /// and underglow as edge lighting, and a keypad's keys as keys no
         /// source has named.</summary>
         [Fact]
@@ -529,7 +529,7 @@ namespace PadForge.Tests
         /// KeyboardLayoutManager puts in its zone, each at the cell OpenRGB
         /// sends it to and with the usage its name stands for. The keys are
         /// read from tools/openrgb_klm/klm_dump.tsv, the output of OpenRGB's
-        /// code at c6fc8016 (rows "case", then row, column, value and name
+        /// code at b9d903b5 (rows "case", then row, column, value and name
         /// per key), where the first key listed at a cell names it, as
         /// GetKeyNameAt returns it (KeyboardLayoutManager.cpp:933-944).
         /// </summary>

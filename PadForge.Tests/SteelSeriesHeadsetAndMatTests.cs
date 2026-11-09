@@ -11,7 +11,7 @@ namespace PadForge.Tests
     /// The SteelSeries headsets and mousemats OpenRGB lights (#557): the
     /// Arctis 5, the Arctis Nova 3, the Siberia 350 and the QCK Prism Cloth
     /// mats. Each expected report is written out here from OpenRGB at
-    /// c6fc8016 (Controllers/SteelSeriesController), never from the builder
+    /// b9d903b5 (Controllers/SteelSeriesController), never from the builder
     /// under test, as a Windows HID call takes it: the report ID first and
     /// the buffer at the length OpenRGB sends.
     /// </summary>

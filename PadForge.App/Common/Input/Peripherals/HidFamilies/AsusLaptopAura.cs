@@ -23,24 +23,21 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             return false;
         }
 
-        /// <summary>isACPI, IsTUF and IsVivoZenPro (Aura.cs:105, AppConfig.cs:403-405
+        /// <summary>isACPI, IsTUF and IsVivoZenPro (Aura.cs:108, AppConfig.cs:418-420
         /// and 423-425): these keyboards take their color through the ATK ACPI
         /// device (<see cref="AsusTufLaptopLighting"/>).</summary>
         public bool ThroughAcpi => Has("TUF", "TX Gaming", "TX Air", "Vivobook", "Zenbook", "ProArt", "EXPERTBOOK", " V16", "ASUSLaptop");
 
-        /// <summary>IsStrix (AppConfig.cs:515-518).</summary>
+        /// <summary>IsStrix (AppConfig.cs:530-533).</summary>
         public bool Strix => Has("Strix", "Scar", "G703G");
 
-        /// <summary>IsS17 (AppConfig.cs:595-598).</summary>
-        public bool S17 => Has("S17");
-
-        /// <summary>IsZ13 (AppConfig.cs:575-578).</summary>
+        /// <summary>IsZ13 (AppConfig.cs:590-593).</summary>
         public bool Z13 => Has("Z13");
 
-        /// <summary>IsNoDirectRGB and IsSlash (AppConfig.cs:480-488 and 555-558).</summary>
+        /// <summary>IsNoDirectRGB and IsSlash (AppConfig.cs:495-503 and 570-573).</summary>
         public bool NoDirectColor => Has("GA503", "G533Q", "GU502", "GA403", "GU605", "GA605", "GA405", "GU405", "GU606", "GX651");
 
-        /// <summary>IsWhite with NoAura (AppConfig.cs:455-468), whose GA401I the GA401
+        /// <summary>IsWhite with NoAura (AppConfig.cs:470-483), whose GA401I the GA401
         /// covers, and IsARCNM (lines 398-401).</summary>
         public bool WhiteOnly => Has("GA401", "FX517Z", "FX516P", "X13", "GZ301VIC", "FA617N", "FA617X", "GA502IU", "HN7306", "H760", "H740", "M6500X");
     }
@@ -60,39 +57,40 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
     /// <para>What kind of keyboard. G-Helper sends B9, the ID string and
     /// 05 20 31 00 20, reads report 5D, and takes the answer only when it echoes the
     /// first bytes (AuraProbe, AsusHid.cs:254-296). Byte 9 is the kind: 02 four zones,
-    /// 03 per-key, 04 or 00 one zone (Aura.cs:70-76 and 356-363). Byte 12 is the layout, 2 for
-    /// ISO (Aura.cs:326, and OpenRGB's AsusAuraCoreLaptopController.h:100). Byte 13 says
-    /// which lights are past the keys: 02 a lightbar, 80 a rear strip (Aura.cs:333-340
+    /// 03 per-key, 04 or 00 one zone (Aura.cs:72-78 and 362-369). Byte 12 is the layout, 2 for
+    /// ISO (Aura.cs:332, and OpenRGB's AsusAuraCoreLaptopController.h:100). Byte 13 says
+    /// which lights are past the keys: 02 a lightbar, 80 a rear strip (Aura.cs:339-346
     /// and 370-376). Where the firmware gives no answer or 00, asusctl's list decides.
     /// A keyboard white only takes a level, and G-Helper's list and the firmware's bit
-    /// 10 in byte 14 tell which (Aura.cs:380).</para>
+    /// 10 in byte 14 tell which (Aura.cs:387).</para>
     ///
-    /// <para>What goes out. BC with 01, or 00 where G-Helper's IsOldStrix or IsS17 hold,
-    /// opens direct mode (Aura.cs:672-677 and 824-829), and nothing written this way
-    /// is stored: asusctl writes its per-key frames with no apply after
-    /// (asusd src/aura_laptop/mod.rs:179-205). A per-key keyboard opens with BC 00, as
-    /// OpenRGB's laptops and asusctl's get_init_msg do. Brightness goes to 3 with
+    /// <para>What goes out. BC opens direct mode: 00 on a per-key keyboard and on one
+    /// of G-Helper's old Strix boards, 01 on any other (Aura.cs:685-690 and 874-879,
+    /// where G-Helper's per-key commit 49dbbe1 dropped its S17 rule). A per-key keyboard
+    /// opens with BC 00 in OpenRGB's laptops and asusctl's get_init_msg too. Nothing
+    /// written this way is stored: asusctl writes its per-key frames with no apply after
+    /// (asusd src/aura_laptop/mod.rs:179-205). Brightness goes to 3 with
     /// BA C5 C4, as OpenRGB's Direct mode sets it, so a keyboard turned down still
-    /// shows its colors. One zone is BC 01 01 with the color at byte 9 (Aura.cs:832-842),
+    /// shows its colors. One zone is BC 01 01 with the color at byte 9 (Aura.cs:882-892),
     /// asusctl's capture of Armoury Crate (advanced.rs, new_zoned). Four zones are
     /// BC 00 01 04 with zones 0 to 3 and the lightbar at 6 to 11 from byte 9
-    /// (Aura.cs:624-632 and 726-741). Per-key is the frames of OpenRGB's SetLedsDirect,
-    /// which G-Helper sends too (Aura.cs:697-712), then the rear strip of 39 LEDs,
-    /// BC 00 01 05 with the frame's first LED plus one (Aura.cs:752-766). The ROG Flow
-    /// Z13 first takes C0 03 01 (Aura.cs:388-389).</para>
+    /// (Aura.cs:631-639 and 743-758). Per-key is the frames of OpenRGB's SetLedsDirect,
+    /// which G-Helper sends too (Aura.cs:714-729), then the rear strip of 39 LEDs,
+    /// BC 00 01 05 with the frame's first LED plus one (Aura.cs:769-783). The ROG Flow
+    /// Z13 first takes C0 03 01 (Aura.cs:395-396).</para>
     ///
     /// <para>G-Helper's laptops with no direct color and the white ones take B3 with
-    /// zone 0 and speed EB, then B5 (Aura.cs:291-308 and 811-815), which also stores
+    /// zone 0 and speed EB, then B5 (Aura.cs:297-314 and 861-865), which also stores
     /// nothing, since "Changes won't persist unless apply is set"
     /// (asusd src/aura_laptop/mod.rs:118-125). A white keyboard's level goes in the red
     /// byte, and G-Helper zeroes the other two. PadForge sends the brightest channel
     /// there, so a color with no red still lights the keyboard. The Z13's rear light is
     /// G-Helper's REAR_LIGHT_PIDS, the same B3 and B5 with B4, which stores
-    /// (Aura.cs:863), so it keeps the stored-write bounds of
+    /// (Aura.cs:913), so it keeps the stored-write bounds of
     /// <see cref="LenovoLegionLighting"/>.</para>
     ///
     /// <para>G-Helper lights a laptop with a LampArray interface through that interface
-    /// (AsusLampArray.cs:33-46, Aura.cs:659-663 and 803-807), and OpenRGB's laptops light
+    /// (AsusLampArray.cs:33-46, Aura.cs:666-670 and 853-857), and OpenRGB's laptops light
     /// through BC, so the row goes through both, each shown where the firmware lets it
     /// (<see cref="HidLightingModel.LiveThroughLampArray"/>).</para>
     ///
@@ -117,7 +115,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
 
         /// <summary>REAR_LIGHT_PIDS (AsusHid.cs:14). asusctl lists it as a keyboard too
         /// (G533QS in aura_support.ron), which it is on any laptop but the Z13
-        /// (HasRearLight, AppConfig.cs:584-587).</summary>
+        /// (HasRearLight, AppConfig.cs:599-602).</summary>
         internal const ushort RearLightProduct = 0x18C6;
 
         internal const byte KindZones = 0x02, KindPerKey = 0x03, KindOneZone = 0x04;
@@ -127,7 +125,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
         internal const int ZonesLightbarFirst = 6, ZonesLightbarLights = 6;
 
         /// <summary>The LEDs a per-key picture numbers: 167 keys and the eleven past
-        /// them (Aura.cs:655-656).</summary>
+        /// them (Aura.cs:662-663).</summary>
         internal const int PerKeyLeds = 178;
 
         internal const int RearStripLeds = 39, RearStripPerFrame = 16;
@@ -137,7 +135,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
         internal const int RearStripFirstAddress = PerKeyLeds;
 
         /// <summary>The repaint interval of the laptops with no direct color, G-Helper's
-        /// aura_refresh for anything but a Strix (Aura.cs:916).</summary>
+        /// aura_refresh for anything but a Strix (Aura.cs:966).</summary>
         internal const int StaticRepaintMs = 300;
 
         private const byte StaticSpeed = 0xEB;
@@ -209,7 +207,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
 
         /// <summary>A frame as an output report, and as a feature report where the collection
         /// has none or the write fails. G-Helper writes the Z13's opening and every frame it
-        /// stores with stream.Write (Aura.cs:388-389 and 863, AsusHid.cs:160-173).</summary>
+        /// stores with stream.Write (Aura.cs:395-396 and 913, AsusHid.cs:160-173).</summary>
         internal static bool SendOutputFirst(IHidReportChannel io, byte[] frame)
             => (io.OutputReportLength > 0 && io.WriteOutput(frame)) || io.SetFeature(frame);
 
@@ -250,7 +248,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
         internal static bool Says(Answer? answer, AsusLaptopBoard row)
             => answer?.Type is KindZones or KindPerKey or KindOneZone || row?.PerKey == true;
 
-        /// <summary>IsOldStrix (Aura.cs:372).</summary>
+        /// <summary>IsOldStrix (Aura.cs:378).</summary>
         private static bool OldStrix(Answer? answer, AsusLaptopMachine machine)
             => answer is { Features1: 0 } && machine.Strix;
 
@@ -258,7 +256,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
         internal static byte OpeningByte(Kind kind, Answer? answer, AsusLaptopMachine machine) => kind switch
         {
             Kind.PerKey => 0x00,
-            Kind.Zones => (byte)(OldStrix(answer, machine) || machine.S17 ? 0x00 : 0x01),
+            Kind.Zones => (byte)(OldStrix(answer, machine) ? 0x00 : 0x01),
             _ => 0x01,
         };
 
@@ -296,7 +294,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
 
         /// <summary>The lights of a per-key keyboard. On ISO, LED 96 is the key beside
         /// Enter and LED 106 the key beside Left Shift (G-Helper's packetMap names them #
-        /// and ISO\, Aura.cs:565-567). On ANSI they sit under Enter and Left Shift.</summary>
+        /// and ISO\, Aura.cs:572-574). On ANSI they sit under Enter and Left Shift.</summary>
         internal static LightMap PerKeyMap(int productId, PluginKeyTable table, bool iso, bool rearStrip)
         {
             var lights = PluginKeyNames.Lights(table).ToList();
@@ -348,7 +346,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             return frame;
         }
 
-        /// <summary>AuraMessage for the Static mode (Aura.cs:291-308), then B5. Byte 9 is
+        /// <summary>AuraMessage for the Static mode (Aura.cs:297-314), then B5. Byte 9 is
         /// FF for black. A white keyboard's level goes in the red byte.</summary>
         internal static List<byte[]> StaticFrames(int rgb, bool white, bool stored)
         {
@@ -365,7 +363,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             return frames;
         }
 
-        /// <summary>The rear strip's frames (Aura.cs:752-766).</summary>
+        /// <summary>The rear strip's frames (Aura.cs:769-783).</summary>
         internal static List<byte[]> RearStripFrames(IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors)
         {
             var strip = new int[RearStripLeds];

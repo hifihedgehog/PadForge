@@ -8,31 +8,35 @@ namespace PadForge.Common.Input.Peripherals
     /// <summary>
     /// OpenRGB's CorsairPeripheralV2Controller family (#557): the Corsair
     /// keyboards, mice, MM700 mousemats and Slipstream receivers of the
-    /// protocol ckb-next calls Bragi. The collections are OpenRGB's
-    /// registrations (CorsairPeripheralV2ControllerDetect.cpp:92-138,
-    /// through <see cref="OpenRgbRegistrations"/>). Every frame is a 65-byte
-    /// output report, report ID 0, whose byte 1 is the write command: 08
-    /// for a wired device, 09 for one behind a receiver, 80 for the K57
-    /// (CorsairPeripheralV2Controller.h:24-30).
+    /// protocol ckb-next calls Bragi, the K65 Mini among them since OpenRGB
+    /// 4f2d8920. The collections are OpenRGB's registrations
+    /// (CorsairPeripheralV2ControllerDetect.cpp, through
+    /// <see cref="OpenRgbRegistrations"/>). Every frame is an output report,
+    /// report ID 0, as long as the device's packet size, 65 bytes or 1025
+    /// (<see cref="CorsairV2Device.PacketSize"/>), whose byte 1 is the write
+    /// command: 08 for a wired device, 09 for one behind a receiver, 80 for
+    /// the K57 (CorsairPeripheralV2Controller.h:24-30).
     ///
-    /// <para>The open, as OpenRGB's controller makes it
-    /// (CorsairPeripheralV2Controller.cpp:20-138). The device's product ID,
-    /// property 12, asked up to eight times 120 ms apart until it answers
-    /// one (GetAddressRetry and GetAddress, lines 264-319): a receiver
-    /// answers its own, and is then asked again with write command 09 for
-    /// the device behind it (lines 32-50). Then the vendor ID, property 11,
-    /// whose answer OpenRGB keeps nothing of. A device whose product ID is
-    /// not in OpenRGB's device list gets nothing more (lines 79-106,
-    /// CorsairPeripheralV2ControllerDetect.cpp:42-53). Then the lighting
-    /// resource: a transaction is opened on resource 22, and one the device
-    /// refuses is opened on resource 1 instead, then closed (lines
-    /// 108-137), except on the K100s, which stay on 22. Then software render
-    /// mode, 01 03 00 02, and a read of property 5F
+    /// <para>The open, as OpenRGB's controller makes it at b9d903b5
+    /// (CorsairPeripheralV2Controller.cpp:20-137). The device's product ID is
+    /// the collection's. A receiver's is its own, so the device behind it is
+    /// asked for its product ID, property 12, with write command 09, up to
+    /// eight times 120 ms apart until it answers one (lines 38-47,
+    /// GetAddressRetry and GetAddress, lines 263-318). A device not in
+    /// OpenRGB's device list gets nothing more (lines 68-97). Then the
+    /// device's lighting register and packet size (lines 103-104), and the
+    /// lighting resource: a transaction is opened on resource 22, and one the
+    /// device refuses is opened on resource 1 instead, then closed (lines
+    /// 114-136), except on the K100s and the K65 Mini, which stay on 22. Then
+    /// software render mode, 01 03 00 02, a read of the lighting register
     /// (CorsairPeripheralV2HardwareController.cpp:15-19,
     /// CorsairPeripheralV2SoftwareController.cpp:15-19), and the board
-    /// layout, property 41 (lines 259-262). Each write but the property
-    /// reads is followed by a read of the answer, up to 50 ms, except on
-    /// the K57, which answers none (skip_reads, lines 45-49).</para>
+    /// layout, property 41 (lines 258-261). Each write but the property reads is
+    /// followed by a read of the answer, up to 50 ms, except on the K57,
+    /// which answers none (skip_reads, lines 49-53). The receiver's ask goes
+    /// out before the packet size is known, at OpenRGB's default of 1025
+    /// (CorsairPeripheralV2Controller.h), and a report reaches the device at
+    /// its collection's length (<see cref="HidReportChannel.Pad"/>).</para>
     ///
     /// <para>The lights are OpenRGB's per device
     /// (CorsairPeripheralV2Devices.cpp, through CorsairLights.g.cs): a
@@ -48,10 +52,17 @@ namespace PadForge.Common.Input.Peripherals
     /// 00, then red, green and blue for each address
     /// (CorsairPeripheralV2HardwareController.cpp:26-88,
     /// CorsairPeripheralV2SoftwareController.cpp:26-47). It goes out in one
-    /// transaction: whatever input is waiting is read away, the transaction
-    /// opened, 06 with the length and 57 bytes, its answer read for up to 3
-    /// ms or a 2 ms wait, 07 reports of 61 bytes each followed by 2 ms, and
-    /// the transaction closed (SetLEDs, lines 361-457).</para>
+    /// transaction on handle 1: the transaction opened, 06 01 with the length
+    /// and the first packet size less 8 bytes, its answer read for up to 3 ms
+    /// or a 2 ms wait, 07 01 reports of the packet size less 4 bytes each
+    /// followed by 2 ms, and the transaction closed (SetLEDs, lines 377-460).
+    /// The read of waiting input before it is commented out there (line 389).
+    /// ckb-next writes lighting on handle 0 (BRAGI_LIGHTING_HANDLE,
+    /// bragi_proto.h:70), and OpenRGB did until 4f2d8920, which took the
+    /// K65 Mini's own controller's handle 1 for every device of its list. A
+    /// device only SignalRGB's plugin lists keeps handle 0, which the plugin
+    /// opens (Corsair_Bragi_Device.js:318), and the path OpenRGB had for it,
+    /// the waiting input read away first (<see cref="CorsairV2Device.PictureHandle"/>).</para>
     ///
     /// <para>The model of the device. Software render mode shows each
     /// picture as it comes, and it lasts until the device re-enumerates
@@ -144,9 +155,23 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>CORSAIR_K57_RGB_WIRED_PID (CorsairPeripheralV2Devices.h:72).</summary>
         internal const ushort K57Wired = 0x1B6E;
 
-        /// <summary>The K100s, whose lighting stays on resource 22 (lines
-        /// 116-124).</summary>
-        internal static bool KeepsResource22(uint productId) => productId is 0x1B7C or 0x1BC5 or 0x1B7D;
+        /// <summary>The K100s and the K65 Mini, whose lighting stays on resource
+        /// 22 (lines 114-123).</summary>
+        internal static bool KeepsResource22(uint productId) => productId is 0x1B7C or 0x1BC5 or 0x1B7D or 0x1BAF;
+
+        /// <summary>CORSAIR_V2_PACKET_SIZE, the packet size before a device is known
+        /// (CorsairPeripheralV2Controller.h:30, the member's default).</summary>
+        internal const int DefaultPacketSize = 1025;
+
+        /// <summary>Other product IDs of a device OpenRGB lists, which SignalRGB's plugin
+        /// lists with it and drives with the same frames: the K65 Mini's
+        /// (Corsair_K65_Mini_Keyboard.js:3, its open and picture at lines 66-127).</summary>
+        internal static readonly Dictionary<ushort, ushort> OtherIds = new()
+        {
+            [0x1BCF] = 0x1BAF,
+            [0x1BC3] = 0x1BAF,
+            [0x1BBD] = 0x1BAF,
+        };
 
         private readonly Dictionary<(string Detector, int ProductId), HidLightingModel> _models = new();
         private readonly object _gate = new();
@@ -156,7 +181,8 @@ namespace PadForge.Common.Input.Peripherals
         public HidLightingModel Match(HidCollectionInfo collection)
         {
             if (collection == null || collection.VendorId != CorsairLights.VendorId) return null;
-            var registrations = OpenRgbRegistrations.Match(OpenRgbFamily, collection);
+            var registrations = OpenRgbRegistrations.Match(OpenRgbFamily,
+                OtherIds.TryGetValue(collection.ProductId, out ushort sameAs) ? collection with { ProductId = sameAs } : collection);
             var registration = registrations.Count > 0 ? registrations[0] : PluginRegistration(collection);
             if (registration == null) return null;
             lock (_gate)
@@ -187,7 +213,7 @@ namespace PadForge.Common.Input.Peripherals
                 RepaintMs = RepaintMs,
                 KeepAliveMs = KeepAliveMs,
                 KeepAliveIdleMs = KeepAliveMs,
-                Begin = (io, wait) => Begin(io, wait, hardware, product),
+                Begin = (io, wait) => Begin(io, wait, hardware, product, productId),
                 Owed = path => CorsairSession.Owed(KeyboardProfileBackups.DeviceKey(product, path)),
                 Repair = (io, wait) => CorsairSession.Repair(io, wait, KeyboardProfileBackups.DeviceKey(product, io?.Path), 0),
             };
@@ -218,14 +244,14 @@ namespace PadForge.Common.Input.Peripherals
         internal static readonly Lazy<CorsairV2Device[]> PluginDevices = new(() => PluginCorsairTables.Devices
             .Where(d => !IsReceiver(d.Product) && CorsairLights.V2Devices.All(v => v.ProductId != d.Product))
             .Select(PluginDevice)
-            .Append(CorsairLights.K60RgbProDevice with { Name = "Corsair K60 PRO", ProductId = 0x1B83, Monochrome = true })
+            .Append(CorsairLights.K60RgbProDevice with { Name = "Corsair K60 PRO", ProductId = 0x1B83, Monochrome = true, PictureHandle = 0 })
             .ToArray());
 
         /// <summary>The K70 Pro's ID OpenRGB does not list takes its table, as the
         /// plugin lists them together.</summary>
         private static CorsairV2Device PluginDevice(PluginCorsairDevice row)
         {
-            if (row.Product == 0x1BD4) return CorsairLights.K70RgbProDevice with { Name = "Corsair K70 RGB PRO", ProductId = 0x1BD4 };
+            if (row.Product == 0x1BD4) return CorsairLights.K70RgbProDevice with { Name = "Corsair K70 RGB PRO", ProductId = 0x1BD4, PictureHandle = 0 };
             var table = row.Table();
             var lights = table.Usages != null
                 ? PluginKeyNames.Lights(table)
@@ -373,21 +399,31 @@ namespace PadForge.Common.Input.Peripherals
             return blocks;
         }
 
+        /// <summary>A report of the device's packet size, report ID 0, then
+        /// <paramref name="bytes"/>.</summary>
+        internal static byte[] Frame(int packetSize, params byte[] bytes)
+        {
+            var frame = new byte[packetSize];
+            Array.Copy(bytes, 0, frame, 1, Math.Min(bytes.Length, packetSize - 1));
+            return frame;
+        }
+
         /// <summary>The block-write reports of <paramref name="data"/>
-        /// (SetLEDs, lines 391-454): 06, 00, the length low and high, two
-        /// zeros, then 57 bytes, and 07, 00, then 61 bytes per report, the
+        /// (SetLEDs, lines 393-456): 06, the handle, the length low and high,
+        /// two zeros, then the packet size less 8 bytes, and 07, the handle
+        /// still in byte 3, then the packet size less 4 bytes per report, the
         /// last one's tail zero.</summary>
-        internal static List<byte[]> DataFrames(byte writeCmd, byte[] data)
+        internal static List<byte[]> DataFrames(byte writeCmd, byte handle, int packetSize, byte[] data)
         {
             var frames = new List<byte[]>();
-            var first = CorsairLights.Frame(writeCmd, 0x06, 0x00, (byte)data.Length, (byte)(data.Length >> 8));
-            int copy = Math.Min(data.Length, CorsairLights.PacketLength - 8);
+            var first = Frame(packetSize, writeCmd, 0x06, handle, (byte)data.Length, (byte)(data.Length >> 8));
+            int copy = Math.Min(data.Length, packetSize - 8);
             Array.Copy(data, 0, first, 8, copy);
             frames.Add(first);
-            for (int index = copy; index < data.Length; index += CorsairLights.PacketLength - 4)
+            for (int index = copy; index < data.Length; index += packetSize - 4)
             {
-                var next = CorsairLights.Frame(writeCmd, 0x07, 0x00);
-                Array.Copy(data, index, next, 4, Math.Min(data.Length - index, CorsairLights.PacketLength - 4));
+                var next = Frame(packetSize, writeCmd, 0x07, handle);
+                Array.Copy(data, index, next, 4, Math.Min(data.Length - index, packetSize - 4));
                 frames.Add(next);
             }
             return frames;
@@ -414,14 +450,23 @@ namespace PadForge.Common.Input.Peripherals
             public byte LightCtrl = LightCtrl2;
             public bool SkipReads;
 
+            /// <summary>The device's packet size once it is known, OpenRGB's default
+            /// before.</summary>
+            public int PacketSize = DefaultPacketSize;
+
+            /// <summary>The handle a picture goes on (<see cref="CorsairV2Device.PictureHandle"/>).</summary>
+            public byte Handle = 1;
+
             public bool Write(byte[] frame) => _io.WriteOutput(frame);
+
+            public byte[] Frame(params byte[] bytes) => CorsairPeripheralV2Lighting.Frame(PacketSize, bytes);
 
             /// <summary>One answer, into a buffer whose byte 0 is the report
             /// ID: hidapi's byte n is byte n + 1 here. The count read, 0 for
             /// none in time, -1 for a failed read.</summary>
             public int Read(byte[] buffer, int ms) => _io.ReadInput(buffer, ms);
 
-            public byte[] Buffer() => new byte[Math.Max(CorsairLights.PacketLength, _io.InputReportLength)];
+            public byte[] Buffer() => new byte[Math.Max(PacketSize, _io.InputReportLength)];
 
             /// <summary>A write followed by a read of its answer, unless the
             /// device answers none (SetRenderMode, LightingControl,
@@ -439,7 +484,7 @@ namespace PadForge.Common.Input.Peripherals
             /// write failed.</summary>
             public uint? Get(byte property)
             {
-                if (!Write(CorsairLights.Frame(WriteCmd, 0x02, property))) return null;
+                if (!Write(Frame(WriteCmd, 0x02, property))) return null;
                 var answer = Buffer();
                 if (Read(answer, AnswerMs) < 0) Array.Clear(answer);
                 if (answer[3] > 0) return NoValue;
@@ -465,7 +510,7 @@ namespace PadForge.Common.Input.Peripherals
             /// answer came or none is read. -1 when the write failed.</summary>
             public int Start(byte option)
             {
-                var frame = CorsairLights.Frame(WriteCmd, 0x0D, option, LightCtrl);
+                var frame = Frame(WriteCmd, 0x0D, option, LightCtrl);
                 if (!Write(frame)) return -1;
                 if (SkipReads) return 0x0D;
                 var answer = Buffer();
@@ -473,22 +518,24 @@ namespace PadForge.Common.Input.Peripherals
             }
 
             /// <summary>StopTransaction (lines 342-359).</summary>
-            public bool Stop(byte option) => Exchange(CorsairLights.Frame(WriteCmd, 0x05, 0x01, option));
+            public bool Stop(byte option) => Exchange(Frame(WriteCmd, 0x05, 0x01, option));
 
             /// <summary>SetRenderMode (lines 213-233): 01 hardware, 02
             /// software.</summary>
-            public byte[] RenderMode(byte mode) => CorsairLights.Frame(WriteCmd, 0x01, 0x03, 0x00, mode);
+            public byte[] RenderMode(byte mode) => Frame(WriteCmd, 0x01, 0x03, 0x00, mode);
 
-            /// <summary>SetLEDs (lines 378-457).</summary>
+            /// <summary>SetLEDs (lines 377-460): StartTransaction on the picture's
+            /// handle, the block write, StopTransaction(0). On handle 0 the waiting
+            /// input is read away first, as OpenRGB did before 4f2d8920.</summary>
             public bool SendData(byte[] data)
             {
-                if (!SkipReads)
+                if (Handle == 0 && !SkipReads)
                 {
                     var scratch = Buffer();
                     for (int i = 0; i < MaxClearReads && Read(scratch, ShortAnswerMs) > 0; i++) { }
                 }
-                if (Start(0) < 0) return false;
-                var frames = DataFrames(WriteCmd, data);
+                if (Start(Handle) < 0) return false;
+                var frames = DataFrames(WriteCmd, Handle, PacketSize, data);
                 for (int i = 0; i < frames.Count; i++)
                 {
                     if (!Write(frames[i])) return false;
@@ -505,10 +552,10 @@ namespace PadForge.Common.Input.Peripherals
             }
         }
 
-        private HidLightingSession Begin(IHidReportChannel io, Action<int> wait, bool hardware, string product)
+        private HidLightingSession Begin(IHidReportChannel io, Action<int> wait, bool hardware, string product, ushort productId)
         {
             var link = new Link(io, wait);
-            if (link.GetRetry(0x12) is not uint pid) return null;
+            uint pid = productId;
             if (IsReceiver(pid))
             {
                 link.WriteCmd = WriteWireless;
@@ -527,11 +574,10 @@ namespace PadForge.Common.Input.Peripherals
                 link.LightCtrl = LightCtrl1;
                 link.SkipReads = true;
             }
-            // The vendor ID, read and dropped (lines 60-71).
-            if (!link.Write(CorsairLights.Frame(link.WriteCmd, 0x02, 0x11))) return null;
-            link.Read(link.Buffer(), AnswerMs);
             var device = DeviceOf(pid);
             if (device == null) return null;
+            link.PacketSize = device.PacketSize;
+            link.Handle = device.PictureHandle;
             if (device.Monochrome) link.LightCtrl = LightCtrlMonochrome;
             else if (link.LightCtrl == LightCtrl2 && !KeepsResource22(pid))
             {
@@ -545,7 +591,7 @@ namespace PadForge.Common.Input.Peripherals
                 if (!link.Stop(0)) return null;
             }
             if (!link.Exchange(link.RenderMode(0x02))) return null;
-            if (!link.Exchange(CorsairLights.Frame(link.WriteCmd, 0x02, 0x5F))) return null;
+            if (!link.Exchange(link.Frame(link.WriteCmd, 0x02, device.LightCtrlReg))) return null;
             if (link.Get(0x41) is not uint layout) return null;
             var map = MapOf(device, LayoutOf(layout), out int bufferLength);
             bool triplets = hardware && link.LightCtrl == LightCtrl2;
@@ -556,9 +602,13 @@ namespace PadForge.Common.Input.Peripherals
         {
             private readonly Link _link;
 
+            /// <summary>The hand-back is recorded as a 65-byte report: a record holds
+            /// no more than <see cref="KeyboardProfileBackups.MaxContents"/> bytes, and the
+            /// channel pads a report to a 1025-byte device's length when it goes out
+            /// (<see cref="HidReportChannel.Pad"/>).</summary>
             public Session(string key, Link link, CorsairV2Device device, LightMap map, int bufferLength,
                 bool triplets)
-                : base(key, link.RenderMode(0x01), 1, 0)
+                : base(key, CorsairLights.Frame(link.WriteCmd, 0x01, 0x03, 0x00, 0x01), 1, 0)
             {
                 _link = link;
                 Device = device;

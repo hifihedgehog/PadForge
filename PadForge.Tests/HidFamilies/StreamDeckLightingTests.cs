@@ -13,7 +13,7 @@ namespace PadForge.Tests
     /// by OpenRGB's own code: CreateButtonImage and SendButtonImage
     /// (RGBController_ElgatoStreamDeck.cpp:75-99,
     /// ElgatoStreamDeckController.cpp:60-79) compiled with MSVC against
-    /// OpenRGB's dependencies/stb/stb_image_write.h at c6fc8016, one line
+    /// OpenRGB's dependencies/stb/stb_image_write.h at b9d903b5, one line
     /// per key and color. Trailing zeros are left out.</summary>
     public class StreamDeckLightingTests
     {

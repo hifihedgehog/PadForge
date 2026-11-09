@@ -52,8 +52,6 @@ namespace PadForge.Common.Input.Peripherals
                 ("Corsair HS80 RGB Wireless", 0x0A6B, true, three),
                 ("Corsair HS80 RGB White", 0x0A71, false, three),
                 ("Corsair HS80 RGB White Wireless", 0x0A73, true, three),
-                // On master only, and not on beta's list.
-                ("Corsair Virtuoso Gaming SE", 0xA346, true, four),
             })
             {
                 // The device byte: 09 through the dongle, 08 on the cable.
@@ -115,11 +113,8 @@ namespace PadForge.Common.Input.Peripherals
             };
             foreach (var (name, pid, plugin) in new (string, ushort, string)[]
             {
-                ("Corsair Void Pro Headset", 0x0A14, "Corsair_Void_Pro_HeadSet_0x0A14.js"),
-                ("Corsair Void Pro Headset", 0x0A17, "Corsair_Void_Pro_HeadSet_0x0A17.js"),
+                // 0A14, 0A17, 0A1A and 0A1D are OpenRGB's (CorsairVoidLighting).
                 ("Corsair Void Pro Headset", 0x0A19, "Corsair_Void_Pro_HeadSet_0x0A19.js"),
-                ("Corsair Void Pro Headset", 0x0A1A, "Corsair_Void_Pro_HeadSet_0x0A1A.js"),
-                ("Corsair Void Pro Headset", 0x0A1D, "Corsair_Void_Pro_HeadSet_0x0A1D.js"),
                 ("Corsair Void Pro Headset", 0x1B23, "Corsair_Void_Pro_HeadSet_0x1B23.js"),
                 ("Corsair Void Elite Headset", 0x0A56, "Corsair_Void_Elite_HeadSet.js"),
                 ("Corsair Void Elite Headset", 0x0A52, "Corsair_Void_Elite_HeadSet_0x0A52.js"),

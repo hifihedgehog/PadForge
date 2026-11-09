@@ -252,7 +252,7 @@ namespace PadForge.Tests
         [Fact]
         public void TheTables_AreOpenRgbsAtThePinnedCommit()
         {
-            Assert.StartsWith("c6fc8016", SteelSeriesApexLayouts.OpenRgbCommit);
+            Assert.StartsWith("b9d903b5", SteelSeriesApexLayouts.OpenRgbCommit);
             Assert.Equal(112, SteelSeriesApexLayouts.Keys.Length);
             Assert.Equal(0x04, SteelSeriesApexLayouts.Keys[0]);
             Assert.Equal(0xFB, SteelSeriesApexLayouts.Keys[111]);

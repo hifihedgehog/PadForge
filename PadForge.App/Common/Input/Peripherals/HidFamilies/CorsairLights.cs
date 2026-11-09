@@ -47,12 +47,31 @@ namespace PadForge.Common.Input.Peripherals
     /// <summary>One corsair_v2_zone (CorsairPeripheralV2Devices.h:41-47).</summary>
     internal sealed record CorsairV2Zone(string Name, CorsairZoneType Type, int Rows, int Cols);
 
-    /// <summary>One corsair_v2_device (CorsairPeripheralV2Devices.h:58-66):
-    /// its product ID, type, size, zones in order and the name of its key
-    /// layout in KeyboardLayouts, null for none.</summary>
+    /// <summary>One corsair_v2_device (CorsairPeripheralV2Devices.h:58-68):
+    /// its product ID, type, size, zones in order, the name of its key
+    /// layout in KeyboardLayouts, null for none, its lighting register and
+    /// its packet size.</summary>
     internal sealed record CorsairV2Device(string Name, ushort ProductId, CorsairDeviceType Type, int Rows, int Cols,
         CorsairV2Zone[] Zones, string Layout)
     {
+        /// <summary>light_ctrl_reg, the property the open reads after software
+        /// render mode (LightingControl, CorsairPeripheralV2HardwareController.cpp:18
+        /// and CorsairPeripheralV2SoftwareController.cpp:18). 5F for every device
+        /// of OpenRGB's list but the K65 Mini's 6E.</summary>
+        public byte LightCtrlReg { get; init; } = 0x5F;
+
+        /// <summary>pkt_size, the length of every report the device takes
+        /// (CorsairPeripheralV2Controller.cpp:103-104): 65, or 1025 for the K65 Mini
+        /// and the K70 RGB PRO V2. A picture is cut to fit it.</summary>
+        public int PacketSize { get; init; } = CorsairLights.PacketLength;
+
+        /// <summary>The handle a picture is written on. OpenRGB opens handle 1 for
+        /// every device of its list (SetLEDs, CorsairPeripheralV2Controller.cpp:390-398,
+        /// since 4f2d8920). A device only SignalRGB's plugin lists takes handle 0, which
+        /// the plugin opens for lighting (Corsair_Bragi_Device.js:318), as ckb-next does
+        /// (BRAGI_LIGHTING_HANDLE, bragi_proto.h:70).</summary>
+        public byte PictureHandle { get; init; }
+
         /// <summary>The lights of a device OpenRGB has no table for, from
         /// SignalRGB's plugin, in place of <see cref="Zones"/>.</summary>
         public IReadOnlyList<LightInfo> OwnLights { get; init; }

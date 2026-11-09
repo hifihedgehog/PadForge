@@ -76,7 +76,7 @@ namespace PadForge.Tests
         }
 
         /// <summary>G-Helper writes C0 03 01 and the rear light's three frames with
-        /// stream.Write (Aura.cs:388-389 and 863, AsusHid.cs:160-173).</summary>
+        /// stream.Write (Aura.cs:395-396 and 913, AsusHid.cs:160-173).</summary>
         [Fact]
         public void TheZ13sOpening_AndItsRearLight_GoAsOutputReports()
         {
@@ -450,19 +450,20 @@ namespace PadForge.Tests
             Assert.Equal(CorsairPeripheralLighting.MouseZones, plain.Count);
         }
 
-        /// <summary>The K65 Mini's registration names no usage page, so its frame's length
-        /// tells the collection: 1025 bytes from OpenRGB and SignalRGB alike
-        /// (CorsairK65MiniController.h:16, Corsair_K65_Mini_Keyboard.js:66).</summary>
+        /// <summary>The K65 Mini is a V2 device of OpenRGB's (4f2d8920), registered on
+        /// interface 1 and the vendor page FF42 (CorsairPeripheralV2ControllerDetect.cpp),
+        /// so the older family no longer takes it and the collection on another page is
+        /// not its lighting.</summary>
         [Theory]
         [InlineData(0x1BAF)]
         [InlineData(0x1BCF)]
-        public void TheK65Mini_IsTheCollectionWithAFrameLongOutputReport(int product)
+        public void TheK65Mini_IsTheV2FamilysCollectionOnPageFF42(int product)
         {
-            var family = new CorsairPeripheralLighting();
-            var collection = CorsairPeripheralLightingTests.Collection((ushort)product, 0xFF00);
-            Assert.Null(family.Match(collection with { OutputReportLength = 65 }));
-            Assert.Null(family.Match(collection with { OutputReportLength = 0 }));
-            Assert.NotNull(family.Match(collection with { OutputReportLength = CorsairPeripheralLighting.K65MiniPacketLength }));
+            var collection = CorsairPeripheralLightingTests.Collection((ushort)product, 0xFF42);
+            Assert.NotNull(new CorsairPeripheralV2Lighting().Match(collection));
+            Assert.Null(new CorsairPeripheralV2Lighting().Match(collection with { UsagePage = 0xFF00 }));
+            Assert.Null(new CorsairPeripheralLighting().Match(collection));
+            Assert.Null(new CorsairPeripheralLighting().Match(collection with { UsagePage = 0xFF00 }));
         }
 
         // ── Cooler Master ──

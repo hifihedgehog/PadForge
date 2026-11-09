@@ -10,12 +10,12 @@ WHAT IT READS, under OpenRGB's Controllers:
 - CorsairPeripheralController/CorsairPeripheralControllerDetect.cpp: the
   section ("Keyboards", "Mice", "Mousemats", "Headset Stands", ...) each
   REGISTER line sits in, which names the device type of its product ID.
-- CorsairPeripheralController/RGBController_CorsairK65Mini.cpp: the K65
-  Mini's matrix map and its keys[] (light position and name).
 - CorsairPeripheralController/CorsairK55RGBPROXTController.cpp keys[] and
   RGBController_CorsairK55RGBPROXT.cpp: matrix_map and key_names.
 - CorsairPeripheralV2Controller/CorsairPeripheralV2Devices.cpp and .h: every
-  corsair_v2_zone, every corsair_v2_device and the device list's order.
+  corsair_v2_zone, every corsair_v2_device with its lighting register and
+  packet size, and the device list's order. Every device of the list takes
+  its pictures on handle 1 (SetLEDs, CorsairPeripheralV2Controller.cpp).
 - RGBController/RGBControllerKeyNames.cpp: the string behind each KEY_ and
   ZONE_ name.
 
@@ -184,17 +184,6 @@ def main():
     detect = oc.Source(root, V1 + "CorsairPeripheralControllerDetect.cpp")
     detect_ev = oc.Evaluator([detect])
 
-    # -- K65 Mini ----------------------------------------------------------
-    k65 = oc.Source(root, V1 + "RGBController_CorsairK65Mini.cpp")
-    k65_ev = oc.Evaluator([k65], strings=key_names)
-    k65_matrix = matrix(k65, k65_ev, "matrix_map")
-    node, k65_keys_line = definition(k65, "keys")
-    k65_keys = []
-    for e in node:
-        if not isinstance(e, Node) or len(e) != 2:
-            raise CppError("K65 Mini keys: %r" % e)
-        k65_keys.append((k65_ev.integer(e[0]), k65_ev.string(e[1])))
-
     # -- K55 RGB PRO XT --------------------------------------------------------
     xt_ctl = oc.Source(root, V1 + "CorsairK55RGBPROXTController.cpp")
     xt_keys = ints(xt_ctl, oc.Evaluator([xt_ctl]), "keys")
@@ -220,7 +209,7 @@ def main():
     devices = {}
     for var in device_vars:
         node, line = definition(v2, var)
-        if len(node) != 6 or not isinstance(node[4], Node):
+        if len(node) != 8 or not isinstance(node[4], Node):
             raise CppError("%s: %d fields" % (var, len(node)))
         zl = []
         for e in node[4]:
@@ -237,7 +226,7 @@ def main():
         else:
             raise CppError("%s: layout %r" % (var, layout))
         devices[var] = (v2_ev.integer(node[0]), node[1][0].text, v2_ev.integer(node[2]), v2_ev.integer(node[3]),
-                        zl, layout_name, line)
+                        zl, layout_name, line, v2_ev.integer(node[6]), v2_ev.integer(node[7]))
     node, list_line = definition(v2, "corsair_v2_device_list_data")
     order = []
     for e in node:
@@ -306,17 +295,6 @@ def main():
         w("            (%s, %s, 0x%04X, %s, %d)," % (cs_string(rname), cs_string(det), pid, cs_string(heading or ""), line))
     w("        };")
 
-    matrix_out("k65_mini_matrix_map", k65_matrix[0], k65_matrix[1], "RGBController_CorsairK65Mini.cpp")
-    w("")
-    w("        /// <summary>RGBController_CorsairK65Mini.cpp:%d keys: each key's position" % k65_keys_line)
-    w("        /// in the frame and OpenRGB's name for it, in the order matrix_map")
-    w("        /// numbers them.</summary>")
-    w("        internal static readonly (int Position, string Name)[] K65MiniKeys =")
-    w("        {")
-    for pos, name in k65_keys:
-        w("            (%d, %s)," % (pos, cs_string(name)))
-    w("        };")
-
     int_array("k55_pro_xt_keys", xt_keys[0], xt_keys[1], "CorsairK55RGBPROXTController.cpp")
     matrix_out("k55_pro_xt_matrix_map", xt_matrix[0], xt_matrix[1], "RGBController_CorsairK55RGBPROXT.cpp")
     str_array("k55_pro_xt_key_names", xt_names[0], xt_names[1], "RGBController_CorsairK55RGBPROXT.cpp")
@@ -329,13 +307,18 @@ def main():
         w("        internal static readonly CorsairV2Zone %s = new(%s, CorsairZoneType.%s, %d, %d);"
           % (pascal(var), cs_string(name), pascal(ztype.replace("ZONE_TYPE_", "").lower()), rows, cols))
     for var in device_vars:
-        pid, dtype, rows, cols, zl, layout_name, line = devices[var]
+        pid, dtype, rows, cols, zl, layout_name, line, light_ctrl_reg, pkt_size = devices[var]
         w("")
         w("        /// <summary>%s:%d %s.</summary>" % (v2_file, line, var))
         w("        internal static readonly CorsairV2Device %s = new(%s, 0x%04X, CorsairDeviceType.%s, %d, %d,"
           % (pascal(var), cs_string(var), pid, pascal(dtype.replace("DEVICE_TYPE_", "").lower()), rows, cols))
-        w("            new[] { %s }, %s);" % (", ".join(pascal(z) for z in zl),
-                                            cs_string(layout_name) if layout_name else "null"))
+        w("            new[] { %s }, %s)" % (", ".join(pascal(z) for z in zl),
+                                           cs_string(layout_name) if layout_name else "null"))
+        w("        {")
+        w("            LightCtrlReg = 0x%02X," % light_ctrl_reg)
+        w("            PacketSize = %d," % pkt_size)
+        w("            PictureHandle = 1,")
+        w("        };")
     w("")
     w("        /// <summary>%s:%d corsair_v2_device_list_data, in its order.</summary>" % (v2_file, list_line))
     w("        internal static readonly CorsairV2Device[] V2Devices =")

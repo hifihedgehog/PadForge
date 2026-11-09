@@ -21,7 +21,7 @@ namespace PadForge.Tests
         [Fact]
         public void TheTables_AreOpenRgbsAtThePinnedCommit()
         {
-            Assert.Equal("c6fc8016d215cca17d660c47746a08d7ea6a9175", AnnePro2KeyroxLayouts.OpenRgbCommit);
+            Assert.Equal("b9d903b544a40486709c4ca097d0b234b617db9c", AnnePro2KeyroxLayouts.OpenRgbCommit);
             // RGBController_AnnePro2.cpp:19-24 and 47-111.
             Assert.Equal(61, AnnePro2KeyroxLayouts.AnnePro2.Length);
             Assert.Equal(new AnneKeyroxLed("Key: Right Control", 60, 4, 12), AnnePro2KeyroxLayouts.AnnePro2[60]);

@@ -73,12 +73,28 @@ namespace PadForge.Tests
         [Fact]
         public void TheDeviceList_IsOpenRgbs()
         {
-            // corsair_v2_device_list_data (CorsairPeripheralV2Devices.cpp:1720-1766).
-            Assert.Equal(33, CorsairLights.V2Devices.Length);
+            // corsair_v2_device_list_data (CorsairPeripheralV2Devices.cpp at b9d903b5).
+            Assert.Equal(34, CorsairLights.V2Devices.Length);
             Assert.Equal("k55_rgb_pro_device", CorsairLights.V2Devices[0].Name);
             Assert.Equal("mm700_3xl_device", CorsairLights.V2Devices[^1].Name);
             var k100 = CorsairPeripheralV2Lighting.DeviceOf(0x1B7C);
             Assert.Equal(("corsair_k100_layout", 12, 24), (k100.Layout, k100.Rows, k100.Cols));
+            // Each device's lighting register and packet size (light_ctrl_reg and pkt_size,
+            // CorsairPeripheralV2Devices.h:66-67): the K65 Mini's own (lines 968-985) and
+            // the K70 RGB PRO V2's 1025-byte reports (OpenRGB dbb97ccb), 5F and 65 elsewhere.
+            // Every device of the list paints on handle 1 (SetLEDs, CorsairPeripheralV2Controller.cpp:390-398).
+            var k65 = CorsairPeripheralV2Lighting.DeviceOf(0x1BAF);
+            Assert.Equal(("k65_mini_device", "corsair_K65_mini_layout", 6, 14), (k65.Name, k65.Layout, k65.Rows, k65.Cols));
+            Assert.Equal((0x6E, 1025, 1), (k65.LightCtrlReg, k65.PacketSize, k65.PictureHandle));
+            var proV2 = CorsairPeripheralV2Lighting.DeviceOf(0x1BB3);
+            Assert.Equal((0x5F, 1025, 1), (proV2.LightCtrlReg, proV2.PacketSize, proV2.PictureHandle));
+            Assert.Equal((0x5F, 65, 1), (k100.LightCtrlReg, k100.PacketSize, k100.PictureHandle));
+            Assert.All(CorsairLights.V2Devices.Where(d => d.ProductId is not (0x1BAF or 0x1BB3)),
+                d => Assert.Equal((0x5F, 65, 1), (d.LightCtrlReg, d.PacketSize, d.PictureHandle)));
+            // The devices only SignalRGB's plugin lists paint on handle 0, as the plugin
+            // opens it (Corsair_Bragi_Device.js:318) and ckb-next does (bragi_proto.h:70).
+            Assert.All(CorsairPeripheralV2Lighting.PluginDevices.Value,
+                d => Assert.Equal((0x5F, 65, 0), (d.LightCtrlReg, d.PacketSize, d.PictureHandle)));
             var dark = CorsairPeripheralV2Lighting.DeviceOf(0x1B4B);
             Assert.Equal(new[] { "Scroll Wheel", "Side Buttons", "Rear Left", "Logo", "Rear Right", "DPI & Indicator Zone" },
                 dark.Zones.Select(z => z.Name));
@@ -97,7 +113,7 @@ namespace PadForge.Tests
         {
             var family = Family();
             var registrations = OpenRgbRegistrations.Of(CorsairPeripheralV2Lighting.OpenRgbFamily).ToList();
-            Assert.Equal(38, registrations.Count);
+            Assert.Equal(39, registrations.Count);
             foreach (var r in registrations)
             {
                 var model = family.Match(Collection((ushort)r.ProductId));
@@ -218,17 +234,29 @@ namespace PadForge.Tests
         public void TheBlockWrite_Is57BytesThen61()
         {
             var data = Enumerable.Range(0, 200).Select(i => (byte)i).ToArray();
-            var frames = CorsairPeripheralV2Lighting.DataFrames(0x08, data);
-            // 57 + 61 + 61 + 21 (SetLEDs, lines 395-454).
+            var frames = CorsairPeripheralV2Lighting.DataFrames(0x08, 1, 65, data);
+            // 57 + 61 + 61 + 21 on handle 1, whose number stays in byte 3 of every
+            // report (SetLEDs, CorsairPeripheralV2Controller.cpp:393-456 at b9d903b5).
             Assert.Equal(4, frames.Count);
-            Assert.Equal("00 08 06 00 C8 00 00 00 00 01", Hex(frames[0], 10));
+            Assert.Equal("00 08 06 01 C8 00 00 00 00 01", Hex(frames[0], 10));
             Assert.Equal(56, frames[0][64]);
-            Assert.Equal("00 08 07 00 39 3A", Hex(frames[1], 6));
-            Assert.Equal("00 08 07 00 B3", Hex(frames[3], 5));
+            Assert.Equal("00 08 07 01 39 3A", Hex(frames[1], 6));
+            Assert.Equal("00 08 07 01 B3", Hex(frames[3], 5));
             Assert.Equal(199, frames[3][4 + 20]);
             Assert.All(frames[3].Skip(25), b => Assert.Equal(0, b));
             Assert.All(frames, f => Assert.Equal(65, f.Length));
-            Assert.Single(CorsairPeripheralV2Lighting.DataFrames(0x09, new byte[57]));
+            Assert.Single(CorsairPeripheralV2Lighting.DataFrames(0x09, 1, 65, new byte[57]));
+            // Handle 0, as the plugin's devices take it.
+            var plugin = CorsairPeripheralV2Lighting.DataFrames(0x08, 0, 65, data);
+            Assert.Equal("00 08 06 00 C8 00", Hex(plugin[0], 6));
+            Assert.Equal("00 08 07 00 39 3A", Hex(plugin[1], 6));
+            // A 1025-byte device takes 1017 bytes in its first report and 1021 in each
+            // after (pkt_size - offset1 and pkt_size - offset2).
+            var big = CorsairPeripheralV2Lighting.DataFrames(0x08, 1, 1025, new byte[2000]);
+            Assert.Equal(2, big.Count);
+            Assert.All(big, f => Assert.Equal(1025, f.Length));
+            Assert.Equal("00 08 06 01 D0 07", Hex(big[0], 6));
+            Assert.Equal("00 08 07 01", Hex(big[1], 4));
         }
 
         // ─────────────────────────────────────────────
@@ -241,10 +269,10 @@ namespace PadForge.Tests
             var model = Family().Match(Collection(0x1BC4));
             var io = Device(0x1BC4, layout: 2);
             var session = Assert.IsType<CorsairPeripheralV2Lighting.Session>(model.Begin(io, io.Wait));
+            // The product ID is the collection's and no ID is asked of a wired device
+            // (CorsairPeripheralV2Controller.cpp:20-54 at b9d903b5).
             Assert.Equal(new[]
             {
-                "out 00 08 02 12 00 00", "in 50",      // the product ID
-                "out 00 08 02 11 00 00", "in 50",      // the vendor ID
                 "out 00 08 0D 00 22 00", "in 50",      // resource 22 opened
                 "out 00 08 05 01 00 00", "in 50",      // and closed
                 "out 00 08 01 03 00 02", "in 50",      // software render mode
@@ -308,10 +336,9 @@ namespace PadForge.Tests
             var model = Family().Match(Collection(0x1B6E));
             var io = Device(0x1B6E);
             var session = Assert.IsType<CorsairPeripheralV2Lighting.Session>(model.Begin(io, io.Wait));
+            // Known by the collection's product ID (lines 49-53), so nothing is asked first.
             Assert.Equal(new[]
             {
-                "out 00 08 02 12 00 00", "in 50",
-                "out 00 80 02 11 00 00", "in 50",      // read whatever skip_reads says
                 "out 00 80 01 03 00 02",
                 "out 00 80 02 5F 00 00",
                 "out 00 80 02 41 00 00", "in 50",      // GetAddress always reads
@@ -333,8 +360,9 @@ namespace PadForge.Tests
             Assert.Empty(model.Map.Lights);
             var io = Device(0x1BA6, pidByCmd: cmd => cmd == 0x09 ? 0x1BB5 : null);
             var session = Assert.IsType<CorsairPeripheralV2Lighting.Session>(model.Begin(io, io.Wait));
-            Assert.Equal(new[] { "out 00 08 02 12 00 00", "in 50", "out 00 09 02 12 00 00", "in 50", "out 00 09 02 11 00 00" },
-                io.Log.Take(5));
+            // The collection's ID names a receiver, so the device behind it is asked with
+            // 09, and no vendor ID follows (lines 38-47 at b9d903b5).
+            Assert.Equal(new[] { "out 00 09 02 12 00 00", "in 50", "out 00 09 0D 00 22 00" }, io.Log.Take(3));
             Assert.Equal(CorsairPeripheralV2Lighting.WriteWireless, session.WriteCmd);
             Assert.Equal("m65_ultra_rgb_device", session.Device.Name);
             Assert.Equal(2, session.Map.Lights.Count);
@@ -361,25 +389,27 @@ namespace PadForge.Tests
         [Fact]
         public void AProductIdThatIsSlowToCome_IsAskedAgain120MsApart()
         {
+            // A receiver's device that has not woken answers zero (GetAddressRetry, lines 263-289).
             int asked = 0;
-            var model = Family().Match(Collection(0x1BF0));
-            var io = Device(0x1BF0, pidByCmd: _ => ++asked < 3 ? 0u : null);
+            var model = Family().Match(Collection(0x1BA6));
+            var io = Device(0x1BA6, pidByCmd: _ => ++asked < 3 ? 0u : 0x1BB5u);
             Assert.NotNull(model.Begin(io, io.Wait));
-            Assert.Equal(new[] { "out 00 08 02 12 00 00", "in 50", "wait 120", "out 00 08 02 12 00 00", "in 50", "wait 120",
-                "out 00 08 02 12 00 00", "in 50", "out 00 08 02 11 00 00" }, io.Log.Take(9));
-            // An error answer is no value either (lines 311-317).
-            var refusing = new FakeCorsairChannel { Answer = q => Answer(q[1], q[2], error: 3, value: 0x1BF0) };
+            Assert.Equal(new[] { "out 00 09 02 12 00 00", "in 50", "wait 120", "out 00 09 02 12 00 00", "in 50", "wait 120",
+                "out 00 09 02 12 00 00", "in 50", "out 00 09 0D 00 22 00" }, io.Log.Take(9));
+            // An error answer is no value either (lines 311-316), and eight of them end the open.
+            var refusing = new FakeCorsairChannel { Answer = q => Answer(q[1], q[2], error: 3, value: 0x1BB5) };
             Assert.Null(model.Begin(refusing, refusing.Wait));
-            Assert.Equal(8 + 1, refusing.Outputs.Count);
+            Assert.Equal(8, refusing.Outputs.Count);
         }
 
         [Fact]
         public void ADeviceNotInTheList_GetsNothingMore()
         {
-            var model = Family().Match(Collection(0x1BF0));
-            var io = Device(0x1234);
+            // The device behind a receiver that the list lacks is dropped (lines 92-97).
+            var model = Family().Match(Collection(0x1BA6));
+            var io = Device(0x1BA6, pidByCmd: _ => 0x1234u);
             Assert.Null(model.Begin(io, io.Wait));
-            Assert.Equal(new[] { "out 00 08 02 12 00 00", "in 50", "out 00 08 02 11 00 00", "in 50" }, io.Log);
+            Assert.Equal(new[] { "out 00 09 02 12 00 00", "in 50" }, io.Log);
         }
 
         /// <summary>The K60 PRO's one-color model: its own resource (ckb-next device_bragi.c:83-86),
@@ -398,6 +428,10 @@ namespace PadForge.Tests
             var block = io.Outputs.First(f => f[2] == 0x06);
             Assert.Equal(session.BufferLength, block[4] | block[5] << 8 | block[6] << 16 | block[7] << 24);
             Assert.Equal(0x9C, block[8 + lights[0].Address]);
+            // A device of the plugin's list paints on handle 0, the transaction opened on
+            // it, as the plugin and ckb-next do.
+            Assert.Equal(0, block[3]);
+            Assert.Equal(0, io.Outputs.First(f => f[2] == 0x0D)[3]);
         }
 
         [Fact]
@@ -408,18 +442,77 @@ namespace PadForge.Tests
             var session = model.Begin(io, io.Wait);
             io.Log.Clear();
             Assert.Equal(HidLightingPaint.Sent, session.Paint(io, io.Wait, session.Map.Lights, new[] { 0x112233, 0x445566 }));
-            // ClearPacketBuffer, StartTransaction, the block write, its
-            // answer or a 2 ms wait, StopTransaction (lines 378-457).
+            // StartTransaction(1), the block write on handle 1, its answer or a 2 ms
+            // wait, StopTransaction(0), with no ClearPacketBuffer first (SetLEDs,
+            // CorsairPeripheralV2Controller.cpp:377-460 at b9d903b5).
             Assert.Equal(new[]
             {
-                "in 3",
-                "out 00 08 0D 00 22 00", "in 50",
-                "out 00 08 06 00 08 00", "in 3", "wait 2",
+                "out 00 08 0D 01 22 00", "in 50",
+                "out 00 08 06 01 08 00", "in 3", "wait 2",
                 "out 00 08 05 01 00 00", "in 50",
             }, io.Log);
             var block = io.Outputs.Single(f => f[2] == 0x06);
-            Assert.Equal("00 08 06 00 08 00 00 00 12 00 11 22 33 44 55 66 00", Hex(block, 17));
+            Assert.Equal("00 08 06 01 08 00 00 00 12 00 11 22 33 44 55 66 00", Hex(block, 17));
             Assert.Equal("00 08 01 03 00 01", Hex(KeyboardProfileBackups.Get("corsair:1B1C:1BF0").Value.Contents, 6));
+        }
+
+        /// <summary>The K65 Mini is a device of the list now (OpenRGB 4f2d8920): no
+        /// resource probe, its own lighting register 6E, and 1025-byte reports, so a
+        /// picture fits in one, as its own controller had it (08 06 01 73 01 00 00 12 00).
+        /// SignalRGB's plugin names three more IDs and drives them the same way
+        /// (Corsair_K65_Mini_Keyboard.js:3 and 66-127).</summary>
+        [Theory]
+        [InlineData(0x1BAF)]
+        [InlineData(0x1BCF)]
+        [InlineData(0x1BC3)]
+        [InlineData(0x1BBD)]
+        public void TheK65Mini_OpensAsADeviceOfTheList_AndPaintsInOneReport(int product)
+        {
+            var model = Family().Match(Collection((ushort)product));
+            Assert.Equal("Corsair K65 Mini", model.Name);
+            Assert.Null(Family().Match(Collection((ushort)product, page: 0xFF00)));
+            Assert.Null(new CorsairPeripheralLighting().Match(Collection((ushort)product, page: 0xFF42)));
+            var io = Device((uint)product);
+            var session = Assert.IsType<CorsairPeripheralV2Lighting.Session>(model.Begin(io, io.Wait));
+            Assert.Equal(new[]
+            {
+                "out 00 08 01 03 00 02", "in 50",      // software render mode
+                "out 00 08 02 6E 00 00", "in 50",      // LightingControl(light_ctrl_reg)
+                "out 00 08 02 41 00 00", "in 50",      // the board layout
+            }, io.Log);
+            Assert.All(io.Outputs, f => Assert.Equal(1025, f.Length));
+            Assert.True(session.Triplets);
+            Assert.Equal(123, session.BufferLength);
+            // The hand-back record fits a backup (KeyboardProfileBackups.MaxContents), so the
+            // picture is not held back waiting for it. The channel pads it on the way out.
+            Assert.Equal("00 08 01 03 00 01", Hex(Assert.Single(session.CrashFrames), 6));
+            Assert.True(Assert.Single(session.CrashFrames).Length <= KeyboardProfileBackups.MaxContents);
+            Assert.Equal(new[] { 0, 1, 44 }, session.Map.Lights.Where(l => l.Usage == 0x2C).Select(l => l.Address).OrderBy(a => a));
+            io.Log.Clear();
+            io.Outputs.Clear();
+            var lights = session.Map.Lights;
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(io, io.Wait, lights,
+                lights.Select(l => l.Address == 41 ? 0x112233 : 0).ToList()));
+            Assert.Equal(new[] { "out 00 08 0D 01 22 00", "in 50", "out 00 08 06 01 73 01", "in 3", "wait 2",
+                "out 00 08 05 01 00 00", "in 50" }, io.Log);
+            var block = io.Outputs.Single(f => f[2] == 0x06);
+            Assert.Equal("00 08 06 01 73 01 00 00 12 00", Hex(block, 10));
+            Assert.Equal("11 22 33", Hex(block, 10 + 41 * 3, 3));
+            Assert.Equal(1025, block.Length);
+        }
+
+        /// <summary>The K70 RGB PRO V2 takes 1025-byte reports (OpenRGB dbb97ccb), so
+        /// its whole picture goes in one.</summary>
+        [Fact]
+        public void TheK70RgbProV2_PaintsIn1025ByteReports()
+        {
+            var model = Family().Match(Collection(0x1BB3));
+            var io = Device(0x1BB3);
+            var session = model.Begin(io, io.Wait);
+            io.Log.Clear();
+            session.Paint(io, io.Wait, session.Map.Lights, new int[session.Map.Lights.Count]);
+            Assert.DoesNotContain(io.Log, l => l.StartsWith("out 00 08 07"));
+            Assert.Equal(1025, io.Outputs.Single(f => f[2] == 0x06).Length);
         }
 
         [Fact]
@@ -431,9 +524,9 @@ namespace PadForge.Tests
             io.Log.Clear();
             session.Paint(io, io.Wait, session.Map.Lights, new int[session.Map.Lights.Count]);
             // 2 + 193 * 3 = 581 bytes: 57, then nine of 61.
-            Assert.Equal(9, io.Log.Count(l => l.StartsWith("out 00 08 07")));
+            Assert.Equal(9, io.Log.Count(l => l.StartsWith("out 00 08 07 01")));
             Assert.Equal(10, io.Log.Count(l => l == "wait 2"));
-            Assert.Equal("00 08 06 00 45 02", Hex(io.Outputs.Single(f => f[2] == 0x06), 6));
+            Assert.Equal("00 08 06 01 45 02", Hex(io.Outputs.Single(f => f[2] == 0x06), 6));
         }
 
         [Fact]

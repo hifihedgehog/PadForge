@@ -1,4 +1,4 @@
-openrgb	c6fc8016d215cca17d660c47746a08d7ea6a9175
+openrgb	b9d903b544a40486709c4ca097d0b234b617db9c
 model	Razer	Razer BlackWidow 2019	577		razer_blackwidow_2019_layout	Keyboard	6	22
 model	Razer	Razer BlackWidow Chroma	515		razer_blackwidow_chroma_layout	Keyboard	6	22
 model	Razer	Razer BlackWidow Chroma Tournament Edition	521		razer_blackwidow_chroma_te_layout	Keyboard	6	22
@@ -76,6 +76,7 @@ model	CorsairPeripheralV2	k60_rgb_pro_se_device	7053		corsair_K60_layout	Keyboar
 model	CorsairPeripheralV2	k60_rgb_pro_lp_device	7085		corsair_K60_layout	Keyboard	6	21
 model	CorsairPeripheralV2	k60_rgb_pro_tkl_device_b	7111		corsair_K60_tkl_layout	Keyboard	6	21
 model	CorsairPeripheralV2	k60_rgb_pro_tkl_device_w	7149		corsair_K60_tkl_layout	Keyboard	6	21
+model	CorsairPeripheralV2	k65_mini_device	7087		corsair_K65_mini_layout	Keyboard	6	14
 model	CorsairPeripheralV2	k70_core_rgb_device	7165		corsair_k70_layout	Keyboard	6	21
 model	CorsairPeripheralV2	k70_core_rgb_tkl_device	11009		corsair_K70_CORE_TKL_layout	Keyboard	6	17
 model	CorsairPeripheralV2	k70_rgb_pro_device	7108		corsair_k70_pro_layout	Keyboard	7	21
@@ -98,6 +99,8 @@ model	AsusAuraCore	G733QR	-1	G733QR	g733qr_keyboard_layout	Keyboard	0	0
 model	AsusAuraCore	G733QR	-1	G733QR	g733qr_lid_layout	Lid	0	0
 model	AsusAuraCore	G733QR	-1	G733QR	g733qr_lightbar_layout	Lightbar	0	0
 model	AsusAuraCore	G733QR	-1	G733QR	g733qr_keystone_layout	Keystone	0	0
+model	AsusAuraCore	G733PZ	-1	G733PZ	g713rw_keyboard_layout	Keyboard	0	0
+model	AsusAuraCore	G733PZ	-1	G733PZ	g733qr_lightbar_layout	Lightbar	0	0
 model	AsusAuraCore	G814JV	-1	G814JV	g814jv_keyboard_layout	Keyboard	0	0
 model	AsusAuraCore	G814JV	-1	G814JV	g814jv_lightbar_layout	Lightbar	0	0
 model	AsusAuraCore	G814JIR	-1	G814JIR	g814jv_keyboard_layout	Keyboard	0	0
@@ -11801,6 +11804,204 @@ case	CorsairPeripheralV2	corsair_K60_tkl_layout	Jis	6	17	89	Tenkeyless
 5	15	81	Key: Down Arrow	
 5	16	79	Key: Right Arrow	
 map	6	17	0	-1	1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19	20	21	22	23	24	25	26	27	28	29	30	31	32	33	34	35	36	37	38	39	40	41	42	43	44	45	46	47	48	49	50	51	52	53	54	55	56	57	58	59	60	61	62	63	-1	-1	-1	64	65	66	67	68	69	70	71	72	73	74	75	-1	76	-1	77	-1	78	79	80	-1	-1	-1	81	-1	-1	-1	82	83	84	85	86	87	88
+case	CorsairPeripheralV2	corsair_K65_mini_layout	AnsiQwerty	5	14	63	Sixty percent 
+0	0	41	Key: Escape	
+0	1	30	Key: 1	
+0	2	31	Key: 2	
+0	3	32	Key: 3	
+0	4	33	Key: 4	
+0	5	34	Key: 5	
+0	6	35	Key: 6	
+0	7	36	Key: 7	
+0	8	37	Key: 8	
+0	9	38	Key: 9	
+0	10	39	Key: 0	
+0	11	45	Key: -	
+0	12	46	Key: =	
+0	13	42	Key: Backspace	
+1	0	43	Key: Tab	
+1	1	20	Key: Q	
+1	2	26	Key: W	
+1	3	8	Key: E	
+1	4	21	Key: R	
+1	5	23	Key: T	
+1	6	28	Key: Y	
+1	7	24	Key: U	
+1	8	12	Key: I	
+1	9	18	Key: O	
+1	10	19	Key: P	
+1	11	47	Key: [	
+1	12	48	Key: ]	
+1	13	49	Key: \ (ANSI)	
+2	0	57	Key: Caps Lock	
+2	1	4	Key: A	
+2	2	22	Key: S	
+2	3	7	Key: D	
+2	4	9	Key: F	
+2	5	10	Key: G	
+2	6	11	Key: H	
+2	7	13	Key: J	
+2	8	14	Key: K	
+2	9	15	Key: L	
+2	10	51	Key: ;	
+2	11	52	Key: '	
+2	13	40	Key: Enter	
+3	0	106	Key: Left Shift	
+3	2	29	Key: Z	
+3	3	27	Key: X	
+3	4	6	Key: C	
+3	5	25	Key: V	
+3	6	5	Key: B	
+3	7	17	Key: N	
+3	8	16	Key: M	
+3	9	54	Key: ,	
+3	10	55	Key: .	
+3	11	56	Key: /	
+3	13	110	Key: Right Shift	
+4	0	105	Key: Left Control	
+4	1	108	Key: Left Windows	
+4	4	0	Key: Space	
+4	2	107	Key: Left Alt	
+4	8	1	Key: Space	
+4	6	44	Key: Space	
+4	10	111	Key: Right Alt	
+4	11	122	Key: Right Fn	
+4	12	101	Key: Menu	
+4	13	109	Key: Right Control	
+map	5	14	0	1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19	20	21	22	23	24	25	26	27	28	29	30	31	32	33	34	35	36	37	38	39	-1	40	41	-1	42	43	44	45	46	47	48	49	50	51	-1	52	53	54	56	-1	55	-1	58	-1	57	-1	59	60	61	62
+case	CorsairPeripheralV2	corsair_K65_mini_layout	IsoQwerty	5	14	64	Sixty percent 
+0	0	41	Key: Escape	
+0	1	30	Key: 1	
+0	2	31	Key: 2	
+0	3	32	Key: 3	
+0	4	33	Key: 4	
+0	5	34	Key: 5	
+0	6	35	Key: 6	
+0	7	36	Key: 7	
+0	8	37	Key: 8	
+0	9	38	Key: 9	
+0	10	39	Key: 0	
+0	11	45	Key: -	
+0	12	46	Key: =	
+0	13	42	Key: Backspace	
+1	0	43	Key: Tab	
+1	1	20	Key: Q	
+1	2	26	Key: W	
+1	3	8	Key: E	
+1	4	21	Key: R	
+1	5	23	Key: T	
+1	6	28	Key: Y	
+1	7	24	Key: U	
+1	8	12	Key: I	
+1	9	18	Key: O	
+1	10	19	Key: P	
+1	11	47	Key: [	
+1	12	48	Key: ]	
+2	0	57	Key: Caps Lock	
+2	1	4	Key: A	
+2	2	22	Key: S	
+2	3	7	Key: D	
+2	4	9	Key: F	
+2	5	10	Key: G	
+2	6	11	Key: H	
+2	7	13	Key: J	
+2	8	14	Key: K	
+2	9	15	Key: L	
+2	10	51	Key: ;	
+2	11	52	Key: '	
+2	12	50	Key: #	
+2	13	40	Key: Enter	
+3	0	106	Key: Left Shift	
+3	1	100	Key: \ (ISO)	
+3	2	29	Key: Z	
+3	3	27	Key: X	
+3	4	6	Key: C	
+3	5	25	Key: V	
+3	6	5	Key: B	
+3	7	17	Key: N	
+3	8	16	Key: M	
+3	9	54	Key: ,	
+3	10	55	Key: .	
+3	11	56	Key: /	
+3	13	110	Key: Right Shift	
+4	0	105	Key: Left Control	
+4	1	108	Key: Left Windows	
+4	4	0	Key: Space	
+4	2	107	Key: Left Alt	
+4	8	1	Key: Space	
+4	6	44	Key: Space	
+4	10	111	Key: Right Alt	
+4	11	122	Key: Right Fn	
+4	12	101	Key: Menu	
+4	13	109	Key: Right Control	
+map	5	14	0	1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19	20	21	22	23	24	25	26	-1	27	28	29	30	31	32	33	34	35	36	37	38	39	40	41	42	43	44	45	46	47	48	49	50	51	52	-1	53	54	55	57	-1	56	-1	59	-1	58	-1	60	61	62	63
+case	CorsairPeripheralV2	corsair_K65_mini_layout	Jis	5	14	65	Sixty percent 
+0	0	41	Key: Escape	
+0	1	30	Key: 1	
+0	2	31	Key: 2	
+0	3	32	Key: 3	
+0	4	33	Key: 4	
+0	5	34	Key: 5	
+0	6	35	Key: 6	
+0	7	36	Key: 7	
+0	8	37	Key: 8	
+0	9	38	Key: 9	
+0	10	39	Key: 0	
+0	11	45	Key: -	
+0	12	46	Key: =	
+0	13	42	Key: Backspace	
+1	0	43	Key: Tab	
+1	1	20	Key: Q	
+1	2	26	Key: W	
+1	3	8	Key: E	
+1	4	21	Key: R	
+1	5	23	Key: T	
+1	6	28	Key: Y	
+1	7	24	Key: U	
+1	8	12	Key: I	
+1	9	18	Key: O	
+1	10	19	Key: P	
+1	11	47	Key: [	
+1	12	48	Key: ]	
+1	13	49	Key: \ (ANSI)	
+2	0	57	Key: Caps Lock	
+2	1	4	Key: A	
+2	2	22	Key: S	
+2	3	7	Key: D	
+2	4	9	Key: F	
+2	5	10	Key: G	
+2	6	11	Key: H	
+2	7	13	Key: J	
+2	8	14	Key: K	
+2	9	15	Key: L	
+2	10	51	Key: ;	
+2	11	52	Key: '	
+2	12	50	Key: #	
+2	13	40	Key: Enter	
+3	0	106	Key: Left Shift	
+3	1	100	Key: \ (ISO)	
+3	2	29	Key: Z	
+3	3	27	Key: X	
+3	4	6	Key: C	
+3	5	25	Key: V	
+3	6	5	Key: B	
+3	7	17	Key: N	
+3	8	16	Key: M	
+3	9	54	Key: ,	
+3	10	55	Key: .	
+3	11	56	Key: /	
+3	13	110	Key: Right Shift	
+4	0	105	Key: Left Control	
+4	1	108	Key: Left Windows	
+4	4	0	Key: Space	
+4	2	107	Key: Left Alt	
+4	8	1	Key: Space	
+4	6	44	Key: Space	
+4	10	111	Key: Right Alt	
+4	11	122	Key: Right Fn	
+4	12	101	Key: Menu	
+4	13	109	Key: Right Control	
+map	5	14	0	1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19	20	21	22	23	24	25	26	27	28	29	30	31	32	33	34	35	36	37	38	39	40	41	42	43	44	45	46	47	48	49	50	51	52	53	-1	54	55	56	58	-1	57	-1	60	-1	59	-1	61	62	63	64
 case	CorsairPeripheralV2	corsair_k70_layout	AnsiQwerty	6	21	104	Full 104 key 
 0	0	41	Key: Escape	
 0	2	58	Key: F1	

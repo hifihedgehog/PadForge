@@ -301,7 +301,6 @@ namespace PadForge.Tests
         [InlineData(0x0A6B, 0x09)]
         [InlineData(0x0A71, 0x08)]
         [InlineData(0x0A73, 0x09)]
-        [InlineData(0xA346, 0x09)]
         public void ACorsairHeadset_TakesSoftwareControl_ThenTheReds_Greens_Blues(int pid, int device)
         {
             var d = Device(0x1B1C, (ushort)pid);
@@ -325,12 +324,9 @@ namespace PadForge.Tests
             Assert.Equal(16, d.Picture(new int[1]).First().Bytes.Length);
         }
 
+        /// <summary>The Void IDs OpenRGB lacks. Its four are <see cref="CorsairVoidLighting"/>'s.</summary>
         [Theory]
-        [InlineData(0x0A14)]
-        [InlineData(0x0A17)]
         [InlineData(0x0A19)]
-        [InlineData(0x0A1A)]
-        [InlineData(0x0A1D)]
         [InlineData(0x1B23)]
         [InlineData(0x0A56)]
         [InlineData(0x0A52)]
@@ -475,16 +471,13 @@ namespace PadForge.Tests
         // ── Corsair IDs of the families OpenRGB holds ──
 
         [Theory]
-        [InlineData(0x1BCF, 0x1BAF)]
-        [InlineData(0x1BC3, 0x1BAF)]
-        [InlineData(0x1BBD, 0x1BAF)]
         [InlineData(0x1B15, 0x1B20)]
         [InlineData(0x1B14, 0x1B2F)]
         [InlineData(0x1B3A, 0x1B49)]
         public void TheCorsairFamily_TakesAnotherIdAsTheDeviceItIs(int other, int same)
         {
             var r = OpenRgbRegistrations.Of(CorsairPeripheralLighting.OpenRgbFamily).First(x => x.ProductId == same);
-            var known = CollectionFor(r, output: (ushort)(same == 0x1BAF ? CorsairPeripheralLighting.K65MiniPacketLength : 65), feature: 65, input: 64);
+            var known = CollectionFor(r, output: 65, feature: 65, input: 64);
             var collection = known with { ProductId = (ushort)other };
             var model = CorsairPeripheralLighting.Instance.Match(collection);
             Assert.NotNull(model);

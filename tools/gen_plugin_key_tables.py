@@ -131,6 +131,13 @@ QMK_NAME_FIXES = {
     "MCHOSE/MCHOSE_GX87_QMK_ANSI_Keyboard.js": {77: "Left Ctrl"},
 }
 
+# Product names a plugin misspells, as the plugin writes it and as the product is named. The run
+# stops when the plugin no longer writes the first, so a fix in the plugin retires the entry.
+QMK_TITLE_FIXES = {
+    "Keychron/V Series/8K/Keychron_V6_8K_QMK_ISO_Encoder_Keyboard.js":
+        ("KKeychron V6 8K ISO Encoder QMK Keyboard", "Keychron V6 8K ISO Encoder QMK Keyboard"),
+}
+
 # A place the plugin's list leaves out, after the place named, and one it has too many: the French
 # Berserker's names run a key off its places from F12 to the right shift.
 QMK_PLACE_LIST_FIXES = {
@@ -384,7 +391,7 @@ def products_in(text):
 # folder signal-plugins kept until 935142ad, which all speak one protocol.
 # ---------------------------------------------------------------------------
 
-QMK_MAIN = "08c909a574c977969be1b51e6a9d4585e08fdc39"
+QMK_MAIN = "d476c65e8acb0ed1034b5343ecca368c6724aa2c"
 
 # The branches, best first. A product takes the first plugin that names it, so
 # main outranks the staging branches, and the boards awaiting testing come last.
@@ -668,7 +675,13 @@ def read_qmk_boards(qmk_clone, signal_clone):
         places = read_list(text, "vKeyPositions")
         for product in fresh:
             taken.add((vid, product))
-        boards.append({"clone": "qmk" if clone == qmk_clone else "signal", "commit": commit, "path": path, "title": name.group(1),
+        title = name.group(1)
+        if path in QMK_TITLE_FIXES:
+            wrong, right = QMK_TITLE_FIXES[path]
+            if title != wrong:
+                sys.exit(f"{path} names itself {title!r}, not {wrong!r}: drop its QMK_TITLE_FIXES entry")
+            title = right
+        boards.append({"clone": "qmk" if clone == qmk_clone else "signal", "commit": commit, "path": path, "title": title,
                        "vendor": vid, "products": fresh, "keys": keys, "names": key_names, "places": places})
     return boards
 
@@ -1078,10 +1091,10 @@ def lists_of(board, text, suffix):
 # Where the boards' firmware is, each tree at a pinned commit: the folders to read. Keychron keeps
 # its boards on several branches, the newest first here: 2025q3, wireless_playground, playground
 # and bluetooth_playground.
-KEYCHRON_FIRMWARE = ("9ada9b7baecb9591c469b9b068146ac5891a480a", "666862cb8123b64a6b96718d739c6203ad99031f",
+KEYCHRON_FIRMWARE = ("57e682caa0a821e6de1b589e6f983f266151ab02", "666862cb8123b64a6b96718d739c6203ad99031f",
                      "4a8143cce9c2ab32a1384c352c3db324149abddd", "618127a725a1773e85f13455602cf6f72ab4de17")
 KEYCHRON_FOLDERS = ("keyboards/keychron", "keyboards/lemokey")
-QMK_FIRMWARE = "7a1bbf37c5c07da4ea0a162bb139083a46ef40a1"
+QMK_FIRMWARE = "d194c077ed964195ec16d255c7a4b89a794cf03b"
 QMK_FOLDERS = ("keyboards",)
 
 KEYCODE_USAGES = {

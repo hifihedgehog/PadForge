@@ -272,6 +272,20 @@ namespace PadForge.Engine.Common.Mapping
         public double Threshold { get; init; }
         public bool ClickBound { get; init; }
 
+        /// <summary>Press: the coordinator's cancel sources (steamclient64.dll
+        /// 0x138668df0). The sentinel is a Full Press or Chord sibling's own
+        /// read, the sibling threshold the lowest Soft Press threshold above
+        /// this one's, and the Exclusive runs on the same value with its own
+        /// fields. All zero or null when the activator's interruptable
+        /// setting is off, since that gates the whole cancel (0x13862d451).</summary>
+        internal MappingSource SentinelSource { get; init; }
+        public double SiblingThreshold { get; init; }
+        public bool HasExclusive { get; init; }
+        public double ExclusiveThreshold { get; init; }
+        public bool ExclusiveInner { get; init; }
+        public bool ExclusiveClick { get; init; }
+        public double ExclusiveSibling { get; init; }
+
         /// <summary>Pull and Press: names the machine both outputs share.</summary>
         internal string MachineKey { get; init; }
         internal MappingSource ValueSource { get; init; }
@@ -301,6 +315,9 @@ namespace PadForge.Engine.Common.Mapping
         private readonly bool _inner;
         private readonly bool _click;
         private readonly bool _hairClick;
+        private readonly bool _press;
+        private readonly double _sibling;
+        private readonly SteamThreshold _exclusive;
         private readonly long _windowMs;
 
         private double _t;
@@ -328,11 +345,23 @@ namespace PadForge.Engine.Common.Mapping
         /// above the average once the pull lets off.</param>
         /// <param name="inner">Inverted: held while above zero and inside.</param>
         /// <param name="click">The full pull cancels a waiting press, and
-        /// under Hip Fire Exclusive gives way to a held one.</param>
+        /// under Hip Fire Exclusive gives way to a held one. On a Soft Press
+        /// it says the step's click is a pressed Full Press or Chord
+        /// sibling.</param>
         /// <param name="hairClick">The trigger mode's Hair Trigger moves its
         /// threshold with the full pull's click.</param>
+        /// <param name="press">A Soft Press activator: the coordinator's
+        /// cancels run before the fire, as the client orders them
+        /// (0x13862d451 before 0x13862d524).</param>
+        /// <param name="sibling">The lowest sibling Soft Press threshold
+        /// above this one's, 0 for none: the value crossing it cancels the
+        /// wait (0x138668ed4).</param>
+        /// <param name="exclusive">An Exclusive sibling on the same value:
+        /// fired, it cancels the wait (0x13862a580 hands the coordinator
+        /// 0x7fffffff).</param>
         public SteamThreshold(int style, double threshold, double holdBack, double range, double delta,
-            bool inner, bool click, bool hairClick)
+            bool inner, bool click, bool hairClick, bool press = false, double sibling = 0,
+            SteamThreshold exclusive = null)
         {
             _style = style;
             _threshold = threshold;
@@ -342,6 +371,9 @@ namespace PadForge.Engine.Common.Mapping
             _inner = inner;
             _click = click;
             _hairClick = hairClick;
+            _press = press;
+            _sibling = sibling;
+            _exclusive = exclusive;
             _windowMs = BoundedReads.HipFireWindowMs(style);
             Reset();
         }
@@ -369,6 +401,9 @@ namespace PadForge.Engine.Common.Mapping
         {
             if (_lastStepMs != long.MinValue && (nowMs - _lastStepMs > GapMs || nowMs < _lastStepMs)) Reset();
             _lastStepMs = nowMs;
+            // The Exclusive sibling tracks the same value on every update,
+            // whatever this activator is doing.
+            _exclusive?.Step(value, raw, click, nowMs);
 
             bool was = _active;
             double h = Math.Abs(_rangeNow * _pct) / 100.0;
@@ -387,6 +422,22 @@ namespace PadForge.Engine.Common.Mapping
                 _pendingMs = long.MaxValue;
                 Soft = false;
             }
+            else if (_press)
+            {
+                // The coordinator's cancel (0x13862d451), run before the
+                // fire test (0x13862d524): a pressed Full Press or Chord
+                // sibling (the click here, through its own read) or a fired
+                // Exclusive sibling hands a threshold of 1 (0x138668f35),
+                // else the lowest sibling Soft Press threshold above this
+                // one's (0x138668ed4), and the live value crossing it drops
+                // the wait. An inverted press flips the compare
+                // (0x13862d4c4) and gets no sibling threshold, since the
+                // inverted walk never flags one (0x138668ee7).
+                bool sentinel = (_click && click) || (_exclusive != null && _exclusive.Soft);
+                bool cancel = sentinel && Crossed(1, value);
+                if (!cancel && _sibling > 0) cancel = Crossed(_sibling, value);
+                if (cancel) _pendingMs = long.MaxValue;
+            }
             if (nowMs >= _pendingMs)
             {
                 _pendingMs = long.MaxValue;
@@ -400,13 +451,16 @@ namespace PadForge.Engine.Common.Mapping
             }
 
             bool full = click;
-            if (_click)
-            {
-                if (Soft && _style == 5) full = false;
-                else if (click) _pendingMs = long.MaxValue;
-            }
+            if (Soft && _style == 5) full = false;
+            else if (!_press && _click && click) _pendingMs = long.MaxValue;
             Full = full;
         }
+
+        /// <summary>The coordinator's compare (0x13862d4a6, and 0x13862d4c4
+        /// flipped for an inverted press): the live value past the cancel
+        /// threshold.</summary>
+        private bool Crossed(double threshold, double value)
+            => _inner ? threshold > value : value > threshold;
 
         /// <summary>The Hair Trigger (0x1388de7eb, 0x13862d54f): letting off
         /// the pull by more than the delta between two updates moves the
@@ -638,13 +692,22 @@ namespace PadForge.Engine.Common.Mapping
             => string.Create(CultureInfo.InvariantCulture,
                 $"Pull {style} {(full ? "Full" : "Soft")} {N(threshold)} {(click ? "click" : "-")} {input}");
 
-        /// <summary>Steam's Soft Press activator (Soft), or a sibling press its
-        /// Hip Fire Exclusive holds off (Full): activation_threshold as the
-        /// threshold, soft_press_sytle as the style.</summary>
-        public static string Press(int style, bool full, double threshold, bool inner, bool click, string component,
+        /// <summary>Steam's Soft Press activator with its coordinator cancels
+        /// (steamclient64.dll 0x13862d451 and 0x138668df0), which run only
+        /// while the activator's interruptable setting is on, so the importer
+        /// writes <paramref name="cancel"/> as "-" when it is off. The tokens
+        /// are space-joined in any order. <c>fp{read}</c> embeds a Full Press
+        /// or Chord sibling's own read (pressed, it hands the coordinator
+        /// 0x7ffffffe, a cancel threshold of 1). <c>sib{raw}</c> is the lowest
+        /// sibling Soft Press threshold above this one's, which the live value
+        /// crossing cancels. <c>ex{thr}:{in|out}:{c|-}:{sib}</c> is an
+        /// Exclusive sibling, run on the same value (fired, it hands
+        /// 0x7fffffff), with its own inversion, whether the fp sentinel
+        /// cancels it too, and its own sibling threshold.</summary>
+        public static string Press(int style, bool full, double threshold, bool inner, string cancel, string component,
             string input)
             => string.Create(CultureInfo.InvariantCulture,
-                $"Press {style} {(full ? "Full" : "Soft")} {N(threshold)} {(inner ? "in" : "out")} {(click ? "click" : "-")} {component} {input}");
+                $"Press {style} {(full ? "Full" : "Soft")} {N(threshold)} {(inner ? "in" : "out")} {(string.IsNullOrEmpty(cancel) ? "-" : cancel)} {component} {input}");
 
         /// <summary>A number as a descriptor writes it: four decimals at most,
         /// so the string a translation writes is the string it reads back.</summary>
@@ -895,30 +958,108 @@ namespace PadForge.Engine.Common.Mapping
             }
             if (d.StartsWith("Press ", StringComparison.Ordinal))
             {
-                var p = d.Split(' ', 8, StringSplitOptions.RemoveEmptyEntries);
-                if (p.Length != 8
+                var p = d.Split(' ', 6, StringSplitOptions.RemoveEmptyEntries);
+                if (p.Length != 6
                     || !int.TryParse(p[1], NumberStyles.None, c, out int style) || style > 5
                     || p[2] is not ("Soft" or "Full")
                     || !Num(p[3], out double threshold) || threshold < 0 || threshold > 32767
-                    || p[4] is not ("in" or "out")
-                    || p[5] is not ("click" or "-")
-                    || !TryComponent(p[6], p[7], out int axis, out int sign)
-                    // The full pull belongs to a trigger: a pair has none.
-                    || (p[5] == "click" && axis >= 0))
+                    || p[4] is not ("in" or "out"))
                     return null;
+                // The cancel slot: "-", the legacy "click", or any of
+                // fp{read} (spaces inside the braces), sib{raw} and
+                // ex{thr}:{in|out}:{c|-}:{sib}, then the component and the
+                // input.
+                string rest = p[5];
+                string sentinel = null;
+                bool legacyClick = false;
+                double sibling = 0, exThr = 0, exSibling = 0;
+                bool hasEx = false, exInner = false, exClick = false;
+                int cancels = 0;
+                while (true)
+                {
+                    rest = rest.TrimStart(' ');
+                    if (rest.StartsWith("fp{", StringComparison.Ordinal))
+                    {
+                        int close = rest.IndexOf('}');
+                        if (close < 0 || sentinel != null) return null;
+                        sentinel = rest[3..close];
+                        // The sentinel is a whole read of its own. A Press
+                        // inside it would step this machine from inside its
+                        // own step.
+                        if (!IsBounded(sentinel) || sentinel.StartsWith("Press ", StringComparison.Ordinal))
+                            return null;
+                        rest = rest[(close + 1)..];
+                        cancels++;
+                        continue;
+                    }
+                    int sp = rest.IndexOf(' ');
+                    if (sp < 0) return null;
+                    string tok = rest[..sp];
+                    if (tok.StartsWith("sib", StringComparison.Ordinal))
+                    {
+                        if (sibling > 0 || !Num(tok[3..], out sibling) || sibling <= 0 || sibling > 32767)
+                            return null;
+                        cancels++;
+                    }
+                    else if (tok.StartsWith("ex", StringComparison.Ordinal))
+                    {
+                        var ex = tok[2..].Split(':');
+                        if (hasEx || ex.Length != 4
+                            || !Num(ex[0], out exThr) || exThr <= 0 || exThr > 32767
+                            || ex[1] is not ("in" or "out")
+                            || ex[2] is not ("c" or "-")
+                            || !Num(ex[3], out exSibling) || exSibling < 0 || exSibling > 32767)
+                            return null;
+                        hasEx = true;
+                        exInner = ex[1] == "in";
+                        exClick = ex[2] == "c";
+                        cancels++;
+                    }
+                    else if (cancels == 0 && tok is "click" or "-")
+                    {
+                        legacyClick = tok == "click";
+                        cancels = -1;
+                    }
+                    else break;
+                    rest = rest[(sp + 1)..];
+                    if (cancels == -1) break;
+                }
+                var tail = rest.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
+                if (tail.Length != 2
+                    || !TryComponent(tail[0], tail[1], out int axis, out int sign)
+                    // The full pull belongs to a trigger: a pair has none.
+                    || (legacyClick && axis >= 0))
+                    return null;
+                string cancel = legacyClick ? "click"
+                    : cancels <= 0 ? "-"
+                    : string.Join(' ', new[]
+                    {
+                        sentinel != null ? "fp{" + sentinel + "}" : null,
+                        sibling > 0 ? "sib" + N(sibling) : null,
+                        hasEx
+                            ? string.Create(c, $"ex{N(exThr)}:{(exInner ? "in" : "out")}:{(exClick ? "c" : "-")}:{N(exSibling)}")
+                            : null,
+                    }.Where(t => t != null));
                 return new BoundedRead
                 {
                     Kind = BoundedReadKind.Press,
-                    Inner = p[7],
+                    Inner = tail[1],
                     Style = style,
                     IsFull = p[2] == "Full",
                     Threshold = threshold,
                     InnerEdge = p[4] == "in",
-                    ClickBound = p[5] == "click",
+                    ClickBound = legacyClick,
+                    SentinelSource = sentinel != null ? new MappingSource { Descriptor = sentinel } : null,
+                    SiblingThreshold = sibling,
+                    HasExclusive = hasEx,
+                    ExclusiveThreshold = exThr,
+                    ExclusiveInner = exInner,
+                    ExclusiveClick = exClick,
+                    ExclusiveSibling = exSibling,
                     ComponentAxis = axis,
                     ComponentSign = sign,
-                    MachineKey = string.Create(c, $"Press {p[1]} {p[3]} {p[4]} {p[5]} {p[6]} {p[7]}"),
-                    ValueSource = axis < 0 ? new MappingSource { Descriptor = p[7] } : null,
+                    MachineKey = string.Create(c, $"Press {p[1]} {p[3]} {p[4]} {cancel} {tail[0]} {tail[1]}"),
+                    ValueSource = axis < 0 ? new MappingSource { Descriptor = tail[1] } : null,
                 };
             }
             var s = d.Split(' ', 7, StringSplitOptions.RemoveEmptyEntries);
@@ -1094,14 +1235,21 @@ namespace PadForge.Engine.Common.Mapping
                 Press = read.Kind == BoundedReadKind.Press;
                 Input = read.Inner;
                 ValueSource = read.ValueSource;
+                SentinelSource = read.SentinelSource;
+                ClickBound = read.ClickBound;
                 ComponentAxis = read.ComponentAxis;
                 ComponentSign = read.ComponentSign;
                 Machine = Press
                     // The Soft Press activator (0x138627c50): 5 percent of
                     // activation_threshold's 32255 maximum as the hold-back,
                     // and a Hair Trigger delta of 150.
-                    ? new SteamThreshold(read.Style, read.Threshold, 5, 32255, 150, read.InnerEdge, read.ClickBound,
-                        hairClick: false)
+                    ? new SteamThreshold(read.Style, read.Threshold, 5, 32255, 150, read.InnerEdge,
+                        read.ClickBound || read.SentinelSource != null, hairClick: false, press: true,
+                        sibling: read.SiblingThreshold,
+                        exclusive: read.HasExclusive
+                            ? new SteamThreshold(5, read.ExclusiveThreshold, 5, 32255, 150, read.ExclusiveInner,
+                                read.ExclusiveClick, hairClick: false, press: true, sibling: read.ExclusiveSibling)
+                            : null)
                     // The trigger mode (0x1388de2c6): 7.5 percent of 32767,
                     // and a Hair Trigger delta of a third of it (0x1388de2f1).
                     : new SteamThreshold(read.Style, read.Threshold, 7.5, 32767, 7.5 / 3.0 * 32767.0 / 100.0, false,
@@ -1112,6 +1260,8 @@ namespace PadForge.Engine.Common.Mapping
             public readonly bool Press;
             public readonly string Input;
             public readonly MappingSource ValueSource;
+            public readonly MappingSource SentinelSource;
+            public readonly bool ClickBound;
             public readonly int ComponentAxis;
             public readonly int ComponentSign;
             public readonly SteamThreshold Machine;
@@ -1141,7 +1291,16 @@ namespace PadForge.Engine.Common.Mapping
             }
             raw = Math.Clamp(raw, 0, 1) * 32767.0;
             double value = e.Press && e.ComponentAxis != 2 ? Math.Pow(raw / 32767.0, 0.75) * 32767.0 : raw;
-            e.Machine.Step(value, raw, e.ComponentAxis < 0 && raw >= FullPullRaw, nowMs);
+            // A Soft Press's click is a pressed Full Press or Chord sibling:
+            // its own read where the importer embedded one, else the raw
+            // full pull under the legacy click token. The trigger mode's
+            // Pull keeps the raw full pull.
+            bool click = e.Press
+                ? e.SentinelSource != null
+                    ? Held(state, e.SentinelSource, -1, deviceGuid)
+                    : e.ClickBound && e.ComponentAxis < 0 && raw >= FullPullRaw
+                : e.ComponentAxis < 0 && raw >= FullPullRaw;
+            e.Machine.Step(value, raw, click, nowMs);
         }
 
         private static SteamThreshold MachineFor(BoundedRead read, string deviceGuid)

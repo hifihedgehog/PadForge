@@ -272,6 +272,11 @@ namespace PadForge.SteamWorkshop.Translation
             // identity's upper-half leg onto the full pull would overdrive
             // the top half of an otherwise clean analog pull.
             public bool HasMatchedPassthrough;
+            // The first of two adjacent sources the materialize pass joins
+            // with the client's yaw-and-roll blend (YawRollJoin), -1 for
+            // none. Set by the mouse emitters for a gyro_axis 2 group's
+            // turn legs.
+            public int BlendPair = -1;
             public readonly List<MappingSource> Sources = new();
             // Click gates ride each source's own GateDescriptor since v18
             // (the engine's per-source AND companion), so a second feed on
@@ -3613,9 +3618,12 @@ namespace PadForge.SteamWorkshop.Translation
         /// on a Steam Deck,
         /// SteamOS handheld or Zotac Zone config. For yaw and roll it takes
         /// yaw times gyro_yaw_scale / 10000 and roll times gyro_roll_scale /
-        /// 10000 and returns the length of the two, signed by roll, or
-        /// sqrt(yaw^2 - roll^2) signed by yaw when they disagree and yaw is
-        /// the larger. PadForge adds them, and the line says so.
+        /// 10000 and joins them (0x1388af6f0): the signed length of the two
+        /// when their signs agree or the yaw leg is strictly larger, else
+        /// sqrt(roll^2 - yaw^2) signed by the roll leg (the compare at
+        /// 0x1388af82f, a zero leg counting as positive). The import
+        /// carries the join on the row's Custom combine (YawRollJoin), so
+        /// <paramref name="blend"/> comes back true for the emitters.
         /// The relative mouse class registers no axis, so it turns with
         /// yaw. The joystick classes on the gyro (joystick_move,
         /// joystick_mouse, Joystick Camera) read its tilt instead
@@ -3629,8 +3637,9 @@ namespace PadForge.SteamWorkshop.Translation
         /// on the device. Laser Pointer has no counterpart and reads
         /// yaw.</para></summary>
         private (string Descriptor, bool Flip, double Share)[] GyroTurningSources(Run run, string path,
-            Dictionary<string, string> settings, string mode, bool conversionStyle)
+            Dictionary<string, string> settings, string mode, bool conversionStyle, out bool blend)
         {
+            blend = false;
             const string yaw = "Gyro Yaw", roll = "Gyro Roll";
             static (string, bool, double)[] Legs(params (string, bool, double)[] legs)
                 => legs.Where(l => Math.Abs(l.Item3) >= 0.001).ToArray();
@@ -3675,7 +3684,7 @@ namespace PadForge.SteamWorkshop.Translation
                 case 1:
                     return Legs((roll, true, 1.0));
                 case 2:
-                    run.Report.Add(TranslationStatus.Partial, TranslationReasons.GyroYawRollBlend, path);
+                    blend = true;
                     return Legs((yaw, false, GyroScaleShare(settings, "gyro_yaw_scale")),
                         (roll, true, GyroScaleShare(settings, "gyro_roll_scale")));
                 default:
@@ -3815,8 +3824,9 @@ namespace PadForge.SteamWorkshop.Translation
         {
             var pair = PhysicalSlotResolver.MouseAxisPair(slot, run.SinglePadTrackpads);
             if (pair == null) return;
+            bool blend = false;
             var turns = pair.Value.Family == 2
-                ? GyroTurningSources(run, path, settings, mode, conversionStyle)
+                ? GyroTurningSources(run, path, settings, mode, conversionStyle, out blend)
                 : new[] { (pair.Value.X, false, 1.0) };
 
             double ratio = 1.0;
@@ -3911,12 +3921,23 @@ namespace PadForge.SteamWorkshop.Translation
             // Each leg carries its turn share and, after the rotation, the
             // output mixer's share of its row. A leg that comes to nothing
             // is dropped.
-            void AddLeg(string target, string desc, bool invert, bool isX, double coeff)
+            bool AddLeg(string target, string desc, bool invert, bool isX, double coeff)
             {
-                if (Math.Abs(coeff) < 0.001) return;
+                if (Math.Abs(coeff) < 0.001) return false;
                 AddRowSource(run, isKbm: true, layer, target,
                     Make(desc, invert, isX, coeff), isAxis: true,
                     TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
+                return true;
+            }
+
+            // gyro_axis 2: the client joins the yaw and roll legs before
+            // anything else reads them, so the row carries the join as its
+            // Custom combine (YawRollJoin). One leg alone passes through
+            // the join linearly in the client too, so it stays a plain leg.
+            void MarkBlend(string target, int added)
+            {
+                if (blend && added == 2 && run.Rows.TryGetValue((true, layer, target), out var pr))
+                    pr.BlendPair = pr.Sources.Count - 2;
             }
 
             if (feel.HasRotation)
@@ -3926,20 +3947,27 @@ namespace PadForge.SteamWorkshop.Translation
                 // axes with the trigonometric coefficients folded into the
                 // per-source sensitivity (sign via Invert). Near-zero legs
                 // are dropped so 90-degree multiples stay two clean rows.
+                // The join is degree-one homogeneous and odd, so the folded
+                // coefficients scale it exactly.
                 ReportRotationNonlinearWithheld(run, path, curve, feel, curveChannel);
                 double t = feel.RotationDeg * Math.PI / 180.0;
                 double cos = Math.Cos(t), sin = Math.Sin(t);
+                int addedX = 0, addedY = 0;
                 foreach (var (turn, flip, share) in turns)
-                    AddLeg("KbmMouseX", turn, invertX ^ flip, isX: true, shareX * cos * share);
+                    if (AddLeg("KbmMouseX", turn, invertX ^ flip, isX: true, shareX * cos * share)) addedX++;
+                MarkBlend("KbmMouseX", addedX);
                 AddLeg("KbmMouseX", y, invertY, isX: true, shareX * -sin);
                 foreach (var (turn, flip, share) in turns)
-                    AddLeg("KbmMouseY", turn, invertX ^ flip, isX: false, shareY * sin * share);
+                    if (AddLeg("KbmMouseY", turn, invertX ^ flip, isX: false, shareY * sin * share)) addedY++;
+                MarkBlend("KbmMouseY", addedY);
                 AddLeg("KbmMouseY", y, invertY, isX: false, shareY * cos);
             }
             else
             {
+                int added = 0;
                 foreach (var (turn, flip, share) in turns)
-                    AddLeg("KbmMouseX", turn, invertX ^ flip, isX: true, shareX * share);
+                    if (AddLeg("KbmMouseX", turn, invertX ^ flip, isX: true, shareX * share)) added++;
+                MarkBlend("KbmMouseX", added);
                 AddLeg("KbmMouseY", y, invertY, isX: false, shareY);
             }
 
@@ -3976,8 +4004,9 @@ namespace PadForge.SteamWorkshop.Translation
                     settings.TryGetValue("output_joystick", out var ojRaw) ? (ojRaw ?? "").Trim() : "");
                 return;
             }
+            bool blend = false;
             var turns = pair.Value.Family == 2
-                ? GyroTurningSources(run, path, settings, mode, conversionStyle)
+                ? GyroTurningSources(run, path, settings, mode, conversionStyle, out blend)
                 : new[] { (pair.Value.X, false, 1.0) };
 
             double ratio = 1.0;
@@ -4082,12 +4111,21 @@ namespace PadForge.SteamWorkshop.Translation
             // Each leg carries its turn share and, after the rotation, the
             // output mixer's share of its row. A leg that comes to nothing
             // is dropped.
-            void AddLeg(string target, string desc, bool invert, bool isX, double coeff)
+            bool AddLeg(string target, string desc, bool invert, bool isX, double coeff)
             {
-                if (Math.Abs(coeff) < 0.001) return;
+                if (Math.Abs(coeff) < 0.001) return false;
                 AddRowSource(run, isKbm: false, layer, target,
                     Make(desc, invert, isX, coeff), isAxis: true,
                     TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
+                return true;
+            }
+
+            // gyro_axis 2: the join rides the row's Custom combine, as in
+            // EmitMouseAxes.
+            void MarkBlend(string target, int added)
+            {
+                if (blend && added == 2 && run.Rows.TryGetValue((false, layer, target), out var pr))
+                    pr.BlendPair = pr.Sources.Count - 2;
             }
 
             if (feel.HasRotation)
@@ -4117,17 +4155,22 @@ namespace PadForge.SteamWorkshop.Translation
                 // would leave the yaw→Y leg's sign behind and turn the
                 // gyro the other way.
                 double ySign = flipGyroY ? -1.0 : 1.0;
+                int addedX = 0, addedY = 0;
                 foreach (var (turn, flip, share) in turns)
-                    AddLeg($"{dst}ThumbAxisX", turn, invertX ^ flip, isX: true, shareX * cos * share);
+                    if (AddLeg($"{dst}ThumbAxisX", turn, invertX ^ flip, isX: true, shareX * cos * share)) addedX++;
+                MarkBlend($"{dst}ThumbAxisX", addedX);
                 AddLeg($"{dst}ThumbAxisX", y, invertY, isX: true, shareX * (family == 2 ? sin : -sin));
                 foreach (var (turn, flip, share) in turns)
-                    AddLeg($"{dst}ThumbAxisY", turn, invertX ^ flip, isX: false, shareY * ySign * sin * share);
+                    if (AddLeg($"{dst}ThumbAxisY", turn, invertX ^ flip, isX: false, shareY * ySign * sin * share)) addedY++;
+                MarkBlend($"{dst}ThumbAxisY", addedY);
                 AddLeg($"{dst}ThumbAxisY", y, invertY, isX: false, shareY * ySign * cos);
             }
             else
             {
+                int added = 0;
                 foreach (var (turn, flip, share) in turns)
-                    AddLeg($"{dst}ThumbAxisX", turn, invertX ^ flip, isX: true, shareX * share);
+                    if (AddLeg($"{dst}ThumbAxisX", turn, invertX ^ flip, isX: true, shareX * share)) added++;
+                MarkBlend($"{dst}ThumbAxisX", added);
                 AddLeg($"{dst}ThumbAxisY", y, invertY ^ flipGyroY, isX: false, shareY);
             }
 
@@ -4446,7 +4489,7 @@ namespace PadForge.SteamWorkshop.Translation
                     string.Equals((a.Type ?? "").Trim(), "soft_press", StringComparison.OrdinalIgnoreCase)
                     && SoftPressStyle(a) == 5);
                 if (exclusive != null)
-                    exclusiveFull = SoftPressSource(run, slot, input.Name, exclusive, source, full: true);
+                    exclusiveFull = SoftPressSource(run, slot, input, exclusive, source, full: true);
             }
             foreach (var activator in input.Activators)
             {
@@ -4464,7 +4507,7 @@ namespace PadForge.SteamWorkshop.Translation
                         break;
                     case "soft_press":
                         soft = true;
-                        hostSource = SoftPressSource(run, slot, input.Name, activator, source, full: false);
+                        hostSource = SoftPressSource(run, slot, input, activator, source, full: false);
                         if (hostSource == null)
                         {
                             foreach (var b in activator.Bindings)
@@ -4576,6 +4619,85 @@ namespace PadForge.SteamWorkshop.Translation
                && int.TryParse((raw ?? "").Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int v)
                 ? Math.Clamp(v, 0, 5) : 0;
 
+        private static int SoftPressThreshold(SteamInputActivator activator)
+            => activator.Settings.TryGetValue("activation_threshold", out var at)
+               && int.TryParse((at ?? "").Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int atv)
+                ? Math.Clamp(atv, 0, 32767) : 4096;
+
+        private static bool SoftPressInverted(SteamInputActivator activator)
+            => activator.Settings.TryGetValue("edge_binding_invert", out var iv) && (iv ?? "").Trim() != "0";
+
+        /// <summary>The cancel tokens a Soft Press activator's coordinator
+        /// carries (steamclient64.dll 0x13862d451 and 0x138668df0). The
+        /// activator's interruptable setting (default on, registered at
+        /// 0x138627c50 member 0x250) gates the whole block, so off means no
+        /// tokens. A pressed Full Press or Chord sibling hands the
+        /// coordinator 0x7ffffffe (0x13862a560, their shared level getter),
+        /// a cancel threshold of 1: the sentinel embeds the input's own
+        /// press, the full pull for a trigger's click and the input's
+        /// lowered read elsewhere (the edge's Pull, a direction's Wedge).
+        /// Every other activator type inherits the base level getter, which
+        /// returns 0 (0x1380ed520), so none of them cancels anything. The
+        /// numeric rule takes the lowest sibling Soft Press threshold above
+        /// this one's (0x138668ed4, idle Soft Presses report their
+        /// thresholds per 0x13862a580), never for an inverted press, whose
+        /// walk flags no numeric level (0x138668ee7). A fired Exclusive
+        /// sibling hands 0x7fffffff, and rides the same value with its own
+        /// inversion, interruptable and sibling threshold.</summary>
+        private static string SoftPressCancel(SteamSlot slot, SteamInputInput input,
+            SteamInputActivator activator, ResolvedSource source, int threshold, bool inner)
+        {
+            if (activator.Settings.TryGetValue("interruptable", out var iv) && (iv ?? "").Trim() == "0")
+                return "-";
+            string fp = null;
+            if (input.Activators.Any(a => (a.Type ?? "").Trim().ToLowerInvariant() is "full_press" or "chord"))
+            {
+                string sentinel = slot is SteamSlot.LeftTrigger or SteamSlot.RightTrigger
+                    && string.Equals(input.Name, "click", StringComparison.OrdinalIgnoreCase)
+                        ? PhysicalSlotResolver.TriggerFullPullDescriptor(
+                            slot == SteamSlot.LeftTrigger ? "Gamepad LeftTrigger" : "Gamepad RightTrigger")
+                        : source?.Descriptor;
+                if (!string.IsNullOrEmpty(sentinel) && BoundedReads.IsBounded(sentinel)
+                    && !sentinel.StartsWith("Press ", StringComparison.Ordinal))
+                    fp = "fp{" + sentinel + "}";
+            }
+            int SiblingAbove(SteamInputActivator self, int own)
+            {
+                int best = 0;
+                foreach (var a in input.Activators)
+                {
+                    if (ReferenceEquals(a, self)) continue;
+                    if ((a.Type ?? "").Trim().ToLowerInvariant() != "soft_press") continue;
+                    int t = SoftPressThreshold(a);
+                    if (t > own && (best == 0 || t < best)) best = t;
+                }
+                return best;
+            }
+            int sibling = inner ? 0 : SiblingAbove(activator, threshold);
+            SteamInputActivator excl = null;
+            foreach (var a in input.Activators)
+            {
+                if (ReferenceEquals(a, activator)) continue;
+                if ((a.Type ?? "").Trim().ToLowerInvariant() != "soft_press" || SoftPressStyle(a) != 5) continue;
+                if (excl == null || SoftPressThreshold(a) < SoftPressThreshold(excl)) excl = a;
+            }
+            string ex = null;
+            if (excl != null)
+            {
+                int exThr = SoftPressThreshold(excl);
+                bool exInner = SoftPressInverted(excl);
+                bool exInterruptable = !(excl.Settings.TryGetValue("interruptable", out var xiv)
+                    && (xiv ?? "").Trim() == "0");
+                bool exClick = fp != null && exInterruptable;
+                int exSib = exInner || !exInterruptable ? 0 : SiblingAbove(excl, exThr);
+                ex = string.Create(CultureInfo.InvariantCulture,
+                    $"ex{exThr}:{(exInner ? "in" : "out")}:{(exClick ? "c" : "-")}:{exSib}");
+            }
+            var parts = new[] { fp, sibling > 0 ? "sib" + sibling.ToString(CultureInfo.InvariantCulture) : null, ex }
+                .Where(t => t != null).ToArray();
+            return parts.Length == 0 ? "-" : string.Join(' ', parts);
+        }
+
         /// <summary><para>Steam's Soft Press activator reads one analog value,
         /// picked by its table (steamclient64.dll 0x1392dc500) from the
         /// hosting input and the member: a trigger's pull for its click or
@@ -4585,23 +4707,24 @@ namespace PadForge.SteamWorkshop.Translation
         /// (default 4096) through a trigger with 5 percent of 32255 as
         /// hold-back (0x138627c50), inside it when the activator's
         /// edge_binding_invert is set, by the style soft_press_sytle (default
-        /// Simple). A Hip Fire style lets the full pull cancel a waiting press.
-        /// Null for any other input, which reads no value, so Steam never
-        /// fires it.</para>
+        /// Simple). The coordinator's cancels ride the read's cancel tokens
+        /// (<see cref="SoftPressCancel"/>). Null for any other input, which
+        /// reads no value, so Steam never fires it: the value table has no
+        /// bumper rows either, so the update's bumper branches
+        /// (0x13862b332, 0x13862d39a) never run.</para>
         /// <para>A side trackpad's click keeps the click: Steam fills pad
         /// pressure only on the Steam Controller and the Steam Deck
         /// (0x138679f7d), and SDL reports a touch as full pressure on the other
         /// pads, so a pressure read would fire on any touch there.</para></summary>
-        private static ResolvedSource SoftPressSource(Run run, SteamSlot? slot, string inputName,
+        private static ResolvedSource SoftPressSource(Run run, SteamSlot? slot, SteamInputInput input,
             SteamInputActivator activator, ResolvedSource source, bool full)
         {
             if (slot == null) return source;
-            string name = (inputName ?? "").ToLowerInvariant();
-            int threshold = activator.Settings.TryGetValue("activation_threshold", out var at)
-                && int.TryParse((at ?? "").Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int atv)
-                    ? Math.Clamp(atv, 0, 32767) : 4096;
+            string name = (input.Name ?? "").ToLowerInvariant();
+            int threshold = SoftPressThreshold(activator);
             int style = SoftPressStyle(activator);
-            bool inner = activator.Settings.TryGetValue("edge_binding_invert", out var iv) && (iv ?? "").Trim() != "0";
+            bool inner = SoftPressInverted(activator);
+            string cancel = SoftPressCancel(slot.Value, input, activator, source, threshold, inner);
             switch (slot.Value)
             {
                 case SteamSlot.LeftTrigger:
@@ -4610,7 +4733,7 @@ namespace PadForge.SteamWorkshop.Translation
                     string axis = slot == SteamSlot.LeftTrigger ? "Gamepad LeftTrigger" : "Gamepad RightTrigger";
                     return new ResolvedSource
                     {
-                        Descriptor = BoundedReads.Press(style, full, threshold, inner, style >= 2, "-", axis),
+                        Descriptor = BoundedReads.Press(style, full, threshold, inner, cancel, "-", axis),
                     };
                 case SteamSlot.Joystick:
                 case SteamSlot.RightJoystick:
@@ -4631,7 +4754,7 @@ namespace PadForge.SteamWorkshop.Translation
                     string pair = PairFor(run, slot.Value, PhysicalSlotResolver.HalfFor(slot.Value, run.SinglePadTrackpads));
                     return new ResolvedSource
                     {
-                        Descriptor = BoundedReads.Press(style, false, threshold, inner, false, component, pair),
+                        Descriptor = BoundedReads.Press(style, false, threshold, inner, cancel, component, pair),
                     };
                 default:
                     return null;
@@ -5554,10 +5677,14 @@ namespace PadForge.SteamWorkshop.Translation
         // input fired (a Start_Press row keeps firing while a Long_Press
         // macro engages), which is precisely Steam's interruptable-OFF
         // behavior. The note reported the matching case as a divergence,
-        // so it was factually wrong, not merely noise. The un-implemented
-        // direction is Steam's DEFAULT (interruptible on, sibling fires
-        // cancel each other), which the report vocabulary has never named
-        // per the defaults-are-silent convention.
+        // so it was factually wrong, not merely noise. Steam's DEFAULT
+        // direction (interruptable on) belongs to the Soft Press alone:
+        // the client's coordinator (0x138668df0) is called only by the
+        // activators' shared init, which caches its value, and by the Soft
+        // Press update's cancel (0x13862d47e), and SoftPressCancel carries
+        // it onto the Press read. A Long Press pausing its input's other
+        // activators is separate machinery, approximated by consuming (the
+        // comments on the long-press emitters below).
 
         private void TranslateBinding(Run run, SteamInputPreset preset, SteamInputBinding binding,
             ResolvedSource source, string clickGate, string layer, string path,
@@ -7671,6 +7798,32 @@ namespace PadForge.SteamWorkshop.Translation
             }
         }
 
+        /// <summary>The yaw-and-roll join of Steam's absolute mouse class
+        /// (steamclient64.dll 0x1388af6f0) over the row's sources: the one
+        /// at <paramref name="pair"/> is the yaw leg, the next the roll
+        /// leg, each already scaled and signed by its per-source fields,
+        /// as the client scales before joining. Signs agreeing, or the yaw
+        /// leg strictly larger, take the signed length of the two, else
+        /// the residual sqrt of roll squared less yaw squared, signed by
+        /// the roll leg (the compare at 0x1388af82f takes the residual
+        /// when the roll leg is at least the yaw leg, a zero leg counting
+        /// as positive). Sources outside the pair (a rotation's pitch leg)
+        /// add on. Degree-one homogeneous and odd, so coefficients folded
+        /// into the legs' sensitivities scale the join exactly.</summary>
+        private static string YawRollJoin(int pair, int count)
+        {
+            string a = "s[" + pair.ToString(CultureInfo.InvariantCulture) + "]";
+            string b = "s[" + (pair + 1).ToString(CultureInfo.InvariantCulture) + "]";
+            string join = "((" + a + " >= 0) == (" + b + " >= 0) || abs(" + a + ") > abs(" + b + ")"
+                + " ? (" + a + " < 0 ? -1 : 1) * hypot(" + a + ", " + b + ")"
+                + " : (" + b + " < 0 ? -1 : 1) * sqrt(abs(" + b + "*" + b + " - " + a + "*" + a + ")))";
+            var terms = new List<string> { join };
+            for (int i = 0; i < count; i++)
+                if (i != pair && i != pair + 1)
+                    terms.Add("s[" + i.ToString(CultureInfo.InvariantCulture) + "]");
+            return string.Join(" + ", terms);
+        }
+
         /// <summary>Pairwise max-by-magnitude, sign preserved, through the
         /// expression language's ternary.</summary>
         private static string FoldMaxAbs(List<string> terms)
@@ -7939,7 +8092,16 @@ namespace PadForge.SteamWorkshop.Translation
 
                 var row = new MappingRow { Target = key.Target, LayerMask = key.Layer };
                 row.Sources.AddRange(pending.Sources);
-                if (pending.Sources.Count > 1 && pending.IsAxis && !pending.HasMatchedPassthrough)
+                if (pending.BlendPair >= 0 && pending.BlendPair + 2 <= pending.Sources.Count)
+                {
+                    // gyro_axis 2: the client's yaw-and-roll join, over the
+                    // two turn legs, any other legs adding on. The gyro
+                    // legs carry no gates, so the gate expander below
+                    // leaves the expression alone.
+                    row.CombineMode = "Custom";
+                    row.CombineExpression = YawRollJoin(pending.BlendPair, pending.Sources.Count);
+                }
+                else if (pending.Sources.Count > 1 && pending.IsAxis && !pending.HasMatchedPassthrough)
                     row.CombineMode = "Sum"; // mouse deltas and merged axes are additive
                 // Rows carrying a matched analog passthrough keep the
                 // axis default (max-abs), so extra legs (a click

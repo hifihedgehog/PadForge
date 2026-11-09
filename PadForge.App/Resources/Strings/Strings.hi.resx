@@ -5250,5 +5250,4 @@
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows रेडियल स्टिक के {0} को धक्के के कोण के हिसाब से ढालता है। PadForge का स्टिक कार्ड सीधे धक्के को एक तरह और तिरछे धक्के को दूसरी तरह चलाता है।</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows जाइरो के डेडज़ोन को हर अक्ष पर गति के कोण के हिसाब से घटाता है। PadForge हर अक्ष से पूरा डेडज़ोन हटाता है, इसलिए सीधी गति दोनों में एक जैसी चलती है और धीमी तिरछी गति देर से शुरू होती है।</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>लेयर {0} को अलग-अलग ट्यून करती हैं, इसलिए हर लेयर की अपनी ट्यूनिंग रहती है, और कर्व सबसे नज़दीकी पावर कर्व के रूप में आता है।</value></data>
-  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>यॉ और रोल जोड़े गए (Steam इन्हें सदिश की लंबाई से मिलाता है)</value></data>
 </root>

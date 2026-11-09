@@ -5250,5 +5250,4 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows former en radial stiks {0} efter skubbets vinkel. Kortet Sticks i PadForge afspiller et lige skub ens og et diagonalt skub forskelligt.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows skalerer gyroens dødzone på hver akse efter bevægelsens vinkel. PadForge trækker hele dødzonen fra hver akse, så en lige bevægelse afspilles ens, og en langsom diagonal begynder senere.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Lagene tuner {0} forskelligt, så hvert lag beholder sin egen tuning, og kurven overføres som den nærmeste potenskurve.</value></data>
-  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>drejning og krængning lagt sammen (Steam kombinerer dem efter vektorlængde)</value></data>
 </root>

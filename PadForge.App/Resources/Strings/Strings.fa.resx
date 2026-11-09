@@ -5250,5 +5250,4 @@
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows {0} استیک شعاعی را بر اساس زاویه فشار شکل می‌دهد. کارت استیک در PadForge فشار مستقیم را یکسان و فشار مورب را متفاوت اجرا می‌کند.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows ناحیه مرده ژیروسکوپ را در هر محور بر اساس زاویه حرکت کم می‌کند. PadForge کل ناحیه مرده را از هر محور کم می‌کند، بنابراین حرکت مستقیم یکسان اجرا می‌شود و حرکت مورب آهسته دیرتر شروع می‌شود.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>لایه‌ها {0} را متفاوت تنظیم می‌کنند، بنابراین هر لایه تنظیم خودش را نگه می‌دارد و منحنی به نزدیک‌ترین منحنی توانی منتقل می‌شود.</value></data>
-  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>یاو و رول با هم جمع شدند (Steam آن‌ها را با طول بردار ترکیب می‌کند)</value></data>
 </root>

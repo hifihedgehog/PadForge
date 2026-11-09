@@ -128,8 +128,6 @@ namespace PadForge.Tests
             var p = Translate(Vdf("absolute_mouse", ("gyro_axis", "2")));
             Assert.True(CursorX(p, roll: -1f) > 1f, "a roll to the right should move the cursor right");
             Assert.True(CursorX(p, yaw: -1f) > 1f, "the nose right should move the cursor right");
-            Assert.Contains(p.Report.Entries, e => e.Status == TranslationStatus.Partial
-                && e.ReasonKey == TranslationReasons.GyroYawRollBlend);
         }
 
         // ─── The client's own rules for yaw, roll and their scales ───
@@ -157,7 +155,6 @@ namespace PadForge.Tests
             var deck = Translate(VdfFor("controller_neptune", "absolute_mouse"));
             Assert.True(CursorX(deck, roll: -1f) > 1f, "a Deck config turns with roll by default");
             Assert.True(CursorX(deck, yaw: -1f) > 1f);
-            Assert.Contains(deck.Report.Entries, e => e.ReasonKey == TranslationReasons.GyroYawRollBlend);
             var ps5 = Translate(VdfFor("controller_ps5", "absolute_mouse"));
             Assert.Equal(0f, CursorX(ps5, roll: -1f));
         }

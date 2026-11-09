@@ -5250,5 +5250,4 @@ PadForge ले तिनलाई अहिले अनइन्स्टल �
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows-ले रेडियल स्टिकको {0} लाई धक्काको कोणअनुसार आकार दिन्छ। PadForge-को स्टिक कार्डले सीधा धक्कालाई उस्तै र विकर्ण धक्कालाई फरक तरिकाले चलाउँछ।</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows-ले प्रत्येक अक्षमा जाइरोको डेडजोनलाई चालको कोणअनुसार घटबढ गर्छ। PadForge-ले प्रत्येक अक्षबाट पूरै डेडजोन हटाउँछ, त्यसैले सीधा चाल उस्तै चल्छ र ढिलो विकर्ण चाल पछि सुरु हुन्छ।</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>लेयरहरूले {0} लाई फरक तरिकाले ट्युन गर्छन्, त्यसैले प्रत्येकले आफ्नै ट्युनिङ राख्छ, र कर्भ सबैभन्दा नजिकको पावर कर्भका रूपमा आयात हुन्छ।</value></data>
-  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>याउ र रोल जोडियो (Steam-ले यी दुईलाई भेक्टरको लम्बाइद्वारा मिलाउँछ)</value></data>
 </root>

@@ -5250,5 +5250,4 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows định hình {0} của cần analog tròn theo góc đẩy. Thẻ cần analog của PadForge xử lý cú đẩy thẳng như nhau và cú đẩy chéo thì khác.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows điều chỉnh vùng chết của con quay hồi chuyển trên từng trục theo góc của chuyển động. PadForge trừ toàn bộ vùng chết khỏi từng trục, nên chuyển động thẳng hoạt động như nhau còn chuyển động chéo chậm bắt đầu muộn hơn.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Các lớp tinh chỉnh {0} khác nhau, nên mỗi lớp giữ tinh chỉnh riêng, và đường cong được chuyển sang thành đường cong lũy thừa gần nhất.</value></data>
-  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>yaw và roll được cộng lại (Steam kết hợp chúng theo độ dài vectơ)</value></data>
 </root>

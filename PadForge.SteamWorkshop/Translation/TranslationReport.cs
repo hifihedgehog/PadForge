@@ -728,10 +728,6 @@ namespace PadForge.SteamWorkshop.Translation
         /// rotated legs carry only the linear knobs and the withheld keys
         /// are named. {0} = the withheld keys.</summary>
         public const string RotationNonlinearWithheld = "Workshop_Tr_RotationNonlinearWithheld"; // {0} setting keys
-        /// <summary>A gyro_axis 2 group of the absolute mouse modes: the
-        /// client blends yaw and roll, each times its scale, by the length
-        /// of the two, and PadForge adds them.</summary>
-        public const string GyroYawRollBlend = "Workshop_Tr_GyroYawRollBlend";
         /// <summary>gyro_to_2d_conversion_style 6, Steam's Laser Pointer:
         /// PadForge has no counterpart and reads yaw.</summary>
         public const string GyroLaserPointer = "Workshop_Tr_GyroLaserPointer";

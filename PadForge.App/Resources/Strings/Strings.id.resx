@@ -5250,5 +5250,4 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows membentuk {0} stik radial menurut sudut dorongan. Kartu stik PadForge memperlakukan dorongan lurus dengan cara yang sama dan dorongan diagonal dengan cara berbeda.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows menyesuaikan zona mati giroskop pada tiap sumbu menurut sudut gerakan. PadForge mengurangi seluruh zona mati pada tiap sumbu, jadi gerakan lurus berperilaku sama dan gerakan diagonal yang lambat mulai bergerak lebih lambat.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Lapisan menyetel {0} secara berbeda, sehingga masing-masing mempertahankan penyetelannya sendiri, dan kurvanya diterapkan sebagai kurva pangkat terdekat.</value></data>
-  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>yaw dan roll dijumlahkan (Steam menggabungkannya dengan panjang vektor)</value></data>
 </root>

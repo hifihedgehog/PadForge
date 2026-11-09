@@ -5250,5 +5250,4 @@
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows формирует параметры радиального стика {0} по углу отклонения. Карточка стика в PadForge одинаково обрабатывает отклонение по прямой и по-разному диагональное.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows масштабирует мертвую зону гироскопа по каждой оси в зависимости от угла движения. PadForge вычитает мертвую зону по каждой оси целиком, поэтому движение по прямой обрабатывается одинаково, а медленное диагональное начинается позже.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Слои настраивают {0} по-разному, поэтому у каждого остаются свои настройки, а кривая переносится как ближайшая степенная.</value></data>
-  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>рыскание и крен складываются (Steam объединяет их по длине вектора)</value></data>
 </root>

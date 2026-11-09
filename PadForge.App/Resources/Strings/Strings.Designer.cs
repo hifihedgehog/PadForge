@@ -3948,7 +3948,6 @@ public class Strings : INotifyPropertyChanged
     public string Workshop_Tr_FlickStickSurfaceNotSupported => Get("Workshop_Tr_FlickStickSurfaceNotSupported");
     public string Workshop_Tr_DeadZoneRadialResidual => Get("Workshop_Tr_DeadZoneRadialResidual");
     public string Workshop_Tr_RotationNonlinearWithheld => Get("Workshop_Tr_RotationNonlinearWithheld");
-    public string Workshop_Tr_GyroYawRollBlend => Get("Workshop_Tr_GyroYawRollBlend");
     public string Workshop_Tr_GyroLaserPointer => Get("Workshop_Tr_GyroLaserPointer");
     public string Workshop_Tr_GyroRollFromHorizon => Get("Workshop_Tr_GyroRollFromHorizon");
     public string Workshop_Tr_GyroPitchFromHorizon => Get("Workshop_Tr_GyroPitchFromHorizon");

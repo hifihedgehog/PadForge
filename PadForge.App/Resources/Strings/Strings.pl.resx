@@ -5250,5 +5250,4 @@ Czy PadForge ma je teraz odinstalować? Wymaga to uprawnień administratora i mo
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows kształtuje {0} drążka radialnego według kąta wychylenia. Karta Drążki w PadForge traktuje wychylenie na wprost tak samo, a ukośne inaczej.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows skaluje martwą strefę żyroskopu na każdej osi według kąta ruchu. PadForge odejmuje całą martwą strefę od każdej osi, więc ruch na wprost działa tak samo, a wolny ruch ukośny zaczyna działać później.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Warstwy inaczej stroją {0}, więc każda zachowuje własne strojenie, a krzywa została przeniesiona jako najbliższa krzywa potęgowa.</value></data>
-  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>odchylenie i przechylenie dodane do siebie (Steam łączy je według długości wektora)</value></data>
 </root>

@@ -5250,5 +5250,4 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>A DS4Windows a radiális kar {0} beállítását a kitérítés szöge szerint alakítja. A PadForge kar kártyája az egyenes kitérítést ugyanúgy, az átlósat másképp játssza le.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>A DS4Windows a giroszkóp holtzónáját tengelyenként a mozgás szöge szerint méretezi. A PadForge a teljes holtzónát levonja minden tengelyről, ezért az egyenes mozgást ugyanúgy játssza le, a lassú átlós mozgás viszont később indul.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>A rétegek eltérően hangolják ezt: {0}, ezért mindegyik megtartja a saját hangolását, a görbe pedig a legközelebbi hatványgörbeként került át.</value></data>
-  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>a legyezés és az orsózás összeadva (a Steam a vektor hossza szerint egyesíti őket)</value></data>
 </root>

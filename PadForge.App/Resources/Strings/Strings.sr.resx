@@ -5250,5 +5250,4 @@
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows обликује {0} радијалног штапића према углу гурања. Картица штапића у програму PadForge једнако изводи право гурање, а дијагонално другачије.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows умањује мртву зону жироскопа на свакој оси сразмерно углу покрета. PadForge одузима целу мртву зону на свакој оси, па се прав покрет понаша једнако, а спор дијагонални почиње касније.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Слојеви различито подешавају {0}, па сваки задржава своје подешавање, а крива се преноси као најближа степена крива.</value></data>
-  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>скретање и ваљање су сабрани (Steam их спаја по дужини вектора)</value></data>
 </root>

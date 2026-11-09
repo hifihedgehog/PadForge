@@ -5250,5 +5250,4 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows tvaruje {0} radiální páčky podle úhlu vychýlení. Karta páčky v PadForge přímé vychýlení přehraje stejně a úhlopříčné jinak.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows upravuje mrtvou zónu gyroskopu na každé ose podle úhlu pohybu. PadForge odečítá celou mrtvou zónu na každé ose, takže přímý pohyb se přehraje stejně a pomalý úhlopříčný začne později.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Vrstvy ladí {0} různě, proto si každá ponechává vlastní ladění a křivka se přenese jako nejbližší mocninná křivka.</value></data>
-  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>yaw a roll sečtené (Steam je spojuje podle délky vektoru)</value></data>
 </root>

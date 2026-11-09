@@ -108,25 +108,127 @@ namespace PadForge.SteamWorkshop.Tests
         {
             var p = One("trigger", "right_trigger",
                 Inp("edge", Soft("key_press E", ("activation_threshold", "9830"), ("soft_press_sytle", "1"))));
-            Assert.Equal(BoundedReads.Press(1, false, 9830, false, false, "-", "Gamepad RightTrigger"), KeyRow(p, "KbmKey45"));
+            Assert.Equal(BoundedReads.Press(1, false, 9830, false, "-", "-", "Gamepad RightTrigger"), KeyRow(p, "KbmKey45"));
             var simple = One("trigger", "left_trigger", Inp("click", Soft("key_press E")));
-            Assert.Equal(BoundedReads.Press(0, false, 4096, false, false, "-", "Gamepad LeftTrigger"), KeyRow(simple, "KbmKey45"));
+            Assert.Equal(BoundedReads.Press(0, false, 4096, false, "-", "-", "Gamepad LeftTrigger"), KeyRow(simple, "KbmKey45"));
         }
+
+        /// <summary>The full pull read a Full Press or Chord sibling on a
+        /// trigger's click hands the cancel.</summary>
+        private static string FullPull(string axis)
+            => "fp{" + PhysicalSlotResolver.TriggerFullPullDescriptor(axis) + "}";
 
         [Fact]
         public void SoftPress_HipFireExclusive_HoldsItsMembersFullPressOff()
         {
             var p = One("trigger", "left_trigger",
                 Inp("click", Soft("key_press E", ("soft_press_sytle", "5")), Full("key_press Q")));
-            Assert.Equal(BoundedReads.Press(5, false, 4096, false, true, "-", "Gamepad LeftTrigger"), KeyRow(p, "KbmKey45"));
-            Assert.Equal(BoundedReads.Press(5, true, 4096, false, true, "-", "Gamepad LeftTrigger"), KeyRow(p, "KbmKey51"));
+            Assert.Equal(BoundedReads.Press(5, false, 4096, false, FullPull("Gamepad LeftTrigger"), "-",
+                "Gamepad LeftTrigger"), KeyRow(p, "KbmKey45"));
+            Assert.Equal(BoundedReads.Press(5, true, 4096, false, FullPull("Gamepad LeftTrigger"), "-",
+                "Gamepad LeftTrigger"), KeyRow(p, "KbmKey51"));
+        }
+
+        // ─── The coordinator's cancels (0x13862d451, 0x138668df0) ─────────
+
+        [Fact]
+        public void SoftPress_HipFire_Alone_HasNoCancel()
+        {
+            // The coordinator walks the input's other activators. With none,
+            // nothing cancels the wait, so a full pull inside the window
+            // leaves the press to fire.
+            var p = One("trigger", "left_trigger",
+                Inp("click", Soft("key_press E", ("soft_press_sytle", "2"))));
+            Assert.Equal(BoundedReads.Press(2, false, 4096, false, "-", "-", "Gamepad LeftTrigger"),
+                KeyRow(p, "KbmKey45"));
+        }
+
+        [Fact]
+        public void SoftPress_HipFire_AFullPressSibling_CancelsThroughItsRead()
+        {
+            var p = One("trigger", "left_trigger",
+                Inp("click", Soft("key_press E", ("soft_press_sytle", "2")), Full("key_press Q")));
+            Assert.Equal(BoundedReads.Press(2, false, 4096, false, FullPull("Gamepad LeftTrigger"), "-",
+                "Gamepad LeftTrigger"), KeyRow(p, "KbmKey45"));
+        }
+
+        [Fact]
+        public void SoftPress_InterruptableOff_DropsTheCancels()
+        {
+            // interruptable gates the client's whole cancel block
+            // (0x13862d451), and it is stored per activator.
+            var p = One("trigger", "left_trigger",
+                Inp("click", Soft("key_press E", ("soft_press_sytle", "2"), ("interruptable", "0")),
+                    Full("key_press Q")));
+            Assert.Equal(BoundedReads.Press(2, false, 4096, false, "-", "-", "Gamepad LeftTrigger"),
+                KeyRow(p, "KbmKey45"));
+        }
+
+        [Fact]
+        public void SoftPress_Siblings_TakeTheLowestThresholdAboveTheirs()
+        {
+            var p = One("trigger", "left_trigger",
+                Inp("click",
+                    Soft("key_press E", ("soft_press_sytle", "2")),
+                    Soft("key_press R", ("soft_press_sytle", "2"), ("activation_threshold", "12000")),
+                    Soft("key_press T", ("soft_press_sytle", "3"), ("activation_threshold", "20000")),
+                    Full("key_press Q")));
+            string fp = FullPull("Gamepad LeftTrigger");
+            Assert.Equal(BoundedReads.Press(2, false, 4096, false, fp + " sib12000", "-", "Gamepad LeftTrigger"),
+                KeyRow(p, "KbmKey45"));
+            Assert.Equal(BoundedReads.Press(2, false, 12000, false, fp + " sib20000", "-", "Gamepad LeftTrigger"),
+                KeyRow(p, "KbmKey52"));
+            Assert.Equal(BoundedReads.Press(3, false, 20000, false, fp, "-", "Gamepad LeftTrigger"),
+                KeyRow(p, "KbmKey54"));
+        }
+
+        [Fact]
+        public void SoftPress_AnExclusiveSibling_RidesTheSameValue()
+        {
+            // The Exclusive counts twice: idle, its threshold is a numeric
+            // sibling level, and fired it hands the coordinator 0x7fffffff.
+            var p = One("trigger", "left_trigger",
+                Inp("click",
+                    Soft("key_press E", ("soft_press_sytle", "3")),
+                    Soft("key_press Q", ("soft_press_sytle", "5"), ("activation_threshold", "20000"))));
+            Assert.Equal(BoundedReads.Press(3, false, 4096, false, "sib20000 ex20000:out:-:0", "-",
+                "Gamepad LeftTrigger"), KeyRow(p, "KbmKey45"));
+            Assert.Equal(BoundedReads.Press(5, false, 20000, false, "-", "-", "Gamepad LeftTrigger"),
+                KeyRow(p, "KbmKey51"));
+        }
+
+        [Fact]
+        public void SoftPress_OnATriggerEdge_TakesThePullAsItsSentinel()
+        {
+            // The edge's own press is the Soft Pull, so the sentinel embeds
+            // the same Pull read the Full Press row carries.
+            var p = One("trigger", "left_trigger",
+                Inp("edge", Soft("key_press E", ("soft_press_sytle", "2")), Full("key_press Q")));
+            Assert.Equal("fp{" + KeyRow(p, "KbmKey51") + "}",
+                "fp{" + BoundedReads.Pull(1, false, 10000, false, "Gamepad LeftTrigger") + "}");
+            Assert.Equal(BoundedReads.Press(2, false, 4096, false, "fp{" + KeyRow(p, "KbmKey51") + "}", "-",
+                "Gamepad LeftTrigger"), KeyRow(p, "KbmKey45"));
+        }
+
+        [Fact]
+        public void SoftPress_OnADpadDirection_TakesTheDirectionAsItsSentinel()
+        {
+            // The direction's own press is its wedge, the Full Press row's
+            // read, whatever the group's geometry settings.
+            var p = One("dpad", "left_trackpad",
+                Inp("dpad_north", Soft("key_press E", ("soft_press_sytle", "2"), ("activation_threshold", "14745")),
+                    Full("key_press Q")));
+            string wedge = KeyRow(p, "KbmKey51");
+            Assert.StartsWith("Wedge ", wedge);
+            Assert.Equal(BoundedReads.Press(2, false, 14745, false, "fp{" + wedge + "}", "Y-",
+                "Touchpad 0 Finger 0 Ring"), KeyRow(p, "KbmKey45"));
         }
 
         [Fact]
         public void SoftPress_OnADpadDirection_ReadsTheComponent()
         {
             var p = One("dpad", "left_trackpad", Inp("dpad_north", Soft("key_press E", ("activation_threshold", "14745"))));
-            Assert.Equal(BoundedReads.Press(0, false, 14745, false, false, "Y-", "Touchpad 0 Finger 0 Ring"),
+            Assert.Equal(BoundedReads.Press(0, false, 14745, false, "-", "Y-", "Touchpad 0 Finger 0 Ring"),
                 KeyRow(p, "KbmKey45"));
         }
 
@@ -134,7 +236,7 @@ namespace PadForge.SteamWorkshop.Tests
         public void SoftPress_OnAStickEdge_ReadsTheLength()
         {
             var p = One("joystick_move", "right_joystick", Inp("edge", Soft("key_press E")));
-            Assert.Equal(BoundedReads.Press(0, false, 4096, false, false, "len", "Gamepad RightStickRing"),
+            Assert.Equal(BoundedReads.Press(0, false, 4096, false, "-", "len", "Gamepad RightStickRing"),
                 KeyRow(p, "KbmKey45"));
         }
 

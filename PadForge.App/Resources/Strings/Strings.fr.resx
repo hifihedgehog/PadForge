@@ -5201,5 +5201,4 @@ Voulez-vous que PadForge les désinstalle maintenant ? Cette opération nécessi
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows façonne le réglage {0} d'un stick radial selon l'angle de la poussée. Les réglages du stick de PadForge traitent pareil une poussée droite et une poussée en diagonale.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows ajuste la zone morte du gyro sur chaque axe selon l'angle du mouvement. PadForge retire la zone morte entière de chaque axe : un mouvement droit se comporte donc pareil, et un mouvement diagonal lent démarre plus tard.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Les couches règlent {0} différemment : chacune garde ses propres réglages, et la courbe est reprise sous la forme de la courbe de puissance la plus proche.</value></data>
-  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>lacet et roulis additionnés (Steam les combine par la longueur du vecteur)</value></data>
 </root>

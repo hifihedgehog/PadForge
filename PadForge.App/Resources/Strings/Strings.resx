@@ -3713,7 +3713,6 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>flick stick on a surface with no analog pair skipped</value></data>
   <data name="Workshop_Tr_DeadZoneRadialResidual" xml:space="preserve"><value>deadzone radii apply per axis, not radially ({0})</value></data>
   <data name="Workshop_Tr_RotationNonlinearWithheld" xml:space="preserve"><value>nonlinear response withheld on rotated axes ({0})</value></data>
-  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>yaw and roll added (Steam combines them by vector length)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>Laser Pointer gyro read as yaw (PadForge has no laser pointer conversion)</value></data>
   <data name="Workshop_Tr_GyroRollFromHorizon" xml:space="preserve"><value>roll centered where the controller rests at the start or on Gyro Recenter, not on the horizon</value></data>
   <data name="Workshop_Tr_GyroPitchFromHorizon" xml:space="preserve"><value>pitch centered where the controller rests at the start or on Gyro Recenter, not at {0}° from flat</value></data>

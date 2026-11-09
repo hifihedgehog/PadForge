@@ -5250,5 +5250,4 @@
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows 依推動的角度調整放射狀搖桿的 {0}。PadForge 的搖桿卡片對直推和斜推一視同仁。</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows 依移動的角度按比例調整陀螺儀每個軸上的死區。PadForge 則從每個軸扣除整個死區，因此直向移動的表現相同，緩慢的斜向移動則開始得較晚。</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>各圖層對 {0} 的調校不同，因此每個圖層保留各自的調校，曲線則帶入為最接近的冪次曲線。</value></data>
-  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>偏航與滾轉採相加（Steam 以向量長度合併兩者）</value></data>
 </root>

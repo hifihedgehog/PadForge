@@ -285,7 +285,7 @@ namespace PadForge.Tests
             // activation_threshold 4096 with 5 percent of 32255 as hold-back,
             // on the pull to the power 0.75: pressed past 9.73 percent of the
             // pull, held to 3.21.
-            string press = BoundedReads.Press(0, false, 4096, false, false, "-", Trigger);
+            string press = BoundedReads.Press(0, false, 4096, false, "-", "-", Trigger);
             Assert.False(Hold(press, 0, 2));
             Assert.False(Hold(press, 9, 2));
             Assert.True(Hold(press, 10.5, 2));
@@ -296,8 +296,8 @@ namespace PadForge.Tests
         [Fact]
         public void Press_OnAComponent_ReadsTheCurvedWay_AndALengthStraight()
         {
-            string north = BoundedReads.Press(0, false, 4096, false, false, "Y-", Pad);
-            string edge = BoundedReads.Press(0, false, 4096, false, false, "len", Pad);
+            string north = BoundedReads.Press(0, false, 4096, false, "-", "Y-", Pad);
+            string edge = BoundedReads.Press(0, false, 4096, false, "-", "len", Pad);
             Finger(0.5f, 0.5f);
             Assert.False(Read(north));
             Assert.False(Read(edge));
@@ -308,6 +308,77 @@ namespace PadForge.Tests
             Assert.False(Read(edge));
             Finger(0.5f, 0.5f + 0.06f);
             Assert.False(Read(north));
+        }
+
+        // ─── Press: the coordinator's cancels (0x13862d451, 0x138668df0) ──
+
+        [Fact]
+        public void Press_HipFire_ASiblingThresholdAboveItCancelsTheWait()
+        {
+            // Two Soft Presses on one input: the coordinator hands the lower
+            // one the lowest sibling threshold above its own, and the value
+            // crossing it inside the window cancels the wait.
+            string press = BoundedReads.Press(2, false, 4096, false, "sib12000", "-", Trigger);
+            Assert.True(Hold(press, 15, 45));
+            Assert.False(Hold(press, 0, 2));
+            Assert.False(Hold(press, 50, 45));
+        }
+
+        [Fact]
+        public void Press_HipFire_AFullPressSibling_CancelsThroughItsOwnRead()
+        {
+            // With no Full Press or Chord sibling the coordinator returns
+            // nothing, so a full pull inside the window cancels nothing.
+            string alone = BoundedReads.Press(2, false, 4096, false, "-", "-", Trigger);
+            Assert.True(Hold(alone, 100, 45));
+            Assert.False(Hold(alone, 0, 2));
+            // With one, the sentinel is the sibling's own read.
+            string press = BoundedReads.Press(2, false, 4096, false,
+                "fp{" + BoundedReads.Level(95, 95, false, "-", BoundedGate.None, Trigger) + "}", "-", Trigger);
+            Assert.False(Hold(press, 100, 45));
+            Assert.False(Hold(press, 0, 2));
+            Assert.True(Hold(press, 50, 45));
+        }
+
+        [Fact]
+        public void Press_HipFire_AFiredExclusiveSiblingCancels()
+        {
+            // The Exclusive sibling runs on the same value: it fires after its
+            // own 60 ms window, and a waiting press then cancels (the
+            // coordinator returns 1 for a pressed Exclusive). Style 3 waits
+            // 70 ms, so the Exclusive lands inside the window.
+            string press = BoundedReads.Press(3, false, 4096, false, "ex20000:out:-:0", "-", Trigger);
+            Assert.False(Hold(press, 80, 85));
+            Assert.False(Hold(press, 0, 2));
+            Assert.True(Hold(press, 15, 85));
+        }
+
+        [Fact]
+        public void Press_Simple_StackedPresses_CancelOnTheirPressTick()
+        {
+            // The client cancels before it fires, so even a Simple press dies
+            // on its own press tick when the value lands past the sibling.
+            string press = BoundedReads.Press(0, false, 4096, false, "sib12000", "-", Trigger);
+            Assert.False(Hold(press, 50, 3));
+            Assert.False(Hold(press, 0, 2));
+            Assert.True(Hold(press, 15, 2));
+        }
+
+        [Fact]
+        public void Press_Parse_TakesTheCancelTokens_AndRefusesANestedPress()
+        {
+            Assert.NotNull(BoundedReads.Parse(
+                "Press 2 Soft 4096 out fp{Level 95 95 out - - Gamepad LeftTrigger} sib12000 ex20000:out:c:25000 - Gamepad LeftTrigger"));
+            Assert.NotNull(BoundedReads.Parse("Press 2 Soft 4096 out click - Gamepad LeftTrigger"));
+            Assert.Null(BoundedReads.Parse(
+                "Press 2 Soft 4096 out fp{Press 0 Soft 4096 out - - Gamepad LeftTrigger} - Gamepad LeftTrigger"));
+            Assert.Null(BoundedReads.Parse("Press 2 Soft 4096 out sibx - Gamepad LeftTrigger"));
+            Assert.Null(BoundedReads.Parse("Press 2 Soft 4096 out ex20000:out:c - Gamepad LeftTrigger"));
+            // The Soft and Full outputs of one activator share one machine,
+            // cancel tokens included.
+            var soft = BoundedReads.Parse("Press 5 Soft 4096 out sib12000 - Gamepad LeftTrigger");
+            var full = BoundedReads.Parse("Press 5 Full 4096 out sib12000 - Gamepad LeftTrigger");
+            Assert.Equal(soft.MachineKey, full.MachineKey);
         }
     }
 }

@@ -616,8 +616,9 @@ namespace PadForge.Common.Input
                             newState, ctx.SrcLeft, 50, slot, ud.InstanceGuidString);
                         bool right = SourceCoercion.EvaluateForButtonTarget(
                             newState, ctx.SrcRight, 50, slot, ud.InstanceGuidString);
-                        // Button-pair GRID (hotbar, v26): direction presses
-                        // STEP a persistent selection; a four-bool vector
+                        // Button-pair GRID (a Touch Grid on a D-pad or the
+                        // face buttons, v26): direction presses STEP a
+                        // persistent selection, since a four-bool vector
                         // could only reach a grid's edge cells. The
                         // evaluator owns the edge detector and the
                         // step-commit pulse.
@@ -626,10 +627,10 @@ namespace PadForge.Common.Input
                             MenuEvaluator.StepButtonPairGrid(ctx.State, def, layerOk,
                                 up, down, left, right, nowMs);
                             NoteMenuCommitLayer(slot, def, ctx.State, mask, layerOk, pulseSeqBefore, nowMs);
-                            // Hotbars keep their step-and-pulse contract in
-                            // every mode; only the overlay's lifetime follows
+                            // The grid keeps its step-and-pulse contract in
+                            // every mode. Only the overlay's lifetime follows
                             // the stay-open flag (#413), so a layer-held
-                            // hotbar stays on screen between presses.
+                            // grid stays on screen between presses.
                             bool pairPhysical = up || down || left || right;
                             bool pairActive = MenuEvaluator.ComputeSurfaceActive(def, pairPhysical, layerOk);
                             if (layerHolds && pairActive)

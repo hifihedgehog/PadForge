@@ -79,9 +79,6 @@ namespace PadForge.Common.Input.OnScreenKeyboard
     /// opacity from the menu itself.</summary>
     public sealed class OskSettings
     {
-        /// <summary>The corner grip's size range, in percent.</summary>
-        public const int MinScale = 50, MaxScale = 200;
-
         public OskStyle Style { get; init; } = OskStyle.Grid;
         public bool FunctionRow { get; init; }
         /// <summary>Word suggestions from Windows' text prediction.</summary>

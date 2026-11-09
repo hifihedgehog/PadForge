@@ -304,17 +304,18 @@ namespace PadForge.Engine.Menus
             st.Clicked = menuActive && clicked;
         }
 
-        /// <summary>Advances a button-pair GRID (hotbar) for this poll
-        /// frame (translator v26): direction presses STEP a persistent
-        /// selection instead of composing a hover vector (a four-bool
-        /// vector could only ever reach a grid's edge cells). Rising
-        /// Right / Down moves +1, rising Left / Up moves -1, clamped to
-        /// the cell range, and entering a cell commits it as a one-shot
-        /// pulse: the hotbar's step-through-the-bar contract, each press
-        /// firing the next cell's bindings. Selection persists while the
-        /// menu stays live so repeated presses walk the bar; the layer
-        /// ending resets nothing (a hotbar remembers its position, and
-        /// <paramref name="layerActive"/> false simply freezes it).</summary>
+        /// <summary>Advances a button-pair GRID, a Touch Grid opened on a
+        /// D-pad or the four face buttons, for this poll frame (translator
+        /// v26). Direction presses STEP a persistent selection instead of
+        /// composing a hover vector, because a four-bool vector could only
+        /// ever reach a grid's edge cells. Rising Right / Down moves +1,
+        /// rising Left / Up moves -1, clamped to the cell range, and
+        /// entering a cell commits it as a one-shot pulse, so each press
+        /// fires the next cell's bindings. Selection persists while the
+        /// menu stays live, so repeated presses walk the grid. The layer
+        /// ending resets nothing: the grid remembers its position, and
+        /// <paramref name="layerActive"/> false simply freezes it. The
+        /// Hotbar style steps in MenuHotbar.Step, not here.</summary>
         public static void StepButtonPairGrid(MenuRuntimeState st, MenuDefinitionEntry def,
             bool layerActive, bool up, bool down, bool left, bool right, long nowMs)
         {

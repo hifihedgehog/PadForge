@@ -79,6 +79,15 @@ namespace PadForge.Tests
         private static int Up(int percent) => 32768 - 32767 * percent / 100;
         private static int Right(int percent) => 32768 + 32767 * percent / 100;
 
+        // The left stick pushed toward a bearing (degrees counterclockwise
+        // from right, so 90 is up) this percent of the way.
+        private static void Push(CustomInputState state, double bearing, int percent)
+        {
+            double r = bearing * Math.PI / 180.0, d = percent / 100.0;
+            state.Axis[0] = (int)Math.Round(32768 + 32767 * d * Math.Cos(r));
+            state.Axis[1] = (int)Math.Round(32768 - 32767 * d * Math.Sin(r));
+        }
+
         // A row's read of one source, its gate included.
         private static bool ButtonRead(CustomInputState state, MappingSource src)
             => SourceEvaluator.EvaluateForButtonTarget(state, src, 50, 0, "KbmKey20", 0, null, 0, "");
@@ -1220,7 +1229,7 @@ namespace PadForge.Tests
             => "[{\"id\":1,\"name\":\"gamepad\",\"convertToVirtual\":true,\"default\":" + scope + "}]";
 
         [Fact]
-        public void AxisRange_LeavesTheGamesStickAlone_AndSaysItDidNotComeAcross()
+        public void AxisRange_LeavesTheGamesStickAlone()
         {
             // A stick's "sensitivity" is reWASD's Horizontal and Vertical axis
             // range: the width of the direction zones that keys mapped to the
@@ -1230,8 +1239,114 @@ namespace PadForge.Tests
             var r = Import(File(hardware: Tuned("""{"sticks":[{"name":"left","sensitivity":{"x":16384,"y":32767}}]}""")));
             Assert.Equal(1.0, Row(r.Profile, "LeftThumbAxisX").Sources[0].Sensitivity);
             Assert.Equal(1.0, Row(r.Profile, "LeftThumbAxisY").Sources[0].Sensitivity);
+            Assert.DoesNotContain(r.Report.Entries, e => e.ReasonKey == ImportReasons.ControllerSetting && e.ReasonArgs.Contains("sensitivity"));
+        }
+
+        [Theory]
+        [InlineData(1, 2, true)]
+        [InlineData(13573, 30, true)]
+        [InlineData(13573, 20, false)]
+        [InlineData(32768, 50, true)]
+        [InlineData(32768, 40, false)]
+        public void AnAxisRange_SetsHowFarItsDirectionsReach(int range, double bearing, bool fires)
+        {
+            // reWASD's direction test (jlserv.exe, opcode 0xE1, 0x14007b880):
+            // Up fires while |x| times the vertical axis range is under |y|
+            // times 32768, so it reaches atan(32768 / range) from straight up:
+            // nearly 90 degrees at 1, 67.5 at the default 13573, 45 at 32768.
+            var p = Profile(File(hardware: Tuned("{\"sticks\":[{\"name\":\"left\",\"sensitivity\":{\"y\":" + range + "}}]}"),
+                masks: "[" + Mask(1, 1, 40) + "]", mappings: "[" + Map(1, "[" + Key(57) + "]") + "]"));
+            var state = Centered();
+            Push(state, bearing, 100);
+            Assert.Equal(fires, ButtonRead(state, Row(p, "KbmKey20").Sources[0]));
+        }
+
+        [Fact]
+        public void ACardinalDirection_ReadsReWasdsZone()
+        {
+            // Past the low zone's circle and within the axis range's reach,
+            // not wherever the up half passes the low zone.
+            var p = Profile(File(masks: "[" + Mask(1, 1, 40) + "]", mappings: "[" + Map(1, "[" + Key(57) + "]") + "]"));
+            var src = Row(p, "KbmKey20").Sources[0];
+            var state = Centered();
+            Push(state, 45, 38);
+            Assert.True(ButtonRead(state, src));
+            Push(state, 20, 100);
+            Assert.False(ButtonRead(state, src));
+            Push(state, 90, 25);
+            Assert.False(ButtonRead(state, src));
+        }
+
+        [Fact]
+        public void ACardinalOnAnEightWayStick_LeavesTheCornerToTheDiagonal()
+        {
+            // "Use 8 digital directions" gives each corner its own mapping:
+            // past both tests the push is the diagonal's, so Up reaches only
+            // 22.5 degrees from straight up at the default ranges.
+            var p = Profile(File(hardware: Tuned("""{"sticks":[{"name":"left","diagonalZones":true}]}"""),
+                masks: "[" + Mask(1, 1, 40) + "," + Mask(2, 1, 176) + "]",
+                mappings: "[" + Map(1, "[" + Key(57) + "]") + "," + Map(2, "[" + Key(28) + "]") + "]"));
+            var up = Row(p, "KbmKey20").Sources[0];
+            var upRight = Row(p, "KbmKey0D").Sources[0];
+            var state = Centered();
+            Push(state, 45, 80);
+            Assert.False(ButtonRead(state, up));
+            Assert.True(ButtonRead(state, upRight));
+            Push(state, 80, 80);
+            Assert.True(ButtonRead(state, up));
+            Assert.False(ButtonRead(state, upRight));
+        }
+
+        [Fact]
+        public void ADiagonal_WidensWithTheAxisRange()
+        {
+            // A corner is where both tests pass. At 6000 each direction
+            // reaches atan(32768 / 6000), about 79.6 degrees, so Up-Right runs
+            // from about 10.4 to 79.6 degrees.
+            var p = Profile(File(hardware: Tuned("""{"sticks":[{"name":"left","sensitivity":{"x":6000,"y":6000}}]}"""),
+                masks: "[" + Mask(1, 1, 176) + "]", mappings: "[" + Map(1, "[" + Key(57) + "]") + "]"));
+            var src = Row(p, "KbmKey20").Sources[0];
+            var state = Centered();
+            Push(state, 15, 80);
+            Assert.True(ButtonRead(state, src));
+            Push(state, 5, 80);
+            Assert.False(ButtonRead(state, src));
+        }
+
+        [Fact]
+        public void ARotatedSticksZoneDirection_TurnsAndKeepsItsBand()
+        {
+            // 113 is up between the medium and high edges (66 and 85 percent).
+            // A quarter turn counterclockwise puts it to the right.
+            var p = Profile(File(hardware: Tuned("""{"sticks":[{"name":"left","rotation":90}]}"""),
+                masks: "[" + Mask(1, 1, 113) + "]", mappings: "[" + Map(1, "[" + Key(57) + "]") + "]"));
+            var src = Row(p, "KbmKey20").Sources[0];
+            var state = Centered();
+            Push(state, 0, 75);
+            Assert.True(ButtonRead(state, src));
+            Push(state, 0, 50);
+            Assert.False(ButtonRead(state, src));
+            Push(state, 0, 95);
+            Assert.False(ButtonRead(state, src));
+            Push(state, 90, 75);
+            Assert.False(ButtonRead(state, src));
+        }
+
+        [Fact]
+        public void AnEllipticZone_IsNamed()
+        {
+            // reWASD sizes a zone by x across and y up and down (ConfigJSON_3_0
+            // keeps y only when it differs), and PadForge's zones are circles.
+            var r = Import(File(hardware: Tuned("""{"sticks":[{"name":"left","zones":[{"name":"low","x":9830,"y":16384}]}]}""")));
             Assert.Contains(r.Report.Entries, e => e.Status == TranslationStatus.Partial
-                && e.ReasonKey == ImportReasons.ControllerSetting && e.ReasonArgs.Contains("sensitivity"));
+                && e.ReasonKey == ImportReasons.ControllerSetting && e.ReasonArgs.Contains("zones"));
+        }
+
+        [Fact]
+        public void EightWayMode_IsReadNotNamed()
+        {
+            var r = Import(File(hardware: Tuned("""{"sticks":[{"name":"left","diagonalZones":true}]}""")));
+            Assert.DoesNotContain(r.Report.Entries, e => e.ReasonKey == ImportReasons.ControllerSetting && e.ReasonArgs.Contains("diagonalZones"));
         }
 
         [Fact]
@@ -1244,7 +1359,7 @@ namespace PadForge.Tests
             var axis = Row(p, "RightThumbAxisX").Sources[0];
             Assert.Equal(0, axis.ParamStickDeadZoneShape);
             Assert.Equal(0.0, axis.ParamStickDeadZoneInner);
-            Assert.Equal(50, Row(p, "KbmKey20").Sources[0].DeadZone);
+            Assert.Equal(BoundedReads.Sector(90, 67.5, 50, "Gamepad RightStickRing"), Row(p, "KbmKey20").Sources[0].GateDescriptor);
         }
 
         [Fact]
@@ -1281,14 +1396,19 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void ARotatedSticksDirection_SaysTheRotationDoesNotReachIt()
+        public void ARotatedSticksDirection_TurnsWithIt()
         {
-            // A direction reads one raw axis, and reWASD turns its direction
-            // zones with the stick.
-            var r = Import(File(hardware: Tuned("""{"sticks":[{"name":"left","rotation":30}]}"""),
+            // reWASD turns its direction zones with the stick: a quarter turn
+            // counterclockwise reads up from a push to the right.
+            var r = Import(File(hardware: Tuned("""{"sticks":[{"name":"left","rotation":90}]}"""),
                 masks: "[" + Mask(1, 1, 40) + "]", mappings: "[" + Map(1, "[" + Key(57) + "]") + "]"));
-            Assert.Contains(r.Report.Entries, e => e.Status == TranslationStatus.Partial && e.Binding == "Directions"
-                && e.ReasonKey == ImportReasons.ControllerSetting && e.ReasonArgs.Contains("rotation"));
+            var src = Row(r.Profile, "KbmKey20").Sources[0];
+            var state = Centered();
+            Push(state, 0, 80);
+            Assert.True(ButtonRead(state, src));
+            Push(state, 90, 80);
+            Assert.False(ButtonRead(state, src));
+            Assert.DoesNotContain(r.Report.Entries, e => e.Status == TranslationStatus.Partial && (e.SourcePath ?? "").Contains("Left stick"));
         }
 
         [Fact]
@@ -2468,13 +2588,13 @@ namespace PadForge.Tests
             var r = Import(File(shifts: """[{"id":1,"type":"default","set":[{"deviceId":1,"buttonId":40}]}]""",
                 hardware: Tuned("""{"sticks":[{"name":"left","zones":[{"name":"low","x":16384}]}]}""")));
             var act = r.Profile.SlotMappingSets[0].ShiftActivators.Single(a => a.LayerMask == "Shift1");
-            Assert.InRange(act.AxisThreshold, 0.49, 0.51);
+            Assert.Equal(BoundedReads.Sector(90, 67.5, 50, "Gamepad LeftStickRing"), act.GateDescriptor);
         }
 
         [Theory]
         [InlineData(1)]
         [InlineData(13573)]
-        public void AnUntouchedAxisRange_SaysNothing(int value)
+        public void AnAxisRangeOfOneOrTheDefault_LeavesTheGamesStickAlone(int value)
         {
             // reWASD 9.1 and 9.3 wrote 1 on sticks nobody touched (Miner
             // Warfare 9.1.2, TATE - Rotate -90 9.3.0), and 13573 is the default

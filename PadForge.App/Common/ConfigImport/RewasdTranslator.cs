@@ -44,6 +44,11 @@ namespace PadForge.Common.ConfigImport
 
         private sealed class StickTuning
         {
+            // The axis ranges that size the direction zones, and whether a
+            // corner is a diagonal's alone ("Use 8 digital directions").
+            public int RangeX = DefaultAxisRange;
+            public int RangeY = DefaultAxisRange;
+            public bool EightWay;
             public double RotationDeg;
             public double CurveExponent;
             public int Low = DefaultLowZone;
@@ -89,10 +94,6 @@ namespace PadForge.Common.ConfigImport
 
         /// <summary>Set when a touchpad diagonal is read.</summary>
         private bool _touchDiagonalRead;
-
-        /// <summary>The rotated sticks, per layer, that a direction reads
-        /// through one raw axis, in the order first read.</summary>
-        private readonly List<(int Shift, string Stick)> _rotatedDirections = new();
 
         private RewasdTranslator(JsonElement root)
         {
@@ -547,25 +548,47 @@ namespace PadForge.Common.ConfigImport
                 Label = label,
                 Descriptor = descriptor,
             };
-            // reWASD turns its direction zones with a rotated stick
-            // (StickCrossView rotates them, and OverlayMenuVME.CalcAngle turns
-            // a menu's bearing), and a half-axis read holds one raw axis, so a
-            // rotated stick's direction says the rotation does not reach it.
-            ImportInput Dir(string axis, bool lower, string stick, string label)
+            // A stick direction is reWASD's own test (jlserv.exe, opcode 0xE1,
+            // 0x14007b880): past the zone's edge, Up and Down fire while |x|
+            // times the vertical axis range is under |y| times 32768, and Left
+            // and Right while |y| times the horizontal range is under |x|
+            // times 32768. That region is a sector of the ring. reWASD turns it
+            // counterclockwise for a positive rotation (StickCrossView,
+            // OverlayMenuVME.CalcAngle), so the push that reads as a direction
+            // lies the rotation back. A straight stick reads the half the
+            // direction lies in, so an analog output takes that axis. A turned
+            // sector can cross into the other half, so a turned stick reads
+            // the ring. A zone with an edge above it bands the ring, and the
+            // sector then rides as the second gate.
+            ImportInput Directional(string stick, string axis, bool lower, double bearing, double reach, int edge, int next, string label)
             {
                 var t = TuningOf(shift, stick);
-                if (t.RotationDeg != 0 && !_rotatedDirections.Contains((shift, stick)))
-                    _rotatedDirections.Add((shift, stick));
-                return new()
+                string ring = "Gamepad " + (stick == "left" ? "Left" : "Right") + "StickRing";
+                var d = t.RotationDeg == 0
+                    ? new ImportInput { Control = "gp:" + id, Label = label, Descriptor = axis, HalfAxis = true, Invert = lower, IsAnalog = true }
+                    : Ring(ring, 0, label);
+                d.DeadZone = 1;
+                double center = Math.Round(((bearing - t.RotationDeg) % 360.0 + 360.0) % 360.0, 2);
+                string sector = PadForge.Engine.Common.Mapping.BoundedReads.Sector(center, Math.Round(Math.Max(reach, 0.0), 2), edge, ring);
+                if (next > edge && next < 100)
                 {
-                    Control = "gp:" + id,
-                    Label = label,
-                    Descriptor = axis,
-                    HalfAxis = true,
-                    Invert = lower,
-                    DeadZone = t.Low,
-                    IsAnalog = true,
-                };
+                    d.Band = PadForge.Engine.Common.Mapping.BoundedReads.Between(edge, next, false, false, ring);
+                    d.Gate = sector;
+                }
+                else
+                {
+                    d.Band = sector;
+                }
+                return d;
+            }
+            // Up, Down, Left or Right past the low zone. Bearings run
+            // counterclockwise from right.
+            ImportInput Dir(string axis, bool lower, string stick, string label)
+            {
+                bool vertical = axis.EndsWith("Y", StringComparison.Ordinal);
+                double bearing = vertical ? (lower ? 90 : 270) : (lower ? 180 : 0);
+                var t = TuningOf(shift, stick);
+                return Directional(stick, axis, lower, bearing, CardinalReach(t, vertical), t.Low, 0, label);
             }
             ImportInput Trig(string descriptor, int zone, string label) => new()
             {
@@ -592,40 +615,27 @@ namespace PadForge.Common.ConfigImport
                 int zone = k / 4, dir = k % 4;
                 string prefix = stick == "left" ? "Left" : "Right";
                 var t = TuningOf(shift, stick);
-                var d = Dir("Gamepad " + prefix + "Stick" + (dir <= 1 ? "Y" : "X"), dir is 0 or 2, stick,
+                bool vertical = dir <= 1, lower = dir is 0 or 2;
+                double bearing = vertical ? (lower ? 90 : 270) : (lower ? 180 : 0);
+                return Directional(stick, "Gamepad " + prefix + "Stick" + (vertical ? "Y" : "X"), lower, bearing,
+                    CardinalReach(t, vertical),
+                    zone == 0 ? t.Low : zone == 1 ? t.Med : t.High,
+                    zone == 0 ? t.Med : zone == 1 ? t.High : 0,
                     prefix + " stick " + (zone == 0 ? "low" : zone == 1 ? "medium" : "high") + " zone "
                     + (dir switch { 0 => "Up", 1 => "Down", 2 => "Left", _ => "Right" }));
-                d.DeadZone = zone == 0 ? t.Low : zone == 1 ? t.Med : t.High;
-                return d.Below(zone == 0 ? t.Med : zone == 1 ? t.High : 0);
             }
-            // A diagonal: past the low zone and within 22.5 degrees of its
-            // bearing, an eighth of the circle, through the Sector read the
-            // DS4Windows import uses for stick directions. The schema's
-            // diagonalZones is a switch with no edge of its own, so the low
-            // zone is where a diagonal starts. The read underneath only has to
-            // agree on the side. Bearings run counterclockwise from right.
+            // A diagonal is the corner where both of reWASD's tests pass,
+            // past the low zone. Measured from the horizontal axis toward the
+            // vertical one, it runs from 90 less the vertical reach to the
+            // horizontal reach: 22.5 to 67.5 degrees at the default ranges.
             ImportInput Diagonal(double bearing, string stick, string label)
             {
                 string prefix = stick == "left" ? "Left" : "Right";
-                string ring = "Gamepad " + prefix + "StickRing";
                 var t = TuningOf(shift, stick);
-                ImportInput d;
-                if (t.RotationDeg == 0)
-                {
-                    d = Dir("Gamepad " + prefix + "StickY", bearing is > 0 and < 180, stick, label);
-                }
-                else
-                {
-                    // reWASD turns its zones counterclockwise for a positive
-                    // rotation, so the push that reads as this diagonal lies the
-                    // rotation back. A turned sector can cross into the other
-                    // half of the stick, so the ring reads under it.
-                    bearing = ((bearing - t.RotationDeg) % 360.0 + 360.0) % 360.0;
-                    d = Ring(ring, 1, label);
-                }
-                d.DeadZone = 1;
-                d.Band = PadForge.Engine.Common.Mapping.BoundedReads.Sector(bearing, 22.5, t.Low, ring);
-                return d;
+                double horizontal = Reach(t.RangeX), vertical = Reach(t.RangeY);
+                double mid = (90.0 - vertical + horizontal) / 2.0, half = (horizontal + vertical - 90.0) / 2.0;
+                double center = bearing switch { 45 => mid, 135 => 180 - mid, 225 => 180 + mid, _ => 360 - mid };
+                return Directional(stick, "Gamepad " + prefix + "StickY", bearing is > 0 and < 180, center, half, t.Low, 0, label);
             }
             ImportInput Half(string descriptor, bool lower, string label) => new()
             {
@@ -2390,21 +2400,27 @@ namespace PadForge.Common.ConfigImport
                 }
                 if (Has(st, "mouse", out _))
                     _b.Partial(ImportReasons.MoveSpeed, Scoped(StickLabel(name)), "", "");
-                NoteLeftovers(st, Scoped(StickLabel(name)), "name", "sensitivity", "rotation", "zones", "curves", "mouse");
+                NoteLeftovers(st, Scoped(StickLabel(name)), "name", "sensitivity", "rotation", "zones", "curves", "mouse", "diagonalZones");
                 var t = new StickTuning();
-                // "sensitivity" is reWASD's Horizontal and Vertical axis range:
-                // the width of the direction zones that keys mapped to the
-                // stick read (reWASDUI StickCrossSectors draws them from it).
-                // It never reaches the game's stick (reWASD's administrator on
-                // its forum, thread 222207), and PadForge's direction reads have
-                // no zone width to take it. reWASD 9.1 and 9.3 wrote 1 on a
-                // stick nobody touched.
-                if (Has(st, "sensitivity", out var range) && (AxisRangeSet(range, "x") || AxisRangeSet(range, "y")))
-                    _b.Partial(ImportReasons.ControllerSetting, Scoped(StickLabel(name)), "Axis range", "", "sensitivity");
+                // "sensitivity" is reWASD's Horizontal and Vertical axis range,
+                // which sizes the direction zones keys mapped to the stick read
+                // (GamepadInput's Directional). It never reaches the game's
+                // stick (reWASD's administrator on its forum, thread 222207).
+                if (Has(st, "sensitivity", out var range))
+                {
+                    t.RangeX = AxisRange(range, "x");
+                    t.RangeY = AxisRange(range, "y");
+                }
+                t.EightWay = Flag(st, "diagonalZones");
                 // reWASD's loader (ConfigJSON_3_0) takes -90 to 90 degrees and
                 // leaves the stick straight for anything else.
                 int rotation = Int(st, "rotation");
                 t.RotationDeg = rotation is >= -90 and <= 90 ? rotation : 0;
+                // reWASD's zone is an ellipse, x across and y up and down, and
+                // its saver writes y only when it differs from x. PadForge's
+                // stick zones are circles at x.
+                if (Arr(st, "zones").Any(z => Has(z, "x", out _) && Has(z, "y", out _) && Int(z, "x") != Int(z, "y")))
+                    _b.Partial(ImportReasons.ControllerSetting, Scoped(StickLabel(name)), "Zones", "", "zones");
                 foreach (var z in Arr(st, "zones"))
                 {
                     int value = Int(z, "x", Int(z, "y"));
@@ -2496,14 +2512,29 @@ namespace PadForge.Common.ConfigImport
                 _b.Partial(ImportReasons.ControllerSetting, Scoped("Vibration"), "", "", "vibration");
         }
 
-        /// <summary>Whether a stick's axis range on one axis is set: neither
-        /// absent nor reWASD's default, nor the 1 that reWASD 9.1 and 9.3
-        /// wrote on an untouched stick (the samples Miner Warfare, 9.1.2, and
-        /// TATE - Rotate -90 Landscape 180, 9.3.0).</summary>
-        private static bool AxisRangeSet(JsonElement range, string axis)
+        /// <summary>A stick's axis range on one axis, as reWASD's loader
+        /// (ConfigJSON_3_0) takes it: 1 to 32768, else the default. reWASD
+        /// 9.1 and 9.3 wrote 1 on sticks nobody touched (the samples Miner
+        /// Warfare, 9.1.2, and TATE - Rotate -90 Landscape 180, 9.3.0), which
+        /// reWASD now reads as zones each the width of a half.</summary>
+        private static int AxisRange(JsonElement range, string axis)
         {
             int value = Int(range, axis, DefaultAxisRange);
-            return value != 1 && value != DefaultAxisRange;
+            return value is >= 1 and <= 32768 ? value : DefaultAxisRange;
+        }
+
+        /// <summary>How far a direction reaches from its axis, in degrees: the
+        /// angle whose tangent is 32768 over the axis range, 67.5 at the
+        /// default.</summary>
+        private static double Reach(int range) => Math.Atan(32768.0 / range) * 180.0 / Math.PI;
+
+        /// <summary>How far Up and Down, or Left and Right, reach. With "Use 8
+        /// digital directions" a corner belongs to its diagonal, so a
+        /// direction stops where the other axis's test begins.</summary>
+        private static double CardinalReach(StickTuning t, bool vertical)
+        {
+            double own = Reach(vertical ? t.RangeY : t.RangeX);
+            return t.EightWay ? Math.Min(own, 90.0 - Reach(vertical ? t.RangeX : t.RangeY)) : own;
         }
 
         private static string StickLabel(string name) => name == "left" ? "Left stick" : "Right stick";
@@ -2729,8 +2760,6 @@ namespace PadForge.Common.ConfigImport
                 _b.Partial(ImportReasons.GyroAxes, "Gyro", "", "");
             if (_touchDiagonalRead)
                 _b.Partial(ImportReasons.TouchpadDiagonal, "Touchpad", "", "");
-            foreach (var (shift, stick) in _rotatedDirections)
-                _b.Partial(ImportReasons.ControllerSetting, PathOf(shift, StickLabel(stick)), "Directions", "", "rotation");
             if (Arr(_root, "crosshairs").Any())
                 _b.Skipped(ImportReasons.Crosshair, "Crosshairs", "");
 

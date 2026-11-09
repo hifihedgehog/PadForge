@@ -67,7 +67,12 @@ namespace PadForge.Common.ConfigImport
             };
             if (DeadZone > 0) src.DeadZone = DeadZone;
             if (Gate.Length > 0) src.GateDescriptor = Gate;
-            if (Band.Length > 0) src.GateDescriptor = Band;
+            if (Band.Length > 0)
+            {
+                // Both: the band gates first and the second read rides behind it.
+                if (Gate.Length > 0) src.Gate2Descriptor = Gate;
+                src.GateDescriptor = Band;
+            }
             return src;
         }
 
@@ -834,7 +839,11 @@ namespace PadForge.Common.ConfigImport
                 LayerMask = layer,
             };
             if (first.Gate.Length > 0) act.GateDescriptor = first.Gate;
-            if (first.Band.Length > 0) act.GateDescriptor = first.Band;
+            if (first.Band.Length > 0)
+            {
+                if (first.Gate.Length > 0) act.Gate2Descriptor = first.Gate;
+                act.GateDescriptor = first.Band;
+            }
             if (first.IsAnalog)
             {
                 act.Kind = "Axis";

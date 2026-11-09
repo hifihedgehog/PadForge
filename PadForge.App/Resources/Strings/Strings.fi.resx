@@ -5221,6 +5221,7 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>Laserosoitin-gyro luettu kiertymänä (PadForge-ssa ei ole laserosoittimen muunnosta)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>reWASD-issa {0} pääsee silti Windows-iin, koska tiedosto määrittää sen ilman määrityksen poistoa. Kun Estä määritetyt syötteet on käytössä, PadForge estää sen.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows muotoilee säteittäisen sauvan asetuksia {0} työnnön kulman mukaan. PadForge-n sauvakortti toistaa suoran työnnön samoin ja vinon eri tavalla.</value></data>
+  <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows skaalaa gyron kuolleen alueen kullakin akselilla liikkeen kulman mukaan. PadForge poistaa koko kuolleen alueen jokaiselta akselilta, joten suora liike toistuu samoin ja hidas vino liike alkaa myöhemmin.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Tasot säätävät kohdetta {0} eri tavoin, joten kullakin on omat säätönsä, ja käyrä tulee mukaan lähimpänä potenssikäyränä.</value></data>
   <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>kiertymä ja kallistus lasketaan yhteen (Steam yhdistää ne vektorin pituuden mukaan)</value></data>
 </root>

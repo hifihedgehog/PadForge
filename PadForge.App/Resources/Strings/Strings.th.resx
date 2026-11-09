@@ -5221,6 +5221,7 @@
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>ไจโรแบบตัวชี้เลเซอร์ถูกอ่านเป็นยอว์ (PadForge ไม่มีการแปลงแบบตัวชี้เลเซอร์)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>ใน reWASD {0} ยังไปถึง Windows เพราะไฟล์แมปไว้โดยไม่ยกเลิกการแมป เมื่อเปิด ดักอินพุตที่แมปไว้ PadForge จะกันไว้</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows ปรับ {0} ของสติ๊กแบบรัศมีตามมุมที่ดัน การ์ดสติ๊กของ PadForge ถือว่าการดันตรงเหมือนกัน และการดันทแยงต่างออกไป</value></data>
+  <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows ปรับเดดโซนของไจโรในแต่ละแกนตามมุมของการเคลื่อนไหว PadForge หักเดดโซนทั้งหมดออกจากแต่ละแกน การเคลื่อนไหวตรงจึงเหมือนกัน ส่วนการเคลื่อนไหวทแยงช้าๆ จะเริ่มขยับช้ากว่า</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>เลเยอร์ต่างๆ ปรับแต่ง {0} ไม่เหมือนกัน แต่ละเลเยอร์จึงเก็บการปรับแต่งของตัวเองไว้ และเส้นโค้งถูกนำมาเป็นเส้นโค้งยกกำลังที่ใกล้เคียงที่สุด</value></data>
   <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>นำยอว์และโรลมารวมกัน (Steam รวมทั้งสองด้วยความยาวเวกเตอร์)</value></data>
 </root>

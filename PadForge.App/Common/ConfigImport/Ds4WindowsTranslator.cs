@@ -1792,6 +1792,21 @@ namespace PadForge.Common.ConfigImport
                 _b.Partial(ImportReasons.ControllerSetting, "Gyro", "Triggers", first, "Gyro triggers");
         }
 
+        /// <summary>The report line of a gyro mode that moves the mouse or a
+        /// stick. MouseCursor.cs and Mouse.cs SixMouseStick take the dead zone
+        /// off each axis times the cosine or sine of the movement's angle
+        /// (normX, normY), and PadForge's gyro takes the whole dead zone off
+        /// each axis. A straight movement plays the same, a slow diagonal one
+        /// starts later, and the line says so while there is a dead zone and
+        /// something to move.</summary>
+        private void GyroModeLine(string binding, string emitted, double deadZoneCounts)
+        {
+            if (deadZoneCounts > 0 && emitted.Length > 0)
+                _b.Partial(ImportReasons.GyroByAngle, "Gyro", binding, emitted);
+            else
+                _b.Clean("Gyro", binding, emitted);
+        }
+
         /// <summary>DS4Sixaxis GYRO_RES_IN_DEG_SEC: the raw counts DS4Windows'
         /// gyro zones are written in, per degree per second.</summary>
         private const double GyroCountsPerDegree = 16;
@@ -1826,8 +1841,9 @@ namespace PadForge.Common.ConfigImport
                     _b.Bind(ImportBuilder.BaseLayer, "ds:gyro:y", "KbmMouseY",
                         new MappingSource { Descriptor = "Gyro Pitch", GyroSensitivity = sensitivity * vertical, Invert = (invert & 1) != 0 }, 0);
                     // MouseCursor.cs subtracts its dead zone from the raw counts.
-                    _b.GyroDeadZone = GyroDegrees(Num("GyroMouseDeadZone", 10));
-                    _b.Clean("Gyro", "Mouse", "KbmMouseX, KbmMouseY");
+                    double mouseDeadZone = Num("GyroMouseDeadZone", 10);
+                    _b.GyroDeadZone = GyroDegrees(mouseDeadZone);
+                    GyroModeLine("Mouse", "KbmMouseX, KbmMouseY", mouseDeadZone);
                     break;
                 }
                 case "MouseJoystick":
@@ -1852,7 +1868,8 @@ namespace PadForge.Common.ConfigImport
                     double outer = Math.Clamp(Math.Max(1, Num("GyroMouseStickMaxZone", 830)) / GyroCountsPerDegree / GyroFullScaleDegrees, 0.001, 0.99);
                     double antiX = Math.Clamp(Num("GyroMouseStickAntiDeadX", 0.4), 0.0, 0.99);
                     double antiY = Math.Clamp(Num("GyroMouseStickAntiDeadY", 0.4), 0.0, 0.99);
-                    _b.GyroDeadZone = GyroDegrees(Num("GyroMouseStickDeadZone", 30));
+                    double stickDeadZone = Num("GyroMouseStickDeadZone", 30);
+                    _b.GyroDeadZone = GyroDegrees(stickDeadZone);
                     if (side != null && stickX)
                         _b.Bind(ImportBuilder.BaseLayer, "ds:gyro:x", side + "ThumbAxisX",
                             // SixMouseStick pushes right on gyroYawFull or
@@ -1867,7 +1884,7 @@ namespace PadForge.Common.ConfigImport
                             // and a stick Y row's positive value is down, so
                             // the row turns it unless bit 2 turns it back.
                             new MappingSource { Descriptor = "Gyro Pitch", GyroSensitivity = stickVertical, Invert = (stickInvert & 2) == 0, ParamRangeOuter = outer, ParamAntiDeadzone = antiY }, PadId);
-                    _b.Clean("Gyro", "Mouse joystick", side != null && (stickX || stickY) ? side + "ThumbAxis" : "");
+                    GyroModeLine("Mouse joystick", side != null && (stickX || stickY) ? side + "ThumbAxis" : "", stickDeadZone);
                     break;
                 }
                 case "Passthru":

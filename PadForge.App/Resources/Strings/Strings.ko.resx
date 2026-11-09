@@ -5172,6 +5172,7 @@
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>레이저 포인터 자이로를 요로 읽음(PadForge에는 레이저 포인터 변환이 없음)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>reWASD에서는 파일이 {0}을(를) 매핑 해제 없이 매핑하므로 이 키가 여전히 Windows에 전달됩니다. 매핑된 입력 소비를 켜면 PadForge가 이를 차단합니다.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows는 방사형 스틱의 {0}을(를) 미는 각도에 따라 다르게 적용합니다. PadForge의 스틱 카드는 직선으로 미는 입력은 똑같이, 대각선으로 미는 입력은 다르게 처리합니다.</value></data>
+  <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows는 자이로 데드존을 움직임의 각도에 따라 각 축에 나누어 적용합니다. PadForge는 각 축에서 데드존 전체를 제외하므로, 직선 움직임은 똑같이 동작하고 느린 대각선 움직임은 더 늦게 시작됩니다.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>레이어마다 {0}의 조정이 달라 각 레이어가 자체 조정을 유지하며, 곡선은 가장 가까운 거듭제곱 곡선으로 가져옵니다.</value></data>
   <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>요와 롤을 더함(Steam은 벡터 길이로 합성)</value></data>
 </root>

@@ -5172,6 +5172,7 @@
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>激光指针陀螺仪按偏航读取（PadForge 没有激光指针转换）</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>在 reWASD 中，{0} 仍会传到 Windows，因为文件映射了它但没有取消映射。开启拦截已映射的输入后，PadForge 会拦截它。</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows 按推动的角度来调整放射状摇杆的 {0}。PadForge 的摇杆卡片对笔直推动的处理一致，对斜向推动的处理则不同。</value></data>
+  <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows 按移动的角度来调整每个轴上的陀螺仪死区。PadForge 会在每个轴上去掉整个死区，因此笔直的移动表现一致，缓慢的斜向移动则开始得更晚。</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>各层对 {0} 的调节不同，因此每层保留各自的调节设置，曲线则导入为最接近的幂曲线。</value></data>
   <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>偏航与翻滚已相加（Steam 按向量长度合并二者）</value></data>
 </root>

@@ -5221,6 +5221,7 @@ Vill du att PadForge avinstallerar dem nu? Detta kräver förhöjd behörighet o
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>gyrot Laserpekare lästes som gir (PadForge har ingen laserpekaromvandling)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>I reWASD når {0} fortfarande Windows eftersom filen mappar den utan att avmappa den. Med Fånga upp mappade inmatningar aktiverat håller PadForge tillbaka den.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows formar en radiell spaks {0} efter tryckets vinkel. Spakkortet i PadForge spelar upp ett rakt tryck likadant och ett diagonalt på ett annat sätt.</value></data>
+  <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows formar gyrots dödzon på varje axel efter rörelsens vinkel. PadForge tar bort hela dödzonen på varje axel, så en rak rörelse spelas upp likadant och en långsam diagonal börjar senare.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Lagren justerar {0} olika, så varje lager behåller sin egen justering, och kurvan förs över som den närmaste potenskurvan.</value></data>
   <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>gir och roll adderade (Steam kombinerar dem med vektorlängden)</value></data>
 </root>

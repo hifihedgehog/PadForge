@@ -5221,6 +5221,7 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>Laser Pointer గైరో యాగా చదవబడింది (PadForge-లో లేజర్ పాయింటర్ మార్పిడి లేదు)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>reWASD-లో {0} ఇంకా Windows-కు చేరుతుంది, ఎందుకంటే ఫైల్ దాన్ని మ్యాప్ తొలగింపు లేకుండా మ్యాప్ చేస్తుంది. మ్యాప్ చేసిన ఇన్పుట్లను వినియోగించు ఆన్ చేసినప్పుడు, PadForge దాన్ని ఆపుతుంది.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows రేడియల్ స్టిక్ {0} ను నెట్టిన కోణాన్ని బట్టి ఆకృతి చేస్తుంది. PadForge-లో స్టిక్ కార్డ్ నేరుగా నెట్టడాన్ని ఒకేలా, వికర్ణ నెట్టడాన్ని వేరుగా ప్లే చేస్తుంది.</value></data>
+  <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows ప్రతి అక్షంపై గైరో డెడ్ జోన్ ను కదలిక కోణాన్ని బట్టి తీసివేస్తుంది. PadForge-లో ప్రతి అక్షంపై పూర్తి డెడ్ జోన్ తీసివేయబడుతుంది, కాబట్టి నేరుగా కదలిక ఒకేలా పనిచేస్తుంది, నెమ్మదైన వికర్ణ కదలిక ఆలస్యంగా మొదలవుతుంది.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>లేయర్‌లు {0} ను వేర్వేరుగా ట్యూన్ చేస్తాయి, కాబట్టి ప్రతి లేయర్ తన సొంత ట్యూనింగ్‌ను ఉంచుకుంటుంది, వక్రరేఖ అత్యంత దగ్గరి పవర్ వక్రరేఖగా వస్తుంది.</value></data>
   <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>యా మరియు రోల్ కలపబడ్డాయి (Steam వాటిని వెక్టర్ పొడవుతో కలుపుతుంది)</value></data>
 </root>

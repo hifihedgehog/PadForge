@@ -5221,6 +5221,7 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>Laser Pointer-snúningsskynjari lesinn sem snúningur (PadForge hefur enga leysibendilsumbreytingu)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>Í reWASD nær {0} enn til Windows því skráin varpar honum án afvörpunar. Með Gleypa varpað inntak kveikt heldur PadForge honum til baka.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows mótar {0} hringlaga stýripinna eftir horni hreyfingarinnar. Stillingaspjald stýripinna í PadForge spilar beina hreyfingu eins en skáhreyfingu á annan hátt.</value></data>
+  <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows mótar dautt svæði snúningsskynjarans á hverjum ási eftir horni hreyfingarinnar. PadForge tekur allt dauða svæðið af hverjum ási, svo bein hreyfing spilar eins en hæg skáhreyfing byrjar síðar.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Lögin stilla {0} á mismunandi hátt, svo hvert þeirra heldur sínum stillingum og ferillinn fluttist yfir sem næsti veldisferill.</value></data>
   <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>snúningur og velta lögð saman (Steam sameinar þau eftir lengd vigurs)</value></data>
 </root>

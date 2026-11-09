@@ -5221,6 +5221,7 @@
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>гіраскоп Laser Pointer чытаецца як рысканне (у PadForge няма пераўтварэння лазернай указкі)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>У reWASD {0} усё роўна трапляе ў Windows, бо файл прызначае яго без скасавання. Калі ўключана Паглынаць прызначаныя ўводы, PadForge яго стрымлівае.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows фармуе {0} радыяльнага стыка па вуглу націску. Картка налад стыка ў PadForge прамы націск праводзіць аднолькава, а дыяганальны па-іншаму.</value></data>
+  <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows памяншае мёртвую зону гіраскопа на кожнай восі ў залежнасці ад вугла руху. PadForge здымае мёртвую зону на кожнай восі цалкам, таму прамы рух працуе аднолькава, а павольны дыяганальны пачынаецца пазней.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Пласты па-рознаму наладжваюць {0}, таму кожны захоўвае ўласную наладу, а крывая пераносіцца як бліжэйшая ступенная крывая.</value></data>
   <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>рысканне і крэн складаюцца (Steam аб'ядноўвае іх па даўжыні вектара)</value></data>
 </root>

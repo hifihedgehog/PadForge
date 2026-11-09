@@ -5221,6 +5221,7 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>gyroskop Laser Pointer sa číta ako otáčanie (PadForge nemá prevod laserového ukazovateľa)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>V reWASD sa {0} stále dostáva do systému Windows, pretože ho súbor mapuje bez zrušenia mapovania. Keď je zapnuté Pohltiť namapované vstupy, PadForge ho zadrží.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows tvaruje {0} radiálnej páčky podľa uhla vychýlenia. Karta páčky v PadForge hrá priame vychýlenie rovnako a uhlopriečne inak.</value></data>
+  <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows upravuje mŕtvu zónu gyroskopu na každej osi podľa uhla pohybu. PadForge odoberie celú mŕtvu zónu na každej osi, takže priamy pohyb sa správa rovnako a pomalý uhlopriečny sa rozbehne neskôr.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Vrstvy ladia {0} odlišne, preto si každá ponecháva vlastné ladenie a krivka sa prenesie ako najbližšia mocninová krivka.</value></data>
   <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>otáčanie a náklon sa sčítajú (Steam ich spája podľa dĺžky vektora)</value></data>
 </root>

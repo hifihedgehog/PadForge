@@ -4996,6 +4996,7 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="Import_Tr_StickBeforeRotation" xml:space="preserve"><value>{0} reads the stick before its rotation. DS4Windows read it after.</value></data>
   <data name="Import_Tr_StickBeforeCurve" xml:space="preserve"><value>{0} reads the stick's angle before its zones and curve. DS4Windows read it after.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows shapes a radial stick's {0} by the angle of the push. PadForge's stick card plays a straight push the same and a diagonal one differently.</value></data>
+  <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows scales the gyro dead zone on each axis by the angle of the movement. PadForge takes the whole dead zone off each axis, so a straight movement plays the same and a slow diagonal one starts later.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>The layers tune {0} differently, so each keeps its own tuning, and the curve comes across as the nearest power curve.</value></data>
   <data name="Import_LayerName_Format" xml:space="preserve"><value>Layer {0}</value></data>
   <data name="Import_ShiftLayerName_Format" xml:space="preserve"><value>Shift {0}</value></data>

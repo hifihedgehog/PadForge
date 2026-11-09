@@ -1857,6 +1857,26 @@ namespace PadForge.Tests
                 .Profile.SlotMappingSets[0].WorkshopGyroDeadZone);
         }
 
+        /// <summary>MouseCursor.cs and Mouse.cs SixMouseStick take the gyro
+        /// dead zone off each axis times the cosine or sine of the movement's
+        /// angle (normX, normY). PadForge's gyro takes the whole dead zone off
+        /// each axis, so the line names the difference while there is a dead
+        /// zone, and a file with none comes across as written.</summary>
+        [Theory]
+        [InlineData("Mouse", "GyroMouseDeadZone", "Mouse")]
+        [InlineData("MouseJoystick", "GyroMouseStickDeadZone", "Mouse joystick")]
+        public void AGyroDeadZone_IsNamedAsScaledByTheAngle(string mode, string setting, string binding)
+        {
+            var defaults = Import("<GyroOutputMode>" + mode + "</GyroOutputMode>");
+            var line = Assert.Single(defaults.Report.Entries, e => e.SourcePath == "Gyro" && e.Binding == binding);
+            Assert.Equal(TranslationStatus.Partial, line.Status);
+            Assert.Equal(ImportReasons.GyroByAngle, line.ReasonKey);
+
+            var none = Import("<GyroOutputMode>" + mode + "</GyroOutputMode><" + setting + ">0</" + setting + ">");
+            var clean = Assert.Single(none.Report.Entries, e => e.SourcePath == "Gyro" && e.Binding == binding);
+            Assert.Equal(TranslationStatus.Clean, clean.Status);
+        }
+
         private static bool ReadsTouch(MappingRow row)
             => row != null && row.Sources.Any(s => s.Descriptor.StartsWith("Touchpad 0", StringComparison.Ordinal));
 

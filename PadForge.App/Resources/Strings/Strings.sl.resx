@@ -5221,6 +5221,7 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>žiroskop Laser Pointer prebran kot zasuk (PadForge nima pretvorbe laserskega kazalca)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>V reWASD {0} še vedno doseže Windows, ker ga datoteka preslika brez preklica preslikave. Če je vklopljeno Zadrži preslikane vnose, ga PadForge zadrži.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows oblikuje {0} radialne palčke glede na kot potiska. Kartica nastavitev palčke v PadForge raven potisk odigra enako, diagonalnega pa drugače.</value></data>
+  <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows mrtvo območje žiroskopa na vsaki osi prilagodi glede na kot gibanja. PadForge na vsaki osi odvzame celotno mrtvo območje, zato raven premik odigra enako, počasen diagonalen pa se začne pozneje.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Plasti {0} nastavijo različno, zato vsaka obdrži svoje nastavitve, krivulja pa se prenese kot najbližja potenčna krivulja.</value></data>
   <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>zasuk in nagib seštevek (Steam ju združi po dolžini vektorja)</value></data>
 </root>

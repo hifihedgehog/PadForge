@@ -5221,6 +5221,7 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>Laser Pointer জাইরো ইয়ো হিসেবে পড়া হয়েছে (PadForge-এ লেজার পয়েন্টার রূপান্তর নেই)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>reWASD-এ {0} তবুও Windows-এ পৌঁছায়, কারণ ফাইলটি এটিকে আনম্যাপ ছাড়াই ম্যাপ করে। ম্যাপ করা ইনপুট আটকে দিন চালু থাকলে PadForge এটি আটকে রাখে।</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows রেডিয়াল স্টিকের {0} ঠেলার কোণ অনুযায়ী গড়ে। PadForge-এর স্টিক কার্ডে সোজা ঠেলা একরকম আর কোনাকুনি ঠেলা অন্যরকম চলে।</value></data>
+  <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows জাইরোর ডেডজোন প্রতিটি অক্ষে নড়াচড়ার কোণ অনুযায়ী কমায়। PadForge প্রতিটি অক্ষ থেকে পুরো ডেডজোন বাদ দেয়, তাই সোজা নড়াচড়া একইরকম চলে আর ধীর কোনাকুনি নড়াচড়া দেরিতে শুরু হয়।</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>লেয়ারগুলি {0} আলাদাভাবে টিউন করে, তাই প্রতিটি লেয়ার নিজের টিউনিং রাখে, আর কার্ভটি সবচেয়ে কাছের পাওয়ার কার্ভ হিসেবে আনা হয়েছে।</value></data>
   <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>ইয়ো ও রোল যোগ করা হয়েছে (Steam ভেক্টরের দৈর্ঘ্য ধরে এ দুটি মেলায়)</value></data>
 </root>

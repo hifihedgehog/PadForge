@@ -5172,6 +5172,7 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>giroscopio en Puntero láser leído como guiñada (PadForge no convierte el puntero láser)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>En reWASD, {0} sigue llegando a Windows porque el archivo la asigna sin una desasignación. Con Consumir entradas asignadas activado, PadForge la bloquea.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows da forma a {0} de un stick radial según el ángulo del empuje. La tarjeta del stick de PadForge trata igual un empuje recto y distinto uno diagonal.</value></data>
+  <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows ajusta la zona muerta del giroscopio en cada eje según el ángulo del movimiento. PadForge quita la zona muerta entera de cada eje, así que un movimiento recto se comporta igual y uno diagonal lento empieza más tarde.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Las capas ajustan {0} de forma distinta, así que cada una conserva su propio ajuste, y la curva se traslada como la curva de potencia más cercana.</value></data>
   <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>guiñada y alabeo sumados (Steam los combina por la longitud del vector)</value></data>
 </root>

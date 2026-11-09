@@ -5221,6 +5221,7 @@
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>το γυροσκόπιο Δείκτης λέιζερ διαβάστηκε ως εκτροπή (το PadForge δεν έχει μετατροπή δείκτη λέιζερ)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>Στο reWASD, το {0} εξακολουθεί να φτάνει στα Windows επειδή το αρχείο το αντιστοιχίζει χωρίς αποαντιστοίχιση. Με ενεργή την Κατακράτηση αντιστοιχισμένων εισόδων, το PadForge το κατακρατά.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>Το DS4Windows διαμορφώνει το {0} ενός ακτινικού μοχλού με βάση τη γωνία της ώθησης. Η κάρτα μοχλού του PadForge αντιμετωπίζει μια ευθεία ώθηση με τον ίδιο τρόπο και μια διαγώνια διαφορετικά.</value></data>
+  <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>Το DS4Windows κλιμακώνει τη νεκρή ζώνη του γυροσκοπίου σε κάθε άξονα με βάση τη γωνία της κίνησης. Το PadForge αφαιρεί ολόκληρη τη νεκρή ζώνη από κάθε άξονα, οπότε μια ευθεία κίνηση συμπεριφέρεται με τον ίδιο τρόπο και μια αργή διαγώνια ξεκινά αργότερα.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Τα επίπεδα ρυθμίζουν διαφορετικά το {0}, γι' αυτό κάθε επίπεδο κρατά τη δική του ρύθμιση και η καμπύλη μεταφέρεται ως η πλησιέστερη καμπύλη δύναμης.</value></data>
   <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>η εκτροπή και ο διατοιχισμός προστέθηκαν (το Steam τα συνδυάζει με το μήκος του διανύσματος)</value></data>
 </root>

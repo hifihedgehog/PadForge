@@ -5192,6 +5192,7 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>gyro Laserpen gelezen als yaw (PadForge heeft geen laserpenomzetting)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>In reWASD bereikt {0} nog steeds Windows, omdat het bestand die toewijst zonder de toewijzing op te heffen. Met Toegewezen invoer verbruiken aan houdt PadForge die tegen.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows vormt de {0} van een radiale stick naar de hoek van de duw. De stickkaart van PadForge behandelt een rechte duw gelijk en een diagonale duw anders.</value></data>
+  <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows past de dode zone van de gyro per as aan naar de hoek van de beweging. PadForge haalt de hele dode zone van elke as af, dus een rechte beweging werkt gelijk en een trage diagonale begint later.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>De lagen stemmen {0} verschillend af, dus elke laag houdt zijn eigen afstelling, en de curve is overgenomen als de dichtstbijzijnde machtscurve.</value></data>
   <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>yaw en roll opgeteld (Steam combineert ze via de vectorlengte)</value></data>
 </root>

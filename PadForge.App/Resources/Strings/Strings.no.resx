@@ -5221,6 +5221,7 @@ Vil du at PadForge skal avinstallere dem nå? Dette krever administratorrettighe
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>gyro i Laserpeker lest som giring (PadForge har ingen konvertering for laserpeker)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>I reWASD når {0} fortsatt Windows fordi filen tilordner den uten å oppheve den. Med Blokker tilordnede inndata slått på blokkerer PadForge den.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows former {0} for en radial stikke etter vinkelen på skyvet. stikkekortet i PadForge spiller et rett skyv likt og et diagonalt skyv annerledes.</value></data>
+  <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows skalerer dødsonen til gyroen på hver akse etter vinkelen på bevegelsen. PadForge trekker hele dødsonen fra hver akse, så en rett bevegelse spilles likt og en langsom diagonal en starter senere.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Lagene justerer {0} ulikt, så hvert beholder sin egen justering, og kurven kommer med som den nærmeste potenskurven.</value></data>
   <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>giring og rulling summert (Steam kombinerer dem etter vektorlengde)</value></data>
 </root>

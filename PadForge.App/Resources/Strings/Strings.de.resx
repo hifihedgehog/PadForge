@@ -5172,6 +5172,7 @@ Sollen sie jetzt deinstalliert werden? Dies erfordert erhöhte Rechte und kann e
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>Laserpointer-Gyro als Gieren gelesen (PadForge hat keine Laserpointer-Umrechnung)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>In reWASD erreicht {0} weiterhin Windows, weil die Datei es ohne Aufheben der Zuordnung zuordnet. Mit aktivierter Option Zugeordnete Eingaben verbrauchen fängt PadForge es ab.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows formt {0} eines radialen Sticks nach dem Winkel des Ausschlags. Die Stick-Karte von PadForge spielt einen geraden Ausschlag gleich ab und einen diagonalen anders.</value></data>
+  <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows skaliert die Totzone des Gyros auf jeder Achse nach dem Winkel der Bewegung. PadForge zieht auf jeder Achse die ganze Totzone ab, daher wird eine gerade Bewegung gleich abgespielt und eine langsame diagonale beginnt später.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Die Ebenen stimmen {0} unterschiedlich ab, daher behält jede ihre eigene Abstimmung, und die Kurve wird als nächstliegende Potenzkurve übernommen.</value></data>
   <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>Gieren und Rollen addiert (Steam verbindet sie über die Vektorlänge)</value></data>
 </root>

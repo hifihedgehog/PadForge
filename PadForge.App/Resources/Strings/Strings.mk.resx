@@ -5221,6 +5221,7 @@
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>жироскопот Laser Pointer се чита како вртење (PadForge нема претворање за ласерски покажувач)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>Во reWASD, {0} сè уште стигнува до Windows бидејќи датотеката го мапира без отмапирање. Кога е вклучено Блокирај мапирани влезови, PadForge го запира.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows ги обликува {0} на радијалниот стик според аголот на притисокот. Картичката на стикот во PadForge го игра правиот притисок исто, а дијагоналниот поинаку.</value></data>
+  <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows ја намалува мртвата зона на жироскопот на секоја оска според аголот на движењето. PadForge ја одзема целата мртва зона од секоја оска, па правото движење се игра исто, а бавното дијагонално почнува подоцна.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Слоевите го подесуваат {0} различно, па секој го задржува своето подесување, а кривата се пренесува како најблиската експоненцијална крива.</value></data>
   <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>вртењето и навалувањето се собираат (Steam ги спојува по должината на векторот)</value></data>
 </root>

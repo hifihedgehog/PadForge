@@ -5221,6 +5221,7 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>žiroskops režīmā Laser Pointer nolasīts kā pagrieziens (PadForge nav lāzera rādītāja pārveidošanas)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>Programmā reWASD {0} joprojām nonāk līdz Windows, jo fails to piesaista bez atcelšanas. Ja ir ieslēgts Pārtvert piesaistīto ievadi, PadForge to aptur.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows veido radiālās kursorsviras {0} pēc grūdiena leņķa. PadForge kursorsviras iestatījumi taisnu grūdienu atskaņo vienādi, bet diagonālu citādi.</value></data>
+  <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows žiroskopa nejutības zonu katrai asij pielāgo pēc kustības leņķa. PadForge no katras ass atņem visu nejutības zonu, tāpēc taisna kustība darbojas vienādi, bet lēna diagonāla sākas vēlāk.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Slāņi {0} noregulē atšķirīgi, tāpēc katrs saglabā savus iestatījumus, un līkne tiek pārnesta kā tuvākā pakāpes līkne.</value></data>
   <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>pagrieziens un sānsvere saskaitīti kopā (Steam tos apvieno pēc vektora garuma)</value></data>
 </root>

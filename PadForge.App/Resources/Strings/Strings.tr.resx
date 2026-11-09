@@ -5221,6 +5221,7 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>Lazer İşaretçi jiroskobu sapma olarak okundu (PadForge'da lazer işaretçi dönüşümü yok)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>reWASD'de {0}, dosya onu eşlemeyi kaldırmadan eşlediği için yine de Windows'a ulaşır. Eşlenmiş girişleri tüket açıkken PadForge onu engeller.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows radyal bir çubuğun {0} ayarını itmenin açısına göre şekillendirir. PadForge'un çubuk ayarları düz bir itmeyi aynı, çapraz bir itmeyi farklı oynatır.</value></data>
+  <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows jiroskop ölü bölgesini her eksende hareketin açısına göre ölçekler. PadForge ölü bölgenin tamamını her eksenden düşer, bu yüzden düz bir hareket aynı oynar, yavaş çapraz bir hareket ise daha geç başlar.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Katmanlar {0} ayarını farklı yapıyor, bu yüzden her biri kendi ayarını korur ve eğri en yakın üstel eğri olarak aktarılır.</value></data>
   <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>sapma ve yuvarlanma toplandı (Steam bunları vektör uzunluğuyla birleştirir)</value></data>
 </root>

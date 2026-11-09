@@ -5221,6 +5221,7 @@
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>Laser Pointer جائرو کو یاؤ کے طور پر پڑھا گیا (PadForge میں لیزر پوائنٹر کی تبدیلی نہیں ہے)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>reWASD میں {0} پھر بھی Windows تک پہنچتی ہے کیونکہ فائل اسے بغیر ان میپ کے میپ کرتی ہے۔ میپ شدہ ان پٹ روک لیں آن ہو تو PadForge اسے روک لیتا ہے۔</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows ریڈیل اسٹک کی {0} کو دھکیلنے کے زاویے کے مطابق ڈھالتا ہے۔ PadForge کا اسٹک کارڈ سیدھے دھکے کو ایک جیسا اور وتری دھکے کو مختلف طور پر چلاتا ہے۔</value></data>
+  <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows ہر محور پر جائرو کے ڈیڈ زون کو حرکت کے زاویے کے مطابق گھٹاتا بڑھاتا ہے۔ PadForge ہر محور سے پورا ڈیڈ زون ہٹا دیتا ہے، اس لیے سیدھی حرکت ایک جیسی چلتی ہے اور آہستہ وتری حرکت دیر سے شروع ہوتی ہے۔</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>لیئرز {0} کو مختلف طور پر ٹیون کرتے ہیں، اس لیے ہر ایک کی اپنی ٹیوننگ برقرار رہتی ہے، اور کروو قریب ترین پاور کروو کے طور پر منتقل ہوتا ہے۔</value></data>
   <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>یاؤ اور رول کو جمع کیا گیا (Steam انہیں ویکٹر کی لمبائی سے ملاتا ہے)</value></data>
 </root>

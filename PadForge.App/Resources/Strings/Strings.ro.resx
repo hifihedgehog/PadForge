@@ -5221,6 +5221,7 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>giroscop Indicator laser citit ca girație (PadForge nu are conversie pentru indicatorul laser)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>În reWASD, {0} ajunge totuși în Windows, deoarece fișierul îl mapează fără o demapare. Cu Blocare intrări mapate activată, PadForge îl blochează.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows modelează {0} ale unei manete radiale după unghiul împingerii. Cardul manetei din PadForge tratează la fel o împingere dreaptă și diferit una diagonală.</value></data>
+  <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows modelează zona moartă a giroscopului pe fiecare axă după unghiul mișcării. PadForge scoate întreaga zonă moartă de pe fiecare axă, deci o mișcare dreaptă se comportă la fel, iar una diagonală lentă începe mai târziu.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Straturile reglează {0} diferit, așa că fiecare păstrează propriile setări, iar curba este preluată ca cea mai apropiată curbă de putere.</value></data>
   <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>girația și ruliul se adună (Steam le combină prin lungimea vectorului)</value></data>
 </root>

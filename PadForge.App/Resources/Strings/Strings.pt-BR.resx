@@ -5166,6 +5166,7 @@ Deseja que o PadForge os desinstale agora? Isso exige elevação e pode levar um
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>giroscópio em Apontador laser lido como yaw (o PadForge não tem conversão de apontador laser)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>No reWASD, {0} ainda chegava ao Windows porque o arquivo o mapeia sem um desmapeamento. Com Consumir Entradas Mapeadas ativado, o PadForge o bloqueia.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>O DS4Windows molda {0} de um analógico radial pelo ângulo do empurrão. O cartão de Analógicos do PadForge trata um empurrão reto de um jeito e um diagonal de outro.</value></data>
+  <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>O DS4Windows ajusta a Zona Morta do giroscópio em cada eixo pelo ângulo do movimento. O PadForge retira a Zona Morta inteira de cada eixo, então um movimento reto se comporta do mesmo jeito e um diagonal lento começa mais tarde.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>As camadas ajustam {0} de maneiras diferentes, então cada uma mantém o próprio ajuste, e a curva passa para a curva de potência mais próxima.</value></data>
   <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>yaw e roll somados (o Steam os combina pelo comprimento do vetor)</value></data>
 </root>

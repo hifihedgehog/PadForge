@@ -4732,6 +4732,7 @@ public class Strings : INotifyPropertyChanged
     public string Import_Tr_StickBeforeRotation => Get("Import_Tr_StickBeforeRotation");
     public string Import_Tr_StickBeforeCurve => Get("Import_Tr_StickBeforeCurve");
     public string Import_Tr_StickByAngle => Get("Import_Tr_StickByAngle");
+    public string Import_Tr_GyroByAngle => Get("Import_Tr_GyroByAngle");
     public string Import_Tr_CurveOnRows => Get("Import_Tr_CurveOnRows");
     public string Import_LayerName_Format => Get("Import_LayerName_Format");
     public string Import_ShiftLayerName_Format => Get("Import_ShiftLayerName_Format");

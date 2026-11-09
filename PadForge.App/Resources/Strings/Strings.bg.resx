@@ -5221,6 +5221,7 @@
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>жироскопът в режим Лазерна показалка се чете като завъртане (PadForge няма преобразуване за лазерна показалка)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>В reWASD {0} все още стига до Windows, защото файлът го съпоставя без отмяна на съпоставянето. При включено Поглъщане на съпоставените входове PadForge го задържа.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows оформя {0} на радиален стик според ъгъла на натиска. Картата на стика в PadForge възпроизвежда еднакво прав натиск, а диагоналния по различен начин.</value></data>
+  <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows мащабира мъртвата зона на жироскопа по всяка ос според ъгъла на движението. PadForge сваля цялата мъртва зона от всяка ос, така че прякото движение се възпроизвежда еднакво, а бавното диагонално започва по-късно.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Слоевете настройват {0} по различен начин, затова всеки запазва собствените си настройки, а кривата се пренася като най-близката степенна крива.</value></data>
   <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>завъртането и кренът са събрани (Steam ги комбинира по дължината на вектора)</value></data>
 </root>

@@ -5218,11 +5218,9 @@
   <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>คีย์บอร์ดของสล็อตที่ไม่ใช่คีย์บอร์ด + เมาส์อีกต่อไป</value></data>
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (ไม่มีบนพีซีเครื่องนี้)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (ไม่มีบนช่องนี้)</value></data>
-  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>รวมยอว์และโรลด้วยความแรงเต็มที่ (ไม่อ่านส่วนของโรล)</value></data>
-  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>ไจโรแบบพื้นที่เฉพาะแห่งถูกอ่านเป็นยอว์ (PadForge ไม่มีแกนหลักที่เอียง)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>ไจโรแบบตัวชี้เลเซอร์ถูกอ่านเป็นยอว์ (PadForge ไม่มีการแปลงแบบตัวชี้เลเซอร์)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>ใน reWASD {0} ยังไปถึง Windows เพราะไฟล์แมปไว้โดยไม่ยกเลิกการแมป เมื่อเปิด ดักอินพุตที่แมปไว้ PadForge จะกันไว้</value></data>
-  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge หมุนค่าบวกตามเข็มนาฬิกา เหมือนที่ DS4Windows ทำ ความช่วยเหลือของ reWASD ระบุช่วงของการหมุน ไม่ได้ระบุทิศทาง</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows ปรับ {0} ของสติ๊กแบบรัศมีตามมุมที่ดัน การ์ดสติ๊กของ PadForge ถือว่าการดันตรงเหมือนกัน และการดันทแยงต่างออกไป</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>เลเยอร์ต่างๆ ปรับแต่ง {0} ไม่เหมือนกัน แต่ละเลเยอร์จึงเก็บการปรับแต่งของตัวเองไว้ และเส้นโค้งถูกนำมาเป็นเส้นโค้งยกกำลังที่ใกล้เคียงที่สุด</value></data>
+  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>นำยอว์และโรลมารวมกัน (Steam รวมทั้งสองด้วยความยาวเวกเตอร์)</value></data>
 </root>

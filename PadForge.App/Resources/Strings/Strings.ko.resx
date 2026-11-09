@@ -5169,11 +5169,9 @@
   <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>더 이상 키보드 + 마우스가 아닌 슬롯의 키보드</value></data>
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (이 PC에 없음)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (이 슬롯에 없음)</value></data>
-  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>요와 롤을 최대 강도로 합산함(롤 기여도는 읽지 않음)</value></data>
-  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>로컬 스페이스 자이로를 요로 읽음(PadForge에는 기울어진 주축이 없음)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>레이저 포인터 자이로를 요로 읽음(PadForge에는 레이저 포인터 변환이 없음)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>reWASD에서는 파일이 {0}을(를) 매핑 해제 없이 매핑하므로 이 키가 여전히 Windows에 전달됩니다. 매핑된 입력 소비를 켜면 PadForge가 이를 차단합니다.</value></data>
-  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge는 DS4Windows처럼 양의 회전을 시계 방향으로 적용합니다. reWASD 도움말은 회전의 범위만 알려 주고 방향은 알려 주지 않습니다.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows는 방사형 스틱의 {0}을(를) 미는 각도에 따라 다르게 적용합니다. PadForge의 스틱 카드는 직선으로 미는 입력은 똑같이, 대각선으로 미는 입력은 다르게 처리합니다.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>레이어마다 {0}의 조정이 달라 각 레이어가 자체 조정을 유지하며, 곡선은 가장 가까운 거듭제곱 곡선으로 가져옵니다.</value></data>
+  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>요와 롤을 더함(Steam은 벡터 길이로 합성)</value></data>
 </root>

@@ -38,10 +38,12 @@ namespace PadForge.Common.ConfigImport
         // XInput's own digital threshold, 30 of 255.
         private const int TriggerPressPercent = 12;
 
+        // reWASD's untouched axis range, which it never writes
+        // (reWASDCommon Constants.DefaultStickSensitivity).
+        private const int DefaultAxisRange = 13573;
+
         private sealed class StickTuning
         {
-            public double SensX = 1.0;
-            public double SensY = 1.0;
             public double RotationDeg;
             public double CurveExponent;
             public int Low = DefaultLowZone;
@@ -87,6 +89,10 @@ namespace PadForge.Common.ConfigImport
 
         /// <summary>Set when a touchpad diagonal is read.</summary>
         private bool _touchDiagonalRead;
+
+        /// <summary>The rotated sticks, per layer, that a direction reads
+        /// through one raw axis, in the order first read.</summary>
+        private readonly List<(int Shift, string Stick)> _rotatedDirections = new();
 
         private RewasdTranslator(JsonElement root)
         {
@@ -541,16 +547,26 @@ namespace PadForge.Common.ConfigImport
                 Label = label,
                 Descriptor = descriptor,
             };
-            ImportInput Dir(string axis, bool lower, string stick, string label) => new()
+            // reWASD turns its direction zones with a rotated stick
+            // (StickCrossView rotates them, and OverlayMenuVME.CalcAngle turns
+            // a menu's bearing), and a half-axis read holds one raw axis, so a
+            // rotated stick's direction says the rotation does not reach it.
+            ImportInput Dir(string axis, bool lower, string stick, string label)
             {
-                Control = "gp:" + id,
-                Label = label,
-                Descriptor = axis,
-                HalfAxis = true,
-                Invert = lower,
-                DeadZone = TuningOf(shift, stick).Low,
-                IsAnalog = true,
-            };
+                var t = TuningOf(shift, stick);
+                if (t.RotationDeg != 0 && !_rotatedDirections.Contains((shift, stick)))
+                    _rotatedDirections.Add((shift, stick));
+                return new()
+                {
+                    Control = "gp:" + id,
+                    Label = label,
+                    Descriptor = axis,
+                    HalfAxis = true,
+                    Invert = lower,
+                    DeadZone = t.Low,
+                    IsAnalog = true,
+                };
+            }
             ImportInput Trig(string descriptor, int zone, string label) => new()
             {
                 Control = "gp:" + id,
@@ -586,15 +602,29 @@ namespace PadForge.Common.ConfigImport
             // bearing, an eighth of the circle, through the Sector read the
             // DS4Windows import uses for stick directions. The schema's
             // diagonalZones is a switch with no edge of its own, so the low
-            // zone is where a diagonal starts. The half-axis read underneath
-            // only has to agree on the side. Bearings run counterclockwise
-            // from right.
+            // zone is where a diagonal starts. The read underneath only has to
+            // agree on the side. Bearings run counterclockwise from right.
             ImportInput Diagonal(double bearing, string stick, string label)
             {
                 string prefix = stick == "left" ? "Left" : "Right";
-                var d = Dir("Gamepad " + prefix + "StickY", bearing is > 0 and < 180, stick, label);
+                string ring = "Gamepad " + prefix + "StickRing";
+                var t = TuningOf(shift, stick);
+                ImportInput d;
+                if (t.RotationDeg == 0)
+                {
+                    d = Dir("Gamepad " + prefix + "StickY", bearing is > 0 and < 180, stick, label);
+                }
+                else
+                {
+                    // reWASD turns its zones counterclockwise for a positive
+                    // rotation, so the push that reads as this diagonal lies the
+                    // rotation back. A turned sector can cross into the other
+                    // half of the stick, so the ring reads under it.
+                    bearing = ((bearing - t.RotationDeg) % 360.0 + 360.0) % 360.0;
+                    d = Ring(ring, 1, label);
+                }
                 d.DeadZone = 1;
-                d.Band = PadForge.Engine.Common.Mapping.BoundedReads.Sector(bearing, 22.5, TuningOf(shift, stick).Low, "Gamepad " + prefix + "StickRing");
+                d.Band = PadForge.Engine.Common.Mapping.BoundedReads.Sector(bearing, 22.5, t.Low, ring);
                 return d;
             }
             ImportInput Half(string descriptor, bool lower, string label) => new()
@@ -980,10 +1010,10 @@ namespace PadForge.Common.ConfigImport
             var t = TuningOf(shift, stick);
             string layer = LayerOf(shift);
 
-            MappingSource Make(string descriptor, double coeff, double sens)
+            MappingSource Make(string descriptor, double coeff)
             {
                 var src = new MappingSource { Descriptor = descriptor };
-                double scale = Math.Abs(coeff) * sens;
+                double scale = Math.Abs(coeff);
                 if (scale != 1.0) src.Sensitivity = scale;
                 if (coeff < 0) src.Invert = true;
                 if (t.CurveExponent > 0) src.ParamCurveExponent = t.CurveExponent;
@@ -998,24 +1028,29 @@ namespace PadForge.Common.ConfigImport
 
             if (t.RotationDeg != 0)
             {
-                double r = t.RotationDeg * Math.PI / 180.0;
+                // reWASD turns a stick counterclockwise for a positive
+                // rotation. Its service's rotate instruction computes
+                // x cos - y sin and x sin + y cos on a stick whose Y points up.
+                // These rows' Y points down, so the same turn takes the
+                // negative angle here.
+                double r = -t.RotationDeg * Math.PI / 180.0;
                 double cos = Math.Cos(r), sin = Math.Sin(r);
-                void Leg(string control, string target, string descriptor, double coeff, double sens)
+                void Leg(string control, string target, string descriptor, double coeff)
                 {
                     if (Math.Abs(coeff) < 0.001) return;
-                    _b.Bind(layer, control, target, Make(descriptor, coeff, sens), _firstVirtualId);
+                    _b.Bind(layer, control, target, Make(descriptor, coeff), _firstVirtualId);
                 }
-                Leg(cx, tx, gx, cos, t.SensX);
-                Leg(cx, tx, gy, -sin, t.SensX);
-                Leg(cy, ty, gx, sin, t.SensY);
-                Leg(cy, ty, gy, cos, t.SensY);
+                Leg(cx, tx, gx, cos);
+                Leg(cx, tx, gy, -sin);
+                Leg(cy, ty, gx, sin);
+                Leg(cy, ty, gy, cos);
                 _b.SumRow(tx);
                 _b.SumRow(ty);
             }
             else
             {
-                var sx = Make(gx, 1.0, t.SensX);
-                var sy = Make(gy, 1.0, t.SensY);
+                var sx = Make(gx, 1.0);
+                var sy = Make(gy, 1.0);
                 _stickSources[(shift, cx)] = sx;
                 _stickSources[(shift, cy)] = sy;
                 _b.Bind(layer, cx, tx, sx, _firstVirtualId);
@@ -2357,12 +2392,19 @@ namespace PadForge.Common.ConfigImport
                     _b.Partial(ImportReasons.MoveSpeed, Scoped(StickLabel(name)), "", "");
                 NoteLeftovers(st, Scoped(StickLabel(name)), "name", "sensitivity", "rotation", "zones", "curves", "mouse");
                 var t = new StickTuning();
-                if (Has(st, "sensitivity", out var sens))
-                {
-                    t.SensX = StickSensitivity(sens, "x");
-                    t.SensY = StickSensitivity(sens, "y");
-                }
-                t.RotationDeg = Int(st, "rotation");
+                // "sensitivity" is reWASD's Horizontal and Vertical axis range:
+                // the width of the direction zones that keys mapped to the
+                // stick read (reWASDUI StickCrossSectors draws them from it).
+                // It never reaches the game's stick (reWASD's administrator on
+                // its forum, thread 222207), and PadForge's direction reads have
+                // no zone width to take it. reWASD 9.1 and 9.3 wrote 1 on a
+                // stick nobody touched.
+                if (Has(st, "sensitivity", out var range) && (AxisRangeSet(range, "x") || AxisRangeSet(range, "y")))
+                    _b.Partial(ImportReasons.ControllerSetting, Scoped(StickLabel(name)), "Axis range", "", "sensitivity");
+                // reWASD's loader (ConfigJSON_3_0) takes -90 to 90 degrees and
+                // leaves the stick straight for anything else.
+                int rotation = Int(st, "rotation");
+                t.RotationDeg = rotation is >= -90 and <= 90 ? rotation : 0;
                 foreach (var z in Arr(st, "zones"))
                 {
                     int value = Int(z, "x", Int(z, "y"));
@@ -2399,13 +2441,9 @@ namespace PadForge.Common.ConfigImport
                     }
                 }
                 _tuning[(shift, name)] = t;
-                // reWASD's help (Advanced stick settings) gives the rotation's
-                // range, -45 to 45, and no direction. BindStick turns a
-                // positive rotation clockwise, DS4Windows' matrix
-                // (DS4State.rotateLSCoordinates), so a rotated stick says so.
-                if (t.RotationDeg != 0)
-                    _b.Partial(ImportReasons.StickRotation, Scoped(StickLabel(name)), "Tuning", "");
-                else if (Has(st, "sensitivity", out _) || Arr(st, "zones").Any())
+                // BindStick turns the game's stick as reWASD's rotate
+                // instruction does, and the zones place zone mappings.
+                if (t.RotationDeg != 0 || Arr(st, "zones").Any())
                     _b.Clean(Scoped(StickLabel(name)), "Tuning", "");
             }
 
@@ -2458,17 +2496,14 @@ namespace PadForge.Common.ConfigImport
                 _b.Partial(ImportReasons.ControllerSetting, Scoped("Vibration"), "", "", "vibration");
         }
 
-        /// <summary>A stick's sensitivity on one axis as an output scale.
-        /// reWASD's blog (How to tune a virtual stick on mouse) calls
-        /// Sensitivity a multiplier. reWASD 9.x writes 1 on every stick
-        /// nobody touched (the samples Miner Warfare, 9.1.2, and TATE - Rotate
-        /// -90 Landscape 180, 9.3.0), so 1 scales nothing. Any other value
-        /// reads as a fraction of 32767, floored at a tenth. Shunt's compiler
-        /// reads the same fraction and spends it on a dead zone instead.</summary>
-        private static double StickSensitivity(JsonElement sens, string axis)
+        /// <summary>Whether a stick's axis range on one axis is set: neither
+        /// absent nor reWASD's default, nor the 1 that reWASD 9.1 and 9.3
+        /// wrote on an untouched stick (the samples Miner Warfare, 9.1.2, and
+        /// TATE - Rotate -90 Landscape 180, 9.3.0).</summary>
+        private static bool AxisRangeSet(JsonElement range, string axis)
         {
-            int raw = Int(sens, axis, 32767);
-            return raw == 1 ? 1.0 : Math.Clamp(raw / 32767.0, 0.1, 1.0);
+            int value = Int(range, axis, DefaultAxisRange);
+            return value != 1 && value != DefaultAxisRange;
         }
 
         private static string StickLabel(string name) => name == "left" ? "Left stick" : "Right stick";
@@ -2694,6 +2729,8 @@ namespace PadForge.Common.ConfigImport
                 _b.Partial(ImportReasons.GyroAxes, "Gyro", "", "");
             if (_touchDiagonalRead)
                 _b.Partial(ImportReasons.TouchpadDiagonal, "Touchpad", "", "");
+            foreach (var (shift, stick) in _rotatedDirections)
+                _b.Partial(ImportReasons.ControllerSetting, PathOf(shift, StickLabel(stick)), "Directions", "", "rotation");
             if (Arr(_root, "crosshairs").Any())
                 _b.Skipped(ImportReasons.Crosshair, "Crosshairs", "");
 

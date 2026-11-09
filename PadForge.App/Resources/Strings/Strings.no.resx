@@ -5218,11 +5218,9 @@ Vil du at PadForge skal avinstallere dem nå? Dette krever administratorrettighe
   <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>Tastaturet til et spor som ikke lenger er Tastatur + mus</value></data>
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (ikke på denne PC-en)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (ikke på dette sporet)</value></data>
-  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>giring og rulling lagt til med full styrke (bidraget fra rulling ikke lest)</value></data>
-  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>gyro i Lokalt rom lest som giring (PadForge har ingen skråstilt primærakse)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>gyro i Laserpeker lest som giring (PadForge har ingen konvertering for laserpeker)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>I reWASD når {0} fortsatt Windows fordi filen tilordner den uten å oppheve den. Med Blokker tilordnede inndata slått på blokkerer PadForge den.</value></data>
-  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge dreier en positiv rotasjon med klokken, slik DS4Windows gjør. reWASDs hjelp oppgir rotasjonens område, ikke retningen.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows former {0} for en radial stikke etter vinkelen på skyvet. stikkekortet i PadForge spiller et rett skyv likt og et diagonalt skyv annerledes.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Lagene justerer {0} ulikt, så hvert beholder sin egen justering, og kurven kommer med som den nærmeste potenskurven.</value></data>
+  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>giring og rulling summert (Steam kombinerer dem etter vektorlengde)</value></data>
 </root>

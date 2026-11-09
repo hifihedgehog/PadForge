@@ -5218,11 +5218,9 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>Keyboard dari slot yang bukan lagi Keyboard + mouse</value></data>
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (tidak ada di PC ini)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (tidak ada di slot ini)</value></data>
-  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>yaw dan roll ditambahkan dengan kekuatan penuh (kontribusi roll tidak dibaca)</value></data>
-  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>giroskop Ruang Lokal dibaca sebagai yaw (PadForge tidak memiliki sumbu utama yang miring)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>giroskop Penunjuk Laser dibaca sebagai yaw (PadForge tidak memiliki konversi penunjuk laser)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>Di reWASD, {0} tetap mencapai Windows karena file memetakannya tanpa unmap. Dengan Serap input yang dipetakan aktif, PadForge menahannya.</value></data>
-  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge memutar rotasi positif searah jarum jam, seperti DS4Windows. Bantuan reWASD menyebut rentang rotasi, bukan arahnya.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows membentuk {0} stik radial menurut sudut dorongan. Kartu stik PadForge memperlakukan dorongan lurus dengan cara yang sama dan dorongan diagonal dengan cara berbeda.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Lapisan menyetel {0} secara berbeda, sehingga masing-masing mempertahankan penyetelannya sendiri, dan kurvanya diterapkan sebagai kurva pangkat terdekat.</value></data>
+  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>yaw dan roll dijumlahkan (Steam menggabungkannya dengan panjang vektor)</value></data>
 </root>

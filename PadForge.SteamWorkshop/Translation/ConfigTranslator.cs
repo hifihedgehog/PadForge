@@ -172,6 +172,31 @@ namespace PadForge.SteamWorkshop.Translation
             /// pair or the lower one.</summary>
             public readonly bool FourRearButtons;
 
+            /// <summary>A Steam Deck, SteamOS handheld or Zotac Zone config.
+            /// Loading one, the Steam client sets the default of gyro_axis
+            /// and gyro_to_2d_conversion_style to 2, yaw and roll, in the
+            /// absolute mouse and the 3DOF to 2D gyro modes, and moves an
+            /// old "rotation" into "rotation_2" times 1.5 in the absolute
+            /// mouse modes. Its handheld check (steamclient64.dll) takes
+            /// controller types 4, 5, 10, 100 and 130, and those handlers
+            /// leave 10, the Steam Controller (2026), out. The client's own
+            /// type table names 4 and 5 controller_neptune, 100
+            /// controller_steamos_handheld and 130 controller_zotac_zone.</summary>
+            public readonly bool HandheldGyroDefaults;
+
+            /// <summary>An original Steam Controller config, controller
+            /// types 2 and 3. The absolute mouse and flick stick modes turn
+            /// its right trackpad 15 degrees and its left one -15 unless the
+            /// file sets a rotation. That is on top of the 15 degrees the
+            /// driver already turns each pad by, in the client and in SDL
+            /// alike (SDL_hidapi_steam.c FormatStatePacketUntilGyro).</summary>
+            public readonly bool AngledTrackpads;
+
+            /// <summary>A Switch Pro, Switch 2 Pro or Joy-Con config. A gyro
+            /// mode's old "sensitivity" moves into gyro_natural_sensitivity
+            /// doubled for these types, and unchanged for the rest.</summary>
+            public readonly bool SwitchGyroDoubling;
+
             public Run(SteamInputConfig config, TranslationOptions options)
             {
                 Config = config;
@@ -182,6 +207,15 @@ namespace PadForge.SteamWorkshop.Translation
                 NintendoLabels = PhysicalSlotResolver.UsesNintendoLabels(config.ControllerType);
                 SinglePadTrackpads = PhysicalSlotResolver.UsesSinglePadTrackpads(config.ControllerType);
                 FourRearButtons = PhysicalSlotResolver.UsesFourRearButtons(config.ControllerType);
+                string type = config.ControllerType ?? "";
+                HandheldGyroDefaults = type is "controller_neptune" or "controller_steamos_handheld"
+                    or "controller_zotac_zone";
+                AngledTrackpads = type is "controller_steamcontroller_gordon"
+                    or "controller_steamcontroller_headcrab";
+                SwitchGyroDoubling = type is "controller_switch_pro" or "controller_switch_pro_generic"
+                    or "controller_switch2_pro" or "controller_switch2_pro_generic"
+                    or "controller_switch_joycon_left" or "controller_switch_joycon_right"
+                    or "controller_switch_joycon_pair";
                 foreach (var g in config.Groups)
                     if (!GroupsById.ContainsKey(g.Id))
                         GroupsById[g.Id] = g;
@@ -435,7 +469,7 @@ namespace PadForge.SteamWorkshop.Translation
 
                 case "joystick_mouse":
                 case "joystick_camera":
-                    EmitMouseAxes(run, slot, layer, path, settings, StickMouseBaseline,
+                    EmitMouseAxes(run, slot, layer, path, settings, mode, StickMouseBaseline,
                         curveChannel: CurveChannelApplies(slot, mode));
                     TranslateMemberGroup(run, preset, effective, slot, layer, path, settings);
                     break;
@@ -447,7 +481,7 @@ namespace PadForge.SteamWorkshop.Translation
                     // mode == "mouse_joystick"), so the host's analog pair
                     // lands on the right-stick axes (output_joystick 1
                     // redirects to the left).
-                    EmitMouseJoystickAxes(run, slot, layer, path, settings, StickMouseBaseline,
+                    EmitMouseJoystickAxes(run, slot, layer, path, settings, mode, StickMouseBaseline,
                         curveChannel: CurveChannelApplies(slot, mode));
                     TranslateMemberGroup(run, preset, effective, slot, layer, path, settings);
                     break;
@@ -457,11 +491,10 @@ namespace PadForge.SteamWorkshop.Translation
                     // joystick_mouse-hosted gyro path (Gyro Yaw/Pitch into
                     // the KbM mouse delta) with its own sensitivity key.
                     // gyro_natural_sensitivity stores percent of natural
-                    // 1:1 aim (100 = 1.0x; corpus 3737909570 carries 75,
-                    // and Valve's shipped gyro templates carry no settings
-                    // at all, so absent = 1.0x).
-                    EmitMouseAxes(run, slot, layer, path, settings, GenericBaseline,
-                        sensitivityKey: "gyro_natural_sensitivity",
+                    // 1:1 aim (100 = 1.0x, and corpus 3737909570 carries 75).
+                    // A file without it runs at the client's default of 250,
+                    // which is how Valve's shipped gyro templates run.
+                    EmitMouseAxes(run, slot, layer, path, settings, mode, GenericBaseline,
                         curveChannel: CurveChannelApplies(slot, mode), conversionStyle: true);
                     TranslateMemberGroup(run, preset, effective, slot, layer, path, settings);
                     break;
@@ -476,7 +509,7 @@ namespace PadForge.SteamWorkshop.Translation
                     // so it lowers through the same emitter. The group's
                     // gyro_button / ratchet settings ride the shared
                     // gyro-settings walk like every other gyro mode.
-                    EmitMouseJoystickAxes(run, slot, layer, path, settings, StickMouseBaseline,
+                    EmitMouseJoystickAxes(run, slot, layer, path, settings, mode, StickMouseBaseline,
                         curveChannel: CurveChannelApplies(slot, mode), conversionStyle: true);
                     TranslateMemberGroup(run, preset, effective, slot, layer, path, settings);
                     break;
@@ -533,7 +566,7 @@ namespace PadForge.SteamWorkshop.Translation
                     // construct on trackpads is mouse_region, handled below.
                     // So the relative rows ARE the faithful translation:
                     // Clean.
-                    EmitMouseAxes(run, slot, layer, path, settings, TrackpadMouseBaseline,
+                    EmitMouseAxes(run, slot, layer, path, settings, mode, TrackpadMouseBaseline,
                         curveChannel: CurveChannelApplies(slot, mode));
                     TranslateMemberGroup(run, preset, effective, slot, layer, path, settings);
                     break;
@@ -672,34 +705,50 @@ namespace PadForge.SteamWorkshop.Translation
         /// <summary>Modes whose analog pair rides the per-source
         /// curve/range channel: v11 built the stick hosts, v18 widened the
         /// engine seam to the trackpad finger / gesture lanes, the gyro
-        /// lane, and the unipolar trigger tail, so every analog host
-        /// stamps.</summary>
+        /// lane, and the unipolar trigger tail. gyro_to_mouse and
+        /// gyro_to_joystick stay out: the client's 3DOF to 2D gyro class
+        /// registers neither curve_exponent, anti_deadzone,
+        /// deadzone_inner_radius nor sensitivity_horiz_scale, moves
+        /// sensitivity_vert_scale into gyro_vertical_horizontal_ratio, and
+        /// keeps its own custom_curve_exponent and deadzone_outer_radius
+        /// (default 2000) for its gyro speed, which
+        /// <see cref="GyroClassUnreadKeys"/> names.</summary>
         private static readonly HashSet<string> CurveChannelModes = new(StringComparer.Ordinal)
         {
             "joystick_move", "joystick_mouse", "joystick_camera", "mouse_joystick",
-            "absolute_mouse", "relative_mouse", "gyro_to_mouse",
+            "absolute_mouse", "relative_mouse",
         };
 
         /// <summary>True when a group's curve cluster lands on the emitted
         /// analog rows. MUST stay the same predicate the emitters use to
         /// stamp, or the drop note and the stamps drift apart.</summary>
         internal static bool CurveChannelApplies(SteamSlot slot, string mode)
-            => ((PhysicalSlotResolver.IsStick(slot) || PhysicalSlotResolver.IsTrackpad(slot)
+            => (PhysicalSlotResolver.IsStick(slot) || PhysicalSlotResolver.IsTrackpad(slot)
                     || slot == SteamSlot.Gyro)
-                && CurveChannelModes.Contains(mode))
-            // gyro_to_joystick on the GYRO slot, scoped rather than added to
-            // CurveChannelModes. A Gyro-slot group of this mode reaches
-            // EmitMouseJoystickAxes with curveChannel false, so its authored
-            // curve cluster parsed to nothing and never stamped.
-            //
-            // Scoped on purpose. Putting the mode in CurveChannelModes would
-            // also turn the channel on for STICK slots, and the emitter's
-            // `!curveChannel` outer-radius rescue exists precisely because
-            // gyro_to_joystick hand-bound to a stick is the one mode that
-            // reaches it OUTSIDE the channel; without that arm the authored
-            // outer radius arms the geometry and then vanishes. This keeps
-            // both: the gyro slot stamps, the stick slot keeps its rescue.
-            || (slot == SteamSlot.Gyro && mode == "gyro_to_joystick");
+                && CurveChannelModes.Contains(mode);
+
+        /// <summary>Settings the client's 3DOF to 2D gyro class registers
+        /// that PadForge does not carry, named when a file sets them. Its
+        /// speed dead zone rescales the gyro's speed past it, and its
+        /// precision speed scales the output by speed / precision below it
+        /// (both hundredths of a degree per second): PadForge's gyro dead
+        /// zone works per axis without the rescale, and its tightening
+        /// threshold is a smoothing threshold. The gyro_to_joystick class
+        /// adds a deflection stage of its own (the output range, the power
+        /// curve and the speed range) and starts both speed settings at
+        /// 0.</summary>
+        private static readonly string[] GyroClassUnreadKeys =
+        {
+            "gyro_speed_deadzone", "gyro_precision_speed", "custom_curve_exponent", "deadzone_outer_radius",
+            "mouse_trigger_clamp_amount",
+        };
+
+        private static readonly string[] GyroJoystickUnreadKeys =
+        {
+            "gyro_to_joystick_out_min", "gyro_to_joystick_out_max", "gyro_to_joystick_power_curve",
+            "gyro_speed_to_joystick_min", "gyro_speed_to_joystick_max",
+            "mousejoystick_deadzone_x", "mousejoystick_deadzone_y", "mousejoystick_precision",
+        };
 
         /// <summary>True when the group's output is a virtual thumb PAIR,
         /// so Steam's deadzone_shape lands on the engine's pair-shaped
@@ -831,9 +880,9 @@ namespace PadForge.SteamWorkshop.Translation
         /// old MouseModeTuningDropped family, parsed once per group and
         /// stamped onto the emitted mouse-axis sources.
         ///
-        /// <para>Grounding and scales. rotation is degrees (corpus -30..14;
-        /// the shipped configurator's Rotation slider), applied as a
-        /// rotation of the input vector: x' = x cos t - y sin t,
+        /// <para>Grounding and scales. The rotation is degrees (see
+        /// <see cref="SteamRotationDeg"/> for which key a mode reads),
+        /// applied as a rotation of the input vector: x' = x cos t - y sin t,
         /// y' = x sin t + y cos t in the pad's y-down frame (positive =
         /// visually clockwise). mouse_smoothing is a 0..100-ish strength
         /// (corpus 0..22), mapped to the per-tick EMA alpha / 100, the
@@ -865,10 +914,11 @@ namespace PadForge.SteamWorkshop.Translation
                 TrackballDecayY = decayY;
             }
 
-            public static MouseFeelChannel FromSettings(Dictionary<string, string> settings)
+            /// <param name="rotationDeg">The group's rotation from
+            /// <see cref="SteamRotationDeg"/>.</param>
+            public static MouseFeelChannel FromSettings(Dictionary<string, string> settings, double rotationDeg)
             {
-                double rot = ParseIntSetting(settings, "rotation", 0);
-                if (rot <= -360 || rot >= 360) rot = 0; // junk guard
+                double rot = rotationDeg;
                 double alpha = Math.Clamp(ParseIntSetting(settings, "mouse_smoothing", 0), 0, 99) / 100.0;
                 double accel = Math.Clamp(ParseIntSetting(settings, "acceleration", 0), 0, 10) * 0.5;
                 double threshold = Math.Clamp(ParseIntSetting(settings, "mouse_move_threshold", 0), 0, 100) / 1000.0;
@@ -1017,6 +1067,9 @@ namespace PadForge.SteamWorkshop.Translation
             }
 
             var curves = CurveSettingKeys
+                .Concat(mode == "gyro_to_joystick" && slot == SteamSlot.Gyro
+                    ? GyroClassUnreadKeys.Concat(GyroJoystickUnreadKeys)
+                    : Enumerable.Empty<string>())
                 .Where(k => settings.ContainsKey(k)
                     && !(shapeConsumed && k == "deadzone_shape"))
                 .ToList();
@@ -1031,7 +1084,16 @@ namespace PadForge.SteamWorkshop.Translation
             // its own overlapping keys.
             if (reportMouseTuning)
             {
-                var mouseTuning = MouseModeTuningKeys
+                // mouse_region rotates in Steam (its Rotation control writes
+                // rotation_2), and its absolute pointer rows cannot turn.
+                // gyro_to_mouse names its gyro class's own speed settings.
+                var keys = mode switch
+                {
+                    "mouse_region" => MouseModeTuningKeys.Concat(new[] { "rotation_2", "rotation" }),
+                    "gyro_to_mouse" when slot == SteamSlot.Gyro => MouseModeTuningKeys.Concat(GyroClassUnreadKeys),
+                    _ => MouseModeTuningKeys,
+                };
+                var mouseTuning = keys
                     .Where(k => settings.TryGetValue(k, out var v)
                         && (v ?? "").Trim().Length > 0 && (v ?? "").Trim() != "0")
                     .ToList();
@@ -2891,6 +2953,37 @@ namespace PadForge.SteamWorkshop.Translation
                 return s;
             }
 
+            // Rotate Output ("pushing the physical stick North results in an
+            // output of East, when set to 90") turns the pair clockwise. Each
+            // output row Sums both input axes with the angle's coefficients,
+            // in the row frame the mouse-mode rotation uses (X right, Y down:
+            // X = x cos - y sin, Y = x sin + y cos), and the nonlinear stamps
+            // are withheld and named, as there.
+            double rotation = SteamRotationDeg(run, settings, "joystick_move", slot);
+            void EmitRotatedPair(string dst, string xDesc, string yDesc, in CurveRangeChannel curve)
+            {
+                ReportRotationNonlinearWithheld(run, path, curve, default, curveChannel: true);
+                double t = rotation * Math.PI / 180.0;
+                double cos = Math.Cos(t), sin = Math.Sin(t);
+                foreach (var (target, desc, isX, coeff) in new[]
+                {
+                    ($"{dst}ThumbAxisX", xDesc, true, cos),
+                    ($"{dst}ThumbAxisX", yDesc, true, -sin),
+                    ($"{dst}ThumbAxisY", xDesc, false, sin),
+                    ($"{dst}ThumbAxisY", yDesc, false, cos),
+                })
+                {
+                    if (Math.Abs(coeff) < 0.001) continue;
+                    var s = Src(desc);
+                    curve.StampAxis(s, isX);
+                    WithholdNonlinearForRotation(s);
+                    if (Math.Abs(coeff) != 1.0) s.Sensitivity *= Math.Abs(coeff);
+                    if (coeff < 0) s.Invert = true;
+                    AddRowSource(run, isKbm: false, layer, target, s, isAxis: true,
+                        TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
+                }
+            }
+
             if (PhysicalSlotResolver.IsStick(slot))
             {
                 bool left = slot == SteamSlot.Joystick;
@@ -2899,7 +2992,12 @@ namespace PadForge.SteamWorkshop.Translation
                 // v11: the group's response-curve cluster rides the emitted
                 // pair as per-source params (both member rows, X and Y).
                 var curve = CurveRangeChannel.FromSettings(settings);
-                if (crossed)
+                if (rotation != 0)
+                {
+                    EmitRotatedPair(crossed ? (left ? "Right" : "Left") : (left ? "Left" : "Right"),
+                        $"Gamepad {src}X", $"Gamepad {src}Y", curve);
+                }
+                else if (crossed)
                 {
                     string dst = left ? "Right" : "Left";
                     var sx = Src($"Gamepad {src}X");
@@ -2940,7 +3038,15 @@ namespace PadForge.SteamWorkshop.Translation
                     padCurve.StampAxis(s, isX);
                     return s;
                 }
-                if (half != TrackpadHalf.Whole)
+                if (rotation != 0)
+                {
+                    string sfx = PhysicalSlotResolver.HalfSuffix(half);
+                    EmitRotatedPair(dst,
+                        half != TrackpadHalf.Whole ? $"Touchpad {p} Finger 0 X{sfx}" : $"Touchpad {p} StickX",
+                        half != TrackpadHalf.Whole ? $"Touchpad {p} Finger 0 Y{sfx}" : $"Touchpad {p} StickY",
+                        padCurve);
+                }
+                else if (half != TrackpadHalf.Whole)
                 {
                     // A stick hosted on one half of a single physical pad
                     // (#9 B-1) rides the region-windowed absolute finger
@@ -2974,84 +3080,241 @@ namespace PadForge.SteamWorkshop.Translation
         }
 
         /// <summary><para>The gyro sources that turn a gyro group's
-        /// horizontal output, each with whether its Invert flips. The Steam
-        /// client stores the choice as setting 64, "gyro_axis" (the
-        /// steamclient64.dll setting table), offered by steamui/sp.js as
-        /// GyroAxisAbsMouse, GyroAxisJoystickCamera and GyroAxisMouseJoystick
-        /// with Gyro_Yaw 0, Gyro_Roll 1 and Gyro_YawAndRoll 2. gyro_to_mouse
-        /// and gyro_to_joystick store setting 152,
-        /// "gyro_to_2d_conversion_style" (GyroTo2DConversionStyle):
+        /// horizontal output, each with whether its Invert flips and its
+        /// share of the turn. The Steam client stores the turning axis as
+        /// setting 64, "gyro_axis" (the steamclient64.dll setting table),
+        /// offered by steamui/sp.js as GyroAxisAbsMouse,
+        /// GyroAxisJoystickCamera and GyroAxisMouseJoystick with Gyro_Yaw 0,
+        /// Gyro_Roll 1 and Gyro_YawAndRoll 2. gyro_to_mouse and
+        /// gyro_to_joystick store setting 152, "gyro_to_2d_conversion_style":
         /// LocalSpaceYaw 0, LocalSpaceRoll 1, LocalSpaceCombineYawAndRoll 2,
         /// LocalSpaceAdvanced 3, PlayerSpace 4, WorldSpace 5,
-        /// LaserPointer 6. An absent key reads as yaw, the old lowering.</para>
+        /// LaserPointer 6.</para>
         /// <para>Roll turns right for a roll to the right, as sc-controller's
         /// MouseAction(ROLL) does for gyro_axis 1 (scc/foreign/vdf.py,
         /// scc/actions.py: cursor X = roll * -speed on SDL's roll).
         /// PadForge's Gyro Roll is positive for that roll, and both the mouse
         /// lane and a stick X row turn it left, so it rides inverted.</para>
-        /// <para>Yaw and roll together are added, Steam's "Yaw + Roll adds
-        /// the Lean and Turn together". Both ride at full strength: the
-        /// client shows gyro_yaw_scale and gyro_roll_scale as -100 to 100
-        /// percent, and the stored scale behind that display is not in the
-        /// UI code, so the contribution is not read and the line says so.
-        /// Player and World Space are PadForge's own gyro spaces
-        /// (GamepadMotion.hpp CalculatePlayerSpaceGyro and
+        /// <para>The rest follows the client's code. Its absolute mouse
+        /// class (absolute_mouse and mouse_joystick) starts on yaw and roll
+        /// on a Steam Deck,
+        /// SteamOS handheld or Zotac Zone config. For yaw and roll it takes
+        /// yaw times gyro_yaw_scale / 10000 and roll times gyro_roll_scale /
+        /// 10000 and returns the length of the two, signed by roll, or
+        /// sqrt(yaw^2 - roll^2) signed by yaw when they disagree and yaw is
+        /// the larger. PadForge adds them, and the line says so.
+        /// joystick_camera keeps the axis as an on/off setting, roll for
+        /// anything but 0, and the relative mouse class registers no axis,
+        /// so it turns with yaw. The 3DOF to 2D class adds roll times
+        /// gyro_roll_scale / 10000 to yaw for style 2, and for style 3 first
+        /// turns the sample by -gyro_mouse_sample_angle_offset degrees about
+        /// the pitch axis, so both are exact sums of yaw and roll. It never
+        /// reads gyro_yaw_scale. Player and World Space are PadForge's own
+        /// gyro spaces (GamepadMotion.hpp CalculatePlayerSpaceGyro and
         /// CalculateWorldSpaceGyro, Steam's descriptions of the same), set
-        /// on the device. Local Space with a tilted primary axis and Laser
-        /// Pointer have no counterpart and read yaw.</para></summary>
-        private (string Descriptor, bool Flip)[] GyroTurningSources(Run run, string path,
-            Dictionary<string, string> settings, bool conversionStyle)
+        /// on the device. Laser Pointer has no counterpart and reads
+        /// yaw.</para></summary>
+        private (string Descriptor, bool Flip, double Share)[] GyroTurningSources(Run run, string path,
+            Dictionary<string, string> settings, string mode, bool conversionStyle)
         {
-            var yaw = ("Gyro Yaw", false);
-            var roll = ("Gyro Roll", true);
-            int choice = ParseIntSetting(settings,
-                conversionStyle ? "gyro_to_2d_conversion_style" : "gyro_axis", 0);
-            switch (choice)
+            const string yaw = "Gyro Yaw", roll = "Gyro Roll";
+            static (string, bool, double)[] Legs(params (string, bool, double)[] legs)
+                => legs.Where(l => Math.Abs(l.Item3) >= 0.001).ToArray();
+
+            if (conversionStyle)
+            {
+                var (style, offsetDeg, rollShare) = GyroConversionStyle(run, settings);
+                switch (style)
+                {
+                    case 1:
+                        return Legs((roll, true, 1.0));
+                    case 2:
+                        return Legs((yaw, false, 1.0), (roll, true, rollShare));
+                    case 3:
+                        // Turning (pitch, yaw, roll) by -a about the pitch axis
+                        // leaves yaw' = yaw cos a + roll sin a and
+                        // roll' = roll cos a - yaw sin a, and the output is
+                        // yaw' + share * roll'.
+                        double a = offsetDeg * Math.PI / 180.0;
+                        return Legs((yaw, false, Math.Cos(a) - rollShare * Math.Sin(a)),
+                            (roll, true, Math.Sin(a) + rollShare * Math.Cos(a)));
+                    case 4:
+                        run.Profile.GyroSpace = "Player";
+                        return Legs((yaw, false, 1.0));
+                    case 5:
+                        run.Profile.GyroSpace = "World";
+                        return Legs((yaw, false, 1.0));
+                    case 6:
+                        run.Report.Add(TranslationStatus.Partial, TranslationReasons.GyroLaserPointer, path);
+                        return Legs((yaw, false, 1.0));
+                    default:
+                        return Legs((yaw, false, 1.0));
+                }
+            }
+
+            bool mouseClass = mode is "absolute_mouse" or "mouse_joystick";
+            int axis = ParseIntSetting(settings, "gyro_axis", mouseClass && run.HandheldGyroDefaults ? 2 : 0);
+            if (mode == "relative_mouse")
+                return Legs((yaw, false, 1.0));
+            if (mode == "joystick_camera")
+                return Legs(axis != 0 ? (roll, true, 1.0) : (yaw, false, 1.0));
+            switch (axis)
             {
                 case 1:
-                    return new[] { roll };
+                    return Legs((roll, true, 1.0));
                 case 2:
-                    run.Report.Add(TranslationStatus.Partial, TranslationReasons.GyroRollContribution, path);
-                    return new[] { yaw, roll };
-                case 3 when conversionStyle:
-                    run.Report.Add(TranslationStatus.Partial, TranslationReasons.GyroLocalSpaceAdvanced, path);
-                    return new[] { yaw };
-                case 4 when conversionStyle:
-                    run.Profile.GyroSpace = "Player";
-                    return new[] { yaw };
-                case 5 when conversionStyle:
-                    run.Profile.GyroSpace = "World";
-                    return new[] { yaw };
-                case 6 when conversionStyle:
-                    run.Report.Add(TranslationStatus.Partial, TranslationReasons.GyroLaserPointer, path);
-                    return new[] { yaw };
+                    run.Report.Add(TranslationStatus.Partial, TranslationReasons.GyroYawRollBlend, path);
+                    return Legs((yaw, false, GyroScaleShare(settings, "gyro_yaw_scale")),
+                        (roll, true, GyroScaleShare(settings, "gyro_roll_scale")));
                 default:
-                    return new[] { yaw };
+                    return Legs((yaw, false, 1.0));
             }
+        }
+
+        /// <summary>gyro_yaw_scale or gyro_roll_scale as a share: the client
+        /// registers both as integers from -10000 to 10000 with a default of
+        /// 10000 and divides by 10000.</summary>
+        private static double GyroScaleShare(Dictionary<string, string> settings, string key)
+            => Math.Clamp(ParseIntSetting(settings, key, 10000), -10000, 10000) / 10000.0;
+
+        /// <summary>The 3DOF to 2D style a gyro_to_mouse or gyro_to_joystick
+        /// group runs, the angle offset style 3 turns by, and roll's share,
+        /// as the client's gyro class loads them. The style defaults to 2 on
+        /// a Steam Deck, SteamOS handheld or Zotac Zone config and to 0
+        /// elsewhere, and gyro_axis defaults the same way. A gyro_axis other
+        /// than that default, with no angle offset, replaces the style: 0
+        /// with 0, 1 with 1 and a 90 degree offset, 2 with 2 and roll at
+        /// full share.</summary>
+        private static (int Style, double OffsetDeg, double RollShare) GyroConversionStyle(
+            Run run, Dictionary<string, string> settings)
+        {
+            int byType = run.HandheldGyroDefaults ? 2 : 0;
+            int style = ParseIntSetting(settings, "gyro_to_2d_conversion_style", byType);
+            int offset = ParseIntSetting(settings, "gyro_mouse_sample_angle_offset", 0);
+            double rollShare = GyroScaleShare(settings, "gyro_roll_scale");
+            int axis = ParseIntSetting(settings, "gyro_axis", byType);
+            if (axis != byType && offset == 0)
+            {
+                switch (axis)
+                {
+                    case 0: style = 0; break;
+                    case 1: style = 1; offset = 90; break;
+                    case 2: style = 2; rollShare = 1.0; break;
+                }
+            }
+            return (style, Math.Clamp(offset, -180, 180), rollShare);
+        }
+
+        /// <summary>The gyro_natural_sensitivity a gyro_to_mouse or
+        /// gyro_to_joystick group runs at. The client registers it as a
+        /// number from 0 to 3000 with a default of 250, and moves an old
+        /// "sensitivity" other than its default 100 into it when the file
+        /// sets none: doubled and capped at 3000 for the Switch family,
+        /// truncated as it is for the rest.</summary>
+        private static double GyroNaturalSensitivity(Run run, Dictionary<string, string> settings)
+        {
+            if (TryParseNumberSetting(settings, "gyro_natural_sensitivity", out double natural))
+                return natural;
+            if (TryParseNumberSetting(settings, "sensitivity", out double old) && old != 100.0)
+                return run.SwitchGyroDoubling
+                    ? Math.Clamp(Math.Truncate(old * 2.0), 0.0, 3000.0)
+                    : Math.Truncate(old);
+            return 250.0;
+        }
+
+        /// <summary>The Vertical/Horizontal Output Mixer of a gyro_to_mouse or
+        /// gyro_to_joystick group, as the shares it leaves the horizontal and
+        /// the vertical output. The client registers
+        /// gyro_vertical_horizontal_ratio as an integer from 0 to 800 with a
+        /// default of 400, shown as -100 to 100 percent, and after the
+        /// rotation multiplies X by 1 - clamp((v - 400) / 400) and Y by
+        /// clamp(v / 400), each clamped to 0..1. An old sensitivity_vert_scale
+        /// other than its default 100 moves into the ratio while the ratio
+        /// sits at 400, by the client's conversion below.</summary>
+        private static (double Horizontal, double Vertical) GyroOutputMixer(Dictionary<string, string> settings)
+        {
+            int ratio = ParseIntSetting(settings, "gyro_vertical_horizontal_ratio", 400);
+            int vertScale = ParseIntSetting(settings, "sensitivity_vert_scale", 100);
+            if (vertScale != 100 && ratio == 400)
+            {
+                float s = vertScale / 100f * 0.5625f;
+                float t = s > 1f
+                    ? Math.Clamp((1f / s - 1f) / -0.11111111f, 0f, 1f)
+                    : Math.Clamp(s, 0f, 1f) - 1f;
+                ratio = (int)(800f * Math.Clamp((t + 1f) * 0.5f, 0f, 1f));
+            }
+            return (1.0 - Math.Clamp((ratio - 400) / 400.0, 0.0, 1.0),
+                Math.Clamp(ratio / 400.0, 0.0, 1.0));
+        }
+
+        /// <summary><para>A group's rotation in degrees, clockwise positive:
+        /// at 90 degrees pushing North comes out East, as the client's own
+        /// descriptions put it. Today's client stores it as setting 45,
+        /// "rotation_2", which every Rotation control in steamui/sp.js
+        /// writes. The older setting 128, "rotation", is registered only by
+        /// the absolute mouse class (absolute_mouse, mouse_joystick) and the
+        /// flick stick, and they move it into rotation_2 while rotation_2
+        /// sits at its default: as it is, or times 1.5 toward zero in the
+        /// absolute mouse class on a Steam Deck, SteamOS handheld or Zotac
+        /// Zone config. Every other mode ignores it, and joystick_camera and
+        /// relative_mouse have no rotation at all.</para>
+        /// <para>On an original Steam Controller config the absolute mouse
+        /// class and the flick stick default to 15 degrees on the right
+        /// trackpad and -15 on the left.</para></summary>
+        private static double SteamRotationDeg(Run run, Dictionary<string, string> settings,
+            string mode, SteamSlot slot)
+        {
+            bool mouseClass = mode is "absolute_mouse" or "mouse_joystick";
+            bool takesOld = mouseClass || mode == "flickstick";
+            if (!takesOld && mode is not ("joystick_mouse" or "joystick_move"
+                    or "gyro_to_mouse" or "gyro_to_joystick"))
+                return 0;
+            int byDefault = takesOld && run.AngledTrackpads
+                ? slot == SteamSlot.RightTrackpad ? 15 : slot == SteamSlot.LeftTrackpad ? -15 : 0
+                : 0;
+            int rotation = ParseIntSetting(settings, "rotation_2", byDefault);
+            int old = ParseIntSetting(settings, "rotation", 0);
+            if (takesOld && rotation == byDefault && old != 0)
+                rotation = mouseClass && run.HandheldGyroDefaults ? (int)(old * 1.5f) : old;
+            return rotation;
+        }
+
+        private static bool TryParseNumberSetting(Dictionary<string, string> settings, string key, out double value)
+        {
+            value = 0;
+            return settings.TryGetValue(key, out var raw)
+                && double.TryParse((raw ?? "").Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out value);
         }
 
         /// <summary>Mouse-mode groups: the slot's analog surface drives the
         /// KbM mouse delta. Multiple groups merging into KbmMouseX/Y get
-        /// Combine=Sum (mouse deltas are additive). The sensitivity key is
-        /// per mode: the classic modes store "sensitivity", gyro_to_mouse
-        /// stores "gyro_natural_sensitivity". Touchpad rows (family 1)
-        /// carry the ratio on the generic per-source Sensitivity too: B-13
-        /// widened that knob to the finger X/Y reads (relative delta
-        /// included), so the config's per-group touch sensitivity lives on
-        /// the row instead of the old TouchpadTuningNotPerRow drop.</summary>
+        /// Combine=Sum (mouse deltas are additive). The classic modes store
+        /// their sensitivity as "sensitivity". gyro_to_mouse runs at
+        /// <see cref="GyroNaturalSensitivity"/>, 100 being PadForge's 1.0x,
+        /// with its X and Y scaled by <see cref="GyroOutputMixer"/>.
+        /// Touchpad rows (family 1) carry the ratio on the generic
+        /// per-source Sensitivity too: B-13 widened that knob to the finger
+        /// X/Y reads (relative delta included), so the config's per-group
+        /// touch sensitivity lives on the row instead of the old
+        /// TouchpadTuningNotPerRow drop.</summary>
         private void EmitMouseAxes(Run run, SteamSlot slot, string layer, string path,
-            Dictionary<string, string> settings, double baseline,
-            string sensitivityKey = "sensitivity", bool curveChannel = false,
-            bool conversionStyle = false)
+            Dictionary<string, string> settings, string mode, double baseline,
+            bool curveChannel = false, bool conversionStyle = false)
         {
             var pair = PhysicalSlotResolver.MouseAxisPair(slot, run.SinglePadTrackpads);
             if (pair == null) return;
             var turns = pair.Value.Family == 2
-                ? GyroTurningSources(run, path, settings, conversionStyle)
-                : new[] { (pair.Value.X, false) };
+                ? GyroTurningSources(run, path, settings, mode, conversionStyle)
+                : new[] { (pair.Value.X, false, 1.0) };
 
             double ratio = 1.0;
-            if (settings.TryGetValue(sensitivityKey, out var sensRaw)
+            double shareX = 1.0, shareY = 1.0;
+            if (conversionStyle)
+            {
+                ratio = Math.Clamp(GyroNaturalSensitivity(run, settings) / baseline, 0.05, 20.0);
+                (shareX, shareY) = GyroOutputMixer(settings);
+            }
+            else if (settings.TryGetValue("sensitivity", out var sensRaw)
                 && double.TryParse(sensRaw, NumberStyles.Float, CultureInfo.InvariantCulture, out double sens)
                 && sens > 0)
             {
@@ -3059,12 +3322,14 @@ namespace PadForge.SteamWorkshop.Translation
             }
 
             var (x, y, family) = pair.Value;
-            int dzPct = GroupDeadZonePercent(settings);
+            // The gyro class registers no deadzone_inner_radius, and its
+            // deadzone_outer_radius is a gyro speed it names elsewhere.
+            int dzPct = conversionStyle ? 0 : GroupDeadZonePercent(settings);
             // v19 (T2): the pair-host inner/outer radii do not apply
             // radially at the analog reads; name the residual. Stick
             // hosts (family 0) consume the radii through the v25
             // per-source geometry stamp below and drop the note.
-            if (family != 0)
+            if (family != 0 && !conversionStyle)
                 ReportRadialDeadZoneResidual(run, settings, path);
             // v11 (widened to every analog host in v18): the group's
             // response-curve cluster rides the emitted pair as per-source
@@ -3074,7 +3339,7 @@ namespace PadForge.SteamWorkshop.Translation
                 : default;
             // v18: the built mouse-feel family (rotation / smoothing /
             // accel / threshold / trackball) rides the same sources.
-            var feel = MouseFeelChannel.FromSettings(settings);
+            var feel = MouseFeelChannel.FromSettings(settings, SteamRotationDeg(run, settings, mode, slot));
 
             // Steam's per-group axis inversion (finding 1g-1). Every
             // mouse-axis family here reads through the bipolar evaluator's
@@ -3131,6 +3396,17 @@ namespace PadForge.SteamWorkshop.Translation
                 return src;
             }
 
+            // Each leg carries its turn share and, after the rotation, the
+            // output mixer's share of its row. A leg that comes to nothing
+            // is dropped.
+            void AddLeg(string target, string desc, bool invert, bool isX, double coeff)
+            {
+                if (Math.Abs(coeff) < 0.001) return;
+                AddRowSource(run, isKbm: true, layer, target,
+                    Make(desc, invert, isX, coeff), isAxis: true,
+                    TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
+            }
+
             if (feel.HasRotation)
             {
                 // rotation (v18): rotate the input vector by the authored
@@ -3141,27 +3417,18 @@ namespace PadForge.SteamWorkshop.Translation
                 ReportRotationNonlinearWithheld(run, path, curve, feel, curveChannel);
                 double t = feel.RotationDeg * Math.PI / 180.0;
                 double cos = Math.Cos(t), sin = Math.Sin(t);
-                void AddLeg(string target, string desc, bool invert, bool isX, double coeff)
-                {
-                    if (Math.Abs(coeff) < 0.001) return;
-                    AddRowSource(run, isKbm: true, layer, target,
-                        Make(desc, invert, isX, coeff), isAxis: true,
-                        TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
-                }
-                foreach (var (turn, flip) in turns)
-                    AddLeg("KbmMouseX", turn, invertX ^ flip, isX: true, cos);
-                AddLeg("KbmMouseX", y, invertY, isX: true, -sin);
-                foreach (var (turn, flip) in turns)
-                    AddLeg("KbmMouseY", turn, invertX ^ flip, isX: false, sin);
-                AddLeg("KbmMouseY", y, invertY, isX: false, cos);
+                foreach (var (turn, flip, share) in turns)
+                    AddLeg("KbmMouseX", turn, invertX ^ flip, isX: true, shareX * cos * share);
+                AddLeg("KbmMouseX", y, invertY, isX: true, shareX * -sin);
+                foreach (var (turn, flip, share) in turns)
+                    AddLeg("KbmMouseY", turn, invertX ^ flip, isX: false, shareY * sin * share);
+                AddLeg("KbmMouseY", y, invertY, isX: false, shareY * cos);
             }
             else
             {
-                foreach (var (turn, flip) in turns)
-                    AddRowSource(run, isKbm: true, layer, "KbmMouseX", Make(turn, invertX ^ flip, isX: true), isAxis: true,
-                        TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
-                AddRowSource(run, isKbm: true, layer, "KbmMouseY", Make(y, invertY, isX: false), isAxis: true,
-                    TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
+                foreach (var (turn, flip, share) in turns)
+                    AddLeg("KbmMouseX", turn, invertX ^ flip, isX: true, shareX * share);
+                AddLeg("KbmMouseY", y, invertY, isX: false, shareY);
             }
 
             // invert_z addresses a third (roll) axis the X/Y mouse-delta pair
@@ -3178,19 +3445,29 @@ namespace PadForge.SteamWorkshop.Translation
         /// slot, except that the gyro's Y row is negated so the nose up
         /// pushes the stick up. output_joystick 1 redirects to the left stick
         /// (the value joystick_move reads as "left"). Anything else keeps the
-        /// mode's right-stick default.</summary>
+        /// mode's right-stick default. gyro_to_joystick runs at
+        /// <see cref="GyroNaturalSensitivity"/>: the client multiplies the
+        /// gyro by it before its own deflection stage, so a file's value
+        /// scales the stick against the client's default of 250, which keeps
+        /// PadForge's 1.0x. Its X and Y take <see cref="GyroOutputMixer"/>.</summary>
         private void EmitMouseJoystickAxes(Run run, SteamSlot slot, string layer, string path,
-            Dictionary<string, string> settings, double baseline, bool curveChannel = false,
+            Dictionary<string, string> settings, string mode, double baseline, bool curveChannel = false,
             bool conversionStyle = false)
         {
             var pair = PhysicalSlotResolver.MouseAxisPair(slot, run.SinglePadTrackpads);
             if (pair == null) return;
             var turns = pair.Value.Family == 2
-                ? GyroTurningSources(run, path, settings, conversionStyle)
-                : new[] { (pair.Value.X, false) };
+                ? GyroTurningSources(run, path, settings, mode, conversionStyle)
+                : new[] { (pair.Value.X, false, 1.0) };
 
             double ratio = 1.0;
-            if (settings.TryGetValue("sensitivity", out var sensRaw)
+            double shareX = 1.0, shareY = 1.0;
+            if (conversionStyle)
+            {
+                ratio = Math.Clamp(GyroNaturalSensitivity(run, settings) / 250.0, 0.05, 20.0);
+                (shareX, shareY) = GyroOutputMixer(settings);
+            }
+            else if (settings.TryGetValue("sensitivity", out var sensRaw)
                 && double.TryParse(sensRaw, NumberStyles.Float, CultureInfo.InvariantCulture, out double sens)
                 && sens > 0)
             {
@@ -3198,7 +3475,8 @@ namespace PadForge.SteamWorkshop.Translation
             }
 
             var (x, y, family) = pair.Value;
-            int dzPct = GroupDeadZonePercent(settings);
+            // As in EmitMouseAxes, the gyro class takes no inner radius.
+            int dzPct = conversionStyle && family == 2 ? 0 : GroupDeadZonePercent(settings);
             // v19 (T2) residual, scoped exactly like EmitMouseAxes since
             // round six (R3): stick hosts consume the radii through the
             // v25 per-source geometry stamp below, so only the finger /
@@ -3206,7 +3484,7 @@ namespace PadForge.SteamWorkshop.Translation
             // stick-capable thumb-pair host the 67fca4d9 completion pass
             // missed, which put the lockdown's "only the trackpad
             // remains" claim ahead of the code.
-            if (family != 0)
+            if (family != 0 && !(conversionStyle && family == 2))
                 ReportRadialDeadZoneResidual(run, settings, path);
             bool invertX = SettingIsOn(settings, "invert_x");
             bool invertY = SettingIsOn(settings, "invert_y");
@@ -3224,7 +3502,7 @@ namespace PadForge.SteamWorkshop.Translation
             var curve = curveChannel
                 ? CurveRangeChannel.FromSettings(settings)
                 : default;
-            var feel = MouseFeelChannel.FromSettings(settings);
+            var feel = MouseFeelChannel.FromSettings(settings, SteamRotationDeg(run, settings, mode, slot));
 
             // deadzone_shape on a stick host (round six, R3): the same
             // per-source geometry stamp as EmitMouseAxes. Steam 1 =
@@ -3281,6 +3559,17 @@ namespace PadForge.SteamWorkshop.Translation
                 return src;
             }
 
+            // Each leg carries its turn share and, after the rotation, the
+            // output mixer's share of its row. A leg that comes to nothing
+            // is dropped.
+            void AddLeg(string target, string desc, bool invert, bool isX, double coeff)
+            {
+                if (Math.Abs(coeff) < 0.001) return;
+                AddRowSource(run, isKbm: false, layer, target,
+                    Make(desc, invert, isX, coeff), isAxis: true,
+                    TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
+            }
+
             if (feel.HasRotation)
             {
                 // rotation (v18): same two-source Sum lowering as
@@ -3288,13 +3577,6 @@ namespace PadForge.SteamWorkshop.Translation
                 ReportRotationNonlinearWithheld(run, path, curve, feel, curveChannel);
                 double t = feel.RotationDeg * Math.PI / 180.0;
                 double cos = Math.Cos(t), sin = Math.Sin(t);
-                void AddLeg(string target, string desc, bool invert, bool isX, double coeff)
-                {
-                    if (Math.Abs(coeff) < 0.001) return;
-                    AddRowSource(run, isKbm: false, layer, target,
-                        Make(desc, invert, isX, coeff), isAxis: true,
-                        TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
-                }
                 // Gyro pitch→X cross leg (v19, finding 1i): the engine's
                 // per-source axis-frame seam flips gyro yaw / roll on the
                 // thumb X targets but never pitch
@@ -3315,20 +3597,18 @@ namespace PadForge.SteamWorkshop.Translation
                 // would leave the yaw→Y leg's sign behind and turn the
                 // gyro the other way.
                 double ySign = flipGyroY ? -1.0 : 1.0;
-                foreach (var (turn, flip) in turns)
-                    AddLeg($"{dst}ThumbAxisX", turn, invertX ^ flip, isX: true, cos);
-                AddLeg($"{dst}ThumbAxisX", y, invertY, isX: true, family == 2 ? sin : -sin);
-                foreach (var (turn, flip) in turns)
-                    AddLeg($"{dst}ThumbAxisY", turn, invertX ^ flip, isX: false, ySign * sin);
-                AddLeg($"{dst}ThumbAxisY", y, invertY, isX: false, ySign * cos);
+                foreach (var (turn, flip, share) in turns)
+                    AddLeg($"{dst}ThumbAxisX", turn, invertX ^ flip, isX: true, shareX * cos * share);
+                AddLeg($"{dst}ThumbAxisX", y, invertY, isX: true, shareX * (family == 2 ? sin : -sin));
+                foreach (var (turn, flip, share) in turns)
+                    AddLeg($"{dst}ThumbAxisY", turn, invertX ^ flip, isX: false, shareY * ySign * sin * share);
+                AddLeg($"{dst}ThumbAxisY", y, invertY, isX: false, shareY * ySign * cos);
             }
             else
             {
-                foreach (var (turn, flip) in turns)
-                    AddRowSource(run, isKbm: false, layer, $"{dst}ThumbAxisX", Make(turn, invertX ^ flip, isX: true), isAxis: true,
-                        TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
-                AddRowSource(run, isKbm: false, layer, $"{dst}ThumbAxisY", Make(y, invertY ^ flipGyroY, isX: false), isAxis: true,
-                    TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
+                foreach (var (turn, flip, share) in turns)
+                    AddLeg($"{dst}ThumbAxisX", turn, invertX ^ flip, isX: true, shareX * share);
+                AddLeg($"{dst}ThumbAxisY", y, invertY ^ flipGyroY, isX: false, shareY);
             }
 
             // invert_z addresses a third axis the X/Y pair does not emit.
@@ -3462,8 +3742,9 @@ namespace PadForge.SteamWorkshop.Translation
             {
                 src.ParamFlickTime = Math.Clamp(transitionMs / 1000.0, 0.01, 1.0);
             }
-            // rotation: constant offset in degrees (v26).
-            int rotOffset = ParseIntSetting(settings, "rotation", 0);
+            // rotation: constant offset in degrees (v26), read the way the
+            // client reads it (SteamRotationDeg).
+            double rotOffset = SteamRotationDeg(run, settings, "flickstick", slot);
             if (rotOffset != 0 && rotOffset > -360 && rotOffset < 360)
                 src.ParamFlickRotationOffsetDeg = rotOffset;
             // mouse_smoothing: percent strength onto the rad-per-tick

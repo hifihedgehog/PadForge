@@ -5189,11 +5189,9 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>Toetsenbord van een slot dat niet meer Toetsenbord + Muis is</value></data>
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (niet op deze pc)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (niet op dit slot)</value></data>
-  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>yaw en roll met volle sterkte opgeteld (bijdrage van roll niet gelezen)</value></data>
-  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>gyro Lokale ruimte gelezen als yaw (PadForge heeft geen gekantelde hoofdas)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>gyro Laserpen gelezen als yaw (PadForge heeft geen laserpenomzetting)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>In reWASD bereikt {0} nog steeds Windows, omdat het bestand die toewijst zonder de toewijzing op te heffen. Met Toegewezen invoer verbruiken aan houdt PadForge die tegen.</value></data>
-  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge draait een positieve rotatie met de klok mee, zoals DS4Windows. De help van reWASD geeft het bereik van de rotatie, niet de richting.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows vormt de {0} van een radiale stick naar de hoek van de duw. De stickkaart van PadForge behandelt een rechte duw gelijk en een diagonale duw anders.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>De lagen stemmen {0} verschillend af, dus elke laag houdt zijn eigen afstelling, en de curve is overgenomen als de dichtstbijzijnde machtscurve.</value></data>
+  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>yaw en roll opgeteld (Steam combineert ze via de vectorlengte)</value></data>
 </root>

@@ -52,6 +52,7 @@ kbm rows: 19
     <- Gamepad RightStickRing [lower-half] dz=100
   Base | KbmMouseX | Sum
     <- Gyro Yaw
+    <- Gyro Roll [inverted]
     <- Gamepad RightStickX sens=1.25
     <- Touchpad 1 Pointer X ptrExtent=1.2
   Base | KbmMouseY | Sum
@@ -161,7 +162,7 @@ menus: 2
     [9] Warp cursor icon=ghost_040_act_0327.png
     [10] Warp cursor icon=ghost_040_act_0307.png
     [12] Warp cursor icon=ghost_050_menu_0306.png
-report: v26 rows:x0+k19 macros:67 menus:2 layers:8 clean:81 partial:4 skipped:0 errors:0
+report: v26 rows:x0+k19 macros:67 menus:2 layers:8 clean:82 partial:5 skipped:0 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmMBtn0 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmMBtn1 <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey45 <- Gamepad ButtonX
@@ -170,7 +171,9 @@ report: v26 rows:x0+k19 macros:67 menus:2 layers:8 clean:81 partial:4 skipped:0 
   Clean RowEmitted @ Default/dpad/group 9 (dpad)/dpad_north/Full_Press => KbmKeyA4 <- Gamepad DPadUp
   Clean RowEmitted @ Default/dpad/group 9 (dpad)/dpad_south/Full_Press => KbmKeyA0 <- Gamepad DPadDown
   Clean RowEmitted @ Default/dpad/group 9 (dpad)/dpad_west/Full_Press => KbmKey08 <- Gamepad DPadLeft
+  Partial GyroYawRollBlend @ Default/gyro/group 14 (absolute_mouse)
   Clean RowEmitted @ Default/gyro/group 14 (absolute_mouse) => KbmMouseX <- Gyro Yaw
+  Clean RowEmitted @ Default/gyro/group 14 (absolute_mouse) => KbmMouseX <- Gyro Roll (inverted)
   Clean RowEmitted @ Default/gyro/group 14 (absolute_mouse) => KbmMouseY <- Gyro Pitch
   Clean RowEmitted @ Default/joystick/group 1 (dpad)/dpad_east/Full_Press => KbmKey44 <- Gamepad LeftStickX (upper half)
   Clean RowEmitted @ Default/joystick/group 1 (dpad)/dpad_north/Full_Press => KbmKey57 <- Gamepad LeftStickY (lower half)

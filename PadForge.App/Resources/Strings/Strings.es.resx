@@ -5169,11 +5169,9 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>Teclado de una ranura que ya no es Teclado + Ratón</value></data>
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (no está en este PC)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (no está en esta ranura)</value></data>
-  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>guiñada y alabeo sumados a plena intensidad (la contribución del alabeo no se lee)</value></data>
-  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>giroscopio en Espacio local leído como guiñada (PadForge no tiene un eje principal inclinado)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>giroscopio en Puntero láser leído como guiñada (PadForge no convierte el puntero láser)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>En reWASD, {0} sigue llegando a Windows porque el archivo la asigna sin una desasignación. Con Consumir entradas asignadas activado, PadForge la bloquea.</value></data>
-  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge gira una rotación positiva en sentido horario, como hace DS4Windows. La ayuda de reWASD da el rango de la rotación, no su dirección.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows da forma a {0} de un stick radial según el ángulo del empuje. La tarjeta del stick de PadForge trata igual un empuje recto y distinto uno diagonal.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Las capas ajustan {0} de forma distinta, así que cada una conserva su propio ajuste, y la curva se traslada como la curva de potencia más cercana.</value></data>
+  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>guiñada y alabeo sumados (Steam los combina por la longitud del vector)</value></data>
 </root>

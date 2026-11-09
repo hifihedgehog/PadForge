@@ -5218,11 +5218,9 @@
   <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>Клавіятура слота, які больш не Клавіятура + мыш</value></data>
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (няма на гэтым ПК)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (няма на гэтым слоце)</value></data>
-  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>рысканне і крэн складаюцца на поўную сілу (уклад крэну не чытаецца)</value></data>
-  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>гіраскоп Local Space чытаецца як рысканне (у PadForge няма нахіленай галоўнай восі)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>гіраскоп Laser Pointer чытаецца як рысканне (у PadForge няма пераўтварэння лазернай указкі)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>У reWASD {0} усё роўна трапляе ў Windows, бо файл прызначае яго без скасавання. Калі ўключана Паглынаць прызначаныя ўводы, PadForge яго стрымлівае.</value></data>
-  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge паварочвае станоўчы паварот па гадзіннікавай стрэлцы, як і DS4Windows. Даведка reWASD паказвае дыяпазон павароту, а не яго напрамак.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows фармуе {0} радыяльнага стыка па вуглу націску. Картка налад стыка ў PadForge прамы націск праводзіць аднолькава, а дыяганальны па-іншаму.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Пласты па-рознаму наладжваюць {0}, таму кожны захоўвае ўласную наладу, а крывая пераносіцца як бліжэйшая ступенная крывая.</value></data>
+  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>рысканне і крэн складаюцца (Steam аб'ядноўвае іх па даўжыні вектара)</value></data>
 </root>

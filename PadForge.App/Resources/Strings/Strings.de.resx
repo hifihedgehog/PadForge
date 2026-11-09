@@ -5169,11 +5169,9 @@ Sollen sie jetzt deinstalliert werden? Dies erfordert erhöhte Rechte und kann e
   <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>Tastatur eines Slots, der kein Tastatur + Maus mehr ist</value></data>
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (nicht an diesem PC)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (nicht an diesem Slot)</value></data>
-  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>Gieren und Rollen mit voller Stärke addiert (Rollanteil nicht gelesen)</value></data>
-  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>Gyro im Lokalen Raum als Gieren gelesen (PadForge hat keine geneigte Primärachse)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>Laserpointer-Gyro als Gieren gelesen (PadForge hat keine Laserpointer-Umrechnung)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>In reWASD erreicht {0} weiterhin Windows, weil die Datei es ohne Aufheben der Zuordnung zuordnet. Mit aktivierter Option Zugeordnete Eingaben verbrauchen fängt PadForge es ab.</value></data>
-  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge dreht eine positive Rotation im Uhrzeigersinn, wie es DS4Windows tut. Die Hilfe von reWASD nennt den Bereich der Rotation, nicht ihre Richtung.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows formt {0} eines radialen Sticks nach dem Winkel des Ausschlags. Die Stick-Karte von PadForge spielt einen geraden Ausschlag gleich ab und einen diagonalen anders.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Die Ebenen stimmen {0} unterschiedlich ab, daher behält jede ihre eigene Abstimmung, und die Kurve wird als nächstliegende Potenzkurve übernommen.</value></data>
+  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>Gieren und Rollen addiert (Steam verbindet sie über die Vektorlänge)</value></data>
 </root>

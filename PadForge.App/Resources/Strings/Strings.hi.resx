@@ -5218,11 +5218,9 @@
   <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>उस स्लॉट का कीबोर्ड जो अब “कीबोर्ड + माउस” नहीं रहा</value></data>
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (इस PC पर नहीं)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (इस स्लॉट पर नहीं)</value></data>
-  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>यॉ और रोल पूरी तीव्रता से जोड़े गए (रोल का योगदान नहीं पढ़ा गया)</value></data>
-  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>Local Space जाइरो को यॉ की तरह पढ़ा गया (PadForge में झुकी हुई प्राथमिक अक्ष नहीं होती)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>Laser Pointer जाइरो को यॉ की तरह पढ़ा गया (PadForge में लेज़र पॉइंटर रूपांतरण नहीं है)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>reWASD में {0} फिर भी Windows तक पहुँचता है, क्योंकि फ़ाइल उसे अनमैप किए बिना मैप करती है। मैप किए गए इनपुट रोक लें चालू होने पर PadForge उसे रोक लेता है।</value></data>
-  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge धनात्मक घुमाव को दक्षिणावर्त घुमाता है, जैसा DS4Windows करता है। reWASD की मदद घुमाव की सीमा बताती है, उसकी दिशा नहीं।</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows रेडियल स्टिक के {0} को धक्के के कोण के हिसाब से ढालता है। PadForge का स्टिक कार्ड सीधे धक्के को एक तरह और तिरछे धक्के को दूसरी तरह चलाता है।</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>लेयर {0} को अलग-अलग ट्यून करती हैं, इसलिए हर लेयर की अपनी ट्यूनिंग रहती है, और कर्व सबसे नज़दीकी पावर कर्व के रूप में आता है।</value></data>
+  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>यॉ और रोल जोड़े गए (Steam इन्हें सदिश की लंबाई से मिलाता है)</value></data>
 </root>

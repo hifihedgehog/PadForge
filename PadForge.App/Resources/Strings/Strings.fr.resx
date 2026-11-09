@@ -5169,11 +5169,9 @@ Voulez-vous que PadForge les désinstalle maintenant ? Cette opération nécessi
   <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>Clavier d'un emplacement qui n'est plus Clavier + Souris</value></data>
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (absent de ce PC)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (absent de cet emplacement)</value></data>
-  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>lacet et roulis additionnés à pleine intensité (contribution du roulis non lue)</value></data>
-  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>gyro Espace local lu comme lacet (PadForge n'a pas d'axe principal incliné)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>gyro Pointeur laser lu comme lacet (PadForge n'a pas de conversion en pointeur laser)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>Dans reWASD, {0} atteint toujours Windows, car le fichier l'assigne sans le désassigner. Avec Consommer les entrées assignées activé, PadForge le bloque.</value></data>
-  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge fait tourner une rotation positive dans le sens horaire, comme DS4Windows. L'aide de reWASD donne la plage de la rotation, pas son sens.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows façonne le réglage {0} d'un stick radial selon l'angle de la poussée. Les réglages du stick de PadForge traitent pareil une poussée droite et une poussée en diagonale.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Les couches règlent {0} différemment : chacune garde ses propres réglages, et la courbe est reprise sous la forme de la courbe de puissance la plus proche.</value></data>
+  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>lacet et roulis additionnés (Steam les combine par la longueur du vecteur)</value></data>
 </root>

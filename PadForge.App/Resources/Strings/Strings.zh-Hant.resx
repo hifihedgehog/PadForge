@@ -5218,11 +5218,9 @@
   <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>已不再是鍵盤 + 滑鼠的插槽的鍵盤</value></data>
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0}（不在這部電腦上）</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0}（不在此插槽上）</value></data>
-  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>偏航與滾轉以完整強度相加（不讀取滾轉的貢獻值）</value></data>
-  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>本機空間陀螺儀以偏航讀取（PadForge 沒有傾斜的主軸）</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>雷射指標陀螺儀以偏航讀取（PadForge 沒有雷射指標轉換）</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>在 reWASD 中，{0} 仍會傳到 Windows，因為該檔案對應了它卻沒有取消對應。開啟攔截已對應的輸入後，PadForge 會攔截它。</value></data>
-  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge 將正的旋轉值視為順時針，與 DS4Windows 相同。reWASD 的說明只給出旋轉的範圍，沒有說明方向。</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows 依推動的角度調整放射狀搖桿的 {0}。PadForge 的搖桿卡片對直推和斜推一視同仁。</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>各圖層對 {0} 的調校不同，因此每個圖層保留各自的調校，曲線則帶入為最接近的冪次曲線。</value></data>
+  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>偏航與滾轉採相加（Steam 以向量長度合併兩者）</value></data>
 </root>

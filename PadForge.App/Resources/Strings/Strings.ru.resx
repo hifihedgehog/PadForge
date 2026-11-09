@@ -5218,11 +5218,9 @@
   <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>Клавиатура слота, который больше не «Клавиатура + мышь»</value></data>
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (нет на этом ПК)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (нет в этом слоте)</value></data>
-  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>рыскание и крен складываются на полную силу (вклад крена не читается)</value></data>
-  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>гироскоп в режиме «Локальное пространство» читается как рыскание (в PadForge нет наклонной основной оси)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>гироскоп в режиме «Лазерная указка» читается как рыскание (в PadForge нет преобразования лазерной указки)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>В reWASD {0} по-прежнему доходит до Windows, потому что файл назначает его без снятия назначения. Когда включено «Поглощать назначенный ввод», PadForge его перехватывает.</value></data>
-  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge поворачивает стик по часовой стрелке при положительном значении поворота, как DS4Windows. Справка reWASD указывает диапазон поворота, но не его направление.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows формирует параметры радиального стика {0} по углу отклонения. Карточка стика в PadForge одинаково обрабатывает отклонение по прямой и по-разному диагональное.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Слои настраивают {0} по-разному, поэтому у каждого остаются свои настройки, а кривая переносится как ближайшая степенная.</value></data>
+  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>рыскание и крен складываются (Steam объединяет их по длине вектора)</value></data>
 </root>

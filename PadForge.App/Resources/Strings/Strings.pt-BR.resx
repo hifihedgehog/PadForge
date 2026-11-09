@@ -5163,11 +5163,9 @@ Deseja que o PadForge os desinstale agora? Isso exige elevação e pode levar um
   <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>Teclado de um slot que não é mais Teclado + Mouse</value></data>
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (não está neste PC)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (não está neste slot)</value></data>
-  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>yaw e roll somados com força total (contribuição do roll não lida)</value></data>
-  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>giroscópio em Espaço local lido como yaw (o PadForge não tem eixo principal inclinado)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>giroscópio em Apontador laser lido como yaw (o PadForge não tem conversão de apontador laser)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>No reWASD, {0} ainda chegava ao Windows porque o arquivo o mapeia sem um desmapeamento. Com Consumir Entradas Mapeadas ativado, o PadForge o bloqueia.</value></data>
-  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>O PadForge gira uma rotação positiva no sentido horário, como o DS4Windows. A ajuda do reWASD informa o intervalo da rotação, não o sentido.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>O DS4Windows molda {0} de um analógico radial pelo ângulo do empurrão. O cartão de Analógicos do PadForge trata um empurrão reto de um jeito e um diagonal de outro.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>As camadas ajustam {0} de maneiras diferentes, então cada uma mantém o próprio ajuste, e a curva passa para a curva de potência mais próxima.</value></data>
+  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>yaw e roll somados (o Steam os combina pelo comprimento do vetor)</value></data>
 </root>

@@ -3713,8 +3713,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>flick stick on a surface with no analog pair skipped</value></data>
   <data name="Workshop_Tr_DeadZoneRadialResidual" xml:space="preserve"><value>deadzone radii apply per axis, not radially ({0})</value></data>
   <data name="Workshop_Tr_RotationNonlinearWithheld" xml:space="preserve"><value>nonlinear response withheld on rotated axes ({0})</value></data>
-  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>yaw and roll added at full strength (roll contribution not read)</value></data>
-  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>Local Space gyro read as yaw (PadForge has no tilted primary axis)</value></data>
+  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>yaw and roll added (Steam combines them by vector length)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>Laser Pointer gyro read as yaw (PadForge has no laser pointer conversion)</value></data>
   <data name="Workshop_Tr_LayerReleaseEdgeApproximated" xml:space="preserve"><value>release-hosted {0} switches on press instead</value></data>
   <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>mouse feel settings dropped ({0})</value></data>
@@ -4996,7 +4995,6 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="Import_Tr_AbsoluteMouse" xml:space="preserve"><value>DS4Windows placed the pointer where the stick points. In PadForge the stick moves the pointer instead.</value></data>
   <data name="Import_Tr_StickBeforeRotation" xml:space="preserve"><value>{0} reads the stick before its rotation. DS4Windows read it after.</value></data>
   <data name="Import_Tr_StickBeforeCurve" xml:space="preserve"><value>{0} reads the stick's angle before its zones and curve. DS4Windows read it after.</value></data>
-  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge turns a positive rotation clockwise, as DS4Windows does. reWASD's help gives the rotation's range, not its direction.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows shapes a radial stick's {0} by the angle of the push. PadForge's stick card plays a straight push the same and a diagonal one differently.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>The layers tune {0} differently, so each keeps its own tuning, and the curve comes across as the nearest power curve.</value></data>
   <data name="Import_LayerName_Format" xml:space="preserve"><value>Layer {0}</value></data>

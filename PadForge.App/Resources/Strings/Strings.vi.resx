@@ -5218,11 +5218,9 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>Bàn phím của một khe không còn là Bàn phím + chuột</value></data>
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (không có trên PC này)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (không có trên khe này)</value></data>
-  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>yaw và roll được cộng với toàn bộ cường độ (không đọc phần đóng góp của roll)</value></data>
-  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>con quay hồi chuyển Không gian lân cận được đọc như yaw (PadForge không có trục chính nghiêng)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>con quay hồi chuyển Bút laze được đọc như yaw (PadForge không có chuyển đổi bút laze)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>Trong reWASD, {0} vẫn đến được Windows vì tệp ánh xạ nó mà không hủy ánh xạ. Khi bật Chặn các đầu vào đã ánh xạ, PadForge sẽ chặn nó.</value></data>
-  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge xoay theo chiều kim đồng hồ khi góc xoay dương, như DS4Windows. Phần trợ giúp của reWASD chỉ nêu phạm vi của góc xoay, không nêu chiều.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows định hình {0} của cần analog tròn theo góc đẩy. Thẻ cần analog của PadForge xử lý cú đẩy thẳng như nhau và cú đẩy chéo thì khác.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Các lớp tinh chỉnh {0} khác nhau, nên mỗi lớp giữ tinh chỉnh riêng, và đường cong được chuyển sang thành đường cong lũy thừa gần nhất.</value></data>
+  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>yaw và roll được cộng lại (Steam kết hợp chúng theo độ dài vectơ)</value></data>
 </root>

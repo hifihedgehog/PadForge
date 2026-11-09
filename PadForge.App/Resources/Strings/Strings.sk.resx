@@ -5218,11 +5218,9 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>Klávesnica slotu, ktorý už nie je Klávesnica + myš</value></data>
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (nie je v tomto počítači)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (nie je v tomto slote)</value></data>
-  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>otáčanie a náklon sa pripočítavajú plnou silou (príspevok náklonu sa nečíta)</value></data>
-  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>gyroskop Local Space sa číta ako otáčanie (PadForge nemá naklonenú primárnu os)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>gyroskop Laser Pointer sa číta ako otáčanie (PadForge nemá prevod laserového ukazovateľa)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>V reWASD sa {0} stále dostáva do systému Windows, pretože ho súbor mapuje bez zrušenia mapovania. Keď je zapnuté Pohltiť namapované vstupy, PadForge ho zadrží.</value></data>
-  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge otáča kladné otočenie v smere hodinových ručičiek, ako to robí DS4Windows. Pomocník reWASD uvádza rozsah otočenia, nie jeho smer.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows tvaruje {0} radiálnej páčky podľa uhla vychýlenia. Karta páčky v PadForge hrá priame vychýlenie rovnako a uhlopriečne inak.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Vrstvy ladia {0} odlišne, preto si každá ponecháva vlastné ladenie a krivka sa prenesie ako najbližšia mocninová krivka.</value></data>
+  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>otáčanie a náklon sa sčítajú (Steam ich spája podľa dĺžky vektora)</value></data>
 </root>

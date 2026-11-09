@@ -55,10 +55,12 @@ kbm rows: 38
     <- Gamepad LeftTrigger [upper-half] dz=15
   Base | KbmMouseX | Sum
     <- Gyro Yaw
-    <- Touchpad 1 Finger 0 X sens=2.26
+    <- Touchpad 1 Finger 0 X sens=2.183
+    <- Touchpad 1 Finger 0 Y [inverted] sens=0.585
   Base | KbmMouseY | Sum
     <- Gyro Pitch
-    <- Touchpad 1 Finger 0 Y sens=2.26
+    <- Touchpad 1 Finger 0 X sens=0.585
+    <- Touchpad 1 Finger 0 Y sens=2.183
   Layer_2220285578_0_MS_left_trackpad_8 | KbmKey45
     <- Menu 2 Item 5
   Layer_2220285578_0_MS_left_trackpad_8 | KbmKey48
@@ -118,7 +120,7 @@ menus: 2
     [8] De Jure Empires
     [9] Counties
     [10] Houses
-report: v26 rows:x0+k38 macros:9 menus:2 layers:2 clean:47 partial:1 skipped:0 errors:0
+report: v26 rows:x0+k38 macros:9 menus:2 layers:2 clean:49 partial:1 skipped:0 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey20 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey6B <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey6D <- Gamepad ButtonX
@@ -153,6 +155,8 @@ report: v26 rows:x0+k38 macros:9 menus:2 layers:2 clean:47 partial:1 skipped:0 e
   Clean RowEmitted @ Default/left_trackpad/group 8 (touch_menu)/touch_menu_button_10/Full_Press => KbmKey59 <- Menu 2 Item 10
   Clean RowEmitted @ Default/left_trigger/group 4 (trigger)/edge/Full_Press => KbmMBtn1 <- Gamepad LeftTrigger (upper half)
   Clean RowEmitted @ Default/right_trackpad/group 2 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
+  Clean RowEmitted @ Default/right_trackpad/group 2 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 Y (inverted)
+  Clean RowEmitted @ Default/right_trackpad/group 2 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 X
   Clean RowEmitted @ Default/right_trackpad/group 2 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
   Clean RowEmitted @ Default/right_trackpad/group 2 (absolute_mouse)/click/Full_Press => KbmKey20 <- Touchpad 1 Click
   Clean RowEmitted @ Default/right_trackpad/group 10 (scrollwheel)/scroll_clockwise/Full_Press => KbmScroll <- Touchpad 1 Finger 0 Y

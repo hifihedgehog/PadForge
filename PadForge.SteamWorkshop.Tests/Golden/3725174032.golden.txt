@@ -79,10 +79,10 @@ kbm rows: 3
   Base | KbmKeyA0
     <- Gamepad Paddle1
   Base | KbmMouseX | Sum
-    <- Gyro Yaw
+    <- Gyro Yaw gyroSens=2.5
     <- Touchpad 1 Finger 0 X
   Base | KbmMouseY | Sum
-    <- Gyro Pitch
+    <- Gyro Pitch gyroSens=2.5
     <- Touchpad 1 Finger 0 Y
 macros: 9
   macro HoldVcButton DoublePress | Double press LeftThumbButton (LeftStick) | btns=0x0000 in=[Gamepad LeftStick] dbl=442ms layer=Base target=0x0040

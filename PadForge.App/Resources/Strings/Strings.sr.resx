@@ -5218,11 +5218,9 @@
   <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>Тастатура слота који више није „Тастатура + миш“</value></data>
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (није на овом рачунару)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (није на овом слоту)</value></data>
-  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>скретање и ваљање додати пуном јачином (допринос ваљања није прочитан)</value></data>
-  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>жироскоп Local Space прочитан као скретање (PadForge нема нагнуту примарну осу)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>жироскоп Laser Pointer прочитан као скретање (PadForge нема претварање у ласерски показивач)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>У програму reWASD, {0} и даље стиже до система Windows јер га датотека мапира без поништавања мапирања. Када је укључено Блокирај мапиране улазе, PadForge га задржава.</value></data>
-  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge окреће позитивно ротирање у смеру казаљке на сату, као што то ради DS4Windows. Помоћ програма reWASD даје опсег ротирања, а не његов смер.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows обликује {0} радијалног штапића према углу гурања. Картица штапића у програму PadForge једнако изводи право гурање, а дијагонално другачије.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Слојеви различито подешавају {0}, па сваки задржава своје подешавање, а крива се преноси као најближа степена крива.</value></data>
+  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>скретање и ваљање су сабрани (Steam их спаја по дужини вектора)</value></data>
 </root>

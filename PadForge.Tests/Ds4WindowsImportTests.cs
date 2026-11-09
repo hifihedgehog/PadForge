@@ -2021,8 +2021,23 @@ namespace PadForge.Tests
         public void ARotatedStick_TurnsAKeysSector()
         {
             var src = Row(Profile("<LSRotation>90</LSRotation>" + Control("Key", "LXPos", "65")), "KbmKey41")
-                .Sources.First(s => s.Descriptor == "Gamepad LeftStickX");
+                .Sources.First(s => s.Descriptor == "Gamepad LeftStickRing");
             Assert.StartsWith("Sector 90 67.5 ", src.GateDescriptor);
+        }
+
+        // A turned sector reaches past the half of the stick its unturned
+        // direction reads, so the key reads the whole ring under it.
+        [Fact]
+        public void ARotatedSticksKey_FiresAcrossItsWholeSector()
+        {
+            var src = Row(Profile("<LSRotation>90</LSRotation>" + Control("Key", "LXPos", "65")), "KbmKey41").Sources[0];
+            var state = Centered();
+            Point(state, 90, 0.8);
+            Assert.True(ButtonRead(state, src));
+            Point(state, 150, 0.8);
+            Assert.True(ButtonRead(state, src));
+            Point(state, 0, 0.8);
+            Assert.False(ButtonRead(state, src));
         }
 
         // GetBoolMapping reads a rotated stick's rotated axis, which no read

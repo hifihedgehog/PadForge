@@ -5218,11 +5218,9 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>Klávesnice slotu, který už není Klávesnice + myš</value></data>
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (není v tomto počítači)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (není v tomto slotu)</value></data>
-  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>yaw a roll sečteny v plné síle (příspěvek rollu se nečetl)</value></data>
-  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>gyroskop v režimu Orientace ovladače čten jako yaw (PadForge nemá nakloněnou hlavní osu)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>gyroskop v režimu Laserové ukazovátko čten jako yaw (PadForge nemá převod laserového ukazovátka)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>V reWASD se {0} stále dostává do Windows, protože soubor ji mapuje bez zrušení původní funkce. Při zapnuté volbě Pohlcovat namapované vstupy ji PadForge zadrží.</value></data>
-  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge otáčí kladné otočení po směru hodinových ručiček, stejně jako DS4Windows. Nápověda reWASD uvádí rozsah otočení, ne jeho směr.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows tvaruje {0} radiální páčky podle úhlu vychýlení. Karta páčky v PadForge přímé vychýlení přehraje stejně a úhlopříčné jinak.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Vrstvy ladí {0} různě, proto si každá ponechává vlastní ladění a křivka se přenese jako nejbližší mocninná křivka.</value></data>
+  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>yaw a roll sečtené (Steam je spojuje podle délky vektoru)</value></data>
 </root>

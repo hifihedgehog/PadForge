@@ -5218,11 +5218,9 @@
   <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>Клавиатурата на слот, който вече не е Клавиатура + мишка</value></data>
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (не е на този компютър)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (не е на този слот)</value></data>
-  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>завъртането и крена са добавени с пълна сила (приносът на крена не се чете)</value></data>
-  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>жироскопът в режим Локално пространство се чете като завъртане (PadForge няма наклонена основна ос)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>жироскопът в режим Лазерна показалка се чете като завъртане (PadForge няма преобразуване за лазерна показалка)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>В reWASD {0} все още стига до Windows, защото файлът го съпоставя без отмяна на съпоставянето. При включено Поглъщане на съпоставените входове PadForge го задържа.</value></data>
-  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge завърта положителното завъртане по посока на часовниковата стрелка, както прави DS4Windows. Помощта на reWASD дава обхвата на завъртането, а не посоката му.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows оформя {0} на радиален стик според ъгъла на натиска. Картата на стика в PadForge възпроизвежда еднакво прав натиск, а диагоналния по различен начин.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Слоевете настройват {0} по различен начин, затова всеки запазва собствените си настройки, а кривата се пренася като най-близката степенна крива.</value></data>
+  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>завъртането и кренът са събрани (Steam ги комбинира по дължината на вектора)</value></data>
 </root>

@@ -5218,11 +5218,9 @@
   <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>صفحه‌کلید اسلاتی که دیگر «صفحه‌کلید + ماوس» نیست</value></data>
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (روی این رایانه نیست)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (روی این اسلات نیست)</value></data>
-  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>یاو و رول با قدرت کامل جمع شدند (سهم رول خوانده نشد)</value></data>
-  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>ژیروسکوپ Local Space به‌صورت یاو خوانده شد (PadForge محور اصلی کج ندارد)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>ژیروسکوپ Laser Pointer به‌صورت یاو خوانده شد (PadForge تبدیل لیزر پوینتر ندارد)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>در reWASD، {0} همچنان به Windows می‌رسد، چون فایل آن را بدون لغو نگاشت نگاشت کرده است. وقتی مصرف ورودی‌های نگاشت‌شده روشن باشد، PadForge جلوی آن را می‌گیرد.</value></data>
-  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge چرخش مثبت را ساعت‌گرد می‌چرخاند، مثل DS4Windows. راهنمای reWASD دامنه چرخش را می‌دهد، نه جهت آن را.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows {0} استیک شعاعی را بر اساس زاویه فشار شکل می‌دهد. کارت استیک در PadForge فشار مستقیم را یکسان و فشار مورب را متفاوت اجرا می‌کند.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>لایه‌ها {0} را متفاوت تنظیم می‌کنند، بنابراین هر لایه تنظیم خودش را نگه می‌دارد و منحنی به نزدیک‌ترین منحنی توانی منتقل می‌شود.</value></data>
+  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>یاو و رول با هم جمع شدند (Steam آن‌ها را با طول بردار ترکیب می‌کند)</value></data>
 </root>

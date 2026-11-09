@@ -5218,11 +5218,9 @@
   <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>Тастатура на слот што повеќе не е Тастатура + глушец</value></data>
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (не е на овој компјутер)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (не е на овој слот)</value></data>
-  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>вртењето и навалувањето се собрани со полна јачина (придонесот на навалувањето не се чита)</value></data>
-  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>жироскопот Local Space се чита како вртење (PadForge нема навалена главна оска)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>жироскопот Laser Pointer се чита како вртење (PadForge нема претворање за ласерски покажувач)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>Во reWASD, {0} сè уште стигнува до Windows бидејќи датотеката го мапира без отмапирање. Кога е вклучено Блокирај мапирани влезови, PadForge го запира.</value></data>
-  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge го врти позитивното ротирање во насока на стрелките на часовникот, како DS4Windows. Помошта на reWASD го дава опсегот на ротирањето, а не неговата насока.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows ги обликува {0} на радијалниот стик според аголот на притисокот. Картичката на стикот во PadForge го игра правиот притисок исто, а дијагоналниот поинаку.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Слоевите го подесуваат {0} различно, па секој го задржува своето подесување, а кривата се пренесува како најблиската експоненцијална крива.</value></data>
+  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>вртењето и навалувањето се собираат (Steam ги спојува по должината на векторот)</value></data>
 </root>

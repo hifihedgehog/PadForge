@@ -5191,11 +5191,9 @@ Vuoi che PadForge li disinstalli ora? L'operazione richiede privilegi elevati e 
   <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>Tastiera di uno slot che non è più Tastiera + Mouse</value></data>
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (non su questo PC)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (non su questo slot)</value></data>
-  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>imbardata e rollio sommati a piena intensità (contributo del rollio non letto)</value></data>
-  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>giroscopio in Spazio locale letto come imbardata (PadForge non ha un asse primario inclinato)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>giroscopio in Puntatore laser letto come imbardata (PadForge non ha la conversione del puntatore laser)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>In reWASD, {0} raggiunge comunque Windows perché il file lo mappa senza un unmap. Con Consuma input mappati attivo, PadForge lo blocca.</value></data>
-  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge ruota in senso orario una rotazione positiva, come fa DS4Windows. L'aiuto di reWASD indica l'intervallo della rotazione, non la sua direzione.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows modella {0} di uno stick radiale in base all'angolo della spinta. La scheda Levette di PadForge tratta allo stesso modo una spinta dritta e in modo diverso una diagonale.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>I livelli regolano {0} in modo diverso, quindi ognuno mantiene la propria regolazione, e la curva viene importata come la curva di potenza più vicina.</value></data>
+  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>imbardata e rollio sommati (Steam li combina con la lunghezza del vettore)</value></data>
 </root>

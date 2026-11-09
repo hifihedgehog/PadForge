@@ -55,7 +55,6 @@ namespace PadForge.Common.ConfigImport
         public const string AbsoluteMouse = "Import_Tr_AbsoluteMouse";
         public const string StickBeforeRotation = "Import_Tr_StickBeforeRotation";
         public const string StickBeforeCurve = "Import_Tr_StickBeforeCurve";
-        public const string StickRotation = "Import_Tr_StickRotation";
         public const string StickByAngle = "Import_Tr_StickByAngle";
         public const string CurveOnRows = "Import_Tr_CurveOnRows";
     }

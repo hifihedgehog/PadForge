@@ -5169,11 +5169,9 @@
   <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>キーボード + マウスではなくなったスロットのキーボード</value></data>
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0}（このPCにはありません）</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0}（このスロットにはありません）</value></data>
-  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>ヨーとロールを全強度で加算 (ロールの寄与は読み取らず)</value></data>
-  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>ローカルスペースのジャイロはヨーとして読み取り (PadForgeには傾いた主軸がありません)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>レーザーポインターのジャイロはヨーとして読み取り (PadForgeにはレーザーポインター変換がありません)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>reWASDでは、ファイルがマッピングのみでマップ解除を指定していないため、{0}は引き続きWindowsに届きます。マッピング済み入力を消費するをオンにすると、PadForgeは届かないようにします。</value></data>
-  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForgeは、DS4Windowsと同じく、正の回転を時計回りとして扱います。reWASDのヘルプには回転の範囲しかなく、向きは書かれていません。</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windowsは、放射状スティックの{0}を倒した角度に応じて調整します。PadForgeのスティックカードでは、まっすぐ倒した場合と斜めに倒した場合で動作が異なります。</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>レイヤーごとに{0}の調整が異なるため、それぞれの調整はそのまま保持し、カーブは最も近いべき乗カーブとして引き継がれました。</value></data>
+  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>ヨーとロールを加算 (Steamはベクトルの長さで合成します)</value></data>
 </root>

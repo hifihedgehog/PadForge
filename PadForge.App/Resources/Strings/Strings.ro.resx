@@ -5218,11 +5218,9 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>Tastatura unui slot care nu mai este Tastatură + mouse</value></data>
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (nu există pe acest PC)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (nu există pe acest slot)</value></data>
-  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>girația și ruliul sunt adunate la intensitate maximă (contribuția ruliului nu este citită)</value></data>
-  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>giroscop Spațiu local citit ca girație (PadForge nu are o axă principală înclinată)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>giroscop Indicator laser citit ca girație (PadForge nu are conversie pentru indicatorul laser)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>În reWASD, {0} ajunge totuși în Windows, deoarece fișierul îl mapează fără o demapare. Cu Blocare intrări mapate activată, PadForge îl blochează.</value></data>
-  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge rotește o rotire pozitivă în sensul acelor de ceasornic, ca DS4Windows. Ajutorul reWASD dă intervalul rotirii, nu direcția ei.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows modelează {0} ale unei manete radiale după unghiul împingerii. Cardul manetei din PadForge tratează la fel o împingere dreaptă și diferit una diagonală.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Straturile reglează {0} diferit, așa că fiecare păstrează propriile setări, iar curba este preluată ca cea mai apropiată curbă de putere.</value></data>
+  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>girația și ruliul se adună (Steam le combină prin lungimea vectorului)</value></data>
 </root>

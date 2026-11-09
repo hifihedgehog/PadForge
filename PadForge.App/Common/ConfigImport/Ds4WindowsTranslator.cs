@@ -918,7 +918,7 @@ namespace PadForge.Common.ConfigImport
                 double dead = axial
                     ? Num(Element(prefix + "AxialDeadOptions"), isX ? "DeadZoneX" : "DeadZoneY", 0)
                     : Num(prefix + "DeadZone", StickDeadZoneInfo.DeadZone);
-                // The half-axis read underneath only has to agree on the side.
+                // The read underneath only has to agree on the side.
                 input.DeadZone = 1;
                 // MapCustom reads the angle off the rotated stick, and
                 // rotateLSCoordinates turns the stick clockwise by the
@@ -926,6 +926,14 @@ namespace PadForge.Common.ConfigImport
                 // reads as this direction lies the rotation further round.
                 double rotation = Num(prefix + "Rotation", 0);
                 center = ((center + rotation) % 360.0 + 360.0) % 360.0;
+                if (rotation != 0)
+                {
+                    // A turned sector reaches past the half of the stick the
+                    // straight direction reads, so the ring reads under it.
+                    input.Descriptor = "Gamepad " + stick + "StickRing";
+                    input.HalfAxis = false;
+                    input.Invert = false;
+                }
                 input.Band = BoundedReads.Sector(center, Math.Round(KeySectorHalfWidth(prefix, isX), 2),
                     (int)Math.Clamp(Math.Ceiling(dead * 100.0 / 127.0), 1.0, 99.0), "Gamepad " + stick + "StickRing");
             }

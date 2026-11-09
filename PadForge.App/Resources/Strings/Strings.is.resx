@@ -5218,11 +5218,9 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>Lyklaborð rauf sem er ekki lengur Lyklaborð + mús</value></data>
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (ekki í þessari tölvu)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (ekki í þessari rauf)</value></data>
-  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>snúningi og veltu bætt við með fullum styrk (framlag veltu ekki lesið)</value></data>
-  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>Local Space-snúningsskynjari lesinn sem snúningur (PadForge hefur engan hallaðan aðalás)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>Laser Pointer-snúningsskynjari lesinn sem snúningur (PadForge hefur enga leysibendilsumbreytingu)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>Í reWASD nær {0} enn til Windows því skráin varpar honum án afvörpunar. Með Gleypa varpað inntak kveikt heldur PadForge honum til baka.</value></data>
-  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge snýr jákvæðum snúningi réttsælis, eins og DS4Windows gerir. Hjálp reWASD gefur svið snúningsins, ekki stefnu hans.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows mótar {0} hringlaga stýripinna eftir horni hreyfingarinnar. Stillingaspjald stýripinna í PadForge spilar beina hreyfingu eins en skáhreyfingu á annan hátt.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Lögin stilla {0} á mismunandi hátt, svo hvert þeirra heldur sínum stillingum og ferillinn fluttist yfir sem næsti veldisferill.</value></data>
+  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>snúningur og velta lögð saman (Steam sameinar þau eftir lengd vigurs)</value></data>
 </root>

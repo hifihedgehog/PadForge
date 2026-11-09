@@ -1220,11 +1220,18 @@ namespace PadForge.Tests
             => "[{\"id\":1,\"name\":\"gamepad\",\"convertToVirtual\":true,\"default\":" + scope + "}]";
 
         [Fact]
-        public void StickSensitivity_IsAFractionOfFullScale()
+        public void AxisRange_LeavesTheGamesStickAlone_AndSaysItDidNotComeAcross()
         {
-            var p = Profile(File(hardware: Tuned("""{"sticks":[{"name":"left","sensitivity":{"x":16384,"y":32767}}]}""")));
-            Assert.InRange(Row(p, "LeftThumbAxisX").Sources[0].Sensitivity, 0.49, 0.51);
-            Assert.Equal(1.0, Row(p, "LeftThumbAxisY").Sources[0].Sensitivity);
+            // A stick's "sensitivity" is reWASD's Horizontal and Vertical axis
+            // range: the width of the direction zones that keys mapped to the
+            // stick read. reWASDUI's StickCrossSectors draws it as those zones,
+            // and reWASD's administrator on its forum (thread 222207): "it
+            // doesn't influence a virtual stick".
+            var r = Import(File(hardware: Tuned("""{"sticks":[{"name":"left","sensitivity":{"x":16384,"y":32767}}]}""")));
+            Assert.Equal(1.0, Row(r.Profile, "LeftThumbAxisX").Sources[0].Sensitivity);
+            Assert.Equal(1.0, Row(r.Profile, "LeftThumbAxisY").Sources[0].Sensitivity);
+            Assert.Contains(r.Report.Entries, e => e.Status == TranslationStatus.Partial
+                && e.ReasonKey == ImportReasons.ControllerSetting && e.ReasonArgs.Contains("sensitivity"));
         }
 
         [Fact]
@@ -1241,7 +1248,7 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void Rotation_SumsBothAxesOntoEachRow()
+        public void Rotation_TurnsTheStickCounterclockwise_AsReWasdDoes()
         {
             var p = Profile(File(hardware: Tuned("""{"sticks":[{"name":"left","rotation":30}]}""")));
             var x = Row(p, "LeftThumbAxisX");
@@ -1251,41 +1258,101 @@ namespace PadForge.Tests
             Assert.Equal(2, x.Sources.Count);
             Assert.Equal(2, y.Sources.Count);
 
-            // x' = x cos - y sin: pushing right reads cos on X and sin on Y.
-            var state = new CustomInputState();
-            for (int i = 0; i < state.Axis.Length; i++) state.Axis[i] = 32768;
+            // reWASD turns a stick counterclockwise for a positive rotation.
+            // Its service's rotate instruction computes x cos - y sin and
+            // x sin + y cos on a stick whose Y points up, its stick view turns
+            // the direction zones clockwise (StickCrossView's RotateTransform),
+            // and its radial menu takes the rotation off a clockwise bearing
+            // (OverlayMenuVME.CalcAngle). PadForge's Y points down, so a push
+            // to the right reads cos on X and -sin on Y: up and to the right.
+            var state = Centered();
             state.Axis[0] = 65535;
             float Read(MappingRow row) => row.Sources.Sum(s => SourceCoercion.EvaluateForBipolarAxisTarget(state, s, 0, false, ""));
             Assert.InRange(Read(x), 0.80f, 0.92f);
-            Assert.InRange(Read(y), 0.42f, 0.58f);
+            Assert.InRange(Read(y), -0.58f, -0.42f);
         }
 
         [Fact]
-        public void ARotatedStick_SaysWhichWayPadForgeTurnsIt()
+        public void ARotatedStick_TurnsCleanly_WhenNoDirectionReadsIt()
         {
-            // reWASD's help gives the rotation's range and no direction, so a
-            // rotated stick's tuning is no Clean match. PadForge turns it the
-            // way DS4Windows does, which the line states.
             var r = Import(File(hardware: Tuned("""{"sticks":[{"name":"left","rotation":30}]}""")));
-            Assert.Contains(r.Report.Entries, e => e.Status == TranslationStatus.Partial && e.ReasonKey == ImportReasons.StickRotation);
-            Assert.DoesNotContain(r.Report.Entries, e => e.Status == TranslationStatus.Clean && e.Binding == "Tuning");
+            Assert.Contains(r.Report.Entries, e => e.Status == TranslationStatus.Clean && e.Binding == "Tuning");
+            Assert.DoesNotContain(r.Report.Entries, e => e.Status == TranslationStatus.Partial && (e.SourcePath ?? "").Contains("Left stick"));
         }
 
         [Fact]
-        public void AStickTunedWithoutRotation_KeepsItsCleanTuningLine()
+        public void ARotatedSticksDirection_SaysTheRotationDoesNotReachIt()
         {
-            var r = Import(File(hardware: Tuned("""{"sticks":[{"name":"left","sensitivity":{"x":16384,"y":32767}}]}""")));
+            // A direction reads one raw axis, and reWASD turns its direction
+            // zones with the stick.
+            var r = Import(File(hardware: Tuned("""{"sticks":[{"name":"left","rotation":30}]}"""),
+                masks: "[" + Mask(1, 1, 40) + "]", mappings: "[" + Map(1, "[" + Key(57) + "]") + "]"));
+            Assert.Contains(r.Report.Entries, e => e.Status == TranslationStatus.Partial && e.Binding == "Directions"
+                && e.ReasonKey == ImportReasons.ControllerSetting && e.ReasonArgs.Contains("rotation"));
+        }
+
+        [Fact]
+        public void ARotatedSticksDiagonal_TurnsWithIt()
+        {
+            // A quarter turn counterclockwise: the push that reads as up and
+            // to the right lies down and to the right.
+            var r = Import(File(hardware: Tuned("""{"sticks":[{"name":"left","rotation":90}]}"""),
+                masks: "[" + Mask(1, 1, 176) + "]", mappings: "[" + Map(1, "[" + Key(57) + "]") + "]"));
+            var src = Row(r.Profile, "KbmKey20").Sources[0];
+            var state = Centered();
+            state.Axis[0] = Right(60);
+            state.Axis[1] = Down(60);
+            Assert.True(ButtonRead(state, src));
+            state.Axis[1] = Up(60);
+            Assert.False(ButtonRead(state, src));
+            Assert.DoesNotContain(r.Report.Entries, e => e.Binding == "Directions");
+        }
+
+        [Fact]
+        public void AStickWithZones_KeepsItsCleanTuningLine()
+        {
+            var r = Import(File(hardware: Tuned("""{"sticks":[{"name":"left","zones":[{"name":"low","x":3000}]}]}""")));
             Assert.Contains(r.Report.Entries, e => e.Status == TranslationStatus.Clean && e.Binding == "Tuning");
-            Assert.DoesNotContain(r.Report.Entries, e => e.ReasonKey == ImportReasons.StickRotation);
+            Assert.DoesNotContain(r.Report.Entries, e => e.ReasonKey == ImportReasons.ControllerSetting && e.ReasonArgs.Contains("rotation"));
         }
 
         [Fact]
         public void NinetyDegreeRotation_DropsItsZeroLegs()
         {
+            // A quarter turn counterclockwise: right reads up, so X follows Y
+            // and Y follows X inverted.
             var p = Profile(File(hardware: Tuned("""{"sticks":[{"name":"left","rotation":90}]}""")));
-            var src = Assert.Single(Row(p, "LeftThumbAxisX").Sources);
-            Assert.Equal("Gamepad LeftStickY", src.Descriptor);
-            Assert.True(src.Invert);
+            var x = Assert.Single(Row(p, "LeftThumbAxisX").Sources);
+            Assert.Equal("Gamepad LeftStickY", x.Descriptor);
+            Assert.False(x.Invert);
+            var y = Assert.Single(Row(p, "LeftThumbAxisY").Sources);
+            Assert.Equal("Gamepad LeftStickX", y.Descriptor);
+            Assert.True(y.Invert);
+        }
+
+        [Fact]
+        public void ATateConfigsStick_TurnsTheWayItsDpadDoes()
+        {
+            // The public sample "Shatter - TATE Landscape 180 Preactivate"
+            // (rewasd-profiles-supersmo, reWASD 9.1.0) sends D-pad Up as Right,
+            // Right as Down, Down as Left and Left as Up, a quarter turn
+            // clockwise, and sets both sticks to -90. The two agree only when a
+            // positive rotation turns the stick counterclockwise, so the stick
+            // pushed up reads right.
+            var p = Profile(File(hardware: Tuned("""{"sticks":[{"name":"left","rotation":-90}]}""")));
+            var state = Centered();
+            state.Axis[1] = Up(100);
+            float x = Row(p, "LeftThumbAxisX").Sources.Sum(s => SourceCoercion.EvaluateForBipolarAxisTarget(state, s, 0, false, ""));
+            Assert.InRange(x, 0.9f, 1.0f);
+        }
+
+        [Fact]
+        public void ARotationPastNinety_LeavesTheStickStraight()
+        {
+            // reWASD's loader (ConfigJSON_3_0) takes -90 to 90 and leaves the
+            // stick straight for anything else.
+            var p = Profile(File(hardware: Tuned("""{"sticks":[{"name":"left","rotation":120}]}""")));
+            Assert.Equal("Gamepad LeftStickX", Assert.Single(Row(p, "LeftThumbAxisX").Sources).Descriptor);
         }
 
         [Fact]
@@ -1356,9 +1423,9 @@ namespace PadForge.Tests
         public void PerLayerTuning_GivesTheLayerItsOwnStickRows()
         {
             var p = Profile(File(shifts: OneLayer, hardware:
-                """[{"id":1,"name":"gamepad","convertToVirtual":true,"shifts":[{"shiftId":1,"sticks":[{"name":"left","sensitivity":{"x":16384,"y":16384}}]}]}]"""));
-            Assert.Equal(1.0, Row(p, "LeftThumbAxisX").Sources[0].Sensitivity);
-            Assert.InRange(Row(p, "LeftThumbAxisX", "Shift1").Sources[0].Sensitivity, 0.49, 0.51);
+                """[{"id":1,"name":"gamepad","convertToVirtual":true,"shifts":[{"shiftId":1,"sticks":[{"name":"left","rotation":90}]}]}]"""));
+            Assert.Equal("Gamepad LeftStickX", Assert.Single(Row(p, "LeftThumbAxisX").Sources).Descriptor);
+            Assert.Equal("Gamepad LeftStickY", Assert.Single(Row(p, "LeftThumbAxisX", "Shift1").Sources).Descriptor);
         }
 
         [Theory]
@@ -1640,13 +1707,15 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void UnmappedDirection_KeepsTheStickTuningOnItsOtherHalf()
+        public void UnmappedDirection_KeepsTheOtherHalf_AtFullReach()
         {
+            // The axis range sizes direction zones, so the half that stays
+            // reaches the game whole.
             var p = Profile(File(hardware: """[{"id":1,"name":"gamepad","convertToVirtual":true,"default":{"sticks":[{"name":"left","sensitivity":{"x":16384,"y":16384}}]}}]""",
                 mappings: """[{"condition":{"hardware":{"deviceId":1,"buttonId":40}},"hardware":{"unmap":true}}]"""));
             var src = Assert.Single(Row(p, "LeftThumbAxisY").Sources);
             Assert.True(src.HalfAxis);
-            Assert.InRange(src.Sensitivity, 0.49, 0.51);
+            Assert.Equal(1.0, src.Sensitivity);
         }
 
         [Fact]
@@ -2402,14 +2471,18 @@ namespace PadForge.Tests
             Assert.InRange(act.AxisThreshold, 0.49, 0.51);
         }
 
-        [Fact]
-        public void AStickSensitivityOfOne_ScalesNothing()
+        [Theory]
+        [InlineData(1)]
+        [InlineData(13573)]
+        public void AnUntouchedAxisRange_SaysNothing(int value)
         {
-            // reWASD 9.x writes 1 on every stick it never touched (Miner
-            // Warfare 9.1.2, TATE - Rotate -90 9.3.0).
-            var p = Profile(File(hardware: Tuned("""{"sticks":[{"name":"left","sensitivity":{"x":1,"y":1}}]}""")));
-            Assert.Equal(1.0, Row(p, "LeftThumbAxisX").Sources[0].Sensitivity);
-            Assert.Equal(1.0, Row(p, "LeftThumbAxisY").Sources[0].Sensitivity);
+            // reWASD 9.1 and 9.3 wrote 1 on sticks nobody touched (Miner
+            // Warfare 9.1.2, TATE - Rotate -90 9.3.0), and 13573 is the default
+            // (reWASDCommon Constants.DefaultStickSensitivity).
+            var r = Import(File(hardware: Tuned("{\"sticks\":[{\"name\":\"left\",\"sensitivity\":{\"x\":" + value + ",\"y\":" + value + "}}]}")));
+            Assert.Equal(1.0, Row(r.Profile, "LeftThumbAxisX").Sources[0].Sensitivity);
+            Assert.Equal(1.0, Row(r.Profile, "LeftThumbAxisY").Sources[0].Sensitivity);
+            Assert.DoesNotContain(r.Report.Entries, e => e.ReasonKey == ImportReasons.ControllerSetting && e.ReasonArgs.Contains("sensitivity"));
         }
 
         [Fact]

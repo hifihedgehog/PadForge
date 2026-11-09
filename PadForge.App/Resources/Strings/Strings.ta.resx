@@ -5218,11 +5218,9 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>இனி விசைப்பலகை + சுட்டி அல்லாத ஸ்லாட்டின் விசைப்பலகை</value></data>
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (இந்தக் கணினியில் இல்லை)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (இந்த ஸ்லாட்டில் இல்லை)</value></data>
-  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>யா மற்றும் ரோல் முழு வலிமையில் சேர்க்கப்பட்டன (ரோல் பங்களிப்பு படிக்கப்படவில்லை)</value></data>
-  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>Local Space கைரோ யா ஆகப் படிக்கப்பட்டது (PadForge-இல் சாய்ந்த முதன்மை அச்சு இல்லை)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>Laser Pointer கைரோ யா ஆகப் படிக்கப்பட்டது (PadForge-இல் லேசர் சுட்டி மாற்றம் இல்லை)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>reWASD-இல், கோப்பு {0}-ஐ மேப்பிங் நீக்கம் இல்லாமல் மேப் செய்வதால் அது இன்னும் Windows-ஐ அடைகிறது. மேப் செய்யப்பட்ட உள்ளீடுகளைத் தடு என்பது இயக்கத்தில் இருந்தால், PadForge அதைத் தடுக்கும்.</value></data>
-  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>DS4Windows செய்வது போலவே PadForge நேர்மறைச் சுழற்சியை கடிகாரச் சுழற்சி திசையில் திருப்பும். reWASD-இன் உதவி சுழற்சியின் வரம்பைத் தருகிறது, திசையைத் தருவதில்லை.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows ஒரு வட்ட ஸ்டிக்கின் {0}-ஐத் தள்ளும் கோணத்தைக் கொண்டு வடிவமைக்கிறது. PadForge-இன் ஸ்டிக் அட்டை நேர்த் தள்ளலை ஒரே மாதிரியாகவும் மூலைவிட்டத் தள்ளலை வேறுவிதமாகவும் இயக்கும்.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>அடுக்குகள் {0}-ஐ வெவ்வேறு விதமாக அமைப்பதால், ஒவ்வொன்றும் தனக்கான அமைப்பை வைத்திருக்கும். வளைவு மிக அருகிலுள்ள அடுக்கு வளைவாக மாற்றப்பட்டது.</value></data>
+  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>யா, ரோல் இரண்டும் கூட்டப்படுகின்றன (Steam அவற்றைத் திசையன் நீளத்தால் இணைக்கும்)</value></data>
 </root>

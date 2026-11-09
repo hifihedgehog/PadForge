@@ -5218,11 +5218,9 @@ Vill du att PadForge avinstallerar dem nu? Detta kräver förhöjd behörighet o
   <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>Tangentbord på en plats som inte längre är av typen Tangentbord + mus</value></data>
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (finns inte på den här datorn)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (finns inte på den här platsen)</value></data>
-  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>gir och roll adderade med full styrka (rollbidraget lästes inte)</value></data>
-  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>gyrot Lokalt utrymme lästes som gir (PadForge har ingen lutad primär axel)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>gyrot Laserpekare lästes som gir (PadForge har ingen laserpekaromvandling)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>I reWASD når {0} fortfarande Windows eftersom filen mappar den utan att avmappa den. Med Fånga upp mappade inmatningar aktiverat håller PadForge tillbaka den.</value></data>
-  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge vrider en positiv rotation medurs, som DS4Windows gör. reWASD:s hjälp anger rotationens omfång, inte dess riktning.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows formar en radiell spaks {0} efter tryckets vinkel. Spakkortet i PadForge spelar upp ett rakt tryck likadant och ett diagonalt på ett annat sätt.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Lagren justerar {0} olika, så varje lager behåller sin egen justering, och kurvan förs över som den närmaste potenskurvan.</value></data>
+  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>gir och roll adderade (Steam kombinerar dem med vektorlängden)</value></data>
 </root>

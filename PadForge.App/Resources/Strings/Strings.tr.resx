@@ -5218,11 +5218,9 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>Artık Klavye + Fare olmayan bir yuvanın klavyesi</value></data>
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (bu bilgisayarda yok)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (bu yuvada yok)</value></data>
-  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>sapma ve yuvarlanma tam güçle eklendi (yuvarlanma katkısı okunmadı)</value></data>
-  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>Yerel Alan jiroskobu sapma olarak okundu (PadForge'da eğik bir birincil eksen yok)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>Lazer İşaretçi jiroskobu sapma olarak okundu (PadForge'da lazer işaretçi dönüşümü yok)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>reWASD'de {0}, dosya onu eşlemeyi kaldırmadan eşlediği için yine de Windows'a ulaşır. Eşlenmiş girişleri tüket açıkken PadForge onu engeller.</value></data>
-  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge pozitif bir döndürmeyi saat yönünde çevirir, DS4Windows'un yaptığı gibi. reWASD'in yardımı döndürmenin aralığını verir, yönünü vermez.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows radyal bir çubuğun {0} ayarını itmenin açısına göre şekillendirir. PadForge'un çubuk ayarları düz bir itmeyi aynı, çapraz bir itmeyi farklı oynatır.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Katmanlar {0} ayarını farklı yapıyor, bu yüzden her biri kendi ayarını korur ve eğri en yakın üstel eğri olarak aktarılır.</value></data>
+  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>sapma ve yuvarlanma toplandı (Steam bunları vektör uzunluğuyla birleştirir)</value></data>
 </root>

@@ -5218,11 +5218,9 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>Paikan näppäimistö, joka ei ole enää Näppäimistö + hiiri</value></data>
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (ei tässä tietokoneessa)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (ei tällä paikalla)</value></data>
-  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>kiertymä ja kallistus lisätty täydellä voimakkuudella (kallistuksen osuutta ei luettu)</value></data>
-  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>Paikallinen tila -gyro luettu kiertymänä (PadForge-ssa ei ole kallistettua pääakselia)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>Laserosoitin-gyro luettu kiertymänä (PadForge-ssa ei ole laserosoittimen muunnosta)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>reWASD-issa {0} pääsee silti Windows-iin, koska tiedosto määrittää sen ilman määrityksen poistoa. Kun Estä määritetyt syötteet on käytössä, PadForge estää sen.</value></data>
-  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge kääntää positiivisen kierron myötäpäivään, kuten DS4Windows. reWASD-in ohje kertoo kierron alueen, ei sen suuntaa.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows muotoilee säteittäisen sauvan asetuksia {0} työnnön kulman mukaan. PadForge-n sauvakortti toistaa suoran työnnön samoin ja vinon eri tavalla.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Tasot säätävät kohdetta {0} eri tavoin, joten kullakin on omat säätönsä, ja käyrä tulee mukaan lähimpänä potenssikäyränä.</value></data>
+  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>kiertymä ja kallistus lasketaan yhteen (Steam yhdistää ne vektorin pituuden mukaan)</value></data>
 </root>

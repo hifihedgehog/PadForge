@@ -201,8 +201,8 @@ namespace PadForge.SteamWorkshop.Tests
         public void Rotation_WithholdsNonlinearStamps_AndNamesThem()
         {
             string vdf = Head
-                + Group(1, "gyro_to_mouse", Settings(
-                    ("rotation", "30"), ("curve_exponent", "4"), ("anti_deadzone", "3277"),
+                + Group(1, "absolute_mouse", Settings(
+                    ("rotation_2", "30"), ("curve_exponent", "4"), ("anti_deadzone", "3277"),
                     ("acceleration", "2"), ("mouse_smoothing", "10")))
                 + Preset(0, "Default", (1, "gyro active"))
                 + "}\n";
@@ -232,7 +232,7 @@ namespace PadForge.SteamWorkshop.Tests
         public void RotationWithoutNonlinearKeys_StaysUnnoted()
         {
             string vdf = Head
-                + Group(1, "gyro_to_mouse", Settings(("rotation", "30")))
+                + Group(1, "gyro_to_mouse", Settings(("rotation_2", "30")))
                 + Preset(0, "Default", (1, "gyro active"))
                 + "}\n";
             var p = Translate(vdf);

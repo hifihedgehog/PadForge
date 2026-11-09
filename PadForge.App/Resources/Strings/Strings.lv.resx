@@ -5218,11 +5218,9 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>Tastatūra slotam, kas vairs nav Tastatūra + pele</value></data>
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (nav šajā datorā)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (nav šajā slotā)</value></data>
-  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>pagrieziens un sānsvere pievienoti pilnā stiprumā (sānsveres devums netiek nolasīts)</value></data>
-  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>žiroskops režīmā Local Space nolasīts kā pagrieziens (PadForge nav sasvērtas primārās ass)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>žiroskops režīmā Laser Pointer nolasīts kā pagrieziens (PadForge nav lāzera rādītāja pārveidošanas)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>Programmā reWASD {0} joprojām nonāk līdz Windows, jo fails to piesaista bez atcelšanas. Ja ir ieslēgts Pārtvert piesaistīto ievadi, PadForge to aptur.</value></data>
-  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge pozitīvu pagriezienu pagriež pulksteņrādītāja virzienā, kā DS4Windows. reWASD palīdzība nosaka pagrieziena diapazonu, nevis virzienu.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows veido radiālās kursorsviras {0} pēc grūdiena leņķa. PadForge kursorsviras iestatījumi taisnu grūdienu atskaņo vienādi, bet diagonālu citādi.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Slāņi {0} noregulē atšķirīgi, tāpēc katrs saglabā savus iestatījumus, un līkne tiek pārnesta kā tuvākā pakāpes līkne.</value></data>
+  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>pagrieziens un sānsvere saskaitīti kopā (Steam tos apvieno pēc vektora garuma)</value></data>
 </root>

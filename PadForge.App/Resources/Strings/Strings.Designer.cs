@@ -3948,8 +3948,7 @@ public class Strings : INotifyPropertyChanged
     public string Workshop_Tr_FlickStickSurfaceNotSupported => Get("Workshop_Tr_FlickStickSurfaceNotSupported");
     public string Workshop_Tr_DeadZoneRadialResidual => Get("Workshop_Tr_DeadZoneRadialResidual");
     public string Workshop_Tr_RotationNonlinearWithheld => Get("Workshop_Tr_RotationNonlinearWithheld");
-    public string Workshop_Tr_GyroRollContribution => Get("Workshop_Tr_GyroRollContribution");
-    public string Workshop_Tr_GyroLocalSpaceAdvanced => Get("Workshop_Tr_GyroLocalSpaceAdvanced");
+    public string Workshop_Tr_GyroYawRollBlend => Get("Workshop_Tr_GyroYawRollBlend");
     public string Workshop_Tr_GyroLaserPointer => Get("Workshop_Tr_GyroLaserPointer");
     public string Workshop_Tr_LayerReleaseEdgeApproximated => Get("Workshop_Tr_LayerReleaseEdgeApproximated");
     public string Workshop_Tr_MouseModeTuningDropped => Get("Workshop_Tr_MouseModeTuningDropped");
@@ -4732,7 +4731,6 @@ public class Strings : INotifyPropertyChanged
     public string Import_Tr_AbsoluteMouse => Get("Import_Tr_AbsoluteMouse");
     public string Import_Tr_StickBeforeRotation => Get("Import_Tr_StickBeforeRotation");
     public string Import_Tr_StickBeforeCurve => Get("Import_Tr_StickBeforeCurve");
-    public string Import_Tr_StickRotation => Get("Import_Tr_StickRotation");
     public string Import_Tr_StickByAngle => Get("Import_Tr_StickByAngle");
     public string Import_Tr_CurveOnRows => Get("Import_Tr_CurveOnRows");
     public string Import_LayerName_Format => Get("Import_LayerName_Format");

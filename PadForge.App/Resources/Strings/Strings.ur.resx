@@ -5218,11 +5218,9 @@
   <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>ایسے سلاٹ کا کی بورڈ جو اب کی بورڈ + ماؤس نہیں رہا</value></data>
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (اس پی سی پر نہیں)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (اس سلاٹ پر نہیں)</value></data>
-  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>یاؤ اور رول پوری شدت سے جمع کیے گئے (رول کا حصہ نہیں پڑھا گیا)</value></data>
-  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>Local Space جائرو کو یاؤ کے طور پر پڑھا گیا (PadForge میں جھکا ہوا بنیادی محور نہیں ہے)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>Laser Pointer جائرو کو یاؤ کے طور پر پڑھا گیا (PadForge میں لیزر پوائنٹر کی تبدیلی نہیں ہے)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>reWASD میں {0} پھر بھی Windows تک پہنچتی ہے کیونکہ فائل اسے بغیر ان میپ کے میپ کرتی ہے۔ میپ شدہ ان پٹ روک لیں آن ہو تو PadForge اسے روک لیتا ہے۔</value></data>
-  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge مثبت گردش کو گھڑی کی سمت میں گھماتا ہے، جیسا DS4Windows کرتا ہے۔ reWASD کی مدد گردش کی حد بتاتی ہے، سمت نہیں۔</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows ریڈیل اسٹک کی {0} کو دھکیلنے کے زاویے کے مطابق ڈھالتا ہے۔ PadForge کا اسٹک کارڈ سیدھے دھکے کو ایک جیسا اور وتری دھکے کو مختلف طور پر چلاتا ہے۔</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>لیئرز {0} کو مختلف طور پر ٹیون کرتے ہیں، اس لیے ہر ایک کی اپنی ٹیوننگ برقرار رہتی ہے، اور کروو قریب ترین پاور کروو کے طور پر منتقل ہوتا ہے۔</value></data>
+  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>یاؤ اور رول کو جمع کیا گیا (Steam انہیں ویکٹر کی لمبائی سے ملاتا ہے)</value></data>
 </root>

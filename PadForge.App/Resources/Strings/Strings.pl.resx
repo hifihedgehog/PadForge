@@ -5218,11 +5218,9 @@ Czy PadForge ma je teraz odinstalować? Wymaga to uprawnień administratora i mo
   <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>Klawiatura slotu, który nie jest już typu Klawiatura + mysz</value></data>
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (brak na tym komputerze)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (brak na tym slocie)</value></data>
-  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>odchylenie i przechylenie dodane z pełną siłą (udział przechylenia nie został odczytany)</value></data>
-  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>żyroskop w trybie Przestrzeń lokalna odczytano jako odchylenie (PadForge nie ma pochylonej osi głównej)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>żyroskop w trybie Wskaźnik laserowy odczytano jako odchylenie (PadForge nie ma konwersji wskaźnika laserowego)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>W reWASD {0} nadal dociera do Windows, bo plik mapuje go bez odmapowania. Gdy Przechwytuj zmapowane wejścia jest włączone, PadForge go blokuje.</value></data>
-  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge obraca dodatni obrót zgodnie z ruchem wskazówek zegara, tak jak DS4Windows. Pomoc reWASD podaje zakres obrotu, a nie jego kierunek.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows kształtuje {0} drążka radialnego według kąta wychylenia. Karta Drążki w PadForge traktuje wychylenie na wprost tak samo, a ukośne inaczej.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Warstwy inaczej stroją {0}, więc każda zachowuje własne strojenie, a krzywa została przeniesiona jako najbliższa krzywa potęgowa.</value></data>
+  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>odchylenie i przechylenie dodane do siebie (Steam łączy je według długości wektora)</value></data>
 </root>

@@ -49,6 +49,15 @@ namespace PadForge.SteamWorkshop.Tests
             // blocks are delivered to the game by its own Steam
             // session. No virtual controller can feed them.
             "Workshop_Tr_GameActionsNotSupported=8",
+            // Impossibility proof in code: the Steam client's absolute
+            // mouse class blends gyro_axis 2's scaled yaw and roll by their
+            // signed length, and the row grammar only sums sources, while
+            // the engine's one blend source, Gyro Horizontal, picks the
+            // larger of the two (SourceCoercion, horizRollDominant). The
+            // corpus site is 3456927474, a Deck config whose absolute
+            // mouse gyro starts on yaw and roll. Proof at
+            // ConfigTranslator.GyroTurningSources.
+            "Workshop_Tr_GyroYawRollBlend=1",
             // Impossibility proof in code: every engine ShiftActivator
             // mode keys on the press edge (ReadActivatorInput has no
             // release-edge trigger), so release-hosted layer verbs
@@ -97,8 +106,12 @@ namespace PadForge.SteamWorkshop.Tests
             // Sum, so rotated legs carry only the linear knobs. Proof
             // at the withholding site (v19 T5).
             "Workshop_Tr_RotationNonlinearWithheld=1",
-            // Clean emission record, not a residual.
-            "Workshop_Tr_RowEmitted=987",
+            // Clean emission record, not a residual. 987 -> 1000: the
+            // original Steam Controller's absolute mouse turns its right
+            // trackpad 15 degrees by default, so six groups in three
+            // fixtures gained their two cross legs, and the Deck config's
+            // absolute mouse gyro gained its roll leg.
+            "Workshop_Tr_RowEmitted=1000",
             // Impossibility proof in code: no circular-scratch angle
             // primitive, so wheel drag rides the detent rows and the
             // cycle steps forward-only. Proof at the scrollwheel

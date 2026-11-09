@@ -999,26 +999,26 @@ namespace PadForge.Tests
                 + string.Join(", ", constIndexed));
         }
 
-        // ── gyro_to_joystick reaches the curve channel on the gyro slot ──
+        // ── The curve channel stays off the 3DOF to 2D gyro modes ──
 
-        /// <summary>A Gyro-slot gyro_to_joystick group reached
-        /// EmitMouseJoystickAxes with curveChannel false, so its authored curve
-        /// cluster parsed to nothing and never stamped. The curve was simply
-        /// absent from the translated profile, silently.
-        ///
-        /// <para>The second case is the point of the scoping. The same mode
-        /// hand-bound to a STICK slot must stay OUTSIDE the channel, because
-        /// the emitter's `!curveChannel` outer-radius rescue exists for exactly
-        /// that combination. Fixing the first by adding the mode to
-        /// CurveChannelModes would have broken the second.</para></summary>
+        /// <summary>Round 35 turned the curve channel on for a Gyro-slot
+        /// gyro_to_joystick group, reading its curve cluster as the stick
+        /// curve. The Steam client's 3DOF to 2D gyro class, which runs
+        /// gyro_to_mouse and gyro_to_joystick, registers neither
+        /// curve_exponent, anti_deadzone, deadzone_inner_radius nor
+        /// sensitivity_horiz_scale, moves sensitivity_vert_scale into its
+        /// vertical/horizontal ratio, and keeps its own custom_curve_exponent
+        /// and deadzone_outer_radius for the gyro's speed, so the channel stays
+        /// off both modes. A gyro_to_joystick group hand-bound to a stick
+        /// keeps the emitter's outer-radius rescue.</summary>
         [Theory]
         // slot,                              mode,                  expected
-        [InlineData(SteamSlot.Gyro,           "gyro_to_joystick",    true)]
+        [InlineData(SteamSlot.Gyro,           "gyro_to_joystick",    false)]
         [InlineData(SteamSlot.LeftTrackpad,   "gyro_to_joystick",    false)]
-        [InlineData(SteamSlot.Gyro,           "gyro_to_mouse",       true)]
+        [InlineData(SteamSlot.Gyro,           "gyro_to_mouse",       false)]
         [InlineData(SteamSlot.Gyro,           "absolute_mouse",      true)]
         [InlineData(SteamSlot.Gyro,           "not_a_curve_mode",    false)]
-        public void CurveChannel_CoversGyroToJoystickOnTheGyroSlotOnly(
+        public void CurveChannel_StaysOffTheGyroClassModes(
             SteamSlot slot, string mode, bool expected)
         {
             Assert.Equal(expected, ConfigTranslator.CurveChannelApplies(slot, mode));

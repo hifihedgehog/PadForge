@@ -150,16 +150,18 @@ namespace PadForge.SteamWorkshop.Tests
         }
 
         [Fact]
-        public void GyroToMouse_NoSettings_DefaultsToUnitSensitivity()
+        public void GyroToMouse_NoSettings_RunsAtTheClientsDefault()
         {
-            // Valve's shipped gyro templates carry no settings at all.
+            // Valve's shipped gyro templates carry no settings at all, so
+            // they run at the client's registered default for
+            // gyro_natural_sensitivity, 250, which is 2.5 times natural.
             string vdf = Head
                 + Group(1, "gyro_to_mouse", "")
                 + Preset(0, "Default", (1, "gyro active"))
                 + "}\n";
             var p = Translate(vdf);
             var x = p.KbmMappingSet.Rows.Single(r => r.Target == "KbmMouseX");
-            Assert.Equal(1.0, Assert.Single(x.Sources).GyroSensitivity, 3);
+            Assert.Equal(2.5, Assert.Single(x.Sources).GyroSensitivity, 3);
             Assert.DoesNotContain(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.UnknownGroupMode);
         }

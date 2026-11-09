@@ -5218,11 +5218,9 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>Tastatur på en slot, der ikke længere er Tastatur + mus</value></data>
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (ikke på denne pc)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (ikke på denne slot)</value></data>
-  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>drejning og krængning lagt sammen med fuld styrke (krængningens bidrag læses ikke)</value></data>
-  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>gyro i Lokalt rum læst som drejning (PadForge har ingen skæv primærakse)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>gyro i Laserpointer læst som drejning (PadForge har ingen laserpointer-omregning)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>I reWASD når {0} stadig frem til Windows, fordi filen tildeler den uden en fjernelse af tildelingen. Med Bloker tildelte input slået til blokerer PadForge den.</value></data>
-  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge drejer en positiv rotation med uret, som DS4Windows gør. reWASDs hjælp angiver rotationens område, ikke dens retning.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows former en radial stiks {0} efter skubbets vinkel. Kortet Sticks i PadForge afspiller et lige skub ens og et diagonalt skub forskelligt.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Lagene tuner {0} forskelligt, så hvert lag beholder sin egen tuning, og kurven overføres som den nærmeste potenskurve.</value></data>
+  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>drejning og krængning lagt sammen (Steam kombinerer dem efter vektorlængde)</value></data>
 </root>

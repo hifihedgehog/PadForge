@@ -5218,11 +5218,9 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="Menu_TypesThrough_MissingSlot" xml:space="preserve"><value>Tipkovnica reže, ki ni več „Tipkovnica + miška“</value></data>
   <data name="Menu_TypesThrough_MissingKeyboard_Format" xml:space="preserve"><value>{0} (ni na tem računalniku)</value></data>
   <data name="Menu_Keyboard_DeviceNotOnSlot_Format" xml:space="preserve"><value>{0} (ni na tej reži)</value></data>
-  <data name="Workshop_Tr_GyroRollContribution" xml:space="preserve"><value>zasuk in nagib seštet s polno močjo (prispevek nagiba ni prebran)</value></data>
-  <data name="Workshop_Tr_GyroLocalSpaceAdvanced" xml:space="preserve"><value>žiroskop Local Space prebran kot zasuk (PadForge nima nagnjene glavne osi)</value></data>
   <data name="Workshop_Tr_GyroLaserPointer" xml:space="preserve"><value>žiroskop Laser Pointer prebran kot zasuk (PadForge nima pretvorbe laserskega kazalca)</value></data>
   <data name="Import_Tr_MappedKeyHeldBack" xml:space="preserve"><value>V reWASD {0} še vedno doseže Windows, ker ga datoteka preslika brez preklica preslikave. Če je vklopljeno Zadrži preslikane vnose, ga PadForge zadrži.</value></data>
-  <data name="Import_Tr_StickRotation" xml:space="preserve"><value>PadForge pozitivno vrtenje obrne v smeri urnega kazalca, kot DS4Windows. Pomoč reWASD navaja obseg vrtenja, ne pa njegove smeri.</value></data>
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows oblikuje {0} radialne palčke glede na kot potiska. Kartica nastavitev palčke v PadForge raven potisk odigra enako, diagonalnega pa drugače.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Plasti {0} nastavijo različno, zato vsaka obdrži svoje nastavitve, krivulja pa se prenese kot najbližja potenčna krivulja.</value></data>
+  <data name="Workshop_Tr_GyroYawRollBlend" xml:space="preserve"><value>zasuk in nagib seštevek (Steam ju združi po dolžini vektorja)</value></data>
 </root>

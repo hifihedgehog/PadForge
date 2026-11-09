@@ -1333,13 +1333,27 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void AnEllipticZone_IsNamed()
+        public void AnEllipticZone_ReadsAsAnEllipse()
         {
             // reWASD sizes a zone by x across and y up and down (ConfigJSON_3_0
-            // keeps y only when it differs), and PadForge's zones are circles.
-            var r = Import(File(hardware: Tuned("""{"sticks":[{"name":"left","zones":[{"name":"low","x":9830,"y":16384}]}]}""")));
-            Assert.Contains(r.Report.Entries, e => e.Status == TranslationStatus.Partial
-                && e.ReasonKey == ImportReasons.ControllerSetting && e.ReasonArgs.Contains("zones"));
+            // keeps y only when it differs) and measures a push against the
+            // ellipse (jlserv.exe, 0x14007b880). A low zone 30 percent across
+            // and 50 up and down: Up needs half the travel, Right needs 30.
+            var r = Import(File(hardware: Tuned("""{"sticks":[{"name":"left","zones":[{"name":"low","x":9830,"y":16384}]}]}"""),
+                masks: "[" + Mask(1, 1, 40) + "," + Mask(2, 1, 37) + "]",
+                mappings: "[" + Map(1, "[" + Key(57) + "]") + "," + Map(2, "[" + Key(28) + "]") + "]"));
+            var up = Row(r.Profile, "KbmKey20").Sources[0];
+            var lowZone = Row(r.Profile, "KbmKey0D").Sources[0];
+            var state = Centered();
+            Push(state, 90, 40);
+            Assert.False(ButtonRead(state, up));
+            Assert.False(ButtonRead(state, lowZone));
+            Push(state, 90, 60);
+            Assert.True(ButtonRead(state, up));
+            Assert.True(ButtonRead(state, lowZone));
+            Push(state, 0, 40);
+            Assert.True(ButtonRead(state, lowZone));
+            Assert.DoesNotContain(r.Report.Entries, e => e.ReasonKey == ImportReasons.ControllerSetting && e.ReasonArgs.Contains("zones"));
         }
 
         [Fact]
@@ -1557,8 +1571,11 @@ namespace PadForge.Tests
             var r = Import(File(masks: "[" + Mask(1, 1, 40) + "]",
                 mappings: "[" + Map(1, "[" + Key(57) + "]", type: type) + "]"));
             var src = Row(r.Profile, "KbmKey20").Sources[0];
-            Assert.Equal(low, src.DeadZone);
-            Assert.Equal(high == 0 ? "" : BoundedReads.Between(low, high, true, true, "Gamepad LeftStickY"), src.GateDescriptor);
+            // Up's sector moves to the zone's edges: past this zone's edge and
+            // short of the next one. The high zone is open upward.
+            Assert.Equal(1, src.DeadZone);
+            Assert.Equal(BoundedReads.Sector(90, 67.5, low, low, high, high, "Gamepad LeftStickRing"), src.GateDescriptor);
+            Assert.Equal("", src.Gate2Descriptor ?? "");
             Assert.Equal(0, r.Report.PartialCount + r.Report.SkippedCount);
 
             // Up past the zone's edge reads, and past the next zone's edge it
@@ -1569,6 +1586,23 @@ namespace PadForge.Tests
             Assert.True(ButtonRead(state, src));
             state.Axis[1] = Up(high == 0 ? 100 : high + 5);
             Assert.Equal(high == 0, ButtonRead(state, src));
+        }
+
+        [Fact]
+        public void AZoneActivatorOnARotatedStick_KeepsItsDirection()
+        {
+            // A quarter turn counterclockwise puts Up to the right, and the
+            // low zone runs from 30 to 66 percent.
+            var r = Import(File(hardware: Tuned("""{"sticks":[{"name":"left","rotation":90}]}"""),
+                masks: "[" + Mask(1, 1, 40) + "]", mappings: "[" + Map(1, "[" + Key(57) + "]", type: "zoneLow") + "]"));
+            var src = Row(r.Profile, "KbmKey20").Sources[0];
+            var state = Centered();
+            Push(state, 0, 50);
+            Assert.True(ButtonRead(state, src));
+            Push(state, 90, 50);
+            Assert.False(ButtonRead(state, src));
+            Push(state, 0, 80);
+            Assert.False(ButtonRead(state, src));
         }
 
         [Fact]

@@ -1093,6 +1093,9 @@ namespace PadForge.Common
                     if (half != null) inner = string.Format(si.Mapping_Sector_Format, inner, ResolvePovDirection(half));
                     return string.Format(si.Mapping_Between_Format, inner, read.Low, read.High);
                 case PadForge.Engine.Common.Mapping.BoundedReadKind.Sector:
+                    // A full turn is a zone of the ring alone, with no direction.
+                    if (read.HalfWidth >= 180)
+                        return read.OuterX > 0 ? string.Format(si.Mapping_Between_Format, inner, read.DeadZone, read.OuterX) : inner;
                     return string.Format(si.Mapping_Sector_Format, inner, ResolvePovDirection(NearestDirection(read.Center)));
                 default:
                     string mode = read.Mode switch

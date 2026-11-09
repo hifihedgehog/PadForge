@@ -54,6 +54,20 @@ namespace PadForge.Common.ConfigImport
             public int Low = DefaultLowZone;
             public int Med = DefaultMedZone;
             public int High = DefaultHighZone;
+
+            // A zone's height when it is an ellipse, 0 when it is a circle.
+            public int LowY;
+            public int MedY;
+            public int HighY;
+
+            /// <summary>Zone 0 (low), 1 (medium) or 2 (high), across and up
+            /// and down.</summary>
+            public (int X, int Y) Edge(int zone) => zone switch
+            {
+                0 => (Low, LowY > 0 ? LowY : Low),
+                1 => (Med, MedY > 0 ? MedY : Med),
+                _ => (High, HighY > 0 ? HighY : High),
+            };
         }
 
         private readonly JsonElement _root;
@@ -552,15 +566,18 @@ namespace PadForge.Common.ConfigImport
             // 0x14007b880): past the zone's edge, Up and Down fire while |x|
             // times the vertical axis range is under |y| times 32768, and Left
             // and Right while |y| times the horizontal range is under |x|
-            // times 32768. That region is a sector of the ring. reWASD turns it
-            // counterclockwise for a positive rotation (StickCrossView,
+            // times 32768. That region is a sector of the ring, and a zone's
+            // edge is an ellipse, x across and y up and down. reWASD turns the
+            // sector counterclockwise for a positive rotation (StickCrossView,
             // OverlayMenuVME.CalcAngle), so the push that reads as a direction
             // lies the rotation back. A straight stick reads the half the
-            // direction lies in, so an analog output takes that axis. A turned
-            // sector can cross into the other half, so a turned stick reads
-            // the ring. A zone with an edge above it bands the ring, and the
-            // sector then rides as the second gate.
-            ImportInput Directional(string stick, string axis, bool lower, double bearing, double reach, int edge, int next, string label)
+            // direction lies in, so an analog output takes that axis raw, the
+            // way reWASD passes a stick to a stick ("Virtual controller
+            // deflection doesn't influence the stick-to-stick mappings",
+            // forum thread 223048). A turned sector can cross into the other
+            // half, so a turned stick reads the ring. A banded direction stops
+            // at the next zone's edge.
+            ImportInput Directional(string stick, string axis, bool lower, double bearing, double reach, int zone, bool banded, string label)
             {
                 var t = TuningOf(shift, stick);
                 string ring = "Gamepad " + (stick == "left" ? "Left" : "Right") + "StickRing";
@@ -569,16 +586,7 @@ namespace PadForge.Common.ConfigImport
                     : Ring(ring, 0, label);
                 d.DeadZone = 1;
                 double center = Math.Round(((bearing - t.RotationDeg) % 360.0 + 360.0) % 360.0, 2);
-                string sector = PadForge.Engine.Common.Mapping.BoundedReads.Sector(center, Math.Round(Math.Max(reach, 0.0), 2), edge, ring);
-                if (next > edge && next < 100)
-                {
-                    d.Band = PadForge.Engine.Common.Mapping.BoundedReads.Between(edge, next, false, false, ring);
-                    d.Gate = sector;
-                }
-                else
-                {
-                    d.Band = sector;
-                }
+                d.Band = ZoneSector(t, ring, center, Math.Round(Math.Max(reach, 0.0), 2), zone, banded);
                 return d;
             }
             // Up, Down, Left or Right past the low zone. Bearings run
@@ -587,8 +595,22 @@ namespace PadForge.Common.ConfigImport
             {
                 bool vertical = axis.EndsWith("Y", StringComparison.Ordinal);
                 double bearing = vertical ? (lower ? 90 : 270) : (lower ? 180 : 0);
+                return Directional(stick, axis, lower, bearing, CardinalReach(TuningOf(shift, stick), vertical), 0, false, label);
+            }
+            // A zone of the ring with no direction. A circle reads the ring
+            // past the zone's edge, banded below the next one. An ellipse reads
+            // through a sector that turns all the way round.
+            ImportInput RingZone(string stick, int zone, string label)
+            {
                 var t = TuningOf(shift, stick);
-                return Directional(stick, axis, lower, bearing, CardinalReach(t, vertical), t.Low, 0, label);
+                string ring = "Gamepad " + (stick == "left" ? "Left" : "Right") + "StickRing";
+                var (ex, ey) = t.Edge(zone);
+                var (nx, ny) = zone < 2 ? t.Edge(zone + 1) : (0, 0);
+                if (ey == ex && ny == nx)
+                    return Ring(ring, ex, label).Below(nx);
+                var d = Ring(ring, 1, label);
+                d.Band = ZoneSector(t, ring, 0, 180, zone, zone < 2);
+                return d;
             }
             ImportInput Trig(string descriptor, int zone, string label) => new()
             {
@@ -618,9 +640,7 @@ namespace PadForge.Common.ConfigImport
                 bool vertical = dir <= 1, lower = dir is 0 or 2;
                 double bearing = vertical ? (lower ? 90 : 270) : (lower ? 180 : 0);
                 return Directional(stick, "Gamepad " + prefix + "Stick" + (vertical ? "Y" : "X"), lower, bearing,
-                    CardinalReach(t, vertical),
-                    zone == 0 ? t.Low : zone == 1 ? t.Med : t.High,
-                    zone == 0 ? t.Med : zone == 1 ? t.High : 0,
+                    CardinalReach(t, vertical), zone, true,
                     prefix + " stick " + (zone == 0 ? "low" : zone == 1 ? "medium" : "high") + " zone "
                     + (dir switch { 0 => "Up", 1 => "Down", 2 => "Left", _ => "Right" }));
             }
@@ -635,7 +655,7 @@ namespace PadForge.Common.ConfigImport
                 double horizontal = Reach(t.RangeX), vertical = Reach(t.RangeY);
                 double mid = (90.0 - vertical + horizontal) / 2.0, half = (horizontal + vertical - 90.0) / 2.0;
                 double center = bearing switch { 45 => mid, 135 => 180 - mid, 225 => 180 + mid, _ => 360 - mid };
-                return Directional(stick, "Gamepad " + prefix + "StickY", bearing is > 0 and < 180, center, half, t.Low, 0, label);
+                return Directional(stick, "Gamepad " + prefix + "StickY", bearing is > 0 and < 180, center, half, 0, false, label);
             }
             ImportInput Half(string descriptor, bool lower, string label) => new()
             {
@@ -671,8 +691,6 @@ namespace PadForge.Common.ConfigImport
                 return input;
             }
 
-            var l = TuningOf(shift, "left");
-            var r = TuningOf(shift, "right");
             var lt = TuningOf(shift, "trigger:left");
             var rt = TuningOf(shift, "trigger:right");
             return id switch
@@ -704,16 +722,16 @@ namespace PadForge.Common.ConfigImport
                 34 => Btn("Gamepad DPadDown", "D-pad Down"),
                 35 => Btn("Gamepad DPadLeft", "D-pad Left"),
                 36 => Btn("Gamepad DPadRight", "D-pad Right"),
-                37 => Ring("Gamepad LeftStickRing", l.Low, "Left stick low zone").Below(l.Med),
-                38 => Ring("Gamepad LeftStickRing", l.Med, "Left stick medium zone").Below(l.High),
-                39 => Ring("Gamepad LeftStickRing", l.High, "Left stick high zone"),
+                37 => RingZone("left", 0, "Left stick low zone"),
+                38 => RingZone("left", 1, "Left stick medium zone"),
+                39 => RingZone("left", 2, "Left stick high zone"),
                 40 => Dir("Gamepad LeftStickY", true, "left", "Left stick Up"),
                 41 => Dir("Gamepad LeftStickY", false, "left", "Left stick Down"),
                 42 => Dir("Gamepad LeftStickX", true, "left", "Left stick Left"),
                 43 => Dir("Gamepad LeftStickX", false, "left", "Left stick Right"),
-                44 => Ring("Gamepad RightStickRing", r.Low, "Right stick low zone").Below(r.Med),
-                45 => Ring("Gamepad RightStickRing", r.Med, "Right stick medium zone").Below(r.High),
-                46 => Ring("Gamepad RightStickRing", r.High, "Right stick high zone"),
+                44 => RingZone("right", 0, "Right stick low zone"),
+                45 => RingZone("right", 1, "Right stick medium zone"),
+                46 => RingZone("right", 2, "Right stick high zone"),
                 47 => Dir("Gamepad RightStickY", true, "right", "Right stick Up"),
                 48 => Dir("Gamepad RightStickY", false, "right", "Right stick Down"),
                 49 => Dir("Gamepad RightStickX", true, "right", "Right stick Left"),
@@ -1764,8 +1782,16 @@ namespace PadForge.Common.ConfigImport
             {
                 string side = input.Descriptor.Contains("Left", StringComparison.Ordinal) ? "left" : "right";
                 var t = TuningOf(shift, input.Descriptor.EndsWith("Trigger", StringComparison.Ordinal) ? "trigger:" + side : side);
-                input.DeadZone = type == "zoneLow" ? t.Low : type == "zoneMed" ? t.Med : t.High;
-                input.Below(type == "zoneLow" ? t.Med : type == "zoneMed" ? t.High : 0);
+                int zone = type == "zoneLow" ? 0 : type == "zoneMed" ? 1 : 2;
+                // A stick direction, or an elliptic ring zone, keeps its
+                // sector, moved to this zone's edges.
+                if (PadForge.Engine.Common.Mapping.BoundedReads.Parse(input.Band) is { Kind: PadForge.Engine.Common.Mapping.BoundedReadKind.Sector } sector)
+                {
+                    input.Band = ZoneSector(t, sector.Inner, sector.Center, sector.HalfWidth, zone, true);
+                    continue;
+                }
+                input.DeadZone = zone == 0 ? t.Low : zone == 1 ? t.Med : t.High;
+                input.Below(zone == 0 ? t.Med : zone == 1 ? t.High : 0);
             }
         }
 
@@ -2416,24 +2442,27 @@ namespace PadForge.Common.ConfigImport
                 // leaves the stick straight for anything else.
                 int rotation = Int(st, "rotation");
                 t.RotationDeg = rotation is >= -90 and <= 90 ? rotation : 0;
-                // reWASD's zone is an ellipse, x across and y up and down, and
-                // its saver writes y only when it differs from x. PadForge's
-                // stick zones are circles at x.
-                if (Arr(st, "zones").Any(z => Has(z, "x", out _) && Has(z, "y", out _) && Int(z, "x") != Int(z, "y")))
-                    _b.Partial(ImportReasons.ControllerSetting, Scoped(StickLabel(name)), "Zones", "", "zones");
                 foreach (var z in Arr(st, "zones"))
                 {
-                    int value = Int(z, "x", Int(z, "y"));
-                    int percent = (int)Math.Clamp(Math.Round(value * 100.0 / 32767.0), 1, 99);
-                    switch (Str(z, "name"))
+                    // Where zone mappings fire. reWASD's help: zones change
+                    // nothing the game reads, and its dead zone reaches the game
+                    // only with "Affect gamepad behavior for games", which a
+                    // stick in this schema cannot set. A zone is an ellipse, x
+                    // across and y up and down, which reWASD's saver writes only
+                    // when it differs from x. Its loader (ConfigJSON_3_0) keeps
+                    // the default across when x is missing and takes x for y
+                    // when y is missing.
+                    int zone = Str(z, "name") switch { "low" => 0, "med" => 1, "high" => 2, _ => -1 };
+                    if (zone < 0) continue;
+                    var (zx, _) = t.Edge(zone);
+                    if (Has(z, "x", out _)) zx = ZonePercent(Int(z, "x"));
+                    int zy = Has(z, "y", out _) ? ZonePercent(Int(z, "y")) : zx;
+                    int height = zy == zx ? 0 : zy;
+                    switch (zone)
                     {
-                        // Where zone mappings fire. reWASD's help: zones
-                        // change nothing the game reads, and its dead zone
-                        // reaches the game only with "Affect gamepad behavior
-                        // for games", which a stick in this schema cannot set.
-                        case "low": t.Low = percent; break;
-                        case "med": t.Med = percent; break;
-                        case "high": t.High = percent; break;
+                        case 0: t.Low = zx; t.LowY = height; break;
+                        case 1: t.Med = zx; t.MedY = height; break;
+                        default: t.High = zx; t.HighY = height; break;
                     }
                 }
                 if (Has(st, "curves", out var curves) && Has(curves, "points", out var points))
@@ -2521,6 +2550,20 @@ namespace PadForge.Common.ConfigImport
         {
             int value = Int(range, axis, DefaultAxisRange);
             return value is >= 1 and <= 32768 ? value : DefaultAxisRange;
+        }
+
+        /// <summary>A zone value, 0 to 32767, as the percent the reads take.</summary>
+        private static int ZonePercent(int value) => (int)Math.Clamp(Math.Round(value * 100.0 / 32767.0), 1, 99);
+
+        /// <summary>A stick's sector past a zone's edge, an ellipse when the
+        /// zone has its own height, and short of the next zone's edge when
+        /// banded and that edge lies inside full travel.</summary>
+        private static string ZoneSector(StickTuning t, string ring, double center, double halfWidth, int zone, bool banded)
+        {
+            var (ex, ey) = t.Edge(zone);
+            var (nx, ny) = banded && zone < 2 ? t.Edge(zone + 1) : (0, 0);
+            if (nx <= ex || nx >= 100) nx = ny = 0;
+            return PadForge.Engine.Common.Mapping.BoundedReads.Sector(center, halfWidth, ex, ey, nx, ny, ring);
         }
 
         /// <summary>How far a direction reaches from its axis, in degrees: the

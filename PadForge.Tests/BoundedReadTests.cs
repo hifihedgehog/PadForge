@@ -99,9 +99,70 @@ namespace PadForge.Tests
             Assert.True(Read(state, sector));
         }
 
+        [Fact]
+        public void Sector_AnEllipticDeadZone_ReadsByTheRadiusTowardThePush()
+        {
+            // 30 across and 50 up and down: reWASD's zone test takes
+            // rx ry / hypot(rx sin, ry cos) toward the push.
+            string sector = BoundedReads.Sector(0, 180, 30, 50, 0, 0, "Gamepad LeftStickRing");
+            Assert.Equal("Sector 0 180 30:50 Gamepad LeftStickRing", sector);
+            var state = Centered();
+            Point(state, 90, 0.45);
+            Assert.False(Read(state, sector));
+            Point(state, 90, 0.55);
+            Assert.True(Read(state, sector));
+            Point(state, 0, 0.35);
+            Assert.True(Read(state, sector));
+            Point(state, 0, 0.25);
+            Assert.False(Read(state, sector));
+            // Toward 45 degrees the radius is 30 x 50 / hypot(21.2, 35.4), about 36.
+            Point(state, 45, 0.34);
+            Assert.False(Read(state, sector));
+            Point(state, 45, 0.38);
+            Assert.True(Read(state, sector));
+        }
+
+        [Fact]
+        public void Sector_StopsAtItsOuterEdge()
+        {
+            string sector = BoundedReads.Sector(90, 67.5, 30, 30, 66, 80, "Gamepad LeftStickRing");
+            Assert.Equal("Sector 90 67.5 30~66:80 Gamepad LeftStickRing", sector);
+            var state = Centered();
+            Point(state, 90, 0.75);
+            Assert.True(Read(state, sector));
+            Point(state, 90, 0.85);
+            Assert.False(Read(state, sector));
+            Point(state, 30, 0.70);
+            Assert.False(Read(state, sector));
+        }
+
+        [Theory]
+        [InlineData("Sector 90 67.5 30 Gamepad LeftStickRing", 30, 0, 0, 0)]
+        [InlineData("Sector 90 67.5 30:30 Gamepad LeftStickRing", 30, 0, 0, 0)]
+        [InlineData("Sector 90 67.5 30:50~66 Gamepad LeftStickRing", 30, 50, 66, 0)]
+        [InlineData("Sector 90 67.5 30~66:80 Gamepad LeftStickRing", 30, 0, 66, 80)]
+        public void Sector_ReadsItsRadii(string descriptor, int x, int y, int outerX, int outerY)
+        {
+            var read = BoundedReads.Parse(descriptor);
+            Assert.Equal((x, y, outerX, outerY), (read.DeadZone, read.DeadZoneY, read.OuterX, read.OuterY));
+        }
+
+        [Fact]
+        public void AFullTurnSector_IsLabeledAsAZoneOfTheRing()
+        {
+            string label = MappingDisplayResolver.ResolveDescriptorText(BoundedReads.Sector(0, 180, 30, 50, 66, 66, "Gamepad LeftStickRing"), null);
+            Assert.Contains("30", label);
+            Assert.Contains("66", label);
+        }
+
         // ── Parsing ─────────────────────────────────────────────────────
 
         [Theory]
+        [InlineData("Sector 90 67.5 30:50:60 Gamepad LeftStickRing")]
+        [InlineData("Sector 90 67.5 30~0 Gamepad LeftStickRing")]
+        [InlineData("Sector 90 67.5 30~66~80 Gamepad LeftStickRing")]
+        [InlineData("Sector 90 67.5 101 Gamepad LeftStickRing")]
+        [InlineData("Sector 90 67.5 30: Gamepad LeftStickRing")]
         [InlineData("Between 66 30 00 Gamepad LeftTrigger")]
         [InlineData("Between 0 30 00 Gamepad LeftTrigger")]
         [InlineData("Between 30 66 0 Gamepad LeftTrigger")]

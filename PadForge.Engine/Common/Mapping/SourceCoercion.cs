@@ -2968,16 +2968,33 @@ namespace PadForge.Engine.Common.Mapping
         /// <paramref name="deadZonePercent"/> and points within
         /// <paramref name="halfWidth"/> degrees of <paramref name="center"/>.
         /// Degrees run counterclockwise from right, so 90 is up.</summary>
-        internal static bool ReadStickSector(CustomInputState state, string ring, double center, double halfWidth, int deadZonePercent)
+        internal static bool ReadStickSector(CustomInputState state, string ring, double center, double halfWidth, int deadZonePercent,
+            int deadZoneYPercent = 0, int outerXPercent = 0, int outerYPercent = 0)
         {
             if (!TryReadRingStick(state, ring, out float x, out float y)) return false;
             double mag = Math.Sqrt(x * x + y * y);
-            if (mag <= Math.Max(deadZonePercent, 1) / 100.0) return false;
+            if (mag <= Math.Max(EllipseRadius(deadZonePercent, deadZoneYPercent, x, y, mag), 0.01)) return false;
+            if (outerXPercent > 0 && mag > EllipseRadius(outerXPercent, outerYPercent, x, y, mag)) return false;
             double angle = Math.Atan2(-y, x) * 180.0 / Math.PI;
             if (angle < 0) angle += 360.0;
             double off = Math.Abs(angle - center);
             if (off > 180.0) off = 360.0 - off;
             return off <= halfWidth;
+        }
+
+        /// <summary>An ellipse's radius toward a push, as a fraction of full
+        /// travel: reWASD's zone test (jlserv.exe, 0x14007b880) takes
+        /// rx ry / hypot(rx sin, ry cos), capped at the larger radius. A
+        /// height of 0 is a circle of the width.</summary>
+        private static double EllipseRadius(int xPercent, int yPercent, float x, float y, double mag)
+        {
+            double rx = xPercent / 100.0;
+            if (yPercent <= 0 || yPercent == xPercent || mag <= 0) return rx;
+            double ry = yPercent / 100.0;
+            if (x == 0) return ry;
+            if (y == 0) return rx;
+            double a = rx * Math.Abs(y) / mag, b = ry * Math.Abs(x) / mag;
+            return Math.Min(rx * ry / Math.Sqrt(a * a + b * b), Math.Max(rx, ry));
         }
 
         /// <summary>The numbered axis <paramref name="placement"/> puts at

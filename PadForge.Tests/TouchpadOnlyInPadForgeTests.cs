@@ -340,6 +340,13 @@ namespace PadForge.Tests
 
     public class TouchpadCaptureTests
     {
+        /// <summary>Every wait here guards against a hang and makes no timing
+        /// claim, so a run that works never reaches it. A 5 s bound ran out
+        /// in a full run on 2026-11-08 (two tests took the bound to the
+        /// second, and both pass in under 50 ms alone), so the bound is 30 s,
+        /// as in TabletCaptureTests.</summary>
+        private static readonly TimeSpan Bound = TimeSpan.FromSeconds(30);
+
         private sealed class Input : Stream
         {
             internal readonly Channel<byte[]> Reports = Channel.CreateUnbounded<byte[]>();
@@ -405,7 +412,7 @@ namespace PadForge.Tests
 
         private static async Task Until(Func<bool> condition)
         {
-            using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+            using var timeout = new CancellationTokenSource(Bound);
             while (!condition()) await Task.Delay(5, timeout.Token);
         }
 
@@ -429,7 +436,7 @@ namespace PadForge.Tests
                     Interlocked.Increment(ref restarts);
                 });
             capture.SetCapture(true);
-            await input.Reading.Task.WaitAsync(TimeSpan.FromSeconds(5));
+            await input.Reading.Task.WaitAsync(Bound);
             Assert.Equal(TabletCaptureState.WaitingForInput, capture.CaptureState);
             Assert.True(capture.IsReading);
             Assert.Equal(1, host.Published);
@@ -446,7 +453,7 @@ namespace PadForge.Tests
             Assert.False(capture.IsReading);
             capture.SetCapture(false);
             await Until(() => capture.CaptureState == TabletCaptureState.Shared);
-            Assert.True(await Task.Run(() => capture.WaitForTransition(TimeSpan.FromSeconds(5))));
+            Assert.True(await Task.Run(() => capture.WaitForTransition(Bound)));
             Assert.Equal(1, restarts);
             Assert.Equal(1, host.Withdrawn);
             Assert.Equal(1, host.Shape.Disposed);
@@ -466,7 +473,7 @@ namespace PadForge.Tests
                 _ => Interlocked.Increment(ref restarts),
                 () => true);
             capture.SetCapture(true);
-            await input.Reading.Task.WaitAsync(TimeSpan.FromSeconds(5));
+            await input.Reading.Task.WaitAsync(Bound);
             Assert.Equal(1, restarts);
             Assert.Equal(2, opens);
             Assert.True(capture.IsReading);
@@ -497,7 +504,7 @@ namespace PadForge.Tests
         public async Task ARestartForWindows_OnTheTestHost_RestartsNothingAndReturns()
         {
             // A run retries on this answer. The test host's fence refuses the restart.
-            Assert.False(await TouchpadCapture.RestartForWindows(Instance()).WaitAsync(TimeSpan.FromSeconds(5)));
+            Assert.False(await TouchpadCapture.RestartForWindows(Instance()).WaitAsync(Bound));
         }
     }
 

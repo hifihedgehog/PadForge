@@ -12,7 +12,8 @@ namespace PadForge.Engine.Common.Mapping
         Between,
 
         /// <summary>A stick is past its dead zone and points within an angle
-        /// of a direction.</summary>
+        /// of a direction. The dead zone can be an ellipse, and the read can
+        /// stop at a second, outer edge.</summary>
         Sector,
 
         /// <summary>One stage of a two-stage trigger pull.</summary>
@@ -163,6 +164,13 @@ namespace PadForge.Engine.Common.Mapping
         public double HalfWidth { get; init; }
         public int DeadZone { get; init; }
 
+        /// <summary>Sector: the dead zone's height when it is an ellipse
+        /// (0 = a circle of <see cref="DeadZone"/>), and the outer edge the
+        /// read stops at, across and up and down (0 = open).</summary>
+        public int DeadZoneY { get; init; }
+        public int OuterX { get; init; }
+        public int OuterY { get; init; }
+
         /// <summary>Stage: the mode, which stage, the wait before a pull
         /// counts, the percent that counts as pulled, and the percent this
         /// stage's output reads as pressed.</summary>
@@ -187,7 +195,9 @@ namespace PadForge.Engine.Common.Mapping
     /// ordinary descriptor, so a macro entry and a row's gate carry it as
     /// they carry any other read. The numbers live in the descriptor:
     /// <c>Between {low} {high} {half}{invert} {input}</c>,
-    /// <c>Sector {center} {halfWidth} {deadZone} {stick ring}</c>,
+    /// <c>Sector {center} {halfWidth} {deadZone} {stick ring}</c>, where the
+    /// dead zone is <c>x</c> or <c>x:y</c> for an ellipse, with
+    /// <c>~x</c> or <c>~x:y</c> after it for an outer edge,
     /// <c>Stage {mode} {Soft|Full} {waitMs} {pull} {press} {input}</c>.</summary>
     public static class BoundedReads
     {
@@ -230,6 +240,17 @@ namespace PadForge.Engine.Common.Mapping
         public static string Sector(double center, double halfWidth, int deadZone, string stickRing)
             => string.Create(CultureInfo.InvariantCulture,
                 $"Sector {center} {halfWidth} {deadZone} {stickRing}");
+
+        /// <summary>A sector between two ellipses: past the inner one, x
+        /// across and y up and down, and short of the outer one (outerX 0 =
+        /// open). Equal radii write the plain circle form.</summary>
+        public static string Sector(double center, double halfWidth, int innerX, int innerY, int outerX, int outerY, string stickRing)
+        {
+            var c = CultureInfo.InvariantCulture;
+            string Radius(int x, int y) => y == x ? x.ToString(c) : string.Create(c, $"{x}:{y}");
+            string radius = Radius(innerX, innerY) + (outerX > 0 ? "~" + Radius(outerX, outerY) : "");
+            return string.Create(c, $"Sector {center} {halfWidth} {radius} {stickRing}");
+        }
 
         public static string Stage(TwoStageMode mode, bool full, int waitMs, int pull, int press, string input)
             => string.Create(CultureInfo.InvariantCulture,
@@ -294,7 +315,7 @@ namespace PadForge.Engine.Common.Mapping
                 if (p.Length != 5
                     || !double.TryParse(p[1], NumberStyles.Float, c, out double center)
                     || !double.TryParse(p[2], NumberStyles.Float, c, out double width)
-                    || !int.TryParse(p[3], NumberStyles.None, c, out int dead)
+                    || !TryRadii(p[3], out int dead, out int deadY, out int outerX, out int outerY)
                     || !SourceCoercion.IsStickRingDescriptor(p[4]))
                     return null;
                 return new BoundedRead
@@ -304,6 +325,9 @@ namespace PadForge.Engine.Common.Mapping
                     Center = center,
                     HalfWidth = width,
                     DeadZone = dead,
+                    DeadZoneY = deadY,
+                    OuterX = outerX,
+                    OuterY = outerY,
                 };
             }
             var s = d.Split(' ', 7, StringSplitOptions.RemoveEmptyEntries);
@@ -333,6 +357,29 @@ namespace PadForge.Engine.Common.Mapping
             };
         }
 
+        /// <summary>A sector's radius token: <c>x</c>, <c>x:y</c>, and an
+        /// optional <c>~x</c> or <c>~x:y</c> outer edge, each 0 to 100. A
+        /// height equal to the width reads as a circle (0).</summary>
+        private static bool TryRadii(string token, out int x, out int y, out int outerX, out int outerY)
+        {
+            x = y = outerX = outerY = 0;
+            var c = CultureInfo.InvariantCulture;
+            string[] edges = token.Split('~');
+            if (edges.Length > 2) return false;
+            static bool Pair(string s, CultureInfo c, out int a, out int b)
+            {
+                b = 0;
+                string[] parts = s.Split(':');
+                if (parts.Length > 2 || !int.TryParse(parts[0], NumberStyles.None, c, out a) || a > 100) { a = 0; return false; }
+                if (parts.Length == 2 && (!int.TryParse(parts[1], NumberStyles.None, c, out b) || b > 100)) return false;
+                if (b == a) b = 0;
+                return true;
+            }
+            if (!Pair(edges[0], c, out x, out y)) return false;
+            if (edges.Length == 2 && (!Pair(edges[1], c, out outerX, out outerY) || outerX == 0)) return false;
+            return true;
+        }
+
         private static MappingSource Source(string input, int percent, bool half, bool invert) => new()
         {
             Kind = "Direct",
@@ -353,7 +400,8 @@ namespace PadForge.Engine.Common.Mapping
                     return Held(state, read.LowSource, slotIndex, deviceGuid)
                            && !Held(state, read.HighSource, slotIndex, deviceGuid);
                 case BoundedReadKind.Sector:
-                    return SourceCoercion.ReadStickSector(state, read.Inner, read.Center, read.HalfWidth, read.DeadZone);
+                    return SourceCoercion.ReadStickSector(state, read.Inner, read.Center, read.HalfWidth, read.DeadZone,
+                        read.DeadZoneY, read.OuterX, read.OuterY);
                 default:
                     var pull = PullFor(read, deviceGuid);
                     return read.IsFull

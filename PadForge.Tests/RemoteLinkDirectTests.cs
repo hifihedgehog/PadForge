@@ -20,6 +20,15 @@ namespace PadForge.Tests
     /// </summary>
     public class RemoteLinkDirectTests
     {
+        /// <summary>The bound on every test here that waits for a delivery
+        /// or a punch to succeed. It guards against a hang and makes no
+        /// timing claim: the simulated transports deliver every datagram on a
+        /// Task.Run, so each one waits for a thread pool turn. A 10 s bound
+        /// ran out in a full run on 2026-11-08 (the lossy ARQ test, 632 ms
+        /// alone), so the bound is 30 s. The short windows of the tests that
+        /// expect a cancel or no connection stay as they are.</summary>
+        private static readonly TimeSpan Bound = TimeSpan.FromSeconds(30);
+
         // ── STUN ──
 
         [Fact]
@@ -169,7 +178,7 @@ namespace PadForge.Tests
             var (ta, tb) = SimTransport.Pair(lossRate: 0.35, seed: 12345);
             using var a = new UdpControlChannel(ta, TimeSpan.FromMilliseconds(20));
             using var b = new UdpControlChannel(tb, TimeSpan.FromMilliseconds(20));
-            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+            using var cts = new CancellationTokenSource(Bound);
 
             var payloads = new List<byte[]>();
             for (int i = 0; i < 12; i++) payloads.Add(RandomBytes(200 + i, i));
@@ -197,7 +206,7 @@ namespace PadForge.Tests
             var (ta, tb) = SimTransport.Pair(lossRate: 0.2, seed: 999);
             using var a = new UdpControlChannel(ta, TimeSpan.FromMilliseconds(20));
             using var b = new UdpControlChannel(tb, TimeSpan.FromMilliseconds(20));
-            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+            using var cts = new CancellationTokenSource(Bound);
 
             var aMsg = RandomBytes(64, 1);
             var bMsg = RandomBytes(80, 2);
@@ -382,7 +391,7 @@ namespace PadForge.Tests
             var nonce = RandomBytes(16, 7);
             var pa = new HolePuncher(ta, nonce, TimeSpan.FromMilliseconds(15));
             var pb = new HolePuncher(tb, nonce, TimeSpan.FromMilliseconds(15));
-            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+            using var cts = new CancellationTokenSource(Bound);
 
             var candA = HolePuncher.OrderCandidates(deadPrivate, epB);
             var candB = HolePuncher.OrderCandidates(deadPrivate, epA);
@@ -411,7 +420,7 @@ namespace PadForge.Tests
             var nonce = RandomBytes(16, 55);
             var pa = new HolePuncher(ta, nonce, TimeSpan.FromMilliseconds(10));
             var pb = new HolePuncher(tb, nonce, TimeSpan.FromMilliseconds(10));
-            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+            using var cts = new CancellationTokenSource(Bound);
 
             // A builds a predicted spray range for B (sequential, delta 2) from
             // B's advertised endpoint. B punches back at A's single endpoint.
@@ -463,7 +472,7 @@ namespace PadForge.Tests
             var nonce = RandomBytes(16, 72);
             var pa = new HolePuncher(a, nonce, TimeSpan.FromMilliseconds(10), selfEndpoints: new[] { myPublic, myLan });
             var pb = new HolePuncher(b, nonce, TimeSpan.FromMilliseconds(10), selfEndpoints: new[] { myPublic, peerLan });
-            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+            using var cts = new CancellationTokenSource(Bound);
 
             // A's candidate list names the shared public endpoint FIRST (as the
             // code does) plus the peer's LAN address. The LAN path must win.
@@ -502,10 +511,10 @@ namespace PadForge.Tests
                 selfEndpoints: new[] { epA }, selfFingerprint: fpA);
             using var cts = new CancellationTokenSource();
             var punching = pa.PunchAsync(new[] { epB }, cts.Token);
-            var first = await Task.WhenAny(arrived.Task, Task.Delay(TimeSpan.FromSeconds(10)));
+            var first = await Task.WhenAny(arrived.Task, Task.Delay(Bound));
             cts.Cancel();
             try { await punching; } catch (OperationCanceledException) { }
-            Assert.True(ReferenceEquals(first, arrived.Task), "no probe arrived within 10 s");
+            Assert.True(ReferenceEquals(first, arrived.Task), "no probe arrived within the bound");
             byte[] captured = await arrived.Task;
 
             Assert.NotNull(captured);

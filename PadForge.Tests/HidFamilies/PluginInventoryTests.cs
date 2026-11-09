@@ -239,11 +239,37 @@ namespace PadForge.Tests
         {
             string path = Environment.GetEnvironmentVariable("PADFORGE_LIGHTING_DEVICES_TSV");
             if (string.IsNullOrEmpty(path)) return;
+            var lines = LitDevices().OrderBy(p => p.Key.Vendor).ThenBy(p => p.Key.Product)
+                .Select(p => $"{p.Key.Vendor:X4}\t{p.Key.Product:X4}\t{p.Value.Name}\t{p.Value.Source}");
+            System.IO.File.WriteAllLines(path, lines);
+        }
+
+        /// <summary>The MNT keyboards are built and cannot be lit on Windows: their firmware takes
+        /// colors only as an output report on the keyboard collection, which Windows holds
+        /// (MntKeyboardLighting). The published list names what PadForge lights, so they stay
+        /// off it, and the Razer devices stay on it.</summary>
+        [Fact]
+        public void TheMntKeyboardsStayOffThePublishedList()
+        {
+            var lit = LitDevices();
+            var mnt = OpenRgbRegistrations.Of(MntKeyboardLighting.OpenRgbFamily).ToList();
+            Assert.Equal(2, mnt.Count);
+            foreach (var r in mnt)
+                Assert.False(lit.ContainsKey(((ushort)r.VendorId, (ushort)r.ProductId)), $"{r.Name} is on the published list");
+            Assert.Contains(lit.Keys, k => k.Vendor == PeripheralLinker.RazerVid);
+        }
+
+        private static Dictionary<(ushort Vendor, ushort Product), (string Name, string Source)> LitDevices()
+        {
             var named = new Dictionary<(ushort Vendor, ushort Product), (string Name, string Source)>();
+            // Built, and never lit on Windows (TheMntKeyboardsStayOffThePublishedList).
+            var unreachable = OpenRgbRegistrations.Of(MntKeyboardLighting.OpenRgbFamily)
+                .Select(r => ((ushort)r.VendorId, (ushort)r.ProductId)).ToHashSet();
             void Add(int vendor, int product, string name, string source)
             {
                 if (vendor <= 0 || vendor > 0xFFFF || product < 0 || product > 0xFFFF || string.IsNullOrWhiteSpace(name)) return;
                 if (!IsLit((ushort)vendor, (ushort)product)) return;
+                if (unreachable.Contains(((ushort)vendor, (ushort)product))) return;
                 named.TryAdd(((ushort)vendor, (ushort)product), (name.Trim(), source));
             }
             // A USB serial device has a USB identity too: BlinkyTape, the HYTE CNVS and Skydimo's
@@ -274,9 +300,7 @@ namespace PadForge.Tests
                 Add(row.Vendor, row.Product, FileTitle(row.Plugin), row.Plugin);
             foreach (var row in OtherProjectsInventory.All.Where(row => !OthersLeftOut.ContainsKey((row.Vendor, row.Product))))
                 Add(row.Vendor, row.Product, FileTitle(row.Source), row.Source);
-            var lines = named.OrderBy(p => p.Key.Vendor).ThenBy(p => p.Key.Product)
-                .Select(p => $"{p.Key.Vendor:X4}\t{p.Key.Product:X4}\t{p.Value.Name}\t{p.Value.Source}");
-            System.IO.File.WriteAllLines(path, lines);
+            return named;
         }
 
         /// <summary>A plugin's or a project's file as words: "Plugins/Corsair/Corsair_K70_Keyboard.js"

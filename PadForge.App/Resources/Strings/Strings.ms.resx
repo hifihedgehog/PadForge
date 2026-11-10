@@ -802,9 +802,11 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Giro</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>Pecutan</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>sembunyikan peranti ini daripada semua aplikasi</value></data>
-  <data name="Devices_ConsumeAction" xml:space="preserve"><value>sekat input terpeta daripada peranti ini</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> untuk semua {0} yang disambungkan</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>menyembunyikan peranti ini daripada program yang membukanya sebagai peranti HID</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows tetap membaca kekunci yang anda taip, jadi penaipan masih berfungsi dalam setiap program, termasuk permainan. Papan kekunci USB boleh dialihkan daripada Windows menggunakan “{0}”.</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows tetap menggerakkan penuding dengan tetikus ini dalam setiap program, termasuk permainan. Tetikus USB boleh dialihkan daripada Windows menggunakan “{0}”.</value></data>
+  <data name="Devices_ConsumeAction" xml:space="preserve"><value>menyekat input terpeta daripada peranti ini</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (terpakai pada semua {0} yang disambungkan)</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>Jika ini satu-satunya {0} anda, anda akan hilang keupayaan berinteraksi dengan sistem anda. Teruskan hanya jika anda mempunyai peranti input lain.</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>Jika anda memetakan input yang kritikal untuk interaksi sistem (contohnya, klik kiri/kanan, pergerakan X/Y), anda mungkin hilang keupayaan mengawal sistem anda. Teruskan hanya jika anda mempunyai peranti input lain.</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>Jika anda memetakan input yang kritikal untuk interaksi sistem (contohnya, kekunci biasa), anda mungkin hilang keupayaan mengawal sistem anda. Teruskan hanya jika anda mempunyai peranti input lain.</value></data>

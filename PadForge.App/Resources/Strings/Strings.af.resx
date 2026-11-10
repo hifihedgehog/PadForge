@@ -802,9 +802,11 @@
   <data name="Devices_Gyro" xml:space="preserve"><value>Giro</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>Versn.</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>hierdie toestel vir alle toepassings versteek</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>hierdie toestel versteek vir programme wat dit as 'n HID-toestel oopmaak</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows lees steeds die sleutels wat jy tik, daarom werk tik steeds in elke program, speletjies ingesluit. Jy kan 'n USB-sleutelbord met “{0}” van Windows wegneem.</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows beweeg steeds die wyser met hierdie muis in elke program, speletjies ingesluit. Jy kan 'n USB-muis met “{0}” van Windows wegneem.</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>toegewysde inset van hierdie toestel blokkeer</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> vir alle gekoppelde {0}e</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (geld vir elke gekoppelde {0})</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>As dit jou enigste {0} is, sal jy die vermoë verloor om met jou stelsel te werk. Gaan net voort as jy 'n ander toestel vir inset beskikbaar het.</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>As jy inset toewys wat krities is vir stelselinteraksie (byvoorbeeld links-/regsklik, X/Y-beweging), kan jy die vermoë verloor om jou stelsel te beheer. Gaan net voort as jy 'n ander toestel vir inset beskikbaar het.</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>As jy inset toewys wat krities is vir stelselinteraksie (byvoorbeeld algemene sleutels), kan jy die vermoë verloor om jou stelsel te beheer. Gaan net voort as jy 'n ander toestel vir inset beskikbaar het.</value></data>

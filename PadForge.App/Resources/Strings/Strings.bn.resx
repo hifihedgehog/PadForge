@@ -858,9 +858,11 @@
   <data name="Devices_Gyro" xml:space="preserve"><value>জাইরো</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>অ্যাক্সেল</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>এই ডিভাইসটিকে সব অ্যাপ্লিকেশন থেকে লুকাবে</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>যেসব প্রোগ্রাম এই ডিভাইসটিকে HID ডিভাইস হিসেবে খোলে, সেগুলোর কাছ থেকে ডিভাইসটি লুকিয়ে রাখবে</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>আপনার টাইপ করা কী Windows পড়তে থাকে, তাই গেমসহ সব প্রোগ্রামে টাইপিং আগের মতোই কাজ করে। “{0}” বোতামটি দিয়ে USB কীবোর্ডকে Windows-এর কাছ থেকে সরিয়ে নেওয়া যায়।</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows এই মাউস দিয়ে গেমসহ সব প্রোগ্রামে পয়েন্টার নড়াতে থাকে। “{0}” বোতামটি দিয়ে USB মাউসকে Windows-এর কাছ থেকে সরিয়ে নেওয়া যায়।</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>এই ডিভাইসের ম্যাপ করা ইনপুটগুলো আটকে দেবে</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (সংযুক্ত সব {0} ডিভাইসের ক্ষেত্রে)</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (সংযুক্ত প্রতিটি {0} ডিভাইসে প্রযোজ্য)</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>এটিই যদি আপনার একমাত্র {0} হয়, তবে আপনি আর সিস্টেম ব্যবহার করতে পারবেন না। হাতে অন্য কোনো ইনপুট ডিভাইস থাকলে তবেই এগিয়ে যান।</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>সিস্টেম ব্যবহারের জন্য অপরিহার্য ইনপুট (যেমন বাম/ডান ক্লিক, X/Y নড়াচড়া) ম্যাপ করলে আপনি সিস্টেম নিয়ন্ত্রণের ক্ষমতা হারাতে পারেন। হাতে অন্য কোনো ইনপুট ডিভাইস থাকলে তবেই এগিয়ে যান।</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>সিস্টেম ব্যবহারের জন্য অপরিহার্য ইনপুট (যেমন বহুল ব্যবহৃত কী) ম্যাপ করলে আপনি সিস্টেম নিয়ন্ত্রণের ক্ষমতা হারাতে পারেন। হাতে অন্য কোনো ইনপুট ডিভাইস থাকলে তবেই এগিয়ে যান।</value></data>

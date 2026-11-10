@@ -598,9 +598,11 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Devices_Gyro" xml:space="preserve"><value>Giroscopio</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>Accel</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>nascondere questo dispositivo a tutte le applicazioni</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>nascondere questo dispositivo ai programmi che lo aprono come dispositivo HID</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows continua a leggere i tasti che digiti, quindi la digitazione funziona ancora in ogni programma, giochi compresi. Una tastiera USB può essere sottratta a Windows con il pulsante «{0}».</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows continua a muovere il puntatore con questo mouse in ogni programma, giochi compresi. Un mouse USB può essere sottratto a Windows con il pulsante «{0}».</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>bloccare gli input mappati da questo dispositivo</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> per tutti i {0} collegati</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (vale per ogni dispositivo collegato del tipo {0})</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>Se questo è il tuo unico {0}, perderai la capacità di interagire con il sistema. Procedi solo se hai un altro dispositivo di input disponibile.</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>Se mappi input critici per l'interazione di sistema (es. clic sinistro/destro, movimento X/Y), potresti perdere la capacità di controllare il sistema. Procedi solo se hai un altro dispositivo di input disponibile.</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>Se mappi input critici per l'interazione di sistema (es. tasti comuni), potresti perdere la capacità di controllare il sistema. Procedi solo se hai un altro dispositivo di input disponibile.</value></data>

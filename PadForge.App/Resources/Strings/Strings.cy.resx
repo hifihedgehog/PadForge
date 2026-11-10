@@ -800,9 +800,11 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Gyro</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>Cyflymiad</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>cuddio'r ddyfais hon rhag pob rhaglen</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>cuddio'r ddyfais hon rhag rhaglenni sy'n ei hagor fel dyfais HID</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Mae Windows yn dal i ddarllen y bysellau rydych chi'n eu teipio, felly mae teipio'n dal i weithio ym mhob rhaglen, gan gynnwys gemau. Gellir tynnu bysellfwrdd USB oddi wrth Windows gyda'r botwm “{0}”.</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Mae Windows yn dal i symud y pwyntydd gyda'r llygoden hon ym mhob rhaglen, gan gynnwys gemau. Gellir tynnu llygoden USB oddi wrth Windows gyda'r botwm “{0}”.</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>rhwystro mewnbynnau wedi'u mapio o'r ddyfais hon</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> ar gyfer pob {0} sydd wedi'i gysylltu</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (yn berthnasol i bob {0} sydd wedi cysylltu)</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>Os mai dyma'ch unig {0}, byddwch yn colli'r gallu i ryngweithio â'ch system. Ewch ymlaen dim ond os oes gennych ddyfais fewnbwn arall ar gael.</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>Os byddwch yn mapio mewnbynnau sy'n hanfodol i ryngweithio â'r system (er enghraifft, clic chwith/dde, symudiad X/Y), efallai y byddwch yn colli'r gallu i reoli eich system. Ewch ymlaen dim ond os oes gennych ddyfais fewnbwn arall ar gael.</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>Os byddwch yn mapio mewnbynnau sy'n hanfodol i ryngweithio â'r system (er enghraifft, bysellau cyffredin), efallai y byddwch yn colli'r gallu i reoli eich system. Ewch ymlaen dim ond os oes gennych ddyfais fewnbwn arall ar gael.</value></data>

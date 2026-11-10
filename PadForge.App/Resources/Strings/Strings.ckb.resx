@@ -799,9 +799,11 @@
   <data name="Devices_Gyro" xml:space="preserve"><value>جایرۆ</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>ئەکسێل</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>شاردنەوەی ئەم ئامێرە لە هەموو بەرنامەکان</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>شاردنەوەی ئەم ئامێرە لەو پرۆگرامانەی کە وەک ئامێرێکی HID دەیکەنەوە</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows بەردەوام دەبێت لە خوێندنەوەی ئەو کلیلانەی لێیان دەدەیت، بۆیە نووسین لە هەموو پرۆگرامێکدا هەر کار دەکات، لەوانەش یارییەکان. دەتوانرێت تەختەکلیلێکی USB بە بەکارهێنانی «{0}» لە دەستی Windows دەربهێنرێت.</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows بەردەوام دەبێت لە جووڵاندنی نیشاندەر بەم ماوسە لە هەموو پرۆگرامێکدا، لەوانەش یارییەکان. دەتوانرێت ماوسێکی USB بە بەکارهێنانی «{0}» لە دەستی Windows دەربهێنرێت.</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>ڕێگرتن لە تێخستنە بەستراوەکانی ئەم ئامێرە</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> بۆ هەموو {0}ە بەستراوەکان</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (ئەمە هەموو ئامێرە پەیوەستکراوەکانی جۆری {0} دەگرێتەوە)</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>ئەگەر ئەمە تاکە {0}ەکەت بێت، توانای کارلێککردن لەگەڵ سیستەمەکەت لەدەست دەدەیت. تەنها ئەگەر ئامێرێکی تێخستنی ترت بەردەستە بەردەوام بە.</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>ئەگەر ئەو تێخستنانە ببەستیتەوە کە بۆ کارلێک لەگەڵ سیستەم گرنگن (بۆ نموونە، کلیکی چەپ/ڕاست، جووڵەی X/Y)، لەوانەیە توانای کۆنترۆڵکردنی سیستەمەکەت لەدەست بدەیت. تەنها ئەگەر ئامێرێکی تێخستنی ترت بەردەستە بەردەوام بە.</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>ئەگەر ئەو تێخستنانە ببەستیتەوە کە بۆ کارلێک لەگەڵ سیستەم گرنگن (بۆ نموونە، کلیلە باوەکان)، لەوانەیە توانای کۆنترۆڵکردنی سیستەمەکەت لەدەست بدەیت. تەنها ئەگەر ئامێرێکی تێخستنی ترت بەردەستە بەردەوام بە.</value></data>

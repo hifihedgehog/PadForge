@@ -797,7 +797,9 @@
   <data name="Devices_Gyro" xml:space="preserve"><value>ಜೈರೋ</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>ಆಕ್ಸೆಲ್</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>ಈ ಸಾಧನವನ್ನು ಎಲ್ಲಾ ಅಪ್ಲಿಕೇಶನ್‌ಗಳಿಂದ ಮರೆಮಾಡಲಾಗುವುದು</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>ಇದನ್ನು HID ಸಾಧನವಾಗಿ ತೆರೆಯುವ ಪ್ರೋಗ್ರಾಂಗಳಿಂದ ಈ ಸಾಧನವನ್ನು ಮರೆಮಾಡಲಾಗುವುದು</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows ನೀವು ಟೈಪ್ ಮಾಡುವ ಕೀಗಳನ್ನು ಓದುತ್ತಲೇ ಇರುತ್ತದೆ, ಆದ್ದರಿಂದ ಆಟಗಳೂ ಸೇರಿದಂತೆ ಪ್ರತಿಯೊಂದು ಪ್ರೋಗ್ರಾಂನಲ್ಲಿ ಟೈಪಿಂಗ್ ಕೆಲಸ ಮಾಡುತ್ತಲೇ ಇರುತ್ತದೆ. USB ಕೀಬೋರ್ಡ್ ಅನ್ನು “{0}” ಬಳಸಿ Windows ನಿಂದ ಬೇರ್ಪಡಿಸಬಹುದು.</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>ಆಟಗಳೂ ಸೇರಿದಂತೆ ಪ್ರತಿಯೊಂದು ಪ್ರೋಗ್ರಾಂನಲ್ಲಿ Windows ಈ ಮೌಸ್‌ನಿಂದ ಪಾಯಿಂಟರ್ ಅನ್ನು ಚಲಿಸುತ್ತಲೇ ಇರುತ್ತದೆ. USB ಮೌಸ್ ಅನ್ನು “{0}” ಬಳಸಿ Windows ನಿಂದ ಬೇರ್ಪಡಿಸಬಹುದು.</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>ಈ ಸಾಧನದಿಂದ ಮ್ಯಾಪ್ ಮಾಡಿದ ಇನ್‌ಪುಟ್‌ಗಳನ್ನು ತಡೆಯಲಾಗುವುದು</value></data>
   <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (ಸಂಪರ್ಕಿತ ಎಲ್ಲಾ {0} ಸಾಧನಗಳಿಗೂ)</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>ಇದು ನಿಮ್ಮ ಏಕೈಕ {0} ಆಗಿದ್ದರೆ, ನಿಮ್ಮ ಸಿಸ್ಟಮ್ ಅನ್ನು ಬಳಸುವ ಸಾಮರ್ಥ್ಯವನ್ನು ನೀವು ಕಳೆದುಕೊಳ್ಳುತ್ತೀರಿ. ನಿಮ್ಮ ಬಳಿ ಮತ್ತೊಂದು ಇನ್‌ಪುಟ್ ಸಾಧನ ಇದ್ದರೆ ಮಾತ್ರ ಮುಂದುವರಿಯಿರಿ.</value></data>

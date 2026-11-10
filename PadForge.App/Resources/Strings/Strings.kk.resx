@@ -802,8 +802,10 @@
   <data name="Devices_Gyro" xml:space="preserve"><value>Гироскоп</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>Акселерометр</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>бұл құрылғыны барлық қолданбалардан жасырады</value></data>
-  <data name="Devices_ConsumeAction" xml:space="preserve"><value>бұл құрылғыдан келетін тағайындалған кірістерді бөгейді</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>осы құрылғыны HID құрылғысы ретінде ашатын бағдарламалардан жасырады</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows сіз басатын пернелерді оқи береді, сондықтан теру барлық бағдарламада, соның ішінде ойындарда да жұмыс істейді. USB пернетақтаны Windows жүйесінен «{0}» түймесі арқылы бөліп алуға болады.</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows бұл тінтуірмен меңзерді барлық бағдарламада, соның ішінде ойындарда да жылжыта береді. USB тінтуірді Windows жүйесінен «{0}» түймесі арқылы бөліп алуға болады.</value></data>
+  <data name="Devices_ConsumeAction" xml:space="preserve"><value>осы құрылғыдан келетін тағайындалған кірістерді бөгейді</value></data>
   <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (барлық қосылған {0} құрылғылары үшін)</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>Егер бұл жалғыз {0} құрылғыңыз болса, жүйені басқару мүмкіндігінен айырыласыз. Басқа енгізу құрылғыңыз болса ғана жалғастырыңыз.</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>Жүйені басқаруға аса қажет кірістерді (мысалы, сол/оң жақ шерту, X/Y қозғалысы) тағайындасаңыз, жүйені басқару мүмкіндігінен айырылуыңыз мүмкін. Басқа енгізу құрылғыңыз болса ғана жалғастырыңыз.</value></data>

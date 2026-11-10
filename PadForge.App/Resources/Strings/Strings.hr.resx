@@ -802,9 +802,11 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Žiroskop</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>Akcel.</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>sakriti ovaj uređaj od svih aplikacija</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>sakriti ovaj uređaj od programa koji ga otvaraju kao HID uređaj</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows i dalje čita tipke koje tipkate pa tipkanje i dalje radi u svim programima, uključujući igre. USB tipkovnica može se oduzeti sustavu Windows opcijom „{0}“.</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows i dalje pomiče pokazivač ovim mišem u svim programima, uključujući igre. USB miš može se oduzeti sustavu Windows opcijom „{0}“.</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>blokirati mapirane ulaze s ovog uređaja</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> za sve povezane uređaje vrste {0}</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (vrijedi za sve povezane uređaje, vrsta: {0})</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>Ako vam je ovo jedini uređaj vrste {0}, izgubit ćete mogućnost upravljanja sustavom. Nastavite samo ako imate dostupan drugi ulazni uređaj.</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>Ako mapirate ulaze koji su ključni za upravljanje sustavom (na primjer lijevi/desni klik, pomicanje po X/Y), mogli biste izgubiti mogućnost upravljanja sustavom. Nastavite samo ako imate dostupan drugi ulazni uređaj.</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>Ako mapirate ulaze koji su ključni za upravljanje sustavom (na primjer uobičajene tipke), mogli biste izgubiti mogućnost upravljanja sustavom. Nastavite samo ako imate dostupan drugi ulazni uređaj.</value></data>

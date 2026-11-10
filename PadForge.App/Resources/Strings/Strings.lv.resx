@@ -858,7 +858,9 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Žiroskops</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>Akselerometrs</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>paslēps šo ierīci no visām lietojumprogrammām</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>paslēps šo ierīci no programmām, kas to atver kā HID ierīci</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows turpina nolasīt jūsu rakstītos taustiņus, tāpēc rakstīšana joprojām darbojas visās programmās, arī spēlēs. USB tastatūru no sistēmas Windows var atņemt, izmantojot pogu „{0}”.</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows turpina kustināt rādītāju ar šo peli visās programmās, arī spēlēs. USB peli no sistēmas Windows var atņemt, izmantojot pogu „{0}”.</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>bloķēs šīs ierīces piesaistīto ievadi</value></data>
   <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (attiecas uz visām pievienotajām ierīcēm, kuru veids ir „{0}”)</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>Ja šī ir jūsu vienīgā {0}, jūs zaudēsiet iespēju mijiedarboties ar sistēmu. Turpiniet tikai tad, ja jums ir pieejama cita ievades ierīce.</value></data>

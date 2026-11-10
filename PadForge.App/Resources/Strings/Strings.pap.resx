@@ -562,7 +562,6 @@
   <data name="Devices_Rumble" xml:space="preserve"><value>Vibrashon</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Giroskopio</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>skonde e aparato aki for di tur aplikashon</value></data>
   <data name="Devices_DeviceKind_Mouse" xml:space="preserve"><value>mouse</value></data>
   <data name="Devices_DeviceKind_Keyboard" xml:space="preserve"><value>teklado</value></data>
 

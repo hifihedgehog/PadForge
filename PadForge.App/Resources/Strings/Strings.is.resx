@@ -858,7 +858,9 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Snúningsskynjari</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>Hröðunarmælir</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>fela þetta tæki fyrir öllum forritum</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>fela þetta tæki fyrir forritum sem opna það sem HID-tæki</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows heldur áfram að lesa lyklana sem þú slærð á, svo innsláttur virkar áfram í öllum forritum, þar á meðal leikjum. Hægt er að taka USB-lyklaborð frá Windows með hnappnum „{0}“.</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows heldur áfram að færa bendilinn með þessari mús í öllum forritum, þar á meðal leikjum. Hægt er að taka USB-mús frá Windows með hnappnum „{0}“.</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>loka á varpað inntak frá þessu tæki</value></data>
   <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (á við öll tengd tæki af gerðinni {0})</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>Ef þetta er eina tækið þitt af gerðinni {0} missir þú getuna til að stjórna kerfinu. Haltu aðeins áfram ef þú hefur annað inntakstæki tiltækt.</value></data>

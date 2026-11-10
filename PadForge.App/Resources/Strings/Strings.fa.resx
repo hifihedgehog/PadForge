@@ -858,9 +858,11 @@
   <data name="Devices_Gyro" xml:space="preserve"><value>ژیروسکوپ</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>شتاب‌سنج</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>پنهان شدن این دستگاه از همه برنامه‌ها</value></data>
-  <data name="Devices_ConsumeAction" xml:space="preserve"><value>مسدود شدن ورودی‌های نگاشت‌شده این دستگاه</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> برای همه دستگاه‌های متصل از نوع {0}</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>پنهان شدن این دستگاه از برنامه‌هایی که آن را به‌عنوان دستگاه HID باز می‌کنند</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows همچنان کلیدهایی را که تایپ می‌کنید می‌خواند، پس تایپ در همه برنامه‌ها، از جمله بازی‌ها، کار می‌کند. صفحه‌کلید USB را می‌توان با دکمه «{0}» از Windows گرفت.</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows همچنان در همه برنامه‌ها، از جمله بازی‌ها، نشانگر را با این ماوس حرکت می‌دهد. ماوس USB را می‌توان با دکمه «{0}» از Windows گرفت.</value></data>
+  <data name="Devices_ConsumeAction" xml:space="preserve"><value>مسدود شدن ورودی‌های نگاشت‌شده از این دستگاه</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (برای همه دستگاه‌های متصل از نوع {0} اعمال می‌شود)</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>اگر این تنها {0} شماست، دیگر نمی‌توانید با سیستم خود کار کنید. فقط در صورتی ادامه دهید که دستگاه ورودی دیگری در دسترس دارید.</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>اگر ورودی‌هایی را نگاشت کنید که برای کار با سیستم حیاتی‌اند (مثلاً کلیک چپ/راست، حرکت X/Y)، ممکن است کنترل سیستم را از دست بدهید. فقط در صورتی ادامه دهید که دستگاه ورودی دیگری در دسترس دارید.</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>اگر ورودی‌هایی را نگاشت کنید که برای کار با سیستم حیاتی‌اند (مثلاً کلیدهای پرکاربرد)، ممکن است کنترل سیستم را از دست بدهید. فقط در صورتی ادامه دهید که دستگاه ورودی دیگری در دسترس دارید.</value></data>

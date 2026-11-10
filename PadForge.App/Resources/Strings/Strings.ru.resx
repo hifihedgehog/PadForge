@@ -858,9 +858,11 @@
   <data name="Devices_Gyro" xml:space="preserve"><value>Гироскоп</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>Акселерометр</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>скроет это устройство от всех приложений</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>скроет это устройство от программ, которые открывают его как HID-устройство</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows по-прежнему считывает вводимые вами клавиши, поэтому набор текста работает во всех программах, включая игры. USB-клавиатуру можно убрать из Windows с помощью кнопки «{0}».</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows по-прежнему двигает указатель с помощью этой мыши во всех программах, включая игры. USB-мышь можно убрать из Windows с помощью кнопки «{0}».</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>заблокирует назначенный ввод с этого устройства</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> для всех подключенных устройств типа «{0}»</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (действует для всех подключенных устройств типа «{0}»)</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>Если это ваша единственная {0}, вы не сможете управлять системой. Продолжайте, только если у вас есть другое устройство ввода.</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>Если назначить ввод, без которого системой не управлять (например, левый и правый щелчок, движение по X/Y), вы можете потерять управление системой. Продолжайте, только если у вас есть другое устройство ввода.</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>Если назначить ввод, без которого системой не управлять (например, часто используемые клавиши), вы можете потерять управление системой. Продолжайте, только если у вас есть другое устройство ввода.</value></data>

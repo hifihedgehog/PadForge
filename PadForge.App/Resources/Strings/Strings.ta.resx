@@ -858,13 +858,15 @@
   <data name="Devices_Gyro" xml:space="preserve"><value>கைரோ</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>முடுக்கமானி</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>இந்தச் சாதனத்தை அனைத்துப் பயன்பாடுகளிடமிருந்தும் மறைக்கும்</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>HID சாதனமாகத் திறக்கும் நிரல்களிடமிருந்து இந்தச் சாதனத்தை மறைக்கும்</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>நீங்கள் தட்டச்சு செய்யும் விசைகளை Windows தொடர்ந்து படிக்கும், எனவே கேம்கள் உட்பட எல்லா நிரல்களிலும் தட்டச்சு தொடர்ந்து வேலை செய்யும். USB விசைப்பலகையை “{0}” பொத்தானைக் கொண்டு Windows-இடமிருந்து எடுத்துக்கொள்ளலாம்.</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>கேம்கள் உட்பட எல்லா நிரல்களிலும் Windows இந்தச் சுட்டியைக் கொண்டு சுட்டிக்குறியைத் தொடர்ந்து நகர்த்தும். USB சுட்டியை “{0}” பொத்தானைக் கொண்டு Windows-இடமிருந்து எடுத்துக்கொள்ளலாம்.</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>இந்தச் சாதனத்திலிருந்து வரும் மேப் செய்யப்பட்ட உள்ளீடுகளைத் தடுக்கும்</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value>இணைக்கப்பட்ட அனைத்து {0} சாதனங்களுக்கும் </value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (இணைக்கப்பட்ட எல்லா {0} சாதனங்களுக்கும் பொருந்தும்)</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>இது உங்களிடமுள்ள ஒரே {0} என்றால், உங்கள் கணினியுடன் ஊடாட முடியாமல் போகும். வேறொரு உள்ளீட்டுச் சாதனம் இருந்தால் மட்டுமே தொடரவும்.</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>கணினியுடன் ஊடாடுவதற்கு இன்றியமையாத உள்ளீடுகளை (எ.கா. இடது/வலது கிளிக், X/Y நகர்வு) மேப் செய்தால், உங்கள் கணினியைக் கட்டுப்படுத்த முடியாமல் போகலாம். வேறொரு உள்ளீட்டுச் சாதனம் இருந்தால் மட்டுமே தொடரவும்.</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>கணினியுடன் ஊடாடுவதற்கு இன்றியமையாத உள்ளீடுகளை (எ.கா. பொதுவான விசைகள்) மேப் செய்தால், உங்கள் கணினியைக் கட்டுப்படுத்த முடியாமல் போகலாம். வேறொரு உள்ளீட்டுச் சாதனம் இருந்தால் மட்டுமே தொடரவும்.</value></data>
-  <data name="Devices_WarnAction_Format" xml:space="preserve"><value>இது {1}{0}.
+  <data name="Devices_WarnAction_Format" xml:space="preserve"><value>இது {0}{1}.
 
 {2}</value></data>
   <data name="Devices_DeviceKind_Mouse" xml:space="preserve"><value>சுட்டி</value></data>

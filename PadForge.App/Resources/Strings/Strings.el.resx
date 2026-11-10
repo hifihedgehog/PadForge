@@ -858,9 +858,11 @@
   <data name="Devices_Gyro" xml:space="preserve"><value>Γυροσκόπιο</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>Επιταχυνσιόμετρο</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>αποκρύψει αυτή τη συσκευή από όλες τις εφαρμογές</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>αποκρύψει αυτή τη συσκευή από τα προγράμματα που την ανοίγουν ως συσκευή HID</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Τα Windows συνεχίζουν να διαβάζουν τα πλήκτρα που πληκτρολογείτε, οπότε η πληκτρολόγηση λειτουργεί σε κάθε πρόγραμμα, ακόμη και στα παιχνίδια. Ένα πληκτρολόγιο USB μπορεί να αφαιρεθεί από τα Windows με την επιλογή «{0}».</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Τα Windows συνεχίζουν να μετακινούν τον δείκτη με αυτό το ποντίκι σε κάθε πρόγραμμα, ακόμη και στα παιχνίδια. Ένα ποντίκι USB μπορεί να αφαιρεθεί από τα Windows με την επιλογή «{0}».</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>αποκλείσει τις αντιστοιχισμένες εισόδους αυτής της συσκευής</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> για κάθε συνδεδεμένο {0}</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (ισχύει για κάθε συνδεδεμένη συσκευή τύπου «{0}»)</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>Αν αυτό είναι το μοναδικό σας {0}, δεν θα μπορείτε πλέον να αλληλεπιδράτε με το σύστημά σας. Συνεχίστε μόνο αν έχετε διαθέσιμη άλλη συσκευή εισόδου.</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>Αν αντιστοιχίσετε εισόδους που είναι κρίσιμες για την αλληλεπίδραση με το σύστημα (π.χ. αριστερό/δεξί κλικ, κίνηση X/Y), ίσως χάσετε τη δυνατότητα ελέγχου του συστήματός σας. Συνεχίστε μόνο αν έχετε διαθέσιμη άλλη συσκευή εισόδου.</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>Αν αντιστοιχίσετε εισόδους που είναι κρίσιμες για την αλληλεπίδραση με το σύστημα (π.χ. συνηθισμένα πλήκτρα), ίσως χάσετε τη δυνατότητα ελέγχου του συστήματός σας. Συνεχίστε μόνο αν έχετε διαθέσιμη άλλη συσκευή εισόδου.</value></data>

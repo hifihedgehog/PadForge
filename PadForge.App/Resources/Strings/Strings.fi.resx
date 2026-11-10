@@ -858,9 +858,11 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Gyro</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>Kiihtyvyys</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>piilottaa tämän laitteen kaikilta sovelluksilta</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>piilottaa tämän laitteen ohjelmilta, jotka avaavat sen HID-laitteena</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows lukee edelleen kirjoittamasi näppäimet, joten kirjoittaminen toimii kaikissa ohjelmissa, myös peleissä. USB-näppäimistön voi ottaa pois Windowsin käytöstä painikkeella ”{0}”.</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows liikuttaa edelleen osoitinta tällä hiirellä kaikissa ohjelmissa, myös peleissä. USB-hiiren voi ottaa pois Windowsin käytöstä painikkeella ”{0}”.</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>estää tämän laitteen määritetyt syötteet</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (kaikki yhdistetyt laitteet, joiden tyyppi on {0})</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (koskee kaikkia yhdistettyjä laitteita, joiden tyyppi on {0})</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>Jos tämä on ainoa {0}, et voi enää käyttää järjestelmääsi. Jatka vain, jos käytettävissäsi on toinen syöttölaite.</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>Jos määrität syötteitä, jotka ovat välttämättömiä järjestelmän käytölle (esimerkiksi vasen/oikea napsautus, X/Y-liike), saatat menettää järjestelmäsi hallinnan. Jatka vain, jos käytettävissäsi on toinen syöttölaite.</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>Jos määrität syötteitä, jotka ovat välttämättömiä järjestelmän käytölle (esimerkiksi yleisiä näppäimiä), saatat menettää järjestelmäsi hallinnan. Jatka vain, jos käytettävissäsi on toinen syöttölaite.</value></data>

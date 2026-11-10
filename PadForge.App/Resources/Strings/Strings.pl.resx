@@ -858,7 +858,9 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Żyroskop</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>Akcelerometr</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>ukrycie tego urządzenia przed wszystkimi aplikacjami</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>ukrycie tego urządzenia przed programami, które otwierają je jako urządzenie HID</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>System Windows nadal odczytuje wpisywane klawisze, więc pisanie działa w każdym programie, także w grach. Klawiaturę USB można odebrać systemowi Windows za pomocą przycisku „{0}”.</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>System Windows nadal porusza wskaźnikiem za pomocą tej myszy w każdym programie, także w grach. Mysz USB można odebrać systemowi Windows za pomocą przycisku „{0}”.</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>zablokowanie zmapowanych wejść z tego urządzenia</value></data>
   <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (dotyczy wszystkich podłączonych urządzeń typu: {0})</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>Jeśli to jedyne urządzenie tego typu ({0}), stracisz możliwość obsługi systemu. Kontynuuj tylko wtedy, gdy masz dostępne inne urządzenie wejściowe.</value></data>

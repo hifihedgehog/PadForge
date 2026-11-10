@@ -858,9 +858,11 @@
   <data name="Devices_Gyro" xml:space="preserve"><value>Гіраскоп</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>Акселерометр</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>схавае гэтую прыладу ад усіх праграм</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>схавае гэтую прыладу ад праграм, якія адкрываюць яе як прыладу HID</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows і далей чытае клавішы, якія вы націскаеце, таму набор тэксту працуе ва ўсіх праграмах, у тым ліку ў гульнях. USB-клавіятуру можна забраць у Windows кнопкай «{0}».</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows і далей рухае паказальнік з дапамогай гэтай мышы ва ўсіх праграмах, у тым ліку ў гульнях. USB-мыш можна забраць у Windows кнопкай «{0}».</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>заблакуе прызначаныя ўводы з гэтай прылады</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> для ўсіх падключаных прылад тыпу «{0}»</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (тычыцца ўсіх падключаных прылад тыпу «{0}»)</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>Калі гэта ваша адзіная {0}, вы страціце магчымасць кіраваць сістэмай. Працягвайце, толькі калі ў вас ёсць іншая прылада ўводу.</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>Калі вы прызначыце ўводы, неабходныя для кіравання сістэмай (напрыклад, левы/правы клік, рух па X/Y), вы можаце страціць магчымасць кіраваць сістэмай. Працягвайце, толькі калі ў вас ёсць іншая прылада ўводу.</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>Калі вы прызначыце ўводы, неабходныя для кіравання сістэмай (напрыклад, часта ўжываныя клавішы), вы можаце страціць магчымасць кіраваць сістэмай. Працягвайце, толькі калі ў вас ёсць іншая прылада ўводу.</value></data>

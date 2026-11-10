@@ -802,7 +802,9 @@
   <data name="Devices_Gyro" xml:space="preserve"><value>Гироскоп</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>Акселерометр</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>энэ төхөөрөмжийг бүх програмаас нуух</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>энэ төхөөрөмжийг HID төхөөрөмж болгон нээдэг програмуудаас нуух</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows таны дарсан товчлууруудыг уншсаар байх тул тоглоомыг оруулаад бүх програмд бичих боломжтой хэвээр байна. USB гарыг “{0}” товчийг ашиглан Windows-оос салгаж болно.</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows энэ хулганаар заагчийг тоглоомыг оруулаад бүх програмд хөдөлгөсөөр байна. USB хулганыг “{0}” товчийг ашиглан Windows-оос салгаж болно.</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>энэ төхөөрөмжийн оноосон оролтуудыг хаах</value></data>
   <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (холбогдсон бүх {0} төхөөрөмжид)</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>Хэрэв энэ таны цорын ганц {0} бол системтэйгээ харилцах боломжоо алдана. Өөр оролтын төхөөрөмж байгаа тохиолдолд л үргэлжлүүлнэ үү.</value></data>

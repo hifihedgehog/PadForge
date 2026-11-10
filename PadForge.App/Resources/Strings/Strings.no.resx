@@ -858,9 +858,11 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Gyro</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>Akselerometer</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>skjule denne enheten for alle programmer</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>skjule denne enheten for programmer som åpner den som en HID-enhet</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows leser fortsatt tastene du skriver, så skriving fungerer i alle programmer, også spill. Et USB-tastatur kan tas bort fra Windows med «{0}».</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows flytter fortsatt pekeren med denne musen i alle programmer, også spill. En USB-mus kan tas bort fra Windows med «{0}».</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>blokkere tilordnede inndata fra denne enheten</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> for alle tilkoblede enheter av typen {0}</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (gjelder alle tilkoblede enheter av typen {0})</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>Hvis dette er den eneste enheten av typen {0} du har, mister du muligheten til å styre systemet. Fortsett bare hvis du har en annen inndataenhet tilgjengelig.</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>Hvis du tilordner inndata som er nødvendige for å bruke systemet (for eksempel venstre-/høyreklikk eller X/Y-bevegelse), kan du miste muligheten til å styre systemet. Fortsett bare hvis du har en annen inndataenhet tilgjengelig.</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>Hvis du tilordner inndata som er nødvendige for å bruke systemet (for eksempel vanlige taster), kan du miste muligheten til å styre systemet. Fortsett bare hvis du har en annen inndataenhet tilgjengelig.</value></data>

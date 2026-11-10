@@ -549,9 +549,11 @@
   <data name="Devices_Rumble" xml:space="preserve"><value>Rumble</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Gyro</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>itago kini nga device gikan sa tanang aplikasyon</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>itago kini nga device gikan sa mga programa nga nag-abli niini isip HID device</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Padayong basahon sa Windows ang mga key nga imong i-type, busa makapag-type ka gihapon sa matag programa, apil ang mga dula. Ang USB keyboard mahimong kuhaon gikan sa Windows pinaagi sa "{0}".</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Padayong lihokon sa Windows ang pointer gamit kini nga mouse sa matag programa, apil ang mga dula. Ang USB mouse mahimong kuhaon gikan sa Windows pinaagi sa "{0}".</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>babagan ang na-map nga mga input gikan niini nga device</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> para sa tanang nakakonektar nga {0}</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (para sa tanang nakakonektar nga {0})</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>Kon kini ra ang imong {0}, dili na nimo magamit ang imong sistema. Padayon lang kon aduna kay laing input device.</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>Kon imong i-map ang mga input nga kinahanglanon sa paggamit sa sistema (pananglitan, wala/tuo nga click, X/Y nga lihok), mahimong dili na nimo makontrol ang imong sistema. Padayon lang kon aduna kay laing input device.</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>Kon imong i-map ang mga input nga kinahanglanon sa paggamit sa sistema (pananglitan, kasagarang mga key), mahimong dili na nimo makontrol ang imong sistema. Padayon lang kon aduna kay laing input device.</value></data>

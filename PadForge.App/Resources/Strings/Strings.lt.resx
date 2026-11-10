@@ -800,7 +800,9 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Giroskopas</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>Akselerometras</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>paslėpti šį įrenginį nuo visų programų</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>paslėpti šį įrenginį nuo programų, kurios jį atidaro kaip HID įrenginį</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows ir toliau nuskaito jūsų spaudžiamus klavišus, todėl rašymas veikia visose programose, įskaitant žaidimus. USB klaviatūrą galima paimti iš Windows naudojant „{0}“.</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows ir toliau valdo žymeklį šia pele visose programose, įskaitant žaidimus. USB pelę galima paimti iš Windows naudojant „{0}“.</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>blokuoti priskirtas šio įrenginio įvestis</value></data>
   <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (taikoma visiems prijungtiems įrenginiams, tipas: {0})</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>Jei tai vienintelė jūsų {0}, nebegalėsite valdyti sistemos. Tęskite tik tada, jei turite kitą įvesties įrenginį.</value></data>

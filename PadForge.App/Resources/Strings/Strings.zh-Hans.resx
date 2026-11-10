@@ -598,9 +598,11 @@
   <data name="Devices_Gyro" xml:space="preserve"><value>陀螺仪</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>加速度计</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>对所有应用程序隐藏此设备</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>对以 HID 设备方式打开此设备的程序隐藏此设备</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows 仍会读取您键入的按键，因此在所有程序（包括游戏）中仍可打字。若要让此 USB 键盘不再由 Windows 使用，请点击“{0}”。</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows 仍会通过此鼠标在所有程序（包括游戏）中移动指针。若要让此 USB 鼠标不再由 Windows 使用，请点击“{0}”。</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>屏蔽此设备已映射的输入</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> 对所有已连接的{0}</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value>（适用于所有已连接的{0}）</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>如果这是您唯一的{0}，您将无法与系统交互。仅在有其他输入设备时继续。</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>如果您映射了系统交互所需的关键输入（例如左/右键点击、X/Y 移动），您可能无法控制系统。仅在有其他输入设备时继续。</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>如果您映射了系统交互所需的关键输入（例如常用按键），您可能无法控制系统。仅在有其他输入设备时继续。</value></data>

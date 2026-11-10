@@ -858,13 +858,15 @@
   <data name="Devices_Gyro" xml:space="preserve"><value>جائرو</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>ایکسیل</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>یہ آلہ تمام ایپلیکیشنز سے چھپ جائے گا</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>یہ آلہ اُن پروگراموں سے چھپ جائے گا جو اسے HID آلے کے طور پر کھولتے ہیں</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows آپ کی ٹائپ کی گئی کلیدیں پڑھتا رہتا ہے، اس لیے ٹائپنگ گیمز سمیت ہر پروگرام میں کام کرتی رہتی ہے۔ USB کی بورڈ کو "{0}" بٹن کے ذریعے Windows سے الگ کیا جا سکتا ہے۔</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows گیمز سمیت ہر پروگرام میں اس ماؤس سے پوائنٹر چلاتا رہتا ہے۔ USB ماؤس کو "{0}" بٹن کے ذریعے Windows سے الگ کیا جا سکتا ہے۔</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>اس آلے کے میپ شدہ ان پٹ بلاک ہو جائیں گے</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value>تمام منسلک {0} کے لیے </value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (ہر منسلک {0} پر لاگو)</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>اگر یہ آپ کا واحد {0} ہے تو آپ اپنے سسٹم کو استعمال نہیں کر سکیں گے۔ صرف اسی صورت میں آگے بڑھیں جب آپ کے پاس کوئی دوسرا ان پٹ آلہ موجود ہو۔</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>اگر آپ ایسے ان پٹ میپ کریں جو سسٹم کے استعمال کے لیے ضروری ہیں (مثلاً بایاں/دایاں کلک، X/Y حرکت) تو ہو سکتا ہے آپ اپنے سسٹم کو کنٹرول نہ کر سکیں۔ صرف اسی صورت میں آگے بڑھیں جب آپ کے پاس کوئی دوسرا ان پٹ آلہ موجود ہو۔</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>اگر آپ ایسے ان پٹ میپ کریں جو سسٹم کے استعمال کے لیے ضروری ہیں (مثلاً عام استعمال کی کلیدیں) تو ہو سکتا ہے آپ اپنے سسٹم کو کنٹرول نہ کر سکیں۔ صرف اسی صورت میں آگے بڑھیں جب آپ کے پاس کوئی دوسرا ان پٹ آلہ موجود ہو۔</value></data>
-  <data name="Devices_WarnAction_Format" xml:space="preserve"><value>اس سے {1}{0}۔
+  <data name="Devices_WarnAction_Format" xml:space="preserve"><value>اس سے {0}{1}۔
 
 {2}</value></data>
   <data name="Devices_DeviceKind_Mouse" xml:space="preserve"><value>ماؤس</value></data>

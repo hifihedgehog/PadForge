@@ -858,9 +858,11 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Gyro</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>Accel</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>hide this device from all applications</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>hide this device from programs that open it as a HID device</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows keeps reading the keys you type, so typing still works in every program, games included. A USB keyboard can be taken away from Windows with {0}.</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows keeps moving the pointer with this mouse in every program, games included. A USB mouse can be taken away from Windows with {0}.</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>block mapped inputs from this device</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> for all connected {0}s</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (applies to every connected {0})</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>If this is your only {0}, you will lose the ability to interact with your system. Only proceed if you have another input device available.</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>If you map inputs that are critical for system interaction (for example, left/right click, X/Y movement), you may lose the ability to control your system. Only proceed if you have another input device available.</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>If you map inputs that are critical for system interaction (for example, common keys), you may lose the ability to control your system. Only proceed if you have another input device available.</value></data>

@@ -598,9 +598,11 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Devices_Gyro" xml:space="preserve"><value>Gyro</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>Accél</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>masquer cet appareil de toutes les applications</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>masquer cet appareil aux programmes qui l'ouvrent comme un appareil HID</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows continue de lire les touches que vous tapez, donc la saisie fonctionne toujours dans tous les programmes, jeux compris. Un clavier USB peut être retiré à Windows avec le bouton « {0} ».</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows continue de déplacer le pointeur avec cette souris dans tous les programmes, jeux compris. Une souris USB peut être retirée à Windows avec le bouton « {0} ».</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>bloquer les entrées assignées de cet appareil</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> pour tous les appareils {0} connectés</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (s'applique à chaque appareil connecté de type {0})</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>S'il s'agit de votre seul(e) {0}, vous perdrez la possibilité d'interagir avec votre système. Ne continuez que si vous disposez d'un autre périphérique d'entrée.</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>Si vous assignez des entrées critiques pour l'interaction système (p. ex. clic gauche/droit, mouvement X/Y), vous risquez de perdre le contrôle de votre système. Ne continuez que si vous disposez d'un autre périphérique d'entrée.</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>Si vous assignez des entrées critiques pour l'interaction système (p. ex. touches courantes), vous risquez de perdre le contrôle de votre système. Ne continuez que si vous disposez d'un autre périphérique d'entrée.</value></data>

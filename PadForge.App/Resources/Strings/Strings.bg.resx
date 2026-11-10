@@ -858,9 +858,11 @@
   <data name="Devices_Gyro" xml:space="preserve"><value>Жироскоп</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>Акселерометър</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>скрие това устройство от всички приложения</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>скрива това устройство от програмите, които го отварят като HID устройство</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows продължава да чете клавишите, които натискате, така че писането работи във всички програми, включително в игрите. USB клавиатура може да бъде отнета от Windows с бутона „{0}“.</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows продължава да движи показалеца с тази мишка във всички програми, включително в игрите. USB мишка може да бъде отнета от Windows с бутона „{0}“.</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>блокира съпоставените входове от това устройство</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> за всички свързани устройства от тип „{0}“</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (важи за всяко свързано устройство от тип „{0}“)</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>Ако това е единствената ви {0}, ще загубите възможността да работите със системата. Продължете само ако разполагате с друго входно устройство.</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>Ако съпоставите входове, които са критични за работата със системата (например ляво/дясно щракване, движение по X/Y), може да загубите възможността да управлявате системата. Продължете само ако разполагате с друго входно устройство.</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>Ако съпоставите входове, които са критични за работата със системата (например често използвани клавиши), може да загубите възможността да управлявате системата. Продължете само ако разполагате с друго входно устройство.</value></data>

@@ -858,13 +858,15 @@
   <data name="Devices_Gyro" xml:space="preserve"><value>जाइरो</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>एक्सेल</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>यो यन्त्रलाई सबै एप्लिकेसनहरूबाट लुकाउनेछ</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>यो यन्त्रलाई HID यन्त्रको रूपमा खोल्ने प्रोग्रामहरूबाट यसलाई लुकाउनेछ</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows ले तपाईंले टाइप गर्ने कुञ्जीहरू पढिरहन्छ, त्यसैले गेमहरू सहित हरेक प्रोग्राममा टाइपिङले काम गरिरहन्छ। USB किबोर्डलाई “{0}” बटनमार्फत Windows बाट अलग गर्न सकिन्छ।</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows ले गेमहरू सहित हरेक प्रोग्राममा यो माउसबाट पोइन्टर सारिरहन्छ। USB माउसलाई “{0}” बटनमार्फत Windows बाट अलग गर्न सकिन्छ।</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>यो यन्त्रबाट म्याप गरिएका इनपुटहरू रोक्नेछ</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> सबै जडान भएका {0}हरूका लागि</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (हरेक जडान भएको {0} मा लागू हुन्छ)</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>यदि यो तपाईंको एक मात्र {0} हो भने, तपाईंले आफ्नो प्रणाली चलाउने क्षमता गुमाउनुहुनेछ। अर्को इनपुट यन्त्र उपलब्ध छ भने मात्र अगाडि बढ्नुहोस्।</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>यदि तपाईंले प्रणाली चलाउन आवश्यक इनपुटहरू (उदाहरणका लागि, बायाँ/दायाँ क्लिक, X/Y चाल) म्याप गर्नुभयो भने, तपाईंले आफ्नो प्रणाली नियन्त्रण गर्ने क्षमता गुमाउन सक्नुहुन्छ। अर्को इनपुट यन्त्र उपलब्ध छ भने मात्र अगाडि बढ्नुहोस्।</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>यदि तपाईंले प्रणाली चलाउन आवश्यक इनपुटहरू (उदाहरणका लागि, सामान्य कुञ्जीहरू) म्याप गर्नुभयो भने, तपाईंले आफ्नो प्रणाली नियन्त्रण गर्ने क्षमता गुमाउन सक्नुहुन्छ। अर्को इनपुट यन्त्र उपलब्ध छ भने मात्र अगाडि बढ्नुहोस्।</value></data>
-  <data name="Devices_WarnAction_Format" xml:space="preserve"><value>यसले{1} {0}।
+  <data name="Devices_WarnAction_Format" xml:space="preserve"><value>यसले {0}{1}।
 
 {2}</value></data>
   <data name="Devices_DeviceKind_Mouse" xml:space="preserve"><value>माउस</value></data>

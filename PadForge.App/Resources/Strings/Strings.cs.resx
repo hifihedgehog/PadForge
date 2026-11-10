@@ -858,9 +858,11 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Gyroskop</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>Akcelerometr</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>skryjete toto zařízení před všemi aplikacemi</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>skryjete toto zařízení před programy, které ho otevírají jako zařízení HID</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Systém Windows nadále čte klávesy, které stisknete, takže psaní funguje ve všech programech, včetně her. USB klávesnici lze systému Windows odebrat pomocí tlačítka „{0}“.</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Systém Windows nadále pohybuje ukazatelem pomocí této myši ve všech programech, včetně her. USB myš lze systému Windows odebrat pomocí tlačítka „{0}“.</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>zablokujete namapované vstupy z tohoto zařízení</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (platí pro všechna připojená zařízení typu {0})</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (platí pro všechna připojená zařízení druhu „{0}“)</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>Pokud je to vaše jediná {0}, ztratíte možnost ovládat systém. Pokračujte jen tehdy, pokud máte k dispozici jiné vstupní zařízení.</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>Pokud namapujete vstupy, které jsou pro ovládání systému nezbytné (např. levé/pravé kliknutí, pohyb X/Y), můžete ztratit možnost systém ovládat. Pokračujte jen tehdy, pokud máte k dispozici jiné vstupní zařízení.</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>Pokud namapujete vstupy, které jsou pro ovládání systému nezbytné (např. běžné klávesy), můžete ztratit možnost systém ovládat. Pokračujte jen tehdy, pokud máte k dispozici jiné vstupní zařízení.</value></data>

@@ -801,9 +801,11 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Ġiroskopju</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>Aċċel.</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>jaħbi dan l-apparat mill-applikazzjonijiet kollha</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>jaħbi dan l-apparat mill-programmi li jiftħuh bħala apparat HID</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows jibqa' jaqra t-tasti li tagħfas, għalhekk il-kitba xorta taħdem f'kull programm, inkluż il-logħob. Tastiera USB tista' titneħħa minn Windows permezz ta' “{0}”.</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows jibqa' jċaqlaq il-pointer b'dan il-maws f'kull programm, inkluż il-logħob. Maws USB jista' jitneħħa minn Windows permezz ta' “{0}”.</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>jimblokka l-inputs immappjati minn dan l-apparat</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> għal kull {0} li hemm</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (japplika għal kull {0} li hemm fuq il-kompjuter)</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>Jekk m'għandekx {0} għajr dan, titlef il-kontroll tas-sistema tiegħek. Kompli biss jekk għandek apparat ieħor tal-input disponibbli.</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>Jekk timmappja inputs li huma meħtieġa biex tħaddem is-sistema (per eżempju, klikk xellug/lemin, moviment X/Y), tista' titlef il-kontroll tas-sistema tiegħek. Kompli biss jekk għandek apparat ieħor tal-input disponibbli.</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>Jekk timmappja inputs li huma meħtieġa biex tħaddem is-sistema (per eżempju, tasti komuni), tista' titlef il-kontroll tas-sistema tiegħek. Kompli biss jekk għandek apparat ieħor tal-input disponibbli.</value></data>

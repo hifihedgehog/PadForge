@@ -802,9 +802,11 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Güroskoop</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>Kiirendus</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>peidab selle seadme kõigi rakenduste eest</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>peidab selle seadme programmide eest, mis avavad selle HID-seadmena</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows loeb klahvivajutusi edasi, nii et tippimine töötab igas programmis, ka mängudes. USB-klaviatuuri saab Windowsilt ära võtta nupuga „{0}“.</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows liigutab selle hiirega kursorit edasi igas programmis, ka mängudes. USB-hiire saab Windowsilt ära võtta nupuga „{0}“.</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>blokeerib selle seadme vastendatud sisendid</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> kõigi seda tüüpi ühendatud seadmete puhul ({0})</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (kehtib kõigi ühendatud seadmete kohta, mille tüüp on {0})</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>Kui see on teie ainus {0}, kaotate võimaluse süsteemiga suhelda. Jätkake ainult siis, kui teil on saadaval mõni muu sisendseade.</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>Kui vastendate sisendeid, mis on süsteemi kasutamiseks hädavajalikud (näiteks vasak-/paremklõps, X/Y liikumine), võite kaotada võimaluse süsteemi juhtida. Jätkake ainult siis, kui teil on saadaval mõni muu sisendseade.</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>Kui vastendate sisendeid, mis on süsteemi kasutamiseks hädavajalikud (näiteks tavalised klahvid), võite kaotada võimaluse süsteemi juhtida. Jätkake ainult siis, kui teil on saadaval mõni muu sisendseade.</value></data>

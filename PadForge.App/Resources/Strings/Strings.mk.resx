@@ -858,9 +858,11 @@
   <data name="Devices_Gyro" xml:space="preserve"><value>Жироскоп</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>Акцел.</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>го скрие овој уред од сите апликации</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>го скрие овој уред од програмите што го отвораат како HID уред</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows продолжува да ги чита тастерите што ги пишувате, па пишувањето и понатаму работи во секоја програма, вклучително и во игрите. USB тастатура може да му се одземе на Windows со копчето „{0}“.</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows продолжува да го движи покажувачот со овој глушец во секоја програма, вклучително и во игрите. USB глушец може да му се одземе на Windows со копчето „{0}“.</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>ги блокира мапираните влезови од овој уред</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> за сите поврзани уреди од тип „{0}“</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (важи за сите поврзани уреди од тип „{0}“)</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>Ако ова е вашиот единствен уред од тип „{0}“, ќе ја изгубите можноста за управување со системот. Продолжете само ако имате друг достапен влезен уред.</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>Ако мапирате влезови што се неопходни за управување со системот (на пример, лев/десен клик, движење по X/Y), може да ја изгубите контролата врз системот. Продолжете само ако имате друг достапен влезен уред.</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>Ако мапирате влезови што се неопходни за управување со системот (на пример, често користени тастери), може да ја изгубите контролата врз системот. Продолжете само ако имате друг достапен влезен уред.</value></data>

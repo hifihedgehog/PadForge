@@ -858,9 +858,11 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Giroskop</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>Akselerometer</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>menyembunyikan perangkat ini dari semua aplikasi</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>menyembunyikan perangkat ini dari program yang membukanya sebagai perangkat HID</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows tetap membaca tombol yang Anda ketik, jadi mengetik tetap berfungsi di semua program, termasuk game. Keyboard USB dapat disembunyikan dari Windows dengan tombol “{0}”.</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows tetap menggerakkan penunjuk dengan mouse ini di semua program, termasuk game. Mouse USB dapat disembunyikan dari Windows dengan tombol “{0}”.</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>memblokir input yang dipetakan dari perangkat ini</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> untuk semua {0} yang tersambung</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (berlaku untuk setiap {0} yang tersambung)</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>Jika ini satu-satunya {0} Anda, Anda tidak akan bisa lagi berinteraksi dengan sistem. Lanjutkan hanya jika Anda memiliki perangkat input lain.</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>Jika Anda memetakan input yang penting untuk berinteraksi dengan sistem (mis. klik kiri/kanan, gerakan X/Y), Anda bisa kehilangan kemampuan mengendalikan sistem. Lanjutkan hanya jika Anda memiliki perangkat input lain.</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>Jika Anda memetakan input yang penting untuk berinteraksi dengan sistem (mis. tombol yang umum dipakai), Anda bisa kehilangan kemampuan mengendalikan sistem. Lanjutkan hanya jika Anda memiliki perangkat input lain.</value></data>

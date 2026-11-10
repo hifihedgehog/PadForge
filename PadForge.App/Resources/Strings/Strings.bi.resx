@@ -333,7 +333,6 @@
   <data name="Devices_Rumble" xml:space="preserve"><value>Seksek</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Gaero</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>haedem divaes ya long evri program</value></data>
   <data name="Devices_DeviceKind_Mouse" xml:space="preserve"><value>maos</value></data>
   <data name="Devices_DeviceKind_Keyboard" xml:space="preserve"><value>kiboad</value></data>
 

@@ -802,9 +802,11 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Gyro</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>Accel</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>itatago ang device na ito sa lahat ng application</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>itatago ang device na ito sa mga program na nagbubukas dito bilang HID device</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Patuloy na binabasa ng Windows ang mga key na tina-type mo, kaya gumagana pa rin ang pag-type sa bawat program, kasama ang mga laro. Maaaring alisin sa Windows ang isang USB keyboard gamit ang “{0}”.</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Patuloy na ginagalaw ng Windows ang pointer gamit ang mouse na ito sa bawat program, kasama ang mga laro. Maaaring alisin sa Windows ang isang USB mouse gamit ang “{0}”.</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>haharangin ang mga naka-map na input mula sa device na ito</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> para sa lahat ng nakakonektang {0}</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (para sa bawat nakakonektang {0})</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>Kung ito lang ang iyong {0}, mawawalan ka ng kakayahang gamitin ang iyong system. Ituloy lang kung may iba kang input device.</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>Kung magma-map ka ng mga input na kritikal sa paggamit ng system (halimbawa, kaliwa/kanang click, galaw sa X/Y), maaari kang mawalan ng kakayahang kontrolin ang iyong system. Ituloy lang kung may iba kang input device.</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>Kung magma-map ka ng mga input na kritikal sa paggamit ng system (halimbawa, mga karaniwang key), maaari kang mawalan ng kakayahang kontrolin ang iyong system. Ituloy lang kung may iba kang input device.</value></data>

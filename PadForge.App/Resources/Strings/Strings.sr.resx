@@ -858,9 +858,11 @@
   <data name="Devices_Gyro" xml:space="preserve"><value>Жироскоп</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>Акцел.</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>сакрити овај уређај од свих апликација</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>сакрити овај уређај од програма који га отварају као HID уређај</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows и даље чита тастере које куцате, па куцање и даље ради у свим програмима, укључујући игре. USB тастатура се може одузети систему Windows помоћу дугмета „{0}“.</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows и даље помера курсор помоћу овог миша у свим програмима, укључујући игре. USB миш се може одузети систему Windows помоћу дугмета „{0}“.</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>блокирати мапиране улазе са овог уређаја</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> за све повезане уређаје типа „{0}“</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (важи за сваки повезани уређај типа „{0}“)</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>Ако је ово ваш једини уређај типа „{0}“, изгубићете могућност да управљате системом. Наставите само ако имате на располагању други улазни уређај.</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>Ако мапирате улазе који су неопходни за рад са системом (на пример, леви/десни клик, кретање по X/Y), можете изгубити могућност управљања системом. Наставите само ако имате на располагању други улазни уређај.</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>Ако мапирате улазе који су неопходни за рад са системом (на пример, уобичајене тастере), можете изгубити могућност управљања системом. Наставите само ако имате на располагању други улазни уређај.</value></data>

@@ -799,9 +799,11 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Gyro</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>Accel</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>kuficha kifaa hiki kisionekane na programu zote</value></data>
-  <data name="Devices_ConsumeAction" xml:space="preserve"><value>kuzuia ingizo zilizo na ramani kutoka kwenye kifaa hiki</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> kwa kila kifaa kilichounganishwa cha aina ya {0}</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>kuficha kifaa hiki kisionekane kwa programu zinazokifungua kama kifaa cha HID</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows inaendelea kusoma vitufe unavyobonyeza, kwa hiyo kuandika bado kunafanya kazi katika kila programu, ikiwemo michezo. Kibodi ya USB inaweza kuondolewa kutoka kwa Windows kwa kutumia “{0}”.</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows inaendelea kusogeza kiashiria kwa kipanya hiki katika kila programu, ikiwemo michezo. Kipanya cha USB kinaweza kuondolewa kutoka kwa Windows kwa kutumia “{0}”.</value></data>
+  <data name="Devices_ConsumeAction" xml:space="preserve"><value>kuzuia maingizo yaliyo na ramani kutoka kwenye kifaa hiki</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (inatumika kwa kila kifaa kilichounganishwa cha aina ya {0})</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>Ikiwa hiki ndicho kifaa chako pekee cha aina ya {0}, utapoteza uwezo wa kutumia mfumo wako. Endelea tu ikiwa una kifaa kingine cha ingizo.</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>Ukiweka ramani za ingizo muhimu kwa matumizi ya mfumo (kwa mfano, kubofya kushoto/kulia, mwendo wa X/Y), unaweza kupoteza uwezo wa kudhibiti mfumo wako. Endelea tu ikiwa una kifaa kingine cha ingizo.</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>Ukiweka ramani za ingizo muhimu kwa matumizi ya mfumo (kwa mfano, vitufe vya kawaida), unaweza kupoteza uwezo wa kudhibiti mfumo wako. Endelea tu ikiwa una kifaa kingine cha ingizo.</value></data>

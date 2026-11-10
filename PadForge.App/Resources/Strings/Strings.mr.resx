@@ -799,13 +799,15 @@
   <data name="Devices_Gyro" xml:space="preserve"><value>जायरो</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>ॲक्सेल</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>हे डिव्हाइस सर्व अॅप्लिकेशन्सपासून लपवा</value></data>
-  <data name="Devices_ConsumeAction" xml:space="preserve"><value>या डिव्हाइसचे मॅप केलेले इनपुट अडवा</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> सर्व जोडलेल्या {0} साठी</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>HID डिव्हाइस म्हणून हे डिव्हाइस उघडणाऱ्या प्रोग्राम्सपासून ते लपवले जाईल</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>तुम्ही टाइप करत असलेल्या की Windows वाचत राहते, म्हणून गेम्ससह प्रत्येक प्रोग्राममध्ये टायपिंग चालूच राहते. USB कीबोर्ड “{0}” वापरून Windows पासून काढून घेता येतो.</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows या माउसने गेम्ससह प्रत्येक प्रोग्राममध्ये पॉइंटर हलवत राहते. USB माउस “{0}” वापरून Windows पासून काढून घेता येतो.</value></data>
+  <data name="Devices_ConsumeAction" xml:space="preserve"><value>या डिव्हाइसचे मॅप केलेले इनपुट अडवले जाईल</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (जोडलेल्या प्रत्येक {0} साठी लागू)</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>हा तुमचा एकमेव {0} असल्यास, तुमच्या सिस्टीमशी संवाद साधण्याची क्षमता तुम्ही गमावाल. तुमच्याकडे दुसरे इनपुट डिव्हाइस असेल तरच पुढे जा.</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>सिस्टीमशी संवादासाठी महत्त्वाचे इनपुट (उदाहरणार्थ, डावा/उजवा क्लिक, X/Y हालचाल) तुम्ही मॅप केल्यास, तुम्ही तुमची सिस्टीम नियंत्रित करण्याची क्षमता गमावू शकता. तुमच्याकडे दुसरे इनपुट डिव्हाइस असेल तरच पुढे जा.</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>सिस्टीमशी संवादासाठी महत्त्वाचे इनपुट (उदाहरणार्थ, नेहमीच्या की) तुम्ही मॅप केल्यास, तुम्ही तुमची सिस्टीम नियंत्रित करण्याची क्षमता गमावू शकता. तुमच्याकडे दुसरे इनपुट डिव्हाइस असेल तरच पुढे जा.</value></data>
-  <data name="Devices_WarnAction_Format" xml:space="preserve"><value>हे {0}{1} करेल.
+  <data name="Devices_WarnAction_Format" xml:space="preserve"><value>यामुळे {0}{1}.
 
 {2}</value></data>
   <data name="Devices_DeviceKind_Mouse" xml:space="preserve"><value>माउस</value></data>

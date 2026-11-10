@@ -802,9 +802,11 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Giroscópio</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>Acelerómetro</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>ocultar este dispositivo de todas as aplicações</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>ocultar este dispositivo dos programas que o abrem como dispositivo HID</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>O Windows continua a ler as teclas que prime, por isso a escrita continua a funcionar em todos os programas, jogos incluídos. Um teclado USB pode ser retirado ao Windows com “{0}”.</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>O Windows continua a mover o ponteiro com este rato em todos os programas, jogos incluídos. Um rato USB pode ser retirado ao Windows com “{0}”.</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>bloquear as entradas mapeadas deste dispositivo</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> para todos os {0}s ligados</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (aplica-se a todos os dispositivos ligados do tipo {0})</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>Se este for o seu único {0}, deixará de conseguir interagir com o sistema. Prossiga apenas se tiver outro dispositivo de entrada disponível.</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>Se mapear entradas críticas para a interação com o sistema (por exemplo, clique esquerdo/direito, movimento X/Y), poderá deixar de conseguir controlar o sistema. Prossiga apenas se tiver outro dispositivo de entrada disponível.</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>Se mapear entradas críticas para a interação com o sistema (por exemplo, teclas comuns), poderá deixar de conseguir controlar o sistema. Prossiga apenas se tiver outro dispositivo de entrada disponível.</value></data>

@@ -598,9 +598,11 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Gyro</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>Versn.</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>dit apparaat te verbergen voor alle toepassingen</value></data>
-  <data name="Devices_ConsumeAction" xml:space="preserve"><value>toegewezen invoer van dit apparaat te blokkeren</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> voor alle aangesloten {0}en</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>dit apparaat verbergen voor programma's die het openen als HID-apparaat</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows blijft de toetsen lezen die u typt, dus typen werkt nog in elk programma, ook in games. Een USB-toetsenbord kunt u aan Windows onttrekken met de knop “{0}”.</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows beweegt de aanwijzer nog steeds met deze muis in elk programma, ook in games. Een USB-muis kunt u aan Windows onttrekken met de knop “{0}”.</value></data>
+  <data name="Devices_ConsumeAction" xml:space="preserve"><value>toegewezen invoer van dit apparaat blokkeren</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (geldt voor alle aangesloten apparaten van het type {0})</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>Als dit uw enige {0} is, verliest u de mogelijkheid om met uw systeem te werken. Ga alleen verder als u een ander invoerapparaat beschikbaar heeft.</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>Als u invoer toewijst die essentieel is voor systeeminteractie (bijv. links/rechts klikken, X/Y-beweging), kunt u de controle over uw systeem verliezen. Ga alleen verder als u een ander invoerapparaat beschikbaar heeft.</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>Als u invoer toewijst die essentieel is voor systeeminteractie (bijv. veelgebruikte toetsen), kunt u de controle over uw systeem verliezen. Ga alleen verder als u een ander invoerapparaat beschikbaar heeft.</value></data>

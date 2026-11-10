@@ -1244,7 +1244,9 @@ public class Strings : INotifyPropertyChanged
     public string Devices_Nfc => Get("Devices_Nfc");
     public string Devices_Gyro => Get("Devices_Gyro");
     public string Devices_Accel => Get("Devices_Accel");
-    public string Devices_HideAction => Get("Devices_HideAction");
+    public string Devices_HideHidAction => Get("Devices_HideHidAction");
+    public string Devices_WarnHideHid_Keyboard => Get("Devices_WarnHideHid_Keyboard");
+    public string Devices_WarnHideHid_Mouse => Get("Devices_WarnHideHid_Mouse");
     public string Devices_ConsumeAction => Get("Devices_ConsumeAction");
     public string Devices_WarnScope_Format => Get("Devices_WarnScope_Format");
     public string Devices_WarnHide_Format => Get("Devices_WarnHide_Format");

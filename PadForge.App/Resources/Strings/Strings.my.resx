@@ -802,9 +802,11 @@
   <data name="Devices_Gyro" xml:space="preserve"><value>ဂိုင်ရို</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>အရှိန်</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>ဤစက်ပစ္စည်းကို အက်ပလီကေးရှင်းအားလုံးထံမှ ဝှက်ထား</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>HID စက်ပစ္စည်းအဖြစ် ဖွင့်သုံးသည့် ပရိုဂရမ်များထံမှ ဤစက်ပစ္စည်းကို ဝှက်</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows သည် သင်ရိုက်သော ကီးများကို ဆက်လက်ဖတ်နေသဖြင့် ဂိမ်းများအပါအဝင် ပရိုဂရမ်တိုင်းတွင် စာရိုက်ခြင်း ဆက်အလုပ်လုပ်သည်။ USB ကီးဘုတ်ကို “{0}” ဖြင့် Windows ထံမှ ဖယ်ယူနိုင်သည်။</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows သည် ဂိမ်းများအပါအဝင် ပရိုဂရမ်တိုင်းတွင် ဤမောက်စ်ဖြင့် ပွိုင်တာကို ဆက်လက်ရွှေ့နေသည်။ USB မောက်စ်ကို “{0}” ဖြင့် Windows ထံမှ ဖယ်ယူနိုင်သည်။</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>ဤစက်ပစ္စည်းမှ မက်ပင်းလုပ်ထားသော ထည့်သွင်းမှုများကို ပိတ်ဆို့</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> ချိတ်ဆက်ထားသော {0} အားလုံးအတွက်</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (ချိတ်ဆက်ထားသော {0} တိုင်းနှင့် သက်ဆိုင်သည်)</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>ဤသည်မှာ သင်၏ တစ်ခုတည်းသော {0} ဖြစ်ပါက စနစ်ကို အသုံးပြုနိုင်စွမ်း ဆုံးရှုံးမည်။ အခြား ထည့်သွင်းကိရိယာ ရှိမှသာ ဆက်လုပ်ပါ။</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>စနစ်ကို အသုံးပြုရန် အရေးကြီးသော ထည့်သွင်းမှုများ (ဥပမာ ဘယ်/ညာ ကလစ်၊ X/Y ရွေ့လျားမှု) ကို မက်ပင်းလုပ်ပါက စနစ်ကို ထိန်းချုပ်နိုင်စွမ်း ဆုံးရှုံးနိုင်သည်။ အခြား ထည့်သွင်းကိရိယာ ရှိမှသာ ဆက်လုပ်ပါ။</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>စနစ်ကို အသုံးပြုရန် အရေးကြီးသော ထည့်သွင်းမှုများ (ဥပမာ အသုံးများသော ကီးများ) ကို မက်ပင်းလုပ်ပါက စနစ်ကို ထိန်းချုပ်နိုင်စွမ်း ဆုံးရှုံးနိုင်သည်။ အခြား ထည့်သွင်းကိရိယာ ရှိမှသာ ဆက်လုပ်ပါ။</value></data>

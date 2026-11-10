@@ -793,9 +793,11 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Gyro</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>Beschl.</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>dësen Apparat virun allen Applikatiounen verstoppen</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>dësen Apparat virun Programmer verstoppen, déi en als HID-Apparat opmaachen</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows liest ëmmer nach d'Tasten, déi Dir tippt, dofir funktionéiert d'Tippen weiderhin an all Programm, och a Spiller. Eng USB-Tastatur kann Windows mat „{0}“ entzu ginn.</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows beweegt mat dëser Maus weiderhin de Mauszeiger an all Programm, och a Spiller. Eng USB-Maus kann Windows mat „{0}“ entzu ginn.</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>zougeuerdnet Agabe vun dësem Apparat blockéieren</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> fir all ugeschlossen {0}-Apparater</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (gëllt fir all ugeschlossen {0}-Apparater)</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>Wann dëst Ären eenzegen {0}-Apparat ass, kënnt Dir net méi mat Ärem System interagéieren. Maacht nëmme weider, wann Dir nach en aneren Agabapparat hutt.</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>Wann Dir Agaben zouuerdnet, déi fir d'Bedienung vum System néideg sinn (zum Beispill Lénks-/Rietsklick, X/Y-Beweegung), kënnt Dir d'Kontroll iwwer Äre System verléieren. Maacht nëmme weider, wann Dir nach en aneren Agabapparat hutt.</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>Wann Dir Agaben zouuerdnet, déi fir d'Bedienung vum System néideg sinn (zum Beispill gängeg Tasten), kënnt Dir d'Kontroll iwwer Äre System verléieren. Maacht nëmme weider, wann Dir nach en aneren Agabapparat hutt.</value></data>

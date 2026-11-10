@@ -802,9 +802,11 @@
   <data name="Devices_Gyro" xml:space="preserve"><value>ហ្ស៊ីរ៉ូ</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>សំទុះ</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>លាក់ឧបករណ៍នេះពីកម្មវិធីទាំងអស់</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>លាក់ឧបករណ៍នេះពីកម្មវិធីដែលបើកវាជាឧបករណ៍ HID</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows នៅតែអានគ្រាប់ចុចដែលអ្នកវាយ ដូច្នេះការវាយអក្សរនៅតែដំណើរការក្នុងកម្មវិធីទាំងអស់ រួមទាំងហ្គេមផង។ អាចដកក្ដារចុច USB ចេញពី Windows បានដោយប្រើ «{0}»។</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows នៅតែផ្លាស់ទីទស្សន៍ទ្រនិចជាមួយកណ្ដុរនេះក្នុងកម្មវិធីទាំងអស់ រួមទាំងហ្គេមផង។ អាចដកកណ្ដុរ USB ចេញពី Windows បានដោយប្រើ «{0}»។</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>រារាំងការបញ្ចូលដែលបានម៉ាបពីឧបករណ៍នេះ</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> សម្រាប់{0}ទាំងអស់ដែលបានភ្ជាប់</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (អនុវត្តចំពោះ{0}ទាំងអស់ដែលបានភ្ជាប់)</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>បើនេះជា{0}តែមួយគត់របស់អ្នក អ្នកនឹងបាត់បង់សមត្ថភាពក្នុងការប្រើប្រាស់ប្រព័ន្ធរបស់អ្នក។ សូមបន្តតែក្នុងករណីអ្នកមានឧបករណ៍បញ្ចូលមួយផ្សេងទៀតប៉ុណ្ណោះ។</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>បើអ្នកម៉ាបការបញ្ចូលដែលចាំបាច់សម្រាប់ការប្រើប្រាស់ប្រព័ន្ធ (ឧទាហរណ៍ ចុចឆ្វេង/ស្ដាំ ចលនា X/Y) អ្នកអាចបាត់បង់សមត្ថភាពក្នុងការគ្រប់គ្រងប្រព័ន្ធរបស់អ្នក។ សូមបន្តតែក្នុងករណីអ្នកមានឧបករណ៍បញ្ចូលមួយផ្សេងទៀតប៉ុណ្ណោះ។</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>បើអ្នកម៉ាបការបញ្ចូលដែលចាំបាច់សម្រាប់ការប្រើប្រាស់ប្រព័ន្ធ (ឧទាហរណ៍ គ្រាប់ចុចទូទៅ) អ្នកអាចបាត់បង់សមត្ថភាពក្នុងការគ្រប់គ្រងប្រព័ន្ធរបស់អ្នក។ សូមបន្តតែក្នុងករណីអ្នកមានឧបករណ៍បញ្ចូលមួយផ្សេងទៀតប៉ុណ្ណោះ។</value></data>

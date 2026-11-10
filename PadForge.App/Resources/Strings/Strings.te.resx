@@ -858,9 +858,11 @@
   <data name="Devices_Gyro" xml:space="preserve"><value>గైరో</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>యాక్సెల్</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>ఈ పరికరాన్ని అన్ని అప్లికేషన్ల నుండి దాచడం</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>HID పరికరంగా దీన్ని తెరిచే ప్రోగ్రామ్‌ల నుండి ఈ పరికరాన్ని దాచడం</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows మీరు టైప్ చేసే కీలను చదువుతూనే ఉంటుంది, కాబట్టి గేమ్‌లతో సహా ప్రతి ప్రోగ్రామ్‌లో టైపింగ్ పనిచేస్తూనే ఉంటుంది. USB కీబోర్డ్‌ను “{0}” బటన్‌తో Windows నుండి తీసివేయవచ్చు.</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows గేమ్‌లతో సహా ప్రతి ప్రోగ్రామ్‌లో ఈ మౌస్‌తో పాయింటర్‌ను కదిలిస్తూనే ఉంటుంది. USB మౌస్‌ను “{0}” బటన్‌తో Windows నుండి తీసివేయవచ్చు.</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>ఈ పరికరం నుండి మ్యాప్ చేసిన ఇన్పుట్లను నిరోధించడం</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> కనెక్ట్ అయిన అన్ని {0} కోసం</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (కనెక్ట్ అయిన ప్రతి {0} పరికరానికీ వర్తిస్తుంది)</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>ఇది మీ ఏకైక {0} అయితే, మీరు మీ సిస్టమ్తో సంభాషించే సామర్థ్యాన్ని కోల్పోతారు. మీకు మరో ఇన్పుట్ పరికరం ఉంటేనే కొనసాగండి.</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>సిస్టమ్ వినియోగానికి కీలకమైన ఇన్పుట్లను (ఉదాహరణకు ఎడమ/కుడి క్లిక్, X/Y కదలిక) మ్యాప్ చేస్తే, మీరు మీ సిస్టమ్ను నియంత్రించే సామర్థ్యాన్ని కోల్పోవచ్చు. మీకు మరో ఇన్పుట్ పరికరం ఉంటేనే కొనసాగండి.</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>సిస్టమ్ వినియోగానికి కీలకమైన ఇన్పుట్లను (ఉదాహరణకు సాధారణ కీలు) మ్యాప్ చేస్తే, మీరు మీ సిస్టమ్ను నియంత్రించే సామర్థ్యాన్ని కోల్పోవచ్చు. మీకు మరో ఇన్పుట్ పరికరం ఉంటేనే కొనసాగండి.</value></data>

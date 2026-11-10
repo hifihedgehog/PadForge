@@ -801,9 +801,11 @@
   <data name="Devices_Gyro" xml:space="preserve"><value>ጋይሮ</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>አክስሌሮሜትር</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>ይህን መሣሪያ ከሁሉም መተግበሪያዎች ይደብቃል</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>እንደ HID መሣሪያ ከሚከፍቱት ፕሮግራሞች ይህን መሣሪያ ይደብቃል</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows የምትተይባቸውን ቁልፎች ማንበቡን ይቀጥላል፣ ስለዚህ መተየብ ጨዋታዎችን ጨምሮ በሁሉም ፕሮግራም ውስጥ አሁንም ይሠራል። የUSB ቁልፍ ሰሌዳ በ«{0}» አዝራር ከWindows ሊወሰድ ይችላል።</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows በዚህ መዳፊት ጠቋሚውን ጨዋታዎችን ጨምሮ በሁሉም ፕሮግራም ውስጥ ማንቀሳቀሱን ይቀጥላል። የUSB መዳፊት በ«{0}» አዝራር ከWindows ሊወሰድ ይችላል።</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>ከዚህ መሣሪያ የሚመጡ የተዛመዱ ግብዓቶችን ያግዳል</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> ለሁሉም የተገናኙ የ{0} መሣሪያዎች</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (ለእያንዳንዱ የተገናኘ {0} ይሠራል)</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>ያለህ ብቸኛ {0} ይህ ከሆነ፣ ስርዓትህን የመጠቀም ችሎታህን ታጣለህ። ሌላ የግብዓት መሣሪያ ካለህ ብቻ ቀጥል።</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>ስርዓቱን ለመጠቀም ወሳኝ የሆኑ ግብዓቶችን (ለምሳሌ፣ ግራ/ቀኝ ጠቅታ፣ X/Y እንቅስቃሴ) ካዛመድክ፣ ስርዓትህን የመቆጣጠር ችሎታህን ልታጣ ትችላለህ። ሌላ የግብዓት መሣሪያ ካለህ ብቻ ቀጥል።</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>ስርዓቱን ለመጠቀም ወሳኝ የሆኑ ግብዓቶችን (ለምሳሌ፣ የተለመዱ ቁልፎችን) ካዛመድክ፣ ስርዓትህን የመቆጣጠር ችሎታህን ልታጣ ትችላለህ። ሌላ የግብዓት መሣሪያ ካለህ ብቻ ቀጥል።</value></data>

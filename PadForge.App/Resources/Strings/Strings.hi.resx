@@ -858,9 +858,11 @@
   <data name="Devices_Gyro" xml:space="preserve"><value>जाइरो</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>एक्सेल</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>यह डिवाइस सभी एप्लिकेशन से छिप जाएगा</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>यह डिवाइस उन प्रोग्राम से छिप जाएगा जो इसे HID डिवाइस के रूप में खोलते हैं</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows आपके टाइप की गई कुंजियाँ पढ़ता रहता है, इसलिए गेम सहित हर प्रोग्राम में टाइपिंग काम करती रहती है। USB कीबोर्ड को “{0}” बटन से Windows से अलग किया जा सकता है।</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows इस माउस से हर प्रोग्राम में पॉइंटर हिलाता रहता है, गेम सहित। USB माउस को “{0}” बटन से Windows से अलग किया जा सकता है।</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>इस डिवाइस के मैप किए गए इनपुट ब्लॉक हो जाएँगे</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (सभी कनेक्टेड {0} के लिए)</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (यह सभी कनेक्टेड {0} पर लागू होता है)</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>अगर यह आपका एकमात्र {0} है, तो आप अपने सिस्टम को चला नहीं पाएँगे। तभी आगे बढ़ें जब आपके पास कोई दूसरा इनपुट डिवाइस उपलब्ध हो।</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>अगर आप ऐसे इनपुट मैप करते हैं जो सिस्टम चलाने के लिए ज़रूरी हैं (जैसे बायाँ/दायाँ क्लिक, X/Y मूवमेंट), तो हो सकता है आप अपना सिस्टम नियंत्रित न कर पाएँ। तभी आगे बढ़ें जब आपके पास कोई दूसरा इनपुट डिवाइस उपलब्ध हो।</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>अगर आप ऐसे इनपुट मैप करते हैं जो सिस्टम चलाने के लिए ज़रूरी हैं (जैसे आम कुंजियाँ), तो हो सकता है आप अपना सिस्टम नियंत्रित न कर पाएँ। तभी आगे बढ़ें जब आपके पास कोई दूसरा इनपुट डिवाइस उपलब्ध हो।</value></data>

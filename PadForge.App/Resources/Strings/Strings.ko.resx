@@ -598,13 +598,15 @@
   <data name="Devices_Gyro" xml:space="preserve"><value>자이로</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>가속</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>모든 응용 프로그램에서 이 장치를 숨깁니다</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>HID 장치로 이 장치를 여는 프로그램에서 숨깁니다</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows는 입력하는 키를 계속 읽으므로 게임을 포함한 모든 프로그램에서 계속 입력할 수 있습니다. USB 키보드는 “{0}” 버튼으로 Windows에서 분리할 수 있습니다.</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows는 이 마우스로 모든 프로그램에서 계속 포인터를 움직이며, 게임도 예외가 아닙니다. USB 마우스는 “{0}” 버튼으로 Windows에서 분리할 수 있습니다.</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>이 장치의 매핑된 입력을 차단합니다</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value>(연결된 모든 {0}에 적용)</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (연결된 모든 {0}에 적용)</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>이것이 유일한 {0}인 경우 시스템을 조작할 수 없게 됩니다. 다른 입력 장치가 있을 때만 진행하십시오.</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>시스템 조작에 필수적인 입력(예: 좌/우 클릭, X/Y 이동)을 매핑하면 시스템을 제어할 수 없게 될 수 있습니다. 다른 입력 장치가 있을 때만 진행하십시오.</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>시스템 조작에 필수적인 입력(예: 자주 사용하는 키)을 매핑하면 시스템을 제어할 수 없게 될 수 있습니다. 다른 입력 장치가 있을 때만 진행하십시오.</value></data>
-  <data name="Devices_WarnAction_Format" xml:space="preserve"><value>{0} {1}
+  <data name="Devices_WarnAction_Format" xml:space="preserve"><value>{0}{1}.
 
 {2}</value></data>
   <data name="Devices_DeviceKind_Mouse" xml:space="preserve"><value>마우스</value></data>

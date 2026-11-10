@@ -802,9 +802,11 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Giroskopioa</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>Azel.</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>gailu hau aplikazio guztietatik ezkutatuko da</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>gailu hau ezkutatuko da HID gailu gisa irekitzen duten programetatik</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows-ek idazten dituzun teklak irakurtzen jarraitzen du, beraz programa guztietan idatz daiteke oraindik, jokoetan barne. USB teklatu bat Windows-i kendu dakioke «{0}» botoiarekin.</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows-ek sagu honekin erakuslea mugitzen jarraitzen du programa guztietan, jokoetan barne. USB sagu bat Windows-i kendu dakioke «{0}» botoiarekin.</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>gailu honetako esleitutako sarrerak blokeatuko dira</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> konektatutako {0} guztietan</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (konektatutako {0} guztiei aplikatzen zaie)</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>Hau zure {0} bakarra bada, sistemarekin elkarreragiteko gaitasuna galduko duzu. Jarraitu soilik beste sarrera-gailu bat erabilgarri baduzu.</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>Sistemarekin elkarreragiteko ezinbestekoak diren sarrerak esleitzen badituzu (adibidez, ezkerreko/eskuineko klika, X/Y mugimendua), sistema kontrolatzeko gaitasuna gal dezakezu. Jarraitu soilik beste sarrera-gailu bat erabilgarri baduzu.</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>Sistemarekin elkarreragiteko ezinbestekoak diren sarrerak esleitzen badituzu (adibidez, ohiko teklak), sistema kontrolatzeko gaitasuna gal dezakezu. Jarraitu soilik beste sarrera-gailu bat erabilgarri baduzu.</value></data>

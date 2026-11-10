@@ -802,9 +802,11 @@
   <data name="Devices_Gyro" xml:space="preserve"><value>جيروسكوب</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>مقياس تسارع</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>إخفاء هذا الجهاز عن كل التطبيقات</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>إخفاء هذا الجهاز عن البرامج التي تفتحه كجهاز HID</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>يواصل Windows قراءة المفاتيح التي تضغط عليها، فتبقى الكتابة تعمل في كل البرامج، بما فيها الألعاب. ويمكن سحب لوحة مفاتيح USB من Windows عبر «{0}».</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>يواصل Windows تحريك المؤشر بهذا الماوس في كل البرامج، بما فيها الألعاب. ويمكن سحب ماوس USB من Windows عبر «{0}».</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>حجب المدخلات المعينة من هذا الجهاز</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> لكل أجهزة {0} المتصلة</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (ينطبق على كل أجهزة {0} المتصلة)</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>إذا كان هذا جهاز {0} الوحيد لديك، فستفقد القدرة على التفاعل مع نظامك. لا تتابع إلا إذا كان لديك جهاز إدخال آخر.</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>إذا عيّنت مدخلات ضرورية للتفاعل مع النظام (مثل النقر الأيسر/الأيمن وحركة X/Y)، فقد تفقد القدرة على التحكم في نظامك. لا تتابع إلا إذا كان لديك جهاز إدخال آخر.</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>إذا عيّنت مدخلات ضرورية للتفاعل مع النظام (مثل المفاتيح الشائعة)، فقد تفقد القدرة على التحكم في نظامك. لا تتابع إلا إذا كان لديك جهاز إدخال آخر.</value></data>

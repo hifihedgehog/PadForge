@@ -858,9 +858,11 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Gyro</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>Accel.</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>skjule denne enhed for alle programmer</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>skjule denne enhed for programmer, der åbner den som en HID-enhed</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows læser stadig de taster, du trykker på, så det er fortsat muligt at skrive i alle programmer, også i spil. Et USB-tastatur kan fjernes fra Windows med knappen ”{0}”.</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows flytter stadig markøren med denne mus i alle programmer, også i spil. En USB-mus kan fjernes fra Windows med knappen ”{0}”.</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>blokere tildelte input fra denne enhed</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (gælder alle tilsluttede enheder af typen {0})</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (gælder for alle tilsluttede enheder af typen {0})</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>Hvis du ikke har nogen anden enhed af typen {0}, mister du muligheden for at betjene dit system. Fortsæt kun, hvis du har en anden inputenhed til rådighed.</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>Hvis du tildeler input, der er afgørende for at betjene systemet (for eksempel venstre-/højreklik eller X/Y-bevægelse), kan du miste muligheden for at styre dit system. Fortsæt kun, hvis du har en anden inputenhed til rådighed.</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>Hvis du tildeler input, der er afgørende for at betjene systemet (for eksempel almindelige taster), kan du miste muligheden for at styre dit system. Fortsæt kun, hvis du har en anden inputenhed til rådighed.</value></data>

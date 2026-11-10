@@ -858,9 +858,11 @@
   <data name="Devices_Gyro" xml:space="preserve"><value>Jiroskop</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>İvmeölçer</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>bu cihazı tüm uygulamalardan gizler</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>bu cihazı HID cihazı olarak açan programlardan gizler</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows yazdığınız tuşları okumaya devam eder, bu yüzden yazma işlemi oyunlar dahil her programda çalışır. USB klavye, “{0}” ile Windows'tan alınabilir.</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows bu fareyle işaretçiyi oyunlar dahil her programda hareket ettirmeye devam eder. USB fare, “{0}” ile Windows'tan alınabilir.</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>bu cihazdan gelen eşlenmiş girişleri engeller</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (bağlı tüm {0} cihazları için)</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (bağlı her {0} için geçerlidir)</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>Tek {0} cihazınız buysa sisteminizle etkileşim kuramaz hale gelirsiniz. Yalnızca kullanabileceğiniz başka bir giriş cihazınız varsa devam edin.</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>Sistemle etkileşim için kritik olan girişleri (ör. sol/sağ tıklama, X/Y hareketi) eşlerseniz sisteminizi kontrol edemez hale gelebilirsiniz. Yalnızca kullanabileceğiniz başka bir giriş cihazınız varsa devam edin.</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>Sistemle etkileşim için kritik olan girişleri (ör. sık kullanılan tuşlar) eşlerseniz sisteminizi kontrol edemez hale gelebilirsiniz. Yalnızca kullanabileceğiniz başka bir giriş cihazınız varsa devam edin.</value></data>

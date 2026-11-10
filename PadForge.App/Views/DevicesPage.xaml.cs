@@ -287,41 +287,23 @@ namespace PadForge.Views
 
             var cb = sender as CheckBox;
 
-            // Warn when enabling input blocking on a mouse or keyboard. After a
-            // click the box has already toggled, so IsChecked == true means the
-            // user just turned it on. Consumer Control rows get the same
-            // warning: HidHide's base-container sibling expansion cloaks the
-            // WHOLE physical keyboard the consumer collection belongs to, and
-            // doing that silently locked users out of their system (audit M1).
+            // Say what turning on input blocking does to a mouse or keyboard
+            // before it lands. After a click the box has already toggled, so
+            // IsChecked == true means the user just turned it on. Consumer
+            // Control rows get the keyboard's message, since HidHide's
+            // base-container sibling expansion cloaks the whole physical
+            // keyboard the consumer collection belongs to.
             bool cloaksKeyboardClass = dev.ShowConsumeToggle || dev.DeviceTypeKey == "ConsumerControl";
             if (cb?.IsChecked == true && cloaksKeyboardClass)
             {
                 bool isHidHide = cb.Content?.ToString()?.Contains("HidHide") == true;
-                string action = isHidHide
-                    ? Strings.Instance.Devices_HideAction
-                    : Strings.Instance.Devices_ConsumeAction;
-                string deviceKind = dev.DeviceTypeKey == "Mouse"
-                    ? Strings.Instance.Devices_DeviceKind_Mouse
-                    : Strings.Instance.Devices_DeviceKind_Keyboard;
                 bool isMerged = dev.DevicePath?.StartsWith("aggregate://") == true;
 
-                string scope = isMerged
-                    ? string.Format(Strings.Instance.Devices_WarnScope_Format, deviceKind)
-                    : "";
-
-                string consequence = isHidHide
-                    ? string.Format(Strings.Instance.Devices_WarnHide_Format, deviceKind)
-                    : dev.DeviceTypeKey == "Mouse"
-                        ? Strings.Instance.Devices_WarnConsumeMouse
-                        : Strings.Instance.Devices_WarnConsumeKeyboard;
-
-                // Immediately revert — only re-check if the user confirms.
+                // Immediately revert. Only re-check if the user confirms.
                 if (cb != null)
                     cb.IsChecked = false;
 
-                ShowHidingWarningFlyout(cb, vm, dev,
-                    string.Format(Strings.Instance.Devices_WarnAction_Format, action, scope, consequence),
-                    isHidHide);
+                ShowHidingWarningFlyout(cb, vm, dev, HidingWarning(isHidHide, dev.DeviceTypeKey == "Mouse", isMerged), isHidHide);
                 return;
             }
 
@@ -330,6 +312,29 @@ namespace PadForge.Views
             vm.LastRawStateDeviceGuid = Guid.Empty;
 
             vm.NotifyDeviceHidingChanged(dev.InstanceGuid);
+        }
+
+        /// <summary>What the confirm flyout says before input blocking turns on
+        /// for a keyboard, mouse or Consumer Control row. Hide from Games cannot
+        /// take a keyboard or mouse away from Windows: HidHide filters the
+        /// HIDClass stack only (HidHide Watchdog/App.cpp:114-131), while typing
+        /// runs kbdclass > kbdhid > HidUsb and the pointer mouclass > mouhid >
+        /// HidUsb. Measured on hardware on 2026-10-31 for a keyboard (discussion
+        /// #537) and for a mouse (5809b088): Windows kept both, games included.
+        /// So the message says what does happen and names Use Only in PadForge,
+        /// which does take a USB keyboard or mouse from Windows. The Consume
+        /// message stays a warning, since the hooks really swallow mapped
+        /// keys.</summary>
+        internal static string HidingWarning(bool isHidHide, bool isMouse, bool isMerged)
+        {
+            var s = Strings.Instance;
+            string deviceKind = isMouse ? s.Devices_DeviceKind_Mouse : s.Devices_DeviceKind_Keyboard;
+            string scope = isMerged ? string.Format(s.Devices_WarnScope_Format, deviceKind) : "";
+            string action = isHidHide ? s.Devices_HideHidAction : s.Devices_ConsumeAction;
+            string consequence = isHidHide
+                ? string.Format(isMouse ? s.Devices_WarnHideHid_Mouse : s.Devices_WarnHideHid_Keyboard, s.Devices_DriverBind_OnlyInPadForge)
+                : isMouse ? s.Devices_WarnConsumeMouse : s.Devices_WarnConsumeKeyboard;
+            return string.Format(s.Devices_WarnAction_Format, action, scope, consequence);
         }
 
         /// <summary>Quick Charge checkbox (#372): the TwoWay binding has

@@ -741,9 +741,11 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Jiwoskòp</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>Akselewomèt</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>kache aparèy sa a pou tout aplikasyon</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>kache aparèy sa a pou pwogram ki louvri l kòm yon aparèy HID</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows kontinye li touch ou tape yo, kidonk ou ka toujou tape nan tout pwogram, menm nan jwèt. Ou ka retire yon klavye USB nan men Windows ak “{0}”.</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows kontinye fè flèch la deplase ak sourit sa a nan tout pwogram, menm nan jwèt. Ou ka retire yon sourit USB nan men Windows ak “{0}”.</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>bloke antre ki asiyen yo sou aparèy sa a</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> pou tout {0} ki konekte</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (sa aplike pou tout {0} ki konekte)</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>Si sa se sèl {0} ou genyen, ou p ap ka kontwole sistèm ou an ankò. Kontinye sèlman si ou gen yon lòt aparèy antre disponib.</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>Si ou asiyen antre ki nesesè pou kontwole sistèm nan (pa egzanp, klik gòch/dwat, mouvman X/Y), ou ka pèdi kontwòl sistèm ou an. Kontinye sèlman si ou gen yon lòt aparèy antre disponib.</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>Si ou asiyen antre ki nesesè pou kontwole sistèm nan (pa egzanp, touch ou itilize souvan), ou ka pèdi kontwòl sistèm ou an. Kontinye sèlman si ou gen yon lòt aparèy antre disponib.</value></data>

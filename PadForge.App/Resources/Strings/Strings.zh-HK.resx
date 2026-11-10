@@ -858,7 +858,9 @@
   <data name="Devices_Gyro" xml:space="preserve"><value>陀螺儀</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>加速度計</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>對所有應用程式隱藏此裝置</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>對以 HID 裝置方式開啟此裝置的程式隱藏此裝置</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows 仍會讀取你輸入的按鍵，所以在所有程式中（包括遊戲）仍可正常輸入。USB 鍵盤可透過「{0}」從 Windows 分離出來。</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows 仍會在所有程式中（包括遊戲）以此滑鼠移動指標。USB 滑鼠可透過「{0}」從 Windows 分離出來。</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>封鎖此裝置已對應的輸入</value></data>
   <data name="Devices_WarnScope_Format" xml:space="preserve"><value>（適用於所有已連接的{0}）</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>如果這是你唯一的{0}，你將無法操作電腦。請確定有其他輸入裝置可用才繼續。</value></data>

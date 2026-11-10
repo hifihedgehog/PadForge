@@ -802,7 +802,9 @@
   <data name="Devices_Gyro" xml:space="preserve"><value>გიროსკოპი</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>აქსელერომეტრი</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>ამ მოწყობილობის ყველა აპლიკაციისგან დამალვა</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>ამ მოწყობილობის დამალვა იმ პროგრამებისგან, რომლებიც მას HID მოწყობილობად ხსნიან</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows კვლავ იღებს თქვენ მიერ დაჭერილ კლავიშებს, ამიტომ აკრეფა ყველა პროგრამაში მუშაობს, თამაშების ჩათვლით. USB კლავიატურის Windows-ისთვის ჩამორთმევა შესაძლებელია ღილაკით „{0}“.</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows კვლავ ამოძრავებს კურსორს ამ მაუსით ყველა პროგრამაში, თამაშების ჩათვლით. USB მაუსის Windows-ისთვის ჩამორთმევა შესაძლებელია ღილაკით „{0}“.</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>ამ მოწყობილობის მიბმული შეყვანების დაბლოკვა</value></data>
   <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (ყველა შეერთებული: {0})</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>თუ ეს ერთადერთი მოწყობილობაა ({0}), სისტემასთან ურთიერთობის შესაძლებლობას დაკარგავთ. გააგრძელეთ მხოლოდ იმ შემთხვევაში, თუ სხვა შეყვანის მოწყობილობა გაქვთ.</value></data>

@@ -801,9 +801,11 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Devices_Gyro" xml:space="preserve"><value>Xhiro</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>Përshpejtimi</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>fshehë këtë pajisje nga të gjitha aplikacionet</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>fshehë këtë pajisje nga programet që e hapin si pajisje HID</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows vazhdon të lexojë tastet që shtypni, ndaj shkrimi funksionon ende në çdo program, përfshirë lojërat. Një tastierë USB mund të shkëputet nga Windows me butonin “{0}”.</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows vazhdon ta lëvizë treguesin me këtë maus në çdo program, përfshirë lojërat. Një maus USB mund të shkëputet nga Windows me butonin “{0}”.</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>bllokojë hyrjet e hartëzuara nga kjo pajisje</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> për të gjitha pajisjet e lidhura të llojit {0}</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (vlen për çdo pajisje të lidhur të llojit {0})</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>Nëse kjo është pajisja juaj e vetme e llojit {0}, do të humbni mundësinë të ndërveproni me sistemin. Vazhdoni vetëm nëse keni një pajisje tjetër hyrjeje.</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>Nëse hartëzoni hyrje kritike për ndërveprimin me sistemin (për shembull, klikimi majtas/djathtas, lëvizja X/Y), mund të humbni mundësinë të kontrolloni sistemin. Vazhdoni vetëm nëse keni një pajisje tjetër hyrjeje.</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>Nëse hartëzoni hyrje kritike për ndërveprimin me sistemin (për shembull, tastet e zakonshme), mund të humbni mundësinë të kontrolloni sistemin. Vazhdoni vetëm nëse keni një pajisje tjetër hyrjeje.</value></data>

@@ -800,7 +800,9 @@
   <data name="Devices_Gyro" xml:space="preserve"><value>ഗൈറോ</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>ആക്സൽ</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>ഈ ഉപകരണത്തെ എല്ലാ ആപ്ലിക്കേഷനുകളിൽ നിന്നും മറയ്ക്കും</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>ഈ ഉപകരണത്തെ HID ഉപകരണമായി തുറക്കുന്ന പ്രോഗ്രാമുകളിൽ നിന്ന് അതിനെ മറയ്ക്കും</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>നിങ്ങൾ ടൈപ്പ് ചെയ്യുന്ന കീകൾ Windows തുടർന്നും വായിക്കും, അതിനാൽ ഗെയിമുകൾ ഉൾപ്പെടെ എല്ലാ പ്രോഗ്രാമുകളിലും ടൈപ്പിംഗ് പ്രവർത്തിക്കും. “{0}” ഉപയോഗിച്ച് ഒരു USB കീബോർഡ് Windows-ൽ നിന്ന് എടുത്തുമാറ്റാം.</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>ഗെയിമുകൾ ഉൾപ്പെടെ എല്ലാ പ്രോഗ്രാമുകളിലും ഈ മൗസ് ഉപയോഗിച്ച് Windows പോയിന്റർ തുടർന്നും നീക്കും. “{0}” ഉപയോഗിച്ച് ഒരു USB മൗസ് Windows-ൽ നിന്ന് എടുത്തുമാറ്റാം.</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>ഈ ഉപകരണത്തിൽ നിന്ന് മാപ്പ് ചെയ്ത ഇൻപുട്ടുകൾ തടയും</value></data>
   <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (ബന്ധിപ്പിച്ച എല്ലാ {0} ഉപകരണങ്ങൾക്കും)</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>ഇത് നിങ്ങളുടെ ഒരേയൊരു {0} ആണെങ്കിൽ, നിങ്ങളുടെ സിസ്റ്റവുമായി ഇടപെടാനുള്ള കഴിവ് നഷ്ടമാകും. മറ്റൊരു ഇൻപുട്ട് ഉപകരണം ലഭ്യമാണെങ്കിൽ മാത്രം തുടരുക.</value></data>

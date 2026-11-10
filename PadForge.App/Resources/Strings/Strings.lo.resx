@@ -801,9 +801,11 @@
   <data name="Devices_Gyro" xml:space="preserve"><value>ໄຈໂຣ</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>ຄວາມເລັ່ງ</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>ເຊື່ອງອຸປະກອນນີ້ຈາກທຸກແອັບພລິເຄຊັນ</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>ເຊື່ອງອຸປະກອນນີ້ຈາກໂປຣແກຣມທີ່ເປີດມັນເປັນອຸປະກອນ HID</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows ຍັງອ່ານປຸ່ມທີ່ທ່ານພິມຢູ່ຕໍ່ໄປ, ສະນັ້ນການພິມຍັງໃຊ້ໄດ້ໃນທຸກໂປຣແກຣມ ລວມທັງເກມ. ແປ້ນພິມ USB ສາມາດຖືກເອົາອອກຈາກ Windows ໄດ້ດ້ວຍປຸ່ມ “{0}”.</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows ຍັງເລື່ອນຕົວຊີ້ດ້ວຍເມົ້ານີ້ຢູ່ຕໍ່ໄປໃນທຸກໂປຣແກຣມ ລວມທັງເກມ. ເມົ້າ USB ສາມາດຖືກເອົາອອກຈາກ Windows ໄດ້ດ້ວຍປຸ່ມ “{0}”.</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>ສະກັດການປ້ອນຂໍ້ມູນທີ່ແມັບໄວ້ຈາກອຸປະກອນນີ້</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> ສຳລັບ{0}ທັງໝົດທີ່ເຊື່ອມຕໍ່ຢູ່</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (ໃຊ້ກັບ{0}ທັງໝົດທີ່ເຊື່ອມຕໍ່ຢູ່)</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>ຖ້ານີ້ແມ່ນ{0}ອັນດຽວຂອງທ່ານ, ທ່ານຈະບໍ່ສາມາດໃຊ້ງານລະບົບໄດ້. ດຳເນີນການຕໍ່ສະເພາະເມື່ອທ່ານມີອຸປະກອນປ້ອນຂໍ້ມູນອື່ນ.</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>ຖ້າທ່ານແມັບການປ້ອນຂໍ້ມູນທີ່ຈຳເປັນສຳລັບການໃຊ້ງານລະບົບ (ຕົວຢ່າງ: ຄລິກຊ້າຍ/ຂວາ, ການເຄື່ອນທີ່ X/Y), ທ່ານອາດຈະບໍ່ສາມາດຄວບຄຸມລະບົບໄດ້. ດຳເນີນການຕໍ່ສະເພາະເມື່ອທ່ານມີອຸປະກອນປ້ອນຂໍ້ມູນອື່ນ.</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>ຖ້າທ່ານແມັບການປ້ອນຂໍ້ມູນທີ່ຈຳເປັນສຳລັບການໃຊ້ງານລະບົບ (ຕົວຢ່າງ: ປຸ່ມທີ່ໃຊ້ທົ່ວໄປ), ທ່ານອາດຈະບໍ່ສາມາດຄວບຄຸມລະບົບໄດ້. ດຳເນີນການຕໍ່ສະເພາະເມື່ອທ່ານມີອຸປະກອນປ້ອນຂໍ້ມູນອື່ນ.</value></data>

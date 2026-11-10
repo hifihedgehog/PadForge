@@ -858,9 +858,11 @@
   <data name="Devices_Gyro" xml:space="preserve"><value>陀螺儀</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>加速度計</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>對所有應用程式隱藏此裝置</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>對以 HID 裝置開啟此裝置的程式隱藏此裝置</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows 仍會讀取您輸入的按鍵，因此在所有程式中都能正常打字，遊戲也不例外。USB 鍵盤可以透過「{0}」從 Windows 取走。</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows 仍會用此滑鼠在所有程式中移動指標，遊戲也不例外。USB 滑鼠可以透過「{0}」從 Windows 取走。</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>封鎖來自此裝置的已對應輸入</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value>，且適用於所有已連接的{0}</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value>（適用於所有已連接的{0}）</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>如果這是您唯一的{0}，您將無法操作系統。請只在有其他輸入裝置可用時才繼續。</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>如果您對應了操作系統不可或缺的輸入（例如左/右鍵點按、X/Y 移動），可能會無法控制系統。請只在有其他輸入裝置可用時才繼續。</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>如果您對應了操作系統不可或缺的輸入（例如常用按鍵），可能會無法控制系統。請只在有其他輸入裝置可用時才繼續。</value></data>

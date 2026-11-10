@@ -799,13 +799,15 @@
   <data name="Devices_Gyro" xml:space="preserve"><value>જાયરો</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>એક્સેલ</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>આ ઉપકરણને બધી એપ્લિકેશનોથી છુપાવવું</value></data>
-  <data name="Devices_ConsumeAction" xml:space="preserve"><value>આ ઉપકરણના મેપ કરેલા ઇનપુટ અવરોધવા</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>આ ઉપકરણ તેને HID ઉપકરણ તરીકે ખોલતા પ્રોગ્રામથી છુપાવાશે</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>તમે ટાઇપ કરો છો તે કી Windows વાંચતું રહે છે, તેથી રમતો સહિત દરેક પ્રોગ્રામમાં ટાઇપિંગ કામ કરતું રહે છે. USB કીબોર્ડને “{0}” વડે Windows પાસેથી લઈ શકાય છે.</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>રમતો સહિત દરેક પ્રોગ્રામમાં Windows આ માઉસથી પોઇન્ટર ખસેડતું રહે છે. USB માઉસને “{0}” વડે Windows પાસેથી લઈ શકાય છે.</value></data>
+  <data name="Devices_ConsumeAction" xml:space="preserve"><value>આ ઉપકરણના મેપ કરેલા ઇનપુટ અવરોધાશે</value></data>
   <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (બધા જોડાયેલા {0} માટે)</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>જો {0} ફક્ત આ જ હોય, તો તમે તમારી સિસ્ટમ સાથે ક્રિયાપ્રતિક્રિયા કરવાની ક્ષમતા ગુમાવશો. તમારી પાસે બીજું ઇનપુટ ઉપકરણ ઉપલબ્ધ હોય તો જ આગળ વધો.</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>જો તમે સિસ્ટમ સાથે ક્રિયાપ્રતિક્રિયા માટે મહત્ત્વના ઇનપુટ (ઉદાહરણ તરીકે ડાબું/જમણું ક્લિક, X/Y હલનચલન) મેપ કરો, તો તમે તમારી સિસ્ટમ પર નિયંત્રણ ગુમાવી શકો છો. તમારી પાસે બીજું ઇનપુટ ઉપકરણ ઉપલબ્ધ હોય તો જ આગળ વધો.</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>જો તમે સિસ્ટમ સાથે ક્રિયાપ્રતિક્રિયા માટે મહત્ત્વના ઇનપુટ (ઉદાહરણ તરીકે સામાન્ય કી) મેપ કરો, તો તમે તમારી સિસ્ટમ પર નિયંત્રણ ગુમાવી શકો છો. તમારી પાસે બીજું ઇનપુટ ઉપકરણ ઉપલબ્ધ હોય તો જ આગળ વધો.</value></data>
-  <data name="Devices_WarnAction_Format" xml:space="preserve"><value>આનાથી આ થશે: {0}{1}.
+  <data name="Devices_WarnAction_Format" xml:space="preserve"><value>આનાથી {0}{1}.
 
 {2}</value></data>
   <data name="Devices_DeviceKind_Mouse" xml:space="preserve"><value>માઉસ</value></data>

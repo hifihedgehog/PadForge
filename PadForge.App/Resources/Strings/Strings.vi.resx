@@ -858,9 +858,11 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Devices_Gyro" xml:space="preserve"><value>Con quay hồi chuyển</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>Gia tốc kế</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
-  <data name="Devices_HideAction" xml:space="preserve"><value>ẩn thiết bị này khỏi mọi ứng dụng</value></data>
+  <data name="Devices_HideHidAction" xml:space="preserve"><value>ẩn thiết bị này khỏi các chương trình mở nó dưới dạng thiết bị HID</value></data>
+  <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows vẫn đọc các phím bạn gõ, nên việc gõ phím vẫn hoạt động trong mọi chương trình, kể cả trò chơi. Có thể gỡ bàn phím USB khỏi Windows bằng nút “{0}”.</value></data>
+  <data name="Devices_WarnHideHid_Mouse" xml:space="preserve"><value>Windows vẫn di chuyển con trỏ bằng chuột này trong mọi chương trình, kể cả trò chơi. Có thể gỡ chuột USB khỏi Windows bằng nút “{0}”.</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>chặn các đầu vào đã ánh xạ từ thiết bị này</value></data>
-  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> đối với tất cả {0} đang kết nối</value></data>
+  <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (áp dụng cho mọi {0} đang kết nối)</value></data>
   <data name="Devices_WarnHide_Format" xml:space="preserve"><value>Nếu đây là {0} duy nhất của bạn, bạn sẽ mất khả năng tương tác với hệ thống. Chỉ tiếp tục nếu bạn có sẵn một thiết bị đầu vào khác.</value></data>
   <data name="Devices_WarnConsumeMouse" xml:space="preserve"><value>Nếu bạn ánh xạ các đầu vào thiết yếu cho việc tương tác với hệ thống (ví dụ nhấp chuột trái/phải, di chuyển X/Y), bạn có thể mất khả năng điều khiển hệ thống. Chỉ tiếp tục nếu bạn có sẵn một thiết bị đầu vào khác.</value></data>
   <data name="Devices_WarnConsumeKeyboard" xml:space="preserve"><value>Nếu bạn ánh xạ các đầu vào thiết yếu cho việc tương tác với hệ thống (ví dụ các phím thông dụng), bạn có thể mất khả năng điều khiển hệ thống. Chỉ tiếp tục nếu bạn có sẵn một thiết bị đầu vào khác.</value></data>

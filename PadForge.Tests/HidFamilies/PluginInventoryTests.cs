@@ -24,7 +24,12 @@ namespace PadForge.Tests
             ("Asus/Motherboard", InsideAPc), ("CoolerMaster/ACER_P09", InsideAPc), ("CoolerMaster/Intel_Arc", InsideAPc),
             ("Corsair/Corsair_Elite_Capellix", InsideAPc), ("Corsair/Corsair_ICUE_Link", InsideAPc), ("Corsair/Corsair_Nautilus", InsideAPc),
             ("Corsair/Corsair_XC7", InsideAPc), ("Corsair/Corsair_XD6", InsideAPc),
-            ("Corsair/Legacy_Lighting_Controllers/", InsideAPc), ("Corsair/Modern_Corsair/Corsair_ICUE_Link", InsideAPc),
+            // The LT100 towers and LS100 strips in the same folder are lit (CorsairLightingNodeLighting).
+            ("Corsair/Legacy_Lighting_Controllers/Corsair_Lighting_Commander_Pro.js", InsideAPc),
+            ("Corsair/Legacy_Lighting_Controllers/Corsair_Lighting_Node_Core.js", InsideAPc),
+            ("Corsair/Legacy_Lighting_Controllers/Corsair_Lighting_Node_Pro.js", InsideAPc),
+            ("Corsair/Legacy_Lighting_Controllers/Corsair_Spec_Omega_Case.js", InsideAPc),
+            ("Corsair/Modern_Corsair/Corsair_ICUE_Link", InsideAPc),
             ("Corsair/Modern_Corsair/Corsair_Lighting_Commander", InsideAPc), ("Corsair/Platinum_Pro_XT_AIO/", InsideAPc),
             ("GigaByte/", InsideAPc), ("ID-Cooling/", InsideAPc), ("Lian Li/", InsideAPc), ("Msi/", InsideAPc), ("Nollie/", InsideAPc),
             ("Nzxt/NZXT_Kraken", InsideAPc), ("Nzxt/NZXT_Motherboard", InsideAPc), ("Nzxt/NZXT_Smart_Device", InsideAPc), ("Nzxt/Nzxt_Kraken", InsideAPc),

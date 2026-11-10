@@ -35,7 +35,8 @@ Every other folder of OpenRGB's Controllers has a decision here: a family
 PadForge lights another way (LIT_ANOTHER_WAY), one no Windows build compiles
 (NOT_ON_WINDOWS), or one #557's coverage table left out at OpenRGB c6fc8016
 (DECIDED_IN_557: parts inside a PC, lights on the network, code for Linux or
-testing, and the rest of that table's rows). The folders are read from git at
+testing, and the rest of that table's rows). A ported family of which only some
+products are lit names them in SOME_PRODUCTS. The folders are read from git at
 the clone's commit, so an empty folder left on disk counts for nothing. The run
 stops on a folder with no decision, so a family OpenRGB adds is named at
 release prep until it is ported or given its reason.
@@ -84,7 +85,8 @@ FAMILIES = [
 # on the network are not peripherals and are not listed.
 PERIPHERAL_FAMILIES = [
     "AOCMouseController", "AOCMousematController", "AlienwareMonitorController", "AresonController",
-    "AsusMonitorController", "BlinkyTapeController", "ClevoLightbarController", "CorsairVoidController", "CreativeController",
+    "AsusMonitorController", "BlinkyTapeController", "ClevoLightbarController", "CorsairLightingNodeController",
+    "CorsairVoidController", "CreativeController",
     "DreamCheekyController", "EdifierHaloController", "GameSirController", "GigabyteAorusMouseController",
     "HYTEMousematController", "HoltekController", "HyperXMicrophoneController", "HyperXMicrophoneV2Controller",
     "HyperXMouseController", "HyperXMousematController", "InstantMouseController", "LGMonitorController",
@@ -118,13 +120,23 @@ NOT_ON_WINDOWS = {
     "RetroidAYNController": "Linux only",
 }
 
+# Ported families of which only some products are lit, each with the
+# products kept. The Lighting Node family's other five registrations are
+# parts inside a PC, #557's rule: the Lighting Node Core and Pro, the
+# Commander Pro and the 1000D and SPEC OMEGA cases
+# (CorsairLightingNodeControllerDetect.cpp:44-50). The LT100 towers stand on a
+# desk and the LS100 strips go behind a monitor.
+SOME_PRODUCTS = {
+    "CorsairLightingNodeController": {(0x1B1C, 0x0C1E), (0x1B1C, 0x0C23)},
+}
+
 # The other folders OpenRGB had at c6fc8016, where #557 settled its coverage.
 DECIDED_IN_557 = (
     "AMBXController", "AMDWraithPrismController", "ASRockPolychromeUSBController", "ASRockSMBusController",
     "ArcticController", "AsusAuraGPUController", "ColorfulGPUController", "ColorfulTuringGPUController",
     "CorsairCommanderCoreController", "CorsairController", "CorsairDRAMController", "CorsairHydro2Controller",
     "CorsairHydroController", "CorsairHydroPlatinumController", "CorsairICueLinkController",
-    "CorsairLightingNodeController", "CorsairVengeanceController", "CrucialController",
+    "CorsairVengeanceController", "CrucialController",
     "CryorigH7QuadLumiController", "DDPController", "DMXController", "DRGBController", "DebugController",
     "E131Controller", "EKController", "ENESMBusController", "EVGAAmpereGPUController",
     "EVGAGP102GPUController", "EVGAPascalGPUController", "EVGASMBusController", "EVGATuringGPUController",
@@ -515,6 +527,12 @@ def main():
         if not os.path.isdir(os.path.join(root, "Controllers", family)):
             sys.exit("no family " + family)
         found = read_family(root, family, dm, dm_macros, ctors, hidapi_bus)
+        if family in SOME_PRODUCTS:
+            kept = SOME_PRODUCTS[family]
+            missing = kept - {(r.vid, r.pid) for r in found}
+            if missing:
+                sys.exit("%s no longer registers %s" % (family, ", ".join("%04X:%04X" % p for p in sorted(missing))))
+            found = [r for r in found if (r.vid, r.pid) in kept]
         if not found:
             sys.exit("%s has no registration" % family)
         regs.extend(found)

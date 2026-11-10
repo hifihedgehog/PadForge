@@ -487,6 +487,7 @@ namespace PadForge.Common.Input.Peripherals
             RazerArgbLighting.Instance,
             RazerChargingPadLighting.Instance,
             CorsairVoidLighting.Instance,
+            CorsairLightingNodeLighting.Instance,
             PluginDeviceLighting.Instance,
             AlienFxLighting.Instance,
             QmkRawHidLighting.Instance,

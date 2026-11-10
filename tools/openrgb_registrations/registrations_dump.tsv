@@ -491,6 +491,8 @@ AsusMonitorController	Hid	Asus ROG SWIFT PG32UCDP	2821	7114	1	65394	161	-1	1
 AsusMonitorController	Hid	Asus ROG Aura Monitor Light Bar	2821	6856	2	65394	161	-1	1
 BlinkyTapeController	UsbSerial	BlinkyTape	7504	24670	-1	-1	-1	-1	1
 ClevoLightbarController	Hid	CLEVO Lightbar	1165	28673	-1	65283	2	-1	1
+CorsairLightingNodeController	Hid	Corsair LS100 Lighting Kit	6940	3102	-1	-1	-1	-1	1
+CorsairLightingNodeController	Hid	Corsair LT100	6940	3107	-1	-1	-1	-1	1
 CorsairVoidController	Hid	Corsair Void Pro Wireless	6940	2580	-1	65477	1	-1	1
 CorsairVoidController	Hid	Corsair Void Pro Wireless	6940	2586	-1	65477	1	-1	1
 CorsairVoidController	Hid	Corsair Void Pro USB	6940	2583	-1	65477	1	-1	1

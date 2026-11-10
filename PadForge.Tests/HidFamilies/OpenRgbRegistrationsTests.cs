@@ -66,9 +66,10 @@ namespace PadForge.Tests
                                                                     r.Interface, r.UsagePage, r.Usage, r.Bus, r.EnabledByDefault ? 1 : 0);
 
             var families = OpenRgbRegistrations.All.Select(r => r.Family).Distinct().ToList();
-            // The 54 families of the issue's table and the 44 peripheral families, the Corsair
-            // Void's among them since OpenRGB added it after c6fc8016.
-            Assert.Equal(98, families.Count);
+            // The 54 families of the issue's table and the 45 peripheral families, the Corsair
+            // Void's among them since OpenRGB added it after c6fc8016, and the Lighting Node's
+            // LT100 and LS100 alone (SOME_PRODUCTS, which the dump applies too).
+            Assert.Equal(99, families.Count);
             foreach (var family in families)
             {
                 var mine = OpenRgbRegistrations.Of(family).Where(r => !r.FromSettings).Select(Key).OrderBy(x => x, StringComparer.Ordinal);
@@ -133,7 +134,7 @@ namespace PadForge.Tests
                 Assert.Equal(family == "WootingKeyboardController" ? 2 + 3 * 11 : lines, rows.Count);
             }
             Assert.Equal(473, OpenRgbRegistrations.All.Count(r => inventory.ContainsKey(r.Family)));
-            Assert.Equal(575, OpenRgbRegistrations.All.Length);
+            Assert.Equal(577, OpenRgbRegistrations.All.Length);
             Assert.DoesNotContain(OpenRgbRegistrations.All, r => r.Family is "HIDLampArrayController" or "LogitechController"
                                                                or "RazerController" or "SteelSeriesController");
         }

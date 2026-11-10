@@ -11,7 +11,10 @@ controller code, which is not built, and is never called. Only the
 registration constructors run, before main.
 
 Usage:
-    python tools/openrgb_registrations/build.py [OPENRGB_ROOT]
+    python tools/openrgb_registrations/build.py [OPENRGB_ROOT] [FAMILY ...]
+
+Named families are built alone and replace their own rows of the dump, which
+keeps every other family's.
 
 Needs the Visual Studio C++ tools.
 """
@@ -116,6 +119,29 @@ def main():
         shutil.rmtree(work, ignore_errors=True)
     if failed:
         sys.exit("failed: " + ", ".join(failed))
+    with open(out, encoding="utf-8") as f:
+        head, *rows = f.read().splitlines()
+
+    def ported(row):
+        """A family of which only some products are lit keeps their rows alone, as the
+        generator keeps them (SOME_PRODUCTS)."""
+        cells = row.split("\t")
+        products = gen.SOME_PRODUCTS.get(cells[0])
+        return products is None or (int(cells[3]), int(cells[4])) in products
+
+    rows = [r for r in rows if ported(r)]
+    if only and os.path.exists(DUMP):
+        # A run of named families replaces their rows and keeps every other family's, in
+        # the generator's family order.
+        with open(DUMP, encoding="utf-8") as f:
+            old_head, *old_rows = f.read().splitlines()
+        if old_head != head:
+            sys.exit("the dump was made at another OpenRGB commit (%s), so build every family" % old_head)
+        order = {family: i for i, family in enumerate(gen.ALL_FAMILIES)}
+        rows = sorted([r for r in old_rows if r.split("\t")[0] not in only] + rows,
+                      key=lambda r: order.get(r.split("\t")[0], len(order)))
+    with open(out, "wb") as f:
+        f.write(("\n".join([head] + rows) + "\n").encode("utf-8"))
     os.replace(out, DUMP)
     print("wrote " + DUMP)
 

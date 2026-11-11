@@ -9,7 +9,10 @@ using Xunit;
 namespace PadForge.Tests
 {
     /// <summary>The devices only G-Helper, ckb-next, libratbag or alienfx-tools light,
-    /// byte for byte against those projects (#557).</summary>
+    /// byte for byte against those projects (#557). The Kone EMP's tests keep a backup
+    /// in <see cref="KeyboardProfileBackups"/>, which is static, so the class runs in the
+    /// collection no other test runs beside.</summary>
+    [Collection("PeripheralOutputStatics")]
     public class OtherProjectsLightingTests
     {
         private static string Hex(byte[] bytes, int count) => BitConverter.ToString(bytes, 0, count).Replace('-', ' ');

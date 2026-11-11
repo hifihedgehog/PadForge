@@ -11,7 +11,11 @@ namespace PadForge.Tests
 {
     /// <summary>The ASUS Aura USB family against OpenRGB's
     /// AsusAuraUSBController at the pinned commit (#557). Every expected byte
-    /// is written out from the reference's own code, cited at each test.</summary>
+    /// is written out from the reference's own code, cited at each test. The
+    /// Claymore's and the Strix Evolve's tests keep a backup in
+    /// <see cref="KeyboardProfileBackups"/>, which is static, so the class
+    /// runs in the collection no other test runs beside.</summary>
+    [Collection("PeripheralOutputStatics")]
     public class AsusAuraUsbLightingTests
     {
         internal static string Hex(byte[] bytes) => BitConverter.ToString(bytes).Replace('-', ' ');

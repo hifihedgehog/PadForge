@@ -10,7 +10,8 @@ namespace PadForge.Controls
     /// column taking an equal share of the width, so the tiles of a row end
     /// flush with the panel's edge and a wider window gains columns, not
     /// gaps. Every tile of a row is as tall as the row's tallest. A collapsed
-    /// tile takes no cell.
+    /// tile takes no cell. With <see cref="FillRows"/> a row's tiles share
+    /// the whole width, however few they are.
     /// </summary>
     public sealed class TileGridPanel : Panel
     {
@@ -35,6 +36,22 @@ namespace PadForge.Controls
             get => (double)GetValue(GapProperty);
             set => SetValue(GapProperty, value);
         }
+
+        public static readonly DependencyProperty RowGapProperty = DependencyProperty.Register(
+            nameof(RowGap), typeof(double), typeof(TileGridPanel),
+            new FrameworkPropertyMetadata(double.NaN, FrameworkPropertyMetadataOptions.AffectsMeasure));
+
+        /// <summary>The space between rows, when it is not the space
+        /// between columns. Unset, rows stand <see cref="Gap"/> apart.</summary>
+        public double RowGap
+        {
+            get => (double)GetValue(RowGapProperty);
+            set => SetValue(RowGapProperty, value);
+        }
+
+        /// <summary>The space between rows: <see cref="RowGap"/> when it
+        /// is set, else <see cref="Gap"/>.</summary>
+        internal static double RowGapFor(double rowGap, double gap) => double.IsNaN(rowGap) ? gap : rowGap;
 
         public static readonly DependencyProperty MaxColumnsProperty = DependencyProperty.Register(
             nameof(MaxColumns), typeof(int), typeof(TileGridPanel),
@@ -61,56 +78,85 @@ namespace PadForge.Controls
             return (columns, Math.Max(0, item));
         }
 
+        public static readonly DependencyProperty FillRowsProperty = DependencyProperty.Register(
+            nameof(FillRows), typeof(bool), typeof(TileGridPanel),
+            new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsMeasure));
+
+        /// <summary>Whether the tiles of a row share the panel's whole
+        /// width. A row with fewer tiles than the columns that fit then has
+        /// wider tiles and no empty column: two groups of settings stand
+        /// side by side at half the width each, and one alone takes all of
+        /// it. Unset, a tile keeps its column's width and the columns after
+        /// the last tile stay empty, as a row of cards wants.</summary>
+        public bool FillRows
+        {
+            get => (bool)GetValue(FillRowsProperty);
+            set => SetValue(FillRowsProperty, value);
+        }
+
+        /// <summary>The width of each tile in a row that holds
+        /// <paramref name="inRow"/> tiles: the column's width, or an equal
+        /// share of the whole width when rows fill and there is a width to
+        /// share.</summary>
+        internal static double RowItemWidth(double width, double gap, int inRow, double itemWidth, bool fill)
+        {
+            if (!fill || inRow < 1 || double.IsInfinity(width) || double.IsNaN(width)) return itemWidth;
+            return Math.Max(0, (width - gap * (inRow - 1)) / inRow);
+        }
+
+        /// <summary>The tiles that show, in order.</summary>
+        private System.Collections.Generic.List<UIElement> Shown()
+        {
+            var shown = new System.Collections.Generic.List<UIElement>(InternalChildren.Count);
+            foreach (UIElement child in InternalChildren)
+                if (child != null && child.Visibility != Visibility.Collapsed)
+                    shown.Add(child);
+            return shown;
+        }
+
         protected override Size MeasureOverride(Size availableSize)
         {
             var (columns, itemWidth) = Columns(availableSize.Width, MinItemWidth, Gap, MaxColumns);
-            double total = 0, rowHeight = 0;
-            int inRow = 0, shown = 0;
-            foreach (UIElement child in InternalChildren)
+            double down = RowGapFor(RowGap, Gap);
+            var shown = Shown();
+            double total = 0;
+            for (int start = 0; start < shown.Count; start += columns)
             {
-                if (child == null || child.Visibility == Visibility.Collapsed) continue;
-                child.Measure(new Size(itemWidth, double.PositiveInfinity));
-                if (inRow == columns)
+                int inRow = Math.Min(columns, shown.Count - start);
+                double tileWidth = RowItemWidth(availableSize.Width, Gap, inRow, itemWidth, FillRows);
+                double rowHeight = 0;
+                for (int i = start; i < start + inRow; i++)
                 {
-                    total += rowHeight + Gap;
-                    rowHeight = 0;
-                    inRow = 0;
+                    shown[i].Measure(new Size(tileWidth, double.PositiveInfinity));
+                    rowHeight = Math.Max(rowHeight, shown[i].DesiredSize.Height);
                 }
-                rowHeight = Math.Max(rowHeight, child.DesiredSize.Height);
-                inRow++;
-                shown++;
+                total += rowHeight + (start > 0 ? down : 0);
             }
-            total += rowHeight;
+            int across = Math.Min(shown.Count, columns);
             double width = double.IsInfinity(availableSize.Width)
-                ? Math.Min(shown, columns) * itemWidth + Math.Max(0, Math.Min(shown, columns) - 1) * Gap
+                ? across * itemWidth + Math.Max(0, across - 1) * Gap
                 : availableSize.Width;
-            return new Size(shown == 0 ? 0 : width, shown == 0 ? 0 : total);
+            return new Size(shown.Count == 0 ? 0 : width, shown.Count == 0 ? 0 : total);
         }
 
         protected override Size ArrangeOverride(Size finalSize)
         {
             var (columns, itemWidth) = Columns(finalSize.Width, MinItemWidth, Gap, MaxColumns);
-            // A row is as tall as its tallest tile, so the heights are read
-            // a row at a time before anything is placed.
-            var row = new System.Collections.Generic.List<UIElement>(columns);
+            double down = RowGapFor(RowGap, Gap);
+            var shown = Shown();
             double y = 0;
-            void Place()
+            for (int start = 0; start < shown.Count; start += columns)
             {
-                if (row.Count == 0) return;
+                int inRow = Math.Min(columns, shown.Count - start);
+                double tileWidth = RowItemWidth(finalSize.Width, Gap, inRow, itemWidth, FillRows);
+                // A row is as tall as its tallest tile.
                 double height = 0;
-                foreach (var tile in row) height = Math.Max(height, tile.DesiredSize.Height);
-                for (int i = 0; i < row.Count; i++)
-                    row[i].Arrange(new Rect(i * (itemWidth + Gap), y, itemWidth, height));
-                y += height + Gap;
-                row.Clear();
+                for (int i = start; i < start + inRow; i++)
+                    height = Math.Max(height, shown[i].DesiredSize.Height);
+                for (int i = 0; i < inRow; i++)
+                    shown[start + i].Arrange(new Rect(i * (tileWidth + Gap), y, tileWidth, height));
+                y += height + down;
             }
-            foreach (UIElement child in InternalChildren)
-            {
-                if (child == null || child.Visibility == Visibility.Collapsed) continue;
-                if (row.Count == columns) Place();
-                row.Add(child);
-            }
-            Place();
             return finalSize;
         }
     }

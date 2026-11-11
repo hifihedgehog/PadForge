@@ -80,6 +80,19 @@ namespace PadForge.Tests
             Assert.True(count >= 1 && item >= 0);
         }
 
+        [Theory]
+        // A row that fills shares the whole width among its tiles.
+        [InlineData(1088.0, 2, 260.0, true, 536.0)]
+        [InlineData(1088.0, 1, 260.0, true, 1088.0)]
+        [InlineData(1088.0, 4, 260.0, true, 260.0)]
+        // One that does not keeps the column's width.
+        [InlineData(1088.0, 2, 260.0, false, 260.0)]
+        // With no width to share, the tiles keep their narrowest width.
+        [InlineData(double.PositiveInfinity, 2, 252.0, true, 252.0)]
+        [InlineData(double.NaN, 2, 252.0, true, 252.0)]
+        public void ARowThatFills_SharesTheWholeWidthAmongItsTiles(double width, int inRow, double itemWidth, bool fill, double expected)
+            => Assert.Equal(expected, TileGridPanel.RowItemWidth(width, 16, inRow, itemWidth, fill), 6);
+
         /// <summary>Laid out: the tiles of a row are as tall as its tallest,
         /// rows are a gap apart, and a collapsed tile takes no cell, so the
         /// tiles after it close up.</summary>
@@ -100,6 +113,37 @@ namespace PadForge.Tests
             Assert.Equal(new Rect(0, 0, 260, 60), LayoutInformation.GetLayoutSlot(a));
             Assert.Equal(new Rect(276, 0, 260, 60), LayoutInformation.GetLayoutSlot(b));
             Assert.Equal(new Rect(0, 76, 260, 50), LayoutInformation.GetLayoutSlot(c));
+
+            // Rows can stand another distance apart than columns do.
+            Assert.Equal(16, TileGridPanel.RowGapFor(double.NaN, 16));
+            Assert.Equal(24, TileGridPanel.RowGapFor(24, 16));
+            panel.RowGap = 24;
+            panel.Measure(new Size(536, double.PositiveInfinity));
+            Assert.Equal(new Size(536, 60 + 24 + 50), panel.DesiredSize);
+            panel.Arrange(new Rect(panel.DesiredSize));
+            Assert.Equal(new Rect(276, 0, 260, 60), LayoutInformation.GetLayoutSlot(b));
+            Assert.Equal(new Rect(0, 84, 260, 50), LayoutInformation.GetLayoutSlot(c));
+
+            // Rows that fill: the two tiles of the first row are as they
+            // were, and the one tile of the second takes the whole width.
+            panel.FillRows = true;
+            panel.Measure(new Size(536, double.PositiveInfinity));
+            panel.Arrange(new Rect(panel.DesiredSize));
+            Assert.Equal(new Rect(0, 0, 260, 60), LayoutInformation.GetLayoutSlot(a));
+            Assert.Equal(new Rect(276, 0, 260, 60), LayoutInformation.GetLayoutSlot(b));
+            Assert.Equal(new Rect(0, 84, 536, 50), LayoutInformation.GetLayoutSlot(c));
+            // Two tiles in a width that fits four columns: half each, and no
+            // empty column.
+            c.Visibility = Visibility.Collapsed;
+            panel.Measure(new Size(1088, double.PositiveInfinity));
+            panel.Arrange(new Rect(panel.DesiredSize));
+            Assert.Equal(new Rect(0, 0, 536, 60), LayoutInformation.GetLayoutSlot(a));
+            Assert.Equal(new Rect(552, 0, 536, 60), LayoutInformation.GetLayoutSlot(b));
+            // Without it each keeps its column's 260.
+            panel.FillRows = false;
+            panel.Measure(new Size(1088, double.PositiveInfinity));
+            panel.Arrange(new Rect(panel.DesiredSize));
+            Assert.Equal(new Rect(276, 0, 260, 60), LayoutInformation.GetLayoutSlot(b));
 
             // With nothing to show the panel takes no room.
             var empty = new TileGridPanel();

@@ -142,6 +142,90 @@ namespace PadForge.Tests
             Assert.Equal(768, LeftOf(reset, row));
         });
 
+        // ── the value's column ─────────────────────────────────────────
+
+        [Theory]
+        [InlineData(66, 40, 26)]
+        [InlineData(66, 66, 0)]
+        [InlineData(66, 90, 0)]
+        [InlineData(66, 0, 0)]
+        [InlineData(0, 40, 0)]
+        public void AValueNarrowerThanItsColumn_LeavesTheDifferenceBeforeIt(double valueWidth, double value, double expected)
+            => Assert.Equal(expected, SettingRow.ValuePad(valueWidth, value));
+
+        /// <summary>Two rows of one card, a short number and a long one:
+        /// both sliders end at one line and both numbers end against the
+        /// reset, as the Motion and Lights boards draw a card's rows.</summary>
+        [Fact]
+        public void RowsWithAValueWidth_EndTheirSlidersAtOneLine_AndTheirValuesAtTheRight() => RunSta(() =>
+        {
+            var (shortRow, _, shortSlider, shortValue, shortReset) = SliderRow();
+            var (longRow, _, longSlider, longValue, _) = SliderRow();
+            longValue.Width = 60;
+            foreach (var (row, slider) in new[] { (shortRow, shortSlider), (longRow, longSlider) })
+            {
+                slider.MaxWidth = double.PositiveInfinity;
+                row.Grow = true;
+                row.ValueWidth = 66;
+                Layout(row, 800);
+            }
+
+            // 800 less the label's 242, the value column's 66 and the reset's 32.
+            Assert.Equal(460, shortSlider.RenderSize.Width);
+            Assert.Equal(460, longSlider.RenderSize.Width);
+            // Each value stands at the right of the column.
+            Assert.Equal(768 - 40, LeftOf(shortValue, shortRow));
+            Assert.Equal(768 - 60, LeftOf(longValue, longRow));
+            Assert.Equal(768, LeftOf(shortReset, shortRow));
+        });
+
+        [Fact]
+        public void AValueWiderThanItsColumn_TakesItsOwnWidth() => RunSta(() =>
+        {
+            var (row, _, slider, value, reset) = SliderRow();
+            slider.MaxWidth = double.PositiveInfinity;
+            value.Width = 90;
+            row.Grow = true;
+            row.ValueWidth = 66;
+            Layout(row, 800);
+
+            Assert.Equal(800 - 242 - 90 - 32, slider.RenderSize.Width);
+            Assert.Equal(768 - 90, LeftOf(value, row));
+            Assert.Equal(768, LeftOf(reset, row));
+        });
+
+        /// <summary>A slider with no number after it runs to the reset: the
+        /// column is the value's, and there is none.</summary>
+        [Fact]
+        public void ARowWithNoValue_LeavesNoColumnForOne() => RunSta(() =>
+        {
+            var (row, _, slider, value, _) = SliderRow();
+            slider.MaxWidth = double.PositiveInfinity;
+            value.Visibility = Visibility.Collapsed;
+            row.Grow = true;
+            row.ValueWidth = 66;
+            Layout(row, 800);
+
+            Assert.Equal(800 - 242 - 32, slider.RenderSize.Width);
+        });
+
+        /// <summary>A slider that stops at its own width keeps the column
+        /// too: the value stands the difference away from it.</summary>
+        [Fact]
+        public void AValueWidth_HoldsForASliderThatDoesNotGrow() => RunSta(() =>
+        {
+            var (row, _, slider, value, _) = SliderRow();
+            row.ValueWidth = 66;
+            Layout(row, 800);
+
+            Assert.Equal(280, slider.RenderSize.Width);
+            Assert.Equal(242 + 280 + 26, LeftOf(value, row));
+
+            // With no bound the row asks for the column as well.
+            row.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            Assert.Equal(242 + 280 + 66 + 32, row.DesiredSize.Width);
+        });
+
         [Fact]
         public void ACollapsedChild_TakesNoRoom() => RunSta(() =>
         {
@@ -223,6 +307,39 @@ namespace PadForge.Tests
             Layout(row, 500);
             Assert.Equal(158, meters.RenderSize.Width);
             Assert.Equal(400, LeftOf(test, row));
+
+            // A row that grows its slider leaves a filling child at its
+            // MaxWidth: growing is the slider's.
+            row.Grow = true;
+            Layout(row, 1000);
+            Assert.Equal(420, meters.RenderSize.Width);
+            Assert.Equal(662, LeftOf(test, row));
+        });
+
+        /// <summary>A picker in a row that grows: 260 wide while the row
+        /// has the room, narrower when it has not, with the reset in view
+        /// either way.</summary>
+        [Fact]
+        public void APickerThatFills_StaysAtItsWidth_AndNarrowsInANarrowRow() => RunSta(() =>
+        {
+            var row = new SettingRow { MinHeight = 44, Grow = true, ValueWidth = 66 };
+            var label = new Border { Width = 182, Height = 20 };
+            var picker = new Border { MaxWidth = 260, Height = 32 };
+            SettingRow.SetFills(picker, true);
+            var reset = new Border { Width = 32, Height = 32 };
+            DockPanel.SetDock(reset, Dock.Right);
+            row.Children.Add(label);
+            row.Children.Add(picker);
+            row.Children.Add(reset);
+
+            Layout(row, 800);
+            Assert.Equal(182, LeftOf(picker, row));
+            Assert.Equal(260, picker.RenderSize.Width);
+            Assert.Equal(768, LeftOf(reset, row));
+
+            Layout(row, 388);
+            Assert.Equal(174, picker.RenderSize.Width);
+            Assert.Equal(356, LeftOf(reset, row));
         });
 
         // ── the card that lists fold parts ─────────────────────────────

@@ -473,8 +473,16 @@
                                                VerticalAlignment="Center"/>
                                     <!-- Room for the action, which lies over
                                          the line's end and outside the
-                                         button, so the hint stops before it. -->
-                                    <Border Grid.Column="4" Width="{Binding ActualWidth, ElementName=ActionSite}"/>
+                                         button, so the hint stops before it.
+                                         It is there only while the part is
+                                         open. A collapsed element reports no
+                                         change of its width, so room that
+                                         stayed bound to the action's width
+                                         kept it after the part closed, and
+                                         the value then stood that far from
+                                         the line's end. -->
+                                    <Border x:Name="ActionRoom" Grid.Column="4" Visibility="Collapsed"
+                                            Width="{Binding ActualWidth, ElementName=ActionSite}"/>
                                 </Grid>
                             </ToggleButton>
                             <ContentPresenter x:Name="ActionSite" ContentSource="HeaderAction"
@@ -489,6 +497,7 @@
                         <Trigger Property="IsExpanded" Value="True">
                             <Setter TargetName="ExpandSite" Property="Visibility" Value="Visible"/>
                             <Setter TargetName="ActionSite" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="ActionRoom" Property="Visibility" Value="Visible"/>
                             <Setter TargetName="SummaryText" Property="Visibility" Value="Collapsed"/>
                             <Setter TargetName="Chevron" Property="RenderTransform">
                                 <Setter.Value>

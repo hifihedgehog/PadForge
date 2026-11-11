@@ -50,6 +50,37 @@ namespace PadForge.Converters
     }
 
     /// <summary>
+    /// A folded card's line for a setting picked from a list (#574): the
+    /// name the list shows for the stored value. Values: the stored value,
+    /// then the list of options (each a <see cref="ViewModels.GyroLabeledOption"/>),
+    /// then any string of the strings table. The converter never reads the
+    /// third. It is bound so that a change of language reads the line
+    /// again, since an option looks its name up when asked and raises no
+    /// change of its own. A value the list does not hold reads as itself.
+    /// </summary>
+    public sealed class OptionTextConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (values == null || values.Length < 2) return string.Empty;
+            if (values[0] is not string stored) return string.Empty;
+            if (values[1] is System.Collections.IEnumerable options)
+            {
+                foreach (object option in options)
+                {
+                    if (option is ViewModels.GyroLabeledOption labeled
+                        && string.Equals(labeled.Value, stored, StringComparison.Ordinal))
+                        return labeled.Display ?? string.Empty;
+                }
+            }
+            return stored;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+            => throw new NotSupportedException();
+    }
+
+    /// <summary>
     /// A folded card's line made of values (#574): the values, then the
     /// format they go into, bound to the strings table so the words between
     /// the values are the language's own. Empty until every value is there.

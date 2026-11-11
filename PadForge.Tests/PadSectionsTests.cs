@@ -376,13 +376,28 @@ namespace PadForge.Tests
                     // A section may hold row styles of its own beside its
                     // one column of groups.
                     var column = Assert.Single(content.Elements(), e => e.Name.LocalName != "ScrollViewer.Resources");
-                    Assert.Equal("StackPanel", column.Name.LocalName);
+                    if (section == PadViewModel.MotionSection)
+                    {
+                        // Motion & Touch stands its groups side by side
+                        // while each has 420 to itself, as its board does,
+                        // and the groups of a row share the whole width.
+                        Assert.Equal("TileGridPanel", column.Name.LocalName);
+                        Assert.Equal("420", (string)column.Attribute("MinItemWidth"));
+                        Assert.Equal("16", (string)column.Attribute("Gap"));
+                        Assert.Equal("24", (string)column.Attribute("RowGap"));
+                        Assert.Equal("True", (string)column.Attribute("FillRows"));
+                    }
+                    else
+                    {
+                        Assert.Equal("StackPanel", column.Name.LocalName);
+                    }
                     // A group is a panel under its heading, or a group box
                     // that carries the group's name where its board draws no
                     // heading over the cards. Rumble & Haptics is all group
-                    // boxes, and so are the sticks and the triggers.
+                    // boxes, and so are the sticks, the triggers and the
+                    // groups of Motion & Touch.
                     Assert.All(column.Elements(), g => Assert.Contains(g.Name.LocalName, new[] { "StackPanel", "GroupBox" }));
-                    if (section == PadViewModel.RumbleSection)
+                    if (section == PadViewModel.RumbleSection || section == PadViewModel.MotionSection)
                         Assert.All(column.Elements(), g => Assert.Equal("GroupBox", g.Name.LocalName));
                     if (section == PadViewModel.SticksSection)
                         Assert.Equal(new[] { "GroupBox", "GroupBox", "StackPanel" }, column.Elements().Select(g => g.Name.LocalName));
@@ -464,7 +479,10 @@ namespace PadForge.Tests
         /// group. A group whose board draws no heading over its cards (every
         /// group of Rumble and Haptics, the sticks, the triggers) is a group
         /// box that carries the id and the tab's name itself, and its cards
-        /// are all it holds.</summary>
+        /// are all it holds. A group of Motion and Touch is a group box
+        /// with the small label its board draws over its cards: the label
+        /// carries the id, and the group's paragraph is the label's
+        /// tooltip.</summary>
         [Fact]
         public void EveryTabKeepsItsId()
         {
@@ -473,7 +491,24 @@ namespace PadForge.Tests
             {
                 var carrier = Assert.Single(page.Descendants(), e => Id(e) == id);
                 var named = Named(page, name);
-                if (named.Name.LocalName == "GroupBox" && tab != PadViewModel.OutputTabIndex)
+                if (named.Name.LocalName == "GroupBox" && PadViewModel.SectionOfTab(tab) == PadViewModel.MotionSection)
+                {
+                    Assert.Equal("{StaticResource BareGroupBox}", (string)named.Attribute("Style"));
+                    var panel = Assert.Single(named.Elements());
+                    Assert.Equal("StackPanel", panel.Name.LocalName);
+                    // The label is the group's first element and the group
+                    // box takes its name from the same string.
+                    Assert.Same(panel.Elements().First(), carrier);
+                    Assert.Equal("TextBlock", carrier.Name.LocalName);
+                    Assert.Equal("{StaticResource SectionTitle}", (string)carrier.Attribute("Style"));
+                    Assert.Equal((string)carrier.Attribute("Text"), (string)named.Attribute("AutomationProperties.Name"));
+                    Assert.Matches(@"^\{Binding Pad_\w+_Subtitle, Source=\{x:Static strings:Strings\.Instance\}\}$",
+                        (string)carrier.Attribute("ToolTip"));
+                    // No large heading and no paragraph over the cards.
+                    Assert.DoesNotContain(panel.Elements(), e => ((string)e.Attribute("Style") ?? "").Contains("TitleTextBlockStyle"));
+                    Assert.DoesNotContain(panel.Elements().Skip(1), e => e.Name.LocalName == "TextBlock");
+                }
+                else if (named.Name.LocalName == "GroupBox" && tab != PadViewModel.OutputTabIndex)
                 {
                     Assert.True(PadViewModel.IsStackedSection(PadViewModel.SectionOfTab(tab)));
                     Assert.Same(named, carrier);
@@ -879,6 +914,133 @@ namespace PadForge.Tests
             var chart = Assert.Single(triggers.Descendants(), e => e.Name.LocalName == "CurveEditor");
             Assert.Equal("{Binding Pad_SensitivityCurveHintShort, Source={x:Static strings:Strings.Instance}}",
                 (string)chart.ElementsAfterSelf().First().Attribute("Text"));
+        }
+
+        /// <summary>Motion and Touch as its board draws it. The section has
+        /// row styles of its own that shadow the page's: a label column 170
+        /// wide, a slider with no width to stop at, and cards 12 apart.
+        /// Every row grows its slider and holds its value in a column 66
+        /// wide, so the sliders of a card end at one line and the numbers
+        /// end against the resets. A row that belongs to the row above has
+        /// its label set in, and no row is set in itself. A card's title
+        /// has no icon. A picker in a row gives way in a narrow column.</summary>
+        [Fact]
+        public void MotionAndTouch_HasRowsOfItsOwn_AndCardsAsItsBoardDrawsThem()
+        {
+            var page = Page();
+            var scroll = Named(page, "MotionSectionScroll");
+            var own = Assert.Single(scroll.Elements(), e => e.Name.LocalName == "ScrollViewer.Resources");
+            XElement Style(string key) => Assert.Single(own.Elements(), e => (string)e.Attribute(X + "Key") == key);
+            string Setter(XElement style, string property) => (string)style.Elements()
+                .SingleOrDefault(e => e.Name.LocalName == "Setter" && (string)e.Attribute("Property") == property)?.Attribute("Value");
+
+            Assert.Equal("170", Setter(Style("DzLabel"), "Width"));
+            var subLabel = Style("DzSubLabel");
+            Assert.Equal("{StaticResource DzLabel}", (string)subLabel.Attribute("BasedOn"));
+            // 16 in, and its control still starts where every row's does.
+            Assert.Equal("154", Setter(subLabel, "Width"));
+            Assert.Equal("16,0,12,0", Setter(subLabel, "Margin"));
+            var slider = Style("DzSlider");
+            Assert.Equal("{StaticResource EmberSlider}", (string)slider.Attribute("BasedOn"));
+            Assert.Null(Setter(slider, "Width"));
+            Assert.Null(Setter(slider, "MaxWidth"));
+            var card = Style("CardBorder");
+            Assert.Equal("{StaticResource CardBorder}", (string)card.Attribute("BasedOn"));
+            Assert.Equal("0,0,0,12", Setter(card, "Margin"));
+            var lists = scroll.Descendants().Where(e => e.Name.LocalName == "FoldList").ToList();
+            Assert.Equal(2, lists.Count);
+            Assert.All(lists, l => Assert.Equal("12", (string)l.Attribute("Gap")));
+
+            // Every row of the section.
+            var rows = scroll.Descendants().Where(e => e.Name.LocalName == "SettingRow").ToList();
+            Assert.True(rows.Count > 80, "the section has " + rows.Count + " rows");
+            Assert.All(rows, r =>
+            {
+                Assert.Equal("True", (string)r.Attribute("Grow"));
+                Assert.Equal("66", (string)r.Attribute("ValueWidth"));
+                Assert.Null(r.Attribute("Margin"));
+            });
+            // A row opens on its label, in the section's column. The two
+            // rows of live readings do too.
+            Assert.All(rows, r =>
+            {
+                var first = r.Elements().First(e => !e.Name.LocalName.Contains('.'));
+                Assert.Equal("TextBlock", first.Name.LocalName);
+                Assert.Contains((string)first.Attribute("Style"), new[] { "{StaticResource DzLabel}", "{StaticResource DzSubLabel}" });
+            });
+            // No slider keeps a width of its own, and a value typed in
+            // place wears the page's value style.
+            Assert.All(rows.SelectMany(r => r.Elements()).Where(e => e.Name.LocalName == "Slider"),
+                s => Assert.Null(s.Attribute("Width")));
+            Assert.All(rows.Where(r => r.Elements().Any(e => e.Name.LocalName == "Slider"))
+                .SelectMany(r => r.Elements()).Where(e => e.Name.LocalName == "TextBox"),
+                b => Assert.Equal("{StaticResource DzValueEdit}", (string)b.Attribute("Style")));
+            // A picker gives way: it stops at a MaxWidth and is marked to
+            // fill, or asks for no width at all.
+            var pickers = rows.Where(r => r.Elements().All(e => e.Name.LocalName != "Slider"))
+                .SelectMany(r => r.Elements()).Where(e => e.Name.LocalName == "ComboBox").ToList();
+            Assert.True(pickers.Count >= 13, pickers.Count + " pickers");
+            Assert.All(pickers, c =>
+            {
+                Assert.Null(c.Attribute("Width"));
+                if (c.Attribute("MaxWidth") != null)
+                    Assert.Contains(c.Attributes(), a => a.Name.LocalName == "SettingRow.Fills" && a.Value == "True");
+            });
+
+            // A card's title row holds its title and its Reset All, and no
+            // icon. Nothing in the section is the old large heading.
+            var titles = scroll.Descendants().Where(e => (string)e.Attribute("Style") == "{StaticResource CardTitle}").ToList();
+            Assert.Equal(5, titles.Count);
+            Assert.All(titles, title => Assert.DoesNotContain(title.Parent!.Elements(), e => e.Name.LocalName == "GlyphText"));
+            Assert.DoesNotContain(scroll.Descendants(), e => ((string)e.Attribute("Style") ?? "").Contains("TitleTextBlockStyle"));
+
+            // Calibration: its two buttons and when it was last done on one
+            // line that wraps, and the live readings under More, three to a
+            // row that wraps too.
+            var calibration = Assert.Single(Named(page, "GyroCalibrationCard").Elements());
+            Assert.Equal(new[] { "DockPanel", "WrapPanel", "MoreRow" }, calibration.Elements().Select(e => e.Name.LocalName));
+            var line = calibration.Elements().ElementAt(1);
+            Assert.Equal(new[] { "{Binding GyroCalibrateCommand}", "{Binding GyroResetCalibrationCommand}" },
+                line.Elements().Where(e => e.Name.LocalName == "Button").Select(b => (string)b.Attribute("Command")));
+            Assert.Equal("{StaticResource ResetAllButton}", (string)line.Elements().ElementAt(1).Attribute("Style"));
+            var readings = Named(page, "GyroCalibrationMore").Descendants().Where(e => e.Name.LocalName == "WrapPanel").ToList();
+            Assert.Equal(2, readings.Count);
+            Assert.All(readings, w =>
+            {
+                Assert.Contains(w.Attributes(), a => a.Name.LocalName == "SettingRow.Fills" && a.Value == "True");
+                Assert.Equal(3, w.Elements().Count());
+                Assert.All(w.Elements(), r => Assert.Equal("{StaticResource LiveReading}", (string)r.Attribute("Style")));
+            });
+            Assert.Equal("120", Setter(Style("LiveReading"), "Width"));
+
+            // Sensitivity's More: a row for each axis to invert, each with
+            // its own switch and reset.
+            var more = Named(page, "GyroSensitivityMore");
+            foreach (string axis in new[] { "Pitch", "Yaw", "Roll" })
+            {
+                var toggle = Assert.Single(more.Descendants(), e => e.Name.LocalName == "CheckBox"
+                    && (string)e.Attribute("IsChecked") == "{Binding GyroInvert" + axis + ", Mode=TwoWay}");
+                Assert.Equal("{StaticResource SwitchCheckBox}", (string)toggle.Attribute("Style"));
+                Assert.Single(toggle.Parent!.Elements(), e => e.Name.LocalName == "CheckBox");
+                Assert.Equal("{Binding ResetGyroInvert" + axis + "Command}",
+                    (string)Assert.Single(toggle.Parent.Elements(), e => e.Name.LocalName == "Button").Attribute("Command"));
+            }
+
+            // Grip is the first line of the gyro's list. Its line ends with
+            // the grip that is set, by the name the picker shows for it.
+            var grip = Named(page, "GyroGripCard");
+            Assert.Same(lists[0].Elements().First(), grip);
+            var summary = Assert.Single(Assert.Single(grip.Elements(), e => e.Name.LocalName == "FoldCard.Summary").Elements());
+            Assert.Equal("{StaticResource OptionTextConverter}", (string)summary.Attribute("Converter"));
+            Assert.Equal(new[] { "MotionGrip", "MotionGripOptions", "Pad_Gyro_Grip_Header" },
+                summary.Elements().Select(b => (string)b.Attribute("Path")));
+            Assert.Contains(grip.Descendants(), e => (string)e.Attribute("SelectedValue") == "{Binding MotionGrip, Mode=TwoWay}");
+
+            // Mouse Output's paragraph is its title's tooltip.
+            var mouse = titles.Single(e => ((string)e.Attribute("Text")).Contains("Pad_Touchpad_Mouse_Header"));
+            Assert.Contains("Pad_Touchpad_Mouse_Subtitle", (string)mouse.Attribute("ToolTip"));
+            Assert.DoesNotContain(scroll.Descendants(), e => e.Name.LocalName == "TextBlock"
+                && ((string)e.Attribute("Text") ?? "").Contains("Pad_Touchpad_Mouse_Subtitle"));
         }
 
         /// <summary>The screenshot script reaches every tab through ids the

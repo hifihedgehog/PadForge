@@ -300,6 +300,63 @@ namespace PadForge.Tests
             }
         });
 
+        /// <summary>A closed line ends with its value at the line's end,
+        /// before the part was ever opened and after it was opened and
+        /// closed. The room for the open part's action was bound to the
+        /// action's width, and an action that collapses reports no change
+        /// of width, so the room stayed and the value stood the action's
+        /// width short of the end (seen 2026-11-11 on Motion Steering and
+        /// Gyro Tilt beside parts that had never been opened).</summary>
+        [Fact]
+        public void AClosedLinesValue_StandsAtTheEnd_AfterThePartWasOpenedToo() => RunSta(() =>
+        {
+            using var count = new ChangeCount();
+            var styles = ShippedStyles();
+            var card = new FoldCard
+            {
+                Header = "Gyro Tilt",
+                Hint = "Full Tilt Range, Tilt Deadzone",
+                Summary = "25",
+                HeaderAction = new System.Windows.Controls.Border { Width = 80, Height = 30 },
+                Resources = styles,
+                Content = new System.Windows.Controls.TextBlock { Text = "the rows" },
+            };
+            card.Style = (System.Windows.Style)styles[typeof(FoldCard)];
+            Assert.True(card.ApplyTemplate());
+            var value = Assert.IsType<System.Windows.Controls.TextBlock>(card.Template.FindName("SummaryText", card));
+            var action = Assert.IsAssignableFrom<System.Windows.FrameworkElement>(card.Template.FindName("ActionSite", card));
+
+            void Layout()
+            {
+                // Twice: a width that follows another element's settles on
+                // the pass after that element's.
+                for (int pass = 0; pass < 2; pass++)
+                {
+                    card.Measure(new System.Windows.Size(600, double.PositiveInfinity));
+                    card.Arrange(new System.Windows.Rect(0, 0, 600, card.DesiredSize.Height));
+                    card.UpdateLayout();
+                }
+            }
+            double ValueEnd() => value.TranslatePoint(new System.Windows.Point(value.RenderSize.Width, 0), card).X;
+
+            Layout();
+            double closed = ValueEnd();
+            // The line's padding at its end is 16.
+            Assert.Equal(600 - 16, closed, 3);
+
+            card.IsExpanded = true;
+            Layout();
+            // Open, the action stands at the end and the value is away.
+            Assert.Equal(System.Windows.Visibility.Visible, action.Visibility);
+            Assert.Equal(System.Windows.Visibility.Collapsed, value.Visibility);
+            Assert.Equal(80, action.RenderSize.Width, 3);
+
+            card.IsExpanded = false;
+            Layout();
+            Assert.Equal(System.Windows.Visibility.Visible, value.Visibility);
+            Assert.Equal(closed, ValueEnd(), 3);
+        });
+
         /// <summary>Both parts are Expanders whose header button is bound to
         /// IsExpanded both ways, with the content collapsed until the part
         /// is open.</summary>

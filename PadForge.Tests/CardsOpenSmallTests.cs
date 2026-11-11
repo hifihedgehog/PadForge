@@ -45,6 +45,9 @@ namespace PadForge.Tests
             ("AudioRumbleFoldCard", "Pad.Rumble.Audio", "Settings_AudioRumble", "Pad_AudioRumble_FoldHint"),
             ("TriggerRoutingFoldCard", "Pad.Rumble.TriggerRouting", "Pad_TriggerRouting_Header", "Pad_TriggerRouting_FoldHint"),
             ("AudioTriggerRumbleFoldCard", "Pad.Rumble.AudioTriggers", "Pad_AudioTriggerRumble_Header", "Pad_AudioTriggerRumble_FoldHint"),
+            // Grip's hint is its paragraph, which the line trims: its first
+            // sentence is what the board writes there.
+            ("GyroGripCard", "Pad.Motion.Grip", "Pad_Gyro_Grip_Header", "Pad_Gyro_Grip_Subtitle"),
             ("GyroEngageCard", "Pad.Motion.Engage", "Pad_Gyro_Engage_Header", "Pad_GyroEngage_FoldHint"),
             ("GyroResponseCard", "Pad.Motion.Response", "Pad_Gyro_Response_Header", "Pad_GyroResponse_FoldHint"),
             ("MotionSteeringFoldCard", "Pad.Motion.Steering", "Pad_MotionSteer_Header", "Pad_MotionSteering_FoldHint"),
@@ -90,6 +93,11 @@ namespace PadForge.Tests
             ("Pad_More_BassShakers", "Pad.Rumble.BassShakers.More", "Pad_More_BassShakers",
                 new[] { "{Binding RumbleAudioEnabled, Mode=TwoWay}" },
                 new[] { "RumbleAudioEndpointId", "RumbleAudioChannelMode", "RumbleAudioMasterGain" }),
+            // Calibration opens on its two buttons and when it was last
+            // done. The live readings are under More.
+            ("Pad_More_GyroCalibration", "Pad.Motion.Calibration.More", "Settings_GyroLiveRate_Label",
+                new[] { "GyroCalibrateCommand", "GyroResetCalibrationCommand", "GyroCalibrationLabel" },
+                new[] { "GyroLiveRatePitch", "GyroLiveRateYaw", "GyroLiveRateRoll", "AccelLiveX", "AccelLiveY", "AccelLiveZ" }),
             ("Pad_More_GyroSensitivity", "Pad.Motion.Sensitivity.More", "Pad_More_GyroSensitivity",
                 new[] { "{Binding GyroSensitivityH, Mode=TwoWay", "{Binding GyroSensitivityV, Mode=TwoWay" },
                 new[] { "GyroSensitivityUnits", "GyroSpace", "GyroInvertPitch", "GyroInvertYaw", "GyroInvertRoll", "GyroRealWorldCalibration" }),
@@ -140,10 +148,12 @@ namespace PadForge.Tests
             // A list holds fold cards and nothing else.
             foreach (var list in Page().Descendants().Where(e => e.Name.LocalName == "FoldList"))
                 Assert.All(list.Elements(), e => Assert.Equal("FoldCard", e.Name.LocalName));
-            // The 22 parts that have a Reset All and the 21 that have a
-            // description keep them.
+            // The 22 parts that have a Reset All and the 22 that have a
+            // description keep them. Grip has a description and no Reset
+            // All: its one row has its own reset.
             Assert.Equal(22, cards.Count(c => c.Elements().Any(e => e.Name.LocalName == "FoldCard.HeaderAction")));
-            Assert.Equal(21, cards.Count(c => c.Attribute("Description") != null));
+            Assert.Equal(22, cards.Count(c => c.Attribute("Description") != null));
+            Assert.Null(cards.Single(c => Name(c) == "GyroGripCard").Elements().SingleOrDefault(e => e.Name.LocalName == "FoldCard.HeaderAction"));
         }
 
         /// <summary>A feature that is off until switched on, and that the
@@ -246,14 +256,16 @@ namespace PadForge.Tests
         public void OpenCardsComeBeforeFoldedOnesInGyroAndTouchpad()
         {
             var page = Page();
-            // A list's fold cards stand where the list does.
-            string[] CardsOf(string group) => page.Descendants().Single(e => e.Name.LocalName == "StackPanel" && Name(e) == group)
+            // A group is a group box around one panel. A list's fold cards
+            // stand where the list does.
+            string[] CardsOf(string group) => Assert.Single(page.Descendants().Single(e => e.Name.LocalName == "GroupBox" && Name(e) == group).Elements())
                 .Elements().SelectMany(e => e.Name.LocalName == "FoldList" ? e.Elements() : new[] { e })
                 .Where(e => e.Name.LocalName == "FoldCard" || ((string)e.Attribute("Style") ?? "").Contains("CardBorder"))
                 .Select(e => Name(e) ?? e.Descendants().Where(d => ((string)d.Attribute("Style") ?? "").Contains("CardTitle")).Select(d => Key(d, "Text")).First())
                 .ToArray();
 
-            Assert.Equal(new[] { "GyroCalibrationCard", "GyroSensitivityCard", "Pad_Gyro_Grip_Header", "GyroEngageCard", "GyroResponseCard",
+            // Grip is the first line of the gyro's list, as its board has it.
+            Assert.Equal(new[] { "GyroCalibrationCard", "GyroSensitivityCard", "GyroGripCard", "GyroEngageCard", "GyroResponseCard",
                 "MotionSteeringFoldCard", "GyroTiltFoldCard", "GyroPassthroughCard", "GyroSimulationCard", "CompassYawCard" }, CardsOf("TabGyro"));
             Assert.Equal(new[] { "Pad_Touchpad_Mouse_Header", "TouchpadStickFoldCard", "TouchpadPointerFoldCard", "SyntheticPressureFoldCard",
                 "SwipeHapticsFoldCard", "GestureDetectionFoldCard", "InBoxGesturesFoldCard", "CustomGesturesFoldCard" }, CardsOf("TabTouchpad"));
@@ -348,6 +360,41 @@ namespace PadForge.Tests
             Assert.Equal("", Line(System.Windows.DependencyProperty.UnsetValue, 135.0, "{0}° to {1}°"));
             Assert.Equal("", Line(15.0, 135.0, ""));
             Assert.Equal("", Line(15.0, "{0} {1} {2}"));
+        }
+
+        /// <summary>A setting picked from a list reads as the name its
+        /// list shows, which is the language's, where the stored value is
+        /// the same word in every language.</summary>
+        [Fact]
+        public void APickedSetting_ReadsAsTheNameItsListShows()
+        {
+            var c = new OptionTextConverter();
+            object Line(params object[] values) => c.Convert(values, typeof(string), null, CultureInfo.InvariantCulture);
+            string shown = "Zeigend";
+            var options = new[]
+            {
+                new GyroLabeledOption(() => shown, "Pointing"),
+                new GyroLabeledOption(() => "Seitlich", "Sideways"),
+            };
+
+            Assert.Equal("Zeigend", Line("Pointing", options, "any string"));
+            Assert.Equal("Seitlich", Line("Sideways", options, "any string"));
+            // The name is looked up when the line is read, so the same
+            // option reads in the new language after a change of it.
+            shown = "Pointing";
+            Assert.Equal("Pointing", Line("Pointing", options, "any string"));
+            // A value the list does not hold reads as itself, and a
+            // binding with no value yet is nothing.
+            Assert.Equal("Upright", Line("Upright", options, "any string"));
+            Assert.Equal("", Line(System.Windows.DependencyProperty.UnsetValue, options, "any string"));
+            Assert.Equal("Pointing", Line("Pointing", System.Windows.DependencyProperty.UnsetValue, "any string"));
+            Assert.Equal("", Line("Pointing"));
+
+            // The page's grip line is bound that way.
+            var vm = new PadViewModel(0);
+            Assert.Contains(vm.MotionGripOptions, o => o.Value == vm.MotionGrip);
+            Assert.Equal(vm.MotionGripOptions.First(o => o.Value == vm.MotionGrip).Display,
+                Line(vm.MotionGrip, vm.MotionGripOptions, "any string"));
         }
     }
 }

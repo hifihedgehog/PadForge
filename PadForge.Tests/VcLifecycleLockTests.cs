@@ -324,8 +324,15 @@ namespace PadForge.Tests
             Assert.NotNull(chained);
 
             // Releasing only the second leaves the record pending on the first.
+            // The wait is for the second's own dispose, however long the
+            // thread pool takes to reach it. A fixed 200 ms stood here, and
+            // the dispose is a pool work item with no claim on a thread: with
+            // the pool's 32 worker threads parked it ran 2.6 to 4.1 s after
+            // its gate opened (measured 2026-11-11). The count below read 0
+            // once in a full run of 20,469.
             second.Gate.Set();
-            await Task.Delay(200);
+            Assert.True(SpinWait.SpinUntil(() => Volatile.Read(ref second.Disposes) == 1, TimeSpan.FromSeconds(60)),
+                "the second dispose never ran");
             Assert.False(chained.IsCompleted, "the first dispose is still running, the record must say so");
             Assert.Equal(1, second.Disposes);
 

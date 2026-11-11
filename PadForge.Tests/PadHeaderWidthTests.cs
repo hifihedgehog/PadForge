@@ -79,26 +79,27 @@ namespace PadForge.Tests
         /// against the 632 a line holds at the 900 minimum with the
         /// navigation pane open, and English needs more than 632 too, so in
         /// a horizontal stack the last sections would run past the edge, as
-        /// the last of the six tabs once did (#505). The part switch of
-        /// Buttons needs 375 in the worst language and wraps as well.</summary>
+        /// the last of the six tabs once did (#505). The top row of Buttons
+        /// holds its Picture and List switch, which needs 176 in Ukrainian,
+        /// the layer chips, Map All and the list's tools, and wraps as
+        /// well.</summary>
         [Fact]
         public void TheTabGroupWrapsItsTabs()
         {
-            string xaml = PadPage();
-            int firstTab = xaml.IndexOf("x:Name=\"TabController\"", StringComparison.Ordinal);
-            Assert.True(firstTab > 0);
-            string before = xaml.Substring(0, firstTab);
-            int wrap = before.LastIndexOf("<WrapPanel Orientation=\"Horizontal\">", StringComparison.Ordinal);
-            int stack = before.LastIndexOf("<StackPanel", StringComparison.Ordinal);
-            Assert.True(wrap > stack, "the panel that holds the parts of Buttons must be a WrapPanel");
-
-            var page = XDocument.Parse(xaml);
-            foreach (string button in new[] { "SectionButtons", "SectionMacros", "TabController", "TabOutput", "TabMacros", "TabMenus" })
+            var page = XDocument.Parse(PadPage());
+            foreach (string button in new[] { "SectionButtons", "SectionMacros", "TabController", "TabMappings", "TabMacros", "TabMenus" })
             {
                 var strip = Named(page, button).Parent!;
                 Assert.Equal("WrapPanel", strip.Name.LocalName);
                 Assert.Equal("Horizontal", (string)strip.Attribute("Orientation"));
             }
+            // Everything in the top row of Buttons is a child of the one
+            // wrapping panel: the switch, the layer chips, the list's tools,
+            // Map All and More.
+            var top = Named(page, "ButtonsTopRow");
+            Assert.Same(top, Named(page, "TabController").Parent);
+            foreach (string child in new[] { "ShiftLayerTabStrip", "ListTools", "ListMoreButton" })
+                Assert.Same(top, Named(page, child).Parent);
         }
 
         /// <summary>The raw hat strip on the Devices page wraps. Measured

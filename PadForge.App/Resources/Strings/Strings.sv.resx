@@ -304,6 +304,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Enhet</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Styrs av</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Lägg till enhet</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Bild</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Lista</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Klicka på en kontroll och tryck sedan på den inmatning som ska styra den.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Lyssnar efter {0}. Tryck på inmatningen på enheten.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Vilken tryckning spelet ser när båda knapparna i ett par hålls ned</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Vilken tryckning spelet ser när båda tangenterna i ett par hålls ned</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Håller ett litet spakutslag så att spel fortsätter visa handkontrollssymboler</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Smider</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Välj ett makro till vänster, eller tryck på Lägg till för att skapa ett.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>RÅ</value></data>
@@ -1383,7 +1390,6 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_MapAll" xml:space="preserve"><value>Mappa alla</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Mappa: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Spela in alla mappningar i tur och ordning, en i taget</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>Klicka på en mappningsrad och tryck på en knapp eller rör en axel på handkontrollen för att tilldela den.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Kopiera alla mappningar och inställningar till Urklipp</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Klistra in mappningar och inställningar från Urklipp</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Kopiera från...</value></data>
@@ -3897,7 +3903,6 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Rörelse och touch</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Belysning och ljud</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makron och menyer</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Inställningar som formar utdata från den här platsens virtuella handkontroll precis innan de skickas till spel: SOCD-rensning för motsatta riktningar som trycks samtidigt, och Håll handkontrollen vaken för spel som släpper handkontrollen i samma stund som de ser inmatning från mus eller tangentbord.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Basskakare</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Dirigerar den vibration och kraftåterkoppling från spel som den här virtuella handkontrollen tar emot till en ljudutgång som lågfrekventa toner för basskakare och subwoofrar.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibration till ljud</value></data>

@@ -106,6 +106,10 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Isixhobo</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Umthombo</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Yongeza isixhobo</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Umfanekiso</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Uluhlu</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Cofa isilawuli, uze ucinezele igalelo elifanele ukusiqhuba.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Kulindelwe {0}. Cinezela igalelo kwisixhobo sakho.</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>Izibuko</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Ii-mod zemidlalo</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Yamkela ii-mod zemidlalo ze-DSX</value></data>

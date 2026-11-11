@@ -183,6 +183,10 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Masin</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Kisim input long</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Putim masin</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Piksa</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Lis</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Klik long wanpela kontrol, na bihain presim baten o eksis long masin bilong yu we i mas ranim em.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>I rekodim {0}. Presim baten o eksis long masin bilong yu.</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Ol mod bilong gem</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Kisim ol DSX mod bilong gem</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Pot bilong ol mod bilong gem</value></data>
@@ -434,7 +438,6 @@
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>Klik long traim raithan mota</value></data>
   <data name="Pad_RightMotor" xml:space="preserve"><value>Raithan mota</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Mapin: {0}</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>Klik long wanpela lain mapin na presim wanpela baten/eksis long kontrola bilong yu long putim.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Kopim olgeta mapin na ol seting i go long clipboard</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Kopim long...</value></data>
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>Kopim ol seting long narapela masin</value></data>

@@ -289,6 +289,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Dyfais</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Mewnbwn gan</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Ychwanegu Dyfais</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Llun</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Rhestr</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Cliciwch reolydd, yna gwasgwch y mewnbwn a ddylai ei yrru.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Yn gwrando am {0}. Gwasgwch y mewnbwn ar eich dyfais.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Pa wasgiad y mae gemau'n ei weld pan ddelir dau fotwm pâr</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Pa wasgiad y mae gemau'n ei weld pan ddelir dwy fysell pâr</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Yn dal gwyriad bach ar ffon fel bod gemau'n dal i ddangos anogaethau rheolydd</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Gofannu</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Dewiswch facro ar y chwith, neu pwyswch Ychwanegu i greu un.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>CRAI</value></data>
@@ -1218,7 +1225,6 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Mapio Pob Un</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Mapio: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Recordio pob mapio un ar ôl y llall yn eu trefn</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>Cliciwch res mapio a gwasgwch fotwm/echelin ar eich rheolydd i'w neilltuo.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Copïo'r holl fapiau a gosodiadau i'r clipfwrdd</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Gludo mapiau a gosodiadau o'r clipfwrdd</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Copïo O...</value></data>
@@ -3700,7 +3706,6 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Symudiad a Chyffwrdd</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Goleuo a Sain</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Macros a Dewislenni</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Gosodiadau sy'n siapio allbwn rheolydd rhithwir y slot hwn ychydig cyn iddo gael ei anfon i gemau: glanhau SOCD ar gyfer cyfeiriadau gwrthgyferbyniol a wasgir gyda'i gilydd, a Cadw'r rheolydd yn effro ar gyfer gemau sy'n gollwng y rheolydd cyn gynted ag y gwelant fewnbwn llygoden neu fysellfwrdd.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Siglwyr bas</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Yn llwybro dirgryniad ac adborth grym y gêm y mae'r rheolydd rhithwir hwn yn eu derbyn i allbwn sain fel tonau amledd isel ar gyfer siglwyr bas ac isseinyddion.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Dirgryniad i sain</value></data>

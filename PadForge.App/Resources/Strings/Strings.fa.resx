@@ -304,6 +304,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>دستگاه</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>ورودی از</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>افزودن دستگاه</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>تصویر</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>فهرست</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>روی یک کنترل کلیک کنید و سپس ورودی‌ای را که باید آن را هدایت کند فشار دهید.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>در حال گوش دادن به {0}. ورودی را روی دستگاه خود فشار دهید.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>بازی‌ها هنگام نگه داشتن هر دو دکمه یک جفت کدام فشار را می‌بینند</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>بازی‌ها هنگام نگه داشتن هر دو کلید یک جفت کدام فشار را می‌بینند</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>انحراف کوچک چوب آنالوگ را نگه می‌دارد تا بازی‌ها راهنمای کنترلر را نشان دهند</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>در حال آهنگری</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>یک ماکرو را از فهرست انتخاب کنید یا برای ساختن ماکرو «افزودن» را فشار دهید.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>خام</value></data>
@@ -1383,7 +1390,6 @@
   <data name="Pad_MapAll" xml:space="preserve"><value>نگاشت همه</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>نگاشت: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>ضبط همه نگاشت‌ها به‌ترتیب و یکی‌یکی</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>روی یک ردیف نگاشت کلیک کنید و برای اختصاص، دکمه/محوری را روی کنترلر خود فشار دهید.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>کپی همه نگاشت‌ها و تنظیمات در کلیپ‌بورد</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>جای‌گذاری نگاشت‌ها و تنظیمات از کلیپ‌بورد</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>کپی از...</value></data>
@@ -3897,7 +3903,6 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>حرکت و لمس</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>نورپردازی و صدا</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>ماکروها و منوها</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>تنظیماتی که خروجی کنترلر مجازی این اسلات را درست پیش از فرستادن به بازی‌ها شکل می‌دهند: پاک‌سازی SOCD برای جهت‌های متضادی که هم‌زمان فشرده می‌شوند، و «بیدار نگه داشتن کنترلر» برای بازی‌هایی که به‌محض دیدن ورودی ماوس یا صفحه‌کلید، کنترلر را کنار می‌گذارند.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>لرزاننده‌های بیس</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>لرزش و فورس فیدبکی را که این کنترلر مجازی از بازی دریافت می‌کند، به‌صورت تُن‌های فرکانس پایین برای لرزاننده‌های بیس و ساب‌ووفرها به یک خروجی صدا هدایت می‌کند.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>لرزش به صدا</value></data>

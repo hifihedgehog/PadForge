@@ -158,6 +158,8 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Pūrere</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Tāuru mai i</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Tāpiri pūrere</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Pikitia</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Rārangi</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Arokite</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>Ngā āpiti</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Ngā mod kēmu</value></data>
@@ -1786,4 +1788,5 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Nekehanga me te pā</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Rama me te oro</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Ngā mākoro me ngā tahua</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Ka pupuri i tētahi paku whakanekenga o te rākau kia whakaatu tonu ngā kēmu i ngā tohu controller</value></data>
 </root>

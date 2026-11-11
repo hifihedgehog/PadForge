@@ -289,6 +289,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>ឧបករណ៍</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>បញ្ចូលពី</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>បន្ថែមឧបករណ៍</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>រូបភាព</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>បញ្ជី</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>ចុចផ្នែកបញ្ជាមួយ រួចចុចការបញ្ចូលលើឧបករណ៍របស់អ្នកដែលត្រូវបញ្ជាវា។</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>កំពុងរង់ចាំការបញ្ចូលសម្រាប់ {0}។ ចុចការបញ្ចូលលើឧបករណ៍របស់អ្នក។</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>ការចុចដែលហ្គេមឃើញ ពេលសង្កត់ប៊ូតុងទាំងពីរនៃគូមួយ</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>ការចុចដែលហ្គេមឃើញ ពេលសង្កត់គ្រាប់ចុចទាំងពីរនៃគូមួយ</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>រក្សាកម្រិតរុញដងបញ្ជាតិចតួច ដើម្បីឱ្យហ្គេមបន្តបង្ហាញប៊ូតុងរបស់ឧបករណ៍បញ្ជា</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>កំពុងដំណើរការ</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>ជ្រើសម៉ាក្រូនៅខាងឆ្វេង ឬចុច «បន្ថែម» ដើម្បីបង្កើតមួយ។</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>ដើម</value></data>
@@ -1220,7 +1227,6 @@
   <data name="Pad_MapAll" xml:space="preserve"><value>ម៉ាបទាំងអស់</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>ម៉ាប៖ {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>កត់ត្រាការម៉ាបទាំងអស់ម្ដងមួយៗតាមលំដាប់</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>ចុចជួរដេកការម៉ាបមួយ រួចចុចប៊ូតុង/អ័ក្សលើឧបករណ៍បញ្ជារបស់អ្នក ដើម្បីកំណត់វា។</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>ចម្លងការម៉ាប និងការកំណត់ទាំងអស់ទៅក្ដារតម្បៀតខ្ទាស់</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>បិទភ្ជាប់ការម៉ាប និងការកំណត់ពីក្ដារតម្បៀតខ្ទាស់</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>ចម្លងពី...</value></data>
@@ -3700,7 +3706,6 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>ចលនា និងការប៉ះ</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>ពន្លឺ និងសំឡេង</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>ម៉ាក្រូ និងម៉ឺនុយ</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>ការកំណត់ដែលកែលទ្ធផលឧបករណ៍បញ្ជានិម្មិតរបស់រន្ធនេះ មុនពេលវាត្រូវបានផ្ញើទៅហ្គេម៖ ការសម្អាត SOCD សម្រាប់ទិសផ្ទុយគ្នាដែលចុចព្រមគ្នា និង «រក្សាឧបករណ៍បញ្ជាឱ្យភ្ញាក់» សម្រាប់ហ្គេមដែលបោះបង់ឧបករណ៍បញ្ជាភ្លាមៗនៅពេលឃើញការបញ្ចូលពីកណ្ដុរ ឬក្ដារចុច។</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>ឧបករណ៍រំញ័របាស</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>បញ្ជូនការញ័រ និងកម្លាំងតបពីហ្គេមដែលឧបករណ៍បញ្ជានិម្មិតនេះទទួល ទៅលទ្ធផលសំឡេងជាសំឡេងប្រេកង់ទាប សម្រាប់ឧបករណ៍រំញ័របាស និងសាប់វូហ្វឺរ។</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>ការញ័រទៅសំឡេង</value></data>

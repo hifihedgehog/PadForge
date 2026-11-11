@@ -289,6 +289,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>መሣሪያ</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>ምንጭ</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>መሣሪያ አክል</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>ምስል</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>ዝርዝር</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>በምስሉ ላይ አንድ አካል ጠቅ አድርግና ከዚያ ሊያንቀሳቅሰው የሚገባውን ግብዓት ተጫን።</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>ለ{0} ግብዓት በመጠበቅ ላይ። በመሣሪያህ ላይ ግብዓቱን ተጫን።</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>የአንድ ጥንድ ሁለቱም አዝራሮች ሲያዙ ጨዋታዎች የትኛውን መጫን እንደሚያዩ</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>የአንድ ጥንድ ሁለቱም ቁልፎች ሲያዙ ጨዋታዎች የትኛውን መጫን እንደሚያዩ</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>ጨዋታዎች የመቆጣጠሪያ ጥቆማዎችን ማሳየታቸውን እንዲቀጥሉ ትንሽ የስቲክ ማፈንገጥ ይይዛል</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>በመቀጥቀጥ ላይ</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>በግራ በኩል ማክሮ ይምረጡ፣ ወይም አዲስ ለመፍጠር «አክል»ን ይጫኑ።</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>ጥሬ</value></data>
@@ -1219,7 +1226,6 @@
   <data name="Pad_MapAll" xml:space="preserve"><value>ሁሉንም አዛምድ</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>አዛምድ፦ {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>ሁሉንም ማዛመጃዎች አንድ በአንድ በቅደም ተከተል ቅረጽ</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>የማዛመጃ ረድፍ ጠቅ አድርግና ለመመደብ በመቆጣጠሪያህ ላይ አዝራር/ዘንግ ተጫን።</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>ሁሉንም ማዛመጃዎች እና ቅንብሮች ወደ ቅንጥብ ሰሌዳ ቅዳ</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>ማዛመጃዎችን እና ቅንብሮችን ከቅንጥብ ሰሌዳ ለጥፍ</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>ከ... ቅዳ</value></data>
@@ -3667,7 +3673,6 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>እንቅስቃሴ እና ንክኪ</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>መብራት እና ድምጽ</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>ማክሮዎች እና ምናሌዎች</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>የዚህ ቦታ ምናባዊ መቆጣጠሪያ ውፅዓት ወደ ጨዋታዎች ከመላኩ በፊት የሚቀርጹ ቅንብሮች፦ በአንድ ላይ ለተጫኑ ተቃራኒ አቅጣጫዎች የSOCD ማጽዳት፣ እና የመዳፊት ወይም የቁልፍ ሰሌዳ ግብዓት ባዩ ቅጽበት መቆጣጠሪያውን ለሚጥሉ ጨዋታዎች «መቆጣጠሪያውን ንቁ አቆይ»።</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>ባስ ሼከሮች</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>ይህ ምናባዊ መቆጣጠሪያ የሚቀበለውን የጨዋታ ንዝረትና የኃይል ግብረመልስ ለባስ ሼከሮችና ለሰብዉፈሮች እንደ ዝቅተኛ ድግግሞሽ ድምጾች ወደ ድምጽ ውፅዓት ይልካል።</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>ንዝረትን ወደ ድምጽ</value></data>

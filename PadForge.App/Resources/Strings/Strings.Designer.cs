@@ -387,6 +387,13 @@ public class Strings : INotifyPropertyChanged
     public string Pad_ScopeDevice => Get("Pad_ScopeDevice");
     public string Pad_DrivenBy => Get("Pad_DrivenBy");
     public string Pad_AddDevice => Get("Pad_AddDevice");
+    public string Pad_View_Picture => Get("Pad_View_Picture");
+    public string Pad_View_List => Get("Pad_View_List");
+    public string Pad_PictureHint => Get("Pad_PictureHint");
+    public string Pad_Listening_Format => Get("Pad_Listening_Format");
+    public string Pad_Socd_FoldHint => Get("Pad_Socd_FoldHint");
+    public string Pad_Kbm_Socd_FoldHint => Get("Pad_Kbm_Socd_FoldHint");
+    public string Pad_KeepAwake_FoldHint => Get("Pad_KeepAwake_FoldHint");
     public string Engine_Forging => Get("Engine_Forging");
     public string Macro_EmptyHint => Get("Macro_EmptyHint");
     public string Instr_Raw => Get("Instr_Raw");
@@ -1896,7 +1903,6 @@ public class Strings : INotifyPropertyChanged
     public string Pad_MapAll => Get("Pad_MapAll");
     public string Pad_MapPrompt_Format => Get("Pad_MapPrompt_Format");
     public string Pad_MapAllOneByOne => Get("Pad_MapAllOneByOne");
-    public string Pad_MappingHint => Get("Pad_MappingHint");
     public string Pad_CopyTooltip => Get("Pad_CopyTooltip");
     public string Pad_PasteTooltip => Get("Pad_PasteTooltip");
     public string Pad_CopyFrom => Get("Pad_CopyFrom");
@@ -4101,7 +4107,6 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Section_Motion => Get("Pad_Section_Motion");
     public string Pad_Section_Lights => Get("Pad_Section_Lights");
     public string Pad_Section_Macros => Get("Pad_Section_Macros");
-    public string Pad_Output_Subtitle => Get("Pad_Output_Subtitle");
     public string Pad_RumbleAudio_Header => Get("Pad_RumbleAudio_Header");
     public string Pad_RumbleAudio_Subtitle => Get("Pad_RumbleAudio_Subtitle");
     public string Pad_RumbleAudio_Card_Header => Get("Pad_RumbleAudio_Card_Header");

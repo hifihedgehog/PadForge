@@ -304,6 +304,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Perangkat</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Input dari</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Tambah perangkat</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Gambar</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Daftar</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Klik sebuah kontrol, lalu tekan input yang akan menggerakkannya.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Menunggu input untuk {0}. Tekan input pada perangkat Anda.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Penekanan mana yang dilihat game saat kedua tombol dalam satu pasangan ditahan</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Penekanan mana yang dilihat game saat kedua tombol keyboard dalam satu pasangan ditahan</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Menahan defleksi stik kecil agar game terus menampilkan petunjuk kontroler</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Menempa</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Pilih makro di sebelah kiri, atau tekan Tambah untuk membuatnya.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>MENTAH</value></data>
@@ -1383,7 +1390,6 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Petakan semua</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Petakan: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Rekam semua pemetaan secara berurutan, satu per satu</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>Klik baris pemetaan, lalu tekan tombol atau gerakkan sumbu pada kontroler Anda untuk menetapkannya.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Salin semua pemetaan dan pengaturan ke papan klip</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Tempel pemetaan dan pengaturan dari papan klip</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Salin dari...</value></data>
@@ -3897,7 +3903,6 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Gerak dan sentuhan</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Pencahayaan dan audio</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makro dan menu</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Pengaturan yang membentuk output kontroler virtual slot ini tepat sebelum dikirim ke game: pembersihan SOCD untuk arah berlawanan yang ditekan bersamaan, dan Jaga kontroler tetap aktif untuk game yang meninggalkan kontroler begitu melihat input mouse atau keyboard.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shaker</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Merutekan getaran game dan force feedback yang diterima kontroler virtual ini ke output audio sebagai nada frekuensi rendah untuk bass shaker dan subwoofer.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Getaran ke audio</value></data>

@@ -150,6 +150,10 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Hāmeʻa</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Hoʻokele ʻia e</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Hoʻohui i hāmeʻa</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Kiʻi</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Papa inoa</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Kaomi i kekahi mea hoʻokele ma ke kiʻi, a laila kaomi i ka hoʻokomo ma kāu hāmeʻa nāna e hoʻokele iā ia.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Ke hoʻolohe nei no {0}. Kaomi i ka hoʻokomo ma kāu hāmeʻa.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Ke hoʻohana ʻia nei ka port {0} e kekahi polokalamu ʻē aʻe, e like me DSX. E pani iā ia a i ʻole e koho i kekahi port ʻē aʻe.</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Hōʻole</value></data>
 

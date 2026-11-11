@@ -304,6 +304,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Naprava</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Vhod iz</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Dodaj napravo</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Slika</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Seznam</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Kliknite kontrolnik, nato pritisnite vnos, ki naj ga upravlja.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Poslušanje za {0}. Pritisnite vnos na svoji napravi.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Kateri pritisk vidijo igre, ko sta držana oba gumba para</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Kateri pritisk vidijo igre, ko sta držani obe tipki para</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Drži majhen odklon palice, da igre ves čas kažejo prikaz krmilnika</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Kovanje</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Izberite makro na levi ali pa pritisnite „Dodaj“, da ga ustvarite.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>SUROVO</value></data>
@@ -1383,7 +1390,6 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Preslikaj vse</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Preslikava: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Zaporedno posnemi vse preslikave eno za drugo</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>Kliknite vrstico preslikave in pritisnite gumb ali premaknite os na krmilniku, da jo dodelite.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Kopiraj vse preslikave in nastavitve v odložišče</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Prilepi preslikave in nastavitve iz odložišča</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Kopiraj iz ...</value></data>
@@ -3897,7 +3903,6 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Gibanje in dotik</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Osvetlitev in zvok</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makri in meniji</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Nastavitve, ki oblikujejo izhod navideznega krmilnika te reže tik preden se pošlje igram: čiščenje SOCD za sočasno pritisnjene nasprotne smeri in ohranjanje budnosti krmilnika za igre, ki krmilnik opustijo, takoj ko zaznajo vnos miške ali tipkovnice.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Basovski tresalniki</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Vibriranje igre in povratno silo, ki ju prejme ta navidezni krmilnik, usmeri na zvočni izhod kot nizkofrekvenčne tone za basovske tresalnike in nizkotonce.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibriranje v zvok</value></data>

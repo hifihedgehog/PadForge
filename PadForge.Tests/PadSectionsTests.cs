@@ -72,7 +72,7 @@ namespace PadForge.Tests
             [14] = ("TabMouse", "TabMouse"),
             [15] = ("TabMenus", "MenusTab"),
             [16] = ("TabBassShakers", "BassShakersTab"),
-            [17] = ("TabOutput", "OutputTab"),
+            [17] = ("OutputGroup", "OutputTab"),
         };
 
         // ── the map ────────────────────────────────────────────────────
@@ -163,39 +163,56 @@ namespace PadForge.Tests
             }
         }
 
-        /// <summary>Buttons and Macros and Menus each remember the part
-        /// they last showed, while another section is selected too, so a
-        /// click on Buttons comes back to the mapping table the user left.
-        /// The part's change is raised with the tab's.</summary>
+        /// <summary>Buttons remembers the view it last showed and Macros and
+        /// Menus the part, while another section is selected too, so a click
+        /// on Buttons comes back to the list the user left. Buttons has two
+        /// views: tab 2 is the list, and tabs 0 and 17 are the picture, with
+        /// the output cards under it. The view's change is raised with the
+        /// tab's, and only when the view changes.</summary>
         [Fact]
         public void ButtonsAndMacros_RememberTheirPart()
         {
             var vm = new PadViewModel(0);
-            Assert.Equal(0, vm.ButtonsPartIndex);
+            Assert.Equal(0, vm.ButtonsViewIndex);
+            Assert.True(vm.IsButtonsPictureView);
+            Assert.False(vm.IsButtonsListView);
             Assert.Equal(0, vm.MacrosPartIndex);
 
             var raised = new List<string>();
             vm.PropertyChanged += (_, e) => raised.Add(e.PropertyName);
             vm.SelectedConfigTab = 2;
-            Assert.Equal(1, vm.ButtonsPartIndex);
-            Assert.Contains(nameof(PadViewModel.ButtonsPartIndex), raised);
+            Assert.Equal(1, vm.ButtonsViewIndex);
+            Assert.True(vm.IsButtonsListView);
+            Assert.False(vm.IsButtonsPictureView);
+            Assert.Contains(nameof(PadViewModel.ButtonsViewIndex), raised);
+            Assert.Contains(nameof(PadViewModel.IsButtonsListView), raised);
+            Assert.Contains(nameof(PadViewModel.IsButtonsPictureView), raised);
+            Assert.Contains(nameof(PadViewModel.ShowOutputGroup), raised);
             Assert.DoesNotContain(nameof(PadViewModel.SelectedSection), raised);
+            // The tab's own change comes first, so a listener to it reads
+            // the new view already.
+            Assert.True(raised.IndexOf(nameof(PadViewModel.SelectedConfigTab)) < raised.IndexOf(nameof(PadViewModel.ButtonsViewIndex)));
 
             vm.SelectedConfigTab = 5;
-            Assert.Equal(1, vm.ButtonsPartIndex);
+            Assert.Equal(1, vm.ButtonsViewIndex);
             Assert.Equal(2, vm.LastTabOfSection(PadViewModel.ButtonsSection));
 
             vm.SelectedConfigTab = 15;
             Assert.Equal(1, vm.MacrosPartIndex);
-            Assert.Equal(1, vm.ButtonsPartIndex);
+            Assert.Equal(1, vm.ButtonsViewIndex);
+            // Output is the picture, with its cards under it.
             vm.SelectedConfigTab = 17;
-            Assert.Equal(2, vm.ButtonsPartIndex);
+            Assert.Equal(0, vm.ButtonsViewIndex);
             Assert.Equal(1, vm.MacrosPartIndex);
             Assert.Equal(15, vm.LastTabOfSection(PadViewModel.MacrosSection));
             vm.SelectedConfigTab = 1;
             Assert.Equal(0, vm.MacrosPartIndex);
+            // From the output cards to the picture changes no view.
+            vm.SelectedConfigTab = 17;
+            raised.Clear();
             vm.SelectedConfigTab = 0;
-            Assert.Equal(0, vm.ButtonsPartIndex);
+            Assert.Equal(0, vm.ButtonsViewIndex);
+            Assert.DoesNotContain(nameof(PadViewModel.ButtonsViewIndex), raised);
 
             // A stacked section remembers the group it was last sent to.
             Assert.Equal(5, vm.LastTabOfSection(PadViewModel.RumbleSection));
@@ -206,16 +223,26 @@ namespace PadForge.Tests
         /// <summary>What is on the page. A stacked section shows all of its
         /// tabs at once, so the Bass Shakers meters and the Audio group's
         /// device list count as shown while their section is selected,
-        /// whichever of its groups the selection names. Buttons and Macros
-        /// and Menus show only the selected part.</summary>
+        /// whichever of its groups the selection names. In Buttons the
+        /// picture and the output cards show together and the list shows
+        /// alone. Macros and Menus shows only the selected part.</summary>
         [Fact]
         public void IsTabShown_IsTheWholeOfAStackedSection_AndOnePartOfTheOthers()
         {
             var vm = new PadViewModel(0);
             Assert.True(vm.IsTabShown(0));
             Assert.False(vm.IsTabShown(2));
-            Assert.False(vm.IsTabShown(17));
+            Assert.True(vm.IsTabShown(17));
             Assert.False(vm.IsTabShown(3));
+
+            vm.SelectedConfigTab = 2;
+            Assert.True(vm.IsTabShown(2));
+            Assert.False(vm.IsTabShown(0));
+            Assert.False(vm.IsTabShown(17));
+            vm.SelectedConfigTab = 17;
+            Assert.True(vm.IsTabShown(0));
+            Assert.True(vm.IsTabShown(17));
+            Assert.False(vm.IsTabShown(2));
 
             vm.SelectedConfigTab = 5;
             foreach (int tab in new[] { 5, 9, 6, 11, 16 })
@@ -326,7 +353,7 @@ namespace PadForge.Tests
             };
             var partIndex = new Dictionary<int, string>
             {
-                [PadViewModel.ButtonsSection] = "{Binding ButtonsPartIndex, Mode=OneWay}",
+                [PadViewModel.ButtonsSection] = "{Binding ButtonsViewIndex, Mode=OneWay}",
                 [PadViewModel.MacrosSection] = "{Binding MacrosPartIndex, Mode=OneWay}",
             };
             string[] sectionKeys =
@@ -354,33 +381,71 @@ namespace PadForge.Tests
                 }
                 else
                 {
+                    // Buttons has two views, and its third tab, Output, is
+                    // the cards under the picture. Macros and Menus has one
+                    // part per tab.
+                    bool buttonsSection = section == PadViewModel.ButtonsSection;
                     Assert.Equal("Grid", content.Name.LocalName);
-                    var inner = Assert.Single(content.Elements(), e => e.Name.LocalName == "ContentTabControl");
+                    // The picture's view of Buttons scrolls as a page, so
+                    // its tab control sits inside that page. The part switch
+                    // of Macros and Menus sits right over its tab control.
+                    var inner = buttonsSection
+                        ? Assert.Single(content.Descendants(), e => e.Name.LocalName == "ContentTabControl")
+                        : Assert.Single(content.Elements(), e => e.Name.LocalName == "ContentTabControl");
                     Assert.Equal(partIndex[section], (string)inner.Attribute("SelectedIndex"));
-                    Assert.Equal(expected.Count, inner.Elements().Count(e => e.Name.LocalName == "TabItem"));
-                    // The part buttons, in the parts' order, each with its
-                    // tab's number.
+                    var switched = buttonsSection ? expected.Take(2).ToList() : expected;
+                    Assert.Equal(switched.Count, inner.Elements().Count(e => e.Name.LocalName == "TabItem"));
+                    // The switch's buttons, in order, each with its tab's
+                    // number. A layer chip is a radio button too, inside an
+                    // item template, and is not one of them.
                     var buttons = content.Descendants().Where(e => e.Name.LocalName == "RadioButton"
-                        && e.Ancestors().All(a => a != inner)).ToList();
-                    Assert.Equal(expected, buttons.Select(Name));
-                    Assert.Equal(PadViewModel.TabsOfSection(section).Select(t => t.ToString()),
+                        && e.Attribute("Tag") != null
+                        && e.Ancestors().All(a => a != inner)
+                        && e.Ancestors().All(a => a.Name.LocalName != "DataTemplate")).ToList();
+                    Assert.Equal(switched, buttons.Select(Name));
+                    Assert.Equal(PadViewModel.TabsOfSection(section).Take(switched.Count).Select(t => t.ToString()),
                         buttons.Select(b => (string)b.Attribute("Tag")));
                     Assert.All(buttons, b => Assert.Equal("TabBtn_Click", (string)b.Attribute("Click")));
                     Assert.All(buttons, b => Assert.Equal("TabBtn_Checked", (string)b.Attribute("Checked")));
                     // One radio group per strip, so neither unchecks the
                     // other's choice.
                     string group = Assert.Single(buttons.Select(b => (string)b.Attribute("GroupName")).Distinct());
-                    Assert.Equal(section == PadViewModel.ButtonsSection ? "PadButtonsPart" : "PadMacrosPart", group);
+                    Assert.Equal(buttonsSection ? "PadButtonsPart" : "PadMacrosPart", group);
                 }
             }
 
-            // The mapping table is the second part of Buttons, and the menu
-            // editor the second of Macros and Menus.
-            var mappings = Named(page, "MappingsTabRoot");
-            var buttonsParts = sections[PadViewModel.ButtonsSection].Descendants()
+            // Buttons is one layout. The picture is the first item of its
+            // tab control and the second item is empty, so the picture is
+            // off the page in the list. The table and the output cards sit
+            // beside that control, never inside it: one table serves both
+            // views.
+            var buttonsRoot = Named(page, "MappingsTabRoot");
+            Assert.Same(Assert.Single(sections[PadViewModel.ButtonsSection].Elements()), buttonsRoot);
+            // The top row stays put over a page that scrolls while the
+            // picture shows.
+            var scroll = Named(page, "ButtonsScroll");
+            Assert.Equal("ScrollViewer", scroll.Name.LocalName);
+            Assert.Same(buttonsRoot, scroll.Parent);
+            Assert.Same(buttonsRoot, Named(page, "ButtonsTopRow").Parent);
+            Assert.Equal("{Binding Pad_Section_Buttons, Source={x:Static strings:Strings.Instance}}",
+                (string)scroll.Attribute("AutomationProperties.Name"));
+            var buttonsPage = Assert.Single(scroll.Elements());
+            Assert.Equal("ButtonsPage", Name(buttonsPage));
+            var picture = Assert.Single(buttonsPage.Elements(), e => e.Name.LocalName == "ContentTabControl");
+            var views = picture.Elements().Where(e => e.Name.LocalName == "TabItem").ToList();
+            Assert.Contains(views[0], Named(page, "ControllerModel3D").Ancestors());
+            Assert.Contains(views[0], Named(page, "ControllerModel2D").Ancestors());
+            Assert.Contains(views[0], Named(page, "TouchSensors").Ancestors());
+            Assert.False(views[1].HasElements);
+            var table = Named(page, "MappingDataGrid");
+            Assert.Same(buttonsPage, table.Parent);
+            Assert.Same(buttonsPage, Named(page, "OutputGroup").Parent);
+            Assert.DoesNotContain(picture, table.Ancestors());
+            // The menu editor is the second part of Macros and Menus.
+            var macrosParts = sections[PadViewModel.MacrosSection].Descendants()
                 .Single(e => e.Name.LocalName == "ContentTabControl").Elements()
                 .Where(e => e.Name.LocalName == "TabItem").ToList();
-            Assert.Contains(buttonsParts[1], mappings.Ancestors());
+            Assert.Equal(2, macrosParts.Count);
         }
 
         /// <summary>Every id a UI tool or a test found a tab by is still in
@@ -407,6 +472,15 @@ namespace PadForge.Tests
                         .Where(e => e.Name.LocalName == "TextBlock" && e.Attribute("Text") != null);
                     Assert.Empty(before);
                 }
+                else if (tab == PadViewModel.OutputTabIndex)
+                {
+                    // Output is the group of cards under the picture. A
+                    // group box has a peer, so it can carry the id.
+                    Assert.Same(named, carrier);
+                    Assert.Equal("GroupBox", carrier.Name.LocalName);
+                    Assert.Equal("{Binding Pad_Tab_Output, Source={x:Static strings:Strings.Instance}}",
+                        (string)carrier.Attribute("AutomationProperties.Name"));
+                }
                 else
                 {
                     Assert.Same(named, carrier);
@@ -415,11 +489,14 @@ namespace PadForge.Tests
                 }
             }
 
-            // The gates the two slot-type tabs had.
+            // The gates the two slot-type tabs had. Output's group shows
+            // under the picture on a slot type that has output cards.
             Assert.Equal("{Binding RumbleAudioTabVisible, Converter={StaticResource BoolToVisibilityConverter}}",
                 (string)Named(page, "TabBassShakers").Attribute("Visibility"));
-            Assert.Equal("{Binding OutputTabVisible, Converter={StaticResource BoolToVisibilityConverter}}",
-                (string)Named(page, "TabOutput").Attribute("Visibility"));
+            Assert.Equal("{Binding ShowOutputGroup, Converter={StaticResource BoolToVisibilityConverter}}",
+                (string)Named(page, "OutputGroup").Attribute("Visibility"));
+            Assert.Contains("public bool ShowOutputGroup => IsButtonsPictureView && OutputTabVisible;",
+                ExtrasPageTests.RepoText("PadForge.App", "ViewModels", "PadViewModel.Sections.cs"));
             // Sticks, Triggers and Force Feedback start shown and the rest
             // start hidden until the selected device has them, as the tabs
             // did.
@@ -616,7 +693,7 @@ namespace PadForge.Tests
             string script = ExtrasPageTests.RepoText("tools", "capture_all.ps1");
             var page = Page();
             var rows = System.Text.RegularExpressions.Regex.Matches(script,
-                @"^    ""(?<name>[A-Za-z ]+)""\s+= @\{ Section = ""(?<section>\w+)""; (?:Part = ""(?<part>\w+)""|Column = ""(?<column>\w+)""; Group = ""(?<group>\w+)"") \}\r?$",
+                @"^    ""(?<name>[A-Za-z ]+)""\s+= @\{ Section = ""(?<section>\w+)""; (?:Part = ""(?<part>\w+)""(?:; Cards = ""(?<cards>\w+)"")?|Column = ""(?<column>\w+)""; Group = ""(?<group>\w+)"") \}\r?$",
                 System.Text.RegularExpressions.RegexOptions.Multiline);
             Assert.Equal(18, rows.Count);
 
@@ -624,7 +701,20 @@ namespace PadForge.Tests
             var seen = new HashSet<int>();
             foreach (System.Text.RegularExpressions.Match row in rows)
             {
-                string id = row.Groups["part"].Success ? row.Groups["part"].Value : row.Groups["group"].Value;
+                // A row with cards goes to its part and then opens the cards
+                // of the group it names, and that group is the tab it
+                // reaches: Output, under the picture.
+                string id = row.Groups["cards"].Success ? row.Groups["cards"].Value
+                    : row.Groups["part"].Success ? row.Groups["part"].Value : row.Groups["group"].Value;
+                if (row.Groups["cards"].Success)
+                {
+                    Assert.Equal("Output", row.Groups["name"].Value);
+                    Assert.Equal("TabController", row.Groups["part"].Value);
+                    // The script opens a card by an id that ends in FoldCard.
+                    var cards = Named(page, "OutputGroup").Descendants().Where(e => e.Name.LocalName == "FoldCard").ToList();
+                    Assert.Equal(new[] { "SocdFoldCard", "KbmSocdFoldCard", "KeepAwakeFoldCard" }, cards.Select(Name));
+                    Assert.Contains("if ($card.Current.AutomationId -notlike \"*FoldCard\") { continue }", script);
+                }
                 Assert.True(tabOfId.TryGetValue(id, out int tab), row.Groups["name"].Value + " names an id the page does not have: " + id);
                 Assert.True(seen.Add(tab), "two rows reach tab " + tab);
                 int section = PadViewModel.SectionOfTab(tab);

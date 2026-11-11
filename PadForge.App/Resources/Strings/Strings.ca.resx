@@ -289,6 +289,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Dispositiu</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Entrada de</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Afegeix un dispositiu</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Imatge</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Llista</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Fes clic en un control i prem el botó o mou l'eix que l'hagi d'accionar.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>S'està esperant {0}. Prem l'entrada al dispositiu.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Quina pulsació veuen els jocs quan es mantenen premuts els dos botons d'un parell</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Quina pulsació veuen els jocs quan es mantenen premudes les dues tecles d'un parell</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Manté una petita desviació de la palanca perquè els jocs mostrin les indicacions del comandament</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Forjant</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Selecciona una macro a l'esquerra o prem Afegeix per crear-ne una.</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Freda</value></data>
@@ -1218,7 +1225,6 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Assigna-ho tot</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Assigna: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Enregistra totes les assignacions una per una</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>Fes clic en una fila d'assignació i prem un botó o mou un eix del comandament per assignar-lo.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Copia totes les assignacions i la configuració al porta-retalls</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Enganxa les assignacions i la configuració del porta-retalls</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Copia de...</value></data>
@@ -3704,7 +3710,6 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Moviment i tacte</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Llums i so</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Macros i menús</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Opcions que ajusten la sortida del comandament virtual d'aquesta ranura just abans d'enviar-la als jocs: la depuració SOCD per a direccions oposades premudes alhora, i Mantén el comandament actiu per als jocs que deixen de fer cas al comandament tan bon punt detecten entrada de ratolí o de teclat.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shakers</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Envia la vibració i la retroacció de força del joc que rep aquest comandament virtual a una sortida d'àudio com a tons de baixa freqüència per a bass shakers i subwoofers.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibració a àudio</value></data>

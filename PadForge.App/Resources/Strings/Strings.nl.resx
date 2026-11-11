@@ -701,7 +701,6 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Alles toewijzen</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Toewijzen: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Alle toewijzingen een voor een opnemen</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>Klik op een toewijzingsrij en druk op een knop/as op uw controller om deze toe te wijzen.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Alle toewijzingen en instellingen naar klembord kopiëren</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Toewijzingen en instellingen vanuit klembord plakken</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Kopiëren van...</value></data>
@@ -3183,6 +3182,13 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Apparaat</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Invoer van</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Apparaat toevoegen</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Afbeelding</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Lijst</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Klik op een bediening en druk op de invoer op uw apparaat die deze moet aansturen.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Bezig met luisteren naar {0}. Druk op de invoer op uw apparaat.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Welke druk games zien wanneer beide knoppen van een paar zijn ingedrukt</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Welke druk games zien wanneer beide toetsen van een paar zijn ingedrukt</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Houdt een kleine stickuitslag vast zodat games controllerprompts blijven tonen</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Voorbeeld</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>Extra's</value></data>
   <data name="Extras_Subtitle" xml:space="preserve"><value>Optionele functies. Elke functie blijft op de achtergrond tot je hem inschakelt.</value></data>
@@ -3855,7 +3861,6 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Beweging en aanraking</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Licht en geluid</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Macro's en menu's</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Instellingen die de uitvoer van de virtuele controller van dit slot vormgeven vlak voordat deze naar games gaat: SOCD-opschoning voor tegengestelde richtingen die tegelijk worden ingedrukt, en controller actief houden voor games die de controller loslaten zodra ze muis- of toetsenbordinvoer zien.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shakers</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Stuurt de speltrilling en force feedback die deze virtuele controller ontvangt als laagfrequente tonen naar een audio-uitgang voor bass shakers en subwoofers.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Trilling naar audio</value></data>

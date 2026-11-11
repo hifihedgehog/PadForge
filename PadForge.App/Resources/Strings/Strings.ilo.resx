@@ -1176,4 +1176,8 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Garaw ken sagid</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Silaw ken uni</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Dagiti macro ken menu</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Ladawan</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Listaan</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>I-click ti maysa a kontrol, sa ipindot ti input a mangpaandar iti dayta.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Agur-uray iti {0}. Ipindot ti input iti devicem.</value></data>
 </root>

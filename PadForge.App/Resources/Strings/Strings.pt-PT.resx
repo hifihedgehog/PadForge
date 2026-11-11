@@ -289,6 +289,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Dispositivo</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Entrada de</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Adicionar dispositivo</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Imagem</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Lista</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Clique num controlo e prima a entrada no comando que o deve acionar.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>A aguardar {0}. Prima a entrada no seu comando.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Que pressão o jogo vê quando os dois botões de um par estão premidos</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Que pressão o jogo vê quando as duas teclas de um par estão premidas</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Mantém uma pequena deflexão do manípulo para os jogos continuarem a mostrar os ícones do comando</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>A forjar</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Selecione uma macro à esquerda ou prima Adicionar para criar uma.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>BRUTO</value></data>
@@ -1220,7 +1227,6 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Mapear tudo</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Mapear: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Gravar todos os mapeamentos em sequência, um a um</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>Clique numa linha de mapeamento e prima um botão/eixo no comando para o atribuir.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Copiar todos os mapeamentos e definições para a área de transferência</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Colar mapeamentos e definições da área de transferência</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Copiar de...</value></data>
@@ -3706,7 +3712,6 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Movimento e toque</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Iluminação e áudio</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Macros e menus</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Definições que moldam a saída do comando virtual deste slot imediatamente antes de ser enviada para os jogos: limpeza SOCD para direções opostas premidas em conjunto e “Manter o comando ativo” para os jogos que abandonam o comando no momento em que detetam entrada de rato ou teclado.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shakers</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Encaminha a vibração do jogo e o force feedback que este comando virtual recebe para uma saída de áudio, como tons de baixa frequência para bass shakers e subwoofers.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibração para áudio</value></data>

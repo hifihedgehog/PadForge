@@ -304,6 +304,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Enhet</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Styres av</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Legg til enhet</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Bilde</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Liste</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Klikk på en kontroll, og trykk deretter på inndataen som skal styre den.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Lytter etter {0}. Trykk på inndataen på enheten din.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Hvilket trykk spillet ser når begge knappene i et par holdes inne</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Hvilket trykk spillet ser når begge tastene i et par holdes inne</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Holder et lite stikkeutslag slik at spill fortsetter å vise kontrollerikoner</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Smir</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Velg en makro til venstre, eller trykk Legg til for å opprette en.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>RÅ</value></data>
@@ -1383,7 +1390,6 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Tilordne alle</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Tilordne: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Ta opp alle tilordningene én etter én</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>Klikk på en tilordningsrad og trykk på en knapp/akse på kontrolleren for å tilordne den.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Kopier alle tilordninger og innstillinger til utklippstavlen</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Lim inn tilordninger og innstillinger fra utklippstavlen</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Kopier fra...</value></data>
@@ -3897,7 +3903,6 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Bevegelse og berøring</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Lys og lyd</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makroer og menyer</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Innstillinger som former utgangen til den virtuelle kontrolleren i dette sporet rett før den sendes til spill: SOCD-rensing for motsatte retninger som trykkes samtidig, og Hold kontrolleren våken for spill som slipper kontrolleren i det øyeblikket de ser inndata fra mus eller tastatur.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shakers</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Ruter vibrasjonen og force feedback fra spillet som denne virtuelle kontrolleren mottar, til en lydutgang som lavfrekvente toner for bass shakers og subwoofere.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibrasjon til lyd</value></data>

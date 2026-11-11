@@ -289,6 +289,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>උපාංගය</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>ආදාන මූලාශ්‍රය</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>උපාංගයක් එක් කරන්න</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>රූපය</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>ලැයිස්තුව</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>පාලනයක් ක්ලික් කර, එය මෙහෙයවිය යුතු ආදානය ඔබන්න.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>{0} පටිගත කරමින්. ඔබේ උපාංගයේ ආදානය ඔබන්න.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>යුගලයක බොත්තම් දෙකම ඔබා ඇති විට ක්‍රීඩා දකින එබීම</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>යුගලයක යතුරු දෙකම ඔබා ඇති විට ක්‍රීඩා දකින එබීම</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>ක්‍රීඩා පාලක ඉඟි දිගටම පෙන්වන ලෙස කුඩා ස්ටික් අපගමනයක් රඳවයි</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>ක්‍රියාත්මකයි</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>වම් පසින් මැක්‍රෝවක් තෝරන්න, නැතහොත් එකක් සෑදීමට එක් කරන්න ඔබන්න.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>අමු</value></data>
@@ -1219,7 +1226,6 @@
   <data name="Pad_MapAll" xml:space="preserve"><value>සියල්ල සිතියම්ගත කරන්න</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>සිතියම්ගත කරන්න: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>සියලු සිතියම්ගත කිරීම් එකින් එක අනුපිළිවෙලින් පටිගත කරන්න</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>සිතියම්ගත කිරීමේ පේළියක් ක්ලික් කර, එය පැවරීමට ඔබේ පාලකයේ බොත්තමක්/අක්ෂයක් ඔබන්න.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>සියලු සිතියම්ගත කිරීම් සහ සැකසීම් පසුරු පුවරුවට පිටපත් කරන්න</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>පසුරු පුවරුවෙන් සිතියම්ගත කිරීම් සහ සැකසීම් අලවන්න</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>මෙයින් පිටපත් කරන්න...</value></data>
@@ -3664,7 +3670,6 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>චලනය සහ ස්පර්ශය</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>ආලෝකය සහ ශබ්දය</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>මැක්‍රෝ සහ මෙනු</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>ක්‍රීඩාවලට යැවීමට මොහොතකට පෙර මෙම ස්ලොට් එකේ අතථ්‍ය පාලක ප්‍රතිදානය හැඩගස්වන සැකසීම්: එකවර ඔබන ප්‍රතිවිරුද්ධ දිශා සඳහා SOCD පිරිසිදු කිරීම, සහ මූසික හෝ යතුරුපුවරු ආදානය දුටු මොහොතේ පාලකය අත හරින ක්‍රීඩා සඳහා “පාලකය අවදියෙන් තබන්න”.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>බාස් ෂේකර්</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>මෙම අතථ්‍ය පාලකයට ලැබෙන ක්‍රීඩා කම්පනය සහ බල ප්‍රතිපෝෂණය, බාස් ෂේකර් සහ සබ්වූෆර් සඳහා අඩු සංඛ්‍යාත නාද ලෙස ශ්‍රව්‍ය ප්‍රතිදානයකට යොමු කරයි.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>කම්පනය ශ්‍රව්‍යයට</value></data>

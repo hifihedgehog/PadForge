@@ -304,6 +304,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Zařízení</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Vstup ze zařízení</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Přidat zařízení</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Obrázek</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Seznam</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Klikněte na ovládací prvek a poté stiskněte vstup, který ho má ovládat.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Čekání na vstup pro {0}. Stiskněte vstup na svém zařízení.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Který stisk hra uvidí, když jsou držena obě tlačítka páru</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Který stisk hra uvidí, když jsou drženy obě klávesy páru</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Drží malou výchylku páčky, aby hry dál zobrazovaly nápovědu ovladače</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Kuje se</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Vyberte makro vlevo, nebo ho vytvořte stisknutím tlačítka Přidat.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>VSTUP</value></data>
@@ -1383,7 +1390,6 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Namapovat vše</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Namapujte: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Postupně zaznamenat všechna mapování jedno po druhém</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>Klikněte na řádek mapování a stiskněte tlačítko nebo pohněte osou na ovladači, čímž je přiřadíte.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Zkopírovat všechna mapování a nastavení do schránky</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Vložit mapování a nastavení ze schránky</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Kopírovat z...</value></data>
@@ -3897,7 +3903,6 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Pohyb a dotyk</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Světla a zvuk</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makra a nabídky</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Nastavení, která upravují výstup virtuálního ovladače tohoto slotu těsně před odesláním do her: čištění SOCD pro současně stisknuté protilehlé směry a Udržovat ovladač aktivní pro hry, které ovladač opustí ve chvíli, kdy zaznamenají vstup myši nebo klávesnice.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shakery</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Směruje vibrace a silovou zpětnou vazbu ze hry, které tento virtuální ovladač dostává, na zvukový výstup jako nízkofrekvenční tóny pro bass shakery a subwoofery.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibrace do zvuku</value></data>

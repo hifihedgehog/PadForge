@@ -304,6 +304,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>ডিভাইস</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>ইনপুটের উৎস</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>ডিভাইস যোগ করুন</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>ছবি</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>তালিকা</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>একটি কন্ট্রোল-এ ক্লিক করুন, তারপর যে বোতাম চাপলে বা অক্ষ নাড়ালে সেটি চলবে, তা আপনার ডিভাইসে চাপুন বা নাড়ান।</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>{0}-এর জন্য অপেক্ষা করা হচ্ছে। আপনার ডিভাইসে ইনপুটটি চাপুন।</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>জোড়ার দুটি বোতাম একসঙ্গে ধরে রাখলে গেম কোন চাপটি দেখবে</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>জোড়ার দুটি কী একসঙ্গে ধরে রাখলে গেম কোন চাপটি দেখবে</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>স্টিকের সামান্য বিক্ষেপ ধরে রাখে, যাতে গেম কন্ট্রোলারের নির্দেশনা দেখায়</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>গড়া চলছে</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>বাম দিকে একটি ম্যাক্রো নির্বাচন করুন, অথবা নতুন একটি তৈরি করতে “যোগ করুন” চাপুন।</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>কাঁচা</value></data>
@@ -1383,7 +1390,6 @@
   <data name="Pad_MapAll" xml:space="preserve"><value>সব ম্যাপ করুন</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>ম্যাপ করুন: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>সব ম্যাপিং একটি একটি করে পরপর রেকর্ড করুন</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>একটি ম্যাপিং সারিতে ক্লিক করুন, তারপর বরাদ্দ করতে আপনার কন্ট্রোলারের একটি বোতাম চাপুন বা অক্ষ নাড়ান।</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>সব ম্যাপিং ও সেটিংস ক্লিপবোর্ডে কপি করুন</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>ক্লিপবোর্ড থেকে ম্যাপিং ও সেটিংস পেস্ট করুন</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>অন্যটি থেকে কপি করুন...</value></data>
@@ -3897,7 +3903,6 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>মোশন ও টাচ</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>লাইটিং ও অডিও</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>ম্যাক্রো ও মেনু</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>এই স্লটের ভার্চুয়াল কন্ট্রোলার আউটপুট গেমে পাঠানোর ঠিক আগে তার রূপ ঠিক করে এমন সেটিংস: একসঙ্গে চাপা বিপরীত দিকের জন্য SOCD ক্লিনিং, আর যেসব গেম মাউস বা কীবোর্ডের ইনপুট দেখামাত্র কন্ট্রোলার ছেড়ে দেয় সেগুলোর জন্য “কন্ট্রোলার জাগিয়ে রাখুন”।</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>বেস শেকার</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>এই ভার্চুয়াল কন্ট্রোলার গেম থেকে যে রাম্বল ও ফোর্স ফিডব্যাক পায় তা বেস শেকার ও সাবউফারের জন্য নিম্ন-ফ্রিকোয়েন্সির টোন হিসেবে একটি অডিও আউটপুটে পাঠায়।</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>রাম্বল থেকে অডিও</value></data>

@@ -304,6 +304,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Ierīce</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Ievade no</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Pievienot ierīci</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Attēls</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Saraksts</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Noklikšķiniet uz vadīklas un nospiediet ievadi, kas to vadīs.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Gaida ievadi vadīklai {0}. Nospiediet ievadi savā ierīcē.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Kuru nospiešanu spēles redz, kad abas pāra pogas ir turētas</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Kuru nospiešanu spēles redz, kad abi pāra taustiņi ir turēti</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Uztur nelielu sviras novirzi, lai spēles turpina rādīt kontrollera norādes</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Kalšana</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Atlasiet makrosu kreisajā pusē vai nospiediet „Pievienot”, lai to izveidotu.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>JĒLDATI</value></data>
@@ -1383,7 +1390,6 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Piesaistīt visu</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Piesaistīt: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Secīgi ierakstīt visas piesaistes pa vienai</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>Noklikšķiniet uz piesaistes rindas un nospiediet kontrollera pogu/asi, lai to piešķirtu.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Kopēt visas piesaistes un iestatījumus starpliktuvē</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Ielīmēt piesaistes un iestatījumus no starpliktuves</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Kopēt no...</value></data>
@@ -3897,7 +3903,6 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Kustība un skāriens</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Apgaismojums un audio</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makrosi un izvēlnes</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Iestatījumi, kas veido šī slota virtuālā kontrollera izvadi tieši pirms tās nosūtīšanas spēlēm: SOCD apstrāde vienlaikus nospiestiem pretējiem virzieniem un „Uzturēt kontrolleri aktīvu” spēlēm, kas atsakās no kontrollera, tiklīdz konstatē peles vai tastatūras ievadi.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Basu vibratori</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Novirza šī virtuālā kontrollera saņemto spēles vibrāciju un spēka atgriezenisko saiti uz audio izvadi kā zemfrekvences toņus basu vibratoriem un zemfrekvenču skaļruņiem.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibrācija uz audio</value></data>

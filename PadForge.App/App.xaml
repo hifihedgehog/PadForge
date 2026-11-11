@@ -481,7 +481,7 @@
                 Named styles based on DefaultUiButtonStyle bypass this
                 implicit style, so each of them repeats the Template setter
                 (EmberIconButton, EmberPrimaryButton, HomePage's page
-                implicit, PadPage's MapAllPillButton).
+                implicit).
             -->
             <Style TargetType="uictrl:Button" BasedOn="{StaticResource DefaultUiButtonStyle}">
                 <Setter Property="Template" Value="{StaticResource PadUiButtonTemplate}"/>

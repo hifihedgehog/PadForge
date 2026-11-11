@@ -304,6 +304,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Urządzenie</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Sterowany przez</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Dodaj urządzenie</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Obraz</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Lista</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Kliknij element kontrolera, a potem naciśnij przycisk lub porusz osią na swoim urządzeniu, aby go przypisać.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Nasłuchiwanie: {0}. Naciśnij odpowiednie wejście na urządzeniu.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Które naciśnięcie widzi gra, gdy oba przyciski pary są wciśnięte</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Które naciśnięcie widzi gra, gdy oba klawisze pary są wciśnięte</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Utrzymuje niewielkie wychylenie drążka, by gry nadal pokazywały podpowiedzi kontrolera</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Kucie</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Wybierz makro po lewej lub naciśnij Dodaj, aby utworzyć nowe.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>SUROWE</value></data>
@@ -1383,7 +1390,6 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Mapuj wszystko</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Zmapuj: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Nagrywa kolejno wszystkie mapowania, jedno po drugim</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>Kliknij wiersz mapowania i naciśnij przycisk lub porusz osią na kontrolerze, aby je przypisać.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Kopiuj wszystkie mapowania i ustawienia do schowka</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Wklej mapowania i ustawienia ze schowka</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Kopiuj z...</value></data>
@@ -3897,7 +3903,6 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Ruch i dotyk</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Światło i dźwięk</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makra i menu</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Ustawienia kształtujące wyjście wirtualnego kontrolera tego slotu tuż przed wysłaniem do gier: czyszczenie SOCD dla przeciwnych kierunków naciśniętych jednocześnie oraz Utrzymuj aktywność kontrolera dla gier, które porzucają kontroler, gdy tylko wykryją wejście myszy lub klawiatury.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shakery</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Kieruje wibracje z gry i force feedback odbierane przez ten wirtualny kontroler do wyjścia dźwiękowego jako tony o niskiej częstotliwości dla bass shakerów i subwooferów.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Wibracje na dźwięk</value></data>

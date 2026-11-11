@@ -289,6 +289,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>ઉપકરણ</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>ઇનપુટ સ્રોત</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>ઉપકરણ ઉમેરો</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>ચિત્ર</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>સૂચિ</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>કંટ્રોલ પર ક્લિક કરો, પછી તેને ચલાવવા માટેનું ઇનપુટ દબાવો.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>{0} માટે ઇનપુટની રાહ જોવાઈ રહી છે. તમારા ઉપકરણ પર ઇનપુટ દબાવો.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>જોડીના બંને બટન દબાયેલા હોય ત્યારે ગેમને કયું દબાવવું દેખાય</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>જોડીની બંને કી દબાયેલી હોય ત્યારે ગેમને કયું દબાવવું દેખાય</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>નાનો સ્ટિક ઝુકાવ પકડી રાખે છે, જેથી ગેમ કંટ્રોલર સૂચનો બતાવતી રહે</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>ફોર્જિંગ</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>ડાબી બાજુએ મેક્રો પસંદ કરો, અથવા નવો બનાવવા ઉમેરો દબાવો.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
@@ -1217,7 +1224,6 @@
   <data name="Pad_MapAll" xml:space="preserve"><value>બધા મેપ કરો</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>મેપ: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>બધા મેપિંગ એક પછી એક ક્રમમાં રેકોર્ડ કરો</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>મેપિંગ પંક્તિ પર ક્લિક કરો અને તેને સોંપવા તમારા કંટ્રોલર પર બટન/અક્ષ દબાવો.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>બધા મેપિંગ અને સેટિંગ્સ ક્લિપબોર્ડ પર કૉપિ કરો</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>ક્લિપબોર્ડમાંથી મેપિંગ અને સેટિંગ્સ પેસ્ટ કરો</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>આમાંથી કૉપિ કરો...</value></data>
@@ -3694,7 +3700,6 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>ગતિ અને સ્પર્શ</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>લાઇટિંગ અને ઑડિયો</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>મેક્રો અને મેનૂ</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>આ સ્લોટના વર્ચ્યુઅલ કંટ્રોલર આઉટપુટને રમતોને મોકલાય તે પહેલાં આકાર આપતા સેટિંગ: સાથે દબાયેલી વિરુદ્ધ દિશાઓ માટે SOCD સફાઈ, અને માઉસ કે કીબોર્ડ ઇનપુટ દેખાતાં જ કંટ્રોલર છોડી દેતી રમતો માટે કંટ્રોલર જાગતો રાખો.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>બાસ શેકર</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>આ વર્ચ્યુઅલ કંટ્રોલરને મળતા રમતના રમ્બલ અને ફોર્સ ફીડબેકને બાસ શેકર અને સબવૂફર માટે નીચી-આવૃત્તિના ટોન તરીકે ઑડિયો આઉટપુટ પર મોકલે છે.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>રમ્બલ થી ઑડિયો</value></data>

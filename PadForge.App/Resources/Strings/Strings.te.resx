@@ -304,6 +304,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>పరికరం</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>ఇన్పుట్ మూలం</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>పరికరం జోడించు</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>చిత్రం</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>జాబితా</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>ఒక కంట్రోల్‌పై క్లిక్ చేసి, దాన్ని నడిపించాల్సిన ఇన్‌పుట్‌ను నొక్కండి.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>{0} కోసం వింటోంది. మీ పరికరంలోని ఇన్‌పుట్‌ను నొక్కండి.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>జతలోని రెండు బటన్లు నొక్కి ఉన్నప్పుడు గేమ్‌లకు ఏ నొక్కు కనిపిస్తుంది</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>జతలోని రెండు కీలు నొక్కి ఉన్నప్పుడు గేమ్‌లకు ఏ నొక్కు కనిపిస్తుంది</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>చిన్న స్టిక్ విక్షేపాన్ని పట్టి ఉంచి, గేమ్‌లు కంట్రోలర్ సూచనలు చూపేలా చేస్తుంది</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>ఫోర్జింగ్</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>ఎడమ వైపున మాక్రోను ఎంచుకోండి, లేదా కొత్తది సృష్టించడానికి జోడించు నొక్కండి.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
@@ -1383,7 +1390,6 @@
   <data name="Pad_MapAll" xml:space="preserve"><value>అన్నీ మ్యాప్ చేయి</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>మ్యాప్: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>అన్ని మ్యాపింగ్‌లను ఒక్కొక్కటిగా వరుసగా రికార్డ్ చేయండి</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>మ్యాపింగ్ వరుసపై క్లిక్ చేసి, దాన్ని కేటాయించడానికి మీ కంట్రోలర్‌లోని బటన్/అక్షాన్ని నొక్కండి.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>అన్ని మ్యాపింగ్‌లు మరియు సెట్టింగులను క్లిప్‌బోర్డ్‌కు కాపీ చేయండి</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>క్లిప్‌బోర్డ్ నుండి మ్యాపింగ్‌లు మరియు సెట్టింగులను పేస్ట్ చేయండి</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>ఇక్కడినుండి కాపీ చేయి...</value></data>
@@ -3897,7 +3903,6 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>మోషన్ &amp; టచ్</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>లైటింగ్ &amp; ఆడియో</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>మాక్రోలు &amp; మెనూలు</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>ఈ స్లాట్ వర్చువల్ కంట్రోలర్ అవుట్పుట్ గేమ్లకు పంపబడటానికి ముందు దాన్ని తీర్చిదిద్దే సెట్టింగులు: ఒకేసారి నొక్కిన వ్యతిరేక దిశలకు SOCD శుభ్రపరచడం, మౌస్ లేదా కీబోర్డ్ ఇన్పుట్ చూడగానే కంట్రోలర్ను వదిలేసే గేమ్ల కోసం కంట్రోలర్ను మేల్కొని ఉంచడం.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>బాస్ షేకర్లు</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>ఈ వర్చువల్ కంట్రోలర్ అందుకునే గేమ్ రంబుల్, ఫోర్స్ ఫీడ్బ్యాక్ను బాస్ షేకర్లు, సబ్వూఫర్ల కోసం తక్కువ ఫ్రీక్వెన్సీ టోన్లుగా ఆడియో అవుట్పుట్కు పంపుతుంది.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>ఆడియోకు రంబుల్</value></data>

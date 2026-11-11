@@ -304,6 +304,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>डिवाइस</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>इनपुट स्रोत</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>डिवाइस जोड़ें</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>चित्र</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>सूची</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>किसी कंट्रोल पर क्लिक करें और फिर वह इनपुट दबाएँ जिससे उसे चलाना है।</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>{0} के लिए सुन रहा है। अपने डिवाइस पर इनपुट दबाएँ।</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>जोड़ी के दोनों बटन दबे हों तो गेम को कौन-सा बटन दिखे</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>जोड़ी की दोनों कुंजियाँ दबी हों तो गेम को कौन-सी कुंजी दिखे</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>स्टिक को हल्का झुकाए रखता है ताकि गेम कंट्रोलर के संकेत दिखाते रहें</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>गढ़ाई जारी</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>बाईं ओर कोई मैक्रो चुनें, या नया बनाने के लिए “जोड़ें” दबाएँ।</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>रॉ</value></data>
@@ -1383,7 +1390,6 @@
   <data name="Pad_MapAll" xml:space="preserve"><value>सभी मैप करें</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>मैप करें: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>सभी मैपिंग क्रम से एक-एक करके रिकॉर्ड करें</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>किसी मैपिंग पंक्ति पर क्लिक करें और उसे असाइन करने के लिए अपने कंट्रोलर का कोई बटन/अक्ष दबाएँ।</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>सभी मैपिंग और सेटिंग्स क्लिपबोर्ड पर कॉपी करें</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>क्लिपबोर्ड से मैपिंग और सेटिंग्स चिपकाएँ</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>दूसरे डिवाइस से कॉपी करें...</value></data>
@@ -3897,7 +3903,6 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>मोशन और टच</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>लाइटिंग और ऑडियो</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>मैक्रो और मेनू</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>वे सेटिंग्स जो इस स्लॉट के वर्चुअल कंट्रोलर आउटपुट को गेम को भेजे जाने से ठीक पहले आकार देती हैं: एक साथ दबी विपरीत दिशाओं के लिए SOCD क्लीनिंग, और उन गेम के लिए “कंट्रोलर को जगाए रखें” जो माउस या कीबोर्ड इनपुट देखते ही कंट्रोलर को छोड़ देते हैं।</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>बेस शेकर</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>इस वर्चुअल कंट्रोलर को मिलने वाले गेम रंबल और फ़ोर्स फ़ीडबैक को बेस शेकर और सबवूफ़र के लिए कम आवृत्ति के टोन के रूप में ऑडियो आउटपुट पर भेजता है।</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>रंबल से ऑडियो</value></data>

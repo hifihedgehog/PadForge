@@ -289,6 +289,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Device</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Pinapagana ng</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Magdagdag ng device</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Larawan</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Listahan</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Mag-click ng control, pagkatapos ay pindutin ang input na dapat magpagalaw rito.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Naghihintay ng input para sa {0}. Pindutin ang input sa device mo.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Aling pindot ang makikita ng laro kapag sabay na hawak ang dalawang button ng isang pares</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Aling pindot ang makikita ng laro kapag sabay na hawak ang dalawang key ng isang pares</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Humahawak ng maliit na deflection ng stick para patuloy na ipakita ng laro ang mga prompt ng controller</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Nagpapanday</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Pumili ng macro sa kaliwa, o pindutin ang Idagdag para gumawa ng isa.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
@@ -1220,7 +1227,6 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>I-map Lahat</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>I-map: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>I-record nang sunud-sunod, isa-isa, ang lahat ng mapping</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>Mag-click ng mapping row at pindutin ang button/axis sa controller mo para italaga ito.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Kopyahin ang lahat ng mapping at setting sa clipboard</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>I-paste ang mga mapping at setting mula sa clipboard</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Kopyahin Mula...</value></data>
@@ -3517,7 +3523,6 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Galaw at Touch</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Ilaw at Audio</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Mga Macro at Menu</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Mga setting na humuhubog sa output ng virtual controller ng slot na ito bago ito ipadala sa mga laro: SOCD cleaning para sa magkasalungat na direksyong sabay na pinipindot, at Keep Controller Awake para sa mga larong nag-aalis ng controller sa sandaling makakita ng mouse o keyboard input.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass Shakers</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Nagruruta ng game rumble at force feedback na natatanggap ng virtual controller na ito sa isang audio output bilang mga low-frequency na tone para sa mga bass shaker at subwoofer.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Rumble to Audio</value></data>

@@ -292,8 +292,16 @@ namespace PadForge.Views
             if (_currentMidiConfig != null)
                 _currentMidiConfig.PropertyChanged += OnMidiConfigBarPropertyChanged;
 
+            // The table's rows follow this slot's view of Buttons from its
+            // first frame: the picked control's rows under the picture, every
+            // row in the list (#574). A slot that has never had its filter
+            // set would show every row under the picture.
+            _currentPadVm?.ApplyMappingPickerFilter();
+
             ApplyViewMode();
             SyncSectionSelection();
+            SyncButtonsLayout();
+            SyncPickedRowSelection();
             SyncExtendedConfigBar();
             SyncMidiConfigBar();
             SyncLightbarHexBox();
@@ -914,9 +922,6 @@ namespace PadForge.Views
             if (DataContext is PadViewModel vmMouse && hasMouse)
                 vmMouse.LoadMouseGestureSettingsForActiveDevice();
 
-            if (MotorBarsGrid != null)
-                MotorBarsGrid.Visibility = Visibility.Visible;
-
             // SelectedConfigTab tag values: 0 Controller, 1 Macros, 2 Mappings,
             // 3 Sticks, 4 Triggers, 5 Force Feedback, 6 Adaptive Triggers,
             // 7 Lighting, 8 Gyro, 9 Impulse Triggers, 10 Touchpad, 11 Wheel,
@@ -1126,6 +1131,11 @@ namespace PadForge.Views
                 targetName = Models2D.NintendoPreviewMap.ToRaw(targetName, vm.ProfileId);
                 if (targetName == null) return;
             }
+            // The clicked control is the picked one, whether or not a
+            // recording starts for it (none does with no device to listen
+            // to), so the bar under the picture shows its rows (#574).
+            if (DataContext is PadViewModel pickVm)
+                pickVm.PickedTarget = targetName;
             ControllerElementRecordRequested?.Invoke(this, targetName);
         }
 
@@ -1139,32 +1149,248 @@ namespace PadForge.Views
                 vm.AnnotationOverlayEnabled = enabled;
         }
 
-        /// <summary>Annotation chip click: jump to the Mappings tab and
-        /// select + scroll to the owning row. The Loaded-priority dispatch is
-        /// required because the header-less TabControl template only realizes
-        /// the selected tab's content, so the DataGrid needs a layout pass
-        /// after SelectedConfigTab changes before ScrollIntoView works.</summary>
+        /// <summary>Annotation chip click: pick the chip's control, so the bar
+        /// under the picture shows its row with its editor open. It was a
+        /// jump to the Mappings tab while the table lived there (#574).</summary>
         private void OnAnnotationChipNavigate(object sender, string targetSettingName)
         {
             if (DataContext is not PadViewModel vm) return;
-            MappingItem row = null;
-            foreach (var m in vm.Mappings)
-            {
-                if (string.Equals(m.TargetSettingName, targetSettingName, StringComparison.Ordinal))
-                {
-                    row = m;
-                    break;
-                }
-            }
-            if (row == null) return;
+            if (vm.RowOfTarget(targetSettingName) == null) return;
+            vm.PickedTarget = targetSettingName;
+            // A second click on the chip of the control already picked
+            // changes no value, and its row may have been closed since.
+            SyncPickedRowSelection();
+        }
 
-            vm.SelectedConfigTab = 2; // 2 = Mappings, tag map above
-            Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Loaded, () =>
+        // ─────────────────────────────────────────────
+        //  Buttons: the picture and the list (#574)
+        // ─────────────────────────────────────────────
+
+        /// <summary>The least height the picture has, in a window too short
+        /// to give it more.</summary>
+        private const double PictureMinHeight = 200;
+
+        /// <summary>The least room left in view under the picture and its
+        /// line: the heading and first row of a picked control's table. The
+        /// folded output cards get more when they need it.</summary>
+        private const double UnderPictureInView = 124;
+
+        /// <summary>The picture's height in a viewport: what the viewport has
+        /// left after the line under the picture and the room kept in view
+        /// under that. The room is the output cards at their folded height,
+        /// so a page with nothing picked and every card folded fits the
+        /// viewport and has nothing to scroll, and never less than
+        /// <see cref="UnderPictureInView"/>. A fixed 124 cut the second
+        /// folded card off at the viewport's foot (seen 2026-11-11).
+        ///
+        /// <para>The height is a whole number of the screen's pixels, two
+        /// less than fits. <paramref name="pixelsPerUnit"/> is the display
+        /// scale, 1.5 at 150%. Each row of the page is rounded to whole
+        /// pixels on its own, so a page drawn to the last pixel could come
+        /// out one taller than its viewport and get a scroll bar with
+        /// nothing to scroll. A height that lands on half a pixel, as 575
+        /// does at 150%, would be rounded by the page's grid with the rows
+        /// around it. The thousandth keeps a sum a hair under a whole pixel
+        /// from losing that pixel.</para></summary>
+        internal static double PictureHeightFor(double viewport, double line, double foldedCards, double pixelsPerUnit)
+        {
+            if (!(pixelsPerUnit > 0)) pixelsPerUnit = 1;
+            double room = viewport - line - Math.Max(UnderPictureInView, foldedCards);
+            double pixels = Math.Floor(room * pixelsPerUnit + 0.001) - 2;
+            return Math.Max(PictureMinHeight, pixels / pixelsPerUnit);
+        }
+
+        /// <summary>The output cards' height with every card folded: the
+        /// group as it stands with its margins, less what each open card
+        /// shows under its line. An open card therefore leaves the picture's
+        /// height as it was, and the page under it grows and scrolls. Not a
+        /// number while the group cannot be measured: it is hidden, as it is
+        /// in the list and for the moment it takes to come back from there,
+        /// or it has not been laid out.</summary>
+        private double FoldedOutputHeight()
+        {
+            if (OutputGroup == null || !OutputGroup.IsVisible || OutputGroup.ActualHeight <= 0) return double.NaN;
+            double height = OutputGroup.ActualHeight + OutputGroup.Margin.Top + OutputGroup.Margin.Bottom;
+            foreach (var card in new[] { SocdFoldCard, KbmSocdFoldCard, KeepAwakeFoldCard })
             {
+                if (card == null || !card.IsVisible || !card.IsExpanded) continue;
+                if (card.Template?.FindName("ExpandSite", card) is FrameworkElement open)
+                    height -= open.ActualHeight;
+            }
+            return Math.Max(0, height);
+        }
+
+        /// <summary>The folded height last measured.</summary>
+        private double _foldedOutputMeasured = double.NaN;
+
+        /// <summary>The folded height to size the picture from.
+        ///
+        /// <para>A controller type with no output cards needs none, and
+        /// leaves the last measurement alone for the type that has
+        /// them.</para>
+        ///
+        /// <para>While the cards cannot be measured the last measurement
+        /// stands. The picture is sized the moment the view changes, before
+        /// the cards are back on the page, and the cards then come back at
+        /// the size they had, which raises no size change to correct a
+        /// guess. Sizing from zero there left the picture 17 too tall after
+        /// every visit to the list, with the second card cut off (seen
+        /// 2026-11-11). Cards that come back at another size do raise the
+        /// change, and are measured then.</para>
+        ///
+        /// <para>A measurement within two of the last one is the last one.
+        /// Each part of an open card is rounded to whole pixels on its own,
+        /// so the folded height read while a card is open can differ by one
+        /// from the height read with it closed, and the picture moved by a
+        /// pixel each time a card opened. A card that comes or goes changes
+        /// the height by far more than that.</para></summary>
+        internal static double SteadyFoldedHeight(bool typeHasCards, double measured, ref double lastMeasured)
+        {
+            if (!typeHasCards) return 0;
+            if (double.IsNaN(measured)) return double.IsNaN(lastMeasured) ? 0 : lastMeasured;
+            if (Math.Abs(measured - lastMeasured) < 2) return lastMeasured;
+            lastMeasured = measured;
+            return measured;
+        }
+
+        /// <summary>Under the picture the picked row is the table's selected
+        /// row, so its editor and its options show. In the list the picked
+        /// row is selected and brought into view, so a switch from the
+        /// picture lands on the control that was open there.</summary>
+        private void SyncPickedRowSelection()
+        {
+            if (DataContext is not PadViewModel vm || MappingDataGrid == null) return;
+            var row = vm.RowOfTarget(vm.PickedTarget);
+            if (row == null || !MappingDataGrid.Items.Contains(row)) return;
+            if (!ReferenceEquals(MappingDataGrid.SelectedItem, row))
+            {
+                // A plain row draws as one line until this is set, as a
+                // click on it sets it (MappingRow_PreviewMouseLeftButtonDown).
+                if (row.IsTrivialDirect && !row.IsExpandedOverride)
+                    row.IsExpandedOverride = true;
                 MappingDataGrid.SelectedItem = row;
-                MappingDataGrid.UpdateLayout();
-                MappingDataGrid.ScrollIntoView(row);
+            }
+        }
+
+        /// <summary>Buttons went from the picture to the list or back. The
+        /// view model has already given the table that view's rows.</summary>
+        private void OnButtonsViewChanged()
+        {
+            SyncButtonsLayout();
+            FitMappingColumnsOnce();
+            SyncPickedRowSelection();
+        }
+
+        /// <summary>Lays Buttons out for its view. The picture's view is a
+        /// page that scrolls: the picture gets a height of its own, what the
+        /// section's viewport has left after the top row, the line and some
+        /// room under it, and the picked control's rows and the output cards
+        /// follow at their full height. Sharing one screen among them was
+        /// tried first, and an open row with an open card left the 3D view
+        /// a strip that showed the middle of the controller (seen
+        /// 2026-11-11). The list does not scroll the page: its table has the
+        /// section and scrolls its own rows.</summary>
+        private void SyncButtonsLayout()
+        {
+            if (ButtonsScroll == null || MappingDataGrid == null) return;
+            if (DataContext is not PadViewModel vm) return;
+            if (vm.IsButtonsListView)
+            {
+                ButtonsScroll.VerticalScrollBarVisibility = ScrollBarVisibility.Disabled;
+                ButtonsScroll.Padding = new Thickness(0);
+                ButtonsPictureRow.Height = GridLength.Auto;
+                ButtonsTableRow.Height = new GridLength(1, GridUnitType.Star);
+                ButtonsFillRow.Height = GridLength.Auto;
+                MappingDataGrid.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
+                return;
+            }
+            ButtonsScroll.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+            // Room for the page's scroll bar, which is drawn over the
+            // content's edge and sat on the cards' right border.
+            ButtonsScroll.Padding = new Thickness(0, 0, 14, 0);
+            ButtonsTableRow.Height = GridLength.Auto;
+            // The empty last row takes what the viewport has left under
+            // the cards. A grid with pixels left over hands them to its
+            // rows, one each, and to other rows once the page is taller
+            // than the viewport: with a card open the line under the
+            // picture sat a pixel higher and the first card two (measured
+            // 2026-11-11, 1253 and 1315 against 1252 and 1313).
+            ButtonsFillRow.Height = new GridLength(1, GridUnitType.Star);
+            MappingDataGrid.VerticalScrollBarVisibility = ScrollBarVisibility.Disabled;
+            double viewport = ButtonsScroll.ActualHeight;
+            if (viewport <= 0) return;
+            // What is always in view with the picture: the line under it,
+            // with its 6 above and below. The top row sits above the page
+            // and is not part of its viewport.
+            double around = Math.Max(PictureLine.ActualHeight, PictureLine.MinHeight) + 12;
+            double folded = SteadyFoldedHeight(vm.OutputTabVisible, FoldedOutputHeight(), ref _foldedOutputMeasured);
+            double picture = PictureHeightFor(viewport, around, folded, VisualTreeHelper.GetDpi(ButtonsScroll).DpiScaleY);
+            ButtonsPictureRow.Height = new GridLength(picture);
+        }
+
+        private void ButtonsRoot_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (e.HeightChanged) SyncButtonsLayout();
+        }
+
+        /// <summary>The output cards changed height: a card came or went
+        /// with the controller's type, or one opened or closed. The picture
+        /// is sized from their folded height, which the first layout has not
+        /// measured yet and a card's coming or going changes. An open card
+        /// changes the group's height and not its folded height, so the
+        /// picture stays as it was then.</summary>
+        private void OutputGroup_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (e.HeightChanged) SyncButtonsLayout();
+        }
+
+        /// <summary>Under the picture the table shows every one of its few
+        /// rows and the page around it scrolls. A data grid's own scroll
+        /// viewer takes the wheel even with nothing to scroll, so there the
+        /// wheel goes to the page. That also keeps a turn of the wheel over
+        /// a closed picker in the row from changing the picker's choice
+        /// while the page was meant to move. An open picker's list is a
+        /// window of its own, and its wheel never comes here.</summary>
+        private void MappingDataGrid_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (e.Handled || ButtonsScroll == null) return;
+            if (DataContext is not PadViewModel vm || !vm.IsButtonsPictureView) return;
+            e.Handled = true;
+            ButtonsScroll.RaiseEvent(new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta)
+            {
+                RoutedEvent = UIElement.MouseWheelEvent,
+                Source = sender,
             });
+        }
+
+        /// <summary>The line under the picture's Stop: ends Map All when it
+        /// runs, else cancels the one recording. The cancel goes the way a
+        /// second click on the control goes, through the page's record
+        /// event, which the window answers by cancelling the recording of
+        /// the control it is told is already recording.</summary>
+        private void ListeningStop_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is not PadViewModel vm) return;
+            if (vm.IsMapAllActive)
+            {
+                vm.StopMapAll();
+                return;
+            }
+            string target = vm.CurrentRecordingTarget;
+            if (!string.IsNullOrEmpty(target))
+                ControllerElementRecordRequested?.Invoke(this, target);
+        }
+
+        /// <summary>The list's More button opens its menu under itself. A
+        /// context menu is outside the page's tree, so it is handed the
+        /// page's view model for its commands.</summary>
+        private void ListMore_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is not Button button || button.ContextMenu == null) return;
+            button.ContextMenu.DataContext = DataContext;
+            button.ContextMenu.PlacementTarget = button;
+            button.ContextMenu.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
+            button.ContextMenu.IsOpen = true;
         }
 
         // ─────────────────────────────────────────────
@@ -1339,10 +1565,9 @@ namespace PadForge.Views
                     var button = ButtonOfSection(s);
                     if (button != null) button.IsChecked = s == section;
                 }
-                int buttonsPart = vm.ButtonsPartIndex;
-                TabController.IsChecked = buttonsPart == 0;
-                TabMappings.IsChecked = buttonsPart == 1;
-                TabOutput.IsChecked = buttonsPart == 2;
+                bool list = vm.IsButtonsListView;
+                TabController.IsChecked = !list;
+                TabMappings.IsChecked = list;
                 int macrosPart = vm.MacrosPartIndex;
                 TabMacros.IsChecked = macrosPart == 0;
                 TabMenus.IsChecked = macrosPart == 1;
@@ -2937,46 +3162,12 @@ namespace PadForge.Views
 
 
         // ─────────────────────────────────────────────
-        //  Motor test (click) + hover highlight
+        //  Motor test
         // ─────────────────────────────────────────────
 
-        /// <summary>#175 hover-glow for the motor test click zones. Hover
-        /// dims the zone (brightness-only change), so the glow is the faint
-        /// neutral ember. Shared frozen instance, assigned statically from
-        /// code. Never animate a shared Effect.</summary>
-        private static readonly System.Windows.Media.Effects.DropShadowEffect MotorHoverGlow = CreateMotorHoverGlow();
-
-        private static System.Windows.Media.Effects.DropShadowEffect CreateMotorHoverGlow()
-        {
-            var fx = new System.Windows.Media.Effects.DropShadowEffect
-            {
-                Color = Color.FromRgb(0xFF, 0x6B, 0x2C),
-                ShadowDepth = 0,
-                BlurRadius = 10,
-                Opacity = 0.30
-            };
-            fx.Freeze();
-            return fx;
-        }
-
-        private void Motor_MouseEnter(object sender, MouseEventArgs e)
-        {
-            if (sender is FrameworkElement el)
-            {
-                el.Opacity = 0.7;
-                el.Effect = MotorHoverGlow;
-            }
-        }
-
-        private void Motor_MouseLeave(object sender, MouseEventArgs e)
-        {
-            if (sender is FrameworkElement el)
-            {
-                el.Opacity = 1.0;
-                el.Effect = null;
-            }
-        }
-
+        // The Force Feedback group's Left Motor and Right Motor rows each
+        // carry a Test button (#574). They were capsules under the
+        // controller's picture.
         private void LeftMotor_Click(object sender, RoutedEventArgs e)
         {
             if (DataContext is PadViewModel padVm)
@@ -3055,14 +3246,19 @@ namespace PadForge.Views
             }
         }
 
-        /// <summary>Ctrl+F focuses the picker search box while the
-        /// mappings tab is active (#322).</summary>
+        /// <summary>Ctrl+F focuses the picker search box (#322). The box is
+        /// one of the list's tools, so from the picture the list comes on
+        /// first.</summary>
         private void MappingsTabRoot_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == System.Windows.Input.Key.F
                 && (System.Windows.Input.Keyboard.Modifiers & System.Windows.Input.ModifierKeys.Control) != 0)
             {
-                MappingFilterSearchBox.Focus();
+                if (DataContext is PadViewModel vm && !vm.IsButtonsListView)
+                    GoToTab(vm, PadViewModel.MappingsTabIndex, keepScroll: true);
+                // After the list's tools have been laid out.
+                Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Input,
+                    new Action(() => MappingFilterSearchBox.Focus()));
                 e.Handled = true;
             }
         }
@@ -3133,6 +3329,14 @@ namespace PadForge.Views
                              && IsTabAvailable(PadViewModel.BassShakersTabIndex))
                         sectionVm.RefreshBassShakersGroup();
                 }
+            }
+            else if (e.PropertyName == nameof(PadViewModel.ButtonsViewIndex))
+            {
+                OnButtonsViewChanged();
+            }
+            else if (e.PropertyName == nameof(PadViewModel.PickedTarget))
+            {
+                SyncPickedRowSelection();
             }
             else if (e.PropertyName == nameof(PadViewModel.RumbleAudioTabVisible)
                      || e.PropertyName == nameof(PadViewModel.OutputTabVisible))
@@ -5277,9 +5481,35 @@ namespace PadForge.Views
         /// to that pixel width. That matches the user-initiated double-click
         /// outcome exactly.
         /// </summary>
-        private void MappingDataGrid_Loaded(object sender, RoutedEventArgs e)
+        private void MappingDataGrid_Loaded(object sender, RoutedEventArgs e) => FitMappingColumnsOnce();
+
+        /// <summary>Sizes the table's flexible columns to their content, once:
+        /// the first time the list shows with rows in it. The pass builds
+        /// every row in its open form to measure it, which took the page
+        /// more than a second (measured 2026-11-11), and it used to run each
+        /// time the table came on the page, doing that work again for
+        /// columns it had already locked. Under the picture the table holds
+        /// a few rows of one control, so it is not measured there: a width
+        /// taken from those rows would lock in too narrow for the list.
+        /// Until the list has shown, the columns size themselves.</summary>
+        private void FitMappingColumnsOnce()
         {
-            if (sender is not DataGrid grid) return;
+            var grid = MappingDataGrid;
+            if (grid == null || !grid.IsLoaded || grid.Items.Count == 0) return;
+            if (DataContext is not PadViewModel vm || !vm.IsButtonsListView) return;
+            bool anyFlexible = false;
+            foreach (var column in grid.Columns)
+            {
+                var unit = column.Width.UnitType;
+                if (unit == DataGridLengthUnitType.Auto
+                    || unit == DataGridLengthUnitType.SizeToCells
+                    || unit == DataGridLengthUnitType.SizeToHeader)
+                {
+                    anyFlexible = true;
+                    break;
+                }
+            }
+            if (!anyFlexible) return;
             // Run synchronously: containers for the visible viewport
             // are realized by the time Loaded fires, and
             // AutoFitFlexibleColumns disables virtualization +
@@ -5330,22 +5560,28 @@ namespace PadForge.Views
         /// is augmented with the widest item across every ComboBox in
         /// the cell's visual tree (plus a small dropdown-arrow allowance).</para>
         ///
-        /// <para>Row virtualization is forced off via
-        /// <see cref="VirtualizingPanel.SetIsVirtualizing(DependencyObject, bool)"/>
-        /// for the duration of the measurement so scrolled-off rows are
-        /// realized and contribute their honest content widths to the
-        /// max.</para></summary>
-        private static void AutoFitFlexibleColumns(DataGrid grid)
+        /// <para>Row virtualization is off for the length of the
+        /// measurement, through the grid's own
+        /// <see cref="DataGrid.EnableRowVirtualization"/>, so rows that are
+        /// not in view are built and their cells count toward the
+        /// widest.</para></summary>
+        internal static void AutoFitFlexibleColumns(DataGrid grid)
         {
             const double CellChromePadding = 12.0; // matches WPF's gripper-double-click delta
             const double ComboBoxArrowPadding = 32.0; // dropdown-arrow + ComboBox border insets
 
-            // Force-realize every row so cells in scrolled-off rows
-            // contribute to the max. The original virtualization state is
-            // restored at the end so runtime scroll performance is
-            // unaffected.
-            bool wasVirtualizing = VirtualizingPanel.GetIsVirtualizing(grid);
-            VirtualizingPanel.SetIsVirtualizing(grid, false);
+            // Build every row, so cells in rows that are not in view count
+            // toward the widest, and put the grid's setting back at the end
+            // so scrolling stays as fast as it was. The switch is the grid's
+            // own EnableRowVirtualization. The mapping grid's markup sets
+            // it, and a grid whose own switch is set takes that over the
+            // attached VirtualizingPanel.IsVirtualizing, which this pass set
+            // before: the attached value read back as still on, 11 of 22
+            // rows were built, none of them an axis row, and the Options
+            // column locked too narrow for an axis row's Acceleration
+            // (measured 2026-11-11).
+            bool wasVirtualizing = grid.EnableRowVirtualization;
+            grid.EnableRowVirtualization = false;
             grid.UpdateLayout();
 
             try
@@ -5413,7 +5649,7 @@ namespace PadForge.Views
             }
             finally
             {
-                VirtualizingPanel.SetIsVirtualizing(grid, wasVirtualizing);
+                grid.EnableRowVirtualization = wasVirtualizing;
             }
         }
 
@@ -5577,11 +5813,21 @@ namespace PadForge.Views
                 if (added is MappingItem am)
                     am.IsRowSelected = true;
             }
+            // The selected row is the picked control (#574), so the picture's
+            // bar and the list open on the same one. A row of the picked
+            // control's own family changes no rows under the picture.
+            if (e.AddedItems.Count > 0 && e.AddedItems[0] is MappingItem picked
+                && DataContext is PadViewModel pickVm)
+                pickVm.PickedTarget = picked.TargetSettingName;
             // Opening a row grows it by the details strip, which can push
-            // the editor below the fold. Same layout-then-scroll sequence
-            // as OnAnnotationChipNavigate, deferred so the strip has been
-            // measured before the viewport math runs.
-            if (e.AddedItems.Count > 0 && e.AddedItems[0] is MappingItem sel)
+            // the editor below the fold. Deferred so the strip has been
+            // measured before the viewport math runs. In the list only:
+            // under the picture every row is laid out and the page holds
+            // still, since a scroll there moved the picture out from under
+            // the pointer right after a click on one of its controls (seen
+            // 2026-11-11).
+            bool underPicture = DataContext is PadViewModel viewVm && viewVm.IsButtonsPictureView;
+            if (!underPicture && e.AddedItems.Count > 0 && e.AddedItems[0] is MappingItem sel)
             {
                 Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Loaded, () =>
                 {

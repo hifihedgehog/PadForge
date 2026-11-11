@@ -289,6 +289,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Shèbèi</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Shūrù láiyuán</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Tiānjiā shèbèi</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Túpiàn</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Lièbiǎo</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Diǎnjī yī gè kòngjiàn, ránhòu ànxià yào qūdòng tā de shūrù.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Zhèngzài lùzhì {0}. Qǐng zài shèbèi shàng ànxià shūrù.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Yī duì ànniǔ tóngshí ànzhù shí yóuxì kàndào nǎ yī cì ànxià</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Yī duì jiàn tóngshí ànzhù shí yóuxì kàndào nǎ yī cì ànxià</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Bǎochí yáogǎn qīngwēi piānyí, ràng yóuxì jìxù xiǎnshì kòngzhìqì tíshì</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Duànzào zhōng</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Zài zuǒcè xuǎnzé yí gè hóng, huò diǎnjī “Tiānjiā” xīnjiàn yí gè.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>YUÁNSHǏ</value></data>
@@ -1219,7 +1226,6 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Quánbù yìngshè</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Yìngshè: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Zhúyī lùzhì suǒyǒu yìngshè</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>Diǎnjī yī gè yìngshè háng, ránhòu ànxià kòngzhìqì shàng de ànniǔ/zhóu lái fēnpèi.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Jiāng suǒyǒu yìngshè hé shèzhì fùzhì dào jiǎntiēbǎn</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Cóng jiǎntiēbǎn zhàntiē yìngshè hé shèzhì</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Cóng qítā shèbèi fùzhì...</value></data>
@@ -3679,7 +3685,6 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Tǐgǎn yǔ chùkòng</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Dēngguāng yǔ yīnpín</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Hóng yǔ càidān</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Zài fāsòng gěi yóuxì zhīqián duì gāi cáowèi xūnǐ kòngzhìqì shūchū jìnxíng zhěngxíng de shèzhì: SOCD qīnglǐ yòng yú chǔlǐ tóngshí ànxià de xiāngfǎn fāngxiàng, Bǎochí kòngzhìqì huóyuè yòng yú yìngduì yí jiǎncè dào shǔbiāo huò jiànpán shūrù jiù fàngqì kòngzhìqì de yóuxì.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Dīyīn zhèndòngqì</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Jiāng cǐ xūnǐ kòngzhìqì shōudào de yóuxì zhèndòng hé lìfǎnkuì zhuǎnhuàn wéi dīpín yīn, shūchū dào yīnpín shèbèi, yòng yú dīyīn zhèndòngqì hé dīyīnpào.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Zhèndòng zhuǎn yīnpín</value></data>

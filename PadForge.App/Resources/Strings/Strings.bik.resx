@@ -1189,4 +1189,8 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Hiro asin dutdot</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Ilaw asin tunog</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Mga macro asin menu</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Litrato</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Lista</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Mag-click nin sarong kontrol, dangan pindota an input na dapat magpalakaw kaiyan.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Naghahalat sa {0}. Pindota an input sa saimong device.</value></data>
 </root>

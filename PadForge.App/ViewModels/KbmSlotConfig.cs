@@ -303,7 +303,32 @@ namespace PadForge.ViewModels
         public string SocdMode
         {
             get => _socdMode;
-            set => SetProperty(ref _socdMode, string.IsNullOrEmpty(value) ? "Off" : value);
+            set
+            {
+                if (SetProperty(ref _socdMode, string.IsNullOrEmpty(value) ? "Off" : value))
+                    OnPropertyChanged(nameof(SocdSummary));
+            }
+        }
+
+        /// <summary>The SOCD card's value while folded: the mode's name
+        /// (#574).</summary>
+        public string SocdSummary
+        {
+            get
+            {
+                foreach (var option in AvailableSocdModes)
+                    if (string.Equals(option.Value, _socdMode, System.StringComparison.Ordinal))
+                        return option.Name;
+                return PadForge.Resources.Strings.Strings.Instance.Common_Off;
+            }
+        }
+
+        /// <summary>The language changed: the mode names and the folded
+        /// card's value are worded from the string table.</summary>
+        internal void RaiseLocalizedChanged()
+        {
+            OnPropertyChanged(nameof(AvailableSocdModes));
+            OnPropertyChanged(nameof(SocdSummary));
         }
 
         private string _socdPairs = DefaultSocdPairs;

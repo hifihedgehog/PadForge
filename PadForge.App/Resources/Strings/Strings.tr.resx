@@ -304,6 +304,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Cihaz</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Giriş kaynağı</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Cihaz ekle</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Resim</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Liste</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Bir kontrole tıklayın, ardından onu yönetecek girişe basın veya hareket ettirin.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>{0} için giriş bekleniyor. Cihazınızda girişe basın.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Bir çiftin iki düğmesi de basılıyken oyunların hangi basışı gördüğü</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Bir çiftin iki tuşu da basılıyken oyunların hangi basışı gördüğü</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Küçük bir çubuk itişini tutar, oyunlar kontrolcü istemlerini göstermeyi sürdürür</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>İşleniyor</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Soldan bir makro seçin veya yeni bir tane oluşturmak için Ekle'ye basın.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>HAM</value></data>
@@ -1383,7 +1390,6 @@
   <data name="Pad_MapAll" xml:space="preserve"><value>Tümünü eşle</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Eşleyin: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Tüm eşlemeleri sırayla tek tek kaydet</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>Atamak için bir eşleme satırına tıklayın ve kontrolcünüzde bir düğmeye basın veya bir ekseni hareket ettirin.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Tüm eşlemeleri ve ayarları panoya kopyala</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Eşlemeleri ve ayarları panodan yapıştır</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Şuradan kopyala...</value></data>
@@ -3897,7 +3903,6 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Hareket ve Dokunma</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Aydınlatma ve Ses</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makrolar ve Menüler</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Bu yuvanın sanal kontrolcü çıkışını oyunlara gönderilmeden hemen önce şekillendiren ayarlar: birlikte basılan zıt yönler için SOCD temizleme ve fare veya klavye girişi gördüğü anda kontrolcüyü bırakan oyunlar için Kontrolcüyü uyanık tut.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shaker'lar</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Bu sanal kontrolcünün aldığı oyun titreşimini ve kuvvet geri bildirimini, bass shaker'lar ve subwoofer'lar için düşük frekanslı tonlar olarak bir ses çıkışına yönlendirir.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Titreşimden sese</value></data>

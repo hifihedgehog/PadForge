@@ -701,7 +701,6 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Pad_MapAll" xml:space="preserve"><value>Mappa tutto</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Mappa: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Registra tutte le mappature una per una in sequenza</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>Clicca su una riga di mappatura e premi un pulsante/asse sul controller per assegnarlo.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Copia tutte le mappature e le impostazioni negli appunti</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Incolla mappature e impostazioni dagli appunti</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Copia da...</value></data>
@@ -3185,6 +3184,13 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Dispositivo</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Pilotato da</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Aggiungi dispositivo</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Immagine</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Elenco</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Clicca su un controllo, poi premi l'input che deve azionarlo.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>In ascolto di {0}. Premi l'input sul tuo dispositivo.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Quale pressione vedono i giochi quando entrambi i pulsanti di una coppia sono premuti</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Quale pressione vedono i giochi quando entrambi i tasti di una coppia sono premuti</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Mantiene una piccola deflessione dello stick perché i giochi mostrino le icone del controller</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Anteprima</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>Extra</value></data>
   <data name="Extras_Subtitle" xml:space="preserve"><value>Funzioni facoltative. Ognuna resta in disparte finché non la attivi.</value></data>
@@ -3857,7 +3863,6 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Movimento e tocco</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Illuminazione e audio</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Macro e menu</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Impostazioni che modellano l'uscita del controller virtuale di questo slot subito prima dell'invio ai giochi: pulizia SOCD per direzioni opposte premute insieme e mantieni il controller attivo per i giochi che abbandonano il controller appena rilevano mouse o tastiera.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shaker</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Instrada la vibrazione e il force feedback di gioco ricevuti da questo controller virtuale verso un'uscita audio come toni a bassa frequenza per bass shaker e subwoofer.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibrazione in audio</value></data>

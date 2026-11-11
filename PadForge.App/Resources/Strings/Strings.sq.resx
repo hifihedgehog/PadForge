@@ -289,6 +289,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Pajisje</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Drejtuar nga</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Shto pajisje</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Imazh</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Listë</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Kliko një kontroll, pastaj shtyp hyrjen që duhet ta drejtojë.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Po regjistron {0}. Shtyp hyrjen në pajisjen tënde.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Cilën shtypje e sheh loja kur mbahen të dy butonat e një çifti</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Cilën shtypje e sheh loja kur mbahen të dy tastet e një çifti</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Mban një devijim të vogël të levës që lojërat të shfaqin treguesit e kontrolluesit</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Po farkëton</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Zgjidh një makro në të majtë ose shtyp Shto për të krijuar një.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
@@ -1219,7 +1226,6 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_MapAll" xml:space="preserve"><value>Hartëzo të gjitha</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Hartëzo: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Regjistro njëri pas tjetrit të gjitha hartëzimet</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>Kliko një rresht hartëzimi dhe shtyp një buton ose bosht në kontrolluesin tënd për ta caktuar.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Kopjo të gjitha hartëzimet dhe cilësimet në clipboard</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Ngjit hartëzimet dhe cilësimet nga clipboard</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Kopjo nga...</value></data>
@@ -3650,7 +3656,6 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Lëvizja dhe prekja</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Dritat dhe zëri</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makrot dhe menytë</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Cilësime që formësojnë daljen e kontrolluesit virtual të këtij sloti pak para se t'u dërgohet lojërave: pastrimi SOCD për drejtime të kundërta të shtypura njëkohësisht, dhe „Mbaje kontrolluesin zgjuar“ për lojërat që e braktisin kontrolluesin sapo shohin hyrje nga mausi ose tastiera.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass Shakers</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Dërgon dridhjen e lojës dhe force feedback që merr ky kontrollues virtual te një dalje audio si tone me frekuencë të ulët për bass shaker dhe subwoofer.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Dridhje në audio</value></data>

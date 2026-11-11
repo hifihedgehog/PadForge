@@ -244,6 +244,7 @@ namespace PadForge.Tests
             padVm.SelectedConfigTab = 15;  // Menus, which Macros & Menus remembers
             padVm.SelectedConfigTab = 4;   // Triggers, which Sticks & Triggers remembers
             padVm.SelectedConfigTab = 2;   // Mappings
+            padVm.PickedTarget = "ButtonA";
             padVm.MappingsViewLoaded = true;
 
             dev.DeleteSlot(0);
@@ -252,8 +253,10 @@ namespace PadForge.Tests
             Assert.False(padVm.MappingsViewLoaded);
             // Each section is back on its first tab too (#574), so the next
             // controller's Macros & Menus opens on Macros, not on the
-            // deleted one's Menus.
-            Assert.Equal(0, padVm.ButtonsPartIndex);
+            // deleted one's Menus. Buttons is back on the picture, with no
+            // control picked.
+            Assert.Equal(0, padVm.ButtonsViewIndex);
+            Assert.Null(padVm.PickedTarget);
             Assert.Equal(0, padVm.MacrosPartIndex);
             Assert.Equal(1, padVm.LastTabOfSection(PadForge.ViewModels.PadViewModel.MacrosSection));
             Assert.Equal(3, padVm.LastTabOfSection(PadForge.ViewModels.PadViewModel.SticksSection));

@@ -701,7 +701,6 @@
   <data name="Pad_MapAll" xml:space="preserve"><value>すべてマッピング</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>マッピング: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>すべてのマッピングを一つずつ順番に記録します</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>マッピング行をクリックし、コントローラーのボタン/軸を押して割り当てます。</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>すべてのマッピングと設定をクリップボードにコピーします</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>クリップボードからマッピングと設定を貼り付けます</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>コピー元...</value></data>
@@ -3163,6 +3162,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>デバイス</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>入力元</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>デバイスを追加</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>画像</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>リスト</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>コントローラーのボタンやスティックをクリックし、割り当てる入力を押してください。</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>{0} の入力を待っています。お使いのデバイスで入力を押してください。</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>ボタンペアが同時に押されたときにゲームに見せる入力</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>キーペアが同時に押されたときにゲームに見せる入力</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>スティックをわずかに倒した状態を保持し、ゲームにコントローラー表示を続けさせる</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>プレビュー</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>追加機能</value></data>
   <data name="Extras_Subtitle" xml:space="preserve"><value>オプション機能です。オンにするまで邪魔になりません。</value></data>
@@ -3835,7 +3841,6 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>モーションとタッチ</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>ライティングとオーディオ</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>マクロとメニュー</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>このスロットの仮想コントローラー出力をゲームへ送る直前に整える設定です。同時に押された反対方向を処理する SOCD クリーニングと、マウスやキーボード入力を検出するとコントローラーを切り替えてしまうゲーム向けのアクティブ保持があります。</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>バスシェイカー</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>この仮想コントローラーが受け取るゲームの振動とフォースフィードバックを、バスシェイカーやサブウーファー向けの低周波トーンとしてオーディオ出力へ送ります。</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>振動をオーディオへ</value></data>

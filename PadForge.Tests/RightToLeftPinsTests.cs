@@ -202,16 +202,21 @@ namespace PadForge.Tests
             Assert.Equal(9, pinned);
         }
 
-        /// <summary>The left motor's capsule stays under the controller's
-        /// left grip. The row is a Grid, not a drawing, so the general check
-        /// does not cover it.</summary>
+        /// <summary>The two motor capsules that sat side by side under the
+        /// controller's picture, pinned left to right so the left motor
+        /// stayed under the left grip, are gone (#574). Each motor's test is
+        /// a button on its own row of the Force Feedback card now, and rows
+        /// one above the other have no sides to keep.
+        /// PadButtonsViewTests.TheMotorTestsAreOnTheirRows pins the
+        /// buttons.</summary>
         [Fact]
-        public void TheMotorCapsulesKeepTheirSides()
+        public void TheMotorCapsulesAreGone_SoNoRowOfThemNeedsItsSidesKept()
         {
             string pad = File.ReadAllText(Path.Combine(AppDirectory(), "Views", "PadPage.xaml"));
-            Match row = Regex.Match(pad, @"<Grid x:Name=""MotorBarsGrid""[^>]*>");
-            Assert.True(row.Success);
-            Assert.Contains("FlowDirection=\"LeftToRight\"", row.Value);
+            Assert.DoesNotContain("MotorBarsGrid", pad);
+            Assert.DoesNotContain("MotorCapsuleTemplate", pad);
+            Assert.Single(Regex.Matches(pad, @"Click=""LeftMotor_Click"""));
+            Assert.Single(Regex.Matches(pad, @"Click=""RightMotor_Click"""));
         }
 
         [Fact]

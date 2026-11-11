@@ -701,7 +701,6 @@
   <data name="Pad_MapAll" xml:space="preserve"><value>전체 매핑</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>매핑: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>모든 매핑을 하나씩 순서대로 기록합니다</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>매핑 행을 클릭한 후 컨트롤러의 버튼/축을 눌러 할당하십시오.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>모든 매핑 및 설정을 클립보드에 복사합니다</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>클립보드에서 매핑 및 설정을 붙여넣습니다</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>복사 원본...</value></data>
@@ -3163,6 +3162,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>장치</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>입력 장치</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>장치 추가</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>그림</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>목록</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>컨트롤을 클릭한 후 할당할 입력을 누르십시오.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>{0} 입력을 기다리는 중입니다. 장치에서 입력을 누르십시오.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>한 쌍의 버튼을 동시에 누를 때 게임에 보일 입력</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>한 쌍의 키를 동시에 누를 때 게임에 보일 입력</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>스틱을 약간 기울인 상태를 유지해 게임에 컨트롤러 표시를 유지</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>미리 보기</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>추가 기능</value></data>
   <data name="Extras_Subtitle" xml:space="preserve"><value>선택 기능입니다. 켜기 전에는 방해되지 않습니다.</value></data>
@@ -3835,7 +3841,6 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>모션 및 터치</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>조명 및 오디오</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>매크로 및 메뉴</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>이 슬롯의 가상 컨트롤러 출력을 게임으로 보내기 직전에 다듬는 설정입니다. 동시에 눌린 반대 방향을 정리하는 SOCD 클리닝과, 마우스나 키보드 입력을 보면 컨트롤러를 놓아 버리는 게임을 위한 컨트롤러 활성 유지가 있습니다.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>베이스 셰이커</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>이 가상 컨트롤러가 받는 게임 진동과 포스 피드백을 저주파 톤으로 바꿔 베이스 셰이커와 서브우퍼용 오디오 출력으로 보냅니다.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>진동을 오디오로</value></data>

@@ -289,6 +289,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Apparat</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Input minn</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Żid apparat</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Stampa</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Lista</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Ikklikkja kontroll, imbagħad agħfas l-input li għandu jmexxih.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Qed nisimgħu għal {0}. Agħfas l-input fuq l-apparat tiegħek.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Liema għafsa tara l-logħba meta ż-żewġ buttuni ta' par jinżammu</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Liema għafsa tara l-logħba meta ż-żewġ tasti ta' par jinżammu</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Iżżomm devjazzjoni żgħira tal-istick biex il-logħob ikompli juri prompts tal-kontrollur</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Mixgħul</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Agħżel makro fuq ix-xellug, jew agħfas Żid biex toħloq waħda.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
@@ -1219,7 +1226,6 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Immappja kollox</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Immappja: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Irreġistra l-mappjar kollu, wieħed wara l-ieħor</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>Ikklikkja ringiela tal-mappjar u agħfas buttuna/assi fuq il-kontrollur tiegħek biex tassenjah.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Ikkopja l-mappjar u s-settings kollha fil-clipboard</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Waħħal il-mappjar u s-settings mill-clipboard</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Ikkopja minn...</value></data>
@@ -3641,7 +3647,6 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Moviment u Mess</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Dawl u Awdjo</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makros u Menus</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Settings li jsawru l-output tal-kontrollur virtwali ta' dan is-slot eżatt qabel ma jintbagħat lil-logħob: tindif SOCD għal direzzjonijiet opposti magħfusa flimkien, u “Żomm il-kontrollur imqajjem” għal-logħob li jwaqqgħu l-kontrollur hekk kif jaraw input tal-maws jew tat-tastiera.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shakers</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Jibgħat ir-rumble u l-force feedback tal-logħba li jirċievi dan il-kontrollur virtwali lejn output tal-awdjo bħala toni ta' frekwenza baxxa għal bass shakers u subwoofers.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Rumble għall-awdjo</value></data>

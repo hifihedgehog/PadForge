@@ -151,6 +151,10 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Fitaovana</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Entin'ny</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Hanampy fitaovana</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Sary</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Lisitra</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Tsindrio singa iray amin'ny sary, avy eo tsindrio ny fampidirana tokony hitantana azy.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Mandrakitra {0}. Tsindrio ny fampidirana amin'ny fitaovanao.</value></data>
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Mihaino amin'ny :{0}. Mandefa any amin'ny contrôleur laharana {2} ny {1}, nefa tsy misy contrôleur virtoaly misy contrôleur PlayStation manana io laharana io.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Ampiasain'ny programa hafa, toy ny DSX, ny port {0}. Akatony izy na mifidiana port hafa.</value></data>
   <data name="Dashboard_WebPlainLocalOnly" xml:space="preserve"><value>Ity PC ity ihany</value></data>
@@ -504,7 +508,6 @@
   <data name="Pad_RightMotor" xml:space="preserve"><value>Motera havanana</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Mapping: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Raketo tsirairay misesy ny mapping rehetra</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>Tsindrio ny andalana mapping iray ary tsindrio bokotra/axe iray amin'ny contrôleur-nao mba hanendrena azy.</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Adikao avy amin'ny...</value></data>
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>Adikao ny fikirakirana avy amin'ny fitaovana hafa efa voakirakira</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Averina daholo</value></data>
@@ -1996,4 +1999,6 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Fifandraisana indray, port, fiarovana ny maha izy anao, fifandraisana amin'ny adiresy</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Port, hafainganana feno, format manokana</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Profil</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Izay fanindriana hitan'ny lalao rehefa samy tazomina ny bokotra fitendry roa</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Mitazona deflection kely amin'ny stick mba hampisehoan'ny lalao foana ny famantarana contrôleur</value></data>
 </root>

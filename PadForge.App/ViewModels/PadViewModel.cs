@@ -138,6 +138,12 @@ namespace PadForge.ViewModels
             // IsMapAllActive flip.
             OnPropertyChanged(nameof(MapAllButtonText));
             OnPropertyChanged(nameof(MapAllButtonTooltip));
+            // The line under the picture and the two folded output cards'
+            // values are worded from the string table the same way (#574).
+            OnPropertyChanged(nameof(PictureLineText));
+            OnPropertyChanged(nameof(SocdSummary));
+            OnPropertyChanged(nameof(KeepAwakeSummary));
+            _kbmConfig?.RaiseLocalizedChanged();
             OnPropertyChanged(nameof(OutputTypeDisplayName));
             OnPropertyChanged(nameof(PresetDisplayName));
 
@@ -246,6 +252,7 @@ namespace PadForge.ViewModels
                     // output type, never a physical-device capability.
                     OnPropertyChanged(nameof(RumbleAudioTabVisible));
                     OnPropertyChanged(nameof(OutputTabVisible));
+                    OnPropertyChanged(nameof(ShowOutputGroup));
                     // The table scope only exists on a Keyboard + Mouse slot.
                     // Its box disappears with the slot type, so leaving the
                     // value set would strand a filter nothing can clear.
@@ -1459,6 +1466,12 @@ namespace PadForge.ViewModels
 
         internal void ApplyMappingPickerFilter()
         {
+            // Under the picture the search box is not on the page, so text
+            // typed into it in the list narrows neither what the bar's
+            // pickers offer nor which rows the bar holds (#574).
+            bool pictureBar = IsButtonsPictureView;
+            string activeSearch = pictureBar ? string.Empty : _mappingInputSearch;
+
             // The dropdown side: what every picker OFFERS. The Motion rows'
             // two lists (#475), the Up and Down pickers' list and the button
             // rows' list take the same filter as the shared one.
@@ -1468,11 +1481,11 @@ namespace PadForge.ViewModels
                 var view = ReferenceEquals(list, SlotAvailableInputs)
                     ? SlotAvailableInputsView : CollectionViewSource.GetDefaultView(list);
                 if (view == null) continue;
-                if (HiddenPickerDeviceKeys.Count == 0 && string.IsNullOrEmpty(_mappingInputSearch))
+                if (HiddenPickerDeviceKeys.Count == 0 && string.IsNullOrEmpty(activeSearch))
                     view.Filter = null;    // the zero-cost steady state
                 else
                 {
-                    string search = _mappingInputSearch;
+                    string search = activeSearch;
                     var hidden = HiddenPickerDeviceKeys;
                     view.Filter = o => MatchesPickerFilter(o as InputChoice, search, hidden);
                 }
@@ -1490,7 +1503,20 @@ namespace PadForge.ViewModels
                 bool surfaceNarrows = _mappingSurfaceScope != "All"
                     || (kbmCfg != null && (kbmCfg.Surfaces != KbmSlotConfig.DefaultSurfaces || kbmCfg.UsesDevices));
 
-                if (string.IsNullOrEmpty(_mappingInputSearch) && !surfaceNarrows)
+                if (pictureBar)
+                {
+                    // The bar under the picture holds the picked control's
+                    // rows and no others. The slot's surface mode still
+                    // applies. The list's scope does not: its box is not on
+                    // the page there.
+                    var picked = RowOfTarget(_pickedTarget);
+                    string pickedTarget = picked?.TargetSettingName;
+                    MappingCategory? family = picked != null && IsFamilyCategory(picked.Category)
+                        ? picked.Category : null;
+                    rowView.Filter = o => RowMatchesPick(o as MappingItem, pickedTarget, family)
+                                       && RowMatchesSurface(o as MappingItem, "All", kbmCfg);
+                }
+                else if (string.IsNullOrEmpty(_mappingInputSearch) && !surfaceNarrows)
                     rowView.Filter = null;
                 else
                 {
@@ -7580,6 +7606,7 @@ namespace PadForge.ViewModels
                 if (set == null || set.KeepAwakeEnabled == value) return;
                 set.KeepAwakeEnabled = value;
                 OnPropertyChanged(nameof(KeepAwakeEnabled));
+                OnPropertyChanged(nameof(KeepAwakeSummary));
                 ConfigItemDirtyCallback?.Invoke();
             }
         }
@@ -7693,6 +7720,7 @@ namespace PadForge.ViewModels
         {
             OnPropertyChanged(nameof(KeepAwakeCardVisible));
             OnPropertyChanged(nameof(KeepAwakeEnabled));
+            OnPropertyChanged(nameof(KeepAwakeSummary));
             OnPropertyChanged(nameof(KeepAwakeMotion));
             OnPropertyChanged(nameof(KeepAwakeAxis));
             OnPropertyChanged(nameof(AvailableKeepAwakeAxes));
@@ -7712,6 +7740,7 @@ namespace PadForge.ViewModels
                 if (set == null || string.Equals(set.SocdMode, value, StringComparison.Ordinal)) return;
                 set.SocdMode = value;
                 OnPropertyChanged(nameof(SocdMode));
+                OnPropertyChanged(nameof(SocdSummary));
                 ConfigItemDirtyCallback?.Invoke();
             }
         }
@@ -7894,6 +7923,7 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(KbmSocdEditorVisible));
             OnPropertyChanged(nameof(SocdUsesRawIndices));
             OnPropertyChanged(nameof(AvailableSlotSocdModes));
+            OnPropertyChanged(nameof(SocdSummary));
             OnPropertyChanged(nameof(SocdButtonOptions));
         }
 
@@ -8191,14 +8221,20 @@ namespace PadForge.ViewModels
             {
                 if (_selectedConfigTab == value) return;
                 int oldSection = SelectedSection;
+                int oldButtonsView = ButtonsViewIndex;
                 int section = SectionOfTab(value);
                 // Remembered before the change is raised, so a listener that
                 // asks which part shows reads the new one.
                 if (section >= 0) _lastTabOfSection[section] = value;
+                // Buttons went from the picture to the list or back. The
+                // table's rows follow before the change is raised, so the
+                // page finds the rows of the view it is about to draw.
+                bool buttonsViewChanged = ButtonsViewIndex != oldButtonsView;
+                if (buttonsViewChanged) ApplyMappingPickerFilter();
                 SetProperty(ref _selectedConfigTab, value);
                 section = SelectedSection;
                 if (section != oldSection) OnPropertyChanged(nameof(SelectedSection));
-                if (section == ButtonsSection) OnPropertyChanged(nameof(ButtonsPartIndex));
+                if (buttonsViewChanged) RaiseButtonsViewChanged();
                 else if (section == MacrosSection) OnPropertyChanged(nameof(MacrosPartIndex));
                 // Audio and Bass Shakers are groups of a stacked section. A
                 // jump to one by its number refreshes it here. When its
@@ -8302,7 +8338,14 @@ namespace PadForge.ViewModels
         public string CurrentRecordingTarget
         {
             get => _currentRecordingTarget;
-            set => SetProperty(ref _currentRecordingTarget, value);
+            set
+            {
+                if (!SetProperty(ref _currentRecordingTarget, value)) return;
+                // The bar under the picture follows what is being recorded,
+                // and the line there says so (#574).
+                if (!string.IsNullOrEmpty(value)) PickedTarget = value;
+                RaiseListeningChanged();
+            }
         }
 
         private RelayCommand _clearMappingsCommand;
@@ -8469,11 +8512,14 @@ namespace PadForge.ViewModels
         }
 
         private string _mapAllPromptText;
-        /// <summary>Descriptive text shown on the Controller tab during Map All (e.g., "Press: A").</summary>
+        /// <summary>Descriptive text shown on the line under the picture during Map All (e.g., "Press: A").</summary>
         public string MapAllPromptText
         {
             get => _mapAllPromptText;
-            set => SetProperty(ref _mapAllPromptText, value);
+            set
+            {
+                if (SetProperty(ref _mapAllPromptText, value)) RaiseListeningChanged();
+            }
         }
 
         /// <summary>Timer used to add a short delay between Map All entries.</summary>

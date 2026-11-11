@@ -289,6 +289,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>ອຸປະກອນ</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>ຂັບເຄື່ອນໂດຍ</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>ເພີ່ມອຸປະກອນ</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>ຮູບພາບ</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>ລາຍການ</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>ຄລິກສ່ວນຄວບຄຸມໃນຮູບ ແລ້ວກົດອິນພຸດໃນອຸປະກອນຂອງທ່ານທີ່ຈະຄວບຄຸມມັນ.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>ກຳລັງລໍຖ້າອິນພຸດສຳລັບ {0}. ກົດອິນພຸດໃນອຸປະກອນຂອງທ່ານ.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>ການກົດທີ່ເກມເຫັນເມື່ອປຸ່ມທັງສອງຂອງຄູ່ຖືກກົດຄ້າງ</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>ການກົດທີ່ເກມເຫັນເມື່ອປຸ່ມແປ້ນພິມທັງສອງຂອງຄູ່ຖືກກົດຄ້າງ</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>ຄ້າງການເບນສະຕິກເລັກນ້ອຍໄວ້ ເພື່ອໃຫ້ເກມສະແດງສັນຍາລັກປຸ່ມຂອງຕົວຄວບຄຸມຕໍ່ໄປ</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>ກຳລັງຫຼອມ</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>ເລືອກມາໂຄຣທາງຊ້າຍ, ຫຼື ກົດ ເພີ່ມ ເພື່ອສ້າງໃໝ່.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>ດິບ</value></data>
@@ -1219,7 +1226,6 @@
   <data name="Pad_MapAll" xml:space="preserve"><value>ແມັບທັງໝົດ</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>ແມັບ: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>ບັນທຶກການແມັບທັງໝົດຕາມລຳດັບເທື່ອລະອັນ</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>ຄລິກແຖວການແມັບ ແລ້ວກົດປຸ່ມ/ແກນໃນຕົວຄວບຄຸມຂອງທ່ານເພື່ອກຳນົດ.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>ສຳເນົາການແມັບ ແລະ ການຕັ້ງຄ່າທັງໝົດໄປໃສ່ຄລິບບອດ</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>ວາງການແມັບ ແລະ ການຕັ້ງຄ່າຈາກຄລິບບອດ</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>ສຳເນົາຈາກ...</value></data>
@@ -3685,7 +3691,6 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>ການເຄື່ອນໄຫວ ແລະ ການສຳຜັດ</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>ແສງໄຟ ແລະ ສຽງ</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>ມາໂຄຣ ແລະ ເມນູ</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>ການຕັ້ງຄ່າທີ່ປັບເອົາພຸດຂອງຕົວຄວບຄຸມສະເໝືອນຂອງຊ່ອງນີ້ກ່ອນສົ່ງໃຫ້ເກມ: ການລ້າງ SOCD ສຳລັບທິດທາງກົງກັນຂ້າມທີ່ກົດພ້ອມກັນ, ແລະ ຮັກສາຕົວຄວບຄຸມໃຫ້ເຮັດວຽກ ສຳລັບເກມທີ່ຕັດຕົວຄວບຄຸມທັນທີທີ່ເຫັນອິນພຸດຈາກເມົ້າ ຫຼື ແປ້ນພິມ.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>ເບສເຊກເກີ</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>ສົ່ງການສັ່ນ ແລະ ແຮງສະທ້ອນກັບຂອງເກມທີ່ຕົວຄວບຄຸມສະເໝືອນນີ້ໄດ້ຮັບ ໄປຫາເອົາພຸດສຽງເປັນສຽງໂທນຄວາມຖີ່ຕ່ຳ ສຳລັບເບສເຊກເກີ ແລະ ຊັບວູຟເຟີ.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>ການສັ່ນເປັນສຽງ</value></data>

@@ -289,6 +289,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Peranti</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Didorong oleh</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Tambah Peranti</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Gambar</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Senarai</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Klik satu kawalan, kemudian tekan input pada peranti anda yang patut menggerakkannya.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Mendengar untuk {0}. Tekan input pada peranti anda.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Tekanan mana yang dilihat permainan apabila kedua-dua butang dalam sepasang ditahan</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Tekanan mana yang dilihat permainan apabila kedua-dua kekunci dalam sepasang ditahan</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Menahan pesongan kayu bedik yang kecil supaya permainan terus menunjukkan paparan pengawal</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Menempa</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Pilih makro di sebelah kiri, atau tekan Tambah untuk mencipta satu.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>MENTAH</value></data>
@@ -1220,7 +1227,6 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Peta Semua</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Peta: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Rakam semua pemetaan satu demi satu secara berurutan</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>Klik baris pemetaan dan tekan butang/paksi pada pengawal anda untuk menetapkannya.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Salin semua pemetaan dan tetapan ke papan keratan</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Tampal pemetaan dan tetapan daripada papan keratan</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Salin Daripada...</value></data>
@@ -3700,7 +3706,6 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Gerakan &amp; Sentuhan</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Cahaya &amp; Bunyi</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makro &amp; Menu</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Tetapan yang membentuk output pengawal maya slot ini sejurus sebelum dihantar kepada permainan: pembersihan SOCD untuk arah bertentangan yang ditekan serentak, dan Kekalkan Pengawal Berjaga untuk permainan yang menggugurkan pengawal sebaik sahaja ia melihat input tetikus atau papan kekunci.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass Shaker</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Menghalakan getaran dan maklum balas daya permainan yang diterima pengawal maya ini ke output audio sebagai nada frekuensi rendah untuk bass shaker dan subwoofer.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Getaran ke Audio</value></data>

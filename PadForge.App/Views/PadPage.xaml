@@ -297,17 +297,19 @@
              already carry their glow triggers in the App.xaml styles, so no
              page-level shadows for those here. -->
 
-        <!-- Map All pill (Controller tab): hover swaps transparent fill to
-             raised steel. -->
-        <Style x:Key="MapAllPillButton" TargetType="ui:Button" BasedOn="{StaticResource DefaultUiButtonStyle}">
-            <!-- PadUiButtonTemplate: the App.xaml pressed-foreground fix.
-                 BasedOn skips the app implicit style, so repeat it. -->
-            <Setter Property="Template" Value="{StaticResource PadUiButtonTemplate}"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
-                </Trigger>
-            </Style.Triggers>
+        <!-- A group that draws nothing of its own (#574). It gives a set of
+             cards one name and one AutomationId for a screen reader and a UI
+             script, which a panel cannot carry. -->
+        <Style x:Key="BareGroupBox" TargetType="GroupBox">
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="IsTabStop" Value="False"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="GroupBox">
+                        <ContentPresenter/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
         <!-- Shift-layer tab chips: stock RadioButton chrome. -->
@@ -1267,422 +1269,51 @@
             </TabControl.Template>
 
             <!-- ═══ SECTION 0: Buttons ═══
-                 What each button and control of the controller does:
-                 the preview, the mapping table and the output options. -->
+                 What each button and control of the controller does. Two
+                 views of one table (#574): the picture of the controller,
+                 with the picked control's rows and the output cards under
+                 it, or the list of every row. The blocks below were tabs of
+                 the page and keep that indentation. -->
             <TabItem>
-                <Grid>
+                <Grid Margin="8,2,8,8" x:Name="MappingsTabRoot"
+                      PreviewKeyDown="MappingsTabRoot_PreviewKeyDown">
                     <Grid.RowDefinitions>
+                        <!-- The top row and the list's chips stay put. Under
+                             them the view's own content has the rest. -->
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <Border Padding="10,2,10,0">
-                    <WrapPanel Orientation="Horizontal">
-                        <!-- [Preview]. Tag, Click and AutomationId are the tab's own, so
-                             SelectedConfigTab numbering and the code-behind sync keep
-                             working. -->
+
+                    <!-- The top row. It wraps at a narrow window. -->
+                    <WrapPanel Grid.Row="0" x:Name="ButtonsTopRow" Orientation="Horizontal" Margin="0,0,0,6">
+                        <!-- [Picture] and [List]. These are the Preview and
+                             Mappings parts' own radio buttons, with their Tag,
+                             handlers and AutomationId, so SelectedConfigTab's
+                             numbering and everything that selects them by id
+                             keep working. Tab 17, Output, shows the picture:
+                             its two cards sit under it. -->
                         <RadioButton x:Name="TabController" Tag="0" GroupName="PadButtonsPart" Style="{StaticResource TabStripButton}" Click="TabBtn_Click" Checked="TabBtn_Checked"
                                      IsChecked="True"
                                      AutomationProperties.AutomationId="TabController">
-                            <TextBlock Text="{Binding Pad_Tab_Preview, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
+                            <TextBlock Text="{Binding Pad_View_Picture, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
                         </RadioButton>
 
-                        <!-- [Mappings]. Per-VC scope (Issue #61 multi-source): the table
-                             sources from any device assigned to this VC, whichever
-                             one is selected. -->
+                        <!-- Per-VC scope (Issue #61 multi-source): the table
+                             sources from any device assigned to this VC,
+                             whichever one is selected. -->
                         <RadioButton x:Name="TabMappings" Tag="2" GroupName="PadButtonsPart" Style="{StaticResource TabStripButton}" Click="TabBtn_Click" Checked="TabBtn_Checked"
                                      AutomationProperties.AutomationId="MappingsTab">
-                            <TextBlock Text="{Binding Pad_Mappings, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
+                            <TextBlock Text="{Binding Pad_View_List, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
                         </RadioButton>
 
-                        <!-- [Output] (#270 follow-up). SOCD + Keep Controller Awake, the
-                             slot's output-behavior cards. Hidden only on MIDI and VR
-                             slots, which have no output-behavior surface. -->
-                        <RadioButton x:Name="TabOutput" Tag="17" GroupName="PadButtonsPart" Style="{StaticResource TabStripButton}" Click="TabBtn_Click" Checked="TabBtn_Checked"
-                                     Visibility="{Binding OutputTabVisible, Converter={StaticResource BoolToVisibilityConverter}}"
-                                     AutomationProperties.AutomationId="OutputTab">
-                            <TextBlock Text="{Binding Pad_Tab_Output, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
-                        </RadioButton>
-                    </WrapPanel>
-                    </Border>
-                    <controls:ContentTabControl Grid.Row="1"
-                                SelectedIndex="{Binding ButtonsPartIndex, Mode=OneWay}">
-                        <TabControl.Template>
-                            <ControlTemplate TargetType="TabControl">
-                                <ContentPresenter x:Name="PART_SelectedContentHost"
-                                                  ContentSource="SelectedContent"/>
-                            </ControlTemplate>
-                        </TabControl.Template>
-
-            <!-- The parts below were tabs of the page and keep that
-                 indentation. -->
-            <!-- ─── TAB 0: Controller (slot-level) ─── -->
-            <TabItem>
-                <Grid Margin="4">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>      <!-- 3D viewport -->
-                        <RowDefinition Height="Auto"/>   <!-- Motor bars -->
-                        <RowDefinition Height="Auto"/>   <!-- Map All -->
-                    </Grid.RowDefinitions>
-
-                    <!-- Ember stage floor (#175): one continuous surface
-                         under the model, the motor instruments, and Map All,
-                         so the glow never seams at a row boundary. -->
-                    <Border Grid.Row="0" Grid.RowSpan="3" IsHitTestVisible="False">
-                        <Border.Background>
-                            <RadialGradientBrush GradientOrigin="0.5,0.82" Center="0.5,0.82" RadiusX="0.55" RadiusY="0.45">
-                                <GradientStop Color="#20FF6B2C" Offset="0"/>
-                                <GradientStop Color="#00FF6B2C" Offset="1"/>
-                            </RadialGradientBrush>
-                        </Border.Background>
-                    </Border>
-
-                    <!-- ══════════════════════════════════════
-                         CONTROLLER MODEL (2D / 3D)
-                         ══════════════════════════════════════ -->
-                    <Grid Grid.Row="0" AutomationProperties.AutomationId="ControllerModelHost">
-                        <views:ControllerModelView x:Name="ControllerModel3D" />
-                        <views:ControllerModel2DView x:Name="ControllerModel2D" Visibility="Collapsed" />
-                        <views:ControllerSchematicView x:Name="ControllerSchematic" Visibility="Collapsed" />
-                        <views:MidiPreviewView x:Name="MidiPreview" Visibility="Collapsed" />
-                        <views:KBMPreviewView x:Name="KBMPreview" Visibility="Collapsed" />
-                        <views:VRPreviewView x:Name="VRPreview" Visibility="Collapsed" />
-
-                        <!-- A Valve slot's touch sensors (HIDMaestro 1.12.0): the
-                             stick tops on the Deck and the 2026 pad, the grips on
-                             the 2026 pad. The art has no place to click them, so
-                             each is a capsule that lights while its output is on
-                             and records its row on a click. Collapsed on every
-                             other slot. -->
-                        <views:TouchSensorStrip x:Name="TouchSensors"
-                                                HorizontalAlignment="Center" VerticalAlignment="Top"
-                                                Margin="0,8,0,0" />
-
-                        <!-- 2D/3D toggle button (top-left to avoid overlap with 3D Reset View) -->
-                        <Button AutomationProperties.Name="{Binding ToolTip, RelativeSource={RelativeSource Self}, TargetNullValue='', FallbackValue=''}" x:Name="ViewModeToggle"
-                                AutomationProperties.AutomationId="ViewModeToggle"
-                                HorizontalAlignment="Left" VerticalAlignment="Top"
-                                Margin="8,8,0,0" Padding="6,4"
-                                Click="ViewModeToggle_Click" ToolTip="{Binding Pad_SwitchTo2D, Source={x:Static strings:Strings.Instance}}">
-                            <controls:GlyphText x:Name="ViewModeIcon" FontFamily="Segoe MDL2 Assets" FontSize="16"
-                                       Text="&#xE8B9;"/>
-                        </Button>
-                    </Grid>
-
-                    <!-- ══════════════════════════════════════
-                         MOTOR ACTIVITY INDICATORS
-                         ══════════════════════════════════════ -->
-                    <!-- Symmetry with the Map All pill (user report
-                         2026-07-05, re-raised: the 16px bars still read
-                         thin against the fat button). Each meter is now a
-                         capsule TWIN of MapAllPillButton: same 32px height,
-                         same 16px corner radius, same SteelLineSoft
-                         hairline. The mono caption sits INSIDE the capsule
-                         and the ember fill slides underneath it, so at rest
-                         the pair reads as two steel pills over a third. -->
-                    <!-- Pinned left to right (#505): the left motor's capsule stays
-                         under the controller's left grip when the interface
-                         reads right to left. -->
-                    <Grid x:Name="MotorBarsGrid" Grid.Row="1" Width="400" Margin="0,6,0,4" HorizontalAlignment="Center"
-                          FlowDirection="LeftToRight">
-                        <Grid.Resources>
-                            <!-- Capsule instrument: standard PART_Indicator
-                                 template so ProgressBar owns the fill math.
-                                 Track/indicator radii mirror the Map All
-                                 pill's CornerRadius="16". -->
-                            <ControlTemplate x:Key="MotorCapsuleTemplate" TargetType="ProgressBar">
-                                <Grid>
-                                    <Border CornerRadius="16"
-                                            Background="{DynamicResource SteelGroundBrush}"
-                                            BorderBrush="{DynamicResource SteelLineSoftBrush}"
-                                            BorderThickness="1"/>
-                                    <!-- PART_Track is the INSET area, not the outer
-                                         capsule: ProgressBar sizes PART_Indicator
-                                         against PART_Track's width, so when the
-                                         track was the full-width border and the
-                                         indicator carried Margin="1", a full fill
-                                         overhung the capsule's right edge by that
-                                         margin and clipped against the rounding
-                                         (user report 2026-07-06). With the basis
-                                         inset, a full fill ends exactly inside the
-                                         hairline. Radius 15 nests inside the 16. -->
-                                    <Grid x:Name="PART_Track" Margin="1">
-                                        <Border x:Name="PART_Indicator" CornerRadius="15"
-                                                HorizontalAlignment="Left">
-                                            <!-- Ember bloom around the force fill (not the
-                                                 capsule): the shadow is cast by the
-                                                 indicator geometry, so at 0% the fill has
-                                                 no width and no glow, and as force comes
-                                                 through the bar lights up and its leading
-                                                 edge glows, mirroring the card ember. -->
-                                            <Border.Effect>
-                                                <DropShadowEffect Color="#FF6B2C" BlurRadius="9"
-                                                                  ShadowDepth="0" Opacity="0.6"/>
-                                            </Border.Effect>
-                                            <Border.Background>
-                                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                                                    <GradientStop Color="#C43D0C" Offset="0"/>
-                                                    <GradientStop Color="#FF6B2C" Offset="1"/>
-                                                </LinearGradientBrush>
-                                            </Border.Background>
-                                        </Border>
-                                    </Grid>
-                                </Grid>
-                            </ControlTemplate>
-                        </Grid.Resources>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-
-                        <controls:ClickBorder Grid.Column="0" Cursor="Hand" Margin="0,0,12,0"
-                              MouseEnter="Motor_MouseEnter" MouseLeave="Motor_MouseLeave"
-                              ToolTip="{Binding Pad_TestLeftMotor, Source={x:Static strings:Strings.Instance}}"
-                              Background="Transparent" ClickMode="Press" Click="LeftMotor_Click"><Grid>
-                            <ProgressBar AutomationProperties.Name="{Binding Pad_LeftMotor, Source={x:Static strings:Strings.Instance}}" Template="{StaticResource MotorCapsuleTemplate}" Height="32"
-                                         Value="{Binding LeftMotorDisplay, Mode=OneWay}" Minimum="0" Maximum="1"
-                                         IsHitTestVisible="False"/>
-                            <!-- Button typography, not mono tokens (user report
-                                 2026-07-05: the mono caps clashed with Map All
-                                 below): these capsules are clickable test pills
-                                 in the same family as the button, so their
-                                 labels wear the button's face, size, and Title
-                                 Case. -->
-                            <TextBlock Text="{Binding Pad_LeftMotor, Source={x:Static strings:Strings.Instance}}"
-                                       FontFamily="{StaticResource BodyFontFamily}" FontSize="13"
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                       HorizontalAlignment="Center" VerticalAlignment="Center"
-                                       IsHitTestVisible="False"/>
-                        </Grid></controls:ClickBorder>
-
-                        <controls:ClickBorder Grid.Column="1" Cursor="Hand" Margin="12,0,0,0"
-                              MouseEnter="Motor_MouseEnter" MouseLeave="Motor_MouseLeave"
-                              ToolTip="{Binding Pad_TestRightMotor, Source={x:Static strings:Strings.Instance}}"
-                              Background="Transparent" ClickMode="Press" Click="RightMotor_Click"><Grid>
-                            <ProgressBar AutomationProperties.Name="{Binding Pad_RightMotor, Source={x:Static strings:Strings.Instance}}" Template="{StaticResource MotorCapsuleTemplate}" Height="32"
-                                         Value="{Binding RightMotorDisplay, Mode=OneWay}" Minimum="0" Maximum="1"
-                                         IsHitTestVisible="False"/>
-                            <TextBlock Text="{Binding Pad_RightMotor, Source={x:Static strings:Strings.Instance}}"
-                                       FontFamily="{StaticResource BodyFontFamily}" FontSize="13"
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                       HorizontalAlignment="Center" VerticalAlignment="Center"
-                                       IsHitTestVisible="False"/>
-                        </Grid></controls:ClickBorder>
-                    </Grid>
-
-                    <!-- ══════════════════════════════════════
-                         MAP ALL. Controller tab controls
-                         ══════════════════════════════════════ -->
-                    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,4,0,4">
-                        <!-- Height pinned to the motor capsules' 32 so all
-                             three pills share exact end curvature (radius
-                             16 = height/2 on every one. The padding-driven
-                             height landed a couple px taller and flattened
-                             the arcs - user report 2026-07-05). -->
-                        <ui:Button Content="{Binding MapAllButtonText}"
-                                   Style="{StaticResource MapAllPillButton}"
-                                   Height="32" Padding="18,0" FontSize="13"
-                                   CornerRadius="16"
-                                   Background="Transparent"
-                                   MouseOverBackground="{DynamicResource SteelRaisedBrush}"
-                                   BorderBrush="{DynamicResource SteelLineSoftBrush}"
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                   ToolTip="{Binding MapAllButtonTooltip}"
-                                   Click="MapAllToggle_Click"/>
-                        <TextBlock Text="{Binding MapAllPromptText}" FontSize="14" FontWeight="SemiBold"
-                                   VerticalAlignment="Center" Margin="8,0,0,0"
-                                   Foreground="{DynamicResource EmberHotBrush}"
-                                   Visibility="{Binding MapAllPromptText, Converter={StaticResource NullToCollapsedConverter}}"/>
-                    </StackPanel>
-                </Grid>
-            </TabItem>
-
-            <!-- ─── TAB 2: Mappings (device-specific) ─── -->
-            <TabItem>
-                <Grid Margin="8" x:Name="MappingsTabRoot"
-                      PreviewKeyDown="MappingsTabRoot_PreviewKeyDown">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-
-                    <!-- Toolbar -->
-                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,8">
-                        <Button Content="{Binding Common_Copy, Source={x:Static strings:Strings.Instance}}" Command="{Binding CopySettingsCommand}"
-                                Padding="8,4" Margin="0,0,4,0"
-                                ToolTip="{Binding Pad_CopyTooltip, Source={x:Static strings:Strings.Instance}}"/>
-                        <Button Content="{Binding Common_Paste, Source={x:Static strings:Strings.Instance}}" Command="{Binding PasteSettingsCommand}"
-                                Padding="8,4" Margin="0,0,4,0"
-                                ToolTip="{Binding Pad_PasteTooltip, Source={x:Static strings:Strings.Instance}}"/>
-                        <Button Content="{Binding Pad_CopyFrom, Source={x:Static strings:Strings.Instance}}" Command="{Binding CopyFromCommand}"
-                                Padding="8,4" Margin="0,0,8,0"
-                                ToolTip="{Binding Pad_CopyFromTooltip, Source={x:Static strings:Strings.Instance}}"/>
-                        <Button Content="{Binding MapAllButtonText}"
-                                Padding="8,4" Margin="0,0,8,0"
-                                ToolTip="{Binding MapAllButtonTooltip}"
-                                Click="MapAllToggle_Click"/>
-                        <Button x:Name="AddShiftLayerButton"
-                                Content="{Binding Pad_Shift_AddLayer, Source={x:Static strings:Strings.Instance}}"
-                                Padding="8,4" Margin="0,0,8,0"
-                                ToolTip="{Binding Pad_Shift_AddLayer_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                                Click="AddShiftLayer_Click"/>
-                        <TextBlock Text="{Binding Pad_MappingHint, Source={x:Static strings:Strings.Instance}}"
-                                   VerticalAlignment="Center" FontStyle="Italic"
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                        <!-- Picker filter (#322, discussion #302): one search
-                             box and one device-visibility popup filtering the
-                             slot's SHARED choice view, so every picker on the
-                             tab reflects them when opened. A view filter
-                             changes what a dropdown OFFERS, never what a
-                             row's binding holds. Ctrl+F focuses the box
-                             (code-behind on the tab root). -->
-                        <ui:TextBox x:Name="MappingFilterSearchBox" MinWidth="170" Margin="16,0,0,0"
-                                    VerticalAlignment="Center"
-                                    PlaceholderText="{Binding Mapping_FilterSearch_Placeholder, Source={x:Static strings:Strings.Instance}}"
-                                    Text="{Binding MappingInputSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                        <ToggleButton AutomationProperties.Name="{Binding Mapping_FilterDevices_Tooltip, Source={x:Static strings:Strings.Instance}}" x:Name="MappingDeviceFilterToggle" Margin="4,0,0,0" Padding="8,4"
-                                      VerticalAlignment="Center"
-                                      ToolTip="{Binding Mapping_FilterDevices_Tooltip, Source={x:Static strings:Strings.Instance}}">
-                            <controls:DecorativeSymbolIcon Symbol="Filter24"/>
-                        </ToggleButton>
-                        <Popup IsOpen="{Binding IsChecked, ElementName=MappingDeviceFilterToggle}"
-                               PlacementTarget="{Binding ElementName=MappingDeviceFilterToggle}"
-                               Placement="Bottom" StaysOpen="False" AllowsTransparency="True">
-                            <Border Background="{DynamicResource SteelGroundBrush}"
-                                    BorderBrush="{DynamicResource SteelLineBrush}" BorderThickness="1"
-                                    CornerRadius="6" Padding="10" MinWidth="220">
-                                <StackPanel>
-                                    <TextBlock Text="{Binding Mapping_FilterDevices_Header, Source={x:Static strings:Strings.Instance}}"
-                                               FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11"
-                                               Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,6"/>
-                                    <ItemsControl ItemsSource="{Binding PickerDeviceFilterEntries}">
-                                        <ItemsControl.ItemTemplate>
-                                            <DataTemplate>
-                                                <CheckBox Content="{Binding Label}" IsChecked="{Binding IsShown, Mode=TwoWay}"
-                                                          Margin="0,2"/>
-                                            </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-                                    </ItemsControl>
-                                </StackPanel>
-                            </Border>
-                        </Popup>
-
-                        <!-- Keyboard / mouse scope (#408, @Xaklse on Discord).
-                             Sits with the search box and the device funnel
-                             because it is the same kind of thing: a view
-                             control over the table, session-only, ANDed with
-                             the search. Distinct from the slot's Surfaces
-                             mode, which is persistent output configuration.
-                             KbmSurfaceScopeVisible keeps it to a Keyboard +
-                             Mouse slot driving BOTH halves: under a
-                             single-surface mode a scope can only show
-                             everything or nothing. -->
-                        <ComboBox x:Name="MappingSurfaceScopeBox" Margin="4,0,0,0" MinWidth="110"
-                                  VerticalAlignment="Center" Padding="6,2"
-                                  IsSynchronizedWithCurrentItem="False"
-                                  SelectedValuePath="Tag"
-                                  SelectedValue="{Binding MappingSurfaceScope, Mode=TwoWay}"
-                                  ToolTip="{Binding Pad_Mapping_Scope_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                                  Visibility="{Binding KbmSurfaceScopeVisible, Converter={StaticResource BoolToVisibilityConverter}}">
-                            <ComboBoxItem Tag="All" Content="{Binding Pad_Mapping_Scope_All, Source={x:Static strings:Strings.Instance}}"/>
-                            <ComboBoxItem Tag="Mouse" Content="{Binding Pad_Mapping_Scope_Mouse, Source={x:Static strings:Strings.Instance}}"/>
-                            <ComboBoxItem Tag="Keyboard" Content="{Binding Pad_Mapping_Scope_Keyboard, Source={x:Static strings:Strings.Instance}}"/>
-                        </ComboBox>
-
-                        <!-- Clear All rides at the far end in warning chrome
-                             (#175 item 1d): it wipes every mapping row, so it
-                             no longer leads the strip, and the Click path asks
-                             through the shared ConfirmDialog first. -->
-                        <Button Content="{Binding Pad_ClearAll, Source={x:Static strings:Strings.Instance}}" Click="ClearAllMappings_Click"
-                                Style="{StaticResource EmberDestructiveButton}"
-                                Padding="8,4" Margin="8,0,0,0"
-                                ToolTip="{Binding Pad_ClearMappings, Source={x:Static strings:Strings.Instance}}"/>
-                    </StackPanel>
-
-                    <!-- Direct-row compression readout (#175 telemetry board):
-                         mono tertiary count of rows currently rendered as
-                         compact one-liners. DIRECT is a locale-neutral
-                         telemetry token like the radar legend's DZ / PEAK.
-                         Hidden when no row is compact. -->
-                    <StackPanel Grid.Row="0" Orientation="Horizontal"
-                                HorizontalAlignment="Right" VerticalAlignment="Center"
-                                Margin="8,0,4,8">
-                        <StackPanel.Style>
-                            <Style TargetType="StackPanel">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding DirectMappingCount}" Value="0">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </StackPanel.Style>
-                        <TextBlock Text="{Binding DirectMappingCount}"
-                                   FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10"
-                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                   VerticalAlignment="Center" Margin="0,0,4,0"/>
-                        <TextBlock Text="DIRECT"
-                                   FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10"
-                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                   VerticalAlignment="Center"/>
-                    </StackPanel>
-
-                    <!-- Nested layer-tab strip. Hidden when only Base exists
-                         (basic users without any shift layers see the
-                         Mappings tab exactly as before). One RadioButton per
-                         entry in PadViewModel.LayerTabs. Right-click opens
-                         the per-tab context menu. -->
-                    <!-- Inline rename popup, anchored at runtime to the
-                         clicked shift-layer tab. Single-field input + Save
-                         + Cancel. Much lighter than reopening the full
-                         Configure dialog when the user just wants to fix
-                         the name. -->
-                    <Popup x:Name="RenameLayerPopup"
-                           Placement="Bottom"
-                           AllowsTransparency="True"
-                           PopupAnimation="Fade"
-                           StaysOpen="False">
-                        <Border Background="{DynamicResource SolidBackgroundFillColorBaseBrush}"
-                                BorderBrush="{DynamicResource ControlElevationBorderBrush}"
-                                BorderThickness="1"
-                                CornerRadius="8"
-                                Padding="10">
-                            <Border.Effect>
-                                <DropShadowEffect BlurRadius="12" ShadowDepth="2"
-                                                  Direction="270" Opacity="0.30" Color="Black"/>
-                            </Border.Effect>
-                            <StackPanel Orientation="Vertical" MinWidth="240">
-                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Shift_LayerName, Source={x:Static strings:Strings.Instance}}"
-                                           Margin="0,0,0,4"/>
-                                <TextBox x:Name="RenameLayerBox"
-                                         Margin="0,0,0,8"
-                                         KeyDown="RenameLayerBox_KeyDown"/>
-                                <TextBlock x:Name="RenameLayerHint"
-                                           Foreground="{DynamicResource SystemFillColorCautionBrush}"
-                                           TextWrapping="Wrap" Margin="0,0,0,6"
-                                           Visibility="Collapsed"/>
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                                    <!-- Save is the popup's primary affirmative and wears
-                                         the ember accent (#175 dialog language). The old
-                                         inline TextOnAccent-on-accent pair went dark text
-                                         on ember (user report 2026-07-05). -->
-                                    <Button Content="{Binding Common_Save, Source={x:Static strings:Strings.Instance}}"
-                                            MinWidth="72" Margin="0,0,6,0"
-                                            IsDefault="True"
-                                            Click="RenameLayerSave_Click"
-                                            Style="{StaticResource EmberAccentButton}"/>
-                                    <Button Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}"
-                                            MinWidth="72"
-                                            IsCancel="True"
-                                            Click="RenameLayerCancel_Click"/>
-                                </StackPanel>
-                            </StackPanel>
-                        </Border>
-                    </Popup>
-
-                    <ItemsControl Grid.Row="1" x:Name="ShiftLayerTabStrip"
+                        <!-- The layer chips. Hidden when only Base exists, so a
+                             slot without shift layers shows none. One
+                             RadioButton per entry in PadViewModel.LayerTabs.
+                             Right-click opens the per-chip context menu. -->
+                    <ItemsControl x:Name="ShiftLayerTabStrip"
                                   ItemsSource="{Binding LayerTabs}"
-                                  Margin="0,0,0,8"
+                                  Margin="8,4,0,0" VerticalAlignment="Center"
                                   Visibility="{Binding HasShiftLayers, Converter={StaticResource BoolToVisibilityConverter}}">
                         <!-- WrapPanel so layers with many activators flow
                              to a second row when the window narrows
@@ -1777,6 +1408,113 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
 
+                        <!-- The list's own tools. They narrow and edit the whole
+                             table, so they show with it. -->
+                        <StackPanel x:Name="ListTools" Orientation="Horizontal" Margin="8,0,0,0" VerticalAlignment="Center"
+                                    Visibility="{Binding IsButtonsListView, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <Button x:Name="AddShiftLayerButton"
+                                Content="{Binding Pad_Shift_AddLayer, Source={x:Static strings:Strings.Instance}}"
+                                Padding="8,4" Margin="0,0,8,0"
+                                ToolTip="{Binding Pad_Shift_AddLayer_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                Click="AddShiftLayer_Click"/>
+                        <!-- Picker filter (#322, discussion #302): one search
+                             box and one device-visibility popup filtering the
+                             slot's SHARED choice view, so every picker on the
+                             tab reflects them when opened. A view filter
+                             changes what a dropdown OFFERS, never what a
+                             row's binding holds. Ctrl+F focuses the box
+                             (code-behind on the tab root). -->
+                        <ui:TextBox x:Name="MappingFilterSearchBox" MinWidth="170" Margin="16,0,0,0"
+                                    VerticalAlignment="Center"
+                                    PlaceholderText="{Binding Mapping_FilterSearch_Placeholder, Source={x:Static strings:Strings.Instance}}"
+                                    Text="{Binding MappingInputSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <ToggleButton AutomationProperties.Name="{Binding Mapping_FilterDevices_Tooltip, Source={x:Static strings:Strings.Instance}}" x:Name="MappingDeviceFilterToggle" Margin="4,0,0,0" Padding="8,4"
+                                      VerticalAlignment="Center"
+                                      ToolTip="{Binding Mapping_FilterDevices_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                            <controls:DecorativeSymbolIcon Symbol="Filter24"/>
+                        </ToggleButton>
+                        <Popup IsOpen="{Binding IsChecked, ElementName=MappingDeviceFilterToggle}"
+                               PlacementTarget="{Binding ElementName=MappingDeviceFilterToggle}"
+                               Placement="Bottom" StaysOpen="False" AllowsTransparency="True">
+                            <Border Background="{DynamicResource SteelGroundBrush}"
+                                    BorderBrush="{DynamicResource SteelLineBrush}" BorderThickness="1"
+                                    CornerRadius="6" Padding="10" MinWidth="220">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Mapping_FilterDevices_Header, Source={x:Static strings:Strings.Instance}}"
+                                               FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11"
+                                               Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,6"/>
+                                    <ItemsControl ItemsSource="{Binding PickerDeviceFilterEntries}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <CheckBox Content="{Binding Label}" IsChecked="{Binding IsShown, Mode=TwoWay}"
+                                                          Margin="0,2"/>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </Border>
+                        </Popup>
+
+                        <!-- Keyboard / mouse scope (#408, @Xaklse on Discord).
+                             Sits with the search box and the device funnel
+                             because it is the same kind of thing: a view
+                             control over the table, session-only, ANDed with
+                             the search. Distinct from the slot's Surfaces
+                             mode, which is persistent output configuration.
+                             KbmSurfaceScopeVisible keeps it to a Keyboard +
+                             Mouse slot driving BOTH halves: under a
+                             single-surface mode a scope can only show
+                             everything or nothing. -->
+                        <ComboBox x:Name="MappingSurfaceScopeBox" Margin="4,0,0,0" MinWidth="110"
+                                  VerticalAlignment="Center" Padding="6,2"
+                                  IsSynchronizedWithCurrentItem="False"
+                                  SelectedValuePath="Tag"
+                                  SelectedValue="{Binding MappingSurfaceScope, Mode=TwoWay}"
+                                  ToolTip="{Binding Pad_Mapping_Scope_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                  Visibility="{Binding KbmSurfaceScopeVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <ComboBoxItem Tag="All" Content="{Binding Pad_Mapping_Scope_All, Source={x:Static strings:Strings.Instance}}"/>
+                            <ComboBoxItem Tag="Mouse" Content="{Binding Pad_Mapping_Scope_Mouse, Source={x:Static strings:Strings.Instance}}"/>
+                            <ComboBoxItem Tag="Keyboard" Content="{Binding Pad_Mapping_Scope_Keyboard, Source={x:Static strings:Strings.Instance}}"/>
+                        </ComboBox>
+                        </StackPanel>
+
+                        <!-- Map All, in both views. -->
+                        <Button Content="{Binding MapAllButtonText}"
+                                Padding="8,4" Margin="8,0,8,0" VerticalAlignment="Center"
+                                ToolTip="{Binding MapAllButtonTooltip}"
+                                Click="MapAllToggle_Click"/>
+
+                        <!-- More: the four actions on the whole table. Clear All
+                             wipes every mapping row, so it is last, in warning
+                             color, and its Click asks through the shared
+                             ConfirmDialog first (#175 item 1d). -->
+                        <Button x:Name="ListMoreButton" Padding="8,4" Margin="0,0,0,0" VerticalAlignment="Center"
+                                Content="{Binding Common_More, Source={x:Static strings:Strings.Instance}}"
+                                AutomationProperties.AutomationId="Pad_ListMore"
+                                Click="ListMore_Click"
+                                Visibility="{Binding IsButtonsListView, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Button.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="{Binding Common_Copy, Source={x:Static strings:Strings.Instance}}" Command="{Binding CopySettingsCommand}"
+                                              ToolTip="{Binding Pad_CopyTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <MenuItem Header="{Binding Common_Paste, Source={x:Static strings:Strings.Instance}}" Command="{Binding PasteSettingsCommand}"
+                                              ToolTip="{Binding Pad_PasteTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <MenuItem Header="{Binding Pad_CopyFrom, Source={x:Static strings:Strings.Instance}}" Command="{Binding CopyFromCommand}"
+                                              ToolTip="{Binding Pad_CopyFromTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Separator/>
+                                    <MenuItem Header="{Binding Pad_ClearAll, Source={x:Static strings:Strings.Instance}}" Click="ClearAllMappings_Click"
+                                              Foreground="{DynamicResource EmberHotBrush}"
+                                              ToolTip="{Binding Pad_ClearMappings, Source={x:Static strings:Strings.Instance}}"/>
+                                </ContextMenu>
+                            </Button.ContextMenu>
+                        </Button>
+                    </WrapPanel>
+
+
+                    <!-- The list's second row: the pipeline chips, and the count
+                         of rows drawn as one line at its end. -->
+                    <Grid Grid.Row="1" x:Name="ListChipsRow"
+                          Visibility="{Binding IsButtonsListView, Converter={StaticResource BoolToVisibilityConverter}}">
                     <!-- Pipeline heat chips (#175 item 10): one chip per
                          transform pipeline currently rewiring this slot's
                          input. CURVE / GYRO / SHIFT / INV / DZ are mono
@@ -1789,7 +1527,7 @@
                          when several rows own the pipeline. SHIFT cycles
                          the layer tabs instead. Tooltips list the real
                          configured rows. -->
-                    <WrapPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,8"
+                    <WrapPanel Orientation="Horizontal" Margin="0,0,0,8"
                                Visibility="{Binding HasAnyPipelineChips, Converter={StaticResource BoolToVisibilityConverter}}">
                         <WrapPanel.Resources>
                             <!-- Shared chip skeleton: ChipEmber grammar plus
@@ -2041,13 +1779,229 @@
                         </controls:ClickBorder>
                     </WrapPanel>
 
+                    <!-- Direct-row compression readout (#175 telemetry board):
+                         mono tertiary count of rows currently rendered as
+                         compact one-liners. DIRECT is a locale-neutral
+                         telemetry token like the radar legend's DZ / PEAK.
+                         Hidden when no row is compact. -->
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Right" VerticalAlignment="Center"
+                                Margin="8,0,4,8">
+                        <StackPanel.Style>
+                            <Style TargetType="StackPanel">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding DirectMappingCount}" Value="0">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
+                        <TextBlock Text="{Binding DirectMappingCount}"
+                                   FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10"
+                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                   VerticalAlignment="Center" Margin="0,0,4,0"/>
+                        <TextBlock Text="DIRECT"
+                                   FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10"
+                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+                    </Grid>
+
+                    <!-- The view's own content. The picture's view is a page that
+                         scrolls: the picture keeps its height, and the picked
+                         control's rows and the output cards sit under it, so
+                         opening a row or a card never squeezes the controller
+                         out of its picture. The list does not scroll the
+                         page: its table fills it and scrolls its own rows.
+                         The page's code sets which, and the heights of the
+                         picture's row and the table's row (SyncButtonsLayout). -->
+                    <ScrollViewer Grid.Row="2" x:Name="ButtonsScroll" AutomationProperties.Name="{Binding Pad_Section_Buttons, Source={x:Static strings:Strings.Instance}}"
+                                  VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Disabled"
+                                  SizeChanged="ButtonsRoot_SizeChanged">
+                    <Grid x:Name="ButtonsPage">
+                        <Grid.RowDefinitions>
+                            <!-- The picture, the line under it, the table, the
+                                 output cards. -->
+                            <RowDefinition x:Name="ButtonsPictureRow" Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition x:Name="ButtonsTableRow" Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <!-- Nothing sits in this row. In the picture's
+                                 view the page's code gives it what the
+                                 viewport has left under the cards, so the
+                                 rows above keep their own heights. Without
+                                 it the grid hands the leftover pixels to
+                                 those rows, one each, and to other rows once
+                                 a card opens: the line under the picture
+                                 moved a pixel and the first card two. -->
+                            <RowDefinition x:Name="ButtonsFillRow" Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                    <!-- The picture. A header-less tab control with an empty
+                         second item: in the list the picture leaves the visual
+                         tree, as it did when Preview was a tab of its own, so
+                         the 3D view draws nothing while it is not on the
+                         page. -->
+                    <controls:ContentTabControl Grid.Row="0"
+                                SelectedIndex="{Binding ButtonsViewIndex, Mode=OneWay}">
+                        <TabControl.Template>
+                            <ControlTemplate TargetType="TabControl">
+                                <ContentPresenter x:Name="PART_SelectedContentHost"
+                                                  ContentSource="SelectedContent"/>
+                            </ControlTemplate>
+                        </TabControl.Template>
+                        <TabItem>
+                            <Grid>
+                    <!-- Ember stage floor (#175): one continuous surface
+                         under the model, so the glow never seams. -->
+                    <Border IsHitTestVisible="False">
+                        <Border.Background>
+                            <RadialGradientBrush GradientOrigin="0.5,0.82" Center="0.5,0.82" RadiusX="0.55" RadiusY="0.45">
+                                <GradientStop Color="#20FF6B2C" Offset="0"/>
+                                <GradientStop Color="#00FF6B2C" Offset="1"/>
+                            </RadialGradientBrush>
+                        </Border.Background>
+                    </Border>
+
+                    <!-- ══════════════════════════════════════
+                         CONTROLLER MODEL (2D / 3D)
+                         ══════════════════════════════════════ -->
+                    <Grid AutomationProperties.AutomationId="ControllerModelHost">
+                        <views:ControllerModelView x:Name="ControllerModel3D" />
+                        <views:ControllerModel2DView x:Name="ControllerModel2D" Visibility="Collapsed" />
+                        <views:ControllerSchematicView x:Name="ControllerSchematic" Visibility="Collapsed" />
+                        <views:MidiPreviewView x:Name="MidiPreview" Visibility="Collapsed" />
+                        <views:KBMPreviewView x:Name="KBMPreview" Visibility="Collapsed" />
+                        <views:VRPreviewView x:Name="VRPreview" Visibility="Collapsed" />
+
+                        <!-- A Valve slot's touch sensors (HIDMaestro 1.12.0): the
+                             stick tops on the Deck and the 2026 pad, the grips on
+                             the 2026 pad. The art has no place to click them, so
+                             each is a capsule that lights while its output is on
+                             and records its row on a click. Collapsed on every
+                             other slot. -->
+                        <views:TouchSensorStrip x:Name="TouchSensors"
+                                                HorizontalAlignment="Center" VerticalAlignment="Top"
+                                                Margin="0,8,0,0" />
+
+                        <!-- 2D/3D toggle button (top-left to avoid overlap with 3D Reset View) -->
+                        <Button AutomationProperties.Name="{Binding ToolTip, RelativeSource={RelativeSource Self}, TargetNullValue='', FallbackValue=''}" x:Name="ViewModeToggle"
+                                AutomationProperties.AutomationId="ViewModeToggle"
+                                HorizontalAlignment="Left" VerticalAlignment="Top"
+                                Margin="8,8,0,0" Padding="6,4"
+                                Click="ViewModeToggle_Click" ToolTip="{Binding Pad_SwitchTo2D, Source={x:Static strings:Strings.Instance}}">
+                            <controls:GlyphText x:Name="ViewModeIcon" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                       Text="&#xE8B9;"/>
+                        </Button>
+                    </Grid>
+                            </Grid>
+                        </TabItem>
+                        <TabItem/>
+                    </controls:ContentTabControl>
+
+                    <!-- The line under the picture. It says how to map a control,
+                         and while a recording waits for an input it says which
+                         control and offers Stop. One line of one height, so the
+                         picture does not resize when a recording starts. The
+                         list has no such line: a row shows its own recording
+                         state. -->
+                    <Border Grid.Row="1" x:Name="PictureLine" MinHeight="36" Margin="0,6,0,6" Padding="12,2,6,2"
+                            CornerRadius="6" BorderThickness="1"
+                            Visibility="{Binding IsButtonsPictureView, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="BorderBrush" Value="Transparent"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsListening}" Value="True">
+                                        <Setter Property="Background" Value="#24FF6B2C"/>
+                                        <Setter Property="BorderBrush" Value="#55FF6B2C"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <DockPanel LastChildFill="True">
+                            <Button x:Name="ListeningStopButton" DockPanel.Dock="Right" Padding="12,3" Margin="8,0,0,0" VerticalAlignment="Center"
+                                    Content="{Binding Common_Stop, Source={x:Static strings:Strings.Instance}}"
+                                    AutomationProperties.AutomationId="Pad_ListeningStop"
+                                    Click="ListeningStop_Click"
+                                    Visibility="{Binding IsListening, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                            <Ellipse DockPanel.Dock="Left" Width="10" Height="10" Margin="0,0,10,0" VerticalAlignment="Center"
+                                     FlowDirection="LeftToRight"
+                                     Fill="{DynamicResource EmberBrush}"
+                                     Visibility="{Binding IsListening, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                            <TextBlock x:Name="PictureLineText" Text="{Binding PictureLineText}" VerticalAlignment="Center"
+                                       AutomationProperties.AutomationId="Pad_PictureLine"
+                                       TextTrimming="CharacterEllipsis">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsListening}" Value="True">
+                                                <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </DockPanel>
+                    </Border>
+
+                    <!-- Inline rename popup, anchored at runtime to the
+                         clicked shift-layer tab. Single-field input + Save
+                         + Cancel. Much lighter than reopening the full
+                         Configure dialog when the user just wants to fix
+                         the name. -->
+                    <Popup x:Name="RenameLayerPopup"
+                           Placement="Bottom"
+                           AllowsTransparency="True"
+                           PopupAnimation="Fade"
+                           StaysOpen="False">
+                        <Border Background="{DynamicResource SolidBackgroundFillColorBaseBrush}"
+                                BorderBrush="{DynamicResource ControlElevationBorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="8"
+                                Padding="10">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="12" ShadowDepth="2"
+                                                  Direction="270" Opacity="0.30" Color="Black"/>
+                            </Border.Effect>
+                            <StackPanel Orientation="Vertical" MinWidth="240">
+                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Shift_LayerName, Source={x:Static strings:Strings.Instance}}"
+                                           Margin="0,0,0,4"/>
+                                <TextBox x:Name="RenameLayerBox"
+                                         Margin="0,0,0,8"
+                                         KeyDown="RenameLayerBox_KeyDown"/>
+                                <TextBlock x:Name="RenameLayerHint"
+                                           Foreground="{DynamicResource SystemFillColorCautionBrush}"
+                                           TextWrapping="Wrap" Margin="0,0,0,6"
+                                           Visibility="Collapsed"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <!-- Save is the popup's primary affirmative and wears
+                                         the ember accent (#175 dialog language). The old
+                                         inline TextOnAccent-on-accent pair went dark text
+                                         on ember (user report 2026-07-05). -->
+                                    <Button Content="{Binding Common_Save, Source={x:Static strings:Strings.Instance}}"
+                                            MinWidth="72" Margin="0,0,6,0"
+                                            IsDefault="True"
+                                            Click="RenameLayerSave_Click"
+                                            Style="{StaticResource EmberAccentButton}"/>
+                                    <Button Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}"
+                                            MinWidth="72"
+                                            IsCancel="True"
+                                            Click="RenameLayerCancel_Click"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </Popup>
+
                     <!-- Mapping DataGrid. HorizontalAlignment=Left so the DataGrid
                          doesn't stretch wider than its columns sum to. Without
                          this, any Auto / SizeToCells column absorbs the leftover
                          horizontal slack and bloats. With HorizontalAlignment=Left,
                          each column genuinely auto-collapses to its own content
                          and any empty space sits to the right of the grid. -->
-                    <DataGrid AutomationProperties.Name="{Binding Pad_Mappings, Source={x:Static strings:Strings.Instance}}" Grid.Row="3"
+                    <DataGrid AutomationProperties.Name="{Binding Pad_Mappings, Source={x:Static strings:Strings.Instance}}" Grid.Row="2"
                               x:Name="MappingDataGrid"
                               EnableRowVirtualization="True"
                               VirtualizingPanel.VirtualizationMode="Recycling"
@@ -2065,7 +2019,20 @@
                               VerticalScrollBarVisibility="Visible"
                               Grid.IsSharedSizeScope="True"
                               SelectionChanged="MappingDataGrid_SelectionChanged"
+                              PreviewMouseWheel="MappingDataGrid_PreviewMouseWheel"
                               Loaded="MappingDataGrid_Loaded">
+                        <!-- No rows, no table: under the picture before a control is
+                             picked, and in the list when the search matches
+                             nothing. -->
+                        <DataGrid.Style>
+                            <Style TargetType="DataGrid" BasedOn="{StaticResource {x:Type DataGrid}}">
+                                <Style.Triggers>
+                                    <Trigger Property="HasItems" Value="False">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.Style>
                         <!-- The look of every cell. Each template column bases a cell
                              style on it that names its cells for screen readers, which
                              would otherwise read WPF's "Item: ..., Column Display
@@ -2110,10 +2077,15 @@
                                 <Setter Property="Background" Value="Transparent"/>
                                 <Setter Property="BorderBrush" Value="{DynamicResource SteelLineSoftBrush}"/>
                                 <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                                <!-- The 12 after the text keeps two headings apart
+                                     where a column is no wider than its own
+                                     heading: under the picture the Output
+                                     column held one short chip, and OUTPUT ran
+                                     into SOURCE. -->
                                 <Setter Property="ContentTemplate">
                                     <Setter.Value>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding Converter={StaticResource UpperConverter}}"/>
+                                            <TextBlock Text="{Binding Converter={StaticResource UpperConverter}}" Margin="0,0,12,0"/>
                                         </DataTemplate>
                                     </Setter.Value>
                                 </Setter>
@@ -4368,32 +4340,18 @@
                         </DataGrid.Columns>
                     </DataGrid>
 
-                </Grid>
-            </TabItem>
-
-            <!-- === TAB 17: Output (slot-level output behaviors) ===
-                 Home of the cards that shape the slot's virtual controller
-                 OUTPUT right before the Step 5 submit: SOCD cleaning (#240,
-                 with its KBM twin from #205) and Keep Controller Awake
-                 (#270). They lived under the mapping grid on the Mappings
-                 tab first, which the owner called cluttered. Slot tier,
-                 like Menus and Bass Shakers (Tag 17 = the appended
-                 TabItem's index, the slotTier predicate carries it).
-                 Visible for every slot type except MIDI, which has none of
-                 these surfaces. -->
-            <TabItem>
-                <ScrollViewer AutomationProperties.Name="{Binding Pad_Tab_Output, Source={x:Static strings:Strings.Instance}}" Padding="24,0" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
-                    <StackPanel Margin="0,16,0,16">
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <controls:GlyphText Text="&#xE7FC;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
-                                       VerticalAlignment="Center" Margin="0,0,10,0"/>
-                            <TextBlock Text="{Binding Pad_Tab_Output, Source={x:Static strings:Strings.Instance}}"
-                                       Style="{StaticResource TitleTextBlockStyle}" FontFamily="{StaticResource DisplayFontFamily}" FontWeight="650" FontSize="26"/>
-                        </StackPanel>
-                        <TextBlock Text="{Binding Pad_Output_Subtitle, Source={x:Static strings:Strings.Instance}}"
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                   TextWrapping="Wrap" Margin="0,0,0,16"/>
-
+                    <!-- The output cards (#270 follow-up, #574): what shapes the
+                         slot's virtual controller OUTPUT right before the Step 5
+                         submit. They were the Output tab and now fold to one
+                         line each under the picture. The group carries the
+                         tab's AutomationId and its slot-type gate: none on a
+                         MIDI or VR slot. -->
+                    <GroupBox Grid.Row="3" x:Name="OutputGroup" Style="{StaticResource BareGroupBox}" Margin="0,8,0,0"
+                              SizeChanged="OutputGroup_SizeChanged"
+                              AutomationProperties.AutomationId="OutputTab"
+                              AutomationProperties.Name="{Binding Pad_Tab_Output, Source={x:Static strings:Strings.Instance}}"
+                              Visibility="{Binding ShowOutputGroup, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <StackPanel>
                         <!-- Simultaneous Opposite Cardinal Directions (SOCD)
                              card, discussion #240. Slot-tier: configures the
                              slot's virtual controller OUTPUT (MappingSet.SocdMode
@@ -4402,18 +4360,15 @@
                              KbmConfig twin card below) and MIDI slots. Gamepad
                              slots pick from the 15 named targets. Extended slots
                              enter raw button indices 0-127. -->
-                        <Border Style="{StaticResource CardBorder}"
-                                Visibility="{Binding SocdCardVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <controls:FoldCard x:Name="SocdFoldCard" StateKey="Pad.Output.Socd"
+                                           Header="{Binding Pad_Socd_Card_Header, Source={x:Static strings:Strings.Instance}}"
+                                           Hint="{Binding Pad_Socd_FoldHint, Source={x:Static strings:Strings.Instance}}"
+                                           Summary="{Binding SocdSummary}"
+                                           Visibility="{Binding SocdCardVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                             <StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                    <controls:GlyphText Text="&#xE8AB;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
-                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
-                                    <TextBlock Text="{Binding Pad_Socd_Card_Header, Source={x:Static strings:Strings.Instance}}"
-                                               Style="{StaticResource CardTitle}"/>
                                     <ui:Button Command="{Binding ResetSocdCardCommand}" Style="{StaticResource ResetAllButton}"
-                                               Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                               Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="0,0,0,8" HorizontalAlignment="Left"
                                                ToolTip="{Binding Pad_Socd_ResetCard_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                </StackPanel>
                                 <TextBlock Text="{Binding Pad_Socd_Card_Desc, Source={x:Static strings:Strings.Instance}}"
                                            Style="{StaticResource CardDescription}"/>
 
@@ -4532,7 +4487,7 @@
                                     </StackPanel>
                                 </StackPanel>
                             </StackPanel>
-                        </Border>
+                        </controls:FoldCard>
 
                         <!-- KBM twin of the SOCD card, discussion #205: the
                              same card face, bound to the slot's KbmConfig
@@ -4540,18 +4495,15 @@
                              output, Snap Tap style). Replaced the config bar
                              that used to sit under the preview. Mutually
                              exclusive with the gamepad card above. -->
-                        <Border Style="{StaticResource CardBorder}" Margin="0,8,0,0"
-                                Visibility="{Binding KbmSocdEditorVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <controls:FoldCard x:Name="KbmSocdFoldCard" StateKey="Pad.Output.KbmSocd" Margin="0,8,0,0"
+                                           Header="{Binding Pad_Socd_Card_Header, Source={x:Static strings:Strings.Instance}}"
+                                           Hint="{Binding Pad_Kbm_Socd_FoldHint, Source={x:Static strings:Strings.Instance}}"
+                                           Summary="{Binding KbmConfig.SocdSummary}"
+                                           Visibility="{Binding KbmSocdEditorVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                             <StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                    <controls:GlyphText Text="&#xE8AB;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
-                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
-                                    <TextBlock Text="{Binding Pad_Socd_Card_Header, Source={x:Static strings:Strings.Instance}}"
-                                               Style="{StaticResource CardTitle}"/>
                                     <ui:Button Command="{Binding KbmConfig.ResetSocdCommand}" Style="{StaticResource ResetAllButton}"
-                                               Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                               Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="0,0,0,8" HorizontalAlignment="Left"
                                                ToolTip="{Binding Pad_Socd_ResetCard_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                </StackPanel>
                                 <TextBlock Text="{Binding Pad_Kbm_Socd_Card_Desc, Source={x:Static strings:Strings.Instance}}"
                                            Style="{StaticResource CardDescription}"/>
 
@@ -4636,7 +4588,7 @@
                                     </StackPanel>
                                 </StackPanel>
                             </StackPanel>
-                        </Border>
+                        </controls:FoldCard>
 
                         <!-- Keep Controller Awake (#270, discussion #263).
                              Slot-tier like the SOCD card above: holds a small
@@ -4649,18 +4601,15 @@
                              unchanged. Gamepad-output slots only: the
                              injection lives in the gpOut submit branch, so
                              raw-surface, KBM, and MIDI slots hide it. -->
-                        <Border Style="{StaticResource CardBorder}" Margin="0,8,0,0"
-                                Visibility="{Binding KeepAwakeCardVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <controls:FoldCard x:Name="KeepAwakeFoldCard" StateKey="Pad.Output.KeepAwake" Margin="0,8,0,0"
+                                           Header="{Binding Pad_KeepAwake_Card_Header, Source={x:Static strings:Strings.Instance}}"
+                                           Hint="{Binding Pad_KeepAwake_FoldHint, Source={x:Static strings:Strings.Instance}}"
+                                           Summary="{Binding KeepAwakeSummary}"
+                                           Visibility="{Binding KeepAwakeCardVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                             <StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                    <controls:GlyphText Text="&#xE706;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
-                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
-                                    <TextBlock Text="{Binding Pad_KeepAwake_Card_Header, Source={x:Static strings:Strings.Instance}}"
-                                               Style="{StaticResource CardTitle}"/>
                                     <ui:Button Command="{Binding ResetKeepAwakeCardCommand}" Style="{StaticResource ResetAllButton}"
-                                               Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                               Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="0,0,0,8" HorizontalAlignment="Left"
                                                ToolTip="{Binding Pad_KeepAwake_ResetCard_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                </StackPanel>
                                 <TextBlock Text="{Binding Pad_KeepAwake_Card_Desc, Source={x:Static strings:Strings.Instance}}"
                                            Style="{StaticResource CardDescription}"/>
 
@@ -4712,11 +4661,11 @@
                                     <ui:Button Command="{Binding ResetKeepAwakeDeflectionCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_KeepAwake_Reset_Deflection, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                             </StackPanel>
-                        </Border>
-                    </StackPanel>
-                </ScrollViewer>
-            </TabItem>
-                    </controls:ContentTabControl>
+                        </controls:FoldCard>
+                            </StackPanel>
+                    </GroupBox>
+                    </Grid>
+                    </ScrollViewer>
                 </Grid>
             </TabItem>
 
@@ -6330,6 +6279,14 @@
                                      Style="{StaticResource DzValueEdit}"/>
                             <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                             <ui:Button Command="{Binding ResetLeftMotorCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetLeftMotor, Source={x:Static strings:Strings.Instance}}"/>
+                            <!-- Test (#574): fires this motor alone. It was a
+                                 capsule under the controller's picture. -->
+                            <Button x:Name="TestLeftMotorButton" Content="{Binding Pad_RumbleAudio_Test, Source={x:Static strings:Strings.Instance}}"
+                                    Padding="10,4" Margin="8,0,0,0" VerticalAlignment="Center"
+                                    AutomationProperties.AutomationId="Pad_TestLeftMotor"
+                                    AutomationProperties.Name="{Binding Pad_TestLeftMotor, Source={x:Static strings:Strings.Instance}}"
+                                    ToolTip="{Binding Pad_TestLeftMotor, Source={x:Static strings:Strings.Instance}}"
+                                    Click="LeftMotor_Click"/>
                         </StackPanel>
 
                         <!-- Right motor -->
@@ -6341,6 +6298,12 @@
                                      Style="{StaticResource DzValueEdit}"/>
                             <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                             <ui:Button Command="{Binding ResetRightMotorCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetRightMotor, Source={x:Static strings:Strings.Instance}}"/>
+                            <Button x:Name="TestRightMotorButton" Content="{Binding Pad_RumbleAudio_Test, Source={x:Static strings:Strings.Instance}}"
+                                    Padding="10,4" Margin="8,0,0,0" VerticalAlignment="Center"
+                                    AutomationProperties.AutomationId="Pad_TestRightMotor"
+                                    AutomationProperties.Name="{Binding Pad_TestRightMotor, Source={x:Static strings:Strings.Instance}}"
+                                    ToolTip="{Binding Pad_TestRightMotor, Source={x:Static strings:Strings.Instance}}"
+                                    Click="RightMotor_Click"/>
                         </StackPanel>
 
                         <!-- Trigger rumble fold -->

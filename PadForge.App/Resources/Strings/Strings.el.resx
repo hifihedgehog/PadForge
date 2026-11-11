@@ -304,6 +304,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Συσκευή</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Είσοδος από</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Προσθήκη συσκευής</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Εικόνα</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Λίστα</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Κάντε κλικ σε ένα στοιχείο ελέγχου και πατήστε την είσοδο που θα το ελέγχει.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Αναμονή για {0}. Πατήστε την είσοδο στη συσκευή σας.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Ποιο πάτημα βλέπουν τα παιχνίδια όταν κρατιούνται και τα δύο κουμπιά ενός ζεύγους</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Ποιο πάτημα βλέπουν τα παιχνίδια όταν κρατιούνται και τα δύο πλήκτρα ενός ζεύγους</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Κρατά μια μικρή απόκλιση του μοχλού ώστε τα παιχνίδια να εμφανίζουν οδηγίες χειριστηρίου</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Σφυρηλάτηση</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Επιλέξτε μια μακροεντολή στα αριστερά ή πατήστε «Προσθήκη» για να δημιουργήσετε μία.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>ΕΙΣΟΔΟΣ</value></data>
@@ -1383,7 +1390,6 @@
   <data name="Pad_MapAll" xml:space="preserve"><value>Αντιστοίχιση όλων</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Αντιστοίχιση: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Διαδοχική καταγραφή όλων των αντιστοιχίσεων, μία προς μία</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>Κάντε κλικ σε μια γραμμή αντιστοίχισης και πατήστε ένα κουμπί ή μετακινήστε έναν άξονα στο χειριστήριό σας για να το ορίσετε.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Αντιγραφή όλων των αντιστοιχίσεων και ρυθμίσεων στο πρόχειρο</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Επικόλληση αντιστοιχίσεων και ρυθμίσεων από το πρόχειρο</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Αντιγραφή από...</value></data>
@@ -3897,7 +3903,6 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Κίνηση και αφή</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Φωτισμός και ήχος</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Μακροεντολές και μενού</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Ρυθμίσεις που διαμορφώνουν την έξοδο του εικονικού χειριστηρίου αυτής της υποδοχής ακριβώς πριν σταλεί στα παιχνίδια: καθαρισμός SOCD για αντίθετες κατευθύνσεις που πατιούνται μαζί και «Διατήρηση χειριστηρίου ενεργού» για παιχνίδια που εγκαταλείπουν το χειριστήριο τη στιγμή που βλέπουν είσοδο ποντικιού ή πληκτρολογίου.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Δονητές μπάσων</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Δρομολογεί τη δόνηση και την ανάδραση δύναμης του παιχνιδιού που λαμβάνει αυτό το εικονικό χειριστήριο σε μια έξοδο ήχου, ως τόνους χαμηλής συχνότητας για δονητές μπάσων (bass shakers) και subwoofer.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Δόνηση σε ήχο</value></data>

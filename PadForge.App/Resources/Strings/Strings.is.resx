@@ -304,6 +304,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Tæki</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Inntak frá</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Bæta við tæki</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Mynd</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Listi</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Smelltu á stýrihlut og ýttu á inntakið sem á að stjórna honum.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Hlustar eftir {0}. Ýttu á inntakið á tækinu þínu.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Hvaða ýtingu leikir sjá þegar báðum hnöppum pars er haldið inni</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Hvaða ýtingu leikir sjá þegar báðum lyklum pars er haldið inni</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Heldur litlu útslagi á pinna svo leikir sýni áfram ábendingar fyrir leikjastýringu</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Smíðar</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Veldu fjölva til vinstri eða ýttu á „Bæta við“ til að búa til nýjan.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>HRÁTT</value></data>
@@ -1383,7 +1390,6 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Varpa öllu</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Varpa: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Taka upp allar varpanir, eina í einu</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>Smelltu á vörpunarlínu og ýttu á hnapp eða hreyfðu ás á leikjastýringunni til að úthluta honum.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Afrita allar varpanir og stillingar á klippiborð</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Líma varpanir og stillingar af klippiborði</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Afrita frá...</value></data>
@@ -3897,7 +3903,6 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Hreyfing og snerting</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Lýsing og hljóð</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Fjölvar og valmyndir</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Stillingar sem móta úttak sýndarstýringar þessarar raufar rétt áður en það er sent til leikja: SOCD-hreinsun fyrir gagnstæðar stefnur sem ýtt er á samtímis, og „Halda leikjastýringu vakandi“ fyrir leiki sem sleppa leikjastýringunni um leið og þeir sjá inntak frá mús eða lyklaborði.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bassahristarar</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Beinir titringi og kraftsvörun sem þessi sýndarstýring fær frá leiknum á hljóðúttak sem lágtíðnitónum fyrir bassahristara og bassahátalara.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Titringur í hljóð</value></data>

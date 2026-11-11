@@ -271,6 +271,10 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Aparato</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Input di</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Agregá aparato</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Imágen</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Lista</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Klek riba un kontrol, despues primi e botòn/eje riba bo aparato ku mester manej'é.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Ta warda {0}. Primi e botòn/eje riba bo aparato.</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Selektá un makro na banda robes, òf primi Agregá pa krea un.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>OUT</value></data>
@@ -747,7 +751,6 @@
   <data name="Pad_MapAll" xml:space="preserve"><value>Asigná tur</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Asigná: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Graba tur asignashon un pa un</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>Klek riba un fila di asignashon i primi un botòn/eje riba bo kontrol pa asign'é.</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Kopia di...</value></data>
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>Kopia konfigurashon di otro aparato konfigurá</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Reset tur</value></data>
@@ -2505,4 +2508,5 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Movementu i toke</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Lus i zonido</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makro i menu</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Ta tene e palanka un tiki fo'i sentro pa wega keda mustra indikashon di kontrol</value></data>
 </root>

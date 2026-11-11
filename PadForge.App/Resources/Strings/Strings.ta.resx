@@ -304,6 +304,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>சாதனம்</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>உள்ளீட்டு மூலம்</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>சாதனத்தைச் சேர்</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>படம்</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>பட்டியல்</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>ஒரு கட்டுப்பாட்டைக் கிளிக் செய்து, அதை இயக்க வேண்டிய உள்ளீட்டை அழுத்தவும்.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>{0}-க்காகக் கேட்கிறது. உங்கள் சாதனத்தில் உள்ளீட்டை அழுத்தவும்.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>ஒரு ஜோடியின் இரு பொத்தான்களும் பிடிக்கப்படும்போது கேம் எந்த அழுத்தத்தைப் பார்க்கும்</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>ஒரு ஜோடியின் இரு விசைகளும் பிடிக்கப்படும்போது கேம் எந்த அழுத்தத்தைப் பார்க்கும்</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>சிறிய ஸ்டிக் விலகலைப் பிடித்து, கேம்கள் கட்டுப்படுத்தி குறிப்புகளையே காட்டச் செய்யும்</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>செயலில்</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>இடதுபுறத்தில் ஒரு மேக்ரோவைத் தேர்ந்தெடுக்கவும், அல்லது புதிதாக உருவாக்க சேர் என்பதை அழுத்தவும்.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>மூலம்</value></data>
@@ -1383,7 +1390,6 @@
   <data name="Pad_MapAll" xml:space="preserve"><value>அனைத்தையும் மேப் செய்</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>மேப் செய்: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>அனைத்து மேப்பிங்குகளையும் ஒவ்வொன்றாக வரிசையாகப் பதிவுசெய்</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>ஒரு மேப்பிங் வரிசையைக் கிளிக் செய்து, அதற்கு ஒதுக்க உங்கள் கட்டுப்படுத்தியில் ஒரு பொத்தானை அழுத்தவும் அல்லது அச்சை நகர்த்தவும்.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>அனைத்து மேப்பிங்குகளையும் அமைப்புகளையும் கிளிப்போர்டுக்கு நகலெடு</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>கிளிப்போர்டிலிருந்து மேப்பிங்குகளையும் அமைப்புகளையும் ஒட்டு</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>இதிலிருந்து நகலெடு...</value></data>
@@ -3897,7 +3903,6 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>இயக்கம் &amp; தொடுதல்</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>ஒளி &amp; ஒலி</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>மேக்ரோக்கள் &amp; மெனுக்கள்</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>இந்த ஸ்லாட்டின் மெய்நிகர் கட்டுப்படுத்தி வெளியீடு கேம்களுக்கு அனுப்பப்படுவதற்குச் சற்று முன் அதை வடிவமைக்கும் அமைப்புகள்: ஒரே நேரத்தில் அழுத்தப்படும் எதிரெதிர்த் திசைகளுக்கான SOCD சீர்செய்தல், மற்றும் சுட்டி அல்லது விசைப்பலகை உள்ளீட்டைக் கண்டவுடனேயே கட்டுப்படுத்தியைக் கைவிடும் கேம்களுக்கான கட்டுப்படுத்தியை விழிப்பில் வை.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>பாஸ் ஷேக்கர்கள்</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>இந்த மெய்நிகர் கட்டுப்படுத்தி பெறும் கேம் அதிர்வையும் ஃபோர்ஸ் ஃபீட்பேக்கையும், பாஸ் ஷேக்கர்களுக்கும் சப்வூஃபர்களுக்குமான குறைந்த அதிர்வெண் தொனிகளாக ஓர் ஆடியோ வெளியீட்டுக்கு அனுப்பும்.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>அதிர்விலிருந்து ஆடியோ</value></data>

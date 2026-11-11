@@ -289,6 +289,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>ഉപകരണം</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>ഇൻപുട്ട് ഉറവിടം</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>ഉപകരണം ചേർക്കുക</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>ചിത്രം</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>പട്ടിക</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>ഒരു കൺട്രോളിൽ ക്ലിക്ക് ചെയ്ത ശേഷം, അത് നിയന്ത്രിക്കേണ്ട ഇൻപുട്ട് അമർത്തുക.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>{0}-നായി കാത്തിരിക്കുന്നു. നിങ്ങളുടെ ഉപകരണത്തിലെ ഇൻപുട്ട് അമർത്തുക.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>ഒരു ജോടിയിലെ രണ്ട് ബട്ടണുകളും അമർത്തിയാൽ ഗെയിം ഏത് അമർത്തൽ കാണുമെന്ന്</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>ഒരു ജോടിയിലെ രണ്ട് കീകളും അമർത്തിയാൽ ഗെയിം ഏത് അമർത്തൽ കാണുമെന്ന്</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>ഗെയിമുകൾ കൺട്രോളർ നിർദ്ദേശങ്ങൾ കാണിക്കാൻ ചെറിയ സ്റ്റിക്ക് വ്യതിയാനം പിടിച്ചുനിർത്തുന്നു</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>ഫോർജ് ചെയ്യുന്നു</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>ഇടതുവശത്ത് ഒരു മാക്രോ തിരഞ്ഞെടുക്കുക, അല്ലെങ്കിൽ പുതിയത് സൃഷ്ടിക്കാൻ ചേർക്കുക അമർത്തുക.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
@@ -1218,7 +1225,6 @@
   <data name="Pad_MapAll" xml:space="preserve"><value>എല്ലാം മാപ്പ് ചെയ്യുക</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>മാപ്പ്: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>എല്ലാ മാപ്പിംഗുകളും ഓരോന്നായി ക്രമത്തിൽ റെക്കോർഡ് ചെയ്യുക</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>ഒരു മാപ്പിംഗ് വരിയിൽ ക്ലിക്ക് ചെയ്ത് നിങ്ങളുടെ കൺട്രോളറിലെ ഒരു ബട്ടൺ/ആക്സിസ് അമർത്തി അത് നൽകുക.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>എല്ലാ മാപ്പിംഗുകളും ക്രമീകരണങ്ങളും ക്ലിപ്പ്ബോർഡിലേക്ക് പകർത്തുക</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>ക്ലിപ്പ്ബോർഡിൽ നിന്ന് മാപ്പിംഗുകളും ക്രമീകരണങ്ങളും ഒട്ടിക്കുക</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>ഇവിടെ നിന്ന് പകർത്തുക...</value></data>
@@ -3669,7 +3675,6 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>ചലനം &amp; സ്പർശം</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>ലൈറ്റിംഗ് &amp; ഓഡിയോ</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>മാക്രോകൾ &amp; മെനുകൾ</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>ഈ സ്ലോട്ടിന്റെ വെർച്വൽ കൺട്രോളർ ഔട്ട്പുട്ട് ഗെയിമുകളിലേക്ക് അയയ്ക്കുന്നതിന് തൊട്ടുമുമ്പ് അതിനെ രൂപപ്പെടുത്തുന്ന ക്രമീകരണങ്ങൾ: ഒരേസമയം അമർത്തിയ വിപരീത ദിശകൾക്കുള്ള SOCD ക്ലീനിംഗ്, മൗസ് അല്ലെങ്കിൽ കീബോർഡ് ഇൻപുട്ട് കാണുമ്പോൾ കൺട്രോളറെ ഉപേക്ഷിക്കുന്ന ഗെയിമുകൾക്കായി കൺട്രോളർ ഉണർത്തി വയ്ക്കുക.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>ബാസ് ഷേക്കറുകൾ</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>ഈ വെർച്വൽ കൺട്രോളറിന് ലഭിക്കുന്ന ഗെയിം റംബിളും ഫോഴ്സ് ഫീഡ്ബാക്കും ബാസ് ഷേക്കറുകൾക്കും സബ്വൂഫറുകൾക്കുമായി കുറഞ്ഞ ആവൃത്തിയിലുള്ള ടോണുകളായി ഒരു ഓഡിയോ ഔട്ട്പുട്ടിലേക്ക് റൂട്ട് ചെയ്യുന്നു.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>റംബിൾ ഓഡിയോയിലേക്ക്</value></data>

@@ -1292,4 +1292,8 @@
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Suga ngan tingog</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Mga macro ngan menu</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Dugangi hin device</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Litrato</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Lista</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Pidlita an usa nga control, dayon pindota an input nga magkokontrol hini.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Naghuhulat para ha {0}. Pindota an input ha imo device.</value></data>
 </root>

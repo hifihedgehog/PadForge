@@ -289,6 +289,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Սարք</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Ազդանշանի աղբյուր</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Ավելացնել սարք</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Պատկեր</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Ցանկ</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Սեղմեք կառավարման տարրի վրա, ապա սեղմեք ձեր սարքի այն մուտքը, որը պետք է այն կառավարի։</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Սպասվում է մուտք {0}-ի համար։ Սեղմեք մուտքը ձեր սարքի վրա։</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Որ սեղմումը կտեսնեն խաղերը, երբ զույգի երկու կոճակները սեղմված են</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Որ սեղմումը կտեսնեն խաղերը, երբ զույգի երկու ստեղները սեղմված են</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Պահում է ձողի փոքր շեղում, որպեսզի խաղերը շարունակեն ցույց տալ կառավարիչի հուշումները</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Դարբնում է</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Ընտրեք մակրո ձախ կողմում կամ սեղմեք Ավելացնել՝ նորը ստեղծելու համար։</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
@@ -1220,7 +1227,6 @@
   <data name="Pad_MapAll" xml:space="preserve"><value>Կապակցել բոլորը</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Կապակցում՝ {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Հերթով ձայնագրել բոլոր կապակցումները՝ մեկ առ մեկ</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>Սեղմեք կապակցման տողին և ձեր կառավարիչի վրա սեղմեք կոճակ կամ շարժեք առանցք՝ այն նշանակելու համար։</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Պատճենել բոլոր կապակցումներն ու կարգավորումները clipboard-ում</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Տեղադրել կապակցումներն ու կարգավորումները clipboard-ից</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Պատճենել այստեղից...</value></data>
@@ -3664,7 +3670,6 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Շարժում և հպում</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Լույս և ձայն</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Մակրոներ և ընտրացանկեր</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Կարգավորումներ, որոնք ձևավորում են այս սլոթի վիրտուալ կառավարիչի ելքը անմիջապես խաղերին ուղարկելուց առաջ՝ SOCD մաքրում միաժամանակ սեղմված հակադիր ուղղությունների համար, և «Կառավարիչն արթուն պահել» այն խաղերի համար, որոնք կառավարիչը թողնում են հենց մկնիկի կամ ստեղնաշարի մուտք տեսնելիս։</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Բաս շեյքերներ</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Այս վիրտուալ կառավարիչի ստացած խաղի թրթռոցը և հետադարձ ուժը ուղղորդում է աուդիո ելքին՝ որպես ցածր հաճախականության տոներ բաս շեյքերների և սաբվուֆերների համար։</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Թրթռոց դեպի աուդիո</value></data>

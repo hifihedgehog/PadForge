@@ -289,6 +289,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Seade</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Sisend seadmelt</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Lisa seade</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Pilt</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Loend</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Klõpsake juhtelemendil ja vajutage seejärel sisendit, mis seda juhtima peab.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Ootan sisendit: {0}. Vajutage seadmel sisendit.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Millist vajutust mäng näeb, kui paari mõlemad nupud on all</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Millist vajutust mäng näeb, kui paari mõlemad klahvid on all</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Hoiab kangi veidi kõrvale, et mängud näitaksid kontrolleri viipasid</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Sepistab</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Valige vasakult makro või vajutage uue loomiseks Lisa.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>TOORES</value></data>
@@ -1220,7 +1227,6 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Vastenda kõik</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Vastenda: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Lindista kõik vastendused järjest ükshaaval</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>Klõpsake vastenduse rida ja vajutage selle määramiseks kontrolleril nuppu või liigutage telge.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Kopeeri kõik vastendused ja sätted lõikelauale</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Kleebi vastendused ja sätted lõikelaualt</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Kopeeri allikast...</value></data>
@@ -3705,7 +3711,6 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Liikumine ja puude</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Valgustus ja heli</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makrod ja menüüd</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Sätted, mis kujundavad selle pesa virtuaalse kontrolleri väljundit vahetult enne mängudele saatmist: SOCD puhastamine korraga vajutatud vastassuundade jaoks ja Hoia kontroller ärkvel mängude jaoks, mis loobuvad kontrollerist kohe, kui näevad hiire või klaviatuuri sisendit.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bassivibraatorid</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Suunab selle virtuaalse kontrolleri vastu võetud mängu vibratsiooni ja jõutagasiside heliväljundisse madalsageduslike toonidena bassivibraatorite ja subwooferite jaoks.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibratsioon heliks</value></data>

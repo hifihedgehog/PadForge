@@ -289,6 +289,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Kifaa</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Chanzo cha ingizo</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Ongeza kifaa</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Picha</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Orodha</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Bofya kidhibiti kimoja kisha bonyeza kitufe kwenye kifaa chako kitakachokiendesha.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Inasikiliza {0}. Bonyeza ingizo kwenye kifaa chako.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Bonyezo lipi mchezo unaliona vitufe vyote viwili vya jozi vikishikiliwa</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Bonyezo lipi mchezo unaliona vitufe vyote viwili vya jozi vikishikiliwa</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Hushikilia mkengeuko mdogo wa kijiti ili michezo iendelee kuonyesha vielekezo vya kidhibiti</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Inaunda</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Chagua makro upande wa kushoto, au bonyeza Ongeza ili kuunda mpya.</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Baridi</value></data>
@@ -1217,7 +1224,6 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Ramani Zote</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Ramani: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Rekodi ramani zote moja baada ya nyingine kwa mfuatano</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>Bofya safu ya ramani kisha bonyeza kitufe/mhimili kwenye kidhibiti chako ili kuikabidhi.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Nakili ramani na mipangilio yote kwenye ubao wa kunakili</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Bandika ramani na mipangilio kutoka kwenye ubao wa kunakili</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Nakili Kutoka...</value></data>
@@ -3645,7 +3651,6 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Mwendo na Mguso</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Taa na Sauti</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makro na Menyu</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Mipangilio inayounda towe la kidhibiti pepe cha nafasi hii kabla ya kutumwa kwa michezo: usafishaji wa SOCD kwa mielekeo kinzani inayobonyezwa pamoja, na Weka Kidhibiti Kikiwa Macho kwa michezo inayoacha kidhibiti mara inapoona ingizo la kipanya au kibodi.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass Shakers</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Huelekeza mtetemo wa mchezo na force feedback ambayo kidhibiti pepe hiki hupokea kwenye towe la sauti kama toni za masafa ya chini kwa bass shakers na subwoofer.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Mtetemo hadi Sauti</value></data>

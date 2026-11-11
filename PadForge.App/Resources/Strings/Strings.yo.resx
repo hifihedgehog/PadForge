@@ -147,6 +147,10 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Ẹ̀rọ</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Orísun</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Fi ẹ̀rọ kún</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Àwòrán</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Àkójọ</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Tẹ ìdarí kan nínú àwòrán, lẹ́yìn náà tẹ ohun tí yóò darí rẹ̀ lórí ẹ̀rọ rẹ.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Ń gbà sílẹ̀ fún {0}. Tẹ ohun náà lórí ẹ̀rọ rẹ.</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>Pọ́ọ̀tì</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Àwọn mod eré</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Gba àwọn mod eré DSX</value></data>

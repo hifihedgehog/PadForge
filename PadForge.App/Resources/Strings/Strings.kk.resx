@@ -289,6 +289,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Құрылғы</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Енгізу көзі</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Құрылғы қосу</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Сурет</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Тізім</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Басқару элементін басыңыз да, оны басқаруға тиіс кірісті басыңыз немесе қозғаңыз.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>{0} үшін күтілуде. Құрылғыңыздағы кірісті басыңыз.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Жұптың екі түймесі де басылып тұрғанда ойын қай басуды көреді</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Жұптың екі пернесі де басылып тұрғанда ойын қай басуды көреді</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Стикті сәл ауытқытып ұстайды, сондықтан ойындар контроллер нұсқауларын көрсете береді</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Соғуда</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Сол жақтан макросты таңдаңыз немесе жаңасын жасау үшін «Қосу» түймесін басыңыз.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>ШИКІ</value></data>
@@ -1220,7 +1227,6 @@
   <data name="Pad_MapAll" xml:space="preserve"><value>Барлығын тағайындау</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Тағайындау: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Барлық тағайындауларды бірінен соң бірін жазу</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>Тағайындау жолын басыңыз да, контроллеріңізде түймені басыңыз немесе осьті қозғаңыз.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Барлық тағайындаулар мен параметрлерді алмасу буферіне көшіру</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Тағайындаулар мен параметрлерді алмасу буферінен қою</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Мынадан көшіру...</value></data>
@@ -3701,7 +3707,6 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Қозғалыс және сенсор</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Жарық және дыбыс</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Макростар және мәзірлер</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Осы ұяшықтың виртуалды контроллер шығысын ойындарға жіберер алдында қалыптастыратын параметрлер: бір мезгілде басылған қарама-қарсы бағыттарға арналған SOCD тазалау және тінтуір немесе пернетақта енгізуін көрген бойда контроллерді тастайтын ойындарға арналған «Контроллерді ояу ұстау».</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Бас шейкерлері</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Осы виртуалды контроллер алатын ойын дірілі мен күштік кері байланысты бас шейкерлері мен сабвуферлер үшін төмен жиілікті тондар ретінде дыбыс шығысына бағыттайды.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Дірілді дыбысқа беру</value></data>

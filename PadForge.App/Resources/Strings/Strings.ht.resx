@@ -282,6 +282,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Aparèy</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Sous</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Ajoute aparèy</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Imaj</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Lis</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Klike sou yon kontwòl, epi peze antre ki dwe kontwole l la.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Ap tann {0}. Peze antre a sou aparèy ou a.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Ki peze jwèt yo wè lè de bouton yon pè kenbe ansanm</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Ki peze jwèt yo wè lè de touch yon pè kenbe ansanm</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Kenbe yon ti deplasman stick pou jwèt yo kontinye montre endikasyon kontwolè</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Ap fòje</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Chwazi yon makwo sou bò gòch, oswa peze Ajoute pou kreye youn.</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Frèt</value></data>
@@ -1128,7 +1135,6 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Asiyen tout</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Asiyen: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Anrejistre tout asiyasyon yo youn apre lòt</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>Klike sou yon liy asiyasyon epi peze yon bouton/aks sou kontwolè ou a pou asiyen l.</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Kopye soti nan...</value></data>
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>Kopye paramèt yo soti nan yon lòt aparèy ki konfigire</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Reyinisyalize tout</value></data>

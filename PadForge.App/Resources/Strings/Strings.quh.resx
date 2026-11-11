@@ -128,6 +128,10 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Dispositivo</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Kamachiq</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Dispositivota yapay</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Rikch'ay</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Lista</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Huk controlta ñit'iy, chaymantataq chayta kamachinan entradata ñit'iy.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>{0}paq suyachkan. Dispositivoykipi entradata ñit'iy.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>OUT</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>{0} puertota huk programa llamk'achishan, DSX hina. Chay programata wisq'ay, utaq huk puertota akllay.</value></data>

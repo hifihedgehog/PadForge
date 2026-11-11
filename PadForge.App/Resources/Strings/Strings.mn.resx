@@ -289,6 +289,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Төхөөрөмж</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Оролтын эх үүсвэр</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Төхөөрөмж нэмэх</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Зураг</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Жагсаалт</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Удирдлага дээр дараад, түүнийг удирдах оролтыг төхөөрөмж дээрээ дарна уу.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>{0} удирдлагад оролт хүлээж байна. Төхөөрөмж дээрээ оролтоо дарна уу.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Хосын хоёр товч хоёулаа дарагдсан үед тоглоом аль даралтыг харах</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Хосын хоёр товчлуур хоёулаа дарагдсан үед тоглоом аль даралтыг харах</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Тоглоом контроллерийн товчны зааврыг харуулсаар байхаар стикийг бага зэрэг хазайлгасан байлгана</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Урлаж байна</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Зүүн талаас макро сонгох, эсвэл шинээр үүсгэхийн тулд Нэмэх товчийг дарна уу.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>ТҮҮХИЙ</value></data>
@@ -1220,7 +1227,6 @@
   <data name="Pad_MapAll" xml:space="preserve"><value>Бүгдийг оноох</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Оноох: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Бүх оноолтыг нэг нэгээр нь дарааллаар бичих</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>Оноолтын мөр дээр дараад, оноохын тулд контроллер дээрээ товч дарах эсвэл тэнхлэг хөдөлгөнө үү.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Бүх оноолт болон тохиргоог түр санах ойд хуулах</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Оноолт болон тохиргоог түр санах ойгоос буулгах</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Хуулж авах...</value></data>

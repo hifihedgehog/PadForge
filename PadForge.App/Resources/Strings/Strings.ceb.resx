@@ -868,7 +868,6 @@
   <data name="Pad_MapAll" xml:space="preserve"><value>I-map tanan</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>I-map: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Irekord ang tanang mapping usa-usa</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>I-click ang usa ka mapping nga row ug pislita ang button/axis sa imong controller aron i-assign kini.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Kopyaha ang tanang mapping ug setting ngadto sa clipboard</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>I-paste ang mga mapping ug setting gikan sa clipboard</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Kopyaha gikan sa...</value></data>
@@ -3570,4 +3569,11 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Suga ug tingog</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Mga macro ug menu</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Idugang og device</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Hulagway</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Lista</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>I-click ang usa ka control, dayon pislita ang input nga magpalihok niini.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Nagrekord para sa {0}. Pislita ang input sa imong device.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Unsang pislit ang makita sa dula kung ang duha ka button sa usa ka pares gikuptan</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Unsang pislit ang makita sa dula kung ang duha ka key sa usa ka pares gikuptan</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Nagkupot og gamay nga pagtipas sa stick aron magpadayon ang mga dula sa pagpakita sa mga prompt sa controller</value></data>
 </root>

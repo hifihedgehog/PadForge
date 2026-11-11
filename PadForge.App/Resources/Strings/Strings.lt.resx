@@ -289,6 +289,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Įrenginys</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Įvestis iš</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Pridėti įrenginį</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Vaizdas</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Sąrašas</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Spustelėkite valdiklio elementą, tada paspauskite įvestį, kuri jį valdys.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Laukiama įvesties: {0}. Paspauskite įvestį savo įrenginyje.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Kurį paspaudimą mato žaidimai, kai laikomi abu poros mygtukai</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Kurį paspaudimą mato žaidimai, kai laikomi abu poros klavišai</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Laiko nedidelį svirtelės nuokrypį, kad žaidimai rodytų valdiklio užuominas</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Kalama</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Pasirinkite makrokomandą kairėje arba spustelėkite „Pridėti“, kad sukurtumėte naują.</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Šalta</value></data>
@@ -1218,7 +1225,6 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Priskirti viską</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Priskirti: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Paeiliui įrašyti visus priskyrimus po vieną</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>Spustelėkite priskyrimo eilutę ir paspauskite valdiklio mygtuką / pajudinkite ašį, kad ją priskirtumėte.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Kopijuoti visus priskyrimus ir nustatymus į mainų sritį</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Įklijuoti priskyrimus ir nustatymus iš mainų srities</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Kopijuoti iš...</value></data>
@@ -3699,7 +3705,6 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Judesys ir lietimas</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Apšvietimas ir garsas</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makrokomandos ir meniu</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Nustatymai, formuojantys šio lizdo virtualaus valdiklio išvestį prieš pat siunčiant ją žaidimams: SOCD valymas vienu metu paspaustoms priešingoms kryptims ir „Neleisti valdikliui užmigti“ žaidimams, kurie atsisako valdiklio, kai tik pastebi pelės ar klaviatūros įvestį.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Žemųjų dažnių vibratoriai</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Nukreipia šio virtualaus valdiklio gaunamą žaidimo vibraciją ir jėgos grįžtamąjį ryšį į garso išvestį kaip žemo dažnio tonus žemųjų dažnių vibratoriams ir žemadažniams garsiakalbiams.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibracija į garsą</value></data>

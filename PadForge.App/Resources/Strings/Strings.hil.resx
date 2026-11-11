@@ -1497,4 +1497,8 @@
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Suga kag tunog</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Mga macro kag menu</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Magdugang sang device</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Larawan</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Listahan</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Mag-click sang kontrol, dayon pinduta ang input nga magapadalagan sini.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Ginahulat ang input para sa {0}. Pinduta ang input sa imo device.</value></data>
 </root>

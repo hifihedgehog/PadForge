@@ -289,6 +289,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Սարք</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Մուտքի աղբիւր</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Աւելցնել սարք</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Պատկեր</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Ցանկ</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Կտտացուցէք կառավարման տարրի մը վրայ, ապա սեղմեցէք այն մուտքը, որ պիտի վարէ զայն։</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Կ՚արձանագրէ {0}։ Սեղմեցէք մուտքը ձեր սարքին վրայ։</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Որ սեղմումը կը տեսնեն խաղերը, երբ զոյգի երկու կոճակներն ալ սեղմուած են</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Որ սեղմումը կը տեսնեն խաղերը, երբ զոյգի երկու ստեղներն ալ սեղմուած են</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Լծակի փոքր շեղում մը կը պահէ, որպէսզի խաղերը շարունակեն կառավարիչի ցուցումներ ցոյց տալ</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Կը դարբնէ</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Ընտրեցէք մաքրօ մը ձախին, կամ սեղմեցէք «Աւելցնել»՝ նորը ստեղծելու համար։</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>ՀՈՒՄ</value></data>
@@ -1218,7 +1225,6 @@
   <data name="Pad_MapAll" xml:space="preserve"><value>Համապատասխանեցնել բոլորը</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Համապատասխանեցում՝ {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Հերթաբար արձանագրել բոլոր համապատասխանեցումները՝ մէկ առ մէկ</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>Կտտացուցէք համապատասխանեցման տողի մը վրայ եւ սեղմեցէք ձեր կառավարիչի կոճակ/առանցք մը՝ զայն նշանակելու համար։</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Պատճէնել բոլոր համապատասխանեցումներն ու կարգաւորումները սեղմատախտակին</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Փակցնել համապատասխանեցումներն ու կարգաւորումները սեղմատախտակէն</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Պատճէնել այլ սարքէ...</value></data>
@@ -3668,7 +3674,6 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Շարժում եւ հպում</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Լոյսեր եւ ձայն</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Մաքրօներ եւ ցանկեր</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Կարգաւորումներ, որոնք կը ձեւաւորեն այս խցիկին վիրթուալ կառավարիչի ելքը խաղերուն ղրկուելէն անմիջապէս առաջ՝ SOCD մաքրում միաժամանակ սեղմուած հակադիր ուղղութիւններու համար, եւ «Կառավարիչը արթուն պահել» այն խաղերուն համար, որոնք կառավարիչը կը լքեն մուկի կամ ստեղնաշարի մուտք տեսնելու պահուն։</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Պասի թրթռիչներ</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Խաղի թրթռումը եւ ուժային արձագանգը, որ այս վիրթուալ կառավարիչը կը ստանայ, կ'ուղղէ ձայնային ելքի մը՝ որպէս ցածր հաճախականութեան հնչիւններ պասի թրթռիչներու եւ ցածրաձայն բարձրախօսներու համար։</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Թրթռում ձայնի</value></data>

@@ -2146,15 +2146,17 @@ function Find-AllSlots {
 # The pad page's tabs are six sections (PadForge 6, #574). A recipe still
 # names what it wants by the tab's name, and this table says where that is
 # now: the section's button in the header, then either a part button (Buttons
-# and Macros & Menus show one part at a time) or the heading of a group in
-# the section's scrolling column. Every value is an AutomationId, so a
-# translated run finds the same controls. A group's heading carries the id
-# its tab button had, and it is in the tree only while its section shows and
-# the selected device has that group.
+# has Picture and List, Macros & Menus has its two parts) or the heading of a
+# group in the section's scrolling column. Output is the cards under the
+# picture: its row goes to the picture and then opens the cards of the group
+# it names. Every value is an AutomationId, so a translated run finds the
+# same controls. A group's heading carries the id its tab button had, and it
+# is in the tree only while its section shows and the selected device has
+# that group.
 $script:PadTabs = @{
     "Preview"           = @{ Section = "Section_Buttons"; Part = "TabController" }
     "Mappings"          = @{ Section = "Section_Buttons"; Part = "MappingsTab" }
-    "Output"            = @{ Section = "Section_Buttons"; Part = "OutputTab" }
+    "Output"            = @{ Section = "Section_Buttons"; Part = "TabController"; Cards = "OutputTab" }
     "Sticks"            = @{ Section = "Section_Sticks"; Column = "SticksSectionScroll"; Group = "TabSticks" }
     "Triggers"          = @{ Section = "Section_Sticks"; Column = "SticksSectionScroll"; Group = "TabTriggers" }
     "Mouse"             = @{ Section = "Section_Sticks"; Column = "SticksSectionScroll"; Group = "TabMouse" }
@@ -2298,6 +2300,43 @@ function Scroll-PadGroupToTop {
     }
 }
 
+# Open every fold card of a group of the pad page, through each card's expand
+# pattern, so the pointer stays parked. The output cards under the picture
+# fold to one line each, and a shot of them wants them open. False when the
+# group is not on the page, which is how a recipe learns the slot type has no
+# such cards.
+function Open-PadCards {
+    param([string]$GroupAid, [string]$Label, [int]$Tries = 6)
+    $group = $null
+    for ($i = 0; $i -lt $Tries -and -not $group; $i++) {
+        if ($i -gt 0) { Start-Sleep -Milliseconds 400 }
+        $padPage = Find-UIA -Aid "PadPageView"
+        $searchIn = if ($padPage) { $padPage } else { $script:uiaWin }
+        $group = Find-UIA -Parent $searchIn -Aid $GroupAid
+    }
+    if (-not $group) {
+        Write-Host "  !! ${Label}: the page has no such group ($GroupAid) for this slot" -ForegroundColor Yellow
+        return $false
+    }
+    $canExpand = New-Object System.Windows.Automation.PropertyCondition(
+        [System.Windows.Automation.AutomationElement]::IsExpandCollapsePatternAvailableProperty, $true)
+    $opened = 0
+    foreach ($card in $group.FindAll($TD, $canExpand)) {
+        # A fold card is an Expander whose id ends in FoldCard. A combo box
+        # inside an open card expands too and is left alone.
+        if ($card.Current.AutomationId -notlike "*FoldCard") { continue }
+        try {
+            $ecp = $card.GetCurrentPattern([System.Windows.Automation.ExpandCollapsePattern]::Pattern)
+            if ($ecp.Current.ExpandCollapseState -ne [System.Windows.Automation.ExpandCollapseState]::Expanded) { $ecp.Expand() }
+            $opened++
+        } catch {
+            Write-Host "  .. ${Label}: a card would not open ($($_.Exception.Message))" -ForegroundColor DarkGray
+        }
+    }
+    if ($opened -gt 0) { Start-Sleep -Milliseconds 500 }
+    return $true
+}
+
 # Go to what was a tab of the pad page, by its English name: select its
 # section, then its part, or bring its group to the top of the section's
 # column. True once it is in view.
@@ -2317,6 +2356,7 @@ function Tab {
                 # A part switch is in the tree once its section shows.
                 $part = Find-PadStripButton -Aid $t.Part
                 if ($part) { $ok = Select-PadStripButton -El $part -Label "Tab:$Name" }
+                if ($ok -and $t.ContainsKey("Cards")) { $ok = Open-PadCards -GroupAid $t.Cards -Label "Tab:$Name" }
             } else {
                 $ok = Scroll-PadGroupToTop -ColumnAid $t.Column -GroupAid $t.Group -Label "Tab:$Name"
             }
@@ -2370,7 +2410,10 @@ function Wait-PadTab {
         if (-not (Select-PadStripButton -El $section -Label "Section of ${Name}")) { continue }
         if ($t.ContainsKey("Part")) {
             $part = Find-PadStripButton -Aid $t.Part -Tries 2
-            if ($part -and (Select-PadStripButton -El $part -Label "Tab:$Name")) { return $true }
+            if ($part -and (Select-PadStripButton -El $part -Label "Tab:$Name")) {
+                if (-not $t.ContainsKey("Cards")) { return $true }
+                if (Open-PadCards -GroupAid $t.Cards -Label "Tab:$Name" -Tries 1) { return $true }
+            }
         } elseif (Scroll-PadGroupToTop -ColumnAid $t.Column -GroupAid $t.Group -Label "Tab:$Name" -Tries 1 -Quiet) {
             return $true
         }
@@ -8951,12 +8994,15 @@ if ((Get-Count $cards) -gt $kbmIdx) {
     Start-Sleep -Milliseconds 800
     Cap "pad-kbm-preview"
 
-    # SOCD cleaning (#205): the Snap Tap card sits below the KBM preview.
+    # SOCD cleaning (#205): the Snap Tap card is one of the output cards under
+    # the keyboard and mouse picture, folded to a line until it is opened.
     Write-Host "[$(Next)/$total] KBM SOCD"
-    ScrollContent -Clicks -12
-    Start-Sleep -Milliseconds 400
-    Cap "pad-kbm-socd"
-    ScrollContent -Clicks 12
+    if (Tab "Output") {
+        Start-Sleep -Milliseconds 400
+        Cap "pad-kbm-socd"
+    } else {
+        Write-Host "  !! the output cards were not reached -- SKIPPED pad-kbm-socd" -ForegroundColor Red
+    }
 
     # Stick trackball momentum (#291, 4.3.0). The row is Visibility-bound to
     # IsMouseStick, so it exists ONLY on the KBM slot's mouse stick (stick 0)

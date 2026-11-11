@@ -289,6 +289,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Gailua</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Sarrera-iturria</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Gehitu gailua</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Irudia</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Zerrenda</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Egin klik kontrol batean, eta sakatu gailuko sarrera hura gidatzeko.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>{0} entzuten. Sakatu sarrera zure gailuan.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Bikote bateko bi botoiak sakatuta daudenean jokoak zein sakatze ikusten duen</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Bikote bateko bi teklak sakatuta daudenean jokoak zein sakatze ikusten duen</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Palankaren desbideratze txiki bati eusten dio, jokoek kontrolagailuaren ikonoak erakusten jarrai dezaten</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Forjatzen</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Hautatu makro bat ezkerrean, edo sakatu Gehitu bat sortzeko.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>GORDINA</value></data>
@@ -1220,7 +1227,6 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Esleitu dena</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Esleitu: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Grabatu esleipen guztiak banan-banan, segidan</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>Egin klik esleipen-errenkada batean, eta sakatu kontrolagailuko botoi/ardatz bat esleitzeko.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Kopiatu esleipen eta ezarpen guztiak arbelera</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Itsatsi esleipenak eta ezarpenak arbeletik</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Kopiatu hemendik...</value></data>
@@ -3696,7 +3702,6 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Mugimendua eta ukipena</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Argiak eta soinua</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makroak eta menuak</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Zirrikitu honetako kontrolagailu birtualaren irteera jokoetara bidali aurretik moldatzen duten ezarpenak: aldi berean sakatutako aurkako norabideen SOCD garbiketa, eta Mantendu kontrolagailua esna, sagu edo teklatu sarrera ikusi bezain laster kontrolagailua baztertzen duten jokoetarako.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shaker-ak</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Jokoak kontrolagailu birtual honetara bidaltzen dituen bibrazioa eta indar-atzeraelikadura audio-irteera batera bideratzen ditu, maiztasun baxuko tonu gisa, bass shaker-entzat eta subwoofer-entzat.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Bibrazioa audiora</value></data>

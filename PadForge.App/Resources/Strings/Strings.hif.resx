@@ -951,4 +951,8 @@
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Light aur Awaaz</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Macro aur Menu</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Device add karo</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Tasveer</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>List</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Ek control pe click karo, phir uu input dabao jon ke ise chalae ke chahi.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>{0} ke intezaar hoe raha. Apne device pe input dabao.</value></data>
 </root>

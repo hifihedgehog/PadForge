@@ -289,6 +289,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>الجهاز</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>يتحكم به</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>إضافة جهاز</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>صورة</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>قائمة</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>انقر على عنصر تحكم ثم اضغط الإدخال الذي يجب أن يشغّله.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>جارٍ التسجيل لـ {0}. اضغط الإدخال على جهازك.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>أي ضغطة تراها الألعاب عند الضغط على زري زوج معا</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>أي ضغطة تراها الألعاب عند الضغط على مفتاحي زوج معا</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>يثبّت انحرافا صغيرا للعصا لتواصل الألعاب عرض رموز وحدة التحكم</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>قيد السبك</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>اختر ماكرو من القائمة الجانبية، أو اضغط «إضافة» لإنشاء واحد.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>خام</value></data>
@@ -1220,7 +1227,6 @@
   <data name="Pad_MapAll" xml:space="preserve"><value>تعيين الكل</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>تعيين: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>تسجيل كل التعيينات بالتتابع واحدا تلو الآخر</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>انقر على صف تعيين ثم اضغط زرا/محورا في وحدة التحكم لتعيينه.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>نسخ كل التعيينات والإعدادات إلى الحافظة</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>لصق التعيينات والإعدادات من الحافظة</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>نسخ من...</value></data>
@@ -3705,7 +3711,6 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>الحركة واللمس</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>الإضاءة والصوت</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>وحدات الماكرو والقوائم</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>إعدادات تشكّل إخراج وحدة التحكم الظاهرية لهذه الخانة قبيل إرساله إلى الألعاب: معالجة SOCD للاتجاهات المتعاكسة المضغوطة معا، و«إبقاء وحدة التحكم نشطة» للألعاب التي تتخلى عن وحدة التحكم لحظة رصدها إدخالا من الماوس أو لوحة المفاتيح.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>هزازات الجهير</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>يوجه اهتزاز اللعبة وردود فعل القوة التي تستقبلها وحدة التحكم الظاهرية هذه إلى مخرج صوت في صورة نغمات منخفضة التردد لهزازات الجهير ومضخمات الصوت الفرعية.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>الاهتزاز إلى صوت</value></data>

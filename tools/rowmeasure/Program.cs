@@ -312,16 +312,17 @@ internal static class Program
     // Preset chip wrap in the first, and the power button with the slot's
     // state word takes what it needs at the right. Line 2 holds Driven by,
     // the device picker and Add Device. The six sections wrap in a row of
-    // their own, and Buttons and Macros & Menus each switch between their
-    // parts with a strip in the content. Each piece is measured with the
-    // real font and the real chrome. The header's own margin is 12 a side.
+    // their own. Buttons switches between its picture and its list, and
+    // Macros & Menus between its two parts, each with a strip in the
+    // content. Each piece is measured with the real font and the real
+    // chrome. The header's own margin is 12 a side.
     static readonly string[] SectionKeys =
     {
         "Pad_Section_Buttons", "Pad_Section_Sticks", "Pad_Section_Rumble",
         "Pad_Section_Motion", "Pad_Section_Lights", "Pad_Section_Macros",
     };
 
-    static readonly string[] ButtonsPartKeys = { "Pad_Tab_Preview", "Pad_Mappings", "Pad_Tab_Output" };
+    static readonly string[] ButtonsPartKeys = { "Pad_View_Picture", "Pad_View_List" };
     static readonly string[] MacrosPartKeys = { "Pad_Macros", "Pad_Menus" };
 
     // The words the power button shows (InputService sets the slot's status

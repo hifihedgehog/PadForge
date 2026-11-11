@@ -555,6 +555,9 @@ namespace PadForge.Tests
             Assert.Contains(view.Cast<InputChoice>(), c => c.DeviceGuid == "");
 
             p.Pad.HiddenPickerDeviceKeys.Clear();
+            // The search box is one of the list's tools (#574), so its text
+            // narrows the pickers while the list shows.
+            p.Pad.SelectedConfigTab = PadViewModel.MappingsTabIndex;
             p.Pad.MappingInputSearch = "no input is named this";
             Assert.Empty(view.Cast<InputChoice>());
             p.Pad.MappingInputSearch = "";

@@ -217,6 +217,10 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Idivayisi</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Umthombo</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Engeza idivayisi</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Isithombe</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Uhlu</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Chofoza ingxenye esithombeni, bese ucindezela okokufaka okufanele kuyilawule.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Ilalele {0}. Cindezela okokufaka edivayisini yakho.</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Buka kuqala</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>Okwengeziwe</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>Imbobo</value></data>
@@ -646,7 +650,6 @@
   <data name="Pad_RightMotor" xml:space="preserve"><value>Imoto yesokudla</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Mepha konke</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Mepha: {0}</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>Chofoza umugqa wokumepha bese ucindezela inkinobho/i-eksisi esilawulini sakho ukuze uyabele.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Kopisha konke ukumepha nezilungiselelo ebhodini lokunamathisela</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Namathisela ukumepha nezilungiselelo kusuka ebhodini lokunamathisela</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Kopisha kusuka ku...</value></data>

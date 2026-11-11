@@ -289,6 +289,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Apparat</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Gesteiert vun</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Apparat derbäisetzen</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Bild</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Lëscht</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Klickt op e Bedienelement an dréckt dann d'Agab, déi et steiere soll.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Waart op {0}. Dréckt d'Agab op Ärem Apparat.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Wéien Drock d'Spiller gesinn, wann déi zwee Knäppercher vun engem Pair gehale ginn</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Wéien Drock d'Spiller gesinn, wann déi zwou Tasten vun engem Pair gehale ginn</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Hält e klengen Ausschlag vum Stick, sou datt Spiller weider Controllerunzeigen weisen</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Aktiv</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Wielt lénks e Makro aus, oder dréckt op Derbäisetzen, fir een unzeleeën.</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Kal</value></data>
@@ -1211,7 +1218,6 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>All zouuerdnen</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Zouuerdnen: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>All Zouuerdnungen eng no där anerer ophuelen</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>Klickt op eng Zouuerdnungszeil an dréckt e Knäppchen/eng Achs op Ärem Controller, fir se zouzeuerdnen.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>All Zouuerdnungen an Astellungen an den Zwëschespäicher kopéieren</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Zouuerdnungen an Astellungen aus dem Zwëschespäicher afügen</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Kopéieren aus...</value></data>
@@ -3680,7 +3686,6 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Beweegung an Touch</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Beliichtung an Audio</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makroen an Menüen</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Astellungen, déi d'Ausgab vum virtuelle Controller vun dësem Slot direkt virum Schécken un d'Spiller formen: SOCD-Bereinegung fir entgéintgesate Richtungen, déi zesumme gedréckt ginn, a „Controller wakreg halen“ fir Spiller, déi de Controller falen loossen, soubal se Maus- oder Tastaturagab gesinn.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass-Shaker</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Leet d'Vibratioun an d'Force Feedback vum Spill, déi dëse virtuelle Controller kritt, als déif Téin un eng Audio-Ausgab fir Bass-Shaker a Subwoofer.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibratioun op Audio</value></data>

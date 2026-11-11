@@ -304,6 +304,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>آلہ</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>ان پٹ ماخذ</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>آلہ شامل کریں</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>تصویر</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>فہرست</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>کسی کنٹرول پر کلک کریں، پھر وہ ان پٹ دبائیں جو اسے چلائے۔</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>{0} کے لیے ان پٹ کا انتظار ہے۔ اپنے آلے پر ان پٹ دبائیں۔</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>جوڑے کے دونوں بٹن دبے ہوں تو گیم کو کون سا دبا نظر آئے</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>جوڑے کی دونوں کلیدیں دبی ہوں تو گیم کو کون سی دبی نظر آئے</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>اسٹک کا تھوڑا سا انحراف برقرار رکھتا ہے تاکہ گیمز کنٹرولر کے اشارے دکھاتی رہیں</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>ڈھلائی جاری</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>فہرست سے کوئی میکرو منتخب کریں، یا نیا بنانے کے لیے "شامل کریں" دبائیں۔</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>خام</value></data>
@@ -1383,7 +1390,6 @@
   <data name="Pad_MapAll" xml:space="preserve"><value>سب میپ کریں</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>میپ کریں: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>تمام میپنگز ترتیب وار ایک ایک کر کے ریکارڈ کریں</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>کسی میپنگ قطار پر کلک کریں اور تفویض کرنے کے لیے اپنے کنٹرولر کا کوئی بٹن/محور دبائیں۔</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>تمام میپنگز اور ترتیبات کلپ بورڈ پر کاپی کریں</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>میپنگز اور ترتیبات کلپ بورڈ سے پیسٹ کریں</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>کہاں سے کاپی کریں...</value></data>
@@ -3897,7 +3903,6 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>موشن اور ٹچ</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>لائٹس اور آواز</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>میکروز اور مینوز</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>وہ ترتیبات جو اس سلاٹ کے ورچوئل کنٹرولر آؤٹ پٹ کو گیمز کو بھیجے جانے سے عین پہلے ڈھالتی ہیں: ایک ساتھ دبائی گئی مخالف سمتوں کے لیے SOCD کلیننگ، اور ان گیمز کے لیے "کنٹرولر کو بیدار رکھیں" جو ماؤس یا کی بورڈ کا ان پٹ دیکھتے ہی کنٹرولر کو چھوڑ دیتی ہیں۔</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>بیس شیکرز</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>یہ ورچوئل کنٹرولر گیم کا جو رمبل اور فورس فیڈبیک وصول کرتا ہے، اسے بیس شیکرز اور سب ووفرز کے لیے کم فریکوئنسی ٹونز کی صورت میں آڈیو آؤٹ پٹ پر بھیجتا ہے۔</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>رمبل سے آڈیو</value></data>

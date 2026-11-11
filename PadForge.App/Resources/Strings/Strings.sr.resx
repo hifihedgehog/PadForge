@@ -304,6 +304,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Уређај</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Улаз са</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Додај уређај</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Слика</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Списак</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Кликните на контролу, па притисните улаз који треба да њоме управља.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Снимање за {0}. Притисните улаз на свом уређају.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Који притисак игра виде када су оба дугмета пара притиснута</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Који притисак игра виде када су оба тастера пара притиснута</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Држи мали отклон палице да игре и даље приказују ознаке контролера</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Ковање</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Изаберите макро са леве стране или притисните „Додај“ да бисте направили нови.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>СИРОВО</value></data>
@@ -1383,7 +1390,6 @@
   <data name="Pad_MapAll" xml:space="preserve"><value>Мапирај све</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Мапирајте: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Редом сними сва мапирања, једно по једно</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>Кликните на ред мапирања и притисните дугме/померите осу на контролеру да бисте га доделили.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Копирај сва мапирања и подешавања у оставу</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Налепи мапирања и подешавања из оставе</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Копирај из...</value></data>
@@ -3897,7 +3903,6 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Покрет и додир</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Осветљење и звук</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Макрои и менији</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Подешавања која обликују излаз виртуелног контролера овог слота непосредно пре слања играма: SOCD чишћење за супротне смерове притиснуте заједно и „Одржавај контролер активним“ за игре које напуштају контролер чим примете улаз миша или тастатуре.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Бас шејкери</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Усмерава вибрацију игре и повратну силу које овај виртуелни контролер прима на аудио излаз као тонове ниске фреквенције за бас шејкере и сабвуфере.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Вибрација у звук</value></data>

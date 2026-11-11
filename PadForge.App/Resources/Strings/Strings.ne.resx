@@ -304,6 +304,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>यन्त्र</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>इनपुट स्रोत</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>यन्त्र थप्नुहोस्</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>चित्र</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>सूची</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>कन्ट्रोलमा क्लिक गर्नुहोस्, त्यसपछि त्यसलाई चलाउने इनपुट थिच्नुहोस्।</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>{0} को प्रतीक्षा हुँदैछ। आफ्नो यन्त्रमा इनपुट थिच्नुहोस्।</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>जोडीका दुवै बटन थिचिराख्दा खेलहरूले कुन थिचाइ देख्छन्</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>जोडीका दुवै कुञ्जी थिचिराख्दा खेलहरूले कुन थिचाइ देख्छन्</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>खेलहरूले कन्ट्रोलर संकेतहरू देखाइरहून् भनेर स्टिकको सानो विचलन थिचिराख्छ</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>सक्रिय</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>बायाँपट्टि एउटा म्याक्रो चयन गर्नुहोस्, वा नयाँ बनाउन थप्नुहोस् थिच्नुहोस्।</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>कच्चा</value></data>
@@ -1383,7 +1390,6 @@
   <data name="Pad_MapAll" xml:space="preserve"><value>सबै म्याप गर्नुहोस्</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>म्याप: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>सबै म्यापिङ एक-एक गरी क्रमैसँग रेकर्ड गर्नुहोस्</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>म्यापिङ पङ्क्तिमा क्लिक गर्नुहोस् र तोक्नका लागि आफ्नो कन्ट्रोलरमा बटन/अक्ष थिच्नुहोस्।</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>सबै म्यापिङ र सेटिङहरू क्लिपबोर्डमा कपी गर्नुहोस्</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>क्लिपबोर्डबाट म्यापिङ र सेटिङहरू पेस्ट गर्नुहोस्</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>यहाँबाट कपी गर्नुहोस्...</value></data>
@@ -3897,7 +3903,6 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>मोसन र टच</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>लाइटिङ र अडियो</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>म्याक्रो र मेनु</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>खेलहरूमा पठाइनुअघि यस स्लटको भर्चुअल कन्ट्रोलर आउटपुटलाई आकार दिने सेटिङहरू: सँगै थिचिएका विपरीत दिशाका लागि SOCD सफाइ, र माउस वा किबोर्ड इनपुट देख्नेबित्तिकै कन्ट्रोलर छोड्ने खेलहरूका लागि “कन्ट्रोलर जागा राख्नुहोस्”।</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>बेस शेकरहरू</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>यो भर्चुअल कन्ट्रोलरले प्राप्त गर्ने खेलको कम्पन र फोर्स फिडब्याकलाई बेस शेकर र सबवुफरका लागि कम-आवृत्तिका टोनका रूपमा अडियो आउटपुटमा पठाउँछ।</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>कम्पनबाट अडियो</value></data>

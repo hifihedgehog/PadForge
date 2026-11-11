@@ -289,6 +289,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>მოწყობილობა</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>წყარო</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>მოწყობილობის დამატება</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>სურათი</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>სია</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>დააწკაპუნეთ კონტროლზე და დააჭირეთ ღილაკს ან ღერძს თქვენს კონტროლერზე მის მისანიჭებლად.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>ველოდები: {0}. დააჭირეთ შეყვანას თქვენს მოწყობილობაზე.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>რომელ დაჭერას ხედავს თამაში, როცა წყვილის ორივე ღილაკი დაჭერილია</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>რომელ დაჭერას ხედავს თამაში, როცა წყვილის ორივე კლავიში დაჭერილია</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>ინარჩუნებს სტიკის მცირე გადახრას, რომ თამაშებმა კონტროლერის მინიშნებები აჩვენონ</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>ჭედვა</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>აირჩიეთ მაკრო მარცხნივ ან დააჭირეთ „დამატებას“ ახლის შესაქმნელად.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
@@ -1220,7 +1227,6 @@
   <data name="Pad_MapAll" xml:space="preserve"><value>ყველას მიბმა</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>მიბმა: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>ყველა მიბმის თანმიმდევრულად ჩაწერა სათითაოდ</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>დააწკაპუნეთ მიბმის სტრიქონზე და დააჭირეთ ღილაკს ან ღერძს თქვენს კონტროლერზე მის მისანიჭებლად.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>ყველა მიბმისა და პარამეტრის კოპირება გაცვლის ბუფერში</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>მიბმებისა და პარამეტრების ჩასმა გაცვლის ბუფერიდან</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>კოპირება აქედან...</value></data>
@@ -3702,7 +3708,6 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>მოძრაობა და შეხება</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>განათება და ხმა</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>მაკროები და მენიუები</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>პარამეტრები, რომლებიც ამ სლოტის ვირტუალური კონტროლერის გამოსავალს აყალიბებს თამაშებზე გაგზავნამდე: SOCD გასუფთავება ერთდროულად დაჭერილი საპირისპირო მიმართულებებისთვის და „კონტროლერის გაღვიძებული შენარჩუნება“ იმ თამაშებისთვის, რომლებიც კონტროლერს მაუსის ან კლავიატურის შეყვანის დანახვისთანავე ტოვებენ.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>ბასის შეიკერები</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>თამაშისგან მიღებულ ვიბრაციასა და ძალისმიერ უკუკავშირს, რომელსაც ეს ვირტუალური კონტროლერი იღებს, აუდიო გამოსავალზე მიმართავს დაბალი სიხშირის ტონების სახით ბასის შეიკერებისა და სუბვუფერებისთვის.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>ვიბრაცია აუდიოში</value></data>

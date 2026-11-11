@@ -1728,4 +1728,8 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Miinda na audio</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Ba macro na ba menu</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Kobakisa appareil</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Elilingi</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Liste</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Pona contrôle moko, sima finá entrée oyo ekotambwisa yango.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Tozali kozela {0}. Finá entrée na appareil na yo.</value></data>
 </root>

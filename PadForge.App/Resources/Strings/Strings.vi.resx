@@ -304,6 +304,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Thiết bị</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Nguồn đầu vào</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Thêm thiết bị</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Hình ảnh</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Danh sách</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Nhấp vào một điều khiển rồi nhấn đầu vào sẽ điều khiển nó.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Đang chờ {0}. Hãy nhấn đầu vào trên thiết bị của bạn.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Game thấy lần nhấn nào khi giữ cả hai nút của một cặp</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Game thấy lần nhấn nào khi giữ cả hai phím của một cặp</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Giữ cần analog lệch nhẹ để game luôn hiện gợi ý tay cầm</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Đang rèn</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Chọn một macro ở bên trái, hoặc nhấn Thêm để tạo mới.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>THÔ</value></data>
@@ -1383,7 +1390,6 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_MapAll" xml:space="preserve"><value>Ánh xạ tất cả</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Ánh xạ: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Lần lượt ghi từng ánh xạ một</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>Nhấp vào một hàng ánh xạ rồi nhấn một nút/trục trên tay cầm để gán.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Sao chép mọi ánh xạ và thiết lập vào bảng nhớ tạm</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Dán ánh xạ và thiết lập từ bảng nhớ tạm</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Sao chép từ...</value></data>
@@ -3897,7 +3903,6 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Chuyển động và cảm ứng</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Đèn và âm thanh</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Macro và menu</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Các thiết lập định hình đầu ra tay cầm ảo của khe này ngay trước khi nó được gửi đến trò chơi: xử lý SOCD cho các hướng đối nhau được nhấn cùng lúc, và Giữ tay cầm thức cho những trò chơi bỏ tay cầm ngay khi thấy đầu vào chuột hoặc bàn phím.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bộ rung bass</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Định tuyến rung và phản hồi lực của trò chơi mà tay cầm ảo này nhận được sang một đầu ra âm thanh dưới dạng các âm tần số thấp cho bộ rung bass và loa siêu trầm.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Rung thành âm thanh</value></data>

@@ -304,6 +304,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Прылада</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Крыніца ўводу</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Дадаць прыладу</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Малюнак</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Спіс</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Націсніце на элемент кіравання, а потым націсніце кнопку або зрушце вось на сваёй прыладзе, каб прызначыць.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Чакаем увод для {0}. Націсніце кнопку на сваёй прыладзе.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Які націск бачаць гульні, калі ўтрымліваюцца абедзве кнопкі пары</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Які націск бачаць гульні, калі ўтрымліваюцца абедзве клавішы пары</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Утрымлівае невялікае адхіленне стыка, каб гульні паказвалі падказкі кантролера</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Каванне</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Выберыце макрас злева або націсніце «Дадаць», каб стварыць новы.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>СЫРЫЯ</value></data>
@@ -1383,7 +1390,6 @@
   <data name="Pad_MapAll" xml:space="preserve"><value>Прызначыць усё</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Прызначце: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Паслядоўна запісаць усе прызначэнні адно за адным</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>Націсніце на радок прызначэння, а потым націсніце кнопку або зрушце вось на кантролеры, каб прызначыць.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Скапіраваць усе прызначэнні і налады ў буфер абмену</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Уставіць прызначэнні і налады з буфера абмену</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Капіраваць з...</value></data>
@@ -3897,7 +3903,6 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Рух і сэнсар</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Святло і гук</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Макрасы і меню</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Налады, якія фармуюць выхад віртуальнага кантролера гэтага слота непасрэдна перад адпраўкай у гульні: ачыстка SOCD для супрацьлеглых напрамкаў, націснутых разам, і «Трымаць кантролер актыўным» для гульняў, што адкідаюць кантролер, як толькі бачаць увод мышы або клавіятуры.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Басавыя шэйкеры</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Накіроўвае вібрацыю гульні і сілавую зваротную сувязь, якія атрымлівае гэты віртуальны кантролер, на аўдыявыхад у выглядзе нізкачашчынных тонаў для басавых шэйкераў і сабвуфераў.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Вібрацыя ў гук</value></data>

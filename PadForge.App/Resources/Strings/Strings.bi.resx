@@ -169,6 +169,10 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Divaes</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Input i kam long</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Putum wan divaes</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Pija</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Lis</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Kilikim wan kontrol, afta presem baten o muvum stik long divaes blong yu we bae i kontrolem hem.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>I stap wet blong rekodem {0}. Presem baten long divaes blong yu.</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>Pot</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Ol mod blong gem</value></data>
   <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>I letem ol mod blong gem we oli mekem blong DSX oli setem ol adaptive triga, laetba, ol laet blong plea mo laet blong mute blong ol PlayStation kontrola blong yu.</value></data>

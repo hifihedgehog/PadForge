@@ -150,6 +150,10 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Igikoresho</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Iyoborwa na</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Ongeraho igikoresho</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Ishusho</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Urutonde</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Kanda ku gice cy'umugenzuzi, hanyuma ukande icyinjizwa kigomba kugikoresha.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Dutegereje {0}. Kanda icyinjizwa ku gikoresho cyawe.</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Mod z'imikino</value></data>
   <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Yemerera mod z'imikino zakorewe DSX gushyiraho adaptive trigger, lightbar, amatara y'abakinnyi n'itara rya mute bya kontorola zawe za PlayStation.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Emera mod z'imikino za DSX</value></data>

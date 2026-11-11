@@ -701,7 +701,6 @@
   <data name="Pad_MapAll" xml:space="preserve"><value>全部映射</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>映射: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>逐一录制所有映射</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>点击映射行，然后按下控制器上的按钮/轴来分配。</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>将所有映射和设置复制到剪贴板</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>从剪贴板粘贴映射和设置</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>从其他设备复制...</value></data>
@@ -3163,6 +3162,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>设备</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>输入来源</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>添加设备</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>图示</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>列表</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>点击一个控件，然后按下要驱动它的输入。</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>正在监听 {0}。请按下设备上的输入。</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>一对按钮同时按住时游戏看到哪个输入</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>一对按键同时按住时游戏看到哪个输入</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>保持摇杆轻微偏移，让游戏持续显示手柄提示</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>预览</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>附加功能</value></data>
   <data name="Extras_Subtitle" xml:space="preserve"><value>可选功能。每一项在你开启之前都不会打扰你。</value></data>
@@ -3835,7 +3841,6 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>体感与触控</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>灯光与音频</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>宏与菜单</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>在发送给游戏之前对该槽位虚拟控制器输出进行整形的设置：SOCD 清理用于处理同时按下的相反方向，保持控制器活跃用于应对一检测到鼠标或键盘输入就放弃控制器的游戏。</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>低音振动器</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>将此虚拟手柄收到的游戏振动和力反馈转换为低频音，输出到音频设备，用于低音振动器和低音炮。</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>振动转音频</value></data>

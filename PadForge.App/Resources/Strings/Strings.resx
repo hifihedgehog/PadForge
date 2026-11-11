@@ -304,6 +304,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Device</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Driven by</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Add Device</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Picture</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>List</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Click a control, then press the input that should drive it.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Listening for {0}. Press the input on your device.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Which press games see when both buttons of a pair are held</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Which press games see when both keys of a pair are held</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Holds a small stick deflection so games keep showing controller prompts</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Forging</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Select a macro on the left, or press Add to create one.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
@@ -1384,7 +1391,6 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Map All</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Map: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Sequentially record all mappings one by one</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>Click a mapping row and press a button/axis on your controller to assign it.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Copy all mappings and settings to clipboard</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Paste mappings and settings from clipboard</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Copy From...</value></data>
@@ -3918,7 +3924,6 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Motion &amp; Touch</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Lights &amp; Sound</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Macros &amp; Menus</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Settings that shape this slot's virtual controller output right before it is sent to games: SOCD cleaning for opposing directions pressed together, and Keep Controller Awake for games that drop the controller the moment they see mouse or keyboard input.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass Shakers</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Routes the game rumble and force feedback this virtual controller receives to an audio output as low-frequency tones for bass shakers and subwoofers.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Rumble to Audio</value></data>

@@ -289,6 +289,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Toestel</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Aangedryf deur</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Voeg toestel by</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Prent</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Lys</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Klik op 'n kontrole en druk dan die invoer wat dit moet aandryf.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Luister tans vir {0}. Druk die invoer op jou toestel.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Watter druk speletjies sien wanneer albei knoppies van 'n paar vasgehou word</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Watter druk speletjies sien wanneer albei sleutels van 'n paar vasgehou word</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Hou 'n klein stokkie-uitwyking vas sodat speletjies controller-aanwysings bly wys</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Smee</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Kies links 'n makro, of druk Voeg by om een te skep.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
@@ -1220,7 +1227,6 @@
   <data name="Pad_MapAll" xml:space="preserve"><value>Wys alles toe</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Wys toe: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Neem alle toewysings een vir een agtereenvolgens op</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>Klik op 'n toewysingsry en druk 'n knoppie/as op jou controller om dit toe te wys.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Kopieer alle toewysings en instellings na die knipbord</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Plak toewysings en instellings vanaf die knipbord</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Kopieer vanaf...</value></data>
@@ -3587,7 +3593,6 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Beweging en raak</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Beligting en oudio</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makro's en kieslyste</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Instellings wat hierdie gleuf se virtuele controller-uitvoer vorm net voordat dit na speletjies gestuur word: SOCD-skoonmaak vir teenoorgestelde rigtings wat saam gedruk word, en Hou controller wakker vir speletjies wat die controller laat val sodra hulle muis- of sleutelbordinvoer sien.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shakers</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Stuur die spelvibrasie en kragterugvoer wat hierdie virtuele controller ontvang as laagfrekwensie-tone na ’n oudio-uitvoer vir bass shakers en subwoofers.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibrasie na oudio</value></data>

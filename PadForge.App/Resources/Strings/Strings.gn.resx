@@ -132,6 +132,10 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Mba'e'oka</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Omboguata</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Embojoapy mba'e'oka</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Ta'anga</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Tysỹi</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Eikutu peteĩ votõ ta'angápe, upéi ejopy ne mba'e'okápe pe omongu'étava chupe.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Oha'arõ {0}. Ejopy votõ ne mba'e'okápe.</value></data>
   <data name="Dashboard_RemoteLink" xml:space="preserve"><value>Remote Link</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Mbojoaju</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Mbotove</value></data>

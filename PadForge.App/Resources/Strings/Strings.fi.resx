@@ -304,6 +304,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Laite</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Syöttölaite</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Lisää laite</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Kuva</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Luettelo</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Napsauta ohjainta kuvassa ja paina sitten laitteesi painiketta tai liikuta akselia, jonka haluat määrittää sille.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Kuunnellaan kohdetta {0}. Paina syötettä laitteellasi.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Minkä painalluksen peli näkee, kun parin molemmat painikkeet ovat alhaalla</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Minkä painalluksen peli näkee, kun parin molemmat näppäimet ovat alhaalla</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Pitää pienen sauvan poikkeaman, jotta pelit näyttävät ohjainkehotteita</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Taotaan</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Valitse makro vasemmalta tai luo uusi painamalla Lisää.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>RAAKA</value></data>
@@ -1383,7 +1390,6 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Määritä kaikki</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Määritä: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Nauhoita kaikki määritykset yksi kerrallaan</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>Napsauta määritysriviä ja paina ohjaimen painiketta tai liikuta akselia, niin se määritetään riville.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Kopioi kaikki määritykset ja asetukset leikepöydälle</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Liitä määritykset ja asetukset leikepöydältä</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Kopioi kohteesta...</value></data>
@@ -3897,7 +3903,6 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Liike ja kosketus</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Valot ja ääni</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makrot ja valikot</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Asetukset, jotka muokkaavat tämän paikan virtuaaliohjaimen lähtöä juuri ennen sen lähettämistä peleihin: SOCD-siivous yhtä aikaa painetuille vastakkaisille suunnille sekä Pidä ohjain hereillä -toiminto peleille, jotka hylkäävät ohjaimen heti havaitessaan hiiren tai näppäimistön syötettä.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bassotäristimet</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Reitittää tämän virtuaaliohjaimen vastaanottaman pelin tärinän ja voimapalautteen äänilähtöön matalataajuisina sävyinä bassotäristimille ja subwoofereille.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Tärinä ääneksi</value></data>

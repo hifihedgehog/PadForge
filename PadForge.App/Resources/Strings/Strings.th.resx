@@ -304,6 +304,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>อุปกรณ์</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>ควบคุมโดย</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>เพิ่มอุปกรณ์</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>ภาพ</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>รายการ</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>คลิกตัวควบคุม แล้วกดอินพุตที่ต้องการใช้ควบคุมตัวนั้น</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>กำลังรอรับอินพุตสำหรับ {0} กดอินพุตบนอุปกรณ์ของคุณ</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>การกดที่เกมเห็นเมื่อกดปุ่มทั้งคู่ค้างพร้อมกัน</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>การกดที่เกมเห็นเมื่อกดคีย์ทั้งคู่ค้างพร้อมกัน</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>ค้างการเอียงก้านเล็กน้อยเพื่อให้เกมแสดงปุ่มของคอนโทรลเลอร์ต่อไป</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>กำลังหลอม</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>เลือกแมโครทางซ้าย หรือกด “เพิ่ม” เพื่อสร้างใหม่</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>ดิบ</value></data>
@@ -1383,7 +1390,6 @@
   <data name="Pad_MapAll" xml:space="preserve"><value>แมปทั้งหมด</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>แมป: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>บันทึกการแมปทั้งหมดตามลำดับทีละรายการ</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>คลิกแถวการแมป แล้วกดปุ่ม/ขยับแกนบนคอนโทรลเลอร์ของคุณเพื่อกำหนด</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>คัดลอกการแมปและการตั้งค่าทั้งหมดไปยังคลิปบอร์ด</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>วางการแมปและการตั้งค่าจากคลิปบอร์ด</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>คัดลอกจาก...</value></data>
@@ -3897,7 +3903,6 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>การเคลื่อนไหวและสัมผัส</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>แสงไฟและเสียง</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>แมโครและเมนู</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>การตั้งค่าที่ปรับเอาต์พุตคอนโทรลเลอร์เสมือนของช่องนี้ก่อนส่งไปยังเกม: การจัดการ SOCD สำหรับทิศทางตรงข้ามที่กดพร้อมกัน และ “ให้คอนโทรลเลอร์ตื่นอยู่เสมอ” สำหรับเกมที่เลิกใช้คอนโทรลเลอร์ทันทีที่เห็นอินพุตจากเมาส์หรือคีย์บอร์ด</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>เบสเชกเกอร์</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>ส่งการสั่นและฟอร์ซฟีดแบ็กจากเกมที่คอนโทรลเลอร์เสมือนนี้ได้รับไปยังเอาต์พุตเสียงในรูปของโทนความถี่ต่ำ สำหรับเบสเชกเกอร์และซับวูฟเฟอร์</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>การสั่นเป็นเสียง</value></data>

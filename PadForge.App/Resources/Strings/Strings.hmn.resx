@@ -138,6 +138,10 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Khoom siv</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Tswj los ntawm</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Ntxiv khoom siv</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Duab</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Teev npe</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Nyem ib qho khawm hauv daim duab, ces nias lub khawm los yog txav tus pas ntawm koj lub khoom siv uas yuav tswj nws.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Tab tom tos {0}. Nias lub khawm ntawm koj lub khoom siv.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Lwm qhov program, xws li DSX, tab tom siv port {0}. Kaw nws los yog xaiv lwm lub port.</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Txuas</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>Txuas lawm</value></data>

@@ -289,6 +289,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>ئامێر</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>سەرچاوەی تێخستن</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>زیادکردنی ئامێر</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>وێنە</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>لیست</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>کلیک لە کۆنترۆڵێک بکە، پاشان ئەو داهاتەیە دابگرە کە دەتەوێت پێیەوە ببەسترێتەوە.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>تۆمارکردن بۆ {0}. داهاتەکە لەسەر ئامێرەکەت دابگرە.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>یارییەکان کام داگرتن دەبینن کاتێک هەردوو دوگمەی جووتێک ڕاگیراون</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>یارییەکان کام داگرتن دەبینن کاتێک هەردوو کلیلی جووتێک ڕاگیراون</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>لادانێکی بچووکی ستیک ڕادەگرێت تا یارییەکان بەردەوام نیشانەکانی کۆنترۆڵەر پیشان بدەن</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>لە کاردایە</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>ماکرۆیەک لە لیستەکەی لای ڕاست هەڵبژێرە، یان «زیادکردن» دابگرە بۆ دروستکردنی یەکێکی نوێ.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>خاو</value></data>
@@ -1217,7 +1224,6 @@
   <data name="Pad_MapAll" xml:space="preserve"><value>بەستنەوەی هەموو</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>بەستنەوە: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>تۆمارکردنی هەموو بەستنەوەکان یەک بە یەک</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>کلیک لە ڕیزێکی بەستنەوە بکە و دوگمە/تەوەرێک لەسەر کۆنترۆڵەرەکەت دابگرە بۆ دیاریکردنی.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>لەبەرگرتنەوەی هەموو بەستنەوەکان و ڕێکخستنەکان بۆ کلیپبۆرد</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>لکاندنی بەستنەوەکان و ڕێکخستنەکان لە کلیپبۆردەوە</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>لەبەرگرتنەوە لە...</value></data>
@@ -3690,7 +3696,6 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>جوڵە و دەستلێدان</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>ڕووناکی و دەنگ</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>ماکرۆکان و مێنیوەکان</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>ئەو ڕێکخستنانەی دەرچووی کۆنترۆڵەری مەجازی ئەم شوێنە شێوە دەدەن ڕێک پێش ئەوەی بۆ یارییەکان بنێردرێت: پاککردنەوەی SOCD بۆ ئاراستە پێچەوانەکان کە پێکەوە دادەگیرێن، و «کۆنترۆڵەرەکە بە بێداری بهێڵەرەوە» بۆ ئەو یاریانەی کە کۆنترۆڵەرەکە وەلادەنێن هەر کە تێخراوی ماوس یان تەختەکلیل ببینن.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>لەرزێنەرەکانی باس</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>لەرزین و فیدباکی هێزی یاری کە ئەم کۆنترۆڵەری مەجازییە وەریدەگرێت دەنێرێت بۆ دەرچوویەکی دەنگ وەک تۆنی لەرەلەری نزم بۆ لەرزێنەرەکانی باس و سەبوۆفەرەکان.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>لەرزین بۆ دەنگ</value></data>

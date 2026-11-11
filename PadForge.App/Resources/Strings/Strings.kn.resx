@@ -289,6 +289,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>ಸಾಧನ</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>ಇನ್‌ಪುಟ್ ಮೂಲ</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>ಸಾಧನ ಸೇರಿಸಿ</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>ಚಿತ್ರ</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>ಪಟ್ಟಿ</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>ಕಂಟ್ರೋಲ್ ಅನ್ನು ಕ್ಲಿಕ್ ಮಾಡಿ, ನಂತರ ಅದನ್ನು ನಿಯೋಜಿಸಲು ಇನ್‌ಪುಟ್ ಅನ್ನು ಒತ್ತಿ.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>{0} ಗಾಗಿ ಕಾಯುತ್ತಿದೆ. ನಿಮ್ಮ ಸಾಧನದಲ್ಲಿ ಇನ್‌ಪುಟ್ ಒತ್ತಿ.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>ಜೋಡಿಯ ಎರಡೂ ಬಟನ್‌ಗಳನ್ನು ಹಿಡಿದಾಗ ಆಟಕ್ಕೆ ಯಾವ ಒತ್ತುವಿಕೆ ಕಾಣುತ್ತದೆ</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>ಜೋಡಿಯ ಎರಡೂ ಕೀಗಳನ್ನು ಹಿಡಿದಾಗ ಆಟಕ್ಕೆ ಯಾವ ಒತ್ತುವಿಕೆ ಕಾಣುತ್ತದೆ</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>ಸಣ್ಣ ಸ್ಟಿಕ್ ವಿಚಲನೆಯನ್ನು ಹಿಡಿದಿಟ್ಟು ಆಟಗಳು ಕಂಟ್ರೋಲರ್ ಸೂಚನೆಗಳನ್ನು ತೋರಿಸುವಂತೆ ಮಾಡುತ್ತದೆ</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>ರೂಪಿಸುತ್ತಿದೆ</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>ಎಡಭಾಗದಲ್ಲಿ ಮ್ಯಾಕ್ರೋ ಆಯ್ಕೆಮಾಡಿ, ಅಥವಾ ಹೊಸದನ್ನು ರಚಿಸಲು ಸೇರಿಸಿ ಒತ್ತಿ.</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>ತಣ್ಣಗಿದೆ</value></data>
@@ -1215,7 +1222,6 @@
   <data name="Pad_MapAll" xml:space="preserve"><value>ಎಲ್ಲವನ್ನೂ ಮ್ಯಾಪ್ ಮಾಡಿ</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>ಮ್ಯಾಪ್: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>ಎಲ್ಲಾ ಮ್ಯಾಪಿಂಗ್‌ಗಳನ್ನು ಒಂದೊಂದಾಗಿ ಕ್ರಮವಾಗಿ ರೆಕಾರ್ಡ್ ಮಾಡಿ</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>ಮ್ಯಾಪಿಂಗ್ ಸಾಲನ್ನು ಕ್ಲಿಕ್ ಮಾಡಿ ಮತ್ತು ಅದನ್ನು ನಿಯೋಜಿಸಲು ನಿಮ್ಮ ಕಂಟ್ರೋಲರ್‌ನಲ್ಲಿ ಬಟನ್/ಅಕ್ಷವನ್ನು ಒತ್ತಿ.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>ಎಲ್ಲಾ ಮ್ಯಾಪಿಂಗ್‌ಗಳು ಮತ್ತು ಸೆಟ್ಟಿಂಗ್ಸ್ ಅನ್ನು ಕ್ಲಿಪ್‌ಬೋರ್ಡ್‌ಗೆ ನಕಲಿಸಿ</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>ಕ್ಲಿಪ್‌ಬೋರ್ಡ್‌ನಿಂದ ಮ್ಯಾಪಿಂಗ್‌ಗಳು ಮತ್ತು ಸೆಟ್ಟಿಂಗ್ಸ್ ಅಂಟಿಸಿ</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>ಇದರಿಂದ ನಕಲಿಸಿ...</value></data>
@@ -3687,7 +3693,6 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>ಚಲನೆ ಮತ್ತು ಸ್ಪರ್ಶ</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>ಬೆಳಕು ಮತ್ತು ಧ್ವನಿ</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>ಮ್ಯಾಕ್ರೋಗಳು ಮತ್ತು ಮೆನುಗಳು</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>ಈ ಸ್ಲಾಟ್‌ನ ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್ ಔಟ್‌ಪುಟ್ ಆಟಗಳಿಗೆ ಕಳುಹಿಸುವ ಮೊದಲು ಅದನ್ನು ರೂಪಿಸುವ ಸೆಟ್ಟಿಂಗ್‌ಗಳು: ಒಟ್ಟಿಗೆ ಒತ್ತಿದ ವಿರುದ್ಧ ದಿಕ್ಕುಗಳಿಗೆ SOCD ಶುದ್ಧೀಕರಣ, ಮತ್ತು ಮೌಸ್ ಅಥವಾ ಕೀಬೋರ್ಡ್ ಇನ್ಪುಟ್ ಕಂಡ ಕ್ಷಣವೇ ಕಂಟ್ರೋಲರ್ ಅನ್ನು ಕೈಬಿಡುವ ಆಟಗಳಿಗೆ ಕಂಟ್ರೋಲರ್ ಎಚ್ಚರವಾಗಿಡಿ.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>ಬಾಸ್ ಶೇಕರ್‌ಗಳು</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>ಈ ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್ ಪಡೆಯುವ ಆಟದ ಕಂಪನ ಮತ್ತು ಫೋರ್ಸ್ ಫೀಡ್‌ಬ್ಯಾಕ್ ಅನ್ನು ಬಾಸ್ ಶೇಕರ್‌ಗಳು ಮತ್ತು ಸಬ್‌ವೂಫರ್‌ಗಳಿಗಾಗಿ ಕಡಿಮೆ ಆವರ್ತನದ ಸ್ವರಗಳಾಗಿ ಆಡಿಯೊ ಔಟ್‌ಪುಟ್‌ಗೆ ರವಾನಿಸುತ್ತದೆ.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>ಕಂಪನ ಆಡಿಯೊಗೆ</value></data>

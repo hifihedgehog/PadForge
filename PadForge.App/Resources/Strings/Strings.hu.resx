@@ -304,6 +304,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Eszköz</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Bemenet innen</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Eszköz hozzáadása</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Kép</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Lista</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Kattintson egy vezérlőelemre, majd nyomja meg azt a bemenetet, amelynek vezérelnie kell.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>{0} rögzítése folyamatban. Nyomja meg a kívánt bemenetet az eszközén.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Melyik lenyomást látja a játék, ha egy pár mindkét gombja le van nyomva</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Melyik lenyomást látja a játék, ha egy pár mindkét billentyűje le van nyomva</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Kis karkitérést tart, hogy a játékok kontrollerjelzéseket mutassanak</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Kovácsolás</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Válasszon egy makrót a bal oldalon, vagy hozzon létre egyet a Hozzáadás gombbal.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>NYERS</value></data>
@@ -1383,7 +1390,6 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_MapAll" xml:space="preserve"><value>Összes hozzárendelése</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Hozzárendelés: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Az összes hozzárendelés rögzítése egymás után, egyenként</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>Kattintson egy hozzárendelési sorra, majd a hozzárendeléshez nyomjon meg egy gombot vagy mozdítson el egy tengelyt a kontrolleren.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Az összes hozzárendelés és beállítás másolása a vágólapra</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Hozzárendelések és beállítások beillesztése a vágólapról</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Másolás innen...</value></data>
@@ -3897,7 +3903,6 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Mozgás és érintés</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Fény és hang</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makrók és menük</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Beállítások, amelyek a foglalat virtuáliskontroller-kimenetét közvetlenül a játékokhoz küldés előtt alakítják: SOCD-tisztítás az egyszerre lenyomott ellentétes irányokhoz, és a Kontroller ébren tartása azokhoz a játékokhoz, amelyek elengedik a kontrollert, amint egér- vagy billentyűzetbemenetet észlelnek.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shakerek</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>A virtuális kontroller által fogadott játékrezgést és erő-visszacsatolást alacsony frekvenciás hangokként egy hangkimenetre irányítja bass shakerekhez és mélysugárzókhoz.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Rezgés hangként</value></data>

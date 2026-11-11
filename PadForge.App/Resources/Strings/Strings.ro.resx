@@ -304,6 +304,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Dispozitiv</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Controlat de</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Adăugare dispozitiv</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Imagine</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Listă</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Faceți clic pe un control, apoi apăsați intrarea care să-l comande.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Se așteaptă {0}. Apăsați intrarea de pe dispozitiv.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Ce apăsare vede jocul când ambele butoane ale unei perechi sunt ținute apăsate</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Ce apăsare vede jocul când ambele taste ale unei perechi sunt ținute apăsate</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Menține o mică deplasare a stickului ca jocurile să afișeze în continuare indicațiile controlerului</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Forjare</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Selectați o macrocomandă din stânga sau apăsați Adăugare pentru a crea una.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>BRUT</value></data>
@@ -1383,7 +1390,6 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Mapare completă</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Mapare: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Înregistrează pe rând toate mapările, una câte una</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>Faceți clic pe un rând de mapare și apăsați un buton sau mișcați o axă de pe controler pentru a-l atribui.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Copiază toate mapările și setările în clipboard</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Lipește mapările și setările din clipboard</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Copiere din...</value></data>
@@ -3897,7 +3903,6 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Mișcare și atingere</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Iluminare și audio</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Macrocomenzi și meniuri</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Setări care modelează ieșirea controlerului virtual al acestui slot chiar înainte de a fi trimisă jocurilor: curățarea SOCD pentru direcțiile opuse apăsate împreună și Menținere controler activ pentru jocurile care renunță la controler imediat ce detectează intrare de la mouse sau tastatură.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Transductoare tactile</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Direcționează vibrațiile jocului și force feedback-ul primite de acest controler virtual către o ieșire audio, ca tonuri de joasă frecvență pentru transductoare tactile și subwoofere.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibrații în audio</value></data>

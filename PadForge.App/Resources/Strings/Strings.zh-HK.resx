@@ -304,6 +304,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>裝置</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>輸入來源</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>新增裝置</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>圖片</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>清單</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>按一下控制項，然後按下要用來驅動它的輸入。</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>正在等候 {0}。請在你的裝置上按下輸入。</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>同時按住成對按鈕時，遊戲會看到哪一個按下動作</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>同時按住成對按鍵時，遊戲會看到哪一個按下動作</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>保持搖桿小幅推動，讓遊戲持續顯示控制器提示</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>鍛造中</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>在左側選擇巨集，或按「新增」來建立一個。</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>原始</value></data>
@@ -1383,7 +1390,6 @@
   <data name="Pad_MapAll" xml:space="preserve"><value>全部對應</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>對應：{0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>逐一依次錄製所有對應</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>按一下對應列，然後按下控制器上的按鈕或移動軸來指派。</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>把所有對應和設定複製到剪貼簿</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>從剪貼簿貼上對應和設定</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>複製自...</value></data>
@@ -3897,7 +3903,6 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>體感與觸控</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>燈光與音訊</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>巨集與選單</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>在傳送到遊戲之前，調整此插槽虛擬控制器輸出的設定：SOCD 清理用於處理同時按下的相反方向，「保持控制器喚醒」則用於一偵測到滑鼠或鍵盤輸入便放棄控制器的遊戲。</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>低音震動器</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>把此虛擬控制器收到的遊戲震動和力回饋，以低頻音調的形式轉送到音訊輸出，供低音震動器和超低音喇叭使用。</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>震動轉音訊</value></data>

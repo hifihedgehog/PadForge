@@ -304,6 +304,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Устройство</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Источник ввода</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Добавить устройство</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Схема</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Список</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Щелкните элемент управления, затем нажмите кнопку или сдвиньте ось на контроллере, чтобы назначить его.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Ожидание ввода для {0}. Нажмите кнопку на контроллере.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Какое нажатие увидит игра, когда обе кнопки пары зажаты</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Какое нажатие увидит игра, когда обе клавиши пары зажаты</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Удерживает небольшое отклонение стика, чтобы игры показывали подсказки контроллера</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Ковка</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Выберите макрос слева или нажмите «Добавить», чтобы создать новый.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>ВХОД</value></data>
@@ -1383,7 +1390,6 @@
   <data name="Pad_MapAll" xml:space="preserve"><value>Назначить все</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Назначьте: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Последовательно записать все назначения одно за другим</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>Щелкните строку назначения и нажмите кнопку или сдвиньте ось на контроллере, чтобы назначить ее.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Скопировать все назначения и настройки в буфер обмена</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Вставить назначения и настройки из буфера обмена</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Копировать из...</value></data>
@@ -3897,7 +3903,6 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Движение и касание</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Подсветка и звук</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Макросы и меню</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Настройки, которые формируют выход виртуального контроллера этого слота прямо перед отправкой в игры: очистка SOCD для одновременно нажатых противоположных направлений и «Поддерживать активность контроллера» для игр, которые бросают контроллер, как только видят ввод с мыши или клавиатуры.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Бас-шейкеры</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Направляет вибрацию и силовую обратную связь от игры, которые получает этот виртуальный контроллер, на аудиовыход в виде низкочастотных тонов для бас-шейкеров и сабвуферов.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Вибрация в звук</value></data>

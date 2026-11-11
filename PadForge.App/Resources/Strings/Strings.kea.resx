@@ -227,6 +227,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Dispozitivu</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Entrada di</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Djunta dispozitivu</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Imajen</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Lista</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Klika na un kontrolu, dipôs karga un botãu/eixu na bu dispozitivu pa kontrola-l.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Ta spera pa {0}. Karga un botãu na bu dispozitivu.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Kal karga ki jogu ta odja kantu tudu dôs botãu di un par sta sigurado</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Kal karga ki jogu ta odja kantu tudu dôs tékla di un par sta sigurado</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Ta manti stick un poku dizviadu pa jogu kontinua ta mostra botons di komandu</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Friu</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Servidor di muvimentu</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>Porta</value></data>
@@ -711,7 +718,6 @@
   <data name="Pad_MapAll" xml:space="preserve"><value>Mapia tudu</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Mapia: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Grava tudu mapiamentu un pa un, na sekuénsia</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>Klika na un linha di mapiamentu i karga un botãu/eixu na bu komandu pa atribui-l.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Kopia tudu mapiamentu i konfigurason pa área di transferénsia</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Kola mapiamentu i konfigurason di área di transferénsia</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Kopia di...</value></data>

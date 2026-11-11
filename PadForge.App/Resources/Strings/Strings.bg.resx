@@ -304,6 +304,13 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Устройство</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Управлява се от</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Добави устройство</value></data>
+  <data name="Pad_View_Picture" xml:space="preserve"><value>Картина</value></data>
+  <data name="Pad_View_List" xml:space="preserve"><value>Списък</value></data>
+  <data name="Pad_PictureHint" xml:space="preserve"><value>Щракнете върху елемент, после натиснете входа, който трябва да го управлява.</value></data>
+  <data name="Pad_Listening_Format" xml:space="preserve"><value>Изчаква се вход за {0}. Натиснете входа на вашето устройство.</value></data>
+  <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Кое натискане вижда играта, когато и двата бутона от двойката са задържани</value></data>
+  <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Кое натискане вижда играта, когато и двата клавиша от двойката са задържани</value></data>
+  <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Задържа малко отклонение на стика, за да показват игрите подсказки за контролера</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Коване</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Изберете макрос вляво или натиснете „Добави“, за да създадете нов.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>СУРОВО</value></data>
@@ -1383,7 +1390,6 @@
   <data name="Pad_MapAll" xml:space="preserve"><value>Съпостави всички</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Съпоставяне: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Последователно записване на всички съпоставяния едно по едно</value></data>
-  <data name="Pad_MappingHint" xml:space="preserve"><value>Щракнете върху ред за съпоставяне и натиснете бутон/преместете ос на контролера, за да го назначите.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Копирай всички съпоставяния и настройки в клипборда</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Постави съпоставянията и настройките от клипборда</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Копирай от...</value></data>
@@ -3897,7 +3903,6 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Движение и докосване</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Осветление и звук</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Макроси и менюта</value></data>
-  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Настройки, които оформят изхода на виртуалния контролер на този слот непосредствено преди изпращането му към игрите: SOCD обработка при едновременно натиснати противоположни посоки и „Поддържане на контролера активен“ за игри, които изоставят контролера в момента, в който засекат вход от мишка или клавиатура.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Басови шейкъри</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Насочва вибрацията и силовата обратна връзка от играта, които получава този виртуален контролер, към аудиоизход като нискочестотни тонове за басови шейкъри и субуфери.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Вибрация към аудио</value></data>

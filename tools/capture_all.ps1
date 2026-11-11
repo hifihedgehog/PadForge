@@ -917,7 +917,7 @@ function Ensure-DeviceAssigned {
     # realize, enumerate toggles, click the right one. The Xbox GIP dummy lost
     # that fight run after run, and pad-impulse-triggers plus
     # pad-lighting-guide-led stayed weeks stale because the tabs they need only
-    # appear when that device is selectable in the pad page's Driven by picker.
+    # appear when that device is selectable in the pad page's Driven by line.
     #
     # An assignment is nothing but UserSetting.MapTo, so write it. The comment
     # further down this script has said to do exactly this since 2026-07-30.
@@ -2431,12 +2431,11 @@ function Wait-PadTab {
     return $false
 }
 
-# Select a device in the pad page's Driven by picker by name, so the
+# Select a device in the pad page's Driven by line by name, so the
 # device-gated groups (Impulse Triggers, Wheel, etc.) follow it. A slot can
-# carry several devices, and the groups reflect whichever is picked here. The
-# picker is found by its AutomationId, Pad_DeviceCombo. It once had none, and
-# this walked every ComboBox of the page, opening each to read its items,
-# which a section of stacked groups would make a walk of dozens (#574).
+# carry several devices, each a pill in the line, and the groups reflect
+# whichever pill is selected. The line is a list found by its AutomationId,
+# Pad_DrivenByList, and each pill is a list item named for its device.
 function Select-MappedDevice {
     param([string]$NamePart, [int]$Retries = 3)
     for ($smAttempt = 1; $smAttempt -le $Retries; $smAttempt++) {
@@ -2450,20 +2449,16 @@ function Select-MappedDeviceOnce {
     param([string]$NamePart)
     $padPage = Find-UIA -Aid "PadPageView"
     if (-not $padPage) { Write-Host "  !! Select-MappedDevice: no PadPageView" -ForegroundColor Yellow; return $false }
-    $combo = Find-UIA -Parent $padPage -Aid "Pad_DeviceCombo"
-    if (-not $combo) { Write-Host "  !! Select-MappedDevice: no Driven by picker (Pad_DeviceCombo) on the page" -ForegroundColor Yellow; return $false }
+    $list = Find-UIA -Parent $padPage -Aid "Pad_DrivenByList"
+    if (-not $list) { Write-Host "  !! Select-MappedDevice: no Driven by line (Pad_DrivenByList) on the page" -ForegroundColor Yellow; return $false }
     $liCond = New-Object System.Windows.Automation.PropertyCondition(
         [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
         [System.Windows.Automation.ControlType]::ListItem)
-    # EXPAND BEFORE ENUMERATING. A closed WPF ComboBox realizes no items at
-    # all, so a read of one says nothing about whether the device is in the
-    # list.
-    $expand = $null
-    try { $expand = $combo.GetCurrentPattern([System.Windows.Automation.ExpandCollapsePattern]::Pattern); $expand.Expand(); Start-Sleep -Milliseconds 500 }
-    catch { Write-Host "  !! Select-MappedDevice: the picker would not open ($($_.Exception.Message))" -ForegroundColor Yellow; return $false }
+    # Every pill is in the tree: the line wraps and never scrolls, so it
+    # holds back none of its items.
     $match = $null
     $items = @()
-    foreach ($it in $combo.FindAll($TD, $liCond)) {
+    foreach ($it in $list.FindAll($TD, $liCond)) {
         $items += $it.Current.Name
         if (-not $match -and $it.Current.Name -like "*$NamePart*") { $match = $it }
     }
@@ -2471,14 +2466,12 @@ function Select-MappedDeviceOnce {
         try { $match.GetCurrentPattern([System.Windows.Automation.SelectionItemPattern]::Pattern).Select() }
         catch { Click-El $match -Label "device '$NamePart'" | Out-Null }
         Start-Sleep -Milliseconds 1200
-        try { $expand.Collapse() } catch {}
         Write-Host "  Selected mapped device '$NamePart'" -ForegroundColor Green
         return $true
     }
-    try { $expand.Collapse(); Start-Sleep -Milliseconds 200 } catch {}
-    # NAME WHAT THE PICKER ACTUALLY HOLDS. Three runs were spent guessing why
+    # NAME WHAT THE LINE ACTUALLY HOLDS. Three runs were spent guessing why
     # a device "was not in the dropdown" when the answer is one list.
-    Write-Host "  !! mapped device '$NamePart' not found in the picker. It holds: $($items -join ' | ')" -ForegroundColor Yellow
+    Write-Host "  !! mapped device '$NamePart' not found in the Driven by line. It holds: $($items -join ' | ')" -ForegroundColor Yellow
     return $false
 }
 
@@ -7787,7 +7780,7 @@ if ($Only.Count -gt 0) {
                         if (Tab "Bass Shakers") { Start-Sleep -Milliseconds 800; Cap "pad-bass-shakers" }
                         else { Write-Host "  !! Bass Shakers tab not found" -ForegroundColor Yellow }
                     }
-                } else { Write-Host "  !! the Xbox pad is not in the Driven by picker -- SKIPPED the Guide LED and Bass Shakers" -ForegroundColor Red }
+                } else { Write-Host "  !! the Xbox pad is not in the Driven by line -- SKIPPED the Guide LED and Bass Shakers" -ForegroundColor Red }
             }
         } else { Write-Host "  !! the Xbox slot did not open -- SKIPPED $($xboxTourWanted -join ', ')" -ForegroundColor Red }
     }

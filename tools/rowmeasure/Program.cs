@@ -15,7 +15,7 @@ using IOPath = System.IO.Path;
 // render. The sibling harness under tools/combomeasure does the same for the
 // lighting pickers. This one covers the Profiles shortcut row, the raw hat
 // strip, the equalizer row and its headings, the gesture recorder's hint and
-// the pad page's first tier, in every language of Languages.tsv.
+// the pad page header, in every language of Languages.tsv.
 //
 // No estimates. Every number printed is what the layout engine produced.
 
@@ -308,14 +308,15 @@ internal static class Program
 
     // ── C275 and #574: the pad page's header ────────────────────────────
     //
-    // Line 1 is a grid of two columns. The type chip, the title and the
-    // Preset chip wrap in the first, and the power button with the slot's
-    // state word takes what it needs at the right. Line 2 holds Driven by,
-    // the device picker and Add Device. The six sections wrap in a row of
-    // their own. Buttons switches between its picture and its list, and
-    // Macros & Menus between its two parts, each with a strip in the
-    // content. Each piece is measured with the real font and the real
-    // chrome. The header's own margin is 12 a side.
+    // Line 1 is a grid of three columns. The type chip, the title and the
+    // Preset wrap in the first. The power button with the slot's state
+    // word and the More button each take what they need at the right.
+    // Line 2 holds Driven by, a pill for each device and Add Device, and
+    // wraps. The six sections wrap in a row of their own. Buttons switches
+    // between its picture and its list, and Macros & Menus between its two
+    // parts, each with a strip in the content. Each piece is measured with
+    // the real font and the real chrome. The header's own margin is 32 a
+    // side.
     static readonly string[] SectionKeys =
     {
         "Pad_Section_Buttons", "Pad_Section_Sticks", "Pad_Section_Rumble",
@@ -333,14 +334,11 @@ internal static class Program
         "Status_NoMapping", "Main_Active", "Common_Idle",
     };
 
-    // DisplayFontFamily in App.xaml.
-    static readonly FontFamily DisplayFont = new("Segoe UI Variable Display, Segoe UI");
-
     static void BuildPadHeader()
     {
-        // Type chip and title: a 34 square in a 10 right margin, then the
-        // output type's name at 26 in the display face at weight 650 with
-        // its instance number at 15 in the telemetry face. The longest type
+        // Type chip and title: a 34 square in a 14 right margin, then the
+        // output type's name at 24 SemiBold in the body face with its
+        // instance number at 15 in the telemetry face. The longest type
         // name is the one that sizes it.
         var typeKeys = new[]
         {
@@ -357,9 +355,9 @@ internal static class Program
                 if (name == null) continue;
                 var title = new TextBlock
                 {
-                    FontFamily = DisplayFont,
-                    FontSize = 26,
-                    FontWeight = FontWeight.FromOpenTypeWeight(650),
+                    FontFamily = _bodyFont,
+                    FontSize = 24,
+                    FontWeight = FontWeights.SemiBold,
                 };
                 title.Inlines.Add(new System.Windows.Documents.Run(name));
                 title.Inlines.Add(new System.Windows.Documents.Run(" #16")
@@ -372,46 +370,42 @@ internal static class Program
             }
         }
 
-        // Preset chip: ChipGhost (9,3 padding, 1 border) in a 10,4,4,4
-        // margin, holding the word Preset in a 6 right margin, the profile
-        // combo at its 380 cap and a reset in a 4,0,8,0 margin.
+        // Preset: in a 20 left margin, the word Preset at 13 in an 8 right
+        // margin, the profile combo at its 380 cap and a reset, 28 in a 4
+        // left margin.
         foreach (var (tag, _) in Locales)
         {
             string label = S("Pad_Preset", tag);
             if (label == null) continue;
-            var word = Text(label, 12.5);
-            word.Margin = new Thickness(0, 0, 6, 0);
+            var word = Text(label, 13);
+            word.Margin = new Thickness(0, 0, 8, 0);
             var inner = new StackPanel { Orientation = Orientation.Horizontal };
             inner.Children.Add(word);
             inner.Children.Add(new Border { Width = 380 });
-            inner.Children.Add(new Border { Width = 28, Margin = new Thickness(4, 0, 8, 0) });
-            Add("hdr-preset", tag, "preset chip at the combo's 380 cap", new Border
+            inner.Children.Add(new Border { Width = 28, Margin = new Thickness(4, 0, 0, 0) });
+            Add("hdr-preset", tag, "Preset at the combo's 380 cap", new Border
             {
-                Margin = new Thickness(10, 4, 4, 4),
-                Padding = new Thickness(9, 3, 9, 3),
-                BorderThickness = new Thickness(1),
+                Margin = new Thickness(20, 0, 0, 0),
                 Child = inner,
             }, 0);
-            // The same chip with its combo at nothing: the label, the reset
-            // and the chrome, which is what the chip keeps when its line is
+            // The same with its combo at nothing: the label, the reset and
+            // the margin, which is what the Preset keeps when its line is
             // short and the combo gives way.
             var floor = new StackPanel { Orientation = Orientation.Horizontal };
-            var floorWord = Text(label, 12.5);
-            floorWord.Margin = new Thickness(0, 0, 6, 0);
+            var floorWord = Text(label, 13);
+            floorWord.Margin = new Thickness(0, 0, 8, 0);
             floor.Children.Add(floorWord);
-            floor.Children.Add(new Border { Width = 28, Margin = new Thickness(4, 0, 8, 0) });
-            Add("hdr-preset-floor", tag, "preset chip without its combo", new Border
+            floor.Children.Add(new Border { Width = 28, Margin = new Thickness(4, 0, 0, 0) });
+            Add("hdr-preset-floor", tag, "Preset without its combo", new Border
             {
-                Margin = new Thickness(10, 4, 4, 4),
-                Padding = new Thickness(9, 3, 9, 3),
-                BorderThickness = new Thickness(1),
+                Margin = new Thickness(20, 0, 0, 0),
                 Child = floor,
             }, 0);
         }
 
         // Power button: a pill with a 1 border and 10,0,12,0 padding in a
-        // 12 left margin, holding a 14 flame in an 8 right margin and the
-        // state word at 13 SemiBold.
+        // 12 left margin, holding a 16 flame in an 8 right margin and the
+        // state word at 14.
         foreach (var (tag, _) in Locales)
         {
             foreach (string key in StateKeys)
@@ -419,8 +413,8 @@ internal static class Program
                 string word = S(key, tag);
                 if (word == null) continue;
                 var inner = new StackPanel { Orientation = Orientation.Horizontal };
-                inner.Children.Add(new Canvas { Width = 14, Height = 14, Margin = new Thickness(0, 0, 8, 0) });
-                inner.Children.Add(Text(word, 13, FontWeights.SemiBold));
+                inner.Children.Add(new Canvas { Width = 16, Height = 16, Margin = new Thickness(0, 0, 8, 0) });
+                inner.Children.Add(Text(word, 14));
                 Add("hdr-power", tag, key, new Border
                 {
                     Margin = new Thickness(12, 0, 0, 0),
@@ -431,25 +425,33 @@ internal static class Program
             }
         }
 
-        // Driven by at 13 in a 4 right margin, and the real Add Device
-        // button in its 8,2,0,2 margin. The picker between them has a floor
-        // of 200 and a ceiling of 320 in a 4,2 margin.
+        // Driven by at 13 in a 12 right margin. Add Device in a 4,2,0,2
+        // margin: a 1 border and 8,0 padding around a 14 plus in an 8 right
+        // margin and the words at 13. A device's pill between them is as
+        // wide as its name asks, 320 at most, in an 8 right margin.
         foreach (var (tag, _) in Locales)
         {
             string driven = S("Pad_DrivenBy", tag);
             if (driven != null)
             {
                 var label = Text(driven, 13);
-                label.Margin = new Thickness(0, 0, 4, 0);
+                label.Margin = new Thickness(0, 0, 12, 0);
                 Add("hdr-driven", tag, "Driven by", label, 0);
             }
             string add = S("Pad_AddDevice", tag);
             if (add != null)
-                Add("hdr-add", tag, "Add Device", new Wpf.Ui.Controls.Button
+            {
+                var inner = new StackPanel { Orientation = Orientation.Horizontal };
+                inner.Children.Add(new Canvas { Width = 14, Height = 14, Margin = new Thickness(0, 0, 8, 0) });
+                inner.Children.Add(Text(add, 13));
+                Add("hdr-add", tag, "Add Device", new Border
                 {
-                    Content = add,
-                    Margin = new Thickness(8, 2, 0, 2),
+                    Margin = new Thickness(4, 2, 0, 2),
+                    Padding = new Thickness(8, 0, 8, 0),
+                    BorderThickness = new Thickness(1),
+                    Child = inner,
                 }, 0);
+            }
         }
 
         // Six sections. Each is a RadioButton whose text has a 0,10 margin,
@@ -577,22 +579,25 @@ internal static class Program
         Console.WriteLine();
 
         // ── C275 and #574 ──
-        // The header's margin takes 12 a side. At the 900 window minimum
-        // the sidebar (248, always open) leaves a line 628, and in the
-        // default 1100 window 828.
+        // The header's margin takes 32 a side. At the 900 window minimum
+        // the sidebar (248, always open) leaves a line 588, and in the
+        // default 1100 window 788.
         Console.WriteLine("== Pad page header (window minimum 900) ==");
-        const double chip = 34 + 10;
+        const double chip = 34 + 14;
+        // The More button: 34 in an 8 left margin.
+        const double more = 34 + 8;
         double title = Max("hdr-title"), preset = Max("hdr-preset"), presetFloor = Max("hdr-preset-floor");
         double power = Max("hdr-power");
         double widestSection = Max("hdr-section-bold");
         Console.WriteLine($"  type chip                      : {chip:F1}");
         Console.WriteLine($"  title                          : {title:F1} (worst {Worst("hdr-title")})");
-        Console.WriteLine($"  preset chip at its 380 cap     : {preset:F1} (worst {Worst("hdr-preset")})");
-        Console.WriteLine($"  preset chip without its combo  : {presetFloor:F1} (worst {Worst("hdr-preset-floor")})");
+        Console.WriteLine($"  Preset at its 380 cap          : {preset:F1} (worst {Worst("hdr-preset")})");
+        Console.WriteLine($"  Preset without its combo       : {presetFloor:F1} (worst {Worst("hdr-preset-floor")})");
         Console.WriteLine($"  power button, word uncapped    : {power:F1} (worst {Worst("hdr-power")})");
-        // The button's word is capped at 196 and trims past it. The chrome
+        Console.WriteLine($"  More button                    : {more:F1}");
+        // The button's word is capped at 204 and trims past it. The chrome
         // around the word is the button's width less the word's.
-        const double wordCap = 196, powerChrome = 12 + 2 + 22 + 22;
+        const double wordCap = 204, powerChrome = 12 + 2 + 22 + 24;
         foreach (string key in StateKeys)
         {
             var over = _probes.Where(p => p.Group == "hdr-power" && p.Note == key && W(p) - powerChrome > wordCap)
@@ -640,24 +645,28 @@ internal static class Program
         Console.WriteLine($"  Buttons parts on one line      : {buttonsParts.Width:F1} (worst {buttonsParts.Tag})");
         Console.WriteLine($"  Macros & Menus parts, one line : {macrosParts.Width:F1} (worst {macrosParts.Tag})");
 
-        // Line 2 at its floor: Driven by, the picker at 200 in its 4,2
-        // margin, Add Device.
-        double deviceLine = Max("hdr-driven") + 200 + 8 + Max("hdr-add");
+        // Line 2 wraps. Its widest single piece is a device's pill at its
+        // 320 cap in an 8 right margin, and the three side by side are
+        // Driven by, one such pill and Add Device.
+        const double pill = 320 + 8;
+        double deviceLine = Max("hdr-driven") + pill + Max("hdr-add");
         foreach (var (name, line) in new[]
-                 { ("a 900 window", 900.0 - 248 - 24), ("a 1100 window", 1100.0 - 248 - 24) })
+                 { ("a 900 window", 900.0 - 248 - 64), ("a 1100 window", 1100.0 - 248 - 64) })
         {
-            // Line 1's first column is what the power button leaves.
-            double first = line - power;
+            // Line 1's first column is what the power button and the More
+            // button leave.
+            double first = line - power - more;
             var twoLines = sections.Where(s => s.Width > line).Select(s => s.Tag).ToList();
             Console.WriteLine($"  line at {name,-17}      : {line:F1}");
             Console.WriteLine($"    first column of line 1       : {first:F1}");
-            Console.WriteLine($"    title fits it                :" + Verdict(title <= first));
-            // The title trims and the chip's combo narrows where they do not
-            // fit whole. Neither runs past the edge.
+            // The title trims and the Preset's combo narrows where they do
+            // not fit whole. Neither runs past the edge.
             Console.WriteLine($"    title beside the chip        :" + (chip + title <= first ? "  whole" : "  trims"));
-            Console.WriteLine($"    preset chip, combo at its cap:" + (preset <= first ? "  whole" : "  narrows"));
-            Console.WriteLine($"    preset chip's floor fits     :" + Verdict(presetFloor <= first));
-            Console.WriteLine($"    device line at its floor     : {deviceLine:F1}" + Verdict(deviceLine <= line));
+            Console.WriteLine($"    Preset beside the title      :" + (chip + title + preset <= first ? "  yes" : "  wraps under it"));
+            Console.WriteLine($"    Preset, combo at its cap     :" + (preset <= first ? "  whole" : "  narrows"));
+            Console.WriteLine($"    Preset's floor fits          :" + Verdict(presetFloor <= first));
+            Console.WriteLine($"    widest pill fits a line      :" + Verdict(pill <= line));
+            Console.WriteLine($"    device line with one pill    : {deviceLine:F1}" + (deviceLine <= line ? "  one line" : "  wraps"));
             Console.WriteLine($"    widest section fits          :" + Verdict(widestSection <= line));
             Console.WriteLine($"    sections wrap to a second line in: {twoLines.Count}"
                               + (twoLines.Count > 0 ? "  " + string.Join(" ", twoLines) : ""));

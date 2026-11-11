@@ -35,6 +35,11 @@ namespace PadForge.Views
         /// Devices page is where a device is given to a controller.</summary>
         public event EventHandler AddDeviceRequested;
 
+        /// <summary>Raised with the slot's index when Delete is picked from
+        /// the header's More menu. MainWindow deletes the controller, as it
+        /// does for the X on the controller's Home card.</summary>
+        public event EventHandler<int> DeleteRequested;
+
         private PadViewModel _currentPadVm;
 
         /// <summary>RecorderService reference set by MainWindow at startup
@@ -101,14 +106,13 @@ namespace PadForge.Views
         }
 
         /// <summary>Hands the header the view model that knows each slot's
-        /// state (#574). The power button, its state word and the stage
-        /// chips read <see cref="DashboardViewModel.SelectedSlotSummary"/>,
-        /// the summary the slot's Home card shows, so the page and the card
-        /// never disagree. MainWindow calls it once at startup.</summary>
+        /// state (#574). The power button and its state word read
+        /// <see cref="DashboardViewModel.SelectedSlotSummary"/>, the summary
+        /// the slot's Home card shows, so the page and the card never
+        /// disagree. MainWindow calls it once at startup.</summary>
         public void BindSlotState(DashboardViewModel dashboard)
         {
             SlotPowerHost.DataContext = dashboard;
-            StageChips.DataContext = dashboard;
         }
 
         private void PadPage_Loaded(object sender, RoutedEventArgs e)
@@ -1381,10 +1385,10 @@ namespace PadForge.Views
                 ControllerElementRecordRequested?.Invoke(this, target);
         }
 
-        /// <summary>The list's More button opens its menu under itself. A
+        /// <summary>The header's More button opens its menu under itself. A
         /// context menu is outside the page's tree, so it is handed the
         /// page's view model for its commands.</summary>
-        private void ListMore_Click(object sender, RoutedEventArgs e)
+        private void MoreMenu_Click(object sender, RoutedEventArgs e)
         {
             if (sender is not Button button || button.ContextMenu == null) return;
             button.ContextMenu.DataContext = DataContext;
@@ -1642,6 +1646,13 @@ namespace PadForge.Views
         /// <summary>The header's Add Device button.</summary>
         private void AddDevice_Click(object sender, RoutedEventArgs e)
             => AddDeviceRequested?.Invoke(this, EventArgs.Empty);
+
+        /// <summary>Delete, in the header's More menu.</summary>
+        private void DeleteController_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is PadViewModel vm)
+                DeleteRequested?.Invoke(this, vm.PadIndex);
+        }
 
         private static bool TryGetTagIndex(FrameworkElement el, out int index)
         {

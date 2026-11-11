@@ -195,10 +195,12 @@
         <!-- PadForge 6 (#574): a card is a flat fill with one hairline and
              rounded corners. It does not answer the pointer: the controls
              inside it do. The fill and the hairline come from the theme, so
-             a switch of theme recolors every card. -->
+             a switch of theme recolors every card. Its padding is the
+             boards': 20 at the left, 14 over the title, and 12 at the right
+             and under the last row, where a row's reset button sits. -->
         <Setter Property="Background" Value="{DynamicResource CardBackgroundFillColorDefaultBrush}"/>
         <Setter Property="CornerRadius" Value="10"/>
-        <Setter Property="Padding" Value="20,16"/>
+        <Setter Property="Padding" Value="20,14,12,12"/>
         <Setter Property="Margin" Value="0,0,0,16"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="BorderBrush" Value="{DynamicResource CardStrokeColorDefaultBrush}"/>
@@ -519,11 +521,13 @@
          Extras parts (#574)
          ═══════════════════════════════════════════ -->
 
-    <!-- A check box drawn as a switch: a track with a knob that sits at the
-         start when off and at the end when on, ember when on. The control
-         stays a CheckBox, so its binding, its AutomationId, its name for a
-         screen reader (its Content, which the switch does not draw) and its
-         checked state are a check box's. SwitchLook.ShowState writes On or
+    <!-- A check box drawn as a switch: a track 40 by 22 with a knob that
+         sits at the start when off and at the end when on. Off, the track
+         is the control line's steel with a pale knob. On, it is ember with
+         a dark knob. The control stays a CheckBox, so its binding, its
+         AutomationId, its name for a screen reader (its Content, which the
+         switch does not draw) and its checked state are a check box's.
+         SwitchLook.ShowState writes On or
          Off before the track. The knob follows the layout direction, so in
          a right-to-left language on is at the left, as Windows draws it.
          Keyboard focus draws the app's focus visual, which reaches a
@@ -542,11 +546,10 @@
                                    Text="{Binding Common_Off, Source={x:Static strings:Strings.Instance}}"
                                    Foreground="{TemplateBinding Foreground}"
                                    VerticalAlignment="Center" Margin="0,0,10,0"/>
-                        <Border x:Name="Track" Width="40" Height="20" CornerRadius="10"
-                                Background="{DynamicResource SteelRaisedBrush}"
-                                BorderBrush="{DynamicResource SteelLineBrush}" BorderThickness="1"
+                        <Border x:Name="Track" Width="40" Height="22" CornerRadius="11"
+                                Background="{DynamicResource SteelLineBrush}"
                                 VerticalAlignment="Center">
-                            <Ellipse x:Name="Knob" Width="12" Height="12"
+                            <Ellipse x:Name="Knob" Width="16" Height="16"
                                      Fill="{DynamicResource TextFillColorSecondaryBrush}"
                                      HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3,0,3,0"/>
                         </Border>
@@ -558,9 +561,8 @@
                         <Trigger Property="IsChecked" Value="True">
                             <Setter TargetName="StateText" Property="Text" Value="{Binding Common_On, Source={x:Static strings:Strings.Instance}}"/>
                             <Setter TargetName="Track" Property="Background" Value="{DynamicResource EmberBrush}"/>
-                            <Setter TargetName="Track" Property="BorderBrush" Value="{DynamicResource EmberBrush}"/>
                             <Setter TargetName="Knob" Property="HorizontalAlignment" Value="Right"/>
-                            <Setter TargetName="Knob" Property="Fill" Value="{DynamicResource TextOnAccentFillColorPrimaryBrush}"/>
+                            <Setter TargetName="Knob" Property="Fill" Value="{DynamicResource EmberInkBrush}"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Opacity" Value="0.45"/>

@@ -47,9 +47,16 @@ namespace PadForge.Tests
             }
             Assert.Empty(offenders);
 
+            // The controller page's unit style holds the color its label
+            // style holds, whichever that is.
             string pad = File.ReadAllText(Path.Combine(root, "PadForge.App", "Views", "PadPage.xaml"));
-            string style = Regex.Match(pad, "<Style x:Key=\"DzPercent\"[\\s\\S]*?</Style>").Value;
-            Assert.Contains("TextFillColorSecondaryBrush", style);
+            string Foreground(string key)
+            {
+                string style = Regex.Match(pad, "<Style x:Key=\"" + key + "\"[\\s\\S]*?</Style>").Value;
+                return Regex.Match(style, "<Setter Property=\"Foreground\" Value=\"([^\"]*)\"").Groups[1].Value;
+            }
+            Assert.StartsWith("{DynamicResource TextFillColor", Foreground("DzLabel"));
+            Assert.Equal(Foreground("DzLabel"), Foreground("DzPercent"));
         }
     }
 }

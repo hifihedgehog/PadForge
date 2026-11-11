@@ -145,7 +145,7 @@ namespace PadForge.Tests
             public event PropertyChangedEventHandler PropertyChanged;
         }
 
-        private sealed record LoadedRow(Grid Root, StackPanel Row, TextBlock Label, ComboBox Picker,
+        private sealed record LoadedRow(Grid Root, DockPanel Row, TextBlock Label, ComboBox Picker,
             ComboBoxItem HostModeItem, SettingResetButton Reset);
 
         /// <summary>The Lighting Hold row, read out of PadPage.xaml and
@@ -154,8 +154,8 @@ namespace PadForge.Tests
         private static LoadedRow LoadRow()
         {
             string page = RepoText("PadForge.App", "Views", "PadPage.xaml");
-            const string open = "<StackPanel x:Name=\"PeripheralClaimLevelRow\"";
-            const string close = "</StackPanel>";
+            const string open = "<DockPanel LastChildFill=\"False\" MinHeight=\"44\" x:Name=\"PeripheralClaimLevelRow\"";
+            const string close = "</DockPanel>";
             int start = page.IndexOf(open, StringComparison.Ordinal);
             Assert.True(start > 0, "the Lighting Hold row is gone from the page");
             int end = page.IndexOf(close, start, StringComparison.Ordinal);
@@ -175,7 +175,7 @@ namespace PadForge.Tests
                 + row
                 + "</Grid>";
             var root = (Grid)XamlReader.Parse(xaml);
-            var panel = Assert.IsType<StackPanel>(root.FindName("PeripheralClaimLevelRow"));
+            var panel = Assert.IsType<DockPanel>(root.FindName("PeripheralClaimLevelRow"));
             var picker = Assert.IsType<ComboBox>(root.FindName("PeripheralClaimLevelPicker"));
             var hostMode = Assert.IsType<ComboBoxItem>(root.FindName("PeripheralClaimLevelHostModeItem"));
             Assert.Equal(3, panel.Children.Count);
@@ -508,12 +508,12 @@ namespace PadForge.Tests
 
         /// <summary>The row sits in the peripheral lighting panel, under
         /// the switch it qualifies and above the route line, and no other
-        /// control on the page carries its IDs. Its widths are the measured
-        /// ones (tools/combomeasure): the picker's widest option needs 526,
-        /// and the label column gives up 60 of a row's 270 so the row stays
-        /// inside the 780 the Base Color card's picker rows take.</summary>
+        /// control on the page carries its IDs. Its picker's width is the
+        /// measured one (tools/combomeasure): the widest option needs 526.
+        /// Its label takes the page's label column, which is wider than the
+        /// widest label's 158.</summary>
         [Fact]
-        public void TheRowSitsUnderTheSwitch_AndStaysInsideTheWidthTheCardBelowTakes()
+        public void TheRowSitsUnderTheSwitch_AndItsLabelTakesThePagesLabelColumn()
         {
             XNamespace x = "http://schemas.microsoft.com/winfx/2006/xaml";
             var page = XDocument.Parse(RepoText("PadForge.App", "Views", "PadPage.xaml"));
@@ -566,23 +566,23 @@ namespace PadForge.Tests
             // A reset whose row can be hidden goes with its row.
             Assert.Null(reset.Attribute("Visibility"));
 
-            // A row's label column, which a label with no width of its own
-            // takes from the style.
+            // The row is one of the page's rows (#574): a panel that leaves
+            // its last child where it is docked, so the reset, which docks
+            // right through its style, sits at the row's far right. Its
+            // label takes the label column from the style, 230 wide, and
+            // has no width of its own, so the picker starts where every
+            // row's control starts.
+            Assert.Equal("DockPanel", row.Name.LocalName);
+            Assert.Equal("False", (string)row.Attribute("LastChildFill"));
+            Assert.Equal("44", (string)row.Attribute("MinHeight"));
             var rowLabelStyle = One(n => (string)n.Attribute(x + "Key") == "DzLabel", "a style named DzLabel");
             int rowLabel = (int)rowLabelStyle.Elements().Single(e => (string)e.Attribute("Property") == "Width").Attribute("Value");
-            Assert.Equal(270, rowLabel);
+            Assert.Equal(230, rowLabel);
             Assert.Equal("{StaticResource DzLabel}", (string)label.Attribute("Style"));
-            int labelWidth = (int?)label.Attribute("Width") ?? rowLabel;
+            Assert.Null(label.Attribute("Width"));
             int pickerWidth = (int)picker.Attribute("Width");
-            // The reset button is 28 wide after a margin of 4 (EmberIconButton).
-            const int resetWidth = 32;
-            // A card's border and padding on both sides, a row's label
-            // column, the Base Color card's picker and its reset: 780.
-            int cardRow = 2 * (1 + 16) + rowLabel + 444 + resetWidth;
             Assert.True(pickerWidth >= 526 + 8, "the picker clips its widest option");
-            Assert.True(labelWidth >= 158, "the label column clips its widest label");
-            Assert.True(labelWidth + pickerWidth + resetWidth <= cardRow,
-                $"the row is {labelWidth + pickerWidth + resetWidth} wide, wider than the {cardRow} of the card below it");
+            Assert.True(rowLabel >= 158, "the label column clips its widest label");
         }
 
         /// <summary>Every setting of the Lighting and Force Feedback groups

@@ -546,12 +546,20 @@
                 keyboard focus. The pointer's ring comes through the
                 template's hover route (MouseOverBorderBrush, cold), as it
                 does for every icon button. Keyboard focus sets the same
-                ring here, beside the app's focus visual. Size, hit target,
-                glow and press feedback are EmberIconButton's, unchanged.
-                Every reset style in the app is based on this one.
+                ring here, beside the app's focus visual. Size, hit target
+                and press feedback are EmberIconButton's, unchanged. Every
+                reset style in the app is based on this one.
+
+                A PadForge 6 row puts its reset at the row's far right, so
+                the style docks it right: in a row that is a DockPanel it
+                goes to the end, and in any other panel the setter does
+                nothing. Under the pointer it takes the raised fill and no
+                ring.
             -->
             <Style x:Key="QuietResetButton" TargetType="uictrl:Button" BasedOn="{StaticResource EmberIconButton}">
                 <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="MouseOverBorderBrush" Value="Transparent"/>
+                <Setter Property="DockPanel.Dock" Value="Right"/>
                 <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
                 <Style.Triggers>
                     <Trigger Property="IsMouseOver" Value="True">
@@ -792,14 +800,17 @@
                 template has no decrease-side value-fill element (confirmed
                 iteration 47-48), so resource keys cannot add one. This style
                 retemplates the horizontal single-thumb slider with a Track
-                whose decrease side fills the EmberSegGradient, on the same
+                whose decrease side fills flat ember, on the same
                 recessed SteelGround tray + SteelLineSoft hairline the
                 instrument bars use (both theme-paired). Thumb colors ride
                 the SliderThumbBackground* keys: EmberTheme pins them ember
                 on dark, and on light they fall back to the stock accent,
                 which the ApplicationAccentColorManager already pins ember.
-                Horizontal orientation only; every consumer (FFB + Adaptive
-                Triggers cards) is horizontal.
+                Horizontal orientation only. Every consumer is horizontal.
+                The two track buttons stretch by their own attributes:
+                wpf-ui's implicit RepeatButton style aligns a button left
+                and centers it, which sized the decrease side to its
+                content, one pixel wide, so the fill was never seen.
             -->
             <Style x:Key="EmberSlider" TargetType="Slider">
                 <Setter Property="MinHeight" Value="24"/>
@@ -816,7 +827,8 @@
                                         BorderThickness="1"/>
                                 <Track x:Name="PART_Track">
                                     <Track.DecreaseRepeatButton>
-                                        <RepeatButton Command="Slider.DecreaseLarge" IsTabStop="False" Focusable="False">
+                                        <RepeatButton Command="Slider.DecreaseLarge" IsTabStop="False" Focusable="False"
+                                                      HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                             <RepeatButton.Template>
                                                 <ControlTemplate TargetType="RepeatButton">
                                                     <Grid Background="Transparent">
@@ -824,14 +836,15 @@
                                                                 Margin="1,0,0,0"
                                                                 VerticalAlignment="Center"
                                                                 CornerRadius="2"
-                                                                Background="{StaticResource EmberSegGradient}"/>
+                                                                Background="{DynamicResource EmberBrush}"/>
                                                     </Grid>
                                                 </ControlTemplate>
                                             </RepeatButton.Template>
                                         </RepeatButton>
                                     </Track.DecreaseRepeatButton>
                                     <Track.IncreaseRepeatButton>
-                                        <RepeatButton Command="Slider.IncreaseLarge" IsTabStop="False" Focusable="False">
+                                        <RepeatButton Command="Slider.IncreaseLarge" IsTabStop="False" Focusable="False"
+                                                      HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                             <RepeatButton.Template>
                                                 <ControlTemplate TargetType="RepeatButton">
                                                     <Grid Background="Transparent"/>

@@ -2299,29 +2299,11 @@ namespace PadForge
             };
             HomePageView.OpenExtrasRequested += (s, e) => SelectNavItemByTag("Extras");
 
-            // Wire Home's delete + toggle events.
-            HomePageView.DeleteSlotRequested += (s, slotIndex) =>
-            {
-                // Deferred — DeleteSlot fires DeviceAssignmentChanged → RebuildControllerSection.
-                Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    if (_viewModel.SelectedPadIndex == slotIndex)
-                        SelectNavItemByTag("Home");
-
-                    // Capture VC-active state BEFORE the delete so the
-                    // bubble-down cascade in OnSlotDeleted knows whether
-                    // the removed slot was holding a kernel slot. If it
-                    // wasn't, the active VCs at higher positions don't
-                    // need to bubble down — their kernel slots weren't
-                    // displaced by an inactive neighbor's removal.
-                    bool hadActiveVc = _inputService.IsHmVcAt(slotIndex);
-                    var info = _deviceService.DeleteSlot(slotIndex);
-                    _inputService.OnSlotDeleted(slotIndex, info.Type, info.OldGroupPosition,
-                        deletedSlotHadActiveVc: hadActiveVc);
-                    _viewModel.Devices.RefreshSlotButtons();
-                    _inputService.RefreshDeviceList();
-                }));
-            };
+            // Home's delete and toggle events. The X on a controller's
+            // card and Delete in the pad page's More menu (#574) delete it
+            // as the X on its sidebar pill does.
+            HomePageView.DeleteSlotRequested += (s, slotIndex) => DeleteSlotDeferred(slotIndex);
+            PadPageView.DeleteRequested += (s, slotIndex) => DeleteSlotDeferred(slotIndex);
 
             HomePageView.SlotEnabledToggled += (s, args) =>
             {
@@ -4611,22 +4593,36 @@ namespace PadForge
         {
             e.Handled = true; // Prevent NavigationView selection change.
             if (sender is System.Windows.Controls.Button btn && btn.Tag is int slotIndex)
-            {
-                // Deferred to next dispatcher frame — DeleteSlot() fires
-                // DeviceAssignmentChanged → RebuildControllerSection() which removes
-                // the NavViewItem whose child button we're inside of right now.
-                Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    // Navigate away if we're viewing the slot being deleted.
-                    if (_viewModel.SelectedPadIndex == slotIndex)
-                        SelectNavItemByTag("Home");
+                DeleteSlotDeferred(slotIndex);
+        }
 
-                    bool hadActiveVc = _inputService.IsHmVcAt(slotIndex);
-                    var info = _deviceService.DeleteSlot(slotIndex);
-                    _inputService.OnSlotDeleted(slotIndex, info.Type, info.OldGroupPosition,
-                        deletedSlotHadActiveVc: hadActiveVc);
-                }));
-            }
+        /// <summary>Deletes a controller, for all three places that offer
+        /// it: the X on its sidebar pill, the X on its Home card and Delete
+        /// in its page's More menu. Deferred to the next dispatcher pass:
+        /// DeleteSlot fires DeviceAssignmentChanged, which rebuilds the
+        /// sidebar's controller section and removes the entry whose button
+        /// may be the one being clicked.</summary>
+        private void DeleteSlotDeferred(int slotIndex)
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                // Leave the page of the controller being deleted.
+                if (_viewModel.SelectedPadIndex == slotIndex)
+                    SelectNavItemByTag("Home");
+
+                // Capture VC-active state BEFORE the delete so the
+                // bubble-down cascade in OnSlotDeleted knows whether the
+                // removed slot was holding a kernel slot. If it was not,
+                // the active VCs at higher positions do not need to bubble
+                // down: an inactive neighbor's removal displaced none of
+                // their kernel slots.
+                bool hadActiveVc = _inputService.IsHmVcAt(slotIndex);
+                var info = _deviceService.DeleteSlot(slotIndex);
+                _inputService.OnSlotDeleted(slotIndex, info.Type, info.OldGroupPosition,
+                    deletedSlotHadActiveVc: hadActiveVc);
+                _viewModel.Devices.RefreshSlotButtons();
+                _inputService.RefreshDeviceList();
+            }));
         }
 
         // ─────────────────────────────────────────────

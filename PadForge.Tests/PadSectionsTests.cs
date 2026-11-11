@@ -598,11 +598,11 @@ namespace PadForge.Tests
             Assert.DoesNotContain("{Binding SelectedConfigTab", text);
         }
 
-        /// <summary>The header's first two lines: the type chip and the
-        /// title, the Preset chip as it was, the power button with the
-        /// slot's state word, Driven by with the device picker as it was,
-        /// Add Device, and the stage chips the slot's Home card shows
-        /// too.</summary>
+        /// <summary>The header's two lines: the type chip and the title, the
+        /// Preset with its two pickers, the power button with the slot's
+        /// state word, then Driven by with a pill for each device and Add
+        /// Device. The stage icons are on the slot's Home card and not
+        /// here.</summary>
         [Fact]
         public void TheHeaderNamesTheControllerAndItsDevice()
         {
@@ -633,36 +633,50 @@ namespace PadForge.Tests
             Assert.Equal("{Binding IsEnabled}", (string)power.Attribute("IsOn"));
             Assert.Equal("SlotPower_Click", (string)power.Attribute("Click"));
             Assert.Contains(Named(page, "SlotPowerHost"), power.Ancestors());
-            // The two hosts the window binds start with no data. Left to
-            // inherit, each would take the page's view model, which has no
+            // The host the window binds starts with no data. Left to
+            // inherit, it would take the page's view model, which has no
             // SelectedSlotSummary, and fail every binding until the window
             // hands over the dashboard.
             Assert.Equal("{x:Null}", (string)Named(page, "SlotPowerHost").Attribute("DataContext"));
-            Assert.Equal("{x:Null}", (string)Named(page, "StageChips").Attribute("DataContext"));
             Assert.DoesNotContain("SelectedSlotSummary", ExtrasPageTests.RepoText("PadForge.App", "ViewModels", "PadViewModel.cs"));
             var word = Named(page, "SlotStateWord");
             Assert.Contains(power, word.Ancestors());
             Assert.Equal("{Binding StatusText}", (string)word.Attribute("Text"));
             Assert.Equal("True", word.Attributes().Single(a => a.Name.LocalName == "LiveText.Polite").Value);
 
-            // Driven by, the picker, Add Device.
+            // Driven by, a pill for each device, Add Device. The pills are a
+            // list whose selected item is the device the page shows, where a
+            // closed picker stood. Each pill is a list item named for its
+            // device, and the list is labeled by the words before it.
             var drivenBy = Named(page, "DrivenByLabel");
             Assert.Equal("{Binding Pad_DrivenBy, Source={x:Static strings:Strings.Instance}}", (string)drivenBy.Attribute("Text"));
-            var picker = Assert.Single(page.Descendants(), e => e.Name.LocalName == "ComboBox"
-                && (string)e.Attribute("SelectedItem") == "{Binding SelectedMappedDevice, Mode=TwoWay}");
-            Assert.Equal("{Binding MappedDevices}", (string)picker.Attribute("ItemsSource"));
-            Assert.Same(drivenBy.Parent, picker.Parent);
+            var pills = Named(page, "DrivenByList");
+            Assert.Equal("ListBox", pills.Name.LocalName);
+            Assert.Equal("Pad_DrivenByList", Id(pills));
+            Assert.Equal("{Binding MappedDevices}", (string)pills.Attribute("ItemsSource"));
+            Assert.Equal("{Binding SelectedMappedDevice, Mode=TwoWay}", (string)pills.Attribute("SelectedItem"));
+            Assert.Equal("{Binding ElementName=DrivenByLabel}", (string)pills.Attribute("AutomationProperties.LabeledBy"));
+            Assert.Same(drivenBy.Parent, pills.Parent);
+            Assert.Equal("{Binding Name, TargetNullValue='', FallbackValue=''}",
+                (string)Assert.Single(pills.Descendants(), e => e.Name.LocalName == "Setter"
+                    && (string)e.Attribute("Property") == "AutomationProperties.Name").Attribute("Value"));
+            Assert.Same(pills, Assert.Single(page.Descendants(),
+                e => (string)e.Attribute("SelectedItem") == "{Binding SelectedMappedDevice, Mode=TwoWay}"));
+            // A pill shows what the device's line on the Home card shows:
+            // its kind's glyph, its name, its Bluetooth mark and its battery.
+            Assert.Equal(new[] { "{Binding TypeGlyph}", "{Binding Name}", "{Binding TransportGlyph}", "{Binding BatteryText}" },
+                Assert.Single(pills.Descendants(), e => e.Name.LocalName == "DataTemplate")
+                    .Descendants().Select(e => (string)e.Attribute("Text")).Where(t => t != null));
             var add = Named(page, "AddDeviceButton");
             Assert.Equal("Pad_AddDevice", Id(add));
             Assert.Equal("AddDevice_Click", (string)add.Attribute("Click"));
             Assert.Equal("{Binding Pad_AddDevice, Source={x:Static strings:Strings.Instance}}", (string)add.Attribute("Content"));
             Assert.Same(drivenBy.Parent, add.Parent);
 
-            // The stage chips. Home's card shows the same row, and both
-            // draw a chip with the one shared template.
-            var chips = Named(page, "StageChips");
-            Assert.Equal("{Binding SelectedSlotSummary.StageLedger}", (string)chips.Attribute("ItemsSource"));
-            Assert.Equal("{StaticResource StageChipTemplate}", (string)chips.Attribute("ItemTemplate"));
+            // The stage icons are the Home card's. The page has none, and
+            // the one template that draws an icon is still the shared one.
+            Assert.DoesNotContain("StageChips", text);
+            Assert.DoesNotContain("StageLedger", text);
             string home = ExtrasPageTests.RepoText("PadForge.App", "Views", "HomePage.xaml");
             Assert.Contains("ItemsSource=\"{Binding StageLedger}\"", home);
             Assert.Contains("ItemTemplate=\"{StaticResource StageChipTemplate}\"", home);
@@ -677,15 +691,70 @@ namespace PadForge.Tests
             Assert.True(offer < text.IndexOf("x:Name=\"SectionStrip\"", StringComparison.Ordinal));
 
             // The window hands the page the slots' summaries and takes its
-            // two requests.
+            // requests.
             string window = ExtrasPageTests.RepoText("PadForge.App", "MainWindow.xaml.cs");
             Assert.Contains("PadPageView.BindSlotState(_viewModel.Dashboard);", window);
             Assert.Contains("PadPageView.SlotEnabledToggled += (s, args) =>", window);
             Assert.Contains("PadPageView.AddDeviceRequested += (s, e) => SelectNavItemByTag(\"Devices\");", window);
             string code = CodeBehind();
             Assert.Contains("SlotPowerHost.DataContext = dashboard;", code);
-            Assert.Contains("StageChips.DataContext = dashboard;", code);
+            Assert.DoesNotContain("StageChips", code);
             Assert.Contains("(vm.PadIndex, !PadForge.Common.Input.SettingsManager.SlotEnabled[vm.PadIndex]));", code);
+        }
+
+        /// <summary>The header's More button, at the right of its first
+        /// line, holds what acts on the whole controller: Copy, Paste, Copy
+        /// From, then Clear All and Delete under a line. The first four
+        /// keep the commands, the handler and the tooltips their buttons
+        /// had in the list's top row. Delete goes the way the X on the
+        /// controller's Home card goes, so the window leaves the page of a
+        /// controller it deletes.</summary>
+        [Fact]
+        public void TheHeadersMoreMenu_HoldsWhatActsOnTheWholeController()
+        {
+            const string s = ", Source={x:Static strings:Strings.Instance}}";
+            var page = Page();
+            var more = Named(page, "PadMoreButton");
+            Assert.Equal("Pad_More", Id(more));
+            Assert.Equal("{Binding Common_More" + s, (string)more.Attribute("AutomationProperties.Name"));
+            Assert.Equal("{Binding Common_More" + s, (string)more.Attribute("ToolTip"));
+            Assert.Equal("MoreMenu_Click", (string)more.Attribute("Click"));
+            // It shows in every section, so it has no visibility of its own.
+            Assert.Null(more.Attribute("Visibility"));
+            Assert.Same(Named(page, "SlotPowerHost").Parent, more.Parent);
+
+            var menu = Assert.Single(more.Descendants(), e => e.Name.LocalName == "ContextMenu");
+            Assert.Equal(new[] { "MenuItem", "MenuItem", "MenuItem", "Separator", "MenuItem", "MenuItem" },
+                menu.Elements().Select(e => e.Name.LocalName));
+            var items = menu.Elements().Where(e => e.Name.LocalName == "MenuItem").ToList();
+            Assert.Equal(new[] { "Common_Copy", "Common_Paste", "Pad_CopyFrom", "Pad_ClearAll", "Main_DeleteVC" }.Select(k => "{Binding " + k + s),
+                items.Select(i => (string)i.Attribute("Header")));
+            Assert.Equal(new[] { "{Binding CopySettingsCommand}", "{Binding PasteSettingsCommand}", "{Binding CopyFromCommand}", null, null },
+                items.Select(i => (string)i.Attribute("Command")));
+            Assert.Equal(new[] { null, null, null, "ClearAllMappings_Click", "DeleteController_Click" },
+                items.Select(i => (string)i.Attribute("Click")));
+            Assert.Equal(new[] { "Pad_CopyTooltip", "Pad_PasteTooltip", "Pad_CopyFromTooltip", "Pad_ClearMappings" }.Select(k => "{Binding " + k + s),
+                items.Take(4).Select(i => (string)i.Attribute("ToolTip")));
+            Assert.Equal("Pad_DeleteController", Id(items[4]));
+            // The two that destroy read in the danger ink.
+            Assert.Equal(new[] { null, null, null, "{DynamicResource DangerInkBrush}", "{DynamicResource DangerInkBrush}" },
+                items.Select(i => (string)i.Attribute("Foreground")));
+
+            // The menu is outside the page's tree, so the handler hands it
+            // the page's view model before it opens.
+            string code = CodeBehind();
+            Assert.Matches(@"button\.ContextMenu\.DataContext = DataContext;\s*button\.ContextMenu\.PlacementTarget = button;", code);
+
+            // Delete raises the page's request with the controller's index,
+            // and the window answers it, the Home card's X and the sidebar
+            // entry's X with the one deferred delete, which goes Home first
+            // when the controller's page is the one showing.
+            Assert.Matches(@"private void DeleteController_Click\(object sender, RoutedEventArgs e\)\s*\{\s*if \(DataContext is PadViewModel vm\)\s*DeleteRequested\?\.Invoke\(this, vm\.PadIndex\);", code);
+            string window = ExtrasPageTests.RepoText("PadForge.App", "MainWindow.xaml.cs");
+            Assert.Contains("PadPageView.DeleteRequested += (s, slotIndex) => DeleteSlotDeferred(slotIndex);", window);
+            Assert.Contains("HomePageView.DeleteSlotRequested += (s, slotIndex) => DeleteSlotDeferred(slotIndex);", window);
+            Assert.Matches(@"private void OnSidebarDeleteSlot\(object sender, RoutedEventArgs e\)\s*\{[^}]*DeleteSlotDeferred\(slotIndex\);", window);
+            Assert.Matches(@"private void DeleteSlotDeferred\(int slotIndex\)\s*\{\s*Dispatcher\.BeginInvoke\(new Action\(\(\) =>\s*\{[^}]*if \(_viewModel\.SelectedPadIndex == slotIndex\)\s*SelectNavItemByTag\(""Home""\);", window);
         }
 
         /// <summary>The screenshot script reaches every tab through ids the
@@ -740,16 +809,24 @@ namespace PadForge.Tests
             Assert.Equal(18, seen.Count);
 
             // It opens a slot from its Home card by the card's title, and
-            // picks a slot's device in the Driven by picker, each by an id.
-            // The card's title was the word "Slot" until Home, and the
+            // picks a slot's device among the Driven by pills, each by an
+            // id. The card's title was the word "Slot" until Home, and the
             // script kept looking for the word.
             Assert.Contains("Find-UIA -Parent $Card -Aid \"Dash_SlotTitle\"", script);
             Assert.DoesNotContain("-eq 'Slot'", script);
             Assert.Contains("AutomationProperties.AutomationId=\"Dash_SlotTitle\"",
                 ExtrasPageTests.RepoText("PadForge.App", "Views", "HomePage.xaml"));
-            Assert.Contains("Find-UIA -Parent $padPage -Aid \"Pad_DeviceCombo\"", script);
-            Assert.Single(page.Descendants(), e => Id(e) == "Pad_DeviceCombo"
+            Assert.Contains("Find-UIA -Parent $padPage -Aid \"Pad_DrivenByList\"", script);
+            Assert.Single(page.Descendants(), e => Id(e) == "Pad_DrivenByList"
                 && (string)e.Attribute("SelectedItem") == "{Binding SelectedMappedDevice, Mode=TwoWay}");
+            // The pills are a list that is always open, so the script
+            // selects a list item and opens nothing first, as it had to
+            // with the closed picker that stood there.
+            int pick = script.IndexOf("function Select-MappedDeviceOnce", StringComparison.Ordinal);
+            Assert.True(pick > 0);
+            string picking = script.Substring(pick, script.IndexOf("\n}", pick, StringComparison.Ordinal) - pick);
+            Assert.Contains("[System.Windows.Automation.SelectionItemPattern]::Pattern).Select()", picking);
+            Assert.DoesNotContain("ExpandCollapsePattern", picking);
             // Nothing in it reads the page's radio buttons as a tab strip
             // any more: the first of them is the Buttons section now.
             Assert.DoesNotContain("$tabs[0]", script);

@@ -267,10 +267,10 @@ namespace PadForge.Tests
         // ── the top row ────────────────────────────────────────────────
 
         /// <summary>The top row: Picture and List, the layer chips, the
-        /// list's tools, Map All and More, in that order. The tools and More
-        /// show with the list. More holds the four actions on the whole
-        /// table with the commands, the handler and the tooltips their
-        /// buttons had, and Clear All is last.</summary>
+        /// list's tools and Map All, in that order. The tools show with the
+        /// list. What acts on the whole controller (Copy, Paste, Copy From,
+        /// Clear All) is in the header's More menu, which every section
+        /// shows, and the row has no More button of its own.</summary>
         [Fact]
         public void TheTopRowHasTheSwitch_TheLayers_AndTheListsTools()
         {
@@ -280,7 +280,7 @@ namespace PadForge.Tests
             var children = top.Elements().ToList();
             const string listOnly = "{Binding IsButtonsListView, Converter={StaticResource BoolToVisibilityConverter}}";
 
-            Assert.Equal(new[] { "TabController", "TabMappings", "ShiftLayerTabStrip", "ListTools", null, "ListMoreButton" },
+            Assert.Equal(new[] { "TabController", "TabMappings", "ShiftLayerTabStrip", "ListTools", null },
                 children.Select(Name));
             Assert.Equal("{Binding Pad_View_Picture" + S, (string)Assert.Single(children[0].Elements()).Attribute("Text"));
             Assert.Equal("{Binding Pad_View_List" + S, (string)Assert.Single(children[1].Elements()).Attribute("Text"));
@@ -305,24 +305,12 @@ namespace PadForge.Tests
             Assert.Equal("MapAllToggle_Click", (string)mapAll.Attribute("Click"));
             Assert.Null(mapAll.Attribute("Visibility"));
 
-            // More.
-            var more = children[5];
-            Assert.Equal("Pad_ListMore", Id(more));
-            Assert.Equal("{Binding Common_More" + S, (string)more.Attribute("Content"));
-            Assert.Equal("ListMore_Click", (string)more.Attribute("Click"));
-            Assert.Equal(listOnly, (string)more.Attribute("Visibility"));
-            var items = more.Descendants().Where(e => e.Name.LocalName == "MenuItem").ToList();
-            Assert.Equal(new[] { "Common_Copy", "Common_Paste", "Pad_CopyFrom", "Pad_ClearAll" }.Select(k => "{Binding " + k + S),
-                items.Select(i => (string)i.Attribute("Header")));
-            Assert.Equal(new[] { "{Binding CopySettingsCommand}", "{Binding PasteSettingsCommand}", "{Binding CopyFromCommand}", null },
-                items.Select(i => (string)i.Attribute("Command")));
-            Assert.Equal("ClearAllMappings_Click", (string)items[3].Attribute("Click"));
-            Assert.Equal(new[] { "Pad_CopyTooltip", "Pad_PasteTooltip", "Pad_CopyFromTooltip", "Pad_ClearMappings" }.Select(k => "{Binding " + k + S),
-                items.Select(i => (string)i.Attribute("ToolTip")));
-            // The menu is outside the page's tree, so the handler hands it
-            // the page's view model before it opens.
-            Assert.Matches(@"button\.ContextMenu\.DataContext = DataContext;\s*button\.ContextMenu\.PlacementTarget = button;",
-                CodeBehind());
+            // The row opens no More menu: the one that holds Clear All is
+            // the header's (PadSectionsTests pins it).
+            Assert.DoesNotContain(top.Descendants(), e => (string)e.Attribute("Click") == "MoreMenu_Click");
+            Assert.Equal("PadMoreButton", Name(Assert.Single(page.Descendants(),
+                e => e.Descendants().Any(i => (string)i.Attribute("Click") == "ClearAllMappings_Click")
+                     && e.Name.LocalName == "Button")));
 
             // The list's second row: the pipeline chips and the count of
             // one-line rows.

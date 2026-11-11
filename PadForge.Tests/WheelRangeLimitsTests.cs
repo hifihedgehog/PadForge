@@ -320,10 +320,10 @@ public class WheelRangeLimitsTests
         Assert.NotNull(d);
         string page = File.ReadAllText(Path.Combine(d.FullName, "PadForge.App", "Views", "PadPage.xaml"));
         int box = page.IndexOf("IsChecked=\"{Binding WheelRotationRangeEnabled, Mode=TwoWay}\"", StringComparison.Ordinal);
-        int row = page.IndexOf("<StackPanel Orientation=\"Horizontal\" IsEnabled=\"{Binding WheelRotationRangeEnabled}\">", StringComparison.Ordinal);
+        int row = page.IndexOf("<DockPanel LastChildFill=\"False\" MinHeight=\"44\" IsEnabled=\"{Binding WheelRotationRangeEnabled}\">", StringComparison.Ordinal);
         int slider = page.IndexOf("<Slider Value=\"{Binding WheelRotationRange, Mode=TwoWay}\"", StringComparison.Ordinal);
         Assert.True(box > 0 && row > box && slider > row, "the switch, its row and the slider are out of order");
-        Assert.DoesNotContain("</StackPanel>", page.Substring(row, slider - row));
+        Assert.DoesNotContain("</DockPanel>", page.Substring(row, slider - row));
     }
 
     private static (Guid Device, UserSetting Setting) AddWheel(int vendorId, int productId, string range)

@@ -634,7 +634,6 @@
   <data name="Pad_XAxis" xml:space="preserve"><value>Axis ya X</value></data>
   <data name="Pad_BothAxes" xml:space="preserve"><value>Ma axis onse awiri</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Axis ya Y</value></data>
-  <data name="Pad_SensitivityCurve" xml:space="preserve"><value>Curve ya sensitivity</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Axis ya trigger</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->

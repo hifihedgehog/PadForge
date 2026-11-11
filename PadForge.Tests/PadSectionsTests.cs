@@ -373,13 +373,19 @@ namespace PadForge.Tests
                     Assert.Equal(scrollNames[section], Name(content));
                     Assert.Equal("{Binding " + sectionKeys[section] + ", Source={x:Static strings:Strings.Instance}}",
                         (string)content.Attribute("AutomationProperties.Name"));
-                    var column = Assert.Single(content.Elements());
+                    // A section may hold row styles of its own beside its
+                    // one column of groups.
+                    var column = Assert.Single(content.Elements(), e => e.Name.LocalName != "ScrollViewer.Resources");
                     Assert.Equal("StackPanel", column.Name.LocalName);
-                    // A group is a panel under its heading. In Rumble &
-                    // Haptics, whose board draws no heading over the cards,
-                    // it is a group box that carries the group's name.
-                    string groupKind = section == PadViewModel.RumbleSection ? "GroupBox" : "StackPanel";
-                    Assert.All(column.Elements(), g => Assert.Equal(groupKind, g.Name.LocalName));
+                    // A group is a panel under its heading, or a group box
+                    // that carries the group's name where its board draws no
+                    // heading over the cards. Rumble & Haptics is all group
+                    // boxes, and so are the sticks and the triggers.
+                    Assert.All(column.Elements(), g => Assert.Contains(g.Name.LocalName, new[] { "StackPanel", "GroupBox" }));
+                    if (section == PadViewModel.RumbleSection)
+                        Assert.All(column.Elements(), g => Assert.Equal("GroupBox", g.Name.LocalName));
+                    if (section == PadViewModel.SticksSection)
+                        Assert.Equal(new[] { "GroupBox", "GroupBox", "StackPanel" }, column.Elements().Select(g => g.Name.LocalName));
                     Assert.Equal(expected, column.Elements().Select(Name));
                 }
                 else
@@ -455,9 +461,10 @@ namespace PadForge.Tests
         /// the page, once. A part of Buttons or of Macros and Menus keeps
         /// its button. A tab that became a group gives its id to the
         /// group's heading, where a tool that looked for the tab finds the
-        /// group. A group of Rumble and Haptics has no heading, as its
-        /// board has none, so the group is a group box that carries the id
-        /// and the tab's name itself, and its cards are all it holds.</summary>
+        /// group. A group whose board draws no heading over its cards (every
+        /// group of Rumble and Haptics, the sticks, the triggers) is a group
+        /// box that carries the id and the tab's name itself, and its cards
+        /// are all it holds.</summary>
         [Fact]
         public void EveryTabKeepsItsId()
         {
@@ -466,8 +473,9 @@ namespace PadForge.Tests
             {
                 var carrier = Assert.Single(page.Descendants(), e => Id(e) == id);
                 var named = Named(page, name);
-                if (PadViewModel.SectionOfTab(tab) == PadViewModel.RumbleSection)
+                if (named.Name.LocalName == "GroupBox" && tab != PadViewModel.OutputTabIndex)
                 {
+                    Assert.True(PadViewModel.IsStackedSection(PadViewModel.SectionOfTab(tab)));
                     Assert.Same(named, carrier);
                     Assert.Equal("GroupBox", carrier.Name.LocalName);
                     Assert.Equal("{StaticResource BareGroupBox}", (string)carrier.Attribute("Style"));
@@ -778,6 +786,99 @@ namespace PadForge.Tests
             Assert.Contains("HomePageView.DeleteSlotRequested += (s, slotIndex) => DeleteSlotDeferred(slotIndex);", window);
             Assert.Matches(@"private void OnSidebarDeleteSlot\(object sender, RoutedEventArgs e\)\s*\{[^}]*DeleteSlotDeferred\(slotIndex\);", window);
             Assert.Matches(@"private void DeleteSlotDeferred\(int slotIndex\)\s*\{\s*Dispatcher\.BeginInvoke\(new Action\(\(\) =>\s*\{[^}]*if \(_viewModel\.SelectedPadIndex == slotIndex\)\s*SelectNavItemByTag\(""Home""\);", window);
+        }
+
+        /// <summary>Sticks and Triggers as its board draws it. The section
+        /// has row styles of its own that shadow the page's: a label column
+        /// 150 wide, a slider with no width to stop at, and a value typed in
+        /// a field box, the percent 46 wide and the raw value 58. Every row
+        /// of the section grows its slider. A stick's card is two columns,
+        /// its settings and the live stick view, and its More row follows
+        /// them and so runs the card's width. Open, More holds two columns
+        /// of groups and then a curve for each axis. The stick view has no
+        /// small graph for an axis: each axis has its chart under More.</summary>
+        [Fact]
+        public void SticksAndTriggers_HasRowsOfItsOwn_AndAStickCardsMoreRunsTheCard()
+        {
+            var page = Page();
+            var scroll = Named(page, "SticksSectionScroll");
+            var own = Assert.Single(scroll.Elements(), e => e.Name.LocalName == "ScrollViewer.Resources");
+            XElement Style(string key) => Assert.Single(own.Elements(), e => (string)e.Attribute(X + "Key") == key);
+            string Setter(XElement style, string property) => (string)style.Elements()
+                .SingleOrDefault(e => e.Name.LocalName == "Setter" && (string)e.Attribute("Property") == property)?.Attribute("Value");
+
+            Assert.Equal("150", Setter(Style("DzLabel"), "Width"));
+            var slider = Style("DzSlider");
+            Assert.Equal("{StaticResource EmberSlider}", (string)slider.Attribute("BasedOn"));
+            Assert.Null(Setter(slider, "Width"));
+            Assert.Null(Setter(slider, "MaxWidth"));
+            Assert.Equal("{StaticResource DzSlider}", (string)Style("OffsetSlider").Attribute("BasedOn"));
+            var box = Style("DzValueEdit");
+            Assert.Equal("46", Setter(box, "Width"));
+            Assert.Equal("{DynamicResource SteelFieldBrush}", Setter(box, "Background"));
+            Assert.Equal("Right", Setter(box, "TextAlignment"));
+            var rawBox = Style("DzDigitEdit");
+            Assert.Equal("{StaticResource DzValueEdit}", (string)rawBox.Attribute("BasedOn"));
+            Assert.Equal("58", Setter(rawBox, "Width"));
+            // A text box lays its Padding around its text itself. A content
+            // host that took the same Padding as a margin cut a third digit
+            // off a boxed value, here and in the page's own value style.
+            Assert.DoesNotContain("x:Name=\"PART_ContentHost\" Margin=\"{TemplateBinding Padding}\"", PageText());
+
+            // Every row of the section grows its slider.
+            var rows = scroll.Descendants().Where(e => e.Name.LocalName == "SettingRow").ToList();
+            Assert.True(rows.Count > 40, "the section has " + rows.Count + " rows");
+            Assert.All(rows, r => Assert.Equal("True", (string)r.Attribute("Grow")));
+            // A range's two-thumb slider is no Slider, so it is marked to
+            // fill its row.
+            var ranges = scroll.Descendants().Where(e => e.Name.LocalName == "RangeSlider").ToList();
+            Assert.Contains(ranges, r => r.Attributes().Any(a => a.Name.LocalName == "SettingRow.Fills" && a.Value == "True") && r.Attribute("Width") == null);
+
+            // The stick card: a title row, the two columns, then More.
+            var more = Assert.Single(page.Descendants(), e => Id(e) == "Pad_More_Stick");
+            var card = more.Parent!;
+            Assert.Equal("StackPanel", card.Name.LocalName);
+            Assert.Equal("{StaticResource CardBorder}", (string)card.Parent!.Attribute("Style"));
+            Assert.Equal(new[] { "DockPanel", "Grid", "MoreRow" }, card.Elements().Select(e => e.Name.LocalName));
+            var columns = card.Elements().ElementAt(1);
+            var left = Assert.Single(columns.Elements(), e => (string)e.Attribute("Grid.Column") == "0");
+            var view = Assert.Single(columns.Elements(), e => (string)e.Attribute("Grid.Column") == "1");
+            Assert.Contains(left.Descendants(), e => Id(e) == "SensitivityBothChart");
+            Assert.DoesNotContain(view.Descendants(), e => e.Name.LocalName == "CurveEditor");
+            Assert.DoesNotContain("ChartSize=\"96\"", PageText());
+
+            // Under More: two columns of groups, then the two axes' curves.
+            var body = Assert.Single(more.Elements());
+            var grids = body.Elements().Where(e => e.Name.LocalName == "TileGridPanel").ToList();
+            Assert.Equal(2, grids.Count);
+            Assert.All(grids, g => Assert.Equal("2", (string)g.Attribute("MaxColumns")));
+            string[] Keys(XElement e) => e.Descendants().Where(d => ((string)d.Attribute("Style") ?? "").Contains("CardSubsectionTitle"))
+                .Select(d => ((string)d.Attribute("Text")).Split(' ', ',')[1]).ToArray();
+            var groups = grids[0].Elements().ToList();
+            Assert.Equal(2, groups.Count);
+            Assert.Equal(new[] { "Pad_Sticks_Section_CenterPoint", "Pad_Sticks_Section_DeadZone" }, Keys(groups[0]));
+            Assert.Equal("Pad_Sticks_Section_Range", Keys(groups[1])[0]);
+            Assert.Contains("Pad_Steering_Header", groups[1].ToString());
+            var axes = grids[1].Elements().ToList();
+            Assert.Equal(2, axes.Count);
+            Assert.Contains("PresetNameX", axes[0].ToString());
+            Assert.Contains("SensitivityCurveX", axes[0].ToString());
+            Assert.Contains("PresetNameY", axes[1].ToString());
+            Assert.Contains("SensitivityCurveY", axes[1].ToString());
+            // No rule between the groups: each has its label.
+            Assert.DoesNotContain(body.Descendants().Take(400), e => e.Name.LocalName == "Separator" && e.Parent == body);
+
+            // A trigger's card: its three settings, the chart with its hint
+            // under it, and no More row.
+            var triggers = Named(page, "TabTriggers");
+            Assert.DoesNotContain(triggers.Descendants(), e => e.Name.LocalName == "MoreRow");
+            Assert.DoesNotContain(triggers.Descendants(), e => e.Name.LocalName == "Separator");
+            var preset = Assert.Single(triggers.Descendants(), e => Id(e) == "TriggerPresetCombo");
+            Assert.Equal("{Binding Macro_Sensitivity, Source={x:Static strings:Strings.Instance}}",
+                (string)preset.Parent!.Elements().First().Attribute("Text"));
+            var chart = Assert.Single(triggers.Descendants(), e => e.Name.LocalName == "CurveEditor");
+            Assert.Equal("{Binding Pad_SensitivityCurveHintShort, Source={x:Static strings:Strings.Instance}}",
+                (string)chart.ElementsAfterSelf().First().Attribute("Text"));
         }
 
         /// <summary>The screenshot script reaches every tab through ids the

@@ -2158,9 +2158,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_YAxis => Get("Pad_YAxis");
     public string Pad_Range => Get("Pad_Range");
     public string Pad_AntiDeadZone => Get("Pad_AntiDeadZone");
-    public string Pad_SensitivityCurve => Get("Pad_SensitivityCurve");
     public string Pad_SensitivityCurveHintShort => Get("Pad_SensitivityCurveHintShort");
-    public string Pad_Preset_Label => Get("Pad_Preset_Label");
     public string Pad_TriggerAxis => Get("Pad_TriggerAxis");
     public string Pad_More_ForceFeedback => Get("Pad_More_ForceFeedback");
     public string Pad_OverallGain => Get("Pad_OverallGain");

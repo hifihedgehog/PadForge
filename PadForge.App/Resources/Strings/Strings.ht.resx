@@ -2066,9 +2066,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Aks Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Plaj</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-zòn mò</value></data>
-  <data name="Pad_SensitivityCurve" xml:space="preserve"><value>Koub sansiblite</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Klike de fwa pou ajoute yon pwen. Klike adwat pou retire l. Trennen pou ajiste.</value></data>
-  <data name="Pad_Preset_Label" xml:space="preserve"><value>Prereglaj</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Aks gachèt</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->

@@ -73,7 +73,7 @@ namespace PadForge.Tests
         {
             ("Pad_More_Stick", "{Binding MoreStateKey}", "Pad_More_Stick",
                 new[] { "{Binding DeadZoneBoth, Mode=TwoWay}", "PresetNameBoth", "SensitivityCurveBoth", "CalibrateCenter_Click", "ResetStickSensitivityCommand" },
-                new[] { "CenterOffsetX", "DeadZoneShapeIndex", "{Binding DeadZoneX, Mode=TwoWay}", "AntiDeadZoneY", "{Binding Linear, Mode=TwoWay}", "MomentumGlide",
+                new[] { "CenterOffsetX", "{Binding DeadZoneShapeIndex, Mode=TwoWay", "{Binding DeadZoneX, Mode=TwoWay}", "AntiDeadZoneY", "{Binding Linear, Mode=TwoWay}", "MomentumGlide",
                         "PresetNameX", "PresetNameY", "CalibrateBoundaryCommand", "MaxRangeYNeg", "Pad_Steering_Header" }),
             ("Pad_More_Falcon", "Pad.Rumble.Falcon.More", "Pad_More_Falcon",
                 new[] { "{Binding FalconFeel, Mode=TwoWay}", "FalconSpring", "FalconForceCap" },
@@ -215,8 +215,16 @@ namespace PadForge.Tests
                 Assert.Equal(want.Hint, Key(row, "Hint"));
 
                 string under = row.ToString();
-                // Up front: what stands before the row in its own panel.
-                string before = string.Concat(row.ElementsBeforeSelf().Select(e => e.ToString()));
+                // Up front: what stands before the row in its own panel. A
+                // stick's row follows the card's two columns, and there it
+                // is the settings column alone: the title's summary and the
+                // live stick view beside the settings read the values under
+                // More to show them, and set none.
+                var columns = row.ElementsBeforeSelf().LastOrDefault();
+                var settings = columns?.Elements().FirstOrDefault(e => (string)e.Attribute("Grid.Column") == "0");
+                string before = settings != null
+                    ? settings.ToString()
+                    : string.Concat(row.ElementsBeforeSelf().Select(e => e.ToString()));
                 foreach (string text in want.UpFront)
                 {
                     Assert.True(before.Contains(text, StringComparison.Ordinal), want.Id + ": " + text + " is not up front");

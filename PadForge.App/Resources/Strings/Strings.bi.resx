@@ -798,8 +798,6 @@
   <data name="Pad_YAxis" xml:space="preserve"><value>Aksis Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Renj</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-dedzon</value></data>
-  <data name="Pad_SensitivityCurve" xml:space="preserve"><value>Kev blong sensitiviti</value></data>
-  <data name="Pad_Preset_Label" xml:space="preserve"><value>Preset</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Aksis blong triga</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->

@@ -2502,9 +2502,7 @@
   <data name="Pad_YAxis" xml:space="preserve"><value>Y अक्ष</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>दायरा</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>एन्टि-डेडजोन</value></data>
-  <data name="Pad_SensitivityCurve" xml:space="preserve"><value>संवेदनशीलता कर्भ</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>बिन्दु थप्न डबल-क्लिक गर्नुहोस्। हटाउन दायाँ-क्लिक गर्नुहोस्। मिलाउन तान्नुहोस्।</value></data>
-  <data name="Pad_Preset_Label" xml:space="preserve"><value>प्रिसेट</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>ट्रिगर अक्ष</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->

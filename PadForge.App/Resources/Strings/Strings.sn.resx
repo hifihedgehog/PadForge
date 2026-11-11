@@ -651,8 +651,6 @@
   <data name="Pad_YAxis" xml:space="preserve"><value>Axis Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Range</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-deadzone</value></data>
-  <data name="Pad_SensitivityCurve" xml:space="preserve"><value>Sensitivity curve</value></data>
-  <data name="Pad_Preset_Label" xml:space="preserve"><value>Preset</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Simba remota imwe neimwe, kudedera kwetrigger, kuchinjanisa mota</value></data>

@@ -2335,9 +2335,7 @@
   <data name="Pad_YAxis" xml:space="preserve"><value>Y અક્ષ</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>શ્રેણી</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>એન્ટી-ડેડઝોન</value></data>
-  <data name="Pad_SensitivityCurve" xml:space="preserve"><value>સંવેદનશીલતા વળાંક</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>બિંદુ ઉમેરવા ડબલ-ક્લિક કરો. દૂર કરવા જમણું ક્લિક કરો. ગોઠવવા ખેંચો.</value></data>
-  <data name="Pad_Preset_Label" xml:space="preserve"><value>પ્રીસેટ</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>ટ્રિગર અક્ષ</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->

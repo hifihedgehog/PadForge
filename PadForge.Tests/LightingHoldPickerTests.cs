@@ -575,7 +575,13 @@ namespace PadForge.Tests
             // row's control starts.
             Assert.Equal("SettingRow", row.Name.LocalName);
             Assert.Equal("44", (string)row.Attribute("MinHeight"));
-            var rowLabelStyle = One(n => (string)n.Attribute(x + "Key") == "DzLabel", "a style named DzLabel");
+            // The page's own label style: a section may shadow it with one
+            // of its own (Sticks and Triggers does), and this row's section
+            // does not.
+            var rowLabelStyle = page.Root!.Elements().Single(e => e.Name.LocalName == "UserControl.Resources")
+                .Elements().Single(n => (string)n.Attribute(x + "Key") == "DzLabel");
+            Assert.DoesNotContain(row.Ancestors().SelectMany(a => a.Elements()).Where(e => e.Name.LocalName.EndsWith(".Resources", StringComparison.Ordinal))
+                .SelectMany(r => r.Elements()), n => (string)n.Attribute(x + "Key") == "DzLabel" && n.Parent!.Name.LocalName != "UserControl.Resources");
             int rowLabel = (int)rowLabelStyle.Elements().Single(e => (string)e.Attribute("Property") == "Width").Attribute("Value");
             Assert.Equal(230, rowLabel);
             Assert.Equal("{StaticResource DzLabel}", (string)label.Attribute("Style"));

@@ -528,7 +528,6 @@
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->
-  <data name="Pad_SensitivityCurve" xml:space="preserve"><value>Curve ya sensitivity</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Axis ya trigger</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->

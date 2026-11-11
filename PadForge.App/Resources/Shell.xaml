@@ -1,6 +1,7 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
+                    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+                    xmlns:controls="clr-namespace:PadForge.Controls">
 
     <!-- ═══════════════════════════════════════════
          The shell (#574): the sidebar's line icons and the two templates
@@ -94,35 +95,39 @@
                                         HorizontalScrollBarVisibility="Disabled"
                                         VerticalScrollBarVisibility="Auto">
                     <StackPanel Margin="10,12,10,16">
-                        <ItemsControl x:Name="PART_MenuItemsItemsControl"
+                        <!-- The two lists are NavItemsControls: an entry of
+                             one offers Invoke and SelectionItem to UI
+                             Automation, which a plain ItemsControl's item
+                             does not. -->
+                        <controls:NavItemsControl x:Name="PART_MenuItemsItemsControl"
                                       AutomationProperties.AutomationId="NavigationItems"
                                       Focusable="False"
                                       KeyboardNavigation.DirectionalNavigation="Contained"
                                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                       ScrollViewer.VerticalScrollBarVisibility="Disabled">
-                            <ItemsControl.ItemsPanel>
+                            <controls:NavItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <StackPanel Margin="0" IsItemsHost="True"/>
                                 </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                        </ItemsControl>
+                            </controls:NavItemsControl.ItemsPanel>
+                        </controls:NavItemsControl>
                         <!-- The hairline between the controllers and
                              Settings. It is drawn here and is no entry of
                              either list, so UI Automation has no item for
                              it and a screen reader never stops on it. -->
                         <Border Height="1" Margin="4,14,4,10" Background="{DynamicResource SteelPaneLineBrush}"/>
-                        <ItemsControl x:Name="PART_FooterMenuItemsItemsControl"
+                        <controls:NavItemsControl x:Name="PART_FooterMenuItemsItemsControl"
                                       AutomationProperties.AutomationId="NavigationFooterItems"
                                       Focusable="False"
                                       KeyboardNavigation.DirectionalNavigation="Contained"
                                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                       ScrollViewer.VerticalScrollBarVisibility="Disabled">
-                            <ItemsControl.ItemsPanel>
+                            <controls:NavItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <StackPanel Margin="0" IsItemsHost="True"/>
                                 </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                        </ItemsControl>
+                            </controls:NavItemsControl.ItemsPanel>
+                        </controls:NavItemsControl>
                         <ContentPresenter Content="{TemplateBinding PaneFooter}"/>
                     </StackPanel>
                 </ui:DynamicScrollViewer>

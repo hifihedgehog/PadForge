@@ -2502,9 +2502,7 @@
   <data name="Pad_YAxis" xml:space="preserve"><value>Y محور</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>رینج</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>اینٹی ڈیڈ زون</value></data>
-  <data name="Pad_SensitivityCurve" xml:space="preserve"><value>حساسیت کا خم</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>نقطہ شامل کرنے کے لیے ڈبل کلک کریں۔ ہٹانے کے لیے دایاں کلک کریں۔ ایڈجسٹ کرنے کے لیے گھسیٹیں۔</value></data>
-  <data name="Pad_Preset_Label" xml:space="preserve"><value>پری سیٹ</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>ٹرگر محور</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->

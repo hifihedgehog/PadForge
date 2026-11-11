@@ -317,6 +317,15 @@ namespace PadForge
                 }
             };
 
+            // The UI Automation path: Invoke or Select on an entry, from a
+            // screen reader's touch or scan mode or from a UI script. The
+            // entry's list raises this on it (NavItemsControl).
+            NavView.AddHandler(PadForge.Controls.NavItemsControl.ItemInvokedEvent, new RoutedEventHandler((s, e) =>
+            {
+                if (e.OriginalSource is NavigationViewItem nvi && nvi.Tag != null)
+                    ActivateNavItem(nvi);
+            }));
+
             // Close Add Controller popup on window events.
             LocationChanged += (_, _) => CloseControllerPopup();
             SizeChanged += (_, _) => CloseControllerPopup();
@@ -4263,8 +4272,8 @@ namespace PadForge
         }
 
         /// <summary>Opens what a sidebar entry stands for: the Add Controller
-        /// popup, or the entry's page, marked active. A click and a key press
-        /// both come here.</summary>
+        /// popup, or the entry's page, marked active. A click, a key press
+        /// and UI Automation's Invoke all come here.</summary>
         private void ActivateNavItem(NavigationViewItem nvi)
         {
             var tag = nvi.Tag.ToString();

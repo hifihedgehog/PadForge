@@ -1188,9 +1188,7 @@
   <data name="Pad_YAxis" xml:space="preserve"><value>Y 轴</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>范围</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>反死区</value></data>
-  <data name="Pad_SensitivityCurve" xml:space="preserve"><value>灵敏度曲线</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>双击添加点。右键单击删除。拖动调整。</value></data>
-  <data name="Pad_Preset_Label" xml:space="preserve"><value>预设</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>扳机轴</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>各马达强度、扳机震动、交换马达</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>总增益</value></data>

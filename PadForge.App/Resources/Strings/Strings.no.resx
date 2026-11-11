@@ -2502,9 +2502,7 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y-akse</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Område</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-dødsone</value></data>
-  <data name="Pad_SensitivityCurve" xml:space="preserve"><value>Følsomhetskurve</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Dobbeltklikk for å legge til et punkt. Høyreklikk for å fjerne. Dra for å justere.</value></data>
-  <data name="Pad_Preset_Label" xml:space="preserve"><value>Forhåndsinnstilling</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Avtrekkerakse</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->

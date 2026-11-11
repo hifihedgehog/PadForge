@@ -934,8 +934,11 @@ namespace PadForge.Tests
             string shell = ExtrasPageTests.RepoText("PadForge.App", "Resources", "Shell.xaml");
             At(shell, "<ControlTemplate x:Key=\"PadNavigationViewTemplate\" TargetType=\"{x:Type ui:NavigationView}\">");
             At(shell, "<ControlTemplate x:Key=\"PadNavigationViewItemTemplate\" TargetType=\"{x:Type ui:NavigationViewItem}\">");
-            int menu = At(shell, "<ItemsControl x:Name=\"PART_MenuItemsItemsControl\"");
-            int footer = At(shell, "<ItemsControl x:Name=\"PART_FooterMenuItemsItemsControl\"");
+            // Both lists are NavItemsControls, whose entries offer Invoke
+            // and SelectionItem to UI Automation.
+            int menu = At(shell, "<controls:NavItemsControl x:Name=\"PART_MenuItemsItemsControl\"");
+            int footer = At(shell, "<controls:NavItemsControl x:Name=\"PART_FooterMenuItemsItemsControl\"");
+            Assert.DoesNotContain("<ItemsControl x:Name=\"PART_", shell);
             int paneFooter = At(shell, "<ContentPresenter Content=\"{TemplateBinding PaneFooter}\"/>");
             At(shell, "<ui:NavigationViewContentPresenter x:Name=\"PART_NavigationViewContentPresenter\"");
             Assert.True(menu < footer && footer < paneFooter, "the sidebar's three lists are out of order");

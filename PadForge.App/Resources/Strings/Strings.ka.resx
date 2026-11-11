@@ -2338,9 +2338,7 @@
   <data name="Pad_YAxis" xml:space="preserve"><value>ღერძი Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>დიაპაზონი</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>ანტი-მკვდარი ზონა</value></data>
-  <data name="Pad_SensitivityCurve" xml:space="preserve"><value>მგრძნობელობის მრუდი</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>ორჯერ დააწკაპუნეთ წერტილის დასამატებლად. მარჯვენა დაწკაპუნებით წაშალეთ. გადაათრიეთ რეგულირებისთვის.</value></data>
-  <data name="Pad_Preset_Label" xml:space="preserve"><value>პრესეტი</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>ტრიგერის ღერძი</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->

@@ -2502,9 +2502,7 @@
   <data name="Pad_YAxis" xml:space="preserve"><value>Оска Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Опсег</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Анти-мртва зона</value></data>
-  <data name="Pad_SensitivityCurve" xml:space="preserve"><value>Крива на осетливост</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Кликнете двапати за да додадете точка. Десен клик за отстранување. Повлечете за прилагодување.</value></data>
-  <data name="Pad_Preset_Label" xml:space="preserve"><value>Готова поставка</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Оска на тригерот</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->

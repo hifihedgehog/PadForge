@@ -2502,9 +2502,7 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Osa Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Rozsah</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-mrtvá zóna</value></data>
-  <data name="Pad_SensitivityCurve" xml:space="preserve"><value>Křivka citlivosti</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Dvojklikem přidáte bod. Pravým tlačítkem ho odeberete. Tažením ho upravíte.</value></data>
-  <data name="Pad_Preset_Label" xml:space="preserve"><value>Předvolba</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Osa spouště</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->

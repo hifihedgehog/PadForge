@@ -708,8 +708,6 @@
   <data name="Pad_YAxis" xml:space="preserve"><value>Axis Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Range</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-deadzone</value></data>
-  <data name="Pad_SensitivityCurve" xml:space="preserve"><value>Kurba han sensitivity</value></data>
-  <data name="Pad_Preset_Label" xml:space="preserve"><value>Preset</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Axis han trigger</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->

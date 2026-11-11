@@ -2337,9 +2337,7 @@
   <data name="Pad_YAxis" xml:space="preserve"><value>المحور Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>النطاق</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>مضاد المنطقة الميتة</value></data>
-  <data name="Pad_SensitivityCurve" xml:space="preserve"><value>منحنى الحساسية</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>انقر نقرا مزدوجا لإضافة نقطة. انقر بالزر الأيمن للإزالة. اسحب للتعديل.</value></data>
-  <data name="Pad_Preset_Label" xml:space="preserve"><value>إعداد مسبق</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>محور الزناد</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->

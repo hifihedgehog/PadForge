@@ -1188,9 +1188,7 @@
   <data name="Pad_YAxis" xml:space="preserve"><value>Y 軸</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>範囲</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>アンチデッドゾーン</value></data>
-  <data name="Pad_SensitivityCurve" xml:space="preserve"><value>感度カーブ</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>ダブルクリックで点を追加。右クリックで削除。ドラッグで調整。</value></data>
-  <data name="Pad_Preset_Label" xml:space="preserve"><value>プリセット</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>トリガー軸</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>モーターごとのゲイン、トリガー振動、モーターの入れ替え</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>全体ゲイン</value></data>

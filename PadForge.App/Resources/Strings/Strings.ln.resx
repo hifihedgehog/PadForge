@@ -859,8 +859,6 @@
   <data name="Pad_YAxis" xml:space="preserve"><value>Axe Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Plage</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-zone morte</value></data>
-  <data name="Pad_SensitivityCurve" xml:space="preserve"><value>Courbe ya sensibilité</value></data>
-  <data name="Pad_Preset_Label" xml:space="preserve"><value>Préréglage</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Axe ya gâchette</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->

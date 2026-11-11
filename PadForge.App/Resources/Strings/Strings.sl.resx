@@ -2502,9 +2502,7 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Os Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Obseg</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Izravnava mrtvega območja</value></data>
-  <data name="Pad_SensitivityCurve" xml:space="preserve"><value>Krivulja občutljivosti</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Dvokliknite, da dodate točko. Kliknite z desno tipko miške, da jo odstranite. Povlecite, da jo prilagodite.</value></data>
-  <data name="Pad_Preset_Label" xml:space="preserve"><value>Prednastavitev</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Os sprožilca</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->

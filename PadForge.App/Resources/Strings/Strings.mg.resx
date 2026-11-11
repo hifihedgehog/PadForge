@@ -1034,7 +1034,6 @@
   <data name="Pad_YAxis" xml:space="preserve"><value>Axe Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Elanelana</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-deadzone</value></data>
-  <data name="Pad_Preset_Label" xml:space="preserve"><value>Preset</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Tanjaky ny motera tsirairay, vibration amin'ny gâchette, fifanakalozana motera</value></data>

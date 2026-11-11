@@ -2502,9 +2502,7 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Oś Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Zakres</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Antymartwa strefa</value></data>
-  <data name="Pad_SensitivityCurve" xml:space="preserve"><value>Krzywa czułości</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Kliknij dwukrotnie, aby dodać punkt. Kliknij prawym przyciskiem, aby usunąć. Przeciągnij, aby dostosować.</value></data>
-  <data name="Pad_Preset_Label" xml:space="preserve"><value>Preset</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Oś spustu</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->

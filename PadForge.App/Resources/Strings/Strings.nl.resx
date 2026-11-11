@@ -1180,9 +1180,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y-as</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Bereik</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-deadzone</value></data>
-  <data name="Pad_SensitivityCurve" xml:space="preserve"><value>Gevoeligheidscurve</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Dubbelklik om toe te voegen. Rechtsklik om te verwijderen. Sleep om aan te passen.</value></data>
-  <data name="Pad_Preset_Label" xml:space="preserve"><value>Voorinstelling</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Trigger-as</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->

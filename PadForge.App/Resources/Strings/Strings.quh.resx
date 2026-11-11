@@ -678,8 +678,6 @@
   <data name="Pad_YAxis" xml:space="preserve"><value>Y eje</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Rango</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti zona muerta</value></data>
-  <data name="Pad_SensitivityCurve" xml:space="preserve"><value>Sensibilidad curva</value></data>
-  <data name="Pad_Preset_Label" xml:space="preserve"><value>Preset</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Gatillo eje</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->

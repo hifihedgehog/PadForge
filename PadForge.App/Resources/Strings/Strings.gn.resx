@@ -590,7 +590,6 @@
   <data name="Pad_YAxis" xml:space="preserve"><value>Eje Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Rango</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti zona muerta</value></data>
-  <data name="Pad_Preset_Label" xml:space="preserve"><value>Preajuste</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Motor asu</value></data>

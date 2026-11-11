@@ -2502,9 +2502,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Axa Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Interval</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-zonă moartă</value></data>
-  <data name="Pad_SensitivityCurve" xml:space="preserve"><value>Curbă de sensibilitate</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Dublu clic pentru a adăuga un punct. Clic dreapta pentru a-l elimina. Trageți pentru a ajusta.</value></data>
-  <data name="Pad_Preset_Label" xml:space="preserve"><value>Presetare</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Axa trăgaciului</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->

@@ -7543,7 +7543,14 @@ namespace PadForge
                 var padVm = _viewModel.SelectedPad;
                 if (padVm != null)
                 {
-                    InputService.RefreshMappingsToViewModel(padVm);
+                    // The page shows the stored rows. Copying them into its
+                    // view changes nothing, so it marks nothing changed: it
+                    // did, and each visit to a controller's page saved the
+                    // settings file and raised the saved message.
+                    if (_settingsService != null)
+                        _settingsService.MirrorOnly(() => InputService.RefreshMappingsToViewModel(padVm));
+                    else
+                        InputService.RefreshMappingsToViewModel(padVm);
                     var selected = padVm.SelectedMappedDevice;
                     if (selected != null && selected.InstanceGuid != Guid.Empty)
                         _inputService.RefreshAvailableInputsForSlot(padVm);

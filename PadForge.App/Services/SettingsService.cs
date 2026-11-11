@@ -6426,6 +6426,32 @@ namespace PadForge.Services
             return id;
         }
 
+        /// <summary>How many <see cref="MirrorOnly"/> calls are open, and the
+        /// thread they run on.</summary>
+        private int _mirrorDepth;
+        private int _mirrorThread;
+
+        /// <summary>
+        /// Runs a reload that copies stored state into a view and changes
+        /// nothing: the rows a controller's page shows when it is opened.
+        /// The view's setters raise the same change events an edit raises,
+        /// and each one marked the settings changed, so every visit to a
+        /// controller's page wrote the settings file two seconds later and
+        /// raised the saved message (traced 2026-11-11: 132 marks for one
+        /// visit to a page of 22 rows, every one from the reload). For the
+        /// length of the call <see cref="MarkDirty"/> ignores a mark made on
+        /// the calling thread. A mark another thread makes meanwhile is a
+        /// real change and counts. Called on the UI thread.
+        /// </summary>
+        public void MirrorOnly(Action reload)
+        {
+            if (reload == null) return;
+            System.Threading.Volatile.Write(ref _mirrorThread, Environment.CurrentManagedThreadId);
+            System.Threading.Interlocked.Increment(ref _mirrorDepth);
+            try { reload(); }
+            finally { System.Threading.Interlocked.Decrement(ref _mirrorDepth); }
+        }
+
         /// <summary>
         /// Marks settings as dirty (unsaved changes) and schedules an autosave
         /// after a 250 ms debounce period. Safe from any thread: a
@@ -6437,6 +6463,10 @@ namespace PadForge.Services
         /// </summary>
         public void MarkDirty()
         {
+            // A reload that only mirrors stored state marks nothing.
+            if (System.Threading.Volatile.Read(ref _mirrorDepth) > 0
+                && Environment.CurrentManagedThreadId == System.Threading.Volatile.Read(ref _mirrorThread))
+                return;
             InvalidateAssignmentSnapshot();
             IsDirty = true;
 

@@ -278,10 +278,23 @@ namespace PadForge.Tests
             };
             private IReadOnlyList<AuraDevice> _devices = Array.Empty<AuraDevice>();
 
-            private void Log(string s) { lock (_lock) _calls.Add(s); }
+            private readonly List<long> _times = new();
+            private void Log(string s) { lock (_lock) { _calls.Add(s); _times.Add(System.Diagnostics.Stopwatch.GetTimestamp()); } }
             public string[] Calls { get { lock (_lock) return _calls.ToArray(); } }
             public int Count(string call) => Calls.Count(c => c == call);
-            public void Clear() { lock (_lock) _calls.Clear(); }
+            /// <summary>When each call of that name arrived, in order, as
+            /// Stopwatch timestamps.</summary>
+            public long[] TimesOf(string call)
+            {
+                lock (_lock)
+                {
+                    var hits = new List<long>();
+                    for (int i = 0; i < _calls.Count; i++)
+                        if (_calls[i] == call) hits.Add(_times[i]);
+                    return hits.ToArray();
+                }
+            }
+            public void Clear() { lock (_lock) { _calls.Clear(); _times.Clear(); } }
 
             /// <summary>Set: the next light holds until it is set, and
             /// <see cref="Held"/> says it is there, on <see cref="HeldThread"/>.</summary>
@@ -918,10 +931,15 @@ namespace PadForge.Tests
             using var backend = new AuraSdkBackend(native, pollMs: 10, retryMs: 400, stopWaitMs: 2000);
             backend.Start();
             PeripheralOutputs.SetLighting(Keyboard, slot: 0, player: 1, 0x11, 0x22, 0x33);
-            Assert.True(WaitFor(() => native.Count("open") == 1));
-            Thread.Sleep(200);
-            Assert.Equal(1, native.Count("open"));
-            Assert.True(WaitFor(() => native.Count("open") == 2));
+            Assert.True(WaitFor(() => native.Count("open") >= 2, 30000), "the open was never tried again");
+            // The interval is read off the worker's own two calls. The test
+            // used to sleep 200 ms and then count one open, which fails
+            // whenever this thread sleeps past the 400 ms interval. The
+            // backend times the retry on a 16 ms clock, so the floor sits a
+            // little under 400.
+            long[] opens = native.TimesOf("open");
+            double gapMs = System.Diagnostics.Stopwatch.GetElapsedTime(opens[0], opens[1]).TotalMilliseconds;
+            Assert.True(gapMs >= 350, $"the second open came {gapMs:F0} ms after the first, and the retry interval is 400 ms");
         }
 
         /// <summary>Stop hands the devices back, and the crash path's two

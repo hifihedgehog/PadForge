@@ -81,6 +81,40 @@ namespace PadForge.Converters
     }
 
     /// <summary>
+    /// A folded card's line for a setting picked by its place in a list
+    /// (#574). The first value is the place: a number, or an enum whose
+    /// values count from zero in the list's order, the contract
+    /// <see cref="EnumIndexConverter"/> holds a picker to. The values after
+    /// it are the list's names in that order, each bound to the strings
+    /// table, so a change of language reads the line again. A place the
+    /// list does not have reads as nothing.
+    /// </summary>
+    public sealed class IndexTextConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (values == null || values.Length < 2) return string.Empty;
+            int place;
+            switch (values[0])
+            {
+                case int number:
+                    place = number;
+                    break;
+                case Enum named:
+                    place = System.Convert.ToInt32(named, CultureInfo.InvariantCulture);
+                    break;
+                default:
+                    return string.Empty;
+            }
+            if (place < 0 || place + 1 >= values.Length) return string.Empty;
+            return values[place + 1] as string ?? string.Empty;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+            => throw new NotSupportedException();
+    }
+
+    /// <summary>
     /// A folded card's line made of values (#574): the values, then the
     /// format they go into, bound to the strings table so the words between
     /// the values are the language's own. Empty until every value is there.

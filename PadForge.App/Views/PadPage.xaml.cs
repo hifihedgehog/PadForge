@@ -807,10 +807,19 @@ namespace PadForge.Views
             }
             SyncKeyColorsCard(hasPeripheralLighting ? lightingRow : null);
             SyncLedStripsCard(hasPeripheralLighting ? lightingRow : null);
+            // The group's label holds in its tooltip what the group's
+            // paragraphs said: the lightbar's two for a pad with a lightbar,
+            // the peripheral's one for a mouse, keyboard or vendor row. A
+            // device with neither (a Guide button LED alone) gets no
+            // tooltip, where one with nothing in it would open empty.
             if (LightingLightbarSubtitle != null)
                 LightingLightbarSubtitle.Visibility = hasLightbar ? Visibility.Visible : Visibility.Collapsed;
             if (LightingPlayerIdleHint != null)
                 LightingPlayerIdleHint.Visibility = hasLightbar ? Visibility.Visible : Visibility.Collapsed;
+            if (PeripheralLightingSubtitle != null)
+                PeripheralLightingSubtitle.Visibility = hasPeripheralLighting ? Visibility.Visible : Visibility.Collapsed;
+            if (LightingGroupLabel != null)
+                ToolTipService.SetIsEnabled(LightingGroupLabel, hasLightbar || hasPeripheralLighting);
             if (GuideLedCard != null)
                 GuideLedCard.Visibility = hasGuideLed ? Visibility.Visible : Visibility.Collapsed;
             if (TabGyro != null)

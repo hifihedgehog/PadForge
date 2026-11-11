@@ -9691,7 +9691,43 @@
                  Lighting and audio. -->
             <TabItem>
                 <ScrollViewer x:Name="LightsSectionScroll" AutomationProperties.Name="{Binding Pad_Section_Lights, Source={x:Static strings:Strings.Instance}}" Padding="32,0" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
-                    <StackPanel>
+                    <ScrollViewer.Resources>
+                        <!-- This section's rows, as its board draws them (#574): a label
+                             column 170 wide, a slider that takes the room its row has
+                             (each row here grows it), and the value with its unit at the
+                             right of a column 66 wide (each row here sets that), so the
+                             sliders of a card end at one line. Cards stand 12 apart.
+                             These shadow the page's styles for everything in this
+                             section. -->
+                        <Style x:Key="DzLabel" TargetType="TextBlock">
+                            <Setter Property="Width" Value="170"/>
+                            <Setter Property="Margin" Value="0,0,12,0"/>
+                            <Setter Property="TextWrapping" Value="Wrap"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+                        </Style>
+                        <Style x:Key="DzSubLabel" TargetType="TextBlock" BasedOn="{StaticResource DzLabel}">
+                            <Setter Property="Width" Value="154"/>
+                            <Setter Property="Margin" Value="16,0,12,0"/>
+                            <Setter Property="Foreground" Value="{DynamicResource SubRowTextBrush}"/>
+                        </Style>
+                        <Style x:Key="DzSlider" TargetType="Slider" BasedOn="{StaticResource EmberSlider}">
+                            <Setter Property="Minimum" Value="0"/>
+                            <Setter Property="Maximum" Value="100"/>
+                            <Setter Property="MinWidth" Value="60"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="IsSnapToTickEnabled" Value="True"/>
+                            <Setter Property="TickFrequency" Value="0.1"/>
+                        </Style>
+                        <Style x:Key="CardBorder" TargetType="Border" BasedOn="{StaticResource CardBorder}">
+                            <Setter Property="Margin" Value="0,0,0,12"/>
+                        </Style>
+                    </ScrollViewer.Resources>
+                    <!-- The groups side by side while each has 420 to itself,
+                         one under the other when the window is narrower, as
+                         the board wraps them. The groups of a row share the
+                         whole width. -->
+                    <controls:TileGridPanel MinItemWidth="420" Gap="16" RowGap="24" FillRows="True" Margin="0,24,0,24">
 
             <!-- The groups below were tabs of the page and keep that
                  indentation. -->
@@ -9699,116 +9735,46 @@
                  TAB 7: LIGHTING
                  (visible for DS4 / DualSense / DualSense Edge slots)
                  ══════════════════════════════════════ -->
-                    <StackPanel x:Name="TabLighting" Margin="0,16,0,16" Visibility="Collapsed">
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <controls:GlyphText Text="&#xE781;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
-                                       VerticalAlignment="Center" Margin="0,0,10,0"/>
-                            <TextBlock AutomationProperties.AutomationId="TabLighting" AutomationProperties.HeadingLevel="Level2" Text="{Binding Pad_Lighting_Header, Source={x:Static strings:Strings.Instance}}"
-                                       Style="{StaticResource TitleTextBlockStyle}" FontFamily="{StaticResource DisplayFontFamily}" FontWeight="650" FontSize="20"/>
-                        </StackPanel>
-                        <!-- Both header hints are lightbar prose, so they hide
-                             with the lightbar card when the tab is up for a
-                             guide-LED-only device (SyncTabVisibility). -->
-                        <TextBlock x:Name="LightingLightbarSubtitle"
-                                   Text="{Binding Pad_Lighting_Subtitle, Source={x:Static strings:Strings.Instance}}"
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                   TextWrapping="Wrap" Margin="0,0,0,4"/>
-                        <!-- Player-identity idle floor (#191): the tab states
-                             the default so an untouched pad showing a player
-                             color reads as designed behavior, not a mystery. -->
-                        <TextBlock x:Name="LightingPlayerIdleHint"
-                                   Text="{Binding Pad_Lighting_PlayerIdle_Hint, Source={x:Static strings:Strings.Instance}}"
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                   TextWrapping="Wrap" Margin="0,0,0,16"/>
+                    <GroupBox x:Name="TabLighting" Visibility="Collapsed" Style="{StaticResource BareGroupBox}"
+                              AutomationProperties.Name="{Binding Pad_Lighting_Header, Source={x:Static strings:Strings.Instance}}">
+                    <StackPanel>
+                        <!-- The group's label. Its tooltip holds what the group's
+                             paragraphs said: the lightbar's two for a pad with a
+                             lightbar (the second is the player-identity idle floor,
+                             #191: an untouched pad showing a player color reads as
+                             designed behavior), and the peripheral's for a mouse, a
+                             keyboard or a vendor lighting row (#494). SyncTabVisibility
+                             shows the ones that apply, and turns the tooltip off for a
+                             device that has neither, where it would open empty. -->
+                        <TextBlock x:Name="LightingGroupLabel" AutomationProperties.AutomationId="TabLighting" Text="{Binding Pad_Lighting_Header, Source={x:Static strings:Strings.Instance}}"
+                                   Style="{StaticResource SectionTitle}" Margin="0,0,0,12" HorizontalAlignment="Left">
+                            <TextBlock.ToolTip>
+                                <ToolTip>
+                                    <StackPanel MaxWidth="420">
+                                        <TextBlock x:Name="LightingLightbarSubtitle" TextWrapping="Wrap"
+                                                   Text="{Binding Pad_Lighting_Subtitle, Source={x:Static strings:Strings.Instance}}"/>
+                                        <TextBlock x:Name="LightingPlayerIdleHint" TextWrapping="Wrap" Margin="0,6,0,0"
+                                                   Text="{Binding Pad_Lighting_PlayerIdle_Hint, Source={x:Static strings:Strings.Instance}}"/>
+                                        <TextBlock x:Name="PeripheralLightingSubtitle" TextWrapping="Wrap" Visibility="Collapsed"
+                                                   Text="{Binding Pad_Lighting_PeripheralSubtitle, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+                                </ToolTip>
+                            </TextBlock.ToolTip>
+                        </TextBlock>
                         <!-- A DSX game mod setting these lights (#529). -->
                         <TextBlock Text="{Binding GameModLightsLine}" Visibility="{Binding GameModLightsLine, Converter={StaticResource StringToVisibility}}"
                                    Foreground="{DynamicResource EmberBrush}"
-                                   TextWrapping="Wrap" Margin="0,-8,0,16"/>
+                                   TextWrapping="Wrap" Margin="0,0,0,12"/>
 
-                        <!-- A mouse, keyboard or vendor lighting row (#494):
-                             this slot's lighting reaches it through the cards
-                             below, the way it reaches a DualSense. The route
-                             line names the path and who rules a shared one,
-                             the Force Feedback tab's ember line. Shown and
-                             filled by SyncTabVisibility. -->
-                        <StackPanel x:Name="PeripheralLightingPanel" Visibility="Collapsed" Margin="0,0,0,16">
-                            <TextBlock Text="{Binding Pad_Lighting_PeripheralSubtitle, Source={x:Static strings:Strings.Instance}}"
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                       TextWrapping="Wrap"/>
+                        <!-- A mouse, keyboard or vendor lighting row (#494): this
+                             slot's lighting reaches it through the cards below, the
+                             way it reaches a DualSense. The route line names the path
+                             and who rules a shared one, the Force Feedback group's
+                             ember line. Shown and filled by SyncTabVisibility. -->
+                        <StackPanel x:Name="PeripheralLightingPanel" Visibility="Collapsed">
                             <TextBlock x:Name="PeripheralLightingRoute" Visibility="Collapsed"
-                                       Foreground="{DynamicResource EmberBrush}" TextWrapping="Wrap" Margin="0,8,0,0"/>
+                                       Foreground="{DynamicResource EmberBrush}" TextWrapping="Wrap" Margin="0,0,0,12"/>
                         </StackPanel>
-
-                        <controls:FoldList>
-                        <!-- Lighting Control (#494, #557): whether this slot
-                             lights a mouse or keyboard row at all, and how
-                             firmly. The switch is per (slot, device) and
-                             starts off, so assigning a keyboard for its keys
-                             never repaints it. A vendor row or a unit row has
-                             no card: lighting is all it carries. A card of its
-                             own, as every setting on the tab sits in one: the
-                             Lighting Hold row's label column, measured below,
-                             is not the Lightbar card's. Shown by
-                             SyncTabVisibility with the switch. -->
-                        <controls:FoldCard x:Name="PeripheralLightingCard" StateKey="Pad.Lights.Control" Visibility="Collapsed"
-                                           Header="{Binding Pad_Lighting_ControlCard, Source={x:Static strings:Strings.Instance}}"
-                                           Hint="{Binding Pad_LightingControl_FoldHint, Source={x:Static strings:Strings.Instance}}">
-                            <controls:FoldCard.Summary>
-                                <MultiBinding Converter="{StaticResource OnOffTextConverter}">
-                                    <Binding Path="DeviceConfig.PeripheralLightingEnabled"/>
-                                    <Binding Path="Common_On" Source="{x:Static strings:Strings.Instance}"/>
-                                    <Binding Path="Common_Off" Source="{x:Static strings:Strings.Instance}"/>
-                                </MultiBinding>
-                            </controls:FoldCard.Summary>
-                            <StackPanel>
-                                <controls:SettingRow MinHeight="44" x:Name="PeripheralLightingControlRow">
-                                    <TextBlock Text="{Binding Pad_Lighting_ControlDevice, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                    <CheckBox Style="{StaticResource SwitchCheckBox}" VerticalAlignment="Center" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                              IsChecked="{Binding DeviceConfig.PeripheralLightingEnabled, Mode=TwoWay}"
-                                              Content="{Binding Pad_Lighting_ControlDevice, Source={x:Static strings:Strings.Instance}}"
-                                              ToolTip="{Binding Pad_Lighting_ControlDevice_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                    <reset:SettingResetButton Command="{Binding DeviceConfig.ResetPeripheralLightingEnabledCommand}" SettingLabel="{Binding Pad_Lighting_ControlDevice, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DeviceSlotConfig_PeripheralLightingEnabled"/>
-                                </controls:SettingRow>
-                                <!-- Lighting Hold (#494): how firmly this slot may
-                                     hold the device while it lights it, for a
-                                     Logitech device whose own power saving or saved
-                                     profile takes the color away. Per (slot, device)
-                                     like the switch above, and at its first option
-                                     until this tab says more. Shown for a device
-                                     that offers a hold, with the last option only
-                                     where the device offers that one, and with the
-                                     tooltip that stops before that option where it
-                                     does not (SyncTabVisibility). A vendor row or a
-                                     unit row never shows it.
-                                     Widths, measured (tools/combomeasure): the
-                                     widest option is the Spanish last one at
-                                     525.33px, so 534 leaves about 9px of slack, as
-                                     the Base Color card's pickers have. The label
-                                     takes the page's label column, 230 wide, so the
-                                     picker starts where every row's control starts.
-                                     The widest label is the Spanish one at 158px.
-                                     Re-measure if these strings change.
-                                     Typing a letter selects nothing here: it would
-                                     select the last option where that one is out
-                                     of the list. -->
-                                <controls:SettingRow MinHeight="44" x:Name="PeripheralClaimLevelRow" Visibility="Collapsed">
-                                    <TextBlock Text="{Binding Pad_Lighting_ClaimLevel, Source={x:Static strings:Strings.Instance}}"
-                                               Style="{StaticResource DzLabel}"/>
-                                    <ComboBox x:Name="PeripheralClaimLevelPicker"
-                                              SelectedIndex="{Binding DeviceConfig.PeripheralClaimLevel, Mode=TwoWay, Converter={StaticResource EnumIndexConverter}}"
-                                              Width="534" VerticalAlignment="Center" IsTextSearchEnabled="False"
-                                              ToolTip="{Binding Pad_Lighting_ClaimLevel_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                                              AutomationProperties.AutomationId="PeripheralClaimLevelCombo"
-                                              AutomationProperties.Name="{Binding Pad_Lighting_ClaimLevel, Source={x:Static strings:Strings.Instance}}">
-                                        <ComboBoxItem AutomationProperties.AutomationId="PeripheralClaimLevelColorsItem" Content="{Binding Pad_Lighting_ClaimLevel_Colors, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem AutomationProperties.AutomationId="PeripheralClaimLevelPowerItem" Content="{Binding Pad_Lighting_ClaimLevel_Power, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem x:Name="PeripheralClaimLevelHostModeItem" AutomationProperties.AutomationId="PeripheralClaimLevelHostModeItem" Content="{Binding Pad_Lighting_ClaimLevel_HostMode, Source={x:Static strings:Strings.Instance}}"/>
-                                    </ComboBox>
-                                    <reset:SettingResetButton Command="{Binding DeviceConfig.ResetPeripheralClaimLevelCommand}" SettingLabel="{Binding Pad_Lighting_ClaimLevel, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DeviceSlotConfig_PeripheralClaimLevel"/>
-                                </controls:SettingRow>
-                            </StackPanel>
-                        </controls:FoldCard>
-                        </controls:FoldList>
 
                         <!-- Unified lightbar mode picker. Replaces the
                              v3.0 BaseColor + AudioLightbar split. The
@@ -9825,8 +9791,6 @@
                         <Border x:Name="LightbarModeCard" Style="{StaticResource CardBorder}">
                             <StackPanel>
                                 <DockPanel LastChildFill="False" Margin="0,0,0,4">
-                                    <controls:GlyphText Text="&#xE790;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
-                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
                                     <TextBlock Text="{Binding Pad_Lighting_BaseColor, Source={x:Static strings:Strings.Instance}}"
                                                Style="{StaticResource CardTitle}"/>
                                     <ui:Button Command="{Binding DeviceConfig.ResetLightbarAllCommand}" Style="{StaticResource ResetAllButton}"
@@ -9889,7 +9853,7 @@
                                 </StackPanel>
 
                                 <!-- Mode picker -->
-                                <controls:SettingRow MinHeight="44">
+                                <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                     <TextBlock Text="{Binding Pad_Lighting_Mode, Source={x:Static strings:Strings.Instance}}"
                                                Style="{StaticResource DzLabel}"/>
                                     <!-- SelectedValue + Tag binding (rather than SelectedIndex
@@ -9913,7 +9877,7 @@
                                     <ComboBox SelectedValue="{Binding DeviceConfig.LightbarMode, Mode=TwoWay}"
                                               SelectedValuePath="Tag"
                                               AutomationProperties.AutomationId="LightingModeBox"
-                                              Width="444" VerticalAlignment="Center">
+                                              MaxWidth="444" controls:SettingRow.Fills="True" VerticalAlignment="Center">
                                         <ComboBoxItem Content="{Binding Pad_Lighting_Mode_PlayerNumber, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.PlayerNumber}"/>
                                         <ComboBoxItem Content="{Binding Pad_Lighting_Mode_Off, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.Off}"/>
                                         <ComboBoxItem Content="{Binding Pad_Lighting_Mode_Static, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.Static}"/>
@@ -9943,7 +9907,7 @@
                                      mode) and InputReactive Cycle (overlay). -->
 
                                 <!-- Period: Breathing / Rainbow / ColorCycle / AudioPulseRainbow / Strobe -->
-                                <controls:SettingRow MinHeight="44"
+                                <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44"
                                             Visibility="{Binding DeviceConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=Breathing|Rainbow|ColorCycle|AudioPulseRainbow|Strobe}">
                                     <TextBlock Text="{Binding Pad_Lighting_Period, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                     <Slider Value="{Binding DeviceConfig.LightbarPeriodMs, Mode=TwoWay}"
@@ -9957,7 +9921,7 @@
 
                                 <!-- Brightness: Rainbow only (no per-color picker so the
                                      user has no other way to dim the effect). -->
-                                <controls:SettingRow MinHeight="44"
+                                <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44"
                                             Visibility="{Binding DeviceConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=Rainbow}">
                                     <TextBlock Text="{Binding Pad_Lighting_RainbowBrightness, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                     <Slider Value="{Binding DeviceConfig.LightbarRainbowBrightness, Mode=TwoWay}"
@@ -9974,23 +9938,22 @@
                                      (ScreenColorSource), so these controls start nothing. -->
                                 <StackPanel Visibility="{Binding DeviceConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=ScreenColor}">
                                     <TextBlock Text="{Binding Pad_Lighting_ScreenHint, Source={x:Static strings:Strings.Instance}}"
-                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                               TextWrapping="Wrap" Margin="0,0,0,8"/>
+                                               Style="{StaticResource CardDescription}"/>
                                     <TextBlock x:Name="ScreenColorStatus" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                TextWrapping="Wrap" Margin="0,0,0,8" Visibility="Collapsed"/>
-                                    <controls:SettingRow MinHeight="44">
+                                    <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                         <TextBlock Text="{Binding Pad_Lighting_ScreenDisplay, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                         <ComboBox x:Name="ScreenColorDisplayBox" DisplayMemberPath="Label"
                                                   SelectionChanged="ScreenColorDisplayBox_SelectionChanged"
                                                   AutomationProperties.AutomationId="ScreenColorDisplayBox"
-                                                  Width="444" VerticalAlignment="Center"/>
+                                                  MaxWidth="444" controls:SettingRow.Fills="True" VerticalAlignment="Center"/>
                                         <ui:Button Command="{Binding DeviceConfig.ResetScreenColorDisplayCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetScreenColorDisplay, Source={x:Static strings:Strings.Instance}}"/>
                                     </controls:SettingRow>
-                                    <controls:SettingRow MinHeight="44">
+                                    <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                         <TextBlock Text="{Binding Pad_Lighting_ScreenArea, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                         <ComboBox SelectedValue="{Binding DeviceConfig.ScreenColorArea, Mode=TwoWay}" SelectedValuePath="Tag"
                                                   AutomationProperties.AutomationId="ScreenColorAreaBox"
-                                                  Width="444" VerticalAlignment="Center">
+                                                  MaxWidth="444" controls:SettingRow.Fills="True" VerticalAlignment="Center">
                                             <ComboBoxItem Content="{Binding Pad_Lighting_ScreenArea_WholeScreen, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:ScreenColorArea.WholeScreen}"/>
                                             <ComboBoxItem Content="{Binding Pad_Lighting_ScreenArea_TopLeft, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:ScreenColorArea.TopLeft}"/>
                                             <ComboBoxItem Content="{Binding Pad_Lighting_ScreenArea_Top, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:ScreenColorArea.Top}"/>
@@ -10006,7 +9969,7 @@
                                         <ui:Button Command="{Binding DeviceConfig.ResetScreenColorAreaCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetScreenColorArea, Source={x:Static strings:Strings.Instance}}"/>
                                     </controls:SettingRow>
                                     <StackPanel Visibility="{Binding DeviceConfig.ScreenColorArea, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=Custom}">
-                                    <controls:SettingRow MinHeight="44">
+                                    <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                         <TextBlock Text="{Binding Pad_Lighting_ScreenLeft, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                         <Slider Value="{Binding DeviceConfig.ScreenColorLeft, Mode=TwoWay}"
                                                 Style="{StaticResource DzSlider}"
@@ -10016,7 +9979,7 @@
                                         <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                         <ui:Button Command="{Binding DeviceConfig.ResetScreenColorLeftCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetScreenColorLeft, Source={x:Static strings:Strings.Instance}}"/>
                                     </controls:SettingRow>
-                                    <controls:SettingRow MinHeight="44">
+                                    <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                         <TextBlock Text="{Binding Pad_Lighting_ScreenTop, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                         <Slider Value="{Binding DeviceConfig.ScreenColorTop, Mode=TwoWay}"
                                                 Style="{StaticResource DzSlider}"
@@ -10026,7 +9989,7 @@
                                         <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                         <ui:Button Command="{Binding DeviceConfig.ResetScreenColorTopCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetScreenColorTop, Source={x:Static strings:Strings.Instance}}"/>
                                     </controls:SettingRow>
-                                    <controls:SettingRow MinHeight="44">
+                                    <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                         <TextBlock Text="{Binding Pad_Lighting_ScreenWidth, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                         <Slider Value="{Binding DeviceConfig.ScreenColorWidth, Mode=TwoWay}"
                                                 Style="{StaticResource DzSlider}"
@@ -10036,7 +9999,7 @@
                                         <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                         <ui:Button Command="{Binding DeviceConfig.ResetScreenColorWidthCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetScreenColorWidth, Source={x:Static strings:Strings.Instance}}"/>
                                     </controls:SettingRow>
-                                    <controls:SettingRow MinHeight="44">
+                                    <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                         <TextBlock Text="{Binding Pad_Lighting_ScreenHeight, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                         <Slider Value="{Binding DeviceConfig.ScreenColorHeight, Mode=TwoWay}"
                                                 Style="{StaticResource DzSlider}"
@@ -10047,16 +10010,16 @@
                                         <ui:Button Command="{Binding DeviceConfig.ResetScreenColorHeightCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetScreenColorHeight, Source={x:Static strings:Strings.Instance}}"/>
                                     </controls:SettingRow>
                                     </StackPanel>
-                                    <controls:SettingRow MinHeight="44">
+                                    <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                         <TextBlock Text="{Binding Pad_Lighting_ScreenMethod, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                         <ComboBox SelectedValue="{Binding DeviceConfig.ScreenColorMethod, Mode=TwoWay}" SelectedValuePath="Tag"
-                                                  Width="444" VerticalAlignment="Center">
+                                                  MaxWidth="444" controls:SettingRow.Fills="True" VerticalAlignment="Center">
                                             <ComboBoxItem Content="{Binding Pad_Lighting_ScreenMethod_MostCommon, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:ScreenColorMethod.MostCommon}"/>
                                             <ComboBoxItem Content="{Binding Pad_Lighting_ScreenMethod_Average, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:ScreenColorMethod.Average}"/>
                                         </ComboBox>
                                         <ui:Button Command="{Binding DeviceConfig.ResetScreenColorMethodCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetScreenColorMethod, Source={x:Static strings:Strings.Instance}}"/>
                                     </controls:SettingRow>
-                                    <controls:SettingRow MinHeight="44">
+                                    <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                         <TextBlock Text="{Binding Pad_Lighting_ScreenSaturation, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                         <Slider Value="{Binding DeviceConfig.ScreenColorSaturation, Mode=TwoWay}"
                                                 Style="{StaticResource DzSlider}"
@@ -10066,7 +10029,7 @@
                                         <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                         <ui:Button Command="{Binding DeviceConfig.ResetScreenColorSaturationCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetScreenColorSaturation, Source={x:Static strings:Strings.Instance}}"/>
                                     </controls:SettingRow>
-                                    <controls:SettingRow MinHeight="44">
+                                    <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                         <TextBlock Text="{Binding Pad_Lighting_RainbowBrightness, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                         <Slider Value="{Binding DeviceConfig.ScreenColorBrightness, Mode=TwoWay}"
                                                 Style="{StaticResource DzSlider}"
@@ -10076,7 +10039,7 @@
                                         <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                         <ui:Button Command="{Binding DeviceConfig.ResetScreenColorBrightnessCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetLightbarRainbowBrightness, Source={x:Static strings:Strings.Instance}}"/>
                                     </controls:SettingRow>
-                                    <controls:SettingRow MinHeight="44">
+                                    <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                         <TextBlock Text="{Binding Pad_Lighting_ScreenSmoothing, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                         <Slider Value="{Binding DeviceConfig.ScreenColorSmoothing, Mode=TwoWay}"
                                                 Style="{StaticResource DzSlider}"
@@ -10087,7 +10050,7 @@
                                         <ui:Button Command="{Binding DeviceConfig.ResetScreenColorSmoothingCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetScreenColorSmoothing, Source={x:Static strings:Strings.Instance}}"/>
                                     </controls:SettingRow>
                                     <!-- Only a device with more than one light has anything to spread across. -->
-                                    <controls:SettingRow MinHeight="44"
+                                    <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44"
                                                 Visibility="{Binding KeyColors.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <TextBlock Text="{Binding Pad_Lighting_ScreenSpread, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                         <CheckBox Style="{StaticResource SwitchCheckBox}" VerticalAlignment="Center" Foreground="{DynamicResource TextFillColorSecondaryBrush}" IsChecked="{Binding DeviceConfig.ScreenColorSpread, Mode=TwoWay}"
@@ -10097,7 +10060,7 @@
                                 </StackPanel>
 
                                 <!-- Smooth toggle (ColorCycle): blend or hop between palette colors -->
-                                <controls:SettingRow MinHeight="44" Visibility="{Binding DeviceConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=ColorCycle}">
+                                <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44" Visibility="{Binding DeviceConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=ColorCycle}">
                                     <TextBlock Text="{Binding Pad_Lighting_ColorCycleSmooth, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                     <CheckBox Style="{StaticResource SwitchCheckBox}" VerticalAlignment="Center" Foreground="{DynamicResource TextFillColorSecondaryBrush}" IsChecked="{Binding DeviceConfig.LightbarColorCycleSmooth, Mode=TwoWay}"
                                               Content="{Binding Pad_Lighting_ColorCycleSmooth, Source={x:Static strings:Strings.Instance}}"/>
@@ -10201,7 +10164,7 @@
                                 </StackPanel>
 
                                 <!-- Audio sensitivity: every Audio* mode -->
-                                <controls:SettingRow MinHeight="44"
+                                <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44"
                                             Visibility="{Binding DeviceConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=AudioPulse|AudioPulseRandom|AudioPulseRainbow|AudioThresholds|AudioGradient|AudioCrossFade}">
                                     <TextBlock Text="{Binding Pad_Lighting_AudioLightbar_Sensitivity, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                     <Slider Value="{Binding DeviceConfig.AudioLightbarSensitivity, Mode=TwoWay}"
@@ -10215,7 +10178,7 @@
                                 <!-- Audio band thresholds (settings). Moved out of the audio
                                      bands wrapper below so settings stay above colors. -->
                                 <StackPanel Visibility="{Binding DeviceConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=AudioThresholds|AudioGradient|AudioCrossFade}">
-                                    <controls:SettingRow MinHeight="44">
+                                    <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                         <TextBlock Text="{Binding Pad_Lighting_AudioLightbar_LowToMid, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                         <Slider Value="{Binding DeviceConfig.AudioLowToMidPercent, Mode=TwoWay}"
                                                 Style="{StaticResource DzSlider}"
@@ -10225,7 +10188,7 @@
                                         <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                         <ui:Button Command="{Binding DeviceConfig.ResetAudioLowToMidPercentCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetAudioLowToMidPercent, Source={x:Static strings:Strings.Instance}}"/>
                                     </controls:SettingRow>
-                                    <controls:SettingRow MinHeight="44">
+                                    <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                         <TextBlock Text="{Binding Pad_Lighting_AudioLightbar_MidToHigh, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                         <Slider Value="{Binding DeviceConfig.AudioMidToHighPercent, Mode=TwoWay}"
                                                 Style="{StaticResource DzSlider}"
@@ -10238,7 +10201,7 @@
                                 </StackPanel>
 
                                 <!-- Crossfade width (setting). Only meaningful in CrossFade mode -->
-                                <controls:SettingRow MinHeight="44"
+                                <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44"
                                             Visibility="{Binding DeviceConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=AudioCrossFade}">
                                     <TextBlock Text="{Binding Pad_Lighting_AudioLightbar_CrossFadeWidth, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                     <Slider Value="{Binding DeviceConfig.AudioCrossFadePercent, Mode=TwoWay}"
@@ -10465,15 +10428,12 @@
                                      and audio-band pickers. No standalone "reset all
                                      three" button. There's no precedent for one. -->
                                 <StackPanel Visibility="{Binding DeviceConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=Battery}">
-                                    <Grid Margin="0,4,0,8">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="8"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                        </Grid.ColumnDefinitions>
+                                    <!-- The blocks stand side by side while the card has the room
+                                         and wrap when it does not (#574). -->
+                                    <WrapPanel Margin="0,4,0,0">
 
                                         <!-- LOW (empty) color -->
-                                        <Border Grid.Column="0" Background="{DynamicResource ControlFillColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="12"
+                                        <Border Margin="0,0,8,8" Background="{DynamicResource ControlFillColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="12"
                                                 BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}">
                                             <StackPanel>
                                                 <TextBlock Text="{Binding Pad_Lighting_BatteryLowColor, Source={x:Static strings:Strings.Instance}}"
@@ -10521,7 +10481,7 @@
                                         </Border>
 
                                         <!-- HIGH (full) color -->
-                                        <Border Grid.Column="2" Background="{DynamicResource ControlFillColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="12"
+                                        <Border Margin="0,0,8,8" Background="{DynamicResource ControlFillColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="12"
                                                 BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}">
                                             <StackPanel>
                                                 <TextBlock Text="{Binding Pad_Lighting_BatteryHighColor, Source={x:Static strings:Strings.Instance}}"
@@ -10567,7 +10527,7 @@
                                                 </controls:SettingRow>
                                             </StackPanel>
                                         </Border>
-                                    </Grid>
+                                    </WrapPanel>
                                 </StackPanel>
 
                                 <!-- Audio bands: 3 colors with thresholds, only visible
@@ -10576,17 +10536,12 @@
                                      Lightbar border so the user has a single place
                                      to configure every effect mode. -->
                                 <StackPanel Visibility="{Binding DeviceConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=AudioThresholds|AudioGradient|AudioCrossFade}">
-                                    <Grid Margin="0,4,0,8">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="8"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="8"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                        </Grid.ColumnDefinitions>
+                                    <!-- The blocks stand side by side while the card has the room
+                                         and wrap when it does not (#574). -->
+                                    <WrapPanel Margin="0,4,0,0">
 
                                         <!-- LOW (quiet) color -->
-                                        <Border Grid.Column="0" Background="{DynamicResource ControlFillColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="12"
+                                        <Border Margin="0,0,8,8" Background="{DynamicResource ControlFillColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="12"
                                                 BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}">
                                             <StackPanel>
                                                 <TextBlock Text="{Binding Pad_Lighting_AudioLightbar_LowColor, Source={x:Static strings:Strings.Instance}}"
@@ -10642,7 +10597,7 @@
                                         </Border>
 
                                         <!-- MID (medium) color -->
-                                        <Border Grid.Column="2" Background="{DynamicResource ControlFillColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="12"
+                                        <Border Margin="0,0,8,8" Background="{DynamicResource ControlFillColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="12"
                                                 BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}">
                                             <StackPanel>
                                                 <TextBlock Text="{Binding Pad_Lighting_AudioLightbar_MidColor, Source={x:Static strings:Strings.Instance}}"
@@ -10698,7 +10653,7 @@
                                         </Border>
 
                                         <!-- HIGH (loud) color -->
-                                        <Border Grid.Column="4" Background="{DynamicResource ControlFillColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="12"
+                                        <Border Margin="0,0,8,8" Background="{DynamicResource ControlFillColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="12"
                                                 BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}">
                                             <StackPanel>
                                                 <TextBlock Text="{Binding Pad_Lighting_AudioLightbar_HighColor, Source={x:Static strings:Strings.Instance}}"
@@ -10752,16 +10707,10 @@
                                                 </controls:SettingRow>
                                             </StackPanel>
                                         </Border>
-                                    </Grid>
+                                    </WrapPanel>
 
                                 </StackPanel>
 
-                                <!-- More (#574): the settings fewer people change, opened in place. -->
-                                <controls:MoreRow x:Name="LightbarMore" StateKey="Pad.Lights.Lightbar.More"
-                                                  AutomationProperties.AutomationId="Pad_More_Lightbar"
-                                                  Header="{Binding Common_More, Source={x:Static strings:Strings.Instance}}"
-                                                  Hint="{Binding Pad_Lighting_InputReactive, Source={x:Static strings:Strings.Instance}}">
-                                    <StackPanel>
                                 <!-- Input Reactive overlay (v3.2+). Layered on top of the
                                      base mode above: a button-press flashes the chosen
                                      reactive color and decays back to the base. Off keeps
@@ -10771,12 +10720,14 @@
                                      (its picker is below). Placed at the bottom of the lightbar
                                      card so the LightbarMode dropdown's mode-specific
                                      settings sit immediately under it without the
-                                     InputReactive controls breaking up the visual flow. -->
-                                <controls:SettingRow MinHeight="44">
+                                     InputReactive controls breaking up the visual flow.
+                                     Always in view, as the board has it (#574): with
+                                     the overlay off it is this one row. -->
+                                <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                     <TextBlock Text="{Binding Pad_Lighting_InputReactive, Source={x:Static strings:Strings.Instance}}"
                                                Style="{StaticResource DzLabel}"/>
                                     <ComboBox SelectedIndex="{Binding DeviceConfig.InputReactiveMode, Mode=TwoWay, Converter={StaticResource EnumIndexConverter}}"
-                                              Width="444" VerticalAlignment="Center">
+                                              MaxWidth="444" controls:SettingRow.Fills="True" VerticalAlignment="Center">
                                         <ComboBoxItem Content="{Binding Pad_Lighting_InputReactive_Off, Source={x:Static strings:Strings.Instance}}"/>
                                         <ComboBoxItem Content="{Binding Pad_Lighting_InputReactive_Random, Source={x:Static strings:Strings.Instance}}"/>
                                         <ComboBoxItem Content="{Binding Pad_Lighting_InputReactive_Cycle, Source={x:Static strings:Strings.Instance}}"/>
@@ -10793,7 +10744,7 @@
                                      (which apply to every variant) read ahead of the
                                      variant-specific color block. -->
                                 <StackPanel Visibility="{Binding DeviceConfig.IsInputReactiveActive, Converter={StaticResource BoolToVisibilityConverter}}">
-                                    <controls:SettingRow MinHeight="44">
+                                    <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                         <TextBlock Text="{Binding Pad_Lighting_InputHold, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                         <Slider Value="{Binding DeviceConfig.LightbarInputHoldMs, Mode=TwoWay}"
                                                 Style="{StaticResource DzSlider}"
@@ -10803,7 +10754,7 @@
                                         <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzPercent}"/>
                                         <ui:Button Command="{Binding DeviceConfig.ResetLightbarInputHoldCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetLightbarInputHold, Source={x:Static strings:Strings.Instance}}"/>
                                     </controls:SettingRow>
-                                    <controls:SettingRow MinHeight="44">
+                                    <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                         <TextBlock Text="{Binding Pad_Lighting_InputDecay, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                         <Slider Value="{Binding DeviceConfig.LightbarInputDecayMs, Mode=TwoWay}"
                                                 Style="{StaticResource DzSlider}"
@@ -10944,8 +10895,6 @@
                                         </controls:SettingRow>
                                     </StackPanel>
                                 </Border>
-                                    </StackPanel>
-                                </controls:MoreRow>
                             </StackPanel>
                         </Border>
 
@@ -10960,22 +10909,19 @@
                         <Border x:Name="LedStripsCard" Style="{StaticResource CardBorder}" Visibility="Collapsed">
                             <StackPanel>
                                 <DockPanel LastChildFill="False" Margin="0,0,0,4">
-                                    <controls:GlyphText Text="&#xE7E8;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
-                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
                                     <TextBlock Text="{Binding Pad_Lighting_LedStrips, Source={x:Static strings:Strings.Instance}}"
-                                               Style="{StaticResource CardTitle}"/>
+                                               Style="{StaticResource CardTitle}"
+                                               ToolTip="{Binding Pad_Lighting_LedStrips_Description, Source={x:Static strings:Strings.Instance}}"/>
                                     <ui:Button Command="{Binding DeviceConfig.ResetLedStripCountsCommand}" Style="{StaticResource ResetAllButton}"
                                             Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
                                             ToolTip="{Binding Pad_Lighting_LedStrips_ResetAll, Source={x:Static strings:Strings.Instance}}"/>
                                 </DockPanel>
-                                <TextBlock Text="{Binding Pad_Lighting_LedStrips_Description, Source={x:Static strings:Strings.Instance}}"
-                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" Margin="0,0,0,8"/>
                                 <ItemsControl ItemsSource="{Binding LedStrips.Rows}" Focusable="False">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <controls:SettingRow MinHeight="44">
-                                                <TextBlock Text="{Binding Label}" Style="{StaticResource DzLabel}" Width="210"/>
-                                                <ui:NumberBox Width="200" Minimum="0" Maximum="{Binding Maximum}" SmallChange="1" VerticalAlignment="Center"
+                                            <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
+                                                <TextBlock Text="{Binding Label}" Style="{StaticResource DzLabel}"/>
+                                                <ui:NumberBox MaxWidth="200" controls:SettingRow.Fills="True" Minimum="0" Maximum="{Binding Maximum}" SmallChange="1" VerticalAlignment="Center"
                                                               Value="{Binding Leds, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                               ToolTip="{Binding Pad_Lighting_LedStrips_Tooltip, Source={x:Static strings:Strings.Instance}}"
                                                               AutomationProperties.Name="{Binding Label, TargetNullValue=''}"/>
@@ -11032,8 +10978,6 @@
                             </Border.Resources>
                             <StackPanel>
                                 <DockPanel LastChildFill="False" Margin="0,0,0,4">
-                                    <controls:GlyphText Text="&#xE765;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
-                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
                                     <TextBlock Text="{Binding KeyColors.Title}" Style="{StaticResource CardTitle}"/>
                                     <ui:Button Command="{Binding DeviceConfig.ResetKeyLightingCommand}" Style="{StaticResource ResetAllButton}"
                                             Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
@@ -11293,7 +11237,7 @@
                             </StackPanel>
                         </Border>
 
-                        <controls:FoldList>
+                        <controls:FoldList Gap="12">
                         <!-- Indicator LEDs. Player number row + mic mute LED.
                              Grouped under one section because they share the
                              firmware's single brightness register (byte 42).
@@ -11312,13 +11256,24 @@
                                         Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}"
                                         ToolTip="{Binding Pad_ResetIndicatorLeds, Source={x:Static strings:Strings.Instance}}"/>
                             </controls:FoldCard.HeaderAction>
+                            <!-- The line ends with the brightness that is set, by
+                                 the name its picker shows. The names are in the
+                                 picker's order. -->
+                            <controls:FoldCard.Summary>
+                                <MultiBinding Converter="{StaticResource IndexTextConverter}">
+                                    <Binding Path="DeviceConfig.PlayerLedBrightness"/>
+                                    <Binding Path="Pad_Lighting_PlayerLed_Brightness_High" Source="{x:Static strings:Strings.Instance}"/>
+                                    <Binding Path="Pad_Lighting_PlayerLed_Brightness_Medium" Source="{x:Static strings:Strings.Instance}"/>
+                                    <Binding Path="Pad_Lighting_PlayerLed_Brightness_Low" Source="{x:Static strings:Strings.Instance}"/>
+                                </MultiBinding>
+                            </controls:FoldCard.Summary>
                             <StackPanel>
 
                                 <!-- Shared brightness. Physically writes byte 42
                                      ledBrightness, which the DS5 firmware uses
                                      for the player LED row. Mute LED has only
                                      mode (Off / Solid / Pulse). No register. -->
-                                <controls:SettingRow MinHeight="44">
+                                <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                     <TextBlock Text="{Binding Pad_Lighting_LedBrightness, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                     <!-- Combo width standard: all four combos in this card
                                          share 340. Measured, not guessed: a real WPF-UI
@@ -11330,7 +11285,7 @@
                                          about 9px of slack. Re-measure if these strings or
                                          the pip row change (tools/combomeasure). -->
                                     <ComboBox SelectedIndex="{Binding DeviceConfig.PlayerLedBrightness, Mode=TwoWay, Converter={StaticResource EnumIndexConverter}}"
-                                              Width="340" VerticalAlignment="Center">
+                                              MaxWidth="340" controls:SettingRow.Fills="True" VerticalAlignment="Center">
                                         <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_Brightness_High, Source={x:Static strings:Strings.Instance}}"/>
                                         <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_Brightness_Medium, Source={x:Static strings:Strings.Instance}}"/>
                                         <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_Brightness_Low, Source={x:Static strings:Strings.Instance}}"/>
@@ -11350,7 +11305,7 @@
                                      combo's selection box instantiates its own copy of
                                      the template instead of stealing the popup item's
                                      visual. Content stays the localized string. -->
-                                <controls:SettingRow MinHeight="44">
+                                <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                     <TextBlock Text="{Binding Pad_Lighting_PlayerPattern, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                     <!-- SelectedValue + Tag binding (the LightbarMode combo's
                                          pattern): PlayerNumber (6) leads the list while Off (0)
@@ -11358,7 +11313,7 @@
                                          value and EnumIndexConverter can't apply. -->
                                     <ComboBox SelectedValue="{Binding DeviceConfig.PlayerLedMode, Mode=TwoWay}"
                                               SelectedValuePath="Tag"
-                                              Width="340" VerticalAlignment="Center">
+                                              MaxWidth="340" controls:SettingRow.Fills="True" VerticalAlignment="Center">
                                         <ComboBox.Resources>
                                             <Style x:Key="LedPipOn" TargetType="Ellipse">
                                                 <Setter Property="Width" Value="6"/>
@@ -11523,10 +11478,10 @@
                                 </controls:SettingRow>
 
                                 <!-- Mute LED mode -->
-                                <controls:SettingRow MinHeight="44">
+                                <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                     <TextBlock Text="{Binding Pad_Lighting_MuteLedMode, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                     <ComboBox SelectedIndex="{Binding DeviceConfig.MicLedMode, Mode=TwoWay, Converter={StaticResource EnumIndexConverter}}"
-                                              Width="340" VerticalAlignment="Center">
+                                              MaxWidth="340" controls:SettingRow.Fills="True" VerticalAlignment="Center">
                                         <ComboBoxItem Content="{Binding Pad_Lighting_MicLed_Off, Source={x:Static strings:Strings.Instance}}"/>
                                         <ComboBoxItem Content="{Binding Pad_Lighting_MicLed_Solid, Source={x:Static strings:Strings.Instance}}"/>
                                         <ComboBoxItem Content="{Binding Pad_Lighting_MicLed_Pulse, Source={x:Static strings:Strings.Instance}}"/>
@@ -11542,7 +11497,7 @@
                                      drives the LED Solid (muted) or Off (unmuted). The
                                      DropDownOpened handler refreshes the list so unplug /
                                      replug between settings opens is reflected. -->
-                                <controls:SettingRow MinHeight="44"
+                                <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44"
                                             Visibility="{Binding DeviceConfig.IsMicLedFollowDevice, Converter={StaticResource BoolToVisibilityConverter}}">
                                     <TextBlock Text="{Binding Pad_Lighting_MicLed_FollowDevice_Picker, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                     <ComboBox x:Name="MicLedDevicePicker"
@@ -11551,8 +11506,77 @@
                                               SelectedValuePath="Id"
                                               SelectedValue="{Binding DeviceConfig.MicLedFollowDeviceId, Mode=TwoWay}"
                                               DropDownOpened="MicLedDevicePicker_DropDownOpened"
-                                              Width="340" VerticalAlignment="Center"/>
+                                              MaxWidth="340" controls:SettingRow.Fills="True" VerticalAlignment="Center"/>
                                     <reset:SettingResetButton Command="{Binding DeviceConfig.ResetSettingCommand}" CommandParameter="MicLedFollowDeviceId" Visibility="{Binding Visibility, ElementName=MicLedDevicePicker}" SettingLabel="{Binding Pad_Lighting_MicLed_FollowDevice_Picker, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DeviceSlotConfig_MicLedFollowDeviceId_9489"/>
+                                </controls:SettingRow>
+                            </StackPanel>
+                        </controls:FoldCard>
+
+                        <!-- Lighting Control (#494, #557): whether this slot
+                             lights a mouse or keyboard row at all, and how
+                             firmly. The switch is per (slot, device) and
+                             starts off, so assigning a keyboard for its keys
+                             never repaints it. A vendor row or a unit row has
+                             no card: lighting is all it carries. A card of its
+                             own, as every setting on the tab sits in one: the
+                             Lighting Hold row's label column, measured below,
+                             is not the Lightbar card's. Shown by
+                             SyncTabVisibility with the switch. -->
+                        <controls:FoldCard x:Name="PeripheralLightingCard" StateKey="Pad.Lights.Control" Visibility="Collapsed"
+                                           Header="{Binding Pad_Lighting_ControlCard, Source={x:Static strings:Strings.Instance}}"
+                                           Hint="{Binding Pad_LightingControl_FoldHint, Source={x:Static strings:Strings.Instance}}">
+                            <controls:FoldCard.Summary>
+                                <MultiBinding Converter="{StaticResource OnOffTextConverter}">
+                                    <Binding Path="DeviceConfig.PeripheralLightingEnabled"/>
+                                    <Binding Path="Common_On" Source="{x:Static strings:Strings.Instance}"/>
+                                    <Binding Path="Common_Off" Source="{x:Static strings:Strings.Instance}"/>
+                                </MultiBinding>
+                            </controls:FoldCard.Summary>
+                            <StackPanel>
+                                <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44" x:Name="PeripheralLightingControlRow">
+                                    <TextBlock Text="{Binding Pad_Lighting_ControlDevice, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <CheckBox Style="{StaticResource SwitchCheckBox}" VerticalAlignment="Center" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                              IsChecked="{Binding DeviceConfig.PeripheralLightingEnabled, Mode=TwoWay}"
+                                              Content="{Binding Pad_Lighting_ControlDevice, Source={x:Static strings:Strings.Instance}}"
+                                              ToolTip="{Binding Pad_Lighting_ControlDevice_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <reset:SettingResetButton Command="{Binding DeviceConfig.ResetPeripheralLightingEnabledCommand}" SettingLabel="{Binding Pad_Lighting_ControlDevice, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DeviceSlotConfig_PeripheralLightingEnabled"/>
+                                </controls:SettingRow>
+                                <!-- Lighting Hold (#494): how firmly this slot may
+                                     hold the device while it lights it, for a
+                                     Logitech device whose own power saving or saved
+                                     profile takes the color away. Per (slot, device)
+                                     like the switch above, and at its first option
+                                     until this tab says more. Shown for a device
+                                     that offers a hold, with the last option only
+                                     where the device offers that one, and with the
+                                     tooltip that stops before that option where it
+                                     does not (SyncTabVisibility). A vendor row or a
+                                     unit row never shows it.
+                                     Widths, measured (tools/combomeasure): the
+                                     widest option is the Spanish last one at
+                                     525.33px, so 534 leaves about 9px of slack, as
+                                     the Base Color card's pickers have. The label
+                                     takes the page's label column, 230 wide, so the
+                                     picker starts where every row's control starts.
+                                     The widest label is the Spanish one at 158px.
+                                     Re-measure if these strings change.
+                                     Typing a letter selects nothing here: it would
+                                     select the last option where that one is out
+                                     of the list. -->
+                                <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44" x:Name="PeripheralClaimLevelRow" Visibility="Collapsed">
+                                    <TextBlock Text="{Binding Pad_Lighting_ClaimLevel, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource DzLabel}"/>
+                                    <ComboBox x:Name="PeripheralClaimLevelPicker"
+                                              SelectedIndex="{Binding DeviceConfig.PeripheralClaimLevel, Mode=TwoWay, Converter={StaticResource EnumIndexConverter}}"
+                                              MaxWidth="534" controls:SettingRow.Fills="True" VerticalAlignment="Center" IsTextSearchEnabled="False"
+                                              ToolTip="{Binding Pad_Lighting_ClaimLevel_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                              AutomationProperties.AutomationId="PeripheralClaimLevelCombo"
+                                              AutomationProperties.Name="{Binding Pad_Lighting_ClaimLevel, Source={x:Static strings:Strings.Instance}}">
+                                        <ComboBoxItem AutomationProperties.AutomationId="PeripheralClaimLevelColorsItem" Content="{Binding Pad_Lighting_ClaimLevel_Colors, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem AutomationProperties.AutomationId="PeripheralClaimLevelPowerItem" Content="{Binding Pad_Lighting_ClaimLevel_Power, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem x:Name="PeripheralClaimLevelHostModeItem" AutomationProperties.AutomationId="PeripheralClaimLevelHostModeItem" Content="{Binding Pad_Lighting_ClaimLevel_HostMode, Source={x:Static strings:Strings.Instance}}"/>
+                                    </ComboBox>
+                                    <reset:SettingResetButton Command="{Binding DeviceConfig.ResetPeripheralClaimLevelCommand}" SettingLabel="{Binding Pad_Lighting_ClaimLevel, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DeviceSlotConfig_PeripheralClaimLevel"/>
                                 </controls:SettingRow>
                             </StackPanel>
                         </controls:FoldCard>
@@ -11585,10 +11609,10 @@
                                 <!-- Mode. Sequential enum, so SelectedIndex +
                                      EnumIndexConverter like the brightness combo
                                      on the indicator-LEDs card. -->
-                                <controls:SettingRow MinHeight="44">
+                                <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                     <TextBlock Text="{Binding Pad_Lighting_Mode, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                     <ComboBox SelectedIndex="{Binding DeviceConfig.GuideLedMode, Mode=TwoWay, Converter={StaticResource EnumIndexConverter}}"
-                                              Width="340" VerticalAlignment="Center"
+                                              MaxWidth="340" controls:SettingRow.Fills="True" VerticalAlignment="Center"
                                               ToolTip="{Binding Pad_Lighting_GuideLed_Mode_Tooltip, Source={x:Static strings:Strings.Instance}}">
                                         <ComboBoxItem Content="{Binding Pad_Lighting_GuideLed_DeviceDefault, Source={x:Static strings:Strings.Instance}}"/>
                                         <ComboBoxItem Content="{Binding Pad_Lighting_GuideLed_Fixed, Source={x:Static strings:Strings.Instance}}"/>
@@ -11599,15 +11623,15 @@
 
                                 <!-- Brightness, Fixed mode only. Battery mode
                                      derives its level from the charge percent. -->
-                                <controls:SettingRow MinHeight="44"
+                                <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44"
                                             Visibility="{Binding DeviceConfig.IsGuideLedFixed, Converter={StaticResource BoolToVisibilityConverter}}">
                                     <TextBlock Text="{Binding Pad_Lighting_GuideLed_Brightness, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                     <Slider Value="{Binding DeviceConfig.GuideLedBrightness, Mode=TwoWay}" Minimum="0" Maximum="100"
-                                            Width="180" VerticalAlignment="Center"
+                                            MinWidth="60" VerticalAlignment="Center"
                                             ToolTip="{Binding Pad_Lighting_GuideLed_Brightness_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <TextBox Text="{Binding DeviceConfig.GuideLedBrightness, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                              Style="{StaticResource DzValueEdit}"/>
-                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="%" VerticalAlignment="Center" Margin="2,0,0,0"/>
+                                    <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                     <ui:Button Command="{Binding DeviceConfig.ResetGuideLedBrightnessCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetGuideLedBrightness, Source={x:Static strings:Strings.Instance}}"/>
                                 </controls:SettingRow>
                             </StackPanel>
@@ -11615,40 +11639,33 @@
                         </controls:FoldList>
 
                     </StackPanel>
+                    </GroupBox>
 
             <!-- === TAB 12: Audio (slot-level, issue #83) === -->
-                    <StackPanel x:Name="TabAudio" Margin="0,16,0,16" Visibility="Collapsed">
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <controls:GlyphText Text="&#xE767;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
-                                       VerticalAlignment="Center" Margin="0,0,10,0"/>
-                            <TextBlock AutomationProperties.AutomationId="TabAudio" AutomationProperties.HeadingLevel="Level2" Text="{Binding Pad_Audio_Header, Source={x:Static strings:Strings.Instance}}"
-                                       Style="{StaticResource TitleTextBlockStyle}" FontFamily="{StaticResource DisplayFontFamily}" FontWeight="650" FontSize="20"/>
-                        </StackPanel>
-                        <TextBlock Text="{Binding Pad_Audio_Subtitle, Source={x:Static strings:Strings.Instance}}"
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                   TextWrapping="Wrap" Margin="0,0,0,16"/>
+                    <GroupBox x:Name="TabAudio" Visibility="Collapsed" Style="{StaticResource BareGroupBox}"
+                              AutomationProperties.Name="{Binding Pad_Audio_Header, Source={x:Static strings:Strings.Instance}}">
+                    <StackPanel>
+                        <TextBlock AutomationProperties.AutomationId="TabAudio" Text="{Binding Pad_Audio_Header, Source={x:Static strings:Strings.Instance}}"
+                                   Style="{StaticResource SectionTitle}" Margin="0,0,0,12" HorizontalAlignment="Left"
+                                   ToolTip="{Binding Pad_Audio_Subtitle, Source={x:Static strings:Strings.Instance}}"/>
 
                         <!-- Sound Output card -->
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
                                 <DockPanel LastChildFill="False" Margin="0,0,0,4">
-                                    <controls:GlyphText Text="&#xE7F5;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
-                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
                                     <TextBlock Text="{Binding Pad_Audio_Output_Header, Source={x:Static strings:Strings.Instance}}"
-                                               Style="{StaticResource CardTitle}"/>
+                                               Style="{StaticResource CardTitle}"
+                                               ToolTip="{Binding Pad_Audio_Output_Desc, Source={x:Static strings:Strings.Instance}}"/>
                                     <ui:Button Command="{Binding ResetSoundOutputAllCommand}" Style="{StaticResource ResetAllButton}"
                                             Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
                                             ToolTip="{Binding Pad_Audio_Reset_All, Source={x:Static strings:Strings.Instance}}"/>
                                 </DockPanel>
 
-                                <TextBlock Text="{Binding Pad_Audio_Output_Desc, Source={x:Static strings:Strings.Instance}}"
-                                           Style="{StaticResource CardDescription}"/>
-
                                 <TextBlock Text="{Binding Pad_Audio_NoSpeaker, Source={x:Static strings:Strings.Instance}}"
                                            Style="{StaticResource CardDescription}"
                                            Visibility="{Binding SelectedDeviceHasNoSpeaker, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
-                                <controls:SettingRow MinHeight="44">
+                                <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                     <TextBlock Text="{Binding Pad_Audio_MasterVolume, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                     <Slider Value="{Binding SoundMasterVolume, Mode=TwoWay}" Minimum="0" Maximum="100" Style="{StaticResource DzSlider}"/>
                                     <TextBox Text="{Binding SoundMasterVolume, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
@@ -11660,9 +11677,9 @@
                                 <!-- Per assigned device, by convention: this toggle (and the
                                      speaker routing of macro sounds) follows the device selected
                                      in the assigned-devices dropdown. No output picker. -->
-                                <controls:SettingRow MinHeight="44"
+                                <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44"
                                             Visibility="{Binding SelectedDeviceHasSpeaker, Converter={StaticResource BoolToVisibilityConverter}}">
-                                    <TextBlock Text="{Binding Pad_Audio_Mirror, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <TextBlock Text="{Binding Pad_Audio_Mirror, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}" Width="290"/>
                                     <CheckBox Style="{StaticResource SwitchCheckBox}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" IsChecked="{Binding DeviceConfig.AudioPassthroughEnabled, Mode=TwoWay}"
                                               Content="{Binding Pad_Audio_Mirror, Source={x:Static strings:Strings.Instance}}"
                                               ToolTip="{Binding Pad_Audio_Mirror_Tooltip, Source={x:Static strings:Strings.Instance}}"
@@ -11680,10 +11697,10 @@
                                 <!-- Mirror SOURCE: which playback device feeds the mirror.
                                      "" = system default. Lets games that send specific
                                      sounds to a separate playback device target the pad. -->
-                                <controls:SettingRow MinHeight="44" Margin="20,0,0,0"
+                                <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44"
                                             Visibility="{Binding SelectedDeviceHasSpeaker, Converter={StaticResource BoolToVisibilityConverter}}">
-                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Audio_MirrorSource_Label, Source={x:Static strings:Strings.Instance}}"
-                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Pad_Audio_MirrorSource_Label, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzSubLabel}"
+                                              />
                                     <!-- SelectedValuePath/DisplayMemberPath MUST precede the
                                          ItemsSource/SelectedValue bindings: XAML applies
                                          attributes in order, and a SelectedValue that attaches
@@ -11692,7 +11709,7 @@
                                     <ComboBox SelectedValuePath="Id" DisplayMemberPath="Name"
                                               ItemsSource="{Binding MirrorSourceOptions}"
                                               SelectedValue="{Binding SelectedMirrorSourceId, Mode=TwoWay}"
-                                              MinWidth="260" MaxWidth="380"
+                                              MaxWidth="380" controls:SettingRow.Fills="True"
                                               DropDownOpened="MirrorSource_DropDownOpened"
                                               IsEnabled="{Binding DeviceConfig.AudioPassthroughEnabled}"
                                               ToolTip="{Binding Pad_Audio_MirrorSource_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
@@ -11705,14 +11722,14 @@
                                      way a real speaker is not. Always / While an input is
                                      held / While the game rumbles, with a release delay so
                                      the tone does not clip off the instant the source drops. -->
-                                <StackPanel Margin="20,0,0,8"
+                                <StackPanel Margin="0,0,0,8"
                                             Visibility="{Binding SelectedDeviceHasHapticTones, Converter={StaticResource BoolToVisibilityConverter}}">
-                                    <controls:SettingRow MinHeight="44">
-                                        <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Audio_Engage_Label, Source={x:Static strings:Strings.Instance}}"
-                                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
+                                        <TextBlock Text="{Binding Pad_Audio_Engage_Label, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzSubLabel}"
+                                                  />
                                         <ComboBox SelectedValuePath="Tag"
                                                   SelectedValue="{Binding DeviceConfig.AudioMirrorEngageMode, Mode=TwoWay}"
-                                                  MinWidth="220"
+                                                  MaxWidth="260" controls:SettingRow.Fills="True"
                                                   IsEnabled="{Binding DeviceConfig.AudioPassthroughEnabled}"
                                                   ToolTip="{Binding Pad_Audio_Engage_Tooltip, Source={x:Static strings:Strings.Instance}}">
                                             <ComboBoxItem Content="{Binding Pad_Audio_Engage_Always, Source={x:Static strings:Strings.Instance}}" Tag="Always"/>
@@ -11725,7 +11742,7 @@
                                     <!-- Engage input picker, Input mode only. Same grouped
                                          cross-device list + device-label subtitle as the
                                          gyro Aim Engage picker. -->
-                                    <controls:SettingRow MinHeight="44">
+                                    <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                         <controls:SettingRow.Style>
                                             <Style TargetType="controls:SettingRow">
                                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -11736,8 +11753,8 @@
                                                 </Style.Triggers>
                                             </Style>
                                         </controls:SettingRow.Style>
-                                        <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Audio_EngageInput_Label, Source={x:Static strings:Strings.Instance}}"
-                                                   VerticalAlignment="Top" Margin="0,4,8,0"/>
+                                        <TextBlock Text="{Binding Pad_Audio_EngageInput_Label, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzSubLabel}"
+                                                   VerticalAlignment="Top" Margin="16,4,12,0"/>
                                         <StackPanel Orientation="Vertical">
                                             <ComboBox ItemsSource="{Binding SlotAvailableInputsView}"
                                                       SelectedItem="{Binding MirrorEngageSelectedInput, Mode=TwoWay}"
@@ -11790,7 +11807,7 @@
                                                 ToolTip="{Binding Pad_ResetMirrorEngageInput, Source={x:Static strings:Strings.Instance}}"/>
                                     </controls:SettingRow>
                                     <!-- Release delay, any gated mode. -->
-                                    <controls:SettingRow MinHeight="44">
+                                    <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                         <controls:SettingRow.Style>
                                             <Style TargetType="controls:SettingRow">
                                                 <Setter Property="Visibility" Value="Visible"/>
@@ -11801,13 +11818,12 @@
                                                 </Style.Triggers>
                                             </Style>
                                         </controls:SettingRow.Style>
-                                        <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Audio_EngageRelease_Label, Source={x:Static strings:Strings.Instance}}"
-                                                   VerticalAlignment="Center" Margin="0,0,8,0"
+                                        <TextBlock Text="{Binding Pad_Audio_EngageRelease_Label, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzSubLabel}"
                                                    ToolTip="{Binding Pad_Audio_EngageRelease_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                         <TextBox Text="{Binding DeviceConfig.AudioMirrorEngageReleaseMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                  Width="64" VerticalAlignment="Center"
                                                  IsEnabled="{Binding DeviceConfig.AudioPassthroughEnabled}"/>
-                                        <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="ms" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                        <TextBlock Text="ms" Style="{StaticResource DzPercent}"/>
                                         <ui:Button Command="{Binding ResetMirrorEngageReleaseMsCommand}" Style="{StaticResource ResetButton}"
                                                 ToolTip="{Binding Pad_ResetMirrorEngageRelease, Source={x:Static strings:Strings.Instance}}"/>
                                     </controls:SettingRow>
@@ -11821,12 +11837,12 @@
                                      macro sounds are filtered too, so no IsEnabled gate. -->
                                 <StackPanel Margin="0,0,0,8"
                                             Visibility="{Binding SelectedDeviceHasHapticTones, Converter={StaticResource BoolToVisibilityConverter}}">
-                                    <controls:SettingRow MinHeight="44">
-                                        <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Audio_ToneFilter_Label, Source={x:Static strings:Strings.Instance}}"
-                                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
+                                        <TextBlock Text="{Binding Pad_Audio_ToneFilter_Label, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                                  />
                                         <ComboBox SelectedValuePath="Tag"
                                                   SelectedValue="{Binding DeviceConfig.AudioToneFilterMode, Mode=TwoWay}"
-                                                  MinWidth="220"
+                                                  MaxWidth="260" controls:SettingRow.Fills="True"
                                                   ToolTip="{Binding Pad_Audio_ToneFilter_Tooltip, Source={x:Static strings:Strings.Instance}}">
                                             <ComboBoxItem Content="{Binding Pad_Audio_ToneFilter_Off, Source={x:Static strings:Strings.Instance}}" Tag="Off"/>
                                             <ComboBoxItem Content="{Binding Pad_Audio_ToneFilter_Cut, Source={x:Static strings:Strings.Instance}}" Tag="Cut"/>
@@ -11839,7 +11855,7 @@
                                          cutoff's 20-200 by design: midtones stay in the
                                          default pass band, 800 keeps engine and shot
                                          rumble, folds or cuts only beeps above. -->
-                                    <controls:SettingRow MinHeight="44">
+                                    <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                         <controls:SettingRow.Style>
                                             <Style TargetType="controls:SettingRow">
                                                 <Setter Property="Visibility" Value="Visible"/>
@@ -11864,7 +11880,7 @@
                                          when a game drives this slot's virtual DualSense
                                          with authored haptic audio, render it here through
                                          the tone chain. -->
-                                    <controls:SettingRow MinHeight="44">
+                                    <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                         <TextBlock Text="{Binding Pad_Audio_PersonaHaptics_Label, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                         <CheckBox Style="{StaticResource SwitchCheckBox}" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                   Content="{Binding Pad_Audio_PersonaHaptics_Label, Source={x:Static strings:Strings.Instance}}"
@@ -11873,7 +11889,7 @@
                                         <ui:Button Command="{Binding ResetPersonaHapticsCommand}" Style="{StaticResource ResetButton}"
                                                 ToolTip="{Binding Pad_ResetPersonaHaptics, Source={x:Static strings:Strings.Instance}}"/>
                                     </controls:SettingRow>
-                                    <controls:SettingRow MinHeight="44"
+                                    <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44"
                                                 Visibility="{Binding DeviceConfig.AudioPersonaHapticsEnabled, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <TextBlock Text="{Binding Pad_Audio_PersonaHapticsGain_Label, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                         <Slider Value="{Binding DeviceConfig.AudioPersonaHapticsGain, Mode=TwoWay}" Minimum="25" Maximum="300"
@@ -11888,7 +11904,7 @@
                                          the PCM-capable transports (wired / dongle) show
                                          it. The stream keeps actuator content below this
                                          cutoff so the pads move instead of singing. -->
-                                    <controls:SettingRow MinHeight="44"
+                                    <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44"
                                                 Visibility="{Binding SelectedDeviceIsTritonPcm, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <TextBlock Text="{Binding Pad_Audio_TritonLowPass_Label, Source={x:Static strings:Strings.Instance}}"
                                                    ToolTip="{Binding Pad_Audio_TritonLowPass_Tooltip, Source={x:Static strings:Strings.Instance}}"
@@ -11910,7 +11926,7 @@
                                      written into the pad's firmware register, so it holds
                                      with no app in the loop. HeadphoneVolumeUp/Down macro
                                      actions step this same setting. -->
-                                <controls:SettingRow MinHeight="44"
+                                <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44"
                                             Visibility="{Binding SelectedDeviceHasHeadphoneJack, Converter={StaticResource BoolToVisibilityConverter}}">
                                     <TextBlock Text="{Binding Pad_Audio_HeadphoneVolume, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
                                                ToolTip="{Binding Pad_Audio_HeadphoneVolume_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
@@ -11935,7 +11951,7 @@
                                      well as the model. Gating it on the jack rows alone
                                      (4.3.2 docs sweep) still left the slider showing on a
                                      USB DualSense, where nothing reads it. -->
-                                <controls:SettingRow MinHeight="44"
+                                <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44"
                                             Visibility="{Binding SelectedDeviceHasDs5AudioBuffer, Converter={StaticResource BoolToVisibilityConverter}}">
                                     <TextBlock Text="{Binding Pad_Audio_BufferLength, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
                                                ToolTip="{Binding Pad_Audio_BufferLength_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
@@ -11960,11 +11976,11 @@
                                      item keeps its index so the stored enum keeps its meaning.
                                      A DualShock 4 on USB takes the list too (#546): feature
                                      report 0xE0 routes its USB audio, and it plays both. -->
-                                <controls:SettingRow MinHeight="44"
+                                <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44"
                                             Visibility="{Binding SelectedDeviceHasOutputPath, Converter={StaticResource BoolToVisibilityConverter}}">
                                     <TextBlock Text="{Binding Pad_Audio_OutputPath, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                     <ComboBox SelectedIndex="{Binding DeviceConfig.AudioOutputPath, Mode=TwoWay, Converter={StaticResource EnumIndexConverter}}"
-                                              Width="340" VerticalAlignment="Center"
+                                              MaxWidth="340" controls:SettingRow.Fills="True" VerticalAlignment="Center"
                                               ToolTip="{Binding Pad_Audio_OutputPath_Tooltip, Source={x:Static strings:Strings.Instance}}">
                                         <ComboBoxItem Content="{Binding Pad_Audio_OutputPath_Auto, Source={x:Static strings:Strings.Instance}}"/>
                                         <ComboBoxItem Content="{Binding Pad_Audio_OutputPath_Stereo, Source={x:Static strings:Strings.Instance}}"/>
@@ -11995,11 +12011,11 @@
                                 <StackPanel Visibility="{Binding SelectedDeviceHasDspChain, Converter={StaticResource BoolToVisibilityConverter}}">
 
                                     <!-- Crossfeed -->
-                                    <controls:SettingRow MinHeight="44">
+                                    <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                         <TextBlock Text="{Binding Pad_Audio_Crossfeed, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
                                                    ToolTip="{Binding Pad_Audio_Crossfeed_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                         <ComboBox SelectedIndex="{Binding DeviceConfig.AudioCrossfeedLevel, Mode=TwoWay}"
-                                                  Width="340" VerticalAlignment="Center"
+                                                  MaxWidth="340" controls:SettingRow.Fills="True" VerticalAlignment="Center"
                                                   ToolTip="{Binding Pad_Audio_Crossfeed_Tooltip, Source={x:Static strings:Strings.Instance}}">
                                             <!-- The spec suffix is deliberately NOT localized:
                                                  "Jan Meier" and "C. Moy" are people's names and
@@ -12070,7 +12086,7 @@
                                          Custom, because at every preset the pair comes from
                                          the preset and editing it would be a lie. -->
                                     <StackPanel Visibility="{Binding DeviceConfig.AudioCrossfeedIsCustom, Converter={StaticResource BoolToVisibilityConverter}}">
-                                        <controls:SettingRow MinHeight="44">
+                                        <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                             <TextBlock Text="{Binding Pad_Audio_CrossfeedCut, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
                                                        ToolTip="{Binding Pad_Audio_CrossfeedCut_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             <Slider Value="{Binding DeviceConfig.AudioCrossfeedCutHz, Mode=TwoWay}" Minimum="300" Maximum="2000"
@@ -12081,7 +12097,7 @@
                                             <ui:Button Command="{Binding ResetCrossfeedCutCommand}" Style="{StaticResource ResetButton}"
                                                        ToolTip="{Binding Pad_Audio_Reset_CrossfeedCut, Source={x:Static strings:Strings.Instance}}"/>
                                         </controls:SettingRow>
-                                        <controls:SettingRow MinHeight="44">
+                                        <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                             <TextBlock Text="{Binding Pad_Audio_CrossfeedFeed, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
                                                        ToolTip="{Binding Pad_Audio_CrossfeedFeed_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             <Slider Value="{Binding DeviceConfig.AudioCrossfeedFeedDb, Mode=TwoWay}" Minimum="1" Maximum="15"
@@ -12096,7 +12112,7 @@
                                     </StackPanel>
 
                                     <!-- Parametric EQ -->
-                                    <controls:SettingRow MinHeight="44">
+                                    <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                         <TextBlock Text="{Binding Pad_Audio_Eq, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                         <CheckBox Style="{StaticResource SwitchCheckBox}" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                   Content="{Binding Pad_Audio_Eq, Source={x:Static strings:Strings.Instance}}"
@@ -12106,7 +12122,7 @@
                                                    ToolTip="{Binding Pad_Audio_Reset_Eq, Source={x:Static strings:Strings.Instance}}"/>
                                     </controls:SettingRow>
                                     <StackPanel Visibility="{Binding DeviceConfig.AudioEqEnabled, Converter={StaticResource BoolToVisibilityConverter}}">
-                                        <controls:SettingRow MinHeight="44">
+                                        <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                             <TextBlock Text="{Binding Pad_Audio_EqPreamp, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
                                                        ToolTip="{Binding Pad_Audio_EqPreamp_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             <Slider Value="{Binding DeviceConfig.AudioEqPreampDb, Mode=TwoWay}" Minimum="-30" Maximum="12"
@@ -12248,7 +12264,7 @@
                                     </StackPanel>
 
                                     <!-- Limiter -->
-                                    <controls:SettingRow MinHeight="44">
+                                    <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                         <TextBlock Text="{Binding Pad_Audio_Limiter, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                         <CheckBox Style="{StaticResource SwitchCheckBox}" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                   Content="{Binding Pad_Audio_Limiter, Source={x:Static strings:Strings.Instance}}"
@@ -12257,7 +12273,7 @@
                                         <ui:Button Command="{Binding ResetLimiterCommand}" Style="{StaticResource ResetButton}"
                                                    ToolTip="{Binding Pad_Audio_Reset_Limiter, Source={x:Static strings:Strings.Instance}}"/>
                                     </controls:SettingRow>
-                                    <controls:SettingRow MinHeight="44"
+                                    <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44"
                                                 Visibility="{Binding DeviceConfig.AudioLimiterEnabled, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <TextBlock Text="{Binding Pad_Audio_LimiterCeiling, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
                                                    ToolTip="{Binding Pad_Audio_LimiterCeiling_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
@@ -12288,16 +12304,13 @@
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
                                 <DockPanel LastChildFill="False" Margin="0,0,0,4">
-                                    <controls:GlyphText Text="&#xEC4F;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
-                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
                                     <TextBlock Text="{Binding Pad_Audio_Macros_Header, Source={x:Static strings:Strings.Instance}}"
-                                               Style="{StaticResource CardTitle}"/>
+                                               Style="{StaticResource CardTitle}"
+                                               ToolTip="{Binding Pad_Audio_Macros_Desc, Source={x:Static strings:Strings.Instance}}"/>
                                 </DockPanel>
-                                <TextBlock Text="{Binding Pad_Audio_Macros_Desc, Source={x:Static strings:Strings.Instance}}"
-                                           Style="{StaticResource CardDescription}"/>
                                 <Button Content="{Binding Pad_Audio_NewSoundMacro, Source={x:Static strings:Strings.Instance}}"
-                                        Command="{Binding AddSoundMacroCommand}" Padding="10,4" HorizontalAlignment="Left"
-                                        Margin="0,0,0,8"/>
+                                        Command="{Binding AddSoundMacroCommand}" MinHeight="36" Padding="14,0" HorizontalAlignment="Left"
+                                        Margin="0,4,0,8"/>
                                 <TextBlock Text="{Binding Pad_Audio_NoSoundMacros, Source={x:Static strings:Strings.Instance}}"
                                            Style="{StaticResource CardDescription}"
                                            Visibility="{Binding HasNoSoundMacros, Converter={StaticResource BoolToVisibilityConverter}}"/>
@@ -12321,7 +12334,7 @@
                             </StackPanel>
                         </Border>
 
-                        <controls:FoldList>
+                        <controls:FoldList Gap="12">
                         <!-- Sound Packages card -->
                         <controls:FoldCard x:Name="SoundPackagesFoldCard" StateKey="Pad.Sound.Packages"
                                            Header="{Binding Pad_Audio_Packages_Header, Source={x:Static strings:Strings.Instance}}"
@@ -12360,7 +12373,8 @@
                         </controls:FoldCard>
                         </controls:FoldList>
                     </StackPanel>
-                    </StackPanel>
+                    </GroupBox>
+                    </controls:TileGridPanel>
                 </ScrollViewer>
             </TabItem>
 

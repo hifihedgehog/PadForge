@@ -1103,6 +1103,7 @@
             <conv:OnOffTextConverter x:Key="OnOffTextConverter" />
             <conv:FormatTextConverter x:Key="FormatTextConverter" />
             <conv:OptionTextConverter x:Key="OptionTextConverter" />
+            <conv:IndexTextConverter x:Key="IndexTextConverter" />
             <conv:StringToVisibilityConverter x:Key="StringToVisibility" />
             <conv:EnumIndexConverter x:Key="EnumIndexConverter" />
             <conv:EnumEqualityVisibilityConverter x:Key="EnumEqualityVisibilityConverter" />

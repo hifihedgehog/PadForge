@@ -376,11 +376,12 @@ namespace PadForge.Tests
                     // A section may hold row styles of its own beside its
                     // one column of groups.
                     var column = Assert.Single(content.Elements(), e => e.Name.LocalName != "ScrollViewer.Resources");
-                    if (section == PadViewModel.MotionSection)
+                    if (section == PadViewModel.MotionSection || section == PadViewModel.LightsSection)
                     {
-                        // Motion & Touch stands its groups side by side
-                        // while each has 420 to itself, as its board does,
-                        // and the groups of a row share the whole width.
+                        // Motion & Touch and Lights & Sound stand their
+                        // groups side by side while each has 420 to itself,
+                        // as their boards do, and the groups of a row share
+                        // the whole width.
                         Assert.Equal("TileGridPanel", column.Name.LocalName);
                         Assert.Equal("420", (string)column.Attribute("MinItemWidth"));
                         Assert.Equal("16", (string)column.Attribute("Gap"));
@@ -395,9 +396,9 @@ namespace PadForge.Tests
                     // that carries the group's name where its board draws no
                     // heading over the cards. Rumble & Haptics is all group
                     // boxes, and so are the sticks, the triggers and the
-                    // groups of Motion & Touch.
+                    // groups of Motion & Touch and of Lights & Sound.
                     Assert.All(column.Elements(), g => Assert.Contains(g.Name.LocalName, new[] { "StackPanel", "GroupBox" }));
-                    if (section == PadViewModel.RumbleSection || section == PadViewModel.MotionSection)
+                    if (section == PadViewModel.RumbleSection || section == PadViewModel.MotionSection || section == PadViewModel.LightsSection)
                         Assert.All(column.Elements(), g => Assert.Equal("GroupBox", g.Name.LocalName));
                     if (section == PadViewModel.SticksSection)
                         Assert.Equal(new[] { "GroupBox", "GroupBox", "StackPanel" }, column.Elements().Select(g => g.Name.LocalName));
@@ -479,10 +480,10 @@ namespace PadForge.Tests
         /// group. A group whose board draws no heading over its cards (every
         /// group of Rumble and Haptics, the sticks, the triggers) is a group
         /// box that carries the id and the tab's name itself, and its cards
-        /// are all it holds. A group of Motion and Touch is a group box
-        /// with the small label its board draws over its cards: the label
-        /// carries the id, and the group's paragraph is the label's
-        /// tooltip.</summary>
+        /// are all it holds. A group of Motion and Touch or of Lights and
+        /// Sound is a group box with the small label its board draws over
+        /// its cards: the label carries the id, and the group's paragraph
+        /// is the label's tooltip.</summary>
         [Fact]
         public void EveryTabKeepsItsId()
         {
@@ -491,7 +492,8 @@ namespace PadForge.Tests
             {
                 var carrier = Assert.Single(page.Descendants(), e => Id(e) == id);
                 var named = Named(page, name);
-                if (named.Name.LocalName == "GroupBox" && PadViewModel.SectionOfTab(tab) == PadViewModel.MotionSection)
+                if (named.Name.LocalName == "GroupBox"
+                    && PadViewModel.SectionOfTab(tab) is PadViewModel.MotionSection or PadViewModel.LightsSection)
                 {
                     Assert.Equal("{StaticResource BareGroupBox}", (string)named.Attribute("Style"));
                     var panel = Assert.Single(named.Elements());
@@ -502,11 +504,19 @@ namespace PadForge.Tests
                     Assert.Equal("TextBlock", carrier.Name.LocalName);
                     Assert.Equal("{StaticResource SectionTitle}", (string)carrier.Attribute("Style"));
                     Assert.Equal((string)carrier.Attribute("Text"), (string)named.Attribute("AutomationProperties.Name"));
-                    Assert.Matches(@"^\{Binding Pad_\w+_Subtitle, Source=\{x:Static strings:Strings\.Instance\}\}$",
-                        (string)carrier.Attribute("ToolTip"));
-                    // No large heading and no paragraph over the cards.
+                    // The tooltip is the paragraph's binding, or, for
+                    // Lighting, a tooltip that holds the paragraphs code
+                    // shows by what the selected device is.
+                    string tip = (string)carrier.Attribute("ToolTip")
+                        ?? string.Concat(carrier.Elements().Where(e => e.Name.LocalName == "TextBlock.ToolTip").Select(e => e.ToString()));
+                    Assert.Matches(@"\{Binding Pad_\w+_Subtitle, Source=\{x:Static strings:Strings\.Instance\}\}", tip);
+                    // No large heading and no paragraph over the cards: the
+                    // one text a group may hold outside a card, after its
+                    // label, is a status line that a binding fills.
                     Assert.DoesNotContain(panel.Elements(), e => ((string)e.Attribute("Style") ?? "").Contains("TitleTextBlockStyle"));
-                    Assert.DoesNotContain(panel.Elements().Skip(1), e => e.Name.LocalName == "TextBlock");
+                    Assert.All(panel.Elements().Skip(1).Where(e => e.Name.LocalName == "TextBlock"), line =>
+                        Assert.True(((string)line.Attribute("Text") ?? "").StartsWith("{Binding GameMod", StringComparison.Ordinal),
+                            name + " holds a text outside its cards: " + (string)line.Attribute("Text")));
                 }
                 else if (named.Name.LocalName == "GroupBox" && tab != PadViewModel.OutputTabIndex)
                 {
@@ -1041,6 +1051,138 @@ namespace PadForge.Tests
             Assert.Contains("Pad_Touchpad_Mouse_Subtitle", (string)mouse.Attribute("ToolTip"));
             Assert.DoesNotContain(scroll.Descendants(), e => e.Name.LocalName == "TextBlock"
                 && ((string)e.Attribute("Text") ?? "").Contains("Pad_Touchpad_Mouse_Subtitle"));
+        }
+
+        /// <summary>Lights and Sound as its board draws it. The section has
+        /// the row styles Motion and Touch has: a label column 170 wide, a
+        /// slider with no width to stop at, cards 12 apart, and every
+        /// setting row grows its slider and holds its value in a column 66
+        /// wide. A color's R, G and B rows keep the tight styles that fit
+        /// them under a color picker, and a cell of the equalizer's table
+        /// is no setting row. A card's title has no icon, and a card's
+        /// paragraph is its title's tooltip. Lighting Control is a line of
+        /// the list under the cards, after Indicator LEDs.</summary>
+        [Fact]
+        public void LightsAndSound_HasRowsOfItsOwn_AndCardsAsItsBoardDrawsThem()
+        {
+            var page = Page();
+            var scroll = Named(page, "LightsSectionScroll");
+            var own = Assert.Single(scroll.Elements(), e => e.Name.LocalName == "ScrollViewer.Resources");
+            XElement Style(string key) => Assert.Single(own.Elements(), e => (string)e.Attribute(X + "Key") == key);
+            string Setter(XElement style, string property) => (string)style.Elements()
+                .SingleOrDefault(e => e.Name.LocalName == "Setter" && (string)e.Attribute("Property") == property)?.Attribute("Value");
+
+            Assert.Equal("170", Setter(Style("DzLabel"), "Width"));
+            Assert.Equal("154", Setter(Style("DzSubLabel"), "Width"));
+            Assert.Null(Setter(Style("DzSlider"), "MaxWidth"));
+            Assert.Equal("0,0,0,12", Setter(Style("CardBorder"), "Margin"));
+            var lists = scroll.Descendants().Where(e => e.Name.LocalName == "FoldList").ToList();
+            Assert.Equal(2, lists.Count);
+            Assert.All(lists, l => Assert.Equal("12", (string)l.Attribute("Gap")));
+
+            // The rows. A color's three and the table's cell stand apart.
+            var all = scroll.Descendants().Where(e => e.Name.LocalName == "SettingRow").ToList();
+            bool Color(XElement r) => r.Elements().Any(e => (string)e.Attribute("Style") == "{StaticResource DzLabelTight}");
+            bool Cell(XElement r) => r.Attribute("Grid.Column") != null;
+            var rows = all.Where(r => !Color(r) && !Cell(r)).ToList();
+            Assert.Equal(21, all.Count(Color));
+            Assert.Equal(1, all.Count(Cell));
+            Assert.True(rows.Count > 45, "the section has " + rows.Count + " setting rows");
+            Assert.All(rows, r =>
+            {
+                Assert.Equal("True", (string)r.Attribute("Grow"));
+                Assert.Equal("66", (string)r.Attribute("ValueWidth"));
+                Assert.Null(r.Attribute("Margin"));
+                var first = r.Elements().First(e => !e.Name.LocalName.Contains('.'));
+                Assert.Equal("TextBlock", first.Name.LocalName);
+                Assert.Contains((string)first.Attribute("Style"), new[] { "{StaticResource DzLabel}", "{StaticResource DzSubLabel}" });
+            });
+            Assert.All(all.Where(r => Color(r) || Cell(r)), r =>
+            {
+                Assert.Null(r.Attribute("Grow"));
+                Assert.Null(r.Attribute("ValueWidth"));
+            });
+            // No panel sets its rows in: a row that belongs to the one
+            // above has its label set in.
+            Assert.DoesNotContain(scroll.Descendants(), e => e.Name.LocalName == "StackPanel"
+                && ((string)e.Attribute("Margin") ?? "").StartsWith("20,", StringComparison.Ordinal)
+                && e.Descendants().Any(d => d.Name.LocalName == "SettingRow"));
+            // No slider of a setting row keeps a width of its own, and a
+            // picker or a number box gives way.
+            Assert.All(rows.SelectMany(r => r.Elements()).Where(e => e.Name.LocalName == "Slider"),
+                s => Assert.Null(s.Attribute("Width")));
+            var pickers = rows.Where(r => r.Elements().All(e => e.Name.LocalName != "Slider"))
+                .SelectMany(r => r.Elements()).Where(e => e.Name.LocalName is "ComboBox" or "NumberBox").ToList();
+            Assert.True(pickers.Count >= 17, pickers.Count + " pickers");
+            Assert.All(pickers, c =>
+            {
+                Assert.Null(c.Attribute("Width"));
+                Assert.Null(c.Attribute("MinWidth"));
+                Assert.NotNull(c.Attribute("MaxWidth"));
+                Assert.Contains(c.Attributes(), a => a.Name.LocalName == "SettingRow.Fills" && a.Value == "True");
+            });
+
+            // A card's title row: the title and its Reset All, no icon. A
+            // card's paragraph is its title's tooltip.
+            var titles = scroll.Descendants().Where(e => (string)e.Attribute("Style") == "{StaticResource CardTitle}").ToList();
+            Assert.Equal(5, titles.Count);
+            Assert.All(titles, title => Assert.DoesNotContain(title.Parent!.Elements(), e => e.Name.LocalName == "GlyphText"));
+            Assert.DoesNotContain(scroll.Descendants(), e => ((string)e.Attribute("Style") ?? "").Contains("TitleTextBlockStyle"));
+            foreach (var (title, paragraph) in new[]
+            {
+                ("Pad_Lighting_LedStrips", "Pad_Lighting_LedStrips_Description"),
+                ("Pad_Audio_Output_Header", "Pad_Audio_Output_Desc"),
+                ("Pad_Audio_Macros_Header", "Pad_Audio_Macros_Desc"),
+            })
+            {
+                var block = titles.Single(e => ((string)e.Attribute("Text")).Contains(title + ","));
+                Assert.Contains(paragraph + ",", (string)block.Attribute("ToolTip"));
+                Assert.DoesNotContain(scroll.Descendants(), e => e.Name.LocalName == "TextBlock"
+                    && ((string)e.Attribute("Text") ?? "").Contains(paragraph + ","));
+            }
+
+            // Lighting: its label's tooltip holds the group's three
+            // paragraphs, which code shows by the device, and the route
+            // line is the one text of the peripheral's panel.
+            var label = Named(page, "LightingGroupLabel");
+            var tip = Assert.Single(Assert.Single(label.Elements(), e => e.Name.LocalName == "TextBlock.ToolTip").Elements());
+            Assert.Equal("ToolTip", tip.Name.LocalName);
+            Assert.Equal(new[] { "LightingLightbarSubtitle", "LightingPlayerIdleHint", "PeripheralLightingSubtitle" },
+                tip.Descendants().Where(e => e.Name.LocalName == "TextBlock").Select(e => (string)e.Attribute(X + "Name")));
+            Assert.Equal("Collapsed", (string)Named(page, "PeripheralLightingSubtitle").Attribute("Visibility"));
+            var routePanel = Named(page, "PeripheralLightingPanel");
+            Assert.Null(routePanel.Attribute("Margin"));
+            Assert.Equal("PeripheralLightingRoute", (string)Assert.Single(routePanel.Elements()).Attribute(X + "Name"));
+            string code = ExtrasPageTests.RepoText("PadForge.App", "Views", "PadPage.xaml.cs");
+            Assert.Contains("PeripheralLightingSubtitle.Visibility = hasPeripheralLighting ? Visibility.Visible : Visibility.Collapsed;", code);
+            Assert.Contains("ToolTipService.SetIsEnabled(LightingGroupLabel, hasLightbar || hasPeripheralLighting);", code);
+
+            // The list under the cards: Indicator LEDs, Lighting Control,
+            // the Guide button's LED.
+            Assert.Equal(new[] { "IndicatorLedsCard", "PeripheralLightingCard", "GuideLedCard" },
+                lists[0].Elements().Select(e => (string)e.Attribute(X + "Name")));
+            Assert.Same(Named(page, "TabLighting"), lists[0].Ancestors().First(a => a.Name.LocalName == "GroupBox"));
+
+            // A mode's color blocks wrap: two for Battery and three for the
+            // audio bands stood in a Grid of fixed columns, which needs 460
+            // and 694 where a card in a narrow column has 388 inside.
+            var lightbar = Named(page, "LightbarModeCard");
+            var wraps = lightbar.Descendants().Where(e => e.Name.LocalName == "WrapPanel"
+                && e.Elements().Any(b => b.Descendants().Any(d => d.Name.LocalName == "ColorPickerControl"))).ToList();
+            Assert.Equal(new[] { 2, 3 }, wraps.Select(w => w.Elements().Count()));
+            Assert.All(wraps.SelectMany(w => w.Elements()), block =>
+            {
+                Assert.Equal("Border", block.Name.LocalName);
+                Assert.Equal("0,0,8,8", (string)block.Attribute("Margin"));
+                Assert.Null(block.Attribute("Grid.Column"));
+            });
+            Assert.DoesNotContain(lightbar.Descendants(), e => e.Name.LocalName == "Grid"
+                && e.Elements().Count(b => b.Name.LocalName == "Border" && b.Descendants().Any(d => d.Name.LocalName == "ColorPickerControl")) > 1);
+
+            // The mirror switch's long label has the room its board gives it.
+            var mirror = scroll.Descendants().Single(e => e.Name.LocalName == "TextBlock"
+                && ((string)e.Attribute("Text") ?? "").Contains("Pad_Audio_Mirror,"));
+            Assert.Equal("290", (string)mirror.Attribute("Width"));
         }
 
         /// <summary>The screenshot script reaches every tab through ids the

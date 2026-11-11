@@ -154,7 +154,7 @@ namespace PadForge.Tests
         private static LoadedRow LoadRow()
         {
             string page = RepoText("PadForge.App", "Views", "PadPage.xaml");
-            const string open = "<controls:SettingRow MinHeight=\"44\" x:Name=\"PeripheralClaimLevelRow\"";
+            const string open = "<controls:SettingRow Grow=\"True\" ValueWidth=\"66\" MinHeight=\"44\" x:Name=\"PeripheralClaimLevelRow\"";
             const string close = "</controls:SettingRow>";
             int start = page.IndexOf(open, StringComparison.Ordinal);
             Assert.True(start > 0, "the Lighting Hold row is gone from the page");
@@ -511,8 +511,8 @@ namespace PadForge.Tests
         /// the switch it qualifies and above the route line, and no other
         /// control on the page carries its IDs. Its picker's width is the
         /// measured one (tools/combomeasure): the widest option needs 526.
-        /// Its label takes the page's label column, which is wider than the
-        /// widest label's 158.</summary>
+        /// Its label takes its section's label column, which is wider than
+        /// the widest label's 158.</summary>
         [Fact]
         public void TheRowSitsUnderTheSwitch_AndItsLabelTakesThePagesLabelColumn()
         {
@@ -570,24 +570,28 @@ namespace PadForge.Tests
             // The row is one of the page's rows (#574): a SettingRow, which
             // puts a child docked right at the row's far right, so the
             // reset, which docks right through its style, sits there. Its
-            // label takes the label column from the style, 230 wide, and
-            // has no width of its own, so the picker starts where every
-            // row's control starts.
+            // label takes the label column from the style and has no width
+            // of its own, so the picker starts where every row's control
+            // starts.
             Assert.Equal("SettingRow", row.Name.LocalName);
             Assert.Equal("44", (string)row.Attribute("MinHeight"));
-            // The page's own label style: a section may shadow it with one
-            // of its own (Sticks and Triggers does), and this row's section
-            // does not.
-            var rowLabelStyle = page.Root!.Elements().Single(e => e.Name.LocalName == "UserControl.Resources")
-                .Elements().Single(n => (string)n.Attribute(x + "Key") == "DzLabel");
-            Assert.DoesNotContain(row.Ancestors().SelectMany(a => a.Elements()).Where(e => e.Name.LocalName.EndsWith(".Resources", StringComparison.Ordinal))
-                .SelectMany(r => r.Elements()), n => (string)n.Attribute(x + "Key") == "DzLabel" && n.Parent!.Name.LocalName != "UserControl.Resources");
+            // The label style is the section's own, which shadows the
+            // page's for everything in Lights & Sound: its board draws a
+            // label column 170 wide, and the widest label needs 158.
+            var rowLabelStyle = row.Ancestors().SelectMany(a => a.Elements())
+                .Where(e => e.Name.LocalName == "ScrollViewer.Resources").SelectMany(r => r.Elements())
+                .Single(n => (string)n.Attribute(x + "Key") == "DzLabel");
             int rowLabel = (int)rowLabelStyle.Elements().Single(e => (string)e.Attribute("Property") == "Width").Attribute("Value");
-            Assert.Equal(230, rowLabel);
+            Assert.Equal(170, rowLabel);
             Assert.Equal("{StaticResource DzLabel}", (string)label.Attribute("Style"));
             Assert.Null(label.Attribute("Width"));
-            int pickerWidth = (int)picker.Attribute("Width");
-            Assert.True(pickerWidth >= 526 + 8, "the picker clips its widest option");
+            // The picker stops at the measured width and gives way in a
+            // narrower column, where a width of its own ran it under the
+            // reset.
+            Assert.Null(picker.Attribute("Width"));
+            int pickerWidth = (int)picker.Attribute("MaxWidth");
+            Assert.True(pickerWidth >= 526 + 8, "the picker clips its widest option where it has the room");
+            Assert.Contains(picker.Attributes(), a => a.Name.LocalName == "SettingRow.Fills" && a.Value == "True");
             Assert.True(rowLabel >= 158, "the label column clips its widest label");
         }
 

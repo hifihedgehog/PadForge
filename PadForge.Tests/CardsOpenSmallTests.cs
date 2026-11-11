@@ -105,9 +105,8 @@ namespace PadForge.Tests
                 new[] { "{Binding TouchpadMouseSensitivityX, Mode=TwoWay", "{Binding TouchpadMouseSensitivityY, Mode=TwoWay", "TouchpadMouseJitterReduction" },
                 new[] { "TouchpadMouseInvertX", "TouchpadMouseInvertY", "{Binding TouchpadMouseMomentum, Mode=TwoWay", "TouchpadPointerResponse",
                         "TouchpadTrackpadThreshold", "TouchpadMouseAcceleration", "TouchpadMomentumFlingGain", "TouchpadMomentumStacking" }),
-            ("Pad_More_Lightbar", "Pad.Lights.Lightbar.More", "Pad_Lighting_InputReactive",
-                new[] { "DeviceConfig.ResetLightbarModeCommand", "DeviceConfig.LightbarPeriodMs", "DeviceConfig.ScreenColorArea", "DeviceConfig.LightbarRed" },
-                new[] { "DeviceConfig.ResetInputReactiveModeCommand", "DeviceConfig.LightbarInputHoldMs", "DeviceConfig.LightbarInputReactivePalette", "DeviceConfig.InputReactiveR" }),
+            // The Lightbar card has no More row: its board shows Input
+            // Reactive up front, under the mode (TheLightbarCard_ShowsInputReactiveUpFront).
             ("Pad_More_SoundOutput", "Pad.Sound.Output.More", "Pad_More_SoundOutput",
                 new[] { "{Binding SoundMasterVolume", "DeviceConfig.AudioPassthroughEnabled, Mode=TwoWay" },
                 new[] { "SelectedMirrorSourceId", "DeviceConfig.AudioMirrorEngageMode", "DeviceConfig.AudioToneFilterMode", "DeviceConfig.HeadphoneVolume",
@@ -248,6 +247,34 @@ namespace PadForge.Tests
                 // The More row is the last thing in its panel.
                 Assert.Empty(row.ElementsAfterSelf());
             }
+        }
+
+        /// <summary>The Lightbar card as its board draws it: the mode, the
+        /// mode's own settings, then Input Reactive, all in the card with
+        /// no More row. With the overlay off Input Reactive is one row, and
+        /// its hold, decay, palette and color show only while it is on, so
+        /// the card still opens small.</summary>
+        [Fact]
+        public void TheLightbarCard_ShowsInputReactiveUpFront()
+        {
+            var page = Page();
+            var card = Assert.Single(page.Descendants().Single(e => Name(e) == "LightbarModeCard").Elements());
+            Assert.Equal("StackPanel", card.Name.LocalName);
+            Assert.DoesNotContain(card.Descendants(), e => e.Name.LocalName == "MoreRow");
+            Assert.DoesNotContain(page.Descendants(), e => Id(e) == "Pad_More_Lightbar");
+
+            XElement Row(string binding) => card.Elements().Single(e => e.Name.LocalName == "SettingRow"
+                && e.Elements().Any(c => c.Name.LocalName == "ComboBox" && c.Attributes().Any(a => a.Value.Contains(binding))));
+            var mode = Row("DeviceConfig.LightbarMode");
+            var reactive = Row("DeviceConfig.InputReactiveMode");
+            Assert.Contains(mode, reactive.ElementsBeforeSelf());
+            // What Input Reactive opens follows its row and shows by its
+            // own state.
+            var after = reactive.ElementsAfterSelf().ToList();
+            Assert.Equal(3, after.Count);
+            Assert.Contains("DeviceConfig.IsInputReactiveActive", (string)after[0].Attribute("Visibility"));
+            Assert.Contains("DeviceConfig.ShowPaletteForOverlay", (string)after[1].Attribute("Visibility"));
+            Assert.Contains("DeviceConfig.IsInputReactiveFixed", (string)after[2].Attribute("Visibility"));
         }
 
         /// <summary>Open cards come first in the two groups that mix them
@@ -395,6 +422,43 @@ namespace PadForge.Tests
             Assert.Contains(vm.MotionGripOptions, o => o.Value == vm.MotionGrip);
             Assert.Equal(vm.MotionGripOptions.First(o => o.Value == vm.MotionGrip).Display,
                 Line(vm.MotionGrip, vm.MotionGripOptions, "any string"));
+        }
+
+        /// <summary>A setting picked by its place in a list reads as the
+        /// name at that place: the Indicator LEDs line ends with the LED
+        /// brightness that way.</summary>
+        [Fact]
+        public void ASettingPickedByItsPlace_ReadsAsTheNameAtThatPlace()
+        {
+            var c = new IndexTextConverter();
+            object Line(params object[] values) => c.Convert(values, typeof(string), null, CultureInfo.InvariantCulture);
+
+            Assert.Equal("High", Line(PlayerLedBrightness.High, "High", "Medium", "Low"));
+            Assert.Equal("Medium", Line(PlayerLedBrightness.Medium, "High", "Medium", "Low"));
+            Assert.Equal("Niedrig", Line(PlayerLedBrightness.Low, "Hoch", "Mittel", "Niedrig"));
+            Assert.Equal("Medium", Line(1, "High", "Medium", "Low"));
+            // A place the list does not have, a binding with no value yet,
+            // and too few values are nothing.
+            Assert.Equal("", Line(3, "High", "Medium", "Low"));
+            Assert.Equal("", Line(-1, "High", "Medium", "Low"));
+            Assert.Equal("", Line(System.Windows.DependencyProperty.UnsetValue, "High", "Medium", "Low"));
+            Assert.Equal("", Line(0, System.Windows.DependencyProperty.UnsetValue));
+            Assert.Equal("", Line(0));
+
+            // The enum counts from zero in the picker's order, which the
+            // page's line relies on.
+            Assert.Equal(new[] { 0, 1, 2 }, new[] { (int)PlayerLedBrightness.High, (int)PlayerLedBrightness.Medium, (int)PlayerLedBrightness.Low });
+            var card = Page().Descendants().Single(e => Name(e) == "IndicatorLedsCard");
+            var summary = Assert.Single(Assert.Single(card.Elements(), e => e.Name.LocalName == "FoldCard.Summary").Elements());
+            Assert.Equal("{StaticResource IndexTextConverter}", (string)summary.Attribute("Converter"));
+            Assert.Equal(new[] { "DeviceConfig.PlayerLedBrightness", "Pad_Lighting_PlayerLed_Brightness_High",
+                "Pad_Lighting_PlayerLed_Brightness_Medium", "Pad_Lighting_PlayerLed_Brightness_Low" },
+                summary.Elements().Select(b => (string)b.Attribute("Path")));
+            // The picker lists the same names in the same order.
+            var picker = card.Descendants().Single(e => e.Name.LocalName == "ComboBox"
+                && ((string)e.Attribute("SelectedIndex") ?? "").Contains("DeviceConfig.PlayerLedBrightness"));
+            Assert.Equal(summary.Elements().Skip(1).Select(b => (string)b.Attribute("Path")),
+                picker.Elements().Select(i => Key(i, "Content")));
         }
     }
 }

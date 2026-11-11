@@ -346,6 +346,57 @@
     </DataTemplate>
 
     <!-- ═══════════════════════════════════════════
+         Segmented switch (#574)
+         ═══════════════════════════════════════════ -->
+
+    <!-- A segmented switch: a few choices side by side in one track, the
+         chosen one raised. The track is a field's fill inside a hairline.
+         A segment is a radio button, so the choices are one group to the
+         keyboard and to a screen reader: the arrow keys move the choice
+         and the peer reports which is selected. At rest a segment is its
+         words in the secondary color. Chosen, it takes the segment fill,
+         the primary color and a heavier face. -->
+    <Style x:Key="SegmentTrack" TargetType="Border">
+        <Setter Property="Padding" Value="3"/>
+        <Setter Property="CornerRadius" Value="8"/>
+        <Setter Property="Background" Value="{DynamicResource SteelFieldBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource SteelLineSoftBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style x:Key="SegmentRadio" TargetType="RadioButton">
+        <Setter Property="MinHeight" Value="28"/>
+        <Setter Property="Padding" Value="12,0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RadioButton">
+                    <Border x:Name="Bd" Background="Transparent" CornerRadius="6" Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
+                                          TextBlock.Foreground="{TemplateBinding Foreground}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource SteelSegmentBrush}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+                            <Setter Property="FontWeight" Value="SemiBold"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.45"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ═══════════════════════════════════════════
          Fold parts (#574)
          ═══════════════════════════════════════════ -->
 

@@ -1357,7 +1357,7 @@
                  it, or the list of every row. The blocks below were tabs of
                  the page and keep that indentation. -->
             <TabItem>
-                <Grid Margin="8,2,8,8" x:Name="MappingsTabRoot"
+                <Grid Margin="0,20,0,0" x:Name="MappingsTabRoot"
                       PreviewKeyDown="MappingsTabRoot_PreviewKeyDown">
                     <Grid.RowDefinitions>
                         <!-- The top row and the list's chips stay put. Under
@@ -1367,36 +1367,54 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <!-- The top row. It wraps at a narrow window. -->
-                    <WrapPanel Grid.Row="0" x:Name="ButtonsTopRow" Orientation="Horizontal" Margin="0,0,0,6">
+                    <!-- The card's head (#574): the top row, which stays put
+                         over the view. Its leading part wraps at a narrow
+                         window: the Picture and List switch, the layer
+                         chips, Add Layer in the list and the hint over the
+                         picture. Its trailing part is the list's tools and
+                         Map All, at the row's end. When the trailing part
+                         leaves the leading one less than the switch needs,
+                         the two stand one under the other. -->
+                    <Border Grid.Row="0" x:Name="ButtonsCardHead" Margin="32,0,32,0" Padding="16,12"
+                            Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                            BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}" BorderThickness="1"
+                            CornerRadius="10,10,0,0">
+                    <controls:HeadRowPanel x:Name="ButtonsTopRow" LeadingMinWidth="220" Gap="8">
+                    <WrapPanel x:Name="ButtonsTopLeft" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Border Style="{StaticResource SegmentTrack}" Margin="0,0,12,0">
+                        <StackPanel Orientation="Horizontal">
                         <!-- [Picture] and [List]. These are the Preview and
                              Mappings parts' own radio buttons, with their Tag,
                              handlers and AutomationId, so SelectedConfigTab's
                              numbering and everything that selects them by id
                              keep working. Tab 17, Output, shows the picture:
                              its two cards sit under it. -->
-                        <RadioButton x:Name="TabController" Tag="0" GroupName="PadButtonsPart" Style="{StaticResource TabStripButton}" Click="TabBtn_Click" Checked="TabBtn_Checked"
+                        <RadioButton x:Name="TabController" Tag="0" GroupName="PadButtonsPart" Style="{StaticResource SegmentRadio}" Click="TabBtn_Click" Checked="TabBtn_Checked"
                                      IsChecked="True"
                                      AutomationProperties.AutomationId="TabController">
-                            <TextBlock Text="{Binding Pad_View_Picture, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
+                            <TextBlock Text="{Binding Pad_View_Picture, Source={x:Static strings:Strings.Instance}}"/>
                         </RadioButton>
 
                         <!-- Per-VC scope (Issue #61 multi-source): the table
                              sources from any device assigned to this VC,
                              whichever one is selected. -->
-                        <RadioButton x:Name="TabMappings" Tag="2" GroupName="PadButtonsPart" Style="{StaticResource TabStripButton}" Click="TabBtn_Click" Checked="TabBtn_Checked"
+                        <RadioButton x:Name="TabMappings" Tag="2" GroupName="PadButtonsPart" Style="{StaticResource SegmentRadio}" Click="TabBtn_Click" Checked="TabBtn_Checked"
                                      AutomationProperties.AutomationId="MappingsTab">
-                            <TextBlock Text="{Binding Pad_View_List, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
+                            <TextBlock Text="{Binding Pad_View_List, Source={x:Static strings:Strings.Instance}}"/>
                         </RadioButton>
+
+                        </StackPanel>
+                        </Border>
 
                         <!-- The layer chips. Hidden when only Base exists, so a
                              slot without shift layers shows none. One
                              RadioButton per entry in PadViewModel.LayerTabs.
                              Right-click opens the per-chip context menu. -->
+                    <Border x:Name="ShiftLayerTrack" Style="{StaticResource SegmentTrack}" Margin="0,0,12,0"
+                            Visibility="{Binding HasShiftLayers, Converter={StaticResource BoolToVisibilityConverter}}">
                     <ItemsControl x:Name="ShiftLayerTabStrip"
                                   ItemsSource="{Binding LayerTabs}"
-                                  Margin="8,4,0,0" VerticalAlignment="Center"
-                                  Visibility="{Binding HasShiftLayers, Converter={StaticResource BoolToVisibilityConverter}}">
+                                  VerticalAlignment="Center">
                         <!-- WrapPanel so layers with many activators flow
                              to a second row when the window narrows
                              instead of clipping off the right edge. -->
@@ -1408,10 +1426,8 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <RadioButton GroupName="ShiftLayerTabs"
-                                             Style="{StaticResource ShiftLayerTabChip}"
+                                             Style="{StaticResource SegmentRadio}"
                                              IsChecked="{Binding IsActive, Mode=TwoWay}"
-                                             Margin="0,0,4,4"
-                                             Padding="10,4"
                                              Click="ShiftLayerTab_Click"
                                              Tag="{Binding LayerMask}">
                                     <StackPanel Orientation="Horizontal">
@@ -1484,16 +1500,28 @@
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
+                    </Border>
 
+                        <!-- Add Layer, with the list: a new layer's rows are
+                             edited there. -->
+                        <ui:Button x:Name="AddShiftLayerButton" Style="{StaticResource QuietButton}"
+                                   Content="{Binding Pad_Shift_AddLayer, Source={x:Static strings:Strings.Instance}}"
+                                   MinHeight="34" Padding="10,0" Margin="0,0,12,0" VerticalAlignment="Center"
+                                   ToolTip="{Binding Pad_Shift_AddLayer_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                   Click="AddShiftLayer_Click"
+                                   Visibility="{Binding IsButtonsListView, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        <!-- How to map a control, over the picture. -->
+                        <TextBlock x:Name="PictureHint" Text="{Binding Pad_PictureHint, Source={x:Static strings:Strings.Instance}}"
+                                   FontSize="13" Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                   TextWrapping="Wrap" VerticalAlignment="Center" Margin="4,4,0,4"
+                                   Visibility="{Binding IsButtonsPictureView, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    </WrapPanel>
+
+                    <WrapPanel x:Name="ButtonsTopRight" Orientation="Horizontal" VerticalAlignment="Top">
                         <!-- The list's own tools. They narrow and edit the whole
                              table, so they show with it. -->
-                        <StackPanel x:Name="ListTools" Orientation="Horizontal" Margin="8,0,0,0" VerticalAlignment="Center"
+                        <StackPanel x:Name="ListTools" Orientation="Horizontal" VerticalAlignment="Center"
                                     Visibility="{Binding IsButtonsListView, Converter={StaticResource BoolToVisibilityConverter}}">
-                        <Button x:Name="AddShiftLayerButton"
-                                Content="{Binding Pad_Shift_AddLayer, Source={x:Static strings:Strings.Instance}}"
-                                Padding="8,4" Margin="0,0,8,0"
-                                ToolTip="{Binding Pad_Shift_AddLayer_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                                Click="AddShiftLayer_Click"/>
                         <!-- Picker filter (#322, discussion #302): one search
                              box and one device-visibility popup filtering the
                              slot's SHARED choice view, so every picker on the
@@ -1501,7 +1529,7 @@
                              changes what a dropdown OFFERS, never what a
                              row's binding holds. Ctrl+F focuses the box
                              (code-behind on the tab root). -->
-                        <ui:TextBox x:Name="MappingFilterSearchBox" MinWidth="170" Margin="16,0,0,0"
+                        <ui:TextBox x:Name="MappingFilterSearchBox" MinWidth="200" Margin="0"
                                     VerticalAlignment="Center"
                                     PlaceholderText="{Binding Mapping_FilterSearch_Placeholder, Source={x:Static strings:Strings.Instance}}"
                                     Text="{Binding MappingInputSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
@@ -1555,19 +1583,25 @@
                         </ComboBox>
                         </StackPanel>
 
+
                         <!-- Map All, in both views. -->
                         <Button Content="{Binding MapAllButtonText}"
-                                Padding="8,4" Margin="8,0,8,0" VerticalAlignment="Center"
+                                MinHeight="36" Padding="14,0" Margin="12,0,0,0" VerticalAlignment="Center"
                                 ToolTip="{Binding MapAllButtonTooltip}"
                                 Click="MapAllToggle_Click"/>
 
                     </WrapPanel>
+                    </controls:HeadRowPanel>
+                    </Border>
 
 
                     <!-- The list's second row: the pipeline chips, and the count
                          of rows drawn as one line at its end. -->
-                    <Grid Grid.Row="1" x:Name="ListChipsRow"
+                    <Grid Grid.Row="1" x:Name="ListChipsRow" Margin="32,0,32,0"
                           Visibility="{Binding IsButtonsListView, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <!-- The card's sides, behind the chips. -->
+                    <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                            BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}" BorderThickness="1,0,1,0"/>
                     <!-- Pipeline heat chips (#175 item 10): one chip per
                          transform pipeline currently rewiring this slot's
                          input. CURVE / GYRO / SHIFT / INV / DZ are mono
@@ -1580,7 +1614,7 @@
                          when several rows own the pipeline. SHIFT cycles
                          the layer tabs instead. Tooltips list the real
                          configured rows. -->
-                    <WrapPanel Orientation="Horizontal" Margin="0,0,0,8"
+                    <WrapPanel Orientation="Horizontal" Margin="16,10,16,0"
                                Visibility="{Binding HasAnyPipelineChips, Converter={StaticResource BoolToVisibilityConverter}}">
                         <WrapPanel.Resources>
                             <!-- Shared chip skeleton: ChipEmber grammar plus
@@ -1834,7 +1868,7 @@
                          Hidden when no row is compact. -->
                     <StackPanel Orientation="Horizontal"
                                 HorizontalAlignment="Right" VerticalAlignment="Center"
-                                Margin="8,0,4,8">
+                                Margin="8,10,16,0">
                         <StackPanel.Style>
                             <Style TargetType="StackPanel">
                                 <Style.Triggers>
@@ -1865,8 +1899,9 @@
                          picture's row and the table's row (SyncButtonsLayout). -->
                     <ScrollViewer Grid.Row="2" x:Name="ButtonsScroll" AutomationProperties.Name="{Binding Pad_Section_Buttons, Source={x:Static strings:Strings.Instance}}"
                                   VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Disabled"
+                                  Padding="32,0"
                                   SizeChanged="ButtonsRoot_SizeChanged">
-                    <Grid x:Name="ButtonsPage">
+                    <Grid x:Name="ButtonsPage" Margin="0,0,0,24">
                         <Grid.RowDefinitions>
                             <!-- The picture, the line under it, the table, the
                                  output cards. -->
@@ -1885,6 +1920,14 @@
                             <RowDefinition x:Name="ButtonsFillRow" Height="Auto"/>
                         </Grid.RowDefinitions>
 
+                    <!-- The card's body (#574), drawn behind the picture and
+                         the table: its sides, its foot and its lower
+                         corners. The head is the top row over this page. -->
+                    <Border Grid.Row="0" Grid.RowSpan="3" x:Name="ButtonsCardBody"
+                            Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                            BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}" BorderThickness="1,0,1,1"
+                            CornerRadius="0,0,10,10"/>
+
                     <!-- The picture. A header-less tab control with an empty
                          second item: in the list the picture leaves the visual
                          tree, as it did when Preview was a tab of its own, so
@@ -1899,6 +1942,22 @@
                             </ControlTemplate>
                         </TabControl.Template>
                         <TabItem>
+                            <!-- The page's ground under the picture, as the
+                                 board has it, inside the card's sides, with
+                                 a hairline under it. With nothing picked no
+                                 table follows: the picture is the card's
+                                 foot then, and takes its lower corners. -->
+                            <Border x:Name="PictureGround" Margin="1,0,1,0" Background="{DynamicResource SteelGroundBrush}"
+                                    BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}" BorderThickness="0,0,0,1">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding HasItems, ElementName=MappingDataGrid}" Value="False">
+                                                <Setter Property="CornerRadius" Value="0,0,9,9"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
                             <Grid>
                     <!-- Ember stage floor (#175): one continuous surface
                          under the model, so the glow never seams. -->
@@ -1942,58 +2001,35 @@
                                        Text="&#xE8B9;"/>
                         </Button>
                     </Grid>
+
+                    <!-- While a recording waits for an input: which control,
+                         and Stop. It lies over the picture's foot, so the
+                         picture keeps its size when a recording starts. The
+                         list has no such bar: a row shows its own recording
+                         state. -->
+                    <Border x:Name="PictureLine" VerticalAlignment="Bottom" MinHeight="44" Padding="20,6,12,6"
+                            Background="{DynamicResource EmberWellBrush}"
+                            BorderBrush="{DynamicResource EmberEdgeBrush}" BorderThickness="0,1,0,0"
+                            Visibility="{Binding IsListening, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <DockPanel LastChildFill="True">
+                            <Button x:Name="ListeningStopButton" DockPanel.Dock="Right" MinHeight="30" Padding="14,0" Margin="10,0,0,0" VerticalAlignment="Center"
+                                    Content="{Binding Common_Stop, Source={x:Static strings:Strings.Instance}}"
+                                    AutomationProperties.AutomationId="Pad_ListeningStop"
+                                    Click="ListeningStop_Click"/>
+                            <Ellipse DockPanel.Dock="Left" Width="10" Height="10" Margin="0,0,10,0" VerticalAlignment="Center"
+                                     FlowDirection="LeftToRight"
+                                     Fill="{DynamicResource EmberBrush}"/>
+                            <TextBlock x:Name="PictureLineText" Text="{Binding PictureLineText}" VerticalAlignment="Center"
+                                       AutomationProperties.AutomationId="Pad_PictureLine"
+                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                       TextTrimming="CharacterEllipsis"/>
+                        </DockPanel>
+                    </Border>
                             </Grid>
+                            </Border>
                         </TabItem>
                         <TabItem/>
                     </controls:ContentTabControl>
-
-                    <!-- The line under the picture. It says how to map a control,
-                         and while a recording waits for an input it says which
-                         control and offers Stop. One line of one height, so the
-                         picture does not resize when a recording starts. The
-                         list has no such line: a row shows its own recording
-                         state. -->
-                    <Border Grid.Row="1" x:Name="PictureLine" MinHeight="36" Margin="0,6,0,6" Padding="12,2,6,2"
-                            CornerRadius="6" BorderThickness="1"
-                            Visibility="{Binding IsButtonsPictureView, Converter={StaticResource BoolToVisibilityConverter}}">
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Setter Property="Background" Value="Transparent"/>
-                                <Setter Property="BorderBrush" Value="Transparent"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsListening}" Value="True">
-                                        <Setter Property="Background" Value="#24FF6B2C"/>
-                                        <Setter Property="BorderBrush" Value="#55FF6B2C"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                        <DockPanel LastChildFill="True">
-                            <Button x:Name="ListeningStopButton" DockPanel.Dock="Right" Padding="12,3" Margin="8,0,0,0" VerticalAlignment="Center"
-                                    Content="{Binding Common_Stop, Source={x:Static strings:Strings.Instance}}"
-                                    AutomationProperties.AutomationId="Pad_ListeningStop"
-                                    Click="ListeningStop_Click"
-                                    Visibility="{Binding IsListening, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                            <Ellipse DockPanel.Dock="Left" Width="10" Height="10" Margin="0,0,10,0" VerticalAlignment="Center"
-                                     FlowDirection="LeftToRight"
-                                     Fill="{DynamicResource EmberBrush}"
-                                     Visibility="{Binding IsListening, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                            <TextBlock x:Name="PictureLineText" Text="{Binding PictureLineText}" VerticalAlignment="Center"
-                                       AutomationProperties.AutomationId="Pad_PictureLine"
-                                       TextTrimming="CharacterEllipsis">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsListening}" Value="True">
-                                                <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-                        </DockPanel>
-                    </Border>
 
                     <!-- Inline rename popup, anchored at runtime to the
                          clicked shift-layer tab. Single-field input + Save
@@ -2051,6 +2087,7 @@
                          and any empty space sits to the right of the grid. -->
                     <DataGrid AutomationProperties.Name="{Binding Pad_Mappings, Source={x:Static strings:Strings.Instance}}" Grid.Row="2"
                               x:Name="MappingDataGrid"
+                              Margin="16,8,16,12"
                               EnableRowVirtualization="True"
                               VirtualizingPanel.VirtualizationMode="Recycling"
                               HorizontalAlignment="Left"

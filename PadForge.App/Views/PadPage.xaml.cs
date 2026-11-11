@@ -1310,17 +1310,15 @@ namespace PadForge.Views
             if (vm.IsButtonsListView)
             {
                 ButtonsScroll.VerticalScrollBarVisibility = ScrollBarVisibility.Disabled;
-                ButtonsScroll.Padding = new Thickness(0);
                 ButtonsPictureRow.Height = GridLength.Auto;
                 ButtonsTableRow.Height = new GridLength(1, GridUnitType.Star);
                 ButtonsFillRow.Height = GridLength.Auto;
                 MappingDataGrid.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
                 return;
             }
+            // The page's scroll bar is drawn in the 32 the view keeps at
+            // its sides, clear of the cards' right edge.
             ButtonsScroll.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
-            // Room for the page's scroll bar, which is drawn over the
-            // content's edge and sat on the cards' right border.
-            ButtonsScroll.Padding = new Thickness(0, 0, 14, 0);
             ButtonsTableRow.Height = GridLength.Auto;
             // The empty last row takes what the viewport has left under
             // the cards. A grid with pixels left over hands them to its
@@ -1332,10 +1330,11 @@ namespace PadForge.Views
             MappingDataGrid.VerticalScrollBarVisibility = ScrollBarVisibility.Disabled;
             double viewport = ButtonsScroll.ActualHeight;
             if (viewport <= 0) return;
-            // What is always in view with the picture: the line under it,
-            // with its 6 above and below. The top row sits above the page
-            // and is not part of its viewport.
-            double around = Math.Max(PictureLine.ActualHeight, PictureLine.MinHeight) + 12;
+            // What is always in view with the picture: the room the page
+            // keeps under its last card. The top row sits above the page
+            // and is not part of its viewport, and the bar a recording
+            // shows lies over the picture's foot and takes no room.
+            double around = ButtonsPage.Margin.Bottom;
             double folded = SteadyFoldedHeight(vm.OutputTabVisible, FoldedOutputHeight(), ref _foldedOutputMeasured);
             double picture = PictureHeightFor(viewport, around, folded, VisualTreeHelper.GetDpi(ButtonsScroll).DpiScaleY);
             ButtonsPictureRow.Height = new GridLength(picture);

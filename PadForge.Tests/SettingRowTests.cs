@@ -10,10 +10,11 @@ using Xunit;
 namespace PadForge.Tests
 {
     /// <summary>
-    /// The two panels the controller page's rebuilt sections are laid out
+    /// The panels the controller page's rebuilt sections are laid out
     /// with (#574): a setting's row, which keeps its reset in view by
-    /// letting one child give way, and the card that lists fold parts,
-    /// which takes no room when none of its parts shows.
+    /// letting one child give way, a card's head row, whose two parts
+    /// stack in a narrow window, and the card that lists fold parts, which
+    /// takes no room when none of its parts shows.
     /// </summary>
     public class SettingRowTests
     {
@@ -340,6 +341,70 @@ namespace PadForge.Tests
             Layout(row, 388);
             Assert.Equal(174, picker.RenderSize.Width);
             Assert.Equal(356, LeftOf(reset, row));
+        });
+
+        // ── a card's head row ──────────────────────────────────────────
+
+        [Theory]
+        [InlineData(800, 340, 220, true)]
+        [InlineData(560, 340, 220, true)]
+        [InlineData(559, 340, 220, false)]
+        [InlineData(300, 340, 220, false)]
+        [InlineData(double.PositiveInfinity, 340, 220, true)]
+        public void TheHeadsParts_ShareALine_WhileTheLeadingOneKeepsItsLeastWidth(double width, double trailing, double leadingMin, bool expected)
+            => Assert.Equal(expected, HeadRowPanel.SharesLine(width, trailing, leadingMin));
+
+        /// <summary>The Buttons card's head: the switch and what wraps
+        /// with it lead, the list's tools and Map All trail. With room the
+        /// trailing part stands at the row's end and the leading part wraps
+        /// in the rest. Without it each has the whole row, the trailing
+        /// part under the leading one.</summary>
+        [Fact]
+        public void TheHead_PutsItsTrailingPartAtTheEnd_AndStacksInANarrowRow() => RunSta(() =>
+        {
+            var head = new HeadRowPanel { LeadingMinWidth = 220, Gap = 8 };
+            var leading = new WrapPanel { Orientation = Orientation.Horizontal };
+            var toggle = new Border { Width = 190, Height = 36 };
+            var hint = new Border { Width = 300, Height = 20 };
+            leading.Children.Add(toggle);
+            leading.Children.Add(hint);
+            var trailing = new WrapPanel { Orientation = Orientation.Horizontal };
+            trailing.Children.Add(new Border { Width = 240, Height = 40 });
+            trailing.Children.Add(new Border { Width = 100, Height = 36 });
+            head.Children.Add(leading);
+            head.Children.Add(trailing);
+
+            // Wide: one line. The leading part has the 660 left of 1000.
+            Layout(head, 1000);
+            Assert.True(head.IsOnLine);
+            Assert.Equal(660, LeftOf(trailing, head));
+            Assert.Equal(660, leading.RenderSize.Width);
+            Assert.Equal(40, head.DesiredSize.Height);
+            Assert.Equal(190, LeftOf(hint, head));
+
+            // Less room: still one line, and the hint wraps under the
+            // switch inside the leading part's 260.
+            Layout(head, 600);
+            Assert.True(head.IsOnLine);
+            Assert.Equal(260, LeftOf(trailing, head));
+            Assert.Equal(0, LeftOf(hint, head));
+            Assert.Equal(36, TopOf(hint, head));
+
+            // Narrow: 540 would leave the leading part 200, under its 220.
+            // The parts stack, each with the whole row.
+            Layout(head, 540);
+            Assert.False(head.IsOnLine);
+            Assert.Equal(0, LeftOf(trailing, head));
+            Assert.Equal(36 + 8, TopOf(trailing, head));
+            Assert.Equal(540, trailing.RenderSize.Width);
+            Assert.Equal(36 + 8 + 40, head.DesiredSize.Height);
+            Assert.Equal(190, LeftOf(hint, head));
+
+            // With no trailing part showing, the leading one has the row.
+            trailing.Visibility = Visibility.Collapsed;
+            Layout(head, 540);
+            Assert.True(head.IsOnLine);
+            Assert.Equal(540, leading.RenderSize.Width);
         });
 
         // ── the card that lists fold parts ─────────────────────────────

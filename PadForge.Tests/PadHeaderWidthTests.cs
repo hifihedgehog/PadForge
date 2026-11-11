@@ -92,26 +92,52 @@ namespace PadForge.Tests
         /// sidebar, and English needs more than 588 too, so in
         /// a horizontal stack the last sections would run past the edge, as
         /// the last of the six tabs once did (#505). The top row of Buttons
-        /// holds its Picture and List switch, which needs 176 in Ukrainian,
-        /// the layer chips, Map All and the list's tools, and wraps as
-        /// well.</summary>
+        /// is the head of its card. Its left part wraps: the Picture and
+        /// List switch, which needs 176 in Ukrainian, the layer chips, Add
+        /// Layer and the hint. Its right part, the list's tools and Map
+        /// All, keeps its width at the row's end, and the left part wraps
+        /// in what that leaves. When that is less than the switch needs,
+        /// the two parts stand one under the other, each with the whole
+        /// row (HeadRowPanel).</summary>
         [Fact]
         public void TheTabGroupWrapsItsTabs()
         {
             var page = XDocument.Parse(PadPage());
-            foreach (string button in new[] { "SectionButtons", "SectionMacros", "TabController", "TabMappings", "TabMacros", "TabMenus" })
+            foreach (string button in new[] { "SectionButtons", "SectionMacros", "TabMacros", "TabMenus" })
             {
                 var strip = Named(page, button).Parent!;
                 Assert.Equal("WrapPanel", strip.Name.LocalName);
                 Assert.Equal("Horizontal", (string)strip.Attribute("Orientation"));
             }
-            // Everything in the top row of Buttons is a child of the one
-            // wrapping panel: the switch, the layer chips, the list's tools
-            // and Map All.
+            var left = Named(page, "ButtonsTopLeft");
+            Assert.Equal("WrapPanel", left.Name.LocalName);
+            Assert.Equal("Horizontal", (string)left.Attribute("Orientation"));
+            // The switch's two segments stand in one track, which is a
+            // child of the wrapping panel, and so are the layers' track,
+            // Add Layer and the hint.
+            foreach (string segment in new[] { "TabController", "TabMappings" })
+            {
+                var track = Named(page, segment).Parent!.Parent!;
+                Assert.Equal("{StaticResource SegmentTrack}", (string)track.Attribute("Style"));
+                Assert.Same(left, track.Parent);
+            }
+            var layers = Named(page, "ShiftLayerTrack");
+            Assert.Same(left, layers.Parent);
+            Assert.Same(layers, Named(page, "ShiftLayerTabStrip").Parent);
+            foreach (string child in new[] { "AddShiftLayerButton", "PictureHint" })
+                Assert.Same(left, Named(page, child).Parent);
+            // The row: the tools and Map All take their own width at the
+            // row's end and the wrapping part the rest, and the two stack
+            // when the rest is under 220, which holds the switch's 176
+            // with its track. The trailing part wraps too, for the line it
+            // has to itself then.
             var top = Named(page, "ButtonsTopRow");
-            Assert.Same(top, Named(page, "TabController").Parent);
-            foreach (string child in new[] { "ShiftLayerTabStrip", "ListTools" })
-                Assert.Same(top, Named(page, child).Parent);
+            Assert.Equal("HeadRowPanel", top.Name.LocalName);
+            Assert.Equal("220", (string)top.Attribute("LeadingMinWidth"));
+            var right = Named(page, "ButtonsTopRight");
+            Assert.Equal(new[] { left, right }, top.Elements());
+            Assert.Equal("WrapPanel", right.Name.LocalName);
+            Assert.Same(right, Named(page, "ListTools").Parent);
         }
 
         /// <summary>The raw hat strip on the Devices page wraps. Measured

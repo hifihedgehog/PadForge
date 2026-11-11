@@ -110,6 +110,8 @@ namespace PadForge.Common
             SetBrush("SteelLiftBrush", dark ? Color.FromRgb(0x21, 0x2C, 0x3D) : Color.FromRgb(0xD9, 0xDD, 0xE6));
             SetBrush("SteelFootBrush", dark ? Color.FromRgb(0x10, 0x17, 0x22) : Color.FromRgb(0xE4, 0xE7, 0xEE));
             SetBrush("SteelPillLineBrush", dark ? Color.FromRgb(0x26, 0x31, 0x42) : Color.FromRgb(0xC9, 0xCD, 0xD6));
+            // The chosen segment of a segmented switch, on the field's fill.
+            SetBrush("SteelSegmentBrush", dark ? Color.FromRgb(0x26, 0x31, 0x42) : Color.FromRgb(0xD9, 0xDD, 0xE6));
             // The sidebar's rows. The selected one takes the raised fill and
             // one under the pointer a fainter lift. A controller's pill and
             // the Add Controller entry clear the row's own fills (their

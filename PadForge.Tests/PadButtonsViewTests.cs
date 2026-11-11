@@ -226,21 +226,29 @@ namespace PadForge.Tests
             Assert.Equal("Listening for {0}. Press the input on your device.", strings.Pad_Listening_Format);
         }
 
-        /// <summary>The line in the page: one height whether it gives the
-        /// hint or a recording, its text and its Stop bound to the view
-        /// model, and shown with the picture only. Stop ends Map All when it
-        /// runs and otherwise cancels the recording the way a second click
-        /// on the control does.</summary>
+        /// <summary>The bar a recording shows: it lies over the picture's
+        /// foot and takes no row of the page, so the picture keeps its size
+        /// when a recording starts. It shows while a recording waits, with
+        /// its text and its Stop bound to the view model. The hint that
+        /// says how to map a control is the top row's, over the picture.
+        /// Stop ends Map All when it runs and otherwise cancels the
+        /// recording the way a second click on the control does.</summary>
         [Fact]
-        public void TheLineHasOneHeight_AndStopCancelsTheRecording()
+        public void TheListeningBarLiesOverThePicture_AndStopCancelsTheRecording()
         {
             var page = Page();
             var line = Named(page, "PictureLine");
             Assert.Equal("Border", line.Name.LocalName);
-            Assert.Equal("36", (string)line.Attribute("MinHeight"));
-            Assert.Equal("1", (string)line.Attribute("Grid.Row"));
-            Assert.Equal("{Binding IsButtonsPictureView, Converter={StaticResource BoolToVisibilityConverter}}",
+            Assert.Equal("Bottom", (string)line.Attribute("VerticalAlignment"));
+            Assert.Null(line.Attribute("Grid.Row"));
+            Assert.Contains(Named(page, "PictureGround"), line.Ancestors());
+            Assert.Equal("{Binding IsListening, Converter={StaticResource BoolToVisibilityConverter}}",
                 (string)line.Attribute("Visibility"));
+            var hint = Named(page, "PictureHint");
+            Assert.Equal("{Binding Pad_PictureHint" + S, (string)hint.Attribute("Text"));
+            Assert.Equal("{Binding IsButtonsPictureView, Converter={StaticResource BoolToVisibilityConverter}}",
+                (string)hint.Attribute("Visibility"));
+            Assert.Same(Named(page, "ButtonsTopLeft"), hint.Parent);
             var text = Named(page, "PictureLineText");
             Assert.Equal("{Binding PictureLineText}", (string)text.Attribute("Text"));
             Assert.Equal("Pad_PictureLine", Id(text));
@@ -249,9 +257,12 @@ namespace PadForge.Tests
             Assert.Equal("Pad_ListeningStop", Id(stop));
             Assert.Equal("{Binding Common_Stop" + S, (string)stop.Attribute("Content"));
             Assert.Equal("ListeningStop_Click", (string)stop.Attribute("Click"));
-            Assert.Equal("{Binding IsListening, Converter={StaticResource BoolToVisibilityConverter}}",
-                (string)stop.Attribute("Visibility"));
+            // Stop shows with the bar it stands in.
+            Assert.Null(stop.Attribute("Visibility"));
             Assert.Contains(line, stop.Ancestors());
+            // The page keeps no room for the bar: what is always in view
+            // with the picture is the room under the last card.
+            Assert.Contains("double around = ButtonsPage.Margin.Bottom;", CodeBehind());
 
             string code = CodeBehind();
             Assert.Matches(@"private void ListeningStop_Click\(object sender, RoutedEventArgs e\)\s*\{\s*if \(DataContext is not PadViewModel vm\) return;\s*if \(vm\.IsMapAllActive\)\s*\{\s*vm\.StopMapAll\(\);\s*return;\s*\}\s*string target = vm\.CurrentRecordingTarget;\s*if \(!string\.IsNullOrEmpty\(target\)\)\s*ControllerElementRecordRequested\?\.Invoke\(this, target\);", code);
@@ -266,32 +277,60 @@ namespace PadForge.Tests
 
         // ── the top row ────────────────────────────────────────────────
 
-        /// <summary>The top row: Picture and List, the layer chips, the
-        /// list's tools and Map All, in that order. The tools show with the
-        /// list. What acts on the whole controller (Copy, Paste, Copy From,
-        /// Clear All) is in the header's More menu, which every section
-        /// shows, and the row has no More button of its own.</summary>
+        /// <summary>The top row is the head of the Buttons card, as the
+        /// board draws it. Its left part: the Picture and List switch and
+        /// the layer chips, each a segmented switch in its own track, then
+        /// Add Layer in the list and the hint over the picture. Its right
+        /// part: the list's tools, then Map All at the row's end. What acts
+        /// on the whole controller (Copy, Paste, Copy From, Clear All) is
+        /// in the header's More menu, which every section shows, and the
+        /// row has no More button of its own.</summary>
         [Fact]
         public void TheTopRowHasTheSwitch_TheLayers_AndTheListsTools()
         {
             var page = Page();
             var top = Named(page, "ButtonsTopRow");
-            Assert.Equal("0", (string)top.Attribute("Grid.Row"));
-            var children = top.Elements().ToList();
+            var head = top.Parent!;
+            Assert.Equal("ButtonsCardHead", Name(head));
+            Assert.Equal("0", (string)head.Attribute("Grid.Row"));
+            // The head carries the card's fill and edge, with the card's
+            // upper corners, 32 from each side of the page.
+            Assert.Equal("{DynamicResource CardBackgroundFillColorDefaultBrush}", (string)head.Attribute("Background"));
+            Assert.Equal("{DynamicResource CardStrokeColorDefaultBrush}", (string)head.Attribute("BorderBrush"));
+            Assert.Equal("10,10,0,0", (string)head.Attribute("CornerRadius"));
+            Assert.Equal("32,0,32,0", (string)head.Attribute("Margin"));
             const string listOnly = "{Binding IsButtonsListView, Converter={StaticResource BoolToVisibilityConverter}}";
 
-            Assert.Equal(new[] { "TabController", "TabMappings", "ShiftLayerTabStrip", "ListTools", null },
-                children.Select(Name));
-            Assert.Equal("{Binding Pad_View_Picture" + S, (string)Assert.Single(children[0].Elements()).Attribute("Text"));
-            Assert.Equal("{Binding Pad_View_List" + S, (string)Assert.Single(children[1].Elements()).Attribute("Text"));
+            var left = Named(page, "ButtonsTopLeft").Elements().ToList();
+            Assert.Equal(4, left.Count);
+            // The switch.
+            Assert.Equal("{StaticResource SegmentTrack}", (string)left[0].Attribute("Style"));
+            Assert.Equal(new[] { "TabController", "TabMappings" }, Assert.Single(left[0].Elements()).Elements().Select(Name));
+            Assert.Equal("{Binding Pad_View_Picture" + S, (string)Assert.Single(Named(page, "TabController").Elements()).Attribute("Text"));
+            Assert.Equal("{Binding Pad_View_List" + S, (string)Assert.Single(Named(page, "TabMappings").Elements()).Attribute("Text"));
+            Assert.All(new[] { "TabController", "TabMappings" },
+                n => Assert.Equal("{StaticResource SegmentRadio}", (string)Named(page, n).Attribute("Style")));
+            // The layers, shown when a layer exists.
+            Assert.Equal("ShiftLayerTrack", Name(left[1]));
+            Assert.Equal("{StaticResource SegmentTrack}", (string)left[1].Attribute("Style"));
             Assert.Equal("{Binding HasShiftLayers, Converter={StaticResource BoolToVisibilityConverter}}",
-                (string)children[2].Attribute("Visibility"));
-            Assert.Equal("{Binding LayerTabs}", (string)children[2].Attribute("ItemsSource"));
+                (string)left[1].Attribute("Visibility"));
+            var strip = Assert.Single(left[1].Elements());
+            Assert.Equal("ShiftLayerTabStrip", Name(strip));
+            Assert.Equal("{Binding LayerTabs}", (string)strip.Attribute("ItemsSource"));
+            Assert.Contains("Style=\"{StaticResource SegmentRadio}\"", strip.ToString());
+            // Add Layer, with the list.
+            Assert.Equal("AddShiftLayerButton", Name(left[2]));
+            Assert.Equal(listOnly, (string)left[2].Attribute("Visibility"));
+            Assert.Equal("PictureHint", Name(left[3]));
 
-            // The list's tools, each as it was.
-            var tools = children[3];
+            // The right part: the list's tools, each as it was, then Map
+            // All.
+            var children = Named(page, "ButtonsTopRight").Elements().ToList();
+            Assert.Equal(new[] { "ListTools", null }, children.Select(Name));
+            var tools = children[0];
             Assert.Equal(listOnly, (string)tools.Attribute("Visibility"));
-            Assert.Equal(new[] { "AddShiftLayerButton", "MappingFilterSearchBox", "MappingDeviceFilterToggle", null, "MappingSurfaceScopeBox" },
+            Assert.Equal(new[] { "MappingFilterSearchBox", "MappingDeviceFilterToggle", null, "MappingSurfaceScopeBox" },
                 tools.Elements().Select(Name));
             Assert.Equal("AddShiftLayer_Click", (string)Named(page, "AddShiftLayerButton").Attribute("Click"));
             Assert.Equal("{Binding MappingInputSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}",
@@ -300,7 +339,7 @@ namespace PadForge.Tests
                 (string)Named(page, "MappingSurfaceScopeBox").Attribute("Visibility"));
 
             // Map All, in both views.
-            var mapAll = children[4];
+            var mapAll = children[1];
             Assert.Equal("{Binding MapAllButtonText}", (string)mapAll.Attribute("Content"));
             Assert.Equal("MapAllToggle_Click", (string)mapAll.Attribute("Click"));
             Assert.Null(mapAll.Attribute("Visibility"));
@@ -451,6 +490,26 @@ namespace PadForge.Tests
             var scroll = Named(page, "ButtonsScroll");
             Assert.Equal("ScrollViewer", scroll.Name.LocalName);
             Assert.Equal("ButtonsRoot_SizeChanged", (string)scroll.Attribute("SizeChanged"));
+            // The view's content is 32 from each side of the page, as the
+            // card's head is, with the page's scroll bar in that margin.
+            Assert.Equal("32,0", (string)scroll.Attribute("Padding"));
+            // The card's body is drawn behind the picture, the bar's old
+            // row and the table: its sides, its foot and its lower corners.
+            var body = Named(page, "ButtonsCardBody");
+            Assert.Same(Named(page, "ButtonsPage"), body.Parent);
+            Assert.Equal("0", (string)body.Attribute("Grid.Row"));
+            Assert.Equal("3", (string)body.Attribute("Grid.RowSpan"));
+            Assert.Equal("1,0,1,1", (string)body.Attribute("BorderThickness"));
+            Assert.Equal("0,0,10,10", (string)body.Attribute("CornerRadius"));
+            // The picture stands on the page's ground inside the card's
+            // sides, and is the card's foot while no table follows it.
+            var ground = Named(page, "PictureGround");
+            Assert.Equal("1,0,1,0", (string)ground.Attribute("Margin"));
+            Assert.Equal("{DynamicResource SteelGroundBrush}", (string)ground.Attribute("Background"));
+            var foot = Assert.Single(ground.Descendants(), e => e.Name.LocalName == "DataTrigger"
+                && (string)e.Attribute("Binding") == "{Binding HasItems, ElementName=MappingDataGrid}");
+            Assert.Equal("False", (string)foot.Attribute("Value"));
+            Assert.Equal("0,0,9,9", (string)Assert.Single(foot.Elements()).Attribute("Value"));
             // The section: the top row, the list's chips, and the view's
             // content with the room that is left.
             Assert.Equal(new[] { "Auto", "Auto", "*" },
@@ -471,7 +530,7 @@ namespace PadForge.Tests
             Assert.Equal("MappingDataGrid_PreviewMouseWheel", (string)table.Attribute("PreviewMouseWheel"));
 
             string code = CodeBehind();
-            Assert.Matches(@"if \(vm\.IsButtonsListView\)\s*\{\s*ButtonsScroll\.VerticalScrollBarVisibility = ScrollBarVisibility\.Disabled;\s*ButtonsScroll\.Padding = new Thickness\(0\);\s*ButtonsPictureRow\.Height = GridLength\.Auto;\s*ButtonsTableRow\.Height = new GridLength\(1, GridUnitType\.Star\);\s*ButtonsFillRow\.Height = GridLength\.Auto;\s*MappingDataGrid\.VerticalScrollBarVisibility = ScrollBarVisibility\.Visible;\s*return;\s*\}", code);
+            Assert.Matches(@"if \(vm\.IsButtonsListView\)\s*\{\s*ButtonsScroll\.VerticalScrollBarVisibility = ScrollBarVisibility\.Disabled;\s*ButtonsPictureRow\.Height = GridLength\.Auto;\s*ButtonsTableRow\.Height = new GridLength\(1, GridUnitType\.Star\);\s*ButtonsFillRow\.Height = GridLength\.Auto;\s*MappingDataGrid\.VerticalScrollBarVisibility = ScrollBarVisibility\.Visible;\s*return;\s*\}", code);
             Assert.Contains("ButtonsScroll.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;", code);
             // In the picture's view the table is as tall as its rows, and
             // the empty last row takes the viewport's leftover. In the list

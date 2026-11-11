@@ -451,7 +451,10 @@ namespace PadForge.Tests
             var scroll = Named(page, "ButtonsScroll");
             Assert.Equal("ScrollViewer", scroll.Name.LocalName);
             Assert.Same(buttonsRoot, scroll.Parent);
-            Assert.Same(buttonsRoot, Named(page, "ButtonsTopRow").Parent);
+            // The top row is the head of the Buttons card.
+            var head = Named(page, "ButtonsCardHead");
+            Assert.Same(buttonsRoot, head.Parent);
+            Assert.Same(head, Named(page, "ButtonsTopRow").Parent);
             Assert.Equal("{Binding Pad_Section_Buttons, Source={x:Static strings:Strings.Instance}}",
                 (string)scroll.Attribute("AutomationProperties.Name"));
             var buttonsPage = Assert.Single(scroll.Elements());

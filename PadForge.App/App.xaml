@@ -67,6 +67,8 @@
                     <SolidColorBrush x:Key="SteelLiftBrush" Color="#212C3D"/>
                     <SolidColorBrush x:Key="SteelFootBrush" Color="#101722"/>
                     <SolidColorBrush x:Key="SteelPillLineBrush" Color="#263142"/>
+                    <!-- The chosen segment of a segmented switch. -->
+                    <SolidColorBrush x:Key="SteelSegmentBrush" Color="#263142"/>
                     <SolidColorBrush x:Key="SteelPaneHoverBrush" Color="#121925"/>
                     <!-- Inside a card: a full-width row under the pointer
                          (a More row, a folded part's line), a reset

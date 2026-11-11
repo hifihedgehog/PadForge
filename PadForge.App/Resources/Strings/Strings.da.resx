@@ -143,7 +143,6 @@
   <data name="Main_Minimize" xml:space="preserve"><value>Minimer</value></data>
   <data name="Main_Maximize" xml:space="preserve"><value>Maksimer</value></data>
   <data name="Main_Restore" xml:space="preserve"><value>Gendan</value></data>
-  <data name="Main_NavigationPane" xml:space="preserve"><value>Navigationsrude</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Vis PadForge</value></data>
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>Virtuel controller {0}</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>Motoren er stoppet</value></data>
@@ -272,12 +271,14 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>Hjem</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>Enheder tilsluttet: {0}. Controllere: {1}.</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Inputmotor</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> enheder online</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>Controllere</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Ekstra i brug</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>Resten findes under Ekstra, og hver enkelt er slået fra, til du slår den til.</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>Til. {0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>{0} flere under [Ekstra]. En ekstra er slået fra, til du slår den til.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>Åbn Ekstra</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>Vis QR</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} er tilsluttet og ikke i brug.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Brug den</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> tildelt, </value></data>
@@ -2482,7 +2483,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>({0} yderligere fejl undertrykt)</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Hz</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->

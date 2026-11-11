@@ -156,32 +156,9 @@ namespace PadForge.Views
         private bool _isDragging;
         private Point _dragStartPoint;
         private Border _dragSourceCard;
-        // The template-root element BeginDrag hid (card + aura + wrappers);
-        // EndDrag restores exactly this element instead of re-deriving it
-        // from a parent chain that the cache wrappers have since changed.
-        private FrameworkElement _dragHiddenRoot;
-
-        /// <summary>Topmost element of the slot item's template under its
-        /// ContentPresenter, climbing from the card through any wrapper
-        /// grids. This is the element that contains BOTH the card and its
-        /// glow-host aura sibling.</summary>
-        private static FrameworkElement FindDragTemplateRoot(FrameworkElement card)
-        {
-            FrameworkElement root = null;
-            DependencyObject cur = card;
-            // Depth cap: the real chain is card -> cache wrapper -> template
-            // root -> ContentPresenter. If the tree ever changes shape, stop
-            // climbing rather than risk hiding an ancestor panel.
-            for (int depth = 0; depth < 4; depth++)
-            {
-                if (System.Windows.Media.VisualTreeHelper.GetParent(cur) is not FrameworkElement p
-                    || p is ContentPresenter)
-                    break;
-                root = p;
-                cur = p;
-            }
-            return root;
-        }
+        // The card BeginDrag hid. EndDrag gives exactly this one its
+        // opacity back, whatever has happened to _dragSourceCard since.
+        private Border _dragHiddenCard;
         private int _dragSourcePadIndex;
         private int _dragSourceVisualPos;
         private bool _dragIsSwapMode;
@@ -317,17 +294,11 @@ namespace PadForge.Views
             _dragSwapTargetPadIndex = -1;
             _dragDropIndex = -1;
 
-            // Capture bitmap before hiding the card.
+            // Capture bitmap before hiding the card. The card is its item's
+            // whole template, so hiding it leaves nothing in the old spot.
             var snapshot = CaptureCardVisual(card);
-            // Hide the whole template root: hiding only the card leaves the
-            // glow-host sibling painting a silhouette in the old spot. The
-            // card's IMMEDIATE parent is no longer that root (a BitmapCache
-            // wrapper Grid sits between them since the perf work), so climb
-            // to the topmost element under the item's ContentPresenter and
-            // remember it for EndDrag.
-            _dragHiddenRoot = FindDragTemplateRoot(card);
-            if (_dragHiddenRoot != null) _dragHiddenRoot.Opacity = 0;
-            else card.Opacity = 0;
+            _dragHiddenCard = card;
+            card.Opacity = 0;
 
             Mouse.Capture(SlotsItemsControl, CaptureMode.SubTree);
 
@@ -533,14 +504,15 @@ namespace PadForge.Views
             // was missing is LostMouseCapture, wired in WireDragHandlers.
             // Reading the fields into locals still costs nothing and closes
             // the documented re-entrancy for the paths that do reach it.
-            var hiddenRoot = _dragHiddenRoot;
-            var sourceCard = _dragSourceCard;
-            _dragHiddenRoot = null;
+            var hiddenCard = _dragHiddenCard;
+            _dragHiddenCard = null;
 
             Mouse.Capture(null);
 
-            if (hiddenRoot != null) hiddenRoot.Opacity = 1;
-            if (sourceCard != null) sourceCard.Opacity = 1;
+            // ClearValue, not 1: the card's style dims a controller with
+            // nothing mapped, and a local value would outrank that for the
+            // rest of the card's life.
+            hiddenCard?.ClearValue(UIElement.OpacityProperty);
 
             ClearSwapHighlight();
 
@@ -672,10 +644,9 @@ namespace PadForge.Views
             int h = (int)Math.Ceiling(card.ActualHeight * dpi.DpiScaleY) + 4;
             var rtb = new RenderTargetBitmap(w, h, dpi.PixelsPerInchX, dpi.PixelsPerInchY,
                 PixelFormats.Pbgra32);
-            // Render through a VisualBrush: RenderTargetBitmap.Render(card)
-            // bakes in the card's RenderTransform, and the hover lift is at
-            // -2px when a drag starts, which cut the ghost's top edge
-            // (user-reported). The brush normalizes the content bounds.
+            // Drawn through a VisualBrush at the origin.
+            // RenderTargetBitmap.Render(card) would draw the card at its
+            // offset inside its parent, which cuts the ghost.
             var dv = new DrawingVisual();
             using (var dc = dv.RenderOpen())
             {

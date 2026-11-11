@@ -180,7 +180,7 @@ internal static class Program
     // 120, 120 and 40, then the action cluster. The row sits in a card (16
     // padding, 1 border) inside the page scroller's 24 side padding. A mode
     // name wider than its picker is trimmed, with the full name on hover.
-    const double ProfilesRowAtMinimum = 900 - 244 - 2 * 24 - 2 * 17;
+    const double ProfilesRowAtMinimum = 900 - 248 - 2 * 24 - 2 * 17;
     static Grid _profilesRow;
 
     static void BuildProfilesRow()
@@ -509,7 +509,7 @@ internal static class Program
         }
         string Verdict(bool fits) => fits ? "  fits" : "  OVERFLOWS";
 
-        Console.WriteLine("== Profiles shortcut row (window minimum 900, pane open) ==");
+        Console.WriteLine("== Profiles shortcut row (window minimum 900) ==");
         var columns = _profilesRow.ColumnDefinitions;
         double floors = columns.Take(4).Sum(c => c.MinWidth) + 3 * ResetCost;
         double modePicker = columns[0].ActualWidth - 6 - ResetCost;
@@ -578,9 +578,8 @@ internal static class Program
 
         // ── C275 and #574 ──
         // The header's margin takes 12 a side. At the 900 window minimum
-        // with the navigation pane open (244) a line holds 632, with the
-        // compact pane (48) 828, and in the default 1100 window with the
-        // pane open 832.
+        // the sidebar (248, always open) leaves a line 628, and in the
+        // default 1100 window 828.
         Console.WriteLine("== Pad page header (window minimum 900) ==");
         const double chip = 34 + 10;
         double title = Max("hdr-title"), preset = Max("hdr-preset"), presetFloor = Max("hdr-preset-floor");
@@ -645,7 +644,7 @@ internal static class Program
         // margin, Add Device.
         double deviceLine = Max("hdr-driven") + 200 + 8 + Max("hdr-add");
         foreach (var (name, line) in new[]
-                 { ("900, pane open", 900.0 - 244 - 24), ("900, pane compact", 900.0 - 48 - 24), ("1100, pane open", 1100.0 - 244 - 24) })
+                 { ("a 900 window", 900.0 - 248 - 24), ("a 1100 window", 1100.0 - 248 - 24) })
         {
             // Line 1's first column is what the power button leaves.
             double first = line - power;

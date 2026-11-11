@@ -257,12 +257,14 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>Home</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>Mga Device na nakakonekta: {0}. Mga Controller: {1}.</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Input engine</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> device na online</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>Mga Controller</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Mga Extra na Ginagamit</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>Ang iba pa ay nasa Mga Extra, at naka-off ang bawat isa hangga't hindi mo ino-on.</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>Naka-on. {0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>{0} pa sa [Mga Extra]. Naka-off ang isang extra hangga't hindi mo ino-on.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>Buksan ang Mga Extra</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>Ipakita ang QR</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>Nakakonekta ang {0} at hindi ito ginagamit.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Gamitin</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> naka-map, </value></data>

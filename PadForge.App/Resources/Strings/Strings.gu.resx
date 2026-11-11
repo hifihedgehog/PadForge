@@ -257,12 +257,14 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>હોમ</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>જોડાયેલા ઉપકરણો: {0}. કંટ્રોલર: {1}.</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>ઇનપુટ એન્જિન</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> ઉપકરણો ઓનલાઇન</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>કંટ્રોલર</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>ઉપયોગમાં એક્સ્ટ્રાઝ</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>બાકીના એક્સ્ટ્રાઝમાં છે, દરેક તમે ચાલુ ન કરો ત્યાં સુધી બંધ રહે છે.</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>ચાલુ. {0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>{0} વધુ [એક્સ્ટ્રાઝ]માં છે. એક્સ્ટ્રા તમે ચાલુ ન કરો ત્યાં સુધી બંધ રહે છે.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>એક્સ્ટ્રાઝ ખોલો</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>QR બતાવો</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} કનેક્ટ થયેલ છે અને ઉપયોગમાં નથી.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>તેનો ઉપયોગ કરો</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> મેપ કરેલ, </value></data>
@@ -2314,7 +2316,7 @@
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>({0} વધારાની ભૂલ(ઓ) દબાવી દેવાઈ)</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Hz</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->

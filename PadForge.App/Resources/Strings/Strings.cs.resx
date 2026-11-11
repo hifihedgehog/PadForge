@@ -143,7 +143,6 @@
   <data name="Main_Minimize" xml:space="preserve"><value>Minimalizovat</value></data>
   <data name="Main_Maximize" xml:space="preserve"><value>Maximalizovat</value></data>
   <data name="Main_Restore" xml:space="preserve"><value>Obnovit</value></data>
-  <data name="Main_NavigationPane" xml:space="preserve"><value>Navigační panel</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Zobrazit PadForge</value></data>
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>Virtuální ovladač {0}</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>Jádro zastaveno</value></data>
@@ -272,12 +271,14 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>Domů</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>Připojená zařízení: {0}. Ovladače: {1}.</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Vstupní jádro</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> zařízení online</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>Ovladače</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Používané doplňky</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>Ostatní jsou na stránce Doplňky, každý je vypnutý, dokud ho nezapnete.</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>Zapnuto. {0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Dalších {0} je v [Doplňcích]. Doplněk zůstane vypnutý, dokud ho nezapnete.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>Otevřít doplňky</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>Zobrazit QR</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>Zařízení {0} je připojeno a nepoužívá se.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Použít</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> namapováno, </value></data>
@@ -2482,7 +2483,7 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(počet dalších potlačených chyb: {0})</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Hz</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->

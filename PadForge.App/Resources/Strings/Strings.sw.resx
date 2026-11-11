@@ -257,12 +257,14 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>Mwanzo</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>Vifaa vilivyounganishwa: {0}. Vidhibiti: {1}.</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Injini ya ingizo</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> vifaa viko mtandaoni</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>Vidhibiti</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Vipengele vya ziada vinavyotumika</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>Vilivyobaki viko kwenye Vipengele vya ziada, kila kimoja kimezimwa hadi utakapokiwasha.</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>Imewashwa. {0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>{0} zaidi kwenye [Vipengele vya ziada]. Kipengele cha ziada kimezimwa hadi utakapokiwasha.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>Fungua Vipengele vya ziada</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>Onyesha QR</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} imeunganishwa na haitumiki.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Kitumie</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> vimepangwa, </value></data>
@@ -2298,7 +2300,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(hitilafu {0} za ziada zimezimwa)</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Hz</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->

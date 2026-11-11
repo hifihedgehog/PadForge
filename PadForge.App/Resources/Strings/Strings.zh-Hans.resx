@@ -140,7 +140,6 @@
   <data name="Main_Minimize" xml:space="preserve"><value>最小化</value></data>
   <data name="Main_Maximize" xml:space="preserve"><value>最大化</value></data>
   <data name="Main_Restore" xml:space="preserve"><value>还原</value></data>
-  <data name="Main_NavigationPane" xml:space="preserve"><value>导航窗格</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>显示 PadForge</value></data>
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>虚拟控制器 {0}</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>引擎已停止</value></data>
@@ -262,12 +261,14 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>主页</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>已连接设备：{0}。控制器：{1}。</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>输入引擎</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> 台设备在线</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>控制器</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>正在使用的附加功能</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>其余功能在“附加功能”页面中，每一项在你开启之前都保持关闭。</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>开。{0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>还有 {0} 项在[附加功能]中。附加功能在你开启之前保持关闭。</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>打开附加功能</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>显示 QR</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} 已接入，尚未使用。</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>使用</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> 已映射，</value></data>
@@ -1157,7 +1158,7 @@
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>（已隐藏 {0} 个额外错误）</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Hz</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Preview Views ═══ -->

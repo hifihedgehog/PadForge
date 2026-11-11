@@ -143,7 +143,6 @@
   <data name="Main_Minimize" xml:space="preserve"><value>Свернуть</value></data>
   <data name="Main_Maximize" xml:space="preserve"><value>Развернуть</value></data>
   <data name="Main_Restore" xml:space="preserve"><value>Восстановить</value></data>
-  <data name="Main_NavigationPane" xml:space="preserve"><value>Панель навигации</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Показать PadForge</value></data>
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>Виртуальный контроллер {0}</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>Движок остановлен</value></data>
@@ -272,12 +271,14 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>Главная</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>Устройств подключено: {0}. Контроллеров: {1}.</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Движок ввода</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> устр. в сети</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>Контроллеры</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Используемые дополнения</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>Остальные находятся в разделе «Дополнения», и каждое отключено, пока вы его не включите.</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>Включено. {0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Ещё {0} в разделе [Дополнения]. Дополнение остаётся отключённым, пока вы его не включите.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>Открыть дополнения</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>Показать QR</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>Устройство {0} подключено и не используется.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Использовать</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> назначено, </value></data>
@@ -2482,7 +2483,7 @@
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(скрыто дополнительных ошибок: {0})</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Гц</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Гц</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->

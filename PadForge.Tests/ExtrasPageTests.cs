@@ -588,9 +588,9 @@ namespace PadForge.Tests
                 "<ResourceDictionary xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\""
                 + " xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\""
                 + " xmlns:controls=\"clr-namespace:PadForge.Controls;assembly=" + assembly + "\""
+                + " xmlns:conv=\"clr-namespace:PadForge.Converters;assembly=" + assembly + "\""
                 + " xmlns:strings=\"clr-namespace:PadForge.Resources.Strings;assembly=" + assembly + "\">"
                 + "<FontFamily x:Key=\"TelemetryFontFamily\">Consolas</FontFamily>"
-                + "<DropShadowEffect x:Key=\"NeutralHoverGlow\"/>"
                 + "<Style x:Key=\"CardBorder\" TargetType=\"Border\"/>"
                 + "<Style x:Key=\"CardTitle\" TargetType=\"TextBlock\"/>"
                 + "<Style x:Key=\"CardDescription\" TargetType=\"TextBlock\"/>"
@@ -667,13 +667,15 @@ namespace PadForge.Tests
             Assert.Equal("Extras_Switch_RemoteLink", AutomationProperties.GetAutomationId(toggle));
         });
 
-        /// <summary>The tile's second face, the row Home shows for an extra
-        /// that is on (the HomeExtraTile style): one button over the whole
-        /// row that asks for the extra's page, under an id that starts
-        /// Home_Extra_ so it never shares one with the catalog's tile, the
-        /// live status while there is one, and no switch.</summary>
+        /// <summary>The tile's second face, the one Home shows for an extra
+        /// that is on (the HomeExtraTile style): one button that asks for
+        /// the extra's page, under an id that starts Home_Extra_ so it never
+        /// shares one with the catalog's tile, the word On with the live
+        /// status after it (the extra's one line while it reports none),
+        /// and no switch. A tile that names a second button has one at its
+        /// end, which asks for the page too.</summary>
         [Fact]
-        public void HomesRow_BuildsFromItsShippedTemplate_OpensThePage_AndHasNoSwitch() => RunSta(() =>
+        public void HomesTile_BuildsFromItsShippedTemplate_OpensThePage_AndHasNoSwitch() => RunSta(() =>
         {
             var styles = ShippedStyles();
             var row = new ExtraTile
@@ -681,35 +683,57 @@ namespace PadForge.Tests
                 Key = "MotionServer",
                 Glyph = "",
                 Title = "Motion Server",
+                Line = "Sends motion to emulators.",
                 Status = "Listening on port 26760",
                 IsOn = true,
                 Resources = styles,
                 Style = (Style)styles["HomeExtraTile"],
             };
-            Assert.True(row.ApplyTemplate(), "Home's row has no template");
+            Assert.True(row.ApplyTemplate(), "Home's tile has no template");
             Assert.Equal(ExtraTile.HomeOpenIdPrefix, row.OpenPrefix);
 
             var open = Assert.IsType<Button>(row.Template.FindName(ExtraTile.OpenPartName, row));
+            var action = Assert.IsType<Button>(row.Template.FindName(ExtraTile.ActionPartName, row));
             Assert.Null(row.Template.FindName(ExtraTile.SwitchPartName, row));
             Assert.Null(row.Template.FindName("StateWord", row));
-            var status = Assert.IsType<TextBlock>(row.Template.FindName("StatusText", row));
 
             Assert.Equal("Home_Extra_MotionServer", AutomationProperties.GetAutomationId(open));
+            Assert.Equal("Home_Extra_MotionServer_Action", AutomationProperties.GetAutomationId(action));
             Assert.Equal("Motion Server", AutomationProperties.GetName(open));
             Assert.Equal("Listening on port 26760", AutomationProperties.GetItemStatus(open));
-            Assert.Equal(Visibility.Visible, status.Visibility);
-            Assert.Equal("Listening on port 26760", status.Text);
 
-            // An extra with no status line shows its name alone.
+            // What follows the word On: the status while there is one, and
+            // the extra's one line otherwise.
+            Assert.Equal("Listening on port 26760", row.Summary);
             row.Status = "";
-            Assert.Equal(Visibility.Collapsed, status.Visibility);
+            Assert.Equal("Sends motion to emulators.", row.Summary);
             row.Status = null;
-            Assert.Equal(Visibility.Collapsed, status.Visibility);
+            Assert.Equal("Sends motion to emulators.", row.Summary);
+            row.Line = null;
+            Assert.Equal(string.Empty, row.Summary);
+            row.Status = "Listening on port 26760";
+            // The line under the name is the format of the string table
+            // over that summary, the one text in the face that wraps.
+            var words = Descendants<TextBlock>(open).Single(t => t.TextWrapping == TextWrapping.Wrap);
+            Assert.Equal(string.Format(Strings.Instance.Home_ExtraOn_Format, "Listening on port 26760"), words.Text);
+            Assert.StartsWith(Strings.Instance.Common_On, words.Text);
 
             var opened = new List<object>();
             row.OpenRequested += (_, e) => opened.Add(e.OriginalSource);
             open.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
             Assert.Same(row, Assert.Single(opened));
+
+            // The second button: gone while the tile names none, there once
+            // it does, and a click on it asks for the page as the face does.
+            Assert.Equal(Visibility.Collapsed, action.Visibility);
+            row.ActionText = "Show QR";
+            Assert.Equal(Visibility.Visible, action.Visibility);
+            Assert.Equal("Show QR", action.Content);
+            action.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+            Assert.Equal(2, opened.Count);
+            Assert.Same(row, opened[1]);
+            row.ActionText = null;
+            Assert.Equal(Visibility.Collapsed, action.Visibility);
 
             // The catalog's tile of the same extra keeps its own id.
             var tile = new ExtraTile { Key = "MotionServer", Resources = styles };
@@ -718,6 +742,17 @@ namespace PadForge.Tests
             Assert.Equal("Extras_Open_MotionServer",
                 AutomationProperties.GetAutomationId(Assert.IsType<Button>(tile.Template.FindName(ExtraTile.OpenPartName, tile))));
         });
+
+        /// <summary>Every element of a type at or under a root, in the
+        /// logical tree, which a template's content has before any layout.</summary>
+        private static IEnumerable<T> Descendants<T>(DependencyObject root) where T : DependencyObject
+        {
+            if (root is T hit) yield return hit;
+            foreach (object child in LogicalTreeHelper.GetChildren(root))
+                if (child is DependencyObject node)
+                    foreach (T found in Descendants<T>(node))
+                        yield return found;
+        }
 
         [Fact]
         public void ASwitch_IsACheckBoxThatSaysOnOrOff_WhenAskedTo() => RunSta(() =>

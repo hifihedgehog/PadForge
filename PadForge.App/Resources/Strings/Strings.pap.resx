@@ -249,12 +249,14 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>Inisio</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>Aparatonan konektá: {0}. Kontrolnan: {1}.</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Motor di entrada</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> aparatonan online</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>Kontrolnan</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Ekstra den uso</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>E restu ta den Ekstra, kada un pagá te ora bo sende e.</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>Sendí. {0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>{0} mas den [Ekstra]. Un ekstra ta pagá te ora bo sende e.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>Habri Ekstra</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>Mustra QR</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> asigná, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> konektá</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Motor ta kore. Klik pa para.</value></data>
@@ -1334,7 +1336,7 @@
   <data name="App_Error" xml:space="preserve"><value>PadForge: Eròr</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Hz</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->

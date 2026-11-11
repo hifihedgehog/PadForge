@@ -257,12 +257,14 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>الرئيسية</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>الأجهزة المتصلة: {0}. وحدات التحكم: {1}.</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>محرك الإدخال</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> أجهزة متصلة</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>وحدات التحكم</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>الإضافات قيد الاستخدام</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>بقية الإضافات في الإضافات، وكل واحدة متوقفة حتى تشغلها.</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>تشغيل. {0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>{0} أخرى في [الإضافات]. تبقى الإضافة متوقفة حتى تشغلها.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>فتح الإضافات</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>عرض QR</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} متصل وغير مستخدم.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>استخدمه</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> معينة، </value></data>
@@ -2316,7 +2318,7 @@
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(تم كتم أخطاء إضافية عددها {0})</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} هرتز</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} هرتز</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->

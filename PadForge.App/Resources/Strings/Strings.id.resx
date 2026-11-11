@@ -143,7 +143,6 @@
   <data name="Main_Minimize" xml:space="preserve"><value>Perkecil</value></data>
   <data name="Main_Maximize" xml:space="preserve"><value>Perbesar</value></data>
   <data name="Main_Restore" xml:space="preserve"><value>Pulihkan</value></data>
-  <data name="Main_NavigationPane" xml:space="preserve"><value>Panel Navigasi</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Tampilkan PadForge</value></data>
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>Kontroler Virtual {0}</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>Mesin berhenti</value></data>
@@ -272,12 +271,14 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>Beranda</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>Perangkat terhubung: {0}. Kontroler: {1}.</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Mesin input</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> perangkat online</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>Kontroler</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Ekstra yang dipakai</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>Sisanya ada di Ekstra, masing-masing nonaktif sampai Anda mengaktifkannya.</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>Aktif. {0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>{0} lagi di [Ekstra]. Ekstra nonaktif sampai Anda mengaktifkannya.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>Buka Ekstra</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>Tampilkan QR</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} tersambung dan belum dipakai.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Gunakan</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> dipetakan, </value></data>
@@ -2482,7 +2483,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>({0} kesalahan tambahan disembunyikan)</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Hz</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->

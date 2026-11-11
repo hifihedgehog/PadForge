@@ -143,7 +143,6 @@
   <data name="Main_Minimize" xml:space="preserve"><value>కనిష్టీకరించు</value></data>
   <data name="Main_Maximize" xml:space="preserve"><value>గరిష్టీకరించు</value></data>
   <data name="Main_Restore" xml:space="preserve"><value>పునరుద్ధరించు</value></data>
-  <data name="Main_NavigationPane" xml:space="preserve"><value>నావిగేషన్ పేన్</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>PadForge చూపించు</value></data>
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>వర్చువల్ కంట్రోలర్ {0}</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>ఇంజిన్ ఆగింది</value></data>
@@ -272,12 +271,14 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>హోమ్</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>కనెక్ట్ అయిన పరికరాలు: {0}. కంట్రోలర్లు: {1}.</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>ఇన్పుట్ ఇంజిన్</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> పరికరాలు ఆన్‌లైన్‌లో ఉన్నాయి</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>కంట్రోలర్లు</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>వాడుకలో ఉన్న ఎక్స్‌ట్రాలు</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>మిగిలినవి ఎక్స్‌ట్రాలు పేజీలో ఉన్నాయి, మీరు ఆన్ చేసే వరకు ప్రతిదీ ఆఫ్‌లో ఉంటుంది.</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>ఆన్. {0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>{0} మరిన్ని [ఎక్స్‌ట్రాలు] పేజీలో ఉన్నాయి. ఎక్స్‌ట్రా మీరు ఆన్ చేసే వరకు ఆఫ్‌లో ఉంటుంది.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>ఎక్స్‌ట్రాలు తెరువు</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>QR చూపించు</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} కనెక్ట్ అయి ఉంది, వాడుకలో లేదు.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>దీన్ని వాడు</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> మ్యాప్ చేయబడ్డాయి, </value></data>
@@ -2482,7 +2483,7 @@
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>({0} అదనపు లోపాలు అణచివేయబడ్డాయి)</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Hz</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->

@@ -225,7 +225,6 @@ public class Strings : INotifyPropertyChanged
     public string Main_Minimize => Get("Main_Minimize");
     public string Main_Maximize => Get("Main_Maximize");
     public string Main_Restore => Get("Main_Restore");
-    public string Main_NavigationPane => Get("Main_NavigationPane");
     public string Main_ShowPadForge => Get("Main_ShowPadForge");
     public string Main_VirtualController_Format => Get("Main_VirtualController_Format");
     public string Main_EngineStopped => Get("Main_EngineStopped");
@@ -355,12 +354,14 @@ public class Strings : INotifyPropertyChanged
     public string Status_DeviceRemoved => Get("Status_DeviceRemoved");
     public string Status_VCDeleted_Format => Get("Status_VCDeleted_Format");
     public string Home_Title => Get("Home_Title");
+    public string Home_EngineLine_Format => Get("Home_EngineLine_Format");
     public string Dashboard_InputEngine => Get("Dashboard_InputEngine");
-    public string Dashboard_DevicesOnline => Get("Dashboard_DevicesOnline");
     public string Home_Controllers => Get("Home_Controllers");
     public string Home_ExtrasInUse => Get("Home_ExtrasInUse");
+    public string Home_ExtraOn_Format => Get("Home_ExtraOn_Format");
     public string Home_MoreExtras => Get("Home_MoreExtras");
     public string Home_OpenExtras => Get("Home_OpenExtras");
+    public string Home_ShowQr => Get("Home_ShowQr");
     public string Home_Offer_Format => Get("Home_Offer_Format");
     public string Home_Offer_Use => Get("Home_Offer_Use");
     public string Dashboard_Mapped => Get("Dashboard_Mapped");

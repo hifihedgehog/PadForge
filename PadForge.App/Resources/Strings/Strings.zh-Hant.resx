@@ -143,7 +143,6 @@
   <data name="Main_Minimize" xml:space="preserve"><value>最小化</value></data>
   <data name="Main_Maximize" xml:space="preserve"><value>最大化</value></data>
   <data name="Main_Restore" xml:space="preserve"><value>還原</value></data>
-  <data name="Main_NavigationPane" xml:space="preserve"><value>導覽窗格</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>顯示 PadForge</value></data>
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>虛擬控制器 {0}</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>引擎已停止</value></data>
@@ -272,12 +271,14 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>首頁</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>已連線裝置：{0}。控制器：{1}。</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>輸入引擎</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> 個裝置在線上</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>控制器</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>使用中的額外功能</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>其餘功能都在「額外功能」頁面，每一項在您開啟之前都維持關閉。</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>開啟。{0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>另有 {0} 項在「[額外功能]」。額外功能在您開啟之前都維持關閉。</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>開啟額外功能</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>顯示 QR</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} 已連接，但尚未使用。</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>使用它</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> 個已對應，</value></data>
@@ -2482,7 +2483,7 @@
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>（另有 {0} 個錯誤未顯示）</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Hz</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->

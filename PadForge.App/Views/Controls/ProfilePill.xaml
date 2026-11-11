@@ -3,25 +3,23 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:strings="clr-namespace:PadForge.Resources.Strings"
              xmlns:controls="clr-namespace:PadForge.Controls">
-    <!-- Active-profile pill (#175 item 8): rounded steel chip carrying a
-         lit flame + the active profile name in telemetry mono. Hosted in
-         the title bar (#574), where the status bar's copy went. Its host's
-         DataContext is not the one it reads, so code-behind rebinds the
-         pill to MainViewModel.Settings on Loaded. That is the one
-         SettingsViewModel whose ActiveProfileInfo every switch path
-         (auto, shortcut cycle, Load button, delete/revert) already sets.
-         Click opens the switcher flyout; MainWindow wires it. Hover is a
-         fill lighten only: the Effect slot is reserved for the code-driven
-         auto-switch flare (one Effect slot per element). -->
-    <controls:ClickBorder x:Name="PillBorder" CornerRadius="9" BorderThickness="1"
-            Padding="8,2" Cursor="Hand" Click="Pill_Click">
+    <!-- The profile switcher in the title bar (#574): the word Profile, the
+         active profile's name and a chevron, in one outlined box the height
+         of the search box beside it. Its host's DataContext is not the one
+         it reads, so code-behind rebinds it to MainViewModel.Settings on
+         Loaded. That is the one SettingsViewModel whose ActiveProfileInfo
+         every switch path (auto, shortcut cycle, Load button, delete or
+         revert) already sets. A click opens the switcher, which MainWindow
+         wires. Under the pointer the fill lifts one step. -->
+    <controls:ClickBorder x:Name="PillBorder" Height="34" CornerRadius="8" BorderThickness="1"
+            Padding="12,0,10,0" Cursor="Hand" Click="Pill_Click">
         <Border.Style>
             <Style TargetType="Border">
-                <Setter Property="BorderBrush" Value="{DynamicResource SteelLineSoftBrush}"/>
-                <Setter Property="Background" Value="{DynamicResource ControlFillColorDefaultBrush}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource SteelPillLineBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource CardBackgroundFillColorDefaultBrush}"/>
                 <Style.Triggers>
                     <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}"/>
+                        <Setter Property="Background" Value="{DynamicResource SteelRaisedBrush}"/>
                     </Trigger>
                 </Style.Triggers>
             </Style>
@@ -33,37 +31,27 @@
                 <Binding Path="ActiveProfileInfo"/>
             </MultiBinding>
         </AutomationProperties.Name>
-        <!-- Tooltip carries the untruncated name (slot-card precedent). -->
+        <!-- The tooltip carries the whole name, which the box trims. -->
         <Border.ToolTip>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="{Binding Profiles_ActiveProfile, Source={x:Static strings:Strings.Instance}}" Margin="0,0,4,0"/>
                 <TextBlock Text="{Binding ActiveProfileInfo}"/>
             </StackPanel>
         </Border.ToolTip>
-        <StackPanel Orientation="Horizontal">
-            <!-- The active profile burns (#175): same lit flame as the
-                 Profiles-page header. Always lit, so the glow is static. -->
-            <Path FlowDirection="LeftToRight" Data="{StaticResource FlameOuterGeometry}"
-                  Fill="{DynamicResource EmberBrush}"
-                  Width="10" Height="12" Stretch="Uniform"
-                  VerticalAlignment="Center" Margin="0,0,5,0"/>
-            <!-- ShowLabel: the word Profile ahead of the name, and a
-                 chevron after it, for a host with nothing beside the pill
-                 to say what the name is or that it opens a list. -->
-            <TextBlock x:Name="PillLabel" Visibility="Collapsed"
-                       Text="{Binding Main_ProfileLabel, Source={x:Static strings:Strings.Instance}}"
-                       FontSize="12"
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <TextBlock Text="{Binding Main_ProfileLabel, Source={x:Static strings:Strings.Instance}}"
+                       FontSize="14"
                        Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                       VerticalAlignment="Center" Margin="0,0,6,0"/>
+                       VerticalAlignment="Center" Margin="0,0,8,0"/>
             <TextBlock Text="{Binding ActiveProfileInfo}"
-                       FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
-                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                       MaxWidth="140" TextTrimming="CharacterEllipsis"
+                       FontSize="14"
+                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                       MaxWidth="180" TextTrimming="CharacterEllipsis"
                        VerticalAlignment="Center"/>
-            <controls:GlyphText x:Name="PillChevron" Visibility="Collapsed"
-                                Text="&#xE70D;" FontFamily="Segoe MDL2 Assets" FontSize="8"
-                                Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                VerticalAlignment="Center" Margin="6,1,0,0"/>
+            <Path FlowDirection="LeftToRight" Data="M0,0 L5,5 L10,0" Width="10" Height="6" Stretch="Fill"
+                  Stroke="{DynamicResource TextFillColorTertiaryBrush}" StrokeThickness="1.6"
+                  StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"
+                  VerticalAlignment="Center" Margin="8,1,0,0"/>
         </StackPanel>
     </controls:ClickBorder>
 </UserControl>

@@ -47,11 +47,6 @@
             <Setter Property="Background" Value="{DynamicResource SteelGroundBrush}"/>
             <Setter Property="BorderBrush" Value="{DynamicResource SteelLineBrush}"/>
             <Setter Property="TextElement.Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
-                </Trigger>
-            </Style.Triggers>
         </Style>
         <Style x:Key="FacetToken" TargetType="TextBlock">
             <Setter Property="FontFamily" Value="{StaticResource TelemetryFontFamily}"/>
@@ -105,11 +100,6 @@
         <!-- Glow sweep (#175): shared cold bloom for pressed touch dots
              and POV needles. Static, frozen, never animated. -->
         <DropShadowEffect x:Key="ColdDotGlow" Color="#58B6E4" BlurRadius="8" ShadowDepth="0" Opacity="0.45"/>
-        <!-- Hover glow (#175): hover color changes carry a hue-matched
-             bloom. Every hover shift on this page is neutral steel, so the
-             glow is the faint ember signature. Frozen shared static effect,
-             set from triggers only, never animated. -->
-        <DropShadowEffect x:Key="NeutralHoverGlow" po:Freeze="True" Color="#FF6B2C" ShadowDepth="0" BlurRadius="10" Opacity="0.30"/>
         <!-- Hover glow sweep (#175): stock-chrome classes bloom in the same
              moment their hover fill shifts. BasedOn the WPF-UI defaults so
              theme brushes survive. The two inline Button styles below
@@ -119,29 +109,14 @@
             <!-- MinHeight mirrors the App.xaml implicit Button style (32px
                  grid), which this page-local implicit replaces. -->
             <Setter Property="MinHeight" Value="32"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
-                </Trigger>
-            </Style.Triggers>
         </Style>
         <Style TargetType="CheckBox" BasedOn="{StaticResource DefaultCheckBoxStyle}">
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
-                </Trigger>
-            </Style.Triggers>
         </Style>
         <Style TargetType="TextBox" BasedOn="{StaticResource DefaultTextBoxStyle}">
             <!-- Selection setters mirror the App.xaml implicit TextBox
                  style, which this page-local implicit replaces. -->
             <Setter Property="SelectionBrush" Value="{DynamicResource EmberBrush}"/>
             <Setter Property="SelectionOpacity" Value="0.35"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
-                </Trigger>
-            </Style.Triggers>
         </Style>
         <Style x:Key="RawCellLabel" TargetType="TextBlock">
             <Setter Property="FontFamily" Value="{StaticResource TelemetryFontFamily}"/>
@@ -565,7 +540,6 @@
                                              fight. Static effect; only the transform
                                              animates. -->
                                         <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
                                             <Trigger.EnterActions>
                                                 <BeginStoryboard>
                                                     <Storyboard>
@@ -1161,9 +1135,6 @@
                                                         <!-- Hover glow (#175): neutral hover, faint ember.
                                                              Before IsChecked so the assigned pill's own
                                                              ember glow wins while checked. -->
-                                                        <Trigger Property="IsMouseOver" Value="True">
-                                                            <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
-                                                        </Trigger>
                                                         <Trigger Property="IsChecked" Value="True">
                                                             <Setter Property="Foreground" Value="#FFFFF3E8"/>
                                                             <Setter Property="Background">

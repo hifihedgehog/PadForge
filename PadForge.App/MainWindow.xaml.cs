@@ -278,71 +278,6 @@ namespace PadForge
             // subscribe it a second time.
             NavView.ItemInvoked += NavView_ItemInvoked;
 
-            // Fade compact icons in when pane closes, fade out when it opens.
-            NavView.PaneClosed += (_, _) =>
-            {
-                SetEngineFootMode(compact: true);
-                SetControllersLabelMode(compact: true);
-                _isCardFading = true;
-                // Clear any leftover animation state from previous cycle.
-                foreach (var mi in NavView.MenuItems)
-                    if (mi is NavigationViewItem nvi && IsCardFadeItem(nvi))
-                    { nvi.BeginAnimation(UIElement.OpacityProperty, null); nvi.Opacity = 0; }
-                UpdateAllControllerCardMode(compact: true);
-
-                // Delay for pane animation, then fade in, then unlock.
-                var delayTimer = new System.Windows.Threading.DispatcherTimer { Interval = TimeSpan.FromMilliseconds(200) };
-                delayTimer.Tick += (s2, e2) =>
-                {
-                    delayTimer.Stop();
-                    foreach (var mi in NavView.MenuItems)
-                        if (mi is NavigationViewItem nvi && IsCardFadeItem(nvi))
-                            nvi.BeginAnimation(UIElement.OpacityProperty,
-                                new System.Windows.Media.Animation.DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(200)));
-
-                    // Unlock after fade completes.
-                    var unlockTimer = new System.Windows.Threading.DispatcherTimer { Interval = TimeSpan.FromMilliseconds(220) };
-                    unlockTimer.Tick += (s3, e3) =>
-                    {
-                        unlockTimer.Stop();
-                        _isCardFading = false;
-                        if (_rebuildPendingAfterFade) { _rebuildPendingAfterFade = false; RebuildControllerSection(); }
-                    };
-                    unlockTimer.Start();
-                };
-                delayTimer.Start();
-            };
-            NavView.PaneOpened += (_, _) =>
-            {
-                SetEngineFootMode(compact: false);
-                SetControllersLabelMode(compact: false);
-                _isCardFading = true;
-                foreach (var mi in NavView.MenuItems)
-                    if (mi is NavigationViewItem nvi && IsCardFadeItem(nvi))
-                    { nvi.BeginAnimation(UIElement.OpacityProperty, null); nvi.Opacity = 0; }
-                UpdateAllControllerCardMode(compact: false);
-
-                var delayTimer = new System.Windows.Threading.DispatcherTimer { Interval = TimeSpan.FromMilliseconds(200) };
-                delayTimer.Tick += (s2, e2) =>
-                {
-                    delayTimer.Stop();
-                    foreach (var mi in NavView.MenuItems)
-                        if (mi is NavigationViewItem nvi && IsCardFadeItem(nvi))
-                            nvi.BeginAnimation(UIElement.OpacityProperty,
-                                new System.Windows.Media.Animation.DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(200)));
-
-                    var unlockTimer = new System.Windows.Threading.DispatcherTimer { Interval = TimeSpan.FromMilliseconds(220) };
-                    unlockTimer.Tick += (s3, e3) =>
-                    {
-                        unlockTimer.Stop();
-                        _isCardFading = false;
-                        if (_rebuildPendingAfterFade) { _rebuildPendingAfterFade = false; RebuildControllerSection(); }
-                    };
-                    unlockTimer.Start();
-                };
-                delayTimer.Start();
-            };
-
 
 
             // Fallback click handler — WPF UI's SelectionChanged may not fire
@@ -3299,15 +3234,12 @@ namespace PadForge
                 FullScreenBtn.IsOn = true;
             }
 
-            // Ambient-motion gate: the always-on breathes (rail heat ring,
-            // Home and Profiles auras, selection pulses) pay WPF's fixed
-            // per-animation-frame pipeline cost (~18% of a core per breathe
-            // at 60fps, measured in isolation 2026-07-16) even when the app
-            // is buried behind a game. Foreground state flips the probe; the
-            // XAML breathes react through their trigger conditions and the
-            // code-built rail ring re-evaluates via the section rebuild.
-            // Every effect stays exactly as designed whenever the app is
-            // visible and focused.
+            // Ambient-motion gate: an animation that never ends pays WPF's
+            // fixed per-frame pipeline cost (about 18% of a core at 60fps,
+            // measured in isolation 2026-07-16) even when the app is
+            // buried behind a game. Foreground state flips the probe, and
+            // the marquees and the XAML animations that wait on it follow
+            // through their own bindings.
             Activated += (_, _) => SetAmbientMotion(true);
             Deactivated += (_, _) => SetAmbientMotion(false);
             // Both signals, because either one alone is a lie. StateChanged
@@ -3637,28 +3569,24 @@ namespace PadForge
 
             NavView.MenuItems.Clear();
 
-            // Rail icons wear the same ember their page headers do; the
-            // DynamicResource reference keeps them tracking theme swaps.
-            static FontIcon EmberNavIcon(string glyph)
-            {
-                var icon = new PadForge.Controls.DecorativeFontIcon
+            // A sidebar entry's line icon (#574), one of the geometries
+            // in Resources/Shell.xaml. It carries no color of its own: the
+            // entry's template gives it the quiet color, and ember while
+            // its entry is the selected one.
+            PadForge.Controls.DecorativeStrokeIcon NavIcon(string geometryKey)
+                => new PadForge.Controls.DecorativeStrokeIcon
                 {
-                    FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"),
-                    Glyph = glyph,
+                    Data = (System.Windows.Media.Geometry)FindResource(geometryKey),
                 };
-                icon.SetResourceReference(FontIcon.ForegroundProperty, "EmberBrush");
-                return icon;
-            }
 
-            // Home (#574), where the Dashboard was. E80F is the house, the
-            // page header's own glyph. Its AutomationId is still
+            // Home (#574), where the Dashboard was. Its AutomationId is still
             // Nav_Dashboard: the ids are what UI tools select by, and #574
             // keeps every one of them.
             _navHome = new NavigationViewItem
             {
                 Content = Strings.Instance.Home_Title,
                 Tag = "Home",
-                Icon = EmberNavIcon("\uE80F")
+                Icon = NavIcon("NavHomeGeometry")
             };
             SetNavAutomationId(_navHome, "Dashboard");
             NavView.MenuItems.Add(_navHome);
@@ -3669,7 +3597,7 @@ namespace PadForge
             {
                 Content = Strings.Instance.Devices_Title,
                 Tag = "Devices",
-                Icon = EmberNavIcon("\uE772")
+                Icon = NavIcon("NavDevicesGeometry")
             };
             SetNavAutomationId(_navDevices, "Devices");
             NavView.MenuItems.Add(_navDevices);
@@ -3678,21 +3606,19 @@ namespace PadForge
             _navProfiles = new NavigationViewItem
             {
                 Tag = "Profiles",
-                Icon = EmberNavIcon("\uE8F1"),
+                Icon = NavIcon("NavProfilesGeometry"),
                 Content = Strings.Instance.Profiles_Title
             };
             SetNavAutomationId(_navProfiles, "Profiles");
             NavView.MenuItems.Add(_navProfiles);
 
             // Extras (#574): the optional features that were the Dashboard's
-            // Services cards. E74C is Segoe MDL2 OEM, three squares with a
-            // fourth turned, the mark Windows gives add-ons (drawn from the
-            // live segmdl2.ttf).
+            // Services cards. Three squares and a plus sign.
             _navExtras = new NavigationViewItem
             {
                 Content = Strings.Instance.Extras_Title,
                 Tag = "Extras",
-                Icon = EmberNavIcon("\uE74C")
+                Icon = NavIcon("NavExtrasGeometry")
             };
             SetNavAutomationId(_navExtras, "Extras");
             NavView.MenuItems.Add(_navExtras);
@@ -3716,8 +3642,6 @@ namespace PadForge
                 System.Windows.Automation.AutomationHeadingLevel.Level2);
             System.Windows.Automation.AutomationProperties.SetAutomationId(_navControllersLabel, "Nav_ControllersLabel");
             NavView.MenuItems.Add(_navControllersLabel);
-            SetControllersLabelMode(compact: !NavView.IsPaneOpen);
-            SetEngineFootMode(compact: !NavView.IsPaneOpen);
 
             // Controller entries. None at first. They are populated dynamically.
             RebuildControllerSection();
@@ -3758,27 +3682,6 @@ namespace PadForge
             }
         }
 
-        /// <summary>The Controllers label shows with the open pane and hides
-        /// with the closed one, where the rail is 48 wide.</summary>
-        private void SetControllersLabelMode(bool compact)
-        {
-            if (_navControllersLabel != null)
-                _navControllersLabel.Visibility = compact ? Visibility.Collapsed : Visibility.Visible;
-        }
-
-        /// <summary>The engine foot with the pane open or closed. Open, it
-        /// reads flame, state, rate. Closed, the rail has room for the
-        /// flame alone, centered like the entries' icons above it.</summary>
-        private void SetEngineFootMode(bool compact)
-        {
-            var texts = compact ? Visibility.Collapsed : Visibility.Visible;
-            EngineFootState.Visibility = texts;
-            EngineFootRate.Visibility = texts;
-            EngineFoot.Padding = compact ? new Thickness(0) : new Thickness(12, 0, 12, 0);
-            System.Windows.Controls.Grid.SetColumnSpan(EngineFootFlame, compact ? 3 : 1);
-            EngineFootFlame.HorizontalAlignment = compact ? HorizontalAlignment.Center : HorizontalAlignment.Left;
-        }
-
         private void OnCultureChanged()
         {
             if (_navHome != null) _navHome.Content = Strings.Instance.Home_Title;
@@ -3815,17 +3718,12 @@ namespace PadForge
             if (_rebuildingControllerSection) return;
             if (_isDraggingCard)
             {
-                // Queue it, the way the fading branch below does. Dropping the
-                // request outright meant a rebuild raised mid-drag (a device
-                // arriving, a slot changing type) was lost, and the rail kept
-                // showing the pre-change cards until something else asked for
-                // a rebuild. EndCardDrag replays this.
-                _rebuildPendingAfterFade = true;
-                return;
-            }
-            if (_isCardFading)
-            {
-                _rebuildPendingAfterFade = true;
+                // Queue it. Dropping the request outright meant a rebuild
+                // raised mid-drag (a device arriving, a slot changing type)
+                // was lost, and the rail kept showing the pre-change cards
+                // until something else asked for a rebuild. EndCardDrag
+                // replays this.
+                _rebuildPendingAfterDrag = true;
                 return;
             }
 
@@ -3876,14 +3774,6 @@ namespace PadForge
                             or nameof(NavControllerItemViewModel.PresetName))
                         {
                             UpdateControllerNavItemContent(capturedMenuItem, capturedNavItem);
-                            // Collapsed rail: the mini card is a rendered
-                            // bitmap, so its flame heat only tracks state
-                            // if the icon re-renders here too.
-                            if (!NavView.IsPaneOpen)
-                            {
-                                capturedMenuItem.Icon = RenderCompactCardIcon(capturedNavItem);
-                                SyncCollapsedIconSelection(capturedMenuItem);
-                            }
                         }
                     };
                     navItem.PropertyChanged += handler;
@@ -3931,30 +3821,21 @@ namespace PadForge
         /// </summary>
         private NavigationViewItem CreateControllerNavItem(NavControllerItemViewModel navItem)
         {
-            bool collapsed = !NavView.IsPaneOpen;
             var menuItem = new NavigationViewItem
             {
                 Tag = navItem.Tag,
-                Margin = collapsed ? new Thickness(0) : new Thickness(-40, 0, 0, 0)
             };
             SuppressBuiltInSelectionVisual(menuItem);
-            AttachCollapsedIconHover(menuItem);
             System.Windows.Automation.AutomationProperties.SetName(menuItem, AccessibleNames.SlotTitle(navItem.SlotNumber));
             SetNavAutomationId(menuItem, navItem.Tag);
             UpdateControllerNavItemContent(menuItem, navItem);
-            if (collapsed)
-            {
-                menuItem.Icon = RenderCompactCardIcon(navItem);
-                SyncCollapsedIconSelection(menuItem);
-            }
             return menuItem;
         }
 
-        /// <summary>Heat state for a slot's flame (#175), shared by the
-        /// expanded pill and the collapsed mini card so both read the
-        /// same liveness: ember = engine running + VC live (or igniting),
-        /// gold = enabled but engine stopped / awaiting devices, cold
-        /// outline = slot disabled.</summary>
+        /// <summary>Heat state for a slot's flame (#175): ember = engine
+        /// running + VC live (or igniting), gold = enabled but engine
+        /// stopped / awaiting devices, cold outline = slot disabled. The
+        /// pill's flame and its type chip both read it.</summary>
         private void ComputeFlameHeat(NavControllerItemViewModel navItem, out bool lit, out bool cooling)
         {
             if (!navItem.IsEnabled) { lit = false; cooling = false; }
@@ -3993,31 +3874,9 @@ namespace PadForge
                 Stretch = System.Windows.Media.Stretch.Uniform
             };
             if (lit)
-            {
-                flame.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xFF, 0x6B, 0x2C));
-                // Ember bloom (#175 glow sweep): static effect on the lit
-                // flame, small-glyph radius. Never animated. The card ring
-                // breathe stays the only animated effect.
-                flame.Effect = new System.Windows.Media.Effects.DropShadowEffect
-                {
-                    Color = System.Windows.Media.Color.FromRgb(0xFF, 0x6B, 0x2C),
-                    BlurRadius = 8,
-                    ShadowDepth = 0,
-                    Opacity = 0.5
-                };
-            }
+                flame.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "EmberBrush");
             else if (cooling)
-            {
-                flame.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xE8, 0xB4, 0x34));
-                // Faint gold bloom for the cooling flame.
-                flame.Effect = new System.Windows.Media.Effects.DropShadowEffect
-                {
-                    Color = System.Windows.Media.Color.FromRgb(0xE8, 0xB4, 0x34),
-                    BlurRadius = 8,
-                    ShadowDepth = 0,
-                    Opacity = 0.35
-                };
-            }
+                flame.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "WaitBrush");
             else
             {
                 flame.Fill = System.Windows.Media.Brushes.Transparent;
@@ -4034,8 +3893,8 @@ namespace PadForge
         /// at mid opacity instead of starting the loop.</summary>
         private static bool MotionEnabled => System.Windows.SystemParameters.ClientAreaAnimation;
 
-        /// <summary>Carries the mini-card delete X from the row builder to
-        /// the card-level hover wiring inside one
+        /// <summary>Carries a pill's delete X from the row builder to
+        /// the pill's hover wiring inside one
         /// UpdateControllerNavItemContent pass (single-threaded UI build).</summary>
         private Wpf.Ui.Controls.Button _pendingSidebarDeleteBtn;
 
@@ -4082,40 +3941,28 @@ namespace PadForge
                 ToolTip = Strings.Instance.Main_DeleteVC,
                 Tag = navItem.PadIndex,
                 VerticalAlignment = VerticalAlignment.Center,
-                Margin = new Thickness(6, 0, 0, 0),
-                // Compact footprint (#175 clip report 2026-07-06): 22px plus
-                // Padding 2 keeps the shared chrome (local values beat style
-                // setters), and the X never shrinks below 22. Its 28px of
-                // dock width with the 6px margin is one of the row's fixed
-                // parts, budgeted at the card's Width below.
+                Margin = new Thickness(0),
+                // 22px plus Padding 2 keeps the shared chrome (local values
+                // beat style setters), and the X never shrinks below 22.
                 Width = 22,
                 Height = 22,
                 Padding = new Thickness(2),
-                // Hover-revealed (#175): the rail reads as state, actions
-                // appear on intent. Revealed at full strength on CARD hover
-                // (user report 2026-07-06: the row-level reveal engaged
-                // sporadically and the chrome did not match the Devices
-                // row X). EmberIconButtonHot is the shared X treatment.
-                Opacity = 0
             };
             deleteBtn.SetResourceReference(FrameworkElement.StyleProperty, "EmberIconButtonHot");
             // Tools find the card's delete button by this id, not by a name
             // that a translation or another button's tooltip could share.
             System.Windows.Automation.AutomationProperties.SetAutomationId(deleteBtn, "Nav_DeleteSlot");
             deleteBtn.Click += OnSidebarDeleteSlot;
-            System.Windows.Controls.DockPanel.SetDock(deleteBtn, System.Windows.Controls.Dock.Right);
-            row.Children.Add(deleteBtn);
-            // Reveal rides the whole CARD's hover (wired below, once the
-            // card exists) so the X cannot flicker while the pointer moves
-            // between the card's child panels.
+            // The X is not part of the row. It sits over the row's end
+            // (wired below, once the card exists), there only while the
+            // pointer is on the card or the keyboard is on the button, so
+            // the name has the row's whole width the rest of the time.
             _pendingSidebarDeleteBtn = deleteBtn;
 
             // Flame power toggle (#175): heat encodes liveness.
             // Ember = forging (enabled, engine running, VC live).
             // Gold = cooling (enabled but engine stopped / awaiting devices).
             // Outline = cold (disabled). Flashing ember = igniting.
-            // Heat comes from the shared helper so the collapsed mini
-            // card's flame can never diverge from the expanded pill's.
             string powerTooltip;
             bool isInitializing = navItem.IsInitializing;
             ComputeFlameHeat(navItem, out bool lit, out bool cooling);
@@ -4169,7 +4016,7 @@ namespace PadForge
                 powerTooltip = Strings.Instance.Main_Active;
             }
 
-            var flameGlyph = BuildFlameGlyph(13, lit, cooling);
+            var flameGlyph = BuildFlameGlyph(16, lit, cooling);
 
             // Apply flashing opacity animation when igniting. Reduced motion
             // (#175 item 98, SystemParameters.ClientAreaAnimation): no flash
@@ -4195,7 +4042,9 @@ namespace PadForge
                 Content = flameGlyph,
                 Background = System.Windows.Media.Brushes.Transparent,
                 BorderThickness = new Thickness(0),
-                Padding = new Thickness(3),
+                Padding = new Thickness(0),
+                Width = 28,
+                Height = 28,
                 MinWidth = 0,
                 MinHeight = 0,
                 ToolTip = powerTooltip,
@@ -4237,24 +4086,25 @@ namespace PadForge
             // and a stray click changed the type outright. The active tile
             // stays as a chip, and a click on it opens the type bar Add
             // Controller uses (ShowControllerTypePopup). The chip draws the
-            // type the way the active tile did: its logo or MDL2 glyph at
-            // 11px, in the light ember-tile ink.
-            var chipInk = System.Windows.Media.Color.FromRgb(0xFF, 0xF3, 0xE8);
+            // type's own logo or MDL2 glyph at 13px. While the controller
+            // runs the chip is ember with dark ink. Otherwise it is steel
+            // with the text's color (#574).
+            var chipInk = (System.Windows.Media.Brush)FindResource(lit ? "EmberInkBrush" : "TextFillColorPrimaryBrush");
             UIElement TypeLogo(string data) => new System.Windows.Shapes.Path
             {
                 FlowDirection = FlowDirection.LeftToRight,
                 Data = System.Windows.Media.Geometry.Parse(data),
-                Width = 11,
-                Height = 11,
+                Width = 13,
+                Height = 13,
                 Stretch = System.Windows.Media.Stretch.Uniform,
-                Fill = new System.Windows.Media.SolidColorBrush(chipInk)
+                Fill = chipInk
             };
             UIElement TypeGlyph(string glyph) => new PadForge.Controls.GlyphText
             {
                 Text = glyph,
                 FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"),
-                FontSize = 11,
-                Foreground = new System.Windows.Media.SolidColorBrush(chipInk)
+                FontSize = 13,
+                Foreground = chipInk
             };
             UIElement typeIcon = isPlayStation ? TypeLogo(DS4SvgPath)
                 : isNintendo ? TypeLogo(SwitchSvgPath)
@@ -4273,11 +4123,10 @@ namespace PadForge
             var typeChip = new System.Windows.Controls.Button
             {
                 Content = typeIcon,
-                // 4px around the 11px icon: a bigger target than the 15px tile
-                // it replaces, inside the 22px row.
-                Width = 19,
-                Height = 19,
-                Padding = new Thickness(4),
+                // 20 by 20 around the 13px icon.
+                Width = 20,
+                Height = 20,
+                Padding = new Thickness(3),
                 MinWidth = 0,
                 MinHeight = 0,
                 // 5px after the number's box, as the power button's 3px
@@ -4289,8 +4138,8 @@ namespace PadForge
                 Tag = navItem.PadIndex,
                 Cursor = System.Windows.Input.Cursors.Hand
             };
-            typeChip.SetResourceReference(FrameworkElement.StyleProperty, "MiniTypeChipStyle");
-            typeChip.SetResourceReference(System.Windows.Controls.Control.BackgroundProperty, "EmberSegGradient");
+            typeChip.SetResourceReference(FrameworkElement.StyleProperty, "MiniTypeButtonActiveStyle");
+            typeChip.SetResourceReference(System.Windows.Controls.Control.BackgroundProperty, lit ? "EmberBrush" : "SteelLineBrush");
             System.Windows.Automation.AutomationProperties.SetAutomationId(typeChip, "Nav_SlotTypeChip");
             System.Windows.Automation.AutomationProperties.SetName(typeChip, typeName);
             typeChip.Click += (s, e) =>
@@ -4310,17 +4159,17 @@ namespace PadForge
                 // Telemetry mono (#175 font sweep): the "#N" token matches
                 // the Home card's instance label face.
                 FontFamily = (System.Windows.Media.FontFamily)FindResource("TelemetryFontFamily"),
-                FontSize = 11,
+                FontSize = 12,
                 VerticalAlignment = VerticalAlignment.Center,
-                Margin = new Thickness(4, 0, 0, 0),
+                Margin = new Thickness(6, 0, 0, 0),
                 // Fixed box (user report 2026-07-06): an auto-width token
                 // moved what follows it when the instance number gained a
-                // digit, so stacked cards no longer lined up. 20 holds the
-                // worst case ("#16" = 19.3, Cascadia @11).
-                Width = 20,
+                // digit, so stacked cards no longer lined up. 22 holds the
+                // worst case ("#16" = 21.1, Cascadia @12).
+                Width = 22,
                 TextAlignment = TextAlignment.Left
             };
-            instanceLabel.SetResourceReference(System.Windows.Controls.TextBlock.ForegroundProperty, "TextFillColorTertiaryBrush");
+            instanceLabel.SetResourceReference(System.Windows.Controls.TextBlock.ForegroundProperty, "TextFillColorSecondaryBrush");
             row.Children.Add(instanceLabel);
 
             // Preset (discussion #543): the name the slot page's Preset chip
@@ -4333,188 +4182,78 @@ namespace PadForge
                 Margin = new Thickness(6, 0, 0, 0),
                 VerticalAlignment = VerticalAlignment.Center
             };
-            System.Windows.Documents.TextElement.SetFontSize(presetLabel, 12.0);
-            presetLabel.SetResourceReference(System.Windows.Documents.TextElement.ForegroundProperty, "TextFillColorSecondaryBrush");
+            System.Windows.Documents.TextElement.SetFontSize(presetLabel, 13.0);
+            presetLabel.SetResourceReference(System.Windows.Documents.TextElement.ForegroundProperty, "TextFillColorPrimaryBrush");
             row.Children.Add(presetLabel);
 
-            // Flat host (#175 iteration 2): a boxed card inside a rail of
-            // flat text items read as a foreign object on real pixels.
-            // The Border stays only as the drag/drop + click surface; heat
-            // lives in the flame color alone.
+            // The pill (#574): a full-round outline around the row, as wide
+            // as the sidebar's entries. The selected controller's pill takes
+            // an ember outline and a warm fill. The others rest clear on the
+            // sidebar and lift one step under the pointer. Heat is the
+            // flame's color and the chip's fill, and nothing glows. The
+            // Border is also the drag, drop and click surface.
+            bool picked = IsControllerTagSelected(navItem.Tag);
             var card = new System.Windows.Controls.Border
             {
-                // Pill geometry (#175 pitch .slotpill): radius 10, 10/6 padding.
-                CornerRadius = new CornerRadius(10),
-                Padding = new Thickness(10, 6, 10, 6),
+                CornerRadius = new CornerRadius(18),
+                MinHeight = 36,
+                Padding = new Thickness(4, 0, 10, 0),
                 BorderThickness = new Thickness(1),
-                // Fixed width, not MinWidth (user 2026-07-06): stacked cards
-                // must read congruent whatever their digit count. 233 sits
-                // inside the 236 outer cap the widened 244 pane allows and
-                // leaves the row 211 (20 padding, 2 border). The fixed parts
-                // take 113 of it (19 power, 18 number, 24 type chip, 24
-                // instance, 28 X), and the Preset label takes the rest.
-                Width = 233,
-                Child = row,
                 Tag = navItem.PadIndex,
-                // Glow clearance (#175 clip report): the rail clips at the
-                // pill's bounds, truncating the heat ring left and right.
-                // 3px, not more.
-                Margin = new Thickness(3, 2, 3, 2)
+                // With the entry's own 2 under it, 6 between pills.
+                Margin = new Thickness(0, 0, 0, 4)
             };
-            card.SetResourceReference(System.Windows.Controls.Border.BackgroundProperty, "CardBackgroundFillColorDefaultBrush");
-
-            // Heat ring (#175 artifact): live slots carry an ember rim and a
-            // breathing glow so the rail doubles as an engine monitor.
-            if (lit)
+            if (picked)
             {
-                card.BorderBrush = new System.Windows.Media.SolidColorBrush(
-                    System.Windows.Media.Color.FromArgb(0x80, 0xFF, 0x6B, 0x2C));
-                var ring = new System.Windows.Media.Effects.DropShadowEffect
-                {
-                    Color = System.Windows.Media.Color.FromRgb(0xFF, 0x6B, 0x2C),
-                    BlurRadius = 20,
-                    ShadowDepth = 0,
-                    Opacity = 0.25,
-                };
-                card.Effect = ring;
-                // Reduced motion (#175 item 98): breathe swaps for a static
-                // glow pinned near the spec's rgba(...,0.22) point of the
-                // 0.25-0.60 breathe range. The ambient gate swaps the same
-                // way while the app is backgrounded (see SetAmbientMotion):
-                // a static ring is visually the breathe's midpoint, and the
-                // rebuild on re-activation restarts the phase-locked loop.
-                if (MotionEnabled && PadForge.Common.AmbientMotionProbe.Instance.IsAppActive)
-                {
-                    var breathe = new System.Windows.Media.Animation.DoubleAnimation
-                    {
-                        From = 0.25,
-                        To = 0.60,
-                        Duration = System.TimeSpan.FromSeconds(1.6),
-                        AutoReverse = true,
-                        RepeatBehavior = System.Windows.Media.Animation.RepeatBehavior.Forever,
-                        EasingFunction = new System.Windows.Media.Animation.SineEase
-                        { EasingMode = System.Windows.Media.Animation.EasingMode.EaseInOut },
-                        // Phase-lock to a global 3.2s clock: card rebuilds restart
-                        // the animation, and without this the glow visibly jumps
-                        // to cycle start each time.
-                        BeginTime = System.TimeSpan.FromMilliseconds(
-                            -(System.DateTime.UtcNow.TimeOfDay.TotalMilliseconds % 3200.0)),
-                    };
-                    // 30fps ambient rate. Every animation frame pays WPF's
-                    // fixed pipeline cost (measured 2026-07-16: ~18% of a
-                    // core per permanent breathe at the default 60fps,
-                    // independent of caching or which property animates), so
-                    // halving the rate halves that budget. A 1.6s ease-in-out
-                    // sine on a soft blur has no spatial motion; 30 samples a
-                    // second is beyond what the fade can show. This is a
-                    // considered rate for ambient loops, not the earlier
-                    // blanket 15fps cap that stood in for unfixed mechanisms.
-                    System.Windows.Media.Animation.Timeline.SetDesiredFrameRate(breathe, 30);
-                    ring.BeginAnimation(System.Windows.Media.Effects.DropShadowEffect.OpacityProperty, breathe);
-                }
-                else
-                {
-                    ring.Opacity = 0.40;
-                }
-            }
-            else if (cooling)
-            {
-                card.BorderBrush = new System.Windows.Media.SolidColorBrush(
-                    System.Windows.Media.Color.FromArgb(0x2E, 0xFF, 0x6B, 0x2C));
-                // Awaiting devices (mapped but not live): a static faint ember bloom,
-                // matching Home's awaiting card. No breathe. The breathe is the
-                // live state's tell.
-                card.Effect = new System.Windows.Media.Effects.DropShadowEffect
-                {
-                    Color = System.Windows.Media.Color.FromRgb(0xFF, 0x6B, 0x2C),
-                    BlurRadius = 14,
-                    ShadowDepth = 0,
-                    Opacity = 0.16,
-                };
+                card.SetResourceReference(System.Windows.Controls.Border.BorderBrushProperty, "EmberBrush");
+                card.SetResourceReference(System.Windows.Controls.Border.BackgroundProperty, "EmberPickBrush");
             }
             else
             {
-                card.SetResourceReference(System.Windows.Controls.Border.BorderBrushProperty, "ControlStrokeColorDefaultBrush");
-            }
-
-            // Cache placement follows WPF's rule that a CacheMode on the SAME
-            // node as an Effect is ignored for the effect path (learned the
-            // hard way twice tonight, profiled both times). Effect-bearing
-            // pills (lit ring, cooling bloom) cache their CONTENT, so the
-            // animated ring's per-frame ApplyEffect re-renders "chrome +
-            // one texture blit" instead of re-tessellating every glyph in
-            // the row. Effect-free pills cache the whole card, chrome
-            // included, so a neighbor's blur pad recomposes them as blits.
-            // Cards rebuild wholesale on any content change, so staleness is
-            // impossible; the hover-lift transform rides the card, which a
-            // BitmapCache survives without invalidating.
-            if (card.Effect != null)
-                row.CacheMode = new System.Windows.Media.BitmapCache();
-            else
-                card.CacheMode = new System.Windows.Media.BitmapCache();
-
-            // Selection = focus. The focused pill gets a bright pulsing ember/gold
-            // rounded-rect border PLUS a wide pulsing bloom, color and pace tracking
-            // the slot's activation: ember and quick when live, gold and slower when
-            // idle, dim and slowest when disabled. Both are drawn by a PillGlowAdorner
-            // in the window adorner layer, ABOVE the pane's scroll viewport, because
-            // the viewport's ScrollContentPresenter clips its content (a drop shadow
-            // on the card itself is truncated ~5px out, at the viewport edge). The
-            // adorner is the same unclipped surface the reorder drag uses, so the
-            // bloom renders in full. The card keeps its resting heat border underneath.
-            if (IsControllerTagSelected(navItem.Tag))
-            {
-                var selColor = cooling
-                    ? System.Windows.Media.Color.FromRgb(0xE8, 0xB4, 0x34)   // gold, idle
-                    : System.Windows.Media.Color.FromRgb(0xFF, 0x6B, 0x2C);  // ember, live/disabled
-                // Drop the card's own Effect: a lit pill carries the breathing heat
-                // ring here, which the scroll viewport clips and would read as a
-                // clipped selection glow. The unclipped adorner is the sole bloom now.
-                card.Effect = null;
-                ShowSelectionGlowAdorner(card, selColor, lit, cooling);
+                card.SetResourceReference(System.Windows.Controls.Border.BorderBrushProperty, "SteelPillLineBrush");
+                card.Background = System.Windows.Media.Brushes.Transparent;
+                card.MouseEnter += (s, e) => card.SetResourceReference(
+                    System.Windows.Controls.Border.BackgroundProperty, "SteelPaneHoverBrush");
+                card.MouseLeave += (s, e) => card.Background = System.Windows.Media.Brushes.Transparent;
             }
 
             if (!navItem.IsEnabled)
                 card.Opacity = 0.6;
             else if (!lit && !cooling)
-                card.Opacity = 0.72;   // cold: nothing mapped, the card recedes (Dashboard parity)
+                card.Opacity = 0.72;   // cold: nothing mapped, the card recedes (Home parity)
 
-            // Hover engagement (#175): every mini card lifts 2px on hover and blooms
-            // faint ember. The bloom rides the adorner layer (like the selection
-            // bloom) so the pane scroll viewport does not clip it; the selected pill
-            // is skipped since it already wears the stronger selection bloom.
-            var cardLift = new System.Windows.Media.TranslateTransform();
-            card.RenderTransform = cardLift;
-            card.MouseEnter += (s, e) =>
-            {
-                var up = new System.Windows.Media.Animation.DoubleAnimation(-2, System.TimeSpan.FromMilliseconds(130))
-                {
-                    EasingFunction = new System.Windows.Media.Animation.CubicEase
-                    { EasingMode = System.Windows.Media.Animation.EasingMode.EaseOut }
-                };
-                cardLift.BeginAnimation(System.Windows.Media.TranslateTransform.YProperty, up);
-                if (!IsControllerTagSelected(navItem.Tag))
-                    ShowHoverGlowAdorner(card);
-            };
-            card.MouseLeave += (s, e) =>
-            {
-                var down = new System.Windows.Media.Animation.DoubleAnimation(0, System.TimeSpan.FromMilliseconds(250))
-                {
-                    EasingFunction = new System.Windows.Media.Animation.CubicEase
-                    { EasingMode = System.Windows.Media.Animation.EasingMode.EaseIn }
-                };
-                cardLift.BeginAnimation(System.Windows.Media.TranslateTransform.YProperty, down);
-                RemoveHoverGlowAdorner();
-            };
-
-            // X reveal follows the card's own hover state (stable across
-            // child-panel boundaries), matching the Devices row X.
+            // The X over the row's end. Its host paints the pill's own
+            // ground behind it, so the name's last letters do not show
+            // through, and it follows the card's hover state (stable across
+            // the card's child panels) and the button's keyboard focus.
+            var surface = new System.Windows.Controls.Grid();
+            surface.Children.Add(row);
             if (_pendingSidebarDeleteBtn is Wpf.Ui.Controls.Button cardDeleteBtn)
             {
                 _pendingSidebarDeleteBtn = null;
-                card.MouseEnter += (s, e) => cardDeleteBtn.Opacity = 1.0;
-                card.MouseLeave += (s, e) => cardDeleteBtn.Opacity = 0;
+                var deleteHost = new System.Windows.Controls.Border
+                {
+                    HorizontalAlignment = HorizontalAlignment.Right,
+                    VerticalAlignment = VerticalAlignment.Stretch,
+                    Padding = new Thickness(6, 0, 0, 0),
+                    Child = cardDeleteBtn,
+                    Opacity = 0,
+                };
+                void Show(bool shown)
+                {
+                    deleteHost.SetResourceReference(System.Windows.Controls.Border.BackgroundProperty,
+                        picked ? "EmberPickBrush"
+                        : card.IsMouseOver ? "SteelPaneHoverBrush"
+                        : "SteelPaneBrush");
+                    deleteHost.Opacity = shown ? 1.0 : 0;
+                }
+                card.MouseEnter += (s, e) => Show(true);
+                card.MouseLeave += (s, e) => Show(cardDeleteBtn.IsKeyboardFocused);
+                cardDeleteBtn.GotKeyboardFocus += (s, e) => Show(true);
+                cardDeleteBtn.LostKeyboardFocus += (s, e) => Show(card.IsMouseOver);
+                surface.Children.Add(deleteHost);
             }
+            card.Child = surface;
 
             // The Preset scrolls on the same card hover that reveals the X.
             presetLabel.SetBinding(PadForge.Controls.MarqueeLabel.ActiveProperty,
@@ -4539,9 +4278,6 @@ namespace PadForge
                         again.Focus();
                 }));
             }
-
-            // Never touch Icon here. PaneClosed/PaneOpened handlers manage it exclusively.
-            // Re-rendering the bitmap on every 30Hz update causes visual flashing.
         }
 
         /// <summary>Opens what a sidebar entry stands for: the Add Controller
@@ -4579,84 +4315,37 @@ namespace PadForge
             return null;
         }
 
-        /// <summary>Re-renders every controller nav card in its CURRENT pane
-        /// mode. The flames read engine-level inputs (stopped, idle) that
-        /// change without any per-slot property firing, so those transitions
-        /// re-render here rather than leaving each flame stale at its last
-        /// heat (the 2026-07-24 idle-vs-forging contradiction).</summary>
+        /// <summary>Re-renders every controller's pill. The flames read
+        /// engine-level inputs (stopped, idle) that change without any
+        /// per-slot property firing, so those transitions re-render here
+        /// rather than leaving each flame stale at its last heat (the
+        /// 2026-07-24 idle-vs-forging contradiction).</summary>
         private void RefreshAllControllerNavItems()
-            => UpdateAllControllerCardMode(compact: !NavView.IsPaneOpen);
-
-        /// <summary>
-        /// Swaps all controller NavigationViewItem cards between full and compact mode.
-        /// Compact mode shows a mini card: flame heat glyph + slot number on top row,
-        /// type icon + subgroup number on bottom row.
-        /// </summary>
-        private void UpdateAllControllerCardMode(bool compact)
         {
             var navItems = _viewModel.NavControllerItems;
             if (navItems == null) return;
 
             foreach (var navItem in navItems)
-            {
                 foreach (var mi in NavView.MenuItems)
-                {
                     if (mi is NavigationViewItem nvi && nvi.Tag?.ToString() == navItem.Tag)
                     {
-                        if (compact)
-                        {
-                            // Render compact card to bitmap and set as Icon
-                            // (WPF UI only shows Icon in compact mode, not Content).
-                            nvi.Icon = RenderCompactCardIcon(navItem);
-                            SyncCollapsedIconSelection(nvi);
-                            // Reset margin for compact mode so the item doesn't extend outside pane.
-                            nvi.Margin = new Thickness(0);
-                        }
-                        else
-                        {
-                            nvi.Icon = null;
-                            nvi.Margin = new Thickness(-40, 0, 0, 0);
-                            UpdateControllerNavItemContent(nvi, navItem);
-                        }
+                        UpdateControllerNavItemContent(nvi, navItem);
                         break;
                     }
-                }
-            }
-
-            // The Add Controller entry rides the same crossfade: minified card
-            // when expanded, bare "+" when collapsed.
-            foreach (var mi in NavView.MenuItems)
-                if (mi is NavigationViewItem addNvi && addNvi.Tag?.ToString() == "AddController")
-                { UpdateAddControllerCardMode(addNvi, compact); break; }
         }
 
-        /// <summary>True for nav items that participate in the pane
-        /// collapse/expand opacity crossfade: the controller mini cards
-        /// (Tag "Pad…") and the Add Controller entry.</summary>
-        private static bool IsCardFadeItem(NavigationViewItem nvi)
-        {
-            var t = nvi.Tag?.ToString();
-            return t != null && (t.StartsWith("Pad") || t == "AddController");
-        }
-
-        /// <summary>Builds the drawer "Add Controller" entry as a minified twin
-        /// of Home's Add Controller card (dashed steel outline, muted
-        /// "+" glyph + label). Expanded it wears the card; collapsed it
-        /// crossfades down to a bare "+" symbol on the same 200/200/220 ms
-        /// window as the controller mini cards. Every brush is DynamicResource,
-        /// so both themes track live (no baked bitmap like the mini cards).</summary>
+        /// <summary>Builds the sidebar's Add Controller entry, the small
+        /// twin of Home's Add Controller tile (a dashed outline, a plus
+        /// sign and the words). Every brush is a resource reference, so
+        /// both themes track live.</summary>
         private NavigationViewItem BuildAddControllerNavItem()
         {
-            bool collapsed = !NavView.IsPaneOpen;
             var item = new NavigationViewItem
             {
                 Tag = "AddController",
                 Content = BuildAddControllerCard(),
-                Margin = collapsed ? new Thickness(0) : new Thickness(-40, 0, 0, 0),
-                Icon = collapsed ? MakeAddControllerCollapsedIcon() : null,
             };
             SuppressBuiltInSelectionVisual(item);
-            AttachCollapsedIconHover(item);
             System.Windows.Automation.AutomationProperties.SetName(item, Strings.Instance.Main_AddController);
             SetNavAutomationId(item, "AddController");
             return item;
@@ -4671,357 +4360,33 @@ namespace PadForge
         private static void SetNavAutomationId(NavigationViewItem item, string tag)
             => System.Windows.Automation.AutomationProperties.SetAutomationId(item, "Nav_" + tag);
 
-        /// <summary>Gives the COLLAPSED-rail icon of a mini-card entry the same
-        /// subtle hover feedback the expanded pill has: a 2 px lift plus a faint
-        /// ember bloom. The expanded card wires its own hover on the card Border
-        /// (BuildFlameGlyph card), but when the pane is collapsed that Border is
-        /// not shown, the bitmap/glyph Icon is, so this drives the Icon element
-        /// directly. Gated to the collapsed state so it never double-lifts the
-        /// expanded card. The Icon is rebuilt on every pane toggle, so the
-        /// handlers resolve nvi.Icon at hover time rather than capturing it.</summary>
-        private void AttachCollapsedIconHover(NavigationViewItem nvi)
-        {
-            var hoverGlow = TryFindResource("NeutralHoverGlow") as System.Windows.Media.Effects.Effect;
-            nvi.MouseEnter += (s, e) =>
-            {
-                if (NavView.IsPaneOpen) return;
-                if (nvi.Icon is not System.Windows.FrameworkElement icon) return;
-                if (icon.RenderTransform is not System.Windows.Media.TranslateTransform lift)
-                {
-                    lift = new System.Windows.Media.TranslateTransform();
-                    icon.RenderTransform = lift;
-                }
-                lift.BeginAnimation(System.Windows.Media.TranslateTransform.YProperty,
-                    new System.Windows.Media.Animation.DoubleAnimation(-2, System.TimeSpan.FromMilliseconds(130))
-                    { EasingFunction = new System.Windows.Media.Animation.CubicEase { EasingMode = System.Windows.Media.Animation.EasingMode.EaseOut } });
-                // A selected icon already wears the stronger selection glow, so
-                // only unselected icons take the faint hover bloom.
-                if (!IsControllerTagSelected(nvi.Tag?.ToString()) && hoverGlow != null)
-                    icon.Effect = hoverGlow;
-            };
-            nvi.MouseLeave += (s, e) =>
-            {
-                if (nvi.Icon is not System.Windows.FrameworkElement icon) return;
-                if (icon.RenderTransform is System.Windows.Media.TranslateTransform lift)
-                    lift.BeginAnimation(System.Windows.Media.TranslateTransform.YProperty,
-                        new System.Windows.Media.Animation.DoubleAnimation(0, System.TimeSpan.FromMilliseconds(250))
-                        { EasingFunction = new System.Windows.Media.Animation.CubicEase { EasingMode = System.Windows.Media.Animation.EasingMode.EaseIn } });
-                // Once the transient hover bloom lifts, restore the pulsing
-                // selection glow (or clear it).
-                if (ReferenceEquals(icon.Effect, hoverGlow))
-                {
-                    if (IsControllerTagSelected(nvi.Tag?.ToString())) SyncCollapsedIconSelection(nvi);
-                    else icon.Effect = null;
-                }
-            };
-        }
-
         /// <summary>Drives <see cref="PadForge.Common.AmbientMotionProbe"/>
-        /// from window activation/minimize and rebuilds the controller rail
-        /// so the code-built heat rings re-evaluate their gate. XAML breathes
-        /// react on their own through trigger conditions. Guarded on actual
-        /// state change: dialogs toggle activation constantly and the rail
-        /// rebuild is not free.</summary>
-        private void SetAmbientMotion(bool active)
-        {
-            var probe = PadForge.Common.AmbientMotionProbe.Instance;
-            if (probe.IsAppActive == active) return;
-            probe.IsAppActive = active;
-            RebuildControllerSection();
-        }
+        /// from window activation and minimize. The marquees and the XAML
+        /// animations that wait on it react through their own bindings.</summary>
+        private static void SetAmbientMotion(bool active)
+            => PadForge.Common.AmbientMotionProbe.Instance.IsAppActive = active;
 
         /// <summary>True when this tag is the focused controller page (a "PadN"
         /// tag equal to the app-wide selection).</summary>
         private bool IsControllerTagSelected(string tag)
             => tag != null && tag.StartsWith("Pad") && tag == _viewModel.SelectedNavTag;
 
-        /// <summary>Applies or clears the pulsing selection glow on a controller
-        /// item's COLLAPSED icon. The icon's Effect slot is free (the flame
-        /// bloom is baked into the bitmap), so it takes an animated ember bloom
-        /// directly, matching the expanded pill's selection pulse.</summary>
-        private void SyncCollapsedIconSelection(NavigationViewItem nvi)
-        {
-            if (nvi.Icon is not System.Windows.FrameworkElement icon) return;
-            if (!IsControllerTagSelected(nvi.Tag?.ToString()))
-            {
-                icon.Effect = null;
-                return;
-            }
-            var glow = new System.Windows.Media.Effects.DropShadowEffect
-            {
-                Color = System.Windows.Media.Color.FromRgb(0xFF, 0x6B, 0x2C),
-                // Kept at the expanded pill's bloom radius; the 48px collapsed rail
-                // gives the icon ~12px a side, so a 12px bloom fits without clipping.
-                BlurRadius = 12,
-                ShadowDepth = 0,
-                Opacity = 0.6,
-            };
-            icon.Effect = glow;
-            if (MotionEnabled && PadForge.Common.AmbientMotionProbe.Instance.IsAppActive)
-            {
-                var pulse = new System.Windows.Media.Animation.DoubleAnimation(0.5, 0.95,
-                    System.TimeSpan.FromMilliseconds(1200))
-                {
-                    AutoReverse = true,
-                    RepeatBehavior = System.Windows.Media.Animation.RepeatBehavior.Forever,
-                    EasingFunction = new System.Windows.Media.Animation.SineEase
-                    { EasingMode = System.Windows.Media.Animation.EasingMode.EaseInOut },
-                    BeginTime = System.TimeSpan.FromMilliseconds(
-                        -(System.DateTime.UtcNow.TimeOfDay.TotalMilliseconds % 2400.0)),
-                };
-                // 30fps ambient rate + foreground gate: same measured
-                // rationale as the heat ring (every permanent animation frame
-                // pays the fixed pipeline cost; a soft pulse cannot show 60
-                // samples a second). The static glow above remains while
-                // backgrounded.
-                System.Windows.Media.Animation.Timeline.SetDesiredFrameRate(pulse, 30);
-                glow.BeginAnimation(System.Windows.Media.Effects.DropShadowEffect.OpacityProperty, pulse);
-            }
-        }
+        // The controller tag whose pill is drawn as selected (null when a
+        // page that is not a controller's is open), so a selection change
+        // redraws only the pills it touches.
+        private string _pickedControllerTag;
 
-        // The pane's controller pills live inside a DynamicScrollViewer whose
-        // ScrollContentPresenter clips its content to the viewport for scrolling.
-        // That clip is intrinsic to the presenter (it holds regardless of
-        // ClipToBounds or any explicit Clip, both of which are already false on the
-        // whole ancestor chain), so a drop shadow on a pill is always truncated ~5px
-        // out, at the viewport edge. The reorder drag renders its ghost in the
-        // window's adorner layer instead, which sits ABOVE the scroller and is not
-        // clipped (that is why a dragged card reaches the window edges). The pill
-        // glows take the same route: the selected and hovered pills get their bloom
-        // from a PillGlowAdorner in that layer rather than from the card's Effect.
-        private PillGlowAdorner _selGlowAdorner;
-        private System.Windows.Documents.AdornerLayer _selGlowLayer;
-        private PillGlowAdorner _hoverGlowAdorner;
-        private System.Windows.Documents.AdornerLayer _hoverGlowLayer;
-
-        /// <summary>Replaces the selected pill's glow adorner. The pill may not be in
-        /// the visual tree yet on a fresh rebuild, so it waits for Loaded. The adorner
-        /// is added to the NavView's adorner layer (the outer, unclipped one the drag
-        /// uses), and the whole adorner (border + bloom) breathes via its Opacity.</summary>
-        private void ShowSelectionGlowAdorner(System.Windows.Controls.Border card,
-            System.Windows.Media.Color color, bool lit, bool cooling)
-        {
-            RemoveSelectionGlowAdorner();
-            void Attach()
-            {
-                if (_selGlowAdorner != null || card.ActualWidth <= 0) return;
-                var layer = System.Windows.Documents.AdornerLayer.GetAdornerLayer(NavView);
-                if (layer == null) return;
-                var adorner = new PillGlowAdorner(NavView, card, color, 10, 2, 20, 0.6, () => NavView.IsPaneOpen);
-                layer.Add(adorner);
-                _selGlowAdorner = adorner;
-                _selGlowLayer = layer;
-                if (MotionEnabled && PadForge.Common.AmbientMotionProbe.Instance.IsAppActive)
-                {
-                    double lo = lit ? 0.55 : cooling ? 0.45 : 0.35;
-                    double periodMs = lit ? 1100 : cooling ? 1600 : 2200;
-                    var phase = System.TimeSpan.FromMilliseconds(
-                        -(System.DateTime.UtcNow.TimeOfDay.TotalMilliseconds % (periodMs * 2.0)));
-                    // NOTE (corrected 2026-07-16): element Opacity is a
-                    // DEPENDENT animation in WPF, not composite-time. The old
-                    // claim here was wrong. The adorner carries a BitmapCache
-                    // so each tick recomposes a cached texture instead of
-                    // re-rasterizing the stroke. Gated on foreground +
-                    // 30fps for the same measured reasons as the heat ring;
-                    // the ungated static adorner keeps the selection visible.
-                    var selBreathe = new System.Windows.Media.Animation.DoubleAnimation(lo, 1.0,
-                        System.TimeSpan.FromMilliseconds(periodMs))
-                    {
-                        AutoReverse = true,
-                        RepeatBehavior = System.Windows.Media.Animation.RepeatBehavior.Forever,
-                        EasingFunction = new System.Windows.Media.Animation.SineEase
-                        { EasingMode = System.Windows.Media.Animation.EasingMode.EaseInOut },
-                        BeginTime = phase,
-                    };
-                    System.Windows.Media.Animation.Timeline.SetDesiredFrameRate(selBreathe, 30);
-                    adorner.BeginAnimation(System.Windows.UIElement.OpacityProperty, selBreathe);
-                }
-            }
-            if (card.IsLoaded && card.ActualWidth > 0)
-                Attach();
-            else
-            {
-                System.Windows.RoutedEventHandler h = null;
-                h = (s, e) => { card.Loaded -= h; Attach(); };
-                card.Loaded += h;
-            }
-        }
-
-        private void RemoveSelectionGlowAdorner()
-        {
-            if (_selGlowAdorner == null) return;
-            _selGlowAdorner.Detach();
-            (_selGlowLayer ?? System.Windows.Documents.AdornerLayer.GetAdornerLayer(_selGlowAdorner.AdornedElement))
-                ?.Remove(_selGlowAdorner);
-            _selGlowAdorner = null;
-            _selGlowLayer = null;
-        }
-
-        /// <summary>The hovered pill's ember bloom, also in the NavView adorner layer
-        /// (above the scroll viewport) so it is not clipped. Skipped for the selected
-        /// pill, which already wears the stronger selection bloom.</summary>
-        private void ShowHoverGlowAdorner(System.Windows.Controls.Border card)
-        {
-            RemoveHoverGlowAdorner();
-            if (card.ActualWidth <= 0) return;
-            var layer = System.Windows.Documents.AdornerLayer.GetAdornerLayer(NavView);
-            if (layer == null) return;
-            var adorner = new PillGlowAdorner(NavView, card,
-                System.Windows.Media.Color.FromRgb(0xFF, 0x6B, 0x2C), 10, 2, 14, 0.4, () => NavView.IsPaneOpen);
-            layer.Add(adorner);
-            _hoverGlowAdorner = adorner;
-            _hoverGlowLayer = layer;
-        }
-
-        private void RemoveHoverGlowAdorner()
-        {
-            if (_hoverGlowAdorner == null) return;
-            _hoverGlowAdorner.Detach();
-            (_hoverGlowLayer ?? System.Windows.Documents.AdornerLayer.GetAdornerLayer(_hoverGlowAdorner.AdornedElement))
-                ?.Remove(_hoverGlowAdorner);
-            _hoverGlowAdorner = null;
-            _hoverGlowLayer = null;
-        }
-
-        /// <summary>Draws a pill's rounded-rect ember border plus a soft DropShadow bloom
-        /// in the window adorner layer. It adorns the NavView, NOT the pill: WPF clips an
-        /// adorner whose adorned element is inside a ScrollViewer to that viewport (the
-        /// clip being escaped), which is why the reorder drag also adorns the NavView. A
-        /// DropShadowEffect sizes its blurred output to the drawn-content bounds, so the
-        /// bloom would truncate ~5px out at the tight border rect; a near-invisible
-        /// padding rect widens those bounds to the full blur. The pill's rect is
-        /// transformed into NavView coordinates each render, so the glow tracks the pill
-        /// through scroll and the hover lift.</summary>
-        internal sealed class PillGlowAdorner : System.Windows.Documents.Adorner
-        {
-            private readonly FrameworkElement _target;
-            private readonly Visual _root;
-            private readonly System.Windows.Media.Color _color;
-            private readonly double _radius, _borderThickness, _pad;
-            private System.Windows.Media.SolidColorBrush _padBrush;
-            private System.Windows.Media.Pen _borderPen;
-            private static T Frozen<T>(T f) where T : System.Windows.Freezable { f.Freeze(); return (T)(object)f; }
-            private readonly Func<bool> _shouldRender;
-            private EventHandler _onLayout;
-            private System.Windows.Freezable _lift;
-            private Rect? _drawn;
-
-            /// <summary>How many times it has drawn itself.</summary>
-            internal int Renders { get; private set; }
-
-            public PillGlowAdorner(UIElement root, FrameworkElement target, System.Windows.Media.Color color,
-                double radius, double borderThickness, double blur, double opacity, Func<bool> shouldRender) : base(root)
-            {
-                _root = root;
-                _target = target;
-                _color = color;
-                _radius = radius;
-                _borderThickness = borderThickness;
-                _pad = blur + 6;
-                _shouldRender = shouldRender;
-                IsHitTestVisible = false;
-                Effect = new System.Windows.Media.Effects.DropShadowEffect
-                { Color = color, BlurRadius = blur, ShadowDepth = 0, Opacity = opacity };
-                // The breathe animates this adorner's ELEMENT Opacity, which is
-                // a DEPENDENT animation (ordinary UIPropertyMetadata): each
-                // tick dirties the adorner and, uncached, re-rasterized the
-                // rounded-rect pen stroke every frame. Cached, the tick
-                // recomposes a texture. The Effect stays outside the cache by
-                // WPF's rules and keeps blooming.
-                CacheMode = new System.Windows.Media.BitmapCache();
-                // A redraw is itself a layout pass, which raises LayoutUpdated, so
-                // redrawing on every one never stops. Only a pill that moved, or
-                // that came or went, needs one.
-                _onLayout = (s, e) => { if (PillRect() != _drawn) InvalidateVisual(); };
-                _target.LayoutUpdated += _onLayout;
-                // The hover lift moves the pill with no layout pass at all.
-                if (_target.RenderTransform is { IsFrozen: false } lift)
-                {
-                    _lift = lift;
-                    _lift.Changed += _onLayout;
-                }
-            }
-
-            public void Detach()
-            {
-                if (_onLayout == null) return;
-                _target.LayoutUpdated -= _onLayout;
-                if (_lift != null) _lift.Changed -= _onLayout;
-                _lift = null;
-                _onLayout = null;
-            }
-
-            /// <summary>Where the pill sits in the root's coordinates, or null
-            /// while it is not shown and nothing is drawn. Only while the pill is
-            /// actually shown (pane open): when the pane collapses the pill is
-            /// hidden but the adorner survives, and it would draw the pill's
-            /// border at a stale position out in midair.</summary>
-            private Rect? PillRect()
-            {
-                if (_target == null || !_target.IsVisible || _target.ActualWidth <= 0 || _target.ActualHeight <= 0)
-                    return null;
-                if (_shouldRender != null && !_shouldRender()) return null;
-                if (System.Windows.PresentationSource.FromVisual(_target) == null) return null;
-                try
-                {
-                    var tl = _target.TransformToVisual(_root).Transform(new System.Windows.Point(0, 0));
-                    return new Rect(tl.X, tl.Y, _target.ActualWidth, _target.ActualHeight);
-                }
-                catch { return null; }
-            }
-
-            protected override void OnRender(System.Windows.Media.DrawingContext dc)
-            {
-                Renders++;
-                _drawn = PillRect();
-                if (_drawn is not Rect pill) return;
-                System.Windows.Point tl = pill.TopLeft;
-                double w = pill.Width, h = pill.Height;
-
-                // Near-invisible padding rect (alpha 1): widens the adorner's drawn-content
-                // bounds so the DropShadowEffect's blur is not clipped to the border rect.
-                // It casts a negligible shadow of its own.
-                // Frozen, hoisted resources: color and thickness are ctor-fixed.
-                _padBrush ??= Frozen(new System.Windows.Media.SolidColorBrush(
-                    System.Windows.Media.Color.FromArgb(1, _color.R, _color.G, _color.B)));
-                if (_borderPen == null)
-                {
-                    _borderPen = new System.Windows.Media.Pen(
-                        Frozen(new System.Windows.Media.SolidColorBrush(_color)), _borderThickness);
-                    _borderPen.Freeze();
-                }
-                dc.DrawRectangle(_padBrush, null,
-                    new Rect(tl.X - _pad, tl.Y - _pad, w + 2 * _pad, h + 2 * _pad));
-
-                // The ember border: outlines the pill and is the source the effect blooms.
-                double t = _borderThickness / 2;
-                dc.DrawRoundedRectangle(null, _borderPen,
-                    new Rect(tl.X + t, tl.Y + t, w - _borderThickness, h - _borderThickness),
-                    _radius, _radius);
-            }
-        }
-
-        // The controller tag currently wearing the selection glow (null when a
-        // non-controller page is focused), for change-gated re-glowing.
-        private string _glowSelectedControllerTag;
-
-        /// <summary>On a controller selection change, re-glows just the two
-        /// affected pills: the newly focused one gains the selection bloom, the
-        /// previously focused one reverts. The expanded card recomputes its
-        /// Effect via a Content rebuild (the heat ring and selection glow share
-        /// the one Effect slot); the collapsed icon is set directly.</summary>
+        /// <summary>On a controller selection change, redraws the two pills
+        /// it touches: the newly selected one takes the ember outline and
+        /// the warm fill, and the one selected before goes back to rest.</summary>
         private void RefreshControllerSelectionVisuals()
         {
             if (_navHome == null) return;
             string sel = _viewModel.SelectedNavTag;
             if (sel == null || !sel.StartsWith("Pad")) sel = null;
-            if (sel == _glowSelectedControllerTag) return;
-            string prev = _glowSelectedControllerTag;
-            _glowSelectedControllerTag = sel;
-
-            // Leaving all pads: no pill's rebuild will run to swap the adorner, so
-            // drop it here. Pad->pad hands off inside ShowSelectionGlowAdorner.
-            if (sel == null) RemoveSelectionGlowAdorner();
+            if (sel == _pickedControllerTag) return;
+            string prev = _pickedControllerTag;
+            _pickedControllerTag = sel;
 
             foreach (var mi in NavView.MenuItems)
             {
@@ -5035,22 +4400,19 @@ namespace PadForge
                     foreach (var n in _viewModel.NavControllerItems)
                         if (n.Tag == t) { navItem = n; break; }
                 if (navItem != null) UpdateControllerNavItemContent(nvi, navItem);
-                SyncCollapsedIconSelection(nvi);
             }
         }
 
-        /// <summary>Unasserts the WPF-UI NavigationViewItem's built-in row
-        /// selection visuals (the selected/hover/pressed MainBorder highlight
-        /// and the left ActiveRectangle indicator pill) for one item, so the
-        /// controller mini cards and the Add Controller entry show only our
-        /// own selection feedback. The Compact template (PaneDisplayMode=Left)
-        /// paints those via DynamicResource brush keys, so shadowing the keys
-        /// in the item's local resource scope transparently overrides them for
-        /// this item alone. Standard entries (Home, About) never get this
-        /// call and keep the default selection highlight. Keys verified against
-        /// the cloned Wpf.Ui 4.3.0 NavigationViewCompact.xaml + its theme
-        /// dictionaries. Transparent is theme-neutral, so dark and light both
-        /// resolve correctly.</summary>
+        /// <summary>Clears the row fills of one sidebar entry (rest, selected,
+        /// under the pointer, pressed), so a controller's pill and the Add
+        /// Controller entry show only the outline and fill they draw
+        /// themselves. The entry's template (PadNavigationViewItemTemplate
+        /// in Resources/Shell.xaml) reads those fills from four resource
+        /// keys, so shadowing the keys in the entry's own resources changes
+        /// them for this entry alone. Home, Settings and the other plain
+        /// entries never get this call and keep the row fills. What sits
+        /// inside the entry looks these keys up through it and finds them
+        /// clear, which is why a pill's lift reads SteelPaneHoverBrush.</summary>
         private static void SuppressBuiltInSelectionVisual(NavigationViewItem item)
         {
             var clear = System.Windows.Media.Brushes.Transparent;
@@ -5058,49 +4420,36 @@ namespace PadForge
             item.Resources["NavigationViewItemBackgroundSelected"] = clear;
             item.Resources["NavigationViewItemBackgroundPointerOver"] = clear;
             item.Resources["NavigationViewItemBackgroundPressed"] = clear;
-            item.Resources["NavigationViewItemBackgroundDisabled"] = clear;
-            item.Resources["NavigationViewSelectionIndicatorForeground"] = clear;
         }
 
-        /// <summary>The muted "+" the collapsed rail shows for Add Controller.
-        /// Tertiary-gray to match the Home card's add sign, DynamicResource
-        /// so it re-tints on a theme flip.</summary>
-        private static FontIcon MakeAddControllerCollapsedIcon()
-        {
-            var icon = new PadForge.Controls.DecorativeFontIcon
-            {
-                FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"),
-                Glyph = "",
-            };
-            icon.SetResourceReference(FontIcon.ForegroundProperty, "TextFillColorTertiaryBrush");
-            return icon;
-        }
-
-        /// <summary>The expanded Add Controller card: a minified copy of the
-        /// Home tile (HomePage.xaml), sized to the mini-card pill
-        /// (212 wide, radius 10). WPF Border can't dash, so a Rectangle wears
-        /// the dashed SteelLineBrush outline; a centered "+" glyph + label sit
-        /// in TextFillColorTertiaryBrush. Hover matches the mini cards: a 2 px
-        /// lift plus a faint ember bloom.</summary>
+        /// <summary>The Add Controller entry's card (#574): a dashed
+        /// full-round outline the size of a controller's pill, with a plus
+        /// sign and the words centered in it. Under the pointer the fill
+        /// lifts one step, as a pill's does.</summary>
         private System.Windows.Controls.Border BuildAddControllerCard()
         {
-            var glyph = new PadForge.Controls.GlyphText
+            var plus = new System.Windows.Shapes.Path
             {
-                Text = "",
-                FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"),
-                FontSize = 14,
+                FlowDirection = FlowDirection.LeftToRight,
+                Data = (System.Windows.Media.Geometry)FindResource("PlusLineGeometry"),
+                Width = 12,
+                Height = 12,
+                Stretch = System.Windows.Media.Stretch.Uniform,
+                StrokeThickness = 1.6,
+                StrokeStartLineCap = System.Windows.Media.PenLineCap.Round,
+                StrokeEndLineCap = System.Windows.Media.PenLineCap.Round,
                 VerticalAlignment = VerticalAlignment.Center,
                 Margin = new Thickness(0, 0, 8, 0),
             };
-            glyph.SetResourceReference(TextBlock.ForegroundProperty, "TextFillColorTertiaryBrush");
+            plus.SetResourceReference(System.Windows.Shapes.Shape.StrokeProperty, "TextFillColorSecondaryBrush");
 
             var label = new TextBlock
             {
                 Text = Strings.Instance.Main_AddController,
-                FontSize = 12,
+                FontSize = 13,
                 VerticalAlignment = VerticalAlignment.Center,
             };
-            label.SetResourceReference(TextBlock.ForegroundProperty, "TextFillColorTertiaryBrush");
+            label.SetResourceReference(TextBlock.ForegroundProperty, "TextFillColorSecondaryBrush");
 
             var content = new StackPanel
             {
@@ -5108,18 +4457,19 @@ namespace PadForge
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center,
             };
-            content.Children.Add(glyph);
+            content.Children.Add(plus);
             content.Children.Add(label);
 
+            // A Border cannot dash, so a Rectangle wears the dashed outline.
             var dash = new System.Windows.Shapes.Rectangle
             {
-                RadiusX = 10,
-                RadiusY = 10,
-                StrokeThickness = 1.5,
+                RadiusX = 18,
+                RadiusY = 18,
+                StrokeThickness = 1,
                 StrokeDashArray = new System.Windows.Media.DoubleCollection { 4, 3 },
                 SnapsToDevicePixels = true,
             };
-            dash.SetResourceReference(System.Windows.Shapes.Shape.StrokeProperty, "SteelLineBrush");
+            dash.SetResourceReference(System.Windows.Shapes.Shape.StrokeProperty, "DashLineBrush");
 
             var grid = new Grid();
             grid.Children.Add(dash);
@@ -5127,187 +4477,18 @@ namespace PadForge
 
             var card = new System.Windows.Controls.Border
             {
-                // Exact mini-card pill footprint so the entry stacks congruently
-                // and the dashed outline (plus its hover glow) traces the same
-                // rectangle a solid pill does: radius 10, width 233, 3/2 margin,
-                // and MinHeight 36 = the pill's rendered height (the fixed 22 px
-                // delete-button row + 12 px padding + 2 px border in
-                // UpdateControllerNavItemContent). NO Padding here: like the
-                // Home card, the Rectangle must fill the full card bounds,
-                // not sit inset. Inset shrinks the box and makes the glow hug a
-                // smaller inner outline.
-                CornerRadius = new CornerRadius(10),
-                Width = 233,
+                // The pill's footprint, so the entry stacks with the
+                // controllers above it. No Padding: the Rectangle fills the
+                // card's bounds.
+                CornerRadius = new CornerRadius(18),
                 MinHeight = 36,
-                Margin = new Thickness(3, 2, 3, 2),
                 Background = System.Windows.Media.Brushes.Transparent,
                 Cursor = System.Windows.Input.Cursors.Hand,
                 Child = grid,
             };
-
-            // Hover: 2 px lift + faint ember bloom, the same feedback the mini
-            // cards use.
-            var lift = new System.Windows.Media.TranslateTransform();
-            card.RenderTransform = lift;
-            var hoverGlow = TryFindResource("NeutralHoverGlow") as System.Windows.Media.Effects.Effect;
-            card.MouseEnter += (s, e) =>
-            {
-                var up = new System.Windows.Media.Animation.DoubleAnimation(-2, System.TimeSpan.FromMilliseconds(130))
-                { EasingFunction = new System.Windows.Media.Animation.CubicEase { EasingMode = System.Windows.Media.Animation.EasingMode.EaseOut } };
-                lift.BeginAnimation(System.Windows.Media.TranslateTransform.YProperty, up);
-                if (card.Effect == null && hoverGlow != null) card.Effect = hoverGlow;
-            };
-            card.MouseLeave += (s, e) =>
-            {
-                var down = new System.Windows.Media.Animation.DoubleAnimation(0, System.TimeSpan.FromMilliseconds(250))
-                { EasingFunction = new System.Windows.Media.Animation.CubicEase { EasingMode = System.Windows.Media.Animation.EasingMode.EaseIn } };
-                lift.BeginAnimation(System.Windows.Media.TranslateTransform.YProperty, down);
-                if (ReferenceEquals(card.Effect, hoverGlow)) card.Effect = null;
-            };
-            return card;
-        }
-
-        /// <summary>Swaps the Add Controller entry between the expanded card
-        /// (Content) and the collapsed "+" (Icon), mirroring
-        /// UpdateAllControllerCardMode for the mini cards so both ride the same
-        /// PaneClosed/PaneOpened crossfade.</summary>
-        private void UpdateAddControllerCardMode(NavigationViewItem nvi, bool compact)
-        {
-            if (compact)
-            {
-                nvi.Icon = MakeAddControllerCollapsedIcon();
-                nvi.Margin = new Thickness(0);
-            }
-            else
-            {
-                nvi.Icon = null;
-                nvi.Margin = new Thickness(-40, 0, 0, 0);
-            }
-        }
-
-        /// <summary>
-        /// Renders a compact card visual to a BitmapSource and wraps it in an ImageIcon
-        /// so it can be displayed in NavigationViewItem.Icon (which only accepts IconElement).
-        /// </summary>
-        private Wpf.Ui.Controls.ImageIcon RenderCompactCardIcon(NavControllerItemViewModel navItem)
-        {
-            var visual = BuildCompactCard(navItem);
-
-            // Measure and arrange the visual so it has a size.
-            visual.Measure(new Size(40, 40));
-            visual.Arrange(new Rect(0, 0, 40, 40));
-            visual.UpdateLayout();
-
-            var dpi = System.Windows.Media.VisualTreeHelper.GetDpi(this);
-            int pw = (int)Math.Ceiling(40 * dpi.DpiScaleX);
-            int ph = (int)Math.Ceiling(40 * dpi.DpiScaleY);
-
-            var rtb = new System.Windows.Media.Imaging.RenderTargetBitmap(
-                pw, ph, dpi.PixelsPerInchX, dpi.PixelsPerInchY,
-                System.Windows.Media.PixelFormats.Pbgra32);
-            rtb.Render(visual);
-
-            return new Wpf.Ui.Controls.ImageIcon { Source = rtb };
-        }
-
-        /// <summary>
-        /// Builds a compact mini card for collapsed sidebar: two rows stacked vertically.
-        /// Row 1: Flame heat glyph + slot number. Row 2: Type icon + subgroup number.
-        /// The flame replaced the old MDL2 gamepad glyph (user report 2026-07-07:
-        /// it clashed with the #175 identity) and carries the same heat
-        /// semantics as the expanded pill's flame.
-        /// </summary>
-        private System.Windows.Controls.Border BuildCompactCard(NavControllerItemViewModel navItem)
-        {
-            var mdl2 = new System.Windows.Media.FontFamily("Segoe MDL2 Assets");
-            bool isDark = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme() == Wpf.Ui.Appearance.ApplicationTheme.Dark;
-            var fgBrush = new System.Windows.Media.SolidColorBrush(
-                isDark ? System.Windows.Media.Colors.White : System.Windows.Media.Colors.Black);
-            fgBrush.Freeze();
-
-            // Row 1: Flame heat glyph + slot number
-            ComputeFlameHeat(navItem, out bool lit, out bool cooling);
-            var row1 = new System.Windows.Controls.StackPanel { Orientation = System.Windows.Controls.Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Center };
-            var compactFlame = BuildFlameGlyph(11, lit, cooling);
-            compactFlame.VerticalAlignment = VerticalAlignment.Center;
-            row1.Children.Add(compactFlame);
-            row1.Children.Add(new System.Windows.Controls.TextBlock
-            {
-                Text = navItem.SlotNumber.ToString(),
-                // Telemetry mono (#175 font sweep): slot-number token, same
-                // face as the expanded pill's slot number.
-                FontFamily = (System.Windows.Media.FontFamily)FindResource("TelemetryFontFamily"),
-                FontSize = 10,
-                FontWeight = FontWeights.SemiBold,
-                Foreground = fgBrush,
-                VerticalAlignment = VerticalAlignment.Center,
-                Margin = new Thickness(3, 0, 0, 0)
-            });
-
-            // Row 2: Type icon + subgroup number
-            var row2 = new System.Windows.Controls.StackPanel { Orientation = System.Windows.Controls.Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Center };
-
-            string iconKey = navItem.IconKey;
-            if (iconKey == "XboxControllerIcon" || iconKey == "DS4ControllerIcon"
-                || iconKey == "NintendoControllerIcon" || iconKey == "ExtendedControllerIcon")
-            {
-                string svgPath = iconKey == "XboxControllerIcon" ? XboxSvgPath
-                    : iconKey == "DS4ControllerIcon" ? DS4SvgPath
-                    : iconKey == "NintendoControllerIcon" ? SwitchSvgPath : ExtendedSvgPath;
-                var path = new System.Windows.Shapes.Path
-                {
-                    FlowDirection = FlowDirection.LeftToRight,
-                    Data = System.Windows.Media.Geometry.Parse(svgPath),
-                    Width = 10, Height = 10,
-                    Stretch = System.Windows.Media.Stretch.Uniform,
-                    Fill = fgBrush
-                };
-                row2.Children.Add(path);
-            }
-            else
-            {
-                string glyph = iconKey == "MidiControllerIcon" ? "\uE8D6"
-                    : iconKey == "VrControllerIcon" ? "\uF119" : "\uE961";
-                row2.Children.Add(new PadForge.Controls.GlyphText
-                {
-                    Text = glyph,
-                    FontFamily = mdl2,
-                    FontSize = 10,
-                    Foreground = fgBrush,
-                    VerticalAlignment = VerticalAlignment.Center
-                });
-            }
-
-            row2.Children.Add(new System.Windows.Controls.TextBlock
-            {
-                Text = navItem.InstanceLabel ?? "",
-                // Telemetry mono (#175 font sweep): instance token, same
-                // face as the expanded pill's "#N" label.
-                FontFamily = (System.Windows.Media.FontFamily)FindResource("TelemetryFontFamily"),
-                FontSize = 9,
-                FontWeight = FontWeights.SemiBold,
-                Foreground = fgBrush,
-                VerticalAlignment = VerticalAlignment.Center,
-                Margin = new Thickness(4, 0, 0, 0)
-            });
-
-            var stack = new System.Windows.Controls.StackPanel
-            {
-                VerticalAlignment = VerticalAlignment.Center,
-                HorizontalAlignment = HorizontalAlignment.Center
-            };
-            stack.Children.Add(row1);
-            stack.Children.Add(row2);
-
-            var card = new System.Windows.Controls.Border
-            {
-                Child = stack,
-                CornerRadius = new CornerRadius(4),
-                Padding = new Thickness(2),
-                Tag = navItem.PadIndex,
-                HorizontalAlignment = HorizontalAlignment.Center
-            };
-
+            card.MouseEnter += (s, e) => card.SetResourceReference(
+                System.Windows.Controls.Border.BackgroundProperty, "SteelPaneHoverBrush");
+            card.MouseLeave += (s, e) => card.Background = System.Windows.Media.Brushes.Transparent;
             return card;
         }
 
@@ -5453,8 +4634,7 @@ namespace PadForge
         // ─────────────────────────────────────────────
 
         private bool _isDraggingCard;
-        private bool _isCardFading;
-        private bool _rebuildPendingAfterFade;
+        private bool _rebuildPendingAfterDrag;
         private int _dragSourcePadIndex;
         private int _dragSourceVisualPos;
         private int _dragDropIndex;
@@ -5839,9 +5019,9 @@ namespace PadForge
             // progress. Deliberately last: the reorder work above calls
             // RebuildControllerSection itself, and replaying earlier would
             // rebuild against a half-applied reorder.
-            if (_rebuildPendingAfterFade)
+            if (_rebuildPendingAfterDrag)
             {
-                _rebuildPendingAfterFade = false;
+                _rebuildPendingAfterDrag = false;
                 RebuildControllerSection();
             }
         }
@@ -5881,8 +5061,9 @@ namespace PadForge
             var rtb = new System.Windows.Media.Imaging.RenderTargetBitmap(
                 w, h, dpi.PixelsPerInchX, dpi.PixelsPerInchY,
                 System.Windows.Media.PixelFormats.Pbgra32);
-            // VisualBrush render: RTB.Render(card) bakes in the hover-lift
-            // RenderTransform (-2px at drag start), cutting the ghost's top.
+            // Drawn through a VisualBrush at the origin. RTB.Render(card)
+            // would draw the pill at its offset inside its parent, which
+            // cuts the ghost.
             var dv = new System.Windows.Media.DrawingVisual();
             using (var dc = dv.RenderOpen())
             {
@@ -6569,14 +5750,13 @@ namespace PadForge
                 System.Windows.Controls.ToolTipService.SetShowOnDisabled(choice, true);
                 System.Windows.Automation.AutomationProperties.SetAutomationId(choice, "RetypeBtn_" + id);
                 System.Windows.Automation.AutomationProperties.SetName(choice, name);
-                // The lit choice wears the chip's tile and subtle hover glow.
-                // The others take the plain Button style Add Controller's
-                // buttons wear, which SegmentButton reaches through BaseStyle,
-                // its steel lift and faint ember glow on hover included
-                // (owner, 2026-10-30).
+                // The lit choice wears the chip's tile. The others take
+                // the plain Button style Add Controller's buttons wear,
+                // which SegmentButton reaches through BaseStyle, its lift
+                // under the pointer included (owner, 2026-10-30).
                 if (active)
                 {
-                    choice.SetResourceReference(FrameworkElement.StyleProperty, "MiniTypeChipStyle");
+                    choice.SetResourceReference(FrameworkElement.StyleProperty, "MiniTypeButtonActiveStyle");
                     choice.SetResourceReference(System.Windows.Controls.Control.BackgroundProperty, "EmberSegGradient");
                 }
                 else
@@ -6738,15 +5918,6 @@ namespace PadForge
                 if (item.IsActive)
                 {
                     flame.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "EmberBrush");
-                    // Rendered lit only on the active row, so the glow is
-                    // static (#175 glow sweep).
-                    flame.Effect = new System.Windows.Media.Effects.DropShadowEffect
-                    {
-                        Color = System.Windows.Media.Color.FromRgb(0xFF, 0x6B, 0x2C),
-                        BlurRadius = 8,
-                        ShadowDepth = 0,
-                        Opacity = 0.5
-                    };
                 }
                 else
                 {
@@ -6983,28 +6154,6 @@ namespace PadForge
             }
         }
 
-        /// <summary>
-        /// Re-renders controller nav item content in-place (no collection modification)
-        /// to refresh driver availability cursors/tooltips.
-        /// </summary>
-        private void RefreshControllerNavItemsInPlace()
-        {
-            var navItems = _viewModel.NavControllerItems;
-            if (navItems == null) return;
-            foreach (var navItem in navItems)
-            {
-                // Find the existing NavigationViewItem by tag.
-                foreach (var mi in NavView.MenuItems)
-                {
-                    if (mi is NavigationViewItem nvi && nvi.Tag?.ToString() == navItem.Tag)
-                    {
-                        UpdateControllerNavItemContent(nvi, navItem);
-                        break;
-                    }
-                }
-            }
-        }
-
         private void CloseControllerPopup()
         {
             if (_controllerTypePopup != null && _controllerTypePopup.IsOpen)
@@ -7019,42 +6168,6 @@ namespace PadForge
         /// as it is set, on the conditions every live line shares
         /// (LiveText.Announce).</summary>
         private void AnnounceStatus() => PadForge.Common.LiveText.Announce(StatusMessageText);
-
-        private void PaneToggleBtn_Click(object sender, RoutedEventArgs e)
-        {
-            NavView.IsPaneOpen = !NavView.IsPaneOpen;
-            if (!NavView.IsPaneOpen)
-            {
-                // Collapsed: the pill is hidden, so drop its glow adorner (the rail
-                // shows selection via the icon glow). Prevents a stale midair border.
-                RemoveSelectionGlowAdorner();
-                RemoveHoverGlowAdorner();
-            }
-            else
-            {
-                // Expanded: rebuild the selected pill so its glow adorner re-attaches.
-                Dispatcher.BeginInvoke(new Action(ReshowSelectionGlow),
-                    System.Windows.Threading.DispatcherPriority.Loaded);
-            }
-        }
-
-        /// <summary>Re-attaches the selection glow adorner to the currently selected
-        /// pill (used after the pane expands, since the pill is rebuilt fresh).</summary>
-        private void ReshowSelectionGlow()
-        {
-            string sel = _viewModel.SelectedNavTag;
-            if (sel == null || !sel.StartsWith("Pad")) return;
-            foreach (var mi in NavView.MenuItems)
-            {
-                if (mi is not NavigationViewItem nvi || nvi.Tag?.ToString() != sel) continue;
-                NavControllerItemViewModel navItem = null;
-                if (_viewModel.NavControllerItems != null)
-                    foreach (var n in _viewModel.NavControllerItems)
-                        if (n.Tag == sel) { navItem = n; break; }
-                if (navItem != null) UpdateControllerNavItemContent(nvi, navItem);
-                break;
-            }
-        }
 
         private void BrandingBar_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
@@ -7510,7 +6623,7 @@ namespace PadForge
             // Update ViewModel navigation state.
             _viewModel.SelectedNavTag = tag;
 
-            // Re-glow the drawer's selected controller card + collapsed icon.
+            // Redraw the sidebar pills the selection change touches.
             RefreshControllerSelectionVisuals();
 
             // Swap visible page.
@@ -7531,8 +6644,8 @@ namespace PadForge
             bool isPad = tag.StartsWith("Pad") && tag.Length >= 4 && int.TryParse(tag.Substring(3), out _);
             PadPageView.Visibility = isPad ? Visibility.Visible : Visibility.Collapsed;
 
-            // Mirror the focused controller onto Home so its card wears
-            // the same selection glow (-1 = no controller focused).
+            // Tell the dashboard which controller's page is open (-1 for
+            // none): the page's header reads that slot's summary.
             int selectedPadIndex = -1;
             if (isPad && int.TryParse(tag.Substring(3), out int selPad1Based))
                 selectedPadIndex = selPad1Based - 1;
@@ -8613,7 +7726,7 @@ namespace PadForge
                 if (ReferenceEquals(target, NavView))
                 {
                     // Highlight only the pane strip, not the whole view.
-                    w = NavView.IsPaneOpen ? NavView.OpenPaneLength : NavView.CompactPaneLength;
+                    w = NavView.OpenPaneLength;
                     h = NavView.ActualHeight;
                 }
 
@@ -8778,15 +7891,10 @@ namespace PadForge
                 _viewModel.Settings.MainWindowState = (int)WindowState;
                 _settingsService.MarkDirty();
             }
-
-            ScheduleSelectionGlowReattach();
         }
 
         private void OnLocationOrSizeChanged(object sender, EventArgs e)
         {
-            if (sender != null && e is SizeChangedEventArgs)
-                ScheduleSelectionGlowReattach();
-
             // Only save when in Normal state (Maximized position/size is system-managed).
             if (WindowState != WindowState.Normal) return;
             var mw = _viewModel.Settings;
@@ -8795,35 +7903,6 @@ namespace PadForge
             mw.MainWindowWidth = Width;
             mw.MainWindowHeight = Height;
             _settingsService.MarkDirty();
-        }
-
-        private System.Windows.Threading.DispatcherTimer _glowReattachTimer;
-
-        /// <summary>Rebuilds the selected mini card's glow adorner after a
-        /// window state change or resize. The adorner's cached texture and the
-        /// adorner layer's arrange can land a frame apart across those
-        /// transitions, leaving the pill border drawn at a stale offset until
-        /// the next selection change. Debounced so a drag-resize re-attaches
-        /// once at the end, not per tick.</summary>
-        private void ScheduleSelectionGlowReattach()
-        {
-            if (_glowSelectedControllerTag == null) return;
-            if (_glowReattachTimer == null)
-            {
-                _glowReattachTimer = new System.Windows.Threading.DispatcherTimer
-                { Interval = TimeSpan.FromMilliseconds(150) };
-                _glowReattachTimer.Tick += (_, _) =>
-                {
-                    _glowReattachTimer.Stop();
-                    if (_glowSelectedControllerTag == null) return;
-                    // Defeat the change gate so the same pill re-attaches at
-                    // its current geometry.
-                    _glowSelectedControllerTag = null;
-                    RefreshControllerSelectionVisuals();
-                };
-            }
-            _glowReattachTimer.Stop();
-            _glowReattachTimer.Start();
         }
 
         private bool _isRestoring;
@@ -10061,14 +9140,6 @@ namespace PadForge
             }
         }
 
-        // Last MIDI availability the drawer cards were rendered against.
-        // null until the first status sweep records the baseline.
-        private bool? _lastMidiAvailableForNav;
-
-        // SteamVR twin of the above: the VR type tile's enabled state is
-        // baked at card build, so an install/uninstall must rebuild once.
-        private bool? _lastSteamVrInstalledForNav;
-
         /// <summary>One repair attempt per session is enough: the paths do
         /// not drift while PadForge runs, and the install path only rewrites
         /// them at install time, which does its own containment.</summary>
@@ -10168,29 +9239,6 @@ namespace PadForge
             // uninstall button; a Steam-client install never reads as owned.
             try { _viewModel.Settings.IsSteamVrOwned = DriverInstaller.GetOwnedSteamVrDir() != null; }
             catch { _viewModel.Settings.IsSteamVrOwned = false; }
-
-            // The drawer pills reflect MIDI availability only through the MIDI
-            // type tile's enabled state. RefreshControllerNavItemsInPlace tears
-            // down and rebuilds every pill's whole Content subtree (restarting
-            // the breathing heat ring and hover transforms), so calling it on
-            // the always-on 5 s lane produced a visible ~5 s "bounce". Rebuild
-            // only when availability actually flips. The first sweep just
-            // records the baseline: the cards were already built against the
-            // current state at startup, so no rebuild is needed for it.
-            if (_navHome != null && _lastMidiAvailableForNav != midiAvailable)
-            {
-                bool firstSweep = _lastMidiAvailableForNav == null;
-                _lastMidiAvailableForNav = midiAvailable;
-                if (!firstSweep) RefreshControllerNavItemsInPlace();
-            }
-
-            // Same flip-only rebuild for the VR tile's SteamVR gate.
-            if (_navHome != null && _lastSteamVrInstalledForNav != steamVr)
-            {
-                bool firstSweep = _lastSteamVrInstalledForNav == null;
-                _lastSteamVrInstalledForNav = steamVr;
-                if (!firstSweep) RefreshControllerNavItemsInPlace();
-            }
         }
 
     }

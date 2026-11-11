@@ -21,6 +21,8 @@ namespace PadForge.ViewModels
             Title = Strings.Instance.Home_Title;
             ScreenOverlays.Add(new ScreenOverlayItem(this, 1));
             // SlotSummaries starts empty; populated dynamically by RefreshActiveSlots().
+            // Home's line under the engine's state counts them.
+            SlotSummaries.CollectionChanged += (_, _) => OnPropertyChanged(nameof(EngineLine));
         }
 
         protected override void OnCultureChanged()
@@ -94,10 +96,8 @@ namespace PadForge.ViewModels
                     SlotSummaries[i].SlotLabel = label;
             }
 
-            // Re-apply the focus selection to (possibly rebuilt) summaries so a
-            // structural refresh never drops the selected card's glow.
-            foreach (var s in SlotSummaries)
-                s.IsSelected = s.PadIndex == _selectedPadIndex;
+            // The summaries may have been made again: find the open
+            // controller's among them.
             SyncSelectedSlotSummary();
 
             ShowAddController = canAddMore;
@@ -105,14 +105,12 @@ namespace PadForge.ViewModels
 
         private int _selectedPadIndex = -1;
 
-        /// <summary>Marks the slot whose pad page is in focus so its card wears
-        /// the persistent selection glow. -1 clears it. Remembered so a later
-        /// RefreshActiveSlots rebuild re-applies the flag to fresh summaries.</summary>
+        /// <summary>Names the slot whose pad page is open, or -1 for none.
+        /// Remembered, so a later RefreshActiveSlots finds that slot's
+        /// summary among the ones it makes.</summary>
         public void SetSelectedPad(int padIndex)
         {
             _selectedPadIndex = padIndex;
-            foreach (var s in SlotSummaries)
-                s.IsSelected = s.PadIndex == padIndex;
             SyncSelectedSlotSummary();
         }
 
@@ -201,34 +199,17 @@ namespace PadForge.ViewModels
             PollingFrequency > 0 ? string.Format(Strings.Instance.Dashboard_PollingHz_Format, PollingFrequency) : Strings.Instance.Dashboard_PollingDash;
 
         // ─────────────────────────────────────────────
-        //  Device counts
+        //  Device count
         // ─────────────────────────────────────────────
-
-        private int _totalDevices;
-
-        /// <summary>Total number of detected input devices (online + offline).</summary>
-        public int TotalDevices
-        {
-            get => _totalDevices;
-            set => SetProperty(ref _totalDevices, value);
-        }
 
         private int _onlineDevices;
 
-        /// <summary>Number of currently connected (online) input devices.</summary>
+        /// <summary>Number of currently connected (online) input devices.
+        /// Home's engine card prints it (<see cref="EngineLine"/>).</summary>
         public int OnlineDevices
         {
             get => _onlineDevices;
             set => SetProperty(ref _onlineDevices, value);
-        }
-
-        private int _mappedDevices;
-
-        /// <summary>Number of devices that have an active mapping to a pad slot.</summary>
-        public int MappedDevices
-        {
-            get => _mappedDevices;
-            set => SetProperty(ref _mappedDevices, value);
         }
 
         // ─────────────────────────────────────────────
@@ -1908,18 +1889,6 @@ namespace PadForge.ViewModels
         {
             get => _isActive;
             set => SetProperty(ref _isActive, value);
-        }
-
-        private bool _isSelected;
-
-        /// <summary>Whether this slot's pad page is the one currently in focus.
-        /// Drives the persistent selection glow on the card. Set from
-        /// DashboardViewModel.SetSelectedPad on navigation, NOT the same as
-        /// IsActive (online device).</summary>
-        public bool IsSelected
-        {
-            get => _isSelected;
-            set => SetProperty(ref _isSelected, value);
         }
 
         private bool _isVirtualControllerConnected;

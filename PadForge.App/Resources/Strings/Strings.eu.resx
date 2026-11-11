@@ -257,12 +257,14 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>Hasiera</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>Konektatutako gailuak: {0}. Kontrolagailuak: {1}.</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Sarrera-motorra</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> gailu linean</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>Kontrolagailuak</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Erabiltzen ari diren gehigarriak</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>Gainerakoak Gehigarriak orrian daude, eta bakoitza desaktibatuta dago zuk aktibatu arte.</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>Aktibatuta. {0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>{0} gehiago [Gehigarriak] orrian. Gehigarri bat desaktibatuta dago zuk aktibatu arte.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>Ireki Gehigarriak</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>Erakutsi QR</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} konektatuta dago eta ez da erabiltzen.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Erabili</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> esleituta, </value></data>
@@ -2312,7 +2314,7 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(ezkutatutako errore gehigarriak: {0})</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Hz</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->

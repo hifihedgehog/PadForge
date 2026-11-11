@@ -140,7 +140,6 @@
   <data name="Main_Minimize" xml:space="preserve"><value>Minimizar</value></data>
   <data name="Main_Maximize" xml:space="preserve"><value>Maximizar</value></data>
   <data name="Main_Restore" xml:space="preserve"><value>Restaurar</value></data>
-  <data name="Main_NavigationPane" xml:space="preserve"><value>Painel de Navegação</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Mostrar PadForge</value></data>
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>Controle Virtual {0}</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>Motor parado</value></data>
@@ -262,12 +261,14 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>Início</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>Dispositivos conectados: {0}. Controles: {1}.</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Motor de Entrada</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> dispositivos online</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>Controles</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Extras em Uso</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>Os demais ficam em Extras, cada um desativado até você ativá-lo.</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>Ativado. {0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Mais {0} em [Extras]. Um extra fica desativado até você ativá-lo.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>Abrir Extras</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>Mostrar QR</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} está conectado e não está em uso.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Usar Este</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> mapeados, </value></data>
@@ -1157,7 +1158,7 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>({0} erro(s) adicional(is) suprimido(s))</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Hz</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Preview Views ═══ -->

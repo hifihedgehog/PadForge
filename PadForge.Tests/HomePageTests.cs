@@ -67,18 +67,23 @@ namespace PadForge.Tests
             foreach (string kept in new[]
             {
                 "AutomationProperties.AutomationId=\"Dash_SlotTypeChip\"",
+                "AutomationProperties.AutomationId=\"Dash_SlotTitle\"",
+                "AutomationProperties.AutomationId=\"Dash_DeleteSlot\"",
+                "AutomationProperties.AutomationId=\"Dash_StageChips\"",
                 "<Border x:Name=\"EngineCard\"",
                 "<ItemsControl x:Name=\"SlotsItemsControl\">",
-                "<reset:ClickBorder x:Name=\"AddControllerCard\"",
+                "<controls:ClickBorder x:Name=\"AddControllerCard\"",
                 "<CollectionContainer x:Name=\"SlotsCollectionContainer\"/>",
             })
                 At(page, kept);
             foreach (string added in new[]
             {
+                "<TextBlock x:Name=\"HomeTitle\" AutomationProperties.HeadingLevel=\"Level1\"",
                 "AutomationProperties.AutomationId=\"Home_EngineButton\"",
                 "AutomationProperties.AutomationId=\"HomeOffer\"",
                 "AutomationProperties.AutomationId=\"HomeOfferUse\"",
                 "AutomationProperties.AutomationId=\"HomeOfferDismiss\"",
+                "AutomationProperties.AutomationId=\"Home_ExtrasLink\"",
                 "AutomationProperties.AutomationId=\"Home_OpenExtras\"",
             })
                 At(page, added);
@@ -95,8 +100,8 @@ namespace PadForge.Tests
 
         /// <summary>The engine's card: the flame is the switch it always was,
         /// the worded button beside the rate raises the same click, and the
-        /// state reads as a polite live line with the device count under
-        /// it.</summary>
+        /// state reads as a polite live line with the counts of devices and
+        /// controllers under it.</summary>
         [Fact]
         public void TheEngineCard_HasTheFlameAndAWordedButton_ForTheOneSwitch()
         {
@@ -110,11 +115,42 @@ namespace PadForge.Tests
             At(engine, "Content=\"{Binding EngineButtonText}\"");
             At(engine, "<TextBlock x:Name=\"EngineStatusLine\" common:LiveText.Polite=\"True\" Text=\"{Binding EngineStatus}\"");
             At(engine, "Text=\"{Binding PollingFrequencyText, Mode=OneWay}\"");
-            At(engine, "Text=\"{Binding OnlineDevices, Mode=OneWay}\"");
-            At(engine, "Text=\"{Binding TotalDevices, Mode=OneWay}\"");
+            At(engine, "<TextBlock x:Name=\"EngineDevicesLine\" Text=\"{Binding EngineLine}\"");
             // The flame and the button say the same thing on hover, in each state.
             foreach (string tip in new[] { "Dashboard_EngineFlame_Stopped", "Dashboard_EngineFlame_Running", "Dashboard_EngineFlame_Idle", "Common_Stopping" })
                 Assert.Equal(2, Count(engine, "Value=\"{Binding " + tip + ", Source={x:Static strings:Strings.Instance}}\""));
+        }
+
+        /// <summary>The line under the engine's state counts the connected
+        /// devices and the controllers, each a number after its label, and
+        /// follows both counts.</summary>
+        [Fact]
+        public void TheEngineLine_CountsDevicesAndControllers_AndFollowsBoth()
+        {
+            var vm = new DashboardViewModel();
+            var changed = new List<string>();
+            vm.PropertyChanged += (_, e) => changed.Add(e.PropertyName);
+            Assert.Equal(string.Format(Strings.Instance.Home_EngineLine_Format, 0, 0), vm.EngineLine);
+
+            vm.OnlineDevices = 5;
+            Assert.Contains(nameof(DashboardViewModel.EngineLine), changed);
+            Assert.Equal(string.Format(Strings.Instance.Home_EngineLine_Format, 5, 0), vm.EngineLine);
+
+            changed.Clear();
+            vm.SlotSummaries.Add(new SlotSummary(0));
+            vm.SlotSummaries.Add(new SlotSummary(1));
+            Assert.Contains(nameof(DashboardViewModel.EngineLine), changed);
+            Assert.Equal(string.Format(Strings.Instance.Home_EngineLine_Format, 5, 2), vm.EngineLine);
+
+            changed.Clear();
+            vm.SlotSummaries.RemoveAt(0);
+            Assert.Contains(nameof(DashboardViewModel.EngineLine), changed);
+            Assert.Equal(string.Format(Strings.Instance.Home_EngineLine_Format, 5, 1), vm.EngineLine);
+
+            // The English names both numbers, so a line that dropped one would not pass above by accident.
+            string english = Strings.Instance.Home_EngineLine_Format;
+            Assert.Contains("{0}", english);
+            Assert.Contains("{1}", english);
         }
 
         [Fact]
@@ -139,24 +175,34 @@ namespace PadForge.Tests
             Assert.Contains(nameof(DashboardViewModel.EngineButtonText), changed);
         }
 
-        /// <summary>A controller's card opens with its flame, its type chip,
-        /// the type's name and which one of that type it is, where "Slot N"
-        /// stood. The Preset has the row under it. The name is one of the
-        /// seven type names, picked by the slot's output type.</summary>
+        /// <summary>A controller's card opens with its type chip, the type's
+        /// name and which one of that type it is, and its flame in the
+        /// corner. Under that line come the Preset, the devices that drive
+        /// it, its state with the device counts, and the stage icons. The
+        /// name is one of the seven type names, picked by the slot's output
+        /// type.</summary>
         [Fact]
         public void AControllersCard_IsHeadedByItsTypeAndNumber_WithThePresetUnderIt()
         {
             string page = Home();
-            int row0 = At(page, "<!-- Row 0: [Flame] [Type chip] Type name #N ... [X] -->");
-            int row1 = At(page, "<!-- Row 1: the Preset (discussion #543)");
-            int row2 = At(page, "<!-- Row 2: Device name (compact).");
-            Assert.True(row0 < row1 && row1 < row2);
+            int row0 = At(page, "<!-- Row 0: [type chip] Type name #N ... [flame] -->");
+            int row1 = At(page, "<!-- Row 1: the Preset, what this controller");
+            int row2 = At(page, "<!-- Row 2: the devices that drive it.");
+            int row3 = At(page, "<!-- Row 3: the state, then how many devices are");
+            int row4 = At(page, "<!-- Row 4: the stage icons (#175 item 10)");
+            int delete = At(page, "<!-- Delete: a round button on the card's upper");
+            Assert.True(row0 < row1 && row1 < row2 && row2 < row3 && row3 < row4 && row4 < delete);
             string head = page.Substring(row0, row1 - row0);
-            int flame = At(head, "Click=\"PowerToggle_Click\" Tag=\"{Binding PadIndex}\"");
             int chip = At(head, "Click=\"TypeChip_Click\" Tag=\"{Binding PadIndex}\"");
             int name = At(head, "<Setter Property=\"Text\" Value=\"{Binding ControllerType_Xbox, Source={x:Static strings:Strings.Instance}}\"/>");
             int number = At(head, "<TextBlock Text=\"{Binding TypeInstanceLabel, StringFormat={}#{0}}\"");
-            Assert.True(flame < chip && chip < name && name < number, "the card's first line is out of order");
+            int flame = At(head, "IsOn=\"{Binding IsEnabled}\" Click=\"PowerToggle_Click\" Tag=\"{Binding PadIndex}\"");
+            Assert.True(chip < name && name < number && number < flame, "the card's first line is out of order");
+            // The flame is the line's last column, so it sits in the corner,
+            // and the delete button is no part of the line.
+            At(head, "<controls:StateToggleButton Grid.Column=\"2\" Width=\"32\" Height=\"32\" Margin=\"2,0,-6,0\"");
+            Assert.Equal(3, Count(head.Substring(0, head.IndexOf("</Grid.ColumnDefinitions>", StringComparison.Ordinal)), "<ColumnDefinition "));
+            Assert.DoesNotContain("DeleteSlot_Click", head);
             foreach (var (type, key) in new[]
             {
                 ("PlayStation", "ControllerType_PlayStation"), ("Nintendo", "ControllerType_Nintendo"),
@@ -175,8 +221,76 @@ namespace PadForge.Tests
 
             string preset = page.Substring(row1, row2 - row1);
             At(preset, "<controls:MarqueeLabel Grid.Row=\"1\" Text=\"{Binding PresetName}\"");
-            // The delete X is still the card's, hover-revealed, one click.
-            At(preset, "Click=\"DeleteSlot_Click\" Tag=\"{Binding PadIndex}\"");
+
+            // The devices: one entry for each, with a bar ahead of every
+            // entry but the first. The bar's trigger is in the bar's own
+            // style, where the nearest ContentPresenter is the entry's.
+            string devices = page.Substring(row2, row3 - row2);
+            // The line's list and the tooltip's, which names every device.
+            Assert.Equal(2, Count(devices, "<ItemsControl ItemsSource=\"{Binding MappedDevices}\""));
+            At(devices, "AlternationCount=\"99\" Focusable=\"False\"");
+            At(devices, "common:MarqueeBehavior.IsEnabled=\"True\"");
+            Assert.Matches(new Regex("<TextBlock Text=\"  \\|  \" FontSize=\"13\"\\s+"
+                + "Foreground=\"\\{DynamicResource TextFillColorTertiaryBrush\\}\">\\s*<TextBlock.Style>\\s*<Style TargetType=\"TextBlock\">\\s*<Style.Triggers>\\s*"
+                + "<DataTrigger Binding=\"\\{Binding \\(ItemsControl.AlternationIndex\\), RelativeSource=\\{RelativeSource AncestorType=ContentPresenter\\}\\}\" Value=\"0\">\\s*"
+                + "<Setter Property=\"Visibility\" Value=\"Collapsed\"/>"), devices);
+            Assert.DoesNotContain("<DataTemplate.Triggers>", devices);
+
+            // The state and the counts: one line while they fit the card,
+            // the counts under the state when they do not, and the dot
+            // between them only on the one line.
+            string state = page.Substring(row3, row4 - row3);
+            At(state, "<controls:LineOrStackPanel Grid.Row=\"3\" VerticalAlignment=\"Bottom\" Margin=\"0,10,0,0\">");
+            At(state, "<TextBlock common:LiveText.Polite=\"True\" Text=\"{Binding StatusText}\" FontSize=\"13\"");
+            At(state, "<TextBlock controls:LineOrStackPanel.OnLineOnly=\"True\" Text=\"·\"");
+            foreach (string run in new[]
+            {
+                "<Run Text=\"{Binding MappedDeviceCount, Mode=OneWay}\"/>",
+                "<Run Text=\"{Binding Dashboard_Mapped, Source={x:Static strings:Strings.Instance}, Mode=OneWay}\"/>",
+                "<Run Text=\"{Binding ConnectedDeviceCount, Mode=OneWay}\"/>",
+                "<Run Text=\"{Binding Dashboard_Connected, Source={x:Static strings:Strings.Instance}, Mode=OneWay}\"/>",
+            })
+                At(state, run);
+
+            // The stage icons, drawn by the template the controller page's
+            // header uses.
+            string stages = page.Substring(row4, delete - row4);
+            At(stages, "<ItemsControl Grid.Row=\"4\" ItemsSource=\"{Binding StageLedger}\"");
+            At(stages, "ItemTemplate=\"{StaticResource StageChipTemplate}\"");
+
+            // Delete: on the card's upper corner, over all five rows, last
+            // in the grid, shown by the card's hover or its own keyboard
+            // focus, and one click.
+            string corner = page.Substring(delete, page.IndexOf("</DataTemplate>", delete, StringComparison.Ordinal) - delete);
+            At(corner, "<ui:Button Grid.RowSpan=\"5\" Width=\"26\" Height=\"26\" Padding=\"0\" CornerRadius=\"13\"");
+            At(corner, "HorizontalAlignment=\"Right\" VerticalAlignment=\"Top\" Margin=\"0,-28,-28,0\"");
+            At(corner, "Click=\"DeleteSlot_Click\" Tag=\"{Binding PadIndex}\"");
+            At(corner, "<Setter Property=\"Opacity\" Value=\"0\"/>");
+            Assert.Matches(new Regex("<DataTrigger Binding=\"\\{Binding IsMouseOver, RelativeSource=\\{RelativeSource AncestorType=ContentPresenter\\}\\}\" Value=\"True\">\\s*"
+                + "<Setter Property=\"Opacity\" Value=\"1\"/>"), corner);
+            Assert.Matches(new Regex("<Trigger Property=\"IsKeyboardFocused\" Value=\"True\">\\s*<Setter Property=\"Opacity\" Value=\"1\"/>"), corner);
+            Assert.Equal(1, Count(page, "DeleteSlot_Click"));
+        }
+
+        /// <summary>The margin that puts the delete button on the card's
+        /// corner is the card's own numbers: its padding and edge, and half
+        /// the button less the two it sits inside the corner.</summary>
+        [Fact]
+        public void TheDeleteButtonsMargin_IsTheCardsPaddingEdgeAndHalfTheButton()
+        {
+            string page = Home();
+            var card = Regex.Match(page, "<Border MinHeight=\"156\" Padding=\"(\\d+)\" CornerRadius=\"10\" BorderThickness=\"(\\d+)\"");
+            Assert.True(card.Success, "the card's opening tag changed");
+            var button = Regex.Match(page, "<ui:Button Grid.RowSpan=\"5\" Width=\"(\\d+)\" Height=\"(\\d+)\" Padding=\"0\" CornerRadius=\"(\\d+)\"\\s+"
+                + "HorizontalAlignment=\"Right\" VerticalAlignment=\"Top\" Margin=\"0,-(\\d+),-(\\d+),0\"");
+            Assert.True(button.Success, "the delete button's opening tag changed");
+            int padding = int.Parse(card.Groups[1].Value), edge = int.Parse(card.Groups[2].Value);
+            int width = int.Parse(button.Groups[1].Value), height = int.Parse(button.Groups[2].Value);
+            Assert.Equal(width, height);
+            Assert.Equal(width / 2, int.Parse(button.Groups[3].Value));
+            int margin = padding + edge + width / 2 - 2;
+            Assert.Equal(margin, int.Parse(button.Groups[4].Value));
+            Assert.Equal(margin, int.Parse(button.Groups[5].Value));
         }
 
         // ── the extras in use ──────────────────────────────────────────
@@ -191,9 +305,9 @@ namespace PadForge.Tests
 
         /// <summary>Home lists the extras by the catalog's own facts: the same
         /// ten keys in the same order, each with the catalog tile's glyph,
-        /// title and status, and each showing while the switch that tile
-        /// shows is on. A row that read another switch would show an extra
-        /// the catalog calls off.</summary>
+        /// title, line and status, and each showing while the switch that
+        /// tile shows is on. A tile that read another switch would show an
+        /// extra the catalog calls off.</summary>
         [Fact]
         public void TheExtrasInUse_AreTheCatalogsTen_EachByTheCatalogsOwnSwitch()
         {
@@ -211,22 +325,33 @@ namespace PadForge.Tests
                 Assert.Equal("{StaticResource HomeExtraTile}", row["Style"]);
                 Assert.Equal(tile["Glyph"], row["Glyph"]);
                 Assert.Equal(tile["Title"], row["Title"]);
+                Assert.Equal(tile["Line"], row["Line"]);
+                Assert.Equal("{Binding Extras_Tile_" + keys[i] + ", Source={x:Static strings:Strings.Instance}}", row["Line"]);
                 Assert.Equal(tile.GetValueOrDefault("Status"), row.GetValueOrDefault("Status"));
-                // The catalog's switch writes back, Home's row only reads.
+                // The catalog's switch writes back, Home's tile only reads.
                 string flag = Regex.Match(tile["IsOn"], "^\\{Binding (\\w+)\\}$").Groups[1].Value;
                 Assert.False(string.IsNullOrEmpty(flag), keys[i] + "'s catalog tile has no plain IsOn binding");
                 Assert.Equal("{Binding " + flag + ", Mode=OneWay}", row["IsOn"]);
                 Assert.Equal("{Binding " + flag + ", Converter={StaticResource BoolToVisibilityConverter}}", row["Visibility"]);
-                // Home's row has no switch, no line and no name of its own.
-                Assert.False(row.ContainsKey("SwitchLabel") || row.ContainsKey("Line") || row.ContainsKey("x:Name"));
+                // Home's tile has no switch and no name of its own.
+                Assert.False(row.ContainsKey("SwitchLabel") || row.ContainsKey("x:Name"));
+                // One tile has a second button: the Web Controller's, to its QR code.
+                if (keys[i] == "WebController")
+                    Assert.Equal("{Binding Home_ShowQr, Source={x:Static strings:Strings.Instance}}", row["ActionText"]);
+                else
+                    Assert.False(row.ContainsKey("ActionText"), keys[i] + " has a second button");
             }
 
-            // One handler for every row, and the way to the catalog.
+            // One handler for every tile, and two ways to the catalog: the
+            // link in the line under the tiles, and the button that shows
+            // while no extra is on.
             string page = Home();
-            At(page, "<WrapPanel x:Name=\"ExtrasInUseRows\" controls:ExtraTile.OpenRequested=\"ExtraInUse_OpenRequested\">");
-            At(page, "Click=\"OpenExtras_Click\"");
-            // The style gives a row its own id, so the two faces of one
-            // extra never share one, and draws no switch.
+            At(page, "<controls:TileGridPanel x:Name=\"ExtrasInUseRows\" MinItemWidth=\"280\" Gap=\"16\"");
+            At(page, "controls:ExtraTile.OpenRequested=\"ExtraInUse_OpenRequested\">");
+            Assert.Equal(2, Count(page, "Click=\"OpenExtras_Click\""));
+            // The style gives a tile its own id, so the two faces of one
+            // extra never share one, and draws no switch. Its second
+            // button is there only for a tile that names one.
             string styles = ExtrasPageTests.RepoText("PadForge.App", "Resources", "ControllerIcons.xaml");
             int style = At(styles, "<Style x:Key=\"HomeExtraTile\" TargetType=\"{x:Type controls:ExtraTile}\">");
             string home = styles.Substring(style);
@@ -234,6 +359,14 @@ namespace PadForge.Tests
             Assert.Equal("Home_Extra_", PadForge.Controls.ExtraTile.HomeOpenIdPrefix);
             Assert.DoesNotContain("PART_Switch", home);
             At(home, "x:Name=\"PART_Open\"");
+            At(home, "<Button x:Name=\"PART_Action\"");
+            At(home, "Content=\"{TemplateBinding ActionText}\"");
+            Assert.Matches(new Regex("<Trigger Property=\"ActionText\" Value=\"\">\\s*<Setter TargetName=\"PART_Action\" Property=\"Visibility\" Value=\"Collapsed\"/>"), home);
+            Assert.Matches(new Regex("<Trigger Property=\"ActionText\" Value=\"\\{x:Null\\}\">\\s*<Setter TargetName=\"PART_Action\" Property=\"Visibility\" Value=\"Collapsed\"/>"), home);
+            Assert.Equal("PART_Action", PadForge.Controls.ExtraTile.ActionPartName);
+            // Under the name: the word On and then the status or the line.
+            At(home, "<Binding Path=\"Summary\" RelativeSource=\"{RelativeSource TemplatedParent}\"/>");
+            At(home, "<Binding Path=\"Home_ExtraOn_Format\" Source=\"{x:Static strings:Strings.Instance}\"/>");
         }
 
         /// <summary>The count Home reads is the ten catalog switches, one
@@ -303,33 +436,119 @@ namespace PadForge.Tests
             }
         }
 
-        /// <summary>The section's heading and its line each have one element
-        /// that changes its words with the count, so the two states never
-        /// show at once.</summary>
+        /// <summary>The section has one heading, which changes its words
+        /// with the count. Under the tiles, with some extras on and some
+        /// off, a line says how many others there are, and the word that
+        /// names the Extras page in it is a link to that page. With none
+        /// on, the Extras page's own subtitle and a button to it take the
+        /// line's place. The two never show at once: one follows
+        /// ShowsExtrasRestLine and the other ShowsExtrasIntro, and the view
+        /// model never raises both.</summary>
         [Fact]
-        public void TheExtrasSection_HasOneHeadingAndOneLine_ThatChangeTheirWords()
+        public void TheExtrasSection_HasOneHeading_AndALineWithALinkOrAnIntroWithAButton()
         {
             string page = Home();
-            int rows = At(page, "<WrapPanel x:Name=\"ExtrasInUseRows\"");
-            int heading = At(page, "<TextBlock x:Name=\"ExtrasHeading\">");
-            int foot = At(page, "<WrapPanel x:Name=\"ExtrasFoot\">");
+            int heading = At(page, "<TextBlock x:Name=\"ExtrasHeading\"");
+            int rows = At(page, "<controls:TileGridPanel x:Name=\"ExtrasInUseRows\"");
+            int foot = At(page, "<StackPanel x:Name=\"ExtrasFoot\"");
             Assert.True(heading < rows && rows < foot);
             string head = page.Substring(heading, rows - heading);
-            At(head, "<Setter Property=\"Text\" Value=\"{Binding Home_ExtrasInUse, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}\"/>");
+            At(head, "<Style TargetType=\"TextBlock\" BasedOn=\"{StaticResource SectionTitle}\">");
+            At(head, "<Setter Property=\"Text\" Value=\"{Binding Home_ExtrasInUse, Source={x:Static strings:Strings.Instance}}\"/>");
             Assert.Matches(new Regex("<DataTrigger Binding=\"\\{Binding ShowsExtrasIntro\\}\" Value=\"True\">\\s*"
                 + "<Setter Property=\"Text\" Value=\"\\{Binding Extras_Title, "), head);
 
             string line = page.Substring(foot);
+            const string rest = "Visibility=\"{Binding ShowsExtrasRestLine, Converter={StaticResource BoolToVisibilityConverter}}\"";
+            const string intro = "Visibility=\"{Binding ShowsExtrasIntro, Converter={StaticResource BoolToVisibilityConverter}}\"";
+            // The line: a lead, the link, a tail, on one line of markup so
+            // no space comes between them.
             At(line, "<TextBlock x:Name=\"ExtrasLine\"");
-            At(line, "<Setter Property=\"Visibility\" Value=\"Collapsed\"/>");
-            Assert.Matches(new Regex("<DataTrigger Binding=\"\\{Binding ShowsExtrasIntro\\}\" Value=\"True\">\\s*"
-                + "<Setter Property=\"Text\" Value=\"\\{Binding Extras_Subtitle, [^\"]*\"/>\\s*"
-                + "<Setter Property=\"Visibility\" Value=\"Visible\"/>"), line);
-            Assert.Matches(new Regex("<DataTrigger Binding=\"\\{Binding ShowsExtrasRestLine\\}\" Value=\"True\">\\s*"
-                + "<Setter Property=\"Text\" Value=\"\\{Binding Home_MoreExtras, [^\"]*\"/>\\s*"
-                + "<Setter Property=\"Visibility\" Value=\"Visible\"/>"), line);
-            // The button is there in every state.
-            Assert.DoesNotContain("Visibility", Regex.Match(line, "<ui:Button x:Name=\"OpenExtrasButton\"[^>]*/>", RegexOptions.Singleline).Value);
+            At(line, rest + "><Run Text=\"{Binding ExtrasRestLead, Mode=OneWay}\"/>"
+                + "<Hyperlink x:Name=\"ExtrasLink\" Click=\"OpenExtras_Click\" Foreground=\"{DynamicResource EmberHotBrush}\" AutomationProperties.AutomationId=\"Home_ExtrasLink\">"
+                + "<Run Text=\"{Binding ExtrasRestLink, Mode=OneWay}\"/></Hyperlink>"
+                + "<Run Text=\"{Binding ExtrasRestTail, Mode=OneWay}\"/></TextBlock>");
+            // The intro and its button show together.
+            Assert.Equal(1, Count(line, rest));
+            Assert.Equal(2, Count(line, intro));
+            Assert.Contains(intro, Regex.Match(line, "<TextBlock x:Name=\"ExtrasIntroLine\"[^>]*/>", RegexOptions.Singleline).Value);
+            Assert.Contains("Text=\"{Binding Extras_Subtitle, Source={x:Static strings:Strings.Instance}}\"",
+                Regex.Match(line, "<TextBlock x:Name=\"ExtrasIntroLine\"[^>]*/>", RegexOptions.Singleline).Value);
+            string button = Regex.Match(line, "<ui:Button x:Name=\"OpenExtrasButton\"[^>]*/>", RegexOptions.Singleline).Value;
+            Assert.Contains(intro, button);
+            Assert.Contains("Click=\"OpenExtras_Click\"", button);
+        }
+
+        /// <summary>The line's three parts come from one string: what stands
+        /// before the bracketed word, the word, and what stands after. The
+        /// number in it is how many extras are off. A translation with no
+        /// brackets is shown whole, with no link.</summary>
+        [Fact]
+        public void TheExtrasLine_SplitsAtTheBracketedWord_AndCountsTheExtrasThatAreOff()
+        {
+            bool udp = HeadTrackingRuntime.Enabled, free = HeadTrackingRuntime.FreeTrackEnabled, xr = HeadTrackingRuntime.OpenXrEnabled;
+            bool telemetry = GameTelemetryRuntime.Enabled, twitch = TwitchChatRuntime.Enabled;
+            try
+            {
+                var vm = new DashboardViewModel { DiscoverOpenXrRuntimes = () => Array.Empty<PadForge.Engine.Common.OpenXr.OpenXrRuntimeEntry>() };
+                foreach (Action<bool> set in new Action<bool>[]
+                {
+                    v => vm.EnableWebController = v, v => vm.HeadTrackingAnyEnabled = v, v => vm.EnableGameTelemetry = v,
+                    v => vm.EnableTwitchChat = v, v => vm.EnableRemoteLink = v, v => vm.EnableDsuMotionServer = v,
+                    v => vm.EnableGameModServer = v, v => vm.OverlaysAnyEnabled = v, v => vm.EnableTouchpadOverlay = v,
+                    v => vm.ScreenOverlaysAnyEnabled = v,
+                })
+                    set(false);
+                vm.EnableWebController = true;
+                vm.EnableRemoteLink = true;
+                vm.EnableTouchpadOverlay = true;
+                Assert.Equal(3, vm.ExtrasInUseCount);
+
+                string whole = string.Format(Strings.Instance.Home_MoreExtras, DashboardViewModel.ExtrasCount - 3);
+                Assert.Contains("7", whole);
+                int open = whole.IndexOf('['), close = whole.IndexOf(']');
+                Assert.True(open >= 0 && close > open + 1, "the English line has no bracketed word");
+                Assert.Equal(whole.Substring(0, open), vm.ExtrasRestLead);
+                Assert.Equal(whole.Substring(open + 1, close - open - 1), vm.ExtrasRestLink);
+                Assert.Equal(whole.Substring(close + 1), vm.ExtrasRestTail);
+                Assert.Equal(Strings.Instance.Extras_Title, vm.ExtrasRestLink);
+                Assert.Equal(whole.Replace("[", string.Empty).Replace("]", string.Empty),
+                    vm.ExtrasRestLead + vm.ExtrasRestLink + vm.ExtrasRestTail);
+
+                // A switch that changes the count tells the three parts.
+                var changed = new List<string>();
+                vm.PropertyChanged += (_, e) => changed.Add(e.PropertyName);
+                vm.EnableTwitchChat = true;
+                foreach (string part in new[] { nameof(vm.ExtrasRestLead), nameof(vm.ExtrasRestLink), nameof(vm.ExtrasRestTail) })
+                    Assert.Contains(part, changed);
+                Assert.Contains("6", vm.ExtrasRestLead + vm.ExtrasRestTail);
+            }
+            finally
+            {
+                HeadTrackingRuntime.Enabled = udp;
+                HeadTrackingRuntime.FreeTrackEnabled = free;
+                HeadTrackingRuntime.OpenXrEnabled = xr;
+                GameTelemetryRuntime.Enabled = telemetry;
+                TwitchChatRuntime.Enabled = twitch;
+            }
+        }
+
+        /// <summary>The line's split, on any string: with one pair of
+        /// brackets it is three parts, and with none, or with a pair left
+        /// open, the whole string is the lead and nothing is a link.</summary>
+        [Theory]
+        [InlineData("7 more in [Extras]. An extra is off.", "7 more in ", "Extras", ". An extra is off.")]
+        [InlineData("[Extras] has 7 more.", "", "Extras", " has 7 more.")]
+        [InlineData("7 more in [Extras]", "7 more in ", "Extras", "")]
+        [InlineData("7 more in Extras.", "7 more in Extras.", "", "")]
+        [InlineData("7 more in [Extras.", "7 more in [Extras.", "", "")]
+        [InlineData("7 more in Extras].", "7 more in Extras].", "", "")]
+        [InlineData("", "", "", "")]
+        public void TheSplit_IsThreePartsAroundOnePairOfBrackets(string text, string lead, string link, string tail)
+        {
+            Assert.Equal(lead, DashboardViewModel.BracketPart(text, 0));
+            Assert.Equal(link, DashboardViewModel.BracketPart(text, 1));
+            Assert.Equal(tail, DashboardViewModel.BracketPart(text, 2));
         }
 
         // ── the offer's rule ───────────────────────────────────────────
@@ -668,8 +887,10 @@ namespace PadForge.Tests
 
         /// <summary>The sidebar reads Home, Devices, Profiles, Extras, then
         /// the word Controllers and the slots under it. The label is a text
-        /// among the entries, kept by the rebuild of the slots, hidden with
-        /// the closed pane and renamed with the language.</summary>
+        /// among the entries, kept by the rebuild of the slots and renamed
+        /// with the language. The sidebar is always open at one width: it
+        /// has no button that closes it, and nothing in the window reads
+        /// or sets whether it is open.</summary>
         [Fact]
         public void TheSidebar_ReadsHomeDevicesProfilesExtras_ThenTheControllers()
         {
@@ -696,14 +917,76 @@ namespace PadForge.Tests
             At(code, "if (_navHome != null) _navHome.Content = Strings.Instance.Home_Title;");
             At(code, "Text = Strings.Instance.Home_Controllers,");
             At(code, "if (_navControllersLabel != null) _navControllersLabel.Text = Strings.Instance.Home_Controllers;");
-            At(code, "_navControllersLabel.Visibility = compact ? Visibility.Collapsed : Visibility.Visible;");
-            // Both pane events tell the label and the foot.
-            Assert.Equal(1, Count(code, "SetControllersLabelMode(compact: true);"));
-            Assert.Equal(1, Count(code, "SetEngineFootMode(compact: true);"));
-            Assert.Equal(1, Count(code, "SetControllersLabelMode(compact: false);"));
-            Assert.Equal(1, Count(code, "SetEngineFootMode(compact: false);"));
-            Assert.Equal(1, Count(code, "SetControllersLabelMode(compact: !NavView.IsPaneOpen);"));
-            Assert.Equal(1, Count(code, "SetEngineFootMode(compact: !NavView.IsPaneOpen);"));
+
+            // Always open: no toggle in the markup, no pane state in the code.
+            string xaml = Window();
+            At(xaml, "IsPaneToggleVisible=\"False\"");
+            At(xaml, "OpenPaneLength=\"248\"");
+            Assert.DoesNotContain("PaneToggleBtn", xaml);
+            Assert.DoesNotContain("IsPaneOpen", xaml);
+            foreach (string gone in new[] { "IsPaneOpen", "PaneClosed", "PaneOpened", "CompactPaneLength", "PaneToggleBtn" })
+                Assert.DoesNotContain(gone, code);
+
+            // The sidebar is drawn by the two templates of Resources/Shell.xaml,
+            // which hold the three parts wpf-ui's NavigationView looks for.
+            At(xaml, "Template=\"{StaticResource PadNavigationViewTemplate}\"");
+            At(xaml, "ItemTemplate=\"{StaticResource PadNavigationViewItemTemplate}\"");
+            string shell = ExtrasPageTests.RepoText("PadForge.App", "Resources", "Shell.xaml");
+            At(shell, "<ControlTemplate x:Key=\"PadNavigationViewTemplate\" TargetType=\"{x:Type ui:NavigationView}\">");
+            At(shell, "<ControlTemplate x:Key=\"PadNavigationViewItemTemplate\" TargetType=\"{x:Type ui:NavigationViewItem}\">");
+            int menu = At(shell, "<ItemsControl x:Name=\"PART_MenuItemsItemsControl\"");
+            int footer = At(shell, "<ItemsControl x:Name=\"PART_FooterMenuItemsItemsControl\"");
+            int paneFooter = At(shell, "<ContentPresenter Content=\"{TemplateBinding PaneFooter}\"/>");
+            At(shell, "<ui:NavigationViewContentPresenter x:Name=\"PART_NavigationViewContentPresenter\"");
+            Assert.True(menu < footer && footer < paneFooter, "the sidebar's three lists are out of order");
+            At(shell, "Width=\"{TemplateBinding OpenPaneLength}\"");
+            // The hairline over Settings is the template's, between the two
+            // lists, and no entry of either: an entry there was an unnamed
+            // item to a screen reader.
+            int hairline = At(shell, "<Border Height=\"1\" Margin=\"4,14,4,10\" Background=\"{DynamicResource SteelPaneLineBrush}\"/>");
+            Assert.True(menu < hairline && hairline < footer);
+            int items = At(xaml, "<ui:NavigationView.FooterMenuItems>");
+            int itemsEnd = At(xaml, "</ui:NavigationView.FooterMenuItems>");
+            string footerItems = xaml.Substring(items, itemsEnd - items);
+            Assert.Equal(2, Count(footerItems, "<ui:NavigationViewItem x:Name=\""));
+            Assert.DoesNotContain("<Border", footerItems);
+            Assert.DoesNotContain("Separator", footerItems);
+        }
+
+        /// <summary>A controller's pill and the Add Controller entry draw
+        /// their own outline and fill, so their entries clear the four row
+        /// fills the entry template reads. What sits inside such an entry
+        /// finds those keys clear too, so the fill a pill takes under the
+        /// pointer has a key of its own, which the theme gives the row's
+        /// color on both grounds.</summary>
+        [Fact]
+        public void APillsEntry_ClearsTheRowFills_AndThePillLiftsWithItsOwnKey()
+        {
+            string code = WindowCode();
+            int clears = At(code, "private static void SuppressBuiltInSelectionVisual(NavigationViewItem item)");
+            string method = code.Substring(clears, code.IndexOf("        }", clears, StringComparison.Ordinal) - clears);
+            string[] rowKeys =
+            {
+                "NavigationViewItemBackground", "NavigationViewItemBackgroundSelected",
+                "NavigationViewItemBackgroundPointerOver", "NavigationViewItemBackgroundPressed",
+            };
+            foreach (string key in rowKeys)
+                At(method, "item.Resources[\"" + key + "\"] = clear;");
+            Assert.Equal(rowKeys.Length, Count(method, "item.Resources["));
+
+            // The entry template reads exactly those four.
+            string shell = ExtrasPageTests.RepoText("PadForge.App", "Resources", "Shell.xaml");
+            var read = Regex.Matches(shell, "\\{DynamicResource (NavigationView\\w+)\\}").Select(m => m.Groups[1].Value)
+                .Where(k => k.StartsWith("NavigationViewItemBackground", StringComparison.Ordinal)).Distinct().OrderBy(k => k, StringComparer.Ordinal);
+            Assert.Equal(rowKeys.OrderBy(k => k, StringComparer.Ordinal), read);
+
+            // Nothing a pill draws reads a key its own entry clears.
+            Assert.Equal(1, Count(code, "\"NavigationViewItemBackgroundPointerOver\""));
+            Assert.Equal(3, Count(code, "\"SteelPaneHoverBrush\""));
+            string theme = ExtrasPageTests.RepoText("PadForge.App", "Common", "EmberTheme.cs");
+            At(theme, "SetBrush(\"NavigationViewItemBackgroundPointerOver\", paneHover);");
+            At(theme, "SetBrush(\"SteelPaneHoverBrush\", paneHover);");
+            At(ExtrasPageTests.RepoText("PadForge.App", "App.xaml"), "<SolidColorBrush x:Key=\"SteelPaneHoverBrush\" Color=\"#121925\"/>");
         }
 
         /// <summary>The status bar is gone. Its flame, state and rate are the
@@ -734,29 +1017,36 @@ namespace PadForge.Tests
             At(engine, "<Border x:Name=\"EngineFoot\"");
             At(engine, "<Path x:Name=\"EngineFootFlame\" FlowDirection=\"LeftToRight\" Data=\"{StaticResource FlameOuterGeometry}\"");
             At(engine, "<TextBlock x:Name=\"EngineFootState\" Grid.Column=\"1\" Text=\"{Binding EngineStatusText}\"");
-            At(engine, "<StackPanel x:Name=\"EngineFootRate\"");
-            At(engine, "Text=\"{Binding PollingFrequency, StringFormat='{}{0:F0}', Mode=OneWay}\"");
+            // The rate is the text Home's engine card prints, so the unit
+            // is the language's own in both places.
+            At(engine, "<TextBlock x:Name=\"EngineFootRate\" Grid.Column=\"2\" VerticalAlignment=\"Center\"");
+            At(engine, "Text=\"{Binding Dashboard.PollingFrequencyText, Mode=OneWay}\"");
+            Assert.DoesNotContain(" Hz", engine);
             foreach (string state in new[] { "Running", "Idle", "Stopping" })
                 Assert.Contains("<DataTrigger Binding=\"{Binding Dashboard.EngineStateKey}\" Value=\"" + state + "\">", engine);
             // The foot reads the window's view model, handed to it by name.
             At(code, "EngineFoot.DataContext = _viewModel;");
-            At(code, "EngineFootState.Visibility = texts;");
-            At(code, "EngineFootRate.Visibility = texts;");
 
-            // The pill.
+            // The pill: the word Profile, the name and a chevron in one
+            // outlined box, with no switch that hides the word.
             int trailing = At(xaml, "<ui:TitleBar.TrailingContent>");
             int trailingEnd = At(xaml, "</ui:TitleBar.TrailingContent>");
             string bar = xaml.Substring(trailing, trailingEnd - trailing);
-            int pill = At(bar, "<viewControls:ProfilePill x:Name=\"TitleProfilePill\" ShowLabel=\"True\"");
+            int pill = At(bar, "<viewControls:ProfilePill x:Name=\"TitleProfilePill\"");
             At(bar, "AutomationProperties.AutomationId=\"ProfilePillStatusBar\"");
             Assert.True(pill < At(bar, "x:Name=\"FullScreenBtn\""), "the pill is not ahead of the full screen button");
             Assert.Equal(1, Count(xaml, "<viewControls:ProfilePill "));
             At(code, "ShowProfileSwitcherPopup(TitleProfilePill, PlacementMode.Bottom);");
             At(code, "TitleProfilePill.Flare();");
             string pillXaml = ExtrasPageTests.RepoText("PadForge.App", "Views", "Controls", "ProfilePill.xaml");
-            At(pillXaml, "<TextBlock x:Name=\"PillLabel\" Visibility=\"Collapsed\"");
-            At(pillXaml, "Text=\"{Binding Main_ProfileLabel, Source={x:Static strings:Strings.Instance}}\"");
-            At(pillXaml, "<controls:GlyphText x:Name=\"PillChevron\" Visibility=\"Collapsed\"");
+            int box = At(pillXaml, "<controls:ClickBorder x:Name=\"PillBorder\" Height=\"34\" CornerRadius=\"8\" BorderThickness=\"1\"");
+            int label = At(pillXaml, "<TextBlock Text=\"{Binding Main_ProfileLabel, Source={x:Static strings:Strings.Instance}}\"");
+            int name = pillXaml.LastIndexOf("<TextBlock Text=\"{Binding ActiveProfileInfo}\"", StringComparison.Ordinal);
+            int chevron = At(pillXaml, "<Path FlowDirection=\"LeftToRight\" Data=\"M0,0 L5,5 L10,0\"");
+            Assert.True(box < label && label < name && name < chevron, "the pill's parts are out of order");
+            Assert.DoesNotContain("ShowLabel", pillXaml);
+            Assert.DoesNotContain("ShowLabel", ExtrasPageTests.RepoText("PadForge.App", "Views", "Controls", "ProfilePill.xaml.cs"));
+            Assert.DoesNotContain("ShowLabel", xaml);
 
             // The message line: first in the pages' grid, over them, out of
             // the pointer's way, and collapsed while there is no message.
@@ -779,6 +1069,42 @@ namespace PadForge.Tests
             At(code, "StatusMessageLine.BeginAnimation(UIElement.OpacityProperty, fade);");
             Assert.DoesNotContain("StatusMessageText.Opacity", code);
             At(code, "private void AnnounceStatus() => PadForge.Common.LiveText.Announce(StatusMessageText);");
+        }
+
+        /// <summary>Minimize, maximize, close and full screen are one row:
+        /// the same size, the same place in the bar's height and the same
+        /// gap. wpf-ui draws its three 44 by 30 against the bar's top, so
+        /// the title bar's own resources restyle them, and the full screen
+        /// button beside them carries the same numbers itself. The bar has
+        /// no button that folds the sidebar.</summary>
+        [Fact]
+        public void TheFourWindowButtons_ShareOneSizeAndPlace()
+        {
+            string xaml = Window();
+            int resources = At(xaml, "<ui:TitleBar.Resources>");
+            int resourcesEnd = At(xaml, "</ui:TitleBar.Resources>");
+            string style = xaml.Substring(resources, resourcesEnd - resources);
+            At(style, "<Style TargetType=\"ui:TitleBarButton\" BasedOn=\"{StaticResource {x:Type ui:TitleBarButton}}\">");
+            string Setter(string property)
+            {
+                var m = Regex.Match(style, "<Setter Property=\"" + property + "\" Value=\"([^\"]*)\"/>");
+                Assert.True(m.Success, "the window buttons' style sets no " + property);
+                return m.Groups[1].Value;
+            }
+            string width = Setter("Width"), height = Setter("Height"), margin = Setter("Margin");
+
+            string button = Regex.Match(xaml, "<controls:StateToggleButton x:Name=\"FullScreenBtn\".*?>", RegexOptions.Singleline).Value;
+            Assert.Contains("Width=\"" + width + "\" Height=\"" + height + "\"", button);
+            Assert.Contains("VerticalAlignment=\"Top\" Margin=\"" + margin + "\"", button);
+
+            // Centered in the bar: the space over a button equals the space under it.
+            var bar = Regex.Match(xaml, "<ui:TitleBar x:Name=\"AppTitleBar\" Height=\"(\\d+)\"");
+            Assert.True(bar.Success);
+            double top = double.Parse(margin.Split(',')[1], System.Globalization.CultureInfo.InvariantCulture);
+            double tall = double.Parse(height, System.Globalization.CultureInfo.InvariantCulture);
+            Assert.Equal(double.Parse(bar.Groups[1].Value, System.Globalization.CultureInfo.InvariantCulture) - tall, top * 2);
+
+            Assert.DoesNotContain("PaneToggleBtn", xaml);
         }
 
         /// <summary>The Welcome Tour, until its own step removes it, stops at

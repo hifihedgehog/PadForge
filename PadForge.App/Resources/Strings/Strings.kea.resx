@@ -205,12 +205,14 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>Inísiu</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>Dispozitivus konetadu: {0}. Komandus: {1}.</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Motor di entrada</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> dispozitivu online</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>Komandus</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Extras en usu</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>Kes otu sta na Extras, kada un disligadu ti bu liga-l.</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>Ligadu. {0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>{0} más na [Extras]. Un extra sta disligadu ti bu liga-l.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>Abri Extras</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>Mostra QR</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} sta konektadu i ka sta en usu.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Uza-l</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> mapiadu, </value></data>
@@ -1577,7 +1579,7 @@
   <data name="App_Error" xml:space="preserve"><value>PadForge: Eru</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Hz</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->

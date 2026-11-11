@@ -257,12 +257,14 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>ಮುಖಪುಟ</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>ಸಾಧನಗಳು ಸಂಪರ್ಕಗೊಂಡಿವೆ: {0}. ಕಂಟ್ರೋಲರ್‌ಗಳು: {1}.</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>ಇನ್‌ಪುಟ್ ಎಂಜಿನ್</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> ಸಾಧನಗಳು ಆನ್‌ಲೈನ್‌ನಲ್ಲಿವೆ</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>ಕಂಟ್ರೋಲರ್‌ಗಳು</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>ಬಳಕೆಯಲ್ಲಿರುವ ಹೆಚ್ಚುವರಿ</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>ಉಳಿದವು ಹೆಚ್ಚುವರಿ ಪುಟದಲ್ಲಿವೆ, ನೀವು ಆನ್ ಮಾಡುವವರೆಗೆ ಪ್ರತಿಯೊಂದೂ ಆಫ್ ಆಗಿರುತ್ತದೆ.</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>ಆನ್. {0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>{0} ಇನ್ನಷ್ಟು [ಹೆಚ್ಚುವರಿ] ಪುಟದಲ್ಲಿವೆ. ಹೆಚ್ಚುವರಿ ಸೌಲಭ್ಯವನ್ನು ನೀವು ಆನ್ ಮಾಡುವವರೆಗೆ ಅದು ಆಫ್ ಆಗಿರುತ್ತದೆ.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>ಹೆಚ್ಚುವರಿ ತೆರೆಯಿರಿ</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>QR ತೋರಿಸಿ</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} ಸಂಪರ್ಕಗೊಂಡಿದೆ ಮತ್ತು ಬಳಕೆಯಲ್ಲಿಲ್ಲ.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>ಬಳಸಿ</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> ಮ್ಯಾಪ್ ಆಗಿವೆ, </value></data>
@@ -2311,7 +2313,7 @@
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>({0} ಹೆಚ್ಚುವರಿ ದೋಷ(ಗಳು) ಮರೆಮಾಡಲಾಗಿದೆ)</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Hz</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->

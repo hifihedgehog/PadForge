@@ -257,12 +257,14 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>ഹോം</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>ഉപകരണങ്ങൾ: {0}. കൺട്രോളറുകൾ: {1}.</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>ഇൻപുട്ട് എഞ്ചിൻ</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> ഉപകരണങ്ങൾ ഓൺലൈൻ</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>കൺട്രോളറുകൾ</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>ഉപയോഗത്തിലുള്ള എക്സ്ട്രാസ്</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>ബാക്കിയുള്ളവ എക്സ്ട്രാസ് പേജിൽ ഉണ്ട്, നിങ്ങൾ ഓണാക്കുന്നതുവരെ ഓരോന്നും ഓഫായിരിക്കും.</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>ഓൺ. {0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>{0} എണ്ണം കൂടി [എക്സ്ട്രാസ്] പേജിൽ ഉണ്ട്. നിങ്ങൾ ഓണാക്കുന്നതുവരെ ഓരോ എക്സ്ട്രായും ഓഫായിരിക്കും.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>എക്സ്ട്രാസ് തുറക്കുക</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>QR കാണിക്കുക</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} കണക്റ്റ് ചെയ്തിട്ടുണ്ട്, പക്ഷേ ഉപയോഗത്തിലില്ല.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>ഉപയോഗിക്കുക</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> മാപ്പ് ചെയ്തു, </value></data>
@@ -2310,7 +2312,7 @@
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>({0} അധിക പിശകുകൾ മറച്ചിരിക്കുന്നു)</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Hz</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->

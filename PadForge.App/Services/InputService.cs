@@ -2822,7 +2822,6 @@ namespace PadForge.Services
                 _mainVm.Dashboard.EngineStatus = Strings.Instance.Common_Stopped;
                 _mainVm.Dashboard.PollingFrequency = 0;
                 _mainVm.Dashboard.OnlineDevices = 0;
-                _mainVm.PollingFrequency = 0;
                 _mainVm.StatusText = Strings.Instance.Status_EngineStopped;
                 _mainVm.RefreshCommands();
 
@@ -3814,14 +3813,13 @@ namespace PadForge.Services
 
             // Snapshot devices under lock to avoid cross-thread collection-modified
             // exceptions when the engine's UpdateDevices runs concurrently.
-            // Copy-only critical sections: this runs at 30 Hz on the UI thread
+            // A copy-only critical section: this runs at 30 Hz on the UI thread
             // and UserDevices.SyncRoot is the SAME monitor the ~1 kHz poll
-            // thread takes for device-state lookups. The previous shape held
-            // it through LINQ counts and a NESTED settings lock with an
-            // O(devices x settings) scan, which profiled as
-            // Monitor.Enter_Slowpath contention on the poll thread. Now each
-            // lock holds only long enough to ToArray, and every count runs on
-            // the snapshots outside.
+            // thread takes for device-state lookups. An earlier shape held it
+            // through LINQ counts and a nested settings lock, which profiled as
+            // Monitor.Enter_Slowpath contention on the poll thread. The lock
+            // holds only long enough to ToArray, and the count runs on the
+            // snapshot outside it.
             UserDevice[] deviceSnapshot = null;
             var ud = SettingsManager.UserDevices;
             if (ud != null)
@@ -3829,46 +3827,15 @@ namespace PadForge.Services
                 lock (ud.SyncRoot)
                     deviceSnapshot = ud.Items.ToArray();
 
-                int total = deviceSnapshot.Length;
+                // The one count the interface prints: Home's engine card.
                 int online = 0;
                 for (int i = 0; i < deviceSnapshot.Length; i++)
                     if (deviceSnapshot[i] != null && deviceSnapshot[i].IsOnline) online++;
-
-                int mapped = 0;
-                var settingsCol = SettingsManager.UserSettings;
-                if (settingsCol?.Items != null)
-                {
-                    UserSetting[] settingsSnapshot;
-                    lock (settingsCol.SyncRoot)
-                        settingsSnapshot = settingsCol.Items.ToArray();
-                    for (int s = 0; s < settingsSnapshot.Length; s++)
-                    {
-                        var us = settingsSnapshot[s];
-                        if (us == null) continue;
-                        for (int i = 0; i < deviceSnapshot.Length; i++)
-                        {
-                            var d = deviceSnapshot[i];
-                            if (d != null && d.IsOnline && d.InstanceGuid == us.InstanceGuid)
-                            {
-                                mapped++;
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                dash.TotalDevices = total;
                 dash.OnlineDevices = online;
-                dash.MappedDevices = mapped;
-
-                _mainVm.ConnectedDeviceCount = online;
             }
 
             RefreshSlotSummaryProperties(deviceSnapshot);
             RefreshNavItemConnectedCounts(deviceSnapshot);
-
-            // Update main VM frequency.
-            _mainVm.PollingFrequency = _inputManager.CurrentFrequency;
         }
 
         // Reusable buffer for the non-allocating FindByPadIndex overload,

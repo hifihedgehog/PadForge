@@ -140,7 +140,6 @@
   <data name="Main_Minimize" xml:space="preserve"><value>最小化</value></data>
   <data name="Main_Maximize" xml:space="preserve"><value>最大化</value></data>
   <data name="Main_Restore" xml:space="preserve"><value>元に戻す</value></data>
-  <data name="Main_NavigationPane" xml:space="preserve"><value>ナビゲーションペイン</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>PadForge を表示</value></data>
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>仮想コントローラー {0}</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>エンジン停止中</value></data>
@@ -262,12 +261,14 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>ホーム</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>接続中のデバイス: {0}。コントローラー: {1}。</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>入力エンジン</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> 台のデバイスがオンライン</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>コントローラー</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>使用中の追加機能</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>ほかの機能は「追加機能」にあり、オンにするまでオフのままです。</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>オン。{0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>ほかに {0} 件が[追加機能]にあります。追加機能は、オンにするまでオフのままです。</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>追加機能を開く</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>QR を表示</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} が接続されていますが、使用されていません。</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>使う</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> 台がマッピング済み、</value></data>
@@ -1157,7 +1158,7 @@
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(追加のエラーが {0} 件抑制されました)</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Hz</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Preview Views ═══ -->

@@ -143,7 +143,6 @@
   <data name="Main_Minimize" xml:space="preserve"><value>मिनिमाइज गर्नुहोस्</value></data>
   <data name="Main_Maximize" xml:space="preserve"><value>म्याक्सिमाइज गर्नुहोस्</value></data>
   <data name="Main_Restore" xml:space="preserve"><value>पुनर्स्थापना गर्नुहोस्</value></data>
-  <data name="Main_NavigationPane" xml:space="preserve"><value>नेभिगेसन प्यान</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>PadForge देखाउनुहोस्</value></data>
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>भर्चुअल कन्ट्रोलर {0}</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>इन्जिन रोकियो</value></data>
@@ -272,12 +271,14 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>गृहपृष्ठ</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>जडान भएका यन्त्रहरू: {0}। कन्ट्रोलरहरू: {1}।</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>इनपुट इन्जिन</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> यन्त्र अनलाइन</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>कन्ट्रोलरहरू</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>प्रयोगमा रहेका अतिरिक्त</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>बाँकी सुविधाहरू अतिरिक्तमा छन्, तपाईंले नखोलेसम्म हरेक बन्द रहन्छ।</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>अन। {0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>थप {0} वटा [अतिरिक्त]मा छन्। तपाईंले नखोलेसम्म अतिरिक्त सुविधा बन्द रहन्छ।</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>अतिरिक्त खोल्नुहोस्</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>QR देखाउनुहोस्</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} जडान भएको छ र प्रयोगमा छैन।</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>प्रयोग गर्नुहोस्</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> म्याप गरिएका, </value></data>
@@ -2482,7 +2483,7 @@
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>({0} थप त्रुटि(हरू) लुकाइयो)</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Hz</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->

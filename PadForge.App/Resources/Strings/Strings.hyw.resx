@@ -257,12 +257,14 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>Գլխաւոր</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>Միացուած սարքեր: {0}։ Կառավարիչներ: {1}։</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Մուտքի շարժիչ</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> սարք առցանց</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>Կառավարիչներ</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Գործածուող լրացուցիչներ</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>Մնացեալները Լրացուցիչներ էջին մէջ են, եւ իւրաքանչիւրը անջատուած կը մնայ, մինչեւ որ զայն միացնէք։</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>Միացուած։ {0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>[Լրացուցիչներ] էջին մէջ կայ եւս {0} հատ։ Լրացուցիչ մը անջատուած կը մնայ, մինչեւ որ զայն միացնէք։</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>Բանալ Լրացուցիչները</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>Ցուցադրել QR</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} միացած է եւ չի գործածուիր։</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Գործածել</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> համապատասխանեցուած, </value></data>
@@ -2308,7 +2310,7 @@
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>({0} լրացուցիչ սխալ(ներ) չցուցադրուեցան)</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Hz</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->

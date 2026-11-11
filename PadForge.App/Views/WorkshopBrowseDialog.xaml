@@ -119,9 +119,6 @@
                 <Setter Property="BorderBrush" Value="{DynamicResource SteelLineBrush}"/>
                 <Setter Property="TextElement.Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
                 <Style.Triggers>
-                    <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
-                    </Trigger>
                     <DataTrigger Binding="{Binding IsActive}" Value="True">
                         <Setter Property="Background" Value="{DynamicResource EmberTintBrush}"/>
                         <Setter Property="BorderBrush" Value="#66FF6B2C"/>
@@ -144,9 +141,6 @@
                 <Setter Property="BorderBrush" Value="{DynamicResource SteelLineBrush}"/>
                 <Setter Property="TextElement.Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
                 <Style.Triggers>
-                    <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
-                    </Trigger>
                     <DataTrigger Binding="{Binding IsIncluded}" Value="True">
                         <Setter Property="Background" Value="{DynamicResource EmberTintBrush}"/>
                         <Setter Property="BorderBrush" Value="#66FF6B2C"/>
@@ -177,7 +171,6 @@
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
                                     <Setter TargetName="RowBd" Property="Background" Value="#0CFF6B2C"/>
-                                    <Setter TargetName="RowBd" Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
                                 </Trigger>
                                 <Trigger Property="IsSelected" Value="True">
                                     <Setter TargetName="EdgeBar" Property="Visibility" Value="Visible"/>
@@ -209,11 +202,6 @@
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
-                <Style.Triggers>
-                    <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
-                    </Trigger>
-                </Style.Triggers>
             </Style>
 
             <!-- Manifest telemetry rows: three shapes ride one ItemsControl, so

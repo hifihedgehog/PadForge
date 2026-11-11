@@ -17,16 +17,20 @@ namespace PadForge.Controls
     /// never opens the page. Each carries an AutomationId made from
     /// <see cref="Key"/>: Extras_Open_ and Extras_Switch_ plus the key.</para>
     ///
-    /// <para>Home shows an extra that is on as a smaller face of the same
-    /// control (the HomeExtraTile style): the glyph, the name and the
-    /// status, one button that opens the extra's page, and no switch.</para>
+    /// <para>Home shows an extra that is on as a second face of the same
+    /// control (the HomeExtraTile style): the glyph, the name, the word On
+    /// with the status or the one line after it, one button that opens the
+    /// extra's page, and no switch. A tile with <see cref="ActionText"/>
+    /// has a second button at its end that opens the page too.</para>
     /// </summary>
     [TemplatePart(Name = OpenPartName, Type = typeof(ButtonBase))]
     [TemplatePart(Name = SwitchPartName, Type = typeof(ToggleButton))]
+    [TemplatePart(Name = ActionPartName, Type = typeof(ButtonBase))]
     public sealed class ExtraTile : Control
     {
         public const string OpenPartName = "PART_Open";
         public const string SwitchPartName = "PART_Switch";
+        public const string ActionPartName = "PART_Action";
         public const string OpenIdPrefix = "Extras_Open_";
         public const string SwitchIdPrefix = "Extras_Switch_";
 
@@ -49,7 +53,8 @@ namespace PadForge.Controls
             nameof(Title), typeof(string), typeof(ExtraTile), new PropertyMetadata(string.Empty));
 
         public static readonly DependencyProperty LineProperty = DependencyProperty.Register(
-            nameof(Line), typeof(string), typeof(ExtraTile), new PropertyMetadata(string.Empty));
+            nameof(Line), typeof(string), typeof(ExtraTile),
+            new PropertyMetadata(string.Empty, (d, _) => ((ExtraTile)d).SetSummary()));
 
         public static readonly DependencyProperty SwitchLabelProperty = DependencyProperty.Register(
             nameof(SwitchLabel), typeof(string), typeof(ExtraTile), new PropertyMetadata(string.Empty));
@@ -59,12 +64,22 @@ namespace PadForge.Controls
             new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         public static readonly DependencyProperty StatusProperty = DependencyProperty.Register(
-            nameof(Status), typeof(string), typeof(ExtraTile), new PropertyMetadata(string.Empty));
+            nameof(Status), typeof(string), typeof(ExtraTile),
+            new PropertyMetadata(string.Empty, (d, _) => ((ExtraTile)d).SetSummary()));
+
+        private static readonly DependencyPropertyKey SummaryKey = DependencyProperty.RegisterReadOnly(
+            nameof(Summary), typeof(string), typeof(ExtraTile), new PropertyMetadata(string.Empty));
+
+        public static readonly DependencyProperty SummaryProperty = SummaryKey.DependencyProperty;
+
+        public static readonly DependencyProperty ActionTextProperty = DependencyProperty.Register(
+            nameof(ActionText), typeof(string), typeof(ExtraTile), new PropertyMetadata(string.Empty));
 
         public static readonly RoutedEvent OpenRequestedEvent = EventManager.RegisterRoutedEvent(
             nameof(OpenRequested), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(ExtraTile));
 
         private ButtonBase _open;
+        private ButtonBase _action;
         private ToggleButton _switch;
 
         public ExtraTile()
@@ -137,6 +152,23 @@ namespace PadForge.Controls
             set => SetValue(StatusProperty, value);
         }
 
+        /// <summary>What Home says under the name of an extra that is on:
+        /// its live status when it has one, and its one-line description
+        /// otherwise.</summary>
+        public string Summary => (string)GetValue(SummaryProperty);
+
+        private void SetSummary()
+            => SetValue(SummaryKey, string.IsNullOrEmpty(Status) ? (Line ?? string.Empty) : Status);
+
+        /// <summary>The words on a second button at the tile's end (Show QR
+        /// on Home's Web Controller tile), or empty for none. The button
+        /// opens the extra's page, as the tile does.</summary>
+        public string ActionText
+        {
+            get => (string)GetValue(ActionTextProperty);
+            set => SetValue(ActionTextProperty, value);
+        }
+
         /// <summary>Raised when the tile is clicked anywhere but its switch.</summary>
         public event RoutedEventHandler OpenRequested
         {
@@ -147,10 +179,13 @@ namespace PadForge.Controls
         public override void OnApplyTemplate()
         {
             if (_open != null) _open.Click -= OnOpenClick;
+            if (_action != null) _action.Click -= OnOpenClick;
             base.OnApplyTemplate();
             _open = GetTemplateChild(OpenPartName) as ButtonBase;
+            _action = GetTemplateChild(ActionPartName) as ButtonBase;
             _switch = GetTemplateChild(SwitchPartName) as ToggleButton;
             if (_open != null) _open.Click += OnOpenClick;
+            if (_action != null) _action.Click += OnOpenClick;
             NameParts();
         }
 
@@ -169,6 +204,7 @@ namespace PadForge.Controls
             string key = Key;
             if (string.IsNullOrEmpty(key)) return;
             if (_open != null) AutomationProperties.SetAutomationId(_open, (OpenPrefix ?? OpenIdPrefix) + key);
+            if (_action != null) AutomationProperties.SetAutomationId(_action, (OpenPrefix ?? OpenIdPrefix) + key + "_Action");
             if (_switch != null) AutomationProperties.SetAutomationId(_switch, SwitchIdPrefix + key);
         }
     }

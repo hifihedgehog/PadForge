@@ -3584,10 +3584,13 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, puli nga DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Mga port, kinatas-ang katulin, custom nga mga format</value></data>
   <data name="Home_Title" xml:space="preserve"><value>Balay</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>Mga device nga konektado: {0}. Mga controller: {1}.</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>Mga controller</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Mga dugang nga gigamit</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>Ang uban anaa sa Mga dugang, ug patay ang matag usa hangtod nga i-on nimo.</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>Naka-on. {0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>{0} pa ang anaa sa [Mga dugang]. Patay ang usa ka dugang hangtod nga i-on nimo.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>Ablihi ang Mga dugang</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>Ipakita ang QR</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>Nakakonektar ang {0} ug wala gigamit.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Gamita</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Mga button</value></data>

@@ -140,7 +140,6 @@
   <data name="Main_Minimize" xml:space="preserve"><value>최소화</value></data>
   <data name="Main_Maximize" xml:space="preserve"><value>최대화</value></data>
   <data name="Main_Restore" xml:space="preserve"><value>이전 크기로 복원</value></data>
-  <data name="Main_NavigationPane" xml:space="preserve"><value>탐색 창</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>PadForge 표시</value></data>
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>가상 컨트롤러 {0}</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>엔진 중지됨</value></data>
@@ -262,12 +261,14 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>홈</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>연결된 장치: {0}. 컨트롤러: {1}.</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>입력 엔진</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value>대 온라인</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>컨트롤러</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>사용 중인 추가 기능</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>나머지는 추가 기능에 있으며, 켜기 전에는 모두 꺼져 있습니다.</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>켬. {0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>[추가 기능]에 {0}개가 더 있습니다. 추가 기능은 켜기 전에는 꺼져 있습니다.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>추가 기능 열기</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>QR 표시</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0}이(가) 연결되어 있으며 사용 중이 아닙니다.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>사용</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value>개 매핑됨, </value></data>
@@ -1157,7 +1158,7 @@
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(추가 오류 {0}건이 표시되지 않음)</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Hz</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Preview Views ═══ -->

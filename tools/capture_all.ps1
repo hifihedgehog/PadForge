@@ -4321,23 +4321,6 @@ if (-not $uiaWin) {
 }
 Write-Host "  UIA: '$($uiaWin.Current.Name)'"
 
-# Expand sidebar if compact
-$hamburger = Find-UIA -Aid "TogglePaneButton" -CT ([System.Windows.Automation.ControlType]::Button)
-if (-not $hamburger) {
-    $hamburger = Find-UIA -Name "Toggle navigation" -CT ([System.Windows.Automation.ControlType]::Button)
-}
-if ($hamburger) {
-    # Home's entry, by the id it has kept (Nav_Dashboard).
-    $dash = Find-SidebarEntry "Dashboard"
-    $dashR = Get-Rect $dash
-    if ($null -ne $dashR -and $dashR.Width -lt 120) {
-        Write-Host "  Sidebar compact -- expanding..."
-        Click-El $hamburger -Label "Hamburger" -Delay 500
-    } else {
-        Write-Host "  Sidebar already expanded"
-    }
-}
-
 # Warm-up click
 [Win32]::ForceFG($hwnd)
 Start-Sleep -Milliseconds 200

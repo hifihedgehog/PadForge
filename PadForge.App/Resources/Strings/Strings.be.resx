@@ -143,7 +143,6 @@
   <data name="Main_Minimize" xml:space="preserve"><value>Згарнуць</value></data>
   <data name="Main_Maximize" xml:space="preserve"><value>Разгарнуць</value></data>
   <data name="Main_Restore" xml:space="preserve"><value>Аднавіць</value></data>
-  <data name="Main_NavigationPane" xml:space="preserve"><value>Панэль навігацыі</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Паказаць PadForge</value></data>
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>Віртуальны кантролер {0}</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>Рухавік спынены</value></data>
@@ -272,12 +271,14 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>Галоўная</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>Прылады падключаны: {0}. Кантролеры: {1}.</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Рухавік уводу</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> прылад падключана</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>Кантролеры</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Дадаткова ў ужытку</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>Астатняе ў раздзеле «Дадаткова», кожная функцыя выключана, пакуль вы яе не ўключыце.</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>Уключана. {0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Яшчэ {0} у раздзеле [Дадаткова]. Функцыя выключана, пакуль вы яе не ўключыце.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>Адкрыць «Дадаткова»</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>Паказаць QR</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} падключана, але не выкарыстоўваецца.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Выкарыстаць</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> прызначана, </value></data>
@@ -2482,7 +2483,7 @@
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(схавана дадатковых памылак: {0})</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Гц</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Гц</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->

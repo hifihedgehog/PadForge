@@ -782,7 +782,7 @@
   <data name="App_Error" xml:space="preserve"><value>PadForge: Mistek</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Hz</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->
@@ -1611,4 +1611,5 @@
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Paoa blong evri mota, seksek blong triga, jenisim ol mota</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Paoa blong evri triga, jenisim ol mota, seksek blong adaptive triga</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Invert, Momentum, Respons, Akselereisen, fling</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>Soem QR</value></data>
 </root>

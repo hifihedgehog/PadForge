@@ -572,58 +572,11 @@ namespace PadForge.ViewModels
             HasActiveSlots ? Strings.Instance.Engine_Forging :
             Strings.Instance.Common_Idle;
 
-        private static readonly System.Windows.Media.SolidColorBrush GreenBrush =
-            new(System.Windows.Media.Color.FromRgb(0x4C, 0xAF, 0x50)); // Running
-        private static readonly System.Windows.Media.SolidColorBrush AmberBrush =
-            new(System.Windows.Media.Color.FromRgb(0xFF, 0xB3, 0x00)); // Idle
-        private static readonly System.Windows.Media.SolidColorBrush RedBrush =
-            new(System.Windows.Media.Color.FromRgb(0xF4, 0x43, 0x36)); // Stopped
-
-        static MainViewModel()
-        {
-            GreenBrush.Freeze();
-            AmberBrush.Freeze();
-            RedBrush.Freeze();
-        }
-
         /// <summary>
-        /// Brush for the engine status indicator dot.
+        /// Raises the engine status text: the engine's state, the slot
+        /// count or the language changed.
         /// </summary>
-        public System.Windows.Media.Brush EngineStatusBrush =>
-            !IsEngineRunning ? RedBrush :
-            HasActiveSlots ? GreenBrush :
-            AmberBrush;
-
-        /// <summary>
-        /// Refreshes engine status text and indicator brush.
-        /// </summary>
-        public void RefreshEngineStatus()
-        {
-            OnPropertyChanged(nameof(EngineStatusText));
-            OnPropertyChanged(nameof(EngineStatusBrush));
-        }
-
-        private double _pollingFrequency;
-
-        /// <summary>
-        /// Current input polling frequency in Hz.
-        /// </summary>
-        public double PollingFrequency
-        {
-            get => _pollingFrequency;
-            set => SetProperty(ref _pollingFrequency, value);
-        }
-
-        private int _connectedDeviceCount;
-
-        /// <summary>
-        /// Number of currently connected input devices.
-        /// </summary>
-        public int ConnectedDeviceCount
-        {
-            get => _connectedDeviceCount;
-            set => SetProperty(ref _connectedDeviceCount, value);
-        }
+        public void RefreshEngineStatus() => OnPropertyChanged(nameof(EngineStatusText));
 
         // ─────────────────────────────────────────────
         //  Commands

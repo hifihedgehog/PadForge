@@ -11,21 +11,6 @@
 
     <conv:UppercaseConverter x:Key="UpperConverter"/>
 
-    <!-- Hover-glow effects (#175): every hover color change carries a
-         glow matched to the hue it turns. Ember hover glows ember, cold
-         hover glows cold, neutral steel lifts get a faint ember (the
-         app's signature). Frozen so one instance is shared by every
-         style trigger and code-behind site; static Effect setters only,
-         never animated (Effect animation from style triggers crashes at
-         startup). -->
-    <DropShadowEffect x:Key="EmberHoverGlow" po:Freeze="True"
-                      Color="#FF6B2C" ShadowDepth="0" BlurRadius="12" Opacity="0.45"/>
-    <DropShadowEffect x:Key="EmberHoverGlowSmall" po:Freeze="True"
-                      Color="#FF6B2C" ShadowDepth="0" BlurRadius="8" Opacity="0.45"/>
-    <DropShadowEffect x:Key="ColdHoverGlow" po:Freeze="True"
-                      Color="#58B6E4" ShadowDepth="0" BlurRadius="10" Opacity="0.40"/>
-    <DropShadowEffect x:Key="NeutralHoverGlow" po:Freeze="True"
-                      Color="#FF6B2C" ShadowDepth="0" BlurRadius="10" Opacity="0.30"/>
     <!-- ═══════════════════════════════════════════
          Controller Type Icons (DrawingImage)
          Sources, as served by svgrepo.com:
@@ -195,173 +180,33 @@
 
     <Style x:Key="SectionTitle" TargetType="TextBlock">
         <!-- A section header reads as a heading to a screen reader, which
-             can then move from section to section. -->
+             can then move from section to section. PadForge 6 (#574): the
+             page's own face in sentence case, one step quieter than the
+             text under it. -->
         <Setter Property="AutomationProperties.HeadingLevel" Value="Level2"/>
-        <Setter Property="FontFamily" Value="{StaticResource TelemetryFontFamily}"/>
-        <!-- Artifact eyebrow size (#175 type pass): 10px mono, matching the
-             LEFT/RIGHT MOTOR captions and every other eyebrow surface. -->
-        <Setter Property="FontSize" Value="10"/>
+        <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}"/>
+        <Setter Property="FontSize" Value="13"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
-        <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
 
     <Style x:Key="CardBorder" TargetType="Border">
+        <!-- PadForge 6 (#574): a card is a flat fill with one hairline and
+             rounded corners. It does not answer the pointer: the controls
+             inside it do. The fill and the hairline come from the theme, so
+             a switch of theme recolors every card. -->
         <Setter Property="Background" Value="{DynamicResource CardBackgroundFillColorDefaultBrush}"/>
-        <Setter Property="CornerRadius" Value="8"/>
-        <Setter Property="Padding" Value="16"/>
-        <Setter Property="Margin" Value="0,0,0,12"/>
-        <!-- 1px stroke (#175): without an edge, cards float as blobs on
-             the steel ground. Iteration 53 adds a hover elevation: the
-             stroke heats to steel-lift over 300ms and cools back over
-             1200ms. ColorAnimation needs a local SolidColorBrush the
-             style owns, so DynamicResource cannot theme the stroke.
-             Round-3 A1 theme-scopes it instead through EmberThemeProbe
-             (flipped by EmberTheme.ApplyAccent): a DataTrigger swaps the
-             rest brush per ground, and per-ground hover MultiDataTriggers
-             carry the heat/cool storyboards. Light rest matches the
-             SteelLineBrush light value; dark values are unchanged. The
-             theme stomp (zero-length animation clearing any color a
-             completed hover storyboard still holds on a per-element
-             brush clone) lives in ExitActions ONLY, one per ground:
-             ExitActions never run at initial style application, while
-             EnterActions on an x:Static-sourced DataTrigger DO run the
-             moment the binding transfers a matching value, mid style
-             application, before the BorderBrush setter has applied.
-             With the stomp in the light trigger's EnterActions, every
-             light/HC launch died in Storyboard.VerifyPathIsAnimatable
-             ("'BorderBrush' property does not point to a
-             DependencyObject") while MainWindow loaded its first page
-             (v4.0.0 crash-on-launch, Discord report 2026-07). Dark
-             never crashed because IsDark=True keeps the light trigger
-             inactive at load. Live flips still stomp both ways via the
-             exit pair below. The hover animations omit From so a
-             mid-fade re-enter eases from the current color instead of
-             snapping. -->
+        <Setter Property="CornerRadius" Value="10"/>
+        <Setter Property="Padding" Value="20,16"/>
+        <Setter Property="Margin" Value="0,0,0,16"/>
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="BorderBrush">
-            <Setter.Value>
-                <SolidColorBrush Color="#253049"/>
-            </Setter.Value>
-        </Setter>
-        <Style.Triggers>
-            <!-- Leaving dark = entering light: stomp held hover colors to
-                 the light rest. Actions-only twin of the trigger below; no
-                 setters, so BorderBrush precedence is unchanged. -->
-            <DataTrigger Binding="{Binding IsDark, Source={x:Static common:EmberThemeProbe.Instance}}"
-                         Value="True">
-                <DataTrigger.ExitActions>
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <ColorAnimation
-                                Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"
-                                To="#C9CDD6"
-                                Duration="0:0:0"/>
-                        </Storyboard>
-                    </BeginStoryboard>
-                </DataTrigger.ExitActions>
-            </DataTrigger>
-            <DataTrigger Binding="{Binding IsDark, Source={x:Static common:EmberThemeProbe.Instance}}"
-                         Value="False">
-                <DataTrigger.ExitActions>
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <ColorAnimation
-                                Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"
-                                To="#253049"
-                                Duration="0:0:0"/>
-                        </Storyboard>
-                    </BeginStoryboard>
-                </DataTrigger.ExitActions>
-                <Setter Property="BorderBrush">
-                    <Setter.Value>
-                        <SolidColorBrush Color="#C9CDD6"/>
-                    </Setter.Value>
-                </Setter>
-            </DataTrigger>
-            <MultiDataTrigger>
-                <MultiDataTrigger.Conditions>
-                    <Condition Binding="{Binding IsDark, Source={x:Static common:EmberThemeProbe.Instance}}" Value="True"/>
-                    <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True"/>
-                </MultiDataTrigger.Conditions>
-                <!-- Hover glow (#175): the stroke heats toward blue-steel,
-                     so the glow is cold. Static Setter in the same trigger
-                     as the color change; only the stroke color animates. -->
-                <MultiDataTrigger.Setters>
-                    <Setter Property="Effect" Value="{StaticResource ColdHoverGlow}"/>
-                </MultiDataTrigger.Setters>
-                <MultiDataTrigger.EnterActions>
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <ColorAnimation
-                                Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"
-                                To="#35507A"
-                                Duration="0:0:0.3">
-                                <ColorAnimation.EasingFunction>
-                                    <QuadraticEase EasingMode="EaseOut"/>
-                                </ColorAnimation.EasingFunction>
-                            </ColorAnimation>
-                        </Storyboard>
-                    </BeginStoryboard>
-                </MultiDataTrigger.EnterActions>
-                <MultiDataTrigger.ExitActions>
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <ColorAnimation
-                                Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"
-                                To="#253049"
-                                Duration="0:0:1.2">
-                                <ColorAnimation.EasingFunction>
-                                    <QuadraticEase EasingMode="EaseIn"/>
-                                </ColorAnimation.EasingFunction>
-                            </ColorAnimation>
-                        </Storyboard>
-                    </BeginStoryboard>
-                </MultiDataTrigger.ExitActions>
-            </MultiDataTrigger>
-            <MultiDataTrigger>
-                <MultiDataTrigger.Conditions>
-                    <Condition Binding="{Binding IsDark, Source={x:Static common:EmberThemeProbe.Instance}}" Value="False"/>
-                    <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True"/>
-                </MultiDataTrigger.Conditions>
-                <MultiDataTrigger.Setters>
-                    <Setter Property="Effect" Value="{StaticResource ColdHoverGlow}"/>
-                </MultiDataTrigger.Setters>
-                <MultiDataTrigger.EnterActions>
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <ColorAnimation
-                                Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"
-                                To="#AEB6C4"
-                                Duration="0:0:0.3">
-                                <ColorAnimation.EasingFunction>
-                                    <QuadraticEase EasingMode="EaseOut"/>
-                                </ColorAnimation.EasingFunction>
-                            </ColorAnimation>
-                        </Storyboard>
-                    </BeginStoryboard>
-                </MultiDataTrigger.EnterActions>
-                <MultiDataTrigger.ExitActions>
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <ColorAnimation
-                                Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"
-                                To="#C9CDD6"
-                                Duration="0:0:1.2">
-                                <ColorAnimation.EasingFunction>
-                                    <QuadraticEase EasingMode="EaseIn"/>
-                                </ColorAnimation.EasingFunction>
-                            </ColorAnimation>
-                        </Storyboard>
-                    </BeginStoryboard>
-                </MultiDataTrigger.ExitActions>
-            </MultiDataTrigger>
-        </Style.Triggers>
+        <Setter Property="BorderBrush" Value="{DynamicResource CardStrokeColorDefaultBrush}"/>
     </Style>
 
     <Style x:Key="CardTitle" TargetType="TextBlock">
-        <Setter Property="FontFamily" Value="{StaticResource DisplayFontFamily}"/>
-        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}"/>
+        <Setter Property="FontSize" Value="16"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
@@ -393,11 +238,110 @@
          role even where an ancestor overrides the inherited family. -->
     <Style x:Key="CardDescription" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}"/>
-        <Setter Property="FontSize" Value="12"/>
-        <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
         <Setter Property="Margin" Value="0,0,0,8"/>
     </Style>
+
+    <!-- ═══════════════════════════════════════════
+         Stage icons (#175 item 10)
+         ═══════════════════════════════════════════ -->
+
+    <!-- One icon for each configuration stage a controller's devices have
+         (sticks, triggers, gyro, lighting, touchpad, audio), on its Home
+         card and in its page's header. Ember when the stage carries a
+         configuration that is not the default, ashen steel when it does
+         not. The font stages share the text style, and the stick and
+         trigger shapes share the path style. -->
+    <Style x:Key="StageGlyphText" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="Segoe Fluent Icons, Segoe MDL2 Assets"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+        <Setter Property="Opacity" Value="0.65"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsHot}" Value="True">
+                <Setter Property="Foreground" Value="{DynamicResource EmberBrush}"/>
+                <Setter Property="Opacity" Value="1"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="StageGlyphShape" TargetType="Path">
+        <Setter Property="Stretch" Value="Uniform"/>
+        <Setter Property="Fill" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+        <Setter Property="Opacity" Value="0.65"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsHot}" Value="True">
+                <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
+                <Setter Property="Opacity" Value="1"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- One stage icon. Under the pointer, a stage with something set shows
+         a readout for each device it covers: the device's glyph and name,
+         then its values in the telemetry face (STOCK for an untouched
+         device), wrapped so a long readout never clips at the screen's
+         edge. A stage with nothing set has no tooltip. The shapes show by
+         style triggers so the template needs no converter. -->
+    <DataTemplate x:Key="StageChipTemplate">
+        <Grid Margin="0,0,10,0" Background="Transparent"
+              ToolTipService.IsEnabled="{Binding HasSummary}"
+              ToolTipService.InitialShowDelay="400"
+              ToolTipService.ShowDuration="20000">
+            <Grid.ToolTip>
+                <ItemsControl ItemsSource="{Binding SummaryLines}" MaxWidth="400">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock TextWrapping="Wrap" Margin="0,1,0,1"><Run Text="{Binding DeviceGlyph, Mode=OneWay}" FontFamily="Segoe MDL2 Assets" FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/><Run Text="{Binding DeviceName, Mode=OneWay}" FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/><Run Text="{Binding Tokens, Mode=OneWay}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/></TextBlock>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid.ToolTip>
+            <!-- The stick (the Sticks stage). -->
+            <Grid Width="14" Height="14">
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsStickShape}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+                <Path FlowDirection="LeftToRight" Data="{StaticResource ZackslyStickOuterRingGeometry}" Style="{StaticResource StageGlyphShape}"/>
+                <Path FlowDirection="LeftToRight" Data="{StaticResource ZackslyStickInnerDiscGeometry}" Style="{StaticResource StageGlyphShape}"/>
+            </Grid>
+            <!-- The trigger (the Triggers stage). -->
+            <Grid Width="14" Height="14">
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsTriggerShape}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+                <Path FlowDirection="LeftToRight" Data="{StaticResource ZackslyTriggerOuterBodyGeometry}" Style="{StaticResource StageGlyphShape}"/>
+            </Grid>
+            <!-- The font stages (gyro, lighting, touchpad, audio). -->
+            <controls:GlyphText Text="{Binding Glyph}">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock" BasedOn="{StaticResource StageGlyphText}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Glyph}" Value="">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </controls:GlyphText>
+        </Grid>
+    </DataTemplate>
 
     <!-- ═══════════════════════════════════════════
          Fold parts (#574)
@@ -618,9 +562,6 @@
                             <Setter TargetName="Knob" Property="HorizontalAlignment" Value="Right"/>
                             <Setter TargetName="Knob" Property="Fill" Value="{DynamicResource TextOnAccentFillColorPrimaryBrush}"/>
                         </Trigger>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Track" Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
-                        </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Opacity" Value="0.45"/>
                         </Trigger>
@@ -734,52 +675,77 @@
         </Setter>
     </Style>
 
-    <!-- An extra that is on, as Home shows it: the glyph on its chip, the
-         extra's name, and its live status under the name. The whole face is
-         one button that opens the extra's page. It has no switch: an extra
+    <!-- An extra that is on, as Home shows it: a card with the glyph on its
+         square, the extra's name, and under the name the word On and the
+         extra's live status (its one line from the catalog when it reports
+         none). The face is one button that opens the extra's page, and a
+         tile with ActionText has a second button at its end that opens it
+         too (Show QR on the Web Controller's). It has no switch: an extra
          is turned off on its own page or on its tile in the catalog. The
          face carries the name and the status for a screen reader, as the
          catalog's tile does, and its AutomationId starts Home_Extra_, so it
          never shares one with that tile. -->
     <Style x:Key="HomeExtraTile" TargetType="{x:Type controls:ExtraTile}">
         <Setter Property="OpenPrefix" Value="Home_Extra_"/>
-        <Setter Property="Width" Value="300"/>
-        <Setter Property="Margin" Value="0,0,12,12"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:ExtraTile}">
                     <Border Style="{StaticResource CardBorder}" Padding="0" Margin="0">
-                        <Button x:Name="PART_Open" Style="{StaticResource ExtraTileOpenButton}"
-                                AutomationProperties.Name="{Binding Title, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue='', FallbackValue=''}"
-                                AutomationProperties.ItemStatus="{TemplateBinding Status}">
-                            <Grid Margin="14,12">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Border Width="36" Height="36" CornerRadius="9" VerticalAlignment="Center"
-                                        Background="{DynamicResource SteelRaisedBrush}">
-                                    <controls:GlyphText Text="{TemplateBinding Glyph}"
-                                                        FontFamily="Segoe MDL2 Assets" FontSize="16"
-                                                        Foreground="{DynamicResource EmberBrush}"
-                                                        HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                                <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
-                                    <TextBlock Text="{TemplateBinding Title}" Style="{StaticResource CardTitle}"
-                                               TextTrimming="CharacterEllipsis"/>
-                                    <TextBlock x:Name="StatusText" Text="{TemplateBinding Status}" TextWrapping="Wrap"
-                                               FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11"
-                                               Foreground="{DynamicResource ColdBrush}" Margin="0,2,0,0"/>
-                                </StackPanel>
-                            </Grid>
-                        </Button>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Button x:Name="PART_Open" Style="{StaticResource ExtraTileOpenButton}"
+                                    AutomationProperties.Name="{Binding Title, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue='', FallbackValue=''}"
+                                    AutomationProperties.ItemStatus="{TemplateBinding Status}">
+                                <Grid Margin="16">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Width="36" Height="36" CornerRadius="9" VerticalAlignment="Center"
+                                            Background="{DynamicResource SteelRaisedBrush}">
+                                        <controls:GlyphText Text="{TemplateBinding Glyph}"
+                                                            FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                                            Foreground="{DynamicResource EmberHotBrush}"
+                                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
+                                        <TextBlock Text="{TemplateBinding Title}" FontSize="14" FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                                   TextTrimming="CharacterEllipsis"/>
+                                        <!-- "On." and then the extra's live status, or its one
+                                             line from the catalog when it reports none. -->
+                                        <TextBlock FontSize="13" TextWrapping="Wrap"
+                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}">
+                                            <TextBlock.Text>
+                                                <MultiBinding>
+                                                    <!-- Made here, not looked up: this dictionary
+                                                         loads ahead of the one that holds the
+                                                         app's converters. -->
+                                                    <MultiBinding.Converter>
+                                                        <conv:FormatTextConverter/>
+                                                    </MultiBinding.Converter>
+                                                    <Binding Path="Summary" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                                    <Binding Path="Home_ExtraOn_Format" Source="{x:Static strings:Strings.Instance}"/>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Grid>
+                            </Button>
+                            <Button x:Name="PART_Action" Grid.Column="1" Margin="0,0,16,0" Padding="14,0" MinHeight="36"
+                                    VerticalAlignment="Center"
+                                    Content="{TemplateBinding ActionText}"/>
+                        </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="Status" Value="">
-                            <Setter TargetName="StatusText" Property="Visibility" Value="Collapsed"/>
+                        <Trigger Property="ActionText" Value="">
+                            <Setter TargetName="PART_Action" Property="Visibility" Value="Collapsed"/>
                         </Trigger>
-                        <Trigger Property="Status" Value="{x:Null}">
-                            <Setter TargetName="StatusText" Property="Visibility" Value="Collapsed"/>
+                        <Trigger Property="ActionText" Value="{x:Null}">
+                            <Setter TargetName="PART_Action" Property="Visibility" Value="Collapsed"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

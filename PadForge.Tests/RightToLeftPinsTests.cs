@@ -151,11 +151,13 @@ namespace PadForge.Tests
         /// <summary>A drawing built in code is in no markup file, so the
         /// check above cannot see it. Each is counted here, by file. All but
         /// the main window's are added under a parent that is pinned: the
-        /// canvas of the control that builds them, the lightbar host, or a
-        /// window that keeps left to right. The main window's nine are the
-        /// flames and the platform logos of the navigation rail and its
-        /// pop-ups, the type bar's change-type row among them (discussion
-        /// #543), which go into mirrored rows, so each pins itself.
+        /// canvas of the control that builds them, the lightbar host, a
+        /// window that keeps left to right, or, for the sidebar's line icons
+        /// (DecorativeIcons.cs), the box the icon scales them in. The main
+        /// window's nine are the flames and the platform logos of the
+        /// sidebar and its pop-ups, the type bar's change-type row
+        /// (discussion #543) and the Add Controller entry's plus sign among
+        /// them, which go into mirrored rows, so each pins itself.
         /// MarqueeLabel's canvas carries text, not a drawing, and mirrors
         /// with the language on purpose: in a right-to-left one the hidden
         /// end of a name sits on the left, and the scroll must reveal it. A
@@ -176,6 +178,7 @@ namespace PadForge.Tests
                 ["ControllerModel2DView.xaml.cs"] = 2,
                 ["ControllerSchematicView.xaml.cs"] = 4,
                 ["CurveEditor.xaml.cs"] = 1,
+                ["DecorativeIcons.cs"] = 2,
                 ["GunCalibrationScreen.cs"] = 1,
                 ["KBMPreviewView.xaml.cs"] = 4,
                 ["KeyLightsView.cs"] = 1,
@@ -200,6 +203,11 @@ namespace PadForge.Tests
             int pinned = Regex.Matches(main,
                 @"new System\.Windows\.Shapes\.Path\s*\{\s*FlowDirection = FlowDirection\.LeftToRight,").Count;
             Assert.Equal(9, pinned);
+
+            // The line icon's path and its 24 by 24 canvas sit in a box
+            // that keeps left to right.
+            string icons = File.ReadAllText(Path.Combine(AppDirectory(), "Controls", "DecorativeIcons.cs"));
+            Assert.Contains("_box = new System.Windows.Controls.Viewbox { Child = grid, FlowDirection = FlowDirection.LeftToRight };", icons);
         }
 
         /// <summary>The two motor capsules that sat side by side under the

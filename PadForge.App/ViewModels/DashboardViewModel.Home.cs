@@ -22,6 +22,11 @@ namespace PadForge.ViewModels
         /// stopped.</summary>
         public string EngineButtonText => IsEngineOn ? Strings.Instance.Common_Stop : Strings.Instance.Common_Start;
 
+        /// <summary>The line under the engine's state: how many devices are
+        /// connected and how many virtual controllers there are. Both are
+        /// numbers after a label, so the line needs no plural forms.</summary>
+        public string EngineLine => string.Format(Strings.Instance.Home_EngineLine_Format, OnlineDevices, SlotSummaries.Count);
+
         // ─────────────────────────────────────────────
         //  The offer (Settings > Assignment Prompts)
         // ─────────────────────────────────────────────
@@ -49,6 +54,40 @@ namespace PadForge.ViewModels
 
         public bool HasHomeOffer => _homeOfferGuid != Guid.Empty;
 
+        /// <summary>The offer's sentence in three parts, so the page can set
+        /// the device's name apart from the words around it: what the
+        /// language puts before the name, the name, and what comes after.
+        /// A sentence with no place for the name is all lead.</summary>
+        public string HomeOfferLead { get; private set; } = string.Empty;
+
+        public string HomeOfferName => _homeOfferName;
+
+        public string HomeOfferTail { get; private set; } = string.Empty;
+
+        private void SetOfferParts()
+        {
+            string format = Strings.Instance.Home_Offer_Format;
+            int at = format.IndexOf("{0}", StringComparison.Ordinal);
+            if (!HasHomeOffer)
+            {
+                HomeOfferLead = string.Empty;
+                HomeOfferTail = string.Empty;
+            }
+            else if (at < 0)
+            {
+                HomeOfferLead = _homeOfferText;
+                HomeOfferTail = string.Empty;
+            }
+            else
+            {
+                HomeOfferLead = format.Substring(0, at);
+                HomeOfferTail = format.Substring(at + 3);
+            }
+            OnPropertyChanged(nameof(HomeOfferLead));
+            OnPropertyChanged(nameof(HomeOfferName));
+            OnPropertyChanged(nameof(HomeOfferTail));
+        }
+
         /// <summary>Raised with the device when the user clicks Not Now.
         /// InputService ends the offer for that device for good.</summary>
         public event EventHandler<Guid> HomeOfferDismissed;
@@ -60,6 +99,7 @@ namespace PadForge.ViewModels
             _homeOfferGuid = instanceGuid;
             _homeOfferName = deviceName ?? string.Empty;
             HomeOfferText = string.Format(Strings.Instance.Home_Offer_Format, _homeOfferName);
+            SetOfferParts();
             OnPropertyChanged(nameof(HomeOfferGuid));
             if (!had) OnPropertyChanged(nameof(HasHomeOffer));
         }
@@ -70,6 +110,7 @@ namespace PadForge.ViewModels
             _homeOfferGuid = Guid.Empty;
             _homeOfferName = string.Empty;
             HomeOfferText = string.Empty;
+            SetOfferParts();
             OnPropertyChanged(nameof(HomeOfferGuid));
             OnPropertyChanged(nameof(HasHomeOffer));
         }
@@ -129,6 +170,38 @@ namespace PadForge.ViewModels
         /// list: no extra is on.</summary>
         public bool ShowsExtrasIntro => ExtrasInUseCount == 0;
 
+        /// <summary>The line under the tiles that says how many other extras
+        /// there are, in three parts so the page can make the word that
+        /// names the Extras page a link: what comes before that word, the
+        /// word, and what comes after. The string marks the word with
+        /// square brackets. A string with no brackets is all lead.</summary>
+        public string ExtrasRestLead => ExtrasRestPart(0);
+
+        public string ExtrasRestLink => ExtrasRestPart(1);
+
+        public string ExtrasRestTail => ExtrasRestPart(2);
+
+        private string ExtrasRestPart(int part)
+            => BracketPart(string.Format(Strings.Instance.Home_MoreExtras, ExtrasCount - ExtrasInUseCount), part);
+
+        /// <summary>One of the three parts of a text around its first pair
+        /// of square brackets: 0 is what stands before the pair, 1 what the
+        /// pair holds, 2 what stands after. A text with no closed pair is
+        /// all part 0.</summary>
+        internal static string BracketPart(string text, int part)
+        {
+            text ??= string.Empty;
+            int open = text.IndexOf('[');
+            int close = open < 0 ? -1 : text.IndexOf(']', open + 1);
+            if (close < 0) return part == 0 ? text : string.Empty;
+            return part switch
+            {
+                0 => text.Substring(0, open),
+                1 => text.Substring(open + 1, close - open - 1),
+                _ => text.Substring(close + 1),
+            };
+        }
+
         /// <summary>The Home properties that follow <paramref name="changed"/>.
         /// Called from the one OnPropertyChanged override, in the Extras
         /// part, and raised past it so nothing here calls itself.</summary>
@@ -138,6 +211,9 @@ namespace PadForge.ViewModels
             {
                 case nameof(IsEngineOn):
                     base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(EngineButtonText)));
+                    break;
+                case nameof(OnlineDevices):
+                    base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(EngineLine)));
                     break;
                 case nameof(EnableWebController):
                 case nameof(HeadTrackingEnabled):
@@ -157,6 +233,7 @@ namespace PadForge.ViewModels
                     base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(HasExtrasInUse)));
                     base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(ShowsExtrasRestLine)));
                     base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(ShowsExtrasIntro)));
+                    RaiseExtrasRestParts();
                     break;
             }
         }
@@ -167,7 +244,17 @@ namespace PadForge.ViewModels
         {
             if (HasHomeOffer)
                 HomeOfferText = string.Format(Strings.Instance.Home_Offer_Format, _homeOfferName);
+            SetOfferParts();
             base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(EngineButtonText)));
+            base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(EngineLine)));
+            RaiseExtrasRestParts();
+        }
+
+        private void RaiseExtrasRestParts()
+        {
+            base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(ExtrasRestLead)));
+            base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(ExtrasRestLink)));
+            base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(ExtrasRestTail)));
         }
     }
 }

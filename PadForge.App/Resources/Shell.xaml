@@ -1,0 +1,141 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
+
+    <!-- ═══════════════════════════════════════════
+         The shell (#574): the sidebar's line icons and the two templates
+         that draw the sidebar.
+         ═══════════════════════════════════════════ -->
+
+    <!-- Line icons on a 24 by 24 grid, drawn by DecorativeStrokeIcon with a
+         round 1.7 stroke. Each is one geometry: a rounded square is four
+         lines and four quarter turns, and a circle is two half turns. -->
+    <Geometry x:Key="NavHomeGeometry">M4 11.5 L12 5 l8 6.5 V19 a1 1 0 0 1 -1 1 h-4.5 v-5.5 h-5 V20 H5 a1 1 0 0 1 -1 -1 z</Geometry>
+    <Geometry x:Key="NavDevicesGeometry">M7 8 h10 a4.5 4.5 0 0 1 4.4 3.6 l0.9 4.6 a2.4 2.4 0 0 1 -4.2 2 L16.5 16 h-9 l-1.6 2.2 a2.4 2.4 0 0 1 -4.2 -2 l0.9 -4.6 A4.5 4.5 0 0 1 7 8 z M8 10.5 v3 M6.5 12 h3</Geometry>
+    <Geometry x:Key="NavProfilesGeometry">M12 4 l8 4 l-8 4 l-8 -4 z M4 12 l8 4 l8 -4 M4 16 l8 4 l8 -4</Geometry>
+    <Geometry x:Key="NavExtrasGeometry">M5.5 4 h3.5 a1.5 1.5 0 0 1 1.5 1.5 v3.5 a1.5 1.5 0 0 1 -1.5 1.5 h-3.5 a1.5 1.5 0 0 1 -1.5 -1.5 v-3.5 a1.5 1.5 0 0 1 1.5 -1.5 z M15 4 h3.5 a1.5 1.5 0 0 1 1.5 1.5 v3.5 a1.5 1.5 0 0 1 -1.5 1.5 h-3.5 a1.5 1.5 0 0 1 -1.5 -1.5 v-3.5 a1.5 1.5 0 0 1 1.5 -1.5 z M5.5 13.5 h3.5 a1.5 1.5 0 0 1 1.5 1.5 v3.5 a1.5 1.5 0 0 1 -1.5 1.5 h-3.5 a1.5 1.5 0 0 1 -1.5 -1.5 v-3.5 a1.5 1.5 0 0 1 1.5 -1.5 z M16.75 14 v5.5 M14 16.75 h5.5</Geometry>
+    <Geometry x:Key="NavSettingsGeometry">M4 7 h8 M18 7 h2 M4 12 h2 M12 12 h8 M4 17 h10 M13 7 a2 2 0 1 0 4 0 a2 2 0 1 0 -4 0 M7 12 a2 2 0 1 0 4 0 a2 2 0 1 0 -4 0 M15 17 a2 2 0 1 0 4 0 a2 2 0 1 0 -4 0</Geometry>
+    <Geometry x:Key="NavAboutGeometry">M3.5 12 a8.5 8.5 0 1 0 17 0 a8.5 8.5 0 1 0 -17 0 M12 11 v5 M12 8 h0.01</Geometry>
+    <Geometry x:Key="PlusLineGeometry">M12 5 v14 M5 12 h14</Geometry>
+    <Geometry x:Key="SearchLineGeometry">M5 11 a6 6 0 1 0 12 0 a6 6 0 1 0 -12 0 M16 16 l4 4</Geometry>
+
+    <!-- One entry of the sidebar: a rounded row with its icon and its
+         words. The selected one takes the raised fill and an ember icon,
+         and its words come forward through the style in MainWindow.xaml.
+         The fills are the wpf-ui keys, so an entry that shadows them in its
+         own resources (a controller's pill, which shows its selection
+         itself) stays clear. An entry with no icon gives its whole width to
+         its content. -->
+    <ControlTemplate x:Key="PadNavigationViewItemTemplate" TargetType="{x:Type ui:NavigationViewItem}">
+        <Border x:Name="MainBorder"
+                MinHeight="{TemplateBinding MinHeight}"
+                Background="{DynamicResource NavigationViewItemBackground}"
+                CornerRadius="8">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <ContentPresenter x:Name="IconContentPresenter" Grid.Column="0"
+                                  Margin="12,0,0,0" VerticalAlignment="Center"
+                                  Content="{TemplateBinding Icon}" Focusable="False"
+                                  TextElement.Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                <ContentPresenter x:Name="ElementContentPresenter" Grid.Column="1"
+                                  Margin="12,0,12,0" VerticalAlignment="Center"
+                                  Content="{TemplateBinding Content}"
+                                  ContentTemplate="{TemplateBinding ContentTemplate}"
+                                  TextElement.Foreground="{TemplateBinding Foreground}"/>
+                <ContentPresenter Grid.Column="2" VerticalAlignment="Center" Content="{TemplateBinding InfoBadge}"/>
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="MainBorder" Property="Background" Value="{DynamicResource NavigationViewItemBackgroundPointerOver}"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter TargetName="MainBorder" Property="Background" Value="{DynamicResource NavigationViewItemBackgroundPressed}"/>
+            </Trigger>
+            <Trigger Property="IsActive" Value="True">
+                <Setter TargetName="MainBorder" Property="Background" Value="{DynamicResource NavigationViewItemBackgroundSelected}"/>
+                <Setter TargetName="IconContentPresenter" Property="TextElement.Foreground" Value="{DynamicResource EmberBrush}"/>
+            </Trigger>
+            <Trigger Property="Icon" Value="{x:Null}">
+                <Setter TargetName="IconContentPresenter" Property="Visibility" Value="Collapsed"/>
+                <Setter TargetName="ElementContentPresenter" Property="Margin" Value="0"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter TargetName="MainBorder" Property="Opacity" Value="0.5"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <!-- The sidebar and the page beside it. The sidebar is one column on
+         the pane's fill with a hairline at its edge. Its entries, the
+         entries wpf-ui calls footer entries (Settings and About) and the
+         engine's row follow one another from the top and scroll together.
+         The page takes the rest, flat on the ground. The three parts
+         wpf-ui's NavigationView asks its template for are here under
+         their names (NavigationView.TemplateParts.cs): the two entry lists
+         and the page presenter. The back button, the pane toggle and the
+         search button are not: this sidebar has none. -->
+    <ControlTemplate x:Key="PadNavigationViewTemplate" TargetType="{x:Type ui:NavigationView}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Border x:Name="PaneBorder" Grid.Column="0"
+                    Width="{TemplateBinding OpenPaneLength}"
+                    Background="{DynamicResource SteelPaneBrush}"
+                    BorderBrush="{DynamicResource SteelPaneLineBrush}" BorderThickness="0,0,1,0">
+                <ui:DynamicScrollViewer x:Name="PART_ScrollViewer"
+                                        CanContentScroll="False"
+                                        HorizontalScrollBarVisibility="Disabled"
+                                        VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="10,12,10,16">
+                        <ItemsControl x:Name="PART_MenuItemsItemsControl"
+                                      AutomationProperties.AutomationId="NavigationItems"
+                                      Focusable="False"
+                                      KeyboardNavigation.DirectionalNavigation="Contained"
+                                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                      ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Margin="0" IsItemsHost="True"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                        <!-- The hairline between the controllers and
+                             Settings. It is drawn here and is no entry of
+                             either list, so UI Automation has no item for
+                             it and a screen reader never stops on it. -->
+                        <Border Height="1" Margin="4,14,4,10" Background="{DynamicResource SteelPaneLineBrush}"/>
+                        <ItemsControl x:Name="PART_FooterMenuItemsItemsControl"
+                                      AutomationProperties.AutomationId="NavigationFooterItems"
+                                      Focusable="False"
+                                      KeyboardNavigation.DirectionalNavigation="Contained"
+                                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                      ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Margin="0" IsItemsHost="True"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                        <ContentPresenter Content="{TemplateBinding PaneFooter}"/>
+                    </StackPanel>
+                </ui:DynamicScrollViewer>
+            </Border>
+            <Border Grid.Column="1" Background="{DynamicResource NavigationViewContentBackground}">
+                <Grid>
+                    <ui:NavigationViewContentPresenter x:Name="PART_NavigationViewContentPresenter"
+                                                       Padding="{TemplateBinding Padding}"
+                                                       Transition="{TemplateBinding Transition}"
+                                                       TransitionDuration="{TemplateBinding TransitionDuration}"/>
+                    <ContentPresenter Content="{TemplateBinding ContentOverlay}"/>
+                </Grid>
+            </Border>
+        </Grid>
+    </ControlTemplate>
+</ResourceDictionary>

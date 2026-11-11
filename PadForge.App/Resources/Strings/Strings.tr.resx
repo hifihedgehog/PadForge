@@ -143,7 +143,6 @@
   <data name="Main_Minimize" xml:space="preserve"><value>Simge Durumuna Küçült</value></data>
   <data name="Main_Maximize" xml:space="preserve"><value>Büyüt</value></data>
   <data name="Main_Restore" xml:space="preserve"><value>Önceki Boyuta Getir</value></data>
-  <data name="Main_NavigationPane" xml:space="preserve"><value>Gezinti Bölmesi</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>PadForge'u göster</value></data>
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>Sanal kontrolcü {0}</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>Motor durduruldu</value></data>
@@ -272,12 +271,14 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>Ana sayfa</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>Bağlı cihazlar: {0}. Kontrolcüler: {1}.</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Giriş motoru</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> cihaz çevrimiçi</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>Kontrolcüler</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Kullanılan ekstralar</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>Diğerleri Ekstralar sayfasında, siz açana kadar her biri kapalı.</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>Açık. {0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>{0} tane daha [Ekstralar] sayfasında. Bir ekstra, siz açana kadar kapalı kalır.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>Ekstralar'ı aç</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>QR'ı göster</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} bağlı ve kullanılmıyor.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Kullan</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> eşlenmiş, </value></data>
@@ -2482,7 +2483,7 @@
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>({0} ek hata gizlendi)</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Hz</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->

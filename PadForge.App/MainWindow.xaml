@@ -26,56 +26,45 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Ember steel ground (#175). Sits over the Mica backdrop and under
-             all content: near-black steel with a faint ember wash top-right
-             and a cold wash on the left. Dark theme only. UpdateSteelLayer
-             collapses it in Light. -->
+        <!-- The ground (#574): one flat fill under everything, the page's
+             color. Dark theme only. UpdateSteelLayer collapses it in Light,
+             where the window's own backdrop shows. -->
         <Grid x:Name="SteelLayer" Grid.RowSpan="2" IsHitTestVisible="False">
-            <Border Background="#F20B0E14"/>
-            <Border>
-                <Border.Background>
-                    <RadialGradientBrush GradientOrigin="0.78,0" Center="0.78,0" RadiusX="0.55" RadiusY="0.45">
-                        <GradientStop Color="#12FF6B2C" Offset="0"/>
-                        <GradientStop Color="#00FF6B2C" Offset="1"/>
-                    </RadialGradientBrush>
-                </Border.Background>
-            </Border>
-            <Border>
-                <Border.Background>
-                    <RadialGradientBrush GradientOrigin="0.06,0.25" Center="0.06,0.25" RadiusX="0.5" RadiusY="0.4">
-                        <GradientStop Color="#0C58B6E4" Offset="0"/>
-                        <GradientStop Color="#0058B6E4" Offset="1"/>
-                    </RadialGradientBrush>
-                </Border.Background>
-            </Border>
+            <Border Background="{DynamicResource SteelGroundBrush}"/>
         </Grid>
 
-        <!-- App branding bar. Hamburger on left, PadForge icon + name.
-             TitleBar provides native min/max/close with Snap Layout support. -->
+        <!-- The title bar (#574): the PadForge mark and name, the profile
+             switcher, and the window's own buttons, on the pane's fill with
+             a hairline under it. TitleBar provides native minimize,
+             maximize and close with Snap Layout support. -->
         <Grid x:Name="AppBrandingBar" Grid.Row="0" Height="48">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <controls:StateToggleButton AutomationProperties.Name="{Binding Main_NavigationPane, Source={x:Static strings:Strings.Instance}}" x:Name="PaneToggleBtn" IsOn="{Binding IsPaneOpen, ElementName=NavView}" Grid.Column="0" Click="PaneToggleBtn_Click"
-                    Width="48" Height="48"
-                    Background="Transparent"
-                    BorderThickness="0" Padding="0"
-                    HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
-                <controls:GlyphText Text="&#xE700;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
-            </controls:StateToggleButton>
-            <ui:TitleBar x:Name="AppTitleBar" Grid.Column="1"
+            <Border Background="{DynamicResource SteelPaneBrush}"
+                    BorderBrush="{DynamicResource SteelPaneLineBrush}" BorderThickness="0,0,0,1"
+                    IsHitTestVisible="False"/>
+            <ui:TitleBar x:Name="AppTitleBar" Height="48"
+                         ButtonsForeground="{DynamicResource TextFillColorSecondaryBrush}"
                          CloseClicked="TitleBar_CloseClicked"
                          MaximizeClicked="TitleBar_MaximizeClicked"
                          ForceShutdown="False">
+                <ui:TitleBar.Resources>
+                    <!-- Minimize, maximize and close: 40 by 32, centered in
+                         the 48 of the bar, 2 apart. wpf-ui draws them 44 by
+                         30 against the bar's top edge, which leaves them
+                         above the middle of a bar this tall. -->
+                    <Style TargetType="ui:TitleBarButton" BasedOn="{StaticResource {x:Type ui:TitleBarButton}}">
+                        <Setter Property="Width" Value="40"/>
+                        <Setter Property="Height" Value="32"/>
+                        <Setter Property="Margin" Value="0,8,2,0"/>
+                    </Style>
+                </ui:TitleBar.Resources>
                 <ui:TitleBar.Header>
-                    <Border x:Name="AppBrandingBorder" Padding="12,0"
+                    <Border x:Name="AppBrandingBorder" Padding="14,0,12,0" Height="48"
                             Background="Transparent" MouseLeftButtonDown="BrandingBar_MouseDown">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <controls:DecorativeImage FlowDirection="LeftToRight" Source="/Resources/PadForge-icon.png" Width="20" Height="20"
+                            <controls:DecorativeImage FlowDirection="LeftToRight" Source="/Resources/PadForge-icon.png" Width="24" Height="24"
                                    RenderOptions.BitmapScalingMode="HighQuality" VerticalAlignment="Center"/>
-                            <TextBlock Text="PadForge" FontSize="12"
-                                       VerticalAlignment="Center" Margin="8,0,0,0"/>
+                            <TextBlock Text="PadForge" FontSize="14" FontWeight="SemiBold"
+                                       VerticalAlignment="Center" Margin="10,0,0,0"/>
                         </StackPanel>
                     </Border>
                 </ui:TitleBar.Header>
@@ -93,13 +82,17 @@
                          is marked hit-testable in the chrome as the full
                          screen button beside it is. Its AutomationId is the
                          one it always had. -->
-                    <viewControls:ProfilePill x:Name="TitleProfilePill" ShowLabel="True"
-                                              VerticalAlignment="Top" Margin="0,4,8,0"
+                    <viewControls:ProfilePill x:Name="TitleProfilePill"
+                                              VerticalAlignment="Center" Margin="0,0,8,0"
                                               WindowChrome.IsHitTestVisibleInChrome="True"
                                               AutomationProperties.AutomationId="ProfilePillStatusBar"/>
-                    <controls:StateToggleButton x:Name="FullScreenBtn" AutomationProperties.Name="{Binding Main_FullScreen, Source={x:Static strings:Strings.Instance}}" Click="FullScreenBtn_Click" Width="44" Height="30"
+                    <!-- Full screen: the fourth of the window's buttons. It
+                         has the size, the place and the icon weight the
+                         three beside it are given in the title bar's
+                         resources below, so the four read as one row. -->
+                    <controls:StateToggleButton x:Name="FullScreenBtn" AutomationProperties.Name="{Binding Main_FullScreen, Source={x:Static strings:Strings.Instance}}" Click="FullScreenBtn_Click" Width="40" Height="32"
                             Background="Transparent" BorderThickness="0" Padding="0"
-                            VerticalAlignment="Top" Margin="0"
+                            VerticalAlignment="Top" Margin="0,8,2,0"
                             WindowChrome.IsHitTestVisibleInChrome="True">
                         <Button.Style>
                             <Style TargetType="Button">
@@ -119,10 +112,6 @@
                                                          machine (#285 reporter's log, 2026-08-08). -->
                                                     <Setter TargetName="LayoutRoot" Property="Background"
                                                             Value="{Binding ButtonsBackground, RelativeSource={RelativeSource AncestorType=ui:TitleBar}}"/>
-                                                    <!-- Hover glow (#175): subtle-fill lift is
-                                                         neutral, so faint ember. -->
-                                                    <Setter TargetName="LayoutRoot" Property="Effect"
-                                                            Value="{StaticResource NeutralHoverGlow}"/>
                                                 </Trigger>
                                             </ControlTemplate.Triggers>
                                         </ControlTemplate>
@@ -136,7 +125,7 @@
                              both FindAncestor and ElementName bindings
                              evaluated before the tree connects and logged a
                              BINDERR on every launch. -->
-                        <controls:GlyphText x:Name="FullScreenIcon" Text="&#xE740;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
+                        <controls:GlyphText x:Name="FullScreenIcon" Text="&#xE740;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="12"/>
                     </controls:StateToggleButton>
                     </StackPanel>
                 </ui:TitleBar.TrailingContent>
@@ -151,22 +140,26 @@
                            IsBackButtonVisible="Collapsed"
                            IsPaneToggleVisible="False"
                            AlwaysShowHeader="False"
-                           CompactPaneLength="48"
-                           OpenPaneLength="244">
+                           OpenPaneLength="248"
+                           Template="{StaticResource PadNavigationViewTemplate}"
+                           ItemTemplate="{StaticResource PadNavigationViewItemTemplate}">
 
             <ui:NavigationView.Resources>
+                <!-- One sidebar row (#574): 38 tall with 2 between rows.
+                     It rests in the secondary text color, and the selected
+                     one comes forward in the primary color and a heavier
+                     weight. The fill and the icon's color are the entry
+                     template's (Resources/Shell.xaml). Code-built entries
+                     take this style too. -->
                 <Style TargetType="ui:NavigationViewItem">
-                    <Setter Property="Height" Value="48"/>
+                    <Setter Property="MinHeight" Value="38"/>
+                    <Setter Property="Margin" Value="0,0,0,2"/>
                     <Setter Property="FontSize" Value="14"/>
-                    <!-- Rail rests in the steel-blue secondary; selection
-                         brings the accent forward (#175). -->
                     <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
                     <Style.Triggers>
-                        <!-- Hover glow (#175): stock subtle-fill highlight is
-                             neutral, so faint ember. Code-built rail items
-                             inherit this implicit style. -->
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                        <Trigger Property="IsActive" Value="True">
+                            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+                            <Setter Property="FontWeight" Value="SemiBold"/>
                         </Trigger>
                     </Style.Triggers>
                 </Style>
@@ -174,32 +167,30 @@
 
             <!-- MenuItems built programmatically in code-behind (BuildNavigationItems) -->
 
+            <!-- Settings and About follow the controllers under a hairline
+                 (the sidebar's template draws the hairline and lays these
+                 entries out right after the others, Resources/Shell.xaml). -->
             <ui:NavigationView.FooterMenuItems>
-                <controls:QuietNavigationSeparator/>
                 <ui:NavigationViewItem x:Name="NavSettings" Content="{Binding Settings_Title, Source={x:Static strings:Strings.Instance}}" Tag="Settings" AutomationProperties.AutomationId="Nav_Settings" AutomationProperties.PositionInSet="1" AutomationProperties.SizeOfSet="2">
                     <ui:NavigationViewItem.Icon>
-                        <!-- Ember, matching the page header's icon color. -->
-                        <controls:DecorativeFontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE713;" Foreground="{DynamicResource EmberBrush}"/>
+                        <controls:DecorativeStrokeIcon Data="{StaticResource NavSettingsGeometry}"/>
                     </ui:NavigationViewItem.Icon>
                 </ui:NavigationViewItem>
                 <ui:NavigationViewItem x:Name="NavAbout" Content="{Binding About_Title, Source={x:Static strings:Strings.Instance}}" Tag="About" AutomationProperties.AutomationId="Nav_About" AutomationProperties.PositionInSet="2" AutomationProperties.SizeOfSet="2">
                     <ui:NavigationViewItem.Icon>
-                        <controls:DecorativeFontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE946;" Foreground="{DynamicResource EmberBrush}"/>
+                        <controls:DecorativeStrokeIcon Data="{StaticResource NavAboutGeometry}"/>
                     </ui:NavigationViewItem.Icon>
                 </ui:NavigationViewItem>
             </ui:NavigationView.FooterMenuItems>
 
-            <!-- The engine at the sidebar's foot (#574): the flame, the
-                 state and the polling rate, which the status bar carried.
-                 wpf-ui's left template draws PaneFooter under the footer
-                 entries (NavigationViewCompact.xaml,
-                 LeftNavigationViewTemplate). While the pane is closed there
-                 is room for the flame alone, so MainWindow.SetEngineFootMode
-                 hides the two texts. The bindings read MainViewModel, which
-                 the constructor hands this element by name. -->
+            <!-- The engine's row (#574), last in the sidebar: the flame,
+                 the state and the polling rate, which is the text Home's
+                 engine card prints, in the language's own unit. The
+                 bindings read MainViewModel, which the constructor hands
+                 this element by name. -->
             <ui:NavigationView.PaneFooter>
-                <Border x:Name="EngineFoot" Margin="0,2,0,10" MinHeight="40" Padding="12,0" CornerRadius="8"
-                        Background="{DynamicResource SteelRaisedBrush}">
+                <Border x:Name="EngineFoot" Margin="0,12,0,0" MinHeight="40" Padding="12,0" CornerRadius="8"
+                        Background="{DynamicResource SteelFootBrush}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -207,72 +198,41 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <Path x:Name="EngineFootFlame" FlowDirection="LeftToRight" Data="{StaticResource FlameOuterGeometry}"
-                              Width="14" Height="14" Stretch="Uniform"
+                              Width="16" Height="16" Stretch="Uniform"
                               VerticalAlignment="Center">
                             <Path.Style>
                                 <Style TargetType="Path">
-                                    <!-- Cold default: outline only. -->
+                                    <!-- Stopped: the outline alone. Running:
+                                         ember. Idle or stopping: gold. -->
                                     <Setter Property="Fill" Value="Transparent"/>
                                     <Setter Property="Stroke" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
                                     <Setter Property="StrokeThickness" Value="1.2"/>
                                     <Style.Triggers>
-                                        <!-- Glow sweep (#175): static Effect set from triggers only,
-                                             never animated. Running blooms ember, Idle/Stopping faint gold. -->
                                         <DataTrigger Binding="{Binding Dashboard.EngineStateKey}" Value="Running">
                                             <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
                                             <Setter Property="Stroke" Value="{x:Null}"/>
-                                            <Setter Property="Effect">
-                                                <Setter.Value>
-                                                    <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
-                                                </Setter.Value>
-                                            </Setter>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding Dashboard.EngineStateKey}" Value="Idle">
                                             <Setter Property="Fill" Value="{DynamicResource WaitBrush}"/>
                                             <Setter Property="Stroke" Value="{x:Null}"/>
-                                            <Setter Property="Effect">
-                                                <Setter.Value>
-                                                    <DropShadowEffect Color="#E8B434" BlurRadius="8" ShadowDepth="0" Opacity="0.35"/>
-                                                </Setter.Value>
-                                            </Setter>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding Dashboard.EngineStateKey}" Value="Stopping">
                                             <Setter Property="Fill" Value="{DynamicResource WaitBrush}"/>
                                             <Setter Property="Stroke" Value="{x:Null}"/>
-                                            <Setter Property="Effect">
-                                                <Setter.Value>
-                                                    <DropShadowEffect Color="#E8B434" BlurRadius="8" ShadowDepth="0" Opacity="0.35"/>
-                                                </Setter.Value>
-                                            </Setter>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </Path.Style>
                         </Path>
                         <TextBlock x:Name="EngineFootState" Grid.Column="1" Text="{Binding EngineStatusText}"
-                                   FontSize="13" FontWeight="SemiBold" Margin="10,0,8,0"
+                                   FontSize="13" Margin="10,0,8,0"
+                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                                    VerticalAlignment="Center" TextTrimming="CharacterEllipsis"
-                                   AutomationProperties.AutomationId="EngineFootState">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Dashboard.EngineStateKey}" Value="Running">
-                                            <Setter Property="Foreground" Value="{DynamicResource EmberHotBrush}"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-                        <StackPanel x:Name="EngineFootRate" Grid.Column="2" Orientation="Horizontal"
-                                    VerticalAlignment="Center">
-                            <TextBlock Text="{Binding PollingFrequency, StringFormat='{}{0:F0}', Mode=OneWay}"
-                                       FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
-                                       Foreground="{DynamicResource ColdBrush}"/>
-                            <TextBlock Text=" Hz"
-                                       FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
-                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                        </StackPanel>
+                                   AutomationProperties.AutomationId="EngineFootState"/>
+                        <TextBlock x:Name="EngineFootRate" Grid.Column="2" VerticalAlignment="Center"
+                                   FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
+                                   Foreground="{DynamicResource ColdBrush}"
+                                   Text="{Binding Dashboard.PollingFrequencyText, Mode=OneWay}"/>
                     </Grid>
                 </Border>
             </ui:NavigationView.PaneFooter>

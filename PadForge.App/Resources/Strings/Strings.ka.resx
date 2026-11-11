@@ -257,12 +257,14 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>მთავარი</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>დაკავშირებული მოწყობილობები: {0}. კონტროლერები: {1}.</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>შეყვანის ძრავა</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> მოწყობილობა ონლაინ</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>კონტროლერები</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>გამოყენებული დამატებითი</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>დანარჩენი დამატებითშია, თითოეული გამორთულია, სანამ არ ჩართავთ.</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>ჩართული. {0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>კიდევ {0} არის [დამატებითში]. დამატებითი გამორთულია, სანამ არ ჩართავთ.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>დამატებითის გახსნა</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>QR კოდის ჩვენება</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} დაკავშირებულია და არ გამოიყენება.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>გამოყენება</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> მიბმულია, </value></data>
@@ -2317,7 +2319,7 @@
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(კიდევ {0} შეცდომა დაფარულია)</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} ჰც</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} ჰც</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->

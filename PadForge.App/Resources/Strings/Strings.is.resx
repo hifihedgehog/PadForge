@@ -143,7 +143,6 @@
   <data name="Main_Minimize" xml:space="preserve"><value>Lágmarka</value></data>
   <data name="Main_Maximize" xml:space="preserve"><value>Hámarka</value></data>
   <data name="Main_Restore" xml:space="preserve"><value>Endurheimta</value></data>
-  <data name="Main_NavigationPane" xml:space="preserve"><value>Leiðsagnarrúða</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Sýna PadForge</value></data>
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>Sýndarstýring {0}</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>Vélin stöðvuð</value></data>
@@ -272,12 +271,14 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>Heim</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>Tæki tengd: {0}. Leikjastýringar: {1}.</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Inntaksvél</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> tæki tengd</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>Leikjastýringar</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Aukaeiginleikar í notkun</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>Hinir eru undir Aukaeiginleikar og hver þeirra er óvirkur þar til þú kveikir á honum.</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>Kveikt. {0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>{0} í viðbót undir [Aukaeiginleikum]. Aukaeiginleiki er óvirkur þar til þú kveikir á honum.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>Opna Aukaeiginleikar</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>Sýna QR</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} er tengt og ekki í notkun.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Nota það</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> með vörpun, </value></data>
@@ -2482,7 +2483,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(viðbótarvillur faldar: {0})</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Hz</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->

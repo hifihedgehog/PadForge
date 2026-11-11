@@ -143,7 +143,6 @@
   <data name="Main_Minimize" xml:space="preserve"><value>Умањи</value></data>
   <data name="Main_Maximize" xml:space="preserve"><value>Увећај</value></data>
   <data name="Main_Restore" xml:space="preserve"><value>Врати</value></data>
-  <data name="Main_NavigationPane" xml:space="preserve"><value>Окно за навигацију</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Прикажи PadForge</value></data>
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>Виртуелни контролер {0}</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>Механизам је заустављен</value></data>
@@ -272,12 +271,14 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>Почетна</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>Повезани уређаји: {0}. Контролери: {1}.</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Улазни механизам</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> уређаја на мрежи</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>Контролери</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Додаци у употреби</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>Остали су међу Додацима, сваки је искључен док га не укључите.</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>Укључено. {0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Још {0} у [Додацима]. Додатак је искључен док га не укључите.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>Отвори страницу Додаци</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>Прикажи QR</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} је повезан и не користи се.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Користи га</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> мапирано, </value></data>
@@ -2482,7 +2483,7 @@
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(потиснуто додатних грешака: {0})</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Hz</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->

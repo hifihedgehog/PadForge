@@ -257,12 +257,14 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>Inici</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>Dispositius connectats: {0}. Comandaments: {1}.</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Motor d'entrada</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> dispositius en línia</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>Comandaments</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Extres en ús</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>La resta són a Extres, cadascuna desactivada fins que l'actives.</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>Activat. {0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>{0} més a [Extres]. Un extra continua desactivat fins que l'actives.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>Obre Extres</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>Mostra QR</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} està connectat i no s'utilitza.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Fes-lo servir</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> assignats, </value></data>
@@ -2315,7 +2317,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(errors addicionals suprimits: {0})</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Hz</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->

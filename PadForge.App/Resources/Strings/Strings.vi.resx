@@ -143,7 +143,6 @@
   <data name="Main_Minimize" xml:space="preserve"><value>Thu nhỏ</value></data>
   <data name="Main_Maximize" xml:space="preserve"><value>Phóng to</value></data>
   <data name="Main_Restore" xml:space="preserve"><value>Khôi phục</value></data>
-  <data name="Main_NavigationPane" xml:space="preserve"><value>Ngăn điều hướng</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Hiện PadForge</value></data>
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>Tay cầm ảo {0}</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>Bộ máy đã dừng</value></data>
@@ -272,12 +271,14 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>Trang chủ</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>Thiết bị đã kết nối: {0}. Tay cầm: {1}.</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Bộ máy đầu vào</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> thiết bị trực tuyến</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>Tay cầm</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Tiện ích đang dùng</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>Các tiện ích còn lại nằm trong Tiện ích, mỗi tiện ích tắt cho đến khi bạn bật nó.</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>Bật. {0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Còn {0} tiện ích nữa trong [Tiện ích]. Mỗi tiện ích tắt cho đến khi bạn bật nó.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>Mở Tiện ích</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>Hiện mã QR</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} đã kết nối và chưa được dùng.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Dùng nó</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> đã ánh xạ, </value></data>
@@ -2482,7 +2483,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(đã ẩn thêm {0} lỗi)</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Hz</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->

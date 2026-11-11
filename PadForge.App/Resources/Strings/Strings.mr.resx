@@ -257,12 +257,14 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>मुख्यपृष्ठ</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>कनेक्ट केलेले डिव्हाइस: {0}. कंट्रोलर: {1}.</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>इनपुट इंजिन</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> डिव्हाइस ऑनलाइन</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>कंट्रोलर</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>वापरातील अतिरिक्त</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>बाकीचे अतिरिक्त मध्ये आहेत, प्रत्येक तुम्ही चालू करेपर्यंत बंद राहते.</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>चालू. {0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>{0} आणखी [अतिरिक्त] मध्ये आहेत. एखादे अतिरिक्त तुम्ही चालू करेपर्यंत बंद राहते.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>अतिरिक्त उघडा</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>QR दाखवा</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} जोडलेले आहे आणि वापरात नाही.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>वापरा</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> मॅप केलेले, </value></data>
@@ -2314,7 +2316,7 @@
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>({0} अतिरिक्त त्रुटी दडपल्या)</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Hz</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->

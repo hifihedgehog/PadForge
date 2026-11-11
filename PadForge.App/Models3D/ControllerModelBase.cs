@@ -617,9 +617,8 @@ namespace PadForge.Models3D
         /// <see cref="HighlightMaterials"/>.</summary>
         protected static Material CreateAccentHighlight()
         {
-            // Must stay a SOLID brush: GradientHighlight lerps its Color.
-            // AccentButtonBackground became an ember gradient in #175, so the
-            // highlight now derives from the pinned accent Color instead.
+            // Must stay a SOLID brush of its own: GradientHighlight lerps
+            // its Color. It is made from the pinned accent Color.
             Brush accentBrush;
             try
             {

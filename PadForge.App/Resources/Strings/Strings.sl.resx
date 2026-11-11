@@ -143,7 +143,6 @@
   <data name="Main_Minimize" xml:space="preserve"><value>Pomanjšaj</value></data>
   <data name="Main_Maximize" xml:space="preserve"><value>Povečaj</value></data>
   <data name="Main_Restore" xml:space="preserve"><value>Obnovi</value></data>
-  <data name="Main_NavigationPane" xml:space="preserve"><value>Podokno za krmarjenje</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Pokaži PadForge</value></data>
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>Navidezni krmilnik {0}</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>Mehanizem je ustavljen</value></data>
@@ -272,12 +271,14 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>Domov</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>Povezane naprave: {0}. Krmilniki: {1}.</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Mehanizem vnosa</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> povezanih naprav</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>Krmilniki</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Dodatki v uporabi</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>Preostali so med dodatki, vsak je izklopljen, dokler ga ne vklopite.</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>Vklopljeno. {0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Še {0} na strani [Dodatki]. Dodatek je izklopljen, dokler ga ne vklopite.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>Odpri dodatke</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>Prikaži QR</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>Naprava {0} je povezana in ni v uporabi.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Uporabi</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> preslikanih, </value></data>
@@ -2482,7 +2483,7 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(skritih dodatnih napak: {0})</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Hz</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->

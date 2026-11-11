@@ -257,12 +257,14 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>ໜ້າຫຼັກ</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>ອຸປະກອນທີ່ເຊື່ອມຕໍ່: {0}. ຕົວຄວບຄຸມ: {1}.</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>ເອັນຈິນອິນພຸດ</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> ອຸປະກອນອອນລາຍ</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>ຕົວຄວບຄຸມ</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>ສ່ວນເສີມທີ່ໃຊ້ຢູ່</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>ອັນອື່ນໆຢູ່ໃນໜ້າ ສ່ວນເສີມ, ແຕ່ລະອັນປິດຢູ່ຈົນກວ່າທ່ານຈະເປີດມັນ.</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>ເປີດ. {0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>ອີກ {0} ອັນຢູ່ໃນໜ້າ [ສ່ວນເສີມ]. ສ່ວນເສີມຈະປິດຢູ່ຈົນກວ່າທ່ານຈະເປີດມັນ.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>ເປີດສ່ວນເສີມ</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>ສະແດງ QR</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} ເຊື່ອມຕໍ່ຢູ່ ແລະ ບໍ່ໄດ້ຖືກໃຊ້ງານ.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>ໃຊ້ມັນ</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> ແມັບແລ້ວ, </value></data>
@@ -2310,7 +2312,7 @@
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(ລະງັບຂໍ້ຜິດພາດເພີ່ມເຕີມ {0} ລາຍການ)</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Hz</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->

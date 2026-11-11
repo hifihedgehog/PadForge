@@ -143,7 +143,6 @@
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Nesorina ny fitaovana.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> fitaovana an-tserasera</value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> mifandray</value></data>
   <data name="FirstRun_Skip" xml:space="preserve"><value>Dingao</value></data>
   <data name="FirstRun_Next" xml:space="preserve"><value>Manaraka</value></data>
@@ -1016,7 +1015,7 @@
 {1}</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Hz</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->
@@ -2028,4 +2027,5 @@
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Fivadihana, momentum, valiny, fanafainganana, fling</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Fitaovana fivoahana, fantsona, tanjaka, feo iray isaky ny motera</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Fiovan'ny teboka afovoany, endriky ny deadzone sy ny sandany isaky ny axe, fiolahana isaky ny axe, elanelana, familiana</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>Fitaovana mifandray: {0}. Contrôleur: {1}.</value></data>
 </root>

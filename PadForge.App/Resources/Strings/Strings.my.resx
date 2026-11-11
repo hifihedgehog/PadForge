@@ -257,12 +257,14 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>ပင်မ</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>ချိတ်ဆက်ထားသော စက်ပစ္စည်းများ: {0}။ ကွန်ထရိုလာများ: {1}။</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>အဝင် အင်ဂျင်</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> စက်ပစ္စည်း အွန်လိုင်း</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>ကွန်ထရိုလာများ</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>အသုံးပြုနေသော အပိုများ</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>ကျန်သည်များသည် အပိုများတွင် ရှိပြီး သင် မဖွင့်မချင်း တစ်ခုချင်းစီ ပိတ်ထားသည်။</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>ဖွင့်။ {0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>နောက်ထပ် {0} ခု [အပိုများ] တွင် ရှိသည်။ အပိုတစ်ခုကို သင် မဖွင့်မချင်း ပိတ်ထားသည်။</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>အပိုများကို ဖွင့်ရန်</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>QR ပြရန်</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} ချိတ်ဆက်ထားပြီး အသုံးမပြုရသေးပါ။</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>အသုံးပြုရန်</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> ခု မက်ပ်ထား၊ </value></data>
@@ -2314,7 +2316,7 @@
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(နောက်ထပ် အမှား {0} ခုကို မပြဘဲ ချန်ထားသည်)</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Hz</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->

@@ -45,26 +45,28 @@ namespace PadForge.Tests
             }
         }
 
-        /// <summary>Home (#574), top to bottom: the engine's card, the offer,
-        /// the controllers under their heading, and the extras in use under
-        /// theirs with the line and the button at the foot. The engine's
-        /// card has no heading over it. Each extra is listed once, in the
-        /// catalog's order and by the catalog's own title.</summary>
+        /// <summary>Home (#574), top to bottom: the page's title, the
+        /// engine's card, the offer, the controllers under their heading,
+        /// and the extras in use under theirs with the line and the button
+        /// at the foot. The engine's card has no heading over it. Each
+        /// extra is listed once, in the catalog's order and by the
+        /// catalog's own title.</summary>
         [Fact]
         public void Home_SectionsRunInTheDecidedOrder()
         {
             string page = RepoText("PadForge.App", "Views", "HomePage.xaml");
-            const string heading = ", Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}";
+            const string heading = ", Source={x:Static strings:Strings.Instance}}";
             int last = -1;
             foreach (string needle in new[]
             {
+                "<TextBlock x:Name=\"HomeTitle\"",
                 "<Border x:Name=\"EngineCard\"",
                 "<Border x:Name=\"HomeOffer\"",
-                "{Binding Home_Controllers" + heading,
+                "Text=\"{Binding Home_Controllers" + heading,
                 "<ItemsControl x:Name=\"SlotsItemsControl\">",
-                "{Binding Home_ExtrasInUse" + heading,
-                "<WrapPanel x:Name=\"ExtrasInUseRows\"",
-                "<WrapPanel x:Name=\"ExtrasFoot\">",
+                "Value=\"{Binding Home_ExtrasInUse" + heading,
+                "<controls:TileGridPanel x:Name=\"ExtrasInUseRows\"",
+                "<StackPanel x:Name=\"ExtrasFoot\"",
             })
             {
                 int at = page.IndexOf(needle, StringComparison.Ordinal);
@@ -73,7 +75,10 @@ namespace PadForge.Tests
                 Assert.True(at > last, needle + " is out of order");
                 last = at;
             }
-            Assert.DoesNotContain("{Binding Dashboard_InputEngine" + heading, page);
+            // A heading is drawn as written (the SectionTitle style), and
+            // the engine's card has none.
+            Assert.DoesNotContain("UpperConverter", page);
+            Assert.DoesNotContain("Text=\"{Binding Dashboard_InputEngine" + heading, page);
             AssertTitleOrder(page,
                 "Title=\"{Binding ", ", Source={x:Static strings:Strings.Instance}}\"",
                 ExtrasTitleKeys);

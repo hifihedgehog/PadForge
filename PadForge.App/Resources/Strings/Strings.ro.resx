@@ -143,7 +143,6 @@
   <data name="Main_Minimize" xml:space="preserve"><value>Minimizare</value></data>
   <data name="Main_Maximize" xml:space="preserve"><value>Maximizare</value></data>
   <data name="Main_Restore" xml:space="preserve"><value>Restaurare</value></data>
-  <data name="Main_NavigationPane" xml:space="preserve"><value>Panou de navigare</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Afișare PadForge</value></data>
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>Controler virtual {0}</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>Motor oprit</value></data>
@@ -272,12 +271,14 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>Acasă</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>Dispozitive conectate: {0}. Controlere: {1}.</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Motor de intrare</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> dispozitive conectate</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>Controlere</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Extra în uz</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>Restul sunt în Extra, fiecare dezactivată până când o activați.</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>Activat. {0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Încă {0} în [Extra]. O extra rămâne dezactivată până când o activați.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>Deschidere Extra</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>Afișare QR</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} este conectat și nu este folosit.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Utilizare</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> mapate, </value></data>
@@ -2482,7 +2483,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(erori suplimentare suprimate: {0})</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Hz</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->

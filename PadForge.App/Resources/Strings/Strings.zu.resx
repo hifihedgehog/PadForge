@@ -199,10 +199,13 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>Ikhaya</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>Amadivayisi axhunyiwe: {0}. Izilawuli: {1}.</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>Izilawuli</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Okwengeziwe okusetshenziswayo</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>Okusele kusekhasini elithi Okwengeziwe, ngakunye kuvaliwe uze ukuvule.</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>Vuliwe. {0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Okunye okungu-{0} kusekhasini elithi [Okwengeziwe]. Ngakunye kuvaliwe uze ukuvule.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>Vula Okwengeziwe</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>Bonisa i-QR</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} ixhunyiwe futhi ayisetshenziswa.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Yisebenzise</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Injini iyasebenza. Chofoza ukuze uyimise.</value></data>
@@ -1299,7 +1302,7 @@
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(amaphutha engeziwe angu-{0} afihliwe)</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Hz</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->

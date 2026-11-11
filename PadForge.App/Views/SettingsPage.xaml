@@ -10,11 +10,6 @@
              xmlns:common="clr-namespace:PadForge.Common">
 
     <UserControl.Resources>
-        <!-- Hover glow (#175): hover color changes carry a hue-matched
-             bloom. Every hover shift on this page is neutral steel, so the
-             glow is the faint ember signature. Frozen shared static effect,
-             set from triggers only, never animated. -->
-        <DropShadowEffect x:Key="NeutralHoverGlow" po:Freeze="True" Color="#FF6B2C" ShadowDepth="0" BlurRadius="10" Opacity="0.30"/>
         <!-- Hover glow sweep (#175): stock-chrome classes bloom in the same
              moment their hover fill shifts. BasedOn the WPF-UI defaults so
              theme brushes survive. -->
@@ -22,18 +17,8 @@
             <!-- MinHeight mirrors the App.xaml implicit Button style (32px
                  grid), which this page-local implicit replaces. -->
             <Setter Property="MinHeight" Value="32"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
-                </Trigger>
-            </Style.Triggers>
         </Style>
         <Style TargetType="CheckBox" BasedOn="{StaticResource DefaultCheckBoxStyle}">
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
-                </Trigger>
-            </Style.Triggers>
         </Style>
         <Style TargetType="ComboBox" BasedOn="{StaticResource DefaultComboBoxStyle}">
             <!-- First four setters mirror the App.xaml implicit ComboBox
@@ -42,18 +27,8 @@
             <Setter Property="MaxDropDownHeight" Value="200"/>
             <Setter Property="MinHeight" Value="30"/>
             <Setter Property="Padding" Value="8,4"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
-                </Trigger>
-            </Style.Triggers>
         </Style>
         <Style TargetType="ui:NumberBox" BasedOn="{StaticResource DefaultUiNumberBoxStyle}">
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
-                </Trigger>
-            </Style.Triggers>
         </Style>
     </UserControl.Resources>
 

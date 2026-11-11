@@ -257,12 +257,14 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>Pradžia</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>Prijungti įrenginiai: {0}. Valdikliai: {1}.</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Įvesties variklis</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> įrenginiai prijungti</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>Valdikliai</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Naudojami papildai</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>Kiti papildai yra puslapyje „Papildai“, kiekvienas išjungtas, kol jo neįjungiate.</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>Įjungta. {0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Dar {0} skiltyje [Papildai]. Papildas išjungtas, kol jo neįjungiate.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>Atidaryti papildus</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>Rodyti QR</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} prijungtas ir nenaudojamas.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Naudoti</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> priskirta, </value></data>
@@ -2315,7 +2317,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(nerodoma papildomų klaidų: {0})</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Hz</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->

@@ -257,12 +257,14 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>Нүүр</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>Холбогдсон төхөөрөмжүүд: {0}. Контроллерүүд: {1}.</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Оролтын хөдөлгүүр</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> төхөөрөмж онлайн</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>Контроллерүүд</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Ашиглаж буй Нэмэлтүүд</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>Бусад нь Нэмэлтүүд хуудсанд байгаа бөгөөд та асаах хүртэл тус бүр унтраалттай байна.</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>Асаалттай. {0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Бусад {0} нь [Нэмэлтүүд] хуудсанд байгаа. Нэмэлт бүр та асаах хүртэл унтраалттай байна.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>Нэмэлтүүдийг нээх</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>QR харуулах</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} холбогдсон боловч ашиглагдаагүй байна.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Ашиглах</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> оноосон, </value></data>
@@ -2317,7 +2319,7 @@
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(нэмэлт {0} алдааг нуусан)</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Гц</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Гц</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->

@@ -257,12 +257,14 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>Laman Utama</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>Peranti disambungkan: {0}. Pengawal: {1}.</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Enjin Input</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> peranti dalam talian</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>Pengawal</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Tambahan yang Digunakan</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>Yang selebihnya berada dalam Tambahan, setiap satu dimatikan sehingga anda menghidupkannya.</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>Hidup. {0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>{0} lagi dalam [Tambahan]. Setiap tambahan kekal dimatikan sehingga anda menghidupkannya.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>Buka Tambahan</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>Tunjuk QR</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} telah disambungkan dan tidak digunakan.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Gunakan</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> dipetakan, </value></data>
@@ -2316,7 +2318,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>({0} ralat tambahan disekat)</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Hz</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->

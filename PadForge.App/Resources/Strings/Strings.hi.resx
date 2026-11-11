@@ -143,7 +143,6 @@
   <data name="Main_Minimize" xml:space="preserve"><value>छोटा करें</value></data>
   <data name="Main_Maximize" xml:space="preserve"><value>बड़ा करें</value></data>
   <data name="Main_Restore" xml:space="preserve"><value>पूर्ववत आकार में लाएँ</value></data>
-  <data name="Main_NavigationPane" xml:space="preserve"><value>नेविगेशन पैनल</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>PadForge दिखाएँ</value></data>
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>वर्चुअल कंट्रोलर {0}</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>इंजन रुका है</value></data>
@@ -272,12 +271,14 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>होम</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>कनेक्ट किए गए डिवाइस: {0}। कंट्रोलर: {1}।</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>इनपुट इंजन</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> डिवाइस ऑनलाइन</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>कंट्रोलर</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>उपयोग में एक्स्ट्रा</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>बाकी एक्स्ट्रा में हैं, और हर एक तब तक बंद रहती है, जब तक आप उसे चालू नहीं करते।</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>चालू। {0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>{0} और [एक्स्ट्रा] में हैं। हर एक्स्ट्रा तब तक बंद रहता है, जब तक आप उसे चालू नहीं करते।</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>एक्स्ट्रा खोलें</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>QR दिखाएँ</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} कनेक्ट है और उपयोग में नहीं है।</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>उपयोग करें</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> मैप किए गए, </value></data>
@@ -2482,7 +2483,7 @@
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>({0} अतिरिक्त त्रुटियाँ नहीं दिखाई गईं)</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Hz</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->

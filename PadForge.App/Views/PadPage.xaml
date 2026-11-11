@@ -27,15 +27,6 @@
                 <x:Type TypeName="input:EqBandType"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
-        <!-- #175 hover-glow: hue-matched glows for anything whose color
-             changes on hover. Ember hover gets an ember glow, cold hover a
-             cold glow, steel/brightness-only hover the faint neutral ember
-             (the app's signature hue). Static Effect setters only. Never
-             animate Effect or Effect.Opacity from style triggers (startup
-             crash). Frozen so one instance is shared safely. -->
-        <DropShadowEffect x:Key="EmberHoverGlow" po:Freeze="True" Color="#FF6B2C" ShadowDepth="0" BlurRadius="12" Opacity="0.45"/>
-        <DropShadowEffect x:Key="ColdHoverGlow" po:Freeze="True" Color="#58B6E4" ShadowDepth="0" BlurRadius="10" Opacity="0.40"/>
-        <DropShadowEffect x:Key="NeutralHoverGlow" po:Freeze="True" Color="#FF6B2C" ShadowDepth="0" BlurRadius="10" Opacity="0.30"/>
 
         <!-- Touchpad stick rows (#175 item 15): settings persist as 0..1
              fractions, the DZ-row idiom displays percent. Two-way converter
@@ -68,11 +59,6 @@
             <Setter Property="Padding" Value="2,1"/>
             <!-- #175 hover-glow: hover lightens the recessed well one step
                  (TextControlBackgroundPointerOver), a neutral change. -->
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
-                </Trigger>
-            </Style.Triggers>
         </Style>
         <Style x:Key="DzDigitEdit" TargetType="TextBox" BasedOn="{StaticResource DefaultTextBoxStyle}">
             <Setter Property="Width" Value="56"/>
@@ -82,11 +68,6 @@
             <Setter Property="Margin" Value="6,0,0,0"/>
             <Setter Property="Padding" Value="2,1"/>
             <Setter Property="ToolTip" Value="{Binding Pad_RawAxisValue, Source={x:Static strings:Strings.Instance}}"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
-                </Trigger>
-            </Style.Triggers>
         </Style>
         <!-- A unit reads as part of its row's phrase, so it takes the
              label's color (owner, 2026-10-30). UnitTextTests pins it. -->
@@ -163,11 +144,6 @@
             <Setter Property="TextAlignment" Value="Right"/>
             <Setter Property="Margin" Value="6,0,0,0"/>
             <Setter Property="Padding" Value="2,1"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
-                </Trigger>
-            </Style.Triggers>
         </Style>
         <!-- Tight variant kept as an alias: EmberIconButton's fixed 28x28
              already gives the compact RGB rows their footprint. -->
@@ -249,42 +225,11 @@
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="Bd" Property="Background" Value="#14FF6B2C"/>
-                                <Setter TargetName="Bd" Property="Effect" Value="{StaticResource EmberHoverGlow}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-        </Style>
-
-        <!-- Stage chip glyphs (#175 item 10), here from Home with the chips
-             (#574): ember when the stage carries a non-default
-             configuration, ashen steel when inert. Font stages (gyro /
-             lighting / touchpad / audio) share the text style. The Zacksly
-             stick / trigger shapes share the path style. -->
-        <Style x:Key="StageGlyphText" TargetType="TextBlock">
-            <Setter Property="FontFamily" Value="Segoe Fluent Icons, Segoe MDL2 Assets"/>
-            <Setter Property="FontSize" Value="13"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
-            <Setter Property="Opacity" Value="0.65"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding IsHot}" Value="True">
-                    <Setter Property="Foreground" Value="{DynamicResource EmberBrush}"/>
-                    <Setter Property="Opacity" Value="1"/>
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-        <Style x:Key="StageGlyphShape" TargetType="Path">
-            <Setter Property="Stretch" Value="Uniform"/>
-            <Setter Property="Fill" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
-            <Setter Property="Opacity" Value="0.65"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding IsHot}" Value="True">
-                    <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
-                    <Setter Property="Opacity" Value="1"/>
-                </DataTrigger>
-            </Style.Triggers>
         </Style>
 
         <!-- ═══════════════ #175 hover-glow styles ═══════════════
@@ -314,29 +259,14 @@
 
         <!-- Shift-layer tab chips: stock RadioButton chrome. -->
         <Style x:Key="ShiftLayerTabChip" TargetType="RadioButton" BasedOn="{StaticResource {x:Type RadioButton}}">
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
-                </Trigger>
-            </Style.Triggers>
         </Style>
 
         <!-- Stock-chrome item containers, page-wide (no app-level glow for
              these two): Macros list, macro Actions list, sound packages
              list, and every mapping-picker dropdown item. -->
         <Style TargetType="ComboBoxItem" BasedOn="{StaticResource {x:Type ComboBoxItem}}">
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
-                </Trigger>
-            </Style.Triggers>
         </Style>
         <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
-                </Trigger>
-            </Style.Triggers>
         </Style>
 
         <!-- Adaptive-trigger mode cards (#175 competitor item 5): the
@@ -359,9 +289,6 @@
                             <ContentPresenter/>
                         </Border>
                         <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="CardBd" Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
-                            </Trigger>
                             <Trigger Property="IsSelected" Value="True">
                                 <Setter TargetName="CardBd" Property="Background" Value="{DynamicResource EmberTintBrush}"/>
                                 <Setter TargetName="CardBd" Property="BorderBrush" Value="#66FF6B2C"/>
@@ -408,7 +335,7 @@
                  beside the title, where a panel that cannot wrap gave the
                  last child whatever width was left, which was none.
                  Measured with tools/rowmeasure at the 900 window minimum
-                 with the navigation pane open, the line holds 632 and the
+                 beside the sidebar, the line holds 628 and the
                  power button takes up to 254 of it. The title needs up to
                  362 (Tamil) and the Preset chip up to 617 at its combo's
                  cap (Swahili), so the title trims and the chip's combo
@@ -579,9 +506,6 @@
                                 </Setter.Value>
                             </Setter>
                             <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
-                                </Trigger>
                                 <DataTrigger Binding="{Binding IsEnabled}" Value="True">
                                     <Setter Property="Background" Value="{DynamicResource EmberTintBrush}"/>
                                     <Setter Property="BorderBrush" Value="#66FF6B2C"/>
@@ -810,8 +734,8 @@
                            AutomationProperties.AutomationId="Pad_AddDevice"/>
                 </WrapPanel>
 
-                <!-- Stage chips (#175 item 10), here from the slot's Home card
-                     (#574). One glyph per configuration stage the slot's
+                <!-- Stage chips (#175 item 10), which the slot's Home card
+                     shows too. One glyph per configuration stage the slot's
                      assigned devices actually have, mirroring this page's
                      capability gates. Ember when the stage carries a
                      non-default configuration, ashen steel when inert.
@@ -824,55 +748,13 @@
                      none for the same reason. -->
                 <ItemsControl x:Name="StageChips" Grid.Column="1" DataContext="{x:Null}"
                               ItemsSource="{Binding SelectedSlotSummary.StageLedger}"
+                              ItemTemplate="{StaticResource StageChipTemplate}"
                               VerticalAlignment="Center" Margin="12,0,0,0" Focusable="False">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Horizontal"/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Margin="10,0,0,0" Background="Transparent"
-                                  ToolTipService.IsEnabled="{Binding HasSummary}"
-                                  ToolTipService.InitialShowDelay="400"
-                                  ToolTipService.ShowDuration="20000">
-                                <Grid.ToolTip>
-                                    <ItemsControl ItemsSource="{Binding SummaryLines}" MaxWidth="400">
-                                        <ItemsControl.ItemTemplate>
-                                            <DataTemplate>
-                                                <!-- Icon, name, settings (user direction 2026-07-06):
-                                                     the same order as the card's main device label. -->
-                                                <TextBlock TextWrapping="Wrap" Margin="0,1,0,1"><Run Text="{Binding DeviceGlyph, Mode=OneWay}" FontFamily="Segoe MDL2 Assets" FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/><Run Text="{Binding DeviceName, Mode=OneWay}" FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/><Run Text="{Binding Tokens, Mode=OneWay}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/></TextBlock>
-                                            </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-                                    </ItemsControl>
-                                </Grid.ToolTip>
-                                <!-- Zacksly stick silhouette (Sticks stage). -->
-                                <Grid Width="14" Height="14"
-                                      Visibility="{Binding IsStickShape, Converter={StaticResource BoolToVisibilityConverter}}">
-                                    <Path FlowDirection="LeftToRight" Data="{StaticResource ZackslyStickOuterRingGeometry}" Style="{StaticResource StageGlyphShape}"/>
-                                    <Path FlowDirection="LeftToRight" Data="{StaticResource ZackslyStickInnerDiscGeometry}" Style="{StaticResource StageGlyphShape}"/>
-                                </Grid>
-                                <!-- Zacksly trigger silhouette (Triggers stage). -->
-                                <Grid Width="14" Height="14"
-                                      Visibility="{Binding IsTriggerShape, Converter={StaticResource BoolToVisibilityConverter}}">
-                                    <Path FlowDirection="LeftToRight" Data="{StaticResource ZackslyTriggerOuterBodyGeometry}" Style="{StaticResource StageGlyphShape}"/>
-                                </Grid>
-                                <!-- Font stages (gyro / lighting / touchpad / audio). -->
-                                <controls:GlyphText Text="{Binding Glyph}">
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock" BasedOn="{StaticResource StageGlyphText}">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Glyph}" Value="">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </controls:GlyphText>
-                            </Grid>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </Grid>
 
@@ -1374,11 +1256,6 @@
                                                      resolves lexically, so the page-level glow
                                                      effect is reachable from the popup. -->
                                                 <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
-                                                    <Style.Triggers>
-                                                        <Trigger Property="IsMouseOver" Value="True">
-                                                            <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
-                                                        </Trigger>
-                                                    </Style.Triggers>
                                                 </Style>
                                             </ContextMenu.Resources>
                                             <MenuItem Header="{Binding Pad_Shift_Configure, Source={x:Static strings:Strings.Instance}}"
@@ -1537,11 +1414,6 @@
                                 <Setter Property="Cursor" Value="Hand"/>
                                 <Setter Property="Margin" Value="0,0,6,4"/>
                                 <Setter Property="Padding" Value="8,2"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Effect" Value="{StaticResource EmberHoverGlow}"/>
-                                    </Trigger>
-                                </Style.Triggers>
                             </Style>
                             <Style x:Key="PipelineChipToken" TargetType="TextBlock">
                                 <Setter Property="FontFamily" Value="{StaticResource TelemetryFontFamily}"/>
@@ -2091,11 +1963,6 @@
                                 </Setter>
                                 <!-- #175 hover-glow: stock header hover is a
                                      neutral fill change. -->
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
-                                    </Trigger>
-                                </Style.Triggers>
                             </Style>
                         </DataGrid.ColumnHeaderStyle>
                         <DataGrid.CellStyle>
@@ -10220,7 +10087,6 @@
                                                     <Style.Triggers>
                                                         <Trigger Property="IsMouseOver" Value="True">
                                                             <Setter Property="BorderBrush" Value="{DynamicResource ColdBrush}"/>
-                                                            <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
                                                         </Trigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -10237,7 +10103,6 @@
                                                     <Style.Triggers>
                                                         <Trigger Property="IsMouseOver" Value="True">
                                                             <Setter Property="BorderBrush" Value="{DynamicResource ColdBrush}"/>
-                                                            <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
                                                         </Trigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -10254,7 +10119,6 @@
                                                     <Style.Triggers>
                                                         <Trigger Property="IsMouseOver" Value="True">
                                                             <Setter Property="BorderBrush" Value="{DynamicResource ColdBrush}"/>
-                                                            <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
                                                         </Trigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -10271,7 +10135,6 @@
                                                     <Style.Triggers>
                                                         <Trigger Property="IsMouseOver" Value="True">
                                                             <Setter Property="BorderBrush" Value="{DynamicResource ColdBrush}"/>
-                                                            <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
                                                         </Trigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -10288,7 +10151,6 @@
                                                     <Style.Triggers>
                                                         <Trigger Property="IsMouseOver" Value="True">
                                                             <Setter Property="BorderBrush" Value="{DynamicResource ColdBrush}"/>
-                                                            <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
                                                         </Trigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -10305,7 +10167,6 @@
                                                     <Style.Triggers>
                                                         <Trigger Property="IsMouseOver" Value="True">
                                                             <Setter Property="BorderBrush" Value="{DynamicResource ColdBrush}"/>
-                                                            <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
                                                         </Trigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -10322,7 +10183,6 @@
                                                     <Style.Triggers>
                                                         <Trigger Property="IsMouseOver" Value="True">
                                                             <Setter Property="BorderBrush" Value="{DynamicResource ColdBrush}"/>
-                                                            <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
                                                         </Trigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -10339,7 +10199,6 @@
                                                     <Style.Triggers>
                                                         <Trigger Property="IsMouseOver" Value="True">
                                                             <Setter Property="BorderBrush" Value="{DynamicResource ColdBrush}"/>
-                                                            <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
                                                         </Trigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -10961,7 +10820,6 @@
                                     <Style.Triggers>
                                         <Trigger Property="IsMouseOver" Value="True">
                                             <Setter Property="BorderBrush" Value="{DynamicResource ColdBrush}"/>
-                                            <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
                                         </Trigger>
                                     </Style.Triggers>
                                 </Style>
@@ -12617,11 +12475,6 @@
                                             <!-- #175 hover-glow: based on DefaultButtonStyle
                                                  directly (not the page implicit), so the
                                                  neutral glow trigger rides here. -->
-                                            <Style.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
-                                                </Trigger>
-                                            </Style.Triggers>
                                         </Style>
                                     </WrapPanel.Resources>
                                     <!-- Variable chips: a..z. Visibility tracks VariableCount so
@@ -12713,11 +12566,6 @@
                                             <Setter Property="FontSize" Value="11"/>
                                             <!-- #175 hover-glow: DefaultButtonStyle bypasses
                                                  the implicit Button glow, so it rides here. -->
-                                            <Style.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
-                                                </Trigger>
-                                            </Style.Triggers>
                                         </Style>
                                     </WrapPanel.Resources>
                                     <Button Content="{Binding Macro_Expression_Recipe_Single, Source={x:Static strings:Strings.Instance}}" Tag="a"

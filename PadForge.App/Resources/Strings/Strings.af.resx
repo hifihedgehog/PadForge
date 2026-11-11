@@ -257,12 +257,14 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>Tuis</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>Gekoppelde toestelle: {0}. Controllers: {1}.</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Invoerenjin</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> toestelle aanlyn</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>Controllers</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Ekstras in gebruik</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>Die res is op Ekstras, elk af totdat jy dit aanskakel.</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>Aan. {0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>{0} meer in [Ekstras]. 'n Ekstra is af totdat jy dit aanskakel.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>Maak Ekstras oop</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>Wys QR</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} is gekoppel en nie in gebruik nie.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Gebruik dit</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> toegewys, </value></data>

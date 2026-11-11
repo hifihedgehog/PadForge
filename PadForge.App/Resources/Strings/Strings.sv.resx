@@ -143,7 +143,6 @@
   <data name="Main_Minimize" xml:space="preserve"><value>Minimera</value></data>
   <data name="Main_Maximize" xml:space="preserve"><value>Maximera</value></data>
   <data name="Main_Restore" xml:space="preserve"><value>Återställ</value></data>
-  <data name="Main_NavigationPane" xml:space="preserve"><value>Navigeringsfönster</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Visa PadForge</value></data>
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>Virtuell handkontroll {0}</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>Motorn stoppad</value></data>
@@ -272,12 +271,14 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>Hem</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>Anslutna enheter: {0}. Handkontroller: {1}.</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Inmatningsmotor</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> enheter online</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>Handkontroller</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Tillägg som används</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>Resten finns under Tillägg, och var och en är avstängd tills du slår på den.</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>På. {0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>{0} till under [Tillägg]. Ett tillägg är avstängt tills du slår på det.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>Öppna Tillägg</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>Visa QR</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} är ansluten och används inte.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Använd den</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> mappade, </value></data>
@@ -2482,7 +2483,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>({0} ytterligare fel undertrycktes)</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Hz</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->

@@ -143,7 +143,6 @@
   <data name="Main_Minimize" xml:space="preserve"><value>Kicsinyítés</value></data>
   <data name="Main_Maximize" xml:space="preserve"><value>Nagyítás</value></data>
   <data name="Main_Restore" xml:space="preserve"><value>Visszaállítás</value></data>
-  <data name="Main_NavigationPane" xml:space="preserve"><value>Navigációs panel</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>A PadForge megjelenítése</value></data>
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>{0}. virtuális kontroller</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>A bemeneti motor leállt</value></data>
@@ -272,12 +271,14 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>Kezdőlap</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>Csatlakoztatott eszközök: {0}. Kontrollerek: {1}.</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Bemeneti motor</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> eszköz online</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>Kontrollerek</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Használatban lévő extrák</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>A többi az Extrák oldalon található, mindegyik kikapcsolva marad, amíg be nem kapcsolja.</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>Be. {0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>{0} további az [Extrák] oldalon található. Az extra kikapcsolva marad, amíg be nem kapcsolja.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>Extrák megnyitása</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>QR megjelenítése</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>A(z) {0} csatlakoztatva van, de nincs használatban.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Használja</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> hozzárendelve, </value></data>
@@ -2482,7 +2483,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(további {0} hiba elrejtve)</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Hz</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->

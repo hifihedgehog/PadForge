@@ -313,7 +313,6 @@ namespace PadForge.Tests
             vm.SetSelectedPad(2);
             Assert.Same(vm.SlotSummaries[1], vm.SelectedSlotSummary);
             Assert.Contains(nameof(DashboardViewModel.SelectedSlotSummary), raised);
-            Assert.True(vm.SelectedSlotSummary.IsSelected);
 
             // The slots change: the summaries are made again, and the
             // header must not keep one that left the list.
@@ -602,8 +601,8 @@ namespace PadForge.Tests
         /// <summary>The header's first two lines: the type chip and the
         /// title, the Preset chip as it was, the power button with the
         /// slot's state word, Driven by with the device picker as it was,
-        /// Add Device, and the stage chips that came from the slot's Home
-        /// card.</summary>
+        /// Add Device, and the stage chips the slot's Home card shows
+        /// too.</summary>
         [Fact]
         public void TheHeaderNamesTheControllerAndItsDevice()
         {
@@ -659,10 +658,17 @@ namespace PadForge.Tests
             Assert.Equal("{Binding Pad_AddDevice, Source={x:Static strings:Strings.Instance}}", (string)add.Attribute("Content"));
             Assert.Same(drivenBy.Parent, add.Parent);
 
-            // The stage chips, and Home's card without them.
+            // The stage chips. Home's card shows the same row, and both
+            // draw a chip with the one shared template.
             var chips = Named(page, "StageChips");
             Assert.Equal("{Binding SelectedSlotSummary.StageLedger}", (string)chips.Attribute("ItemsSource"));
-            Assert.DoesNotContain("StageLedger", ExtrasPageTests.RepoText("PadForge.App", "Views", "HomePage.xaml"));
+            Assert.Equal("{StaticResource StageChipTemplate}", (string)chips.Attribute("ItemTemplate"));
+            string home = ExtrasPageTests.RepoText("PadForge.App", "Views", "HomePage.xaml");
+            Assert.Contains("ItemsSource=\"{Binding StageLedger}\"", home);
+            Assert.Contains("ItemTemplate=\"{StaticResource StageChipTemplate}\"", home);
+            string shared = ExtrasPageTests.RepoText("PadForge.App", "Resources", "ControllerIcons.xaml");
+            Assert.Single(System.Text.RegularExpressions.Regex.Matches(shared, "<DataTemplate x:Key=\"StageChipTemplate\""));
+            Assert.DoesNotContain("x:Key=\"StageChipTemplate\"", text);
 
             // The offer band is in the header still, between the device
             // line and the sections.

@@ -143,7 +143,6 @@
   <data name="Main_Minimize" xml:space="preserve"><value>ย่อเล็กสุด</value></data>
   <data name="Main_Maximize" xml:space="preserve"><value>ขยายใหญ่สุด</value></data>
   <data name="Main_Restore" xml:space="preserve"><value>คืนค่า</value></data>
-  <data name="Main_NavigationPane" xml:space="preserve"><value>บานหน้าต่างนำทาง</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>แสดง PadForge</value></data>
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>คอนโทรลเลอร์เสมือน {0}</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>เอนจินหยุดแล้ว</value></data>
@@ -272,12 +271,14 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>หน้าแรก</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>อุปกรณ์ที่เชื่อมต่อ: {0} คอนโทรลเลอร์: {1}</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>เอนจินอินพุต</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> อุปกรณ์ออนไลน์</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>คอนโทรลเลอร์</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>ส่วนเสริมที่ใช้อยู่</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>ส่วนที่เหลืออยู่ในส่วนเสริม และแต่ละอย่างจะปิดอยู่จนกว่าคุณจะเปิดใช้</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>เปิด {0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>อีก {0} รายการอยู่ใน [ส่วนเสริม] ส่วนเสริมจะปิดอยู่จนกว่าคุณจะเปิดใช้</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>เปิดส่วนเสริม</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>แสดง QR</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} เชื่อมต่ออยู่และยังไม่ได้ใช้งาน</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>ใช้เลย</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> แมปแล้ว, </value></data>
@@ -2482,7 +2483,7 @@
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(ข้อผิดพลาดเพิ่มเติมอีก {0} รายการไม่ได้แสดง)</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Hz</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->

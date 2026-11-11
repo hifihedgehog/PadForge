@@ -140,7 +140,6 @@
   <data name="Main_Minimize" xml:space="preserve"><value>Minimaliseren</value></data>
   <data name="Main_Maximize" xml:space="preserve"><value>Maximaliseren</value></data>
   <data name="Main_Restore" xml:space="preserve"><value>Herstellen</value></data>
-  <data name="Main_NavigationPane" xml:space="preserve"><value>Navigatiepaneel</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>PadForge tonen</value></data>
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>Virtuele Controller {0}</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>Engine gestopt</value></data>
@@ -262,12 +261,14 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>Startpagina</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>Apparaten verbonden: {0}. Controllers: {1}.</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Invoer-engine</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> apparaten online</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>Controllers</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Extra's in gebruik</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>De rest staat in Extra's, elke functie blijft uit tot je hem inschakelt.</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>Aan. {0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>{0} meer in [Extra's]. Een extra blijft uit tot je hem inschakelt.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>Extra's openen</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>QR tonen</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} is verbonden en wordt niet gebruikt.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Gebruiken</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> toegewezen, </value></data>
@@ -1157,7 +1158,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>({0} extra fout(en) onderdrukt)</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Hz</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->

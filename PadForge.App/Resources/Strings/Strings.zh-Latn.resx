@@ -257,12 +257,14 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>Zhǔyè</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>Yǐ liánjiē de shèbèi: {0}. Kòngzhìqì: {1}.</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Shūrù yǐnqíng</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> tái shèbèi zàixiàn</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>Kòngzhìqì</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Shǐyòng zhōng de kuòzhǎn gōngnéng</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>Qíyú xiàngmù wèiyú Kuòzhǎn gōngnéng zhōng, měi xiàng zài nín qǐyòng zhīqián dōu bǎochí guānbì.</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>Kāi. {0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Lìng yǒu {0} xiàng wèiyú [Kuòzhǎn gōngnéng] zhōng. Měi xiàng kuòzhǎn gōngnéng zài nín qǐyòng zhīqián dōu bǎochí guānbì.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>Dǎkāi kuòzhǎn gōngnéng</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>Xiǎnshì QR mǎ</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} yǐ jiērù, dàn wèi bèi shǐyòng.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Shǐyòng</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> yǐ yìngshè, </value></data>
@@ -2316,7 +2318,7 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(Yǐ yǐncáng {0} gè éwài cuòwù)</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Hz</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->

@@ -29,6 +29,7 @@
                 </ResourceDictionary>
 
                 <ResourceDictionary Source="/Resources/ControllerIcons.xaml"/>
+                <ResourceDictionary Source="/Resources/Shell.xaml"/>
 
                 <!-- Custom theme overrides -->
                 <ResourceDictionary>
@@ -38,36 +39,56 @@
                          Steel = the ground the two sit on.
                          Green/gold/red stay health-only and are not defined here. -->
                     <SolidColorBrush x:Key="EmberBrush" Color="#FF6B2C"/>
-                    <SolidColorBrush x:Key="EmberHotBrush" Color="#FFA24D"/>
+                    <SolidColorBrush x:Key="EmberHotBrush" Color="#FF8A57"/>
                     <SolidColorBrush x:Key="EmberDeepBrush" Color="#C43D0C"/>
                     <SolidColorBrush x:Key="EmberTintBrush" Color="#1AFF6B2C"/>
-                    <SolidColorBrush x:Key="ColdBrush" Color="#58B6E4"/>
+                    <SolidColorBrush x:Key="ColdBrush" Color="#7CC7EA"/>
                     <SolidColorBrush x:Key="ColdDeepBrush" Color="#2E6A8F"/>
-                    <SolidColorBrush x:Key="ColdTintBrush" Color="#1A58B6E4"/>
+                    <SolidColorBrush x:Key="ColdTintBrush" Color="#1A7CC7EA"/>
                     <!-- Text-safe pairs (round-3 A4): dark defaults here,
                          EmberTheme.ApplyAccent swaps both per ground.
                          EmberTextBrush = raw-ember text that deepens on
                          white; ColdMutedBrush = secondary cold with the
                          62% dim baked in so consumers stay at Opacity 1. -->
                     <SolidColorBrush x:Key="EmberTextBrush" Color="#FF6B2C"/>
-                    <SolidColorBrush x:Key="ColdMutedBrush" Color="#9E58B6E4"/>
-                    <SolidColorBrush x:Key="SteelGroundBrush" Color="#0B0E14"/>
-                    <SolidColorBrush x:Key="SteelRaisedBrush" Color="#1B2333"/>
-                    <SolidColorBrush x:Key="SteelLineBrush" Color="#253049"/>
-                    <!-- Crucible card ground: dark default; EmberTheme swaps
-                         it per theme (light falls back to the card fill).
-                         End stop stays on the card fill, not the page ground,
-                         so the card reads a step above the steel (spec 417). -->
-                    <LinearGradientBrush x:Key="CrucibleCardBrush" StartPoint="0,0" EndPoint="0,1">
-                        <GradientStop Color="#111623" Offset="0"/>
-                        <GradientStop Color="#111623" Offset="1"/>
-                    </LinearGradientBrush>
-                    <SolidColorBrush x:Key="SteelLineSoftBrush" Color="#1C2536"/>
-                    <SolidColorBrush x:Key="SegTrackBrush" Color="#0B0E14"/>
-                    <SolidColorBrush x:Key="SegTrackStrokeBrush" Color="#1C2536"/>
-                    <!-- The lit type tile, code-built: the forge gradient must
-                         not be swapped away on hover. MiniTypeChipStyle builds
-                         on it. -->
+                    <SolidColorBrush x:Key="ColdMutedBrush" Color="#9E7CC7EA"/>
+                    <SolidColorBrush x:Key="SteelGroundBrush" Color="#0A0E15"/>
+                    <SolidColorBrush x:Key="SteelRaisedBrush" Color="#18202E"/>
+                    <SolidColorBrush x:Key="SteelLineBrush" Color="#2A3546"/>
+                    <!-- PadForge 6 surfaces (#574). The pane is the title bar
+                         and the sidebar, one step off the page ground, with
+                         its own hairline. A field is where a value is typed.
+                         The lifted fill is a raised control under the
+                         pointer. EmberTheme.ApplyAccent sets all of these
+                         for the active ground. -->
+                    <SolidColorBrush x:Key="SteelPaneBrush" Color="#0C111A"/>
+                    <SolidColorBrush x:Key="SteelPaneLineBrush" Color="#1A2230"/>
+                    <SolidColorBrush x:Key="SteelFieldBrush" Color="#0D131D"/>
+                    <SolidColorBrush x:Key="SteelLiftBrush" Color="#212C3D"/>
+                    <SolidColorBrush x:Key="SteelFootBrush" Color="#101722"/>
+                    <SolidColorBrush x:Key="SteelPillLineBrush" Color="#263142"/>
+                    <SolidColorBrush x:Key="SteelPaneHoverBrush" Color="#121925"/>
+                    <!-- Tinted grounds: the square behind a lit flame, a
+                         running controller's edge, the selected controller
+                         in the sidebar, and the band that offers a device. -->
+                    <SolidColorBrush x:Key="EmberWellBrush" Color="#2A1509"/>
+                    <SolidColorBrush x:Key="EmberEdgeBrush" Color="#4A2C1A"/>
+                    <SolidColorBrush x:Key="EmberPickBrush" Color="#1D1611"/>
+                    <SolidColorBrush x:Key="EmberInkBrush" Color="#160A03"/>
+                    <SolidColorBrush x:Key="EmberLiftBrush" Color="#FF8450"/>
+                    <SolidColorBrush x:Key="EmberPressBrush" Color="#E85F25"/>
+                    <SolidColorBrush x:Key="DangerEdgeBrush" Color="#7A3A1A"/>
+                    <SolidColorBrush x:Key="DangerInkBrush" Color="#FFB08A"/>
+                    <SolidColorBrush x:Key="WaitWellBrush" Color="#17150F"/>
+                    <SolidColorBrush x:Key="WaitEdgeBrush" Color="#3D3220"/>
+                    <SolidColorBrush x:Key="DashLineBrush" Color="#344154"/>
+                    <SolidColorBrush x:Key="SteelLineSoftBrush" Color="#1E2734"/>
+                    <SolidColorBrush x:Key="SegTrackBrush" Color="#0A0E15"/>
+                    <SolidColorBrush x:Key="SegTrackStrokeBrush" Color="#1E2734"/>
+                    <!-- The type chip of a controller's pill and card, and
+                         the type bar's lit choice, code-built: a rounded
+                         tile whose fill the code sets and no state swaps
+                         away. -->
                     <Style x:Key="MiniTypeButtonActiveStyle" TargetType="Button">
                         <Setter Property="BorderThickness" Value="0"/>
                         <Setter Property="Template">
@@ -86,21 +107,9 @@
                             </Trigger>
                         </Style.Triggers>
                     </Style>
-                    <!-- The sidebar card's type chip (discussion #543): the
-                         lit tile on its own, a button that opens the type bar.
-                         The forge gradient stays on hover, and the faint ember
-                         glow every plain button wears there says it can be
-                         clicked. The type bar's lit choice wears it too. -->
-                    <Style x:Key="MiniTypeChipStyle" TargetType="Button" BasedOn="{StaticResource MiniTypeButtonActiveStyle}">
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
                     <!-- Wait gold: the only sanctioned gold. Cooling flames,
                          awaiting-devices states, anything holding heat. -->
-                    <SolidColorBrush x:Key="WaitBrush" Color="#E8B434"/>
+                    <SolidColorBrush x:Key="WaitBrush" Color="#F2B84B"/>
                     <!-- Active seg-control tile fill: 140deg ember gradient
                          (spec 432). Shared by every seg control. -->
                     <LinearGradientBrush x:Key="EmberSegGradient" StartPoint="0,0" EndPoint="0.64,0.77">
@@ -147,14 +156,6 @@
                      sit on the same rhythm as the 32px control grid. -->
                 <Setter Property="MinHeight" Value="30"/>
                 <Setter Property="Padding" Value="8,4"/>
-                <Style.Triggers>
-                    <!-- Hover glow (#175): closed control lifts to raised
-                         steel (neutral), so faint ember. Static frozen
-                         Effect shared from ControllerIcons.xaml. -->
-                    <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
-                    </Trigger>
-                </Style.Triggers>
             </Style>
 
             <!--
@@ -164,15 +165,6 @@
             -->
             <Style TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
                 <Setter Property="MinHeight" Value="32"/>
-                <Style.Triggers>
-                    <!-- Hover glow (#175): the template swaps to
-                         ButtonBackgroundPointerOver steel lift (neutral),
-                         so faint ember. Covers every plain Button,
-                         including the code-built rail/flyout buttons. -->
-                    <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
-                    </Trigger>
-                </Style.Triggers>
             </Style>
 
             <!--
@@ -528,9 +520,6 @@
                          glow is cold. Static frozen Effect, never animated
                          (see motion note above). EmberIconButtonHot overrides
                          this trigger with the ember glow via BasedOn. -->
-                    <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Effect" Value="{StaticResource ColdHoverGlow}"/>
-                    </Trigger>
                     <Trigger Property="IsPressed" Value="True">
                         <Setter Property="RenderTransform">
                             <Setter.Value>
@@ -589,75 +578,98 @@
 
             <Style x:Key="EmberIconButtonHot" TargetType="uictrl:Button" BasedOn="{StaticResource EmberIconButton}">
                 <Setter Property="MouseOverBorderBrush" Value="{DynamicResource EmberBrush}"/>
-                <Style.Triggers>
-                    <!-- Hover glow (#175): ember ring, ember glow. Derived
-                         trigger wins over the base style's cold glow. -->
-                    <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Effect" Value="{StaticResource EmberHoverGlow}"/>
-                    </Trigger>
-                </Style.Triggers>
             </Style>
 
             <!--
-                Accent-verb buttons (#175 dialog language): the confirm
-                dialog's footer formatting extended app-wide. Neutral is
-                the default chrome. A surface's single primary affirmative
-                verb wears the ember accent, and destroyers wear
-                EmberDestructiveButton below. The accent is that same
-                idiom one rung up the ramp: EmberBrush rim and text over
-                the default chrome, hover blooms the standard ember glow.
-                Promoted from ProfilesPage's page-local ProfileAccentButton.
-                EmberAccentButton covers plain Button. EmberPrimaryButton
-                is the identical look for uictrl:Button. Consumers must
-                not set Appearance=Primary, whose style trigger would beat
-                these setters. Both templates swap to the same neutral
-                hover rim and fill (Wpf.Ui 4.3.0 Controls/Button/
-                Button.xaml), so the two types read as one.
+                The buttons of PadForge 6 (#574), three beside the plain one.
+
+                The main action of a surface is filled ember with dark text
+                in a heavier weight: one per surface, the affirmative verb.
+                EmberAccentButton is that look for a plain Button and
+                EmberPrimaryButton for a uictrl:Button. Consumers must not
+                set Appearance=Primary, whose style trigger would beat these
+                setters. A plain Button's template reads its fills under the
+                pointer and while pressed from fixed resource keys, so the
+                plain style shadows those keys in its own resources.
+
+                An action that removes something is clear with a dark ember
+                edge and pale ember text (EmberDestructiveButton).
+
+                A quiet action has no fill and no edge until the pointer is
+                on it (QuietButton for a uictrl:Button, QuietPlainButton for
+                a plain Button).
 
                 Dialog footer idiom (layout a style cannot carry): a
                 right-aligned horizontal StackPanel, Margin 0,18,0,0,
-                MinWidth 90 buttons with 8px gaps, Cancel/Close neutral,
-                the action tinted by verb class. See ConfirmDialog.
+                MinWidth 90 buttons with 8px gaps, Cancel or Close plain,
+                the action in ember or as a danger. See ConfirmDialog.
             -->
             <Style x:Key="EmberAccentButton" TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
-                <Setter Property="MinHeight" Value="32"/>
+                <Style.Resources>
+                    <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#FF8450"/>
+                    <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="#E85F25"/>
+                    <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="#160A03"/>
+                    <SolidColorBrush x:Key="ButtonForegroundPressed" Color="#160A03"/>
+                    <SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="#FF8450"/>
+                    <SolidColorBrush x:Key="ButtonBorderBrushPressed" Color="#E85F25"/>
+                </Style.Resources>
+                <Setter Property="MinHeight" Value="36"/>
+                <Setter Property="Background" Value="{DynamicResource EmberBrush}"/>
                 <Setter Property="BorderBrush" Value="{DynamicResource EmberBrush}"/>
-                <Setter Property="Foreground" Value="{DynamicResource EmberBrush}"/>
-                <Style.Triggers>
-                    <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Effect" Value="{StaticResource EmberHoverGlow}"/>
-                    </Trigger>
-                </Style.Triggers>
+                <Setter Property="Foreground" Value="{DynamicResource EmberInkBrush}"/>
+                <Setter Property="FontWeight" Value="SemiBold"/>
             </Style>
             <Style x:Key="EmberPrimaryButton" TargetType="uictrl:Button" BasedOn="{StaticResource DefaultUiButtonStyle}">
                 <Setter Property="Template" Value="{StaticResource PadUiButtonTemplate}"/>
-                <Setter Property="MinHeight" Value="32"/>
+                <Setter Property="MinHeight" Value="36"/>
+                <Setter Property="Background" Value="{DynamicResource EmberBrush}"/>
                 <Setter Property="BorderBrush" Value="{DynamicResource EmberBrush}"/>
-                <Setter Property="Foreground" Value="{DynamicResource EmberBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource EmberInkBrush}"/>
+                <Setter Property="FontWeight" Value="SemiBold"/>
+                <Setter Property="MouseOverBackground" Value="{DynamicResource EmberLiftBrush}"/>
+                <Setter Property="MouseOverBorderBrush" Value="{DynamicResource EmberLiftBrush}"/>
+                <Setter Property="PressedBackground" Value="{DynamicResource EmberPressBrush}"/>
+                <Setter Property="PressedBorderBrush" Value="{DynamicResource EmberPressBrush}"/>
+                <Setter Property="PressedForeground" Value="{DynamicResource EmberInkBrush}"/>
+            </Style>
+
+            <Style x:Key="EmberDestructiveButton" TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
+                <Style.Resources>
+                    <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#33FF6B2C"/>
+                    <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="#22FF6B2C"/>
+                </Style.Resources>
+                <Setter Property="MinHeight" Value="36"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource DangerEdgeBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource DangerInkBrush}"/>
+            </Style>
+
+            <Style x:Key="QuietButton" TargetType="uictrl:Button" BasedOn="{StaticResource DefaultUiButtonStyle}">
+                <Setter Property="Template" Value="{StaticResource PadUiButtonTemplate}"/>
+                <Setter Property="MinHeight" Value="36"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+                <Setter Property="MouseOverBackground" Value="{DynamicResource SteelRaisedBrush}"/>
+                <Setter Property="MouseOverBorderBrush" Value="Transparent"/>
+                <Setter Property="PressedBackground" Value="{DynamicResource SteelLiftBrush}"/>
+                <Setter Property="PressedBorderBrush" Value="Transparent"/>
+                <Setter Property="PressedForeground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
                 <Style.Triggers>
                     <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Effect" Value="{StaticResource EmberHoverGlow}"/>
+                        <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
                     </Trigger>
                 </Style.Triggers>
             </Style>
-
-            <!--
-                Destructive-verb button (#175 phase 2): the confirm dialog's
-                action chrome. No warning-button style existed before this,
-                so every destructive confirm shares it. Ember-deep rim and
-                text tint (the deep end of the ember ramp) read armed
-                without shouting, and hover blooms the standard ember glow.
-                Static frozen Effect from a trigger, never animated.
-            -->
-            <Style x:Key="EmberDestructiveButton" TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
-                <Setter Property="MinHeight" Value="32"/>
-                <Setter Property="BorderBrush" Value="{DynamicResource EmberDeepBrush}"/>
-                <Setter Property="Foreground" Value="{DynamicResource EmberDeepBrush}"/>
-                <Style.Triggers>
-                    <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Effect" Value="{StaticResource EmberHoverGlow}"/>
-                    </Trigger>
-                </Style.Triggers>
+            <Style x:Key="QuietPlainButton" TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
+                <Style.Resources>
+                    <SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="Transparent"/>
+                    <SolidColorBrush x:Key="ButtonBorderBrushPressed" Color="Transparent"/>
+                </Style.Resources>
+                <Setter Property="MinHeight" Value="36"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
             </Style>
 
             <!--
@@ -670,7 +682,7 @@
                 wash + #66FF6B2C rim the identity chip and the AT mode cards
                 wear, and the content keeps its own foregrounds (names stay
                 primary, mono detail lines stay secondary/tertiary). Hover
-                is the neutral subtle fill with the faint ember bloom.
+                is the neutral subtle fill.
             -->
             <Style x:Key="EmberSelectListItem" TargetType="ListBoxItem" BasedOn="{StaticResource DefaultListBoxItemStyle}">
                 <Setter Property="Template">
@@ -685,7 +697,6 @@
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
                                     <Setter TargetName="RowBd" Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}"/>
-                                    <Setter TargetName="RowBd" Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
                                 </Trigger>
                                 <!-- Last-writer trigger order: selected wins the fill
                                      even while hovered, the glow stays. -->
@@ -701,11 +712,6 @@
 
             <!-- Form checkboxes ride the implicit style (neutral hover glow). -->
             <Style TargetType="CheckBox" BasedOn="{StaticResource DefaultCheckBoxStyle}">
-                <Style.Triggers>
-                    <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
-                    </Trigger>
-                </Style.Triggers>
             </Style>
 
             <!--
@@ -846,8 +852,6 @@
                                                             <!-- Hover glow (#175): thumb heats to
                                                                  EmberHot, so ember glow. 14px dot
                                                                  takes the small-glyph radius. -->
-                                                            <Setter TargetName="ThumbDot" Property="Effect"
-                                                                    Value="{StaticResource EmberHoverGlowSmall}"/>
                                                         </Trigger>
                                                     </ControlTemplate.Triggers>
                                                 </ControlTemplate>
@@ -950,9 +954,6 @@
                     <!-- Hover glow (#175): hover fades in the line buttons
                          and widens the thumb (neutral chrome), so faint
                          ember on the whole bar. -->
-                    <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
-                    </Trigger>
                 </Style.Triggers>
             </Style>
 
@@ -1010,22 +1011,10 @@
             <Style TargetType="TextBox" BasedOn="{StaticResource DefaultTextBoxStyle}">
                 <Setter Property="SelectionBrush" Value="{DynamicResource EmberBrush}"/>
                 <Setter Property="SelectionOpacity" Value="0.35"/>
-                <Style.Triggers>
-                    <!-- Hover glow (#175): well deepens to the pointer-over
-                         fill (neutral), so faint ember. -->
-                    <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
-                    </Trigger>
-                </Style.Triggers>
             </Style>
             <Style TargetType="uictrl:TextBox" BasedOn="{StaticResource DefaultUiTextBoxStyle}">
                 <Setter Property="SelectionBrush" Value="{DynamicResource EmberBrush}"/>
                 <Setter Property="SelectionOpacity" Value="0.35"/>
-                <Style.Triggers>
-                    <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
-                    </Trigger>
-                </Style.Triggers>
             </Style>
 
             <!--

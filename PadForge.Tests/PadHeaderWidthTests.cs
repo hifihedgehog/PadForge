@@ -16,8 +16,9 @@ namespace PadForge.Tests
     /// strip was handed a negative width and clipped away entirely.
     ///
     /// <para>The header that took the two tiers' place (#574) is measured
-    /// by the same tool. Its margin is 12 a side, so a line holds 632 at
-    /// that minimum. Worst language for each piece: the title 362.0, the
+    /// by the same tool. Its margin is 12 a side, and the sidebar is 248
+    /// wide and always open, so a line holds 628 at that minimum. Worst
+    /// language for each piece: the title 362.0, the
     /// Preset chip 617.3 at its combo's cap and 237.3 without the combo,
     /// the power button 388.0 with its state word whole, the six sections
     /// on one line 1079.3, the widest single section 251.3. So the sections
@@ -76,8 +77,8 @@ namespace PadForge.Tests
 
         /// <summary>The strips wrap among themselves. Measured with
         /// tools/rowmeasure, the six sections need 1079 in Malayalam
-        /// against the 632 a line holds at the 900 minimum with the
-        /// navigation pane open, and English needs more than 632 too, so in
+        /// against the 628 a line holds at the 900 minimum beside the
+        /// sidebar, and English needs more than 628 too, so in
         /// a horizontal stack the last sections would run past the edge, as
         /// the last of the six tabs once did (#505). The top row of Buttons
         /// holds its Picture and List switch, which needs 176 in Ukrainian,
@@ -128,7 +129,7 @@ namespace PadForge.Tests
         /// <summary>The power button sits at the right of the title's line
         /// and takes what it needs first, so its width is bounded: the state
         /// word is capped at 196, which makes the button 254 at most and
-        /// leaves the title's column 378 at the minimum. Uncapped, "Virtual
+        /// leaves the title's column 374 at the minimum. Uncapped, "Virtual
         /// controller failed" in Tamil made the button 388 and left the
         /// title 244 of the 362 it needs.</summary>
         [Fact]

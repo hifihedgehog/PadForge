@@ -143,7 +143,6 @@
   <data name="Main_Minimize" xml:space="preserve"><value>چھوٹا کریں</value></data>
   <data name="Main_Maximize" xml:space="preserve"><value>بڑا کریں</value></data>
   <data name="Main_Restore" xml:space="preserve"><value>بحال کریں</value></data>
-  <data name="Main_NavigationPane" xml:space="preserve"><value>نیویگیشن پین</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>PadForge دکھائیں</value></data>
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>ورچوئل کنٹرولر {0}</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>انجن رکا ہوا ہے</value></data>
@@ -272,12 +271,14 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>ہوم</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>منسلک آلات: {0}۔ کنٹرولرز: {1}۔</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>ان پٹ انجن</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> آلات آن لائن</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>کنٹرولرز</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>زیر استعمال ایکسٹراز</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>باقی ایکسٹراز میں ہیں، ہر ایک اس وقت تک آف رہتا ہے جب تک آپ اسے آن نہ کریں۔</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>آن۔ {0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>{0} مزید [ایکسٹراز] میں ہیں۔ ایکسٹرا اس وقت تک آف رہتا ہے جب تک آپ اسے آن نہ کریں۔</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>ایکسٹراز کھولیں</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>QR دکھائیں</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} منسلک ہے اور استعمال میں نہیں۔</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>استعمال کریں</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> میپ شدہ، </value></data>
@@ -2482,7 +2483,7 @@
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>({0} مزید خرابیاں نہیں دکھائی گئیں)</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Hz</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->

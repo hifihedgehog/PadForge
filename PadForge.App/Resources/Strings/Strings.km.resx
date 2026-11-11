@@ -257,12 +257,14 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>ទំព័រដើម</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>ឧបករណ៍ដែលបានភ្ជាប់៖ {0}។ ឧបករណ៍បញ្ជា៖ {1}។</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>ម៉ាស៊ីនបញ្ចូល</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> ឧបករណ៍លើបណ្ដាញ</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>ឧបករណ៍បញ្ជា</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>មុខងារបន្ថែមដែលកំពុងប្រើ</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>មុខងារដែលនៅសល់ស្ថិតនៅក្នុង «មុខងារបន្ថែម» ហើយនីមួយៗនៅបិទ រហូតដល់អ្នកបើកវា។</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>បើក។ {0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>{0} ទៀតនៅក្នុង [មុខងារបន្ថែម]។ មុខងារបន្ថែមនីមួយៗនៅបិទ រហូតដល់អ្នកបើកវា។</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>បើកមុខងារបន្ថែម</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>បង្ហាញ QR</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} បានភ្ជាប់ ហើយមិនកំពុងប្រើទេ។</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>ប្រើវា</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> បានម៉ាប, </value></data>
@@ -2314,7 +2316,7 @@
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(កំហុសបន្ថែម {0} ត្រូវបានលាក់)</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Hz</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->

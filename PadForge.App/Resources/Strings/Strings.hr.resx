@@ -257,12 +257,14 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>Početna</value></data>
+  <data name="Home_EngineLine_Format" xml:space="preserve"><value>Povezani uređaji: {0}. Kontroleri: {1}.</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Ulazni mehanizam</value></data>
-  <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> uređaja na mreži</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>Kontroleri</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Dodaci u upotrebi</value></data>
-  <data name="Home_MoreExtras" xml:space="preserve"><value>Ostali su na stranici Dodaci, svaki isključen dok ga ne uključite.</value></data>
+  <data name="Home_ExtraOn_Format" xml:space="preserve"><value>Uključeno. {0}</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Još {0} na stranici [Dodaci]. Dodatak je isključen dok ga ne uključite.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>Otvori stranicu Dodaci</value></data>
+  <data name="Home_ShowQr" xml:space="preserve"><value>Prikaži QR</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>Uređaj {0} je povezan i nije u upotrebi.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Upotrijebi</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> mapirano, </value></data>
@@ -2317,7 +2319,7 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(potisnuto dodatnih pogrešaka: {0})</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
-  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
+  <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Hz</value></data>
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->

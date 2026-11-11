@@ -19,12 +19,6 @@
          and its tooltip. The data context is DashboardViewModel, Home's too.
          ExtrasPage.xaml.cs shows one of the eleven panels at a time. -->
     <UserControl.Resources>
-        <!-- Hover glow (#175): every hover color change carries a glow in
-             the hue the element turns. Ember hovers bloom ember. Neutral
-             steel hovers carry the faint ember signature. Frozen shared
-             static effects, set from triggers only, never animated. -->
-        <DropShadowEffect x:Key="EmberHoverGlow" po:Freeze="True" Color="#FF6B2C" ShadowDepth="0" BlurRadius="12" Opacity="0.45"/>
-        <DropShadowEffect x:Key="NeutralHoverGlow" po:Freeze="True" Color="#FF6B2C" ShadowDepth="0" BlurRadius="10" Opacity="0.30"/>
 
         <!-- Hover glow sweep (#175): stock-chrome classes bloom in the same
              moment their hover fill shifts. BasedOn the WPF-UI defaults so
@@ -33,38 +27,14 @@
             <!-- MinHeight mirrors the App.xaml implicit Button style (32px
                  grid), which this page-local implicit replaces. -->
             <Setter Property="MinHeight" Value="32"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
-                </Trigger>
-            </Style.Triggers>
         </Style>
         <Style TargetType="ui:Button" BasedOn="{StaticResource DefaultUiButtonStyle}">
             <!-- PadUiButtonTemplate: the App.xaml pressed-foreground fix.
                  Page-local implicits replace the app implicit, so the
                  Template setter rides along here too. -->
             <Setter Property="Template" Value="{StaticResource PadUiButtonTemplate}"/>
-            <Style.Triggers>
-                <!-- Neutral first. The Primary accent rides the ember ramp,
-                     so its MultiTrigger sits later and wins on hover. -->
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
-                </Trigger>
-                <MultiTrigger>
-                    <MultiTrigger.Conditions>
-                        <Condition Property="IsMouseOver" Value="True"/>
-                        <Condition Property="Appearance" Value="Primary"/>
-                    </MultiTrigger.Conditions>
-                    <Setter Property="Effect" Value="{StaticResource EmberHoverGlow}"/>
-                </MultiTrigger>
-            </Style.Triggers>
         </Style>
         <Style TargetType="CheckBox" BasedOn="{StaticResource DefaultCheckBoxStyle}">
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
-                </Trigger>
-            </Style.Triggers>
         </Style>
         <Style TargetType="ComboBox" BasedOn="{StaticResource DefaultComboBoxStyle}">
             <!-- First four setters mirror the App.xaml implicit ComboBox
@@ -73,29 +43,14 @@
             <Setter Property="MaxDropDownHeight" Value="200"/>
             <Setter Property="MinHeight" Value="30"/>
             <Setter Property="Padding" Value="8,4"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
-                </Trigger>
-            </Style.Triggers>
         </Style>
         <Style TargetType="ui:NumberBox" BasedOn="{StaticResource DefaultUiNumberBoxStyle}">
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
-                </Trigger>
-            </Style.Triggers>
         </Style>
         <Style TargetType="ui:TextBox" BasedOn="{StaticResource DefaultUiTextBoxStyle}">
             <!-- Selection setters mirror the App.xaml implicit ui:TextBox
                  style, which this page-local implicit replaces. -->
             <Setter Property="SelectionBrush" Value="{DynamicResource EmberBrush}"/>
             <Setter Property="SelectionOpacity" Value="0.35"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
-                </Trigger>
-            </Style.Triggers>
         </Style>
 
         <!-- The way back at the top of an extra's page: the catalog's name,
@@ -1639,11 +1594,6 @@
                                      template survives. -->
                                 <Slider.Style>
                                     <Style TargetType="Slider" BasedOn="{StaticResource {x:Type Slider}}">
-                                        <Style.Triggers>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter Property="Effect" Value="{StaticResource EmberHoverGlow}"/>
-                                            </Trigger>
-                                        </Style.Triggers>
                                     </Style>
                                 </Slider.Style>
                             </Slider>
@@ -1721,11 +1671,6 @@
                                                     Width="160" VerticalAlignment="Center">
                                                 <Slider.Style>
                                                     <Style TargetType="Slider" BasedOn="{StaticResource {x:Type Slider}}">
-                                                        <Style.Triggers>
-                                                            <Trigger Property="IsMouseOver" Value="True">
-                                                                <Setter Property="Effect" Value="{StaticResource EmberHoverGlow}"/>
-                                                            </Trigger>
-                                                        </Style.Triggers>
                                                     </Style>
                                                 </Slider.Style>
                                             </Slider>

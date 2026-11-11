@@ -136,6 +136,7 @@ PadForge.sln
 │   │
 │   ├── Resources/
 │   │   ├── ControllerIcons.xaml        XAML icon resource dictionary
+│   │   ├── Shell.xaml                  The sidebar's line icons and the two templates that draw it
 │   │   ├── PadForge.ico               Application icon
 │   │   ├── SDL3/x64/SDL3.dll          Custom SDL3 fork (HIDMaestro filter, Switch 2 Pro)
 │   │   ├── SDL3/x64/libusb-1.0.dll    libusb for WinUSB device access

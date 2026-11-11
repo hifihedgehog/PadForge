@@ -936,8 +936,6 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>Đặt lại độ lợi tổng</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Đặt lại cò trái</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Đặt lại cò phải</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Lực cò không đổi</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Một lực đều lên từng mô-tơ cò</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Định tuyến cò</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Chuyển rung của mô-tơ chính sang cò</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Định tuyến các mô-tơ rung chính vào kênh cò, mỗi lần một cò. Hoạt động với rung XInput và phản hồi lực. Có thể dùng một bộ kích hoạt làm điều kiện để cò chỉ rung khi bạn giữ một nút.</value></data>
@@ -967,7 +965,6 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Áp dụng lực cò không đổi</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Cò trái</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>Cò phải</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>Đặt lại lực cò không đổi</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Đặt lại cò trái</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Đặt lại cò phải</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Rung cò theo âm trầm</value></data>
@@ -2511,7 +2508,6 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Trục cò</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Phản hồi lực / Rung / Phản hồi xúc giác</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Độ lợi từng mô-tơ, rung cò, hoán đổi mô-tơ</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Độ lợi tổng</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Mô-tơ trái</value></data>
@@ -2523,14 +2519,11 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Hoạt động của mô-tơ</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Lực không đổi</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Một lực đều cho đến khi bạn tắt</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Áp dụng một lực liên tục lên thiết bị này cho đến khi bạn tắt. Lực do trò chơi điều khiển từ bất kỳ nguồn nào sẽ ghi đè khi đang hoạt động, và lực không đổi tiếp tục khi trò chơi dừng.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Áp dụng lực không đổi</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Kéo trong lưới để đặt hướng và cường độ.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>Đặt lại lực không đổi</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Đặt lại lực không đổi X</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Đặt lại lực không đổi Y</value></data>
 
@@ -3939,7 +3932,6 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Macro và menu</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bộ rung bass</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Định tuyến rung và phản hồi lực của trò chơi mà tay cầm ảo này nhận được sang một đầu ra âm thanh dưới dạng các âm tần số thấp cho bộ rung bass và loa siêu trầm.</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Rung thành âm thanh</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Thiết bị đầu ra, chế độ kênh, độ lợi, âm riêng cho từng mô-tơ</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Hoạt động với các tay cầm ảo Xbox, DualShock 3, DualShock 4 / DualSense và Nintendo Switch Pro, cùng các tay cầm ảo Mở rộng có phản hồi lực, chẳng hạn vô lăng đua xe, và Steam Deck Controller (Composite). Phản hồi của trò chơi và Thử rung được phát qua đầu ra âm thanh. Rung từ macro vẫn ở trên tay cầm.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Đặt lại Rung thành âm thanh</value></data>
@@ -4386,8 +4378,6 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Tablet_InRange" xml:space="preserve"><value>Bút trong tầm</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Đang chờ dữ liệu bộ nhớ dùng chung FreeTrack.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>Bộ nhớ dùng chung FreeTrack không khả dụng.</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Rung theo góc lái</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Rung tăng dần khi trục cần analog rời xa tâm</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Thêm rung liên tục khi trục cần analog ảo đã chọn di chuyển ra xa tâm. Dùng đầu ra đã ánh xạ từ mọi nguồn đã gán. Với Chia theo hướng, chuyển động âm điều khiển mô-tơ trái và chuyển động dương điều khiển mô-tơ phải. Mô-tơ trái hoặc Mô-tơ phải đặt cả hai hướng lên đúng mô-tơ đó. Dành cho đầu ra Xbox và PlayStation với thiết bị có rung. Hiệu ứng này bỏ qua vô lăng, các thiết bị khác có phản hồi lực không đổi và bàn đạp Fanatec.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Bật rung theo góc lái</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Trục ảo</value></data>
@@ -4402,7 +4392,6 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Đặt lại về Cần trái X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Đặt lại cường độ (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Đặt lại vùng chết ở tâm (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>Đặt lại rung theo góc lái</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Đặt lại Bật rung theo góc lái</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Hồ sơ</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>Bề mặt đầu vào</value></data>

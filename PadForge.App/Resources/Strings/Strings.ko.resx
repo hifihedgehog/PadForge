@@ -1192,7 +1192,6 @@
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>더블 클릭으로 점 추가. 우클릭으로 제거. 드래그로 조정.</value></data>
   <data name="Pad_Preset_Label" xml:space="preserve"><value>프리셋</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>트리거 축</value></data>
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>포스 피드백 / 진동</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>모터별 게인, 트리거 진동, 모터 교체</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>전체 게인</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>왼쪽 모터</value></data>
@@ -1202,14 +1201,11 @@
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>이 컨트롤러에는 트리거 모터가 없어 Xbox 임펄스 트리거를 사용하는 게임의 진동을 느낄 수 없습니다. 대신 각 트리거 채널을 같은 쪽 메인 모터로 합칩니다.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>진동 테스트</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>모터 활동</value></data>
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>상시 포스</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>끌 때까지 이어지는 일정한 포스</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>토글을 끌 때까지 이 기기에 지속적인 포스를 적용합니다. 게임이 보내는 포스는 활성 동안 우선되며, 게임이 멈추면 다시 재개됩니다.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>상시 포스 적용</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>그리드 안을 드래그하여 방향과 세기를 설정하세요.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>상시 포스 초기화</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>상시 포스 X 초기화</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>상시 포스 Y 초기화</value></data>
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>중앙 오프셋 X 초기화</value></data>
@@ -2155,8 +2151,6 @@
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>전체 게인 재설정</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>왼쪽 트리거 재설정</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>오른쪽 트리거 재설정</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>지속 트리거 힘</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>각 트리거 모터에 일정한 힘</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>트리거 라우팅</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>메인 모터의 진동을 트리거로 보냅니다</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>메인 진동 모터를 트리거 채널로, 트리거별로 라우팅합니다. XInput 진동과 포스 피드백에서 작동합니다. 활성화기로 제어하면 버튼을 누르고 있는 동안에만 트리거가 진동합니다.</value></data>
@@ -2186,7 +2180,6 @@
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>지속 트리거 힘 적용</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>왼쪽 트리거</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>오른쪽 트리거</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>지속 트리거 힘 재설정</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>왼쪽 트리거 재설정</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>오른쪽 트리거 재설정</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>오디오 베이스 트리거 진동</value></data>
@@ -3877,7 +3870,6 @@
   <data name="Pad_Section_Macros" xml:space="preserve"><value>매크로 및 메뉴</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>베이스 셰이커</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>이 가상 컨트롤러가 받는 게임 진동과 포스 피드백을 저주파 톤으로 바꿔 베이스 셰이커와 서브우퍼용 오디오 출력으로 보냅니다.</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>진동을 오디오로</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>출력 장치, 채널, 게인, 모터별 톤</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox, DualShock 3, DualShock 4 / DualSense, Nintendo Switch Pro, 레이싱 휠 같은 포스 피드백 지원 Extended 가상 컨트롤러, 그리고 Steam Deck Controller (Composite)에서 동작합니다. 게임 피드백과 테스트 진동이 오디오 출력으로 전달됩니다. 매크로 진동은 컨트롤러에 남습니다.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>진동을 오디오로 재설정</value></data>
@@ -4337,8 +4329,6 @@
   <data name="Tablet_InRange" xml:space="preserve"><value>펜 감지 범위 내</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>FreeTrack 공유 메모리 데이터를 기다리는 중입니다.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>FreeTrack 공유 메모리를 사용할 수 없습니다.</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>조향 각도 진동</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>스틱 축이 중앙에서 멀어질수록 강해지는 진동</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>선택한 가상 스틱 축이 중앙에서 멀어질수록 지속적인 진동이 강해집니다. 할당된 모든 소스의 매핑된 출력을 사용합니다. 방향별 분리에서는 음의 방향은 왼쪽 모터를, 양의 방향은 오른쪽 모터를 구동합니다. 왼쪽 모터 또는 오른쪽 모터를 선택하면 두 방향 모두 해당 모터 하나에서 진동합니다. 진동 장치를 사용하는 Xbox 및 PlayStation 출력용입니다. 휠, 일정한 포스 피드백을 쓰는 다른 장치, Fanatec 페달은 건너뜁니다.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>조향 각도 진동 사용</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>가상 축</value></data>
@@ -4353,7 +4343,6 @@
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>왼쪽 스틱 X로 초기화</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>강도 초기화 (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>중앙 데드존 초기화 (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>조향 각도 진동 초기화</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>'조향각 진동 사용' 재설정</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>프로필</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>입력 표면</value></data>

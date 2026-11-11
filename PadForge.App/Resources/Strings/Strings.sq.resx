@@ -880,8 +880,6 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>Rivendos përfitimin e përgjithshëm</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Rivendos këmbëzën e majtë</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Rivendos këmbëzën e djathtë</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Forca e vazhdueshme e këmbëzës</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Forcë e vazhdueshme në çdo motor këmbëze</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Përcjellja e këmbëzës</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Dërgon dridhjen e motorëve kryesorë te këmbëzat</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Përcjell motorët kryesorë të dridhjes te kanali i këmbëzës, një këmbëz në herë. Funksionon me dridhjen XInput dhe force feedback. Një aktivizues mund ta kontrollojë që këmbëza të dridhet vetëm ndërsa mbani shtypur një buton.</value></data>
@@ -911,7 +909,6 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Apliko forcën e vazhdueshme të këmbëzës</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Këmbëza e majtë</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>Këmbëza e djathtë</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>Rivendos forcën e vazhdueshme të këmbëzës</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Rivendos këmbëzën e majtë</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Rivendos këmbëzën e djathtë</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Dridhja e këmbëzave nga basi i audios</value></data>
@@ -2335,7 +2332,6 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Boshti i këmbëzës</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Force feedback / dridhje / haptikë</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Forca për çdo motor, dridhja e këmbëzave, këmbimi i motorëve</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Fitimi i përgjithshëm</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Motori i majtë</value></data>
@@ -2347,14 +2343,11 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Aktiviteti i motorëve</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Forca konstante</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Forcë e qëndrueshme deri sa ta çaktivizosh</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Apliko një forcë të vazhdueshme në këtë pajisje derisa ta çaktivizosh. Forca e dërguar nga loja, nga çdo burim, e zëvendëson atë për sa kohë është aktive dhe ajo rifillon kur loja ndalon.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Apliko forcë konstante</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Zvarrit brenda rrjetës për të caktuar drejtimin dhe fuqinë.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>Rivendos forcën konstante</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Rivendos forcën konstante X</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Rivendos forcën konstante Y</value></data>
 
@@ -3692,7 +3685,6 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makrot dhe menytë</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass Shakers</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Dërgon dridhjen e lojës dhe force feedback që merr ky kontrollues virtual te një dalje audio si tone me frekuencë të ulët për bass shaker dhe subwoofer.</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Dridhje në audio</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Pajisja e daljes, kanalet, përforcimi, një tone për çdo motor</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Funksionon me kontrolluesit virtualë Xbox, DualShock 3, DualShock 4 / DualSense dhe Nintendo Switch Pro, si dhe me kontrolluesit virtualë Extended me force feedback, si timonët e garave, dhe me Steam Deck Controller (Composite). Reagimi i lojës dhe „Testo dridhjen“ luhen përmes daljes audio. Dridhja e makrove mbetet në kontrollues.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Rivendos dridhjen në audio</value></data>
@@ -4131,8 +4123,6 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="Tablet_InRange" xml:space="preserve"><value>Stilolapsi në diapazon</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Po pritet për të dhënat e memories së përbashkët FreeTrack.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>Memoria e përbashkët FreeTrack nuk është e disponueshme.</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Dridhja e këndit të drejtimit</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Dridhje që rritet kur një bosht leve largohet nga qendra</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Shton dridhje të vazhdueshme ndërsa boshti i zgjedhur virtual i levës largohet nga qendra. Përdor daljen e hartëzuar nga të gjitha burimet e caktuara. Me "Ndarë sipas drejtimit", lëvizja negative drejton motorin e majtë dhe ajo pozitive motorin e djathtë. "Motori i majtë" ose "Motori i djathtë" i vendos të dyja drejtimet në atë motor. Për dalje Xbox dhe PlayStation me pajisje dridhjeje. Anashkalon timonët, pajisjet e tjera me force feedback konstant dhe pedalet Fanatec.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Aktivizo dridhjen e këndit të drejtimit</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Boshti virtual</value></data>
@@ -4147,7 +4137,6 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Rivendos te Leva e majtë X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Rivendos forcën (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Rivendos zonën e vdekur të qendrës (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>Rivendos dridhjen e këndit të drejtimit</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Rivendos Aktivizo dridhjen e këndit të drejtimit</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Profili</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>Sipërfaqet e hyrjes</value></data>

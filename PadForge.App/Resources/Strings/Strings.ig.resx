@@ -1258,11 +1258,8 @@
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Ọkụ na Ụda</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Macro na Menu</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Ngosi mgbe stick n'ọnọdụ steering ruru njedebe ya</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Rumble na-eto ka axis stick na-apụ n'etiti</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Ike na-adịgide ruo mgbe ị gbanyụrụ ya</value></data>
   <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Rumble sitere na bass nke ụda sistemụ</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Na-eziga rumble nke motor ndị isi na trigger</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Ike na-adịgide na motor trigger ọ bụla</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Rumble trigger sitere na bass nke ụda sistemụ</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Deadzone ịdabere, Ntụziaka njikwa</value></data>
   <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Bọtịnụ Aim Engage, Ọnọdụ Engage, Oke Easy Aim</value></data>

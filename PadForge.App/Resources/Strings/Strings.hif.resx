@@ -202,7 +202,6 @@
   <data name="Pad_ResetTriggerRouteMode" xml:space="preserve"><value>Mode reset karo</value></data>
   <data name="Pad_ResetTriggerRouteScale" xml:space="preserve"><value>Scale reset karo</value></data>
   <data name="Pad_ResetTriggerRouteActivatorMode" xml:space="preserve"><value>Activator mode reset karo</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>Constant trigger force reset karo</value></data>
   <data name="Pad_ResetAudioTriggerSensitivity" xml:space="preserve"><value>Sensitivity reset karo</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Stick</value></data>
@@ -959,8 +958,6 @@
   <data name="Pad_View_List" xml:space="preserve"><value>List</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Ek control pe click karo, phir uu input dabao jon ke ise chalae ke chahi.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>{0} ke intezaar hoe raha. Apne device pe input dabao.</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Stick axis center se jitna hatta, utna rumble badhta</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Ek barabar force jab tak aap band nahi karo</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Lean deadzone, controller orientation</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Deadzone, smoothing, acceleration, output curve</value></data>
   <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Aim engage button, engage mode, easy aim threshold</value></data>

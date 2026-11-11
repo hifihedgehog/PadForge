@@ -936,8 +936,6 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>Atiestatīt kopējo pastiprinājumu</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Atiestatīt kreiso mēlīti</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Atiestatīt labo mēlīti</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Pastāvīgs mēlīšu spēks</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Pastāvīgs spēks uz katru mēlītes motoru</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Mēlīšu maršrutēšana</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Nosūta galveno motoru vibrāciju uz mēlītēm</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Novirza galvenos vibrācijas motorus uz mēlīšu kanālu, katru mēlīti atsevišķi. Darbojas ar XInput vibrāciju un spēka atgriezenisko saiti. Aktivators var to ierobežot, lai mēlīte vibrētu tikai tad, kad turat pogu.</value></data>
@@ -967,7 +965,6 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Piemērot pastāvīgu mēlīšu spēku</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Kreisā mēlīte</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>Labā mēlīte</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>Atiestatīt pastāvīgo mēlīšu spēku</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Atiestatīt kreiso mēlīti</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Atiestatīt labo mēlīti</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Mēlīšu vibrācija no audio basiem</value></data>
@@ -2511,7 +2508,6 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Mēlītes ass</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Spēka atgriezeniskā saite / vibrācija / haptika</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Pastiprinājums katram motoram, mēlīšu vibrācija, motoru maiņa</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Kopējais pastiprinājums</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Kreisais motors</value></data>
@@ -2523,14 +2519,11 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Motoru darbība</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Pastāvīgs spēks</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Pastāvīgs spēks, līdz to izslēdzat</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Piemēro šai ierīcei nepārtrauktu spēku, līdz to izslēdzat. Spēles radīts spēks no jebkura avota to aizstāj, kamēr ir aktīvs, un pastāvīgais spēks atsākas, kad spēle beidz.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Piemērot pastāvīgu spēku</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Velciet režģa iekšpusē, lai iestatītu virzienu un stiprumu.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>Atiestatīt pastāvīgo spēku</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Atiestatīt pastāvīgo spēku X</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Atiestatīt pastāvīgo spēku Y</value></data>
 
@@ -3939,7 +3932,6 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makrosi un izvēlnes</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Basu vibratori</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Novirza šī virtuālā kontrollera saņemto spēles vibrāciju un spēka atgriezenisko saiti uz audio izvadi kā zemfrekvences toņus basu vibratoriem un zemfrekvenču skaļruņiem.</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibrācija uz audio</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Izvades ierīce, kanāli, pastiprinājums, tonis katram motoram</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Darbojas ar Xbox, DualShock 3, DualShock 4 / DualSense un Nintendo Switch Pro virtuālajiem kontrolleriem, kā arī ar paplašinātajiem virtuālajiem kontrolleriem ar spēka atgriezenisko saiti, piemēram, sacīkšu stūrēm, un Steam Deck Controller (Composite). Spēles atgriezeniskā saite un „Pārbaudīt vibrāciju” tiek atskaņoti caur audio izvadi. Makrosu vibrācija paliek kontrollerī.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Atiestatīt „Vibrācija uz audio”</value></data>
@@ -4386,8 +4378,6 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="Tablet_InRange" xml:space="preserve"><value>Pildspalva darbības zonā</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Gaida FreeTrack koplietojamās atmiņas datus.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>FreeTrack koplietojamā atmiņa nav pieejama.</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Stūrēšanas leņķa vibrācija</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Vibrācija, kas pastiprinās, sviras asij attālinoties no centra</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Pievieno nepārtrauktu vibrāciju, kad atlasītā virtuālās sviras ass attālinās no centra. Izmanto piesaistīto izvadi no visiem piešķirtajiem avotiem. Ar iestatījumu Sadalīt pēc virziena negatīva kustība darbina kreiso motoru, pozitīva kustība labo. Izvēloties Kreisais motors vai Labais motors, abi virzieni darbina tikai šo motoru. Paredzēts Xbox un PlayStation izvadei ar vibrācijas ierīcēm. Tā izlaiž stūres, citas ierīces ar pastāvīgu spēka atgriezenisko saiti un Fanatec pedāļus.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Iespējot stūrēšanas leņķa vibrāciju</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Virtuālā ass</value></data>
@@ -4402,7 +4392,6 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Atiestatīt uz „Kreisā svira X”</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Atiestatīt stiprumu (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Atiestatīt centra nejutības zonu (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>Atiestatīt stūrēšanas leņķa vibrāciju</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Atiestatīt „Iespējot stūrēšanas leņķa vibrāciju”</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Profils</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>Ievades virsmas</value></data>

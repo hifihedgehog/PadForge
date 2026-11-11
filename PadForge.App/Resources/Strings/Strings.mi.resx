@@ -1009,7 +1009,6 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Tuaka trigger</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Force feedback / Wiri / Haptics</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Te kaha o ia mōta, te wiri trigger, te whakawhiti mōta</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Mōta mauī</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Mōta matau</value></data>
@@ -1798,10 +1797,7 @@
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Ngā mākoro me ngā tahua</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Ka pupuri i tētahi paku whakanekenga o te rākau kia whakaatu tonu ngā kēmu i ngā tohu controller</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>He tohu ina tae te stick urungi ki tōna mutunga</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>He wiri e kaha haere ana i te wehenga o te tuaka stick i te pokapū</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>He kaha pūmau kia whakawetohia rā anō e koe</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Ka tuku i te wiri o ngā mōta matua ki ngā trigger</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>He kaha pūmau ki ia mōta trigger</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>He wiri trigger mai i te bass o te oro pūnaha</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Ngā deadzone tītaha, te takotoranga o te controller</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Deadzone, whakamāeneene, Whakaterenga, Ānau putanga</value></data>

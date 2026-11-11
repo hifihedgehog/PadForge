@@ -936,8 +936,6 @@
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>بازنشانی بهره کلی</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>بازنشانی ماشه چپ</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>بازنشانی ماشه راست</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>نیروی ثابت ماشه</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>نیرویی ثابت روی هر موتور ماشه</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>مسیردهی ماشه</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>لرزش موتورهای اصلی را به ماشه‌ها می‌فرستد</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>موتورهای اصلی لرزش را به کانال ماشه هدایت می‌کند، هر بار برای یک ماشه. با لرزش XInput و فورس فیدبک کار می‌کند. یک فعال‌ساز می‌تواند آن را مشروط کند تا ماشه فقط وقتی بلرزد که دکمه‌ای را نگه داشته‌اید.</value></data>
@@ -967,7 +965,6 @@
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>اعمال نیروی ثابت ماشه</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>ماشه چپ</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>ماشه راست</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>بازنشانی نیروی ثابت ماشه</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>بازنشانی ماشه چپ</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>بازنشانی ماشه راست</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>لرزش ماشه با بیس صدا</value></data>
@@ -2511,7 +2508,6 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>محور ماشه</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>فورس فیدبک / لرزش / هپتیک</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>بهره هر موتور، لرزش ماشه، جابه‌جایی موتورها</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>بهره کلی</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>موتور چپ</value></data>
@@ -2523,14 +2519,11 @@
   <data name="Pad_MotorActivity" xml:space="preserve"><value>فعالیت موتور</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>نیروی ثابت</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>نیرویی ثابت تا زمان خاموش کردن</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>تا وقتی خاموشش نکنید، نیرویی پیوسته به این دستگاه اعمال می‌کند. نیرویی که بازی از هر منبعی می‌فرستد، تا وقتی فعال است جای آن را می‌گیرد و با توقف بازی، این نیرو از سر گرفته می‌شود.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>اعمال نیروی ثابت</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>برای تعیین جهت و شدت، درون شبکه بکشید.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>بازنشانی نیروی ثابت</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>بازنشانی نیروی ثابت X</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>بازنشانی نیروی ثابت Y</value></data>
 
@@ -3939,7 +3932,6 @@
   <data name="Pad_Section_Macros" xml:space="preserve"><value>ماکروها و منوها</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>لرزاننده‌های بیس</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>لرزش و فورس فیدبکی را که این کنترلر مجازی از بازی دریافت می‌کند، به‌صورت تُن‌های فرکانس پایین برای لرزاننده‌های بیس و ساب‌ووفرها به یک خروجی صدا هدایت می‌کند.</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>لرزش به صدا</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>دستگاه خروجی، کانال‌ها، بهره، صدای هر موتور</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>با کنترلرهای مجازی Xbox، DualShock 3، DualShock 4 / DualSense و Nintendo Switch Pro کار می‌کند، و نیز با کنترلرهای مجازی گسترش‌یافته دارای فورس فیدبک مانند فرمان‌های مسابقه، و Steam Deck Controller (Composite). بازخورد بازی و «آزمایش لرزش» از خروجی صدا پخش می‌شوند. لرزش ماکرو روی کنترلر می‌ماند.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>بازنشانی لرزش به صدا</value></data>
@@ -4386,8 +4378,6 @@
   <data name="Tablet_InRange" xml:space="preserve"><value>قلم در محدوده</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>در انتظار داده‌های حافظه مشترک FreeTrack.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>حافظه مشترک FreeTrack در دسترس نیست.</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>لرزش زاویه هدایت</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>لرزشی که با دور شدن محور استیک از مرکز قوی‌تر می‌شود</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>با دور شدن محور استیک مجازی انتخاب‌شده از مرکز، لرزش پیوسته‌ای اضافه می‌کند. از خروجی نگاشت‌شده همه منبع‌های اختصاص‌یافته استفاده می‌کند. با «تقسیم بر اساس جهت»، حرکت منفی موتور چپ و حرکت مثبت موتور راست را به کار می‌اندازد. «موتور چپ» یا «موتور راست» هر دو جهت را روی همان یک موتور می‌گذارد. برای خروجی Xbox و PlayStation با دستگاه‌های دارای لرزش. فرمان‌ها، دستگاه‌های دیگر دارای فورس فیدبک ثابت و پدال‌های Fanatec را نادیده می‌گیرد.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>فعال کردن لرزش زاویه هدایت</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>محور مجازی</value></data>
@@ -4402,7 +4392,6 @@
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>بازنشانی به استیک چپ X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>بازنشانی شدت (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>بازنشانی ناحیه مرده مرکز (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>بازنشانی لرزش زاویه هدایت</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>بازنشانی «فعال کردن لرزش زاویه هدایت»</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>پروفایل</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>سطوح ورودی</value></data>

@@ -881,8 +881,6 @@
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>საერთო გაძლიერების საწყისზე დაბრუნება</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>მარცხენა ტრიგერის საწყისზე დაბრუნება</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>მარჯვენა ტრიგერის საწყისზე დაბრუნება</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>ტრიგერის მუდმივი ძალა</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>მუდმივი ძალა თითოეულ ტრიგერის ძრავაზე</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>ტრიგერის მარშრუტიზაცია</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>მთავარი ძრავების ვიბრაციას ტრიგერებზე გადააქვს</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>ძირითადი ვიბრაციის ძრავების გადამისამართება ტრიგერის არხზე, თითო ტრიგერზე ცალ-ცალკე. მუშაობს XInput ვიბრაციასთან და ძალისმიერ უკუკავშირთან. გამშვებს შეუძლია ის გააკონტროლოს, რათა ტრიგერმა ზუზუნი მხოლოდ ღილაკის დაჭერისას დაიწყოს.</value></data>
@@ -912,7 +910,6 @@
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>ტრიგერის მუდმივი ძალის გამოყენება</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>მარცხენა ტრიგერი</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>მარჯვენა ტრიგერი</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>ტრიგერის მუდმივი ძალის საწყისზე დაბრუნება</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>მარცხენა ტრიგერის საწყისზე დაბრუნება</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>მარჯვენა ტრიგერის საწყისზე დაბრუნება</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>ტრიგერის ვიბრაცია აუდიოს ბასით</value></data>
@@ -2347,7 +2344,6 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>ტრიგერის ღერძი</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>ძალისმიერი უკუკავშირი / ვიბრაცია / ჰაპტიკა</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>ძრავის გაძლიერება, ტრიგერის ვიბრაცია, ძრავების გაცვლა</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>საერთო გაძლიერება</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>მარცხენა ძრავა</value></data>
@@ -2359,14 +2355,11 @@
   <data name="Pad_MotorActivity" xml:space="preserve"><value>ძრავების აქტივობა</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>მუდმივი ძალა</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>მუდმივი ძალა გამორთვამდე</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>ამ მოწყობილობაზე უწყვეტი ძალის მიმართვა, სანამ არ გამორთავთ. თამაშიდან მოსული ძალა ნებისმიერი წყაროდან გადაფარავს მას, სანამ აქტიურია, და განახლდება, როცა თამაში შეწყვეტს.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>მუდმივი ძალის გამოყენება</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>გადაათრიეთ ბადეში მიმართულებისა და სიძლიერის დასაყენებლად.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>საწყისზე დაბრუნება: მუდმივი ძალა</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>საწყისზე დაბრუნება: მუდმივი ძალა X</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>საწყისზე დაბრუნება: მუდმივი ძალა Y</value></data>
 
@@ -3744,7 +3737,6 @@
   <data name="Pad_Section_Macros" xml:space="preserve"><value>მაკროები და მენიუები</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>ბასის შეიკერები</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>თამაშისგან მიღებულ ვიბრაციასა და ძალისმიერ უკუკავშირს, რომელსაც ეს ვირტუალური კონტროლერი იღებს, აუდიო გამოსავალზე მიმართავს დაბალი სიხშირის ტონების სახით ბასის შეიკერებისა და სუბვუფერებისთვის.</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>ვიბრაცია აუდიოში</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>გამოსავლის მოწყობილობა, არხები, გაძლიერება, ტონი თითოეული ძრავისთვის</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>მუშაობს Xbox-ის, DualShock 3-ის, DualShock 4 / DualSense-ისა და Nintendo Switch Pro-ს ვირტუალურ კონტროლერებთან, ასევე ძალისმიერი უკუკავშირის მქონე გაფართოებულ ვირტუალურ კონტროლერებთან, მაგალითად სარბოლო საჭეებთან, და Steam Deck-ის კონტროლერთან (კომპოზიტური). თამაშის უკუკავშირი და ვიბრაციის ტესტი აუდიო გამოსავლით ჟღერს. მაკროს ვიბრაცია კონტროლერზე რჩება.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>ვიბრაციის აუდიოში გადაცემის საწყისზე დაბრუნება</value></data>
@@ -4179,8 +4171,6 @@
   <data name="Tablet_InRange" xml:space="preserve"><value>კალამი დიაპაზონშია</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>ველოდებით FreeTrack-ის გაზიარებული მეხსიერების მონაცემებს.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>FreeTrack-ის გაზიარებული მეხსიერება მიუწვდომელია.</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>საჭის კუთხის ვიბრაცია</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>ვიბრაცია, რომელიც ძლიერდება სტიკის ღერძის ცენტრიდან გადახრისას</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>ამატებს უწყვეტ ვიბრაციას, როცა არჩეული ვირტუალური სტიკის ღერძი ცენტრიდან დაშორდება. იყენებს ყველა მიმაგრებული წყაროს მიბმულ გამოსავალს. პარამეტრით „მიმართულების მიხედვით გაყოფა“ უარყოფითი მოძრაობა მარცხენა ძრავას მართავს, დადებითი მარჯვენას. „მარცხენა ძრავა“ ან „მარჯვენა ძრავა“ ორივე მიმართულებას ამ ერთ ძრავაზე აყენებს. განკუთვნილია Xbox-ისა და PlayStation-ის გამოსავლისთვის ვიბრაციის მქონე მოწყობილობებით. გამოტოვებს საჭეებს, მუდმივი ძალისმიერი უკუკავშირის მქონე სხვა მოწყობილობებს და Fanatec-ის პედლებს.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>საჭის კუთხის ვიბრაციის ჩართვა</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>ვირტუალური ღერძი</value></data>
@@ -4195,7 +4185,6 @@
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>დაბრუნება: მარცხენა სტიკი X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>სიძლიერის საწყისზე დაბრუნება (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>ცენტრის მკვდარი ზონის საწყისზე დაბრუნება (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>საჭის კუთხის ვიბრაციის საწყისზე დაბრუნება</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>საჭის კუთხის ვიბრაციის ჩართვის საწყისზე დაბრუნება</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>პროფილი</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>შეყვანის ზედაპირები</value></data>

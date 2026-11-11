@@ -1330,7 +1330,6 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>I-eksisi yethrigha</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Impendulo yamandla / Ukudlidliza / Ama-haptics</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Amandla emoto ngayinye, ukudlidliza kwamathrigha, ukushintshanisa izimoto</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Imoto engakwesokunxele</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Imoto engakwesokudla</value></data>
@@ -1341,14 +1340,11 @@
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Umsebenzi wezimoto</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Amandla angaguquki</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Amandla aqhubekayo uze uwacime</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Sebenzisa amandla aqhubekayo kule divayisi uze uwacime. Amandla aqhutshwa umdlalo avela kunoma yimuphi umthombo ayeqa lawa ngesikhathi esebenza, futhi lawa ayaqhubeka lapho umdlalo uyeka.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Sebenzisa amandla angaguquki</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Hudula ngaphakathi kwegridi ukuze usethe isiqondiso namandla.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>Setha kabusha amandla angaguquki</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Setha kabusha amandla angaguquki X</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Setha kabusha amandla angaguquki Y</value></data>
 
@@ -1973,7 +1969,6 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Ukunyakaza nokuthinta</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Ukukhanyisa nomsindo</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Ama-macro namamenyu</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Ukudlidliza kuya emsindweni</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Idivayisi yokukhipha, iziteshi, amandla, ithoni yemoto ngayinye</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Setha kabusha ukudlidliza kuya emsindweni</value></data>
   <data name="Pad_RumbleAudio_OutputDevice" xml:space="preserve"><value>Idivayisi yokukhipha</value></data>
@@ -2447,9 +2442,7 @@
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Imbobo, i-DSX.exe engumbambeli</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Izimbobo, isivinini esiphelele, amafomethi angokwezifiso</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Uphawu lapho induku yokushayela ifika emkhawulweni</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Ukudlidliza okukhula njengoba i-eksisi yenduku isuka esikhungweni</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Ithumela ukudlidliza kwezimoto ezinkulu kumathrigha</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Amandla aqhubekayo emotweni ngayinye yethrigha</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Ukudlidliza kwamathrigha okuvela kumaza aphansi omsindo wesistimu</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Izindawo ezifile zokuncika, Ukubhekiswa kwesilawuli</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Indawo efile, ukubushelelisa, Ukusheshisa, Ijika lokukhiphayo</value></data>

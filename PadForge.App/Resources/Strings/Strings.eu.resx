@@ -881,8 +881,6 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>Berrezarri irabazi orokorra</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Berrezarri ezkerreko katua</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Berrezarri eskuineko katua</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Katuen indar konstantea</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Indar finko bat katu-motor bakoitzean</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Katuen bideratzea</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Motor nagusien bibrazioa katuetara bidaltzen du</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Bideratu bibrazio-motor nagusiak katuen kanalera, katu bat aldi bakoitzean. XInput bibrazioarekin eta indar-atzeraelikadurarekin funtzionatzen du. Aktibatzaile batek mugatu dezake, katuak botoi bati eusten diozun bitartean soilik dardara egin dezan.</value></data>
@@ -912,7 +910,6 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Aplikatu katuen indar konstantea</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Ezkerreko katua</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>Eskuineko katua</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>Berrezarri katuen indar konstantea</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Berrezarri ezkerreko katua</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Berrezarri eskuineko katua</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Katuen bibrazioa audioaren baxuekin</value></data>
@@ -2342,7 +2339,6 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Katuaren ardatza</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Indar-atzeraelikadura / bibrazioa / haptika</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Motor bakoitzaren irabazia, katuen bibrazioa, motorren trukea</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Irabazi orokorra</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Ezkerreko motorra</value></data>
@@ -2354,14 +2350,11 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Motorren jarduera</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Indar konstantea</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Indar finko bat desaktibatu arte</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Aplikatu indar jarraitua gailu honi desaktibatu arte. Jokoak edozein iturritatik eragindako indarrak lehentasuna du aktibo dagoen bitartean, eta indar konstantea berriro aplikatzen da jokoa gelditzean.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Aplikatu indar konstantea</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Arrastatu saretaren barruan norabidea eta indarra ezartzeko.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>Berrezarri indar konstantea</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Berrezarri indar konstantea X</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Berrezarri indar konstantea Y</value></data>
 
@@ -3738,7 +3731,6 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makroak eta menuak</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shaker-ak</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Jokoak kontrolagailu birtual honetara bidaltzen dituen bibrazioa eta indar-atzeraelikadura audio-irteera batera bideratzen ditu, maiztasun baxuko tonu gisa, bass shaker-entzat eta subwoofer-entzat.</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Bibrazioa audiora</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Irteera-gailua, kanalak, irabazia, motor bakoitzaren tonua</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox, DualShock 3, DualShock 4 / DualSense eta Nintendo Switch Pro kontrolagailu birtualekin funtzionatzen du, baita indar-atzeraelikadura duten kontrolagailu birtual Hedatuekin ere, hala nola lasterketa-bolanteekin, eta Steam Deck Controller (Composite) gailuarekin. Jokoaren atzeraelikadura eta Bibrazio-proba audio-irteeratik entzuten dira. Makroen bibrazioa kontrolagailuan geratzen da.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Berrezarri bibrazioa audiora</value></data>
@@ -4177,8 +4169,6 @@ PadForge-k orain desinstalatzea nahi duzu? Horrek administratzaile-baimenak beha
   <data name="Tablet_InRange" xml:space="preserve"><value>Luma irismenean</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>FreeTrack-en memoria partekatuko datuen zain.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>FreeTrack-en memoria partekatua ez dago erabilgarri.</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Gidatze-angeluaren bibrazioa</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Palanka-ardatza erditik urruntzean hazten den bibrazioa</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Bibrazio jarraitua gehitzen du hautatutako palanka birtualaren ardatza erditik urruntzen den neurrian. Esleitutako iturri guztien esleitutako irteera erabiltzen du. «Banatu norabidearen arabera» aukeran, mugimendu negatiboak ezkerreko motorra gidatzen du eta positiboak eskuinekoa. «Ezkerreko motorra» edo «Eskuineko motorra» aukerak bi norabideak motor horretan jartzen ditu. Xbox eta PlayStation irteerarako, bibrazio-gailuekin. Bolanteak, indar-atzeraelikadura konstantea duten beste gailuak eta Fanatec pedalak saltatzen ditu.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Gaitu gidatze-angeluaren bibrazioa</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Ardatz birtuala</value></data>
@@ -4193,7 +4183,6 @@ PadForge-k orain desinstalatzea nahi duzu? Horrek administratzaile-baimenak beha
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Berrezarri Ezkerreko palanka X-ra</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Berrezarri intentsitatea (%50)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Berrezarri erdiko gune hila (%2)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>Berrezarri gidatze-angeluaren bibrazioa</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Berrezarri Gaitu gidatze-angeluaren bibrazioa</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Profila</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>Sarrera-gainazalak</value></data>

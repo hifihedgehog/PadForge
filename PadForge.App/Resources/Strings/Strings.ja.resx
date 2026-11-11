@@ -1192,7 +1192,6 @@
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>ダブルクリックで点を追加。右クリックで削除。ドラッグで調整。</value></data>
   <data name="Pad_Preset_Label" xml:space="preserve"><value>プリセット</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>トリガー軸</value></data>
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>フォースフィードバック / 振動</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>モーターごとのゲイン、トリガー振動、モーターの入れ替え</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>全体ゲイン</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>左モーター</value></data>
@@ -1202,14 +1201,11 @@
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>このコントローラーにはトリガーモーターがないため、Xbox インパルストリガーを使うゲームの振動は感じられません。代わりに各トリガーチャンネルを同じ側のメインモーターに合流させます。</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>振動テスト</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>モーター動作</value></data>
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>定常フォース</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>オフにするまで続く一定のフォース</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>オフにするまでこのデバイスに継続的なフォースを適用します。ゲームからのフォースが入っている間はそちらが優先され、ゲームが停止したら再開します。</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>定常フォースを適用</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>グリッド内をドラッグして方向と強さを設定します。</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>定常フォースをリセット</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>定常フォース X をリセット</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>定常フォース Y をリセット</value></data>
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>センターオフセット X をリセット</value></data>
@@ -2155,8 +2151,6 @@
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>全体ゲインをリセット</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>左トリガーをリセット</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>右トリガーをリセット</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>トリガー定常力</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>各トリガーモーターへの一定の力</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>トリガールーティング</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>メインモーターの振動をトリガーへ送る</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>メインの振動モーターをトリガーチャンネルへ、トリガーごとに振り分けます。XInput 振動とフォースフィードバックに対応します。アクティベーターで制御すれば、ボタンを押している間だけトリガーが振動します。</value></data>
@@ -2186,7 +2180,6 @@
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>トリガー定常力を適用する</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>左トリガー</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>右トリガー</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>トリガー定常力をリセット</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>左トリガーをリセット</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>右トリガーをリセット</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>オーディオ低音トリガー振動</value></data>
@@ -3877,7 +3870,6 @@
   <data name="Pad_Section_Macros" xml:space="preserve"><value>マクロとメニュー</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>バスシェイカー</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>この仮想コントローラーが受け取るゲームの振動とフォースフィードバックを、バスシェイカーやサブウーファー向けの低周波トーンとしてオーディオ出力へ送ります。</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>振動をオーディオへ</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>出力デバイス、チャンネル、ゲイン、モーターごとの音</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox、DualShock 3、DualShock 4 / DualSense、Nintendo Switch Pro、レーシングホイールなどフォースフィードバック対応の Extended 仮想コントローラー、および Steam Deck Controller (Composite) で動作します。ゲームのフィードバックとテストの振動がオーディオ出力に流れます。マクロの振動はコントローラー側に残ります。</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>「振動をオーディオへ」をリセット</value></data>
@@ -4337,8 +4329,6 @@
   <data name="Tablet_InRange" xml:space="preserve"><value>ペンが検出範囲内</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>FreeTrack共有メモリのデータを待機中。</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>FreeTrack共有メモリを利用できません。</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>ステアリング角度による振動</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>スティック軸が中央から離れるほど強まる振動</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>選択した仮想スティック軸が中央から離れるほど、継続的な振動が強くなります。割り当てたすべての入力をマッピングした出力を使用します。「方向ごとに分割」では、負方向で左モーター、正方向で右モーターが振動します。「左モーター」または「右モーター」を選ぶと、両方向がそのモーターで振動します。振動対応デバイスを使うXboxおよびPlayStation出力向けです。ハンドル、定数フォースフィードバックを備えた他のデバイス、Fanatec のペダルは対象外です。</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>ステアリング角度による振動を有効化</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>仮想軸</value></data>
@@ -4353,7 +4343,6 @@
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>左スティックXに戻す</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>強度を戻す（50%）</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>中央のデッドゾーンを戻す（2%）</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>ステアリング角度による振動をリセット</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>「ステアリング角度の振動を有効にする」をリセット</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>プロファイル</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>入力サーフェス</value></data>

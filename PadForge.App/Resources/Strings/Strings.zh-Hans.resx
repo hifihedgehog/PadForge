@@ -1192,7 +1192,6 @@
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>双击添加点。右键单击删除。拖动调整。</value></data>
   <data name="Pad_Preset_Label" xml:space="preserve"><value>预设</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>扳机轴</value></data>
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>力反馈 / 振动</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>各马达强度、扳机震动、交换马达</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>总增益</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>左马达</value></data>
@@ -1202,14 +1201,11 @@
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>此控制器没有扳机马达，使用 Xbox 脉冲扳机的游戏将感觉不到震动。改为将每个扳机通道并入同侧的主马达。</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>测试振动</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>马达活动</value></data>
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>恒力</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>持续施力，直到你关闭</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>持续向此设备施加力，直到你关闭开关。游戏发出的力在生效期间优先，游戏停止后恒力会自动恢复。</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>应用恒力</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>在网格中拖动以设置方向和强度。</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>重置恒力</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>重置恒力 X</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>重置恒力 Y</value></data>
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>重置中心偏移 X</value></data>
@@ -2154,8 +2150,6 @@
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>重置总体增益</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>重置左扳机</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>重置右扳机</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>扳机持续力</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>对每个扳机马达持续施力</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>扳机路由</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>将主马达的振动送到扳机</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>将主振动马达路由到扳机通道，每个扳机单独设置。支持 XInput 振动和力反馈。激活器可对其进行门控，使扳机仅在按住按钮时振动。</value></data>
@@ -2185,7 +2179,6 @@
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>应用扳机持续力</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>左扳机</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>右扳机</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>重置扳机持续力</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>重置左扳机</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>重置右扳机</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>音频低音扳机振动</value></data>
@@ -3877,7 +3870,6 @@
   <data name="Pad_Section_Macros" xml:space="preserve"><value>宏与菜单</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>低音振动器</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>将此虚拟手柄收到的游戏振动和力反馈转换为低频音，输出到音频设备，用于低音振动器和低音炮。</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>振动转音频</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>输出设备、声道、增益、各马达的音调</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>适用于 Xbox、DualShock 3、DualShock 4 / DualSense、Nintendo Switch Pro、支持力反馈的扩展虚拟手柄（例如赛车方向盘）以及 Steam Deck Controller (Composite)。游戏反馈和测试振动会进入音频输出。宏振动仍留在手柄上。</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>重置振动转音频</value></data>
@@ -4337,8 +4329,6 @@
   <data name="Tablet_InRange" xml:space="preserve"><value>笔在感应范围内</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>正在等待 FreeTrack 共享内存数据。</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>FreeTrack 共享内存不可用。</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>转向角度振动</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>摇杆轴离开中心时振动渐强</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>所选虚拟摇杆轴离中心越远，持续振动就越强。使用所有已分配来源映射后的输出。选择“按方向分配”时，负方向驱动左马达，正方向驱动右马达。选择“左马达”或“右马达”时，两个方向都由该马达振动。适用于使用振动设备的 Xbox 和 PlayStation 输出。会跳过方向盘、其他带恒定力反馈的设备以及 Fanatec 踏板。</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>启用转向角度振动</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>虚拟轴</value></data>
@@ -4353,7 +4343,6 @@
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>重置为左摇杆X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>重置强度（50%）</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>重置中心死区（2%）</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>重置转向角度振动</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>重置“启用转向角震动”</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>配置文件</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>输入表面</value></data>

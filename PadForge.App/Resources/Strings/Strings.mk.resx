@@ -936,8 +936,6 @@
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>Ресетирај го вкупното засилување</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Ресетирај го левиот тригер</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Ресетирај го десниот тригер</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Постојана сила на тригерите</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Постојана сила на секој мотор на тригер</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Пренасочување кон тригерите</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Ги пренасочува вибрациите на главните мотори кон тригерите</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Пренасочете ги главните мотори за вибрации во каналот на тригерите, по еден тригер. Работи со вибрациите на XInput и со повратната сила. Активатор може да го условува, така што тригерот вибрира само додека држите копче.</value></data>
@@ -967,7 +965,6 @@
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Примени постојана сила на тригерите</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Лев тригер</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>Десен тригер</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>Ресетирај ја постојаната сила на тригерите</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Ресетирај го левиот тригер</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Ресетирај го десниот тригер</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Вибрации на тригерите од басот на звукот</value></data>
@@ -2511,7 +2508,6 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Оска на тригерот</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Повратна сила / вибрации / хаптика</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>јачина по мотор, вибрации на тригерите, замена на моторите</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Вкупно засилување</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Лев мотор</value></data>
@@ -2523,14 +2519,11 @@
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Активност на моторите</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Постојана сила</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Постојана сила додека не ја исклучите</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Применува постојана сила на овој уред додека не ја исклучите. Силата што ја управува играта, од кој било извор, има предност додека е активна, а постојаната сила продолжува кога играта ќе престане.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Примени постојана сила</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Повлечете во мрежата за да ги поставите насоката и јачината.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>Ресетирај ја постојаната сила</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Ресетирај ја постојаната сила X</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Ресетирај ја постојаната сила Y</value></data>
 
@@ -3939,7 +3932,6 @@
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Макроа и менија</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Бас-шејкери</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Ги пренасочува вибрациите и повратната сила од играта што ги прима овој виртуелен контролер кон аудиоизлез, како нискофреквентни тонови за бас-шејкери и субвуфери.</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Вибрации во звук</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>излезен уред, режим на канали, засилување, тон за секој мотор</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Работи со виртуелните контролери Xbox, DualShock 3, DualShock 4 / DualSense и Nintendo Switch Pro, како и со проширени виртуелни контролери со повратна сила, како тркачки волани, и со Steam Deck Controller (Composite). Повратната реакција од играта и „Тестирај вибрации“ се пуштаат преку аудиоизлезот. Вибрациите од макроа остануваат на контролерот.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Ресетирај „Вибрации во звук“</value></data>
@@ -4386,8 +4378,6 @@
   <data name="Tablet_InRange" xml:space="preserve"><value>Пенкалото е во опсег</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Се чекаат податоци од споделената меморија на FreeTrack.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>Споделената меморија на FreeTrack не е достапна.</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Вибрации според аголот на управување</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Вибрации што растат кога оската се оддалечува од центарот</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Додава непрекинати вибрации додека избраната оска на виртуелната палка се оддалечува од центарот. Го користи мапираниот излез од сите доделени извори. Со „Поделено по насока“ негативното движење го управува левиот мотор, а позитивното десниот. Со „Лев мотор“ или „Десен мотор“ двете насоки одат на тој еден мотор. За излез Xbox и PlayStation со уреди со вибрации. Ги прескокнува воланите, другите уреди со постојана повратна сила и педалите Fanatec.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Овозможи вибрации според аголот на управување</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Виртуелна оска</value></data>
@@ -4402,7 +4392,6 @@
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Ресетирај на „Лева палка X“</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Ресетирај ја јачината (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Ресетирај ја мртвата зона во центарот (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>Ресетирај ги вибрациите според аголот на управување</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Ресетирај „Овозможи вибрации според аголот на управување“</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Профил</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>Влезни површини</value></data>

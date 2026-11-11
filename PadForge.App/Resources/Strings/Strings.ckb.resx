@@ -878,8 +878,6 @@
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>گەڕاندنەوەی گەینی گشتی</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>گەڕاندنەوەی تریگەری چەپ</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>گەڕاندنەوەی تریگەری ڕاست</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>هێزی نەگۆڕی تریگەر</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>هێزێکی بەردەوام لەسەر هەر مۆتۆرێکی تریگەر</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>ئاڕاستەکردنی تریگەر</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>لەرزینی مۆتۆرە سەرەکییەکان دەنێرێت بۆ تریگەرەکان</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>مۆتۆرە سەرەکییەکانی لەرزین ئاڕاستە بکە بۆ کەناڵی تریگەر، هەر جارە بۆ یەک تریگەر. لەگەڵ لەرزینی XInput و فیدباکی هێز کار دەکات. چالاککەرێک دەتوانێت کۆنترۆڵی بکات بۆ ئەوەی تریگەرەکە تەنها لە کاتێکدا بلەرزێت کە دوگمەیەک ڕادەگریت.</value></data>
@@ -909,7 +907,6 @@
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>جێبەجێکردنی هێزی نەگۆڕی تریگەر</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>تریگەری چەپ</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>تریگەری ڕاست</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>گەڕاندنەوەی هێزی نەگۆڕی تریگەر</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>گەڕاندنەوەی تریگەری چەپ</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>گەڕاندنەوەی تریگەری ڕاست</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>لەرزینی تریگەر بە بەیسی دەنگ</value></data>
@@ -2340,7 +2337,6 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>تەوەری تریگەر</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>فیدباکی هێز / لەرزین / هاپتیک</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>هێزی هەر مۆتۆرێک، لەرزینی تریگەر، گۆڕینەوەی مۆتۆرەکان</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>بەهێزکردنی گشتی</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>مۆتۆری چەپ</value></data>
@@ -2352,14 +2348,11 @@
   <data name="Pad_MotorActivity" xml:space="preserve"><value>چالاکیی مۆتۆر</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>هێزی بەردەوام</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>هێزێکی بەردەوام تا دەیکوژێنیتەوە</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>هێزێکی بەردەوام لەسەر ئەم ئامێرە دابنێ تا دەیکوژێنیتەوە. هێزی یاری لە هەر سەرچاوەیەکەوە لە کاتی چالاکبوونیدا جێگەی دەگرێتەوە و کاتێک یارییەکە دەوەستێت دەست پێدەکاتەوە.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>دانانی هێزی بەردەوام</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>لە ناو تۆڕەکەدا ڕایبکێشە بۆ دیاریکردنی ئاراستە و هێز.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>گەڕاندنەوەی هێزی بەردەوام</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>گەڕاندنەوەی هێزی بەردەوام X</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>گەڕاندنەوەی هێزی بەردەوام Y</value></data>
 
@@ -3732,7 +3725,6 @@
   <data name="Pad_Section_Macros" xml:space="preserve"><value>ماکرۆکان و مێنیوەکان</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>لەرزێنەرەکانی باس</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>لەرزین و فیدباکی هێزی یاری کە ئەم کۆنترۆڵەری مەجازییە وەریدەگرێت دەنێرێت بۆ دەرچوویەکی دەنگ وەک تۆنی لەرەلەری نزم بۆ لەرزێنەرەکانی باس و سەبوۆفەرەکان.</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>لەرزین بۆ دەنگ</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>ئامێری دەرچوو، کەناڵەکان، بەهێزکردن، تۆنێک بۆ هەر مۆتۆرێک</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>لەگەڵ کۆنترۆڵەرە مەجازییەکانی Xbox، DualShock 3، DualShock 4 / DualSense و Nintendo Switch Pro کار دەکات، هەروەها کۆنترۆڵەرە مەجازییە Extendedەکان کە فیدباکی هێزیان هەیە، وەک سوکانی پێشبڕکێ، و Steam Deck Controller (Composite). فیدباکی یاری و «تاقیکردنەوەی لەرزین» لە ڕێگەی دەرچووی دەنگەوە لێدەدرێن. لەرزینی ماکرۆ لەسەر کۆنترۆڵەرەکە دەمێنێتەوە.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>گەڕاندنەوەی لەرزین بۆ دەنگ</value></data>
@@ -4171,8 +4163,6 @@
   <data name="Tablet_InRange" xml:space="preserve"><value>قەڵەم لە مەودادایە</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>چاوەڕوانی داتای بیرگەی هاوبەشی FreeTrack.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>بیرگەی هاوبەشی FreeTrack بەردەست نییە.</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>لەرزینی گۆشەی سوکان</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>لەرزینێک کە بە دوورکەوتنەوەی تەوەری ستیک لە ناوەند زیاد دەبێت</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>لەرزینی بەردەوام زیاد دەکات کاتێک تەوەرە مەجازییە هەڵبژێردراوەکەی ستیک لە ناوەند دوور دەکەوێتەوە. دەرچووی بەستراو لە هەموو سەرچاوە دیاریکراوەکان بەکاردەهێنێت. لەگەڵ «دابەشکردن بەپێی ئاراستە»، جووڵەی نەرێنی مۆتۆری چەپ دەخاتە کار و جووڵەی ئەرێنی مۆتۆری ڕاست. «مۆتۆری چەپ» یان «مۆتۆری ڕاست» هەردوو ئاراستەکە دەخاتە سەر ئەو یەک مۆتۆرە. بۆ دەرچووی Xbox و PlayStation لەگەڵ ئامێرەکانی لەرزین. سوکانەکان، ئامێرەکانی تر کە فیدباکی هێزی بەردەوامیان هەیە، و پێدەڵەکانی Fanatec پشتگوێ دەخات.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>چالاککردنی لەرزینی گۆشەی سوکان</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>تەوەری مەجازی</value></data>
@@ -4187,7 +4177,6 @@
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>گەڕاندنەوە بۆ ستیکی چەپ X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>گەڕاندنەوەی هێز (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>گەڕاندنەوەی ناوچەی مردووی ناوەند (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>گەڕاندنەوەی لەرزینی گۆشەی سوکان</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>گەڕاندنەوەی چالاککردنی لەرزینی گۆشەی سوکان</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>پرۆفایل</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>ڕووکارەکانی تێخراو</value></data>

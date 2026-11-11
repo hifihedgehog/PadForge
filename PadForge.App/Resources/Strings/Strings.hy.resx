@@ -881,8 +881,6 @@
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>Վերականգնել ընդհանուր ուժեղացումը</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Վերականգնել ձախ ձգանը</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Վերականգնել աջ ձգանը</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Ձգանի հաստատուն ուժ</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Հաստատուն ուժ յուրաքանչյուր ձգանի շարժիչի վրա</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Ձգանի երթուղավորում</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Հիմնական թրթռաշարժիչների թրթռոցը ուղարկում է ձգաններին</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Երթուղավորում է հիմնական թրթռաշարժիչները ձգանի ալիք, մեկ ձգան միաժամանակ։ Աշխատում է XInput թրթռոցի և հետադարձ ուժի հետ։ Ակտիվացնողը կարող է սահմանափակել այն, որպեսզի ձգանը թրթա միայն կոճակը պահելիս։</value></data>
@@ -912,7 +910,6 @@
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Կիրառել ձգանի հաստատուն ուժ</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Ձախ ձգան</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>Աջ ձգան</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>Վերականգնել ձգանի հաստատուն ուժը</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Վերականգնել ձախ ձգանը</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Վերականգնել աջ ձգանը</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Աուդիո բասով ձգանի թրթռոց</value></data>
@@ -2336,7 +2333,6 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Ձգանի առանցք</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Հետադարձ ուժ / թրթռոց / հապտիկա</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Թրթռաշարժիչի առանձին ուժեղացում, ձգանների թրթռոց, թրթռաշարժիչների տեղափոխում</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Ընդհանուր ուժեղացում</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Ձախ թրթռաշարժիչ</value></data>
@@ -2348,14 +2344,11 @@
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Թրթռաշարժիչների ակտիվություն</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Հաստատուն ուժ</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Հաստատուն ուժ մինչև անջատելը</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Կիրառում է շարունակական ուժ այս սարքի վրա, մինչև չանջատեք։ Խաղի ուժը ցանկացած աղբյուրից գերակայում է հաստատուն ուժի վրա, մինչ ակտիվ է, իսկ խաղի դադարելուց հետո հաստատուն ուժը վերսկսվում է։</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Կիրառել հաստատուն ուժ</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Քաշեք ցանցի մեջ՝ ուղղությունն ու ուժգնությունը սահմանելու համար։</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>Վերականգնել հաստատուն ուժը</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Վերականգնել հաստատուն ուժը X</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Վերականգնել հաստատուն ուժը Y</value></data>
 
@@ -3706,7 +3699,6 @@
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Մակրոներ և ընտրացանկեր</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Բաս շեյքերներ</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Այս վիրտուալ կառավարիչի ստացած խաղի թրթռոցը և հետադարձ ուժը ուղղորդում է աուդիո ելքին՝ որպես ցածր հաճախականության տոներ բաս շեյքերների և սաբվուֆերների համար։</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Թրթռոց դեպի աուդիո</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Ելքային սարք, ալիքներ, ուժեղացում, հնչերանգ յուրաքանչյուր շարժիչի համար</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Աշխատում է Xbox, DualShock 3, DualShock 4 / DualSense և Nintendo Switch Pro վիրտուալ կառավարիչների հետ, ինչպես նաև հետադարձ ուժով Extended վիրտուալ կառավարիչների, օրինակ մրցարշավային ղեկերի, և Steam Deck Controller-ի (Composite) հետ։ Խաղի հետադարձ կապը և «Փորձարկել թրթռոցը» նվագարկվում են աուդիո ելքով։ Մակրոյի թրթռոցը մնում է կառավարիչի վրա։</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Վերականգնել թրթռոցը դեպի աուդիո</value></data>
@@ -4145,8 +4137,6 @@
   <data name="Tablet_InRange" xml:space="preserve"><value>Գրիչը տիրույթում է</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Սպասում է FreeTrack-ի ընդհանուր հիշողության տվյալներին։</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>FreeTrack-ի ընդհանուր հիշողությունը հասանելի չէ։</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Ղեկի անկյան թրթռոց</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Թրթռոց, որն ուժեղանում է, երբ ձողի առանցքը հեռանում է կենտրոնից</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Ավելացնում է անընդհատ թրթռոց, երբ ընտրված վիրտուալ ձողի առանցքը հեռանում է կենտրոնից։ Օգտագործում է բոլոր նշանակված աղբյուրների կապակցված ելքը։ «Բաժանել ըստ ուղղության» ռեժիմում բացասական շարժումը վարում է ձախ թրթռաշարժիչը, դրականը՝ աջը։ «Ձախ թրթռաշարժիչ» կամ «Աջ թրթռաշարժիչ» ընտրելիս երկու ուղղություններն էլ գնում են այդ մեկ թրթռաշարժիչին։ Xbox-ի և PlayStation-ի ելքի համար՝ թրթռոցով սարքերով։ Բացառում է ղեկերը, հաստատուն հետադարձ ուժով այլ սարքերը և Fanatec-ի ոտնակները։</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Միացնել ղեկի անկյան թրթռոցը</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Վիրտուալ առանցք</value></data>
@@ -4161,7 +4151,6 @@
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Վերականգնել՝ Ձախ ձող X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Վերականգնել ուժգնությունը (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Վերականգնել կենտրոնի մեռյալ գոտին (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>Վերականգնել ղեկի անկյան թրթռոցը</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Վերականգնել ղեկի անկյան թրթռոցի միացումը</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Պրոֆիլ</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>Մուտքի մակերեսներ</value></data>

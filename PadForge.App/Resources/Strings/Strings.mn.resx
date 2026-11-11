@@ -881,8 +881,6 @@
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>Нийт өсгөлтийг дахин тохируулах</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Зүүн гохыг дахин тохируулах</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Баруун гохыг дахин тохируулах</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Гохны тогтмол хүч</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Гохны мотор бүрт тогтвортой хүч</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Гохны чиглүүлэлт</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Гол моторуудын чичиргээг гох руу илгээнэ</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Гол чичиргээний моторуудыг гохны суваг руу, нэг удаад нэг гохоор чиглүүлнэ. XInput чичиргээ болон хүчний эргэх холбоотой ажиллана. Идэвхжүүлэгч ашиглан зөвхөн товч дарж барих үед гох чичрэх болгож болно.</value></data>
@@ -912,7 +910,6 @@
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Гохны тогтмол хүч хэрэглэх</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Зүүн гох</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>Баруун гох</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>Гохны тогтмол хүчийг дахин тохируулах</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Зүүн гохыг дахин тохируулах</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Баруун гохыг дахин тохируулах</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Аудионы бассаас гохны чичиргээ</value></data>
@@ -2347,7 +2344,6 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Гохны тэнхлэг</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Хүчний эргэх холбоо / Чичиргээ / Хаптик</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Мотор тус бүрийн өсгөлт, гохны чичиргээ, моторыг солих</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Нийт өсгөлт</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Зүүн мотор</value></data>
@@ -2359,14 +2355,11 @@
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Моторын идэвхжил</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Тогтмол хүч</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Унтраах хүртэл тогтвортой хүч</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Унтраах хүртэл энэ төхөөрөмжид тасралтгүй хүч үзүүлнэ. Аливаа эх үүсвэрээс ирэх тоглоомын хүч идэвхтэй байх хугацаандаа давамгайлж, тоглоом зогсоход энэ хүч дахин үргэлжилнэ.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Тогтмол хүч хэрэглэх</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Чиглэл ба хүчийг тохируулахын тулд торон дотор чирнэ үү.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>Тогтмол хүчийг дахин тохируулах</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Тогтмол хүч X-ийг дахин тохируулах</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Тогтмол хүч Y-ийг дахин тохируулах</value></data>
 
@@ -3745,7 +3738,6 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Хөдөлгөөн ба хүрэлт</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Гэрэл ба дуу</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Макро ба цэсүүд</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Чичиргээг аудио руу</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Гаралтын төхөөрөмж, суваг, өсгөлт, мотор бүрийн ая</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Чичиргээг аудио гаралт руу чиглүүлэх</value></data>
   <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>Энэ виртуал контроллерын хүлээн авсан тоглоомын чичиргээ болон хүчний эргэх холбоог сонгосон аудио гаралтад бага давтамжийн дуу болгон тоглуулна. Унтраахад бүх тохиргоо хадгалагдана.</value></data>
@@ -4167,8 +4159,6 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="Tablet_InRange" xml:space="preserve"><value>Үзэг хүрээнд</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>FreeTrack хуваалцсан санах ойн өгөгдлийг хүлээж байна.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>FreeTrack хуваалцсан санах ой боломжгүй байна.</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Жолооны өнцгийн чичиргээ</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Стикийн тэнхлэг төвөөс холдох тусам өсөх чичиргээ</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Сонгосон виртуал стикийн тэнхлэг төвөөс холдох тусам тасралтгүй чичиргээ нэмнэ. Хуваарилсан бүх эх үүсвэрийн оноолтын гаралтыг ашиглана. «Чиглэлээр хуваах» сонголтод сөрөг хөдөлгөөн зүүн моторыг, эерэг хөдөлгөөн баруун моторыг ажиллуулна. «Зүүн мотор» эсвэл «Баруун мотор» сонголт хоёр чиглэлийг хоёуланг нь тухайн нэг моторт өгнө. Чичиргээтэй төхөөрөмжтэй Xbox ба PlayStation гаралтад зориулагдсан. Жолоо, тогтмол хүчний эргэх холбоотой бусад төхөөрөмж болон Fanatec дөрөөг алгасна.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Жолооны өнцгийн чичиргээг идэвхжүүлэх</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Виртуал тэнхлэг</value></data>
@@ -4183,7 +4173,6 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Дахин тохируулах (зүүн стик X)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Хүчийг дахин тохируулах (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Төвийн үхсэн бүсийг дахин тохируулах (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>Жолооны өнцгийн чичиргээг дахин тохируулах</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>«Жолооны өнцгийн чичиргээг идэвхжүүлэх»-ийг дахин тохируулах</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Профайл</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>Оролтын гадаргуу</value></data>

@@ -876,8 +876,6 @@
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>ಒಟ್ಟಾರೆ ಗೇನ್ ಮರುಹೊಂದಿಸಿ</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>ಎಡ ಟ್ರಿಗರ್ ಮರುಹೊಂದಿಸಿ</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>ಬಲ ಟ್ರಿಗರ್ ಮರುಹೊಂದಿಸಿ</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>ಸ್ಥಿರ ಟ್ರಿಗರ್ ಬಲ</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>ಪ್ರತಿ ಟ್ರಿಗರ್ ಮೋಟಾರ್‌ಗೆ ಸ್ಥಿರ ಬಲ</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>ಟ್ರಿಗರ್ ರೂಟಿಂಗ್</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>ಮುಖ್ಯ ಮೋಟಾರ್‌ಗಳ ಕಂಪನವನ್ನು ಟ್ರಿಗರ್‌ಗಳಿಗೆ ಕಳುಹಿಸುತ್ತದೆ</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>ಮುಖ್ಯ ಕಂಪನ ಮೋಟಾರ್‌ಗಳನ್ನು ಒಂದೊಂದು ಟ್ರಿಗರ್‌ನಂತೆ ಟ್ರಿಗರ್ ಚಾನಲ್‌ಗೆ ರೂಟ್ ಮಾಡಿ. XInput ಕಂಪನ ಮತ್ತು ಫೋರ್ಸ್ ಫೀಡ್‌ಬ್ಯಾಕ್‌ನೊಂದಿಗೆ ಕೆಲಸ ಮಾಡುತ್ತದೆ. ಸಕ್ರಿಯಕಾರಕವು ಇದನ್ನು ನಿಯಂತ್ರಿಸಬಹುದು, ಇದರಿಂದ ನೀವು ಬಟನ್ ಒತ್ತಿ ಹಿಡಿದಿರುವಾಗ ಮಾತ್ರ ಟ್ರಿಗರ್ ಝೇಂಕರಿಸುತ್ತದೆ.</value></data>
@@ -907,7 +905,6 @@
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>ಸ್ಥಿರ ಟ್ರಿಗರ್ ಬಲ ಅನ್ವಯಿಸಿ</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>ಎಡ ಟ್ರಿಗರ್</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>ಬಲ ಟ್ರಿಗರ್</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>ಸ್ಥಿರ ಟ್ರಿಗರ್ ಬಲ ಮರುಹೊಂದಿಸಿ</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>ಎಡ ಟ್ರಿಗರ್ ಮರುಹೊಂದಿಸಿ</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>ಬಲ ಟ್ರಿಗರ್ ಮರುಹೊಂದಿಸಿ</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>ಆಡಿಯೊ ಬಾಸ್ ಟ್ರಿಗರ್ ಕಂಪನ</value></data>
@@ -2341,7 +2338,6 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>ಟ್ರಿಗರ್ ಅಕ್ಷ</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>ಫೋರ್ಸ್ ಫೀಡ್‌ಬ್ಯಾಕ್ / ಕಂಪನ / ಹ್ಯಾಪ್ಟಿಕ್ಸ್</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>ಪ್ರತಿ ಮೋಟಾರ್‌ಗೆ ಗೇನ್, ಟ್ರಿಗರ್ ಕಂಪನ, ಮೋಟಾರ್ ಅದಲುಬದಲು</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>ಒಟ್ಟಾರೆ ಗೇನ್</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>ಎಡ ಮೋಟಾರ್</value></data>
@@ -2353,14 +2349,11 @@
   <data name="Pad_MotorActivity" xml:space="preserve"><value>ಮೋಟಾರ್ ಚಟುವಟಿಕೆ</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>ಸ್ಥಿರ ಬಲ</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>ನೀವು ಆಫ್ ಮಾಡುವವರೆಗೆ ಒಂದೇ ಸ್ಥಿರ ಬಲ</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>ನೀವು ಆಫ್ ಮಾಡುವವರೆಗೆ ಈ ಸಾಧನಕ್ಕೆ ನಿರಂತರ ಬಲವನ್ನು ಅನ್ವಯಿಸಿ. ಇದು ಸಕ್ರಿಯವಾಗಿರುವಾಗ ಯಾವುದೇ ಮೂಲದಿಂದ ಬರುವ ಗೇಮ್-ಚಾಲಿತ ಬಲ ಅದನ್ನು ಮೀರಿಸುತ್ತದೆ ಮತ್ತು ಗೇಮ್ ನಿಂತಾಗ ಪುನರಾರಂಭವಾಗುತ್ತದೆ.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>ಸ್ಥಿರ ಬಲ ಅನ್ವಯಿಸಿ</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>ದಿಕ್ಕು ಮತ್ತು ಬಲವನ್ನು ಹೊಂದಿಸಲು ಗ್ರಿಡ್ ಒಳಗೆ ಎಳೆಯಿರಿ.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>ಸ್ಥಿರ ಬಲವನ್ನು ಮರುಹೊಂದಿಸು</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>ಸ್ಥಿರ ಬಲ X ಅನ್ನು ಮರುಹೊಂದಿಸು</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>ಸ್ಥಿರ ಬಲ Y ಅನ್ನು ಮರುಹೊಂದಿಸು</value></data>
 
@@ -3729,7 +3722,6 @@
   <data name="Pad_Section_Macros" xml:space="preserve"><value>ಮ್ಯಾಕ್ರೋಗಳು ಮತ್ತು ಮೆನುಗಳು</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>ಬಾಸ್ ಶೇಕರ್‌ಗಳು</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>ಈ ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್ ಪಡೆಯುವ ಆಟದ ಕಂಪನ ಮತ್ತು ಫೋರ್ಸ್ ಫೀಡ್‌ಬ್ಯಾಕ್ ಅನ್ನು ಬಾಸ್ ಶೇಕರ್‌ಗಳು ಮತ್ತು ಸಬ್‌ವೂಫರ್‌ಗಳಿಗಾಗಿ ಕಡಿಮೆ ಆವರ್ತನದ ಸ್ವರಗಳಾಗಿ ಆಡಿಯೊ ಔಟ್‌ಪುಟ್‌ಗೆ ರವಾನಿಸುತ್ತದೆ.</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>ಕಂಪನ ಆಡಿಯೊಗೆ</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>ಔಟ್‌ಪುಟ್ ಸಾಧನ, ಚಾನೆಲ್‌ಗಳು, ಗೇನ್, ಪ್ರತಿ ಮೋಟಾರ್‌ಗೆ ಒಂದು ಸ್ವರ</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox, DualShock 3, DualShock 4 / DualSense ಮತ್ತು Nintendo Switch Pro ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್‌ಗಳೊಂದಿಗೆ, ಜೊತೆಗೆ ರೇಸಿಂಗ್ ವೀಲ್‌ಗಳಂತಹ ಫೋರ್ಸ್ ಫೀಡ್‌ಬ್ಯಾಕ್ ಇರುವ ವಿಸ್ತೃತ ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್‌ಗಳು ಮತ್ತು Steam Deck Controller (Composite) ನೊಂದಿಗೆ ಕೆಲಸ ಮಾಡುತ್ತದೆ. ಆಟದ ಫೀಡ್‌ಬ್ಯಾಕ್ ಮತ್ತು ಕಂಪನ ಪರೀಕ್ಷೆ ಆಡಿಯೊ ಔಟ್‌ಪುಟ್ ಮೂಲಕ ಪ್ಲೇ ಆಗುತ್ತವೆ. ಮ್ಯಾಕ್ರೋ ಕಂಪನ ಕಂಟ್ರೋಲರ್‌ನಲ್ಲೇ ಉಳಿಯುತ್ತದೆ.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>ಕಂಪನ ಆಡಿಯೊಗೆ ಮರುಹೊಂದಿಸಿ</value></data>
@@ -4166,8 +4158,6 @@ PadForge ಅವುಗಳನ್ನು ಈಗ ಅನ್‌ಇನ್‌ಸ್ಟಾ
   <data name="Tablet_InRange" xml:space="preserve"><value>ಪೆನ್ ವ್ಯಾಪ್ತಿಯಲ್ಲಿದೆ</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>FreeTrack ಹಂಚಿಕೆಯ ಮೆಮೊರಿ ಡೇಟಾಗಾಗಿ ಕಾಯಲಾಗುತ್ತಿದೆ.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>FreeTrack ಹಂಚಿಕೆಯ ಮೆಮೊರಿ ಲಭ್ಯವಿಲ್ಲ.</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>ಸ್ಟೀರಿಂಗ್ ಕೋನ ಕಂಪನ</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>ಸ್ಟಿಕ್ ಅಕ್ಷ ಕೇಂದ್ರದಿಂದ ದೂರ ಹೋದಂತೆ ಹೆಚ್ಚುವ ಕಂಪನ</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>ಆಯ್ದ ವರ್ಚುವಲ್ ಸ್ಟಿಕ್ ಅಕ್ಷ ಕೇಂದ್ರದಿಂದ ದೂರ ಸರಿದಂತೆ ನಿರಂತರ ಕಂಪನ ಸೇರಿಸುತ್ತದೆ. ನಿಯೋಜಿತ ಎಲ್ಲ ಮೂಲಗಳ ಮ್ಯಾಪ್ ಮಾಡಿದ ಔಟ್‌ಪುಟ್ ಬಳಸುತ್ತದೆ. ದಿಕ್ಕಿನ ಪ್ರಕಾರ ವಿಭಜನೆ ಆಯ್ಕೆಯಲ್ಲಿ ಋಣಾತ್ಮಕ ಚಲನೆ ಎಡ ಮೋಟಾರ್ ಅನ್ನು, ಧನಾತ್ಮಕ ಚಲನೆ ಬಲ ಮೋಟಾರ್ ಅನ್ನು ಚಾಲಿಸುತ್ತದೆ. ಎಡ ಮೋಟಾರ್ ಅಥವಾ ಬಲ ಮೋಟಾರ್ ಆರಿಸಿದರೆ ಎರಡೂ ದಿಕ್ಕುಗಳು ಆ ಒಂದೇ ಮೋಟಾರ್‌ನಲ್ಲಿ ಕಂಪಿಸುತ್ತವೆ. ಕಂಪನ ಸಾಧನಗಳಿರುವ Xbox ಮತ್ತು PlayStation ಔಟ್‌ಪುಟ್‌ಗಾಗಿ. ಇದು ಸ್ಟೀರಿಂಗ್ ವೀಲ್‌ಗಳು, ಸ್ಥಿರ ಫೋರ್ಸ್ ಫೀಡ್‌ಬ್ಯಾಕ್ ಇರುವ ಇತರ ಸಾಧನಗಳು ಮತ್ತು Fanatec ಪೆಡಲ್‌ಗಳನ್ನು ಬಿಟ್ಟುಬಿಡುತ್ತದೆ.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>ಸ್ಟೀರಿಂಗ್ ಕೋನ ಕಂಪನ ಸಕ್ರಿಯಗೊಳಿಸಿ</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>ವರ್ಚುವಲ್ ಅಕ್ಷ</value></data>
@@ -4182,7 +4172,6 @@ PadForge ಅವುಗಳನ್ನು ಈಗ ಅನ್‌ಇನ್‌ಸ್ಟಾ
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>ಎಡ ಸ್ಟಿಕ್ X ಗೆ ಮರುಹೊಂದಿಸು</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>ತೀವ್ರತೆ ಮರುಹೊಂದಿಸು (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>ಕೇಂದ್ರ ಡೆಡ್ ಜೋನ್ ಮರುಹೊಂದಿಸು (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>ಸ್ಟೀರಿಂಗ್ ಕೋನ ಕಂಪನ ಮರುಹೊಂದಿಸು</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>ಸ್ಟೀರಿಂಗ್ ಕೋನ ಕಂಪನ ಸಕ್ರಿಯಗೊಳಿಸುವಿಕೆ ಮರುಹೊಂದಿಸು</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>ಪ್ರೊಫೈಲ್</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>ಇನ್‌ಪುಟ್ ಮೇಲ್ಮೈಗಳು</value></data>

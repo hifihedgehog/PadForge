@@ -881,8 +881,6 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>Vrati ukupno pojačanje na zadano</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Vrati lijevi okidač na zadano</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Vrati desni okidač na zadano</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Stalna sila okidača</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Stalna sila na svaki motor okidača</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Usmjeravanje na okidače</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Šalje vibraciju glavnih motora na okidače</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Usmjerite glavne motore vibracije u kanal okidača, za svaki okidač zasebno. Radi s XInput vibracijom i povratnom silom. Aktivator ga može uvjetovati tako da okidač zuji samo dok držite gumb.</value></data>
@@ -912,7 +910,6 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Primijeni stalnu silu okidača</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Lijevi okidač</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>Desni okidač</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>Vrati stalnu silu okidača na zadano</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Vrati lijevi okidač na zadano</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Vrati desni okidač na zadano</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Vibracija okidača prema basu zvuka</value></data>
@@ -2347,7 +2344,6 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Os okidača</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Povratna sila / vibracija / haptika</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Pojačanje po motoru, vibracija okidača, zamjena motora</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Ukupno pojačanje</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Lijevi motor</value></data>
@@ -2359,14 +2355,11 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Aktivnost motora</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Stalna sila</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Stalna sila dok je ne isključite</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Primjenjuje neprekidnu silu na ovaj uređaj dok je ne isključite. Sila koju pokreće igra iz bilo kojeg izvora ima prednost dok je aktivna, a stalna se sila nastavlja kada igra prestane.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Primijeni stalnu silu</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Povlačite unutar mreže da biste postavili smjer i jačinu.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>Vrati stalnu silu na zadano</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Vrati stalnu silu X na zadano</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Vrati stalnu silu Y na zadano</value></data>
 
@@ -3747,7 +3740,6 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makroi i izbornici</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Taktilni pretvarači</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Usmjerava vibraciju igre i povratnu silu koje ovaj virtualni kontroler prima na izlaz zvuka kao niskofrekventne tonove za taktilne pretvarače i subwoofere.</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibracija u zvuk</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Izlazni uređaj, kanali, pojačanje, ton za svaki motor</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Radi s virtualnim kontrolerima Xbox, DualShock 3, DualShock 4 / DualSense i Nintendo Switch Pro, s Proširenim virtualnim kontrolerima s povratnom silom, kao što su trkaći volani, te s kontrolerom Steam Deck Controller (Composite). Povratna reakcija igre i Testiraj vibraciju reproduciraju se kroz izlaz zvuka. Vibracija iz makroa ostaje na kontroleru.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Vrati vibraciju u zvuk na zadano</value></data>
@@ -4184,8 +4176,6 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Tablet_InRange" xml:space="preserve"><value>Olovka u dometu</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Čekaju se podaci dijeljene memorije FreeTrack.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>Dijeljena memorija FreeTrack nije dostupna.</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Vibracija prema kutu upravljanja</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Vibracija koja raste dok se os palice udaljava od središta</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Dodaje neprekidnu vibraciju dok se odabrana os virtualne palice udaljava od središta. Koristi mapirani izlaz svih dodijeljenih izvora. Uz Podijeljeno po smjeru, negativni pomak pokreće lijevi motor, a pozitivni desni. Lijevi motor ili Desni motor stavlja oba smjera na taj jedan motor. Za Xbox i PlayStation izlaz s uređajima s vibracijom. Preskače volane, druge uređaje s konstantnom povratnom silom i pedale Fanatec.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Omogući vibraciju prema kutu upravljanja</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Virtualna os</value></data>
@@ -4200,7 +4190,6 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Vrati na Lijeva palica X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Vrati jačinu na zadano (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Vrati središnju mrtvu zonu na zadano (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>Vrati vibraciju prema kutu upravljanja na zadano</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Vrati na zadano: Omogući vibraciju prema kutu upravljanja</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Profil</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>Ulazne površine</value></data>

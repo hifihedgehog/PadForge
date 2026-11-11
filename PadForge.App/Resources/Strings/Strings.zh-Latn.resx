@@ -880,8 +880,6 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>Chóngzhì zǒngtǐ zēngyì</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Chóngzhì zuǒ bānjī</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Chóngzhì yòu bānjī</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Bānjī chíxù lì</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Měi gè bānjī mǎdá shàng de chíxù lì</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Bānjī lùyóu</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Bǎ zhǔ mǎdá de zhèndòng sòng dào bānjī</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Bǎ zhǔ zhèndòng mǎdá lùyóu dào bānjī tōngdào, měi cì yí gè bānjī. Zhīchí XInput zhèndòng hé lìfǎnkuì. Kě yòng chùfāqì kòngzhì, shǐ bānjī zhǐ zài nǐ ànzhù ànniǔ shí zhèndòng.</value></data>
@@ -911,7 +909,6 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Yìngyòng bānjī chíxù lì</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Zuǒ bānjī</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>Yòu bānjī</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>Chóngzhì bānjī chíxù lì</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Chóngzhì zuǒ bānjī</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Chóngzhì yòu bānjī</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Yīnpín dīyīn bānjī zhèndòng</value></data>
@@ -2346,7 +2343,6 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Bānjī zhóu</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Lìfǎnkuì / zhèndòng / chùgǎn fǎnkuì</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Gè mǎdá zēngyì, bānjī zhèndòng, jiāohuàn mǎdá</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Zǒng zēngyì</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Zuǒ mǎdá</value></data>
@@ -2358,14 +2354,11 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Mǎdá huódòng</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Hénglì</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Chíxù de lì, zhídào nǐ guānbì</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Chíxù xiàng cǐ shèbèi shījiā lì, zhídào nǐ guānbì kāiguān. Yóuxì fāchū de lì zài shēngxiào qījiān yōuxiān, yóuxì tíngzhǐ hòu hénglì huì zìdòng huīfù.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Yìngyòng hénglì</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Zài wǎnggé zhōng tuōdòng yǐ shèzhì fāngxiàng hé qiángdù.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>Chóngzhì hénglì</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Chóngzhì hénglì X</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Chóngzhì hénglì Y</value></data>
 
@@ -3721,7 +3714,6 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Hóng yǔ càidān</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Dīyīn zhèndòngqì</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Jiāng cǐ xūnǐ kòngzhìqì shōudào de yóuxì zhèndòng hé lìfǎnkuì zhuǎnhuàn wéi dīpín yīn, shūchū dào yīnpín shèbèi, yòng yú dīyīn zhèndòngqì hé dīyīnpào.</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Zhèndòng zhuǎn yīnpín</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Shūchū shèbèi, shēngdào, zēngyì, měi gè mǎdá de yīndiào</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Shìyòng yú Xbox, DualShock 3, DualShock 4 / DualSense hé Nintendo Switch Pro xūnǐ kòngzhìqì, yǐjí zhīchí lìfǎnkuì de kuòzhǎn xūnǐ kòngzhìqì (lìrú sàichē fāngxiàngpán) hé Steam Deck Controller (Composite). Yóuxì fǎnkuì hé cèshì zhèndòng huì jìnrù yīnpín shūchū. Hóng zhèndòng réng liú zài kòngzhìqì shàng.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Chóngzhì zhèndòng zhuǎn yīnpín</value></data>
@@ -4121,8 +4113,6 @@ Yào ràng PadForge xiànzài xièzài tāmen ma? Cǐ cāozuò xūyào tíshēng
   <data name="Tablet_InRange" xml:space="preserve"><value>Bǐ zài gǎnyìng fànwéi nèi</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Zhèngzài děngdài FreeTrack gòngxiǎng nèicún shùjù.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>FreeTrack gòngxiǎng nèicún bùkěyòng.</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Zhuǎnxiàng jiǎodù zhèndòng</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Yáogǎn zhóu lí zhōngxīn yuè yuǎn, zhèndòng yuè qiáng</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Suí suǒ xuǎn xūnǐ yáogǎn zhóu lí zhōngxīn yuè yuǎn, chíxù zhèndòng yuè qiáng. Shǐyòng suǒyǒu yǐ fēnpèi lái yuán yìngshè hòu de shūchū. Xuǎnzé “Àn fāngxiàng fēnkāi” shí, fù fāngxiàng qūdòng zuǒ mǎdá, zhèng fāngxiàng qūdòng yòu mǎdá. Xuǎnzé “Zuǒ mǎdá” huò “Yòu mǎdá” zé liǎng gè fāngxiàng dōu zài nà yī gè mǎdá shàng zhèndòng. Shìyòng yú shǐyòng zhèndòng shèbèi de Xbox hé PlayStation shūchū. Tā bù chǔlǐ fāngxiàngpán, qítā dài héngdìng lìfǎnkuì de shèbèi hé Fanatec tàbǎn.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Qǐyòng zhuǎnxiàng jiǎodù zhèndòng</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Xūnǐ zhóu</value></data>
@@ -4137,7 +4127,6 @@ Yào ràng PadForge xiànzài xièzài tāmen ma? Cǐ cāozuò xūyào tíshēng
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Chóngzhì wéi zuǒ yáogǎn X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Chóngzhì qiángdù (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Chóngzhì zhōngxīn sǐqū (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>Chóngzhì zhuǎnxiàng jiǎodù zhèndòng</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Chóngzhì “Qǐyòng zhuǎnxiàng jiǎodù zhèndòng”</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Pèizhì wénjiàn</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>Shūrù biǎomiàn</value></data>

@@ -234,10 +234,13 @@ namespace PadForge.Tests
         public void ThePadPageStringsWithBracketsGoThroughBidiText()
         {
             string page = RepoText("PadForge.App", "Views", "PadPage.xaml");
-            foreach (string key in new[] { "Macro_Expression_Tooltip", "Macro_KeyComboHint", "MacroAction_ShowDreamcastScreen_Hint", "Pad_RumbleAudio_Card_Desc" })
+            foreach (string key in new[] { "Macro_Expression_Tooltip", "Macro_KeyComboHint", "MacroAction_ShowDreamcastScreen_Hint" })
                 Assert.Contains("common:BidiText.Text=\"{Binding " + key + ",", page);
-            foreach (string key in new[] { "Pad_MidiChannelTooltip", "Pad_MidiStartCCTooltip", "Macro_KeyComboTooltip" })
+            // Which controllers Bass Shakers works with is its card title's
+            // tooltip since the card lost its paragraph (#574).
+            foreach (string key in new[] { "Pad_MidiChannelTooltip", "Pad_MidiStartCCTooltip", "Macro_KeyComboTooltip", "Pad_RumbleAudio_Card_Desc" })
                 Assert.Contains("common:BidiText.ToolTip=\"{Binding " + key + ",", page);
+            Assert.DoesNotMatch(@"\s(?:Text|ToolTip)=""\{Binding Pad_RumbleAudio_Card_Desc", page);
             Assert.DoesNotMatch(@"\sToolTip=""\{Binding Pad_Formula_Chip_", page);
             Assert.True(Regex.Matches(page, @"common:BidiText\.ToolTip=""\{Binding Pad_Formula_Chip_").Count > 70);
         }

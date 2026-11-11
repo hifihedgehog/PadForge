@@ -1678,11 +1678,8 @@
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Ukukhanya &amp; Isandi</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Iimakhro &amp; Iimenyu</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Uphawu xa intonga yokuqhuba ifika esiphelweni</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Ukungcangcazela okukhula njengoko i-axis yentonga isuka embindini</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Amandla aqhubekayo de uwacime</value></data>
   <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Ukungcangcazela okuvela kwi-bass yesandi senkqubo</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Ithumela ukungcangcazela kweemoto eziphambili kwii-trigger</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Amandla aqhubekayo kwimoto nganye ye-trigger</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Ukungcangcazela kwe-trigger okuvela kwi-bass yesandi senkqubo</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Ii-deadzone zokuthambeka, Ukuma kwesilawuli</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>I-deadzone, ukuthambisa, Ukukhawuleza, Igophe lesiphumo</value></data>

@@ -936,8 +936,6 @@
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>Нулиране на общото усилване</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Нулиране на левия спусък</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Нулиране на десния спусък</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Постоянна сила на спусъците</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Постоянна сила на мотора на всеки спусък</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Пренасочване към спусъците</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Пренасочва вибрацията на основните мотори към спусъците</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Пренасочва основните мотори за вибрация към канала на спусъците, поотделно за всеки спусък. Работи с вибрацията на XInput и със силовата обратна връзка. Активатор може да го ограничи, така че спусъкът да вибрира само докато задържате бутон.</value></data>
@@ -967,7 +965,6 @@
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Прилагане на постоянна сила на спусъците</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Ляв спусък</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>Десен спусък</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>Нулиране на постоянната сила на спусъците</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Нулиране на левия спусък</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Нулиране на десния спусък</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Вибрация на спусъците от басите в звука</value></data>
@@ -2511,7 +2508,6 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Ос на спусъка</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Силова обратна връзка / вибрация / хаптика</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Усилване по мотори, вибрация на спусъците, размяна на мотори</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Общо усилване</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Ляв мотор</value></data>
@@ -2523,14 +2519,11 @@
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Активност на моторите</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Постоянна сила</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Постоянна сила, докато не я изключите</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Прилага постоянна сила към това устройство, докато не я изключите. Силата, управлявана от играта, от какъвто и да е източник, има предимство, докато е активна, а постоянната сила се възобновява, когато играта спре.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Прилагане на постоянна сила</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Плъзнете в мрежата, за да зададете посоката и силата.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>Нулиране на постоянната сила</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Нулиране на постоянната сила X</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Нулиране на постоянната сила Y</value></data>
 
@@ -3939,7 +3932,6 @@
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Макроси и менюта</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Басови шейкъри</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Насочва вибрацията и силовата обратна връзка от играта, които получава този виртуален контролер, към аудиоизход като нискочестотни тонове за басови шейкъри и субуфери.</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Вибрация към аудио</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Изходно устройство, режим на каналите, усилване, тон за всеки мотор</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Работи с виртуалните контролери Xbox, DualShock 3, DualShock 4 / DualSense и Nintendo Switch Pro, както и с разширени виртуални контролери със силова обратна връзка, като например състезателни волани, и Steam Deck Controller (Composite). Обратната връзка от играта и „Тест на вибрацията“ се възпроизвеждат през аудиоизхода. Вибрацията от макроси остава на контролера.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Нулиране на „Вибрация към аудио“</value></data>
@@ -4386,8 +4378,6 @@
   <data name="Tablet_InRange" xml:space="preserve"><value>Писалката е в обхват</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Изчакване на данни от споделената памет на FreeTrack.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>Споделената памет на FreeTrack не е налична.</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Вибрация според ъгъла на завиване</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Вибрация, която расте, когато оста на стика се отдалечава от центъра</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Добавя непрекъсната вибрация, когато избраната виртуална ос на стика се отдалечава от центъра. Използва съпоставения изход от всички назначени източници. При Разделяне по посока отрицателното движение задвижва левия мотор, а положителното – десния. Ляв мотор или Десен мотор поставя и двете посоки върху този един мотор. За изход Xbox и PlayStation с устройства с вибрация. Пропуска воланите, другите устройства с постоянна силова обратна връзка и педалите на Fanatec.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Включване на вибрацията според ъгъла на завиване</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Виртуална ос</value></data>
@@ -4402,7 +4392,6 @@
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Нулиране до „Ляв стик X“</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Нулиране на силата (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Нулиране на мъртвата зона в центъра (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>Нулиране на вибрацията според ъгъла на завиване</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Нулиране на „Включване на вибрацията според ъгъла на завиване“</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Профил</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>Входни повърхности</value></data>

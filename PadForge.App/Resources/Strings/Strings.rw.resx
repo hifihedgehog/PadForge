@@ -1698,10 +1698,7 @@
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, igisimbura cya DSX.exe</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Umwirondoro</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Ikimenyetso iyo agati ko kuyobora kageze ku iherezo</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Kunyeganyega kwiyongera uko umurongo w'agati uva hagati</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Imbaraga zihoraho kugeza uzizimije</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Yohereza kunyeganyega kwa moteri nkuru kuri trigger</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Imbaraga zihoraho kuri moteri ya buri trigger</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Bass y'amajwi ya sisitemu itera trigger kunyeganyega</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Deadzone zo guhengama, icyerekezo cya controller</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Deadzone, koroshya, kwihutisha, umurongo uhetamye w'isohoka</value></data>

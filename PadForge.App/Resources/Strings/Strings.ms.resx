@@ -881,8 +881,6 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>Tetap Semula Gandaan Keseluruhan</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Tetap Semula Pencetus Kiri</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Tetap Semula Pencetus Kanan</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Daya Pencetus Malar</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Daya mantap pada setiap motor pencetus</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Penghalaan Pencetus</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Menghantar getaran motor utama ke pencetus</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Halakan motor getaran utama ke saluran pencetus, satu pencetus pada satu masa. Berfungsi dengan getaran XInput dan maklum balas daya. Pengaktif boleh mengawalnya supaya pencetus hanya berdengung semasa anda menahan butang.</value></data>
@@ -912,7 +910,6 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Kenakan Daya Pencetus Malar</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Pencetus Kiri</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>Pencetus Kanan</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>Tetap Semula Daya Pencetus Malar</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Tetap Semula Pencetus Kiri</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Tetap Semula Pencetus Kanan</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Getaran Pencetus Bass Audio</value></data>
@@ -2346,7 +2343,6 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Paksi Pencetus</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Maklum Balas Daya / Getaran / Haptik</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Gandaan setiap motor, getaran pencetus, tukar motor</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Gandaan Keseluruhan</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Motor Kiri</value></data>
@@ -2358,14 +2354,11 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Aktiviti Motor</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Daya Malar</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Daya mantap sehingga anda mematikannya</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Gunakan daya berterusan pada peranti ini sehingga anda mematikannya. Daya yang dipacu permainan daripada mana-mana sumber menindih semasa ia aktif dan disambung semula apabila permainan berhenti.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Gunakan Daya Malar</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Seret dalam grid untuk menetapkan arah dan kekuatan.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>Tetap Semula Daya Malar</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Tetap Semula Daya Malar X</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Tetap Semula Daya Malar Y</value></data>
 
@@ -3742,7 +3735,6 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makro &amp; Menu</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass Shaker</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Menghalakan getaran dan maklum balas daya permainan yang diterima pengawal maya ini ke output audio sebagai nada frekuensi rendah untuk bass shaker dan subwoofer.</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Getaran ke Audio</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Peranti output, saluran, gandaan, nada untuk setiap motor</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Berfungsi dengan pengawal maya Xbox, DualShock 3, DualShock 4 / DualSense dan Nintendo Switch Pro, serta pengawal maya Extended dengan maklum balas daya, seperti roda lumba, dan Steam Deck Controller (Composite). Maklum balas permainan dan Uji Getaran dimainkan melalui output audio. Getaran makro kekal pada pengawal.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Tetap Semula Getaran ke Audio</value></data>
@@ -4181,8 +4173,6 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="Tablet_InRange" xml:space="preserve"><value>Pen dalam Julat</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Menunggu data memori kongsi FreeTrack.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>Memori kongsi FreeTrack tidak tersedia.</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Getaran Sudut Stereng</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Getaran yang meningkat apabila paksi kayu bedik menjauhi tengah</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Menambah getaran berterusan apabila paksi kayu bedik maya yang dipilih bergerak menjauhi tengah. Menggunakan output terpeta daripada semua sumber yang diumpukkan. Dengan Pisah Mengikut Arah, gerakan negatif memacu motor kiri dan gerakan positif motor kanan. Motor Kiri atau Motor Kanan meletakkan kedua-dua arah pada satu motor itu. Untuk output Xbox dan PlayStation dengan peranti getaran. Ia melangkau roda stereng, peranti lain dengan maklum balas daya malar, dan pedal Fanatec.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Dayakan Getaran Sudut Stereng</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Paksi Maya</value></data>
@@ -4197,7 +4187,6 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Tetap Semula kepada Kayu Bedik Kiri X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Tetap Semula Kekuatan (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Tetap Semula Zon Mati Tengah (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>Tetap Semula Getaran Sudut Stereng</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Tetap Semula Dayakan Getaran Sudut Stereng</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Profil</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>Permukaan Input</value></data>

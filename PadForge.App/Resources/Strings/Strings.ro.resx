@@ -936,8 +936,6 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>Resetare amplificare generală</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Resetare trăgaci stâng</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Resetare trăgaci drept</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Forță constantă pe trăgace</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>O forță constantă pe fiecare motor de trăgaci</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Direcționare către trăgace</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Trimite vibrațiile motoarelor principale către trăgace</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Direcționează motoarele principale de vibrație către canalul trăgacelor, câte un trăgaci pe rând. Funcționează cu vibrațiile XInput și cu force feedback. Un activator o poate condiționa, astfel încât trăgaciul să vibreze doar cât timp țineți apăsat un buton.</value></data>
@@ -967,7 +965,6 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Aplicare forță constantă pe trăgace</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Trăgaci stâng</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>Trăgaci drept</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>Resetare forță constantă pe trăgace</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Resetare trăgaci stâng</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Resetare trăgaci drept</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Vibrații de bas pe trăgace</value></data>
@@ -2511,7 +2508,6 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Axa trăgaciului</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Force feedback / vibrații / haptică</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Amplificare per motor, vibrații trăgace, interschimbare motoare</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Amplificare generală</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Motor stâng</value></data>
@@ -2523,14 +2519,11 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Activitatea motoarelor</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Forță constantă</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>O forță constantă până o dezactivați</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Aplică o forță continuă acestui dispozitiv până când o dezactivați. Forța comandată de joc, din orice sursă, are prioritate cât timp este activă, iar forța constantă se reia când jocul se oprește.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Aplicare forță constantă</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Trageți în interiorul grilei pentru a seta direcția și intensitatea.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>Resetare forță constantă</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Resetare forță constantă X</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Resetare forță constantă Y</value></data>
 
@@ -3939,7 +3932,6 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Macrocomenzi și meniuri</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Transductoare tactile</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Direcționează vibrațiile jocului și force feedback-ul primite de acest controler virtual către o ieșire audio, ca tonuri de joasă frecvență pentru transductoare tactile și subwoofere.</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibrații în audio</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Dispozitiv de ieșire, canale, amplificare, un ton pentru fiecare motor</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Funcționează cu controlerele virtuale Xbox, DualShock 3, DualShock 4 / DualSense și Nintendo Switch Pro, plus controlerele virtuale Extins cu force feedback, cum ar fi volanele de curse, și Steam Deck Controller (Composite). Feedbackul jocului și Testare vibrații se redau prin ieșirea audio. Vibrațiile din macrocomenzi rămân pe controler.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Resetare vibrații în audio</value></data>
@@ -4386,8 +4378,6 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Tablet_InRange" xml:space="preserve"><value>Stilou în raza de detecție</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Se așteaptă date din memoria partajată FreeTrack.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>Memoria partajată FreeTrack nu este disponibilă.</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Vibrații după unghiul de virare</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Vibrații care cresc pe măsură ce axa se depărtează de centru</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Adaugă vibrații continue pe măsură ce axa de stick virtuală selectată se depărtează de centru. Folosește ieșirea mapată de la toate sursele atribuite. Cu Împărțit pe direcție, mișcarea negativă acționează motorul stâng, iar cea pozitivă motorul drept. Motor stâng sau Motor drept pune ambele direcții pe acel motor. Pentru ieșirea Xbox și PlayStation cu dispozitive cu vibrații. Omite volanele, alte dispozitive cu force feedback constant și pedalele Fanatec.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Activare vibrații după unghiul de virare</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Axă virtuală</value></data>
@@ -4402,7 +4392,6 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Resetare la Stick stâng X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Resetare intensitate (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Resetare zonă moartă centrală (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>Resetare vibrații după unghiul de virare</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Resetare Activare vibrații după unghiul de virare</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Profil</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>Suprafețe de intrare</value></data>

@@ -904,7 +904,6 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Ákísì tírígà</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Force feedback / Ìmìtìtì / Haptics</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Agbára mọ́tò kọ̀ọ̀kan, ìmìtìtì tírígà, pípààrọ̀ mọ́tò</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Mọ́tò òsì</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Mọ́tò ọ̀tún</value></data>
@@ -1464,7 +1463,6 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Ìṣípòpadà àti ìfọwọ́kàn</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Ìmọ́lẹ̀ àti ohùn</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Macro àti àkójọ àṣàyàn</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Ìmìtìtì sí ohùn</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Ẹ̀rọ ìjáde, àwọn ikanni, agbára, ohùn kan fún mọ́tò kọ̀ọ̀kan</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Tún ìmìtìtì sí ohùn tò</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Darí ìmìtìtì sí ìjáde ohùn</value></data>
@@ -1855,10 +1853,7 @@
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} ti sopọ̀ kò sì sí ní lílò.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Lò ó</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Àmì ní òpin yíyí fún ọ̀pá ní ipò ìdarí</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Ìmìtìtì tí ń pọ̀ sí i bí ákísì ọ̀pá ṣe ń kúrò ní àárín</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Agbára tí kò yí padà títí o fi pa á</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Ń fi ìmìtìtì àwọn mọ́tò àkọ́kọ́ ránṣẹ́ sí àwọn tírígà</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Agbára tí kò yí padà lórí mọ́tò tírígà kọ̀ọ̀kan</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Ìmìtìtì tírígà láti inú baasi ohùn ètò</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Àwọn deadzone ìtẹ̀sí, Ìdojúkọ adarí</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Deadzone, ìmúdẹ̀rọ, Ìmúyára, Ìtẹ̀ ìjáde</value></data>

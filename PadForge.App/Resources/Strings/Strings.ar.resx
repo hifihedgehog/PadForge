@@ -881,8 +881,6 @@
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>إعادة ضبط الكسب الإجمالي</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>إعادة ضبط الزناد الأيسر</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>إعادة ضبط الزناد الأيمن</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>قوة ثابتة للزناد</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>قوة ثابتة على محرك كل زناد</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>توجيه الأزندة</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>يرسل اهتزاز المحركين الرئيسيين إلى الأزندة</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>توجيه محركات الاهتزاز الرئيسية إلى قناة الأزندة، لكل زناد على حدة. يعمل مع اهتزاز XInput وردود فعل القوة. يمكن أن يقيده مدخل تفعيل، فلا يطن الزناد إلا أثناء ضغطك المستمر على زر.</value></data>
@@ -912,7 +910,6 @@
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>تطبيق قوة ثابتة على الزناد</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>الزناد الأيسر</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>الزناد الأيمن</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>إعادة ضبط القوة الثابتة للزناد</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>إعادة ضبط الزناد الأيسر</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>إعادة ضبط الزناد الأيمن</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>اهتزاز الأزندة بجهير الصوت</value></data>
@@ -2346,7 +2343,6 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>محور الزناد</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>ردود فعل القوة / الاهتزاز / ردود الفعل اللمسية</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>كسب كل محرك، اهتزاز الأزندة، تبديل المحركين</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>الكسب الإجمالي</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>المحرك الأيسر</value></data>
@@ -2358,14 +2354,11 @@
   <data name="Pad_MotorActivity" xml:space="preserve"><value>نشاط المحركات</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>قوة ثابتة</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>قوة ثابتة إلى أن توقفها</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>تطبيق قوة مستمرة على هذا الجهاز إلى أن توقفها. القوة التي تشغّلها اللعبة من أي مصدر تتجاوزها ما دامت نشطة، وتعود القوة الثابتة عندما تتوقف اللعبة.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>تطبيق قوة ثابتة</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>اسحب داخل الشبكة لتحديد الاتجاه والشدة.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>إعادة ضبط القوة الثابتة</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>إعادة ضبط القوة الثابتة X</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>إعادة ضبط القوة الثابتة Y</value></data>
 
@@ -3747,7 +3740,6 @@
   <data name="Pad_Section_Macros" xml:space="preserve"><value>وحدات الماكرو والقوائم</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>هزازات الجهير</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>يوجه اهتزاز اللعبة وردود فعل القوة التي تستقبلها وحدة التحكم الظاهرية هذه إلى مخرج صوت في صورة نغمات منخفضة التردد لهزازات الجهير ومضخمات الصوت الفرعية.</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>الاهتزاز إلى صوت</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>جهاز الإخراج، القنوات، الكسب، نغمة لكل محرك</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>يعمل مع وحدات التحكم الظاهرية Xbox وDualShock 3 وDualShock 4 / DualSense وNintendo Switch Pro، ومع وحدات التحكم الظاهرية الموسعة ذات ردود فعل القوة، مثل عجلات السباق، ووحدة Steam Deck Controller (Composite). ردود فعل اللعبة و«اختبار الاهتزاز» تعمل عبر مخرج الصوت. اهتزاز الماكرو يبقى على وحدة التحكم.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>إعادة ضبط الاهتزاز إلى صوت</value></data>
@@ -4186,8 +4178,6 @@
   <data name="Tablet_InRange" xml:space="preserve"><value>القلم في النطاق</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>بانتظار بيانات الذاكرة المشتركة FreeTrack.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>الذاكرة المشتركة FreeTrack غير متوفرة.</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>اهتزاز زاوية التوجيه</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>اهتزاز يزداد كلما ابتعد محور العصا عن المركز</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>يضيف اهتزازا مستمرا كلما ابتعد محور العصا الظاهرية المحدد عن المركز. يستخدم المخرج المعين من كل المصادر المعينة. مع تقسيم حسب الاتجاه، تشغّل الحركة السالبة المحرك الأيسر والموجبة الأيمن. اختيار المحرك الأيسر أو المحرك الأيمن يضع الاتجاهين على ذلك المحرك وحده. لإخراج Xbox وPlayStation مع أجهزة تدعم الاهتزاز. يتخطى العجلات والأجهزة الأخرى ذات ردود فعل القوة الثابتة ودواسات Fanatec.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>تفعيل اهتزاز زاوية التوجيه</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>المحور الظاهري</value></data>
@@ -4202,7 +4192,6 @@
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>إعادة الضبط إلى «العصا اليسرى X»</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>إعادة ضبط الشدة (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>إعادة ضبط المنطقة الميتة المركزية (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>إعادة ضبط اهتزاز زاوية التوجيه</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>إعادة ضبط تفعيل اهتزاز زاوية التوجيه</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>ملف التعريف</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>أسطح الإدخال</value></data>

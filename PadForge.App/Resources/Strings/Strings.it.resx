@@ -1186,7 +1186,6 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Asse grilletto</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Force Feedback / Vibrazione</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Guadagno per motore, vibrazione dei grilletti, scambio motori</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Guadagno complessivo</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Motore sinistro</value></data>
@@ -1198,14 +1197,11 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Attività motori</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Forza costante</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Una forza costante finché non la disattivi</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Applica una forza continua a questo dispositivo finché non la disattivi. La forza generata da un gioco ha la priorità mentre è attiva e riprende quando il gioco si ferma.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Applica forza costante</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Trascina nella griglia per impostare direzione e intensità.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>Reimposta forza costante</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Reimposta forza costante X</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Reimposta forza costante Y</value></data>
 
@@ -2175,8 +2171,6 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>Reimposta guadagno complessivo</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Reimposta grilletto sinistro</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Reimposta grilletto destro</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Forza costante sui grilletti</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Una forza costante su ogni motore di grilletto</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Instradamento grilletti</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Invia la vibrazione dei motori principali ai grilletti</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Instrada i motori di vibrazione principali nel canale del grilletto, un grilletto alla volta. Funziona con la vibrazione XInput e il force feedback. Un attivatore può condizionarlo in modo che il grilletto vibri solo mentre tieni premuto un pulsante.</value></data>
@@ -2206,7 +2200,6 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Applica forza costante sui grilletti</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Grilletto sinistro</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>Grilletto destro</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>Reimposta forza costante sui grilletti</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Reimposta grilletto sinistro</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Reimposta grilletto destro</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Vibrazione grilletti da bassi audio</value></data>
@@ -3899,7 +3892,6 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Macro e menu</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shaker</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Instrada la vibrazione e il force feedback di gioco ricevuti da questo controller virtuale verso un'uscita audio come toni a bassa frequenza per bass shaker e subwoofer.</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibrazione in audio</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Dispositivo di uscita, canali, guadagno, un tono per ogni motore</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Funziona con i controller virtuali Xbox, DualShock 3, DualShock 4 / DualSense e Nintendo Switch Pro, oltre ai controller virtuali Esteso con force feedback, come i volanti da corsa, e lo Steam Deck Controller (Composite). Il feedback di gioco e la vibrazione di prova passano dall'uscita audio. La vibrazione di macro resta sul controller.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Reimposta vibrazione in audio</value></data>
@@ -4359,8 +4351,6 @@ Vuoi che PadForge li disinstalli ora? L'operazione richiede privilegi elevati e 
   <data name="Tablet_InRange" xml:space="preserve"><value>Penna nel raggio di rilevamento</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>In attesa di dati dalla memoria condivisa FreeTrack.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>La memoria condivisa FreeTrack non è disponibile.</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Vibrazione in base all’angolo di sterzata</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Vibrazione che cresce man mano che un asse si allontana dal centro</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Aggiunge una vibrazione continua quando l’asse virtuale scelto si allontana dal centro. Usa l’uscita mappata di tutte le sorgenti assegnate. Con Divisa per direzione, il movimento negativo attiva il motore sinistro e quello positivo il destro. Motore sinistro o Motore destro assegna entrambe le direzioni a quel solo motore. Per uscite Xbox e PlayStation con dispositivi con vibrazione. Salta i volanti, gli altri dispositivi con force feedback costante e i pedali Fanatec.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Attiva vibrazione in base all’angolo di sterzata</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Asse virtuale</value></data>
@@ -4375,7 +4365,6 @@ Vuoi che PadForge li disinstalli ora? L'operazione richiede privilegi elevati e 
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Reimposta su Stick sinistro X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Reimposta intensità (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Reimposta zona morta centrale (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>Reimposta vibrazione in base all’angolo di sterzata</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Reimposta Abilita vibrazione angolo di sterzata</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Profilo</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>Superfici di ingresso</value></data>

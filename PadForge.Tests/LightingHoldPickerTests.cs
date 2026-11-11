@@ -145,7 +145,7 @@ namespace PadForge.Tests
             public event PropertyChangedEventHandler PropertyChanged;
         }
 
-        private sealed record LoadedRow(Grid Root, DockPanel Row, TextBlock Label, ComboBox Picker,
+        private sealed record LoadedRow(Grid Root, SettingRow Row, TextBlock Label, ComboBox Picker,
             ComboBoxItem HostModeItem, SettingResetButton Reset);
 
         /// <summary>The Lighting Hold row, read out of PadPage.xaml and
@@ -154,8 +154,8 @@ namespace PadForge.Tests
         private static LoadedRow LoadRow()
         {
             string page = RepoText("PadForge.App", "Views", "PadPage.xaml");
-            const string open = "<DockPanel LastChildFill=\"False\" MinHeight=\"44\" x:Name=\"PeripheralClaimLevelRow\"";
-            const string close = "</DockPanel>";
+            const string open = "<controls:SettingRow MinHeight=\"44\" x:Name=\"PeripheralClaimLevelRow\"";
+            const string close = "</controls:SettingRow>";
             int start = page.IndexOf(open, StringComparison.Ordinal);
             Assert.True(start > 0, "the Lighting Hold row is gone from the page");
             int end = page.IndexOf(close, start, StringComparison.Ordinal);
@@ -167,6 +167,7 @@ namespace PadForge.Tests
                 + " xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\""
                 + " xmlns:strings=\"clr-namespace:PadForge.Resources.Strings;assembly=PadForge\""
                 + " xmlns:reset=\"clr-namespace:PadForge.Controls;assembly=PadForge\""
+                + " xmlns:controls=\"clr-namespace:PadForge.Controls;assembly=PadForge\""
                 + " xmlns:conv=\"clr-namespace:PadForge.Converters;assembly=PadForge\">"
                 + "<Grid.Resources>"
                 + "<conv:EnumIndexConverter x:Key=\"EnumIndexConverter\"/>"
@@ -175,7 +176,7 @@ namespace PadForge.Tests
                 + row
                 + "</Grid>";
             var root = (Grid)XamlReader.Parse(xaml);
-            var panel = Assert.IsType<DockPanel>(root.FindName("PeripheralClaimLevelRow"));
+            var panel = Assert.IsType<SettingRow>(root.FindName("PeripheralClaimLevelRow"));
             var picker = Assert.IsType<ComboBox>(root.FindName("PeripheralClaimLevelPicker"));
             var hostMode = Assert.IsType<ComboBoxItem>(root.FindName("PeripheralClaimLevelHostModeItem"));
             Assert.Equal(3, panel.Children.Count);
@@ -566,14 +567,13 @@ namespace PadForge.Tests
             // A reset whose row can be hidden goes with its row.
             Assert.Null(reset.Attribute("Visibility"));
 
-            // The row is one of the page's rows (#574): a panel that leaves
-            // its last child where it is docked, so the reset, which docks
-            // right through its style, sits at the row's far right. Its
+            // The row is one of the page's rows (#574): a SettingRow, which
+            // puts a child docked right at the row's far right, so the
+            // reset, which docks right through its style, sits there. Its
             // label takes the label column from the style, 230 wide, and
             // has no width of its own, so the picker starts where every
             // row's control starts.
-            Assert.Equal("DockPanel", row.Name.LocalName);
-            Assert.Equal("False", (string)row.Attribute("LastChildFill"));
+            Assert.Equal("SettingRow", row.Name.LocalName);
             Assert.Equal("44", (string)row.Attribute("MinHeight"));
             var rowLabelStyle = One(n => (string)n.Attribute(x + "Key") == "DzLabel", "a style named DzLabel");
             int rowLabel = (int)rowLabelStyle.Elements().Single(e => (string)e.Attribute("Property") == "Width").Attribute("Value");
@@ -599,7 +599,9 @@ namespace PadForge.Tests
         {
             var page = XDocument.Parse(RepoText("PadForge.App", "Views", "PadPage.xaml"));
             XNamespace x = "http://schemas.microsoft.com/winfx/2006/xaml";
-            var scroller = page.Descendants().Single(n => n.Name.LocalName == "StackPanel"
+            // A group is a panel under its heading, or a group box with no
+            // heading where its section's board draws none.
+            var scroller = page.Descendants().Single(n => n.Name.LocalName is "StackPanel" or "GroupBox"
                 && (string)n.Attribute(x + "Name") == group);
             string[] settings = { "CheckBox", "ComboBox", "Slider", "TextBox", "ToggleSwitch", "RadioButton", "SettingResetButton" };
             var loose = scroller.Descendants()

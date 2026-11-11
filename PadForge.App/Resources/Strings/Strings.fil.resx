@@ -881,8 +881,6 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>I-reset ang Overall Gain</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>I-reset ang Kaliwang Trigger</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>I-reset ang Kanang Trigger</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Constant Trigger Force</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Tuloy-tuloy na force sa bawat trigger motor</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Trigger Routing</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Ipinapadala ang rumble ng mga pangunahing motor sa mga trigger</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>I-route ang mga pangunahing rumble motor sa trigger channel, isang trigger bawat beses. Gumagana sa XInput rumble at force feedback. Maaaring i-gate ito ng activator para mag-buzz lang ang trigger habang may hawak kang button.</value></data>
@@ -912,7 +910,6 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Maglapat ng Constant Trigger Force</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Kaliwang Trigger</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>Kanang Trigger</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>I-reset ang Constant Trigger Force</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>I-reset ang Kaliwang Trigger</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>I-reset ang Kanang Trigger</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Audio Bass Trigger Rumble</value></data>
@@ -2286,7 +2283,6 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Maglapat ng tuluy-tuloy na puwersa sa device na ito hanggang i-toggle mo ito off. Ang puwersang ibinibigay ng laro mula sa anumang source ay papalit habang aktibo ito at magpapatuloy kapag huminto ang laro.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Ilapat ang Constant Force</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>I-drag sa loob ng grid para itakda ang direksyon at lakas.</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>I-reset ang Constant Force</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>I-reset ang Constant Force X</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>I-reset ang Constant Force Y</value></data>
 
@@ -3555,7 +3551,6 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Mga Macro at Menu</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass Shakers</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Nagruruta ng game rumble at force feedback na natatanggap ng virtual controller na ito sa isang audio output bilang mga low-frequency na tone para sa mga bass shaker at subwoofer.</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Rumble to Audio</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Output device, mga channel, gain, tono para sa bawat motor</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Gumagana sa mga virtual controller na Xbox, DualShock 3, DualShock 4 / DualSense, at Nintendo Switch Pro, at sa mga Extended virtual controller na may force feedback, tulad ng racing wheel, at sa Steam Deck Controller (Composite). Tumutugtog sa audio output ang game feedback at Test Rumble. Nananatili sa controller ang macro rumble.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>I-reset ang Rumble to Audio</value></data>
@@ -3994,8 +3989,6 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="Tablet_InRange" xml:space="preserve"><value>Nasa Range ang Pen</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Naghihintay ng data ng FreeTrack shared memory.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>Hindi available ang FreeTrack shared memory.</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Steering Angle Rumble</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Rumble na lumalakas habang lumalayo ang stick axis sa gitna</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Nagdaragdag ng tuloy-tuloy na rumble habang lumalayo sa gitna ang napiling virtual stick axis. Ginagamit ang mapped output mula sa lahat ng naka-assign na source. Sa Hatiin ayon sa Direksyon, ang negatibong galaw ay nagpapagana sa kaliwang motor at ang positibo sa kanan. Ang Kaliwang Motor o Kanang Motor ay naglalagay ng magkabilang direksyon sa iisang motor. Para sa Xbox at PlayStation output na may mga rumble device. Lalaktawan nito ang mga wheel, ang iba pang device na may constant force feedback, at ang mga pedal ng Fanatec.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>I-enable ang Steering Angle Rumble</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Virtual Axis</value></data>
@@ -4010,7 +4003,6 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>I-reset sa Kaliwang Stick X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>I-reset ang Strength (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>I-reset ang Center Deadzone (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>I-reset ang Steering Angle Rumble</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>I-reset ang Enable Steering Angle Rumble</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Profile</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>Mga Input Surface</value></data>
@@ -4472,7 +4464,6 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} sa {1} habang hawak</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} sa {1} hanggang ihinto</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>Ihinto ang trigger effect sa {0}</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Tuloy-tuloy na force hanggang patayin mo</value></data>
   <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Rumble mula sa bass ng audio ng system</value></data>
   <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Kontrolin ang Ilaw ng Device na Ito, Hawak sa Ilaw</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Gain bawat motor, trigger rumble, pagpapalit ng motor</value></data>

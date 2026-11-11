@@ -706,11 +706,8 @@
   <data name="Extras_Title" xml:space="preserve"><value>Nkekaho</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Kanea ne Nnyegyeɛ</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Nkaebɔ bere a steering stick du n'awieeɛ</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Rumble a ɛkɔ soro bere a stick axis fi mfinimfini</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Ahoɔden a ɛtena hɔ kosi sɛ wobɛdum</value></data>
   <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Rumble a efi system nnyegyeɛ bass mu</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Ɛde motor akɛseɛ no rumble kɔ triggers no so</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Ahoɔden a ɛtena hɔ wɔ trigger motor biara so</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Trigger rumble a efi system nnyegyeɛ bass mu</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Kyeakyea deadzones, Controller gyinabeaɛ</value></data>
   <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Ɛsɔ touchpad yi gestures so</value></data>

@@ -879,8 +879,6 @@
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>മൊത്തം ഗെയിൻ പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>ഇടത് ട്രിഗർ പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>വലത് ട്രിഗർ പുനഃസജ്ജമാക്കുക</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>സ്ഥിരമായ ട്രിഗർ ഫോഴ്സ്</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>ഓരോ ട്രിഗർ മോട്ടോറിലും ഒരേ ഫോഴ്സ്</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>ട്രിഗർ റൂട്ടിംഗ്</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>പ്രധാന മോട്ടോറുകളുടെ റംബിൾ ട്രിഗറുകളിലേക്ക് അയയ്ക്കുന്നു</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>പ്രധാന റംബിൾ മോട്ടോറുകളെ ഒരു സമയം ഒരു ട്രിഗർ എന്ന നിലയിൽ ട്രിഗർ ചാനലിലേക്ക് റൂട്ട് ചെയ്യുക. XInput റംബിളിലും ഫോഴ്സ് ഫീഡ്ബാക്കിലും പ്രവർത്തിക്കും. ഒരു ബട്ടൺ അമർത്തിപ്പിടിക്കുമ്പോൾ മാത്രം ട്രിഗർ വൈബ്രേറ്റ് ചെയ്യുന്ന വിധം ഒരു ആക്ടിവേറ്റർ ഇതിനെ നിയന്ത്രിക്കാം.</value></data>
@@ -910,7 +908,6 @@
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>സ്ഥിരമായ ട്രിഗർ ഫോഴ്സ് പ്രയോഗിക്കുക</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>ഇടത് ട്രിഗർ</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>വലത് ട്രിഗർ</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>സ്ഥിരമായ ട്രിഗർ ഫോഴ്സ് പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>ഇടത് ട്രിഗർ പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>വലത് ട്രിഗർ പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>ഓഡിയോ ബാസ് ട്രിഗർ റംബിൾ</value></data>
@@ -2340,7 +2337,6 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>ട്രിഗർ ആക്സിസ്</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>ഫോഴ്സ് ഫീഡ്ബാക്ക് / റംബിൾ / ഹാപ്റ്റിക്സ്</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>ഓരോ മോട്ടോറിന്റെയും ഗെയിൻ, ട്രിഗർ റംബിൾ, മോട്ടോർ മാറ്റം</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>ആകെ ഗെയിൻ</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>ഇടത് മോട്ടോർ</value></data>
@@ -2352,14 +2348,11 @@
   <data name="Pad_MotorActivity" xml:space="preserve"><value>മോട്ടോർ പ്രവർത്തനം</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>സ്ഥിര ബലം</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>ഓഫ് ചെയ്യുന്നതുവരെ ഒരേ ബലം</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>നിങ്ങൾ ഓഫ് ചെയ്യുന്നതുവരെ ഈ ഉപകരണത്തിൽ തുടർച്ചയായ ബലം പ്രയോഗിക്കുക. ഏതെങ്കിലും ഉറവിടത്തിൽ നിന്ന് ഗെയിം നൽകുന്ന ബലം ഇത് സജീവമായിരിക്കുമ്പോൾ അതിനെ മറികടക്കുകയും ഗെയിം നിർത്തുമ്പോൾ പുനരാരംഭിക്കുകയും ചെയ്യും.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>സ്ഥിര ബലം പ്രയോഗിക്കുക</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>ദിശയും ശക്തിയും സജ്ജമാക്കാൻ ഗ്രിഡിനുള്ളിൽ വലിക്കുക.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>സ്ഥിര ബലം പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>സ്ഥിര ബലം X പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>സ്ഥിര ബലം Y പുനഃസജ്ജമാക്കുക</value></data>
 
@@ -3711,7 +3704,6 @@
   <data name="Pad_Section_Macros" xml:space="preserve"><value>മാക്രോകൾ &amp; മെനുകൾ</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>ബാസ് ഷേക്കറുകൾ</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>ഈ വെർച്വൽ കൺട്രോളറിന് ലഭിക്കുന്ന ഗെയിം റംബിളും ഫോഴ്സ് ഫീഡ്ബാക്കും ബാസ് ഷേക്കറുകൾക്കും സബ്വൂഫറുകൾക്കുമായി കുറഞ്ഞ ആവൃത്തിയിലുള്ള ടോണുകളായി ഒരു ഓഡിയോ ഔട്ട്പുട്ടിലേക്ക് റൂട്ട് ചെയ്യുന്നു.</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>റംബിൾ ഓഡിയോയിലേക്ക്</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>ഔട്ട്പുട്ട് ഉപകരണം, ചാനലുകൾ, ഗെയിൻ, ഓരോ മോട്ടോറിനും ഒരു ടോൺ</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox, DualShock 3, DualShock 4 / DualSense, Nintendo Switch Pro വെർച്വൽ കൺട്രോളറുകൾക്കൊപ്പവും, റേസിംഗ് വീലുകൾ പോലെ ഫോഴ്സ് ഫീഡ്ബാക്കുള്ള എക്സ്റ്റെൻഡഡ് വെർച്വൽ കൺട്രോളറുകൾക്കൊപ്പവും, Steam Deck Controller (Composite)-നൊപ്പവും പ്രവർത്തിക്കുന്നു. ഗെയിം ഫീഡ്ബാക്കും ടെസ്റ്റ് റംബിളും ഓഡിയോ ഔട്ട്പുട്ടിലൂടെ പ്ലേ ചെയ്യുന്നു. മാക്രോ റംബിൾ കൺട്രോളറിൽ തന്നെ തുടരും.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>റംബിൾ ഓഡിയോയിലേക്ക് പുനഃസജ്ജമാക്കുക</value></data>
@@ -4150,8 +4142,6 @@ PadForge ഇവ ഇപ്പോൾ അൺഇൻസ്റ്റാൾ ചെയ�
   <data name="Tablet_InRange" xml:space="preserve"><value>പെൻ പരിധിയിൽ</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>FreeTrack ഷെയേർഡ് മെമ്മറി ഡേറ്റയ്ക്കായി കാത്തിരിക്കുന്നു.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>FreeTrack ഷെയേർഡ് മെമ്മറി ലഭ്യമല്ല.</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>സ്റ്റിയറിംഗ് ആംഗിൾ റംബിൾ</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>സ്റ്റിക്ക് ആക്സിസ് മധ്യത്തിൽ നിന്ന് അകലുമ്പോൾ കൂടുന്ന റംബിൾ</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>തിരഞ്ഞെടുത്ത വെർച്വൽ സ്റ്റിക്ക് ആക്സിസ് മധ്യത്തിൽ നിന്ന് അകലുമ്പോൾ തുടർച്ചയായ റംബിൾ ചേർക്കുന്നു. അസൈൻ ചെയ്ത എല്ലാ ഉറവിടങ്ങളുടെയും മാപ്പ് ചെയ്ത ഔട്ട്പുട്ട് ഉപയോഗിക്കുന്നു. ദിശ അനുസരിച്ച് വിഭജിക്കുക എന്നതിൽ നെഗറ്റീവ് ചലനം ഇടത് മോട്ടോറിനെയും പോസിറ്റീവ് ചലനം വലത് മോട്ടോറിനെയും പ്രവർത്തിപ്പിക്കുന്നു. ഇടത് മോട്ടോർ അല്ലെങ്കിൽ വലത് മോട്ടോർ തിരഞ്ഞെടുത്താൽ രണ്ട് ദിശകളും ആ ഒറ്റ മോട്ടോറിൽ പ്രവർത്തിക്കും. റംബിൾ ഉപകരണങ്ങളുള്ള Xbox, PlayStation ഔട്ട്പുട്ടിനുള്ളത്. വീലുകൾ, സ്ഥിരമായ ഫോഴ്സ് ഫീഡ്ബാക്കുള്ള മറ്റ് ഉപകരണങ്ങൾ, Fanatec പെഡലുകൾ എന്നിവ ഇത് ഒഴിവാക്കുന്നു.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>സ്റ്റിയറിംഗ് ആംഗിൾ റംബിൾ പ്രവർത്തനക്ഷമമാക്കുക</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>വെർച്വൽ ആക്സിസ്</value></data>
@@ -4166,7 +4156,6 @@ PadForge ഇവ ഇപ്പോൾ അൺഇൻസ്റ്റാൾ ചെയ�
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>ഇടത് സ്റ്റിക്ക് X എന്നതിലേക്ക് പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>ശക്തി പുനഃസജ്ജമാക്കുക (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>മധ്യ ഡെഡ് സോൺ പുനഃസജ്ജമാക്കുക (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>സ്റ്റിയറിംഗ് ആംഗിൾ റംബിൾ പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>സ്റ്റിയറിംഗ് ആംഗിൾ റംബിൾ പ്രവർത്തനക്ഷമമാക്കൽ പുനഃസജ്ജമാക്കുക</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>പ്രൊഫൈൽ</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>ഇൻപുട്ട് സർഫേസുകൾ</value></data>

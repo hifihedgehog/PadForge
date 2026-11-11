@@ -879,8 +879,6 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>Ailosod y Cynnydd Cyffredinol</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Ailosod y Sbardun Chwith</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Ailosod y Sbardun De</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Grym Sbardun Cyson</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Grym cyson ar bob modur sbardun</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Llwybro Sbardun</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Anfon dirgryniad y prif foduron i'r sbardunau</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Llwybrwch y prif foduron dirgryniad i'r sianel sbardun, un sbardun ar y tro. Mae'n gweithio gyda dirgryniad XInput ac adborth grym. Gall ysgogydd ei reoli fel mai dim ond tra byddwch yn dal botwm y mae'r sbardun yn suo.</value></data>
@@ -910,7 +908,6 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Rhoi Grym Sbardun Cyson</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Sbardun Chwith</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>Sbardun De</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>Ailosod Grym Sbardun Cyson</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Ailosod y Sbardun Chwith</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Ailosod y Sbardun De</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Dirgryniad Sbardun o Fas Sain</value></data>
@@ -2345,7 +2342,6 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Echelin Sbardun</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Adborth Grym / Dirgryniad / Haptig</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Ennill pob modur, dirgryniad sbardun, cyfnewid moduron</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Cynnydd Cyffredinol</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Modur Chwith</value></data>
@@ -2357,14 +2353,11 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Gweithgarwch y Moduron</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Grym Cyson</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Grym cyson nes i chi ei ddiffodd</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Rhoi grym parhaus ar y ddyfais hon nes i chi ei ddiffodd. Mae grym a yrrir gan gêm o unrhyw ffynhonnell yn ei ddiystyru tra bo'n weithredol ac yn ailddechrau pan fydd y gêm yn stopio.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Rhoi Grym Cyson</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Llusgwch y tu mewn i'r grid i osod cyfeiriad a chryfder.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>Ailosod Grym Cyson</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Ailosod Grym Cyson X</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Ailosod Grym Cyson Y</value></data>
 
@@ -3742,7 +3735,6 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Macros a Dewislenni</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Siglwyr bas</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Yn llwybro dirgryniad ac adborth grym y gêm y mae'r rheolydd rhithwir hwn yn eu derbyn i allbwn sain fel tonau amledd isel ar gyfer siglwyr bas ac isseinyddion.</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Dirgryniad i sain</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Dyfais allbwn, sianeli, ennill, tôn i bob modur</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Yn gweithio gyda rheolyddion rhithwir Xbox, DualShock 3, DualShock 4 / DualSense, a Nintendo Switch Pro, ynghyd â rheolyddion rhithwir Estynedig ag adborth grym, fel olwynion llywio rasio, a Rheolydd Steam Deck (Cyfansawdd). Mae adborth y gêm a Phrofi dirgryniad yn chwarae drwy'r allbwn sain. Mae dirgryniad macro yn aros ar y rheolydd.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Ailosod dirgryniad i sain</value></data>
@@ -4170,8 +4162,6 @@ Hoffech chi i PadForge eu dadosod nawr? Mae hyn angen caniatâd gweinyddwr ac ef
   <data name="Tablet_InRange" xml:space="preserve"><value>Pen o fewn Amrediad</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Yn aros am ddata cof a rennir FreeTrack.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>Nid yw cof a rennir FreeTrack ar gael.</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Dirgryniad Ongl Llywio</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Dirgryniad sy'n cryfhau wrth i echelin ffon adael y canol</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Yn ychwanegu dirgryniad parhaus wrth i'r echelin ffon rithwir ddewisedig symud i ffwrdd o'r canol. Yn defnyddio'r allbwn mapiedig o'r holl ffynonellau a neilltuwyd. Gyda Hollti yn ôl Cyfeiriad, mae symudiad negyddol yn gyrru'r modur chwith a symudiad positif y dde. Mae Modur Chwith neu Modur Dde yn rhoi'r ddau gyfeiriad ar yr un modur hwnnw. Ar gyfer allbwn Xbox a PlayStation gyda dyfeisiau dirgryniad. Mae'n hepgor olwynion lywio, dyfeisiau eraill ag adborth grym cyson, a phedalau Fanatec.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Galluogi Dirgryniad Ongl Llywio</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Echelin Rithwir</value></data>
@@ -4186,7 +4176,6 @@ Hoffech chi i PadForge eu dadosod nawr? Mae hyn angen caniatâd gweinyddwr ac ef
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Ailosod i Ffon Chwith X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Ailosod y Cryfder (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Ailosod Parth Marw y Canol (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>Ailosod Dirgryniad Ongl Llywio</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Ailosod Galluogi Dirgryniad Ongl Llywio</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Proffil</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>Arwynebau Mewnbwn</value></data>

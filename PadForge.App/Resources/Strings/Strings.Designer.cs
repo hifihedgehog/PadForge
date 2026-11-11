@@ -1318,8 +1318,6 @@ public class Strings : INotifyPropertyChanged
     public string Pad_ResetImpulseOverallGain => Get("Pad_ResetImpulseOverallGain");
     public string Pad_ResetImpulseLeft => Get("Pad_ResetImpulseLeft");
     public string Pad_ResetImpulseRight => Get("Pad_ResetImpulseRight");
-    public string Pad_ConstantTriggerForce_Header => Get("Pad_ConstantTriggerForce_Header");
-    public string Pad_ConstantTriggerForce_FoldHint => Get("Pad_ConstantTriggerForce_FoldHint");
     public string Pad_TriggerRouting_Header => Get("Pad_TriggerRouting_Header");
     public string Pad_TriggerRouting_FoldHint => Get("Pad_TriggerRouting_FoldHint");
     public string Pad_TriggerRouting_Description => Get("Pad_TriggerRouting_Description");
@@ -1349,7 +1347,6 @@ public class Strings : INotifyPropertyChanged
     public string Pad_ConstantTriggerForce_Toggle => Get("Pad_ConstantTriggerForce_Toggle");
     public string Pad_ConstantTriggerForce_Left => Get("Pad_ConstantTriggerForce_Left");
     public string Pad_ConstantTriggerForce_Right => Get("Pad_ConstantTriggerForce_Right");
-    public string Pad_ResetConstantTriggerForce => Get("Pad_ResetConstantTriggerForce");
     public string Pad_ResetConstantTriggerLeft => Get("Pad_ResetConstantTriggerLeft");
     public string Pad_ResetConstantTriggerRight => Get("Pad_ResetConstantTriggerRight");
     public string Pad_AudioTriggerRumble_Header => Get("Pad_AudioTriggerRumble_Header");
@@ -2165,7 +2162,6 @@ public class Strings : INotifyPropertyChanged
     public string Pad_SensitivityCurveHintShort => Get("Pad_SensitivityCurveHintShort");
     public string Pad_Preset_Label => Get("Pad_Preset_Label");
     public string Pad_TriggerAxis => Get("Pad_TriggerAxis");
-    public string Pad_ForceFeedbackRumble => Get("Pad_ForceFeedbackRumble");
     public string Pad_More_ForceFeedback => Get("Pad_More_ForceFeedback");
     public string Pad_OverallGain => Get("Pad_OverallGain");
     public string Pad_LeftMotorLabel => Get("Pad_LeftMotorLabel");
@@ -2175,14 +2171,11 @@ public class Strings : INotifyPropertyChanged
     public string Pad_TriggerRumbleFold_Tooltip => Get("Pad_TriggerRumbleFold_Tooltip");
     public string Pad_TestRumble => Get("Pad_TestRumble");
     public string Pad_MotorActivity => Get("Pad_MotorActivity");
-    public string Pad_ConstantForce_Header => Get("Pad_ConstantForce_Header");
-    public string Pad_ConstantForce_FoldHint => Get("Pad_ConstantForce_FoldHint");
     public string Pad_ConstantForce_Description => Get("Pad_ConstantForce_Description");
     public string Pad_ConstantForce_Toggle => Get("Pad_ConstantForce_Toggle");
     public string Pad_ConstantForce_Position => Get("Pad_ConstantForce_Position");
     public string Pad_ConstantForce_X => Get("Pad_ConstantForce_X");
     public string Pad_ConstantForce_Y => Get("Pad_ConstantForce_Y");
-    public string Pad_ResetConstantForce => Get("Pad_ResetConstantForce");
     public string Pad_ResetConstantForceX => Get("Pad_ResetConstantForceX");
     public string Pad_ResetConstantForceY => Get("Pad_ResetConstantForceY");
     public string Pad_ResetCenterOffsetX => Get("Pad_ResetCenterOffsetX");
@@ -4143,7 +4136,6 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Section_Macros => Get("Pad_Section_Macros");
     public string Pad_RumbleAudio_Header => Get("Pad_RumbleAudio_Header");
     public string Pad_RumbleAudio_Subtitle => Get("Pad_RumbleAudio_Subtitle");
-    public string Pad_RumbleAudio_Card_Header => Get("Pad_RumbleAudio_Card_Header");
     public string Pad_More_BassShakers => Get("Pad_More_BassShakers");
     public string Pad_RumbleAudio_Card_Desc => Get("Pad_RumbleAudio_Card_Desc");
     public string Pad_RumbleAudio_ResetCard_Tooltip => Get("Pad_RumbleAudio_ResetCard_Tooltip");
@@ -4197,8 +4189,6 @@ public class Strings : INotifyPropertyChanged
     public string Tablet_Eraser => Get("Tablet_Eraser");
     public string Tablet_Inverted => Get("Tablet_Inverted");
     public string Tablet_InRange => Get("Tablet_InRange");
-    public string Pad_SteeringAngleRumble_Header => Get("Pad_SteeringAngleRumble_Header");
-    public string Pad_SteeringAngleRumble_FoldHint => Get("Pad_SteeringAngleRumble_FoldHint");
     public string Pad_SteeringAngleRumble_Description => Get("Pad_SteeringAngleRumble_Description");
     public string Pad_SteeringAngleRumble_Enable => Get("Pad_SteeringAngleRumble_Enable");
     public string Pad_SteeringAngleRumble_Axis => Get("Pad_SteeringAngleRumble_Axis");
@@ -4213,7 +4203,6 @@ public class Strings : INotifyPropertyChanged
     public string Pad_SteeringAngleRumble_ResetAxis => Get("Pad_SteeringAngleRumble_ResetAxis");
     public string Pad_SteeringAngleRumble_ResetStrength => Get("Pad_SteeringAngleRumble_ResetStrength");
     public string Pad_SteeringAngleRumble_ResetDeadzone => Get("Pad_SteeringAngleRumble_ResetDeadzone");
-    public string Pad_SteeringAngleRumble_ResetAll => Get("Pad_SteeringAngleRumble_ResetAll");
     public string Pad_SteeringAngleRumble_ResetEnable => Get("Pad_SteeringAngleRumble_ResetEnable");
     public string ResetLabel_Profile => Get("ResetLabel_Profile");
     public string ResetLabel_InputSurfaces => Get("ResetLabel_InputSurfaces");

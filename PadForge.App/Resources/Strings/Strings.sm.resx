@@ -903,7 +903,6 @@
   <data name="Menu_NotRecorded" xml:space="preserve"><value>(e leʻi setiina)</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Overlay o le menu</value></data>
   <data name="Dashboard_Overlays" xml:space="preserve"><value>Overlay</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Gatete i le leo</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Masini e alu i ai, auala leo, malosi, se leo mo afi taʻitasi</value></data>
   <data name="Pad_RumbleAudio_Voice_Low" xml:space="preserve"><value>Afi maualalo</value></data>
   <data name="Pad_RumbleAudio_Voice_High" xml:space="preserve"><value>Afi maualuga</value></data>
@@ -1149,11 +1148,8 @@
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Moli ma Leo</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Macro ma Menu</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Se faʻailo pe a oʻo le stick foeuli i lona tapulaʻa</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Gatete e faʻateleina pe a alu ese le axis mai le ogatotonu</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Se malosi tumau seʻia e tapeina</value></data>
   <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Gatete mai le bass i le leo o le komepiuta</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>E auina atu le gatete o afi autū i trigger</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Se malosi tumau i afi taʻitasi o trigger</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Gatete o trigger mai le bass i le leo o le komepiuta</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Deadzone o le faʻasipa, Faʻasaga o le controller</value></data>
   <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Faʻamau e faʻaola ai le taulaʻi, Faiga o le faʻaolaina, Tapulaʻa o le Easy Aim</value></data>

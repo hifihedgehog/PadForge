@@ -713,8 +713,6 @@
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Rarama kei na Rorogo</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Macro kei na Menu</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Ivakatakilakila ni stick ena iyalayala ni kena vuki</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Yavavala e levu cake ni toso na axis ni stick mai na loma</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Kaukauwa dei me yacova ni vakamatei</value></data>
   <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Yavavala mai na bass ni domo ni sisitemu</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Deadzone ni seva, Ituvaki ni controller</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Deadzone, vakamalumutaki, Vakatotolotaki, Kaba ni output</value></data>

@@ -936,8 +936,6 @@
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>Επαναφορά συνολικής ενίσχυσης</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Επαναφορά αριστερής σκανδάλης</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Επαναφορά δεξιάς σκανδάλης</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Σταθερή δύναμη σκανδάλης</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Σταθερή δύναμη σε κάθε κινητήρα σκανδάλης</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Δρομολόγηση σκανδαλών</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Στέλνει τη δόνηση των κύριων κινητήρων στις σκανδάλες</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Δρομολογεί τους κύριους κινητήρες δόνησης στο κανάλι των σκανδαλών, μία σκανδάλη τη φορά. Λειτουργεί με τη δόνηση XInput και με την ανάδραση δύναμης. Ένας ενεργοποιητής μπορεί να την ελέγχει, ώστε η σκανδάλη να δονείται μόνο όσο κρατάτε πατημένο ένα κουμπί.</value></data>
@@ -967,7 +965,6 @@
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Εφαρμογή σταθερής δύναμης σκανδάλης</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Αριστερή σκανδάλη</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>Δεξιά σκανδάλη</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>Επαναφορά σταθερής δύναμης σκανδάλης</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Επαναφορά αριστερής σκανδάλης</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Επαναφορά δεξιάς σκανδάλης</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Δόνηση σκανδαλών από τα μπάσα του ήχου</value></data>
@@ -2511,7 +2508,6 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Άξονας σκανδάλης</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Ανάδραση δύναμης / δόνηση / απτική ανάδραση</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Ενίσχυση ανά κινητήρα, δόνηση σκανδαλών, αντιμετάθεση κινητήρων</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Συνολική ενίσχυση</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Αριστερός κινητήρας</value></data>
@@ -2523,14 +2519,11 @@
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Δραστηριότητα κινητήρων</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Σταθερή δύναμη</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Σταθερή δύναμη μέχρι να την απενεργοποιήσετε</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Εφαρμόζει συνεχή δύναμη σε αυτή τη συσκευή μέχρι να την απενεργοποιήσετε. Η δύναμη που προκαλεί το παιχνίδι, από οποιαδήποτε πηγή, υπερισχύει όσο είναι ενεργή, και η σταθερή δύναμη συνεχίζεται όταν το παιχνίδι σταματήσει.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Εφαρμογή σταθερής δύναμης</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Σύρετε μέσα στο πλέγμα για να ορίσετε κατεύθυνση και ισχύ.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>Επαναφορά σταθερής δύναμης</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Επαναφορά σταθερής δύναμης X</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Επαναφορά σταθερής δύναμης Y</value></data>
 
@@ -3939,7 +3932,6 @@
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Μακροεντολές και μενού</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Δονητές μπάσων</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Δρομολογεί τη δόνηση και την ανάδραση δύναμης του παιχνιδιού που λαμβάνει αυτό το εικονικό χειριστήριο σε μια έξοδο ήχου, ως τόνους χαμηλής συχνότητας για δονητές μπάσων (bass shakers) και subwoofer.</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Δόνηση σε ήχο</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Συσκευή εξόδου, κανάλια, ενίσχυση, τόνος για κάθε κινητήρα</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Λειτουργεί με εικονικά χειριστήρια Xbox, DualShock 3, DualShock 4 / DualSense και Nintendo Switch Pro, καθώς και με Εκτεταμένα εικονικά χειριστήρια με ανάδραση δύναμης, όπως τιμονιέρες αγώνων, και με το Steam Deck Controller (Composite). Η ανάδραση του παιχνιδιού και η «Δοκιμή δόνησης» αναπαράγονται μέσω της εξόδου ήχου. Η δόνηση από μακροεντολές παραμένει στο χειριστήριο.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Επαναφορά δόνησης σε ήχο</value></data>
@@ -4386,8 +4378,6 @@
   <data name="Tablet_InRange" xml:space="preserve"><value>Γραφίδα εντός εμβέλειας</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Αναμονή για δεδομένα από την κοινόχρηστη μνήμη FreeTrack.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>Η κοινόχρηστη μνήμη FreeTrack δεν είναι διαθέσιμη.</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Δόνηση γωνίας τιμονιού</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Δόνηση που αυξάνεται όσο ο άξονας απομακρύνεται από το κέντρο</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Προσθέτει συνεχή δόνηση καθώς ο επιλεγμένος εικονικός άξονας μοχλού απομακρύνεται από το κέντρο. Χρησιμοποιεί την αντιστοιχισμένη έξοδο από όλες τις ανατεθειμένες πηγές. Με την επιλογή Διαχωρισμός ανά κατεύθυνση, η αρνητική κίνηση οδηγεί τον αριστερό κινητήρα και η θετική τον δεξιό. Η επιλογή Αριστερός κινητήρας ή Δεξιός κινητήρας βάζει και τις δύο κατευθύνσεις σε αυτόν τον κινητήρα. Για έξοδο Xbox και PlayStation με συσκευές δόνησης. Παραλείπει τιμονιέρες, άλλες συσκευές με σταθερή ανάδραση δύναμης και πεντάλ Fanatec.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Ενεργοποίηση δόνησης γωνίας τιμονιού</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Εικονικός άξονας</value></data>
@@ -4402,7 +4392,6 @@
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Επαναφορά σε «Αριστερός μοχλός X»</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Επαναφορά ισχύος (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Επαναφορά κεντρικής νεκρής ζώνης (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>Επαναφορά δόνησης γωνίας τιμονιού</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Επαναφορά ενεργοποίησης δόνησης γωνίας τιμονιού</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Προφίλ</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>Επιφάνειες εισόδου</value></data>

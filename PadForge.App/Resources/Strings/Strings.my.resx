@@ -881,8 +881,6 @@
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>စုစုပေါင်း အားမြှင့်မှုကို ပြန်လည်သတ်မှတ်ရန်</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>ဘယ် ထရီဂါကို ပြန်လည်သတ်မှတ်ရန်</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>ညာ ထရီဂါကို ပြန်လည်သတ်မှတ်ရန်</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>အမြဲတမ်း ထရီဂါ အား</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>ထရီဂါ မော်တာတစ်ခုစီသို့ တည်ငြိမ်သော အား</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>ထရီဂါ လမ်းကြောင်းသတ်မှတ်ခြင်း</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>ပင်မ မော်တာများ၏ တုန်ခါမှုကို ထရီဂါများသို့ ပို့သည်</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>ပင်မ တုန်ခါမှု မော်တာများကို ထရီဂါ ချန်နယ်ထဲသို့ ထရီဂါတစ်ခုချင်း လမ်းကြောင်းပေးသည်။ XInput တုန်ခါမှုနှင့် အားပြန်တုံ့ပြန်မှုတို့နှင့် အလုပ်လုပ်သည်။ ခလုတ်တစ်ခု ဖိထားစဉ်သာ ထရီဂါ တုန်ခါစေရန် အသက်သွင်းခလုတ်ဖြင့် ကန့်သတ်နိုင်သည်။</value></data>
@@ -912,7 +910,6 @@
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>အမြဲတမ်း ထရီဂါ အား သက်ရောက်စေရန်</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>ဘယ် ထရီဂါ</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>ညာ ထရီဂါ</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>အမြဲတမ်း ထရီဂါ အားကို ပြန်လည်သတ်မှတ်ရန်</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>ဘယ် ထရီဂါကို ပြန်လည်သတ်မှတ်ရန်</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>ညာ ထရီဂါကို ပြန်လည်သတ်မှတ်ရန်</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>အသံ ဘေ့စ် ထရီဂါ တုန်ခါမှု</value></data>
@@ -2344,7 +2341,6 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>ထရီဂါ ဝင်ရိုး</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>အားပြန်တုံ့ပြန်မှု / တုန်ခါမှု / ဟက်ပတစ်</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>မော်တာအလိုက် ပြင်းအား၊ ထရီဂါ တုန်ခါမှု၊ မော်တာ လဲလှယ်ခြင်း</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>စုစုပေါင်း အားမြှင့်မှု</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>ဘယ်မော်တာ</value></data>
@@ -2356,14 +2352,11 @@
   <data name="Pad_MotorActivity" xml:space="preserve"><value>မော်တာ လှုပ်ရှားမှု</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>စဉ်ဆက်မပြတ်အား</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>သင်ပိတ်သည်အထိ တည်ငြိမ်သော အား</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>သင်ပိတ်သည်အထိ ဤစက်ပစ္စည်းသို့ စဉ်ဆက်မပြတ်အား သက်ရောက်စေပါ။ မည်သည့်ရင်းမြစ်မှမဆို ဂိမ်းက ထုတ်ပေးသောအားသည် အသက်ဝင်နေစဉ် ဤအားကို အစားထိုးပြီး ဂိမ်းရပ်သွားသောအခါ ဤအား ပြန်စသည်။</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>စဉ်ဆက်မပြတ်အား သက်ရောက်စေ</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>ဦးတည်ချက်နှင့် အားကို သတ်မှတ်ရန် ဇယားကွက်အတွင်း ဆွဲပါ။</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>စဉ်ဆက်မပြတ်အား ပြန်လည်သတ်မှတ်</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>စဉ်ဆက်မပြတ်အား X ပြန်လည်သတ်မှတ်</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>စဉ်ဆက်မပြတ်အား Y ပြန်လည်သတ်မှတ်</value></data>
 
@@ -3740,7 +3733,6 @@
   <data name="Pad_Section_Macros" xml:space="preserve"><value>မက်ခရိုနှင့် မီနူးများ</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>ဘေ့စ် ရှိတ်ကာများ</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>ဤဗာချွယ်ကွန်ထရိုလာ လက်ခံသော ဂိမ်း၏ တုန်ခါမှုနှင့် အားပြန်တုံ့ပြန်မှုကို ဘေ့စ် ရှိတ်ကာများနှင့် ဆပ်ဝူးဖာများအတွက် ကြိမ်နှုန်းနိမ့် အသံများအဖြစ် အသံအထွက်တစ်ခုသို့ လမ်းကြောင်းပေးသည်။</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>တုန်ခါမှုမှ အသံသို့</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>အထွက် စက်ပစ္စည်း၊ ချန်နယ်များ၊ အချဲ့နှုန်း၊ မော်တာတစ်ခုစီအတွက် အသံ</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox၊ DualShock 3၊ DualShock 4 / DualSense နှင့် Nintendo Switch Pro ဗာချွယ်ကွန်ထရိုလာများ၊ ထို့အပြင် ပြိုင်ကား စတီယာရင်ဘီးများကဲ့သို့ အားပြန်တုံ့ပြန်မှု ပါသော တိုးချဲ့ ဗာချွယ်ကွန်ထရိုလာများနှင့် Steam Deck Controller (Composite) တို့နှင့် အလုပ်လုပ်သည်။ ဂိမ်း တုံ့ပြန်မှုနှင့် “တုန်ခါမှု စမ်းသပ်ရန်” သည် အသံအထွက်မှတစ်ဆင့် ဖွင့်သည်။ မက်ခရို တုန်ခါမှုသည် ကွန်ထရိုလာပေါ်တွင် ဆက်ရှိသည်။</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>“တုန်ခါမှုမှ အသံသို့” ကို ပြန်လည်သတ်မှတ်ရန်</value></data>
@@ -4175,8 +4167,6 @@ PadForge က ၎င်းတို့ကို ယခုပင် ဖြုတ�
   <data name="Tablet_InRange" xml:space="preserve"><value>ဘောပင် အကွာအဝေးအတွင်း</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>FreeTrack မျှဝေမှတ်ဉာဏ် ဒေတာကို စောင့်နေသည်။</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>FreeTrack မျှဝေမှတ်ဉာဏ် မရနိုင်ပါ။</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>စတီယာရင်ထောင့် တုန်ခါမှု</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>စတစ်ဝင်ရိုး ဗဟိုမှ ဝေးလာသည်နှင့်အမျှ ပြင်းလာသော တုန်ခါမှု</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>ရွေးထားသော ဗာချွယ်စတစ်ဝင်ရိုး ဗဟိုမှ ဝေးလာသည်နှင့်အမျှ စဉ်ဆက်မပြတ် တုန်ခါမှုကို ထည့်သည်။ သတ်မှတ်ထားသော ရင်းမြစ်အားလုံးမှ မက်ပင်းလုပ်ထားသော အထွက်ကို အသုံးပြုသည်။ “ဦးတည်ရာအလိုက် ခွဲခြား” ကို ရွေးထားလျှင် အနုတ်လှုပ်ရှားမှုက ဘယ်မော်တာကို၊ အပေါင်းလှုပ်ရှားမှုက ညာမော်တာကို မောင်းနှင်သည်။ “ဘယ်မော်တာ” သို့မဟုတ် “ညာမော်တာ” ကို ရွေးထားလျှင် ဦးတည်ရာနှစ်ခုလုံးကို ထိုမော်တာတစ်ခုတည်းပေါ်တွင် ထားသည်။ တုန်ခါမှု စက်ပစ္စည်းများပါသော Xbox နှင့် PlayStation အထွက်အတွက်။ စတီယာရင်ဘီးများ၊ စဉ်ဆက်မပြတ် အားပြန်တုံ့ပြန်မှုပါသော အခြားစက်ပစ္စည်းများနှင့် Fanatec ခြေနင်းများကို ချန်လှပ်ထားသည်။</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>စတီယာရင်ထောင့် တုန်ခါမှု ဖွင့်ရန်</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>ဗာချွယ် ဝင်ရိုး</value></data>
@@ -4191,7 +4181,6 @@ PadForge က ၎င်းတို့ကို ယခုပင် ဖြုတ�
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>ဘယ်စတစ် X သို့ ပြန်လည်သတ်မှတ်</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>ပြင်းအား ပြန်လည်သတ်မှတ် (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>ဗဟို ဒက်ဇုန် ပြန်လည်သတ်မှတ် (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>စတီယာရင်ထောင့် တုန်ခါမှု ပြန်လည်သတ်မှတ်</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>“စတီယာရင်ထောင့် တုန်ခါမှု ဖွင့်ရန်” ပြန်လည်သတ်မှတ်</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>ပရိုဖိုင်</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>အဝင် မျက်နှာပြင်များ</value></data>

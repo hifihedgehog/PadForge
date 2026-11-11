@@ -879,8 +879,6 @@
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>Վերակայել ընդհանուր ուժեղացումը</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Վերակայել ձախ ձգանը</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Վերակայել աջ ձգանը</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Ձգանի մշտական ուժ</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Անընդհատ ուժ իւրաքանչիւր ձգանի մոթորին վրայ</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Ձգանի ուղղորդում</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Հիմնական մոթորներուն թրթռումը կը ղրկէ ձգաններուն</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Հիմնական թրթռումի մոթորները ուղղեցէք ձգանի ալիքին՝ ամէն անգամ մէկ ձգան։ Կ'աշխատի XInput թրթռումի եւ ուժային արձագանգի հետ։ Գործարկիչ մը կրնայ զայն սահմանափակել, որպէսզի ձգանը թրթռայ միայն կոճակ մը սեղմած պահելու ատեն։</value></data>
@@ -910,7 +908,6 @@
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Կիրառել ձգանի մշտական ուժ</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Ձախ ձգան</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>Աջ ձգան</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>Վերակայել ձգանի մշտական ուժը</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Վերակայել ձախ ձգանը</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Վերակայել աջ ձգանը</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Ձայնի պասով ձգանի թրթռում</value></data>
@@ -2338,7 +2335,6 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Ձգանի առանցք</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Ուժային արձագանգ / թրթռում / հպական արձագանգ</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Իւրաքանչիւր մոթորի ուժգնութիւն, ձգաններու թրթռում, մոթորներու փոխանակում</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Ընդհանուր ուժեղացում</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Ձախ մոթոր</value></data>
@@ -2350,14 +2346,11 @@
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Մոթորներու գործունէութիւն</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Մնայուն ուժ</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Անընդհատ ուժ, մինչեւ որ զայն անջատէք</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Այս սարքին վրայ անընդհատ ուժ կը կիրարկէ, մինչեւ որ զայն անջատէք։ Որեւէ աղբիւրէ եկող խաղի ուժը առաջնութիւն ունի, քանի դեռ գործօն է, եւ մնայուն ուժը կը վերսկսի, երբ խաղը դադրի։</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Կիրարկել մնայուն ուժ</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Քաշեցէք ցանցին մէջ՝ ուղղութիւնը եւ ուժը որոշելու համար։</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>Վերակայել մնայուն ուժը</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Վերակայել մնայուն ուժը X</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Վերակայել մնայուն ուժը Y</value></data>
 
@@ -3710,7 +3703,6 @@
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Մաքրօներ եւ ցանկեր</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Պասի թրթռիչներ</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Խաղի թրթռումը եւ ուժային արձագանգը, որ այս վիրթուալ կառավարիչը կը ստանայ, կ'ուղղէ ձայնային ելքի մը՝ որպէս ցածր հաճախականութեան հնչիւններ պասի թրթռիչներու եւ ցածրաձայն բարձրախօսներու համար։</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Թրթռում ձայնի</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Ելքի սարք, ալիքներ, ուժեղացում, իւրաքանչիւր մոթորի հնչիւն</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Կ'աշխատի Xbox, DualShock 3, DualShock 4 / DualSense եւ Nintendo Switch Pro վիրթուալ կառավարիչներու հետ, ինչպէս նաեւ ուժային արձագանգով «Ընդլայնուած» վիրթուալ կառավարիչներու, օրինակ՝ մրցարշաւի ղեկերու, եւ Steam Deck Controller (Composite)-ի հետ։ Խաղի արձագանգը եւ «Թրթռումի փորձարկում»-ը կը հնչեն ձայնային ելքով։ Մաքրօի թրթռումը կը մնայ կառավարիչին վրայ։</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Վերակայել «Թրթռում ձայնի»</value></data>
@@ -4141,8 +4133,6 @@
   <data name="Tablet_InRange" xml:space="preserve"><value>Գրիչը հասանելի գօտիին մէջ</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Կը սպասէ FreeTrack համատեղ յիշողութեան տուեալներուն։</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>FreeTrack համատեղ յիշողութիւնը անմատչելի է։</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Ղեկի անկիւնի թրթռում</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Թրթռում, որ կ'աճի, երբ լծակի առանցքը կեդրոնէն կը հեռանայ</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Կ'աւելցնէ շարունակական թրթռում, երբ ընտրուած վիրթուալ լծակի առանցքը կեդրոնէն կը հեռանայ։ Կը գործածէ բոլոր նշանակուած աղբիւրներուն համապատասխանեցուած ելքը։ «Բաժնուած ըստ ուղղութեան» ընտրանքով բացասական շարժումը կը գործարկէ ձախ մոթորը, դրականը՝ աջը։ «Ձախ մոթոր» կամ «Աջ մոթոր» երկու ուղղութիւններն ալ կը դնէ այդ մէկ մոթորին վրայ։ Xbox եւ PlayStation ելքի համար՝ թրթռումով սարքերով։ Ան կը շրջանցէ ղեկերը, անընդհատ ուժային արձագանգ ունեցող ուրիշ սարքերը եւ Fanatec ոտնակները։</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Միացնել ղեկի անկիւնի թրթռումը</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Վիրթուալ առանցք</value></data>
@@ -4157,7 +4147,6 @@
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Վերակայել (ձախ լծակ X)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Վերակայել ուժգնութիւնը (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Վերակայել կեդրոնի մեռեալ գօտին (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>Վերակայել ղեկի անկիւնի թրթռումը</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Վերակայել ղեկի անկիւնի թրթռումի միացումը</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Փրոֆիլ</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>Մուտքի մակերեսներ</value></data>

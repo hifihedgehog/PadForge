@@ -936,8 +936,6 @@
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>সামগ্রিক গেইন রিসেট করুন</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>বাম ট্রিগার রিসেট করুন</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>ডান ট্রিগার রিসেট করুন</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>স্থির ট্রিগার ফোর্স</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>প্রতিটি ট্রিগার মোটরে স্থির ফোর্স</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>ট্রিগার রাউটিং</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>মূল মোটরের রাম্বল ট্রিগারে পাঠায়</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>মূল রাম্বল মোটরগুলোকে ট্রিগার চ্যানেলে পাঠান, একবারে একটি ট্রিগার। XInput রাম্বল ও ফোর্স ফিডব্যাকের সঙ্গে কাজ করে। একটি অ্যাক্টিভেটর দিয়ে এটি নিয়ন্ত্রণ করা যায়, যাতে আপনি একটি বোতাম ধরে রাখলেই কেবল ট্রিগার কাঁপে।</value></data>
@@ -967,7 +965,6 @@
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>স্থির ট্রিগার ফোর্স প্রয়োগ করুন</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>বাম ট্রিগার</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>ডান ট্রিগার</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>স্থির ট্রিগার ফোর্স রিসেট করুন</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>বাম ট্রিগার রিসেট করুন</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>ডান ট্রিগার রিসেট করুন</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>অডিও বেস ট্রিগার রাম্বল</value></data>
@@ -2511,7 +2508,6 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>ট্রিগার অক্ষ</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>ফোর্স ফিডব্যাক / রাম্বল / হ্যাপটিক্স</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>মোটর অনুযায়ী গেইন, ট্রিগার রাম্বল, মোটর অদলবদল</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>সামগ্রিক গেইন</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>বাম মোটর</value></data>
@@ -2523,14 +2519,11 @@
   <data name="Pad_MotorActivity" xml:space="preserve"><value>মোটরের সক্রিয়তা</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>স্থির ফোর্স</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>আপনি বন্ধ না করা পর্যন্ত স্থির ফোর্স</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>আপনি বন্ধ না করা পর্যন্ত এই ডিভাইসে একটানা ফোর্স প্রয়োগ করুন। যেকোনো উৎস থেকে আসা গেমের ফোর্স সক্রিয় থাকা অবস্থায় এটিকে ওভাররাইড করে, আর গেম থামলে এটি আবার চালু হয়।</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>স্থির ফোর্স প্রয়োগ করুন</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>দিক ও শক্তি ঠিক করতে গ্রিডের ভেতরে টানুন।</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>স্থির ফোর্স রিসেট করুন</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>স্থির ফোর্স X রিসেট করুন</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>স্থির ফোর্স Y রিসেট করুন</value></data>
 
@@ -3939,7 +3932,6 @@
   <data name="Pad_Section_Macros" xml:space="preserve"><value>ম্যাক্রো ও মেনু</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>বেস শেকার</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>এই ভার্চুয়াল কন্ট্রোলার গেম থেকে যে রাম্বল ও ফোর্স ফিডব্যাক পায় তা বেস শেকার ও সাবউফারের জন্য নিম্ন-ফ্রিকোয়েন্সির টোন হিসেবে একটি অডিও আউটপুটে পাঠায়।</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>রাম্বল থেকে অডিও</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>আউটপুট ডিভাইস, চ্যানেল, গেইন, প্রতিটি মোটরের সুর</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox, DualShock 3, DualShock 4 / DualSense ও Nintendo Switch Pro ভার্চুয়াল কন্ট্রোলারের সঙ্গে কাজ করে, এ ছাড়া ফোর্স ফিডব্যাকসহ বর্ধিত ভার্চুয়াল কন্ট্রোলার, যেমন রেসিং হুইল, আর Steam Deck Controller (Composite)-এর সঙ্গেও। গেমের ফিডব্যাক ও “রাম্বল পরীক্ষা করুন” অডিও আউটপুটে বাজে। ম্যাক্রোর রাম্বল কন্ট্রোলারেই থাকে।</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>“রাম্বল থেকে অডিও” রিসেট করুন</value></data>
@@ -4386,8 +4378,6 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="Tablet_InRange" xml:space="preserve"><value>পেন সীমার মধ্যে</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>FreeTrack শেয়ার্ড মেমরির ডেটার অপেক্ষায়।</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>FreeTrack শেয়ার্ড মেমরি উপলব্ধ নয়।</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>স্টিয়ারিং কোণের রাম্বল</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>স্টিক অক্ষ কেন্দ্র থেকে সরলে বাড়তে থাকা রাম্বল</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>নির্বাচিত ভার্চুয়াল স্টিক অক্ষ কেন্দ্র থেকে যত সরে, তত একটানা রাম্বল যোগ করে। বরাদ্দ করা সব উৎসের ম্যাপ করা আউটপুট ব্যবহার করে। দিক অনুযায়ী বিভক্ত বেছে নিলে ঋণাত্মক দিকের নড়াচড়া বাম মোটর চালায়, ধনাত্মক দিকের নড়াচড়া ডান মোটর। বাম মোটর বা ডান মোটর বেছে নিলে দুই দিকই সেই একটি মোটরে চলে। রাম্বল ডিভাইসসহ Xbox ও PlayStation আউটপুটের জন্য। এটি হুইল, ধ্রুবক ফোর্স ফিডব্যাকসহ অন্যান্য ডিভাইস এবং Fanatec পেডাল বাদ দেয়।</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>স্টিয়ারিং কোণের রাম্বল সক্ষম করুন</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>ভার্চুয়াল অক্ষ</value></data>
@@ -4402,7 +4392,6 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>বাম স্টিক X-এ রিসেট করুন</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>শক্তি রিসেট করুন (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>কেন্দ্রের ডেডজোন রিসেট করুন (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>স্টিয়ারিং কোণের রাম্বল রিসেট করুন</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>“স্টিয়ারিং কোণের রাম্বল সক্ষম করুন” রিসেট করুন</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>প্রোফাইল</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>ইনপুট সারফেস</value></data>

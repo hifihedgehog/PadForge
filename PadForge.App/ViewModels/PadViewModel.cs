@@ -4858,14 +4858,6 @@ namespace PadForge.ViewModels
         public ICommand ResetImpulseRightCommand => _resetImpulseRightCommand ??= new RelayCommand(() => ImpulseRightStrength = 100);
 
         // ── Constant Trigger Force reset commands ──
-        private ICommand _resetConstantTriggerForceCommand;
-        public ICommand ResetConstantTriggerForceCommand => _resetConstantTriggerForceCommand ??= new RelayCommand(() =>
-        {
-            ConstantTriggerForceEnabled = false;
-            ConstantTriggerForceLeft = 0;
-            ConstantTriggerForceRight = 0;
-        });
-
         private ICommand _resetConstantTriggerLeftCommand;
         public ICommand ResetConstantTriggerLeftCommand => _resetConstantTriggerLeftCommand ??= new RelayCommand(() => ConstantTriggerForceLeft = 0);
         private ICommand _resetConstantTriggerRightCommand;
@@ -4995,9 +4987,6 @@ namespace PadForge.ViewModels
         /// <summary>0 splits by direction, 1 the left motor, 2 the right (#510). Any other
         /// value reads as 0, as the engine reads it.</summary>
         public int SteeringAngleRumbleMotor { get => _steeringAngleRumbleMotor; set => SetProperty(ref _steeringAngleRumbleMotor, value is >= 0 and <= 2 ? value : 0); }
-
-        private ICommand _resetSteeringAngleRumbleCommand;
-        public ICommand ResetSteeringAngleRumbleCommand => _resetSteeringAngleRumbleCommand ??= new RelayCommand(ResetSteeringAngleRumble);
 
         private ICommand _resetSteeringAngleRumbleEnabledCommand;
         public ICommand ResetSteeringAngleRumbleEnabledCommand => _resetSteeringAngleRumbleEnabledCommand ??= new RelayCommand(() => SteeringAngleRumbleEnabled = false);
@@ -5271,14 +5260,6 @@ namespace PadForge.ViewModels
 
         private double _constantForceY;
         public double ConstantForceY { get => _constantForceY; set => SetProperty(ref _constantForceY, Math.Clamp(value, -1.0, 1.0)); }
-
-        private ICommand _resetConstantForceCommand;
-        public ICommand ResetConstantForceCommand => _resetConstantForceCommand ??= new RelayCommand(() =>
-        {
-            ConstantForceEnabled = false;
-            ConstantForceX = 0;
-            ConstantForceY = 0;
-        });
 
         private ICommand _resetConstantForceXCommand;
         public ICommand ResetConstantForceXCommand => _resetConstantForceXCommand ??= new RelayCommand(() => ConstantForceX = 0);

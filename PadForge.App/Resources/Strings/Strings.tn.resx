@@ -1013,11 +1013,8 @@
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Lesedi le modumo</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Temoso fa stick ya go kgweetsa e fitlha bokhutlo</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Go baakanya ditsenyo tsa Flick Stick</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Thothomelo e e golang fa selepe sa stick se tloga mo bogareng</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Thata e e tsitsitseng go fitlha o e tima</value></data>
   <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Thothomelo go tswa mo bass ya modumo wa sistimi</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>E romela thothomelo ya dimotoro tse dikgolo kwa ditrigger</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Thata e e tsitsitseng mo motorong mongwe le mongwe wa trigger</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Thothomelo ya trigger go tswa mo bass ya modumo wa sistimi</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Deadzone tsa go sekama, Ntlha ya controller</value></data>
   <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Konopo ya go simolola go maka, Mokgwa wa go simolola, Moedi wa Easy Aim</value></data>

@@ -1304,10 +1304,7 @@
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Magetsi ndi mawu</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Chizindikiro pamene stick yoyendetsa yafika kumapeto</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Zokonza za Flick Stick</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Kunjenjemera kumene kumakula pamene axis ya stick ichoka pakati</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Mphamvu yokhazikika mpaka mutayizimitsa</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Imatumiza kunjenjemera kwa mota zazikulu ku ma trigger</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Mphamvu yokhazikika pa mota ya trigger iliyonse</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Kunjenjemera kwa trigger kochokera ku bass ya mawu a kompyuta</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Ma deadzone opendekera, Kaimidwe ka controller</value></data>
   <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Batani loyatsa kuloza, Njira yoyatsira, Malire a Easy Aim</value></data>

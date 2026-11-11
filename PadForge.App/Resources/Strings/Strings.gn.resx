@@ -1100,11 +1100,8 @@
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Tesape ha audio</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Macro ha menúkuéra</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Señal palanca volante ohupytývo ipaha</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Vibración okakuaáva eje osẽ jave mbytégui</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Mbarete opytáva remboguepeve</value></data>
   <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Vibración sistema audio bajo rehegua</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Omondo motor guasu vibración gatillokuérape</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Mbarete opytáva peteĩteĩ gatillo motorpe</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Gatillo vibración sistema audio bajo rehegua</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Zona muerta ñembojere, Control orientación</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Zona muerta, suavizado, Aceleración, Curva ñesẽ</value></data>

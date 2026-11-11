@@ -881,8 +881,6 @@
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>Stel totale versterking terug</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Stel linkersneller terug</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Stel regtersneller terug</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Konstante snellerkrag</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>'n Bestendige krag op elke snellermotor</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Snellerroetering</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Stuur die hoofmotors se vibrasie na die snellers</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Roeteer die hoofvibrasiemotors na die snellerkanaal, een sneller op 'n slag. Werk met XInput-vibrasie en kragterugvoer. 'n Aktiveerder kan dit beperk sodat die sneller net gons terwyl jy 'n knoppie hou.</value></data>
@@ -912,7 +910,6 @@
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Pas konstante snellerkrag toe</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Linkersneller</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>Regtersneller</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>Stel konstante snellerkrag terug</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Stel linkersneller terug</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Stel regtersneller terug</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Oudiobas-snellervibrasie</value></data>
@@ -2309,7 +2306,6 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Snellerias</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Kragterugvoer / Vibrasie / Haptiese terugvoer</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Versterking per motor, snellervibrasie, motorverwisseling</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Algehele versterking</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Linkermotor</value></data>
@@ -2321,12 +2317,9 @@
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Motoraktiwiteit</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Konstante krag</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>'n Bestendige krag totdat jy dit afskakel</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Pas 'n deurlopende krag op hierdie toestel toe totdat jy dit afskakel. Krag wat deur 'n speletjie gestuur word, van enige bron, geniet voorrang terwyl dit aktief is en hervat wanneer die speletjie stop.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Pas konstante krag toe</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Sleep binne die rooster om rigting en sterkte te stel.</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>Stel konstante krag terug</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Stel konstante krag X terug</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Stel konstante krag Y terug</value></data>
 
@@ -3629,7 +3622,6 @@
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makro's en kieslyste</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shakers</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Stuur die spelvibrasie en kragterugvoer wat hierdie virtuele controller ontvang as laagfrekwensie-tone na ’n oudio-uitvoer vir bass shakers en subwoofers.</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibrasie na oudio</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Uitvoertoestel, kanale, versterking, 'n toon vir elke motor</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Werk met virtuele Xbox-, DualShock 3-, DualShock 4 / DualSense- en Nintendo Switch Pro-controllers, plus Uitgebreide virtuele controllers met kragterugvoer, soos wedrenstuurwiele, en die Steam Deck Controller (Composite). Spelterugvoer en Toets vibrasie speel deur die oudio-uitvoer. Makrovibrasie bly op die controller.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Stel vibrasie na oudio terug</value></data>
@@ -4024,8 +4016,6 @@ Wil jy hê PadForge moet dit nou deïnstalleer? Dit vereis verhoogde regte en ka
   <data name="Tablet_InRange" xml:space="preserve"><value>Pen binne bereik</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Wag vir FreeTrack se gedeelde geheuedata.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>FreeTrack se gedeelde geheue is nie beskikbaar nie.</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Vibrasie volgens stuurhoek</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Vibrasie wat toeneem namate 'n stokkie-as van die middel af beweeg</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Voeg deurlopende vibrasie by namate die gekose virtuele stokkie-as van die middel af beweeg. Gebruik die gekarteerde uitvoer van alle toegewysde bronne. Met Verdeel volgens rigting dryf negatiewe beweging die linkermotor en positiewe beweging die regtermotor. Linkermotor of Regtermotor plaas albei rigtings op daardie een motor. Vir Xbox- en PlayStation-uitvoer met vibrasietoestelle. Dit slaan stuurwiele, ander toestelle met konstante kragterugvoer en Fanatec-pedale oor.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Skakel stuurhoekvibrasie aan</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Virtuele as</value></data>
@@ -4040,7 +4030,6 @@ Wil jy hê PadForge moet dit nou deïnstalleer? Dit vereis verhoogde regte en ka
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Stel terug na linkerstokkie X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Stel sterkte terug (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Stel middel-dooisone terug (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>Stel stuurhoekvibrasie terug</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Stel Skakel stuurhoekvibrasie aan terug</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Profiel</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>Invoeroppervlakke</value></data>

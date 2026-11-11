@@ -1184,11 +1184,8 @@
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Agur-uray iti {0}. Ipindot ti input iti devicem.</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Senial no dumanon ti stick iti pagpatinggaan iti steering mode</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Panangiyannatop kadagiti input ti Flick Stick</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Rumble nga umad-adu bayat nga umadayo ti stick axis iti tengnga</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Agtultuloy a force agingga nga iddepem</value></data>
   <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Rumble manipud iti bass ti audio ti sistema</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Ipatulodna ti rumble dagiti kangrunaan a motor kadagiti trigger</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Agtultuloy a force iti tunggal motor ti trigger</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Rumble ti trigger manipud iti bass ti audio ti sistema</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Deadzone ti panagkiling, oryentasion ti controller</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Deadzone, panangpalinak, akselerasion, kurba ti output</value></data>

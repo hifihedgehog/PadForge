@@ -68,6 +68,13 @@
                     <SolidColorBrush x:Key="SteelFootBrush" Color="#101722"/>
                     <SolidColorBrush x:Key="SteelPillLineBrush" Color="#263142"/>
                     <SolidColorBrush x:Key="SteelPaneHoverBrush" Color="#121925"/>
+                    <!-- Inside a card: a full-width row under the pointer
+                         (a More row, a folded part's line), a reset
+                         button's glyph at rest, and the label of a setting
+                         that belongs to the row above it. -->
+                    <SolidColorBrush x:Key="SteelCardHoverBrush" Color="#161E2B"/>
+                    <SolidColorBrush x:Key="QuietGlyphBrush" Color="#6B7890"/>
+                    <SolidColorBrush x:Key="SubRowTextBrush" Color="#CFD7E3"/>
                     <!-- Tinted grounds: the square behind a lit flame, a
                          running controller's edge, the selected controller
                          in the sidebar, and the band that offers a device. -->
@@ -541,26 +548,36 @@
                 which puts hundreds of them on the pad page alone. Drawn
                 with the icon button's ghost ring and a bright glyph, they
                 read louder than the settings they stand beside. A reset
-                button now rests with no ring and a dim glyph, and takes
-                the ring and the full glyph back under the pointer or
-                keyboard focus. The pointer's ring comes through the
-                template's hover route (MouseOverBorderBrush, cold), as it
-                does for every icon button. Keyboard focus sets the same
-                ring here, beside the app's focus visual. Size, hit target
-                and press feedback are EmberIconButton's, unchanged. Every
-                reset style in the app is based on this one.
+                button rests with no ring and a dim glyph. Under the
+                pointer it takes the raised fill and the full glyph, and
+                keyboard focus adds a cold ring beside the app's focus
+                visual. Press feedback is EmberIconButton's, unchanged.
+                Every reset style in the app is based on this one.
 
                 A PadForge 6 row puts its reset at the row's far right, so
                 the style docks it right: in a row that is a DockPanel it
                 goes to the end, and in any other panel the setter does
-                nothing. Under the pointer it takes the raised fill and no
-                ring.
+                nothing. It is 32 square with no margin, which costs a row
+                the same 32 the icon button's 28 and its 4 of margin do.
+
+                A reset in a row that rests (the row's switch is off) is
+                disabled with its row. The button template then fills and
+                rings it from two theme keys, which drew a box at the end
+                of every resting row. The style shadows both keys with
+                nothing, so a resting reset is its dimmed glyph alone.
             -->
             <Style x:Key="QuietResetButton" TargetType="uictrl:Button" BasedOn="{StaticResource EmberIconButton}">
+                <Style.Resources>
+                    <SolidColorBrush x:Key="ButtonBackgroundDisabled" Color="Transparent"/>
+                    <SolidColorBrush x:Key="ButtonBorderBrushDisabled" Color="Transparent"/>
+                </Style.Resources>
+                <Setter Property="Width" Value="32"/>
+                <Setter Property="Height" Value="32"/>
+                <Setter Property="Margin" Value="0"/>
                 <Setter Property="BorderBrush" Value="Transparent"/>
                 <Setter Property="MouseOverBorderBrush" Value="Transparent"/>
                 <Setter Property="DockPanel.Dock" Value="Right"/>
-                <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource QuietGlyphBrush}"/>
                 <Style.Triggers>
                     <Trigger Property="IsMouseOver" Value="True">
                         <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>

@@ -1139,8 +1139,6 @@
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Seetša le Modumo</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Dimakro le Malokelelo</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Temošo ge stick ya go otlela e fihla mafelelong</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Rumble ye e golago ge axis ya stick e tloga bogareng</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Maatla a sa fetogego go fihlela o a tima</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>E romela rumble ya dimotoro tše dikgolo go di-trigger</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Di-deadzone tša go sekama, Tebelelo ya controller</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Deadzone, go boreledišwa, Koketšo ya lebelo, Kgopamo ya ditšweletšo</value></data>

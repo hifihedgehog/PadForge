@@ -936,8 +936,6 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>Återställ total förstärkning</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Återställ vänster avtryckare</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Återställ höger avtryckare</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Konstant avtryckarkraft</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>En jämn kraft på varje avtryckarmotor</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Avtryckardirigering</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Skickar huvudmotorernas vibration till avtryckarna</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Dirigera de huvudsakliga vibrationsmotorerna till avtryckarkanalen, en avtryckare i taget. Fungerar med XInput-vibration och kraftåterkoppling. En aktiverare kan styra det så att avtryckaren bara surrar medan du håller ned en knapp.</value></data>
@@ -967,7 +965,6 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Använd konstant avtryckarkraft</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Vänster avtryckare</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>Höger avtryckare</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>Återställ konstant avtryckarkraft</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Återställ vänster avtryckare</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Återställ höger avtryckare</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Avtryckarvibration från ljudbas</value></data>
@@ -2511,7 +2508,6 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Avtryckaraxel</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Kraftåterkoppling / vibration / haptik</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Förstärkning per motor, avtryckarvibration, byte av motor</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Total förstärkning</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Vänster motor</value></data>
@@ -2523,14 +2519,11 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Motoraktivitet</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Konstant kraft</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>En jämn kraft tills du stänger av den</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Lägg en kontinuerlig kraft på den här enheten tills du slår av det. Kraft som styrs av ett spel, oavsett källa, tar över medan den är aktiv, och den konstanta kraften återupptas när spelet slutar.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Använd konstant kraft</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Dra i rutnätet för att ange riktning och styrka.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>Återställ konstant kraft</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Återställ konstant kraft X</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Återställ konstant kraft Y</value></data>
 
@@ -3939,7 +3932,6 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makron och menyer</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Basskakare</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Dirigerar den vibration och kraftåterkoppling från spel som den här virtuella handkontrollen tar emot till en ljudutgång som lågfrekventa toner för basskakare och subwoofrar.</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibration till ljud</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Utdataenhet, kanaler, förstärkning, en ton för varje motor</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Fungerar med virtuella handkontroller av typen Xbox, DualShock 3, DualShock 4 / DualSense och Nintendo Switch Pro, samt Utökade virtuella handkontroller med kraftåterkoppling, till exempel racingrattar, och Steam Deck Controller (Composite). Spelets återkoppling och Testa vibration spelas upp via ljudutgången. Makrovibration stannar kvar på handkontrollen.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Återställ Vibration till ljud</value></data>
@@ -4386,8 +4378,6 @@ Vill du att PadForge avinstallerar dem nu? Detta kräver förhöjd behörighet o
   <data name="Tablet_InRange" xml:space="preserve"><value>Pennan inom räckhåll</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Väntar på data från det delade FreeTrack-minnet.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>Det delade FreeTrack-minnet är inte tillgängligt.</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Vibration efter styrvinkel</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Vibration som ökar när en spakaxel lämnar mitten</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Lägger till kontinuerlig vibration när den valda virtuella spakaxeln rör sig bort från mitten. Använder den mappade utdatan från alla tilldelade källor. Med Dela efter riktning driver negativ rörelse vänster motor och positiv rörelse höger. Vänster motor eller Höger motor lägger båda riktningarna på just den motorn. För Xbox- och PlayStation-utdata med vibrationsenheter. Den hoppar över ratter, andra enheter med konstant kraftåterkoppling och Fanatec-pedaler.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Aktivera vibration efter styrvinkel</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Virtuell axel</value></data>
@@ -4402,7 +4392,6 @@ Vill du att PadForge avinstallerar dem nu? Detta kräver förhöjd behörighet o
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Återställ till Vänster spak X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Återställ styrka (50 %)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Återställ dödzon i mitten (2 %)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>Återställ vibration efter styrvinkel</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Återställ Aktivera vibration efter styrvinkel</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Profil</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>Inmatningsytor</value></data>

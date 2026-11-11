@@ -167,7 +167,9 @@ public class SteeringAngleRumbleTests
         Assert.Equal(2, vm.SteeringAngleRumbleMotor);
         settings.UpdatePadSettingsFromViewModels();
         AssertSettings(ps, rig.Assignment.GetPadSetting());
-        vm.ResetSteeringAngleRumbleCommand.Execute(null);
+        // The Force Feedback card's Reset All resets the feature with the
+        // rest of the card: its settings sit under the card's More row.
+        vm.ResetForceAllCommand.Execute(null);
         Assert.False(vm.SteeringAngleRumbleEnabled);
         Assert.Equal(0, vm.SteeringAngleRumbleAxis);
         Assert.Equal(50, vm.SteeringAngleRumbleStrength);

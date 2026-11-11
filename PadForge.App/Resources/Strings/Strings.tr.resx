@@ -936,8 +936,6 @@
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>Genel kazancı sıfırla</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Sol tetiği sıfırla</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Sağ tetiği sıfırla</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Sabit tetik kuvveti</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Her tetik motoruna sürekli bir kuvvet</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Tetik yönlendirme</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Ana motorların titreşimini tetiklere gönderir</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Ana titreşim motorlarını tetik kanalına, her tetik için ayrı ayrı yönlendirir. XInput titreşimi ve kuvvet geri bildirimiyle çalışır. Bir etkinleştiriciyle koşula bağlanabilir, böylece tetik yalnızca bir düğmeyi basılı tutarken titrer.</value></data>
@@ -967,7 +965,6 @@
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Sabit tetik kuvveti uygula</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Sol tetik</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>Sağ tetik</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>Sabit tetik kuvvetini sıfırla</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Sol tetiği sıfırla</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Sağ tetiği sıfırla</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Ses basından tetik titreşimi</value></data>
@@ -2511,7 +2508,6 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Tetik ekseni</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Kuvvet geri bildirimi / titreşim / haptik</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Motor başına kazanç, tetik titreşimi, motor değişimi</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Genel kazanç</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Sol motor</value></data>
@@ -2523,14 +2519,11 @@
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Motor etkinliği</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Sabit kuvvet</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Siz kapatana kadar sürekli bir kuvvet</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Siz kapatana kadar bu cihaza sürekli bir kuvvet uygular. Oyunun herhangi bir kaynaktan yönettiği kuvvet, etkin olduğu sürece bunu geçersiz kılar. Oyun durduğunda sabit kuvvet kaldığı yerden devam eder.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Sabit kuvvet uygula</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Yönü ve gücü ayarlamak için ızgaranın içinde sürükleyin.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>Sabit kuvveti sıfırla</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Sabit kuvvet X değerini sıfırla</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Sabit kuvvet Y değerini sıfırla</value></data>
 
@@ -3939,7 +3932,6 @@
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makrolar ve Menüler</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shaker'lar</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Bu sanal kontrolcünün aldığı oyun titreşimini ve kuvvet geri bildirimini, bass shaker'lar ve subwoofer'lar için düşük frekanslı tonlar olarak bir ses çıkışına yönlendirir.</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Titreşimden sese</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Çıkış cihazı, kanallar, kazanç, her motor için bir ton</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox, DualShock 3, DualShock 4 / DualSense ve Nintendo Switch Pro sanal kontrolcüleriyle, yarış direksiyonları gibi kuvvet geri bildirimli Genişletilmiş sanal kontrolcülerle ve Steam Deck Controller (Composite) ile çalışır. Oyun geri bildirimi ve Titreşimi test et, ses çıkışından çalınır. Makro titreşimi kontrolcüde kalır.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Titreşimden sese ayarını sıfırla</value></data>
@@ -4386,8 +4378,6 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Tablet_InRange" xml:space="preserve"><value>Kalem menzilde</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>FreeTrack paylaşılan bellek verisi bekleniyor.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>FreeTrack paylaşılan belleği kullanılamıyor.</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Direksiyon açısı titreşimi</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Çubuk ekseni merkezden uzaklaştıkça artan titreşim</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Seçili sanal çubuk ekseni merkezden uzaklaştıkça sürekli titreşim ekler. Atanmış tüm kaynakların eşlenmiş çıkışını kullanır. Yöne göre ayır seçiliyken negatif hareket sol motoru, pozitif hareket sağ motoru sürer. Sol motor veya Sağ motor seçilirse her iki yön de yalnızca o motora verilir. Titreşimli cihazlarla Xbox ve PlayStation çıkışı içindir. Direksiyonları, sabit kuvvet geri bildirimi olan diğer cihazları ve Fanatec pedallarını atlar.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Direksiyon açısı titreşimini etkinleştir</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Sanal eksen</value></data>
@@ -4402,7 +4392,6 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Sol çubuk X değerine sıfırla</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Gücü sıfırla (%50)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Merkez ölü bölgesini sıfırla (%2)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>Direksiyon açısı titreşimini sıfırla</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Direksiyon açısı titreşimini etkinleştir ayarını sıfırla</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Profil</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>Giriş yüzeyleri</value></data>

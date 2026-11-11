@@ -936,8 +936,6 @@
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>समग्र गेन रिसेट गर्नुहोस्</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>बायाँ ट्रिगर रिसेट गर्नुहोस्</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>दायाँ ट्रिगर रिसेट गर्नुहोस्</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>स्थिर ट्रिगर बल</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>प्रत्येक ट्रिगर मोटरमा निरन्तर बल</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>ट्रिगर राउटिङ</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>मुख्य मोटरहरूको कम्पन ट्रिगरहरूमा पठाउँछ</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>मुख्य कम्पन मोटरहरूलाई एक पटकमा एउटा ट्रिगर गरी ट्रिगर च्यानलमा पठाउनुहोस्। XInput कम्पन र फोर्स फिडब्याक दुवैसँग काम गर्छ। एक्टिभेटरले यसलाई नियन्त्रण गर्न सक्छ, ताकि तपाईंले बटन थिचिराखेको बेला मात्र ट्रिगर कम्पन होस्।</value></data>
@@ -967,7 +965,6 @@
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>स्थिर ट्रिगर बल लागू गर्नुहोस्</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>बायाँ ट्रिगर</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>दायाँ ट्रिगर</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>स्थिर ट्रिगर बल रिसेट गर्नुहोस्</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>बायाँ ट्रिगर रिसेट गर्नुहोस्</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>दायाँ ट्रिगर रिसेट गर्नुहोस्</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>अडियो बास ट्रिगर कम्पन</value></data>
@@ -2511,7 +2508,6 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>ट्रिगर अक्ष</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>फोर्स फिडब्याक / कम्पन / ह्याप्टिक्स</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>प्रत्येक मोटरको गेन, ट्रिगर कम्पन, मोटर साटासाट</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>समग्र गेन</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>बायाँ मोटर</value></data>
@@ -2523,14 +2519,11 @@
   <data name="Pad_MotorActivity" xml:space="preserve"><value>मोटर गतिविधि</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>स्थिर बल</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>तपाईंले बन्द नगरेसम्म निरन्तर बल</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>तपाईंले टगल बन्द नगरेसम्म यो यन्त्रमा निरन्तर बल लगाउनुहोस्। कुनै पनि स्रोतबाट खेलले चलाएको बल सक्रिय रहँदा यसलाई अधिलेखन गर्छ, र खेलले रोकेपछि यो फेरि सुरु हुन्छ।</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>स्थिर बल लगाउनुहोस्</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>दिशा र शक्ति सेट गर्न ग्रिडभित्र तान्नुहोस्।</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>स्थिर बल रिसेट गर्नुहोस्</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>स्थिर बल X रिसेट गर्नुहोस्</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>स्थिर बल Y रिसेट गर्नुहोस्</value></data>
 
@@ -3939,7 +3932,6 @@
   <data name="Pad_Section_Macros" xml:space="preserve"><value>म्याक्रो र मेनु</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>बेस शेकरहरू</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>यो भर्चुअल कन्ट्रोलरले प्राप्त गर्ने खेलको कम्पन र फोर्स फिडब्याकलाई बेस शेकर र सबवुफरका लागि कम-आवृत्तिका टोनका रूपमा अडियो आउटपुटमा पठाउँछ।</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>कम्पनबाट अडियो</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>आउटपुट यन्त्र, च्यानल, गेन, प्रत्येक मोटरको टोन</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox, DualShock 3, DualShock 4 / DualSense, र Nintendo Switch Pro भर्चुअल कन्ट्रोलरहरूसँग काम गर्छ, साथै रेसिङ ह्विलजस्ता फोर्स फिडब्याक भएका Extended भर्चुअल कन्ट्रोलरहरू र Steam Deck Controller (Composite) सँग पनि। खेलको फिडब्याक र कम्पन परीक्षण अडियो आउटपुटमार्फत बज्छन्। म्याक्रो कम्पन कन्ट्रोलरमै रहन्छ।</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>कम्पनबाट अडियो रिसेट गर्नुहोस्</value></data>
@@ -4386,8 +4378,6 @@ PadForge ले तिनलाई अहिले अनइन्स्टल �
   <data name="Tablet_InRange" xml:space="preserve"><value>पेन दायराभित्र</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>FreeTrack साझा मेमोरी डाटाको प्रतीक्षा गर्दै।</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>FreeTrack साझा मेमोरी उपलब्ध छैन।</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>स्टेयरिङ कोण कम्पन</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>स्टिक अक्ष केन्द्रबाट टाढा सर्दा बढ्ने कम्पन</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>चयन गरिएको भर्चुअल स्टिक अक्ष केन्द्रबाट टाढा सर्दा निरन्तर कम्पन थप्छ। सबै असाइन गरिएका स्रोतहरूको म्याप गरिएको आउटपुट प्रयोग गर्छ। "दिशाअनुसार विभाजन" छानिएको बेला ऋणात्मक चालले बायाँ मोटर चलाउँछ र धनात्मक चालले दायाँ। "बायाँ मोटर" वा "दायाँ मोटर" ले दुवै दिशालाई त्यही एउटै मोटरमा राख्छ। कम्पन यन्त्रहरूसहितको Xbox र PlayStation आउटपुटका लागि। ह्विलहरू, स्थिर फोर्स फिडब्याक भएका अन्य यन्त्रहरू र Fanatec पेडलहरू यसमा समावेश छैनन्।</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>स्टेयरिङ कोण कम्पन सक्षम गर्नुहोस्</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>भर्चुअल अक्ष</value></data>
@@ -4402,7 +4392,6 @@ PadForge ले तिनलाई अहिले अनइन्स्टल �
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>बायाँ स्टिक X मा रिसेट गर्नुहोस्</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>शक्ति रिसेट गर्नुहोस् (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>केन्द्र डेडजोन रिसेट गर्नुहोस् (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>स्टेयरिङ कोण कम्पन रिसेट गर्नुहोस्</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>स्टेयरिङ कोण कम्पन सक्षमता रिसेट गर्नुहोस्</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>प्रोफाइल</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>इनपुट सतहहरू</value></data>

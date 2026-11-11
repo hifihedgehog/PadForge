@@ -951,11 +951,8 @@
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Kukui a me ka leo</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Nā macro a me nā papa kuhikuhi</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>He hōʻailona ke piha ka wili ʻana o ka stick ma ke ʻano huila</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Haʻalulu e piʻi ana ke haʻalele ke axis stick i ke kikowaena</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>He ikaika paʻa a hiki i kou hoʻopio ʻana</value></data>
   <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Haʻalulu mai ka bass o ke kani ʻōnaehana</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Hoʻouna i ka haʻalulu o nā mīkini nui i nā trigger</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>He ikaika paʻa ma kēlā me kēia mīkini trigger</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Haʻalulu trigger mai ka bass o ke kani ʻōnaehana</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Deadzone hiō, Kūlana o ka mea hoʻokele</value></data>
   <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Pihi hoʻāla kuhi, ʻAno hoʻāla, Paepae kuhi maʻalahi</value></data>

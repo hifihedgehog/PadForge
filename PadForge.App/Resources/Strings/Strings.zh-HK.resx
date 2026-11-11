@@ -936,8 +936,6 @@
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>重設整體增益</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>重設左扳機</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>重設右扳機</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>恆定扳機力</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>對每個扳機馬達持續施力</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>扳機路由</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>把主馬達的震動轉送到扳機</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>把主震動馬達的訊號轉送到扳機通道，每個扳機分開設定。適用於 XInput 震動和力回饋。可用啟動器加以限制，讓扳機只在你按住按鈕時才震動。</value></data>
@@ -967,7 +965,6 @@
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>套用恆定扳機力</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>左扳機</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>右扳機</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>重設恆定扳機力</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>重設左扳機</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>重設右扳機</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>音訊低音扳機震動</value></data>
@@ -2511,7 +2508,6 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>扳機軸</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>力回饋 / 震動 / 觸覺回饋</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>各馬達增益、扳機震動、對調馬達</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>整體增益</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>左馬達</value></data>
@@ -2523,14 +2519,11 @@
   <data name="Pad_MotorActivity" xml:space="preserve"><value>馬達活動</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>恆定力</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>持續施力，直至你關閉</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>持續向此裝置施力，直至你關閉為止。任何來源由遊戲驅動的力在作用期間會優先，遊戲停止後便恢復恆定力。</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>套用恆定力</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>在格線內拖曳以設定方向和強度。</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>重設恆定力</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>重設恆定力 X</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>重設恆定力 Y</value></data>
 
@@ -3939,7 +3932,6 @@
   <data name="Pad_Section_Macros" xml:space="preserve"><value>巨集與選單</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>低音震動器</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>把此虛擬控制器收到的遊戲震動和力回饋，以低頻音調的形式轉送到音訊輸出，供低音震動器和超低音喇叭使用。</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>震動轉音訊</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>輸出裝置、聲道、增益、各馬達的音調</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>適用於 Xbox、DualShock 3、DualShock 4 / DualSense 和 Nintendo Switch Pro 虛擬控制器，以及具備力回饋的擴充虛擬控制器（例如賽車方向盤）和 Steam Deck Controller (Composite)。遊戲回饋和「測試震動」會經音訊輸出播放。巨集震動則留在控制器上。</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>重設震動轉音訊</value></data>
@@ -4386,8 +4378,6 @@
   <data name="Tablet_InRange" xml:space="preserve"><value>筆在感應範圍內</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>正在等待 FreeTrack 共用記憶體數據。</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>FreeTrack 共用記憶體無法使用。</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>轉向角度震動</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>搖桿軸離開中心時漸強的震動</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>所選的虛擬搖桿軸離開中心時，加入持續震動。使用來自所有已指派來源的對應後輸出。選用「按方向分開」時，負向移動驅動左馬達，正向移動驅動右馬達。選用「左馬達」或「右馬達」時，兩個方向都使用該馬達。適用於配合震動裝置的 Xbox 和 PlayStation 輸出。會略過方向盤、其他具持續力回饋的裝置，以及 Fanatec 踏板。</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>啟用轉向角度震動</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>虛擬軸</value></data>
@@ -4402,7 +4392,6 @@
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>重設為左搖桿 X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>重設強度（50%）</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>重設中央死區（2%）</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>重設轉向角度震動</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>重設啟用轉向角度震動</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>設定檔</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>輸入表面</value></data>

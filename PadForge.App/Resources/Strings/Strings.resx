@@ -936,8 +936,6 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>Reset Overall Gain</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Reset Left Trigger</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Reset Right Trigger</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Constant Trigger Force</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>A steady force on each trigger motor</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Trigger Routing</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Sends the main motors' rumble to the triggers</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Route the main rumble motors into the trigger channel, one trigger at a time. Works with XInput rumble and force feedback. An activator can gate it so the trigger only buzzes while you hold a button.</value></data>
@@ -967,7 +965,6 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Apply Constant Trigger Force</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Left Trigger</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>Right Trigger</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>Reset Constant Trigger Force</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Reset Left Trigger</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Reset Right Trigger</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Audio Bass Trigger Rumble</value></data>
@@ -2525,7 +2522,6 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Trigger Axis</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Force Feedback / Rumble / Haptics</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Per-motor gain, trigger rumble, motor swap</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Overall Gain</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Left Motor</value></data>
@@ -2537,14 +2533,11 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Motor Activity</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Constant Force</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>A steady force until you turn it off</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Apply a continuous force to this device until you toggle off. Game-driven force from any source overrides while it's active and resumes when the game stops.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Apply Constant Force</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Drag inside the grid to set direction and strength.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>Reset Constant Force</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Reset Constant Force X</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Reset Constant Force Y</value></data>
 
@@ -3960,7 +3953,6 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Macros &amp; Menus</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass Shakers</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Routes the game rumble and force feedback this virtual controller receives to an audio output as low-frequency tones for bass shakers and subwoofers.</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Rumble to Audio</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Output device, channels, gain, a tone for each motor</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Works with Xbox, DualShock 3, DualShock 4 / DualSense, and Nintendo Switch Pro virtual controllers, plus Extended virtual controllers with force feedback, such as racing wheels, and the Steam Deck Controller (Composite). Game feedback and Test Rumble play through the audio output. Macro rumble stays on the controller.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Reset Rumble to Audio</value></data>
@@ -4433,8 +4425,6 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="Tablet_InRange" xml:space="preserve"><value>Pen In Range</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Waiting for FreeTrack shared memory data.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>FreeTrack shared memory is unavailable.</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Steering Angle Rumble</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Rumble that grows as a stick axis leaves center</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Adds continuous rumble as the selected virtual stick axis moves away from center. Uses the mapped output from all assigned sources. With Split by Direction, negative movement drives the left motor and positive movement the right. Left Motor or Right Motor puts both directions on that one motor. For Xbox and PlayStation output with rumble devices. It skips wheels, other devices with constant force feedback, and Fanatec pedals.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Enable Steering Angle Rumble</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Virtual Axis</value></data>
@@ -4449,7 +4439,6 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Reset to Left Stick X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Reset Strength (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Reset Center Deadzone (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>Reset Steering Angle Rumble</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Reset Enable Steering Angle Rumble</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Profile</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>Input Surfaces</value></data>

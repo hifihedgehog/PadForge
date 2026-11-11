@@ -879,8 +879,6 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>Nustatyti bendrą stiprinimą iš naujo</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Nustatyti kairįjį gaiduką iš naujo</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Nustatyti dešinįjį gaiduką iš naujo</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Pastovi gaidukų jėga</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Pastovi jėga kiekvienam gaiduko varikliui</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Gaidukų nukreipimas</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Pagrindinių variklių vibracija siunčiama į gaidukus</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Nukreipkite pagrindinius vibracijos variklius į gaidukų kanalą, po vieną gaiduką. Veikia su XInput vibracija ir jėgos grįžtamuoju ryšiu. Aktyviklis gali tai riboti, kad gaidukas vibruotų tik laikant mygtuką.</value></data>
@@ -910,7 +908,6 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Taikyti pastovią gaidukų jėgą</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Kairysis gaidukas</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>Dešinysis gaidukas</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>Nustatyti pastovią gaidukų jėgą iš naujo</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Nustatyti kairįjį gaiduką iš naujo</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Nustatyti dešinįjį gaiduką iš naujo</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Gaidukų vibracija pagal žemuosius dažnius</value></data>
@@ -2345,7 +2342,6 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Gaiduko ašis</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Jėgos grįžtamasis ryšys / vibracija / haptika</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Kiekvieno variklio stiprinimas, gaidukų vibracija, variklių sukeitimas</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Bendras stiprinimas</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Kairysis variklis</value></data>
@@ -2357,14 +2353,11 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Variklių veikla</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Pastovi jėga</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Pastovi jėga, kol išjungsite</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Šiam įrenginiui taikoma nuolatinė jėga, kol ją išjungsite. Žaidimo valdoma jėga iš bet kurio šaltinio ją pakeičia, kol yra aktyvi, o žaidimui sustojus nuolatinė jėga vėl taikoma.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Taikyti pastovią jėgą</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Vilkite tinklelio viduje, kad nustatytumėte kryptį ir stiprumą.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>Nustatyti pastovią jėgą iš naujo</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Nustatyti pastovią jėgą X iš naujo</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Nustatyti pastovią jėgą Y iš naujo</value></data>
 
@@ -3741,7 +3734,6 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makrokomandos ir meniu</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Žemųjų dažnių vibratoriai</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Nukreipia šio virtualaus valdiklio gaunamą žaidimo vibraciją ir jėgos grįžtamąjį ryšį į garso išvestį kaip žemo dažnio tonus žemųjų dažnių vibratoriams ir žemadažniams garsiakalbiams.</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibracija į garsą</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Išvesties įrenginys, kanalai, stiprinimas, kiekvieno variklio tonas</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Veikia su „Xbox“, „DualShock 3“, „DualShock 4“ / „DualSense“ ir „Nintendo Switch Pro“ virtualiais valdikliais, taip pat su išplėstiniais virtualiais valdikliais su jėgos grįžtamuoju ryšiu, pavyzdžiui, lenktynių vairais, ir „Steam Deck Controller (Composite)“. Žaidimo grįžtamasis ryšys ir „Išbandyti vibraciją“ leidžiami per garso išvestį. Makrokomandų vibracija lieka valdiklyje.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Nustatyti „Vibracija į garsą“ iš naujo</value></data>
@@ -4180,8 +4172,6 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="Tablet_InRange" xml:space="preserve"><value>Rašiklis veikimo zonoje</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Laukiama FreeTrack bendrosios atminties duomenų.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>FreeTrack bendroji atmintis nepasiekiama.</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Vibracija pagal vairo kampą</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Vibracija stiprėja svirtelės ašiai tolstant nuo centro</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Prideda nuolatinę vibraciją, kai pasirinkta virtualios svirtelės ašis tolsta nuo centro. Naudoja visų priskirtų šaltinių priskirtą išvestį. Pasirinkus „Padalyti pagal kryptį“, neigiamas judesys valdo kairįjį variklį, teigiamas – dešinįjį. Pasirinkus „Kairysis variklis“ arba „Dešinysis variklis“, abi kryptys vibruoja per tą vieną variklį. Skirta „Xbox“ ir „PlayStation“ išvesčiai su vibruojančiais įrenginiais. Praleidžia vairus, kitus įrenginius su pastoviu jėgos grįžtamuoju ryšiu ir Fanatec pedalus.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Įjungti vibraciją pagal vairo kampą</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Virtuali ašis</value></data>
@@ -4196,7 +4186,6 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Atkurti „Kairioji svirtelė X“</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Nustatyti stiprumą iš naujo (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Nustatyti centro nejautros zoną iš naujo (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>Nustatyti vibraciją pagal vairo kampą iš naujo</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Nustatyti „Įjungti vibraciją pagal vairo kampą“ iš naujo</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Profilis</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>Įvesties paviršiai</value></data>

@@ -879,8 +879,6 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>Restableix el guany general</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Restableix el gallet esquerre</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Restableix el gallet dret</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Força constant als gallets</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Una força constant a cada motor dels gallets</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Encaminament als gallets</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Envia la vibració dels motors principals als gallets</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Encamina els motors de vibració principals cap al canal dels gallets, un gallet cada vegada. Funciona amb la vibració XInput i la retroacció de força. Un activador pot condicionar-lo perquè el gallet només vibri mentre mantens premut un botó.</value></data>
@@ -910,7 +908,6 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Aplica una força constant als gallets</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Gallet esquerre</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>Gallet dret</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>Restableix la força constant als gallets</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Restableix el gallet esquerre</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Restableix el gallet dret</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Vibració dels gallets amb els greus de l'àudio</value></data>
@@ -2345,7 +2342,6 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Eix del gallet</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Retroacció de força / vibració / hàptica</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Guany per motor, vibració dels gallets, intercanvi de motors</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Guany general</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Motor esquerre</value></data>
@@ -2357,14 +2353,11 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Activitat dels motors</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Força constant</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Una força constant fins que la desactives</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Aplica una força contínua a aquest dispositiu fins que la desactivis. La força que genera el joc, sigui quina sigui la font, té prioritat mentre està activa, i la força constant es reprèn quan el joc s'atura.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Aplica una força constant</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Arrossega dins de la graella per definir la direcció i la força.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>Restableix la força constant</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Restableix la força constant X</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Restableix la força constant Y</value></data>
 
@@ -3746,7 +3739,6 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Macros i menús</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shakers</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Envia la vibració i la retroacció de força del joc que rep aquest comandament virtual a una sortida d'àudio com a tons de baixa freqüència per a bass shakers i subwoofers.</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibració a àudio</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Dispositiu de sortida, canals, guany, un to per a cada motor</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Funciona amb els comandaments virtuals Xbox, DualShock 3, DualShock 4 / DualSense i Nintendo Switch Pro, a més dels comandaments virtuals ampliats amb retroacció de força, com els volants de curses, i el Steam Deck Controller (Composite). La resposta del joc i Prova la vibració es reprodueixen per la sortida d'àudio. La vibració de les macros es manté al comandament.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Restableix la vibració a àudio</value></data>
@@ -4185,8 +4177,6 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="Tablet_InRange" xml:space="preserve"><value>Llapis a l'abast</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>S'estan esperant dades de la memòria compartida de FreeTrack.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>La memòria compartida de FreeTrack no està disponible.</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Vibració segons l'angle de direcció</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Vibració que creix quan un eix de la palanca s'allunya del centre</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Afegeix una vibració contínua a mesura que l'eix de palanca virtual seleccionat s'allunya del centre. Fa servir la sortida assignada de totes les fonts assignades. Amb Dividit per direcció, el moviment negatiu acciona el motor esquerre i el positiu, el dret. Motor esquerre o Motor dret posa les dues direccions en aquell únic motor. Per a sortides Xbox i PlayStation amb dispositius de vibració. Omet els volants, altres dispositius amb retroacció de força constant i els pedals de Fanatec.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Activa la vibració segons l'angle de direcció</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Eix virtual</value></data>
@@ -4201,7 +4191,6 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Restableix a Palanca esquerra X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Restableix la força (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Restableix la zona morta central (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>Restableix la vibració segons l'angle de direcció</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Restableix Activa la vibració segons l'angle de direcció</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Perfil</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>Superfícies d'entrada</value></data>

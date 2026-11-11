@@ -375,7 +375,11 @@ namespace PadForge.Tests
                         (string)content.Attribute("AutomationProperties.Name"));
                     var column = Assert.Single(content.Elements());
                     Assert.Equal("StackPanel", column.Name.LocalName);
-                    Assert.All(column.Elements(), g => Assert.Equal("StackPanel", g.Name.LocalName));
+                    // A group is a panel under its heading. In Rumble &
+                    // Haptics, whose board draws no heading over the cards,
+                    // it is a group box that carries the group's name.
+                    string groupKind = section == PadViewModel.RumbleSection ? "GroupBox" : "StackPanel";
+                    Assert.All(column.Elements(), g => Assert.Equal(groupKind, g.Name.LocalName));
                     Assert.Equal(expected, column.Elements().Select(Name));
                 }
                 else
@@ -451,7 +455,9 @@ namespace PadForge.Tests
         /// the page, once. A part of Buttons or of Macros and Menus keeps
         /// its button. A tab that became a group gives its id to the
         /// group's heading, where a tool that looked for the tab finds the
-        /// group.</summary>
+        /// group. A group of Rumble and Haptics has no heading, as its
+        /// board has none, so the group is a group box that carries the id
+        /// and the tab's name itself, and its cards are all it holds.</summary>
         [Fact]
         public void EveryTabKeepsItsId()
         {
@@ -460,7 +466,24 @@ namespace PadForge.Tests
             {
                 var carrier = Assert.Single(page.Descendants(), e => Id(e) == id);
                 var named = Named(page, name);
-                if (PadViewModel.IsStackedSection(PadViewModel.SectionOfTab(tab)))
+                if (PadViewModel.SectionOfTab(tab) == PadViewModel.RumbleSection)
+                {
+                    Assert.Same(named, carrier);
+                    Assert.Equal("GroupBox", carrier.Name.LocalName);
+                    Assert.Equal("{StaticResource BareGroupBox}", (string)carrier.Attribute("Style"));
+                    Assert.Matches(@"^\{Binding Pad_\w+, Source=\{x:Static strings:Strings\.Instance\}\}$",
+                        (string)carrier.Attribute("AutomationProperties.Name"));
+                    // No heading and no paragraph over the cards: the one
+                    // text a group may hold outside a card is a status line
+                    // that code or a binding fills.
+                    var panel = Assert.Single(carrier.Elements());
+                    Assert.Equal("StackPanel", panel.Name.LocalName);
+                    Assert.All(panel.Elements().Where(e => e.Name.LocalName == "TextBlock"), line =>
+                        Assert.True(Name(line) != null || ((string)line.Attribute("Text") ?? "").StartsWith("{Binding GameMod", StringComparison.Ordinal),
+                            name + " holds a text outside its cards: " + (string)line.Attribute("Text")));
+                    Assert.DoesNotContain(panel.Elements(), e => ((string)e.Attribute("Style") ?? "").Contains("TitleTextBlockStyle"));
+                }
+                else if (PadViewModel.IsStackedSection(PadViewModel.SectionOfTab(tab)))
                 {
                     Assert.Equal("StackPanel", named.Name.LocalName);
                     Assert.Equal("TextBlock", carrier.Name.LocalName);

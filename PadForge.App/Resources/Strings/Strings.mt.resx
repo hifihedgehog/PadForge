@@ -880,8 +880,6 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>Irrisettja l-intensità ġenerali</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Irrisettja t-trigger tax-xellug</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Irrisettja t-trigger tal-lemin</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Forza kostanti fit-triggers</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Forza kostanti fuq kull mutur tat-trigger</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Rotta tat-triggers</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Ibgħat ir-rumble tal-muturi ewlenin lit-triggers</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Ibgħat il-muturi ewlenin tar-rumble fil-kanal tat-trigger, trigger wieħed kull darba. Jaħdem mar-rumble XInput u mal-force feedback. Attivatur jista' jikkontrollah biex it-trigger jivvibra biss waqt li żżomm buttuna.</value></data>
@@ -911,7 +909,6 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Applika forza kostanti fit-triggers</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Trigger tax-xellug</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>Trigger tal-lemin</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>Irrisettja l-forza kostanti fit-triggers</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Irrisettja t-trigger tax-xellug</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Irrisettja t-trigger tal-lemin</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Rumble tat-triggers mill-bass tal-awdjo</value></data>
@@ -2322,7 +2319,6 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Assi tat-trigger</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Force feedback / rumble / haptics</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Gain għal kull mutur, rumble tat-triggers, tibdil tal-muturi</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Qawwa ġenerali</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Mutur tax-xellug</value></data>
@@ -2334,14 +2330,11 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Attività tal-muturi</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Forza kostanti</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Forza kostanti sakemm titfiha</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Applika forza kontinwa fuq dan l-apparat sakemm titfiha. Il-forza mil-logħba, minn kwalunkwe sors, tieħu postha waqt li tkun attiva, u din terġa' tibda meta l-logħba tieqaf.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Applika forza kostanti</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Kaxkar ġewwa l-grilja biex tagħżel id-direzzjoni u l-qawwa.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>Irrisettja l-forza kostanti</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Irrisettja l-forza kostanti X</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Irrisettja l-forza kostanti Y</value></data>
 
@@ -3683,7 +3676,6 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makros u Menus</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shakers</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Jibgħat ir-rumble u l-force feedback tal-logħba li jirċievi dan il-kontrollur virtwali lejn output tal-awdjo bħala toni ta' frekwenza baxxa għal bass shakers u subwoofers.</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Rumble għall-awdjo</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Apparat tal-output, kanali, gain, ton għal kull mutur</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Jaħdem mal-kontrolluri virtwali Xbox, DualShock 3, DualShock 4 / DualSense u Nintendo Switch Pro, kif ukoll mal-kontrolluri virtwali Extended b'force feedback, bħal roti tas-sewqan, u mas-Steam Deck Controller (Composite). Il-feedback tal-logħba u Test Rumble jindaqqu permezz tal-output tal-awdjo. Ir-rumble tal-makros jibqa' fuq il-kontrollur.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Irrisettja Rumble għall-awdjo</value></data>
@@ -4116,8 +4108,6 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="Tablet_InRange" xml:space="preserve"><value>Pinna fil-firxa</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Qed jistenna d-data tal-memorja kondiviża ta' FreeTrack.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>Il-memorja kondiviża ta' FreeTrack mhix disponibbli.</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Rumble tal-angolu tat-tmun</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Rumble li jikber hekk kif assi tal-istick jitbiegħed miċ-ċentru</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Iżid rumble kontinwu hekk kif l-assi virtwali magħżul tal-istick jitbiegħed miċ-ċentru. Juża l-output immappjat mis-sorsi assenjati kollha. Bl-għażla “Maqsum skont id-direzzjoni”, il-moviment negattiv iħaddem il-mutur tax-xellug u l-moviment pożittiv dak tal-lemin. “Mutur tax-xellug” jew “Mutur tal-lemin” ipoġġi ż-żewġ direzzjonijiet fuq dak il-mutur waħdu. Għall-output Xbox u PlayStation b'apparati tar-rumble. Jaqbeż ir-roti tas-sewqan, apparati oħra b'force feedback kostanti, u l-pedali Fanatec.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Ixgħel ir-rumble tal-angolu tat-tmun</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Assi virtwali</value></data>
@@ -4132,7 +4122,6 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Irrisettja għal Stick tax-xellug X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Irrisettja s-saħħa (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Irrisettja ż-żona mejta taċ-ċentru (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>Irrisettja r-rumble tal-angolu tat-tmun</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Irrisettja “Ixgħel ir-rumble tal-angolu tat-tmun”</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Profil</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>Uċuħ tal-input</value></data>

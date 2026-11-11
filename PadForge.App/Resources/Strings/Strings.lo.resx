@@ -880,8 +880,6 @@
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>ຄືນຄ່າອັດຕາຂະຫຍາຍລວມ</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>ຄືນຄ່າທຣິກເກີຊ້າຍ</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>ຄືນຄ່າທຣິກເກີຂວາ</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>ແຮງທຣິກເກີຄົງທີ່</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>ແຮງຄົງທີ່ໃນແຕ່ລະມໍເຕີທຣິກເກີ</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>ການກຳນົດເສັ້ນທາງທຣິກເກີ</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>ສົ່ງການສັ່ນຂອງມໍເຕີຫຼັກໄປຫາທຣິກເກີ</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>ສົ່ງມໍເຕີສັ່ນຫຼັກເຂົ້າຊ່ອງສັນຍານທຣິກເກີ ເທື່ອລະທຣິກເກີ. ໃຊ້ໄດ້ກັບການສັ່ນ XInput ແລະ ແຮງສະທ້ອນກັບ. ຕົວເປີດໃຊ້ສາມາດຄວບຄຸມມັນໄດ້ ເພື່ອໃຫ້ທຣິກເກີສັ່ນສະເພາະຕອນທີ່ທ່ານກົດຄ້າງປຸ່ມ.</value></data>
@@ -911,7 +909,6 @@
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>ໃຊ້ແຮງທຣິກເກີຄົງທີ່</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>ທຣິກເກີຊ້າຍ</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>ທຣິກເກີຂວາ</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>ຄືນຄ່າແຮງທຣິກເກີຄົງທີ່</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>ຄືນຄ່າທຣິກເກີຊ້າຍ</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>ຄືນຄ່າທຣິກເກີຂວາ</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>ການສັ່ນທຣິກເກີຕາມສຽງເບສ</value></data>
@@ -2340,7 +2337,6 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>ແກນທຣິກເກີ</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>ແຮງສະທ້ອນກັບ / ການສັ່ນ / ແຮັບຕິກ</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>ຄວາມແຮງແຕ່ລະມໍເຕີ, ການສັ່ນຂອງທຣິກເກີ, ສັບປ່ຽນມໍເຕີ</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>ອັດຕາຂະຫຍາຍລວມ</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>ມໍເຕີຊ້າຍ</value></data>
@@ -2352,14 +2348,11 @@
   <data name="Pad_MotorActivity" xml:space="preserve"><value>ການເຮັດວຽກຂອງມໍເຕີ</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>ແຮງຄົງທີ່</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>ແຮງຄົງທີ່ຈົນກວ່າທ່ານຈະປິດ</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>ໃຊ້ແຮງຕໍ່ເນື່ອງກັບອຸປະກອນນີ້ຈົນກວ່າທ່ານຈະປິດ. ແຮງທີ່ເກມສົ່ງມາຈາກແຫຼ່ງໃດກໍຕາມຈະມີຜົນເໜືອກວ່າໃນຂະນະທີ່ມັນເຮັດວຽກ ແລະ ແຮງນີ້ຈະກັບມາເມື່ອເກມຢຸດ.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>ໃຊ້ແຮງຄົງທີ່</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>ລາກພາຍໃນຕາຕະລາງເພື່ອກຳນົດທິດທາງ ແລະ ຄວາມແຮງ.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>ຄືນຄ່າແຮງຄົງທີ່</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>ຄືນຄ່າແຮງຄົງທີ່ X</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>ຄືນຄ່າແຮງຄົງທີ່ Y</value></data>
 
@@ -3727,7 +3720,6 @@
   <data name="Pad_Section_Macros" xml:space="preserve"><value>ມາໂຄຣ ແລະ ເມນູ</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>ເບສເຊກເກີ</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>ສົ່ງການສັ່ນ ແລະ ແຮງສະທ້ອນກັບຂອງເກມທີ່ຕົວຄວບຄຸມສະເໝືອນນີ້ໄດ້ຮັບ ໄປຫາເອົາພຸດສຽງເປັນສຽງໂທນຄວາມຖີ່ຕ່ຳ ສຳລັບເບສເຊກເກີ ແລະ ຊັບວູຟເຟີ.</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>ການສັ່ນເປັນສຽງ</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>ອຸປະກອນເອົາພຸດ, ຊ່ອງສຽງ, ອັດຕາຂະຫຍາຍ, ໂທນສຽງຂອງແຕ່ລະມໍເຕີ</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>ໃຊ້ໄດ້ກັບຕົວຄວບຄຸມສະເໝືອນ Xbox, DualShock 3, DualShock 4 / DualSense ແລະ Nintendo Switch Pro, ພ້ອມທັງຕົວຄວບຄຸມສະເໝືອນ Extended ທີ່ມີແຮງສະທ້ອນກັບ ເຊັ່ນ ພວງມາໄລແຂ່ງລົດ, ແລະ Steam Deck Controller (Composite). ການຕອບສະໜອງຂອງເກມ ແລະ ທົດສອບການສັ່ນ ຈະຫຼິ້ນຜ່ານເອົາພຸດສຽງ. ການສັ່ນຈາກມາໂຄຣຍັງຢູ່ໃນຕົວຄວບຄຸມ.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>ຄືນຄ່າການສັ່ນເປັນສຽງ</value></data>
@@ -4166,8 +4158,6 @@
   <data name="Tablet_InRange" xml:space="preserve"><value>ປາກກາຢູ່ໃນໄລຍະ</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>ກຳລັງລໍຖ້າຂໍ້ມູນໜ່ວຍຄວາມຈຳຮ່ວມຂອງ FreeTrack</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>ໜ່ວຍຄວາມຈຳຮ່ວມຂອງ FreeTrack ບໍ່ພ້ອມໃຊ້ງານ</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>ການສັ່ນຕາມມຸມພວງມາໄລ</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>ການສັ່ນທີ່ແຮງຂຶ້ນເມື່ອແກນສະຕິກອອກຈາກຈຸດກາງ</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>ເພີ່ມການສັ່ນຕໍ່ເນື່ອງເມື່ອແກນສະຕິກສະເໝືອນທີ່ເລືອກເຄື່ອນອອກຈາກຈຸດກາງ ໃຊ້ຜົນອອກທີ່ແມັບແລ້ວຈາກທຸກແຫຼ່ງທີ່ກຳນົດໄວ້ ເມື່ອເລືອກ “ແຍກຕາມທິດທາງ” ການເຄື່ອນທີ່ທາງລົບຂັບມໍເຕີຊ້າຍ ທາງບວກຂັບມໍເຕີຂວາ “ມໍເຕີຊ້າຍ” ຫຼື “ມໍເຕີຂວາ” ຈະໃຫ້ທັງສອງທິດທາງໃຊ້ມໍເຕີນັ້ນພຽງໂຕດຽວ ສຳລັບຜົນອອກ Xbox ແລະ PlayStation ທີ່ມີອຸປະກອນສັ່ນ ບໍ່ນຳໃຊ້ກັບພວງມາໄລ ອຸປະກອນອື່ນທີ່ມີແຮງສະທ້ອນກັບແບບຄົງທີ່ ແລະ ແປ້ນຢຽບ Fanatec</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>ເປີດໃຊ້ການສັ່ນຕາມມຸມພວງມາໄລ</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>ແກນສະເໝືອນ</value></data>
@@ -4182,7 +4172,6 @@
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>ຄືນຄ່າເປັນສະຕິກຊ້າຍ X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>ຄືນຄ່າຄວາມແຮງ (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>ຄືນຄ່າເດດໂຊນຈຸດກາງ (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>ຄືນຄ່າການສັ່ນຕາມມຸມພວງມາໄລ</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>ຄືນຄ່າ “ເປີດໃຊ້ການສັ່ນຕາມມຸມພວງມາໄລ”</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>ໂປຣໄຟລ໌</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>ພື້ນຜິວອິນພຸດ</value></data>

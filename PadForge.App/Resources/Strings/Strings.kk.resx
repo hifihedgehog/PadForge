@@ -881,8 +881,6 @@
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>Жалпы күшейтуді қалпына келтіру</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Сол триггерді қалпына келтіру</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Оң триггерді қалпына келтіру</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Тұрақты триггер күші</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Әр триггер моторына тұрақты күш</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Триггерге бағыттау</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Негізгі моторлардың дірілін триггерлерге жібереді</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Негізгі діріл моторларын триггер арнасына бағыттаңыз, бір уақытта бір триггерге. XInput дірілімен және күштік кері байланыспен жұмыс істейді. Белсендіргіш оны шектей алады, сонда триггер тек түймені ұстап тұрғанда ғана дірілдейді.</value></data>
@@ -912,7 +910,6 @@
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Тұрақты триггер күшін қолдану</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Сол триггер</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>Оң триггер</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>Тұрақты триггер күшін қалпына келтіру</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Сол триггерді қалпына келтіру</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Оң триггерді қалпына келтіру</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Аудио басс бойынша триггер дірілі</value></data>
@@ -2347,7 +2344,6 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Триггер осі</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Күштік кері байланыс / діріл / хаптика</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Әр мотор үшін күшейту, триггер дірілі, моторларды алмастыру</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Жалпы күшейту</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Сол мотор</value></data>
@@ -2359,14 +2355,11 @@
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Мотор белсенділігі</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Тұрақты күш</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Өшіргенше тұрақты күш</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Өшіргенше осы құрылғыға үздіксіз күш беріңіз. Кез келген көзден келетін, ойын басқаратын күш белсенді кезде басымдыққа ие болады, ал ойын тоқтағанда бұл күш қайта жалғасады.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Тұрақты күшті қолдану</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Бағыт пен күшті орнату үшін тордың ішінде сүйреңіз.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>Тұрақты күшті қалпына келтіру</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Тұрақты күш X мәнін қалпына келтіру</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Тұрақты күш Y мәнін қалпына келтіру</value></data>
 
@@ -3743,7 +3736,6 @@
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Макростар және мәзірлер</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Бас шейкерлері</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Осы виртуалды контроллер алатын ойын дірілі мен күштік кері байланысты бас шейкерлері мен сабвуферлер үшін төмен жиілікті тондар ретінде дыбыс шығысына бағыттайды.</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Дірілді дыбысқа беру</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Шығыс құрылғысы, арна, күшейту, әр мотор үшін тон</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox, DualShock 3, DualShock 4 / DualSense және Nintendo Switch Pro виртуалды контроллерлерімен, сондай-ақ рөлдер сияқты күштік кері байланысы бар кеңейтілген виртуалды контроллерлермен және Steam Deck Controller (Composite) құрылғысымен жұмыс істейді. Ойын кері байланысы мен Дірілді сынау дыбыс шығысы арқылы ойнайды. Макростың дірілі контроллерде қалады.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Дірілді дыбысқа беруді қалпына келтіру</value></data>
@@ -4180,8 +4172,6 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="Tablet_InRange" xml:space="preserve"><value>Қалам ауқымда</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>FreeTrack ортақ жады деректері күтілуде.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>FreeTrack ортақ жадысы қолжетімсіз.</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Рөл бұрышы дірілі</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Стик осі центрден алыстаған сайын күшейетін діріл</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Таңдалған виртуалды стик осі центрден алыстаған сайын үздіксіз діріл қосады. Барлық тағайындалған көздердің тағайындалған шығысын қолданады. Бағыт бойынша бөлу режимінде теріс қозғалыс сол моторды, оң қозғалыс оң моторды басқарады. Сол мотор немесе Оң мотор таңдалса, екі бағыт та сол бір моторға беріледі. Діріл құрылғылары бар Xbox және PlayStation шығысы үшін. Рөлдерді, тұрақты күштік кері байланысы бар басқа құрылғыларды және Fanatec педальдарын өткізіп жібереді.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Рөл бұрышы дірілін қосу</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Виртуалды ось</value></data>
@@ -4196,7 +4186,6 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Сол жақ стик X күйіне қайтару</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Күшті қалпына келтіру (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Орталық өлі аймақты қалпына келтіру (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>Рөл бұрышы дірілін қалпына келтіру</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Рөл бұрышы дірілін қосуды қалпына келтіру</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Профиль</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>Кіріс беттері</value></data>

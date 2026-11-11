@@ -878,8 +878,6 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>Weka Upya Ongezeko la Jumla</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Weka Upya Kichochezi cha Kushoto</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Weka Upya Kichochezi cha Kulia</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Nguvu Endelevu ya Kichochezi</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Nguvu endelevu kwa kila motor ya kichochezi</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Uelekezaji wa Kichochezi</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Hupeleka mtetemo wa motor kuu kwa vichochezi</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Elekeza motor kuu za mtetemo kwenye chaneli ya kichochezi, kichochezi kimoja kwa wakati. Hufanya kazi na mtetemo wa XInput na force feedback. Kianzishi kinaweza kukidhibiti ili kichochezi kivume tu unaposhikilia kitufe.</value></data>
@@ -909,7 +907,6 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Tumia Nguvu Endelevu ya Kichochezi</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Kichochezi cha Kushoto</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>Kichochezi cha Kulia</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>Weka Upya Nguvu Endelevu ya Kichochezi</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Weka Upya Kichochezi cha Kushoto</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Weka Upya Kichochezi cha Kulia</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Mtetemo wa Kichochezi kwa Besi ya Sauti</value></data>
@@ -2328,7 +2325,6 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Mhimili wa Kichochezi</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Force feedback / Mtetemo / Haptics</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Gain ya kila motor, mtetemo wa kichochezi, kubadilishana motor</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Ukuzaji wa Jumla</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Motor ya Kushoto</value></data>
@@ -2340,14 +2336,11 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Shughuli ya Motor</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Nguvu ya Kudumu</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Nguvu ya kudumu hadi uizime</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Tumia nguvu endelevu kwenye kifaa hiki hadi uizime. Nguvu inayotoka kwenye mchezo kutoka chanzo chochote hubatilisha ikiwa hai na kurudi mchezo unaposimama.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Tumia Nguvu ya Kudumu</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Buruta ndani ya gridi kuweka mwelekeo na nguvu.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>Weka upya nguvu ya kudumu</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Weka upya nguvu ya kudumu X</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Weka upya nguvu ya kudumu Y</value></data>
 
@@ -3687,7 +3680,6 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makro na Menyu</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass Shakers</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Huelekeza mtetemo wa mchezo na force feedback ambayo kidhibiti pepe hiki hupokea kwenye towe la sauti kama toni za masafa ya chini kwa bass shakers na subwoofer.</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Mtetemo hadi Sauti</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Kifaa cha towe, chaneli, gain, toni kwa kila motor</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Hufanya kazi na vidhibiti pepe vya Xbox, DualShock 3, DualShock 4 / DualSense, na Nintendo Switch Pro, pamoja na vidhibiti pepe vya Extended vyenye force feedback, kama usukani wa mbio, na Steam Deck Controller (Composite). Maoni ya mchezo na Test Rumble hucheza kupitia towe la sauti. Mtetemo wa makro hubaki kwenye kidhibiti.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Weka Upya Mtetemo hadi Sauti</value></data>
@@ -4123,8 +4115,6 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="Tablet_InRange" xml:space="preserve"><value>Kalamu Iko Ndani ya Masafa</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Inasubiri data ya shared memory ya FreeTrack.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>Shared memory ya FreeTrack haipatikani.</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Mtetemo wa Pembe ya Usukani</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Mtetemo unaoongezeka mhimili wa kijiti unapoondoka kituoni</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Huongeza mtetemo endelevu mhimili pepe wa kijiti uliochaguliwa unavyosogea mbali na kituo. Hutumia matokeo yaliyoramaniwa kutoka vyanzo vyote vilivyoagizwa. Kwa Gawanya kwa Mwelekeo, mwendo hasi huendesha motor ya kushoto na mwendo chanya motor ya kulia. Motor ya Kushoto au Motor ya Kulia huweka pande zote mbili kwenye motor hiyo moja. Kwa matokeo ya Xbox na PlayStation yenye vifaa vya mtetemo. Haitumiki kwa usukani, vifaa vingine vyenye force feedback ya nguvu thabiti, na kanyagio za Fanatec.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Washa Mtetemo wa Pembe ya Usukani</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Mhimili Pepe</value></data>
@@ -4139,7 +4129,6 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Weka Upya kuwa Kijiti cha Kushoto X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Weka Upya Nguvu (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Weka Upya Deadzone ya Kituo (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>Weka Upya Mtetemo wa Pembe ya Usukani</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Weka Upya Washa Mtetemo wa Pembe ya Usukani</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Wasifu</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>Nyuso za Ingizo</value></data>

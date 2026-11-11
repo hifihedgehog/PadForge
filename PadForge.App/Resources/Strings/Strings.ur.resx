@@ -936,8 +936,6 @@
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>مجموعی گین ری سیٹ کریں</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>بایاں ٹرگر ری سیٹ کریں</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>دایاں ٹرگر ری سیٹ کریں</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>مستقل ٹرگر فورس</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>ہر ٹرگر موٹر پر مسلسل فورس</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>ٹرگر روٹنگ</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>مرکزی موٹروں کا رمبل ٹرگرز تک پہنچاتا ہے</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>مرکزی رمبل موٹروں کو ٹرگر چینل میں روٹ کریں، ایک وقت میں ایک ٹرگر۔ XInput رمبل اور فورس فیڈبیک کے ساتھ کام کرتا ہے۔ ایکٹیویٹر اسے مشروط کر سکتا ہے تاکہ ٹرگر صرف اسی وقت تھرتھرائے جب آپ کوئی بٹن دبائے رکھیں۔</value></data>
@@ -967,7 +965,6 @@
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>مستقل ٹرگر فورس لگائیں</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>بایاں ٹرگر</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>دایاں ٹرگر</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>مستقل ٹرگر فورس ری سیٹ کریں</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>بایاں ٹرگر ری سیٹ کریں</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>دایاں ٹرگر ری سیٹ کریں</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>آڈیو بیس ٹرگر رمبل</value></data>
@@ -2511,7 +2508,6 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>ٹرگر محور</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>فورس فیڈبیک / رمبل / ہیپٹکس</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>ہر موٹر کی گین، ٹرگر رمبل، موٹروں کی ادلا بدلی</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>مجموعی گین</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>بائیں موٹر</value></data>
@@ -2523,14 +2519,11 @@
   <data name="Pad_MotorActivity" xml:space="preserve"><value>موٹر کی سرگرمی</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>مستقل فورس</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>بند کرنے تک مسلسل فورس</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>جب تک آپ اسے بند نہ کریں، اس آلے پر مسلسل فورس لگائیں۔ کسی بھی ذریعے سے آنے والی گیم کی فورس، جب تک وہ فعال ہو، اس پر حاوی رہتی ہے، اور گیم کے رکنے پر یہ دوبارہ شروع ہو جاتی ہے۔</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>مستقل فورس لگائیں</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>سمت اور طاقت سیٹ کرنے کے لیے گرڈ کے اندر گھسیٹیں۔</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>مستقل فورس ری سیٹ کریں</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>مستقل فورس X ری سیٹ کریں</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>مستقل فورس Y ری سیٹ کریں</value></data>
 
@@ -3939,7 +3932,6 @@
   <data name="Pad_Section_Macros" xml:space="preserve"><value>میکروز اور مینوز</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>بیس شیکرز</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>یہ ورچوئل کنٹرولر گیم کا جو رمبل اور فورس فیڈبیک وصول کرتا ہے، اسے بیس شیکرز اور سب ووفرز کے لیے کم فریکوئنسی ٹونز کی صورت میں آڈیو آؤٹ پٹ پر بھیجتا ہے۔</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>رمبل سے آڈیو</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>آؤٹ پٹ آلہ، چینلز، گین، ہر موٹر کے لیے ایک ٹون</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox، DualShock 3، DualShock 4 / DualSense اور Nintendo Switch Pro ورچوئل کنٹرولرز کے ساتھ کام کرتا ہے، نیز فورس فیڈبیک والے توسیعی ورچوئل کنٹرولرز، جیسے ریسنگ وہیلز، اور Steam Deck Controller (Composite) کے ساتھ بھی۔ گیم کا فیڈبیک اور "رمبل ٹیسٹ کریں" آڈیو آؤٹ پٹ سے چلتے ہیں۔ میکرو کا رمبل کنٹرولر پر ہی رہتا ہے۔</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>"رمبل سے آڈیو" ری سیٹ کریں</value></data>
@@ -4386,8 +4378,6 @@
   <data name="Tablet_InRange" xml:space="preserve"><value>قلم رینج میں</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>FreeTrack شیئرڈ میموری ڈیٹا کا انتظار ہے۔</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>FreeTrack شیئرڈ میموری دستیاب نہیں۔</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>اسٹیئرنگ زاویے کا رمبل</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>اسٹک محور کے مرکز سے دور ہونے پر بڑھتا رمبل</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>جیسے جیسے منتخب ورچوئل اسٹک محور مرکز سے دور جاتا ہے، مسلسل رمبل شامل کرتا ہے۔ تمام تفویض کردہ ماخذ کا میپ شدہ آؤٹ پٹ استعمال کرتا ہے۔ سمت کے مطابق تقسیم کے ساتھ، منفی حرکت بائیں موٹر کو چلاتی ہے اور مثبت حرکت دائیں موٹر کو۔ بائیں موٹر یا دائیں موٹر منتخب کرنے پر دونوں سمتیں اسی ایک موٹر پر چلتی ہیں۔ رمبل والے آلات کے ساتھ Xbox اور PlayStation آؤٹ پٹ کے لیے۔ یہ اسٹیئرنگ وہیل، مستقل فورس فیڈبیک والے دیگر آلات اور Fanatec پیڈل کو چھوڑ دیتا ہے۔</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>اسٹیئرنگ زاویے کا رمبل فعال کریں</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>ورچوئل محور</value></data>
@@ -4402,7 +4392,6 @@
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>بائیں اسٹک X پر ری سیٹ کریں</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>طاقت ری سیٹ کریں (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>مرکزی ڈیڈ زون ری سیٹ کریں (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>اسٹیئرنگ زاویے کا رمبل ری سیٹ کریں</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>"اسٹیئرنگ زاویے کا رمبل فعال کریں" ری سیٹ کریں</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>پروفائل</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>ان پٹ سطحیں</value></data>

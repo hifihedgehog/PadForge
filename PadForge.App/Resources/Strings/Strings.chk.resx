@@ -616,8 +616,6 @@
   <data name="Telemetry_Game_TruckSimulator" xml:space="preserve"><value>Euro Truck Simulator 2 me American Truck Simulator</value></data>
   <data name="Telemetry_Formats_KindJson" xml:space="preserve"><value>JSON</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Apachaatá eú device</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Chechchech mi watteló lupwen eú stick axis a towu seni lukalapan</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Eú pwóór mi nimenim tori kopwe aúkúúkú</value></data>
   <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Chechchech seni bass lon ngingiin ewe system</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Atoto chechchechen ekkewe motor mi lap ngeni ekkewe trigger</value></data>
   <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Ataraka ekkewe gesture won ei touchpad</value></data>

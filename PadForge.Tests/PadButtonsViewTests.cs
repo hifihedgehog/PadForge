@@ -329,8 +329,9 @@ namespace PadForge.Tests
         // ── the output cards ───────────────────────────────────────────
 
         /// <summary>The Output tab's cards fold to one line each under the
-        /// picture: the card's own title, a hint, and the value it holds.
-        /// Each keeps its gate, its Reset All and every row it had.</summary>
+        /// picture, the lines of one card: the part's own title, a hint,
+        /// and the value it holds. Each keeps its gate, its Reset All and
+        /// every row it had.</summary>
         [Fact]
         public void TheOutputCardsFoldUnderThePicture()
         {
@@ -338,11 +339,14 @@ namespace PadForge.Tests
             var group = Named(page, "OutputGroup");
             Assert.Equal("3", (string)group.Attribute("Grid.Row"));
             Assert.Equal("{StaticResource BareGroupBox}", (string)group.Attribute("Style"));
-            // The cards stack at their full height. The page around them
-            // scrolls, so they have no scroll viewer of their own.
+            // The parts stack at their full height in one list. The page
+            // around them scrolls, so they have no scroll viewer of their
+            // own.
             var column = Assert.Single(group.Elements());
             Assert.Equal("StackPanel", column.Name.LocalName);
-            var cards = column.Elements().ToList();
+            var list = Assert.Single(column.Elements());
+            Assert.Equal("FoldList", list.Name.LocalName);
+            var cards = list.Elements().ToList();
             Assert.All(cards, c => Assert.Equal("FoldCard", c.Name.LocalName));
             Assert.Equal(new[] { "SocdFoldCard", "KbmSocdFoldCard", "KeepAwakeFoldCard" }, cards.Select(Name));
             Assert.Equal(new[] { "Pad.Output.Socd", "Pad.Output.KbmSocd", "Pad.Output.KeepAwake" },
@@ -357,17 +361,21 @@ namespace PadForge.Tests
                     .Select(k => "{Binding " + k + ", Converter={StaticResource BoolToVisibilityConverter}}"),
                 cards.Select(c => (string)c.Attribute("Visibility")));
 
-            // Each card opens on its Reset All, then its description, then
-            // its rows.
+            // Each part's Reset All stands at the end of its line while it
+            // is open, its description is the line's tooltip, and its body
+            // is its rows alone.
             string[] resets = { "{Binding ResetSocdCardCommand}", "{Binding KbmConfig.ResetSocdCommand}", "{Binding ResetKeepAwakeCardCommand}" };
             string[] descriptions = { "Pad_Socd_Card_Desc", "Pad_Kbm_Socd_Card_Desc", "Pad_KeepAwake_Card_Desc" };
             for (int i = 0; i < cards.Count; i++)
             {
-                var body = Assert.Single(cards[i].Elements()).Elements().ToList();
-                Assert.Equal(resets[i], (string)body[0].Attribute("Command"));
-                Assert.Equal("{StaticResource ResetAllButton}", (string)body[0].Attribute("Style"));
-                Assert.Equal("{Binding " + descriptions[i] + S, (string)body[1].Attribute("Text"));
-                Assert.True(body.Count > 3);
+                var action = Assert.Single(Assert.Single(cards[i].Elements(), e => e.Name.LocalName == "FoldCard.HeaderAction").Elements());
+                Assert.Equal(resets[i], (string)action.Attribute("Command"));
+                Assert.Equal("{StaticResource ResetAllButton}", (string)action.Attribute("Style"));
+                Assert.Equal("{Binding " + descriptions[i] + S, (string)cards[i].Attribute("Description"));
+                var body = Assert.Single(cards[i].Elements(), e => e.Name.LocalName == "StackPanel").Elements().ToList();
+                Assert.True(body.Count > 1);
+                Assert.DoesNotContain(body, e => ((string)e.Attribute("Style") ?? "").Contains("ResetAllButton")
+                    || ((string)e.Attribute("Text") ?? "").Contains(descriptions[i]));
             }
             string text = PageText();
             foreach (string kept in new[]

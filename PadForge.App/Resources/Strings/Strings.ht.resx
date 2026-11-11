@@ -819,8 +819,6 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_ResetImpulseTriggers" xml:space="preserve"><value>Reyinisyalize gachèt Impulse</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Reyinisyalize gachèt gòch</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Reyinisyalize gachèt dwat</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Fòs konstan sou gachèt</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Yon fòs fiks sou chak motè gachèt</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Redireksyon gachèt</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Voye vibrasyon motè prensipal yo nan gachèt yo</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Voye motè vibrasyon prensipal yo nan kanal gachèt la, yon gachèt alafwa. Mache ak vibrasyon XInput ak retou fòs. Yon aktivatè ka kontwole l pou gachèt la vibre sèlman lè ou kenbe yon bouton.</value></data>
@@ -850,7 +848,6 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Aplike fòs konstan sou gachèt</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Gachèt gòch</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>Gachèt dwat</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>Reyinisyalize fòs konstan sou gachèt</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Reyinisyalize gachèt gòch</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Reyinisyalize gachèt dwat</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Vibrasyon gachèt ak bas odyo</value></data>
@@ -2075,7 +2072,6 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Aks gachèt</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Retou fòs / Vibrasyon / Aptik</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Fòs pa motè, vibrasyon gachèt, chanje plas motè yo</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Motè gòch</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Motè dwat</value></data>
@@ -2084,13 +2080,10 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Aktivite motè</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Fòs konstan</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Yon fòs fiks jiskaske ou etenn li</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Aplike fòs konstan</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Trennen andedan griy la pou chwazi direksyon ak fòs.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>Reyinisyalize fòs konstan</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Reyinisyalize fòs konstan X</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Reyinisyalize fòs konstan Y</value></data>
 
@@ -3114,7 +3107,6 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Mouvman ak manyen</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Limyè ak son</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makwo ak meni</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibrasyon nan odyo</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Aparèy sòti, kanal, fòs, yon ton pou chak motè</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Reyinisyalize vibrasyon nan odyo</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Voye vibrasyon an nan yon sòti odyo</value></data>
@@ -3536,8 +3528,6 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Tablet_InRange" xml:space="preserve"><value>Stilè a nan zòn deteksyon</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Ap tann done nan memwa pataje FreeTrack.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>Memwa pataje FreeTrack pa disponib.</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Vibrasyon selon ang direksyon</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Vibrasyon ki ogmante lè yon aks stick kite sant lan</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Ajoute yon vibrasyon kontinyèl pandan aks stick vityèl ou chwazi a ap deplase lwen sant lan. Li sèvi ak sòti ki asiye nan tout sous ki atribiye yo. Avèk «Separe selon direksyon», mouvman negatif fè motè gòch la mache, mouvman pozitif fè motè dwat la mache. «Motè gòch» oswa «Motè dwat» mete toude direksyon yo sou motè sa a sèlman. Pou sòti Xbox ak PlayStation ak aparèy ki ka vibre. Li pa aji sou volan yo, sou lòt aparèy ki gen retou fòs konstan, ni sou pedal Fanatec yo.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Aktive vibrasyon selon ang direksyon</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Aks vityèl</value></data>
@@ -3552,7 +3542,6 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Remèt sou Stick gòch X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Reyinisyalize fòs (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Reyinisyalize zòn mò sant (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>Reyinisyalize vibrasyon selon ang direksyon</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Reyinisyalize Aktive vibrasyon selon ang direksyon</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Pwofil</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>Sifas antre</value></data>

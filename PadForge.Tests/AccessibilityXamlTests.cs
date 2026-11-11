@@ -638,7 +638,7 @@ namespace PadForge.Tests
         private static readonly HashSet<string> ScanInputs = new(Inputs) { "RangeSlider" };
         // A panel or border, whose row the label scan climbs to when the input
         // inside it has no label of its own (AccessibleNames.FindLabel).
-        private static readonly HashSet<string> RowParents = new() { "StackPanel", "DockPanel", "WrapPanel", "Grid", "UniformGrid", "Canvas", "VirtualizingStackPanel", "Border", "Viewbox" };
+        private static readonly HashSet<string> RowParents = new() { "StackPanel", "DockPanel", "WrapPanel", "Grid", "UniformGrid", "Canvas", "VirtualizingStackPanel", "Border", "Viewbox", "SettingRow" };
         private static readonly HashSet<string> Toggles = new() { "CheckBox", "RadioButton", "ToggleSwitch" };
         // Lists whose item containers AccessibleNames.NameItem does not reach.
         private static readonly HashSet<string> Lists = new() { "DataGrid", "TreeView" };

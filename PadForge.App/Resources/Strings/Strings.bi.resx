@@ -1593,10 +1593,7 @@
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Laet mo saon</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makro mo menu</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Wan saen taem stik blong stia i kasem en blong hem</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Seksek we i kam strong taem aksis blong stik i muv longwe long medel</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Wan fos we i stap gogo yu tanem i of</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>I sanem seksek blong ol bigfala mota i go long ol triga</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Wan fos we i stap oltaem long mota blong evri triga</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Seksek blong triga we i kam long bes blong saon blong sistem</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Ol dedzon blong lin, Daereksen blong kontrola</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Dedzon, smudim, Akselereisen, Kev blong aotput</value></data>

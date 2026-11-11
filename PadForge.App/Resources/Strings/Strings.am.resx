@@ -880,8 +880,6 @@
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>አጠቃላይ ማጉላትን ዳግም አስጀምር</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>ግራ ትሪገርን ዳግም አስጀምር</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>ቀኝ ትሪገርን ዳግም አስጀምር</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>ቋሚ የትሪገር ኃይል</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>በእያንዳንዱ ትሪገር ሞተር ላይ ቋሚ ኃይል</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>የትሪገር ማዘዋወሪያ</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>የዋና ሞተሮችን ንዝረት ወደ ትሪገሮች ይልካል</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>ዋናዎቹን የንዝረት ሞተሮች ወደ ትሪገር ቻናሉ፣ አንድ ትሪገር በአንድ ጊዜ፣ አዛውር። ከXInput ንዝረት እና ከኃይል ግብረመልስ ጋር ይሠራል። ትሪገሩ አዝራር ስትይዝ ብቻ እንዲንዘር አንቂ ሊገድበው ይችላል።</value></data>
@@ -911,7 +909,6 @@
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>ቋሚ የትሪገር ኃይል ተግብር</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>ግራ ትሪገር</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>ቀኝ ትሪገር</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>ቋሚ የትሪገር ኃይልን ዳግም አስጀምር</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>ግራ ትሪገርን ዳግም አስጀምር</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>ቀኝ ትሪገርን ዳግም አስጀምር</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>የድምጽ ባስ ትሪገር ንዝረት</value></data>
@@ -2340,7 +2337,6 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>የትሪገር ዘንግ</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>የኃይል ግብረመልስ / ንዝረት / ሃፕቲክስ</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>የእያንዳንዱ ሞተር ማጉላት፣ የትሪገር ንዝረት፣ ሞተሮችን ማለዋወጥ</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>አጠቃላይ ማጉላት</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>የግራ ሞተር</value></data>
@@ -2352,14 +2348,11 @@
   <data name="Pad_MotorActivity" xml:space="preserve"><value>የሞተር እንቅስቃሴ</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>ቋሚ ኃይል</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>እስኪያጠፉት ድረስ የሚቆይ ቋሚ ኃይል</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>እስክታጠፋው ድረስ በዚህ መሣሪያ ላይ ቀጣይነት ያለው ኃይል ተግብር። ከማንኛውም ምንጭ በጨዋታ የሚላክ ኃይል ገባሪ ሆኖ ሳለ ይቀድማል፣ ጨዋታው ሲያቆም ደግሞ ይህ ኃይል ይቀጥላል።</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>ቋሚ ኃይል ተግብር</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>አቅጣጫና ጥንካሬ ለማዘጋጀት በፍርግርጉ ውስጥ ጎትት።</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>ቋሚ ኃይልን ዳግም አስጀምር</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>ቋሚ ኃይል X ዳግም አስጀምር</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>ቋሚ ኃይል Y ዳግም አስጀምር</value></data>
 
@@ -3709,7 +3702,6 @@
   <data name="Pad_Section_Macros" xml:space="preserve"><value>ማክሮዎች እና ምናሌዎች</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>ባስ ሼከሮች</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>ይህ ምናባዊ መቆጣጠሪያ የሚቀበለውን የጨዋታ ንዝረትና የኃይል ግብረመልስ ለባስ ሼከሮችና ለሰብዉፈሮች እንደ ዝቅተኛ ድግግሞሽ ድምጾች ወደ ድምጽ ውፅዓት ይልካል።</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>ንዝረትን ወደ ድምጽ</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>የውፅዓት መሣሪያ፣ ቻናሎች፣ ማጉላት፣ ለእያንዳንዱ ሞተር ድምፀት</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>ከXbox፣ DualShock 3፣ DualShock 4 / DualSense እና Nintendo Switch Pro ምናባዊ መቆጣጠሪያዎች፣ የኃይል ግብረመልስ ካላቸው የተራዘሙ ምናባዊ መቆጣጠሪያዎች (እንደ የእሽቅድምድም መሪዎች) እና ከSteam Deck Controller (Composite) ጋር ይሠራል። የጨዋታ ግብረመልስ እና የሙከራ ንዝረት በድምጽ ውፅዓቱ ይጫወታሉ። የማክሮ ንዝረት በመቆጣጠሪያው ላይ ይቆያል።</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>ንዝረትን ወደ ድምጽ ዳግም አስጀምር</value></data>
@@ -4148,8 +4140,6 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="Tablet_InRange" xml:space="preserve"><value>ብዕር በክልል ውስጥ</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>የFreeTrack የጋራ ማህደረ ትውስታ ውሂብን በመጠበቅ ላይ።</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>የFreeTrack የጋራ ማህደረ ትውስታ አይገኝም።</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>የመሪ ማዕዘን ንዝረት</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>የስቲክ ዘንግ ከመሃል ሲርቅ የሚጨምር ንዝረት</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>የተመረጠው ምናባዊ የስቲክ ዘንግ ከመሃል ሲርቅ ቀጣይነት ያለው ንዝረት ያክላል። ከሁሉም የተመደቡ ምንጮች የተዛመደውን ውጤት ይጠቀማል። «በአቅጣጫ የተከፈለ» ሲመረጥ፣ አሉታዊ እንቅስቃሴ የግራውን ሞተር፣ አዎንታዊ እንቅስቃሴ ደግሞ የቀኙን ያንቀሳቅሳል። «የግራ ሞተር» ወይም «የቀኝ ሞተር» ሁለቱንም አቅጣጫዎች በዚያ አንድ ሞተር ላይ ያደርጋል። ለXbox እና PlayStation ውጤት ከንዝረት መሣሪያዎች ጋር። መሪዎችን፣ ቋሚ የኃይል ግብረመልስ ያላቸውን ሌሎች መሣሪያዎች እና የFanatec ፔዳሎችን ይዘልላል።</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>የመሪ ማዕዘን ንዝረትን አንቃ</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>ምናባዊ ዘንግ</value></data>
@@ -4164,7 +4154,6 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>ወደ «የግራ ስቲክ X» ዳግም አስጀምር</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>ጥንካሬን ዳግም አስጀምር (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>የመሃል የሞተ ቀጠናን ዳግም አስጀምር (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>የመሪ ማዕዘን ንዝረትን ዳግም አስጀምር</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>«የመሪ ማዕዘን ንዝረትን አንቃ» ዳግም አስጀምር</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>መገለጫ</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>የግብዓት ገጾች</value></data>

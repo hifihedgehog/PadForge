@@ -729,11 +729,8 @@
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>Ngalulu mo e Ongoʻi</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Maama mo e Leʻo</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Fakaʻilonga ʻi he ngataʻanga ʻo e stick ʻi he mode fakaʻuli</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Tetetete ʻoku lahi ange ʻi he mavahe ʻa e axis stick mei loto</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Mālohi tuʻumaʻu kae ʻoua ke ke tamateʻi</value></data>
   <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Tetetete mei he bass ʻi he ongo ʻo e sisitemi</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Fekauʻi ʻa e tetetete ʻo e ongo motor lalahi ki he ongo trigger</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Mālohi tuʻumaʻu ʻi he motor ʻo e trigger taki taha</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Tetetete trigger mei he bass ʻi he ongo ʻo e sisitemi</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Deadzone fakatafaʻaki, Fakahangatonu ʻo e Controller</value></data>
   <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Button Fakaʻaongaʻi Taumuʻa, Mode Fakaʻaongaʻi, Threshold Taumuʻa Faingofua</value></data>

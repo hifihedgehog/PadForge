@@ -936,8 +936,6 @@
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>Ресетуј укупно појачање</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Ресетуј леви окидач</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Ресетуј десни окидач</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Стална сила окидача</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Стална сила на сваки мотор окидача</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Усмеравање на окидаче</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Шаље вибрацију главних мотора на окидаче</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Усмерите главне моторе за вибрацију у канал окидача, на један по један окидач. Ради са XInput вибрацијом и повратном силом. Активатор може да га условљава, тако да окидач вибрира само док држите дугме.</value></data>
@@ -967,7 +965,6 @@
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Примени сталну силу окидача</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Леви окидач</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>Десни окидач</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>Ресетуј сталну силу окидача</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Ресетуј леви окидач</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Ресетуј десни окидач</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Вибрација окидача по басу звука</value></data>
@@ -2511,7 +2508,6 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Оса окидача</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Повратна сила / вибрација / хаптика</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Појачање по мотору, вибрација окидача, замена мотора</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Укупно појачање</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Леви мотор</value></data>
@@ -2523,14 +2519,11 @@
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Активност мотора</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Стална сила</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Стална сила док је не искључите</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Примењује сталну силу на овај уређај док је не искључите. Сила коју покреће игра, из било ког извора, има предност док је активна, а стална сила се наставља када игра престане.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Примени сталну силу</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Превуците унутар мреже да бисте подесили смер и јачину.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>Ресетуј сталну силу</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Ресетуј сталну силу X</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Ресетуј сталну силу Y</value></data>
 
@@ -3939,7 +3932,6 @@
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Макрои и менији</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Бас шејкери</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Усмерава вибрацију игре и повратну силу које овај виртуелни контролер прима на аудио излаз као тонове ниске фреквенције за бас шејкере и сабвуфере.</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Вибрација у звук</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Излазни уређај, канали, појачање, тон за сваки мотор</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Ради са Xbox, DualShock 3, DualShock 4 / DualSense и Nintendo Switch Pro виртуелним контролерима, као и са проширеним виртуелним контролерима са повратном силом, као што су тркачки волани, и са Steam Deck Controller (Composite). Повратна информација игре и „Тестирај вибрацију“ репродукују се преко аудио излаза. Вибрација из макроа остаје на контролеру.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Ресетуј вибрацију у звук</value></data>
@@ -4386,8 +4378,6 @@
   <data name="Tablet_InRange" xml:space="preserve"><value>Оловка у домету</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Чекају се подаци из FreeTrack дељене меморије.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>FreeTrack дељена меморија није доступна.</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Вибрација према углу управљања</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Вибрација која расте док оса палице напушта центар</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Додаје непрекидну вибрацију док се изабрана оса виртуелне палице удаљава од центра. Користи мапирани излаз свих додељених извора. Са опцијом „Подела по смеру“ негативно кретање покреће леви мотор, а позитивно десни. Опција „Леви мотор“ или „Десни мотор“ ставља оба смера на тај један мотор. За Xbox и PlayStation излаз са уређајима који вибрирају. Прескаче волане, остале уређаје са константном повратном силом и Fanatec педале.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Омогући вибрацију према углу управљања</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Виртуелна оса</value></data>
@@ -4402,7 +4392,6 @@
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Ресетуј на „Лева палица X“</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Ресетуј јачину (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Ресетуј мртву зону у центру (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>Ресетуј вибрацију према углу управљања</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Ресетуј омогућавање вибрације према углу управљања</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Профил</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>Улазне површине</value></data>

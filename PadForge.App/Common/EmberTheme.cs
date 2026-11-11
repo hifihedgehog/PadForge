@@ -121,6 +121,12 @@ namespace PadForge.Common
             SetBrush("NavigationViewItemBackgroundPointerOver", paneHover);
             SetBrush("NavigationViewItemBackgroundPressed", dark ? Color.FromRgb(0x14, 0x1B, 0x27) : Color.FromRgb(0xE8, 0xEA, 0xEF));
             SetBrush("SteelPaneHoverBrush", paneHover);
+            // Inside a card: a full-width row under the pointer, a reset
+            // button's glyph at rest, and the label of a setting that
+            // belongs to the row above it.
+            SetBrush("SteelCardHoverBrush", dark ? Color.FromRgb(0x16, 0x1E, 0x2B) : Color.FromRgb(0xF0, 0xF2, 0xF6));
+            SetBrush("QuietGlyphBrush", dark ? Color.FromRgb(0x6B, 0x78, 0x90) : Color.FromRgb(0x8A, 0x96, 0xAB));
+            SetBrush("SubRowTextBrush", dark ? Color.FromRgb(0xCF, 0xD7, 0xE3) : Color.FromRgb(0x2D, 0x39, 0x4B));
             SetBrush("EmberWellBrush", dark ? Color.FromRgb(0x2A, 0x15, 0x09) : Color.FromRgb(0xFF, 0xE9, 0xDD));
             SetBrush("EmberEdgeBrush", dark ? Color.FromRgb(0x4A, 0x2C, 0x1A) : Color.FromRgb(0xF0, 0xB7, 0x9C));
             SetBrush("EmberPickBrush", dark ? Color.FromRgb(0x1D, 0x16, 0x11) : Color.FromRgb(0xFF, 0xF1, 0xE9));

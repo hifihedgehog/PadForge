@@ -921,7 +921,6 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Aksisii tiriigarii</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Force feedback / Raafama / Haaptiksii</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Cimina mootora tokkoon tokkoo, raafama tiriigarii, jijjiirraa mootoraa</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Mootora bitaa</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Mootora mirgaa</value></data>
@@ -930,12 +929,9 @@
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Sochii mootoraa</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Humna dhaabbataa</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Humna dhaabbataa hanga ati cuftutti</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Humna dhaabbataa fayyadami</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>Humna dhaabbataa deebisi</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Humna dhaabbataa X deebisi</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Humna dhaabbataa Y deebisi</value></data>
 
@@ -1521,7 +1517,6 @@
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>Raafama fi miira tuqiinsaa</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Sochii fi tuqiinsa</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Ibsaa fi sagalee</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Raafama gara sagaleetti</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Meeshaa bahiinsaa, chaanaloota, cimina, sagalee mootora tokkoon tokkoof</value></data>
   <data name="Pad_RumbleAudio_OutputDevice" xml:space="preserve"><value>Meeshaa bahiinsaa</value></data>
   <data name="Pad_RumbleAudio_ResetOutputDevice" xml:space="preserve"><value>Meeshaa bahiinsaa deebisi</value></data>
@@ -1887,9 +1882,7 @@
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} wal qunnamee jira, garuu hojii irra hin jiru.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Itti fayyadami</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Akeekkachiisa sitikii konkolaachisuu yeroo daangaa guutuu ga'u</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Raafama aksisiin sitikii giddugaleessa irraa fagaachuun guddatu</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Raafama mootora ijoo gara tiriigaraatti erga</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Humna dhaabbataa mootora tiriigarii hunda irratti</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Raafama tiriigarii sagalee gadi aanaa sirnaa irraa</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Deedzoonii jallachuu, Kallattii kontirolaa</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Deedzoonii, lallaafsuu, Ariitii, Kurfii bahiinsaa</value></data>

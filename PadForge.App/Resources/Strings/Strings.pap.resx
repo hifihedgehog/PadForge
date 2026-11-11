@@ -1362,7 +1362,6 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Eje di trigger</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Force feedback / Vibrashon / Háptika</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Fortalesa pa kada motor, vibrashon di trigger, kambio di motor</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Motor robes</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Motor drechi</value></data>
@@ -1370,12 +1369,9 @@
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Aktividat di motor</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Forsa konstante</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Un forsa stabil te ora bo pag'é</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Apliká forsa konstante</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>Reset forsa konstante</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Reset forsa konstante X</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Reset forsa konstante Y</value></data>
 
@@ -2067,7 +2063,6 @@
   <data name="Dashboard_Overlays" xml:space="preserve"><value>Overlaynan</value></data>
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Indikadónan riba pantaya ku PadForge ta mustra miéntras bo ta hunga. Desaktivá un di nan nunka ta kambia e funshonamentu, solamente si e ta wòrdu anunsiá.</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Overlay di kambio di perfil</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibrashon pa audio</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Aparato di output, kanal, fortalesa, un tono pa kada motor</value></data>
   <data name="Pad_RumbleAudio_ChannelMode" xml:space="preserve"><value>Modo di kanal</value></data>
   <data name="Pad_RumbleAudio_Mode_Mono" xml:space="preserve"><value>Mono (tur kanal)</value></data>
@@ -2530,9 +2525,7 @@
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makro i menu</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Ta tene e palanka un tiki fo'i sentro pa wega keda mustra indikashon di kontrol</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Un señal ora un stick den modo di stür yega su límite</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Vibrashon ku ta krese ora un eje di stick ta bai leu for di sentro</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Ta manda vibrashon di e motornan prinsipal na e triggernan</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Un forsa stabil riba kada motor di trigger</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Vibrashon di trigger for di e bas den audio di sistema</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Zona morto di inklinashon, Orientashon di kontrol</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Zona morto, suavisashon, Akselerashon, Kurva di output</value></data>

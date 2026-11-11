@@ -880,8 +880,6 @@
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>සමස්ත ලාභය යළි සකසන්න</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>වම් ට්‍රිගරය යළි සකසන්න</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>දකුණු ට්‍රිගරය යළි සකසන්න</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>නියත ට්‍රිගර බලය</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>එක් එක් ට්‍රිගර මෝටරයට ස්ථිර බලයක්</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>ට්‍රිගර යොමු කිරීම</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>ප්‍රධාන මෝටරවල කම්පනය ට්‍රිගරවලට යවයි</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>ප්‍රධාන කම්පන මෝටර ට්‍රිගර නාලිකාවට යොමු කරන්න, වරකට එක් ට්‍රිගරයක්. XInput කම්පනය සහ බල ප්‍රතිපෝෂණය සමඟ ක්‍රියා කරයි. ඔබ බොත්තමක් ඔබාගෙන සිටින විට පමණක් ට්‍රිගරය කම්පනය වන පරිදි සක්‍රියකාරකයකට එය පාලනය කළ හැක.</value></data>
@@ -911,7 +909,6 @@
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>නියත ට්‍රිගර බලය යොදන්න</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>වම් ට්‍රිගරය</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>දකුණු ට්‍රිගරය</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>නියත ට්‍රිගර බලය යළි සකසන්න</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>වම් ට්‍රිගරය යළි සකසන්න</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>දකුණු ට්‍රිගරය යළි සකසන්න</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>ශ්‍රව්‍ය බාස් ට්‍රිගර කම්පනය</value></data>
@@ -2342,7 +2339,6 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>ට්‍රිගර අක්ෂය</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>බල ප්‍රතිපෝෂණය / කම්පනය / හැප්ටික්ස්</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>එක් එක් මෝටරයේ ලාභය, ට්‍රිගර කම්පනය, මෝටර මාරු කිරීම</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>සමස්ත ලාභය</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>වම් මෝටරය</value></data>
@@ -2354,14 +2350,11 @@
   <data name="Pad_MotorActivity" xml:space="preserve"><value>මෝටර ක්‍රියාකාරිත්වය</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>නියත බලය</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>ඔබ අක්‍රිය කරන තුරු ස්ථිර බලයක්</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>ඔබ ටොගල් කර අක්‍රිය කරන තුරු මෙම උපාංගයට අඛණ්ඩ බලයක් යොදන්න. ඕනෑම ප්‍රභවයකින් ක්‍රීඩාව එවන බලය සක්‍රියව ඇති අතරතුර එය මෙය අභිබවා යන අතර, ක්‍රීඩාව නැවැත්වූ විට මෙය නැවත ආරම්භ වේ.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>නියත බලය යොදන්න</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>දිශාව සහ ශක්තිය සැකසීමට ජාලකය තුළ අදින්න.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>නියත බලය යළි සකසන්න</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>නියත බලය X යළි සකසන්න</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>නියත බලය Y යළි සකසන්න</value></data>
 
@@ -3706,7 +3699,6 @@
   <data name="Pad_Section_Macros" xml:space="preserve"><value>මැක්‍රෝ සහ මෙනු</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>බාස් ෂේකර්</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>මෙම අතථ්‍ය පාලකයට ලැබෙන ක්‍රීඩා කම්පනය සහ බල ප්‍රතිපෝෂණය, බාස් ෂේකර් සහ සබ්වූෆර් සඳහා අඩු සංඛ්‍යාත නාද ලෙස ශ්‍රව්‍ය ප්‍රතිදානයකට යොමු කරයි.</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>කම්පනය ශ්‍රව්‍යයට</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>ප්‍රතිදාන උපාංගය, නාලිකා, ලාභය, එක් එක් මෝටරයට නාදයක්</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox, DualShock 3, DualShock 4 / DualSense, සහ Nintendo Switch Pro අතථ්‍ය පාලක සමඟත්, ධාවන සුක්කානම් වැනි බල ප්‍රතිපෝෂණය සහිත Extended අතථ්‍ය පාලක සහ Steam Deck Controller (Composite) සමඟත් ක්‍රියා කරයි. ක්‍රීඩා ප්‍රතිපෝෂණය සහ කම්පන පරීක්ෂණය ශ්‍රව්‍ය ප්‍රතිදානය හරහා වාදනය වේ. මැක්‍රෝ කම්පනය පාලකය මතම පවතී.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>කම්පනය ශ්‍රව්‍යයට යළි සකසන්න</value></data>
@@ -4141,8 +4133,6 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="Tablet_InRange" xml:space="preserve"><value>පෑන පරාසය තුළ</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>FreeTrack හවුල් මතක දත්ත සඳහා රැඳී සිටිමින්.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>FreeTrack හවුල් මතකය ලබා ගත නොහැක.</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>සුක්කානම් කෝණ කම්පනය</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>ස්ටික් අක්ෂය මධ්‍යයෙන් ඉවතට යන විට වැඩි වන කම්පනය</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>තෝරාගත් අතථ්‍ය ස්ටික් අක්ෂය මධ්‍යයෙන් ඉවතට යන විට අඛණ්ඩ කම්පනයක් එක් කරයි. පවරා ඇති සියලු මූලාශ්‍රවලින් සිතියම්ගත ප්‍රතිදානය භාවිත කරයි. "දිශාව අනුව බෙදීම" තෝරා ඇති විට, සෘණ චලනය වම් මෝටරය ධාවනය කරන අතර, ධන චලනය දකුණු මෝටරය ධාවනය කරයි. "වම් මෝටරය" හෝ "දකුණු මෝටරය" දිශා දෙකම එම එක් මෝටරයට යොමු කරයි. කම්පන උපාංග සහිත Xbox සහ PlayStation ප්‍රතිදානය සඳහා. සුක්කානම්, නියත බල ප්‍රතිපෝෂණය සහිත වෙනත් උපාංග සහ Fanatec පැඩල මෙය මඟ හරියි.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>සුක්කානම් කෝණ කම්පනය සක්‍රිය කරන්න</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>අතථ්‍ය අක්ෂය</value></data>
@@ -4157,7 +4147,6 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>වම් ස්ටික් X වෙත යළි සකසන්න</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>ප්‍රබලතාව යළි සකසන්න (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>මධ්‍ය ඩෙඩ්සෝන් යළි සකසන්න (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>සුක්කානම් කෝණ කම්පනය යළි සකසන්න</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>"සුක්කානම් කෝණ කම්පනය සක්‍රිය කරන්න" යළි සකසන්න</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>පැතිකඩ</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>ආදාන මතුපිට</value></data>

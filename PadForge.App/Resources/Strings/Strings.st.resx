@@ -1023,7 +1023,6 @@
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Mabone le Molumo</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Macros le Dimenyu</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Tshupo ha stick e fihla pheletsong mokgweng wa ho kganna</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Matla a tsitsitseng ho fihlela o a tima</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>E romela ho thothomela ha di-motor tse kgolo ho di-trigger</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Ho thothomela ha trigger ho tswa ho bass ya modumo wa sistimi</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Di-deadzone tsa ho sekama, Tsela eo controller e lebileng ka yona</value></data>

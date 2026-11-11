@@ -936,8 +936,6 @@
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>మొత్తం గెయిన్ను రీసెట్ చేయి</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>ఎడమ ట్రిగ్గర్ను రీసెట్ చేయి</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>కుడి ట్రిగ్గర్ను రీసెట్ చేయి</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>స్థిర ట్రిగ్గర్ బలం</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>ప్రతి ట్రిగ్గర్ మోటార్‌పై స్థిరమైన బలం</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>ట్రిగ్గర్ రూటింగ్</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>ప్రధాన మోటార్ల రంబుల్‌ను ట్రిగ్గర్లకు పంపుతుంది</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>ప్రధాన రంబుల్ మోటార్లను ట్రిగ్గర్ ఛానెల్లోకి, ఒక్కో ట్రిగ్గర్కు మళ్లించండి. XInput రంబుల్ మరియు ఫోర్స్ ఫీడ్బ్యాక్తో పని చేస్తుంది. యాక్టివేటర్ దీన్ని నియంత్రించగలదు, తద్వారా మీరు బటన్ను నొక్కి ఉంచినప్పుడు మాత్రమే ట్రిగ్గర్ కంపిస్తుంది.</value></data>
@@ -967,7 +965,6 @@
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>స్థిర ట్రిగ్గర్ బలాన్ని వర్తింపజేయి</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>ఎడమ ట్రిగ్గర్</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>కుడి ట్రిగ్గర్</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>స్థిర ట్రిగ్గర్ బలాన్ని రీసెట్ చేయి</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>ఎడమ ట్రిగ్గర్ను రీసెట్ చేయి</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>కుడి ట్రిగ్గర్ను రీసెట్ చేయి</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>ఆడియో బాస్ ట్రిగ్గర్ రంబుల్</value></data>
@@ -2511,7 +2508,6 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>ట్రిగ్గర్ అక్షం</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>ఫోర్స్ ఫీడ్బ్యాక్ / రంబుల్ / హాప్టిక్స్</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>ఒక్కో మోటార్ గెయిన్, ట్రిగ్గర్ రంబుల్, మోటార్ల మార్పిడి</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>మొత్తం గెయిన్</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>ఎడమ మోటార్</value></data>
@@ -2523,14 +2519,11 @@
   <data name="Pad_MotorActivity" xml:space="preserve"><value>మోటార్ కార్యకలాపం</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>స్థిర బలం</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>ఆఫ్ చేసే వరకు స్థిరమైన బలం</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>మీరు ఆఫ్ చేసే వరకు ఈ పరికరానికి నిరంతర బలాన్ని వర్తింపజేస్తుంది. ఏ మూలం నుండైనా గేమ్ ఇచ్చే బలం, ఇది యాక్టివ్‌గా ఉన్నప్పుడు దీన్ని భర్తీ చేస్తుంది, గేమ్ ఆగాక ఇది తిరిగి కొనసాగుతుంది.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>స్థిర బలాన్ని వర్తింపజేయి</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>దిశ, బలాన్ని సెట్ చేయడానికి గ్రిడ్ లోపల లాగండి.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>స్థిర బలం రీసెట్ చేయి</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>స్థిర బలం X రీసెట్ చేయి</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>స్థిర బలం Y రీసెట్ చేయి</value></data>
 
@@ -3939,7 +3932,6 @@
   <data name="Pad_Section_Macros" xml:space="preserve"><value>మాక్రోలు &amp; మెనూలు</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>బాస్ షేకర్లు</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>ఈ వర్చువల్ కంట్రోలర్ అందుకునే గేమ్ రంబుల్, ఫోర్స్ ఫీడ్బ్యాక్ను బాస్ షేకర్లు, సబ్వూఫర్ల కోసం తక్కువ ఫ్రీక్వెన్సీ టోన్లుగా ఆడియో అవుట్పుట్కు పంపుతుంది.</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>ఆడియోకు రంబుల్</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>అవుట్పుట్ పరికరం, ఛానెల్‌లు, గెయిన్, ప్రతి మోటార్‌కు ఒక స్వరం</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox, DualShock 3, DualShock 4 / DualSense, Nintendo Switch Pro వర్చువల్ కంట్రోలర్లతో, అలాగే రేసింగ్ వీల్స్ వంటి ఫోర్స్ ఫీడ్బ్యాక్ ఉన్న ఎక్స్టెండెడ్ వర్చువల్ కంట్రోలర్లతో, Steam Deck Controller (Composite) తో పనిచేస్తుంది. గేమ్ ఫీడ్బ్యాక్, టెస్ట్ రంబుల్ ఆడియో అవుట్పుట్ ద్వారా వినిపిస్తాయి. మాక్రో రంబుల్ కంట్రోలర్లోనే ఉంటుంది.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>ఆడియోకు రంబుల్ రీసెట్ చేయి</value></data>
@@ -4386,8 +4378,6 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="Tablet_InRange" xml:space="preserve"><value>పెన్ పరిధిలో ఉంది</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>FreeTrack షేర్డ్ మెమరీ డేటా కోసం వేచి ఉంది.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>FreeTrack షేర్డ్ మెమరీ అందుబాటులో లేదు.</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>స్టీరింగ్ యాంగిల్ రంబుల్</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>స్టిక్ అక్షం మధ్య నుండి దూరమయ్యే కొద్దీ పెరిగే రంబుల్</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>ఎంచుకున్న వర్చువల్ స్టిక్ అక్షం మధ్య నుండి దూరంగా కదిలేకొద్దీ నిరంతర రంబుల్ను జోడిస్తుంది. కేటాయించిన అన్ని మూలాల మ్యాప్ అయిన అవుట్పుట్ను ఉపయోగిస్తుంది. దిశ వారీగా విభజన ఎంచుకుంటే, ప్రతికూల కదలిక ఎడమ మోటార్ను, ధనాత్మక కదలిక కుడి మోటార్ను నడుపుతాయి. ఎడమ మోటార్ లేదా కుడి మోటార్ ఎంచుకుంటే రెండు దిశలూ ఆ ఒక్క మోటార్లోనే ప్లే అవుతాయి. రంబుల్ పరికరాలతో Xbox మరియు PlayStation అవుట్పుట్ కోసం. ఇది స్టీరింగ్ వీల్స్ను, స్థిరమైన ఫోర్స్ ఫీడ్బ్యాక్ ఉన్న ఇతర పరికరాలను, Fanatec పెడల్స్ను వదిలివేస్తుంది.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>స్టీరింగ్ యాంగిల్ రంబుల్ను ప్రారంభించు</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>వర్చువల్ అక్షం</value></data>
@@ -4402,7 +4392,6 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>ఎడమ స్టిక్ X కు రీసెట్ చేయి</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>బలాన్ని రీసెట్ చేయి (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>మధ్య డెడ్ జోన్ రీసెట్ (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>స్టీరింగ్ యాంగిల్ రంబుల్ రీసెట్</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>స్టీరింగ్ యాంగిల్ రంబుల్ ప్రారంభించడాన్ని రీసెట్ చేయి</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>ప్రొఫైల్</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>ఇన్పుట్ ఉపరితలాలు</value></data>

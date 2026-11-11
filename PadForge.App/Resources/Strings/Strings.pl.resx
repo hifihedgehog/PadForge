@@ -936,8 +936,6 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>Resetuj wzmocnienie ogólne</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Resetuj lewy spust</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Resetuj prawy spust</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Stała siła spustów</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Stała siła na każdym silniku spustu</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Kierowanie do spustów</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Przekazuje wibracje silników głównych do spustów</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Kieruje główne silniki wibracji do kanału spustów, osobno dla każdego spustu. Działa z wibracjami XInput i force feedback. Aktywator może to bramkować, aby spust wibrował tylko wtedy, gdy przytrzymujesz przycisk.</value></data>
@@ -967,7 +965,6 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Stosuj stałą siłę spustów</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Lewy spust</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>Prawy spust</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>Resetuj stałą siłę spustów</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Resetuj lewy spust</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Resetuj prawy spust</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Wibracje spustów z basów dźwięku</value></data>
@@ -2511,7 +2508,6 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Oś spustu</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Force feedback / wibracje / haptyka</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Wzmocnienie silników, wibracje spustów, zamiana silników</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Wzmocnienie ogólne</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Lewy silnik</value></data>
@@ -2523,14 +2519,11 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Aktywność silników</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Stała siła</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Stała siła, dopóki jej nie wyłączysz</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Przykłada stałą siłę do tego urządzenia, dopóki jej nie wyłączysz. Siła sterowana przez grę z dowolnego źródła ma pierwszeństwo, gdy jest aktywna, a stała siła wraca, gdy gra przestaje.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Stosuj stałą siłę</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Przeciągnij wewnątrz siatki, aby ustawić kierunek i siłę.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>Resetuj stałą siłę</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Resetuj stałą siłę X</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Resetuj stałą siłę Y</value></data>
 
@@ -3939,7 +3932,6 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makra i menu</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shakery</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Kieruje wibracje z gry i force feedback odbierane przez ten wirtualny kontroler do wyjścia dźwiękowego jako tony o niskiej częstotliwości dla bass shakerów i subwooferów.</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Wibracje na dźwięk</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Urządzenie wyjściowe, kanały, wzmocnienie, ton dla każdego silnika</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Działa z wirtualnymi kontrolerami Xbox, DualShock 3, DualShock 4 / DualSense i Nintendo Switch Pro, a także z wirtualnymi kontrolerami Rozszerzony z force feedback, takimi jak kierownice wyścigowe, oraz ze Steam Deck Controller (Composite). Efekty z gry i funkcja Testuj wibracje są odtwarzane przez wyjście dźwiękowe. Wibracje z makr pozostają na kontrolerze.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Resetuj wibracje na dźwięk</value></data>
@@ -4386,8 +4378,6 @@ Czy PadForge ma je teraz odinstalować? Wymaga to uprawnień administratora i mo
   <data name="Tablet_InRange" xml:space="preserve"><value>Pióro w zasięgu</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Oczekiwanie na dane z pamięci współdzielonej FreeTrack.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>Pamięć współdzielona FreeTrack jest niedostępna.</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Wibracje kąta skrętu</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Wibracje rosnące wraz z wychyleniem osi drążka</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Dodaje ciągłe wibracje, gdy wybrana oś wirtualnego drążka oddala się od środka. Używa zmapowanego wyjścia ze wszystkich przypisanych źródeł. Przy opcji Podział według kierunku ruch ujemny steruje lewym silnikiem, a dodatni prawym. Opcja Lewy silnik lub Prawy silnik kieruje oba kierunki na ten jeden silnik. Dla wyjścia Xbox i PlayStation z urządzeniami z wibracjami. Pomija kierownice, inne urządzenia ze stałym force feedback oraz pedały Fanatec.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Włącz wibracje kąta skrętu</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Oś wirtualna</value></data>
@@ -4402,7 +4392,6 @@ Czy PadForge ma je teraz odinstalować? Wymaga to uprawnień administratora i mo
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Resetuj do „Lewy drążek X”</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Resetuj siłę (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Resetuj martwą strefę środka (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>Resetuj wibracje kąta skrętu</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Resetuj włączenie wibracji kąta skrętu</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Profil</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>Powierzchnie wejściowe</value></data>

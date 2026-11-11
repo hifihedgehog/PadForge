@@ -936,8 +936,6 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>Resetovat celkové zesílení</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Resetovat levou spoušť</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Resetovat pravou spoušť</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Stálá síla spouští</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Stálá síla na každý motor spouště</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Směrování do spouští</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Posílá vibrace hlavních motorů do spouští</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Směruje hlavní vibrační motory do kanálu spouští, pro každou spoušť zvlášť. Funguje s vibracemi XInput i se silovou zpětnou vazbou. Aktivátorem to lze podmínit, takže spoušť vibruje, jen když držíte tlačítko.</value></data>
@@ -967,7 +965,6 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Použít stálou sílu spouští</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Levá spoušť</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>Pravá spoušť</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>Resetovat stálou sílu spouští</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Resetovat levou spoušť</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Resetovat pravou spoušť</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Vibrace spouští podle basů zvuku</value></data>
@@ -2511,7 +2508,6 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Osa spouště</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Silová zpětná vazba / vibrace / haptika</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Zesílení jednotlivých motorů, vibrace spouští, prohození motorů</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Celkové zesílení</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Levý motor</value></data>
@@ -2523,14 +2519,11 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Aktivita motorů</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Stálá síla</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Stálá síla, dokud ji nevypnete</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Působí na toto zařízení nepřetržitou silou, dokud ji nevypnete. Síla řízená hrou z libovolného zdroje má přednost, dokud je aktivní, a po skončení hry se stálá síla obnoví.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Použít stálou sílu</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Tažením v mřížce nastavíte směr a sílu.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>Resetovat stálou sílu</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Resetovat stálou sílu X</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Resetovat stálou sílu Y</value></data>
 
@@ -3939,7 +3932,6 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makra a nabídky</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shakery</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Směruje vibrace a silovou zpětnou vazbu ze hry, které tento virtuální ovladač dostává, na zvukový výstup jako nízkofrekvenční tóny pro bass shakery a subwoofery.</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibrace do zvuku</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Výstupní zařízení, režim kanálů, zesílení, tón pro každý motor</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Funguje s virtuálními ovladači Xbox, DualShock 3, DualShock 4 / DualSense a Nintendo Switch Pro, dále s rozšířenými virtuálními ovladači se silovou zpětnou vazbou, jako jsou závodní volanty, a s ovladačem Steam Deck Controller (Composite). Odezva ze hry a Otestovat vibrace se přehrávají zvukovým výstupem. Vibrace z maker zůstávají na ovladači.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Resetovat vibrace do zvuku</value></data>
@@ -4386,8 +4378,6 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="Tablet_InRange" xml:space="preserve"><value>Pero v dosahu</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Čeká se na data sdílené paměti FreeTrack.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>Sdílená paměť FreeTrack není k dispozici.</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Vibrace podle úhlu řízení</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Vibrace sílí, jak se osa páčky vzdaluje od středu</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Přidává nepřetržité vibrace, jak se vybraná osa virtuální páčky vzdaluje od středu. Používá namapovaný výstup ze všech přiřazených zdrojů. S volbou Rozdělit podle směru záporný pohyb řídí levý motor a kladný pravý. Volba Levý motor nebo Pravý motor přesune oba směry na tento jediný motor. Pro výstup Xbox a PlayStation se zařízeními s vibracemi. Přeskakuje volanty, další zařízení s konstantní silovou zpětnou vazbou a pedály Fanatec.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Povolit vibrace podle úhlu řízení</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Virtuální osa</value></data>
@@ -4402,7 +4392,6 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Resetovat na Levá páčka X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Resetovat sílu (50 %)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Resetovat středovou mrtvou zónu (2 %)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>Resetovat vibrace podle úhlu řízení</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Resetovat povolení vibrací podle úhlu řízení</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Profil</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>Vstupní plochy</value></data>

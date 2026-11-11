@@ -713,7 +713,6 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Axis han trigger</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Force feedback / rumble / haptics</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Gain kada motor, rumble han trigger, bayloay han motor</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Wala nga motor</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Tuo nga motor</value></data>
@@ -1303,11 +1302,8 @@
   <data name="Pad_PictureHint" xml:space="preserve"><value>Pidlita an usa nga control, dayon pindota an input nga magkokontrol hini.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Naghuhulat para ha {0}. Pindota an input ha imo device.</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Senyas ha full lock han stick nga ginagamit nga manibela</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Rumble nga nagdadako samtang nahirayo ha tunga an stick axis</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Padayon nga force tubtob nga imo patayon</value></data>
   <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Rumble tikang ha bass han audio han sistema</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Nagpapadara han rumble han mga main nga motor ngadto ha mga trigger</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Padayon nga force ha kada motor han trigger</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Rumble han trigger tikang ha bass han audio han sistema</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Mga deadzone han pagkiling, oryentasyon han controller</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Deadzone, pagpahapsay, Akselerasyon, kurba han output</value></data>

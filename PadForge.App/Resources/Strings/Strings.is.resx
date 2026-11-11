@@ -936,8 +936,6 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>Endurstilla heildarmögnun</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Endurstilla vinstri gikk</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Endurstilla hægri gikk</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Stöðugur kraftur í gikkjum</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Stöðugur kraftur á hvern gikkmótor</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Beining til gikkja</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Sendir titring aðalmótoranna í gikkana</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Beina aðaltitringsmótorunum inn á gikkrásina, einum gikk í einu. Virkar með XInput-titringi og kraftsvörun. Virkir getur stýrt þessu svo gikkurinn titri aðeins á meðan þú heldur hnappi inni.</value></data>
@@ -967,7 +965,6 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Beita stöðugum krafti á gikki</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Vinstri gikkur</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>Hægri gikkur</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>Endurstilla stöðugan kraft í gikkjum</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Endurstilla vinstri gikk</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Endurstilla hægri gikk</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Gikkjatitringur frá bassa í hljóði</value></data>
@@ -2511,7 +2508,6 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Gikkás</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Kraftsvörun / titringur / snertisvörun</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Styrkur hvors mótors, gikkjatitringur, víxlun mótora</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Heildarmögnun</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Vinstri mótor</value></data>
@@ -2523,14 +2519,11 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Virkni mótora</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Stöðugur kraftur</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Stöðugur kraftur þar til slökkt er á honum</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Beita stöðugum krafti á þetta tæki þar til slökkt er á því. Kraftur frá leik, hvaðan sem hann kemur, gengur fyrir á meðan hann er virkur, og stöðugi krafturinn heldur áfram þegar leikurinn hættir.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Beita stöðugum krafti</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Dragðu innan hnitanetsins til að stilla stefnu og styrk.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>Endurstilla stöðugan kraft</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Endurstilla stöðugan kraft X</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Endurstilla stöðugan kraft Y</value></data>
 
@@ -3939,7 +3932,6 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Fjölvar og valmyndir</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bassahristarar</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Beinir titringi og kraftsvörun sem þessi sýndarstýring fær frá leiknum á hljóðúttak sem lágtíðnitónum fyrir bassahristara og bassahátalara.</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Titringur í hljóð</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Úttakstæki, rásir, mögnun, tónn fyrir hvern mótor</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Virkar með Xbox-, DualShock 3-, DualShock 4- / DualSense- og Nintendo Switch Pro-sýndarstýringum, auk útvíkkaðra sýndarstýringa með kraftsvörun, svo sem kappakstursstýra, og Steam Deck Controller (Composite). Svörun frá leik og „Prófa titring“ spilast um hljóðúttakið. Titringur frá fjölvum helst á leikjastýringunni.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Endurstilla „Titringur í hljóð“</value></data>
@@ -4386,8 +4378,6 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Tablet_InRange" xml:space="preserve"><value>Penni innan seilingar</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Bíður eftir gögnum úr sameiginlegu minni FreeTrack.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>Sameiginlegt minni FreeTrack er ekki tiltækt.</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Titringur eftir stýrishorni</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Titringur sem eykst þegar ás pinna færist frá miðju</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Bætir við samfelldum titringi þegar valinn ás sýndarpinna færist frá miðju. Notar varpað úttak frá öllum úthlutuðum uppsprettum. Með Skipt eftir stefnu knýr neikvæð hreyfing vinstri mótorinn og jákvæð hreyfing þann hægri. Vinstri mótor eða Hægri mótor setur báðar áttir á þann eina mótor. Fyrir Xbox- og PlayStation-úttak með titringstækjum. Sleppir stýrum, öðrum tækjum með stöðuga kraftsvörun og pedölum frá Fanatec.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Virkja titring eftir stýrishorni</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Sýndarás</value></data>
@@ -4402,7 +4392,6 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Endurstilla á vinstri pinna X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Endurstilla styrk (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Endurstilla dautt svæði í miðju (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>Endurstilla titring eftir stýrishorni</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Endurstilla „Virkja titring eftir stýrishorni“</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Snið</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>Inntaksfletir</value></data>

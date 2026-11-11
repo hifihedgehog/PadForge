@@ -936,8 +936,6 @@
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>कुल गेन रीसेट करें</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>बायाँ ट्रिगर रीसेट करें</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>दायाँ ट्रिगर रीसेट करें</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>स्थिर ट्रिगर बल</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>हर ट्रिगर मोटर पर लगातार बल</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>ट्रिगर रूटिंग</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>मुख्य मोटर का रंबल ट्रिगर तक भेजता है</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>मुख्य रंबल मोटर को ट्रिगर चैनल में भेजें, एक बार में एक ट्रिगर। XInput रंबल और फ़ोर्स फ़ीडबैक के साथ काम करता है। एक्टिवेटर से इसे इस तरह बाँधा जा सकता है कि ट्रिगर तभी थरथराए जब आप कोई बटन दबाए रखें।</value></data>
@@ -967,7 +965,6 @@
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>स्थिर ट्रिगर बल लगाएँ</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>बायाँ ट्रिगर</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>दायाँ ट्रिगर</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>स्थिर ट्रिगर बल रीसेट करें</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>बायाँ ट्रिगर रीसेट करें</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>दायाँ ट्रिगर रीसेट करें</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>ऑडियो बेस ट्रिगर रंबल</value></data>
@@ -2511,7 +2508,6 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>ट्रिगर अक्ष</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>फ़ोर्स फ़ीडबैक / रंबल / हैप्टिक्स</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>हर मोटर का गेन, ट्रिगर रंबल, मोटर की अदला-बदली</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>कुल गेन</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>बाईं मोटर</value></data>
@@ -2523,14 +2519,11 @@
   <data name="Pad_MotorActivity" xml:space="preserve"><value>मोटर गतिविधि</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>स्थिर बल</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>बंद करने तक लगातार बल</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>जब तक आप इसे बंद नहीं करते, इस डिवाइस पर लगातार बल लगाएँ। किसी भी स्रोत से आने वाला गेम का बल सक्रिय रहने तक इसे ओवरराइड करता है, और गेम के रुकने पर यह फिर चालू हो जाता है।</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>स्थिर बल लगाएँ</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>दिशा और शक्ति सेट करने के लिए ग्रिड के अंदर खींचें।</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>स्थिर बल रीसेट करें</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>स्थिर बल X रीसेट करें</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>स्थिर बल Y रीसेट करें</value></data>
 
@@ -3939,7 +3932,6 @@
   <data name="Pad_Section_Macros" xml:space="preserve"><value>मैक्रो और मेनू</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>बेस शेकर</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>इस वर्चुअल कंट्रोलर को मिलने वाले गेम रंबल और फ़ोर्स फ़ीडबैक को बेस शेकर और सबवूफ़र के लिए कम आवृत्ति के टोन के रूप में ऑडियो आउटपुट पर भेजता है।</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>रंबल से ऑडियो</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>आउटपुट डिवाइस, चैनल, गेन, हर मोटर के लिए एक स्वर</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox, DualShock 3, DualShock 4 / DualSense और Nintendo Switch Pro वर्चुअल कंट्रोलर के साथ काम करता है, साथ ही फ़ोर्स फ़ीडबैक वाले विस्तारित वर्चुअल कंट्रोलर, जैसे रेसिंग व्हील, और Steam Deck Controller (Composite) के साथ भी। गेम का फ़ीडबैक और “रंबल का परीक्षण करें” ऑडियो आउटपुट से चलते हैं। मैक्रो रंबल कंट्रोलर पर ही रहता है।</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>“रंबल से ऑडियो” रीसेट करें</value></data>
@@ -4386,8 +4378,6 @@
   <data name="Tablet_InRange" xml:space="preserve"><value>पेन रेंज में</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>FreeTrack की साझा मेमोरी के डेटा की प्रतीक्षा है।</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>FreeTrack की साझा मेमोरी उपलब्ध नहीं है।</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>स्टीयरिंग कोण रंबल</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>स्टिक अक्ष केंद्र से दूर जाने पर बढ़ता रंबल</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>चुना गया वर्चुअल स्टिक अक्ष जैसे-जैसे केंद्र से दूर जाता है, लगातार रंबल जोड़ता है। सभी असाइन किए गए स्रोतों के मैप किए गए आउटपुट का उपयोग करता है। दिशा के अनुसार विभाजित चुनने पर ऋणात्मक गति बाईं मोटर चलाती है और धनात्मक गति दाईं मोटर। बाईं मोटर या दाईं मोटर चुनने पर दोनों दिशाएँ उसी एक मोटर पर चलती हैं। रंबल डिवाइस वाले Xbox और PlayStation आउटपुट के लिए। यह व्हील, लगातार फ़ोर्स फ़ीडबैक वाले अन्य डिवाइस और Fanatec पेडल को छोड़ देता है।</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>स्टीयरिंग कोण रंबल सक्षम करें</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>वर्चुअल अक्ष</value></data>
@@ -4402,7 +4392,6 @@
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>बाईं स्टिक X पर रीसेट करें</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>शक्ति रीसेट करें (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>केंद्र डेडज़ोन रीसेट करें (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>स्टीयरिंग कोण रंबल रीसेट करें</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>“स्टीयरिंग कोण रंबल सक्षम करें” रीसेट करें</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>प्रोफ़ाइल</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>इनपुट सतहें</value></data>

@@ -881,8 +881,6 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>Lähtesta üldvõimendus</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Lähtesta vasak päästik</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Lähtesta parem päästik</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Päästiku püsijõud</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Püsijõud igale päästikumootorile</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Päästiku suunamine</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Suunab põhimootorite vibratsiooni päästikutele</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Suunab põhivibratsioonimootorid päästikukanalisse, korraga ühele päästikule. Töötab XInput-vibratsiooni ja jõutagasisidega. Aktivaator võib seda piirata, nii et päästik vibreerib ainult siis, kui hoiate nuppu all.</value></data>
@@ -912,7 +910,6 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Rakenda päästiku püsijõudu</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Vasak päästik</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>Parem päästik</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>Lähtesta päästiku püsijõud</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Lähtesta vasak päästik</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Lähtesta parem päästik</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Helibassi päästikuvibratsioon</value></data>
@@ -2347,7 +2344,6 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Päästikutelg</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Jõutagasiside / vibratsioon / haptika</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Mootorite võimendus, päästikuvibratsioon, mootorite vahetus</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Üldvõimendus</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Vasak mootor</value></data>
@@ -2359,14 +2355,11 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Mootorite tegevus</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Püsijõud</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Püsiv jõud, kuni selle välja lülitate</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Rakendab sellele seadmele pidevat jõudu, kuni selle välja lülitate. Mängu juhitud jõud mis tahes allikast alistab selle, kuni see on aktiivne, ja püsijõud jätkub, kui mäng lõpetab.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Rakenda püsijõudu</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Suuna ja tugevuse määramiseks lohistage ruudustiku sees.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>Lähtesta püsijõud</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Lähtesta püsijõud X</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Lähtesta püsijõud Y</value></data>
 
@@ -3747,7 +3740,6 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makrod ja menüüd</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bassivibraatorid</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Suunab selle virtuaalse kontrolleri vastu võetud mängu vibratsiooni ja jõutagasiside heliväljundisse madalsageduslike toonidena bassivibraatorite ja subwooferite jaoks.</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibratsioon heliks</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Väljundseade, kanalid, võimendus, iga mootori toon</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Töötab virtuaalsete kontrolleritega Xbox, DualShock 3, DualShock 4 / DualSense ja Nintendo Switch Pro, samuti jõutagasisidega laiendatud virtuaalsete kontrolleritega, nagu võidusõiduroolid, ning kontrolleriga Steam Deck Controller (Composite). Mängu tagasiside ja testvibratsioon esitatakse heliväljundi kaudu. Makrovibratsioon jääb kontrollerile.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Lähtesta vibratsioon heliks</value></data>
@@ -4183,8 +4175,6 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="Tablet_InRange" xml:space="preserve"><value>Pliiats ulatuses</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>FreeTrack-ühismälu andmete ootamine.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>FreeTrack-ühismälu pole saadaval.</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Roolinurga vibratsioon</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Vibratsioon, mis tugevneb kangitelje keskelt eemaldudes</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Lisab pideva vibratsiooni, kui valitud virtuaalne kangitelg liigub keskelt eemale. Kasutab kõigi määratud allikate vastendatud väljundit. Valiku Suuna järgi jagatud korral juhib negatiivne liikumine vasakut mootorit ja positiivne paremat. Valik Vasak mootor või Parem mootor suunab mõlemad suunad sellele ühele mootorile. Xbox- ja PlayStation-väljundile vibratsiooniga seadmetega. Välja jäetakse roolid, muud pidevat jõutagasisidet kasutavad seadmed ja Fanatec pedaalid.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Luba roolinurga vibratsioon</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Virtuaalne telg</value></data>
@@ -4199,7 +4189,6 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Lähtesta: vasak kang X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Lähtesta tugevus (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Lähtesta keskme surnud tsoon (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>Lähtesta roolinurga vibratsioon</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Lähtesta roolinurga vibratsiooni lubamine</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Profiil</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>Sisendpinnad</value></data>

@@ -521,8 +521,6 @@
   <data name="Pad_RawAxisValue" xml:space="preserve"><value>Valor brutu di eixu</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Ripoi gatilhu skerdu</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Ripoi gatilhu direitu</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Forsa konstanti na gatilhus</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Un forsa firmi na kada motor di gatilhu</value></data>
   <data name="Pad_TriggerRouting_LeftTrigger" xml:space="preserve"><value>Gatilhu skerdu</value></data>
   <data name="Pad_TriggerRouting_RightTrigger" xml:space="preserve"><value>Gatilhu direitu</value></data>
   <data name="Pad_TriggerRouting_Source" xml:space="preserve"><value>Fonti</value></data>
@@ -543,7 +541,6 @@
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Aplika forsa konstanti na gatilhus</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Gatilhu skerdu</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>Gatilhu direitu</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>Ripoi forsa konstanti na gatilhus</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Ripoi gatilhu skerdu</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Ripoi gatilhu direitu</value></data>
   <data name="Pad_AudioTriggerRumble_Sensitivity" xml:space="preserve"><value>Sensibilidadi</value></data>
@@ -1605,7 +1602,6 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Eixu di gatilhu</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Force feedback / Vibrason / Háptika</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Ganhu pa motor, vibrason di gatilhu, troka motor</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Motor di skerda</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Motor di direita</value></data>
@@ -1614,12 +1610,9 @@
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Atividadi di motor</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Forsa konstanti</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Un forsa firmi ti bu dizliga-l</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Aplika forsa konstanti</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>Ripoi forsa konstanti</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Ripoi forsa konstanti X</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Ripoi forsa konstanti Y</value></data>
 
@@ -2367,7 +2360,6 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Muvimentu i Toki</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Lus i Son</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makrus i Menu</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibrason pa áudiu</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Dispozitivu di saída, kanal, ganhu, un tom pa kada motor</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Ripoi vibrason pa áudiu</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Manda vibrason pa un saída di áudiu</value></data>
@@ -2876,7 +2868,6 @@
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Porta, substitutu di DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Portas, velosidadi máxima, formatus personalizadu</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Avizu na limiti di un stick na modu di volanti</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Vibrason ki ta kresi kantu eixu di stick ta sai di sentru</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Ta manda vibrason di motoris prinsipal pa gatilhus</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Vibrason di gatilhu di baxu di áudiu di sistema</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Zona morta di inklinason, Orientason di komandu</value></data>

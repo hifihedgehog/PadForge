@@ -936,8 +936,6 @@
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>ஒட்டுமொத்த கெயினை மீட்டமை</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>இடது டிரிகரை மீட்டமை</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>வலது டிரிகரை மீட்டமை</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>நிலையான டிரிகர் ஃபோர்ஸ்</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>ஒவ்வொரு டிரிகர் மோட்டாருக்கும் நிலையான ஃபோர்ஸ்</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>டிரிகர் வழியமைப்பு</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>முதன்மை மோட்டார்களின் அதிர்வை டிரிகர்களுக்கு அனுப்பும்</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>முதன்மை அதிர்வு மோட்டார்களை டிரிகர் சேனலுக்கு, ஒரு நேரத்தில் ஒரு டிரிகர் என்ற வகையில் திருப்பிவிடும். XInput அதிர்வு மற்றும் ஃபோர்ஸ் ஃபீட்பேக்குடன் வேலை செய்யும். ஒரு செயல்படுத்தி இதைக் கட்டுப்படுத்தலாம், அப்போது நீங்கள் ஒரு பொத்தானைப் பிடித்திருக்கும்போது மட்டுமே டிரிகர் அதிரும்.</value></data>
@@ -967,7 +965,6 @@
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>நிலையான டிரிகர் ஃபோர்ஸைச் செலுத்து</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>இடது டிரிகர்</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>வலது டிரிகர்</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>நிலையான டிரிகர் ஃபோர்ஸை மீட்டமை</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>இடது டிரிகரை மீட்டமை</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>வலது டிரிகரை மீட்டமை</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>ஆடியோ பாஸ் டிரிகர் அதிர்வு</value></data>
@@ -2511,7 +2508,6 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>டிரிகர் அச்சு</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>ஃபோர்ஸ் ஃபீட்பேக் / அதிர்வு / ஹாப்டிக்ஸ்</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>ஒவ்வொரு மோட்டாருக்கும் வலிமை, டிரிகர் அதிர்வு, மோட்டார் இடமாற்றம்</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>ஒட்டுமொத்த கெயின்</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>இடது மோட்டார்</value></data>
@@ -2523,14 +2519,11 @@
   <data name="Pad_MotorActivity" xml:space="preserve"><value>மோட்டார் செயல்பாடு</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>நிலையான ஃபோர்ஸ்</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>ஆஃப் செய்யும் வரை நிலையான ஃபோர்ஸ்</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>நீங்கள் ஆஃப் செய்யும் வரை இந்தச் சாதனத்துக்குத் தொடர்ச்சியான ஃபோர்ஸைச் செலுத்தும். எந்த மூலத்திலிருந்தும் வரும் கேம் இயக்கும் ஃபோர்ஸ், அது செயலில் இருக்கும்போது இதை மேலெழுதும், கேம் நிறுத்தியதும் இது மீண்டும் தொடரும்.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>நிலையான ஃபோர்ஸைச் செலுத்து</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>திசையையும் வலிமையையும் அமைக்க கட்டத்துக்குள் இழுக்கவும்.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>நிலையான ஃபோர்ஸை மீட்டமை</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>நிலையான ஃபோர்ஸ் X-ஐ மீட்டமை</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>நிலையான ஃபோர்ஸ் Y-ஐ மீட்டமை</value></data>
 
@@ -3939,7 +3932,6 @@
   <data name="Pad_Section_Macros" xml:space="preserve"><value>மேக்ரோக்கள் &amp; மெனுக்கள்</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>பாஸ் ஷேக்கர்கள்</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>இந்த மெய்நிகர் கட்டுப்படுத்தி பெறும் கேம் அதிர்வையும் ஃபோர்ஸ் ஃபீட்பேக்கையும், பாஸ் ஷேக்கர்களுக்கும் சப்வூஃபர்களுக்குமான குறைந்த அதிர்வெண் தொனிகளாக ஓர் ஆடியோ வெளியீட்டுக்கு அனுப்பும்.</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>அதிர்விலிருந்து ஆடியோ</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>வெளியீட்டுச் சாதனம், சேனல்கள், கெயின், ஒவ்வொரு மோட்டாருக்கும் ஒரு ஒலி</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox, DualShock 3, DualShock 4 / DualSense, Nintendo Switch Pro மெய்நிகர் கட்டுப்படுத்திகளுடனும், ரேசிங் வீல்கள் போன்ற ஃபோர்ஸ் ஃபீட்பேக் கொண்ட விரிவாக்கப்பட்ட மெய்நிகர் கட்டுப்படுத்திகளுடனும், Steam Deck Controller (Composite) உடனும் வேலை செய்யும். கேம் ஃபீட்பேக்கும் அதிர்வைச் சோதி என்பதும் ஆடியோ வெளியீடு வழியாக ஒலிக்கும். மேக்ரோ அதிர்வு கட்டுப்படுத்தியிலேயே இருக்கும்.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>அதிர்விலிருந்து ஆடியோவை மீட்டமை</value></data>
@@ -4386,8 +4378,6 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Tablet_InRange" xml:space="preserve"><value>பேனா வரம்புக்குள்</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>FreeTrack பகிர்ந்த நினைவகத் தரவுக்காகக் காத்திருக்கிறது.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>FreeTrack பகிர்ந்த நினைவகம் கிடைக்கவில்லை.</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>ஸ்டீயரிங் கோண அதிர்வு</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>ஸ்டிக் அச்சு மையத்திலிருந்து விலக விலக அதிரும் அதிர்வு</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>தேர்ந்தெடுத்த மெய்நிகர் ஸ்டிக் அச்சு மையத்திலிருந்து விலகும்போது தொடர்ச்சியான அதிர்வைச் சேர்க்கும். ஒதுக்கப்பட்ட எல்லா மூலங்களிலிருந்தும் மேப் செய்யப்பட்ட வெளியீட்டைப் பயன்படுத்தும். திசைப்படி பிரிப்பு தேர்வில், எதிர்மறை நகர்வு இடது மோட்டாரையும், நேர்மறை நகர்வு வலது மோட்டாரையும் இயக்கும். இடது மோட்டார் அல்லது வலது மோட்டார் தேர்வில் இரு திசைகளும் அந்த ஒரே மோட்டாரில் இயங்கும். அதிர்வுச் சாதனங்களுடன் கூடிய Xbox மற்றும் PlayStation வெளியீட்டுக்கானது. இது வீல்கள், நிலையான ஃபோர்ஸ் ஃபீட்பேக் கொண்ட பிற சாதனங்கள் மற்றும் Fanatec பெடல்களைத் தவிர்க்கும்.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>ஸ்டீயரிங் கோண அதிர்வை இயக்கு</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>மெய்நிகர் அச்சு</value></data>
@@ -4402,7 +4392,6 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>இடது ஸ்டிக் X-க்கு மீட்டமை</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>வலிமையை மீட்டமை (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>மைய டெட்ஜோனை மீட்டமை (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>ஸ்டீயரிங் கோண அதிர்வை மீட்டமை</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>ஸ்டீயரிங் கோண அதிர்வை இயக்கு என்பதை மீட்டமை</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>சுயவிவரம்</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>உள்ளீட்டுப் பரப்புகள்</value></data>

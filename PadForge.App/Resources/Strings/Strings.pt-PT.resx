@@ -881,8 +881,6 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>Repor ganho geral</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Repor gatilho esquerdo</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Repor gatilho direito</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Força constante nos gatilhos</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Uma força constante em cada motor de gatilho</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Encaminhamento para os gatilhos</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Envia a vibração dos motores principais para os gatilhos</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Encaminha os motores de vibração principais para o canal dos gatilhos, um gatilho de cada vez. Funciona com a vibração XInput e com force feedback. Um ativador pode condicioná-lo, para que o gatilho só vibre enquanto mantém um botão premido.</value></data>
@@ -912,7 +910,6 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Aplicar força constante nos gatilhos</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Gatilho esquerdo</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>Gatilho direito</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>Repor força constante nos gatilhos</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Repor gatilho esquerdo</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Repor gatilho direito</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Vibração dos gatilhos pelos graves do áudio</value></data>
@@ -2347,7 +2344,6 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Eixo do gatilho</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Force feedback / Vibração / Háptica</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Ganho por motor, vibração dos gatilhos, troca de motores</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Ganho geral</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Motor esquerdo</value></data>
@@ -2359,14 +2355,11 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Atividade dos motores</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Força constante</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Uma força constante até a desligar</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Aplica uma força contínua a este dispositivo até a desligar. A força gerada pelo jogo, seja qual for a origem, sobrepõe-se enquanto estiver ativa, e a força constante é retomada quando o jogo para.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Aplicar força constante</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Arraste dentro da grelha para definir a direção e a força.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>Repor força constante</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Repor força constante X</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Repor força constante Y</value></data>
 
@@ -3748,7 +3741,6 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Macros e menus</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shakers</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Encaminha a vibração do jogo e o force feedback que este comando virtual recebe para uma saída de áudio, como tons de baixa frequência para bass shakers e subwoofers.</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibração para áudio</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Dispositivo de saída, canais, ganho, um tom para cada motor</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Funciona com comandos virtuais Xbox, DualShock 3, DualShock 4 / DualSense e Nintendo Switch Pro, e ainda com comandos virtuais Alargado com force feedback, como volantes de corrida, e com o Steam Deck Controller (Composite). A resposta do jogo e “Testar vibração” são reproduzidos através da saída de áudio. A vibração de macros fica no comando.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Repor Vibração para áudio</value></data>
@@ -4185,8 +4177,6 @@ Pretende que o PadForge os desinstale agora? Esta operação requer elevação e
   <data name="Tablet_InRange" xml:space="preserve"><value>Caneta ao alcance</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>A aguardar dados da memória partilhada do FreeTrack.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>A memória partilhada do FreeTrack não está disponível.</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Vibração por ângulo de direção</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Vibração que aumenta à medida que um eixo do manípulo se afasta do centro</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Acrescenta vibração contínua à medida que o eixo de manípulo virtual selecionado se afasta do centro. Usa a saída mapeada de todas as origens atribuídas. Com Dividir por direção, o movimento negativo aciona o motor esquerdo e o movimento positivo o direito. Motor esquerdo ou Motor direito coloca as duas direções nesse único motor. Para saída Xbox e PlayStation com dispositivos de vibração. Ignora volantes, outros dispositivos com force feedback constante e pedais Fanatec.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Ativar vibração por ângulo de direção</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Eixo virtual</value></data>
@@ -4201,7 +4191,6 @@ Pretende que o PadForge os desinstale agora? Esta operação requer elevação e
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Repor para Manípulo esquerdo X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Repor força (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Repor zona morta central (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>Repor vibração por ângulo de direção</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Repor Ativar vibração por ângulo de direção</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Perfil</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>Superfícies de entrada</value></data>

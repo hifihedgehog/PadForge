@@ -936,8 +936,6 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>Teljes erősítés visszaállítása</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Bal ravasz visszaállítása</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Jobb ravasz visszaállítása</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Állandó ravaszerő</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Állandó erő minden ravaszmotoron</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Ravaszátirányítás</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>A fő motorok rezgését a ravaszokra küldi</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>A fő rezgőmotorok átirányítása a ravaszcsatornába, ravaszonként külön. XInput-rezgéssel és erő-visszacsatolással működik. Aktivátorral feltételhez köthető, így a ravasz csak addig rezeg, amíg nyomva tart egy gombot.</value></data>
@@ -967,7 +965,6 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Állandó ravaszerő alkalmazása</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Bal ravasz</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>Jobb ravasz</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>Állandó ravaszerő visszaállítása</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Bal ravasz visszaállítása</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Jobb ravasz visszaállítása</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Ravaszrezgés a hang basszusából</value></data>
@@ -2511,7 +2508,6 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Ravasztengely</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Erő-visszacsatolás / rezgés / haptika</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Motoronkénti erősítés, ravaszrezgés, motorcsere</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Teljes erősítés</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Bal motor</value></data>
@@ -2523,14 +2519,11 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Motoraktivitás</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Állandó erő</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Állandó erő, amíg ki nem kapcsolja</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Folyamatos erőt ad erre az eszközre, amíg ki nem kapcsolja. A játék által vezérelt, bármilyen forrásból érkező erő felülbírálja, amíg aktív, majd a játék leállásakor az állandó erő folytatódik.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Állandó erő alkalmazása</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Az irány és az erősség beállításához húzza az egeret a rácson belül.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>Állandó erő visszaállítása</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Állandó erő X visszaállítása</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Állandó erő Y visszaállítása</value></data>
 
@@ -3939,7 +3932,6 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makrók és menük</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shakerek</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>A virtuális kontroller által fogadott játékrezgést és erő-visszacsatolást alacsony frekvenciás hangokként egy hangkimenetre irányítja bass shakerekhez és mélysugárzókhoz.</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Rezgés hangként</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Kimeneti eszköz, csatornák, erősítés, hang minden motorhoz</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox, DualShock 3, DualShock 4 / DualSense és Nintendo Switch Pro virtuális kontrollerekkel működik, valamint erő-visszacsatolásos Bővített virtuális kontrollerekkel, például versenykormányokkal, és a Steam Deck Controller (Composite) kontrollerrel. A játék visszajelzése és a Rezgés tesztelése a hangkimeneten szólal meg. A makróból indított rezgés a kontrolleren marad.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>A Rezgés hangként visszaállítása</value></data>
@@ -4386,8 +4378,6 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Tablet_InRange" xml:space="preserve"><value>Toll hatótávolságon belül</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Várakozás a FreeTrack megosztott memória adataira.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>A FreeTrack megosztott memória nem érhető el.</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Kormányszögtől függő rezgés</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Rezgés, amely a kartengely kitérésével erősödik</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Folyamatos rezgést ad, ahogy a kiválasztott virtuális kartengely eltávolodik a középponttól. Az összes hozzárendelt forrás hozzárendelt kimenetét használja. Az Irányonként külön beállításnál a negatív irányú mozgás a bal, a pozitív a jobb motort hajtja. A Bal motor vagy a Jobb motor mindkét irányt arra az egy motorra teszi. Rezgésre képes eszközökkel rendelkező Xbox és PlayStation kimenethez. Kihagyja a kormányokat, az állandó erő-visszacsatolású egyéb eszközöket és a Fanatec pedálokat.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Kormányszögtől függő rezgés engedélyezése</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Virtuális tengely</value></data>
@@ -4402,7 +4392,6 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Visszaállítás Bal kar X-re</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Erősség visszaállítása (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Középső holtzóna visszaállítása (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>Kormányszögtől függő rezgés visszaállítása</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>A Kormányszögtől függő rezgés engedélyezése visszaállítása</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Profil</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>Bemeneti felületek</value></data>

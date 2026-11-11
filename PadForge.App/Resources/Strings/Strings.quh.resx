@@ -683,7 +683,6 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Gatillo eje</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Force feedback / Vibración / Háptica</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Sapa motorpa kallpan, gatillo vibración, motorkunata tikray</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Lluq'i motor</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Paña motor</value></data>
@@ -1445,10 +1444,7 @@
   <data name="Pad_Section_Lights" xml:space="preserve"><value>K'anchaykuna &amp; Audio</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Macrokuna &amp; Menúkuna</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Volante modopi palanca tukukama chayaqtin willakuy</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Palancapa ejen chawpimanta karunchakuqtin wiñaq vibración</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Mana tikrakuq kallpa, wañuchinaykikama</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Hatun motorkunapa vibraciónninta gatillokunaman apachin</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Sapa gatillo motorpi mana tikrakuq kallpa</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Sistema audiopa bajonmanta gatillo vibración</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Kinrayaypa zona muertankuna, controlpa orientacionnin</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Zona muerta, llamp'uchay, Aceleración, lluqsiy curva</value></data>

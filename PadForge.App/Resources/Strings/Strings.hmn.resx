@@ -1376,10 +1376,7 @@
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Teeb thiab suab</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Cov macro thiab menu</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Lub cim thaum stick tig kawg nkaus hauv hom tsav tsheb</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Kev co uas loj zuj zus thaum axis stick tawm ntawm nruab nrab</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Lub zog ruaj khov mus txog thaum koj kaw</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Xa kev co ntawm cov motor loj mus rau cov trigger</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Lub zog ruaj khov rau txhua lub motor trigger</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Kev co trigger los ntawm suab bass ntawm lub computer</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Deadzone thaum qaij, Kev taw ntawm lub controller</value></data>
   <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Khawm qhib kev tsom, Hom qhib, Ciam tsom yooj yim</value></data>

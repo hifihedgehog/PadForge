@@ -818,7 +818,6 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Eksis bilong triga</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Force feedback / Guria / Haptics</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Strong bilong wanwan mota, guria bilong triga, senisim mota</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Lephan mota</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Raithan mota</value></data>
@@ -1764,10 +1763,7 @@
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Ol lait na nois</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Ol makro na menu</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Saen taim stik bilong stiaring i kamap long las hap</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Guria i kamap strong taim eksis bilong stik i lusim namel</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Strong i stap oltaim inap yu tanim of</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Salim guria bilong bikpela mota i go long ol triga</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Strong i stap oltaim long wanwan mota bilong triga</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Guria bilong triga long bes bilong nois bilong sistem</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Deadzone, mekim isi, Spid i go antap, Kev bilong aut</value></data>
   <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Baten bilong aim, Pasin bilong kirap, Threshold bilong isi aim</value></data>

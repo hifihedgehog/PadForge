@@ -936,8 +936,6 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>Palauta kokonaisvahvistus</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Palauta vasen liipaisin</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Palauta oikea liipaisin</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Jatkuva liipaisinvoima</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Tasainen voima kumpaankin liipaisinmoottoriin</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Liipaisinreititys</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Ohjaa päämoottorien tärinän liipaisimiin</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Reititä päätärinämoottorit liipaisinkanavaan liipaisin kerrallaan. Toimii XInput-tärinän ja voimapalautteen kanssa. Aktivoija voi rajata sen niin, että liipaisin surisee vain, kun pidät painiketta painettuna.</value></data>
@@ -967,7 +965,6 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Käytä jatkuvaa liipaisinvoimaa</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Vasen liipaisin</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>Oikea liipaisin</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>Palauta jatkuva liipaisinvoima</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Palauta vasen liipaisin</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Palauta oikea liipaisin</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Liipaisintärinä äänen bassosta</value></data>
@@ -2511,7 +2508,6 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Liipaisinakseli</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Voimapalaute / tärinä / haptiikka</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Moottorikohtainen vahvistus, liipaisintärinä, moottorien vaihto</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Kokonaisvahvistus</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Vasen moottori</value></data>
@@ -2523,14 +2519,11 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Moottorien toiminta</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Jatkuva voima</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Tasainen voima, kunnes kytket sen pois</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Käytä jatkuvaa voimaa tähän laitteeseen, kunnes kytket sen pois. Pelin ohjaama voima mistä tahansa lähteestä ohittaa sen niin kauan kuin se on aktiivinen, ja jatkuva voima palaa, kun peli lopettaa.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Käytä jatkuvaa voimaa</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Aseta suunta ja voimakkuus vetämällä ruudukon sisällä.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>Palauta jatkuva voima</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Palauta jatkuva voima X</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Palauta jatkuva voima Y</value></data>
 
@@ -3939,7 +3932,6 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makrot ja valikot</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bassotäristimet</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Reitittää tämän virtuaaliohjaimen vastaanottaman pelin tärinän ja voimapalautteen äänilähtöön matalataajuisina sävyinä bassotäristimille ja subwoofereille.</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Tärinä ääneksi</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Lähtölaite, kanavat, vahvistus, sävel kullekin moottorille</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Toimii Xbox-, DualShock 3-, DualShock 4- / DualSense- ja Nintendo Switch Pro -virtuaaliohjainten sekä voimapalautteella varustettujen laajennettujen virtuaaliohjainten, kuten kilpa-ajorattien, ja Steam Deck Controller (Composite) -ohjaimen kanssa. Pelin palaute ja Testaa tärinää toistetaan äänilähdön kautta. Makrojen tärinä pysyy ohjaimessa.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Palauta Tärinä ääneksi</value></data>
@@ -4386,8 +4378,6 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="Tablet_InRange" xml:space="preserve"><value>Kynä kantaman sisällä</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Odotetaan FreeTrack-jaetun muistin tietoja.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>FreeTrack-jaettu muisti ei ole käytettävissä.</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Ohjauskulman tärinä</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Tärinä, joka voimistuu sauvan akselin siirtyessä keskeltä</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Lisää jatkuvaa tärinää, kun valittu virtuaalisen sauvan akseli liikkuu pois keskeltä. Käyttää kaikkien liitettyjen lähteiden määritettyä lähtöä. Valinnalla Jaa suunnan mukaan negatiivinen liike ohjaa vasenta moottoria ja positiivinen oikeaa. Valinnalla Vasen moottori tai Oikea moottori molemmat suunnat toistuvat vain tällä moottorilla. Xbox- ja PlayStation-lähdölle tärinälaitteiden kanssa. Se ohittaa ratit, muut jatkuvaa voimapalautetta käyttävät laitteet ja Fanatec-polkimet.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Ota ohjauskulman tärinä käyttöön</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Virtuaaliakseli</value></data>
@@ -4402,7 +4392,6 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Palauta: Vasen sauva X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Palauta voimakkuus (50 %)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Palauta keskikohdan kuollut alue (2 %)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>Palauta ohjauskulman tärinä</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Palauta ohjauskulman tärinän käyttöönotto</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Profiili</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>Syötepinnat</value></data>

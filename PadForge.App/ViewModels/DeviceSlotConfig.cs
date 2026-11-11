@@ -1656,6 +1656,16 @@ namespace PadForge.ViewModels
             });
         private RelayCommand _resetRightTrigger;
 
+        /// <summary>Both triggers back to their defaults, for the Reset All
+        /// of the one card that holds the two (#574).</summary>
+        public RelayCommand ResetAdaptiveTriggersCommand =>
+            _resetAdaptiveTriggers ??= new RelayCommand(() =>
+            {
+                ResetLeftTriggerCommand.Execute(null);
+                ResetRightTriggerCommand.Execute(null);
+            });
+        private RelayCommand _resetAdaptiveTriggers;
+
         public RelayCommand ResetLeftRangeCommand =>
             _resetLeftRange ??= new RelayCommand(() =>
             {

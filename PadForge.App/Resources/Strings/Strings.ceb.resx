@@ -588,8 +588,6 @@
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>I-reset ang kinatibuk-ang gain</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>I-reset ang wala nga trigger</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>I-reset ang tuo nga trigger</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Kanunay nga pwersa sa trigger</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Padayon nga pwersa sa matag motor sa trigger</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Idirekta ang mga main rumble motor ngadto sa channel sa trigger, usa ka trigger matag higayon. Molihok kini uban sa XInput rumble ug force feedback. Ang activator makapugong niini aron mo-buzz lang ang trigger samtang gikuptan nimo ang button.</value></data>
   <data name="Pad_TriggerRouting_LeftTrigger" xml:space="preserve"><value>Wala nga trigger</value></data>
   <data name="Pad_TriggerRouting_RightTrigger" xml:space="preserve"><value>Tuo nga trigger</value></data>
@@ -613,7 +611,6 @@
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Ihatag ang kanunay nga pwersa sa trigger</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Wala nga trigger</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>Tuo nga trigger</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>I-reset ang kanunay nga pwersa sa trigger</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>I-reset ang wala nga trigger</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>I-reset ang tuo nga trigger</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Trigger rumble gikan sa bass sa audio</value></data>
@@ -1699,14 +1696,11 @@
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Kalihokan sa motor</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Makanunayon nga pwersa</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Padayon nga pwersa hangtod imong i-off</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Paghatag og padayon nga pwersa niining device hangtod imong i-toggle kini pagpalong. Ang pwersa gikan sa dula, gikan sa bisan unsang tinubdan, mo-override samtang aktibo kini, ug ang makanunayon nga pwersa mobalik kung mohunong ang dula.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Gamita ang makanunayon nga pwersa</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>I-drag sulod sa grid aron itakda ang direksyon ug kusog.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>I-reset ang makanunayon nga pwersa</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>I-reset ang makanunayon nga pwersa X</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>I-reset ang makanunayon nga pwersa Y</value></data>
 
@@ -2712,7 +2706,6 @@
   <data name="Dashboard_Overlays" xml:space="preserve"><value>Mga overlay</value></data>
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Mga timailhan sa screen nga gipakita sa PadForge samtang nagdula ka. Ang pag-off sa usa dili gayud mousab sa pamatasan, kung gipahibalo lang kini o dili.</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Overlay sa pagbalhin og profile</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Rumble ngadto sa audio</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Device sa output, mga channel, gain, tono alang sa matag motor</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>I-reset ang Rumble ngadto sa audio</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Ipadala ang rumble ngadto sa audio output</value></data>
@@ -3093,8 +3086,6 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="Tablet_InRange" xml:space="preserve"><value>Pen sulod sa range</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Naghulat sa data sa FreeTrack shared memory.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>Dili magamit ang FreeTrack shared memory.</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Rumble sa anggulo sa steering</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Rumble nga mokusog samtang ang axis sa stick mopalayo sa sentro</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Magdugang og padayon nga rumble samtang ang napiling virtual nga axis sa stick molihok palayo sa sentro. Gigamit ang na-map nga output gikan sa tanang na-assign nga source. Kon "Gibahin sumala sa direksyon" ang napili, ang negatibo nga lihok mopaandar sa wala nga motor ug ang positibo sa tuo. Ang "Wala nga motor" o "Tuo nga motor" magbutang sa duha ka direksyon sa maong usa ka motor. Para sa Xbox ug PlayStation nga output nga adunay rumble nga device. Gilaktawan niini ang mga manibela, ang ubang device nga adunay padayon nga force feedback, ug ang mga pedal sa Fanatec.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>I-enable ang rumble sa anggulo sa steering</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Virtual nga axis</value></data>
@@ -3109,7 +3100,6 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>I-reset sa Wala nga stick X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>I-reset ang kakusog (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>I-reset ang deadzone sa sentro (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>I-reset ang rumble sa anggulo sa steering</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>I-reset ang I-enable ang rumble sa anggulo sa steering</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Profile</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>Mga input surface</value></data>

@@ -864,7 +864,6 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Axe ya gâchette</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Retour de force / Vibration / Haptique</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Gain ya moteur moko moko, vibration ya gâchette, kobongola ba moteur</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Moteur ya mwasi</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Moteur ya mobali</value></data>
@@ -1742,10 +1741,7 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Pad_PictureHint" xml:space="preserve"><value>Pona contrôle moko, sima finá entrée oyo ekotambwisa yango.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Tozali kozela {0}. Finá entrée na appareil na yo.</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Elembo ntango stick ya volant ekómi na nsuka</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Vibration oyo ekoli ntango axe ya stick elongwe na katikati</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Makasi ya ntango nyonso tii okozimisa yango</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Etindi vibration ya ba moteur monene na ba gâchette</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Makasi ya ntango nyonso na moteur ya gâchette moko moko</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Vibration ya gâchette uta na basse ya audio ya système</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Ba zone morte ya kogumbama, Orientation ya manette</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Zone morte, lissage, Accélération, Courbe ya kobima</value></data>

@@ -936,8 +936,6 @@
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>Сбросить общее усиление</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Сбросить левый триггер</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Сбросить правый триггер</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Постоянное усилие триггеров</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Постоянное усилие на моторе каждого триггера</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Маршрутизация на триггеры</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Передает вибрацию основных моторов на триггеры</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Направляет сигнал основных моторов вибрации в канал триггеров, отдельно для каждого триггера. Работает с вибрацией XInput и силовой обратной связью. Можно задать активатор, чтобы триггер вибрировал, только пока вы удерживаете кнопку.</value></data>
@@ -967,7 +965,6 @@
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Подавать постоянное усилие на триггеры</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Левый триггер</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>Правый триггер</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>Сбросить постоянное усилие триггеров</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Сбросить левый триггер</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Сбросить правый триггер</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Вибрация триггеров от басов</value></data>
@@ -2511,7 +2508,6 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Ось триггера</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Силовая обратная связь / вибрация / тактильная отдача</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Усиление по моторам, вибрация триггеров, обмен моторов</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Общее усиление</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Левый мотор</value></data>
@@ -2523,14 +2519,11 @@
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Активность моторов</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Постоянное усилие</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Постоянное усилие, пока вы его не отключите</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Подает постоянное усилие на это устройство, пока вы его не выключите. Усилие, заданное игрой из любого источника, имеет приоритет, пока оно действует, а когда игра его прекращает, постоянное усилие возвращается.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Подавать постоянное усилие</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Перетаскивайте внутри сетки, чтобы задать направление и силу.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>Сбросить постоянное усилие</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Сбросить постоянное усилие X</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Сбросить постоянное усилие Y</value></data>
 
@@ -3939,7 +3932,6 @@
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Макросы и меню</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Бас-шейкеры</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Направляет вибрацию и силовую обратную связь от игры, которые получает этот виртуальный контроллер, на аудиовыход в виде низкочастотных тонов для бас-шейкеров и сабвуферов.</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Вибрация в звук</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Устройство вывода, каналы, усиление, тон для каждого мотора</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Работает с виртуальными контроллерами Xbox, DualShock 3, DualShock 4 / DualSense и Nintendo Switch Pro, а также с расширенными виртуальными контроллерами с силовой обратной связью, например гоночными рулями, и с Steam Deck Controller (Composite). Отдача от игры и «Проверить вибрацию» воспроизводятся через аудиовыход. Вибрация от макросов остается на контроллере.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Сбросить «Вибрация в звук»</value></data>
@@ -4386,8 +4378,6 @@
   <data name="Tablet_InRange" xml:space="preserve"><value>Перо в зоне действия</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Ожидание данных из общей памяти FreeTrack.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>Общая память FreeTrack недоступна.</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Вибрация по углу руления</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Вибрация усиливается по мере отклонения оси стика от центра</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Добавляет непрерывную вибрацию по мере того, как выбранная ось виртуального стика уходит от центра. Использует назначенный выход всех назначенных источников. Если выбрано «По направлению», отрицательное движение управляет левым мотором, положительное правым. «Левый мотор» или «Правый мотор» направляет оба направления на этот один мотор. Для выхода Xbox и PlayStation с устройствами, поддерживающими вибрацию. Рули, другие устройства с постоянной силовой обратной связью и педали Fanatec пропускаются.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Включить вибрацию по углу руления</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Виртуальная ось</value></data>
@@ -4402,7 +4392,6 @@
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Сбросить на «Левый стик X»</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Сбросить силу (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Сбросить мертвую зону в центре (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>Сбросить вибрацию по углу руления</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Сбросить «Включить вибрацию по углу руления»</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Профиль</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>Поверхности ввода</value></data>

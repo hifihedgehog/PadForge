@@ -42,11 +42,8 @@ namespace PadForge.Tests
             ("KeepAwakeFoldCard", "Pad.Output.KeepAwake", "Pad_KeepAwake_Card_Header", "Pad_KeepAwake_FoldHint"),
             ("LockFeedbackCard", "Pad.Sticks.LockFeedback", "Pad_Steering_LockFeedback", "Pad_LockFeedback_FoldHint"),
             ("FlickStickCard", "Pad.Sticks.FlickStick", "Pad_FlickStick_Header", "Pad_FlickStick_FoldHint"),
-            ("SteeringAngleRumbleCard", "Pad.Rumble.SteeringAngle", "Pad_SteeringAngleRumble_Header", "Pad_SteeringAngleRumble_FoldHint"),
-            ("ConstantForceFoldCard", "Pad.Rumble.ConstantForce", "Pad_ConstantForce_Header", "Pad_ConstantForce_FoldHint"),
             ("AudioRumbleFoldCard", "Pad.Rumble.Audio", "Settings_AudioRumble", "Pad_AudioRumble_FoldHint"),
             ("TriggerRoutingFoldCard", "Pad.Rumble.TriggerRouting", "Pad_TriggerRouting_Header", "Pad_TriggerRouting_FoldHint"),
-            ("ConstantTriggerForceFoldCard", "Pad.Rumble.ConstantTriggerForce", "Pad_ConstantTriggerForce_Header", "Pad_ConstantTriggerForce_FoldHint"),
             ("AudioTriggerRumbleFoldCard", "Pad.Rumble.AudioTriggers", "Pad_AudioTriggerRumble_Header", "Pad_AudioTriggerRumble_FoldHint"),
             ("GyroEngageCard", "Pad.Motion.Engage", "Pad_Gyro_Engage_Header", "Pad_GyroEngage_FoldHint"),
             ("GyroResponseCard", "Pad.Motion.Response", "Pad_Gyro_Response_Header", "Pad_GyroResponse_FoldHint"),
@@ -83,10 +80,13 @@ namespace PadForge.Tests
                 new[] { "FalconKickButton", "{Binding FalconKick, Mode=TwoWay}", "FalconShake", "FalconBraceButton", "FalconPreloadButton", "FalconGravity" }),
             ("Pad_More_ForceFeedback", "Pad.Rumble.ForceFeedback.More", "Pad_More_ForceFeedback",
                 new[] { "ForceOverallGain", "Pad_MotorActivity", "TestRumbleCommand" },
-                new[] { "LeftMotorStrength", "RightMotorStrength", "Pad_TestLeftMotor", "Pad_TestRightMotor", "TriggerRumbleFold", "SwapMotors" }),
+                new[] { "LeftMotorStrength", "RightMotorStrength", "Pad_TestLeftMotor", "Pad_TestRightMotor", "TriggerRumbleFold", "SwapMotors",
+                        "SteeringAngleRumbleEnabled", "SteeringAngleRumbleAxis", "SteeringAngleRumbleMotor", "SteeringAngleRumbleStrength",
+                        "SteeringAngleRumbleDeadzone", "ConstantForceEnabled", "ConstantForcePadBorder", "ConstantForceX", "ConstantForceY" }),
             ("Pad_More_ImpulseTriggers", "Pad.Rumble.ImpulseTriggers.More", "Pad_More_ImpulseTriggers",
-                new[] { "ImpulseOverallGain", "Pad_ImpulseTriggers_MotorActivity", "TestLeftImpulseTriggerCommand", "TestRightImpulseTriggerCommand" },
-                new[] { "ImpulseLeftStrength", "ImpulseRightStrength", "ImpulseSwapTriggers", "AtVibrationToImpulse" }),
+                new[] { "ImpulseOverallGain", "Pad_ImpulseTriggers_MotorActivity" },
+                new[] { "ImpulseLeftStrength", "ImpulseRightStrength", "TestLeftImpulseTriggerCommand", "TestRightImpulseTriggerCommand",
+                        "ImpulseSwapTriggers", "AtVibrationToImpulse", "ConstantTriggerForceEnabled", "ConstantTriggerForceLeft", "ConstantTriggerForceRight" }),
             ("Pad_More_BassShakers", "Pad.Rumble.BassShakers.More", "Pad_More_BassShakers",
                 new[] { "{Binding RumbleAudioEnabled, Mode=TwoWay}" },
                 new[] { "RumbleAudioEndpointId", "RumbleAudioChannelMode", "RumbleAudioMasterGain" }),
@@ -122,7 +122,71 @@ namespace PadForge.Tests
                 // title row is left in it.
                 var panel = Assert.Single(card.Elements(), e => e.Name.LocalName == "StackPanel");
                 Assert.DoesNotContain(panel.Descendants(), e => ((string)e.Attribute("Style") ?? "").Contains("CardTitle"));
+                // It is a line of a list, which draws the one card its
+                // lines share, and it has no margin of its own there.
+                Assert.Equal("FoldList", card.Parent!.Name.LocalName);
+                Assert.Null(card.Attribute("Margin"));
+                // Its Reset All stands at the line's end and never in its
+                // rows. Its description is the line's tooltip, so the rows
+                // open on no paragraph that says what the part is.
+                Assert.DoesNotContain(panel.Elements(), e => ((string)e.Attribute("Style") ?? "").Contains("ResetAllButton"));
+                var action = card.Elements().SingleOrDefault(e => e.Name.LocalName == "FoldCard.HeaderAction");
+                if (action != null)
+                    Assert.Equal("{StaticResource ResetAllButton}", (string)Assert.Single(action.Elements()).Attribute("Style"));
+                if (card.Attribute("Description") != null)
+                    Assert.DoesNotContain(panel.Elements().Take(1), e => ((string)e.Attribute("Style") ?? "").Contains("CardDescription")
+                        && e.Attribute("Visibility") == null && Name(e) == null);
             }
+            // A list holds fold cards and nothing else.
+            foreach (var list in Page().Descendants().Where(e => e.Name.LocalName == "FoldList"))
+                Assert.All(list.Elements(), e => Assert.Equal("FoldCard", e.Name.LocalName));
+            // The 22 parts that have a Reset All and the 21 that have a
+            // description keep them.
+            Assert.Equal(22, cards.Count(c => c.Elements().Any(e => e.Name.LocalName == "FoldCard.HeaderAction")));
+            Assert.Equal(21, cards.Count(c => c.Attribute("Description") != null));
+        }
+
+        /// <summary>A feature that is off until switched on, and that the
+        /// Rumble board keeps under its card's More row, is a switch with
+        /// its settings under it while it is on: Steering Angle Rumble and
+        /// Constant Force under Force Feedback, Constant Trigger Force
+        /// under Impulse Triggers. Each was a card of its own that folded.
+        /// What the feature does is the tooltip of its switch and of the
+        /// switch's label.</summary>
+        [Theory]
+        [InlineData("SteeringAngleRumbleRows", "Pad_More_ForceFeedback", "SteeringAngleRumbleEnabled", "Pad_SteeringAngleRumble_Description", 4)]
+        [InlineData("ConstantForceRows", "Pad_More_ForceFeedback", "ConstantForceEnabled", "Pad_ConstantForce_Description", 2)]
+        [InlineData("ConstantTriggerForceRows", "Pad_More_ImpulseTriggers", "ConstantTriggerForceEnabled", "Pad_ConstantTriggerForce_Description", 2)]
+        public void ASwitchUnderMore_ShowsItsSettingsWhileItIsOn(string block, string more, string flag, string description, int settings)
+        {
+            var page = Page();
+            var rows = Assert.Single(page.Descendants(), e => Name(e) == block);
+            Assert.Equal("StackPanel", rows.Name.LocalName);
+            Assert.Contains(Assert.Single(page.Descendants(), e => Id(e) == more), rows.Ancestors());
+            var parts = rows.Elements().ToList();
+            Assert.Equal(new[] { "SettingRow", "StackPanel" }, parts.Select(p => p.Name.LocalName));
+
+            // The switch's row: label, switch, reset.
+            var first = parts[0].Elements().ToList();
+            Assert.Equal("{StaticResource DzLabel}", (string)first[0].Attribute("Style"));
+            Assert.Equal("{StaticResource SwitchCheckBox}", (string)first[1].Attribute("Style"));
+            Assert.Equal("{Binding " + flag + ", Mode=TwoWay}", (string)first[1].Attribute("IsChecked"));
+            Assert.Equal(description, Key(first[0], "ToolTip"));
+            Assert.Equal(description, Key(first[1], "ToolTip"));
+
+            // Its settings: there while the switch is on, each a row whose
+            // label is set in from the switch's, with a reset of its own.
+            Assert.Equal("{Binding " + flag + ", Converter={StaticResource BoolToVisibilityConverter}}", (string)parts[1].Attribute("Visibility"));
+            var under = parts[1].Elements().Where(e => e.Name.LocalName == "SettingRow").ToList();
+            Assert.Equal(settings, under.Count);
+            Assert.All(under, row =>
+            {
+                Assert.Equal("{StaticResource DzSubLabel}", (string)row.Elements().First().Attribute("Style"));
+                Assert.Contains(row.Elements(), e => ((string)e.Attribute("Style") ?? "").Contains("ResetButton") || e.Name.LocalName == "SettingResetButton");
+            });
+            // Hidden with their switch off, they need no enabled state of
+            // their own tied to it.
+            Assert.DoesNotContain(parts[1].Descendants(), e => ((string)e.Attribute("IsEnabled") ?? "").Contains(flag));
         }
 
         [Fact]
@@ -174,8 +238,10 @@ namespace PadForge.Tests
         public void OpenCardsComeBeforeFoldedOnesInGyroAndTouchpad()
         {
             var page = Page();
+            // A list's fold cards stand where the list does.
             string[] CardsOf(string group) => page.Descendants().Single(e => e.Name.LocalName == "StackPanel" && Name(e) == group)
-                .Elements().Where(e => e.Name.LocalName == "FoldCard" || ((string)e.Attribute("Style") ?? "").Contains("CardBorder"))
+                .Elements().SelectMany(e => e.Name.LocalName == "FoldList" ? e.Elements() : new[] { e })
+                .Where(e => e.Name.LocalName == "FoldCard" || ((string)e.Attribute("Style") ?? "").Contains("CardBorder"))
                 .Select(e => Name(e) ?? e.Descendants().Where(d => ((string)d.Attribute("Style") ?? "").Contains("CardTitle")).Select(d => Key(d, "Text")).First())
                 .ToArray();
 

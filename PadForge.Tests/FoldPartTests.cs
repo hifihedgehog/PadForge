@@ -349,7 +349,21 @@ namespace PadForge.Tests
             var quiet = Style(app, "QuietResetButton");
             Assert.Equal("{StaticResource EmberIconButton}", (string)quiet.Attribute("BasedOn"));
             Assert.Equal("Transparent", Setter(quiet, "BorderBrush"));
-            Assert.Equal("{DynamicResource TextFillColorTertiaryBrush}", Setter(quiet, "Foreground"));
+            Assert.Equal("{DynamicResource QuietGlyphBrush}", Setter(quiet, "Foreground"));
+            // 32 square with no margin: the board's size, and the same 32 a
+            // row paid for the icon button's 28 and its 4 of margin.
+            Assert.Equal("32", Setter(quiet, "Width"));
+            Assert.Equal("32", Setter(quiet, "Height"));
+            Assert.Equal("0", Setter(quiet, "Margin"));
+            // A reset that rests with its row is its dimmed glyph alone:
+            // the two keys the button template fills and rings a disabled
+            // button from are shadowed with nothing.
+            var shadowed = quiet.Elements().Single(e => e.Name.LocalName == "Style.Resources").Elements().ToList();
+            Assert.Equal(new[] { "ButtonBackgroundDisabled", "ButtonBorderBrushDisabled" }, shadowed.Select(e => (string)e.Attribute(Xaml + "Key")));
+            Assert.All(shadowed, e => Assert.Equal("Transparent", (string)e.Attribute("Color")));
+            string template = RepoText("PadForge.App", "App.xaml");
+            Assert.Contains("Property=\"Background\" Value=\"{DynamicResource ButtonBackgroundDisabled}\"", template);
+            Assert.Contains("Property=\"BorderBrush\" Value=\"{DynamicResource ButtonBorderBrushDisabled}\"", template);
 
             var triggers = quiet.Descendants().Where(e => e.Name.LocalName == "Trigger").ToList();
             var pointer = Assert.Single(triggers, t => (string)t.Attribute("Property") == "IsMouseOver");

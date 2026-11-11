@@ -936,8 +936,6 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>Tilbakestill total forsterkning</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Tilbakestill venstre avtrekker</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Tilbakestill høyre avtrekker</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Konstant avtrekkerkraft</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>En jevn kraft på hver avtrekkermotor</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Ruting til avtrekkere</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Sender vibrasjonen fra hovedmotorene til avtrekkerne</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Send hovedvibrasjonsmotorene til avtrekkerkanalen, én avtrekker om gangen. Fungerer med XInput-vibrasjon og force feedback. En aktivator kan styre det slik at avtrekkeren bare surrer mens du holder inne en knapp.</value></data>
@@ -967,7 +965,6 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Bruk konstant avtrekkerkraft</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Venstre avtrekker</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>Høyre avtrekker</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>Tilbakestill konstant avtrekkerkraft</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Tilbakestill venstre avtrekker</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Tilbakestill høyre avtrekker</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Avtrekkervibrasjon fra bassen i lyden</value></data>
@@ -2511,7 +2508,6 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Avtrekkerakse</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Force feedback / vibrasjon / haptikk</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Styrke for hver motor, avtrekkervibrasjon, bytte av motorer</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Total forsterkning</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Venstre motor</value></data>
@@ -2523,14 +2519,11 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Motoraktivitet</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Konstant kraft</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>En jevn kraft til du slår den av</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Bruker en kontinuerlig kraft på denne enheten til du slår den av. Kraft fra spillet, uansett kilde, overstyrer mens den er aktiv, og den konstante kraften fortsetter når spillet stopper.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Bruk konstant kraft</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Dra inne i rutenettet for å angi retning og styrke.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>Tilbakestill konstant kraft</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Tilbakestill konstant kraft X</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Tilbakestill konstant kraft Y</value></data>
 
@@ -3939,7 +3932,6 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makroer og menyer</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shakers</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Ruter vibrasjonen og force feedback fra spillet som denne virtuelle kontrolleren mottar, til en lydutgang som lavfrekvente toner for bass shakers og subwoofere.</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibrasjon til lyd</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Utgangsenhet, kanaler, forsterkning, en tone for hver motor</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Fungerer med virtuelle kontrollere av typen Xbox, DualShock 3, DualShock 4 / DualSense og Nintendo Switch Pro, i tillegg til utvidede virtuelle kontrollere med force feedback, som racingratt, og Steam Deck Controller (Composite). Tilbakemelding fra spillet og Test vibrasjon spilles av gjennom lydutgangen. Makrovibrasjon blir på kontrolleren.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Tilbakestill vibrasjon til lyd</value></data>
@@ -4386,8 +4378,6 @@ Vil du at PadForge skal avinstallere dem nå? Dette krever administratorrettighe
   <data name="Tablet_InRange" xml:space="preserve"><value>Pennen innenfor rekkevidde</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Venter på data fra delt minne for FreeTrack.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>Delt minne for FreeTrack er ikke tilgjengelig.</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Vibrasjon etter styrevinkel</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Vibrasjon som øker når en stikkeakse går bort fra midten</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Legger til kontinuerlig vibrasjon når den valgte virtuelle stikkeaksen beveger seg bort fra midten. Bruker den tilordnede utgangen fra alle tilordnede kilder. Med Delt etter retning driver negativ bevegelse venstre motor og positiv bevegelse høyre. Venstre motor eller Høyre motor legger begge retninger på den ene motoren. For utgang som Xbox og PlayStation med enheter som kan vibrere. Den hopper over ratt, andre enheter med konstant force feedback og Fanatec-pedaler.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Aktiver vibrasjon etter styrevinkel</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Virtuell akse</value></data>
@@ -4402,7 +4392,6 @@ Vil du at PadForge skal avinstallere dem nå? Dette krever administratorrettighe
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Tilbakestill til venstre stikke X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Tilbakestill styrke (50 %)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Tilbakestill dødsone i midten (2 %)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>Tilbakestill vibrasjon etter styrevinkel</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Tilbakestill Aktiver vibrasjon etter styrevinkel</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Profil</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>Inndataflater</value></data>

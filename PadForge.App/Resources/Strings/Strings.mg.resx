@@ -1037,7 +1037,6 @@
   <data name="Pad_Preset_Label" xml:space="preserve"><value>Preset</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Force feedback / Vibration / Haptique</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Tanjaky ny motera tsirairay, vibration amin'ny gâchette, fifanakalozana motera</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Motera havia</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Motera havanana</value></data>
@@ -2010,10 +2009,7 @@
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Izay fanindriana hitan'ny lalao rehefa samy tazomina ny bokotra fitendry roa</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Mitazona deflection kely amin'ny stick mba hampisehoan'ny lalao foana ny famantarana contrôleur</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Famantarana rehefa tonga amin'ny fetrany ny stick amin'ny fomba familiana</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Vibration mitombo rehefa miala afovoany ny axe an'ny stick</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Hery maharitra mandra-pamonoanao azy</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Mandefa ny vibration an'ny motera lehibe any amin'ny gâchette</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Hery maharitra amin'ny moteran'ny gâchette tsirairay</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Vibration amin'ny gâchette avy amin'ny bass ao amin'ny feon'ny rafitra</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Deadzone amin'ny fitongilanana, fironan'ny contrôleur</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Deadzone, fanalefahana, fanafainganana, fiolahan'ny fivoahana</value></data>

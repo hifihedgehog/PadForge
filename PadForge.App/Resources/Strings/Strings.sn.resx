@@ -655,7 +655,6 @@
   <data name="Pad_Preset_Label" xml:space="preserve"><value>Preset</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Force feedback / kudedera / haptics</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Simba remota imwe neimwe, kudedera kwetrigger, kuchinjanisa mota</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Mota yekuruboshwe</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Mota yekurudyi</value></data>
@@ -1336,10 +1335,7 @@
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Mwenje neInzwi</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Mamacro neMenyu</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Chiratidzo kana stick yekutyaira yasvika pamugumo</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Kudedera kunowedzera axis yestick ichibva pakati</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Simba risingachinje kusvikira waridzima</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Inotumira kudedera kwemota huru kumatrigger</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Simba risingachinje pamota yega yega yetrigger</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Kudedera kwetrigger kunobva kubass yeinzwi resystem</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Deadzone dzekurereka, Kutarisa kwecontroller</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Deadzone, kutsetsenura, Kumhanyisa, Curve yekubuda</value></data>

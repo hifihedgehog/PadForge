@@ -936,8 +936,6 @@
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>รีเซ็ตเกนโดยรวม</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>รีเซ็ตทริกเกอร์ซ้าย</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>รีเซ็ตทริกเกอร์ขวา</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>แรงทริกเกอร์คงที่</value></data>
-  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>แรงคงที่บนมอเตอร์ทริกเกอร์แต่ละตัว</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>การกำหนดเส้นทางทริกเกอร์</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>ส่งการสั่นของมอเตอร์หลักไปยังทริกเกอร์</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>ส่งมอเตอร์การสั่นหลักเข้าช่องสัญญาณทริกเกอร์ ทีละทริกเกอร์ ใช้ได้กับการสั่นของ XInput และฟอร์ซฟีดแบ็ก ตัวเปิดใช้งานสามารถควบคุมให้ทริกเกอร์สั่นเฉพาะขณะที่คุณกดปุ่มค้างไว้เท่านั้น</value></data>
@@ -967,7 +965,6 @@
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>ใช้แรงทริกเกอร์คงที่</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>ทริกเกอร์ซ้าย</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>ทริกเกอร์ขวา</value></data>
-  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>รีเซ็ตแรงทริกเกอร์คงที่</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>รีเซ็ตทริกเกอร์ซ้าย</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>รีเซ็ตทริกเกอร์ขวา</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>การสั่นทริกเกอร์ตามเสียงเบส</value></data>
@@ -2511,7 +2508,6 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>แกนทริกเกอร์</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>ฟอร์ซฟีดแบ็ก / การสั่น / แฮปติก</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>เกนรายมอเตอร์ การสั่นทริกเกอร์ การสลับมอเตอร์</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>เกนโดยรวม</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>มอเตอร์ซ้าย</value></data>
@@ -2523,14 +2519,11 @@
   <data name="Pad_MotorActivity" xml:space="preserve"><value>การทำงานของมอเตอร์</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
-  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>แรงคงที่</value></data>
-  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>แรงคงที่จนกว่าจะปิด</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>ส่งแรงต่อเนื่องไปยังอุปกรณ์นี้จนกว่าคุณจะปิด แรงที่เกมสั่งจากแหล่งใดก็ตามจะมีผลแทนขณะที่ทำงานอยู่ และแรงคงที่จะกลับมาเมื่อเกมหยุดสั่ง</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>ใช้แรงคงที่</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>ลากภายในตารางเพื่อกำหนดทิศทางและความแรง</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
-  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>รีเซ็ตแรงคงที่</value></data>
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>รีเซ็ตแรงคงที่ X</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>รีเซ็ตแรงคงที่ Y</value></data>
 
@@ -3939,7 +3932,6 @@
   <data name="Pad_Section_Macros" xml:space="preserve"><value>แมโครและเมนู</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>เบสเชกเกอร์</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>ส่งการสั่นและฟอร์ซฟีดแบ็กจากเกมที่คอนโทรลเลอร์เสมือนนี้ได้รับไปยังเอาต์พุตเสียงในรูปของโทนความถี่ต่ำ สำหรับเบสเชกเกอร์และซับวูฟเฟอร์</value></data>
-  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>การสั่นเป็นเสียง</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>อุปกรณ์เอาต์พุต แชนเนล เกน เสียงโทนของมอเตอร์แต่ละตัว</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>ใช้ได้กับคอนโทรลเลอร์เสมือนแบบ Xbox, DualShock 3, DualShock 4 / DualSense และ Nintendo Switch Pro รวมถึงคอนโทรลเลอร์เสมือนแบบขยายที่มีฟอร์ซฟีดแบ็ก เช่น พวงมาลัยแข่งรถ และ Steam Deck Controller (Composite) การตอบสนองจากเกมและ “ทดสอบการสั่น” จะเล่นผ่านเอาต์พุตเสียง ส่วนการสั่นจากแมโครยังคงอยู่ที่คอนโทรลเลอร์</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>รีเซ็ตการสั่นเป็นเสียง</value></data>
@@ -4386,8 +4378,6 @@
   <data name="Tablet_InRange" xml:space="preserve"><value>ปากกาอยู่ในระยะ</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>กำลังรอข้อมูลหน่วยความจำที่ใช้ร่วมกันของ FreeTrack</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>หน่วยความจำที่ใช้ร่วมกันของ FreeTrack ไม่พร้อมใช้งาน</value></data>
-  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>การสั่นตามมุมการบังคับเลี้ยว</value></data>
-  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>การสั่นที่แรงขึ้นเมื่อแกนสติ๊กห่างจากกึ่งกลาง</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>เพิ่มการสั่นต่อเนื่องเมื่อแกนสติ๊กเสมือนที่เลือกเคลื่อนออกจากกึ่งกลาง ใช้เอาต์พุตที่แมปจากแหล่งที่มาทั้งหมดที่กำหนดไว้ เมื่อเลือก แยกตามทิศทาง การเคลื่อนที่ทางลบจะขับมอเตอร์ซ้าย และการเคลื่อนที่ทางบวกจะขับมอเตอร์ขวา ถ้าเลือก มอเตอร์ซ้าย หรือ มอเตอร์ขวา ทั้งสองทิศทางจะใช้มอเตอร์ตัวนั้นตัวเดียว สำหรับเอาต์พุต Xbox และ PlayStation ที่มีอุปกรณ์ซึ่งสั่นได้ ไม่รวมพวงมาลัย อุปกรณ์อื่นที่มีฟอร์ซฟีดแบ็กคงที่ และแป้นเหยียบ Fanatec</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>เปิดใช้การสั่นตามมุมการบังคับเลี้ยว</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>แกนเสมือน</value></data>
@@ -4402,7 +4392,6 @@
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>รีเซ็ตเป็นสติ๊กซ้าย X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>รีเซ็ตความแรง (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>รีเซ็ตเดดโซนกึ่งกลาง (2%)</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>รีเซ็ตการสั่นตามมุมการบังคับเลี้ยว</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>รีเซ็ตการเปิดใช้การสั่นตามมุมการบังคับเลี้ยว</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>โปรไฟล์</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>พื้นผิวอินพุต</value></data>

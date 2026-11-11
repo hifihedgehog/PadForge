@@ -260,7 +260,7 @@
         <!-- Stage chip glyphs (#175 item 10), here from Home with the chips
              (#574): ember when the stage carries a non-default
              configuration, ashen steel when inert. Font stages (gyro /
-             lighting / touchpad / audio) share the text style; the Zacksly
+             lighting / touchpad / audio) share the text style. The Zacksly
              stick / trigger shapes share the path style. -->
         <Style x:Key="StageGlyphText" TargetType="TextBlock">
             <Setter Property="FontFamily" Value="Segoe Fluent Icons, Segoe MDL2 Assets"/>
@@ -486,7 +486,7 @@
                             <!-- Chip presentation, take 2 (user report: the
                                  custom minimal template broke the dropdown).
                                  The stock WPF-UI template keeps its own
-                                 toggle/popup machinery; chrome is stripped to
+                                 toggle/popup machinery. Chrome is stripped to
                                  chip weight through properties only. -->
                             <ComboBox.Style>
                                 <Style TargetType="ComboBox" BasedOn="{StaticResource DefaultComboBoxStyle}">
@@ -1287,8 +1287,8 @@
                         </RadioButton>
 
                         <!-- [Mappings]. Per-VC scope (Issue #61 multi-source): the table
-                             sources from any device assigned to this VC, not just the
-                             selected one. -->
+                             sources from any device assigned to this VC, whichever
+                             one is selected. -->
                         <RadioButton x:Name="TabMappings" Tag="2" GroupName="PadButtonsPart" Style="{StaticResource TabStripButton}" Click="TabBtn_Click" Checked="TabBtn_Checked"
                                      AutomationProperties.AutomationId="MappingsTab">
                             <TextBlock Text="{Binding Pad_Mappings, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
@@ -1470,12 +1470,12 @@
                     </Grid>
 
                     <!-- ══════════════════════════════════════
-                         MAP ALL — Controller tab controls
+                         MAP ALL. Controller tab controls
                          ══════════════════════════════════════ -->
                     <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,4,0,4">
                         <!-- Height pinned to the motor capsules' 32 so all
                              three pills share exact end curvature (radius
-                             16 = height/2 on every one; the padding-driven
+                             16 = height/2 on every one. The padding-driven
                              height landed a couple px taller and flattened
                              the arcs - user report 2026-07-05). -->
                         <ui:Button Content="{Binding MapAllButtonText}"
@@ -1630,11 +1630,11 @@
                     <!-- Nested layer-tab strip. Hidden when only Base exists
                          (basic users without any shift layers see the
                          Mappings tab exactly as before). One RadioButton per
-                         entry in PadViewModel.LayerTabs; right-click opens
+                         entry in PadViewModel.LayerTabs. Right-click opens
                          the per-tab context menu. -->
                     <!-- Inline rename popup, anchored at runtime to the
                          clicked shift-layer tab. Single-field input + Save
-                         + Cancel — much lighter than reopening the full
+                         + Cancel. Much lighter than reopening the full
                          Configure dialog when the user just wants to fix
                          the name. -->
                     <Popup x:Name="RenameLayerPopup"
@@ -1703,7 +1703,7 @@
                                              Tag="{Binding LayerMask}">
                                     <StackPanel Orientation="Horizontal">
                                         <!-- Per-layer color dot. Hidden on the Base
-                                             tab; visible (gray default or authored
+                                             tab. Visible (gray default or authored
                                              color) for every shift layer. -->
                                         <Ellipse Width="8" Height="8"
                                                  Margin="0,0,6,0"
@@ -1782,10 +1782,10 @@
                          input. CURVE / GYRO / SHIFT / INV / DZ are mono
                          locale-neutral tokens (DZ / PEAK / DIRECT
                          precedent). A chip renders only while its pipeline
-                         carries configuration; the flame inside fills ember
+                         carries configuration. The flame inside fills ember
                          while an owning row's live value is active this
                          frame (rowfire lane, no extra timer). Click scrolls
-                         the grid to the owning row; repeat clicks cycle
+                         the grid to the owning row. Repeat clicks cycle
                          when several rows own the pipeline. SHIFT cycles
                          the layer tabs instead. Tooltips list the real
                          configured rows. -->
@@ -1937,7 +1937,7 @@
                             </StackPanel>
                         </controls:ClickBorder>
 
-                        <!-- SHIFT: slot has layers beyond Base; flames while
+                        <!-- SHIFT: slot has layers beyond Base. Flames while
                              the engine holds a non-Base layer engaged. -->
                         <controls:ClickBorder Style="{StaticResource PipelineChip}" Tag="Shift"
                                 Visibility="{Binding PipelineShiftActive, Converter={StaticResource BoolToVisibilityConverter}}" Click="PipelineChip_Click">
@@ -2100,7 +2100,7 @@
                              (spec 235-244). Attached directly here, NOT as an
                              implicit page-level style (that broke once with a
                              white bar). Uppercase is display-only via
-                             UpperConverter; resource strings stay Title Case. -->
+                             UpperConverter. Resource strings stay Title Case. -->
                         <DataGrid.ColumnHeaderStyle>
                             <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
                                 <Setter Property="FontFamily" Value="{StaticResource TelemetryFontFamily}"/>
@@ -2177,7 +2177,7 @@
                                                          on one screen. Clicking it expands the row
                                                          back to the full editor via IsExpandedOverride
                                                          (set in code-behind). The liveness flame is the
-                                                         static liveness cue; rowfire below still
+                                                         static liveness cue. Rowfire below still
                                                          animates on compact rows.
                                                          Phase two item 10: unselected fan-in rows
                                                          (HasExtraSources) collapse to this same line
@@ -2345,7 +2345,7 @@
                                                 </MultiDataTrigger>
                                                 <!-- Fan-in compact swap (#175 phase two item 10):
                                                      an unselected multi-source row collapses to
-                                                     the one-line summary; selecting it brings back
+                                                     the one-line summary. Selecting it brings back
                                                      the full cells and opens the details editor.
                                                      IsRowSelected mirrors DataGrid selection (set
                                                      in SelectionChanged). The IsExpandedOverride
@@ -2404,7 +2404,7 @@
                                     <!-- Selected row: a subtle ember wash. The stock selection
                                          fill reads near-white in dark mode and is retina-searing
                                          against the steel ground. Kept below the recording tint
-                                         (#30) so an armed row still reads hotter; the recording
+                                         (#30) so an armed row still reads hotter. The recording
                                          triggers sit after this one so they win when both hold. -->
                                     <Trigger Property="IsSelected" Value="True">
                                         <Setter Property="Background">
@@ -2414,7 +2414,7 @@
                                         </Setter>
                                     </Trigger>
                                     <!-- Reduced motion (#175 item 98): the looping arm-flash
-                                         only runs when ClientAreaAnimation is on; otherwise
+                                         only runs when ClientAreaAnimation is on. Otherwise
                                          the armed row holds a static ember tint.
                                          The pulse holds the ember tint via the setter and
                                          breathes the row's Opacity, a single-step path. The
@@ -2472,7 +2472,7 @@
                                         Background="#0858B6E4">
                                     <Border.Style>
                                         <!-- Rail tints to the active layer's authored
-                                             color (#175); cold when the layer has none.
+                                             color (#175). Cold when the layer has none.
                                              Converter's gray fallback never shows: the
                                              empty-string trigger wins first. -->
                                         <Style TargetType="Border">
@@ -2646,7 +2646,7 @@
                                             </StackPanel>
                                         </StackPanel>
 
-                                        <!-- Combine row — visible only on multi-source rows.
+                                        <!-- Combine row. Visible only on multi-source rows.
                                              Bound to AvailableCombineModes which pairs the
                                              engine's name (MaxAbs / OR / XOR…) with a layman
                                              label + one-line description so non-STEM users
@@ -2724,7 +2724,7 @@
                                              instead of leaving stale text on a single-source
                                              row. The italic placeholder shows an example
                                              until the user types something. -->
-                                        <!-- Custom formula visual editor — chip palette
+                                        <!-- Custom formula visual editor. Chip palette
                                              below a free-text formula box. Users who don't
                                              want to type can build a formula by clicking
                                              chips (each chip's Tag is inserted at the
@@ -2732,7 +2732,7 @@
                                              one of the named buttons. The Click handlers
                                              live in PadPage.xaml.cs and use VisualTreeHelper
                                              to find the named TextBox inside the same
-                                             FormulaEditor StackPanel — that avoids the
+                                             FormulaEditor StackPanel. That avoids the
                                              ComboBox-SelectedItem write-back hell that
                                              made the previous Quick fill dropdown unable
                                              to populate the formula on selection. -->
@@ -2786,14 +2786,14 @@
                                                              drag threshold starts the DragDrop with the
                                                              chip's Tag (the literal text to insert)
                                                              as the data payload. The formula TextBox
-                                                             has AllowDrop=True; WPF's built-in text
+                                                             has AllowDrop=True. WPF's built-in text
                                                              drop behavior inserts at the drop point. -->
                                                         <EventSetter Event="PreviewMouseLeftButtonDown" Handler="FormulaChip_PreviewMouseLeftButtonDown"/>
                                                         <EventSetter Event="PreviewMouseMove" Handler="FormulaChip_PreviewMouseMove"/>
                                                     </Style>
                                                 </WrapPanel.Resources>
-                                                <!-- Source variables (a-d cover most rows; users with
-                                                     more sources can type the rest). Tooltips bind to
+                                                <!-- Source variables. a-d cover most rows, and users with
+                                                     more sources can type the rest. Tooltips bind to
                                                      the row's per-position friendly alias so users
                                                      see what `a/b/c/d` mean for THIS row. -->
                                                 <!-- Variable chips: a..z. Each chip's Visibility tracks the
@@ -2826,13 +2826,13 @@
                                                 <Button Content="y" Tag="y" Style="{StaticResource FormulaChipStyle}" Click="FormulaChip_Click" Visibility="{Binding VariableCount, Converter={StaticResource IndexLessThanVisibilityConverter}, ConverterParameter=24}"/>
                                                 <Button Content="z" Tag="z" Style="{StaticResource FormulaChipStyle}" Click="FormulaChip_Click" Visibility="{Binding VariableCount, Converter={StaticResource IndexLessThanVisibilityConverter}, ConverterParameter=25}"/>
                                                 <!-- Touchpad-only "is touching" flags. Visible on
-                                                     TouchpadX*/Y* rows; resolve to 1.0 while the
+                                                     TouchpadX*/Y* rows. Resolve to 1.0 while the
                                                      paired finger is touching, 0.0 when lifted. Used
                                                      to write gated formulas like
                                                      `aD ? a : (bD ? b : 0.5)` so a stale finger
                                                      position can't pollute the combine. The flag
                                                      channel is only supplied by the touchpad-
-                                                     passthrough evaluator — referencing aD on a
+                                                     passthrough evaluator. Referencing aD on a
                                                      non-touchpad row resolves to 0. -->
                                                 <Button Content="aD" Tag="aD" Style="{StaticResource FormulaChipStyle}"
                                                         Click="FormulaChip_Click"
@@ -3029,7 +3029,7 @@
                                              per-source AvailableInputs (which the parent
                                              MappingItem refreshes whenever the source's
                                              DeviceGuid changes). Empty Device =
-                                             "use the slot's primary device" — the parent
+                                             "use the slot's primary device". The parent
                                              falls the per-source AvailableInputs back to
                                              its own list in that case. -->
                                         <ItemsControl ItemsSource="{Binding ExtraSources}">
@@ -3053,7 +3053,7 @@
                                                                    Foreground="{DynamicResource ColdBrush}"
                                                                    Margin="0,0,6,0" VerticalAlignment="Center"/>
                                                         <!-- Kind selector. Schema/engine value ("Direct" / "Incremental" /
-                                                             "InvertOnHold") round-trips via SelectedValue; the dropdown
+                                                             "InvertOnHold") round-trips via SelectedValue. The dropdown
                                                              shows the friendly display name from KindChoice.Name so the
                                                              user reads "Invert On Hold" instead of the camel-case identifier. -->
                                                         <!-- Instance binding, NOT x:Static: an x:Static ItemsSource is
@@ -3093,12 +3093,12 @@
                                                                        Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
                                                         </Border>
                                                         <!-- Cross-device grouped picker. ItemsSource is the
-                                                             parent MappingItem's full cross-device flat list;
+                                                             parent MappingItem's full cross-device flat list.
                                                              GroupStyle headers identify which device each
                                                              input belongs to. Selecting an InputChoice writes
                                                              both the source's Descriptor and DeviceGuid in
                                                              one shot via the InputChoiceToSource attached
-                                                             behavior. Hidden for Incremental — that kind reads
+                                                             behavior. Hidden for Incremental. That kind reads
                                                              its inputs from the Up/Down pickers on the row
                                                              below, not from a single source descriptor. -->
                                                         <StackPanel Orientation="Vertical" Margin="0,0,4,0"
@@ -3160,7 +3160,7 @@
                                                              as the (hidden-for-InvertOnHold) source picker so
                                                              the whole row stays on one line. While the picked
                                                              modifier is held, the row's combined output is
-                                                             sign-flipped — that's the B.3 reversible-throttle
+                                                             sign-flipped. That's the B.3 reversible-throttle
                                                              shape (engine treats Kind=InvertOnHold sources as
                                                              row-level modifiers, see InputManager.Step3.
                                                              MappingSetEval.IsInvertOnHoldActive). -->
@@ -3320,7 +3320,7 @@
                                                         </StackPanel>
                                                         <!-- Gyro Lean rows scale by the GENERIC per-source
                                                              Sensitivity (the field ReadGyroLean reads), not
-                                                             GyroSensitivity; the gyro dial above is
+                                                             GyroSensitivity. The gyro dial above is
                                                              rate-only (#292). Same visual, working field. -->
                                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0"
                                                                     Visibility="{Binding IsGyroLeanSource, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -3439,7 +3439,7 @@
                                                             <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="ParamRapidTriggerDistance" SettingLabel="{Binding Pad_Mapping_RapidTrigger_Distance, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingSourceItem_ParamRapidTriggerDistance_5377" Margin="4,0,8,0"/>
                                                         </StackPanel>
                                                         <!-- Remove this source from the row entirely.
-                                                             Distinct from Clear (which keeps the row) — uses
+                                                             Distinct from Clear (which keeps the row). Uses
                                                              a less-prominent ✕ glyph so it's clearly the
                                                              "delete row" action. -->
                                                         <!-- Incremental inline controls. Up/Down pickers + record
@@ -3883,7 +3883,7 @@
                                             <!-- Direct primary: the cross-device input picker fills the cell.
                                                  The Mode dropdown lives in the row-detail strip, not here, so
                                                  the cell holds only the mapping and never crowds the picker
-                                                 (#111). The grouped view headers each device; SelectedItem
+                                                 (#111). The grouped view headers each device. SelectedItem
                                                  tags the row with the picked DeviceGuid + DeviceLabel. -->
                                             <ComboBox AutomationProperties.Name="{Binding Pad_HeaderSource, Source={x:Static strings:Strings.Instance}}" ItemsSource="{Binding AvailableInputsView}"
                                                       SelectedItem="{Binding SelectedInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -3913,12 +3913,12 @@
                                                     </GroupStyle>
                                                 </ComboBox.GroupStyle>
                                             </ComboBox>
-                                            <!-- Phase 2C — primary source's device origin badge.
+                                            <!-- Phase 2C. Primary source's device origin badge.
                                                  Visible when the row is bound to a per-VC
                                                  MappingSet primary and resolved to a
                                                  user-friendly device name. -->
                                             <!-- Source subtitle below the picker. Shows the device
-                                                 the assigned input comes from when set; falls back
+                                                 the assigned input comes from when set. Falls back
                                                  to italic "Unassigned" when nothing is mapped. The
                                                  Style sets Text via a Setter rather than a local
                                                  value so the DataTrigger's override actually wins. -->
@@ -3939,7 +3939,7 @@
                                                     </Style>
                                                 </TextBlock.Style>
                                             </TextBlock>
-                                            <!-- Phase 2C — empty-direction hint + one-click
+                                            <!-- Phase 2C. Empty-direction hint + one-click
                                                  affordance. Surfaces when a bipolar stick-axis
                                                  row has only the positive direction mapped
                                                  (one button-class source, not inverted).
@@ -4163,13 +4163,13 @@
                             </DataGridTemplateColumn>
                             <!-- Invert / Half-axis / Bidirectional / Do-not-inherit options.
                                  Width=Auto sizes to the widest cell + header. The
-                                 always-visible checkboxes set the natural floor;
-                                 the column expands when a row also shows NoInherit
+                                 always-visible checkboxes set the natural floor.
+                                 The column expands when a row also shows NoInherit
                                  or the gyro sensitivity slider, and collapses when
                                  no such row exists. HorizontalAlignment=Left on the
                                  cell-template StackPanel keeps it from being
                                  measured against the cell's stretched arrange
-                                 rectangle — without it, the WPF-UI DataGrid cell
+                                 rectangle. Without it, the WPF-UI DataGrid cell
                                  template feeds the StackPanel the column's stretched
                                  width during measurement, and the column inflates. -->
                             <DataGridTemplateColumn Header="{Binding Pad_HeaderOptions, Source={x:Static strings:Strings.Instance}}" Width="Auto">
@@ -4210,7 +4210,7 @@
                                             <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="InvertOutput" SettingLabel="{Binding Pad_InvertOutput, Source={x:Static strings:Strings.Instance}}" Visibility="{Binding IsInvertOutputApplicable, Converter={StaticResource BoolToVisibilityConverter}}" AutomationProperties.AutomationId="Reset_MappingItem_InvertOutput_5776" Margin="4,0,8,0"/>
                                             <!-- NoInherit toggle. Only meaningful when authoring
                                                  a shift layer whose activator has InheritUnmapped
-                                                 enabled — replace-mode layers (the default) block
+                                                 enabled. Replace-mode layers (the default) block
                                                  Base wholesale, making NoInherit a no-op. The
                                                  CheckBox is hidden outside that narrow case so
                                                  users don't see a useless tickbox. -->
@@ -4223,7 +4223,7 @@
                                             <!-- Gated with the control it resets: an ungated reset left a lone button behind a hidden setting. -->
                                             <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="NoInherit" SettingLabel="{Binding Pad_Shift_NoInherit, Source={x:Static strings:Strings.Instance}}" Visibility="{Binding DataContext.IsActiveLayerInheriting, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BoolToVisibilityConverter}}" AutomationProperties.AutomationId="Reset_MappingItem_NoInherit_5788" Margin="4,0,8,0"/>
                                             <!-- Per-source gyro sensitivity for the primary source.
-                                                 Mirrors the ExtraSource gyro-sensitivity row; only
+                                                 Mirrors the ExtraSource gyro-sensitivity row. Only
                                                  renders for gyro descriptors so non-gyro primaries
                                                  don't see a knob that does nothing. -->
                                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="6,0,0,0"
@@ -4258,7 +4258,7 @@
                                                 <ui:Button Command="{Binding ResetSensitivityCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Common_Reset_Sensitivity, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
                                             <!-- Primary-source acceleration, the twin of the
-                                                 ExtraSources chip's control; same gate, which
+                                                 ExtraSources chip's control. Same gate, which
                                                  excludes the gravity-tilt pairs (#292). -->
                                             <StackPanel Orientation="Horizontal" Margin="0,4,0,0"
                                                         Visibility="{Binding IsParamAccelApplicable, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -4376,7 +4376,7 @@
                  OUTPUT right before the Step 5 submit: SOCD cleaning (#240,
                  with its KBM twin from #205) and Keep Controller Awake
                  (#270). They lived under the mapping grid on the Mappings
-                 tab first, which the owner called cluttered; slot tier,
+                 tab first, which the owner called cluttered. Slot tier,
                  like Menus and Bass Shakers (Tag 17 = the appended
                  TabItem's index, the slotTier predicate carries it).
                  Visible for every slot type except MIDI, which has none of
@@ -4400,7 +4400,7 @@
                              / SocdPairs, applied by Step 5 right before submit),
                              never a device. Hidden on KeyboardMouse (the
                              KbmConfig twin card below) and MIDI slots. Gamepad
-                             slots pick from the 15 named targets; Extended slots
+                             slots pick from the 15 named targets. Extended slots
                              enter raw button indices 0-127. -->
                         <Border Style="{StaticResource CardBorder}"
                                 Visibility="{Binding SocdCardVisible, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -5125,14 +5125,14 @@
                                                                  Stroke="{DynamicResource EmberBrush}" StrokeThickness="1.5"
                                                                  Fill="#14FF6B2C" IsHitTestVisible="False"/>
                                                         <!-- Legacy stock rings removed (#175 close-out item 25):
-                                                             the radar keeps the #1E2739 rings + crosshair above;
-                                                             below sit the DZ steel fill, the dashed ember DZ
+                                                             the radar keeps the #1E2739 rings + crosshair above.
+                                                             Below sit the DZ steel fill, the dashed ember DZ
                                                              circle, and the anti-DZ ember ring. -->
 <!-- Dead zone geometry (#175, user direction 2026-07-04:
                                                              restore the old UI's per-shape overlays - each shape
                                                              draws its own dashed outline with shading, and the
                                                              components overlap). Two tiers in the ember palette:
-                                                             fully dead = ashen fill + ember-deep dash; snapped to
+                                                             fully dead = ashen fill + ember-deep dash. Snapped to
                                                              axis (partial) = fainter fill + fainter dash. The old
                                                              always-on ellipse ring is gone: it painted a circle
                                                              over non-radial shapes. Converters are the proven
@@ -5289,7 +5289,7 @@
                                                  one quiet mono row aligned to the radar edges. Chips
                                                  follow the ChipCold / ChipEmber / steel tint grammar at
                                                  legend scale (mono 9px). RAW/OUT reuse the instrument
-                                                 caption strings; DZ and PEAK are locale-neutral
+                                                 caption strings. DZ and PEAK are locale-neutral
                                                  telemetry tokens like the axis-unit formats in
                                                  StickConfigItem. PeakReadout's value text is written by
                                                  StickPeakHoldBehavior. -->
@@ -5406,7 +5406,7 @@
                                         </Border>
                                     </Grid>
 
-                                    <!-- ═══ Steering (winding / 2D angle-to-axis / motion lean) #94 — divider-separated section like the rest of the card ═══ -->
+                                    <!-- ═══ Steering (winding / 2D angle-to-axis / motion lean) #94. Divider-separated section like the rest of the card ═══ -->
                                     <Separator Margin="0,16,0,8"/>
                                     <StackPanel>
                                             <!-- ─── Steering ─── -->
@@ -5476,7 +5476,7 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
 
-                    <!-- ═══ Steering at-lock feedback (#94) — per device, all opt-in.
+                    <!-- ═══ Steering at-lock feedback (#94). Per device, all opt-in.
                          Channels are shown only when the SELECTED assigned device can
                          do them (SyncTabVisibility gates each by capability). ═══ -->
                     <Border x:Name="LockFeedbackCard" Style="{StaticResource CardBorder}" Margin="0,0,0,16">
@@ -5522,7 +5522,7 @@
                                           Content="{Binding Pad_Steering_Lock_ATResistance, Source={x:Static strings:Strings.Instance}}"/>
                                 <ui:Button Command="{Binding ResetSteeringLockResistanceCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_ATResistance, Source={x:Static strings:Strings.Instance}}"/>
                             </StackPanel>
-                            <!-- Pulse length — the rumble / trigger pulse duration. The lightbar has its
+                            <!-- Pulse length. The rumble / trigger pulse duration. The lightbar has its
                                  own Hold + Decay below, so this no longer covers it. -->
                             <StackPanel x:Name="LockPulseSection">
                                 <Separator Margin="0,8,0,8"/>
@@ -5534,10 +5534,10 @@
                                     <ui:Button Command="{Binding ResetSteeringLockPulseCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_PulseMs, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                             </StackPanel>
-                            <!-- Lightbar color + fade — only meaningful on a device with a lightbar. -->
+                            <!-- Lightbar color + fade. Only meaningful on a device with a lightbar. -->
                             <StackPanel x:Name="LockLightbarSection">
                             <Separator Margin="0,8,0,8"/>
-                            <!-- Color source: Base color (Fixed) / Random Hue / Palette Step — the three
+                            <!-- Color source: Base color (Fixed) / Random Hue / Palette Step. The three
                                  macro lightbar modes, with a palette dedicated to the steering lock. -->
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                 <TextBlock Text="{Binding Macro_LightbarColorSource_Label, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
@@ -5548,7 +5548,7 @@
                                 </ComboBox>
                                 <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="SteeringLockLightbarColorSource" SettingLabel="{Binding Macro_LightbarColorSource_Label, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_SteeringLockLightbarColorSource_6735"/>
                             </StackPanel>
-                            <!-- Fixed base color — full picker in a bounding box (matches every other
+                            <!-- Fixed base color. Full picker in a bounding box (matches every other
                                  color picker): HSV box, swatch, hex field, RGB sliders + per-channel resets.
                                  Shown only for the Fixed source. -->
                             <StackPanel Visibility="{Binding IsSteeringLockLightbarFixedColorVisible, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -5608,7 +5608,7 @@
                                 </StackPanel>
                             </Border>
                             </StackPanel>
-                            <!-- Dedicated palette — shown only for the Palette Step source. Its own colors,
+                            <!-- Dedicated palette. Shown only for the Palette Step source. Its own colors,
                                  stepped through one per lock entry, used only by the steering lock. -->
                             <StackPanel Margin="0,0,0,8"
                                         Visibility="{Binding IsSteeringLockLightbarPaletteVisible, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -5685,7 +5685,7 @@
                                     </StackPanel>
                                 </Button>
                             </StackPanel>
-                            <!-- Hold + Decay — the reactive pulse on lock: hold the color at full for
+                            <!-- Hold + Decay. The reactive pulse on lock: hold the color at full for
                                  Hold ms, then fade back over Decay ms (matches the macro lightbar). -->
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                 <!-- The DURATION key, not Macro_LightbarHold_Label: that
@@ -5716,7 +5716,7 @@
                          normal input descriptor: the user maps it to Mouse X from the
                          input dropdown in Mappings, on any layer (shift-layer hosting
                          is the headline use). This card never targets or overrides an
-                         axis; it only tunes the flick math. Shown on keyboard/mouse
+                         axis. It only tunes the flick math. Shown on keyboard/mouse
                          slots (the output is relative mouse movement). -->
                     <Border x:Name="FlickStickCard" Style="{StaticResource CardBorder}" Visibility="Collapsed">
                         <StackPanel>
@@ -6064,7 +6064,7 @@
                                          picker + Record + Reset, the Aim Engage cluster's exact
                                          arrangement (see the Gyro tab's engage-button row). The
                                          recorded input arms the Custom gesture session while
-                                         held; axes engage past half travel. -->
+                                         held. Axes engage past half travel. -->
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8" IsEnabled="{Binding MouseGestureButtonCustom}">
                                         <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_MouseGestures_CustomInput, Source={x:Static strings:Strings.Instance}}"
                                                    Width="270" VerticalAlignment="Top" Margin="0,4,0,0"
@@ -6903,8 +6903,8 @@
             <!-- ══════════════════════════════════════
                  TAB 9: IMPULSE TRIGGERS
                  (visible when the selected mapped device exposes
-                 SDL_PROP_JOYSTICK_CAP_TRIGGER_RUMBLE_BOOLEAN —
-                 Xbox One / Elite / Series).
+                 SDL_PROP_JOYSTICK_CAP_TRIGGER_RUMBLE_BOOLEAN, as the
+                 Xbox One / Elite / Series pads do).
                  ══════════════════════════════════════ -->
                     <StackPanel x:Name="TabImpulseTriggers" Margin="0,16,0,16" Visibility="Collapsed">
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
@@ -7495,7 +7495,7 @@
                                                     ShowLiveMarker="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"/>
                                                 <!-- GameCube preset lives ON the Weapon card
                                                      (user report 2026-07-05: the floating
-                                                     indented row was a placement orphan; a
+                                                     indented row was a placement orphan. A
                                                      second report caught this chip pasted
                                                      into the Off card by mistake).
                                                      Always visible (#175 item 16) so the
@@ -7617,7 +7617,7 @@
                         </Border>
                     </StackPanel>
 
-            <!-- ═══ Wheel (Tag 11) — native-FFB wheels only ═══ -->
+            <!-- ═══ Wheel (Tag 11). Native-FFB wheels only ═══ -->
                     <StackPanel x:Name="TabWheel" Margin="0,16,0,16" Visibility="Collapsed">
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                             <Viewbox Width="22" Height="22" VerticalAlignment="Center" Margin="0,0,10,0">
@@ -7676,7 +7676,7 @@
                                     </StackPanel>
                                 </StackPanel>
 
-                                <!-- Auto-center — centering spring force -->
+                                <!-- Auto-center. Centering spring force -->
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="{Binding Pad_Wheel_Autocenter, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                     <Slider Value="{Binding WheelAutoCenter, Mode=TwoWay}" Style="{StaticResource DzSlider}"/>
@@ -7686,8 +7686,8 @@
                                     <ui:Button Command="{Binding ResetWheelAutoCenterCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetAutocenter, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
-                                <!-- RPM shift LEDs — telemetry-driven rev display.
-                                     Native HID command (vendor wheels only); hidden for generic
+                                <!-- RPM shift LEDs. Telemetry-driven rev display.
+                                     Native HID command (vendor wheels only). Hidden for generic
                                      SDL wheels, which have no addressable rev strip. -->
                                 <StackPanel x:Name="WheelRpmRow" Orientation="Horizontal" Margin="0,4,0,0">
                                     <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" IsChecked="{Binding WheelRpmLeds, Mode=TwoWay}"
@@ -7727,7 +7727,7 @@
                                            Style="{StaticResource CardDescription}"/>
 
                                 <!-- Enable row. First enable authors the config with the
-                                     four default voices; disable keeps every setting. -->
+                                     four default voices. Disable keeps every setting. -->
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" IsChecked="{Binding RumbleAudioEnabled, Mode=TwoWay}"
                                               Content="{Binding Pad_RumbleAudio_Enable, Source={x:Static strings:Strings.Instance}}"
@@ -7738,7 +7738,7 @@
                                 </StackPanel>
 
                                 <StackPanel>
-                                    <!-- Output Device row. "" = system default; a configured
+                                    <!-- Output Device row. "" = system default. A configured
                                          endpoint that disappears FAILS CLOSED (status line
                                          below warns, selection is preserved). -->
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
@@ -7882,7 +7882,7 @@
 
                         <!-- ─── Grip card (#392) ─── -->
                         <!-- How the controller is held. Pointing is the frame the
-                             driver delivers; Sideways (face up), Wii Wheel (face
+                             driver delivers. Sideways (face up), Wii Wheel (face
                              toward the player), and Upright rotate the body gyro,
                              accelerometer, and gravity together, so a Wii Remote
                              held like a wheel reads as a flat pad to mappings and
@@ -7959,7 +7959,7 @@
                         <!-- ─── Motion Passthrough card ─── -->
                         <!-- Tab-wide scope toggle: whether this tab's tuning
                              reaches the virtual controller's motion passthrough
-                             (gyro report + DSU), not only gyro-as-mapping-source.
+                             (gyro report + DSU) as well as gyro-as-mapping-source.
                              Uses CardBorder's default bottom-12 margin so the
                              gap between this and the Calibration card matches
                              every other adjacent-card gap on the Pad page. -->
@@ -7985,7 +7985,7 @@
                             </StackPanel>
                         </Border>
 
-                        <!-- ─── Motion Steering card (#94) — settings for the "Motion Lean"
+                        <!-- ─── Motion Steering card (#94). Settings for the "Motion Lean"
                              INPUT (tilt deadzones + grip orientation, per assigned device).
                              Motion Lean itself is a normal input descriptor: the user maps
                              it to an axis from the input dropdown in Mappings, like any
@@ -8040,7 +8040,7 @@
                         <!-- ─── Gyro Tilt card (#292): settings for the "Gyro Tilt
                              X/Y" INPUTS (degree-ranged gravity tilt, per assigned
                              device). Like Motion Steering, this card never targets
-                             an axis; the inputs are picked on mapping rows. The
+                             an axis. The inputs are picked on mapping rows. The
                              per-source curve/anti-deadzone knobs on the row apply
                              on top, and Gyro Recenter re-zeroes the resting grip. -->
                         <Border Style="{StaticResource CardBorder}">
@@ -8187,8 +8187,8 @@
                                             ToolTip="{Binding Pad_ResetGyroSensitivityUnits, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
-                                <!-- Player/World Space — Jibb's recommended default
-                                     is Player Space; we keep Local as the conservative default
+                                <!-- Player/World Space. Jibb's recommended default
+                                     is Player Space. We keep Local as the conservative default
                                      so existing configs feel identical. -->
                                 <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
                                     <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Settings_GyroSpace, Source={x:Static strings:Strings.Instance}}"
@@ -8240,7 +8240,7 @@
                                 </StackPanel>
 
                                 <!-- Per-axis invert toggles. Independent from per-source
-                                     Invert flags on the mapping table — Steam-style top-level
+                                     Invert flags on the mapping table. Steam-style top-level
                                      convenience. -->
                                 <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
                                     <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Settings_GyroInvertPitch, Source={x:Static strings:Strings.Instance}}"
@@ -8498,7 +8498,7 @@
                                             ToolTip="{Binding Pad_ResetGyroEngageStickDirection, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
-                                <!-- Aim Engage button — cross-device picker that writes
+                                <!-- Aim Engage button. Cross-device picker that writes
                                      both the descriptor and owning device GUID atomically.
                                      ItemsSource is the slot's combined cross-device InputChoice
                                      list, populated by InputService.PopulateAvailableInputs.
@@ -8559,8 +8559,8 @@
                                             VerticalAlignment="Top"
                                             ToolTip="{Binding Pad_ResetGyroAimEngageButton, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
-                                <!-- Engage Mode — Hold (default) follows the
-                                     button state directly; Toggle flips a
+                                <!-- Engage Mode. Hold (default) follows the
+                                     button state directly. Toggle flips a
                                      sticky per-slot bit on each rising edge.
                                      Sibling to the engage-button row above so
                                      the two parameters of the same feature
@@ -8586,7 +8586,7 @@
                     </StackPanel>
 
             <!-- ═══════════════════════════════════════════
-                 INDEX 10 — Touchpad tab (per-(device, pad)
+                 INDEX 10. Touchpad tab (per-(device, pad)
                  gesture settings). Visibility on the tab
                  strip is gated by SyncTabVisibility based on
                  UserDevice.HasTouchpad of the currently
@@ -8619,7 +8619,7 @@
                                       ScrollViewer.VerticalScrollBarVisibility="Visible">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
-                                        <!-- Pad index is stored 0-based; show it 1-based
+                                        <!-- Pad index is stored 0-based. Show it 1-based
                                              ("1"/"2") to match the previews and picker. The
                                              adjacent label is already the word "Touchpad", so
                                              the dropdown shows only the number. -->
@@ -8635,7 +8635,7 @@
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <!-- Segoe Fluent Icons F108 (LeftStick) silhouette with
                                          the "L" letter omitted. Path data extracted from
-                                         the live font glyph; lives in ControllerIcons.xaml
+                                         the live font glyph. Lives in ControllerIcons.xaml
                                          alongside the Zacksly stick / trigger geometries.
                                          Same Viewbox / Path / DynamicResource brush
                                          pattern used elsewhere on the page. -->
@@ -8918,7 +8918,7 @@
                              The screen rectangle the "Touchpad N Pointer X/Y"
                              absolute cursor sources map onto. Size 1.0 with
                              center 0.5 is Steam's full-screen 1:1
-                             mouse_region map; a smaller size confines the
+                             mouse_region map. A smaller size confines the
                              cursor to part of the screen and the center
                              places that part. Size below 1.0 is the case an
                              earlier stretch-only knob could not express, so
@@ -9045,10 +9045,10 @@
                              Steam-Input-style pulse ticks as the finger
                              travels the pad. Visible only when the selected
                              device's touchpad has a haptic lane PadForge
-                             drives (Steam Controller family / Sony pads);
-                             a Precision Touchpad or overlay would show a
+                             drives (Steam Controller family / Sony pads).
+                             A Precision Touchpad or overlay would show a
                              dead toggle otherwise. Rows follow the Mouse
-                             Output card anatomy; the intensity row uses the
+                             Output card anatomy. The intensity row uses the
                              Sticks DZ grammar (slider + percent edit) over
                              the 0..1 setting via FractionToPercentConverter. -->
                         <Border Style="{StaticResource CardBorder}"
@@ -9437,7 +9437,7 @@
                                    TextWrapping="Wrap" Margin="0,0,0,16"/>
 
                         <!-- Pointer Mode card (issue #203): how the aim drives the
-                             OS cursor. Modes shape the cursor drive only; "IR
+                             OS cursor. Modes shape the cursor drive only. "IR
                              Pointer X/Y" mapping sources keep reading raw aim. -->
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
@@ -9674,7 +9674,7 @@
                              3-color bands are shared by Thresholds /
                              Gradient / CrossFade. Period drives the
                              time-based animations. Palette + Smooth
-                             belong to ColorCycle; Decay + Randomize +
+                             belong to ColorCycle. Decay + Randomize +
                              palette belong to InputReactive.
                              Named so SyncTabVisibility can hide the whole
                              lightbar card when the Lighting tab is shown
@@ -9701,7 +9701,7 @@
                                      measured by alpha-masked template matching against
                                      the pack's own baked composites, so the lit shape is
                                      the art's shape: DualSense/Edge lights the ring
-                                     wrapping the touchpad's flanks; a DualShock 4 lights
+                                     wrapping the touchpad's flanks. A DualShock 4 lights
                                      the front strip plus the rear bar, chosen by
                                      SyncTabVisibility off the same PID gates that
                                      drive tab visibility (BuildLightbarPreview rebuilds
@@ -9795,7 +9795,7 @@
                                      → here are X's settings" without the InputReactive
                                      dropdown breaking the visual flow. The InputReactive
                                      dropdown + its dependent Hold/Decay/Fixed-color block
-                                     moves to the bottom of the card; palette stays in
+                                     moves to the bottom of the card. Palette stays in
                                      the middle since it's shared between ColorCycle (base
                                      mode) and InputReactive Cycle (overlay). -->
 
@@ -9959,7 +9959,7 @@
                                     <reset:SettingResetButton Command="{Binding DeviceConfig.ResetLightbarColorCycleSmoothCommand}" SettingLabel="{Binding Pad_Lighting_ColorCycleSmooth, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DeviceSlotConfig_LightbarColorCycleSmooth_8401"/>
                                 </StackPanel>
 
-                                <!-- Palette (variable count) — Base instance.
+                                <!-- Palette (variable count). Base instance.
                                      Visible only when LightbarMode = ColorCycle so the
                                      palette sits directly below the dropdown that
                                      reveals it. The InputReactive Cycle overlay has
@@ -9968,7 +9968,7 @@
                                      above the dropdown that summoned it. The two were
                                      briefly wired to one collection and editing either
                                      changed the other, which was never intended. ShowPaletteForBase / ShowPaletteForOverlay
-                                     are mutually exclusive — palette renders exactly
+                                     are mutually exclusive. Palette renders exactly
                                      once at any time. -->
                                 <StackPanel Visibility="{Binding DeviceConfig.ShowPaletteForBase, Converter={StaticResource BoolToVisibilityConverter}}">
                                     <TextBlock Text="{Binding Pad_Lighting_PaletteHeader, Source={x:Static strings:Strings.Instance}}"
@@ -10067,7 +10067,7 @@
                                     <ui:Button Command="{Binding DeviceConfig.ResetAudioLightbarSensitivityCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetAudioLightbarSensitivity, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
-                                <!-- Audio band thresholds (settings) — moved out of the audio
+                                <!-- Audio band thresholds (settings). Moved out of the audio
                                      bands wrapper below so settings stay above colors. -->
                                 <StackPanel Visibility="{Binding DeviceConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=AudioThresholds|AudioGradient|AudioCrossFade}">
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
@@ -10092,7 +10092,7 @@
                                     </StackPanel>
                                 </StackPanel>
 
-                                <!-- Crossfade width (setting) — only meaningful in CrossFade mode -->
+                                <!-- Crossfade width (setting). Only meaningful in CrossFade mode -->
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8"
                                             Visibility="{Binding DeviceConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=AudioCrossFade}">
                                     <TextBlock Text="{Binding Pad_Lighting_AudioLightbar_CrossFadeWidth, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
@@ -10325,8 +10325,8 @@
                                      so a user familiar with that pattern immediately
                                      understands the picker. Per-channel ResetButtonTight
                                      next to each R/G/B slider matches the Static base
-                                     and audio-band pickers (no standalone "reset all
-                                     three" button — there's no precedent for one). -->
+                                     and audio-band pickers. No standalone "reset all
+                                     three" button. There's no precedent for one. -->
                                 <StackPanel Visibility="{Binding DeviceConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=Battery}">
                                     <Grid Margin="0,4,0,8">
                                         <Grid.ColumnDefinitions>
@@ -10643,8 +10643,8 @@
                                 </StackPanel>
 
                                 <!-- InputReactive controls. Hold + Decay sliders show whenever
-                                     the input-reactive overlay is enabled in any variant —
-                                     Random / Cycle / Fixed. Hold may be 0 for instant fade;
+                                     the input-reactive overlay is enabled in any variant
+                                     (Random / Cycle / Fixed). Hold may be 0 for instant fade.
                                      Decay may be 0 for clean on/off with no fade. Placed
                                      before the Fixed color picker so the timing controls
                                      (which apply to every variant) read ahead of the
@@ -10672,7 +10672,7 @@
                                     </StackPanel>
                                 </StackPanel>
 
-                                <!-- Palette (variable count) — Overlay instance.
+                                <!-- Palette (variable count). Overlay instance.
                                      Visible only when InputReactive = Cycle AND
                                      LightbarMode != ColorCycle (so this never co-renders
                                      with the Base palette instance above). Its own
@@ -10682,7 +10682,7 @@
                                     <TextBlock Text="{Binding Pad_Lighting_PaletteHeader, Source={x:Static strings:Strings.Instance}}"
                                                FontWeight="SemiBold" Margin="0,0,0,6"/>
                                     <!-- Bound to the InputReactive Cycle's OWN palette, separate from the
-                                         ColorCycle palette above — editing one no longer touches the other. -->
+                                         ColorCycle palette above. Editing one no longer touches the other. -->
                                     <ItemsControl ItemsSource="{Binding DeviceConfig.LightbarInputReactivePalette}" Margin="0,0,0,8">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
@@ -11149,13 +11149,13 @@
                             </StackPanel>
                         </Border>
 
-                        <!-- Indicator LEDs — player number row + mic mute LED.
+                        <!-- Indicator LEDs. Player number row + mic mute LED.
                              Grouped under one section because they share the
                              firmware's single brightness register (byte 42).
                              OpenRGB shows brightness as a property of every
                              mode (Direct / Mic Off / Mic Pulse) for the same
-                             reason — there's only one register on the device.
-                             DualSense / DualSense Edge only — DS4 has neither
+                             reason. There's only one register on the device.
+                             DualSense / DualSense Edge only. DS4 has neither
                              player LEDs nor a mic LED, so the card is hidden
                              on DS4 slots via SyncTabVisibility. -->
                         <Border x:Name="IndicatorLedsCard" Style="{StaticResource CardBorder}">
@@ -11172,10 +11172,10 @@
                                 <TextBlock Text="{Binding Pad_Lighting_IndicatorLeds_Subtitle, Source={x:Static strings:Strings.Instance}}"
                                            Style="{StaticResource CardDescription}"/>
 
-                                <!-- Shared brightness — physically writes byte 42
+                                <!-- Shared brightness. Physically writes byte 42
                                      ledBrightness, which the DS5 firmware uses
                                      for the player LED row. Mute LED has only
-                                     mode (Off / Solid / Pulse) — no register. -->
+                                     mode (Off / Solid / Pulse). No register. -->
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                     <TextBlock Text="{Binding Pad_Lighting_LedBrightness, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                     <!-- Combo width standard: all four combos in this card
@@ -11395,7 +11395,7 @@
 
                                 <!-- Audio endpoint picker, only visible when MicLed mode
                                      is FollowDeviceMute. Lists every active input + output
-                                     endpoint (each prefixed [In] / [Out]); the synthesizer
+                                     endpoint (each prefixed [In] / [Out]). The synthesizer
                                      polls the picked endpoint's mute state at 4 Hz and
                                      drives the LED Solid (muted) or Off (unmuted). The
                                      DropDownOpened handler refreshes the list so unplug /
@@ -11422,11 +11422,11 @@
                              home-LED hint, so every 2015 SC in the process
                              shares one brightness), and the Switch home LED
                              population (#226: Pro Controller, right Joy-Con,
-                             combined pair, charging grip; per-device
-                             SDL_SetJoystickLED, variable 4-bit intensity).
+                             combined pair, charging grip, each through per-device
+                             SDL_SetJoystickLED at variable 4-bit intensity).
                              Shown by SyncTabVisibility when the selected
                              device is XInput-pathed, a 2015 Steam
-                             Controller, or a Switch home-LED device; the
+                             Controller, or a Switch home-LED device. The
                              lightbar card and header hints hide when the
                              tab is up for a guide-LED-only device. -->
                         <Border x:Name="GuideLedCard" Style="{StaticResource CardBorder}" Visibility="Collapsed">
@@ -11525,7 +11525,7 @@
                                          ItemsSource/SelectedValue bindings: XAML applies
                                          attributes in order, and a SelectedValue that attaches
                                          before SelectedValuePath is set fails to resolve and
-                                         never retries — the closed box renders blank. -->
+                                         never retries. The closed box renders blank. -->
                                     <ComboBox SelectedValuePath="Id" DisplayMemberPath="Name"
                                               ItemsSource="{Binding MirrorSourceOptions}"
                                               SelectedValue="{Binding SelectedMirrorSourceId, Mode=TwoWay}"
@@ -11720,7 +11720,7 @@
                                     </StackPanel>
                                     <!-- #381: Steam Controller 2026 PCM low-pass. Only
                                          the PCM-capable transports (wired / dongle) show
-                                         it; the stream keeps actuator content below this
+                                         it. The stream keeps actuator content below this
                                          cutoff so the pads move instead of singing. -->
                                     <StackPanel Orientation="Horizontal" Margin="0,4,0,0"
                                                 Visibility="{Binding SelectedDeviceIsTritonPcm, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -11770,7 +11770,7 @@
                                      discussion #311). The packet 0x11 header byte governing
                                      the Bluetooth transport that carries speaker audio,
                                      haptics AND microphone capture, so it is not a speaker
-                                     knob. 48 is the shipped default (c571aae9); 16 is the
+                                     knob. 48 is the shipped default (c571aae9). 16 is the
                                      floor the reference enforces
                                      (DS5Dongle src/config.cpp:99). Advanced and optional.
                                      The byte goes into the DS5 Bluetooth packet 0x11 header
@@ -11792,7 +11792,7 @@
                                                ToolTip="{Binding Pad_Audio_Reset_BufferLength, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <!-- Output path (byte 7 bits 4-5, OutputPathSelect). Enum
-                                     values 1-4 map to firmware paths 0-3; Automatic writes
+                                     values 1-4 map to firmware paths 0-3. Automatic writes
                                      nothing and keeps the #83 macro-speaker behavior. An
                                      explicit choice here OWNS the byte: the macro-speaker
                                      block yields its path half and keeps volume only.
@@ -12410,7 +12410,7 @@
 
                             <!-- Hold-threshold row (issue #9 wave 1b, B-8b). Visible only in
                                  On Hold mode: the macro fires once the trigger combo has been
-                                 held this long; a shorter tap does nothing. -->
+                                 held this long. A shorter tap does nothing. -->
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
                                         Visibility="{Binding ShowsHoldTimeRow, Converter={StaticResource BoolToVisibilityConverter}}">
                                 <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_TriggerHoldMs_Label, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
@@ -12608,8 +12608,8 @@
                                     <Button Content="," Tag=", " Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click"/>
                                 </WrapPanel>
 
-                                <!-- Starter recipes — common trigger patterns. Each button's
-                                     Tag is the full formula; clicking replaces the box text. -->
+                                <!-- Starter recipes. Common trigger patterns. Each button's
+                                     Tag is the full formula. Clicking replaces the box text. -->
                                 <TextBlock Text="{Binding Pad_Formula_StarterRecipes, Source={x:Static strings:Strings.Instance}}"
                                            FontSize="10"
                                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
@@ -12724,7 +12724,7 @@
                                                               AutomationProperties.Name="{Binding Macro_GameTelemetry, Source={x:Static strings:Strings.Instance}}"
                                                               Visibility="{Binding Source, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=GameTelemetry}"/>
                                                     <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="TelemetryChannel" SettingLabel="{Binding Macro_GameTelemetry, Source={x:Static strings:Strings.Instance}}" Visibility="{Binding Source, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=GameTelemetry}" AutomationProperties.AutomationId="Reset_MacroExpressionVariable_TelemetryChannel_1648" Margin="4,0,8,0"/>
-                                                    <!-- OutputChannel dropdown — items are sourced from the
+                                                    <!-- OutputChannel dropdown. Items are sourced from the
                                                          parent macro's OutputChannelOptions list, which renders
                                                          labels per the slot's VC family (matches the mapping
                                                          table: PlayStation ✕/○/◻/△ + L1/R1, Extended
@@ -12871,7 +12871,7 @@
                                 <!-- Trigger inputs as a scrollable list, one removable row per
                                      input, in the same steel-lined well the action sequence uses.
                                      Each input keeps the mapping grid's cold chip grammar
-                                     (#175 item 80); the X drops just that input. -->
+                                     (#175 item 80). The X drops just that input. -->
                                 <Border BorderBrush="{DynamicResource SteelLineBrush}" BorderThickness="1"
                                         CornerRadius="6" Background="{DynamicResource SteelRaisedBrush}"
                                         Padding="4" Margin="0,0,0,4">
@@ -12964,7 +12964,7 @@
                                 </Border>
                                 <!-- Legacy slot-combined axis Threshold + Direction. Visible
                                      only for OutputController-source triggers that landed in
-                                     the slot-combined TriggerAxisTargets list — InputDevice
+                                     the slot-combined TriggerAxisTargets list. InputDevice
                                      triggers go through the per-device axis entries below and
                                      carry their own Invert / Half / DeadZone, so these
                                      duplicate controls would just be redundant + confusing. -->
@@ -13031,8 +13031,8 @@
                                  mapping grid's ember chip grammar. Selection and
                                  interaction stay on the ListBox container. -->
                             <!-- Bounding box so the sequence reads as one list (user
-                                 report): a steel-lined well. Drag a chip to reorder;
-                                 the drop commits Actions.Move (handlers in code-behind). -->
+                                 report): a steel-lined well. Drag a chip to reorder.
+                                 The drop commits Actions.Move (handlers in code-behind). -->
                             <Border BorderBrush="{DynamicResource SteelLineBrush}" BorderThickness="1"
                                     CornerRadius="6" Background="{DynamicResource SteelRaisedBrush}"
                                     Padding="4" Margin="0,0,0,4">
@@ -13189,7 +13189,7 @@
                                     </StackPanel>
 
                                     <!-- Text Block editor (#201). Multiline text typed out via
-                                         Unicode injection; newlines press Enter, tab CHARACTERS
+                                         Unicode injection. Newlines press Enter, tab CHARACTERS
                                          press Tab. AcceptsTab stays off on purpose: the Tab key
                                          keeps moving focus between fields, so a tab character
                                          only enters the text via paste (the tooltip says so).
@@ -13238,8 +13238,8 @@
                                         <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="SetGyroEngagedMode" SettingLabel="{Binding Macro_SetGyroEngaged_Mode_Label, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_SetGyroEngagedMode_2116"/>
                                     </StackPanel>
 
-                                    <!-- Gyro Recenter card (issue #9 wave 1b, B-18). Parameter-less;
-                                         the card explains what one fire resets, mirroring the Stop
+                                    <!-- Gyro Recenter card (issue #9 wave 1b, B-18). Parameter-less.
+                                         The card explains what one fire resets, mirroring the Stop
                                          Sounds card shape. -->
                                     <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
                                             Visibility="{Binding IsGyroRecenterType, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -13436,7 +13436,7 @@
 
                                     <!-- Pulse while latched (v19, M1): the toggle latches
                                          (button / key / mouse button / axis) can pulse their held
-                                         contribution on the turbo square wave; checking it surfaces
+                                         contribution on the turbo square wave. Checking it surfaces
                                          the shared Interval row below. -->
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
                                                 Visibility="{Binding IsPulseCapableType, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -13460,8 +13460,8 @@
                                     </StackPanel>
 
                                     <!-- Pressure-scaled turbo (#290): rate follows an analog source.
-                                         The Interval row above becomes the FAST end (full press);
-                                         Slow Interval is the light-press end; the curve shapes the
+                                         The Interval row above becomes the FAST end (full press).
+                                         Slow Interval is the light-press end. The curve shapes the
                                          pressure between them. Source pickers reuse the sender-generic
                                          DeviceAxisPicker handlers the volume rows already use. -->
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
@@ -13607,7 +13607,7 @@
                                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                     </StackPanel>
 
-                                    <!-- Duration — for ButtonPress / KeyPress / Delay / LightbarColor -->
+                                    <!-- Duration. For ButtonPress / KeyPress / Delay / LightbarColor -->
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
                                                 Visibility="{Binding IsDurationType, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_Duration, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
@@ -14060,7 +14060,7 @@
                                                 </ComboBox>
                                                 <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="LightbarHoldMode" SettingLabel="{Binding ResetLabel_HoldMode, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_LightbarHoldMode_2473"/>
                                             </StackPanel>
-                                            <!-- Color source — Reactive only. Sticky always uses Fixed. -->
+                                            <!-- Color source. Reactive only. Sticky always uses Fixed. -->
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
                                                         Visibility="{Binding IsLightbarReactiveHold, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_LightbarColorSource_Label, Source={x:Static strings:Strings.Instance}}"
@@ -14073,7 +14073,7 @@
                                                 </ComboBox>
                                                 <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="LightbarColorSource" SettingLabel="{Binding Macro_LightbarColorSource_Label, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_LightbarColorSource_2484"/>
                                             </StackPanel>
-                                            <!-- Color picker — visible for Sticky always, Reactive only when Source=Fixed. -->
+                                            <!-- Color picker. Visible for Sticky always, Reactive only when Source=Fixed. -->
                                             <StackPanel Margin="0,0,0,6"
                                                         Visibility="{Binding IsLightbarFixedColorVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <views:ColorPickerControl HorizontalAlignment="Left" Margin="0,0,0,4"
@@ -14091,7 +14091,7 @@
                                                     </Border.Background>
                                                 </Border>
                                             </StackPanel>
-                                            <!-- Per-macro palette editor — visible only when Reactive + PaletteStep. -->
+                                            <!-- Per-macro palette editor. Visible only when Reactive + PaletteStep. -->
                                             <StackPanel Margin="0,0,0,6"
                                                         Visibility="{Binding IsLightbarPaletteVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <TextBlock Text="{Binding Macro_LightbarPalette_Label, Source={x:Static strings:Strings.Instance}}"
@@ -14147,7 +14147,7 @@
                                                 <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="LightbarHoldMs" SettingLabel="{Binding Macro_TriggerHoldMs_Label, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_LightbarHoldMs_2559" Margin="4,0,8,0"/>
                                                 <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
                                             </StackPanel>
-                                            <!-- Fade slider — Reactive only. Linear fade from full to off after the hold. -->
+                                            <!-- Fade slider. Reactive only. Linear fade from full to off after the hold. -->
                                             <StackPanel Orientation="Horizontal"
                                                         Visibility="{Binding IsLightbarReactiveHold, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_LightbarFade_Label, Source={x:Static strings:Strings.Instance}}"
@@ -14209,7 +14209,7 @@
                                         </StackPanel>
                                     </Border>
 
-                                    <!-- Lightbar Mode Cycle card — checkbox grid bound through LightbarCycleModesCsv via the action's CycleModeOptions list. -->
+                                    <!-- Lightbar Mode Cycle card. Checkbox grid bound through LightbarCycleModesCsv via the action's CycleModeOptions list. -->
                                     <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
                                             Visibility="{Binding IsLightbarModeCycleType, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <StackPanel>
@@ -14339,7 +14339,7 @@
 
                                     <!-- Rumble card (Reactive | Sticky). Shared by the main-motor
                                          Rumble action and the trigger-channel RumbleTrigger action
-                                         (#102); the header title switches per action type. -->
+                                         (#102). The header title switches per action type. -->
                                     <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
                                             Visibility="{Binding IsAnyRumbleSetType, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <StackPanel>
@@ -14377,7 +14377,7 @@
                                                 <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="%" VerticalAlignment="Center" Margin="2,0,0,0"/>
                                                 <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="RumbleStrengthRight" SettingLabel="{Binding Macro_RumbleStrengthRight_Label, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_RumbleStrengthRight_2770"/>
                                             </StackPanel>
-                                            <!-- Hold ms — Reactive only -->
+                                            <!-- Hold ms. Reactive only -->
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
                                                         Visibility="{Binding IsRumbleReactiveHold, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_RumbleHoldMs_Label, Source={x:Static strings:Strings.Instance}}"
@@ -14389,7 +14389,7 @@
                                                 <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="RumbleHoldMs" SettingLabel="{Binding Macro_TriggerHoldMs_Label, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_RumbleHoldMs_2781" Margin="4,0,8,0"/>
                                                 <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
                                             </StackPanel>
-                                            <!-- Fade ms — Reactive only -->
+                                            <!-- Fade ms. Reactive only -->
                                             <StackPanel Orientation="Horizontal"
                                                         Visibility="{Binding IsRumbleReactiveHold, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_RumbleFadeMs_Label, Source={x:Static strings:Strings.Instance}}"
@@ -14405,7 +14405,7 @@
                                     </Border>
 
                                     <!-- Rumble Stop card. Shared by RumbleStop (main motors) and
-                                         RumbleTriggerStop (trigger channel, #102); title + body switch
+                                         RumbleTriggerStop (trigger channel, #102). Title + body switch
                                          per action type. -->
                                     <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
                                             Visibility="{Binding IsAnyRumbleStopType, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -14524,7 +14524,7 @@
                                         </StackPanel>
                                     </Border>
 
-                                    <!-- Play Sound card (issue #83) — file + volume + loop + preview -->
+                                    <!-- Play Sound card (issue #83). File + volume + loop + preview -->
                                     <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
                                             Visibility="{Binding IsPlaySoundType, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <StackPanel>
@@ -14816,7 +14816,7 @@
                                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                     </StackPanel>
 
-                                    <!-- Source axis + process name — for AppVolume -->
+                                    <!-- Source axis + process name. For AppVolume -->
                                     <StackPanel Margin="0,0,0,6"
                                                 Visibility="{Binding IsAppVolumeType, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
@@ -14924,7 +14924,7 @@
                                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                     </StackPanel>
 
-                                    <!-- Source axis + sensitivity — for MouseMove / MouseScroll -->
+                                    <!-- Source axis + sensitivity. For MouseMove / MouseScroll -->
                                     <StackPanel Margin="0,0,0,6"
                                                 Visibility="{Binding IsMouseMoveType, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <!-- Axis source selector -->
@@ -15042,7 +15042,7 @@
 
                             <!-- Repeat settings. Hidden for Turbo and Toggle (#238):
                                  those modes force until-release repeats in the engine,
-                                 so Mode and Count would be dead controls there; their
+                                 so Mode and Count would be dead controls there. Their
                                  one live knob (the interval) rides the inline row
                                  beside the Fire picker instead. -->
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
@@ -15088,7 +15088,7 @@
                 <Grid Margin="8">
                     <Grid.Resources>
                         <!-- Every tooltip on this tab is a sentence-or-three
-                             string; without a cap + wrap they render as one
+                             string. Without a cap + wrap they render as one
                              screen-wide line. Scoped here because a GLOBAL
                              wrap template would stringify element-content
                              tooltips elsewhere. BasedOn keeps the app's
@@ -15369,8 +15369,8 @@
                             </Grid>
 
                             <!-- Layer gate (#413, @brawler14801 on discussion #409). The
-                                 field, its persistence and the runtime gate all existed;
-                                 only the editor did not, so an imported or starter
+                                 field, its persistence and the runtime gate all existed.
+                                 Only the editor did not, so an imported or starter
                                  profile could carry a layer-gated menu and a hand-built
                                  one could not. Same shape and the same two visibility
                                  triggers as the macro editor's Layer row: shown when the
@@ -15401,7 +15401,7 @@
                                 <StackPanel Grid.Column="1" Orientation="Horizontal">
                                     <!-- The picker's collection is reconciled in place and
                                          never replaced, so the width behavior's ItemsSource
-                                         watch would never fire; the version counter tells
+                                         watch would never fire. The version counter tells
                                          it when labels changed under a stable identity. -->
                                     <ComboBox MinWidth="200" ItemsSource="{Binding LayerChoices}"
                                               common:ComboBoxWidthBehavior.SizeToItems="True"
@@ -15583,7 +15583,7 @@
                                     <ColumnDefinition Width="Auto" SharedSizeGroup="MenuEditorLabel"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <!-- "Opens With" in surface mode; "Steer With" when the
+                                <!-- "Opens With" in surface mode. "Steer With" when the
                                      layer holds the menu open (#413), because then the
                                      surface no longer opens anything. -->
                                 <TextBlock Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
@@ -16315,7 +16315,7 @@
 
                             <!-- Overlay geometry card -->
                             <Border Style="{StaticResource CardBorder}" Margin="0,4,0,12" Padding="12">
-                                <!-- Own shared-size scope: this card's labels align with each
+                                <!-- Own shared-size scope: this card's labels line up with each
                                      other, not with the wider editor rows outside it. -->
                                 <StackPanel Grid.IsSharedSizeScope="True">
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">

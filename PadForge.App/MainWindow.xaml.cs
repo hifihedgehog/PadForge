@@ -404,6 +404,10 @@ namespace PadForge
 
             // Create services.
             _settingsService = new SettingsService(_viewModel);
+            // A card opened further or folded back (#574) is interface
+            // state the settings file keeps. CardFoldState raises this for
+            // a real change only, never while the file loads.
+            CardFoldState.Changed += (_, _) => _settingsService.MarkDirty();
             _inputService = new InputService(_viewModel) { SettingsService = _settingsService };
             // Crash / ProcessExit net: quiet all hardware outputs so an
             // abnormal exit can't leave a pad rumbling (discussion #179).

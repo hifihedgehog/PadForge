@@ -459,7 +459,7 @@
                                  Width="72" Margin="8,0,0,0" VerticalAlignment="Center"
                                  HorizontalContentAlignment="Right"/>
                         <TextBlock Text="ms" Margin="4,0,0,0" VerticalAlignment="Center"/>
-                        <ui:Button Click="ResetDelay_Click" Style="{StaticResource EmberIconButton}"
+                        <ui:Button Click="ResetDelay_Click" Style="{StaticResource QuietResetButton}"
                                    VerticalAlignment="Center" Margin="4,0,0,0"
                                    ToolTip="{Binding Pad_ResetShiftDelay, Source={x:Static strings:Strings.Instance}}">
                             <reset:GlyphText Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
@@ -475,7 +475,7 @@
                                  Width="72" Margin="8,0,0,0" VerticalAlignment="Center"
                                  HorizontalContentAlignment="Right"/>
                         <TextBlock Text="ms" Margin="4,0,0,0" VerticalAlignment="Center"/>
-                        <ui:Button Click="ResetAutoCancel_Click" Style="{StaticResource EmberIconButton}"
+                        <ui:Button Click="ResetAutoCancel_Click" Style="{StaticResource QuietResetButton}"
                                    VerticalAlignment="Center" Margin="4,0,0,0"
                                    ToolTip="{Binding Pad_ResetShiftAutoCancel, Source={x:Static strings:Strings.Instance}}">
                             <reset:GlyphText Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
@@ -500,7 +500,7 @@
                         <TextBlock Text="{Binding Pad_Shift_Color, Source={x:Static strings:Strings.Instance}}"
                                    VerticalAlignment="Center"/>
                         <ui:Button x:Name="ClearColorButton"
-                                   Style="{StaticResource EmberIconButton}"
+                                   Style="{StaticResource QuietResetButton}"
                                    VerticalAlignment="Center"
                                    Click="ClearColor_Click"
                                    ToolTip="{Binding Pad_ResetLayerColor, Source={x:Static strings:Strings.Instance}}">
@@ -543,7 +543,7 @@
                         <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="#FFD32F2F"/>
                         <Slider Value="{Binding ElementName=ColorPicker, Path=Red, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                         <TextBox Text="{Binding ElementName=ColorPicker, Path=Red, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
-                        <ui:Button Click="ResetRed_Click" Style="{StaticResource EmberIconButton}"
+                        <ui:Button Click="ResetRed_Click" Style="{StaticResource QuietResetButton}"
                                    VerticalAlignment="Center"
                                    ToolTip="{Binding Pad_ResetLightbarRed, Source={x:Static strings:Strings.Instance}}">
                             <reset:GlyphText Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
@@ -553,7 +553,7 @@
                         <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="#FF388E3C"/>
                         <Slider Value="{Binding ElementName=ColorPicker, Path=Green, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                         <TextBox Text="{Binding ElementName=ColorPicker, Path=Green, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
-                        <ui:Button Click="ResetGreen_Click" Style="{StaticResource EmberIconButton}"
+                        <ui:Button Click="ResetGreen_Click" Style="{StaticResource QuietResetButton}"
                                    VerticalAlignment="Center"
                                    ToolTip="{Binding Pad_ResetLightbarGreen, Source={x:Static strings:Strings.Instance}}">
                             <reset:GlyphText Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
@@ -563,7 +563,7 @@
                         <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
                         <Slider Value="{Binding ElementName=ColorPicker, Path=Blue, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                         <TextBox Text="{Binding ElementName=ColorPicker, Path=Blue, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
-                        <ui:Button Click="ResetBlue_Click" Style="{StaticResource EmberIconButton}"
+                        <ui:Button Click="ResetBlue_Click" Style="{StaticResource QuietResetButton}"
                                    VerticalAlignment="Center"
                                    ToolTip="{Binding Pad_ResetLightbarBlue, Source={x:Static strings:Strings.Instance}}">
                             <reset:GlyphText Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>

@@ -103,7 +103,7 @@
             pattern used by the mapping grid's record / clear buttons:
             symbol font scoped to a child TextBlock, not the Button itself.
         -->
-        <Style x:Key="ResetButton" TargetType="ui:Button" BasedOn="{StaticResource EmberIconButton}">
+        <Style x:Key="ResetButton" TargetType="ui:Button" BasedOn="{StaticResource QuietResetButton}">
             <Setter Property="Content" Value="&#xE72C;"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="ToolTip" Value="{Binding Common_Reset, Source={x:Static strings:Strings.Instance}}"/>
@@ -115,12 +115,13 @@
                 </Setter.Value>
             </Setter>
             <!-- #175 hover-glow: the cold glow trigger is inherited from
-                 EmberIconButton (App.xaml), matching the cold hover ring. -->
+                 EmberIconButton (App.xaml), matching the cold hover ring.
+                 The quiet rest state (#574) is QuietResetButton's. -->
         </Style>
-        <!-- Reset All is a reset-domain text button: same ghost stroke /
-             cold-ring chrome as EmberIconButton, but natural width so the
-             localized label fits. -->
-        <Style x:Key="ResetAllButton" TargetType="ui:Button" BasedOn="{StaticResource EmberIconButton}">
+        <!-- Reset All is a reset-domain text button: the reset buttons'
+             quiet rest state and cold hover ring (QuietResetButton), but
+             natural width so the localized label fits. -->
+        <Style x:Key="ResetAllButton" TargetType="ui:Button" BasedOn="{StaticResource QuietResetButton}">
             <Setter Property="Width" Value="Auto"/>
             <Setter Property="Padding" Value="8,3"/>
             <Setter Property="FontSize" Value="11"/>

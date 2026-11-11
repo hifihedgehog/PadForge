@@ -547,7 +547,34 @@
                     </Trigger>
                 </Style.Triggers>
             </Style>
-            <Style x:Key="SettingResetButton" TargetType="uictrl:Button" BasedOn="{StaticResource EmberIconButton}">
+            <!--
+                Quiet reset (#574). Every setting keeps its reset button,
+                which puts hundreds of them on the pad page alone. Drawn
+                with the icon button's ghost ring and a bright glyph, they
+                read louder than the settings they stand beside. A reset
+                button now rests with no ring and a dim glyph, and takes
+                the ring and the full glyph back under the pointer or
+                keyboard focus. The pointer's ring comes through the
+                template's hover route (MouseOverBorderBrush, cold), as it
+                does for every icon button. Keyboard focus sets the same
+                ring here, beside the app's focus visual. Size, hit target,
+                glow and press feedback are EmberIconButton's, unchanged.
+                Every reset style in the app is based on this one.
+            -->
+            <Style x:Key="QuietResetButton" TargetType="uictrl:Button" BasedOn="{StaticResource EmberIconButton}">
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+                    </Trigger>
+                    <Trigger Property="IsKeyboardFocused" Value="True">
+                        <Setter Property="BorderBrush" Value="{DynamicResource ColdBrush}"/>
+                        <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <Style x:Key="SettingResetButton" TargetType="uictrl:Button" BasedOn="{StaticResource QuietResetButton}">
                 <Setter Property="VerticalAlignment" Value="Center"/>
                 <Setter Property="Content" Value="&#xE72C;"/>
                 <Setter Property="AutomationProperties.Name" Value="{Binding ToolTip, RelativeSource={RelativeSource Self}, TargetNullValue='', FallbackValue=''}"/>

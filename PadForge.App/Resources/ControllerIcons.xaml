@@ -2,6 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:conv="clr-namespace:PadForge.Converters"
     xmlns:common="clr-namespace:PadForge.Common"
+    xmlns:controls="clr-namespace:PadForge.Controls"
     xmlns:po="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="po">
@@ -395,6 +396,171 @@
         <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
         <Setter Property="Margin" Value="0,0,0,8"/>
+    </Style>
+
+    <!-- ═══════════════════════════════════════════
+         Fold parts (#574)
+         ═══════════════════════════════════════════ -->
+
+    <!-- The header of a fold part. The whole row is the button: clear at
+         rest so the card shows through, the stock subtle fill under the
+         pointer. Its content is laid out by the part that owns it. Keyboard
+         focus draws the app's focus visual, which reaches a ToggleButton
+         through the system focus key App.xaml overrides. -->
+    <Style x:Key="FoldHeaderToggle" TargetType="ToggleButton">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                            CornerRadius="7" Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- A card that folds to one line: title, hint, the value the card
+         holds, and a chevron at the end of the line. Open, its content sits
+         under the line inside the same card. The title wears CardTitle's
+         face and the hint CardDescription's, so a folded card reads as the
+         header of the card it opens into. The chevron points down closed
+         and up open, as an expander does in Windows Settings, so it reads
+         the same in a right-to-left language and is pinned left-to-right
+         like every drawing in the app. A Path has no automation peer, so a
+         screen reader passes over it, and the Expander's own peer reports
+         open or closed. The header button carries the title as its name,
+         the hint as its help text and the summary as its status. -->
+    <Style TargetType="{x:Type controls:FoldCard}">
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="IsTabStop" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:FoldCard}">
+                    <Border Style="{StaticResource CardBorder}" Padding="0">
+                        <StackPanel>
+                            <ToggleButton x:Name="HeaderSite" Style="{StaticResource FoldHeaderToggle}"
+                                          MinHeight="48" Padding="16,0"
+                                          IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                          AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue='', FallbackValue=''}"
+                                          AutomationProperties.HelpText="{TemplateBinding Hint}"
+                                          AutomationProperties.ItemStatus="{TemplateBinding Summary}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <ContentPresenter Grid.Column="0" ContentSource="Header"
+                                                      VerticalAlignment="Center"
+                                                      TextElement.FontFamily="{StaticResource DisplayFontFamily}"
+                                                      TextElement.FontSize="15"
+                                                      TextElement.FontWeight="SemiBold"/>
+                                    <TextBlock Grid.Column="1" Text="{TemplateBinding Hint}"
+                                               FontFamily="{StaticResource BodyFontFamily}" FontSize="12"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                               TextTrimming="CharacterEllipsis"
+                                               VerticalAlignment="Center" Margin="12,0,12,0"/>
+                                    <TextBlock Grid.Column="2" Text="{TemplateBinding Summary}"
+                                               FontFamily="{StaticResource BodyFontFamily}" FontSize="12"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                               VerticalAlignment="Center"/>
+                                    <Path x:Name="Chevron" Grid.Column="3" FlowDirection="LeftToRight" Data="M 1,3 L 5,7 L 9,3"
+                                          Width="10" Height="10"
+                                          Stroke="{DynamicResource TextFillColorSecondaryBrush}" StrokeThickness="1.4"
+                                          StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"
+                                          RenderTransformOrigin="0.5,0.5"
+                                          VerticalAlignment="Center" Margin="12,0,0,0"/>
+                                </Grid>
+                            </ToggleButton>
+                            <Border x:Name="ExpandSite" Visibility="Collapsed"
+                                    BorderBrush="{DynamicResource SteelLineSoftBrush}" BorderThickness="0,1,0,0"
+                                    Padding="16">
+                                <ContentPresenter/>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsExpanded" Value="True">
+                            <Setter TargetName="ExpandSite" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="Chevron" Property="RenderTransform">
+                                <Setter.Value>
+                                    <RotateTransform Angle="180"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- The More row at the foot of a card: a rule across the card, then a
+         row that opens the rest of the card's settings under itself. The
+         chevron points down closed and up open. The row keeps its label
+         when open, and the Expander's peer reports the state. -->
+    <Style TargetType="{x:Type controls:MoreRow}">
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="IsTabStop" Value="False"/>
+        <Setter Property="Margin" Value="0,8,0,0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:MoreRow}">
+                    <StackPanel>
+                        <Border BorderBrush="{DynamicResource SteelLineSoftBrush}" BorderThickness="0,1,0,0"/>
+                        <ToggleButton x:Name="HeaderSite" Style="{StaticResource FoldHeaderToggle}"
+                                      MinHeight="36" Padding="6,0" Margin="-6,4,-6,0"
+                                      IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                      AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue='', FallbackValue=''}"
+                                      AutomationProperties.HelpText="{TemplateBinding Hint}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Path x:Name="Chevron" Grid.Column="0" FlowDirection="LeftToRight" Data="M 1,3 L 5,7 L 9,3"
+                                      Width="10" Height="10"
+                                      Stroke="{DynamicResource TextFillColorSecondaryBrush}" StrokeThickness="1.4"
+                                      StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"
+                                      RenderTransformOrigin="0.5,0.5"
+                                      VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <ContentPresenter Grid.Column="1" ContentSource="Header"
+                                                  VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="2" Text="{TemplateBinding Hint}"
+                                           FontFamily="{StaticResource BodyFontFamily}" FontSize="12"
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           TextTrimming="CharacterEllipsis"
+                                           VerticalAlignment="Center" Margin="10,0,0,0"/>
+                            </Grid>
+                        </ToggleButton>
+                        <ContentPresenter x:Name="ExpandSite" Visibility="Collapsed" Margin="0,8,0,0"/>
+                    </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsExpanded" Value="True">
+                            <Setter TargetName="ExpandSite" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="Chevron" Property="RenderTransform">
+                                <Setter.Value>
+                                    <RotateTransform Angle="180"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
 </ResourceDictionary>

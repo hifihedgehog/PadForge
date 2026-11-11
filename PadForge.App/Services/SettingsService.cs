@@ -2690,6 +2690,10 @@ namespace PadForge.Services
             vm.LegacyDriverCleanupOffered = appSettings.LegacyDriverCleanupOffered;
             vm.FirstRunTourCompleted = appSettings.FirstRunTourCompleted;
 
+            // Which cards are opened further (#574). A reset to defaults
+            // comes through here with an empty list and folds them all back.
+            CardFoldState.Load(appSettings.OpenCards);
+
             // Restore main window position/size (profile-independent).
             vm.MainWindowLeft = appSettings.MainWindowLeft;
             vm.MainWindowTop = appSettings.MainWindowTop;
@@ -5226,6 +5230,7 @@ namespace PadForge.Services
                 Use2DControllerView = vm.Use2DControllerView,
                 LegacyDriverCleanupOffered = vm.LegacyDriverCleanupOffered,
                 FirstRunTourCompleted = vm.FirstRunTourCompleted,
+                OpenCards = CardFoldState.Snapshot(),
                 EnableInputHiding = vm.EnableInputHiding,
                 KeepHidHideCloaksBetweenLaunches = vm.KeepHidHideCloaksBetweenLaunches,
                 FlydigiEnhancedProtocol = vm.FlydigiEnhancedProtocol,
@@ -7440,6 +7445,19 @@ namespace PadForge.Services
         /// </summary>
         [XmlElement]
         public bool FirstRunTourCompleted { get; set; }
+
+        /// <summary>
+        /// The cards the user has opened further (#574): the keys of the
+        /// More rows and the folded cards that are open
+        /// (<see cref="Common.CardFoldState"/>). Interface state, kept with
+        /// the app's settings so a card opened once is open at the next
+        /// launch. The element is written only when a card is open, so a
+        /// file with none open reads as a 5.x file does.
+        /// </summary>
+        [XmlArray("OpenCards")]
+        [XmlArrayItem("Card")]
+        public List<string> OpenCards { get; set; } = new();
+        public bool ShouldSerializeOpenCards() => OpenCards != null && OpenCards.Count > 0;
 
         /// <summary>
         /// Global master switch for device hiding (HidHide + input hooks).

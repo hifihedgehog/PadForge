@@ -72,6 +72,9 @@
   <data name="Common_Paste" xml:space="preserve"><value>貼り付け</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>有効</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>無効</value></data>
+  <data name="Common_On" xml:space="preserve"><value>オン</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>オフ</value></data>
+  <data name="Common_More" xml:space="preserve"><value>その他</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>インストール済み</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>未インストール</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>ARM64 では利用できません</value></data>
@@ -3129,7 +3132,6 @@
   <data name="About_WiimoteLibDesc" xml:space="preserve"><value>Wii IR カメラとバランスボードの動作ドキュメント。Brian Peek 製。MIT。</value></data>
   <data name="About_JoyconSinger" xml:space="preserve"><value>joycon-singer</value></data>
   <data name="About_JoyconSingerDesc" xml:space="preserve"><value>Joy-Con HD 振動のワイヤーフォーマットのドキュメント。Sergey004 製。プロトコルの事実確認のためにのみ参照。</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>サービス</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>スロット</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>停止中</value></data>
   <data name="Devices_EmptyHint" xml:space="preserve"><value>デバイスを選択すると、その生入力を確認できます。</value></data>
@@ -3153,14 +3155,33 @@
   <data name="Macro_EmptyHint" xml:space="preserve"><value>左側でマクロを選択するか、「追加」を押して新規作成してください。</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>デバイス</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>プレビュー</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>追加機能</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>オプション機能です。オンにするまで邪魔になりません。</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>さまざまな遊び方</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>ほかの場所へ送る</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>画面表示</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>スマートフォンやタブレットをコントローラーとして使います。</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>ヘッドトラッカーや VR ヘッドセットで見回します。</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>ドライビングゲームの速度、ペダル、ギアをマッピングします。</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>視聴者がチャットに入力してボタンを押せるようにします。</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>別の PC の PadForge とコントローラーを共有します。</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>コントローラーのモーションをエミュレーターに送ります。</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>ゲーム MOD からトリガーとライトのエフェクトを受け取ります。</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>プレイ中にメニュー、レイヤー、プロファイルの切り替えを表示します。</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation のタッチパッドを使うゲーム向けの画面上タッチサーフェスです。</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>他のウィンドウの前面に画像、タイマー、時計を表示します。</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>ポート、暗号化なしの HTTP アドレス、アクセス コード</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>再接続、ポート、アイデンティティ保護、アドレスを指定して接続</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR ランタイム、UDP ポート、軸ごとの範囲</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>ポート、DSX.exe の代替プログラム</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>ポート、最高速度、カスタム形式</value></data>
   <data name="Pad_ToggleAnnotations" xml:space="preserve"><value>マッピング注釈</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>ようこそツアーを表示</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>出力タイプを選び、スロットにデバイスを割り当て、カードをクリックしてマッピングを設定します。</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>スマホ用の Web コントローラー、Remote Link、モーションサーバーなど、オプション機能はここにあります。</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>仮想コントローラー</value></data>
   <data name="Tour_Engine_Body" xml:space="preserve"><value>炉そのものです。炎を切り替えて、すべての入力ポーリングを開始・停止します。</value></data>
   <data name="Tour_Engine_Title" xml:space="preserve"><value>入力エンジン</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>モーションデータ、スマホ用ウェブコントローラー、Remote Link はここから配信されます。</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>サービス</value></data>
   <data name="Tour_Slots_Body" xml:space="preserve"><value>各仮想コントローラーはここにあります。炎は、今どのスロットが鍛造中かを示します。</value></data>
   <data name="Tour_Slots_Title" xml:space="preserve"><value>スロット</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>デバイス数、ポーリングレート、エンジンの炎を常に表示します。</value></data>
@@ -4003,7 +4024,7 @@
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>SundayMomentsによるジャック検出オーディオルーティングのパターン。ヘッドホン端子に追従の参照元。ドキュメントとして参照；AGPL-3.0。</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>ダッシュボードのウェブコントローラーカード用のバイトモード QR エンコーダー。Nayuki のリファレンス実装からの移植。MIT。</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Web コントローラーのアドレス用のバイトモード QR エンコーダー。Nayuki のリファレンス実装からの移植。MIT。</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>キーボードとマウスのビジュアライゼーションのマウスアート。Igor Budzhak 作。MIT。</value></data>
   <data name="DeviceType_HeadsetMotion" xml:space="preserve"><value>ヘッドセットトラッカー</value></data>
@@ -4854,7 +4875,7 @@
   <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>画面オーバーレイを有効にする</value></data>
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>表示内容を選択…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge 画面オーバーレイ</value></data>
-  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>表示する内容がまだありません。ダッシュボードで表示内容を選択してください。</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>表示する内容がまだありません。「追加機能」の「画面オーバーレイ」ページで表示内容を選択してください。</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>画面オーバーレイの切り替え</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>画面オーバーレイの切り替え</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>画面オーバーレイ</value></data>

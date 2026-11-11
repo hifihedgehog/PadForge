@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>Дублирай</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Включено</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Изключено</value></data>
+  <data name="Common_On" xml:space="preserve"><value>Включено</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Изключено</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Още</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Инсталирано</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Не е инсталирано</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>Не е налично за ARM64</value></data>
@@ -288,8 +291,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>Самата ковачница. Превключете пламъка, за да пуснете или спрете четенето на всички входове.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Виртуални контролери</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Изберете изходен тип, подайте устройства към слота и щракнете върху картата, за да оформите съпоставянията на слота.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>Услуги</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>Данните за движение, уеб контролерът за телефон и Отдалечената връзка се предават оттук долу.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>Тук ви чакат допълнителни функции: уеб контролерът за телефон, Отдалечената връзка, сървърът за движение и други.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>Лента с показатели</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>Броят устройства, честотата на запитване и пламъкът на двигателя са винаги пред очите ви.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Покажи приветствената обиколка</value></data>
@@ -301,7 +303,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>ИЗХОД</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Студен</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Преглед</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>Услуги</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Допълнения</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>Допълнителни функции. Всяка стои настрана, докато не я включите.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Още начини за игра</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Изпращане другаде</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>На екрана</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>Използвайте телефон или таблет като контролер.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Оглеждайте се с проследяващо устройство за глава или VR шлем.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Съпоставяйте скорост, педали и предавки от състезателни игри.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>Позволете на зрителите да натискат бутони, като пишат в чата.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Споделяйте контролери с PadForge на друг компютър.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Изпращайте движението на контролера към емулатори.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Приемайте ефекти за спусъците и светлините от игрови модове.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Показвайте менюта, слоеве и смени на профил, докато играете.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Сензорна повърхност на екрана за игри, които използват тъчпада на PlayStation.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Картинка, таймер или часовник над другите прозорци.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Порт, обикновен HTTP адрес, код за достъп</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Повторно свързване, порт, защита на идентичността, свързване по адрес</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR среда за изпълнение, UDP порт, обхват за всяка ос</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Порт, заместник DSX.exe</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Портове, пълна скорост, персонализирани формати</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Сървър за движение</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Сървър по протокола DSU/CemuHook Motion Provider за данни от жироскопа и акселерометъра.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Включи DSU сървъра за движение (протокол CemuHook Motion Provider)</value></data>
@@ -4065,7 +4086,7 @@
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Модел за насочване на звука според засичането на жака от SundayMoments, референцията за „Според жака за слушалки“. Използван като документация; AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>QR кодер в байтов режим за картата на уеб контролера в „Табло“, пренесен от референтната реализация на Nayuki. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>QR кодер в байтов режим за адресите на Уеб контролера, пренесен от референтната реализация на Nayuki. MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>Графика на мишката във визуализацията „Клавиатура + мишка“, от Igor Budzhak. MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Честота според натиска</value></data>
@@ -4903,7 +4924,7 @@
   <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>Включи наслагването на екрана</value></data>
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Избор на показваното…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>Наслагване на екрана на PadForge</value></data>
-  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Още няма какво да се покаже. Изберете какво да показва от Таблото.</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Още няма какво да се покаже. Изберете какво да показва от страницата Наслагване на екрана, под Допълнения.</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Превключване на наслагването на екрана</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Превключване на наслагването на екрана</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Наслагване на екрана</value></data>

@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>Duplikovat</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Povoleno</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Zakázáno</value></data>
+  <data name="Common_On" xml:space="preserve"><value>Zapnuto</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Vypnuto</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Více</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Nainstalováno</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Nenainstalováno</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>Na ARM64 není k dispozici</value></data>
@@ -288,8 +291,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>Samotná výheň. Přepnutím plamene spustíte nebo zastavíte veškeré dotazování vstupů.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Virtuální ovladače</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Vyberte typ výstupu, přidejte do slotu zařízení a kliknutím na kartu upravte její mapování.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>Služby</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>Odtud dole se vysílají pohybová data, webový ovladač v telefonu a Vzdálené propojení.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>Tady čekají volitelné funkce: webový ovladač v telefonu, Vzdálené propojení, pohybový server a další.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>Přístrojová lišta</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>Počet zařízení, frekvence dotazování a plamen jádra, stále na očích.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Zobrazit uvítací prohlídku</value></data>
@@ -301,7 +303,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>VÝSTUP</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Studený</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Náhled</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>Služby</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Doplňky</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>Volitelné funkce. Každá vám nebude překážet, dokud ji nezapnete.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Další způsoby hraní</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Odeslat jinam</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>Na obrazovce</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>Použijte telefon nebo tablet jako ovladač.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Rozhlížejte se pomocí sledování hlavy nebo headsetu VR.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Mapujte rychlost, pedály a převodovku z jízdních her.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>Diváci mohou mačkat tlačítka psaním do chatu.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Sdílejte ovladače s programem PadForge na jiném počítači.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Posílejte pohyb ovladače do emulátorů.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Přijímejte efekty spouští a světel z herních modů.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Zobrazujte nabídky, vrstvy a přepnutí profilů při hraní.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Dotyková plocha na obrazovce pro hry, které používají touchpad PlayStation.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Obrázek, časovač nebo hodiny nad ostatními okny.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Port, adresa nešifrovaného HTTP, přístupový kód</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Opětovné připojení, port, ochrana identity, připojení pomocí adresy</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>Běhové prostředí OpenXR, port UDP, rozsah jednotlivých os</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, zástupný DSX.exe</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Porty, plná rychlost, vlastní formáty</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Pohybový server</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Server protokolu DSU/CemuHook Motion Provider pro data gyroskopu a akcelerometru.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Povolit pohybový server DSU (protokol CemuHook Motion Provider)</value></data>
@@ -4065,7 +4086,7 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Vzor směrování zvuku podle detekce konektoru od SundayMoments, předloha pro volbu Podle konektoru sluchátek. Čteno jako dokumentace; AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Kodér QR v bajtovém režimu pro kartu webového ovladače na stránce Přehled, portovaný z referenční implementace od Nayuki. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Kodér QR v bajtovém režimu pro adresy webového ovladače, portovaný z referenční implementace od Nayuki. MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>Grafika myši ve vizualizaci Klávesnice + myš, autor Igor Budzhak. MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Rychlost podle tlaku</value></data>
@@ -4903,7 +4924,7 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>Povolit překryvnou obrazovku</value></data>
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Vybrat, co zobrazuje…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>Překryvná obrazovka PadForge</value></data>
-  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Zatím není co zobrazit. Na Přehledu vyberte, co se má zobrazovat.</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Zatím není co zobrazit. Vyberte, co se má zobrazovat, na stránce Překryvná obrazovka v části Doplňky.</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Přepnout překryvnou obrazovku</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Přepnout překryvnou obrazovku</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Překryvná obrazovka</value></data>

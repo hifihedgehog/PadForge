@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>Duplikuj</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Włączone</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Wyłączone</value></data>
+  <data name="Common_On" xml:space="preserve"><value>Włączone</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Wyłączone</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Więcej</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Zainstalowano</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Nie zainstalowano</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>Niedostępne na ARM64</value></data>
@@ -288,8 +291,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>Sama kuźnia. Przełącz płomień, aby uruchomić lub zatrzymać odpytywanie wszystkich wejść.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Wirtualne kontrolery</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Wybierz typ wyjścia, dodaj do slotu urządzenia i kliknij kartę, aby ukształtować jej mapowania.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>Usługi</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>Tu na dole działają przesyłanie danych ruchu, kontroler webowy w telefonie i Łącze zdalne.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>Tu czekają funkcje opcjonalne: kontroler webowy w telefonie, Łącze zdalne, serwer ruchu i inne.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>Pasek wskaźników</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>Liczba urządzeń, częstotliwość odpytywania i płomień silnika, zawsze na widoku.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Pokaż przewodnik powitalny</value></data>
@@ -301,7 +303,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>WYJŚCIE</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Zimny</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Podgląd</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>Usługi</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Dodatki</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>Funkcje opcjonalne. Każda zostaje w tle, dopóki jej nie włączysz.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Więcej sposobów gry</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Wyślij gdzie indziej</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>Na ekranie</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>Używaj telefonu lub tabletu jako kontrolera.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Rozglądaj się za pomocą trackera głowy lub gogli VR.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Mapuj prędkość, pedały i biegi z gier wyścigowych.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>Pozwól widzom naciskać przyciski, pisząc na czacie.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Udostępniaj kontrolery programowi PadForge na innym komputerze.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Wysyłaj ruch kontrolera do emulatorów.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Przyjmuj efekty spustów i świateł z modów do gier.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Pokazuj menu, warstwy i zmiany profilu podczas gry.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Ekranowa powierzchnia dotykowa do gier korzystających z panelu dotykowego PlayStation.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Obraz, minutnik lub zegar nad innymi oknami.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Port, zwykły adres HTTP, kod dostępu</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Ponowne łączenie, port, ochrona tożsamości, łączenie przez adres</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>Środowisko uruchomieniowe OpenXR, port UDP, zakres dla poszczególnych osi</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, zastępnik DSX.exe</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Porty, pełna prędkość, formaty niestandardowe</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Serwer ruchu</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Serwer protokołu DSU/CemuHook Motion Provider dla danych żyroskopu i akcelerometru.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Włącz serwer ruchu DSU (protokół CemuHook Motion Provider)</value></data>
@@ -4065,7 +4086,7 @@ Czy PadForge ma je teraz odinstalować? Wymaga to uprawnień administratora i mo
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Wzorzec kierowania dźwięku z wykrywaniem gniazda (autor: SundayMoments), na którym opiera się opcja Zgodnie z gniazdem słuchawkowym. Wykorzystany jako dokumentacja; AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Koder QR w trybie bajtowym dla karty kontrolera webowego w Panelu głównym, przeniesiony z implementacji wzorcowej autorstwa Nayuki. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Koder QR w trybie bajtowym dla adresów kontrolera webowego, przeniesiony z implementacji wzorcowej autorstwa Nayuki. MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>Grafika myszy w wizualizacji Klawiatura + mysz. Autor: Igor Budzhak. MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Tempo zależne od nacisku</value></data>
@@ -4903,7 +4924,7 @@ Czy PadForge ma je teraz odinstalować? Wymaga to uprawnień administratora i mo
   <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>Włącz nakładkę ekranową</value></data>
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Wybierz, co pokazuje…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>Nakładka ekranowa PadForge</value></data>
-  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Nie ma jeszcze nic do pokazania. Wybierz, co pokazuje nakładka, w Panelu głównym.</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Nie ma jeszcze nic do pokazania. Wybierz, co pokazuje nakładka, na stronie Nakładka ekranowa w sekcji Dodatki.</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Przełącz nakładkę ekranową</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Przełącz nakładkę ekranową</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Nakładka ekranowa</value></data>

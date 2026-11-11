@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>Dyblygu</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Wedi'i alluogi</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Wedi'i analluogi</value></data>
+  <data name="Common_On" xml:space="preserve"><value>Ymlaen</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>I ffwrdd</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Mwy</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Wedi'i osod</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Heb ei osod</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>Ddim ar gael ar ARM64</value></data>
@@ -273,8 +276,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>Yr efail ei hun. Toglwch y fflam i gychwyn neu stopio holi pob mewnbwn.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Rheolyddion Rhithwir</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Dewiswch fath o allbwn, bwydwch ddyfeisiau'r slot, a chliciwch ar gerdyn i lunio ei fapiadau.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>Gwasanaethau</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>Mae data symudiad, y rheolydd gwe ar y ffôn, a Dolen Bell yn ffrydio o lawr fan hyn.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>Mae nodweddion dewisol yn aros yma: y rheolydd gwe ar y ffôn, Dolen Bell, y gweinydd symudiad a mwy.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>Llinell Offer</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>Nifer y dyfeisiau, cyfradd holi, a fflam yr injan, bob amser yn y golwg.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Dangos y Daith Groeso</value></data>
@@ -286,7 +288,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>ALLAN</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Oer</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Rhagolwg</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>Gwasanaethau</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Ychwanegion</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>Nodweddion dewisol. Mae pob un yn cadw o'r ffordd nes i chi ei droi ymlaen.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Mwy o Ffyrdd i Chwarae</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Ei Anfon i Rywle Arall</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>Ar y Sgrin</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>Defnyddiwch ffôn neu lechen fel rheolydd.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Edrychwch o gwmpas gyda thraciwr pen neu glustffon VR.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Mapiwch gyflymder, pedalau a gerau o gemau gyrru.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>Gadewch i wylwyr wasgu botymau trwy deipio yn y sgwrs.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Rhannwch reolyddion â PadForge ar PC arall.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Anfonwch symudiad rheolydd i efelychwyr.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Derbyniwch effeithiau sbardun a golau gan fodiau gêm.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Dangoswch ddewislenni, haenau a newidiadau proffil wrth i chi chwarae.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Arwyneb cyffwrdd ar y sgrin ar gyfer gemau sy'n defnyddio pad cyffwrdd PlayStation.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Llun, amserydd neu gloc uwchben ffenestri eraill.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Porth, cyfeiriad HTTP plaen, cod mynediad</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Ailgysylltu, porth, diogelu hunaniaeth, cysylltu drwy gyfeiriad</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>Amser rhedeg OpenXR, porth UDP, amrediad pob echelin</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Porth, dirprwy DSX.exe</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Porthladdoedd, cyflymder llawn, fformatau personol</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Gweinydd Symudiad</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Gweinydd protocol DSU/CemuHook Motion Provider ar gyfer data gyrosgop a chyflymiadur.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Galluogi Gweinydd Symudiad DSU (Protocol CemuHook Motion Provider)</value></data>
@@ -3866,7 +3887,7 @@ Hoffech chi i PadForge eu dadosod nawr? Mae hyn angen caniatâd gweinyddwr ac ef
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Patrwm llwybro sain canfod jac gan SundayMoments, y cyfeirnod y tu ôl i Ddilyn Jac y Clustffonau. Darllenwyd fel dogfennaeth; AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Amgodiwr QR modd beit ar gyfer cerdyn rheolydd gwe y Dangosfwrdd, wedi'i borthi o weithrediad cyfeirio Nayuki. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Amgodiwr QR modd beit ar gyfer cyfeiriadau'r Rheolydd Gwe, wedi'i borthi o weithrediad cyfeirio Nayuki. MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>Gwaith celf y llygoden yn y delweddiad Bysellfwrdd + Llygoden, gan Igor Budzhak. MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Cyfradd wedi'i Graddio gan Bwysau</value></data>

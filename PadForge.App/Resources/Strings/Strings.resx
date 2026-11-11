@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>Duplicate</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Enabled</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Disabled</value></data>
+  <data name="Common_On" xml:space="preserve"><value>On</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Off</value></data>
+  <data name="Common_More" xml:space="preserve"><value>More</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Installed</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Not Installed</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>Not Available on ARM64</value></data>
@@ -288,8 +291,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>The forge itself. Toggle the flame to start or stop all input polling.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Virtual Controllers</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Pick an output type, feed the slot devices, and click a card to shape its mappings.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>Services</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>Motion data, the phone web controller, and Remote Link stream from down here.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>Optional features wait here: the phone web controller, Remote Link, the motion server and more.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>Instrument Line</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>Device count, polling rate, and the engine flame, always in view.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Show Welcome Tour</value></data>
@@ -301,7 +303,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>OUT</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Cold</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Preview</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>Services</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Extras</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>Optional features. Each one stays out of the way until you turn it on.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>More Ways to Play</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Send It Elsewhere</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>On Screen</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>Use a phone or tablet as a controller.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Look around with a head tracker or VR headset.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Map speed, pedals and gears from driving games.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>Let viewers press buttons by typing in chat.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Share controllers with PadForge on another PC.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Send controller motion to emulators.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Take trigger and light effects from game mods.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Show menus, layers and profile switches while you play.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>An on-screen touch surface for games that use the PlayStation touchpad.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>A picture, timer or clock above other windows.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Port, plain HTTP address, access code</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Reconnecting, port, identity protection, connecting by address</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR runtime, UDP port, per-axis range</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, DSX.exe stand-in</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Ports, full speed, custom formats</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Motion Server</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider protocol server for gyro and accelerometer data.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Enable DSU Motion Server (CemuHook Motion Provider Protocol)</value></data>
@@ -4086,7 +4107,7 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Jack-detect audio routing pattern by SundayMoments, the reference behind Follow Headphone Jack. Read as documentation; AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Byte-mode QR encoder for the Dashboard's web controller card, ported from Nayuki's reference implementation. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Byte-mode QR encoder for the Web Controller's addresses, ported from Nayuki's reference implementation. MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>Mouse artwork in the Keyboard + Mouse visualization, by Igor Budzhak. MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Pressure-Scaled Rate</value></data>
@@ -4950,7 +4971,7 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>Enable Screen Overlay</value></data>
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Choose What It Shows…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge Screen Overlay</value></data>
-  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Nothing to show yet. Choose what it shows on the Dashboard.</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Nothing to show yet. Choose what it shows on the Screen Overlay page, under Extras.</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Toggle Screen Overlay</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Toggle Screen Overlay</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Screen Overlay</value></data>

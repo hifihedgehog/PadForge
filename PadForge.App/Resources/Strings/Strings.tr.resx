@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>Çoğalt</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Etkin</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Devre dışı</value></data>
+  <data name="Common_On" xml:space="preserve"><value>Açık</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Kapalı</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Daha fazla</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Kurulu</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Kurulu değil</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>ARM64'te kullanılamaz</value></data>
@@ -288,8 +291,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>Ocağın ta kendisi. Tüm giriş yoklamasını başlatmak veya durdurmak için aleve tıklayın.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Sanal kontrolcüler</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Bir çıkış türü seçin, yuvaya cihaz atayın ve eşlemelerini biçimlendirmek için bir karta tıklayın.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>Hizmetler</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>Hareket verileri, telefondaki web kontrolcüsü ve Uzak Bağlantı buradan yayınlanır.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>İsteğe bağlı özellikler burada: telefondaki web kontrolcüsü, Uzak Bağlantı, hareket sunucusu ve daha fazlası.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>Gösterge satırı</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>Cihaz sayısı, yoklama hızı ve motor alevi her zaman göz önünde.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Karşılama turunu göster</value></data>
@@ -301,7 +303,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>ÇIKIŞ</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Soğuk</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Önizleme</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>Hizmetler</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Ekstralar</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>İsteğe bağlı özellikler. Her biri siz açana kadar yolunuzdan çekilir.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Daha fazla oynama yolu</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Başka yere gönder</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>Ekranda</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>Telefonu veya tableti kontrolcü olarak kullanın.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Kafa takip cihazı veya VR gözlüğüyle etrafa bakın.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Sürüş oyunlarındaki hızı, pedalları ve vitesleri eşleyin.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>İzleyiciler sohbete yazarak düğmelere bassın.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Kontrolcüleri başka bir bilgisayardaki PadForge ile paylaşın.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Kontrolcü hareketini emülatörlere gönderin.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Oyun modlarından tetik ve ışık efektlerini alın.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Oynarken menüleri, katmanları ve profil geçişlerini gösterin.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation dokunmatik yüzeyini kullanan oyunlar için ekran üstü dokunma yüzeyi.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Diğer pencerelerin üstünde bir resim, zamanlayıcı veya saat.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Port, düz HTTP adresi, erişim kodu</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Otomatik yeniden bağlanma, port, kimlik koruması, adresle bağlanma</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR çalışma zamanı, UDP portu, eksen başına aralık</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, DSX.exe vekili</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Portlar, tam hız, özel biçimler</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Hareket sunucusu</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Jiroskop ve ivmeölçer verileri için DSU/CemuHook Motion Provider protokol sunucusu.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU hareket sunucusunu etkinleştir (CemuHook Motion Provider protokolü)</value></data>
@@ -4065,7 +4086,7 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>SundayMoments'ın giriş algılamalı ses yönlendirme yöntemi. Kulaklık girişini izle özelliğinin referansıdır. Belge olarak okundu. AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Gösterge panelindeki web kontrolcüsü kartı için bayt modlu QR kodlayıcı. Nayuki'nin referans uygulamasından uyarlandı. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Web kontrolcüsünün adresleri için bayt modlu QR kodlayıcı. Nayuki'nin referans uygulamasından uyarlandı. MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>Klavye + Fare görselleştirmesindeki fare görseli. Geliştiren: Igor Budzhak. MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Basınca göre ölçeklenen hız</value></data>
@@ -4903,7 +4924,7 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>Ekran kaplamasını etkinleştir</value></data>
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Gösterilecek şeyi seç…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge ekran kaplaması</value></data>
-  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Henüz gösterilecek bir şey yok. Neyin gösterileceğini Gösterge panelinden seçin.</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Henüz gösterilecek bir şey yok. Neyin gösterileceğini Ekstralar altındaki Ekran kaplaması sayfasından seçin.</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Ekran kaplamasını aç/kapat</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Ekran kaplamasını aç/kapat</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Ekran kaplaması</value></data>

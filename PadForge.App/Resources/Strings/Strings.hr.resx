@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>Dupliciraj</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Omogućeno</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Onemogućeno</value></data>
+  <data name="Common_On" xml:space="preserve"><value>Uključeno</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Isključeno</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Više</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Instalirano</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Nije instalirano</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>Nije dostupno na ARM64</value></data>
@@ -273,8 +276,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>Sama kovačnica. Kliknite plamen da biste pokrenuli ili zaustavili prozivanje svih ulaza.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Virtualni kontroleri</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Odaberite vrstu izlaza, dodijelite utoru uređaje i kliknite karticu da biste oblikovali njezina mapiranja.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>Usluge</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>Podaci o pokretu, web-kontroler na telefonu i Udaljena veza prenose se odavde.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>Ovdje čekaju dodatne značajke: web-kontroler na telefonu, Udaljena veza, poslužitelj pokreta i još mnogo toga.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>Traka instrumenata</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>Broj uređaja, učestalost prozivanja i plamen mehanizma, uvijek na vidiku.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Prikaži uvodni obilazak</value></data>
@@ -286,7 +288,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>IZLAZ</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Hladno</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Pregled</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>Usluge</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Dodaci</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>Dodatne značajke. Svaka ostaje po strani dok je ne uključite.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Više načina igranja</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Pošaljite drugamo</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>Na zaslonu</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>Koristite telefon ili tablet kao kontroler.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Gledajte oko sebe uređajem za praćenje glave ili VR slušalicama.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Mapirajte brzinu, pedale i stupnjeve prijenosa iz igara vožnje.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>Neka gledatelji pritišću tipke tipkanjem u chatu.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Dijelite kontrolere s programom PadForge na drugom računalu.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Šaljite pokrete kontrolera emulatorima.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Preuzimajte efekte okidača i svjetla iz modifikacija igara.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Prikazuje izbornike, slojeve i promjene profila dok igrate.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Dodirna površina na zaslonu za igre koje koriste dodirnu pločicu kontrolera PlayStation.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Slika, mjerač vremena ili sat iznad ostalih prozora.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Priključak, obična HTTP adresa, pristupni kôd</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Ponovno povezivanje, priključak, zaštita identiteta, povezivanje putem adrese</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR okruženje, UDP priključak, raspon po osi</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Priključak, zamjena DSX.exe</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Priključci, puna brzina, prilagođeni formati</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Poslužitelj pokreta</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Poslužitelj protokola DSU/CemuHook Motion Provider za podatke žiroskopa i akcelerometra.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Omogući DSU poslužitelj pokreta (protokol CemuHook Motion Provider)</value></data>
@@ -3869,7 +3890,7 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Uzorak usmjeravanja zvuka s prepoznavanjem priključka, autor SundayMoments, referenca za Prati priključak za slušalice. Korišteno kao dokumentacija; AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>QR koder u bajtnom načinu za karticu web-kontrolera na nadzornoj ploči, prenesen iz referentne implementacije autora Nayuki. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>QR koder u bajtnom načinu za adrese web-kontrolera, prenesen iz referentne implementacije autora Nayuki. MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>Grafika miša u vizualizaciji Tipkovnica + miš, autor Igor Budzhak. MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Brzina prema pritisku</value></data>

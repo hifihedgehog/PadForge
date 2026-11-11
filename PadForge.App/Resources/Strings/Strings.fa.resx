@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>تکثیر</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>فعال</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>غیرفعال</value></data>
+  <data name="Common_On" xml:space="preserve"><value>روشن</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>خاموش</value></data>
+  <data name="Common_More" xml:space="preserve"><value>بیشتر</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>نصب‌شده</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>نصب‌نشده</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>در ARM64 در دسترس نیست</value></data>
@@ -288,8 +291,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>خود کوره. شعله را روشن یا خاموش کنید تا نمونه‌برداری از همه ورودی‌ها شروع یا متوقف شود.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>کنترلرهای مجازی</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>نوع خروجی را انتخاب کنید، به اسلات دستگاه بدهید و برای شکل دادن به نگاشت‌هایش روی یک کارت کلیک کنید.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>سرویس‌ها</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>داده‌های حرکت، کنترلر وب تلفن و پیوند از راه دور از همین پایین ارسال می‌شوند.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>ویژگی‌های اختیاری اینجا منتظرند: کنترلر وب تلفن، پیوند از راه دور، سرور حرکت و بیشتر.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>نوار نشان‌دهنده‌ها</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>تعداد دستگاه‌ها، نرخ نمونه‌برداری و شعله موتور، همیشه پیش چشم.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>نمایش تور خوشامدگویی</value></data>
@@ -301,7 +303,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>خروجی</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>سرد</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>پیش‌نمایش</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>سرویس‌ها</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>افزونه‌ها</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>ویژگی‌های اختیاری. هر کدام تا وقتی روشنش نکنید کاری به کارتان ندارد.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>روش‌های بیشتر برای بازی</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>ارسال به جای دیگر</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>روی صفحه</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>از تلفن یا تبلت به‌عنوان کنترلر استفاده کنید.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>با ردیاب سر یا هدست واقعیت مجازی به اطراف نگاه کنید.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>سرعت، پدال‌ها و دنده‌ها را از بازی‌های رانندگی نگاشت کنید.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>به بینندگان اجازه دهید با تایپ در چت دکمه فشار دهند.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>کنترلرها را با PadForge روی رایانه‌ای دیگر به اشتراک بگذارید.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>حرکت کنترلر را به شبیه‌سازها ارسال کنید.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>جلوه‌های ماشه و نور را از مودهای بازی دریافت کنید.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>منوها، لایه‌ها و تعویض پروفایل را هنگام بازی نشان دهید.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>سطح لمسی روی صفحه برای بازی‌هایی که از تاچ‌پد PlayStation استفاده می‌کنند.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>تصویر، زمان‌سنج یا ساعت بالای پنجره‌های دیگر.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>پورت، نشانی HTTP ساده، کد دسترسی</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>اتصال دوباره، پورت، حفاظت از هویت، اتصال با نشانی</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>محیط اجرای OpenXR، پورت UDP، محدوده هر محور</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>پورت، جایگزین DSX.exe</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>پورت‌ها، سرعت کامل، قالب‌های سفارشی</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>سرور حرکت</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>سرور پروتکل DSU/CemuHook Motion Provider برای داده‌های ژیروسکوپ و شتاب‌سنج.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>فعال کردن سرور حرکت DSU (پروتکل CemuHook Motion Provider)</value></data>
@@ -4065,7 +4086,7 @@
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>الگوی مسیردهی صدا بر پایه تشخیص جک، اثر SundayMoments، که مرجع «پیروی از جک هدفون» است. به‌عنوان مستندات خوانده شده؛ AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>رمزگذار QR در حالت بایتی برای کارت کنترلر وب در داشبورد، برگردان‌شده از پیاده‌سازی مرجع Nayuki. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>رمزگذار QR در حالت بایتی برای نشانی‌های کنترلر وب، برگردان‌شده از پیاده‌سازی مرجع Nayuki. MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>طرح گرافیکی ماوس در نمایش صفحه‌کلید + ماوس، اثر Igor Budzhak. MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>نرخ وابسته به فشار</value></data>
@@ -4903,7 +4924,7 @@
   <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>فعال کردن اورلی صفحه‌نمایش</value></data>
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>انتخاب آنچه نشان می‌دهد…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>اورلی صفحه‌نمایش PadForge</value></data>
-  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>هنوز چیزی برای نمایش نیست. در داشبورد انتخاب کنید که چه چیزی نشان دهد.</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>هنوز چیزی برای نمایش نیست. در صفحه اورلی صفحه‌نمایش، زیر افزونه‌ها انتخاب کنید که چه چیزی نشان دهد.</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>تغییر وضعیت اورلی صفحه‌نمایش</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>تغییر وضعیت اورلی صفحه‌نمایش</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>اورلی صفحه‌نمایش</value></data>

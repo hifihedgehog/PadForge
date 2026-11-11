@@ -389,6 +389,8 @@ namespace PadForge
 
             // Set child DataContexts.
             DashboardPageView.DataContext = _viewModel.Dashboard;
+            // The Extras page shows the same view model's extras (#574).
+            ExtrasPageView.DataContext = _viewModel.Dashboard;
             DevicesPageView.DataContext = _viewModel.Devices;
             SettingsPageView.DataContext = _viewModel.Settings;
             ProfilesPageView.DataContext = _viewModel.Settings;
@@ -713,7 +715,10 @@ namespace PadForge
                      or nameof(DashboardViewModel.ScreenOverlays)
                      or nameof(DashboardViewModel.EnableMenuOverlay)
                      or nameof(DashboardViewModel.EnableShiftLayerFlyout)
-                     or nameof(DashboardViewModel.EnableProfileOverlay))
+                     or nameof(DashboardViewModel.EnableProfileOverlay)
+                     or nameof(DashboardViewModel.HeadTrackingLastSources)
+                     or nameof(DashboardViewModel.OverlaysLastShown)
+                     or nameof(DashboardViewModel.ScreenOverlaysLastOn))
                     _settingsService.MarkDirty();
             };
 
@@ -3540,10 +3545,10 @@ namespace PadForge
 
 
         /// <summary>Static nav items whose Content must be refreshed on culture change.</summary>
-        private NavigationViewItem _navDashboard, _navProfiles, _navDevices;
+        private NavigationViewItem _navDashboard, _navProfiles, _navDevices, _navExtras;
 
-        /// <summary>Index in NavView.MenuItems where the first controller entry goes (after Dashboard, Profiles, Devices).</summary>
-        private const int ControllerInsertIndex = 3;
+        /// <summary>Index in NavView.MenuItems where the first controller entry goes (after Dashboard, Profiles, Devices, Extras).</summary>
+        private const int ControllerInsertIndex = 4;
 
         /// <summary>Re-entrancy guard for <see cref="RebuildControllerSection"/>.</summary>
         private bool _rebuildingControllerSection;
@@ -3553,7 +3558,7 @@ namespace PadForge
 
         /// <summary>
         /// Programmatically builds the NavigationView menu items.
-        /// Static items: Dashboard, separators, Devices, Profiles.
+        /// Static items: Dashboard, Profiles, Devices, Extras.
         /// Dynamic items: controller entries + "Add" button, rebuilt when NavControllerItems changes.
         /// </summary>
         private void BuildNavigationItems()
@@ -3613,7 +3618,20 @@ namespace PadForge
             SetNavAutomationId(_navDevices, "Devices");
             NavView.MenuItems.Add(_navDevices);
 
-            // Controller entries (initially none — populated dynamically).
+            // Extras (#574): the optional features that were the Dashboard's
+            // Services cards. E74C is Segoe MDL2 OEM, three squares with a
+            // fourth turned, the mark Windows gives add-ons (drawn from the
+            // live segmdl2.ttf).
+            _navExtras = new NavigationViewItem
+            {
+                Content = Strings.Instance.Extras_Title,
+                Tag = "Extras",
+                Icon = EmberNavIcon("\uE74C")
+            };
+            SetNavAutomationId(_navExtras, "Extras");
+            NavView.MenuItems.Add(_navExtras);
+
+            // Controller entries. None at first. They are populated dynamically.
             RebuildControllerSection();
 
             // Subscribe to the single "done" event instead of CollectionChanged.
@@ -3657,8 +3675,9 @@ namespace PadForge
             if (_navDashboard != null) _navDashboard.Content = Strings.Instance.Dashboard_Title;
             if (_navProfiles != null) _navProfiles.Content = Strings.Instance.Profiles_Title;
             if (_navDevices != null) _navDevices.Content = Strings.Instance.Devices_Title;
+            if (_navExtras != null) _navExtras.Content = Strings.Instance.Extras_Title;
 
-            // Footer items — use x:Name references directly.
+            // Footer items. Use x:Name references directly.
             NavSettings.Content = Strings.Instance.Settings_Title;
             NavAbout.Content = Strings.Instance.About_Title;
 
@@ -3671,7 +3690,7 @@ namespace PadForge
 
         /// <summary>
         /// Rebuilds only the controller section of the sidebar (between the two separators).
-        /// Preserves Dashboard, Devices, Profiles, and footer items.
+        /// Preserves Dashboard, Profiles, Devices, Extras, and footer items.
         ///
         /// Uses a re-entrancy guard because <see cref="RefreshNavControllerItems"/> fires
         /// CollectionChanged once for Clear() and once per Add(), each of which would
@@ -4431,6 +4450,9 @@ namespace PadForge
                 foreach (var mi in NavView.FooterMenuItems)
                     if (mi is NavigationViewItem other) other.IsActive = false;
                 nvi.IsActive = true;
+                // The Extras item opens the catalog, from one of the
+                // extras' own pages too.
+                if (tag == "Extras") ExtrasPageView.ShowCatalog();
                 NavigateToTag(tag);
             }
         }
@@ -7406,6 +7428,14 @@ namespace PadForge
             // Swap visible page.
             DashboardPageView.Visibility = tag == "Dashboard" ? Visibility.Visible : Visibility.Collapsed;
             DevicesPageView.Visibility = tag == "Devices" ? Visibility.Visible : Visibility.Collapsed;
+            // Coming to Extras from another page lands on the catalog, as a
+            // category in Windows Settings opens on its list. Only then: the
+            // sidebar raises this for the selected page on any click in it
+            // (NavView_ItemInvoked), and a click on Add Controller must not
+            // close the extra's page the user is on. A click on the Extras
+            // item itself goes back to the catalog in ActivateNavItem.
+            if (tag == "Extras" && ExtrasPageView.Visibility != Visibility.Visible) ExtrasPageView.ShowCatalog();
+            ExtrasPageView.Visibility = tag == "Extras" ? Visibility.Visible : Visibility.Collapsed;
             ProfilesPageView.Visibility = tag == "Profiles" ? Visibility.Visible : Visibility.Collapsed;
             SettingsPageView.Visibility = tag == "Settings" ? Visibility.Visible : Visibility.Collapsed;
             AboutPageView.Visibility = tag == "About" ? Visibility.Visible : Visibility.Collapsed;
@@ -8399,7 +8429,7 @@ namespace PadForge
             ((FrameworkElement)DashboardPageView.EngineCard, Strings.Instance.Tour_Engine_Title, Strings.Instance.Tour_Engine_Body),
             (DashboardPageView.SlotsItemsControl, Strings.Instance.Tour_Cards_Title, Strings.Instance.Tour_Cards_Body),
             (NavView, Strings.Instance.Tour_Slots_Title, Strings.Instance.Tour_Slots_Body),
-            (DashboardPageView.ServicesSection, Strings.Instance.Tour_Services_Title, Strings.Instance.Tour_Services_Body),
+            (_navExtras, Strings.Instance.Extras_Title, Strings.Instance.Tour_Extras_Body),
             (StatusBarBorder, Strings.Instance.Tour_Status_Title, Strings.Instance.Tour_Status_Body),
         };
 
@@ -8445,9 +8475,9 @@ namespace PadForge
 
         private void FirstRunBegin_Click(object sender, RoutedEventArgs e)
         {
-            // The tour's first four stops live on the Dashboard. Make sure
-            // it is the visible page even if the user navigated away
-            // before clicking Begin.
+            // The tour's first two stops live on the Dashboard, and the
+            // sidebar's two show beside it. Make sure it is the visible
+            // page even if the user navigated away before clicking Begin.
             NavigateToTag("Dashboard");
             WelcomePanel.Visibility = Visibility.Collapsed;
             TourCanvas.Visibility = Visibility.Visible;

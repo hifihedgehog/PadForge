@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>ស្ទួន</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>បានបើក</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>បានបិទ</value></data>
+  <data name="Common_On" xml:space="preserve"><value>បើក</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>បិទ</value></data>
+  <data name="Common_More" xml:space="preserve"><value>ច្រើនទៀត</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>បានដំឡើង</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>មិនទាន់ដំឡើង</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>មិនមានលើ ARM64</value></data>
@@ -273,8 +276,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>ឡដែកខ្លួនឯង។ ចុចអណ្ដាតភ្លើងដើម្បីចាប់ផ្ដើម ឬបញ្ឈប់ការស្ទង់ការបញ្ចូលទាំងអស់។</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>ឧបករណ៍បញ្ជានិម្មិត</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>ជ្រើសប្រភេទលទ្ធផល ផ្ដល់ឧបករណ៍ឲ្យរន្ធ ហើយចុចកាតមួយដើម្បីកែតម្រូវការម៉ាបរបស់វា។</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>សេវាកម្ម</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>ទិន្នន័យចលនា ឧបករណ៍បញ្ជាតាមវេបលើទូរសព្ទ និងតំណពីចម្ងាយ ផ្សាយចេញពីខាងក្រោមនេះ។</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>មុខងារជម្រើសរង់ចាំនៅទីនេះ៖ ឧបករណ៍បញ្ជាតាមវេបលើទូរសព្ទ តំណពីចម្ងាយ ម៉ាស៊ីនមេចលនា និងច្រើនទៀត។</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>ខ្សែឧបករណ៍វាស់</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>ចំនួនឧបករណ៍ អត្រាស្ទង់ និងអណ្ដាតភ្លើងម៉ាស៊ីន តែងតែមើលឃើញ។</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>បង្ហាញដំណើរទស្សនាស្វាគមន៍</value></data>
@@ -286,7 +288,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>ចេញ</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>ត្រជាក់</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>មើលជាមុន</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>សេវាកម្ម</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>មុខងារបន្ថែម</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>មុខងារជម្រើស។ មុខងារនីមួយៗមិនរំខានអ្នកទេ រហូតដល់អ្នកបើកវា។</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>វិធីលេងច្រើនទៀត</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>បញ្ជូនទៅកន្លែងផ្សេង</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>លើអេក្រង់</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>ប្រើទូរសព្ទ ឬថេប្លេតជាឧបករណ៍បញ្ជា។</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>មើលជុំវិញដោយប្រើឧបករណ៍តាមដានក្បាល ឬកាស VR។</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>ម៉ាបល្បឿន ឈ្នាន់ និងលេខប្រអប់លេខពីហ្គេមបើកបរ។</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>អនុញ្ញាតឱ្យអ្នកទស្សនាចុចប៊ូតុងដោយវាយក្នុងការជជែក។</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>ចែករំលែកឧបករណ៍បញ្ជាជាមួយ PadForge នៅលើកុំព្យូទ័រផ្សេង។</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>បញ្ជូនចលនាឧបករណ៍បញ្ជាទៅកម្មវិធីត្រាប់តាម។</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>ទទួលបែបផែនទ្រីហ្គឺ និងភ្លើងពីម៉ូដហ្គេម។</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>បង្ហាញម៉ឺនុយ ស្រទាប់ និងការប្ដូរប្រូហ្វាល់ខណៈអ្នកលេង។</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>ផ្ទៃប៉ះលើអេក្រង់ សម្រាប់ហ្គេមដែលប្រើផ្ទាំងប៉ះ PlayStation។</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>រូបភាព កម្មវិធីកំណត់ម៉ោង ឬនាឡិកា នៅពីលើបង្អួចផ្សេងទៀត។</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>ច្រក អាសយដ្ឋាន HTTP ធម្មតា លេខកូដចូលប្រើ</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>ការភ្ជាប់ឡើងវិញ ច្រក ការការពារអត្តសញ្ញាណ ការភ្ជាប់តាមអាសយដ្ឋាន</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>Runtime OpenXR ច្រក UDP ជួរតាមអ័ក្សនីមួយៗ</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>ច្រក កម្មវិធីជំនួស DSX.exe</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>ច្រក ល្បឿនពេញ ទម្រង់ផ្ទាល់ខ្លួន</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>ម៉ាស៊ីនមេចលនា</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>ម៉ាស៊ីនមេពិធីការ DSU/CemuHook Motion Provider សម្រាប់ទិន្នន័យហ្ស៊ីរ៉ូ និងឧបករណ៍វាស់សំទុះ។</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>បើកម៉ាស៊ីនមេចលនា DSU (CemuHook Motion Provider Protocol)</value></data>
@@ -3865,7 +3886,7 @@
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>លំនាំផ្លូវបញ្ជូនសំឡេងតាមការចាប់រន្ធកាស ដោយ SundayMoments ដែលជាឯកសារយោងនៅពីក្រោយ «តាមរន្ធកាស»។ អានជាឯកសារ។ AGPL-3.0។</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>កម្មវិធីអ៊ិនកូដ QR របៀបបៃ សម្រាប់កាតឧបករណ៍បញ្ជាតាមវេបនៃផ្ទាំងគ្រប់គ្រង ដែលផ្ទេរពីការអនុវត្តយោងរបស់ Nayuki។ MIT។</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>កម្មវិធីអ៊ិនកូដ QR របៀបបៃ សម្រាប់អាសយដ្ឋាននៃឧបករណ៍បញ្ជាតាមវេប ដែលផ្ទេរពីការអនុវត្តយោងរបស់ Nayuki។ MIT។</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>រូបភាពកណ្ដុរក្នុងការបង្ហាញ «ក្ដារចុច + កណ្ដុរ» ដោយ Igor Budzhak។ MIT។</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>អត្រាតាមសម្ពាធ</value></data>

@@ -5476,15 +5476,94 @@ function Test-InFrame {
     return ($null -ne $r -and $r.Y -ge ($wr.Top + 60) -and ($r.Y + $r.Height) -le ($wr.Bottom - 60))
 }
 
+# An extra's own page (PadForge 6, #574). The Dashboard's ten service cards
+# became a catalog on the Extras page with a page for each extra, and a
+# card's less-used rows sit under the More row at its foot. This opens the
+# Extras page (its sidebar item always lands on the catalog), invokes the
+# extra's tile by its AutomationId, Extras_Open_ plus the key, and with -More
+# opens the page's More row, Extras_More_ plus the key, through its expand
+# pattern. Both are UI Automation calls, so the pointer stays parked. The
+# open More row is saved to the staged settings file, which the run restores
+# at its end like every other change. The keys are ExtrasPage.Keys:
+# WebController, HeadTracking, GameTelemetry, TwitchChat, RemoteLink,
+# MotionServer, GameMods, Overlays, TouchpadOverlay, ScreenOverlay. A page's
+# way back, Extras_Back_ plus the key, is in the tree only while that page
+# shows, so finding it proves the page opened. False when the tile, the page
+# or the More row is not there.
+function Open-Extra {
+    param([string]$Key, [switch]$More)
+    Nav "Extras" | Out-Null
+    Start-Sleep -Milliseconds 700
+    $tile = Find-UIA -Aid ("Extras_Open_" + $Key)
+    if (-not $tile) {
+        # Another extra's page is still showing from the recipe before:
+        # selecting the page that is already selected changes nothing.
+        # Coming from another page always lands on the catalog.
+        Nav "Dashboard" | Out-Null
+        Start-Sleep -Milliseconds 500
+        Nav "Extras" | Out-Null
+        Start-Sleep -Milliseconds 700
+        $tile = Find-UIA -Aid ("Extras_Open_" + $Key)
+    }
+    if (-not $tile) { Write-Host "  !! no Extras tile for $Key" -ForegroundColor Red; return $false }
+    try {
+        $tile.GetCurrentPattern([System.Windows.Automation.InvokePattern]::Pattern).Invoke()
+    } catch {
+        Write-Host "  !! the Extras tile for $Key would not open: $($_.Exception.Message)" -ForegroundColor Red
+        return $false
+    }
+    Start-Sleep -Milliseconds 700
+    if (-not (Find-UIA -Aid ("Extras_Back_" + $Key))) {
+        Write-Host "  !! the $Key page did not open" -ForegroundColor Red
+        return $false
+    }
+    if ($More) {
+        $row = Find-UIA -Aid ("Extras_More_" + $Key)
+        if (-not $row) { Write-Host "  !! no More row on the $Key page" -ForegroundColor Red; return $false }
+        try {
+            $row.GetCurrentPattern([System.Windows.Automation.ExpandCollapsePattern]::Pattern).Expand()
+        } catch {
+            Write-Host "  !! the More row of the $Key page would not open: $($_.Exception.Message)" -ForegroundColor Red
+            return $false
+        }
+        Start-Sleep -Milliseconds 500
+    }
+    return $true
+}
+
+# The three extras' pages the docs showed as Dashboard sections: Remote
+# Link, Head Tracking and the Motion Server's port box. Each is its own page
+# now, taken with its More row open so the frame holds what the section
+# held. A frame is gated on BOTH ends of what it means to show, as the
+# Dashboard sections were: the 4.4.0 run anchored dashboard-head-tracking on
+# its heading alone and shipped four fifths Remote Link. Each recipe checks
+# Want, so the full run and -Only both come through here.
+function Capture-ExtrasPages {
+    $pages = @(
+        @{ Shot = "remote-link";             Key = "RemoteLink";   Anchors = @("Paired PCs", "Or Connect by Address (Advanced)") },
+        @{ Shot = "dashboard-head-tracking"; Key = "HeadTracking"; Anchors = @("Set Neutral", "Per-Axis Range") },
+        @{ Shot = "dsu-port-box";            Key = "MotionServer"; Anchors = @("Enable DSU Motion Server (CemuHook Motion Provider Protocol)", "Motion Server Port") }
+    )
+    foreach ($p in $pages) {
+        if (-not (Want $p.Shot)) { continue }
+        Write-Host "[extras] $($p.Key) page: $($p.Shot)"
+        if ((Open-Extra $p.Key -More) -and (Scroll-ToAnchors -Anchors $p.Anchors -MaxSteps 90)) {
+            Cap $p.Shot
+        } else {
+            Refuse-Shots @($p.Shot) "the $($p.Key) page never framed [$($p.Anchors -join ', ')]"
+        }
+        ScrollContent -Clicks 90
+    }
+}
+
 # The web controller's plain HTTP address (5.0.0): its two checkboxes, the
 # port and access code row, the status line and the QR. STEP 0 turns it on.
-# The access code is the capture file's own (see STEP 0).
+# The access code is the capture file's own (see STEP 0). It sits under the
+# Web Controller page's More row.
 function Capture-WebPlainSection {
     if (-not (Want "dashboard-web-plain")) { return }
-    Write-Host "[5.0.0] Dashboard: plain HTTP address"
-    Nav "Dashboard"; Start-Sleep -Milliseconds 900
-    ScrollContent -Clicks 90
-    if ((Scroll-AnchorToTop -Anchor "Plain HTTP Address") -and (Test-InFrame "New Code")) {
+    Write-Host "[5.0.0] Extras: Web Controller, plain HTTP address"
+    if ((Open-Extra "WebController" -More) -and (Scroll-AnchorToTop -Anchor "Plain HTTP Address") -and (Test-InFrame "New Code")) {
         Cap "dashboard-web-plain"
     } else {
         Write-Host "  !! the Plain HTTP Address section never framed -- SKIPPED dashboard-web-plain" -ForegroundColor Red
@@ -5624,33 +5703,29 @@ function Capture-PeripheralTabs {
 }
 
 # The 5.2.0 cards. Game Mods (#529) with its port, and Game Telemetry
-# (#531) with its game, ports and Full Speed, on the Dashboard. The Novint
-# Falcon (#521) and Keyboard Screens (#519) cards in Settings, whose library
-# lines say no library loaded on a PC without one. STEP 0 turns all four on.
-# The Dashboard draws its section titles in capitals, and a UIA name match
-# is exact, so the two Dashboard recipes anchor on the drawn title.
+# (#531) with its game, ports and Full Speed, each on its own Extras page
+# with its More row open (Open-Extra), since the port rows sit under it.
+# The Novint Falcon (#521) and Keyboard Screens (#519) cards in Settings,
+# whose library lines say no library loaded on a PC without one. STEP 0
+# turns all four on.
 function Capture-GameModsCard {
     if (-not (Want "dashboard-game-mods")) { return }
-    Write-Host "[5.2.0] Dashboard: Game Mods card"
-    Nav "Dashboard"; Start-Sleep -Milliseconds 900
-    ScrollContent -Clicks 90
-    if ((Scroll-AnchorToTop -Anchor "GAME MODS") -and (Test-InFrame "Game Mod Port")) {
+    Write-Host "[5.2.0] Extras: Game Mods page"
+    if ((Open-Extra "GameMods" -More) -and (Test-InFrame "Game Mod Port")) {
         Cap "dashboard-game-mods"
     } else {
-        Refuse-Shots @("dashboard-game-mods") "the Game Mods card never fit one frame"
+        Refuse-Shots @("dashboard-game-mods") "the Game Mods page never fit one frame"
     }
     ScrollContent -Clicks 90
 }
 
 function Capture-GameTelemetryCard {
     if (-not (Want "dashboard-game-telemetry")) { return }
-    Write-Host "[5.2.0] Dashboard: Game Telemetry card"
-    Nav "Dashboard"; Start-Sleep -Milliseconds 900
-    ScrollContent -Clicks 90
-    if ((Scroll-AnchorToTop -Anchor "GAME TELEMETRY") -and (Test-InFrame "Custom Formats$([char]0x2026)")) {
+    Write-Host "[5.2.0] Extras: Game Telemetry page"
+    if ((Open-Extra "GameTelemetry" -More) -and (Test-InFrame "Custom Formats$([char]0x2026)")) {
         Cap "dashboard-game-telemetry"
     } else {
-        Refuse-Shots @("dashboard-game-telemetry") "the Game Telemetry card never fit one frame"
+        Refuse-Shots @("dashboard-game-telemetry") "the Game Telemetry page never fit one frame"
     }
     ScrollContent -Clicks 90
 }
@@ -5660,11 +5735,10 @@ function Capture-GameTelemetryCard {
 # nothing saved.
 function Capture-TelemetryFormatEditor {
     if (-not (Want "telemetry-format-editor")) { return }
-    Write-Host "[5.2.0] Dashboard: Custom Formats window"
-    Nav "Dashboard"; Start-Sleep -Milliseconds 900
-    ScrollContent -Clicks 90
+    Write-Host "[5.2.0] Extras: Custom Formats window"
     $label = "Custom Formats$([char]0x2026)"
-    if (-not ((Scroll-AnchorToTop -Anchor "GAME TELEMETRY") -and (Test-InFrame $label))) {
+    # The button sits under the Game Telemetry page's More row.
+    if (-not ((Open-Extra "GameTelemetry" -More) -and (Test-InFrame $label))) {
         Refuse-Shots @("telemetry-format-editor") "the Custom Formats button never came into view"
         ScrollContent -Clicks 90
         return
@@ -6805,17 +6879,14 @@ function Capture-ImportPreview {
     Assert-MainWindowBack "the import preview" | Out-Null
 }
 
-# Twitch Chat (#555): its Dashboard card, the Devices row STEP 0 turns on
+# Twitch Chat (#555): its Extras page, the Devices row STEP 0 turns on
 # with no channel, and the Chat Commands window that row opens, closed by
 # WM_CLOSE with nothing changed.
 function Capture-TwitchChatShots {
     if (Want "dashboard-twitch-chat") {
-        Write-Host "[5.3.0] Dashboard: Twitch Chat card"
-        Nav "Dashboard"; Start-Sleep -Milliseconds 900
-        ScrollContent -Clicks 90
-        $framed = (Scroll-AnchorToTop -Anchor "TWITCH CHAT") -or (Scroll-AnchorToTop -Anchor "Twitch Chat")
-        if ($framed -and (Test-InFrame "Who approves !claim")) { Cap "dashboard-twitch-chat" }
-        else { Refuse-Shots @("dashboard-twitch-chat") "the Twitch Chat card never fit one frame" }
+        Write-Host "[5.3.0] Extras: Twitch Chat page"
+        if ((Open-Extra "TwitchChat") -and (Test-InFrame "Who approves !claim")) { Cap "dashboard-twitch-chat" }
+        else { Refuse-Shots @("dashboard-twitch-chat") "the Twitch Chat page never fit one frame" }
         ScrollContent -Clicks 90
     }
     $rowShots = @(@("devices-twitch-chat", "twitch-chat-commands") | Where-Object { Want $_ })
@@ -6837,15 +6908,12 @@ function Capture-TwitchChatShots {
     Assert-MainWindowBack "the Chat Commands window" | Out-Null
 }
 
-# The Dashboard's Screen Overlay card (#560), as it is with no overlay on.
+# The Screen Overlay page of Extras (#560), as it is with no overlay on.
 function Capture-ScreenOverlayCard {
     if (-not (Want "dashboard-screen-overlay")) { return }
-    Write-Host "[5.3.0] Dashboard: Screen Overlay card"
-    Nav "Dashboard"; Start-Sleep -Milliseconds 900
-    ScrollContent -Clicks 90
-    $framed = (Scroll-AnchorToTop -Anchor "SCREEN OVERLAY") -or (Scroll-AnchorToTop -Anchor "Screen Overlay")
-    if ($framed -and ((Test-InFrame "Add Overlay") -or (Test-InFrame "Choose What It Shows$([char]0x2026)"))) { Cap "dashboard-screen-overlay" }
-    else { Refuse-Shots @("dashboard-screen-overlay") "the Screen Overlay card never fit one frame" }
+    Write-Host "[5.3.0] Extras: Screen Overlay page"
+    if ((Open-Extra "ScreenOverlay") -and ((Test-InFrame "Add Overlay") -or (Test-InFrame "Choose What It Shows$([char]0x2026)"))) { Cap "dashboard-screen-overlay" }
+    else { Refuse-Shots @("dashboard-screen-overlay") "the Screen Overlay page never fit one frame" }
     ScrollContent -Clicks 90
 }
 
@@ -7081,24 +7149,11 @@ if ($Only.Count -gt 0) {
         }
     }
 
-    # Dashboard sections whose shot needs SEVERAL anchors in one frame. The
+    # The Remote Link, Head Tracking and Motion Server pages of Extras, whose
+    # shots need SEVERAL anchors in one frame (Capture-ExtrasPages). The
     # Lightbar Mirrors shot left with its section (#494): the Razer Chroma,
     # Logitech LIGHTSYNC and SteelSeries GG device rows replaced it.
-    $multiAnchorTargets = @(
-        @{ Shot = "dashboard-head-tracking";    Page = "Dashboard";
-           Anchors = @("HEAD TRACKING", "Set Neutral") },
-        @{ Shot = "remote-link";                Page = "Dashboard";
-           Anchors = @("REMOTE LINK", "Or Connect by Address (Advanced)") }
-    )
-    foreach ($t in $multiAnchorTargets) {
-        if (-not (Want $t.Shot)) { continue }
-        Write-Host "[focused] $($t.Page) section pair: $($t.Shot)"
-        Nav $t.Page; Start-Sleep -Milliseconds 900
-        ScrollContent -Clicks 90
-        if (Scroll-ToAnchors -Anchors $t.Anchors -MaxSteps 90) { Cap $t.Shot }
-        else { Write-Host "  !! SKIPPED $($t.Shot)" -ForegroundColor Red }
-        ScrollContent -Clicks 90
-    }
+    Capture-ExtrasPages
 
     # Scrolled page sections. A fixed click count is a guess about page
     # LENGTH, and the page keeps growing: -40 reached the Community Configs
@@ -7107,16 +7162,14 @@ if ($Only.Count -gt 0) {
     # anchor is actually on screen, so the shot cannot silently drift onto a
     # neighboring card.
     #
-    # DASHBOARD SECTION TITLES ARE UPPERCASED IN THE VIEW (DashboardPage.xaml
-    # runs every SectionTitle through UpperConverter), and a TextBlock's UIA
-    # Name is what it RENDERS. "Remote Link" therefore matched nothing and
-    # that target could never have fired. Settings CARD titles are not
+    # A SECTION TITLE IS UPPERCASED IN THE VIEW (a page runs its SectionTitle
+    # through UpperConverter), and a TextBlock's UIA Name is what it RENDERS,
+    # so a section title is matched in capitals. Settings CARD titles are not
     # converted, so those anchors stay as written.
     $scrollTargets = @(
-        # remote-link and dashboard-head-tracking are in $multiAnchorTargets
-        # above: each needs BOTH ends of its section in the frame, which a
-        # single anchor cannot promise.
-        @{ Shot = "dsu-port-box";               Page = "Dashboard"; Anchor = "MOTION SERVER"; After = -4 },
+        # remote-link, dashboard-head-tracking and dsu-port-box are taken by
+        # Capture-ExtrasPages above: each needs BOTH ends of its page in the
+        # frame, which a single anchor cannot promise.
         @{ Shot = "settings-assignment-prompts"; Page = "Settings"; Anchor = "Assignment Prompts";  After = -4 },
         @{ Shot = "settings-handheld-buttons";  Page = "Settings";  Anchor = "Handheld PC Buttons"; After = -4 },
         @{ Shot = "settings-community-configs"; Page = "Settings";  Anchor = "Community Configs"; After = -10; Check = "Enable Community Configs" },
@@ -9478,51 +9531,19 @@ if (Select-DeviceByName36 "MIDI Keyboard") {
     Cap "midi-input-mode-devices-page"
 }
 
-# DSU Port box (DSU-Motion-Server.md): the DSU toggle + Port box + reset sit on
-# the Dashboard between the slot cards and the Remote Link section, above the
-# web-controller port. A shorter scroll than Remote Link (-16) lands on them.
-# Dashboard sections, by ANCHOR rather than by click count, for the same
-# reason the Settings block above changed: the page was reordered this cycle.
-# Head Tracking moved onto the Dashboard, Lightbar Mirrors and Razer Sensa HD
-# Haptics were new, and the Drivers status strip left for Settings, so every
-# fixed count below the Services header landed a section early or late. Both
-# of those sections left again with #494, for the vendor device rows.
+# The extras' pages (PadForge 6, #574). The Dashboard's services became the
+# Extras page: a catalog, and a page for each extra with its less-used rows
+# under a More row. The Dashboard keeps the Input Engine and the Virtual
+# Controllers (PageOrderContractTests holds both orders). A recipe reaches
+# an extra by its key through Open-Extra, never by scrolling a long page,
+# so a card added or moved cannot land a frame a section early or late, as
+# the fixed scroll counts did while these were Dashboard sections.
 #
-# Section order (PageOrderContractTests): Input Engine, Virtual Controllers,
-# then Services: Web Controller, Remote Link, Head Tracking, Motion Server,
-# Overlays, Touchpad Overlay.
-#
-# THE SECTION TITLES ARE UPPERCASED IN THE VIEW. DashboardPage.xaml runs
-# every SectionTitle through UpperConverter, and a TextBlock's UIA Name is
-# what it RENDERS, so "Remote Link" matches nothing and "REMOTE LINK" is the
-# anchor. The DSU shot anchors on its checkbox label instead, which is not
-# converted.
-Write-Host "[3b] Dashboard sections"
-#
-# ANCHOR ON THE SECTION'S LAST CONTROL, NOT ITS HEADING. A heading in view
-# proves the section STARTS on screen. The 4.4.0 run anchored
-# dashboard-head-tracking on its heading, the heading entered from the
-# bottom, and the frame that shipped was four fifths Remote Link with one
-# line of Head Tracking under it. Naming both ends of a section makes the
-# gate say what the shot means.
-$dashSections = @(
-    @{ Shot = "remote-link";               Anchors = @("REMOTE LINK", "Or Connect by Address (Advanced)");  After = 0 },
-    @{ Shot = "dashboard-head-tracking";   Anchors = @("HEAD TRACKING", "Set Neutral");                     After = 0 },
-    @{ Shot = "dsu-port-box";              Anchors = @("MOTION SERVER", "Enable DSU Motion Server (CemuHook Motion Provider Protocol)"); After = -4 }
-)
-foreach ($ds in $dashSections) {
-    Nav "Dashboard"; Start-Sleep -Milliseconds 800
-    ScrollContent -Clicks 90
-    # 90 steps: the 5.0.0 Dashboard is taller, and run 6 framed Head
-    # Tracking at step 40, the old limit, then lost Motion Server below it.
-    if (Scroll-ToAnchors -Anchors $ds.Anchors -MaxSteps 90) {
-        if ($ds.After -ne 0) { ScrollContent -Clicks $ds.After; Start-Sleep -Milliseconds 400 }
-        Cap $ds.Shot
-    } else {
-        Write-Host "  !! Dashboard anchors [$($ds.Anchors -join ', ')] never framed together -- SKIPPED $($ds.Shot)" -ForegroundColor Red
-    }
-    ScrollContent -Clicks 90
-}
+# Remote Link, Head Tracking and the Motion Server's port box
+# (DSU-Motion-Server.md), each on its own page with both ends of the frame
+# named (Capture-ExtrasPages).
+Write-Host "[3b] Extras pages"
+Capture-ExtrasPages
 # The web controller's plain HTTP address (5.0.0), framed from its heading.
 Capture-WebPlainSection
 # The 5.2.0 Game Mods and Game Telemetry cards and the Custom Formats window.

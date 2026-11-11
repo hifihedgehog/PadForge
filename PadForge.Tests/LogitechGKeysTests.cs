@@ -421,6 +421,8 @@ namespace PadForge.Tests
 
             string dashboard = RepoFile("PadForge.App", "Views", "DashboardPage.xaml");
             Assert.DoesNotContain("GKeys", dashboard);
+            // Nor among the extras, which is where the Dashboard's services went (#574).
+            Assert.DoesNotContain("GKeys", RepoFile("PadForge.App", "Views", "ExtrasPage.xaml"));
         }
 
         /// <summary>

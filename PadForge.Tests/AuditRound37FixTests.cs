@@ -418,7 +418,8 @@ namespace PadForge.Tests
                 "PadForge.App/Services/InputService.cs",
                 "PadForge.App/ViewModels/DashboardViewModel.cs",
                 "PadForge.App/MainWindow.xaml.cs",
-                "PadForge.App/Views/DashboardPage.xaml",
+                // The Overlays card moved to the Extras page (#574).
+                "PadForge.App/Views/ExtrasPage.xaml",
             };
 
             int Count(string file, string key) =>

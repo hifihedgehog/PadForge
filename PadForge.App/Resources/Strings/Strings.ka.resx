@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>დუბლირება</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>ჩართულია</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>გამორთულია</value></data>
+  <data name="Common_On" xml:space="preserve"><value>ჩართული</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>გამორთული</value></data>
+  <data name="Common_More" xml:space="preserve"><value>მეტი</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>დაყენებულია</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>არ არის დაყენებული</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>მიუწვდომელია ARM64-ზე</value></data>
@@ -273,8 +276,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>თვით ქურა. ალის გადართვით ყველა შეყვანის გამოკითხვა ირთვება ან ითიშება.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>ვირტუალური კონტროლერები</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>აირჩიეთ გამოსასვლელი ტიპი, მიაწოდეთ სლოტს მოწყობილობები და დააწკაპუნეთ ბარათზე მისი მიბმების გასაწყობად.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>სერვისები</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>მოძრაობის მონაცემები, ტელეფონის ვებ-კონტროლერი და დისტანციური კავშირი აქედან გადაიცემა.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>აქ დამატებითი ფუნქციები გელოდებათ: ტელეფონის ვებ-კონტროლერი, დისტანციური კავშირი, მოძრაობის სერვერი და სხვა.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>ინსტრუმენტების ზოლი</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>მოწყობილობების რაოდენობა, გამოკითხვის სიხშირე და ძრავის ალი ყოველთვის თვალწინ.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>მისალმების ტურის ჩვენება</value></data>
@@ -286,7 +288,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>OUT</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>ცივი</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>გადახედვა</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>სერვისები</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>დამატებითი</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>არასავალდებულო ფუნქციები. თითოეული ხელს არ შეგიშლით, სანამ არ ჩართავთ.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>თამაშის მეტი გზა</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>გადაგზავნა სხვაგან</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>ეკრანზე</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>გამოიყენეთ ტელეფონი ან ტაბლეტი კონტროლერად.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>მიმოიხედეთ თავის ტრეკერით ან VR ჰარნიტურით.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>მიაბით სიჩქარე, პედლები და გადაცემები სარბოლო თამაშებიდან.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>მაყურებლებს ჩატში აკრეფით შეეძლებათ ღილაკების დაჭერა.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>გააზიარეთ კონტროლერები სხვა კომპიუტერზე არსებულ PadForge-თან.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>გადაეცით კონტროლერის მოძრაობა ემულატორებს.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>მიიღეთ ტრიგერისა და განათების ეფექტები თამაშის მოდებიდან.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>აჩვენეთ მენიუები, შრეები და პროფილის გადართვები თამაშისას.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>ეკრანული სენსორული ზედაპირი PlayStation-ის ტაჩპედის მომხმარებელი თამაშებისთვის.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>სურათი, ტაიმერი ან საათი სხვა ფანჯრების თავზე.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>პორტი, უბრალო HTTP მისამართი, წვდომის კოდი</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>ავტომატური ხელახალი დაკავშირება, პორტი, პირადობის დაცვა, მისამართით დაკავშირება</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR-ის გაშვების გარემო, UDP პორტი, დიაპაზონი ღერძების მიხედვით</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>პორტი, DSX.exe-ის შემცვლელი</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>პორტები, სრული სიჩქარე, საკუთარი ფორმატები</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>მოძრაობის სერვერი</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider პროტოკოლის სერვერი გიროსკოპისა და აქსელერომეტრის მონაცემებისთვის.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU მოძრაობის სერვერის ჩართვა (CemuHook Motion Provider Protocol)</value></data>
@@ -3868,7 +3889,7 @@
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>ყურსასმენის ბუდის ამოცნობით აუდიოს მარშრუტიზაციის მიდგომა, ავტორი SundayMoments, „ყურსასმენის ბუდის მიყოლის“ წყარო. წაკითხულია როგორც დოკუმენტაცია. AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Byte-რეჟიმის QR კოდირება მთავარი პანელის ვებ-კონტროლერის ბარათისთვის, გადატანილი Nayuki-ს საცნობარო იმპლემენტაციიდან. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Byte-რეჟიმის QR კოდირება ვებ-კონტროლერის მისამართებისთვის, გადატანილი Nayuki-ს საცნობარო იმპლემენტაციიდან. MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>მაუსის ილუსტრაცია კლავიატურა + მაუსის ვიზუალიზაციაში, ავტორი Igor Budzhak. MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>დაჭერის ძალაზე დამოკიდებული სიხშირე</value></data>

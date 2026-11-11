@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>நகலாக்கு</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>இயக்கப்பட்டது</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>முடக்கப்பட்டது</value></data>
+  <data name="Common_On" xml:space="preserve"><value>ஆன்</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>ஆஃப்</value></data>
+  <data name="Common_More" xml:space="preserve"><value>மேலும்</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>நிறுவப்பட்டது</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>நிறுவப்படவில்லை</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>ARM64-இல் கிடைக்காது</value></data>
@@ -288,8 +291,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>இதுவே உலை. அனைத்து உள்ளீட்டுப் போலிங்கையும் தொடங்க அல்லது நிறுத்த, சுடரை நிலைமாற்றவும்.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>மெய்நிகர் கட்டுப்படுத்திகள்</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>ஒரு வெளியீட்டு வகையைத் தேர்ந்தெடுத்து, ஸ்லாட்டுக்குச் சாதனங்களைச் சேர்க்கவும். பிறகு அதன் மேப்பிங்குகளை வடிவமைக்க ஒரு கார்டைக் கிளிக் செய்யவும்.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>சேவைகள்</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>அசைவுத் தரவு, ஃபோன் வலைக் கட்டுப்படுத்தி, தொலை இணைப்பு ஆகியவை கீழே இங்கிருந்து ஸ்ட்ரீம் செய்யப்படுகின்றன.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>விருப்ப அம்சங்கள் இங்கே காத்திருக்கின்றன: ஃபோன் வலைக் கட்டுப்படுத்தி, தொலை இணைப்பு, அசைவுச் சேவையகம் மற்றும் பல.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>அளவீட்டுப் பட்டி</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>சாதன எண்ணிக்கை, போலிங் வீதம், இன்ஜின் சுடர் ஆகியவை எப்போதும் பார்வையில் இருக்கும்.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>வரவேற்புச் சுற்றுப்பயணத்தைக் காட்டு</value></data>
@@ -301,7 +303,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>வெளியீடு</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>அணைந்துள்ளது</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>முன்னோட்டம்</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>சேவைகள்</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>கூடுதல்</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>விருப்ப அம்சங்கள். ஒவ்வொன்றும் நீங்கள் இயக்கும் வரை ஒதுங்கியே இருக்கும்.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>விளையாட மேலும் வழிகள்</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>வேறிடத்துக்கு அனுப்பு</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>திரையில்</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>ஃபோன் அல்லது டேப்லெட்டைக் கட்டுப்படுத்தியாகப் பயன்படுத்தவும்.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>ஹெட் டிராக்கர் அல்லது VR ஹெட்செட் மூலம் சுற்றிப் பார்க்கவும்.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>ஓட்டுநர் கேம்களின் வேகம், மிதிகள், கியர்களை மேப் செய்யவும்.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>பார்வையாளர்கள் அரட்டையில் தட்டச்சு செய்து பொத்தான்களை அழுத்தட்டும்.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>வேறொரு PC-யில் உள்ள PadForge உடன் கட்டுப்படுத்திகளைப் பகிரவும்.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>கட்டுப்படுத்தியின் அசைவை எமுலேட்டர்களுக்கு அனுப்பவும்.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>கேம் மோட்களிலிருந்து டிரிகர் மற்றும் ஒளி விளைவுகளைப் பெறவும்.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>விளையாடும்போது மெனுக்கள், அடுக்குகள், சுயவிவர மாற்றங்களைக் காட்டவும்.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation டச்பேடைப் பயன்படுத்தும் கேம்களுக்கான திரைமேல் தொடு பரப்பு.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>மற்ற சாளரங்களுக்கு மேலே ஒரு படம், டைமர் அல்லது கடிகாரம்.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>போர்ட், சாதாரண HTTP முகவரி, அணுகல் குறியீடு</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>தானாக மீண்டும் இணைத்தல், போர்ட், அடையாளப் பாதுகாப்பு, முகவரி மூலம் இணைத்தல்</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR ரன்டைம், UDP போர்ட், ஒவ்வொரு அச்சுக்குமான வீச்சு</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>போர்ட், DSX.exe மாற்றுநிரல்</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>போர்ட்கள், முழு வேகம், தனிப்பயன் வடிவங்கள்</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>அசைவுச் சேவையகம்</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>கைரோ மற்றும் முடுக்கமானித் தரவுக்கான DSU/CemuHook Motion Provider நெறிமுறைச் சேவையகம்.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU அசைவுச் சேவையகத்தை இயக்கு (CemuHook Motion Provider நெறிமுறை)</value></data>
@@ -4065,7 +4086,7 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>SundayMoments உருவாக்கிய ஜாக்-கண்டறிதல் ஆடியோ வழியமைப்பு முறை, ஹெட்ஃபோன் ஜாக்கைப் பின்தொடர் என்பதற்கான மேற்கோள். ஆவணமாகப் படிக்கப்பட்டது; AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>டாஷ்போர்டின் வலைக் கட்டுப்படுத்தி கார்டுக்கான பைட்-பயன்முறை QR என்கோடர், Nayuki-இன் மேற்கோள் செயலாக்கத்திலிருந்து போர்ட் செய்யப்பட்டது. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>வலைக் கட்டுப்படுத்தியின் முகவரிகளுக்கான பைட்-பயன்முறை QR என்கோடர், Nayuki-இன் மேற்கோள் செயலாக்கத்திலிருந்து போர்ட் செய்யப்பட்டது. MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>விசைப்பலகை + சுட்டி காட்சிப்படுத்தலில் உள்ள சுட்டிப் படம், Igor Budzhak உருவாக்கியது. MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>அழுத்தத்துக்கேற்ற வீதம்</value></data>
@@ -4903,7 +4924,7 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>திரை மேலடுக்கை இயக்கு</value></data>
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>எதைக் காட்டுவது என்பதைத் தேர்ந்தெடு…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge திரை மேலடுக்கு</value></data>
-  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>இன்னும் காட்ட எதுவும் இல்லை. டாஷ்போர்டில் எதைக் காட்டுவது என்பதைத் தேர்ந்தெடுக்கவும்.</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>இன்னும் காட்ட எதுவும் இல்லை. கூடுதல் பிரிவில் உள்ள திரை மேலடுக்கு பக்கத்தில் எதைக் காட்டுவது என்பதைத் தேர்ந்தெடுக்கவும்.</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>திரை மேலடுக்கை நிலைமாற்று</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>திரை மேலடுக்கை நிலைமாற்று</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>திரை மேலடுக்கு</value></data>

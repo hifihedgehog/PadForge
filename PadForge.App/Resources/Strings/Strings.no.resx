@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>Dupliser</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Aktivert</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Deaktivert</value></data>
+  <data name="Common_On" xml:space="preserve"><value>På</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Av</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Mer</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Installert</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Ikke installert</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>Ikke tilgjengelig på ARM64</value></data>
@@ -288,8 +291,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>Selve smia. Slå flammen av eller på for å starte eller stoppe all avspørring av inndata.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Virtuelle kontrollere</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Velg en utdatatype, gi sporet enheter, og klikk på et kort for å forme tilordningene.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>Tjenester</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>Bevegelsesdata, nettkontrolleren for telefonen og Fjernkobling strømmer herfra.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>Valgfrie funksjoner finnes her: nettkontrolleren for telefonen, Fjernkobling, bevegelsesserveren og mer.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>Instrumentlinje</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>Antall enheter, avspørringsfrekvens og motorflammen, alltid synlig.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Vis velkomstomvisning</value></data>
@@ -301,7 +303,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>UT</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Kald</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Forhåndsvisning</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>Tjenester</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Ekstra</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>Valgfrie funksjoner. Hver av dem holder seg unna til du slår den på.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Flere måter å spille på</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Send det videre</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>På skjermen</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>Bruk en telefon eller et nettbrett som kontroller.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Se deg rundt med en hodesporer eller et VR-headset.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Tilordne fart, pedaler og gir fra kjørespill.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>La seere trykke på knapper ved å skrive i chatten.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Del kontrollere med PadForge på en annen PC.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Send kontrollerbevegelser til emulatorer.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Ta imot avtrekker- og lyseffekter fra spillmodder.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Vis menyer, lag og profilbytter mens du spiller.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>En berøringsflate på skjermen for spill som bruker PlayStation-berøringsplaten.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Et bilde, en tidtaker eller en klokke oppå andre vinduer.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Port, vanlig HTTP-adresse, tilgangskode</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Gjenkobling, port, identitetsbeskyttelse, tilkobling med adresse</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR-kjøretidsmiljø, UDP-port, område per akse</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, DSX.exe-stedfortreder</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Porter, full fart, egendefinerte formater</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Bevegelsesserver</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Protokollserver for DSU/CemuHook Motion Provider, for gyro- og akselerometerdata.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Aktiver DSU-bevegelsesserver (CemuHook Motion Provider Protocol)</value></data>
@@ -4065,7 +4086,7 @@ Vil du at PadForge skal avinstallere dem nå? Dette krever administratorrettighe
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Mønster for lydruting med kontaktdeteksjon av SundayMoments, referansen bak Følg hodetelefonkontakten. Lest som dokumentasjon; AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>QR-koderen (bytemodus) for nettkontrollerkortet i Oversikt, portert fra referanseimplementeringen til Nayuki. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>QR-koderen (bytemodus) for adressene til nettkontrolleren, portert fra referanseimplementeringen til Nayuki. MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>Musegrafikken i visualiseringen av Tastatur + mus, av Igor Budzhak. MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Trykkstyrt hastighet</value></data>
@@ -4903,7 +4924,7 @@ Vil du at PadForge skal avinstallere dem nå? Dette krever administratorrettighe
   <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>Aktiver skjermoverlegg</value></data>
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Velg hva det viser…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge-skjermoverlegg</value></data>
-  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Ingenting å vise ennå. Velg hva det viser på Oversikt.</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Ingenting å vise ennå. Velg hva det viser på siden Skjermoverlegg under Ekstra.</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Vis/skjul skjermoverlegg</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Vis/skjul skjermoverlegg</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Skjermoverlegg</value></data>

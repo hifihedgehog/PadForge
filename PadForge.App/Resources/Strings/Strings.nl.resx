@@ -72,6 +72,9 @@
   <data name="Common_Paste" xml:space="preserve"><value>Plakken</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Ingeschakeld</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Uitgeschakeld</value></data>
+  <data name="Common_On" xml:space="preserve"><value>Aan</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Uit</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Meer</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Geïnstalleerd</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Niet geïnstalleerd</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>Niet beschikbaar op ARM64</value></data>
@@ -3149,7 +3152,6 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="About_WiimoteLibDesc" xml:space="preserve"><value>Documentatie van het gedrag van de Wii IR-camera en het Balance Board, door Brian Peek. MIT.</value></data>
   <data name="About_JoyconSinger" xml:space="preserve"><value>joycon-singer</value></data>
   <data name="About_JoyconSingerDesc" xml:space="preserve"><value>Documentatie van het wire-formaat van de Joy-Con HD-rumble, door Sergey004. Alleen gelezen voor protocolfeiten.</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>Services</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Slot</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Koud</value></data>
   <data name="Devices_EmptyHint" xml:space="preserve"><value>Selecteer een apparaat om de ruwe invoer te bekijken.</value></data>
@@ -3173,14 +3175,33 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Selecteer links een macro of druk op Toevoegen om er een te maken.</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Apparaat</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Voorbeeld</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Extra's</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>Optionele functies. Elke functie blijft op de achtergrond tot je hem inschakelt.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Meer manieren om te spelen</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Stuur het door</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>Op het scherm</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>Gebruik een telefoon of tablet als controller.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Kijk rond met een headtracker of VR-bril.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Wijs snelheid, pedalen en versnellingen uit racegames toe.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>Laat kijkers knoppen indrukken door in de chat te typen.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Deel controllers met PadForge op een andere pc.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Stuur de beweging van controllers naar emulators.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Ontvang trigger- en lichteffecten van gamemods.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Toon menu's, lagen en profielwissels tijdens het spelen.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Een touch-oppervlak op het scherm voor games die de PlayStation-touchpad gebruiken.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Een afbeelding, timer of klok boven andere vensters.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Poort, onversleuteld HTTP-adres, toegangscode</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Automatisch opnieuw verbinden, poort, identiteitsbescherming, verbinden via adres</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR-runtime, UDP-poort, bereik per as</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Poort, DSX.exe-vervanger</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Poorten, volle snelheid, aangepaste indelingen</value></data>
   <data name="Pad_ToggleAnnotations" xml:space="preserve"><value>Toewijzingsannotaties</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Welkomstrondleiding tonen</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Kies een uitvoertype, voorzie de slots van apparaten en klik op een kaart om de toewijzingen ervan vorm te geven.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>Optionele functies wachten hier: de webcontroller voor je telefoon, Remote Link, de bewegingsserver en meer.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Virtuele controllers</value></data>
   <data name="Tour_Engine_Body" xml:space="preserve"><value>De smidse zelf. Schakel de vlam in of uit om alle invoerpolling te starten of te stoppen.</value></data>
   <data name="Tour_Engine_Title" xml:space="preserve"><value>Invoer-engine</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>Bewegingsdata, de webcontroller voor je telefoon en Remote Link streamen hiervandaan.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>Services</value></data>
   <data name="Tour_Slots_Body" xml:space="preserve"><value>Elke virtuele controller staat hier. De vlam laat zien welke slots op dit moment smeden.</value></data>
   <data name="Tour_Slots_Title" xml:space="preserve"><value>Slots</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>Aantal apparaten, pollingsnelheid en de engine-vlam, altijd in beeld.</value></data>
@@ -4023,7 +4044,7 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Patroon voor audio-routering op aansluitdetectie door SundayMoments, de referentie achter Koptelefoonaansluiting volgen. Als documentatie gelezen; AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>QR-encoder in bytemodus voor de webcontrollerkaart op het dashboard, geport van Nayuki's referentie-implementatie. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>QR-encoder in bytemodus voor de adressen van de webcontroller, geport van Nayuki's referentie-implementatie. MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>Muisillustratie in de toetsenbord- en muisweergave, door Igor Budzhak. MIT.</value></data>
   <data name="DeviceType_HeadsetMotion" xml:space="preserve"><value>Headset-tracker</value></data>
@@ -4874,7 +4895,7 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>Schermoverlay inschakelen</value></data>
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Kiezen wat de overlay toont…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge-schermoverlay</value></data>
-  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Nog niets om te tonen. Kies op het Dashboard wat de overlay toont.</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Nog niets om te tonen. Kies op de pagina Schermoverlay, onder Extra's, wat de overlay toont.</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Schermoverlay in-/uitschakelen</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Schermoverlay in-/uitschakelen</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Schermoverlay</value></data>

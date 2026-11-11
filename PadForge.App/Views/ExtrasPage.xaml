@@ -1,0 +1,1794 @@
+<UserControl x:Class="PadForge.Views.ExtrasPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:common="clr-namespace:PadForge.Common"
+             xmlns:strings="clr-namespace:PadForge.Resources.Strings"
+             xmlns:po="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="po"
+             xmlns:reset="clr-namespace:PadForge.Controls"
+             xmlns:controls="clr-namespace:PadForge.Controls">
+
+    <!-- The Extras page (#574): the optional features that were the ten
+         Services cards of the Dashboard. It opens on a catalog of tiles,
+         and each extra has a page of its own with today's card on it. A
+         page shows the extra's switch, the one thing to do and its live
+         status, and keeps the rest under a More row. Every control came
+         over as it was: its binding, its AutomationId, its reset button
+         and its tooltip. The data context is the Dashboard's view model.
+         ExtrasPage.xaml.cs shows one of the eleven panels at a time. -->
+    <UserControl.Resources>
+        <!-- Hover glow (#175): every hover color change carries a glow in
+             the hue the element turns. Ember hovers bloom ember. Neutral
+             steel hovers carry the faint ember signature. Frozen shared
+             static effects, set from triggers only, never animated. -->
+        <DropShadowEffect x:Key="EmberHoverGlow" po:Freeze="True" Color="#FF6B2C" ShadowDepth="0" BlurRadius="12" Opacity="0.45"/>
+        <DropShadowEffect x:Key="NeutralHoverGlow" po:Freeze="True" Color="#FF6B2C" ShadowDepth="0" BlurRadius="10" Opacity="0.30"/>
+
+        <!-- Hover glow sweep (#175): stock-chrome classes bloom in the same
+             moment their hover fill shifts. BasedOn the WPF-UI defaults so
+             theme brushes survive. -->
+        <Style TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
+            <!-- MinHeight mirrors the App.xaml implicit Button style (32px
+                 grid), which this page-local implicit replaces. -->
+            <Setter Property="MinHeight" Value="32"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="ui:Button" BasedOn="{StaticResource DefaultUiButtonStyle}">
+            <!-- PadUiButtonTemplate: the App.xaml pressed-foreground fix.
+                 Page-local implicits replace the app implicit, so the
+                 Template setter rides along here too. -->
+            <Setter Property="Template" Value="{StaticResource PadUiButtonTemplate}"/>
+            <Style.Triggers>
+                <!-- Neutral first. The Primary accent rides the ember ramp,
+                     so its MultiTrigger sits later and wins on hover. -->
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                </Trigger>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsMouseOver" Value="True"/>
+                        <Condition Property="Appearance" Value="Primary"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="Effect" Value="{StaticResource EmberHoverGlow}"/>
+                </MultiTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="CheckBox" BasedOn="{StaticResource DefaultCheckBoxStyle}">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="ComboBox" BasedOn="{StaticResource DefaultComboBoxStyle}">
+            <!-- First four setters mirror the App.xaml implicit ComboBox
+                 style, which this page-local implicit replaces. -->
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Visible"/>
+            <Setter Property="MaxDropDownHeight" Value="200"/>
+            <Setter Property="MinHeight" Value="30"/>
+            <Setter Property="Padding" Value="8,4"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="ui:NumberBox" BasedOn="{StaticResource DefaultUiNumberBoxStyle}">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="ui:TextBox" BasedOn="{StaticResource DefaultUiTextBoxStyle}">
+            <!-- Selection setters mirror the App.xaml implicit ui:TextBox
+                 style, which this page-local implicit replaces. -->
+            <Setter Property="SelectionBrush" Value="{DynamicResource EmberBrush}"/>
+            <Setter Property="SelectionOpacity" Value="0.35"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- The way back at the top of an extra's page: the catalog's name,
+             drawn as a link. -->
+        <Style x:Key="ExtrasCrumb" TargetType="Button">
+            <Setter Property="Foreground" Value="{DynamicResource EmberTextBrush}"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="Transparent" Padding="2">
+                            <TextBlock x:Name="Label" Foreground="{TemplateBinding Foreground}"
+                                       Text="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Label" Property="TextDecorations" Value="Underline"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <!-- The 24px page gutter sits on the scrolled panel, not on the scroll
+         viewer, for the reason the Dashboard gives: a card's hover glow
+         needs room inside the scroll clip. -->
+    <ScrollViewer x:Name="PageScroll" AutomationProperties.Name="{Binding Extras_Title, Source={x:Static strings:Strings.Instance}}">
+        <StackPanel Margin="24,16,24,16">
+
+            <!-- ═══ The catalog ═══
+                 One tile for each extra, in three groups. A tile's switch is the
+                 extra's own setting, the one its page shows, so the two always
+                 agree. A click on a tile anywhere else opens the extra's page
+                 (ExtraTile.OpenRequested, handled once here for every tile). -->
+            <StackPanel x:Name="CatalogView" controls:ExtraTile.OpenRequested="Tile_OpenRequested">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                    <reset:GlyphText Text="&#xE74C;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
+                               VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <TextBlock AutomationProperties.HeadingLevel="Level1" Text="{Binding Extras_Title, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource TitleTextBlockStyle}" FontFamily="{StaticResource DisplayFontFamily}" FontWeight="650" FontSize="26" Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                </StackPanel>
+                <TextBlock Text="{Binding Extras_Subtitle, Source={x:Static strings:Strings.Instance}}"
+                           Style="{StaticResource CardDescription}" FontSize="13" Margin="0,0,0,0"/>
+
+                <TextBlock Text="{Binding Extras_Group_Play, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}"
+                           Style="{StaticResource SectionTitle}" Margin="0,20,0,12"/>
+                <WrapPanel>
+                    <controls:ExtraTile x:Name="WebControllerTile" Key="WebController" Glyph="&#xE774;"
+                                        Title="{Binding Dashboard_WebController, Source={x:Static strings:Strings.Instance}}"
+                                        Line="{Binding Extras_Tile_WebController, Source={x:Static strings:Strings.Instance}}"
+                                        SwitchLabel="{Binding Dashboard_EnableWeb, Source={x:Static strings:Strings.Instance}}"
+                                        IsOn="{Binding EnableWebController}"
+                                        Status="{Binding WebControllerStatus}"/>
+                    <controls:ExtraTile x:Name="HeadTrackingTile" Key="HeadTracking" Glyph="&#xE77B;"
+                                        Title="{Binding Dashboard_HeadTracking, Source={x:Static strings:Strings.Instance}}"
+                                        Line="{Binding Extras_Tile_HeadTracking, Source={x:Static strings:Strings.Instance}}"
+                                        SwitchLabel="{Binding Dashboard_HeadTracking, Source={x:Static strings:Strings.Instance}}"
+                                        IsOn="{Binding HeadTrackingAnyEnabled}"
+                                        Status="{Binding HeadTrackingStatus}"/>
+                    <controls:ExtraTile x:Name="GameTelemetryTile" Key="GameTelemetry" Glyph="&#xEC4A;"
+                                        Title="{Binding Dashboard_GameTelemetry, Source={x:Static strings:Strings.Instance}}"
+                                        Line="{Binding Extras_Tile_GameTelemetry, Source={x:Static strings:Strings.Instance}}"
+                                        SwitchLabel="{Binding Dashboard_EnableGameTelemetry, Source={x:Static strings:Strings.Instance}}"
+                                        IsOn="{Binding EnableGameTelemetry}"
+                                        Status="{Binding GameTelemetryStatus}"/>
+                    <controls:ExtraTile x:Name="TwitchChatTile" Key="TwitchChat" Glyph="&#xE8F2;"
+                                        Title="{Binding Dashboard_TwitchChat, Source={x:Static strings:Strings.Instance}}"
+                                        Line="{Binding Extras_Tile_TwitchChat, Source={x:Static strings:Strings.Instance}}"
+                                        SwitchLabel="{Binding Dashboard_EnableTwitchChat, Source={x:Static strings:Strings.Instance}}"
+                                        IsOn="{Binding EnableTwitchChat}"
+                                        Status="{Binding TwitchChatStatus}"/>
+                </WrapPanel>
+
+                <TextBlock Text="{Binding Extras_Group_Send, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}"
+                           Style="{StaticResource SectionTitle}" Margin="0,20,0,12"/>
+                <WrapPanel>
+                    <controls:ExtraTile x:Name="RemoteLinkTile" Key="RemoteLink" Glyph="&#xE969;"
+                                        Title="{Binding Dashboard_RemoteLink, Source={x:Static strings:Strings.Instance}}"
+                                        Line="{Binding Extras_Tile_RemoteLink, Source={x:Static strings:Strings.Instance}}"
+                                        SwitchLabel="{Binding Dashboard_EnableRemoteLink, Source={x:Static strings:Strings.Instance}}"
+                                        IsOn="{Binding EnableRemoteLink}"
+                                        Status="{Binding RemoteLinkStatus}"/>
+                    <controls:ExtraTile x:Name="MotionServerTile" Key="MotionServer" Glyph="&#xE7AD;"
+                                        Title="{Binding Dashboard_MotionServer, Source={x:Static strings:Strings.Instance}}"
+                                        Line="{Binding Extras_Tile_MotionServer, Source={x:Static strings:Strings.Instance}}"
+                                        SwitchLabel="{Binding Dashboard_EnableDsu, Source={x:Static strings:Strings.Instance}}"
+                                        IsOn="{Binding EnableDsuMotionServer}"
+                                        Status="{Binding DsuServerStatus}"/>
+                    <controls:ExtraTile x:Name="GameModsTile" Key="GameMods" Glyph="&#xEA86;"
+                                        Title="{Binding Dashboard_GameMods, Source={x:Static strings:Strings.Instance}}"
+                                        Line="{Binding Extras_Tile_GameMods, Source={x:Static strings:Strings.Instance}}"
+                                        SwitchLabel="{Binding Dashboard_EnableGameMods, Source={x:Static strings:Strings.Instance}}"
+                                        IsOn="{Binding EnableGameModServer}"
+                                        Status="{Binding GameModServerStatus}"/>
+                </WrapPanel>
+
+                <TextBlock Text="{Binding Extras_Group_Screen, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}"
+                           Style="{StaticResource SectionTitle}" Margin="0,20,0,12"/>
+                <WrapPanel>
+                    <controls:ExtraTile x:Name="OverlaysTile" Key="Overlays" Glyph="&#xE700;"
+                                        Title="{Binding Dashboard_Overlays, Source={x:Static strings:Strings.Instance}}"
+                                        Line="{Binding Extras_Tile_Overlays, Source={x:Static strings:Strings.Instance}}"
+                                        SwitchLabel="{Binding Dashboard_Overlays, Source={x:Static strings:Strings.Instance}}"
+                                        IsOn="{Binding OverlaysAnyEnabled}"/>
+                    <controls:ExtraTile x:Name="TouchpadOverlayTile" Key="TouchpadOverlay" Glyph="&#xEDA4;"
+                                        Title="{Binding Dashboard_TouchpadOverlay, Source={x:Static strings:Strings.Instance}}"
+                                        Line="{Binding Extras_Tile_TouchpadOverlay, Source={x:Static strings:Strings.Instance}}"
+                                        SwitchLabel="{Binding Dashboard_EnableTouchpadOverlay, Source={x:Static strings:Strings.Instance}}"
+                                        IsOn="{Binding EnableTouchpadOverlay}"
+                                        Status="{Binding TouchpadOverlayStatus}"/>
+                    <controls:ExtraTile x:Name="ScreenOverlayTile" Key="ScreenOverlay" Glyph="&#xE7F4;"
+                                        Title="{Binding Dashboard_ScreenOverlay, Source={x:Static strings:Strings.Instance}}"
+                                        Line="{Binding Extras_Tile_ScreenOverlay, Source={x:Static strings:Strings.Instance}}"
+                                        SwitchLabel="{Binding Dashboard_ScreenOverlay, Source={x:Static strings:Strings.Instance}}"
+                                        IsOn="{Binding ScreenOverlaysAnyEnabled}"/>
+                </WrapPanel>
+            </StackPanel>
+
+            <!-- ═══ Web Controller ═══
+                 First: whether it is serving, the address and its QR code. Under
+                 More: the port and the plain HTTP address with its access code. -->
+            <StackPanel x:Name="WebControllerPage" Visibility="Collapsed">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                    <Button Style="{StaticResource ExtrasCrumb}" Click="Back_Click"
+                            AutomationProperties.AutomationId="Extras_Back_WebController"
+                            Content="{Binding Extras_Title, Source={x:Static strings:Strings.Instance}}"/>
+                    <TextBlock Text="/" VerticalAlignment="Center" Margin="8,0,8,0"
+                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                    <TextBlock Text="{Binding Dashboard_WebController, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                </StackPanel>
+                <Grid Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <reset:GlyphText Text="&#xE774;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
+                                   VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <TextBlock x:Name="WebControllerTitle" AutomationProperties.HeadingLevel="Level1" Text="{Binding Dashboard_WebController, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource TitleTextBlockStyle}" FontFamily="{StaticResource DisplayFontFamily}" FontWeight="650" FontSize="26" Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                        <CheckBox Style="{StaticResource SwitchCheckBox}" controls:SwitchLook.ShowState="True"
+                                  VerticalAlignment="Center" AutomationProperties.AutomationId="EnableWebControllerCheckBox"
+                                  Content="{Binding Dashboard_EnableWeb, Source={x:Static strings:Strings.Instance}}"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  IsChecked="{Binding EnableWebController}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="EnableWebController" SettingLabel="{Binding Dashboard_EnableWeb, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DashboardViewModel_EnableWebController_1488"/>
+                    </StackPanel>
+                </Grid>
+                <TextBlock Text="{Binding Dashboard_WebDescription, Source={x:Static strings:Strings.Instance}}"
+                           Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,0">
+                    <StackPanel Grid.IsSharedSizeScope="True">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <!-- Serving = flame (#175 item 76). Running truth,
+                                 not the enable checkbox (#175 phase 2 item 2). -->
+                            <Path FlowDirection="LeftToRight" Data="{StaticResource FlameOuterGeometry}"
+                                  Width="11" Height="11" Stretch="Uniform"
+                                  VerticalAlignment="Center" Margin="0,0,6,0">
+                                <Path.Style>
+                                    <Style TargetType="Path">
+                                        <Setter Property="Fill" Value="Transparent"/>
+                                        <Setter Property="Stroke" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                        <Setter Property="StrokeThickness" Value="1.1"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsWebControllerRunning}" Value="True">
+                                                <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
+                                                <Setter Property="Stroke" Value="{x:Null}"/>
+                                                <Setter Property="Effect">
+                                                    <Setter.Value>
+                                                        <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Path.Style>
+                            </Path>
+                            <TextBlock common:LiveText.Polite="True" Text="{Binding WebControllerStatus}" FontSize="12"
+                                       FontFamily="{StaticResource TelemetryFontFamily}"
+                                       Foreground="{DynamicResource ColdBrush}"/>
+                        </StackPanel>
+
+                        <!-- The main address fell back to plain HTTP. The address
+                             alone shows only the http://, so say why phone motion
+                             is off. Same caution treatment as Remote Link's
+                             network verdict. -->
+                        <Border Visibility="{Binding WebControllerHttpsWarning, Converter={StaticResource StringToVisibility}}"
+                                Background="{DynamicResource SystemFillColorCautionBackgroundBrush}"
+                                CornerRadius="6" Padding="10,8" Margin="0,8,0,0" HorizontalAlignment="Left">
+                            <StackPanel Orientation="Horizontal">
+                                <reset:GlyphText Text="&#xE7BA;" FontFamily="Segoe MDL2 Assets" VerticalAlignment="Top"
+                                           Foreground="{DynamicResource SystemFillColorCautionBrush}" Margin="0,1,8,0"/>
+                                <TextBlock Text="{Binding WebControllerHttpsWarning}" TextWrapping="Wrap"
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" MaxWidth="360"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- URL + QR (#296): scan or type to open the controller.
+                             Only shown while the server is running. -->
+                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0"
+                                    Visibility="{Binding HasWebControllerQr, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Border Background="White" CornerRadius="6" Padding="6" VerticalAlignment="Top">
+                                <Image AutomationProperties.Name="{Binding WebControllerUrl, TargetNullValue=''}" FlowDirection="LeftToRight" Source="{Binding WebControllerQr}" Width="132" Height="132"
+                                       RenderOptions.BitmapScalingMode="NearestNeighbor"
+                                       RenderOptions.EdgeMode="Aliased"/>
+                            </Border>
+                            <StackPanel Margin="12,0,0,0" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding Dashboard_WebScanToOpen, Source={x:Static strings:Strings.Instance}}"
+                                           FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,4"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <ui:TextBox Text="{Binding WebControllerUrl, Mode=OneWay}" IsReadOnly="True"
+                                                FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12" Width="260"/>
+                                    <ui:Button Style="{StaticResource EmberIconButton}"
+                                               Command="{Binding CopyWebControllerUrlCommand}" Margin="6,0,0,0"
+                                               VerticalAlignment="Center"
+                                               ToolTip="{Binding Common_Copy, Source={x:Static strings:Strings.Instance}}">
+                                        <reset:GlyphText Text="&#xE8C8;" FontFamily="Segoe MDL2 Assets" FontSize="13"
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                    </ui:Button>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <TextBlock Text="{Binding Dashboard_WebFooter, Source={x:Static strings:Strings.Instance}}"
+                                   FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,4,0,0"/>
+                        <controls:MoreRow x:Name="WebControllerMore" StateKey="Extras.WebController.More"
+                                          AutomationProperties.AutomationId="Extras_More_WebController"
+                                          Header="{Binding Common_More, Source={x:Static strings:Strings.Instance}}"
+                                          Hint="{Binding Extras_More_WebController, Source={x:Static strings:Strings.Instance}}">
+                            <StackPanel>
+                                <!-- The main address's port. Its label column is one
+                                     shared size group with the plain address's port and
+                                     access code below, so the three boxes line up: one
+                                     label column to a card. -->
+                                <Grid HorizontalAlignment="Left" Margin="0,0,0,8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" SharedSizeGroup="WebControllerLabel"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="{Binding Dashboard_Port, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                               Margin="0,0,8,0"/>
+                                    <ui:NumberBox Grid.Column="1" Value="{Binding WebControllerPort, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=1000}"
+                                                  Minimum="1024" Maximum="65535"
+                                                  SpinButtonPlacementMode="Inline" Width="200"/>
+                                    <!-- No margin, as the plain port's reset below has none, so
+                                         the two sit at the same x. -->
+                                    <reset:SettingResetButton Grid.Column="2" Command="{Binding ResetWebPortCommand}" SettingLabel="{Binding Dashboard_WebControllerPort, Source={x:Static strings:Strings.Instance}}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0"/>
+                                </Grid>
+
+                                <Border Height="1" Background="{DynamicResource DividerStrokeColorDefaultBrush}" Margin="0,14,0,14"/>
+
+                                <!-- Plain HTTP address: a second port on the same listener,
+                                     behind the access code. Divider-separated section title
+                                     in the card, the Remote Link card's pattern. -->
+                                <TextBlock Text="{Binding Dashboard_WebPlainTitle, Source={x:Static strings:Strings.Instance}}"
+                                           Style="{StaticResource CardSectionTitle}" FontSize="14" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,6"/>
+                                <TextBlock Text="{Binding Dashboard_WebPlainDescription, Source={x:Static strings:Strings.Instance}}"
+                                           Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <CheckBox VerticalAlignment="Center" AutomationProperties.AutomationId="EnableWebControllerPlainHttpCheckBox"
+                                              Content="{Binding Dashboard_WebPlainEnable, Source={x:Static strings:Strings.Instance}}"
+                                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                              IsChecked="{Binding EnableWebControllerPlainHttp}"/>
+                                    <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="EnableWebControllerPlainHttp" SettingLabel="{Binding Dashboard_WebPlainEnable, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DashboardViewModel_EnableWebControllerPlainHttp_1608"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
+                                    <CheckBox VerticalAlignment="Center" AutomationProperties.AutomationId="WebControllerPlainHttpLocalOnlyCheckBox"
+                                              Content="{Binding Dashboard_WebPlainLocalOnly, Source={x:Static strings:Strings.Instance}}"
+                                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                              IsChecked="{Binding WebControllerPlainHttpLocalOnly}"/>
+                                    <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="WebControllerPlainHttpLocalOnly" SettingLabel="{Binding Dashboard_WebPlainLocalOnly, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DashboardViewModel_WebControllerPlainHttpLocalOnly_1615"/>
+                                </StackPanel>
+                                <TextBlock Text="{Binding Dashboard_WebPlainLocalOnlyHint, Source={x:Static strings:Strings.Instance}}" TextWrapping="Wrap"
+                                           FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,10"/>
+
+                                <!-- Port and access code share one label column, so the two
+                                     boxes line up under labels of different widths, and
+                                     with the main address's port above them. -->
+                                <Grid HorizontalAlignment="Left">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" SharedSizeGroup="WebControllerLabel"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Dashboard_Port, Source={x:Static strings:Strings.Instance}}"
+                                               VerticalAlignment="Center" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,8"/>
+                                    <ui:NumberBox Grid.Row="0" Grid.Column="1" Value="{Binding WebControllerPlainHttpPort, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=1000}"
+                                                  Minimum="1024" Maximum="65535"
+                                                  SpinButtonPlacementMode="Inline" Width="200" Margin="0,0,0,8"/>
+                                    <!-- Left, or it centers in a column the wider New Code
+                                         button sizes and floats away from its box. -->
+                                    <reset:SettingResetButton Grid.Row="0" Grid.Column="2" Command="{Binding ResetWebPlainPortCommand}" SettingLabel="{Binding Dashboard_WebPlainPort, Source={x:Static strings:Strings.Instance}}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding Dashboard_WebAccessCode, Source={x:Static strings:Strings.Instance}}"
+                                               VerticalAlignment="Center" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,0"/>
+                                    <ui:TextBox Grid.Row="1" Grid.Column="1" Text="{Binding WebControllerAccessCode, Mode=OneWay}" IsReadOnly="True"
+                                                AutomationProperties.AutomationId="WebControllerAccessCodeBox"
+                                                FontFamily="{StaticResource TelemetryFontFamily}" Width="200" VerticalAlignment="Center"/>
+                                    <!-- The code has no default to reset to. New Code is its
+                                         one way back, and its face says what it does. -->
+                                    <ui:Button Grid.Row="1" Grid.Column="2" AutomationProperties.AutomationId="NewWebAccessCodeButton"
+                                               Content="{Binding Dashboard_WebNewAccessCode, Source={x:Static strings:Strings.Instance}}"
+                                               Command="{Binding NewWebAccessCodeCommand}" Margin="8,0,0,0" VerticalAlignment="Center"/>
+                                </Grid>
+                                <TextBlock Text="{Binding Dashboard_WebAccessCodeHint, Source={x:Static strings:Strings.Instance}}" TextWrapping="Wrap"
+                                           FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,6,0,8"/>
+
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
+                                            Visibility="{Binding WebControllerPlainStatus, Converter={StaticResource StringToVisibility}}">
+                                    <Path FlowDirection="LeftToRight" Data="{StaticResource FlameOuterGeometry}"
+                                          Width="11" Height="11" Stretch="Uniform"
+                                          VerticalAlignment="Center" Margin="0,0,6,0">
+                                        <Path.Style>
+                                            <Style TargetType="Path">
+                                                <Setter Property="Fill" Value="Transparent"/>
+                                                <Setter Property="Stroke" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                                <Setter Property="StrokeThickness" Value="1.1"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsWebControllerPlainRunning}" Value="True">
+                                                        <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
+                                                        <Setter Property="Stroke" Value="{x:Null}"/>
+                                                        <Setter Property="Effect">
+                                                            <Setter.Value>
+                                                                <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Path.Style>
+                                    </Path>
+                                    <TextBlock common:LiveText.Polite="True" Text="{Binding WebControllerPlainStatus}" FontSize="12"
+                                               FontFamily="{StaticResource TelemetryFontFamily}"
+                                               Foreground="{DynamicResource ColdBrush}"/>
+                                </StackPanel>
+
+                                <!-- The plain address with its code. On the LAN a QR opens
+                                     it. This PC Only names localhost, which a phone cannot
+                                     open, so that mode shows the address alone. -->
+                                <StackPanel Orientation="Horizontal" Margin="0,10,0,0"
+                                            Visibility="{Binding WebControllerPlainUrl, Converter={StaticResource StringToVisibility}}">
+                                    <Border Background="White" CornerRadius="6" Padding="6" VerticalAlignment="Top" Margin="0,0,12,0"
+                                            Visibility="{Binding HasWebControllerPlainQr, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <Image AutomationProperties.Name="{Binding WebControllerPlainUrl, TargetNullValue=''}" FlowDirection="LeftToRight" Source="{Binding WebControllerPlainQr}" Width="132" Height="132"
+                                               RenderOptions.BitmapScalingMode="NearestNeighbor"
+                                               RenderOptions.EdgeMode="Aliased"/>
+                                    </Border>
+                                    <StackPanel VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding Dashboard_WebScanToOpen, Source={x:Static strings:Strings.Instance}}"
+                                                   Visibility="{Binding HasWebControllerPlainQr, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                   FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,4"/>
+                                        <TextBlock Text="{Binding Dashboard_WebPlainLocalAddress, Source={x:Static strings:Strings.Instance}}"
+                                                   Visibility="{Binding HasWebControllerPlainQr, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"
+                                                   FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,4"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <ui:TextBox Text="{Binding WebControllerPlainUrl, Mode=OneWay}" IsReadOnly="True"
+                                                        FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12" Width="320"/>
+                                            <ui:Button Style="{StaticResource EmberIconButton}"
+                                                       Command="{Binding CopyWebControllerPlainUrlCommand}" Margin="6,0,0,0"
+                                                       VerticalAlignment="Center"
+                                                       ToolTip="{Binding Common_Copy, Source={x:Static strings:Strings.Instance}}">
+                                                <reset:GlyphText Text="&#xE8C8;" FontFamily="Segoe MDL2 Assets" FontSize="13"
+                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                            </ui:Button>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
+                        </controls:MoreRow>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+
+            <!-- ═══ Head Tracking (#355) ═══
+                 A UDP listener on OpenTrack's port, a FreeTrack 2.0 shared-memory
+                 reader and an OpenXR headset reader, surfaced as the Head Tracker
+                 device row. The status line is the Devices row's source line,
+                 pushed by InputService on the dashboard tick. The three inputs
+                 have a switch each and no single one, so the page's switch is on
+                 while any of them is (DashboardViewModel.HeadTrackingAnyEnabled).
+                 First: the status, Set Neutral, the three inputs and the two
+                 ranges. Under More: the OpenXR runtime, the UDP port and the
+                 per-axis ranges. -->
+            <StackPanel x:Name="HeadTrackingPage" Visibility="Collapsed">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                    <Button Style="{StaticResource ExtrasCrumb}" Click="Back_Click"
+                            AutomationProperties.AutomationId="Extras_Back_HeadTracking"
+                            Content="{Binding Extras_Title, Source={x:Static strings:Strings.Instance}}"/>
+                    <TextBlock Text="/" VerticalAlignment="Center" Margin="8,0,8,0"
+                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                    <TextBlock Text="{Binding Dashboard_HeadTracking, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                </StackPanel>
+                <Grid Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <reset:GlyphText Text="&#xE77B;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
+                                   VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <TextBlock x:Name="HeadTrackingTitle" AutomationProperties.HeadingLevel="Level1" Text="{Binding Dashboard_HeadTracking, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource TitleTextBlockStyle}" FontFamily="{StaticResource DisplayFontFamily}" FontWeight="650" FontSize="26" Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                        <CheckBox Style="{StaticResource SwitchCheckBox}" controls:SwitchLook.ShowState="True"
+                                  VerticalAlignment="Center" AutomationProperties.AutomationId="HeadTrackingSwitch"
+                                  Content="{Binding Dashboard_HeadTracking, Source={x:Static strings:Strings.Instance}}"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  IsChecked="{Binding HeadTrackingAnyEnabled}"/>
+                        <reset:SettingResetButton Command="{Binding ResetHeadTrackingSourcesCommand}" SettingLabel="{Binding Dashboard_HeadTracking, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DashboardViewModel_HeadTrackingAnyEnabled" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
+                <TextBlock Text="{Binding Dashboard_HeadTrackingDesc, Source={x:Static strings:Strings.Instance}}"
+                           Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,0">
+                    <StackPanel Grid.IsSharedSizeScope="True">
+                        <!-- The Devices row's source line: which of the three
+                             sources is live, or why none is. Stopped while the
+                             feature is off or the engine is down. -->
+                        <TextBlock common:LiveText.Polite="True" Text="{Binding HeadTrackingStatus}" FontSize="12"
+                                   FontFamily="{StaticResource TelemetryFontFamily}"
+                                   Foreground="{DynamicResource ColdBrush}" Margin="0,0,0,12"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <Button Command="{Binding HeadTrackingRecenterCommand}"
+                                    Content="{Binding Dashboard_HeadTrackingRecenter, Source={x:Static strings:Strings.Instance}}"
+                                    ToolTip="{Binding Dashboard_HeadTrackingRecenter_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <CheckBox Content="{Binding Dashboard_HeadTrackingEnable, Source={x:Static strings:Strings.Instance}}"
+                                      x:Name="HeadTrackingUdpCheckBox"
+                                      ToolTip="{Binding Dashboard_HeadTrackingEnable_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                      Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                      IsChecked="{Binding HeadTrackingEnabled}" VerticalAlignment="Center"/>
+                            <reset:SettingResetButton x:Name="HeadTrackingEnabledReset" Command="{Binding ResetHeadTrackingEnabledCommand}" SettingLabel="{Binding Dashboard_HeadTrackingEnable, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <CheckBox Content="{Binding Dashboard_HeadTrackingFreeTrack, Source={x:Static strings:Strings.Instance}}"
+                                      x:Name="HeadTrackingFreeTrackCheckBox"
+                                      ToolTip="{Binding Dashboard_HeadTrackingFreeTrack_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                      Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                      IsChecked="{Binding HeadTrackingFreeTrack}" VerticalAlignment="Center"/>
+                            <reset:SettingResetButton x:Name="HeadTrackingFreeTrackReset" Command="{Binding ResetHeadTrackingFreeTrackCommand}" SettingLabel="{Binding Dashboard_HeadTrackingFreeTrack, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <CheckBox Content="{Binding Dashboard_HeadTrackingOpenXr, Source={x:Static strings:Strings.Instance}}"
+                                      x:Name="HeadTrackingOpenXrCheckBox"
+                                      ToolTip="{Binding Dashboard_HeadTrackingOpenXr_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                      Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                      IsChecked="{Binding HeadTrackingOpenXr}" VerticalAlignment="Center"/>
+                            <reset:SettingResetButton x:Name="HeadTrackingOpenXrReset" Command="{Binding ResetHeadTrackingOpenXrCommand}" SettingLabel="{Binding Dashboard_HeadTrackingOpenXr, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <!-- The two ranges, each row the Motion Server port row: label, box,
+                             reset. Their label column is one shared size group with the grid
+                             under More, so the boxes of both grids line up under labels of
+                             different widths. -->
+                        <Grid Margin="0,0,0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="HeadTrackingLabel"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Text="{Binding Dashboard_HeadTrackingRotationRange, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,8"/>
+                            <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Margin="0,0,0,8">
+                                <ui:NumberBox Value="{Binding HeadTrackingRotationRange, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              Minimum="1" Maximum="180"
+                                              SpinButtonPlacementMode="Inline" Width="200"
+                                              ToolTip="{Binding Dashboard_HeadTrackingRotationRange_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                <reset:SettingResetButton Command="{Binding ResetHeadTrackingRotationRangeCommand}" SettingLabel="{Binding Dashboard_HeadTrackingRotationRange, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <TextBlock Grid.Row="1" Text="{Binding Dashboard_HeadTrackingTranslationRange, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,0"/>
+                            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="0,0,0,0">
+                                <ui:NumberBox Value="{Binding HeadTrackingTranslationRange, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              Minimum="1" Maximum="500"
+                                              SpinButtonPlacementMode="Inline" Width="200"
+                                              ToolTip="{Binding Dashboard_HeadTrackingTranslationRange_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                <reset:SettingResetButton Command="{Binding ResetHeadTrackingTranslationRangeCommand}" SettingLabel="{Binding Dashboard_HeadTrackingTranslationRange, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Grid>
+                        <TextBlock Text="{Binding Dashboard_HeadTrackingFooter, Source={x:Static strings:Strings.Instance}}"
+                                   FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,4,0,0"/>
+                        <controls:MoreRow x:Name="HeadTrackingMore" StateKey="Extras.HeadTracking.More"
+                                          AutomationProperties.AutomationId="Extras_More_HeadTracking"
+                                          Header="{Binding Common_More, Source={x:Static strings:Strings.Instance}}"
+                                          Hint="{Binding Extras_More_HeadTracking, Source={x:Static strings:Strings.Instance}}">
+                            <StackPanel>
+                                <!-- The OpenXR runtime, the port and the per-axis ranges (#403), in
+                                     one grid whose label column is the shared size group of the two
+                                     ranges above: one label column to a card. Zero in a per-axis
+                                     box follows the family range above, so an existing setup is
+                                     untouched until a user pins an axis. -->
+                                <Grid Margin="0,0,0,8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" SharedSizeGroup="HeadTrackingLabel"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <!-- Slack. The section heading and its description span the
+                                             row, and without a star column to take the overflow their
+                                             width is shared out among the Auto columns, which widens
+                                             the label column and pushes every box right. -->
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <!-- Off while the headset input is off, as the port is off while
+                                         the UDP input is. -->
+                                    <TextBlock Text="{Binding Dashboard_HeadTrackingOpenXrRuntime, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                               IsEnabled="{Binding HeadTrackingOpenXr}"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,8"/>
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,0,8"
+                                                IsEnabled="{Binding HeadTrackingOpenXr}">
+                                        <ComboBox x:Name="HeadTrackingOpenXrRuntimeCombo" MinWidth="200"
+                                                  ToolTip="{Binding Dashboard_HeadTrackingOpenXrRuntime_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                                  ItemsSource="{Binding OpenXrRuntimes}"
+                                                  SelectedItem="{Binding SelectedOpenXrRuntime, Mode=TwoWay}"
+                                                  DisplayMemberPath="Display" VerticalAlignment="Center"/>
+                                        <reset:SettingResetButton x:Name="HeadTrackingOpenXrRuntimeReset" Command="{Binding ResetHeadTrackingOpenXrRuntimeCommand}" SettingLabel="{Binding Dashboard_HeadTrackingOpenXrRuntime, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                    <TextBlock Grid.Row="1" Text="{Binding Dashboard_HeadTrackingPort, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                               IsEnabled="{Binding HeadTrackingEnabled}"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,8"/>
+                                    <StackPanel x:Name="HeadTrackingUdpPortControls" Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="0,0,0,8"
+                                                IsEnabled="{Binding HeadTrackingEnabled}">
+                                        <ui:NumberBox Value="{Binding HeadTrackingUdpPort, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=1000}"
+                                                      Minimum="1" Maximum="65535"
+                                                      SpinButtonPlacementMode="Inline" Width="200"
+                                                      ToolTip="{Binding Dashboard_HeadTrackingPort_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <reset:SettingResetButton Command="{Binding ResetHeadTrackingPortCommand}" SettingLabel="{Binding Dashboard_HeadTrackingPort, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                    <TextBlock Grid.Row="2" Grid.ColumnSpan="3" Text="{Binding Dashboard_HeadTrackingAxisRanges, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardTitle}" Margin="0,12,0,4"/>
+                                    <TextBlock Grid.Row="3" Grid.ColumnSpan="3" Text="{Binding Dashboard_HeadTrackingAxisRangesDesc, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardDescription}" Margin="0,0,0,8"/>
+                                    <TextBlock Grid.Row="4" Text="{Binding Dashboard_HeadTrackingAxisYaw, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,8"/>
+                                    <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal" Margin="0,0,0,8">
+                                        <ui:NumberBox Value="{Binding HeadTrackingRangeYaw, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                      Minimum="0" Maximum="180"
+                                                      SpinButtonPlacementMode="Inline" Width="200"
+                                                      ToolTip="{Binding Dashboard_HeadTrackingAxisRange_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <reset:SettingResetButton Command="{Binding ResetHeadTrackingRangeYawCommand}" SettingLabel="{Binding Dashboard_HeadTrackingAxisYaw, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                    <TextBlock Grid.Row="5" Text="{Binding Dashboard_HeadTrackingAxisPitch, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,8"/>
+                                    <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal" Margin="0,0,0,8">
+                                        <ui:NumberBox Value="{Binding HeadTrackingRangePitch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                      Minimum="0" Maximum="180"
+                                                      SpinButtonPlacementMode="Inline" Width="200"
+                                                      ToolTip="{Binding Dashboard_HeadTrackingAxisRange_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <reset:SettingResetButton Command="{Binding ResetHeadTrackingRangePitchCommand}" SettingLabel="{Binding Dashboard_HeadTrackingAxisPitch, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                    <TextBlock Grid.Row="6" Text="{Binding Dashboard_HeadTrackingAxisRoll, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,8"/>
+                                    <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal" Margin="0,0,0,8">
+                                        <ui:NumberBox Value="{Binding HeadTrackingRangeRoll, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                      Minimum="0" Maximum="180"
+                                                      SpinButtonPlacementMode="Inline" Width="200"
+                                                      ToolTip="{Binding Dashboard_HeadTrackingAxisRange_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <reset:SettingResetButton Command="{Binding ResetHeadTrackingRangeRollCommand}" SettingLabel="{Binding Dashboard_HeadTrackingAxisRoll, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                    <TextBlock Grid.Row="7" Text="{Binding Dashboard_HeadTrackingAxisX, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,8"/>
+                                    <StackPanel Grid.Row="7" Grid.Column="1" Orientation="Horizontal" Margin="0,0,0,8">
+                                        <ui:NumberBox Value="{Binding HeadTrackingRangeX, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                      Minimum="0" Maximum="500"
+                                                      SpinButtonPlacementMode="Inline" Width="200"
+                                                      ToolTip="{Binding Dashboard_HeadTrackingAxisRange_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <reset:SettingResetButton Command="{Binding ResetHeadTrackingRangeXCommand}" SettingLabel="{Binding Dashboard_HeadTrackingAxisX, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                    <TextBlock Grid.Row="8" Text="{Binding Dashboard_HeadTrackingAxisY, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,8"/>
+                                    <StackPanel Grid.Row="8" Grid.Column="1" Orientation="Horizontal" Margin="0,0,0,8">
+                                        <ui:NumberBox Value="{Binding HeadTrackingRangeY, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                      Minimum="0" Maximum="500"
+                                                      SpinButtonPlacementMode="Inline" Width="200"
+                                                      ToolTip="{Binding Dashboard_HeadTrackingAxisRange_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <reset:SettingResetButton Command="{Binding ResetHeadTrackingRangeYCommand}" SettingLabel="{Binding Dashboard_HeadTrackingAxisY, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                    <TextBlock Grid.Row="9" Text="{Binding Dashboard_HeadTrackingAxisZ, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,0"/>
+                                    <StackPanel Grid.Row="9" Grid.Column="1" Orientation="Horizontal" Margin="0,0,0,0">
+                                        <ui:NumberBox Value="{Binding HeadTrackingRangeZ, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                      Minimum="0" Maximum="500"
+                                                      SpinButtonPlacementMode="Inline" Width="200"
+                                                      ToolTip="{Binding Dashboard_HeadTrackingAxisRange_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <reset:SettingResetButton Command="{Binding ResetHeadTrackingRangeZCommand}" SettingLabel="{Binding Dashboard_HeadTrackingAxisZ, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </controls:MoreRow>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+
+            <!-- ═══ Game Telemetry (#531) ═══
+                 The UDP listener for driving games' telemetry and Assetto Corsa's
+                 shared memory, surfaced as the Game Telemetry row. EC4A is Segoe
+                 MDL2 SpeedHigh, a speedometer (verified in live segmdl2.ttf).
+                 First: the row's status line, pushed by InputService on the
+                 dashboard tick, and the game picker. Under More: the port, the
+                 forward port, Full Speed and the custom format editor. -->
+            <StackPanel x:Name="GameTelemetryPage" Visibility="Collapsed">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                    <Button Style="{StaticResource ExtrasCrumb}" Click="Back_Click"
+                            AutomationProperties.AutomationId="Extras_Back_GameTelemetry"
+                            Content="{Binding Extras_Title, Source={x:Static strings:Strings.Instance}}"/>
+                    <TextBlock Text="/" VerticalAlignment="Center" Margin="8,0,8,0"
+                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                    <TextBlock Text="{Binding Dashboard_GameTelemetry, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                </StackPanel>
+                <Grid Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <reset:GlyphText Text="&#xEC4A;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
+                                   VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <TextBlock x:Name="GameTelemetryTitle" AutomationProperties.HeadingLevel="Level1" Text="{Binding Dashboard_GameTelemetry, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource TitleTextBlockStyle}" FontFamily="{StaticResource DisplayFontFamily}" FontWeight="650" FontSize="26" Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                        <CheckBox Style="{StaticResource SwitchCheckBox}" controls:SwitchLook.ShowState="True"
+                                  VerticalAlignment="Center" Content="{Binding Dashboard_EnableGameTelemetry, Source={x:Static strings:Strings.Instance}}"
+                                  x:Name="GameTelemetryCheckBox"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  IsChecked="{Binding EnableGameTelemetry}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="EnableGameTelemetry" SettingLabel="{Binding Dashboard_EnableGameTelemetry, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DashboardViewModel_EnableGameTelemetry_2300"/>
+                    </StackPanel>
+                </Grid>
+                <TextBlock Text="{Binding Dashboard_GameTelemetryDescription, Source={x:Static strings:Strings.Instance}}"
+                           Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,0">
+                    <StackPanel Grid.IsSharedSizeScope="True">
+                        <DockPanel Margin="0,0,0,12">
+                            <!-- Listening = flame, as on the Game Mods card: the
+                                 row's open truth, not the switch. -->
+                            <Path DockPanel.Dock="Left" FlowDirection="LeftToRight" Data="{StaticResource FlameOuterGeometry}"
+                                  Width="11" Height="11" Stretch="Uniform"
+                                  VerticalAlignment="Top" Margin="0,3,6,0">
+                                <Path.Style>
+                                    <Style TargetType="Path">
+                                        <Setter Property="Fill" Value="Transparent"/>
+                                        <Setter Property="Stroke" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                        <Setter Property="StrokeThickness" Value="1.1"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsGameTelemetryRunning}" Value="True">
+                                                <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
+                                                <Setter Property="Stroke" Value="{x:Null}"/>
+                                                <Setter Property="Effect">
+                                                    <Setter.Value>
+                                                        <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Path.Style>
+                            </Path>
+                            <TextBlock common:LiveText.Polite="True" Text="{Binding GameTelemetryStatus}" FontSize="12"
+                                       FontFamily="{StaticResource TelemetryFontFamily}" TextWrapping="Wrap"
+                                       Foreground="{DynamicResource ColdBrush}"/>
+                        </DockPanel>
+                        <!-- The game picker. Its label column is one shared size group with
+                             the grid under More, so the boxes of both grids line up. -->
+                        <Grid Margin="0,0,0,8" IsEnabled="{Binding EnableGameTelemetry}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="GameTelemetryLabel"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <!-- Slack, for the reason the head tracking grid gives. -->
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="{Binding Dashboard_GameTelemetryGame, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,0"/>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,0,0">
+                                <ComboBox x:Name="GameTelemetryGameCombo" MinWidth="320"
+                                          ToolTip="{Binding Dashboard_GameTelemetryGame_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                          ItemsSource="{Binding GameTelemetryOptions}"
+                                          SelectedItem="{Binding SelectedGameTelemetryOption, Mode=TwoWay}"
+                                          DisplayMemberPath="Display" VerticalAlignment="Center"/>
+                                <reset:SettingResetButton Command="{Binding ResetGameTelemetryGameCommand}" SettingLabel="{Binding Dashboard_GameTelemetryGame, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Grid>
+                        <TextBlock Text="{Binding Dashboard_GameTelemetryFooter, Source={x:Static strings:Strings.Instance}}" TextWrapping="Wrap"
+                                   FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,4,0,0"/>
+                        <controls:MoreRow x:Name="GameTelemetryMore" StateKey="Extras.GameTelemetry.More"
+                                          AutomationProperties.AutomationId="Extras_More_GameTelemetry"
+                                          Header="{Binding Common_More, Source={x:Static strings:Strings.Instance}}"
+                                          Hint="{Binding Extras_More_GameTelemetry, Source={x:Static strings:Strings.Instance}}">
+                            <StackPanel>
+                                <Grid Margin="0,0,0,8" IsEnabled="{Binding EnableGameTelemetry}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" SharedSizeGroup="GameTelemetryLabel"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <!-- Slack, for the reason the head tracking grid gives. -->
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Text="{Binding Dashboard_Port, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,8"/>
+                                    <!-- Off while Assetto Corsa is picked: it is read from
+                                         shared memory, with no socket and no copy on. -->
+                                    <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Margin="0,0,0,8" IsEnabled="{Binding GameTelemetryReadsUdp}">
+                                        <ui:NumberBox Value="{Binding GameTelemetryPort, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=1000}"
+                                                      Minimum="1024" Maximum="65535"
+                                                      SpinButtonPlacementMode="Inline" Width="200"/>
+                                        <reset:SettingResetButton Command="{Binding ResetGameTelemetryPortCommand}" SettingLabel="{Binding Dashboard_GameTelemetryPort, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                    <TextBlock Grid.Row="1" Text="{Binding Dashboard_GameTelemetryForwardPort, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,8"/>
+                                    <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="0,0,0,8" IsEnabled="{Binding GameTelemetryReadsUdp}">
+                                        <ui:NumberBox Value="{Binding GameTelemetryForwardPort, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=1000}"
+                                                      Minimum="0" Maximum="65535"
+                                                      SpinButtonPlacementMode="Inline" Width="200"
+                                                      ToolTip="{Binding Dashboard_GameTelemetryForwardPort_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <reset:SettingResetButton Command="{Binding ResetGameTelemetryForwardPortCommand}" SettingLabel="{Binding Dashboard_GameTelemetryForwardPort, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                    <TextBlock Grid.Row="2" Text="{Binding Dashboard_GameTelemetryFullSpeed, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,0"/>
+                                    <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" Margin="0,0,0,0">
+                                        <ui:NumberBox Value="{Binding GameTelemetryFullSpeed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                      Minimum="10" Maximum="1000"
+                                                      SpinButtonPlacementMode="Inline" Width="200"
+                                                      ToolTip="{Binding Dashboard_GameTelemetryFullSpeed_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <reset:SettingResetButton Command="{Binding ResetGameTelemetryFullSpeedCommand}" SettingLabel="{Binding Dashboard_GameTelemetryFullSpeed, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Grid>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <Button x:Name="GameTelemetryFormatsButton" Click="GameTelemetryFormatsButton_Click"
+                                            Content="{Binding Dashboard_GameTelemetryFormats, Source={x:Static strings:Strings.Instance}}"
+                                            ToolTip="{Binding Dashboard_GameTelemetryFormats_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </controls:MoreRow>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+
+            <!-- ═══ Twitch Chat (#555) ═══
+                 Viewers press the slots the Twitch Chat row is assigned to by
+                 typing commands in the stream's chat. E8F2 is Segoe MDL2
+                 ChatBubbles (verified in live segmdl2.ttf). The channel, who
+                 approves a claim, the streamer's controls, which act on the open
+                 row, and the row's status line pushed by InputService on the
+                 dashboard tick. -->
+            <StackPanel x:Name="TwitchChatPage" Visibility="Collapsed">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                    <Button Style="{StaticResource ExtrasCrumb}" Click="Back_Click"
+                            AutomationProperties.AutomationId="Extras_Back_TwitchChat"
+                            Content="{Binding Extras_Title, Source={x:Static strings:Strings.Instance}}"/>
+                    <TextBlock Text="/" VerticalAlignment="Center" Margin="8,0,8,0"
+                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                    <TextBlock Text="{Binding Dashboard_TwitchChat, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                </StackPanel>
+                <Grid Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <reset:GlyphText Text="&#xE8F2;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
+                                   VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <TextBlock x:Name="TwitchChatTitle" AutomationProperties.HeadingLevel="Level1" Text="{Binding Dashboard_TwitchChat, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource TitleTextBlockStyle}" FontFamily="{StaticResource DisplayFontFamily}" FontWeight="650" FontSize="26" Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                        <CheckBox Style="{StaticResource SwitchCheckBox}" controls:SwitchLook.ShowState="True"
+                                  VerticalAlignment="Center" Content="{Binding Dashboard_EnableTwitchChat, Source={x:Static strings:Strings.Instance}}"
+                                  x:Name="TwitchChatCheckBox"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  IsChecked="{Binding EnableTwitchChat}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="EnableTwitchChat" SettingLabel="{Binding Dashboard_EnableTwitchChat, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DashboardViewModel_EnableTwitchChat_2245"/>
+                    </StackPanel>
+                </Grid>
+                <TextBlock Text="{Binding Dashboard_TwitchChatDescription, Source={x:Static strings:Strings.Instance}}"
+                           Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,0">
+                    <StackPanel>
+                        <!-- One grid so the boxes line up under labels of
+                             different widths, the Game Telemetry card's grid. -->
+                        <Grid Margin="0,0,0,10" IsEnabled="{Binding EnableTwitchChat}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="{Binding Dashboard_TwitchChatChannel, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,8"/>
+                            <!-- A second after the last key, so the row reopens
+                                 once per edit rather than once per letter. -->
+                            <ui:TextBox Grid.Column="1" Text="{Binding TwitchChatChannel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=1000}"
+                                        AutomationProperties.Name="{Binding Dashboard_TwitchChatChannel, Source={x:Static strings:Strings.Instance}}"
+                                        ToolTip="{Binding Dashboard_TwitchChatChannel_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                        Width="260" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBlock Grid.Row="1" Text="{Binding Dashboard_TwitchChatClaimApproval, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,0"/>
+                            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+                                <ComboBox SelectedIndex="{Binding TwitchChatClaimApprovalIndex}" MinWidth="260" VerticalAlignment="Center"
+                                          AutomationProperties.Name="{Binding Dashboard_TwitchChatClaimApproval, Source={x:Static strings:Strings.Instance}}"
+                                          ToolTip="{Binding Dashboard_TwitchChatClaimApproval_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                    <ComboBoxItem Content="{Binding TwitchChat_Approval_Streamer, Source={x:Static strings:Strings.Instance}}"/>
+                                    <ComboBoxItem Content="{Binding TwitchChat_Approval_Moderators, Source={x:Static strings:Strings.Instance}}"/>
+                                    <ComboBoxItem Content="{Binding TwitchChat_Approval_Viewers, Source={x:Static strings:Strings.Instance}}"/>
+                                </ComboBox>
+                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="TwitchChatClaimApprovalIndex" SettingLabel="{Binding Dashboard_TwitchChatClaimApproval, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DashboardViewModel_TwitchChatClaimApprovalIndex_2289" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Grid>
+                        <!-- The streamer's controls, live while the row is open. -->
+                        <WrapPanel Margin="0,0,0,10" IsEnabled="{Binding IsTwitchChatOpen}">
+                            <Button Command="{Binding TwitchChatPauseCommand}" Margin="0,0,8,0" MinWidth="90"
+                                    ToolTip="{Binding TwitchChat_Pause_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                <Button.Style>
+                                    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                        <Setter Property="Content" Value="{Binding TwitchChat_Pause, Source={x:Static strings:Strings.Instance}}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding TwitchChatPaused}" Value="True">
+                                                <Setter Property="Content" Value="{Binding TwitchChat_Resume, Source={x:Static strings:Strings.Instance}}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                            <Button Command="{Binding TwitchChatSkipCommand}" Margin="0,0,8,0"
+                                    Content="{Binding TwitchChat_Skip, Source={x:Static strings:Strings.Instance}}"
+                                    ToolTip="{Binding TwitchChat_Skip_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                            <Button Command="{Binding TwitchChatClearCommand}" Margin="0,0,8,0"
+                                    Content="{Binding TwitchChat_ClearLine, Source={x:Static strings:Strings.Instance}}"
+                                    ToolTip="{Binding TwitchChat_ClearLine_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                            <Button Command="{Binding TwitchChatEndClaimCommand}"
+                                    Content="{Binding TwitchChat_EndClaim, Source={x:Static strings:Strings.Instance}}"
+                                    ToolTip="{Binding TwitchChat_EndClaim_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                        </WrapPanel>
+                        <DockPanel Margin="0,0,0,4">
+                            <!-- Reading = flame, as on the Game Telemetry card: the
+                                 row's truth, not the switch. -->
+                            <Path DockPanel.Dock="Left" FlowDirection="LeftToRight" Data="{StaticResource FlameOuterGeometry}"
+                                  Width="11" Height="11" Stretch="Uniform"
+                                  VerticalAlignment="Top" Margin="0,3,6,0">
+                                <Path.Style>
+                                    <Style TargetType="Path">
+                                        <Setter Property="Fill" Value="Transparent"/>
+                                        <Setter Property="Stroke" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                        <Setter Property="StrokeThickness" Value="1.1"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsTwitchChatRunning}" Value="True">
+                                                <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
+                                                <Setter Property="Stroke" Value="{x:Null}"/>
+                                                <Setter Property="Effect">
+                                                    <Setter.Value>
+                                                        <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Path.Style>
+                            </Path>
+                            <TextBlock common:LiveText.Polite="True" Text="{Binding TwitchChatStatus}" FontSize="12"
+                                       FontFamily="{StaticResource TelemetryFontFamily}" TextWrapping="Wrap"
+                                       Foreground="{DynamicResource ColdBrush}"/>
+                        </DockPanel>
+                        <!-- The controller picture for the broadcast, on the plain
+                             address: OBS will not load the main address, whose
+                             certificate is self-signed. -->
+                        <StackPanel Margin="0,10,0,0"
+                                    Visibility="{Binding TwitchChatDisplayUrl, Converter={StaticResource StringToVisibility}}">
+                            <TextBlock Text="{Binding Dashboard_TwitchChatDisplay, Source={x:Static strings:Strings.Instance}}"
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,4"/>
+                            <StackPanel Orientation="Horizontal">
+                                <ui:TextBox Text="{Binding TwitchChatDisplayUrl, Mode=OneWay}" IsReadOnly="True"
+                                            AutomationProperties.Name="{Binding Dashboard_TwitchChatDisplay, Source={x:Static strings:Strings.Instance}}"
+                                            FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12" Width="360"/>
+                                <ui:Button Style="{StaticResource EmberIconButton}"
+                                           Command="{Binding CopyTwitchChatDisplayUrlCommand}" Margin="6,0,0,0"
+                                           VerticalAlignment="Center"
+                                           ToolTip="{Binding Common_Copy, Source={x:Static strings:Strings.Instance}}">
+                                    <reset:GlyphText Text="&#xE8C8;" FontFamily="Segoe MDL2 Assets" FontSize="13"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                </ui:Button>
+                            </StackPanel>
+                        </StackPanel>
+                        <!-- Shown while the plain address is off, which the
+                             picture needs. -->
+                        <TextBlock Text="{Binding Dashboard_TwitchChatDisplayOff, Source={x:Static strings:Strings.Instance}}" TextWrapping="Wrap"
+                                   FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,10,0,0">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding TwitchChatDisplayUrl}" Value="{x:Null}">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                        <TextBlock Text="{Binding Dashboard_TwitchChatFooter, Source={x:Static strings:Strings.Instance}}" TextWrapping="Wrap"
+                                   FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,8,0,0"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+
+            <!-- ═══ Remote Link (issue #138) ═══
+                 First: whether it is serving, the paired PCs, the PCs nearby and
+                 this PC's code. Under More: reconnecting, the port, identity
+                 protection and connecting by address. -->
+            <StackPanel x:Name="RemoteLinkPage" Visibility="Collapsed">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                    <Button Style="{StaticResource ExtrasCrumb}" Click="Back_Click"
+                            AutomationProperties.AutomationId="Extras_Back_RemoteLink"
+                            Content="{Binding Extras_Title, Source={x:Static strings:Strings.Instance}}"/>
+                    <TextBlock Text="/" VerticalAlignment="Center" Margin="8,0,8,0"
+                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                    <TextBlock Text="{Binding Dashboard_RemoteLink, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                </StackPanel>
+                <Grid Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <reset:GlyphText Text="&#xE969;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
+                                   VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <TextBlock x:Name="RemoteLinkTitle" AutomationProperties.HeadingLevel="Level1" Text="{Binding Dashboard_RemoteLink, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource TitleTextBlockStyle}" FontFamily="{StaticResource DisplayFontFamily}" FontWeight="650" FontSize="26" Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                        <CheckBox Style="{StaticResource SwitchCheckBox}" controls:SwitchLook.ShowState="True"
+                                  VerticalAlignment="Center" AutomationProperties.AutomationId="EnableRemoteLinkCheckBox"
+                                  Content="{Binding Dashboard_EnableRemoteLink, Source={x:Static strings:Strings.Instance}}"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  IsChecked="{Binding EnableRemoteLink}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="EnableRemoteLink" SettingLabel="{Binding Dashboard_EnableRemoteLink, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DashboardViewModel_EnableRemoteLink_1578"/>
+                    </StackPanel>
+                </Grid>
+                <TextBlock Text="{Binding Dashboard_RemoteLinkDescription, Source={x:Static strings:Strings.Instance}}"
+                           Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,0">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
+                            <!-- Serving = flame (#175 item 76). Running truth,
+                                 not the enable checkbox: identity-unlock errors
+                                 leave the server down while the box stays
+                                 checked (#175 phase 2 item 2). -->
+                            <Path FlowDirection="LeftToRight" Data="{StaticResource FlameOuterGeometry}"
+                                  Width="11" Height="11" Stretch="Uniform"
+                                  VerticalAlignment="Center" Margin="0,0,6,0">
+                                <Path.Style>
+                                    <Style TargetType="Path">
+                                        <Setter Property="Fill" Value="Transparent"/>
+                                        <Setter Property="Stroke" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                        <Setter Property="StrokeThickness" Value="1.1"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsRemoteLinkRunning}" Value="True">
+                                                <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
+                                                <Setter Property="Stroke" Value="{x:Null}"/>
+                                                <Setter Property="Effect">
+                                                    <Setter.Value>
+                                                        <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Path.Style>
+                            </Path>
+                            <TextBlock common:LiveText.Polite="True" Text="{Binding RemoteLinkStatus}" FontSize="12"
+                                       FontFamily="{StaticResource TelemetryFontFamily}"
+                                       Foreground="{DynamicResource ColdBrush}"/>
+                        </StackPanel>
+
+                        <Border Height="1" Background="{DynamicResource DividerStrokeColorDefaultBrush}" Margin="0,14,0,14"/>
+
+                        <!-- Paired PCs: online dot · editable name · revoke -->
+                        <TextBlock Text="{Binding RemoteLink_PairedPeers, Source={x:Static strings:Strings.Instance}}"
+                                   Style="{StaticResource CardSectionTitle}" FontSize="14" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,6"/>
+                        <TextBlock Text="{Binding RemoteLink_PairedPeersDescription, Source={x:Static strings:Strings.Instance}}"
+                                   Style="{StaticResource CardDescription}"/>
+                        <Border Margin="0,12,0,0">
+                            <ItemsControl ItemsSource="{Binding RemoteLink.TrustedPeers}">
+                                <!-- Out of the screen-reader tree while empty, as the Devices page's
+                                     slot badges are: an empty list draws nothing and has no size,
+                                     so collapsing it changes nothing on screen. -->
+                                <ItemsControl.Style>
+                                    <Style TargetType="ItemsControl" BasedOn="{StaticResource {x:Type ItemsControl}}">
+                                        <Setter Property="Focusable" Value="False"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="HasItems" Value="False">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ItemsControl.Style>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="0,0,0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Path FlowDirection="LeftToRight" Grid.Column="0" Margin="2,0,10,0" ToolTip="{Binding OnlineText}">
+                                                <Path.Style>
+                                                    <Style TargetType="Path" BasedOn="{StaticResource LivenessFlameBase}">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsOnline}" Value="True">
+                                                                <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
+                                                                <Setter Property="Stroke" Value="{x:Null}"/>
+                                                                <Setter Property="Effect">
+                                                                    <Setter.Value>
+                                                                        <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
+                                                                    </Setter.Value>
+                                                                </Setter>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Path.Style>
+                                            </Path>
+                                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                                <DockPanel LastChildFill="True" HorizontalAlignment="Left">
+                                                    <reset:SettingResetButton DockPanel.Dock="Right" Command="{Binding ResetSettingCommand}" CommandParameter="Name" SettingLabel="{Binding Macro_Name, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_RemoteLinkTrustedPeer_Name_1678"/>
+                                                    <ui:TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                                PlaceholderText="{Binding RemoteLink_PeerNamePlaceholder, Source={x:Static strings:Strings.Instance}}" MaxLength="40" MinWidth="240"/>
+                                                </DockPanel>
+                                                <TextBlock FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="2,3,0,0" TextTrimming="CharacterEllipsis">
+                                                    <Run Text="{Binding HostName, Mode=OneWay}" FontWeight="SemiBold"/>
+                                                    <Run Text="{Binding FingerprintDisplay, Mode=OneWay, StringFormat='  ·  {0}'}" FontFamily="{StaticResource TelemetryFontFamily}"/>
+                                                </TextBlock>
+                                                <StackPanel Orientation="Horizontal" Margin="0,6,8,0">
+                                                    <CheckBox VerticalAlignment="Center" IsChecked="{Binding AllowRemoteAssignments, Mode=TwoWay}"
+                                                              Content="{Binding RemoteLink_AllowAssignments, Source={x:Static strings:Strings.Instance}}"
+                                                              ToolTip="{Binding RemoteLink_AssignmentPermissionDescription, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="AllowRemoteAssignments" SettingLabel="{Binding RemoteLink_AllowAssignments, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_RemoteLinkTrustedPeer_AllowRemoteAssignments_1685"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                                                <!-- No Appearance=Primary (dark text on the accent
+                                                     slab): Connect is the row's primary affirmative
+                                                     and wears the shared ember accent instead. -->
+                                                <ui:Button Content="{Binding Dashboard_RemoteLinkConnectButton, Source={x:Static strings:Strings.Instance}}"
+                                                           Command="{Binding ConnectCommand}" Style="{StaticResource EmberPrimaryButton}" Margin="0,0,8,0"
+                                                           Visibility="{Binding CanConnect, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                                <Button Content="{Binding RemoteLink_Revoke, Source={x:Static strings:Strings.Instance}}"
+                                                        Command="{Binding RevokeCommand}"/>
+                                                <Button Content="{Binding RemoteLink_AssignDevices, Source={x:Static strings:Strings.Instance}}"
+                                                        Command="{Binding AssignmentsCommand}" Margin="8,0,0,0"
+                                                        Visibility="{Binding IsOnline, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </Border>
+                        <Button Content="{Binding RemoteLink_RevokeAll, Source={x:Static strings:Strings.Instance}}"
+                                Command="{Binding RemoteLink.RevokeAllPeersCommand}" HorizontalAlignment="Left" Margin="0,4,0,0"/>
+
+                        <!-- Nearby PCs not yet paired -->
+                        <StackPanel Margin="0,14,0,0"
+                                    Visibility="{Binding RemoteLink.HasNearbyUnpaired, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <TextBlock Text="{Binding RemoteLink_NearbyTitle, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource CardSectionTitle}" FontSize="14" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,6"/>
+                            <ItemsControl ItemsSource="{Binding RemoteLink.NearbyUnpaired}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="0,0,0,8">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding DisplayName}" FontWeight="SemiBold"/>
+                                                <TextBlock Text="{Binding HostPort}" FontSize="11" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                            </StackPanel>
+                                            <ui:Button Grid.Column="1" VerticalAlignment="Center"
+                                                       Content="{Binding ButtonLabel}" IsEnabled="{Binding CanPair}"
+                                                       Command="{Binding PairCommand}"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+
+                        <!-- The rule over this PC's code and the network verdict.
+                             It shows while either does: with neither, it would
+                             stand over nothing but the card's closing note. -->
+                        <Border Height="1" Background="{DynamicResource DividerStrokeColorDefaultBrush}" Margin="0,14,0,14">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding HasRemoteLinkMyCode}" Value="False"/>
+                                                <Condition Binding="{Binding HasRemoteLinkNatWarning}" Value="False"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                        </Border>
+
+                        <!-- This PC's connection code (#294): share it so someone on
+                             another network reaches you with no VPN. Shown only once
+                             it is minted (needs the public-address probe). -->
+                        <StackPanel Visibility="{Binding HasRemoteLinkMyCode, Converter={StaticResource BoolToVisibilityConverter}}"
+                                    Margin="0,0,0,12">
+                            <TextBlock Text="{Binding Dashboard_RemoteLinkMyCode, Source={x:Static strings:Strings.Instance}}"
+                                       Style="{StaticResource CardSectionTitle}" FontSize="14" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,6"/>
+                            <StackPanel Orientation="Horizontal">
+                                <ui:TextBox Text="{Binding RemoteLinkMyCode, Mode=OneWay}" IsReadOnly="True"
+                                            FontFamily="{StaticResource TelemetryFontFamily}"
+                                            Width="300" VerticalAlignment="Center"/>
+                                <ui:Button Command="{Binding CopyRemoteLinkCodeCommand}" Margin="8,0,0,0"
+                                           Content="{Binding Common_Copy, Source={x:Static strings:Strings.Instance}}"/>
+                            </StackPanel>
+                            <TextBlock Text="{Binding Dashboard_RemoteLinkMyCode_Hint, Source={x:Static strings:Strings.Instance}}"
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+                        </StackPanel>
+
+                        <!-- Network verdict (#294): a mobile hotspot / CGNAT can't be
+                             punched, so say so plainly instead of a late generic failure. -->
+                        <Border Visibility="{Binding HasRemoteLinkNatWarning, Converter={StaticResource BoolToVisibilityConverter}}"
+                                Background="{DynamicResource SystemFillColorCautionBackgroundBrush}"
+                                CornerRadius="6" Padding="10,8" Margin="0,0,0,12">
+                            <StackPanel Orientation="Horizontal">
+                                <reset:GlyphText Text="&#xE7BA;" FontFamily="Segoe MDL2 Assets" VerticalAlignment="Top"
+                                           Foreground="{DynamicResource SystemFillColorCautionBrush}" Margin="0,1,8,0"/>
+                                <TextBlock Text="{Binding RemoteLinkNatWarning}" TextWrapping="Wrap"
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" MaxWidth="360"/>
+                            </StackPanel>
+                        </Border>
+                        <TextBlock Text="{Binding Dashboard_RemoteLinkFooter, Source={x:Static strings:Strings.Instance}}"
+                                   FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,10,0,0" TextWrapping="Wrap"/>
+                        <controls:MoreRow x:Name="RemoteLinkMore" StateKey="Extras.RemoteLink.More"
+                                          AutomationProperties.AutomationId="Extras_More_RemoteLink"
+                                          Header="{Binding Common_More, Source={x:Static strings:Strings.Instance}}"
+                                          Hint="{Binding Extras_More_RemoteLink, Source={x:Static strings:Strings.Instance}}">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                    <CheckBox VerticalAlignment="Center" Content="{Binding RemoteLink_AutoReconnect, Source={x:Static strings:Strings.Instance}}"
+                                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                              IsChecked="{Binding AutoReconnect}"/>
+                                    <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="AutoReconnect" SettingLabel="{Binding RemoteLink_AutoReconnect, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DashboardViewModel_AutoReconnect_1581"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                    <TextBlock Text="{Binding Dashboard_Port, Source={x:Static strings:Strings.Instance}}"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <ui:NumberBox Value="{Binding RemoteLinkPort, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=1000}"
+                                                  Minimum="1024" Maximum="65535"
+                                                  SpinButtonPlacementMode="Inline" Width="200"/>
+                                    <reset:SettingResetButton Command="{Binding ResetRemoteLinkPortCommand}" SettingLabel="{Binding Dashboard_RemoteLinkPort, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                                </StackPanel>
+
+                                <Border Height="1" Background="{DynamicResource DividerStrokeColorDefaultBrush}" Margin="0,14,0,14"/>
+
+                                <!-- Identity protection. Divider-separated section title inside
+                                     the card, so it wears CardSectionTitle (display face); the
+                                     14px/secondary/6px locals keep the established sub-title
+                                     step below CardTitle. -->
+                                <TextBlock Text="{Binding RemoteLink_IdentityTitle, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource CardSectionTitle}" FontSize="14" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,6"/>
+                                <TextBlock Text="{Binding RemoteLink_IdentityDescription, Source={x:Static strings:Strings.Instance}}"
+                                           Style="{StaticResource CardDescription}"/>
+                                <DockPanel LastChildFill="True" Margin="0,10,0,8" HorizontalAlignment="Left">
+                                    <reset:SettingResetButton DockPanel.Dock="Right" Command="{Binding RemoteLink.ResetSettingCommand}" CommandParameter="IdentityProtectionModeIndex" SettingLabel="{Binding RemoteLink_IdentityTitle, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_SettingsViewModel_IdentityProtectionModeIndex_1638"/>
+                                    <ComboBox Width="320"
+                                              ItemsSource="{Binding RemoteLink.IdentityProtectionModes}"
+                                              SelectedIndex="{Binding RemoteLink.IdentityProtectionModeIndex, Mode=TwoWay}"/>
+                                </DockPanel>
+                                <TextBlock Text="{Binding RemoteLink.IdentityProtectionHint}" TextWrapping="Wrap"
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="12"/>
+
+                                <Border Height="1" Background="{DynamicResource DividerStrokeColorDefaultBrush}" Margin="0,14,0,14"/>
+
+                                <!-- Connect by address OR code (fallback when discovery can't see the PC) -->
+                                <TextBlock Text="{Binding Dashboard_RemoteLinkConnect, Source={x:Static strings:Strings.Instance}}"
+                                           Style="{StaticResource CardSectionTitle}" FontSize="14" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,6"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <ui:TextBox Text="{Binding RemoteLinkConnectHost, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                PlaceholderText="192.168.1.20:27500" Width="220" VerticalAlignment="Center"
+                                                AutomationProperties.Name="{Binding Dashboard_RemoteLinkConnect, Source={x:Static strings:Strings.Instance}}"/>
+                                    <ui:Button Command="{Binding ConnectToPeerCommand}" Margin="8,0,0,0"
+                                               Content="{Binding Dashboard_RemoteLinkConnectButton, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </controls:MoreRow>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+
+            <!-- ═══ Motion Server ═══
+                 First: whether it is serving. Under More: the port. -->
+            <StackPanel x:Name="MotionServerPage" Visibility="Collapsed">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                    <Button Style="{StaticResource ExtrasCrumb}" Click="Back_Click"
+                            AutomationProperties.AutomationId="Extras_Back_MotionServer"
+                            Content="{Binding Extras_Title, Source={x:Static strings:Strings.Instance}}"/>
+                    <TextBlock Text="/" VerticalAlignment="Center" Margin="8,0,8,0"
+                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                    <TextBlock Text="{Binding Dashboard_MotionServer, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                </StackPanel>
+                <Grid Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <reset:GlyphText Text="&#xE7AD;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
+                                   VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <TextBlock x:Name="MotionServerTitle" AutomationProperties.HeadingLevel="Level1" Text="{Binding Dashboard_MotionServer, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource TitleTextBlockStyle}" FontFamily="{StaticResource DisplayFontFamily}" FontWeight="650" FontSize="26" Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                        <CheckBox Style="{StaticResource SwitchCheckBox}" controls:SwitchLook.ShowState="True"
+                                  VerticalAlignment="Center" Content="{Binding Dashboard_EnableDsu, Source={x:Static strings:Strings.Instance}}"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  IsChecked="{Binding EnableDsuMotionServer}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="EnableDsuMotionServer" SettingLabel="{Binding Dashboard_EnableDsu, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DashboardViewModel_EnableDsuMotionServer_1896"/>
+                    </StackPanel>
+                </Grid>
+                <TextBlock Text="{Binding Dashboard_DsuDescription, Source={x:Static strings:Strings.Instance}}"
+                           Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,0">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <!-- Serving = flame (#175 item 76); the green dot stays
+                                 strictly health. Binds the server's running truth,
+                                 not the enable checkbox (#175 phase 2 item 2). -->
+                            <Path FlowDirection="LeftToRight" Data="{StaticResource FlameOuterGeometry}"
+                                  Width="11" Height="11" Stretch="Uniform"
+                                  VerticalAlignment="Center" Margin="0,0,6,0">
+                                <Path.Style>
+                                    <Style TargetType="Path">
+                                        <Setter Property="Fill" Value="Transparent"/>
+                                        <Setter Property="Stroke" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                        <Setter Property="StrokeThickness" Value="1.1"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsDsuServerRunning}" Value="True">
+                                                <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
+                                                <Setter Property="Stroke" Value="{x:Null}"/>
+                                                <Setter Property="Effect">
+                                                    <Setter.Value>
+                                                        <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Path.Style>
+                            </Path>
+                            <TextBlock common:LiveText.Polite="True" Text="{Binding DsuServerStatus}" FontSize="12"
+                                       FontFamily="{StaticResource TelemetryFontFamily}"
+                                       Foreground="{DynamicResource ColdBrush}"/>
+                        </StackPanel>
+                        <TextBlock Text="{Binding Dashboard_DsuFooter, Source={x:Static strings:Strings.Instance}}"
+                                   FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,4,0,0"/>
+                        <controls:MoreRow x:Name="MotionServerMore" StateKey="Extras.MotionServer.More"
+                                          AutomationProperties.AutomationId="Extras_More_MotionServer"
+                                          Header="{Binding Common_More, Source={x:Static strings:Strings.Instance}}"
+                                          Hint="{Binding Dashboard_Port, Source={x:Static strings:Strings.Instance}}">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="{Binding Dashboard_Port, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                               Margin="0,0,8,0"/>
+                                    <ui:NumberBox Value="{Binding DsuMotionServerPort, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=1000}"
+                                                  Minimum="1024" Maximum="65535"
+                                                  SpinButtonPlacementMode="Inline" Width="200"/>
+                                    <reset:SettingResetButton Command="{Binding ResetDsuPortCommand}" SettingLabel="{Binding Dashboard_MotionServerPort, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </controls:MoreRow>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+
+            <!-- ═══ Game Mods (#529) ═══
+                 The UDP server DSX game mods send to. EA86 is Segoe MDL2 Puzzle, a
+                 piece added to a game. First: whether it is listening, in a status
+                 line that wraps, since it names the program sending. Under More:
+                 the port and the DSX.exe stand-in switch. -->
+            <StackPanel x:Name="GameModsPage" Visibility="Collapsed">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                    <Button Style="{StaticResource ExtrasCrumb}" Click="Back_Click"
+                            AutomationProperties.AutomationId="Extras_Back_GameMods"
+                            Content="{Binding Extras_Title, Source={x:Static strings:Strings.Instance}}"/>
+                    <TextBlock Text="/" VerticalAlignment="Center" Margin="8,0,8,0"
+                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                    <TextBlock Text="{Binding Dashboard_GameMods, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                </StackPanel>
+                <Grid Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <reset:GlyphText Text="&#xEA86;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
+                                   VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <TextBlock x:Name="GameModsTitle" AutomationProperties.HeadingLevel="Level1" Text="{Binding Dashboard_GameMods, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource TitleTextBlockStyle}" FontFamily="{StaticResource DisplayFontFamily}" FontWeight="650" FontSize="26" Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                        <CheckBox Style="{StaticResource SwitchCheckBox}" controls:SwitchLook.ShowState="True"
+                                  VerticalAlignment="Center" Content="{Binding Dashboard_EnableGameMods, Source={x:Static strings:Strings.Instance}}"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  IsChecked="{Binding EnableGameModServer}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="EnableGameModServer" SettingLabel="{Binding Dashboard_EnableGameMods, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DashboardViewModel_EnableGameModServer_2230"/>
+                    </StackPanel>
+                </Grid>
+                <TextBlock Text="{Binding Dashboard_GameModsDescription, Source={x:Static strings:Strings.Instance}}"
+                           Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,0">
+                    <StackPanel>
+                        <DockPanel Margin="0,0,0,4">
+                            <!-- Serving = flame, as on the Motion Server card: the
+                                 server's running truth, not the switch. -->
+                            <Path DockPanel.Dock="Left" FlowDirection="LeftToRight" Data="{StaticResource FlameOuterGeometry}"
+                                  Width="11" Height="11" Stretch="Uniform"
+                                  VerticalAlignment="Top" Margin="0,3,6,0">
+                                <Path.Style>
+                                    <Style TargetType="Path">
+                                        <Setter Property="Fill" Value="Transparent"/>
+                                        <Setter Property="Stroke" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                        <Setter Property="StrokeThickness" Value="1.1"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsGameModServerRunning}" Value="True">
+                                                <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
+                                                <Setter Property="Stroke" Value="{x:Null}"/>
+                                                <Setter Property="Effect">
+                                                    <Setter.Value>
+                                                        <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Path.Style>
+                            </Path>
+                            <TextBlock common:LiveText.Polite="True" Text="{Binding GameModServerStatus}" FontSize="12"
+                                       FontFamily="{StaticResource TelemetryFontFamily}" TextWrapping="Wrap"
+                                       Foreground="{DynamicResource ColdBrush}"/>
+                        </DockPanel>
+                        <TextBlock Text="{Binding Dashboard_GameModsFooter, Source={x:Static strings:Strings.Instance}}" TextWrapping="Wrap"
+                                   FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,4,0,0"/>
+                        <controls:MoreRow x:Name="GameModsMore" StateKey="Extras.GameMods.More"
+                                          AutomationProperties.AutomationId="Extras_More_GameMods"
+                                          Header="{Binding Common_More, Source={x:Static strings:Strings.Instance}}"
+                                          Hint="{Binding Extras_More_GameMods, Source={x:Static strings:Strings.Instance}}">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="{Binding Dashboard_Port, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                               Margin="0,0,8,0"/>
+                                    <ui:NumberBox Value="{Binding GameModServerPort, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=1000}"
+                                                  Minimum="1024" Maximum="65535"
+                                                  SpinButtonPlacementMode="Inline" Width="200"/>
+                                    <reset:SettingResetButton Command="{Binding ResetGameModPortCommand}" SettingLabel="{Binding Dashboard_GameModPort, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <CheckBox VerticalAlignment="Center" Content="{Binding Dashboard_GameModStandIn, Source={x:Static strings:Strings.Instance}}"
+                                              ToolTip="{Binding Dashboard_GameModStandIn_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                              IsChecked="{Binding GameModDsxStandIn}"/>
+                                    <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="GameModDsxStandIn" SettingLabel="{Binding Dashboard_GameModStandIn, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DashboardViewModel_GameModDsxStandIn_2246"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </controls:MoreRow>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+
+            <!-- ═══ Overlays (menu #9 B-17, shift layer, profile switch) ═══
+                 E700 is Segoe MDL2 GlobalNavButton, the canonical menu glyph. The
+                 three overlays have a switch each and no single one, so the
+                 page's switch is on while any of them is
+                 (DashboardViewModel.OverlaysAnyEnabled). -->
+            <StackPanel x:Name="OverlaysPage" Visibility="Collapsed">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                    <Button Style="{StaticResource ExtrasCrumb}" Click="Back_Click"
+                            AutomationProperties.AutomationId="Extras_Back_Overlays"
+                            Content="{Binding Extras_Title, Source={x:Static strings:Strings.Instance}}"/>
+                    <TextBlock Text="/" VerticalAlignment="Center" Margin="8,0,8,0"
+                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                    <TextBlock Text="{Binding Dashboard_Overlays, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                </StackPanel>
+                <Grid Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <reset:GlyphText Text="&#xE700;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
+                                   VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <TextBlock x:Name="OverlaysTitle" AutomationProperties.HeadingLevel="Level1" Text="{Binding Dashboard_Overlays, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource TitleTextBlockStyle}" FontFamily="{StaticResource DisplayFontFamily}" FontWeight="650" FontSize="26" Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                        <CheckBox Style="{StaticResource SwitchCheckBox}" controls:SwitchLook.ShowState="True"
+                                  VerticalAlignment="Center" AutomationProperties.AutomationId="OverlaysSwitch"
+                                  Content="{Binding Dashboard_Overlays, Source={x:Static strings:Strings.Instance}}"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  IsChecked="{Binding OverlaysAnyEnabled}"/>
+                        <reset:SettingResetButton Command="{Binding ResetOverlaysCommand}" SettingLabel="{Binding Dashboard_Overlays, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DashboardViewModel_OverlaysAnyEnabled" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
+                <TextBlock Text="{Binding Dashboard_OverlaysDescription, Source={x:Static strings:Strings.Instance}}"
+                           Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,0">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                            <CheckBox VerticalAlignment="Center" Content="{Binding Dashboard_MenuOverlay, Source={x:Static strings:Strings.Instance}}"
+                                      Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                      ToolTip="{Binding Dashboard_MenuOverlayDescription, Source={x:Static strings:Strings.Instance}}"
+                                      IsChecked="{Binding EnableMenuOverlay}"/>
+                            <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="EnableMenuOverlay" SettingLabel="{Binding Dashboard_MenuOverlay, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DashboardViewModel_EnableMenuOverlay_2023"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                            <CheckBox VerticalAlignment="Center" Content="{Binding Dashboard_ShiftLayerFlyout, Source={x:Static strings:Strings.Instance}}"
+                                      Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                      IsChecked="{Binding EnableShiftLayerFlyout}"/>
+                            <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="EnableShiftLayerFlyout" SettingLabel="{Binding Dashboard_ShiftLayerFlyout, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DashboardViewModel_EnableShiftLayerFlyout_2026"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox VerticalAlignment="Center" Content="{Binding Dashboard_ProfileOverlay, Source={x:Static strings:Strings.Instance}}"
+                                      Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                      IsChecked="{Binding EnableProfileOverlay}"/>
+                            <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="EnableProfileOverlay" SettingLabel="{Binding Dashboard_ProfileOverlay, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DashboardViewModel_EnableProfileOverlay_2029"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+
+            <!-- ═══ Touchpad Overlay ═══
+                 Whether the overlay is showing, its opacity and its place. -->
+            <StackPanel x:Name="TouchpadOverlayPage" Visibility="Collapsed">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                    <Button Style="{StaticResource ExtrasCrumb}" Click="Back_Click"
+                            AutomationProperties.AutomationId="Extras_Back_TouchpadOverlay"
+                            Content="{Binding Extras_Title, Source={x:Static strings:Strings.Instance}}"/>
+                    <TextBlock Text="/" VerticalAlignment="Center" Margin="8,0,8,0"
+                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                    <TextBlock Text="{Binding Dashboard_TouchpadOverlay, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                </StackPanel>
+                <Grid Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <reset:GlyphText Text="&#xEDA4;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
+                                   VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <TextBlock x:Name="TouchpadOverlayTitle" AutomationProperties.HeadingLevel="Level1" Text="{Binding Dashboard_TouchpadOverlay, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource TitleTextBlockStyle}" FontFamily="{StaticResource DisplayFontFamily}" FontWeight="650" FontSize="26" Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                        <CheckBox Style="{StaticResource SwitchCheckBox}" controls:SwitchLook.ShowState="True"
+                                  VerticalAlignment="Center" Content="{Binding Dashboard_EnableTouchpadOverlay, Source={x:Static strings:Strings.Instance}}"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  IsChecked="{Binding EnableTouchpadOverlay}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="EnableTouchpadOverlay" SettingLabel="{Binding Dashboard_EnableTouchpadOverlay, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DashboardViewModel_EnableTouchpadOverlay_2045"/>
+                    </StackPanel>
+                </Grid>
+                <TextBlock Text="{Binding Dashboard_TouchpadOverlayDescription, Source={x:Static strings:Strings.Instance}}"
+                           Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,0">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                            <!-- Serving = flame (#175 item 76). Binds the overlay
+                                 window's running truth, which already drives the
+                                 status text (#175 phase 2 item 2). -->
+                            <Path FlowDirection="LeftToRight" Data="{StaticResource FlameOuterGeometry}"
+                                  Width="11" Height="11" Stretch="Uniform"
+                                  VerticalAlignment="Center" Margin="0,0,6,0">
+                                <Path.Style>
+                                    <Style TargetType="Path">
+                                        <Setter Property="Fill" Value="Transparent"/>
+                                        <Setter Property="Stroke" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                        <Setter Property="StrokeThickness" Value="1.1"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsTouchpadOverlayRunning}" Value="True">
+                                                <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
+                                                <Setter Property="Stroke" Value="{x:Null}"/>
+                                                <Setter Property="Effect">
+                                                    <Setter.Value>
+                                                        <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Path.Style>
+                            </Path>
+                            <TextBlock common:LiveText.Polite="True" Text="{Binding TouchpadOverlayStatus}" FontSize="12"
+                                       FontFamily="{StaticResource TelemetryFontFamily}"
+                                       Foreground="{DynamicResource ColdBrush}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <TextBlock Text="{Binding Dashboard_TouchpadOverlayOpacity, Source={x:Static strings:Strings.Instance}}"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                       VerticalAlignment="Center" Margin="0,0,8,0" Width="80"/>
+                            <Slider Value="{Binding TouchpadOverlayOpacity, Mode=TwoWay}"
+                                    Minimum="0.0" Maximum="1.0"
+                                    SmallChange="0.05" LargeChange="0.1"
+                                    Width="160" VerticalAlignment="Center">
+                                <!-- Hover glow (#175): the thumb flips ember-hot on hover
+                                     (SliderThumbBackgroundPointerOver), so the bloom is
+                                     ember. BasedOn the implicit style so the themed
+                                     template survives. -->
+                                <Slider.Style>
+                                    <Style TargetType="Slider" BasedOn="{StaticResource {x:Type Slider}}">
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Effect" Value="{StaticResource EmberHoverGlow}"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Slider.Style>
+                            </Slider>
+                            <!-- 200 like the port boxes: the focus-time clear X plus
+                                 the inline spin buttons cramped the value at 130
+                                 (same fix as the Menus tab's number boxes). -->
+                            <ui:NumberBox Value="{Binding TouchpadOverlayOpacityPercent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          Minimum="0" Maximum="100"
+                                          SpinButtonPlacementMode="Inline" Width="200"
+                                          Margin="8,0,0,0"/>
+                            <TextBlock Text="%" VerticalAlignment="Center" Margin="4,0,0,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                            <reset:SettingResetButton Command="{Binding ResetOpacityCommand}" SettingLabel="{Binding Dashboard_TouchpadOverlayOpacity, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <Button Command="{Binding ResetTouchpadOverlayPositionCommand}"
+                                    Content="{Binding Dashboard_TouchpadOverlayResetPosition, Source={x:Static strings:Strings.Instance}}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+
+            <!-- ═══ Screen Overlay (#560) ═══
+                 One group per overlay in one card, so they share one label column.
+                 One overlay has no title of its own and reads like the Touchpad
+                 Overlay's card. Each overlay has its own switch, so the page has
+                 none. The catalog tile's switch is on while any overlay is
+                 (DashboardViewModel.ScreenOverlaysAnyEnabled). -->
+            <StackPanel x:Name="ScreenOverlayPage" Visibility="Collapsed">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                    <Button Style="{StaticResource ExtrasCrumb}" Click="Back_Click"
+                            AutomationProperties.AutomationId="Extras_Back_ScreenOverlay"
+                            Content="{Binding Extras_Title, Source={x:Static strings:Strings.Instance}}"/>
+                    <TextBlock Text="/" VerticalAlignment="Center" Margin="8,0,8,0"
+                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                    <TextBlock Text="{Binding Dashboard_ScreenOverlay, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                </StackPanel>
+                <Grid Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <reset:GlyphText Text="&#xE7F4;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
+                                   VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <TextBlock x:Name="ScreenOverlayTitle" AutomationProperties.HeadingLevel="Level1" Text="{Binding Dashboard_ScreenOverlay, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource TitleTextBlockStyle}" FontFamily="{StaticResource DisplayFontFamily}" FontWeight="650" FontSize="26" Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                    </StackPanel>
+                </Grid>
+                <TextBlock Text="{Binding Dashboard_ScreenOverlayDescription, Source={x:Static strings:Strings.Instance}}"
+                           Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,0">
+                    <StackPanel>
+                        <ItemsControl ItemsSource="{Binding ScreenOverlays}" IsTabStop="False">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Margin="0,0,0,12">
+                                        <TextBlock Text="{Binding Title}" FontWeight="SemiBold" Margin="0,0,0,8"
+                                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                                   Visibility="{Binding OneOfSeveral, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                            <CheckBox VerticalAlignment="Center" Content="{Binding Dashboard_EnableScreenOverlay, Source={x:Static strings:Strings.Instance}}"
+                                                      AutomationProperties.AutomationId="{Binding EnableId}"
+                                                      Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                      IsChecked="{Binding Enabled}"/>
+                                            <reset:SettingResetButton Command="{Binding ResetEnabledCommand}" SettingLabel="{Binding Dashboard_EnableScreenOverlay, Source={x:Static strings:Strings.Instance}}"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                            <TextBlock Text="{Binding Dashboard_TouchpadOverlayOpacity, Source={x:Static strings:Strings.Instance}}"
+                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                       VerticalAlignment="Center" Margin="0,0,8,0" Width="80"/>
+                                            <Slider Value="{Binding Opacity, Mode=TwoWay}"
+                                                    AutomationProperties.AutomationId="{Binding OpacityId}"
+                                                    Minimum="0.0" Maximum="1.0"
+                                                    SmallChange="0.05" LargeChange="0.1"
+                                                    Width="160" VerticalAlignment="Center">
+                                                <Slider.Style>
+                                                    <Style TargetType="Slider" BasedOn="{StaticResource {x:Type Slider}}">
+                                                        <Style.Triggers>
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter Property="Effect" Value="{StaticResource EmberHoverGlow}"/>
+                                                            </Trigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Slider.Style>
+                                            </Slider>
+                                            <ui:NumberBox Value="{Binding OpacityPercent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                          Minimum="0" Maximum="100"
+                                                          SpinButtonPlacementMode="Inline" Width="200"
+                                                          Margin="8,0,0,0"/>
+                                            <TextBlock Text="%" VerticalAlignment="Center" Margin="4,0,0,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                            <reset:SettingResetButton Command="{Binding ResetOpacityCommand}" SettingLabel="{Binding Dashboard_TouchpadOverlayOpacity, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                            <Button Command="{Binding ChooseCommand}"
+                                                    AutomationProperties.AutomationId="{Binding ChooseId}"
+                                                    Margin="0,0,8,0"
+                                                    Content="{Binding Dashboard_ScreenOverlayChoose, Source={x:Static strings:Strings.Instance}}"/>
+                                            <Button Command="{Binding ResetPositionCommand}"
+                                                    AutomationProperties.AutomationId="{Binding ResetPositionId}"
+                                                    Margin="0,0,8,0"
+                                                    Content="{Binding Dashboard_TouchpadOverlayResetPosition, Source={x:Static strings:Strings.Instance}}"/>
+                                            <Button Command="{Binding RemoveCommand}"
+                                                    AutomationProperties.AutomationId="{Binding RemoveId}"
+                                                    Visibility="{Binding OneOfSeveral, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                    Content="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Path FlowDirection="LeftToRight" Data="{StaticResource FlameOuterGeometry}"
+                                                  Width="11" Height="11" Stretch="Uniform"
+                                                  VerticalAlignment="Center" Margin="0,0,6,0">
+                                                <Path.Style>
+                                                    <Style TargetType="Path">
+                                                        <Setter Property="Fill" Value="Transparent"/>
+                                                        <Setter Property="Stroke" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                                        <Setter Property="StrokeThickness" Value="1.1"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsRunning}" Value="True">
+                                                                <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
+                                                                <Setter Property="Stroke" Value="{x:Null}"/>
+                                                                <Setter Property="Effect">
+                                                                    <Setter.Value>
+                                                                        <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
+                                                                    </Setter.Value>
+                                                                </Setter>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Path.Style>
+                                            </Path>
+                                            <TextBlock common:LiveText.Polite="True" Text="{Binding Status}" FontSize="12"
+                                                       FontFamily="{StaticResource TelemetryFontFamily}"
+                                                       Foreground="{DynamicResource ColdBrush}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <Button Command="{Binding AddScreenOverlayCommand}" HorizontalAlignment="Left"
+                                AutomationProperties.AutomationId="ScreenOverlay_Add"
+                                IsEnabled="{Binding CanAddScreenOverlay}"
+                                Content="{Binding Dashboard_ScreenOverlayAdd, Source={x:Static strings:Strings.Instance}}"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

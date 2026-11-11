@@ -96,7 +96,9 @@ namespace PadForge.Tests
 
 
         /// <summary>
-        /// Every value row on the Dashboard carries its own reset.
+        /// Every value row on the Extras page carries its own reset. The
+        /// rows were the Dashboard's until its services got a page each
+        /// (#574), and the Dashboard holds no number box since.
         ///
         /// <para>The other tests here check what a reset SAYS. This one
         /// checks that the reset EXISTS, which is the half that shipped
@@ -109,12 +111,13 @@ namespace PadForge.Tests
         /// belonging to a later row cannot cover for a missing one.</para>
         /// </summary>
         [Fact]
-        public void EveryNumberBoxOnTheDashboardHasItsOwnReset()
+        public void EveryNumberBoxOnTheExtrasPageHasItsOwnReset()
         {
-            string file = Path.Combine(ViewsDir(), "DashboardPage.xaml");
+            Assert.DoesNotContain("<ui:NumberBox", File.ReadAllText(Path.Combine(ViewsDir(), "DashboardPage.xaml")));
+            string file = Path.Combine(ViewsDir(), "ExtrasPage.xaml");
             string text = File.ReadAllText(file);
             var starts = Regex.Matches(text, @"<ui:NumberBox\b").Select(m => m.Index).ToList();
-            Assert.True(starts.Count > 10, $"expected the Dashboard's number boxes, found {starts.Count}");
+            Assert.True(starts.Count > 10, $"expected the Extras page's number boxes, found {starts.Count}");
 
             var offenders = new List<string>();
             for (int i = 0; i < starts.Count; i++)
@@ -126,7 +129,7 @@ namespace PadForge.Tests
 
                 var bound = Regex.Match(row, @"Value=""\{Binding ([A-Za-z0-9_]+)");
                 int line = text.Take(starts[i]).Count(c => c == '\n') + 1;
-                offenders.Add($"DashboardPage.xaml:{line} {(bound.Success ? bound.Groups[1].Value : "?")}");
+                offenders.Add($"ExtrasPage.xaml:{line} {(bound.Success ? bound.Groups[1].Value : "?")}");
             }
 
             Assert.True(offenders.Count == 0,
@@ -138,7 +141,7 @@ namespace PadForge.Tests
         [Fact]
         public void EachPerAxisRangeResetsOnlyItsOwnAxis()
         {
-            string xaml = File.ReadAllText(Path.Combine(ViewsDir(), "DashboardPage.xaml"));
+            string xaml = File.ReadAllText(Path.Combine(ViewsDir(), "ExtrasPage.xaml"));
             foreach (string axis in new[] { "Yaw", "Pitch", "Roll", "X", "Y", "Z" })
             {
                 Assert.Contains($"ResetHeadTrackingRange{axis}Command", xaml);
@@ -150,27 +153,74 @@ namespace PadForge.Tests
 
 
         /// <summary>
-        /// The per-axis ranges share one grid with the two ranges above them.
+        /// The per-axis ranges line up with the two ranges above them.
         ///
         /// <para>They first shipped in a grid of their own, so their label
         /// column was sized by their own longest label and every box and
-        /// reset started at a different x than the rows above. The grid's own
-        /// comment says why it exists: one grid so the boxes line up under
-        /// labels of different widths. A closing grid tag between the two
-        /// means they have been split apart again.</para>
+        /// reset started at a different x than the rows above. One grid
+        /// fixed that. On the Head Tracking page (#574) the two ranges show
+        /// first and the per-axis ranges sit under More, so they are two
+        /// grids again, and what lines them up is one shared size group on
+        /// both label columns, inside one scope on the card. Either grid
+        /// losing the group, or the card losing the scope, puts the boxes
+        /// back at two different x.</para>
         /// </summary>
         [Fact]
-        public void ThePerAxisRangesShareTheGridThatAlignsTheRangesAboveThem()
+        public void ThePerAxisRangesShareTheLabelColumnOfTheRangesAboveThem()
         {
-            string xaml = File.ReadAllText(Path.Combine(ViewsDir(), "DashboardPage.xaml"));
-            int first = xaml.IndexOf("HeadTrackingRotationRange, Mode=TwoWay", StringComparison.Ordinal);
-            int last = xaml.IndexOf("HeadTrackingRangeZ, Mode=TwoWay", StringComparison.Ordinal);
-            Assert.True(first > 0 && last > first, "the range rows were not found in order");
+            string xaml = File.ReadAllText(Path.Combine(ViewsDir(), "ExtrasPage.xaml"));
+            int page = xaml.IndexOf("x:Name=\"HeadTrackingPage\"", StringComparison.Ordinal);
+            int end = xaml.IndexOf("x:Name=\"GameTelemetryPage\"", StringComparison.Ordinal);
+            Assert.True(page > 0 && end > page, "the Head Tracking page was not found");
+            string card = xaml[page..end];
 
-            string between = xaml[first..last];
-            Assert.False(between.Contains("</Grid>", StringComparison.Ordinal),
-                "the per-axis ranges are in a different grid from the ranges above, so their "
-                + "boxes cannot line up with them");
+            int scope = card.IndexOf("<StackPanel Grid.IsSharedSizeScope=\"True\">", StringComparison.Ordinal);
+            int first = card.IndexOf("HeadTrackingRotationRange, Mode=TwoWay", StringComparison.Ordinal);
+            int more = card.IndexOf("<controls:MoreRow x:Name=\"HeadTrackingMore\"", StringComparison.Ordinal);
+            int last = card.IndexOf("HeadTrackingRangeZ, Mode=TwoWay", StringComparison.Ordinal);
+            Assert.True(scope > 0 && first > scope && more > first && last > more,
+                "the two ranges show first and the per-axis ranges sit under More, all inside the card's size scope");
+
+            // Each range row's grid opens with the shared label column.
+            const string Shared = "<ColumnDefinition Width=\"Auto\" SharedSizeGroup=\"HeadTrackingLabel\"/>";
+            foreach (int row in new[] { first, last })
+            {
+                int grid = card.LastIndexOf("<Grid Margin=", row, StringComparison.Ordinal);
+                int columns = card.IndexOf("<ColumnDefinition ", grid, StringComparison.Ordinal);
+                Assert.True(grid > scope && columns > grid && columns < row, "a range row is not in a grid of its own columns");
+                Assert.True(string.CompareOrdinal(card, columns, Shared, 0, Shared.Length) == 0,
+                    "a range grid's label column is not in the shared size group, so its boxes cannot line up with the other grid's");
+            }
+
+            // The six per-axis rows and the port are still one grid.
+            int port = card.IndexOf("{Binding HeadTrackingUdpPort,", StringComparison.Ordinal);
+            Assert.True(port > more && port < last, "the UDP port row is not under More");
+            Assert.False(card[port..last].Contains("</Grid>", StringComparison.Ordinal),
+                "the per-axis ranges are in a different grid from the port above them");
+        }
+
+        /// <summary>The same holds on the Game Telemetry page: the game
+        /// picker shows first, the ports and Full Speed sit under More, and
+        /// one shared size group lines their boxes up.</summary>
+        [Fact]
+        public void TheGameTelemetryRowsShareOneLabelColumn()
+        {
+            string xaml = File.ReadAllText(Path.Combine(ViewsDir(), "ExtrasPage.xaml"));
+            int page = xaml.IndexOf("x:Name=\"GameTelemetryPage\"", StringComparison.Ordinal);
+            int end = xaml.IndexOf("x:Name=\"TwitchChatPage\"", StringComparison.Ordinal);
+            Assert.True(page > 0 && end > page, "the Game Telemetry page was not found");
+            string card = xaml[page..end];
+
+            int scope = card.IndexOf("<StackPanel Grid.IsSharedSizeScope=\"True\">", StringComparison.Ordinal);
+            int game = card.IndexOf("x:Name=\"GameTelemetryGameCombo\"", StringComparison.Ordinal);
+            int more = card.IndexOf("<controls:MoreRow x:Name=\"GameTelemetryMore\"", StringComparison.Ordinal);
+            int speed = card.IndexOf("{Binding GameTelemetryFullSpeed,", StringComparison.Ordinal);
+            Assert.True(scope > 0 && game > scope && more > game && speed > more,
+                "the game picker shows first and Full Speed sits under More, all inside the card's size scope");
+            const string Shared = "<ColumnDefinition Width=\"Auto\" SharedSizeGroup=\"GameTelemetryLabel\"/>";
+            Assert.Equal(2, card.Split(new[] { Shared }, StringSplitOptions.None).Length - 1);
+            // Both grids still follow the switch.
+            Assert.Equal(2, card.Split(new[] { "<Grid Margin=\"0,0,0,8\" IsEnabled=\"{Binding EnableGameTelemetry}\">" }, StringSplitOptions.None).Length - 1);
         }
 
         /// <summary>A SettingResetButton's label is the setting's NAME. Feed

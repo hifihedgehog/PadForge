@@ -213,11 +213,9 @@
   <data name="Tour_Slots_Title" xml:space="preserve"><value>Slots</value></data>
   <data name="Tour_Engine_Title" xml:space="preserve"><value>Motor di entrada</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Komandus virtual</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>Sirvisus</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Slot</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Dispozitivu</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Friu</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>Sirvisus</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Servidor di muvimentu</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>Porta</value></data>
   <data name="Dashboard_WebControllerPort" xml:space="preserve"><value>Porta di komandu web</value></data>

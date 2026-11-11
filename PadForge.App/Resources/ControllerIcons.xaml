@@ -3,6 +3,7 @@
     xmlns:conv="clr-namespace:PadForge.Converters"
     xmlns:common="clr-namespace:PadForge.Common"
     xmlns:controls="clr-namespace:PadForge.Controls"
+    xmlns:strings="clr-namespace:PadForge.Resources.Strings"
     xmlns:po="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="po">
@@ -441,10 +442,15 @@
          like every drawing in the app. A Path has no automation peer, so a
          screen reader passes over it, and the Expander's own peer reports
          open or closed. The header button carries the title as its name,
-         the hint as its help text and the summary as its status. -->
+         the hint as its help text and the summary as its status. The part
+         sets the page's text color for what it holds: a control's own
+         Foreground starts at the system's black, and text inside with no
+         color of its own (a CardTitle) would take that and vanish on the
+         dark card. -->
     <Style TargetType="{x:Type controls:FoldCard}">
         <Setter Property="Focusable" Value="False"/>
         <Setter Property="IsTabStop" Value="False"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:FoldCard}">
@@ -510,10 +516,12 @@
     <!-- The More row at the foot of a card: a rule across the card, then a
          row that opens the rest of the card's settings under itself. The
          chevron points down closed and up open. The row keeps its label
-         when open, and the Expander's peer reports the state. -->
+         when open, and the Expander's peer reports the state. It sets the
+         page's text color for what it holds, as the fold card does. -->
     <Style TargetType="{x:Type controls:MoreRow}">
         <Setter Property="Focusable" Value="False"/>
         <Setter Property="IsTabStop" Value="False"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
         <Setter Property="Margin" Value="0,8,0,0"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -556,6 +564,169 @@
                                     <RotateTransform Angle="180"/>
                                 </Setter.Value>
                             </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ═══════════════════════════════════════════
+         Extras parts (#574)
+         ═══════════════════════════════════════════ -->
+
+    <!-- A check box drawn as a switch: a track with a knob that sits at the
+         start when off and at the end when on, ember when on. The control
+         stays a CheckBox, so its binding, its AutomationId, its name for a
+         screen reader (its Content, which the switch does not draw) and its
+         checked state are a check box's. SwitchLook.ShowState writes On or
+         Off before the track. The knob follows the layout direction, so in
+         a right-to-left language on is at the left, as Windows draws it.
+         Keyboard focus draws the app's focus visual, which reaches a
+         CheckBox through the system focus key App.xaml overrides. -->
+    <Style x:Key="SwitchCheckBox" TargetType="CheckBox">
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="CheckBox">
+                    <!-- Transparent, so the gap between the word and the
+                         track takes the click too. -->
+                    <StackPanel Orientation="Horizontal" Background="Transparent" MinHeight="28">
+                        <TextBlock x:Name="StateText" Visibility="Collapsed"
+                                   Text="{Binding Common_Off, Source={x:Static strings:Strings.Instance}}"
+                                   Foreground="{TemplateBinding Foreground}"
+                                   VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <Border x:Name="Track" Width="40" Height="20" CornerRadius="10"
+                                Background="{DynamicResource SteelRaisedBrush}"
+                                BorderBrush="{DynamicResource SteelLineBrush}" BorderThickness="1"
+                                VerticalAlignment="Center">
+                            <Ellipse x:Name="Knob" Width="12" Height="12"
+                                     Fill="{DynamicResource TextFillColorSecondaryBrush}"
+                                     HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3,0,3,0"/>
+                        </Border>
+                    </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="controls:SwitchLook.ShowState" Value="True">
+                            <Setter TargetName="StateText" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="StateText" Property="Text" Value="{Binding Common_On, Source={x:Static strings:Strings.Instance}}"/>
+                            <Setter TargetName="Track" Property="Background" Value="{DynamicResource EmberBrush}"/>
+                            <Setter TargetName="Track" Property="BorderBrush" Value="{DynamicResource EmberBrush}"/>
+                            <Setter TargetName="Knob" Property="HorizontalAlignment" Value="Right"/>
+                            <Setter TargetName="Knob" Property="Fill" Value="{DynamicResource TextOnAccentFillColorPrimaryBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Track" Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.45"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- The button that is an Extras tile's whole face. It draws nothing of
+         its own: the card under it shows through, and the card's own hover
+         carries the pointer feedback. -->
+    <Style x:Key="ExtraTileOpenButton" TargetType="Button">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}" CornerRadius="7">
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- A tile of the Extras catalog: the extra's glyph on a chip, its name,
+         its switch at the corner, one line on what it is for, and at the
+         foot the word On or Off with the extra's live status beside it
+         while it is on. The face is one button that opens the extra's page.
+         The switch is drawn over the face, outside the button, so the two
+         are separate stops for the keyboard and a click on the switch never
+         opens the page. The empty third column keeps the name clear of the
+         switch. The face carries the name as its name for a screen reader,
+         the line as its help text and the status as its item status, since
+         text inside a template is not read on its own. -->
+    <Style TargetType="{x:Type controls:ExtraTile}">
+        <Setter Property="Width" Value="300"/>
+        <Setter Property="MinHeight" Value="128"/>
+        <Setter Property="Margin" Value="0,0,12,12"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:ExtraTile}">
+                    <Border Style="{StaticResource CardBorder}" Padding="0" Margin="0">
+                        <Grid>
+                            <Button x:Name="PART_Open" Style="{StaticResource ExtraTileOpenButton}"
+                                    AutomationProperties.Name="{Binding Title, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue='', FallbackValue=''}"
+                                    AutomationProperties.HelpText="{TemplateBinding Line}"
+                                    AutomationProperties.ItemStatus="{TemplateBinding Status}">
+                                <Grid Margin="16">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="44"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <Border Width="36" Height="36" CornerRadius="9" VerticalAlignment="Top"
+                                            Background="{DynamicResource SteelRaisedBrush}">
+                                        <controls:GlyphText x:Name="Glyph" Text="{TemplateBinding Glyph}"
+                                                            FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <TextBlock Grid.Column="1" Text="{TemplateBinding Title}"
+                                               Style="{StaticResource CardTitle}" TextWrapping="Wrap"
+                                               MinHeight="36" Margin="12,7,8,0" VerticalAlignment="Top"/>
+                                    <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Text="{TemplateBinding Line}"
+                                               Style="{StaticResource CardDescription}" Margin="0,8,0,0"/>
+                                    <StackPanel Grid.Row="2" Grid.ColumnSpan="3" VerticalAlignment="Bottom" Margin="0,10,0,0">
+                                        <TextBlock x:Name="StateWord" FontSize="12" FontWeight="SemiBold"
+                                                   Text="{Binding Common_Off, Source={x:Static strings:Strings.Instance}}"
+                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                        <TextBlock x:Name="StatusText" Visibility="Collapsed"
+                                                   Text="{TemplateBinding Status}" TextWrapping="Wrap"
+                                                   FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11"
+                                                   Foreground="{DynamicResource ColdBrush}" Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Button>
+                            <CheckBox x:Name="PART_Switch" Style="{StaticResource SwitchCheckBox}"
+                                      HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,20,16,0"
+                                      Content="{TemplateBinding SwitchLabel}"
+                                      IsChecked="{Binding IsOn, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsOn" Value="True">
+                            <Setter TargetName="Glyph" Property="Foreground" Value="{DynamicResource EmberBrush}"/>
+                            <Setter TargetName="StateWord" Property="Text" Value="{Binding Common_On, Source={x:Static strings:Strings.Instance}}"/>
+                            <Setter TargetName="StateWord" Property="Foreground" Value="{DynamicResource EmberTextBrush}"/>
+                            <Setter TargetName="StatusText" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                        <!-- No status line of its own: nothing to show under the word. -->
+                        <Trigger Property="Status" Value="">
+                            <Setter TargetName="StatusText" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+                        <Trigger Property="Status" Value="{x:Null}">
+                            <Setter TargetName="StatusText" Property="Visibility" Value="Collapsed"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

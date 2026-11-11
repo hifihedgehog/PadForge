@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>Duplicar</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Ativado</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Desativado</value></data>
+  <data name="Common_On" xml:space="preserve"><value>Ligado</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Desligado</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Mais</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Instalado</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Não instalado</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>Não disponível em ARM64</value></data>
@@ -273,8 +276,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>A forja propriamente dita. Alterne a chama para iniciar ou parar toda a sondagem de entradas.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Comandos virtuais</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Escolha um tipo de saída, alimente o slot com dispositivos e clique num cartão para moldar os respetivos mapeamentos.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>Serviços</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>Os dados de movimento, o comando web do telemóvel e a Ligação Remota são transmitidos a partir daqui.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>As funcionalidades opcionais ficam aqui: o comando web do telemóvel, a Ligação Remota, o servidor de movimento e mais.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>Linha de instrumentos</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>Número de dispositivos, taxa de sondagem e a chama do motor, sempre à vista.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Mostrar visita guiada de boas-vindas</value></data>
@@ -286,7 +288,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>SAÍDA</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Frio</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Pré-visualização</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>Serviços</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Extras</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>Funcionalidades opcionais. Cada uma fica fora do caminho até a ativar.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Mais formas de jogar</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Enviar para outro lado</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>No ecrã</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>Use um telemóvel ou tablet como comando.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Olhe à sua volta com um rastreador de cabeça ou um headset de RV.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Mapeie a velocidade, os pedais e as mudanças dos jogos de condução.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>Deixe os espectadores premir botões ao escrever no chat.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Partilhe comandos com o PadForge de outro PC.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Envie o movimento do comando para emuladores.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Receba efeitos de gatilhos e de luzes dos mods de jogos.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Mostre menus, camadas e mudanças de perfil enquanto joga.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Uma superfície tátil no ecrã para jogos que usam o painel tátil da PlayStation.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Uma imagem, um temporizador ou um relógio por cima das outras janelas.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Porta, endereço HTTP simples, código de acesso</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Religação, porta, proteção da identidade, ligação por endereço</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>Runtime OpenXR, porta UDP, intervalo por eixo</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Porta, substituto do DSX.exe</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Portas, velocidade máxima, formatos personalizados</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Servidor de movimento</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Servidor do protocolo DSU/CemuHook Motion Provider para dados de giroscópio e acelerómetro.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Ativar o servidor de movimento DSU (protocolo CemuHook Motion Provider)</value></data>
@@ -3870,7 +3891,7 @@ Pretende que o PadForge os desinstale agora? Esta operação requer elevação e
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Padrão de encaminhamento de áudio por deteção da entrada, de SundayMoments, a referência por trás de “Seguir a entrada de auscultadores”. Lido como documentação; AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Codificador QR em modo de bytes para o cartão do comando web no Painel, portado da implementação de referência de Nayuki. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Codificador QR em modo de bytes para os endereços do Comando web, portado da implementação de referência de Nayuki. MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>Ilustração do rato na visualização Teclado + Rato, de Igor Budzhak. MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Taxa proporcional à pressão</value></data>

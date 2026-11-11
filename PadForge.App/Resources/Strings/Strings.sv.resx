@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>Duplicera</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Aktiverad</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Inaktiverad</value></data>
+  <data name="Common_On" xml:space="preserve"><value>På</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Av</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Mer</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Installerad</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Inte installerad</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>Inte tillgänglig på ARM64</value></data>
@@ -288,8 +291,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>Själva ässjan. Slå av eller på lågan för att starta eller stoppa all avläsning av inmatning.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Virtuella handkontroller</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Välj en utdatatyp, mata platsen med enheter och klicka på ett kort för att forma dess mappningar.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>Tjänster</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>Rörelsedata, telefonens webbhandkontroll och Fjärrlänk strömmas härifrån.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>Här väntar valfria funktioner: telefonens webbhandkontroll, Fjärrlänk, rörelseservern med mera.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>Instrumentrad</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>Antal enheter, avläsningsfrekvens och motorns låga, alltid synliga.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Visa välkomstrundturen</value></data>
@@ -301,7 +303,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>UT</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Kall</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Förhandsvisning</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>Tjänster</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Tillägg</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>Valfria funktioner. Var och en håller sig undan tills du slår på den.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Fler sätt att spela</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Skicka vidare</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>På skärmen</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>Använd en telefon eller surfplatta som handkontroll.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Titta runt med en huvudspårare eller ett VR-headset.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Mappa hastighet, pedaler och växlar från racingspel.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>Låt tittare trycka på knappar genom att skriva i chatten.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Dela handkontroller med PadForge på en annan dator.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Skicka handkontrollens rörelser till emulatorer.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Ta emot avtryckar- och ljuseffekter från spelmoddar.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Visa menyer, lager och profilbyten medan du spelar.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>En pekyta på skärmen för spel som använder PlayStation-styrplattan.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>En bild, timer eller klocka ovanpå andra fönster.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Port, vanlig HTTP-adress, åtkomstkod</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Återanslutning, port, identitetsskydd, anslutning via adress</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR-körmiljö, UDP-port, omfång per axel</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, DSX.exe-ersättare</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Portar, full hastighet, anpassade format</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Rörelseserver</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Server för protokollet DSU/CemuHook Motion Provider, för gyro- och accelerometerdata.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Aktivera DSU-rörelseserver (protokollet CemuHook Motion Provider)</value></data>
@@ -4065,7 +4086,7 @@ Vill du att PadForge avinstallerar dem nu? Detta kräver förhöjd behörighet o
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Mönster för ljuddirigering med uttagsdetektering av SundayMoments, referensen bakom Följ hörlursuttag. Läst som dokumentation; AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>QR-kodare i byteläge för webbhandkontrollskortet på Översikt, porterad från Nayukis referensimplementation. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>QR-kodare i byteläge för webbhandkontrollens adresser, porterad från referensimplementationen av Nayuki. MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>Musgrafik i visualiseringen Tangentbord + mus, av Igor Budzhak. MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Tryckskalad takt</value></data>
@@ -4903,7 +4924,7 @@ Vill du att PadForge avinstallerar dem nu? Detta kräver förhöjd behörighet o
   <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>Aktivera skärmöverlägg</value></data>
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Välj vad det visar…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge-skärmöverlägg</value></data>
-  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Inget att visa ännu. Välj vad det visar på översikten.</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Inget att visa ännu. Välj vad det visar på sidan Skärmöverlägg under Tillägg.</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Visa/dölj skärmöverlägg</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Visa/dölj skärmöverlägg</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Skärmöverlägg</value></data>

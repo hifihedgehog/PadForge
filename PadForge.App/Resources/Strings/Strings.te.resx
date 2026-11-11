@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>డూప్లికేట్ చేయి</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>ప్రారంభించబడింది</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>నిలిపివేయబడింది</value></data>
+  <data name="Common_On" xml:space="preserve"><value>ఆన్</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>ఆఫ్</value></data>
+  <data name="Common_More" xml:space="preserve"><value>మరిన్ని</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>ఇన్స్టాల్ అయింది</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>ఇన్స్టాల్ కాలేదు</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>ARM64లో అందుబాటులో లేదు</value></data>
@@ -288,8 +291,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>అసలు ఫోర్జ్ ఇదే. అన్ని ఇన్పుట్ పోలింగ్‌ను ప్రారంభించడానికి లేదా ఆపడానికి జ్వాలను టోగుల్ చేయండి.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>వర్చువల్ కంట్రోలర్లు</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>అవుట్పుట్ రకం ఎంచుకోండి, స్లాట్‌కు పరికరాలను జోడించండి, దాని మ్యాపింగ్‌లను తీర్చిదిద్దడానికి కార్డ్‌పై క్లిక్ చేయండి.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>సేవలు</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>మోషన్ డేటా, ఫోన్ వెబ్ కంట్రోలర్, రిమోట్ లింక్ ఇక్కడ నుండి స్ట్రీమ్ అవుతాయి.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>ఐచ్ఛిక ఫీచర్లు ఇక్కడ ఉంటాయి: ఫోన్ వెబ్ కంట్రోలర్, రిమోట్ లింక్, మోషన్ సర్వర్ ఇంకా మరిన్ని.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>ఇన్స్ట్రుమెంట్ లైన్</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>పరికరాల సంఖ్య, పోలింగ్ రేటు, ఇంజిన్ జ్వాల ఎల్లప్పుడూ కనిపిస్తాయి.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>స్వాగత టూర్ చూపించు</value></data>
@@ -301,7 +303,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>OUT</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>కోల్డ్</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>ప్రివ్యూ</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>సేవలు</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>ఎక్స్‌ట్రాలు</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>ఐచ్ఛిక ఫీచర్లు. మీరు ఆన్ చేసే వరకు ప్రతిదీ పక్కనే ఉంటుంది.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>ఆడటానికి మరిన్ని మార్గాలు</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>మరోచోటికి పంపండి</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>తెరపై</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>ఫోన్ లేదా టాబ్లెట్‌ను కంట్రోలర్‌గా వాడండి.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>హెడ్ ట్రాకర్ లేదా VR హెడ్‌సెట్‌తో చుట్టూ చూడండి.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>డ్రైవింగ్ గేమ్‌ల నుండి వేగం, పెడల్స్, గేర్లను మ్యాప్ చేయండి.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>వీక్షకులు చాట్‌లో టైప్ చేసి బటన్లు నొక్కేలా చేయండి.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>మరొక PCలోని PadForge తో కంట్రోలర్లను పంచుకోండి.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>కంట్రోలర్ మోషన్‌ను ఎమ్యులేటర్లకు పంపండి.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>గేమ్ మోడ్ల నుండి ట్రిగ్గర్, లైట్ ఎఫెక్ట్‌లను స్వీకరించండి.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>మీరు ఆడుతున్నప్పుడు మెనూలు, లేయర్లు, ప్రొఫైల్ మార్పులను చూపండి.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation టచ్ ప్యాడ్ వాడే గేమ్‌ల కోసం తెరపై టచ్ ఉపరితలం.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>ఇతర విండోల పైన ఒక చిత్రం, టైమర్ లేదా గడియారం.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>పోర్ట్, సాధారణ HTTP చిరునామా, యాక్సెస్ కోడ్</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>స్వయంచాలకంగా మళ్లీ కనెక్ట్ చేయడం, పోర్ట్, గుర్తింపు రక్షణ, చిరునామా ద్వారా కనెక్ట్ చేయడం</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR రన్టైమ్, UDP పోర్ట్, అక్షం వారీ పరిధి</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>పోర్ట్, DSX.exe స్టాండ్ ఇన్</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>పోర్ట్‌లు, పూర్తి వేగం, కస్టమ్ ఫార్మాట్లు</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>మోషన్ సర్వర్</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>గైరో, యాక్సిలరోమీటర్ డేటా కోసం DSU/CemuHook Motion Provider ప్రోటోకాల్ సర్వర్.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU మోషన్ సర్వర్‌ను ప్రారంభించు (CemuHook Motion Provider ప్రోటోకాల్)</value></data>
@@ -4065,7 +4086,7 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>హెడ్ఫోన్ జాక్ను అనుసరించు వెనుక ఉన్న సూచన అయిన, జాక్-డిటెక్ట్ ఆడియో రూటింగ్ నమూనా, SundayMoments ద్వారా. డాక్యుమెంటేషన్గా చదవబడింది. AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>డాష్బోర్డ్ యొక్క వెబ్ కంట్రోలర్ కార్డ్ కోసం బైట్-మోడ్ QR ఎన్కోడర్, Nayuki యొక్క రిఫరెన్స్ అమలు నుండి పోర్ట్ చేయబడింది. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>వెబ్ కంట్రోలర్ చిరునామాల కోసం బైట్-మోడ్ QR ఎన్కోడర్, Nayuki యొక్క రిఫరెన్స్ అమలు నుండి పోర్ట్ చేయబడింది. MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>కీబోర్డ్ + మౌస్ విజువలైజేషన్లోని మౌస్ ఆర్ట్వర్క్, Igor Budzhak ద్వారా. MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>ఒత్తిడి ఆధారిత రేటు</value></data>
@@ -4903,7 +4924,7 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>స్క్రీన్ ఓవర్లేను ప్రారంభించు</value></data>
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>ఏమి చూపాలో ఎంచుకోండి…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge స్క్రీన్ ఓవర్లే</value></data>
-  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>ఇంకా చూపడానికి ఏమీ లేదు. ఏమి చూపాలో డాష్‌బోర్డ్‌లో ఎంచుకోండి.</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>ఇంకా చూపడానికి ఏమీ లేదు. ఏమి చూపాలో ఎక్స్‌ట్రాలు కింద స్క్రీన్ ఓవర్లే పేజీలో ఎంచుకోండి.</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>స్క్రీన్ ఓవర్లేను టోగుల్ చేయి</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>స్క్రీన్ ఓవర్లేను టోగుల్ చేయి</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>స్క్రీన్ ఓవర్లే</value></data>

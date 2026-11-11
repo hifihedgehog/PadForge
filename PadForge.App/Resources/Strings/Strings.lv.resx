@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>Dublēt</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Iespējots</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Atspējots</value></data>
+  <data name="Common_On" xml:space="preserve"><value>Ieslēgts</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Izslēgts</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Vairāk</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Instalēts</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Nav instalēts</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>Nav pieejams ARM64</value></data>
@@ -288,8 +291,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>Pati kalve. Pārslēdziet liesmu, lai sāktu vai apturētu visu ievades aptauju.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Virtuālie kontrolleri</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Izvēlieties izvades veidu, piešķiriet slotam ierīces un noklikšķiniet uz kartītes, lai veidotu tā piesaistes.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>Pakalpojumi</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>Kustību dati, tālruņa tīmekļa kontrolleris un Attālais savienojums tiek straumēti no šejienes.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>Šeit gaida papildu iespējas: tālruņa tīmekļa kontrolleris, Attālais savienojums, kustību serveris un citas.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>Instrumentu josla</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>Ierīču skaits, aptaujas biežums un dzinēja liesma vienmēr redzamā vietā.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Rādīt iepazīšanās ekskursiju</value></data>
@@ -301,7 +303,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>IZVADE</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Auksts</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Priekšskatījums</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>Pakalpojumi</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Papildiespējas</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>Papildu iespējas. Katra netraucē, kamēr to neieslēdzat.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Vairāk veidu, kā spēlēt</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Sūtīt citur</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>Ekrānā</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>Izmantojiet tālruni vai planšetdatoru kā kontrolleri.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Skatieties apkārt ar galvas izsekotāju vai VR austiņām.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Piesaistiet ātrumu, pedāļus un pārnesumus no braukšanas spēlēm.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>Ļaujiet skatītājiem nospiest pogas, rakstot tērzētavā.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Koplietojiet kontrollerus ar PadForge citā datorā.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Sūtiet kontrollera kustības datus emulatoriem.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Saņemiet mēlīšu un gaismas efektus no spēļu modifikācijām.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Rādiet izvēlnes, slāņus un profilu pārslēgšanu spēles laikā.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Ekrāna skārienvirsma spēlēm, kas izmanto PlayStation skārienpaliktni.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Attēls, taimeris vai pulkstenis virs citiem logiem.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Ports, vienkāršā HTTP adrese, piekļuves kods</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Atkārtota savienošanās, ports, identitātes aizsardzība, savienošanās pēc adreses</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR izpildlaiks, UDP ports, katras ass diapazons</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Ports, DSX.exe aizstājējs</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Porti, pilns ātrums, pielāgoti formāti</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Kustību serveris</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider protokola serveris žiroskopa un akselerometra datiem.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Iespējot DSU kustību serveri (CemuHook Motion Provider protokols)</value></data>
@@ -4065,7 +4086,7 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Audio maršrutēšanas paraugs ar ligzdas noteikšanu, autors SundayMoments, kas ir „Sekot austiņu ligzdai” atsauce. Izmantots kā dokumentācija. AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Baitu režīma QR kodētājs pārskata tīmekļa kontrollera kartītei, pārnests no Nayuki atsauces implementācijas. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Baitu režīma QR kodētājs tīmekļa kontrollera adresēm, pārnests no Nayuki atsauces implementācijas. MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>Peles attēli vizualizācijā „Tastatūra + pele”, autors Igor Budzhak. MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>No spiediena atkarīgs ātrums</value></data>
@@ -4903,7 +4924,7 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>Iespējot ekrāna pārklājumu</value></data>
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Izvēlēties, ko tas rāda…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge ekrāna pārklājums</value></data>
-  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Pagaidām nav ko rādīt. Izvēlieties, ko tas rāda, pārskatā.</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Pagaidām nav ko rādīt. Izvēlieties, ko tas rāda, lapā Ekrāna pārklājums sadaļā Papildiespējas.</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Pārslēgt ekrāna pārklājumu</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Pārslēgt ekrāna pārklājumu</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Ekrāna pārklājums</value></data>

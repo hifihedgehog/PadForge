@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>Kettőzés</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Engedélyezve</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Letiltva</value></data>
+  <data name="Common_On" xml:space="preserve"><value>Be</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Ki</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Továbbiak</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Telepítve</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Nincs telepítve</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>ARM64 rendszeren nem érhető el</value></data>
@@ -288,8 +291,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>Maga a kovácsműhely. A láng be- vagy kikapcsolásával indítható el és állítható le az összes bemenet lekérdezése.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Virtuális kontrollerek</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Válasszon kimeneti típust, adjon eszközöket a foglalathoz, majd kattintson egy kártyára a hozzárendelések alakításához.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>Szolgáltatások</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>A mozgásadatok, a telefonos webes kontroller és a Távoli kapcsolat innen lentről közvetít.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>Itt várnak az opcionális funkciók: a telefonos webes kontroller, a Távoli kapcsolat, a mozgáskiszolgáló és még sok más.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>Műszersor</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>Eszközszám, lekérdezési gyakoriság és a bemeneti motor lángja, mindig szem előtt.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Üdvözlő bemutató megjelenítése</value></data>
@@ -301,7 +303,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>KIMENET</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Hideg</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Előnézet</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>Szolgáltatások</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Extrák</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>Opcionális funkciók. Mindegyik addig marad a háttérben, amíg be nem kapcsolja.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Játék másképp</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Küldés máshová</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>A képernyőn</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>Telefon vagy táblagép használata kontrollerként.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Körbenézés fejkövetővel vagy VR-headsettel.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Sebesség, pedálok és sebességfokozatok hozzárendelése autós játékokból.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>A nézők gombokat nyomhatnak a csevegésbe írva.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Kontrollerek megosztása egy másik számítógépen futó PadForge példánnyal.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Kontrollermozgás küldése emulátoroknak.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Ravasz- és fényeffektek fogadása játékmodoktól.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Menük, rétegek és profilváltások megjelenítése játék közben.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Képernyőn megjelenő érintőfelület a PlayStation érintőpadját használó játékokhoz.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Kép, időzítő vagy óra a többi ablak felett.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Port, sima HTTP-cím, hozzáférési kód</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Újracsatlakozás, port, identitásvédelem, csatlakozás cím alapján</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR-futtatókörnyezet, UDP-port, tengelyenkénti tartomány</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, DSX.exe helyettesítő</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Portok, teljes sebesség, egyéni formátumok</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Mozgáskiszolgáló</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider protokollt használó kiszolgáló a giroszkóp és a gyorsulásmérő adataihoz.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU mozgáskiszolgáló engedélyezése (CemuHook Motion Provider protokoll)</value></data>
@@ -4065,7 +4086,7 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Csatlakozóérzékelésen alapuló hangútválasztási minta (SundayMoments), a Fejhallgató-csatlakozó követése funkció referenciája. Dokumentációként olvasva; AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Bájt módú QR-kódoló az Irányítópult webes kontroller kártyájához, Nayuki referenciaimplementációjából portolva. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Bájt módú QR-kódoló a Webes kontroller címeihez, Nayuki referenciaimplementációjából portolva. MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>Az egér grafikája a Billentyűzet + egér megjelenítésben, készítette: Igor Budzhak. MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Nyomással skálázott gyakoriság</value></data>
@@ -4903,7 +4924,7 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>Képernyő-átfedés engedélyezése</value></data>
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>A megjelenített tartalom kiválasztása…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge képernyő-átfedés</value></data>
-  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Még nincs mit megjeleníteni. Válassza ki az Irányítópulton, mit mutasson.</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Még nincs mit megjeleníteni. Válassza ki a Képernyő-átfedés oldalon, az Extrák alatt, mit mutasson.</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Képernyő-átfedés be/ki</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Képernyő-átfedés be/ki</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Képernyő-átfedés</value></data>

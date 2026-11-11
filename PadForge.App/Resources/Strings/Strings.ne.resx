@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>नक्कल बनाउनुहोस्</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>सक्षम</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>असक्षम</value></data>
+  <data name="Common_On" xml:space="preserve"><value>अन</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>अफ</value></data>
+  <data name="Common_More" xml:space="preserve"><value>थप</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>स्थापित</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>स्थापित छैन</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>ARM64 मा उपलब्ध छैन</value></data>
@@ -288,8 +291,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>भट्टी आफैँ। सबै इनपुट पोलिङ सुरु वा बन्द गर्न ज्वाला टगल गर्नुहोस्।</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>भर्चुअल कन्ट्रोलरहरू</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>आउटपुट प्रकार छान्नुहोस्, स्लटलाई यन्त्रहरू दिनुहोस्, र यसका म्यापिङहरू मिलाउन कार्डमा क्लिक गर्नुहोस्।</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>सेवाहरू</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>मोसन डेटा, फोनको वेब कन्ट्रोलर र रिमोट लिङ्क यहीँ तलबाट चल्छन्।</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>वैकल्पिक सुविधाहरू यहाँ छन्: फोनको वेब कन्ट्रोलर, रिमोट लिङ्क, मोसन सर्भर र अन्य।</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>स्थिति पट्टी</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>यन्त्र संख्या, पोलिङ दर र इन्जिनको ज्वाला, सधैँ देखिने।</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>स्वागत भ्रमण देखाउनुहोस्</value></data>
@@ -301,7 +303,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>आउटपुट</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>चिसो</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>पूर्वावलोकन</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>सेवाहरू</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>अतिरिक्त</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>वैकल्पिक सुविधाहरू। तपाईंले नखोलेसम्म कुनै पनि सुविधाले बाधा दिँदैन।</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>खेल्ने थप तरिकाहरू</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>अन्यत्र पठाउनुहोस्</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>स्क्रिनमा</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>फोन वा ट्याब्लेटलाई कन्ट्रोलरको रूपमा प्रयोग गर्नुहोस्।</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>हेड ट्र्याकर वा VR हेडसेटले वरिपरि हेर्नुहोस्।</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>ड्राइभिङ गेमहरूबाट गति, पेडल र गियर म्याप गर्नुहोस्।</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>दर्शकहरूलाई च्याटमा टाइप गरेर बटन थिच्न दिनुहोस्।</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>अर्को PC मा रहेको PadForge सँग कन्ट्रोलरहरू साझा गर्नुहोस्।</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>कन्ट्रोलरको मोसन इमुलेटरहरूलाई पठाउनुहोस्।</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>गेम मोडहरूबाट ट्रिगर र लाइट इफेक्टहरू लिनुहोस्।</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>खेल्दा मेनु, लेयर र प्रोफाइल परिवर्तन देखाउनुहोस्।</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation टचप्याड प्रयोग गर्ने गेमहरूका लागि स्क्रिनमा देखिने टच सतह।</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>अन्य झ्यालहरूमाथि चित्र, टाइमर वा घडी।</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>पोर्ट, सादा HTTP ठेगाना, पहुँच कोड</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>पुनः जडान, पोर्ट, पहिचान सुरक्षा, ठेगानाबाट जडान</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR रनटाइम, UDP पोर्ट, प्रति-अक्ष दायरा</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>पोर्ट, DSX.exe को सट्टा चल्ने प्रोग्राम</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>पोर्टहरू, पूर्ण गति, अनुकूल ढाँचाहरू</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>मोसन सर्भर</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>जाइरो र एक्सेलेरोमिटर डेटाका लागि DSU/CemuHook Motion Provider प्रोटोकल सर्भर।</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU मोसन सर्भर सक्षम गर्नुहोस् (CemuHook Motion Provider Protocol)</value></data>
@@ -4065,7 +4086,7 @@ PadForge ले तिनलाई अहिले अनइन्स्टल �
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>SundayMoments द्वारा ज्याक पत्ता लगाउने अडियो रुटिङ ढाँचा, "हेडफोन ज्याक पछ्याउनुहोस्" को सन्दर्भ। कागजातका रूपमा पढिएको; AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>ड्यासबोर्डको वेब कन्ट्रोलर कार्डका लागि बाइट-मोड QR एन्कोडर, Nayuki को सन्दर्भ कार्यान्वयनबाट पोर्ट गरिएको। MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>वेब कन्ट्रोलरका ठेगानाहरूका लागि बाइट-मोड QR एन्कोडर, Nayuki को सन्दर्भ कार्यान्वयनबाट पोर्ट गरिएको। MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>किबोर्ड + माउस भिजुअलाइजेसनमा माउसको चित्र, Igor Budzhak द्वारा। MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>दबाबअनुसारको दर</value></data>
@@ -4903,7 +4924,7 @@ PadForge ले तिनलाई अहिले अनइन्स्टल �
   <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>स्क्रिन ओभरले सक्षम गर्नुहोस्</value></data>
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>यसले के देखाउने छान्नुहोस्…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge स्क्रिन ओभरले</value></data>
-  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>अहिले देखाउन केही छैन। यसले के देखाउने भन्ने ड्यासबोर्डमा छान्नुहोस्।</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>अहिले देखाउन केही छैन। यसले के देखाउने भन्ने अतिरिक्त अन्तर्गतको स्क्रिन ओभरले पेजमा छान्नुहोस्।</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>स्क्रिन ओभरले टगल गर्नुहोस्</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>स्क्रिन ओभरले टगल गर्नुहोस्</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>स्क्रिन ओभरले</value></data>

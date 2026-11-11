@@ -72,6 +72,9 @@
   <data name="Common_Paste" xml:space="preserve"><value>Einfügen</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Aktiviert</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Deaktiviert</value></data>
+  <data name="Common_On" xml:space="preserve"><value>Ein</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Aus</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Mehr</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Installiert</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Nicht installiert</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>Auf ARM64 nicht verfügbar</value></data>
@@ -3129,7 +3132,6 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="About_WiimoteLibDesc" xml:space="preserve"><value>Dokumentation des Verhaltens von Wii-IR-Kamera und Balance Board, von Brian Peek. MIT.</value></data>
   <data name="About_JoyconSinger" xml:space="preserve"><value>joycon-singer</value></data>
   <data name="About_JoyconSingerDesc" xml:space="preserve"><value>Dokumentation des Wire-Formats des Joy-Con-HD-Rumbles, von Sergey004. Nur für Protokollfakten gelesen.</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>Dienste</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Slot</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Kalt</value></data>
   <data name="Devices_EmptyHint" xml:space="preserve"><value>Wählen Sie ein Gerät aus, um seine Roheingabe zu prüfen.</value></data>
@@ -3153,14 +3155,33 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Wählen Sie links ein Makro aus oder klicken Sie auf Hinzufügen, um eines zu erstellen.</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Gerät</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Vorschau</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Extras</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>Optionale Funktionen. Jede bleibt unauffällig, bis Sie sie einschalten.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Weitere Spielmöglichkeiten</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Anderswohin senden</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>Auf dem Bildschirm</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>Smartphone oder Tablet als Controller verwenden.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Sich mit einem Head-Tracker oder VR-Headset umsehen.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Geschwindigkeit, Pedale und Gänge aus Fahrspielen zuordnen.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>Zuschauer können per Chat Tasten drücken.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Controller mit PadForge auf einem anderen PC teilen.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Controller-Bewegungen an Emulatoren senden.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Trigger- und Lichteffekte von Spiel-Mods übernehmen.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Menüs, Ebenen und Profilwechsel beim Spielen anzeigen.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Eine Bildschirm-Touchoberfläche für Spiele, die das PlayStation-Touchpad nutzen.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Ein Bild, Timer oder eine Uhr über anderen Fenstern.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Port, unverschlüsselte HTTP-Adresse, Zugangscode</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Wiederverbinden, Port, Identitätsschutz, Verbinden per Adresse</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR-Laufzeit, UDP-Port, Bereich pro Achse</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, Stellvertreter für DSX.exe</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Ports, volle Geschwindigkeit, eigene Formate</value></data>
   <data name="Pad_ToggleAnnotations" xml:space="preserve"><value>Zuordnungs-Anmerkungen</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Willkommenstour anzeigen</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Wählen Sie einen Ausgabetyp, weisen Sie dem Slot Geräte zu und klicken Sie auf eine Karte, um ihre Zuordnungen zu gestalten.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>Optionale Funktionen warten hier: der Web-Controller fürs Smartphone, Remote Link, der Bewegungsserver und mehr.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Virtuelle Controller</value></data>
   <data name="Tour_Engine_Body" xml:space="preserve"><value>Die Schmiede selbst. Schalten Sie die Flamme um, um die gesamte Eingabeabfrage zu starten oder zu stoppen.</value></data>
   <data name="Tour_Engine_Title" xml:space="preserve"><value>Eingabe-Engine</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>Bewegungsdaten, der Web-Controller fürs Smartphone und Remote Link werden von hier unten gestreamt.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>Dienste</value></data>
   <data name="Tour_Slots_Body" xml:space="preserve"><value>Jeder virtuelle Controller befindet sich hier. Die Flamme zeigt, welche Slots gerade schmieden.</value></data>
   <data name="Tour_Slots_Title" xml:space="preserve"><value>Slots</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>Geräteanzahl, Abfragerate und die Engine-Flamme, immer im Blick.</value></data>
@@ -4003,7 +4024,7 @@ Sollen sie jetzt deinstalliert werden? Dies erfordert erhöhte Rechte und kann e
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Muster für buchsengesteuertes Audio-Routing von SundayMoments, die Referenz hinter Kopfhörerbuchse folgen. Als Dokumentation gelesen; AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>QR-Encoder im Byte-Modus für die Web-Controller-Karte im Dashboard, portiert von Nayukis Referenzimplementierung. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>QR-Encoder im Byte-Modus für die Adressen des Web-Controllers, portiert von der Referenzimplementierung von Nayuki. MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>Maus-Grafik in der Tastatur- und Maus-Visualisierung, von Igor Budzhak. MIT.</value></data>
   <data name="DeviceType_HeadsetMotion" xml:space="preserve"><value>Headset-Tracker</value></data>
@@ -4854,7 +4875,7 @@ Sollen sie jetzt deinstalliert werden? Dies erfordert erhöhte Rechte und kann e
   <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>Bildschirm-Overlay aktivieren</value></data>
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Anzeige wählen…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge-Bildschirm-Overlay</value></data>
-  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Noch nichts anzuzeigen. Wählen Sie in der Übersicht, was es zeigt.</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Noch nichts anzuzeigen. Wählen Sie auf der Seite Bildschirm-Overlay unter Extras, was es zeigt.</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Bildschirm-Overlay umschalten</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Bildschirm-Overlay umschalten</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Bildschirm-Overlay</value></data>

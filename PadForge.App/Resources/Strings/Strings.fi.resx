@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>Monista</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Käytössä</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Ei käytössä</value></data>
+  <data name="Common_On" xml:space="preserve"><value>Päällä</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Pois päältä</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Lisää</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Asennettu</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Ei asennettu</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>Ei saatavilla ARM64:lle</value></data>
@@ -288,8 +291,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>Itse ahjo. Käynnistä tai pysäytä kaikkien syötteiden kysely liekistä.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Virtuaaliohjaimet</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Valitse lähtötyyppi, anna paikalle laitteita ja muokkaa sen määrityksiä napsauttamalla korttia.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>Palvelut</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>Liiketiedot, puhelimen web-ohjain ja Etälinkki toimivat täältä alhaalta.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>Valinnaiset ominaisuudet odottavat täällä: puhelimen web-ohjain, Etälinkki, liikepalvelin ja muuta.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>Mittaririvi</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>Laitemäärä, kyselytaajuus ja moottorin liekki aina näkyvissä.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Näytä tervetuloesittely</value></data>
@@ -301,7 +303,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>LÄHTÖ</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Kylmä</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Esikatselu</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>Palvelut</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Lisäosat</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>Valinnaisia ominaisuuksia. Jokainen pysyy pois tieltä, kunnes otat sen käyttöön.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Lisää tapoja pelata</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Lähetä muualle</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>Näytöllä</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>Käytä puhelinta tai tablettia ohjaimena.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Katsele ympärillesi pääseurantalaitteella tai VR-kuulokkeilla.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Yhdistä ajopelien nopeus, polkimet ja vaihteet ohjaimen toimintoihin.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>Anna katsojien painaa painikkeita kirjoittamalla chattiin.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Jaa ohjaimia toisen tietokoneen PadForge-sovelluksen kanssa.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Lähetä ohjaimen liike emulaattoreille.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Vastaanota liipaisin- ja valotehosteet pelimodeilta.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Näytä valikot, kerrokset ja profiilinvaihdot pelatessasi.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Näytöllä näkyvä kosketuspinta peleille, jotka käyttävät PlayStation-kosketuslevyä.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Kuva, ajastin tai kello muiden ikkunoiden päällä.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Portti, salaamaton HTTP-osoite, pääsykoodi</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Uudelleenyhdistäminen, portti, tunnisteen suojaus, yhdistäminen osoitteella</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR-ajoympäristö, UDP-portti, akselikohtainen vaihteluväli</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Portti, DSX.exe-korvike</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Portit, täysi nopeus, mukautetut formaatit</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Liikepalvelin</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider -protokollan palvelin gyro- ja kiihtyvyysanturitiedoille.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Ota DSU-liikepalvelin käyttöön (CemuHook Motion Provider -protokolla)</value></data>
@@ -4065,7 +4086,7 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Liitännän tunnistukseen perustuva äänen reititysmalli, tekijä SundayMoments, Seuraa kuulokeliitäntää -toiminnon viitteenä. Luettu dokumentaationa. AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Tavutilan QR-kooderi koontinäytön web-ohjainkorttia varten, siirretty viitetoteutuksesta, jonka tekijä on Nayuki. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Tavutilan QR-kooderi Web-ohjaimen osoitteita varten, siirretty viitetoteutuksesta, jonka tekijä on Nayuki. MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>Hiiren kuvitus Näppäimistö + hiiri -visualisoinnissa, tekijä Igor Budzhak. MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Paineeseen skaalattu nopeus</value></data>
@@ -4903,7 +4924,7 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>Ota näytön peittokuva käyttöön</value></data>
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Valitse, mitä se näyttää…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge-näytön peittokuva</value></data>
-  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Ei vielä mitään näytettävää. Valitse, mitä se näyttää, koontinäytöllä.</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Ei vielä mitään näytettävää. Valitse, mitä se näyttää, Näytön peittokuva -sivulla Lisäosat-kohdan alla.</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Näytä/piilota näytön peittokuva</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Näytä/piilota näytön peittokuva</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Näytön peittokuva</value></data>

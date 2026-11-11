@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>Көшірмесін жасау</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Қосулы</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Өшірулі</value></data>
+  <data name="Common_On" xml:space="preserve"><value>Қосулы</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Өшірулі</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Қосымша</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Орнатылған</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Орнатылмаған</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>ARM64 жүйесінде қолжетімсіз</value></data>
@@ -273,8 +276,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>Ұстахананың өзі. Барлық кірістерді сұрауды бастау не тоқтату үшін жалынды қосыңыз не өшіріңіз.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Виртуалды контроллерлер</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Шығыс түрін таңдаңыз, ұяшыққа құрылғыларды беріңіз және тағайындауларын баптау үшін карточканы басыңыз.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>Қызметтер</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>Қозғалыс деректері, телефондағы веб-контроллер және Қашықтан байланыс осы төменгі бөліктен таратылады.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>Қосымша мүмкіндіктер осында: телефондағы веб-контроллер, Қашықтан байланыс, қозғалыс сервері және тағы басқалары.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>Көрсеткіштер жолағы</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>Құрылғылар саны, сұрау жиілігі және қозғалтқыш жалыны әрдайым көз алдыңызда.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Таныстыруды көрсету</value></data>
@@ -286,7 +288,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>ШЫҒЫС</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Суық</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Алдын ала қарау</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>Қызметтер</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Қосымша мүмкіндіктер</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>Міндетті емес мүмкіндіктер. Әрқайсысы сіз қосқанша кедергі келтірмейді.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Ойнаудың қосымша тәсілдері</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Басқа жерге жіберу</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>Экранда</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>Телефонды немесе планшетті контроллер ретінде пайдаланыңыз.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Бас трекерімен немесе VR гарнитурасымен айналаңызға қараңыз.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Жарыс ойындарындағы жылдамдықты, педальдерді және берілістерді тағайындаңыз.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>Көрермендер чатқа жазу арқылы түймелерді бассын.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Контроллерлерді басқа компьютердегі PadForge бағдарламасымен бөлісіңіз.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Контроллер қозғалысын эмуляторларға жіберіңіз.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Ойын модтарынан триггер және жарық эффектілерін қабылдаңыз.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Ойын кезінде мәзірлерді, қабаттарды және профиль ауысуларын көрсетіңіз.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation сенсорлық тақтасын пайдаланатын ойындарға арналған экрандағы сенсорлық бет.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Басқа терезелердің үстінде сурет, таймер немесе сағат.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Порт, қарапайым HTTP мекенжайы, кіру коды</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Қайта қосылу, порт, сәйкестендіру деректерін қорғау, мекенжай арқылы қосылу</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR орындау ортасы, UDP порты, әр осьтің ауқымы</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Порт, DSX.exe алмастырғышы</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Порттар, толық жылдамдық, теңшелетін пішімдер</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Қозғалыс сервері</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Гироскоп пен акселерометр деректеріне арналған DSU/CemuHook Motion Provider хаттамасының сервері.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU қозғалыс серверін қосу (CemuHook Motion Provider хаттамасы)</value></data>
@@ -3865,7 +3886,7 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Ұя анықтау арқылы дыбысты бағыттау үлгісі, авторы: SundayMoments, Құлаққап ұясын ұстану функциясының анықтамасы. Құжаттама ретінде оқылған. AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Бақылау тақтасындағы веб-контроллер картасына арналған байт режимді QR кодтаушысы, Nayuki-дің эталондық іске асыруынан портталған. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Веб-контроллер мекенжайларына арналған байт режимді QR кодтаушысы, Nayuki-дің эталондық іске асыруынан портталған. MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>Пернетақта + тінтуір визуализациясындағы тінтуір суреті, авторы: Igor Budzhak. MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Қысымға қарай жиілік</value></data>

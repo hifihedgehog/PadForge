@@ -1,108 +1,108 @@
 [
   {
-    "File": "PadForge.App/Views/DashboardPage.xaml",
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
     "Id": "Reset_DashboardViewModel_EnableWebController_1488",
     "Owner": "PadForge.ViewModels.DashboardViewModel",
     "Property": "EnableWebController"
   },
   {
-    "File": "PadForge.App/Views/DashboardPage.xaml",
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
     "Id": "Reset_DashboardViewModel_EnableWebControllerPlainHttp_1608",
     "Owner": "PadForge.ViewModels.DashboardViewModel",
     "Property": "EnableWebControllerPlainHttp"
   },
   {
-    "File": "PadForge.App/Views/DashboardPage.xaml",
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
     "Id": "Reset_DashboardViewModel_WebControllerPlainHttpLocalOnly_1615",
     "Owner": "PadForge.ViewModels.DashboardViewModel",
     "Property": "WebControllerPlainHttpLocalOnly"
   },
   {
-    "File": "PadForge.App/Views/DashboardPage.xaml",
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
     "Id": "Reset_DashboardViewModel_EnableRemoteLink_1578",
     "Owner": "PadForge.ViewModels.DashboardViewModel",
     "Property": "EnableRemoteLink"
   },
   {
-    "File": "PadForge.App/Views/DashboardPage.xaml",
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
     "Id": "Reset_DashboardViewModel_AutoReconnect_1581",
     "Owner": "PadForge.ViewModels.DashboardViewModel",
     "Property": "AutoReconnect"
   },
   {
-    "File": "PadForge.App/Views/DashboardPage.xaml",
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
     "Id": "Reset_SettingsViewModel_IdentityProtectionModeIndex_1638",
     "Owner": "PadForge.ViewModels.SettingsViewModel",
     "Property": "IdentityProtectionModeIndex"
   },
   {
-    "File": "PadForge.App/Views/DashboardPage.xaml",
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
     "Id": "Reset_RemoteLinkTrustedPeer_Name_1678",
     "Owner": "PadForge.ViewModels.RemoteLinkTrustedPeer",
     "Property": "Name"
   },
   {
-    "File": "PadForge.App/Views/DashboardPage.xaml",
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
     "Id": "Reset_RemoteLinkTrustedPeer_AllowRemoteAssignments_1685",
     "Owner": "PadForge.ViewModels.RemoteLinkTrustedPeer",
     "Property": "AllowRemoteAssignments"
   },
   {
-    "File": "PadForge.App/Views/DashboardPage.xaml",
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
     "Id": "Reset_DashboardViewModel_EnableDsuMotionServer_1896",
     "Owner": "PadForge.ViewModels.DashboardViewModel",
     "Property": "EnableDsuMotionServer"
   },
   {
-    "File": "PadForge.App/Views/DashboardPage.xaml",
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
     "Id": "Reset_DashboardViewModel_EnableGameModServer_2230",
     "Owner": "PadForge.ViewModels.DashboardViewModel",
     "Property": "EnableGameModServer"
   },
   {
-    "File": "PadForge.App/Views/DashboardPage.xaml",
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
     "Id": "Reset_DashboardViewModel_GameModDsxStandIn_2246",
     "Owner": "PadForge.ViewModels.DashboardViewModel",
     "Property": "GameModDsxStandIn"
   },
   {
-    "File": "PadForge.App/Views/DashboardPage.xaml",
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
     "Id": "Reset_DashboardViewModel_EnableGameTelemetry_2300",
     "Owner": "PadForge.ViewModels.DashboardViewModel",
     "Property": "EnableGameTelemetry"
   },
   {
-    "File": "PadForge.App/Views/DashboardPage.xaml",
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
     "Id": "Reset_DashboardViewModel_EnableTwitchChat_2245",
     "Owner": "PadForge.ViewModels.DashboardViewModel",
     "Property": "EnableTwitchChat"
   },
   {
-    "File": "PadForge.App/Views/DashboardPage.xaml",
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
     "Id": "Reset_DashboardViewModel_TwitchChatClaimApprovalIndex_2289",
     "Owner": "PadForge.ViewModels.DashboardViewModel",
     "Property": "TwitchChatClaimApprovalIndex"
   },
   {
-    "File": "PadForge.App/Views/DashboardPage.xaml",
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
     "Id": "Reset_DashboardViewModel_EnableMenuOverlay_2023",
     "Owner": "PadForge.ViewModels.DashboardViewModel",
     "Property": "EnableMenuOverlay"
   },
   {
-    "File": "PadForge.App/Views/DashboardPage.xaml",
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
     "Id": "Reset_DashboardViewModel_EnableShiftLayerFlyout_2026",
     "Owner": "PadForge.ViewModels.DashboardViewModel",
     "Property": "EnableShiftLayerFlyout"
   },
   {
-    "File": "PadForge.App/Views/DashboardPage.xaml",
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
     "Id": "Reset_DashboardViewModel_EnableProfileOverlay_2029",
     "Owner": "PadForge.ViewModels.DashboardViewModel",
     "Property": "EnableProfileOverlay"
   },
   {
-    "File": "PadForge.App/Views/DashboardPage.xaml",
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
     "Id": "Reset_DashboardViewModel_EnableTouchpadOverlay_2045",
     "Owner": "PadForge.ViewModels.DashboardViewModel",
     "Property": "EnableTouchpadOverlay"

@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>Rudufu</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Imewashwa</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Imezimwa</value></data>
+  <data name="Common_On" xml:space="preserve"><value>Imewashwa</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Imezimwa</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Zaidi</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Imesakinishwa</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Haijasakinishwa</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>Haipatikani kwenye ARM64</value></data>
@@ -273,8 +276,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>Tanuru yenyewe. Badilisha mwali ili kuanza au kusimamisha ukaguzi wote wa ingizo.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Vidhibiti pepe</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Chagua aina ya towe, lisha vifaa kwenye nafasi, kisha bofya kadi ili kuunda ramani zake.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>Huduma</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>Data ya mwendo, kidhibiti cha wavuti cha simu, na Remote Link hutiririka kutoka hapa chini.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>Vipengele vya hiari viko hapa: kidhibiti cha wavuti cha simu, Remote Link, seva ya mwendo na zaidi.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>Mstari wa vipimo</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>Idadi ya vifaa, kasi ya ukaguzi, na mwali wa injini, vikionekana kila wakati.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Onyesha ziara ya kukaribisha</value></data>
@@ -284,7 +286,26 @@
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Chagua makro upande wa kushoto, au bonyeza Ongeza ili kuunda mpya.</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Baridi</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Hakikisho</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>Huduma</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Vipengele vya ziada</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>Vipengele vya hiari. Kila kimoja hakikusumbui hadi utakapokiwasha.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Njia Zaidi za Kucheza</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Tuma Kwingine</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>Kwenye Skrini</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>Tumia simu au tableti kama kidhibiti.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Tazama pande zote kwa kifuatiliaji cha kichwa au kifaa cha VR.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Ramani ya kasi, kanyagio na gia kutoka kwenye michezo ya kuendesha.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>Ruhusu watazamaji kubonyeza vitufe kwa kuandika kwenye gumzo.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Shiriki vidhibiti na PadForge kwenye kompyuta nyingine.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Tuma mwendo wa kidhibiti kwa vigezo vya michezo.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Pokea athari za vichochezi na taa kutoka kwa mod za michezo.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Onyesha menyu, tabaka na ubadilishaji wa wasifu unapocheza.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Sehemu ya mguso kwenye skrini kwa michezo inayotumia touchpad ya PlayStation.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Picha, kipima muda au saa juu ya madirisha mengine.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Mlango, anwani ya HTTP ya kawaida, msimbo wa ufikiaji</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Kuunganisha upya, mlango, ulinzi wa utambulisho, kuunganisha kwa anwani</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR runtime, mlango wa UDP, masafa ya kila mhimili</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Mlango, mbadala wa DSX.exe</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Milango, kasi kamili, miundo maalum</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Seva ya mwendo</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Seva ya itifaki ya DSU/CemuHook Motion Provider ya data ya gyro na accelerometer.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Washa seva ya mwendo ya DSU (Itifaki ya CemuHook Motion Provider)</value></data>
@@ -3811,7 +3832,7 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Mchoro wa uelekezaji wa sauti wa kugundua jeki, na SundayMoments, rejeo nyuma ya Fuata Jeki ya Vipokea Sauti. Husomwa kama nyaraka. AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Kisimbaji cha QR cha hali ya baiti kwa kadi ya kidhibiti cha wavuti ya Dashibodi, kilichohamishwa kutoka utekelezaji wa rejeo wa Nayuki. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Kisimbaji cha QR cha hali ya baiti kwa anwani za Kidhibiti cha wavuti, kilichohamishwa kutoka utekelezaji wa rejeo wa Nayuki. MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>Michoro ya kipanya kwenye taswira ya Kibodi + Kipanya, na Igor Budzhak. MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Kasi Inayopimwa kwa Shinikizo</value></data>

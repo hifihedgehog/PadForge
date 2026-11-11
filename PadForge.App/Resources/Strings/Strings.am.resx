@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>አባዛ</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>ነቅቷል</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>ተሰናክሏል</value></data>
+  <data name="Common_On" xml:space="preserve"><value>በርቷል</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>ጠፍቷል</value></data>
+  <data name="Common_More" xml:space="preserve"><value>ተጨማሪ</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>ተጭኗል</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>አልተጫነም</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>በARM64 ላይ አይገኝም</value></data>
@@ -273,8 +276,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>ዋናው ሞተር ይህ ነው። የሁሉንም መሣሪያዎች ንባብ ለመጀመር ወይም ለማቆም ነበልባሉን ይቀያይሩ።</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>ምናባዊ መቆጣጠሪያዎች</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>የውጽዓት ዓይነት ይምረጡ፣ ለቦታው መሣሪያዎችን ይመድቡ፣ እና ማዛመጃዎቹን ለማስተካከል ካርድን ጠቅ ያድርጉ።</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>አገልግሎቶች</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>የእንቅስቃሴ ውሂብ፣ የስልክ የድር መቆጣጠሪያ እና የርቀት ትስስር ከዚህ በታች ይሠራሉ።</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>አማራጭ ባህሪያት እዚህ ይገኛሉ፦ የስልክ የድር መቆጣጠሪያ፣ የርቀት ትስስር፣ የእንቅስቃሴ አገልጋይ እና ሌሎችም።</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>የመለኪያ መስመር</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>የመሣሪያ ብዛት፣ የንባብ ፍጥነት እና የሞተሩ ነበልባል ሁልጊዜ ይታያሉ።</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>የእንኳን ደህና መጡ ጉብኝትን አሳይ</value></data>
@@ -286,7 +288,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>ውጽዓት</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>ቀዝቃዛ</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>ቅድመ እይታ</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>አገልግሎቶች</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>ተጨማሪዎች</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>አማራጭ ባህሪያት። እያንዳንዱ እስኪያበሩት ድረስ ጣልቃ አይገባም።</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>ተጨማሪ የመጫወቻ መንገዶች</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>ወደ ሌላ ቦታ ይላኩ</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>በማያ ገጽ ላይ</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>ስልክን ወይም ታብሌትን እንደ መቆጣጠሪያ ይጠቀሙ።</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>በራስ መከታተያ ወይም በVR መነጽር ዙሪያውን ይመልከቱ።</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>ከመንዳት ጨዋታዎች ፍጥነትን፣ ፔዳሎችን እና ማርሾችን ያዛምዱ።</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>ተመልካቾች በቻት ውስጥ በመጻፍ ቁልፎችን እንዲጫኑ ይፍቀዱ።</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>በሌላ ፒሲ ላይ ካለ PadForge ጋር መቆጣጠሪያዎችን ያጋሩ።</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>የመቆጣጠሪያ እንቅስቃሴን ወደ ኢሙሌተሮች ይላኩ።</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>የትሪገር እና የብርሃን ውጤቶችን ከጨዋታ ሞዶች ይቀበሉ።</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>በሚጫወቱበት ጊዜ ምናሌዎችን፣ ንብርብሮችን እና የመገለጫ መቀየሪያዎችን ያሳዩ።</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>የPlayStation መዳሰሻ ሰሌዳን ለሚጠቀሙ ጨዋታዎች በማያ ገጽ ላይ የሚታይ የንክኪ ገጽ።</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>ከሌሎች መስኮቶች በላይ የሚታይ ምስል፣ ሰዓት ቆጣሪ ወይም ሰዓት።</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>ወደብ፣ ተራ የHTTP አድራሻ፣ የመዳረሻ ኮድ</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>እንደገና መገናኘት፣ ወደብ፣ የማንነት ጥበቃ፣ በአድራሻ መገናኘት</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR ራንታይም፣ የUDP ወደብ፣ የእያንዳንዱ ዘንግ ክልል</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>ወደብ፣ የDSX.exe ተተኪ</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>ወደቦች፣ ሙሉ ፍጥነት፣ ብጁ ቅርጸቶች</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>የእንቅስቃሴ አገልጋይ</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>ለጋይሮ እና ለአክስሌሮሜትር ውሂብ የDSU/CemuHook Motion Provider ፕሮቶኮል አገልጋይ።</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>የDSU እንቅስቃሴ አገልጋይን አንቃ (CemuHook Motion Provider Protocol)</value></data>
@@ -3833,7 +3854,7 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>የመሰኪያ ማወቂያ የድምጽ መስመር ንድፍ፣ በSundayMoments፣ ከ«የጆሮ ማዳመጫ መሰኪያን ተከተል» በስተጀርባ ያለው ማጣቀሻ። እንደ ሰነድ ተነቧል። AGPL-3.0።</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>ለዳሽቦርዱ የድር መቆጣጠሪያ ካርድ የባይት-ሁነታ QR ኢንኮደር፣ ከNayuki ማጣቀሻ ትግበራ የተወሰደ። MIT።</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>ለድር መቆጣጠሪያው አድራሻዎች የባይት-ሁነታ QR ኢንኮደር፣ ከNayuki ማጣቀሻ ትግበራ የተወሰደ። MIT።</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>በ«የቁልፍ ሰሌዳ + መዳፊት» ምስላዊ ማሳያ ውስጥ ያለው የመዳፊት ሥዕል፣ በIgor Budzhak። MIT።</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>በግፊት የሚለካ ፍጥነት</value></data>

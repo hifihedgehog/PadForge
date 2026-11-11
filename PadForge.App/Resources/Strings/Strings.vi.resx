@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>Nhân bản</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Đã bật</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Đã tắt</value></data>
+  <data name="Common_On" xml:space="preserve"><value>Bật</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Tắt</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Thêm</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Đã cài đặt</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Chưa cài đặt</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>Không khả dụng trên ARM64</value></data>
@@ -288,8 +291,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>Chính là lò rèn. Bật/tắt ngọn lửa để bắt đầu hoặc dừng toàn bộ việc thăm dò đầu vào.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Tay cầm ảo</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Chọn loại đầu ra, cấp thiết bị cho khe, rồi nhấp vào một thẻ để định hình các ánh xạ của nó.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>Dịch vụ</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>Dữ liệu chuyển động, tay cầm web trên điện thoại và Liên kết từ xa được truyền đi từ đây.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>Các tính năng tùy chọn nằm ở đây: tay cầm web trên điện thoại, Liên kết từ xa, máy chủ chuyển động và nhiều tính năng khác.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>Dòng chỉ báo</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>Số thiết bị, tần số thăm dò và ngọn lửa bộ máy, luôn trong tầm mắt.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Hiện chuyến tham quan chào mừng</value></data>
@@ -301,7 +303,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>RA</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Nguội</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Xem trước</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>Dịch vụ</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Tiện ích</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>Các tính năng tùy chọn. Mỗi tính năng nằm yên cho đến khi bạn bật nó.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Thêm cách chơi</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Gửi đi nơi khác</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>Trên màn hình</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>Dùng điện thoại hoặc máy tính bảng làm tay cầm.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Nhìn quanh bằng thiết bị theo dõi đầu hoặc kính VR.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Ánh xạ tốc độ, bàn đạp và số từ các trò chơi lái xe.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>Cho người xem nhấn nút bằng cách gõ trong chat.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Chia sẻ tay cầm với PadForge trên PC khác.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Gửi chuyển động của tay cầm đến các trình giả lập.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Nhận hiệu ứng cò và đèn từ các mod trò chơi.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Hiện menu, lớp và việc chuyển hồ sơ trong lúc bạn chơi.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Bề mặt cảm ứng trên màn hình cho các trò chơi dùng bàn cảm ứng PlayStation.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Một hình, bộ đếm giờ hoặc đồng hồ phía trên các cửa sổ khác.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Cổng, địa chỉ HTTP thường, mã truy cập</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Kết nối lại, cổng, bảo vệ danh tính, kết nối bằng địa chỉ</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>Runtime OpenXR, cổng UDP, phạm vi theo từng trục</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Cổng, DSX.exe thay thế</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Cổng, tốc độ tối đa, định dạng tùy chỉnh</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Máy chủ chuyển động</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Máy chủ giao thức DSU/CemuHook Motion Provider cho dữ liệu con quay hồi chuyển và gia tốc kế.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Bật máy chủ chuyển động DSU (giao thức CemuHook Motion Provider)</value></data>
@@ -4065,7 +4086,7 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Mẫu định tuyến âm thanh theo phát hiện giắc cắm của SundayMoments, tài liệu tham chiếu đứng sau tính năng Theo giắc tai nghe. Được đọc làm tài liệu; AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Bộ mã hóa QR chế độ byte cho thẻ tay cầm web trên Bảng điều khiển, được chuyển từ bản triển khai tham chiếu của Nayuki. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Bộ mã hóa QR chế độ byte cho các địa chỉ của Tay cầm web, được chuyển từ bản triển khai tham chiếu của Nayuki. MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>Hình vẽ chuột trong phần trực quan hóa Bàn phím + chuột, của Igor Budzhak. MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Tốc độ theo lực nhấn</value></data>
@@ -4903,7 +4924,7 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>Bật lớp phủ màn hình</value></data>
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Chọn nội dung hiển thị…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>Lớp phủ màn hình PadForge</value></data>
-  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Chưa có gì để hiển thị. Hãy chọn nội dung hiển thị trên Bảng điều khiển.</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Chưa có gì để hiển thị. Hãy chọn nội dung hiển thị trên trang Lớp phủ màn hình, trong mục Tiện ích.</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Bật/tắt lớp phủ màn hình</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Bật/tắt lớp phủ màn hình</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Lớp phủ màn hình</value></data>

@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>Δημιουργία αντιγράφου</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Ενεργοποιημένο</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Απενεργοποιημένο</value></data>
+  <data name="Common_On" xml:space="preserve"><value>Ενεργό</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Ανενεργό</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Περισσότερα</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Εγκατεστημένο</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Μη εγκατεστημένο</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>Μη διαθέσιμο σε ARM64</value></data>
@@ -288,8 +291,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>Το ίδιο το καμίνι. Πατήστε τη φλόγα για να ξεκινήσετε ή να σταματήσετε όλη τη δειγματοληψία εισόδου.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Εικονικά χειριστήρια</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Επιλέξτε έναν τύπο εξόδου, δώστε συσκευές στην υποδοχή και κάντε κλικ σε μια κάρτα για να διαμορφώσετε τις αντιστοιχίσεις της.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>Υπηρεσίες</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>Τα δεδομένα κίνησης, το χειριστήριο web για τηλέφωνο και η Απομακρυσμένη σύνδεση μεταδίδονται από εδώ κάτω.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>Εδώ βρίσκονται οι προαιρετικές λειτουργίες: το χειριστήριο web για τηλέφωνο, η Απομακρυσμένη σύνδεση, ο διακομιστής κίνησης και άλλα.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>Γραμμή ενδείξεων</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>Πλήθος συσκευών, ρυθμός δειγματοληψίας και η φλόγα της μηχανής, πάντα ορατά.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Εμφάνιση ξενάγησης καλωσορίσματος</value></data>
@@ -301,7 +303,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>ΕΞΟΔΟΣ</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Κρύο</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Προεπισκόπηση</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>Υπηρεσίες</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Επιπλέον</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>Προαιρετικές λειτουργίες. Καθεμία μένει στην άκρη μέχρι να την ενεργοποιήσετε.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Περισσότεροι τρόποι παιχνιδιού</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Αποστολή αλλού</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>Στην οθόνη</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>Χρησιμοποιήστε ένα τηλέφωνο ή tablet ως χειριστήριο.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Κοιτάξτε γύρω σας με συσκευή παρακολούθησης κεφαλιού ή headset VR.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Αντιστοιχίστε ταχύτητα, πεντάλ και σχέσεις ταχυτήτων από παιχνίδια οδήγησης.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>Αφήστε τους θεατές να πατούν κουμπιά πληκτρολογώντας στη συνομιλία.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Μοιραστείτε χειριστήρια με το PadForge σε άλλον υπολογιστή.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Στείλτε την κίνηση του χειριστηρίου σε εξομοιωτές.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Δεχτείτε εφέ σκανδάλης και φωτισμού από mod παιχνιδιών.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Εμφανίστε μενού, επίπεδα και αλλαγές προφίλ ενώ παίζετε.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Επιφάνεια αφής στην οθόνη για παιχνίδια που χρησιμοποιούν την επιφάνεια αφής του PlayStation.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Εικόνα, χρονόμετρο ή ρολόι πάνω από άλλα παράθυρα.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Θύρα, διεύθυνση απλού HTTP, κωδικός πρόσβασης</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Επανασύνδεση, θύρα, προστασία ταυτότητας, σύνδεση μέσω διεύθυνσης</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>Περιβάλλον εκτέλεσης OpenXR, θύρα UDP, εύρος ανά άξονα</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Θύρα, υποκατάστατο DSX.exe</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Θύρες, πλήρης ταχύτητα, προσαρμοσμένες μορφές</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Διακομιστής κίνησης</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Διακομιστής πρωτοκόλλου DSU/CemuHook Motion Provider για δεδομένα γυροσκοπίου και επιταχυνσιομέτρου.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Ενεργοποίηση διακομιστή κίνησης DSU (πρωτόκολλο CemuHook Motion Provider)</value></data>
@@ -4065,7 +4086,7 @@
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Μοτίβο δρομολόγησης ήχου με ανίχνευση υποδοχής, του SundayMoments, η αναφορά πίσω από την επιλογή «Ακολουθεί την υποδοχή ακουστικών». Μελετήθηκε ως τεκμηρίωση. AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Κωδικοποιητής QR σε λειτουργία byte για την κάρτα χειριστηρίου web του Πίνακα ελέγχου, μεταφερμένος από την υλοποίηση αναφοράς του Nayuki. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Κωδικοποιητής QR σε λειτουργία byte για τις διευθύνσεις του Χειριστηρίου web, μεταφερμένος από την υλοποίηση αναφοράς του Nayuki. MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>Εικαστικό ποντικιού στην απεικόνιση «Πληκτρολόγιο + ποντίκι», του Igor Budzhak. MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Ρυθμός ανάλογα με την πίεση</value></data>
@@ -4903,7 +4924,7 @@
   <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>Ενεργοποίηση επικάλυψης οθόνης</value></data>
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Επιλογή του τι δείχνει…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>Επικάλυψη οθόνης PadForge</value></data>
-  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Δεν υπάρχει ακόμα τίποτα για εμφάνιση. Επιλέξτε τι δείχνει στον Πίνακα ελέγχου.</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Δεν υπάρχει ακόμα τίποτα για εμφάνιση. Επιλέξτε τι δείχνει στη σελίδα Επικάλυψη οθόνης, στην ενότητα Επιπλέον.</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Εναλλαγή επικάλυψης οθόνης</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Εναλλαγή επικάλυψης οθόνης</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Επικάλυψη οθόνης</value></data>

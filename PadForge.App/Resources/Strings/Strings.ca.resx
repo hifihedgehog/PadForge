@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>Duplica</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Activat</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Desactivat</value></data>
+  <data name="Common_On" xml:space="preserve"><value>Activat</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Desactivat</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Més</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Instal·lat</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>No instal·lat</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>No disponible en ARM64</value></data>
@@ -273,8 +276,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>La forja en si. Activa o desactiva la flama per iniciar o aturar tot el sondeig d'entrades.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Comandaments virtuals</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Tria un tipus de sortida, alimenta la ranura amb dispositius i fes clic en una targeta per donar forma a les seves assignacions.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>Serveis</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>Les dades de moviment, el comandament web del telèfon i l'Enllaç remot es transmeten des d'aquí baix.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>Aquí hi ha les funcions opcionals: el comandament web del telèfon, l'Enllaç remot, el servidor de moviment i més.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>Línia d'instruments</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>Nombre de dispositius, freqüència de sondeig i la flama del motor, sempre a la vista.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Mostra la visita de benvinguda</value></data>
@@ -284,7 +286,26 @@
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Selecciona una macro a l'esquerra o prem Afegeix per crear-ne una.</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Freda</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Previsualització</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>Serveis</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Extres</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>Funcions opcionals. Cadascuna es manté apartada fins que l'actives.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Més maneres de jugar</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Envia-ho a un altre lloc</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>En pantalla</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>Fes servir un telèfon o una tauleta com a comandament.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Mira al teu voltant amb un sensor de moviment del cap o uns cascos de RV.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Assigna la velocitat, els pedals i les marxes dels jocs de conducció.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>Deixa que els espectadors premin botons escrivint al xat.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Comparteix comandaments amb PadForge en un altre PC.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Envia el moviment del comandament als emuladors.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Rep efectes de gallets i de llum dels mods de joc.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Mostra menús, capes i canvis de perfil mentre jugues.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Una superfície tàctil en pantalla per als jocs que fan servir el panell tàctil de PlayStation.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Una imatge, un temporitzador o un rellotge per sobre d'altres finestres.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Port, adreça HTTP sense xifrar, codi d'accés</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Reconnexió, port, protecció de la identitat, connexió per adreça</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>Entorn d'execució OpenXR, port UDP, rang per eix</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, substitut de DSX.exe</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Ports, velocitat màxima, formats personalitzats</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Servidor de moviment</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Servidor del protocol DSU/CemuHook Motion Provider per a dades de giroscopi i acceleròmetre.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Activa el servidor de moviment DSU (protocol CemuHook Motion Provider)</value></data>
@@ -3870,7 +3891,7 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Patró d'encaminament de l'àudio segons la detecció de la presa, de SundayMoments, la referència de Segueix la presa d'auriculars. Llegit com a documentació. AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Codificador QR en mode de bytes per a la targeta del comandament web del Tauler, adaptat de la implementació de referència de Nayuki. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Codificador QR en mode de bytes per a les adreces del comandament web, adaptat de la implementació de referència de Nayuki. MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>Il·lustració del ratolí a la visualització de Teclat + ratolí, d'Igor Budzhak. MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Freqüència segons la pressió</value></data>

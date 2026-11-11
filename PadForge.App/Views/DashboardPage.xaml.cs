@@ -70,16 +70,6 @@ namespace PadForge.Views
             AddControllerRequested?.Invoke(this, EventArgs.Empty);
         }
 
-        /// <summary>Opens the custom telemetry formats (#531) and keeps the
-        /// list the user saved.</summary>
-        private void GameTelemetryFormatsButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is not ViewModels.DashboardViewModel vm) return;
-            var dlg = new CustomTelemetryFormatsDialog(vm.GameTelemetryFormats) { Owner = Window.GetWindow(this) };
-            if (dlg.ShowDialog() == true && dlg.Result != null)
-                vm.GameTelemetryFormats = dlg.Result;
-        }
-
         private void DeleteSlot_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button btn && btn.Tag is int slotIndex)

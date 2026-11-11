@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>ডুপ্লিকেট করুন</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>সক্ষম</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>অক্ষম</value></data>
+  <data name="Common_On" xml:space="preserve"><value>চালু</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>বন্ধ</value></data>
+  <data name="Common_More" xml:space="preserve"><value>আরও</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>ইনস্টল করা আছে</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>ইনস্টল করা নেই</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>ARM64-এ উপলব্ধ নয়</value></data>
@@ -288,8 +291,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>এটাই সেই চুল্লি। সব ইনপুট পোলিং শুরু বা বন্ধ করতে শিখাটি টগল করুন।</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>ভার্চুয়াল কন্ট্রোলার</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>একটি আউটপুটের ধরন বেছে নিন, স্লটে ডিভাইস দিন, আর এর ম্যাপিং সাজাতে একটি কার্ডে ক্লিক করুন।</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>সার্ভিস</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>মোশন ডেটা, ফোনের ওয়েব কন্ট্রোলার আর রিমোট লিংক নিচের এই অংশ থেকে স্ট্রিম হয়।</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>ঐচ্ছিক ফিচারগুলো এখানে অপেক্ষা করছে: ফোনের ওয়েব কন্ট্রোলার, রিমোট লিংক, মোশন সার্ভার আর আরও অনেক কিছু।</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>নির্দেশক সারি</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>ডিভাইসের সংখ্যা, পোলিং রেট আর ইঞ্জিনের শিখা, সব সময় চোখের সামনে।</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>স্বাগত ট্যুর দেখান</value></data>
@@ -301,7 +303,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>আউটপুট</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>ঠান্ডা</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>প্রিভিউ</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>সার্ভিস</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>এক্সট্রা</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>ঐচ্ছিক ফিচার। চালু না করা পর্যন্ত প্রতিটি আড়ালে থাকে।</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>খেলার আরও উপায়</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>অন্যত্র পাঠান</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>স্ক্রিনে</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>ফোন বা ট্যাবলেটকে কন্ট্রোলার হিসেবে ব্যবহার করুন।</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>হেড ট্র্যাকার বা VR হেডসেট দিয়ে চারপাশে তাকান।</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>ড্রাইভিং গেমের গতি, প্যাডেল ও গিয়ার ম্যাপ করুন।</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>দর্শকেরা চ্যাটে টাইপ করে বোতাম চাপতে পারবেন।</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>PadForge চালু থাকা অন্য পিসির সঙ্গে কন্ট্রোলার শেয়ার করুন।</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>কন্ট্রোলারের মোশন ইমুলেটরে পাঠান।</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>গেম মড থেকে ট্রিগার ও লাইটের এফেক্ট নিন।</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>খেলার সময় মেনু, লেয়ার ও প্রোফাইল বদল দেখান।</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation টাচপ্যাড ব্যবহার করা গেমের জন্য অন-স্ক্রিন টাচ সারফেস।</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>অন্য উইন্ডোর ওপরে ছবি, টাইমার বা ঘড়ি।</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>পোর্ট, সাধারণ HTTP ঠিকানা, অ্যাক্সেস কোড</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>আবার সংযোগ, পোর্ট, পরিচয়ের সুরক্ষা, ঠিকানা দিয়ে সংযোগ</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR রানটাইম, UDP পোর্ট, প্রতিটি অক্ষের আলাদা পরিসর</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>পোর্ট, DSX.exe বদলি</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>পোর্ট, পূর্ণ গতি, কাস্টম ফরম্যাট</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>মোশন সার্ভার</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>জাইরো ও অ্যাক্সিলেরোমিটার ডেটার জন্য DSU/CemuHook Motion Provider প্রোটোকল সার্ভার।</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU মোশন সার্ভার সক্ষম করুন (CemuHook Motion Provider প্রোটোকল)</value></data>
@@ -4065,7 +4086,7 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>SundayMoments-এর জ্যাক-শনাক্তকরণভিত্তিক অডিও রাউটিং পদ্ধতি, যা “হেডফোন জ্যাক অনুসরণ করুন”-এর রেফারেন্স। ডকুমেন্টেশন হিসেবে পড়া হয়েছে; AGPL-3.0।</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>ড্যাশবোর্ডের ওয়েব কন্ট্রোলার কার্ডের জন্য বাইট-মোড QR এনকোডার, Nayuki-র রেফারেন্স ইমপ্লিমেন্টেশন থেকে পোর্ট করা। MIT।</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>ওয়েব কন্ট্রোলারের ঠিকানাগুলোর জন্য বাইট-মোড QR এনকোডার, Nayuki-র রেফারেন্স ইমপ্লিমেন্টেশন থেকে পোর্ট করা। MIT।</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>কীবোর্ড + মাউস ভিজ্যুয়ালাইজেশনের মাউসের আর্টওয়ার্ক, নির্মাতা Igor Budzhak। MIT।</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>চাপ অনুযায়ী হার</value></data>
@@ -4903,7 +4924,7 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>স্ক্রিন ওভারলে সক্ষম করুন</value></data>
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>কী দেখাবে তা বেছে নিন…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge স্ক্রিন ওভারলে</value></data>
-  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>এখনও দেখানোর কিছু নেই। ড্যাশবোর্ডে গিয়ে কী দেখাবে তা বেছে নিন।</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>এখনও দেখানোর কিছু নেই। এক্সট্রার অধীনে স্ক্রিন ওভারলে পাতায় গিয়ে কী দেখাবে তা বেছে নিন।</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>স্ক্রিন ওভারলে টগল করুন</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>স্ক্রিন ওভারলে টগল করুন</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>স্ক্রিন ওভারলে</value></data>

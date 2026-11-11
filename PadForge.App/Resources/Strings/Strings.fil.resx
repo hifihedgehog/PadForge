@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>I-duplicate</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Naka-enable</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Naka-disable</value></data>
+  <data name="Common_On" xml:space="preserve"><value>Naka-on</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Naka-off</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Higit pa</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Naka-install</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Hindi naka-install</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>Hindi available sa ARM64</value></data>
@@ -273,8 +276,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>Ang mismong pandayan. I-toggle ang apoy para simulan o ihinto ang lahat ng input polling.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Mga virtual controller</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Pumili ng uri ng output, maglagay ng mga device sa slot, at i-click ang isang card para hubugin ang mga mapping nito.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>Mga serbisyo</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>Dito sa ibaba nagmumula ang motion data, ang web controller sa phone, at ang Remote Link.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>Nandito ang mga opsyonal na feature: ang web controller sa phone, ang Remote Link, ang Motion Server at iba pa.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>Linya ng instrumento</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>Bilang ng device, polling rate, at ang apoy ng engine, laging nakikita.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Ipakita ang welcome tour</value></data>
@@ -286,7 +288,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>OUT</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Malamig</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Preview</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>Mga serbisyo</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Mga Extra</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>Mga opsyonal na feature. Hindi ito makakaabala hangga't hindi mo ino-on.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Higit Pang Paraan ng Paglalaro</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Ipadala sa Iba</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>Sa Screen</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>Gamitin ang phone o tablet bilang controller.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Tumingin sa paligid gamit ang head tracker o VR headset.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>I-map ang bilis, mga pedal at gear mula sa mga larong pang-drive.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>Hayaang magpindot ng mga button ang mga manonood sa pamamagitan ng pag-type sa chat.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Magbahagi ng mga controller sa PadForge sa ibang PC.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Magpadala ng motion ng controller sa mga emulator.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Tumanggap ng mga epekto ng trigger at ilaw mula sa mga game mod.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Ipakita ang mga menu, layer at pagpapalit ng profile habang naglalaro ka.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Touch surface sa screen para sa mga larong gumagamit ng touchpad ng PlayStation.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Isang larawan, timer o orasan sa ibabaw ng ibang mga window.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Port, plain HTTP address, access code</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Awtomatikong kumonekta muli, port, proteksyon ng identity, pagkonekta gamit ang address</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR runtime, UDP port, range sa bawat axis</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, DSX.exe stand-in</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Mga port, buong bilis, mga custom format</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Motion Server</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Protocol server ng DSU/CemuHook Motion Provider para sa data ng gyro at accelerometer.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>I-enable ang DSU Motion Server (CemuHook Motion Provider Protocol)</value></data>
@@ -3683,7 +3704,7 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Pattern ng audio routing sa jack-detect ni SundayMoments, ang sanggunian sa likod ng Sundan ang Headphone Jack. Binasa bilang dokumentasyon. AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Byte-mode QR encoder para sa web controller card ng Dashboard, na-port mula sa reference implementation ni Nayuki. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Byte-mode QR encoder para sa mga address ng Web controller, na-port mula sa reference implementation ni Nayuki. MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>Artwork ng mouse sa Keyboard + Mouse visualization, ni Igor Budzhak. MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Rate na Sinusukat sa Pressure</value></data>

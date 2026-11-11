@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>Tvítaka</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Virkt</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Óvirkt</value></data>
+  <data name="Common_On" xml:space="preserve"><value>Kveikt</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Slökkt</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Meira</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Uppsett</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Ekki uppsett</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>Ekki í boði á ARM64</value></data>
@@ -288,8 +291,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>Smiðjan sjálf. Kveiktu eða slökktu á loganum til að ræsa eða stöðva alla inntakskönnun.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Sýndarstýringar</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Veldu gerð úttaks, tengdu tæki við raufina og smelltu á spjald til að móta varpanir þess.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>Þjónustur</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>Hreyfigögn, vefstýringin fyrir símann og Fjartenging streyma héðan, neðst á skjánum.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>Valfrjálsir eiginleikar bíða hér: vefstýringin fyrir símann, Fjartenging, hreyfiþjónninn og fleira.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>Mælalína</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>Fjöldi tækja, könnunartíðni og logi vélarinnar, alltaf sýnilegt.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Sýna kynningarferð</value></data>
@@ -301,7 +303,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>ÚT</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Kalt</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Forskoðun</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>Þjónustur</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Aukaeiginleikar</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>Valfrjálsir eiginleikar. Hver þeirra heldur sig til hlés þar til þú kveikir á honum.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Fleiri leiðir til að spila</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Sendu það annað</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>Á skjánum</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>Notaðu síma eða spjaldtölvu sem leikjastýringu.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Horfðu í kringum þig með höfuðrakningartæki eða sýndarveruleikagleraugum.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Varpaðu hraða, pedulum og gírum úr akstursleikjum.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>Leyfðu áhorfendum að ýta á hnappa með því að skrifa í spjallið.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Deildu leikjastýringum með PadForge á annarri tölvu.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Sendu hreyfingu stýringa til hermira.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Taktu við gikk og ljósabrellum frá leikjabreytingum.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Sýndu valmyndir, lög og sniðaskipti á meðan þú spilar.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Snertiflötur á skjánum fyrir leiki sem nota snertiflöt PlayStation.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Mynd, tímamælir eða klukka ofan á öðrum gluggum.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Gátt, ódulkóðað HTTP-vistfang, aðgangskóði</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Endurtenging, gátt, vernd auðkennis, tenging með vistfangi</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR-keyrsluumhverfi, UDP-gátt, svið hvers áss</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Gátt, staðgengill DSX.exe</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Gáttir, fullur hraði, sérsniðin snið</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Hreyfiþjónn</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Þjónn fyrir DSU/CemuHook Motion Provider-samskiptareglurnar, fyrir gögn úr snúningsskynjara og hröðunarmæli.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Virkja DSU-hreyfiþjón (CemuHook Motion Provider-samskiptareglur)</value></data>
@@ -4065,7 +4086,7 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Mynstur fyrir hljóðbeiningu eftir greiningu tengis, eftir SundayMoments, viðmiðunin á bak við „Fylgja heyrnartólatengi“. Lesið sem skjölun; AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>QR-kóðari í bætaham fyrir vefstýringarspjaldið á mælaborðinu, fluttur úr viðmiðunarútfærslu Nayuki. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>QR-kóðari í bætaham fyrir vistföng vefstýringarinnar, fluttur úr viðmiðunarútfærslu Nayuki. MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>Myndefni músarinnar í myndrænu framsetningunni „Lyklaborð + mús“, eftir Igor Budzhak. MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Hraði eftir þrýstingi</value></data>
@@ -4903,7 +4924,7 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>Virkja yfirlag skjás</value></data>
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Velja hvað það sýnir…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge-yfirlag skjás</value></data>
-  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Ekkert að sýna enn. Veldu hvað það sýnir á mælaborðinu.</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Ekkert að sýna enn. Veldu hvað það sýnir á síðunni Yfirlag skjás, undir Aukaeiginleikar.</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Víxla yfirlagi skjás</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Víxla yfirlagi skjás</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Yfirlag skjás</value></data>

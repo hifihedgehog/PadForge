@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>डुप्लिकेट करा</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>सक्षम</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>अक्षम</value></data>
+  <data name="Common_On" xml:space="preserve"><value>चालू</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>बंद</value></data>
+  <data name="Common_More" xml:space="preserve"><value>अधिक</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>इन्स्टॉल केले</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>इन्स्टॉल केलेले नाही</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>ARM64 वर उपलब्ध नाही</value></data>
@@ -273,8 +276,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>ही भट्टी स्वतःच. सर्व इनपुट पोलिंग सुरू किंवा बंद करण्यासाठी ज्योत टॉगल करा.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>व्हर्च्युअल कंट्रोलर</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>आउटपुट प्रकार निवडा, स्लॉटला डिव्हाइस जोडा आणि मॅपिंग घडवण्यासाठी कार्डवर क्लिक करा.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>सेवा</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>मोशन डेटा, फोन वेब कंट्रोलर आणि रिमोट लिंक येथून स्ट्रीम होतात.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>पर्यायी वैशिष्ट्ये येथे आहेत: फोन वेब कंट्रोलर, रिमोट लिंक, मोशन सर्व्हर आणि बरेच काही.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>इन्स्ट्रुमेंट लाइन</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>डिव्हाइसची संख्या, पोलिंग दर आणि इंजिनची ज्योत, नेहमी नजरेसमोर.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>स्वागत दौरा दाखवा</value></data>
@@ -286,7 +288,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>OUT</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>थंड</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>पूर्वावलोकन</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>सेवा</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>अतिरिक्त</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>पर्यायी वैशिष्ट्ये. तुम्ही चालू करेपर्यंत प्रत्येक वैशिष्ट्य बाजूला राहते.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>खेळण्याचे आणखी मार्ग</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>दुसरीकडे पाठवा</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>स्क्रीनवर</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>फोन किंवा टॅबलेट कंट्रोलर म्हणून वापरा.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>हेड ट्रॅकर किंवा VR हेडसेटने आजूबाजूला पाहा.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>ड्रायव्हिंग गेममधील वेग, पेडल आणि गिअर मॅप करा.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>दर्शकांना चॅटमध्ये टाइप करून बटणे दाबू द्या.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>दुसऱ्या PC वरील PadForge सोबत कंट्रोलर शेअर करा.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>कंट्रोलरचे मोशन एमुलेटरना पाठवा.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>गेम मॉड्सकडून ट्रिगर आणि लाइट इफेक्ट घ्या.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>खेळताना मेनू, लेयर आणि प्रोफाइल बदल दाखवा.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation टचपॅड वापरणाऱ्या गेमसाठी स्क्रीनवरील स्पर्श पृष्ठभाग.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>इतर विंडोच्या वर चित्र, टाइमर किंवा घड्याळ.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>पोर्ट, साधा HTTP पत्ता, ॲक्सेस कोड</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>आपोआप पुन्हा कनेक्ट करणे, पोर्ट, ओळख संरक्षण, पत्त्याद्वारे कनेक्ट करणे</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR रनटाइम, UDP पोर्ट, प्रति अक्ष श्रेणी</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>पोर्ट, DSX.exe स्टँड इन</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>पोर्ट, पूर्ण वेग, कस्टम फॉरमॅट</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>मोशन सर्व्हर</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>जायरो आणि ॲक्सेलेरोमीटर डेटासाठी DSU/CemuHook Motion Provider प्रोटोकॉल सर्व्हर.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU मोशन सर्व्हर सक्षम करा (CemuHook Motion Provider प्रोटोकॉल)</value></data>
@@ -3860,7 +3881,7 @@ PadForge ने ते आता अनइन्स्टॉल करावे�
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>SundayMoments यांचा जॅक-शोध ऑडिओ रूटिंग पॅटर्न, हेडफोन जॅकचे अनुसरण करा यामागील संदर्भ. दस्तऐवजीकरण म्हणून वाचले. AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>डॅशबोर्डच्या वेब कंट्रोलर कार्डसाठी बाइट-मोड QR एन्कोडर, Nayuki च्या संदर्भ अंमलबजावणीवरून पोर्ट केलेला. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>वेब कंट्रोलरच्या पत्त्यांसाठी बाइट मोड QR एन्कोडर, Nayuki च्या संदर्भ अंमलबजावणीवरून पोर्ट केलेला. MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>कीबोर्ड + माउस व्हिज्युअलायझेशनमधील माउस आर्टवर्क, Igor Budzhak यांचे. MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>दाबानुसार दर</value></data>

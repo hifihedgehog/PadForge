@@ -72,6 +72,7 @@ PadForge.sln
 │   │   ├── DashboardPage.xaml / .cs         Slot cards, engine stats, driver status
 │   │   ├── PadPage.xaml / .cs               Mapping grid, deadzones, force feedback, macros
 │   │   ├── DevicesPage.xaml / .cs           Card-based device list + visual raw input state
+│   │   ├── ExtrasPage.xaml / .cs            Optional features: a catalog of tiles and a page for each
 │   │   ├── ProfilesPage.xaml / .cs          Per-app profile management and auto-switching
 │   │   ├── SettingsPage.xaml / .cs          Theme, engine, drivers, diagnostics
 │   │   ├── AboutPage.xaml / .cs             App info, technology list, license

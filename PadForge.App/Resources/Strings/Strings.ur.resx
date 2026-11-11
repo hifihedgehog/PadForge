@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>نقل بنائیں</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>فعال</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>غیر فعال</value></data>
+  <data name="Common_On" xml:space="preserve"><value>آن</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>آف</value></data>
+  <data name="Common_More" xml:space="preserve"><value>مزید</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>انسٹال شدہ</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>انسٹال نہیں ہے</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>ARM64 پر دستیاب نہیں</value></data>
@@ -288,8 +291,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>یہی اصل بھٹی ہے۔ تمام ان پٹ پولنگ شروع کرنے یا روکنے کے لیے شعلہ ٹوگل کریں۔</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>ورچوئل کنٹرولرز</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>آؤٹ پٹ کی قسم منتخب کریں، سلاٹ کو آلات دیں، اور اس کی میپنگز ترتیب دینے کے لیے کارڈ پر کلک کریں۔</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>سروسز</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>موشن ڈیٹا، فون کا ویب کنٹرولر اور ریموٹ لنک یہاں نیچے سے اسٹریم ہوتے ہیں۔</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>اختیاری خصوصیات یہاں ملتی ہیں: فون کا ویب کنٹرولر، ریموٹ لنک، موشن سرور اور مزید۔</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>انسٹرومنٹ لائن</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>آلات کی تعداد، پولنگ ریٹ اور انجن کا شعلہ، ہمیشہ نظر کے سامنے۔</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>تعارفی دورہ دکھائیں</value></data>
@@ -301,7 +303,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>آؤٹ</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>ٹھنڈا</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>پیش منظر</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>سروسز</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>ایکسٹراز</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>اختیاری خصوصیات۔ ہر ایک اس وقت تک راستے سے ہٹی رہتی ہے جب تک آپ اسے آن نہ کریں۔</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>کھیلنے کے مزید طریقے</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>اسے کہیں اور بھیجیں</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>اسکرین پر</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>فون یا ٹیبلٹ کو کنٹرولر کے طور پر استعمال کریں۔</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>ہیڈ ٹریکر یا ورچوئل ریئلٹی ہیڈسیٹ سے چاروں طرف دیکھیں۔</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>ڈرائیونگ گیمز سے رفتار، پیڈلز اور گیئرز کو میپ کریں۔</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>ناظرین کو چیٹ میں ٹائپ کر کے بٹن دبانے دیں۔</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>کسی دوسرے PC پر موجود PadForge کے ساتھ کنٹرولرز شیئر کریں۔</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>کنٹرولر کی موشن ایمولیٹرز کو بھیجیں۔</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>گیم موڈز سے ٹرگر اور لائٹ ایفیکٹس وصول کریں۔</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>کھیلتے وقت مینوز، لیئرز اور پروفائل کی تبدیلیاں دکھائیں۔</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation ٹچ پیڈ استعمال کرنے والے گیمز کے لیے اسکرین پر ٹچ سطح۔</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>دوسری ونڈوز کے اوپر تصویر، ٹائمر یا گھڑی۔</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>پورٹ، سادہ HTTP پتہ، رسائی کوڈ</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>خودکار دوبارہ منسلک ہونا، پورٹ، شناخت کا تحفظ، پتے کے ذریعے منسلک ہونا</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR رن ٹائم، UDP پورٹ، ہر محور کی رینج</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>پورٹ، DSX.exe کا متبادل</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>پورٹس، مکمل رفتار، حسب ضرورت فارمیٹس</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>موشن سرور</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>جائرو اور ایکسیلیرومیٹر ڈیٹا کے لیے DSU/CemuHook Motion Provider پروٹوکول سرور۔</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU موشن سرور فعال کریں (CemuHook Motion Provider پروٹوکول)</value></data>
@@ -4065,7 +4086,7 @@
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>SundayMoments کا جیک کی شناخت پر مبنی آڈیو روٹنگ کا طریقہ، جو "ہیڈ فون جیک کے مطابق" کا حوالہ ہے۔ بطور دستاویز پڑھا گیا؛ AGPL-3.0۔</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>ڈیش بورڈ کے ویب کنٹرولر کارڈ کے لیے بائٹ موڈ QR انکوڈر، Nayuki کی حوالہ جاتی امپلیمنٹیشن سے پورٹ کیا گیا۔ MIT۔</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>ویب کنٹرولر کے پتوں کے لیے بائٹ موڈ QR انکوڈر، Nayuki کی حوالہ جاتی امپلیمنٹیشن سے پورٹ کیا گیا۔ MIT۔</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>کی بورڈ + ماؤس ویژولائزیشن میں ماؤس کا آرٹ ورک، از Igor Budzhak۔ MIT۔</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>دباؤ کے مطابق شرح</value></data>
@@ -4903,7 +4924,7 @@
   <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>اسکرین اوورلے فعال کریں</value></data>
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>منتخب کریں کہ کیا دکھانا ہے…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge اسکرین اوورلے</value></data>
-  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>ابھی دکھانے کے لیے کچھ نہیں۔ ڈیش بورڈ پر منتخب کریں کہ کیا دکھانا ہے۔</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>ابھی دکھانے کے لیے کچھ نہیں۔ ایکسٹراز کے تحت اسکرین اوورلے کے صفحے پر منتخب کریں کہ کیا دکھانا ہے۔</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>اسکرین اوورلے ٹوگل کریں</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>اسکرین اوورلے ٹوگل کریں</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>اسکرین اوورلے</value></data>

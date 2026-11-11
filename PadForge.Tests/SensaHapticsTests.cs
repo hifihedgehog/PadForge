@@ -567,9 +567,13 @@ namespace PadForge.Tests
             string migration = RepoText("PadForge.App", "Services", "PeripheralSwitchMigration.cs");
             Assert.Contains("new LegacySwitch(PeripheralRowKind.RazerSensa, app?.EnableSensaHaptics ?? false,", migration);
 
-            string page = RepoText("PadForge.App", "Views", "DashboardPage.xaml");
-            Assert.DoesNotContain("EnableSensaHaptics", page);
-            Assert.DoesNotContain("SensaStatus", page);
+            // Neither the Dashboard nor the Extras page, where its services went (#574).
+            foreach (string name in new[] { "DashboardPage.xaml", "ExtrasPage.xaml" })
+            {
+                string page = RepoText("PadForge.App", "Views", name);
+                Assert.DoesNotContain("EnableSensaHaptics", page);
+                Assert.DoesNotContain("SensaStatus", page);
+            }
 
             string host = RepoText("PadForge.App", "Common", "Input", "Peripherals", "PeripheralOutputHost.cs");
             Assert.Contains("bool assigned = linked && SettingsManager.SlotOrders.GetIdentityPlayerNumber(sensaGuid) > 0;", host);

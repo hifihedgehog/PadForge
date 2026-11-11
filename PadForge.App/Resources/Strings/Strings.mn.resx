@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>Хувилах</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Идэвхтэй</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Идэвхгүй</value></data>
+  <data name="Common_On" xml:space="preserve"><value>Асаалттай</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Унтраалттай</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Бусад</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Суулгасан</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Суулгаагүй</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>ARM64 дээр боломжгүй</value></data>
@@ -273,8 +276,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>Дарханы зуух өөрөө. Бүх оролтын уншилтыг эхлүүлэх эсвэл зогсоохын тулд дөлийг сэлгэнэ үү.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Виртуал контроллерүүд</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Гаралтын төрлөө сонгож, слотод төхөөрөмж өгөөд, карт дээр дарж оноолтоо тохируулна уу.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>Үйлчилгээ</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>Хөдөлгөөний өгөгдөл, утасны веб контроллер, Алсын холболт энэ доод хэсгээс дамжина.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>Нэмэлт боломжууд энд байна: утасны веб контроллер, Алсын холболт, хөдөлгөөний сервер болон бусад.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>Хэмжүүрийн мөр</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>Төхөөрөмжийн тоо, уншилтын давтамж, хөдөлгүүрийн дөл үргэлж харагдана.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Мэндчилгээний танилцуулгыг харуулах</value></data>
@@ -286,7 +288,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>ГАРАЛТ</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Хүйтэн</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Урьдчилан харах</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>Үйлчилгээ</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Нэмэлтүүд</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>Нэмэлт боломжууд. Та асаах хүртэл аль нь ч саад болохгүй.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Тоглох өөр арга замууд</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Өөр газар илгээх</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>Дэлгэц дээр</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>Утас эсвэл таблетыг контроллер болгон ашиглана.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Толгой хянагч эсвэл VR дуулгаар эргэн тойрноо харна.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Уралдааны тоглоомын хурд, дөрөө, арааг онооно.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>Үзэгчдэд чатад бичиж товчлуур дарах боломж олгоно.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Контроллероо өөр компьютер дээрх PadForge програмтай хуваалцана.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Контроллерын хөдөлгөөнийг эмуляторууд руу илгээнэ.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Тоглоомын модуудаас гох болон гэрлийн эффектийг авна.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Тоглож байхад цэс, давхарга, профайл солилтыг харуулна.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation мэдрэгч самбар ашигладаг тоглоомуудад зориулсан дэлгэц дээрх мэдрэгч гадаргуу.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Бусад цонхны дээр харагдах зураг, хугацаа хэмжигч эсвэл цаг.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Порт, энгийн HTTP хаяг, нэвтрэх код</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Дахин холбогдох, порт, таних мэдээллийн хамгаалалт, хаягаар холбогдох</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR ажиллах орчин, UDP порт, тэнхлэг тус бүрийн муж</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Порт, DSX.exe орлуулагч</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Портууд, бүрэн хурд, өөрийн форматууд</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Хөдөлгөөний сервер</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Гироскоп болон акселерометрийн өгөгдөлд зориулсан DSU/CemuHook Motion Provider протоколын сервер.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU хөдөлгөөний серверийг идэвхжүүлэх (CemuHook Motion Provider Protocol)</value></data>
@@ -3851,7 +3872,7 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Залгуур илрүүлэх аудио чиглүүлэлтийн загвар, SundayMoments-ийн бүтээл. Чихэвчний залгуурыг дагах горимын эх сурвалж. Баримт бичиг болгон уншсан. AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Хянах самбарын веб контроллерын картад зориулсан байт горимын QR кодлогч, Nayuki-гийн жишиг хэрэгжүүлэлтээс шилжүүлсэн. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Веб контроллерын хаягуудад зориулсан байт горимын QR кодлогч, Nayuki-гийн жишиг хэрэгжүүлэлтээс шилжүүлсэн. MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>Гар + хулганы дүрслэл дэх хулганы зураг, Igor Budzhak-ийн бүтээл. MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Даралтаас хамаарах хурд</value></data>

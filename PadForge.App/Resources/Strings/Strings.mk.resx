@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>Дуплирај</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Овозможено</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Оневозможено</value></data>
+  <data name="Common_On" xml:space="preserve"><value>Вклучено</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Исклучено</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Повеќе</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Инсталирано</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Не е инсталирано</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>Не е достапно на ARM64</value></data>
@@ -288,8 +291,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>Самата ковачница. Вклучете го или исклучете го пламенот за да го стартувате или запрете читањето на сите влезови.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Виртуелни контролери</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Изберете тип на излез, доделете уреди на слотот и кликнете на картичка за да ги обликувате нејзините мапирања.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>Услуги</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>Податоците за движење, веб-контролерот на телефонот и Далечинската врска се емитуваат одовде долу.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>Тука ги чекаат изборните функции: веб-контролерот на телефонот, Далечинската врска, серверот за движење и повеќе.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>Лента со инструменти</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>Број на уреди, фреквенција на читање и пламенот на моторот, секогаш на видик.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Прикажи ја воведната обиколка</value></data>
@@ -301,7 +303,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>ИЗЛЕЗ</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Ладно</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Преглед</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>Услуги</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Додатоци</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>Изборни функции. Секоја стои настрана додека не ја вклучите.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Повеќе начини за играње</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Испратете го на друго место</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>На екранот</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>Користете телефон или таблет како контролер.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Гледајте наоколу со следач на глава или VR-слушалки.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Мапирајте брзина, педали и брзини од игри за возење.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>Дозволете гледачите да притискаат копчиња со пишување во четот.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Споделувајте контролери со PadForge на друг компјутер.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Испраќајте движење од контролерот до емулатори.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Примајте ефекти на тригери и светла од модови за игри.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Прикажувајте менија, слоеви и менување профили додека играте.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Допирна површина на екранот за игри што користат допирна табла на PlayStation.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Слика, тајмер или часовник над другите прозорци.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Порта, обична HTTP-адреса, код за пристап</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Повторно поврзување, порта, заштита на идентитетот, поврзување преку адреса</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>Извршна околина OpenXR, UDP-порта, опсег по оска</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Порта, замена за DSX.exe</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Порти, полна брзина, прилагодени формати</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Сервер за движење</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Сервер за протоколот DSU/CemuHook Motion Provider за податоци од жироскоп и акцелерометар.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Овозможи DSU сервер за движење (протокол CemuHook Motion Provider)</value></data>
@@ -4065,7 +4086,7 @@
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Шема за насочување на звукот според откривањето на приклучокот од SundayMoments, референцата зад „Следи го приклучокот за слушалки“. Прочитано како документација; AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>QR-енкодер во бајтен режим за картичката на веб-контролерот на Контролната табла, пренесен од референтната имплементација на Nayuki. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>QR-енкодер во бајтен режим за адресите на веб-контролерот, пренесен од референтната имплементација на Nayuki. MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>Илустрации на глушецот во визуелизацијата Тастатура + глушец, од Igor Budzhak. MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Брзина според притисокот</value></data>
@@ -4903,7 +4924,7 @@
   <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>Овозможи оверлеј на екранот</value></data>
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Избери што прикажува…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge оверлеј на екранот</value></data>
-  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Сè уште нема што да се прикаже. Изберете што прикажува на контролната табла.</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Сè уште нема што да се прикаже. Изберете што прикажува на страницата Оверлеј на екранот, под Додатоци.</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Прикажи/скриј оверлеј на екранот</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Прикажи/скриј оверлеј на екранот</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Оверлеј на екранот</value></data>

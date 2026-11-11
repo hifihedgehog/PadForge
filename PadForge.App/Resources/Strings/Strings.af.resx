@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>Dupliseer</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Aangeskakel</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Afgeskakel</value></data>
+  <data name="Common_On" xml:space="preserve"><value>Aan</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Af</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Meer</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Geïnstalleer</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Nie geïnstalleer nie</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>Nie beskikbaar op ARM64 nie</value></data>
@@ -273,8 +276,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>Die smidse self. Skakel die vlam om alle invoerpeiling te begin of te stop.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Virtuele controllers</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Kies 'n uitvoertipe, voed die gleuftoestelle, en klik op 'n kaart om sy toewysings te vorm.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>Dienste</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>Bewegingsdata, die foon-webcontroller en Afstandskakel stroom van hier onder af.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>Opsionele kenmerke wag hier: die foon-webcontroller, Afstandskakel, die bewegingsbediener en meer.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>Instrumentlyn</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>Toestelgetal, peilfrekwensie en die enjinvlam, altyd in sig.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Wys verwelkomingstoer</value></data>
@@ -286,7 +288,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>UIT</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Koud</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Voorskou</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>Dienste</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Ekstras</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>Opsionele kenmerke. Elkeen bly uit die pad totdat jy dit aanskakel.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Meer maniere om te speel</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Stuur dit elders heen</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>Op die skerm</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>Gebruik 'n foon of tablet as 'n controller.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Kyk rond met 'n kopnasporer of VR-bril.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Wys spoed, pedale en rade van bestuurspeletjies toe.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>Laat kykers knoppies druk deur in die klets te tik.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Deel controllers met PadForge op 'n ander rekenaar.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Stuur controllerbeweging na emulators.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Neem snellers- en ligeffekte van speletjie-mods aan.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Wys kieslyste, lae en profielwisselings terwyl jy speel.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>'n Raakvlak op die skerm vir speletjies wat die PlayStation-raakplaat gebruik.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>'n Prent, afteller of horlosie bo ander vensters.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Poort, gewone HTTP-adres, toegangskode</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Herkoppel, poort, identiteitsbeskerming, koppel via adres</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR-looptyd, UDP-poort, reeks per as</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Poort, DSX.exe-plaasvervanger</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Poorte, volspoed, pasgemaakte formate</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Bewegingsbediener</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider-protokolbediener vir giro- en versnellingsmeterdata.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Skakel DSU-bewegingsbediener aan (CemuHook Motion Provider-protokol)</value></data>
@@ -3736,7 +3757,7 @@ Wil jy hê PadForge moet dit nou deïnstalleer? Dit vereis verhoogde regte en ka
   <data name="Pad_Audio_OutputPath_FollowJack" xml:space="preserve"><value>Volg oorfoonpoort</value></data>
   <data name="About_DuaLibDesc" xml:space="preserve"><value>DualSense-uitvoerverslag-bytekaart en Sony se scePad-semantiek deur WujekFoliarz, wat PadForge se effek- en oudioskrywers onderlê. MIT.</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Oudioroeteringspatroon met poortopsporing deur SundayMoments, die verwysing agter Volg oorfoonpoort. As dokumentasie gelees; AGPL-3.0.</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Byte-modus-QR-enkodeerder vir die webcontroller-kaart op die Paneelbord, oorgedra vanaf Nayuki se verwysingsimplementering. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Byte-modus-QR-enkodeerder vir die Webcontroller se adresse, oorgedra vanaf Nayuki se verwysingsimplementering. MIT.</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>Muiskunswerk in die Sleutelbord + muis-visualisering, deur Igor Budzhak. MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Drukgeskaleerde tempo</value></data>
   <data name="Macro_PressureScaledRate_Tooltip" xml:space="preserve"><value>Die herhaaltempo volg hoe hard die gekose analoogbron gedruk word. 'n Ligte druk herhaal teen die Stadige interval, 'n volle druk teen die Interval hierbo, en alles daartussen meng glad.</value></data>

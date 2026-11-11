@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>Dubliuoti</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Įjungta</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Išjungta</value></data>
+  <data name="Common_On" xml:space="preserve"><value>Įjungta</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Išjungta</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Daugiau</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Įdiegta</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Neįdiegta</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>Nepasiekiama ARM64 kompiuteriuose</value></data>
@@ -273,8 +276,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>Pati kalvė. Perjunkite liepsną, kad paleistumėte arba sustabdytumėte visų įvesčių apklausą.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Virtualūs valdikliai</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Pasirinkite išvesties tipą, priskirkite lizdui įrenginius ir spustelėkite kortelę, kad suformuotumėte jo priskyrimus.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>Paslaugos</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>Judesio duomenų, telefono žiniatinklio valdiklio ir nuotolinio ryšio srautai valdomi čia, apačioje.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>Čia laukia pasirenkamos funkcijos: telefono žiniatinklio valdiklis, nuotolinis ryšys, judesio serveris ir kita.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>Prietaisų eilutė</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>Įrenginių skaičius, apklausos dažnis ir variklio liepsna – visada matomi.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Rodyti pasveikinimo apžvalgą</value></data>
@@ -284,7 +286,26 @@
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Pasirinkite makrokomandą kairėje arba spustelėkite „Pridėti“, kad sukurtumėte naują.</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Šalta</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Peržiūra</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>Paslaugos</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Papildai</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>Pasirenkamos funkcijos. Kiekviena netrukdo, kol jos neįjungiate.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Daugiau žaidimo būdų</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Siųsti kitur</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>Ekrane</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>Naudokite telefoną ar planšetę kaip valdiklį.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Dairykitės judindami galvą su galvos sekikliu ar VR ausinėmis.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Priskirkite greitį, pedalus ir pavaras iš lenktynių žaidimų.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>Leiskite žiūrovams spausti mygtukus rašydami pokalbyje.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Bendrinkite valdiklius su „PadForge“ kitame kompiuteryje.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Siųskite valdiklio judesį emuliatoriams.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Priimkite gaidukų ir šviesos efektus iš žaidimų modifikacijų.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Rodykite meniu, sluoksnius ir profilių perjungimus žaidžiant.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Ekrane rodomas jutiklinis paviršius žaidimams, naudojantiems „PlayStation“ jutiklinį skydelį.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Paveikslėlis, laikmatis ar laikrodis virš kitų langų.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Prievadas, paprastas HTTP adresas, prieigos kodas</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Prisijungimas iš naujo, prievadas, tapatybės apsauga, prisijungimas adresu</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR vykdymo aplinka, UDP prievadas, atskirų ašių diapazonas</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Prievadas, DSX.exe pakaitalas</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Prievadai, visas greitis, pasirinktiniai formatai</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Judesio serveris</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook judesio teikėjo protokolo serveris giroskopo ir akselerometro duomenims.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Įjungti DSU judesio serverį (CemuHook judesio teikėjo protokolas)</value></data>
@@ -3865,7 +3886,7 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Garso nukreipimo pagal jungties aptikimą modelis, autorius SundayMoments – funkcijos „Pagal ausinių jungtį“ etalonas. Skaityta kaip dokumentacija. AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Baitų režimo QR koduotuvas suvestinės žiniatinklio valdiklio kortelei, perkeltas iš Nayuki etaloninės realizacijos. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Baitų režimo QR koduotuvas žiniatinklio valdiklio adresams, perkeltas iš Nayuki etaloninės realizacijos. MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>Pelės grafika vizualizacijoje „Klaviatūra + pelė“, autorius Igor Budzhak. MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Nuo spaudimo priklausantis dažnis</value></data>

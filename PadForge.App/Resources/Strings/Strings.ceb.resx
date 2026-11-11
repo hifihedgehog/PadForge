@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>Doblehon</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Gi-enable</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Gi-disable</value></data>
+  <data name="Common_On" xml:space="preserve"><value>Naka-on</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Naka-off</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Dugang pa</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Na-install</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Wala ma-install</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>Dili magamit sa ARM64</value></data>
@@ -224,9 +227,7 @@
   <data name="FirstRun_Next" xml:space="preserve"><value>Sunod</value></data>
   <data name="FirstRun_Done" xml:space="preserve"><value>Nahuman</value></data>
   <data name="Tour_Slots_Title" xml:space="preserve"><value>Mga slot</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>Mga serbisyo</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Pilia ang usa ka macro sa wala, o pislita ang Idugang aron maghimo og bag-o.</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>Mga serbisyo</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Mga game mod</value></data>
   <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Gitugotan niini ang mga game mod nga gihimo para sa DSX nga mo-set sa mga adaptive trigger, lightbar, suga sa player ug suga sa mute sa imong mga PlayStation controller.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Dawata ang mga DSX game mod</value></data>
@@ -2850,7 +2851,7 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Pattern sa audio routing pinaagi sa jack detect ni SundayMoments, ang reperensya luyo sa Sundi ang headphone jack. Gibasa isip dokumentasyon; AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Byte-mode QR encoder para sa web controller card sa Dashboard, gi-port gikan sa reference implementation ni Nayuki. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Byte-mode QR encoder para sa mga address sa Web Controller, gi-port gikan sa reference implementation ni Nayuki. MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>Artwork sa mouse sa Keyboard + Mouse nga visualization, ni Igor Budzhak. MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Rate nga sukad sa presyon</value></data>
@@ -3530,4 +3531,25 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} sa {1} samtang gikuptan</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} sa {1} hangtod hunongon</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>Hunonga ang epekto sa trigger sa {0}</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>Ania dinhi ang mga opsyonal nga feature: ang web controller sa phone, ang Remote Link, ang motion server ug uban pa.</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Mga dugang</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>Mga opsyonal nga feature. Dili kini manghilabot hangtod nga i-on nimo.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Dugang nga paagi sa pagdula</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Ipadala sa laing dapit</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>Sa screen</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>Gamita ang phone o tablet isip controller.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Paglingi-lingi gamit ang head tracker o VR headset.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>I-map ang katulin, mga pedal ug mga gear gikan sa mga dula sa pagmaneho.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>Tugoti ang mga tumatan-aw nga mopislit og mga button pinaagi sa pag-type sa chat.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Ipaambit ang mga controller sa PadForge sa laing PC.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Ipadala ang motion sa controller ngadto sa mga emulator.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Kuhaa ang mga epekto sa trigger ug suga gikan sa mga game mod.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Ipakita ang mga menu, layer ug pagbalhin og profile samtang nagdula ka.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Usa ka touch surface sa screen para sa mga dula nga naggamit sa PlayStation touchpad.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Usa ka hulagway, timer o orasan ibabaw sa ubang mga window.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Port, plain HTTP nga address, access code</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Pagkonektar pag-usab, port, proteksyon sa identidad, pagkonektar pinaagi sa address</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR runtime, UDP port, range kada axis</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, puli nga DSX.exe</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Mga port, kinatas-ang katulin, custom nga mga format</value></data>
 </root>

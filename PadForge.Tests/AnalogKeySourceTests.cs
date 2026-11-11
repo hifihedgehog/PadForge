@@ -592,7 +592,7 @@ namespace PadForge.Tests
 
         /// <summary>The switch sits in the Settings page's Input Engine card
         /// beside the G-keys switch, the vendor input paths the engine can
-        /// read, and not on the Dashboard.</summary>
+        /// read, and not on the Dashboard or among the extras.</summary>
         [Fact]
         public void TheSwitch_SitsInTheInputEngineCard()
         {
@@ -602,6 +602,7 @@ namespace PadForge.Tests
             Assert.True(engine > 0 && analog > engine, "the analog keyboards row is not inside the Input Engine card");
             Assert.Contains("CommandParameter=\"AnalogKeyboardsEnabled\"", page);
             Assert.DoesNotContain("AnalogKeyboards", RepoFile("PadForge.App", "Views", "DashboardPage.xaml"));
+            Assert.DoesNotContain("AnalogKeyboards", RepoFile("PadForge.App", "Views", "ExtrasPage.xaml"));
         }
 
         private static string RepoFile(params string[] parts)

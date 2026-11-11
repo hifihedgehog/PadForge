@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>Dyfisho</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Aktivizuar</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Çaktivizuar</value></data>
+  <data name="Common_On" xml:space="preserve"><value>Aktiv</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Joaktiv</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Më shumë</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Instaluar</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Jo i instaluar</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>Nuk disponohet në ARM64</value></data>
@@ -273,8 +276,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>Vetë farkëtaria. Ndërro flakën për të nisur ose ndaluar sondazhin e të gjitha hyrjeve.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Kontrollues virtualë</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Zgjidh një lloj dalje, ushqe slotin me pajisje dhe kliko një kartë për të formësuar hartëzimet e saj.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>Shërbimet</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>Të dhënat e lëvizjes, kontrolluesi në web i telefonit dhe Lidhja në distancë transmetohen që këtu poshtë.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>Veçoritë opsionale janë këtu: kontrolluesi në web i telefonit, Lidhja në distancë, serveri i lëvizjes dhe më shumë.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>Rreshti i instrumenteve</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>Numri i pajisjeve, shpejtësia e sondazhit dhe flaka e motorit, gjithmonë në pamje.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Shfaq turin e mirëseardhjes</value></data>
@@ -286,7 +288,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>OUT</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>I ftohtë</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Pamje paraprake</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>Shërbimet</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Shtesa</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>Veçori opsionale. Secila rri mënjanë derisa ta aktivizosh.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Më shumë mënyra për të luajtur</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Dërgoje diku tjetër</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>Në ekran</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>Përdor një telefon ose tablet si kontrollues.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Shiko përreth me një gjurmues koke ose kufje VR.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Hartëzo shpejtësinë, pedalet dhe marshet nga lojërat e drejtimit.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>Lejo shikuesit të shtypin butona duke shkruar në bisedë.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Ndaj kontrollues me PadForge në një PC tjetër.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Dërgo lëvizjen e kontrolluesit te emulatorët.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Merr efekte këmbëzash dhe drite nga modet e lojërave.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Shfaq menytë, shtresat dhe ndërrimet e profilit ndërsa luan.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Një sipërfaqe prekëse në ekran për lojëra që përdorin touchpadin e PlayStation.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Një figurë, kohëmatës ose orë mbi dritaret e tjera.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Porta, adresa HTTP e thjeshtë, kodi i qasjes</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Rilidhja, porta, mbrojtja e identitetit, lidhja me adresë</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>Runtime OpenXR, porta UDP, diapazoni për çdo bosht</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Porta, zëvendësuesi DSX.exe</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Portat, shpejtësia e plotë, formate të personalizuara</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Serveri i lëvizjes</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Server i protokollit DSU/CemuHook Motion Provider për të dhënat e xhiros dhe akselerometrit.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Aktivizo serverin e lëvizjes DSU (protokolli CemuHook Motion Provider)</value></data>
@@ -3816,7 +3837,7 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Modeli i drejtimit të audios me zbulim prize nga SundayMoments, reference pas Ndiq prizën e kufjeve. Lexuar si dokumentim; AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Koduesi QR në modalitet bajtesh për kartën e kontrolluesit në web të Panelit, i portuar nga implementimi referues i Nayuki. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Koduesi QR në modalitet bajtesh për adresat e kontrolluesit në web, i portuar nga implementimi referues i Nayuki. MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>Grafika e mausit në vizualizimin Tastierë + maus, nga Igor Budzhak. MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Ritëm i shkallëzuar me presion</value></data>

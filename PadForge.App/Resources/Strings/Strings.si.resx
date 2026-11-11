@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>අනුපිටපත් කරන්න</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>සබල කර ඇත</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>අබල කර ඇත</value></data>
+  <data name="Common_On" xml:space="preserve"><value>ක්‍රියාත්මකයි</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>ක්‍රියාවිරහිතයි</value></data>
+  <data name="Common_More" xml:space="preserve"><value>තවත්</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>ස්ථාපිතයි</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>ස්ථාපනය කර නැත</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>ARM64 මත ලබා ගත නොහැක</value></data>
@@ -273,8 +276,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>කම්මලම මෙයයි. සියලු ආදාන විමසීම ආරම්භ කිරීමට හෝ නැවැත්වීමට ගින්න ටොගල් කරන්න.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>අතථ්‍ය පාලක</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>ප්‍රතිදාන වර්ගයක් තෝරන්න, ස්ලොට් එකට උපාංග ලබා දෙන්න, සහ එහි සිතියම්ගත කිරීම් සැකසීමට කාඩ්පතක් ක්ලික් කරන්න.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>සේවා</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>චලන දත්ත, දුරකථන වෙබ් පාලකය සහ දුරස්ථ සබැඳිය මෙතැන් සිට ප්‍රවාහ වේ.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>විකල්ප විශේෂාංග මෙහි ඇත: දුරකථන වෙබ් පාලකය, දුරස්ථ සබැඳිය, චලන සේවාදායකය සහ තවත් දේ.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>උපකරණ රේඛාව</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>උපාංග ගණන, විමසීම් අනුපාතය සහ එන්ජින් ගින්න, සැමවිටම පෙනෙන ලෙස.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>සාදර චාරිකාව පෙන්වන්න</value></data>
@@ -286,7 +288,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>ප්‍රතිදාන</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>සීතලයි</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>පෙරදසුන</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>සේවා</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>අමතර</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>විකල්ප විශේෂාංග. ඔබ ක්‍රියාත්මක කරන තුරු සෑම එකක්ම බාධාවකින් තොරව පසෙක පවතී.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>ක්‍රීඩා කිරීමට තවත් ක්‍රම</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>වෙනත් තැනකට යවන්න</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>තිරය මත</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>දුරකථනයක් හෝ ටැබ්ලටයක් පාලකයක් ලෙස භාවිත කරන්න.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>හිස් ලුහුබැඳීමේ උපකරණයකින් හෝ VR හෙඩ්සෙට් එකකින් වටපිට බලන්න.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>රිය පැදවීමේ ක්‍රීඩාවලින් වේගය, පැඩල සහ ගියර සිතියම්ගත කරන්න.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>චැට් එකේ ටයිප් කිරීමෙන් බොත්තම් එබීමට නරඹන්නන්ට ඉඩ දෙන්න.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>වෙනත් පරිගණකයක ඇති PadForge සමඟ පාලක බෙදා ගන්න.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>පාලක චලනය ඉමියුලේටරවලට යවන්න.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>ක්‍රීඩා මොඩ්වලින් ට්‍රිගර සහ ආලෝක ප්‍රයෝග ලබා ගන්න.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>ඔබ ක්‍රීඩා කරන අතරතුර මෙනු, ස්ථර සහ පැතිකඩ මාරු කිරීම් පෙන්වන්න.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation ටච්පෑඩ් භාවිත කරන ක්‍රීඩා සඳහා තිරය මත ස්පර්ශ පෘෂ්ඨයක්.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>වෙනත් කවුළුවලට ඉහළින් පින්තූරයක්, ටයිමරයක් හෝ ඔරලෝසුවක්.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>තොට, සරල HTTP ලිපිනය, ප්‍රවේශ කේතය</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>නැවත සම්බන්ධ වීම, තොට, අනන්‍යතා ආරක්ෂණය, ලිපිනයෙන් සම්බන්ධ වීම</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR රන්ටයිම්, UDP තොට, අක්ෂය අනුව පරාසය</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>තොට, DSX.exe ආදේශකය</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>තොටවල්, සම්පූර්ණ වේගය, අභිරුචි ආකෘති</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>චලන සේවාදායකය</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>ගයිරෝ සහ ත්වරණමාන දත්ත සඳහා DSU/CemuHook Motion Provider ප්‍රොටෝකෝල සේවාදායකය.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU චලන සේවාදායකය සබල කරන්න (CemuHook Motion Provider Protocol)</value></data>
@@ -3826,7 +3847,7 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>SundayMoments විසින් ජැක් හඳුනාගැනීමේ ශ්‍රව්‍ය මාර්ගගත කිරීමේ රටාව, "හෙඩ්ෆෝන් ජැක් අනුගමනය කරන්න" පිටුපස ඇති මූලාශ්‍රය. ලේඛන ලෙස කියවන ලදී. AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Nayuki හි මූලාශ්‍ර ක්‍රියාත්මක කිරීමෙන් පෝට් කළ, උපකරණ පුවරුවේ වෙබ් පාලක කාඩ්පත සඳහා බයිට මාදිලියේ QR කේතකය. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Nayuki හි මූලාශ්‍ර ක්‍රියාත්මක කිරීමෙන් පෝට් කළ, වෙබ් පාලකයේ ලිපින සඳහා බයිට මාදිලියේ QR කේතකය. MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>යතුරුපුවරුව + මූසිකය දෘශ්‍යකරණයේ මූසික චිත්‍ර, Igor Budzhak විසින්. MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>පීඩනයට අනුව වේගය</value></data>

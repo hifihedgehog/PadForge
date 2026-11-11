@@ -1836,15 +1836,19 @@ namespace PadForge.Tests
             vm.SelectedGameTelemetryOption = vm.GameTelemetryOptions.First(o => o.Format == GameTelemetryFormat.Auto);
             Assert.True(vm.GameTelemetryReadsUdp);
 
-            // Both rows, each box with its reset button.
-            string page = File.ReadAllText(Path.Combine(RepoRoot(), "PadForge.App", "Views", "DashboardPage.xaml"));
-            foreach (string row in new[] { "Grid.Row=\"1\"", "Grid.Row=\"2\"" })
+            // Both rows, each box with its reset button. They are the first
+            // two rows of the grid under More on the Game Telemetry page
+            // (#574), where the game picker's row used to sit above them.
+            string page = File.ReadAllText(Path.Combine(RepoRoot(), "PadForge.App", "Views", "ExtrasPage.xaml"));
+            foreach (string row in new[] { "Grid.Row=\"0\"", "Grid.Row=\"1\"" })
             {
                 string panel = "<StackPanel " + row + " Grid.Column=\"1\" Orientation=\"Horizontal\" Margin=\"0,0,0,8\" IsEnabled=\"{Binding GameTelemetryReadsUdp}\">";
                 int at = page.IndexOf(panel, StringComparison.Ordinal);
                 Assert.True(at >= 0, "no " + panel);
+                Assert.True(at == page.LastIndexOf(panel, StringComparison.Ordinal), "two of " + panel);
                 string body = page.Substring(at, page.IndexOf("</StackPanel>", at, StringComparison.Ordinal) - at);
-                Assert.Contains(row == "Grid.Row=\"1\"" ? "{Binding GameTelemetryPort," : "{Binding GameTelemetryForwardPort,", body);
+                Assert.Contains(row == "Grid.Row=\"0\"" ? "{Binding GameTelemetryPort," : "{Binding GameTelemetryForwardPort,", body);
+                Assert.Contains("reset:SettingResetButton", body);
             }
         }
 

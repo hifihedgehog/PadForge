@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>Duplika</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Attivat</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Diżattivat</value></data>
+  <data name="Common_On" xml:space="preserve"><value>Mixgħul</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Mitfi</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Aktar</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Installat</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Mhux installat</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>Mhux disponibbli fuq ARM64</value></data>
@@ -273,8 +276,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>Il-forġa nfisha. Ixgħel jew itfi l-fjamma biex tibda jew twaqqaf il-polling kollu tal-input.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Kontrolluri virtwali</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Agħżel tip ta' output, agħti apparati lis-slot, u kklikkja karta biex tibdel il-mappjar tagħha.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>Servizzi</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>Id-data tal-moviment, il-web controller tat-telefon u Remote Link jinbagħtu minn hawn isfel.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>Karatteristiċi fakultattivi jinsabu hawn: il-web controller tat-telefon, Remote Link, is-server tal-moviment u aktar.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>Linja tal-istrumenti</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>L-għadd ta' apparati, ir-rata tal-polling u l-fjamma tal-engine, dejjem quddiem għajnejk.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Uri t-tour tat-tislima</value></data>
@@ -286,7 +288,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>OUT</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Kiesaħ</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Dehra minn qabel</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>Servizzi</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Extras</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>Karatteristiċi fakultattivi. Kull waħda tibqa' barra mit-triq sakemm tixgħelha.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Aktar modi kif tilgħab</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Ibgħatu x'imkien ieħor</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>Fuq l-iskrin</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>Uża telefown jew tablet bħala kontrollur.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Dur madwar b'apparat tat-traċċar tar-ras jew headset tal-VR.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Mappja l-veloċità, il-pedali u l-ingranaġġi minn logħob tas-sewqan.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>Ħalli lill-ispettaturi jagħfsu buttuni billi jittajpjaw fiċ-chat.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Ikkondividi l-kontrolluri ma' PadForge fuq PC ieħor.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Ibgħat il-moviment tal-kontrollur lill-emulaturi.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Ieħu effetti tat-triggers u tad-dwal mill-mods tal-logħob.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Uri menus, saffi u bidliet tal-profil waqt li tilgħab.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Wiċċ tal-mess fuq l-iskrin għal logħob li juża t-touchpad tal-PlayStation.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Stampa, timer jew arloġġ fuq it-twieqi l-oħra.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Port, indirizz HTTP sempliċi, kodiċi ta' aċċess</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Rikonnessjoni, port, protezzjoni tal-identità, konnessjoni bl-indirizz</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>Runtime OpenXR, port UDP, firxa għal kull assi</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, sostitut ta' DSX.exe</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Ports, veloċità sħiħa, formati personalizzati</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Server tal-moviment</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Server tal-protokoll DSU/CemuHook Motion Provider għad-data tal-ġiroskopju u tal-aċċelerometru.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Attiva s-server tal-moviment DSU (CemuHook Motion Provider Protocol)</value></data>
@@ -3801,7 +3822,7 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Mudell ta' routing tal-awdjo b'detezzjoni tal-jack minn SundayMoments, ir-referenza wara Segwi l-jack tal-headphones. Moqri bħala dokumentazzjoni; AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Encoder QR f'mod byte għall-karta tal-web controller fid-dashboard, migjub mill-implimentazzjoni ta' referenza ta' Nayuki. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Encoder QR f'mod byte għall-indirizzi tal-web controller, migjub mill-implimentazzjoni ta' referenza ta' Nayuki. MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>L-arti tal-maws fil-viżwalizzazzjoni Tastiera + maws, minn Igor Budzhak. MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Rata skont il-pressjoni</value></data>

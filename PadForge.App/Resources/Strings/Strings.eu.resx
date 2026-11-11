@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>Bikoiztu</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Gaituta</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Desgaituta</value></data>
+  <data name="Common_On" xml:space="preserve"><value>Aktibatuta</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Desaktibatuta</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Gehiago</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Instalatuta</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Instalatu gabe</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>Ez dago erabilgarri ARM64 sistemetan</value></data>
@@ -273,8 +276,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>Sutegia bera. Piztu edo itzali garra sarrera guztien galdeketa abiarazteko edo gelditzeko.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Kontrolagailu birtualak</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Aukeratu irteera mota bat, eman gailuak zirrikituari eta egin klik txartel batean haren esleipenak moldatzeko.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>Zerbitzuak</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>Mugimendu-datuak, telefonoko web-kontrolagailua eta Urruneko lotura hemen behetik igortzen dira.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>Aukerako eginbideak hemen daude: telefonoko web-kontrolagailua, Urruneko lotura, mugimendu-zerbitzaria eta gehiago.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>Tresna-lerroa</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>Gailu kopurua, galdeketa-maiztasuna eta motorraren garra, beti bistan.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Erakutsi ongietorri-bisita</value></data>
@@ -286,7 +288,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>IRTEERA</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Hotza</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Aurrebista</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>Zerbitzuak</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Gehigarriak</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>Aukerako eginbideak. Bakoitzak ez du trabarik egiten zuk aktibatu arte.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Jokatzeko modu gehiago</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Bidali beste nonbaitera</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>Pantailan</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>Erabili telefonoa edo tableta kontrolagailu gisa.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Begiratu inguruan buru-jarraipeneko gailu batekin edo VR betaurrekoekin.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Esleitu gidatze-jokoetako abiadura, pedalak eta martxak.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>Utzi ikusleei botoiak sakatzen txatean idatzita.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Partekatu kontrolagailuak beste PC bateko PadForge batekin.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Bidali kontrolagailuaren mugimendua emuladoreei.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Jaso katu- eta argi-efektuak joko-modetatik.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Erakutsi menuak, geruzak eta profil-aldaketak jokatzen duzun bitartean.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Pantailako ukipen-azalera, ukipen-panela duten PlayStation kontrolagailuen jokoetarako.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Irudi, tenporizadore edo erloju bat beste leihoen gainean.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Ataka, HTTP helbide arrunta, sarbide-kodea</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Birkonexioa, ataka, identitatearen babesa, helbidearen bidez konektatzea</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR exekuzio-ingurunea, UDP ataka, ardatz bakoitzeko heina</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Ataka, DSX.exe ordezkoa</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Atakak, abiadura osoa, formatu pertsonalizatuak</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Mugimendu-zerbitzaria</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider protokoloaren zerbitzaria, giroskopio- eta azelerometro-datuetarako.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Gaitu DSU mugimendu-zerbitzaria (CemuHook Motion Provider protokoloa)</value></data>
@@ -3862,7 +3883,7 @@ PadForge-k orain desinstalatzea nahi duzu? Horrek administratzaile-baimenak beha
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Konektorea detektatzean audioa bideratzeko patroia, SundayMoments-ena, Jarraitu aurikular-konektorea aukeraren erreferentzia. Dokumentazio gisa irakurria. AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Aginte-paneleko web-kontrolagailuaren txartelerako byte moduko QR kodetzailea, Nayukiren erreferentziako inplementaziotik portatua. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Web-kontrolagailuaren helbideetarako byte moduko QR kodetzailea, Nayuki egilearen erreferentziako inplementaziotik portatua. MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>Teklatua + sagua bistaratzeko saguaren artelana, Igor Budzhak-ena. MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Presioaren araberako maiztasuna</value></data>

@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>ನಕಲು ರಚಿಸಿ</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>ಸಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ</value></data>
+  <data name="Common_On" xml:space="preserve"><value>ಆನ್</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>ಆಫ್</value></data>
+  <data name="Common_More" xml:space="preserve"><value>ಇನ್ನಷ್ಟು</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>ಸ್ಥಾಪಿಸಲಾಗಿದೆ</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>ಸ್ಥಾಪಿಸಿಲ್ಲ</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>ARM64 ನಲ್ಲಿ ಲಭ್ಯವಿಲ್ಲ</value></data>
@@ -273,8 +276,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>ಕುಲುಮೆಯೇ ಇದು. ಎಲ್ಲಾ ಇನ್‌ಪುಟ್ ಪೋಲಿಂಗ್ ಪ್ರಾರಂಭಿಸಲು ಅಥವಾ ನಿಲ್ಲಿಸಲು ಜ್ವಾಲೆಯನ್ನು ಟಾಗಲ್ ಮಾಡಿ.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್‌ಗಳು</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>ಔಟ್‌ಪುಟ್ ಪ್ರಕಾರ ಆರಿಸಿ, ಸ್ಲಾಟ್‌ಗೆ ಸಾಧನಗಳನ್ನು ನೀಡಿ, ಮತ್ತು ಅದರ ಮ್ಯಾಪಿಂಗ್‌ಗಳನ್ನು ರೂಪಿಸಲು ಕಾರ್ಡ್ ಮೇಲೆ ಕ್ಲಿಕ್ ಮಾಡಿ.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>ಸೇವೆಗಳು</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>ಚಲನೆಯ ಡೇಟಾ, ಫೋನ್ ವೆಬ್ ಕಂಟ್ರೋಲರ್ ಮತ್ತು ರಿಮೋಟ್ ಲಿಂಕ್ ಇಲ್ಲಿಂದ ಸ್ಟ್ರೀಮ್ ಆಗುತ್ತವೆ.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>ಐಚ್ಛಿಕ ವೈಶಿಷ್ಟ್ಯಗಳು ಇಲ್ಲಿವೆ: ಫೋನ್ ವೆಬ್ ಕಂಟ್ರೋಲರ್, ರಿಮೋಟ್ ಲಿಂಕ್, ಮೋಷನ್ ಸರ್ವರ್ ಮತ್ತು ಇನ್ನಷ್ಟು.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>ಉಪಕರಣ ಪಟ್ಟಿ</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>ಸಾಧನಗಳ ಸಂಖ್ಯೆ, ಪೋಲಿಂಗ್ ದರ ಮತ್ತು ಎಂಜಿನ್ ಜ್ವಾಲೆ, ಯಾವಾಗಲೂ ಕಣ್ಣೆದುರು.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>ಸ್ವಾಗತ ಪ್ರವಾಸ ತೋರಿಸಿ</value></data>
@@ -284,7 +286,26 @@
   <data name="Macro_EmptyHint" xml:space="preserve"><value>ಎಡಭಾಗದಲ್ಲಿ ಮ್ಯಾಕ್ರೋ ಆಯ್ಕೆಮಾಡಿ, ಅಥವಾ ಹೊಸದನ್ನು ರಚಿಸಲು ಸೇರಿಸಿ ಒತ್ತಿ.</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>ತಣ್ಣಗಿದೆ</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>ಪೂರ್ವವೀಕ್ಷಣೆ</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>ಸೇವೆಗಳು</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>ಹೆಚ್ಚುವರಿ</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>ಐಚ್ಛಿಕ ವೈಶಿಷ್ಟ್ಯಗಳು. ನೀವು ಆನ್ ಮಾಡುವವರೆಗೆ ಪ್ರತಿಯೊಂದೂ ಅಡ್ಡಿಯಾಗುವುದಿಲ್ಲ.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>ಆಡಲು ಇನ್ನಷ್ಟು ಮಾರ್ಗಗಳು</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>ಬೇರೆಡೆಗೆ ಕಳುಹಿಸಿ</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>ಪರದೆಯ ಮೇಲೆ</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>ಫೋನ್ ಅಥವಾ ಟ್ಯಾಬ್ಲೆಟ್ ಅನ್ನು ಕಂಟ್ರೋಲರ್ ಆಗಿ ಬಳಸಿ.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>ಹೆಡ್ ಟ್ರ್ಯಾಕರ್ ಅಥವಾ VR ಹೆಡ್‌ಸೆಟ್‌ನಿಂದ ಸುತ್ತಲೂ ನೋಡಿ.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>ಡ್ರೈವಿಂಗ್ ಗೇಮ್‌ಗಳ ವೇಗ, ಪೆಡಲ್‌ಗಳು ಮತ್ತು ಗೇರ್‌ಗಳನ್ನು ಮ್ಯಾಪ್ ಮಾಡಿ.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>ವೀಕ್ಷಕರು ಚಾಟ್‌ನಲ್ಲಿ ಟೈಪ್ ಮಾಡಿ ಬಟನ್‌ಗಳನ್ನು ಒತ್ತಲು ಬಿಡಿ.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>ಬೇರೊಂದು PC ಯಲ್ಲಿರುವ PadForge ನೊಂದಿಗೆ ಕಂಟ್ರೋಲರ್‌ಗಳನ್ನು ಹಂಚಿಕೊಳ್ಳಿ.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>ಕಂಟ್ರೋಲರ್ ಚಲನೆಯನ್ನು ಎಮ್ಯುಲೇಟರ್‌ಗಳಿಗೆ ಕಳುಹಿಸಿ.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>ಗೇಮ್ ಮಾಡ್‌ಗಳಿಂದ ಟ್ರಿಗರ್ ಮತ್ತು ಲೈಟ್ ಪರಿಣಾಮಗಳನ್ನು ಪಡೆಯಿರಿ.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>ಆಡುವಾಗ ಮೆನು, ಲೇಯರ್ ಮತ್ತು ಪ್ರೊಫೈಲ್ ಬದಲಾವಣೆಗಳನ್ನು ತೋರಿಸಿ.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation ಟಚ್‌ಪ್ಯಾಡ್ ಬಳಸುವ ಗೇಮ್‌ಗಳಿಗಾಗಿ ಪರದೆಯ ಮೇಲಿನ ಸ್ಪರ್ಶ ಮೇಲ್ಮೈ.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>ಇತರ ವಿಂಡೋಗಳ ಮೇಲೆ ಚಿತ್ರ, ಟೈಮರ್ ಅಥವಾ ಗಡಿಯಾರ.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>ಪೋರ್ಟ್, ಸರಳ HTTP ವಿಳಾಸ, ಪ್ರವೇಶ ಕೋಡ್</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>ಮರುಸಂಪರ್ಕ, ಪೋರ್ಟ್, ಗುರುತು ರಕ್ಷಣೆ, ವಿಳಾಸದ ಮೂಲಕ ಸಂಪರ್ಕ</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR ರನ್‌ಟೈಮ್, UDP ಪೋರ್ಟ್, ಪ್ರತಿ ಅಕ್ಷದ ವ್ಯಾಪ್ತಿ</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>ಪೋರ್ಟ್, DSX.exe ಬದಲಿ ಪ್ರೋಗ್ರಾಂ</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>ಪೋರ್ಟ್‌ಗಳು, ಪೂರ್ಣ ವೇಗ, ಕಸ್ಟಮ್ ಫಾರ್ಮ್ಯಾಟ್‌ಗಳು</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>ಮೋಷನ್ ಸರ್ವರ್</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>ಜೈರೋ ಮತ್ತು ಆಕ್ಸೆಲರೋಮೀಟರ್ ಡೇಟಾಗಾಗಿ DSU/CemuHook Motion Provider ಪ್ರೋಟೋಕಾಲ್ ಸರ್ವರ್.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU ಮೋಷನ್ ಸರ್ವರ್ ಸಕ್ರಿಯಗೊಳಿಸಿ (CemuHook Motion Provider Protocol)</value></data>
@@ -3853,7 +3874,7 @@ PadForge ಅವುಗಳನ್ನು ಈಗ ಅನ್‌ಇನ್‌ಸ್ಟಾ
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>ಜ್ಯಾಕ್-ಪತ್ತೆ ಆಡಿಯೊ ರೂಟಿಂಗ್ ಮಾದರಿ, SundayMoments ಅವರಿಂದ, ಹೆಡ್‌ಫೋನ್ ಜ್ಯಾಕ್ ಅನುಸರಿಸು ಹಿಂದಿನ ಉಲ್ಲೇಖ. ದಾಖಲೆಯಾಗಿ ಓದಲಾಗಿದೆ. AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>ಡ್ಯಾಶ್‌ಬೋರ್ಡ್‌ನ ವೆಬ್ ಕಂಟ್ರೋಲರ್ ಕಾರ್ಡ್‌ಗಾಗಿ ಬೈಟ್-ಮೋಡ್ QR ಎನ್‌ಕೋಡರ್, Nayuki ಅವರ ರೆಫರೆನ್ಸ್ ಅನುಷ್ಠಾನದಿಂದ ಪೋರ್ಟ್ ಮಾಡಲಾಗಿದೆ. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>ವೆಬ್ ಕಂಟ್ರೋಲರ್‌ನ ವಿಳಾಸಗಳಿಗಾಗಿ ಬೈಟ್-ಮೋಡ್ QR ಎನ್‌ಕೋಡರ್, Nayuki ಅವರ ರೆಫರೆನ್ಸ್ ಅನುಷ್ಠಾನದಿಂದ ಪೋರ್ಟ್ ಮಾಡಲಾಗಿದೆ. MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>ಕೀಬೋರ್ಡ್ + ಮೌಸ್ ದೃಶ್ಯೀಕರಣದಲ್ಲಿರುವ ಮೌಸ್ ಕಲಾಕೃತಿ, Igor Budzhak ಅವರಿಂದ. MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>ಒತ್ತಡ-ಆಧಾರಿತ ದರ</value></data>

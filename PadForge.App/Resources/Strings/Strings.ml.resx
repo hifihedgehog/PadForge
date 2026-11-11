@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>ഡ്യൂപ്ലിക്കേറ്റ്</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>പ്രവർത്തനക്ഷമം</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>പ്രവർത്തനരഹിതം</value></data>
+  <data name="Common_On" xml:space="preserve"><value>ഓൺ</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>ഓഫ്</value></data>
+  <data name="Common_More" xml:space="preserve"><value>കൂടുതൽ</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>ഇൻസ്റ്റാൾ ചെയ്തു</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>ഇൻസ്റ്റാൾ ചെയ്തിട്ടില്ല</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>ARM64-ൽ ലഭ്യമല്ല</value></data>
@@ -273,8 +276,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>ഫോർജ് തന്നെ. എല്ലാ ഇൻപുട്ട് പോളിംഗും ആരംഭിക്കാനോ നിർത്താനോ ജ്വാല ടോഗിൾ ചെയ്യുക.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>വെർച്വൽ കൺട്രോളറുകൾ</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>ഔട്ട്പുട്ട് തരം തിരഞ്ഞെടുക്കുക, സ്ലോട്ടിലേക്ക് ഉപകരണങ്ങൾ ചേർക്കുക, അതിന്റെ മാപ്പിംഗുകൾ രൂപപ്പെടുത്താൻ കാർഡിൽ ക്ലിക്ക് ചെയ്യുക.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>സേവനങ്ങൾ</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>മോഷൻ ഡാറ്റ, ഫോൺ വെബ് കൺട്രോളർ, റിമോട്ട് ലിങ്ക് എന്നിവ ഇവിടെ നിന്ന് സ്ട്രീം ചെയ്യുന്നു.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>ഓപ്ഷണൽ ഫീച്ചറുകൾ ഇവിടെയുണ്ട്: ഫോൺ വെബ് കൺട്രോളർ, റിമോട്ട് ലിങ്ക്, മോഷൻ സെർവർ തുടങ്ങിയവ.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>ഇൻസ്ട്രുമെന്റ് ലൈൻ</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>ഉപകരണങ്ങളുടെ എണ്ണം, പോളിംഗ് നിരക്ക്, എഞ്ചിൻ ജ്വാല എന്നിവ എപ്പോഴും കാണാം.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>സ്വാഗത ടൂർ കാണിക്കുക</value></data>
@@ -286,7 +288,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>OUT</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>തണുത്തത്</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>പ്രിവ്യൂ</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>സേവനങ്ങൾ</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>എക്സ്ട്രാസ്</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>ഓപ്ഷണൽ ഫീച്ചറുകൾ. നിങ്ങൾ ഓണാക്കുന്നതുവരെ ഓരോന്നും മാറി നിൽക്കും.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>കളിക്കാൻ കൂടുതൽ വഴികൾ</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>മറ്റൊരിടത്തേക്ക് അയയ്ക്കുക</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>സ്ക്രീനിൽ</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>ഫോണോ ടാബ്ലെറ്റോ കൺട്രോളറായി ഉപയോഗിക്കുക.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>ഹെഡ് ട്രാക്കറോ VR ഹെഡ്സെറ്റോ ഉപയോഗിച്ച് ചുറ്റും നോക്കുക.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>ഡ്രൈവിംഗ് ഗെയിമുകളിലെ വേഗം, പെഡലുകൾ, ഗിയറുകൾ എന്നിവ മാപ്പ് ചെയ്യുക.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>കാഴ്ചക്കാർക്ക് ചാറ്റിൽ ടൈപ്പ് ചെയ്ത് ബട്ടണുകൾ അമർത്താൻ അനുവദിക്കുക.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>മറ്റൊരു PC-യിലെ PadForge-മായി കൺട്രോളറുകൾ പങ്കിടുക.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>കൺട്രോളർ മോഷൻ എമുലേറ്ററുകളിലേക്ക് അയയ്ക്കുക.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>ഗെയിം മോഡുകളിൽ നിന്ന് ട്രിഗർ, ലൈറ്റ് ഇഫക്റ്റുകൾ സ്വീകരിക്കുക.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>കളിക്കുമ്പോൾ മെനുകൾ, ലെയറുകൾ, പ്രൊഫൈൽ മാറ്റങ്ങൾ എന്നിവ കാണിക്കുക.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation ടച്ച്പാഡ് ഉപയോഗിക്കുന്ന ഗെയിമുകൾക്കുള്ള സ്ക്രീനിലെ ടച്ച് പ്രതലം.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>മറ്റ് വിൻഡോകൾക്ക് മുകളിൽ ഒരു ചിത്രം, ടൈമർ അല്ലെങ്കിൽ ക്ലോക്ക്.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>പോർട്ട്, സാധാരണ HTTP വിലാസം, ആക്സസ് കോഡ്</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>വീണ്ടും കണക്റ്റ് ചെയ്യൽ, പോർട്ട്, ഐഡന്റിറ്റി സംരക്ഷണം, വിലാസം ഉപയോഗിച്ച് കണക്റ്റ് ചെയ്യൽ</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR റൺടൈം, UDP പോർട്ട്, ഓരോ ആക്സിസിനും പരിധി</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>പോർട്ട്, DSX.exe സ്റ്റാൻഡ്-ഇൻ</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>പോർട്ടുകൾ, പൂർണ്ണ വേഗം, ഇഷ്ടാനുസൃത ഫോർമാറ്റുകൾ</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>മോഷൻ സെർവർ</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>ഗൈറോ, ആക്സിലറോമീറ്റർ ഡാറ്റയ്ക്കുള്ള DSU/CemuHook Motion Provider പ്രോട്ടോക്കോൾ സെർവർ.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU മോഷൻ സെർവർ പ്രവർത്തനക്ഷമമാക്കുക (CemuHook Motion Provider പ്രോട്ടോക്കോൾ)</value></data>
@@ -3835,7 +3856,7 @@ PadForge ഇവ ഇപ്പോൾ അൺഇൻസ്റ്റാൾ ചെയ�
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>SundayMoments-ന്റെ ജാക്ക്-ഡിറ്റക്റ്റ് ഓഡിയോ റൂട്ടിംഗ് മാതൃക, ഹെഡ്ഫോൺ ജാക്ക് പിന്തുടരുക എന്നതിന്റെ റഫറൻസ്. ഡോക്യുമെന്റേഷനായി വായിച്ചത്. AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>ഡാഷ്ബോർഡിലെ വെബ് കൺട്രോളർ കാർഡിനുള്ള ബൈറ്റ്-മോഡ് QR എൻകോഡർ, Nayuki-യുടെ റഫറൻസ് നിർവഹണത്തിൽ നിന്ന് പോർട്ട് ചെയ്തത്. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>വെബ് കൺട്രോളറിന്റെ വിലാസങ്ങൾക്കുള്ള ബൈറ്റ്-മോഡ് QR എൻകോഡർ, Nayuki-യുടെ റഫറൻസ് നിർവഹണത്തിൽ നിന്ന് പോർട്ട് ചെയ്തത്. MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>കീബോർഡ് + മൗസ് വിഷ്വലൈസേഷനിലെ മൗസ് ആർട്ട്വർക്ക്, Igor Budzhak-ന്റേത്. MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>മർദ്ദത്തിനനുസരിച്ചുള്ള നിരക്ക്</value></data>

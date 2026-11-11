@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>Կրկնօրինակել</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Միացուած</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Անջատուած</value></data>
+  <data name="Common_On" xml:space="preserve"><value>Միացուած</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Անջատուած</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Աւելին</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Տեղադրուած</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Տեղադրուած չէ</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>ARM64-ի վրայ հասանելի չէ</value></data>
@@ -273,8 +276,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>Դարբնոցը ինքը։ Միացուցէք կամ անջատեցէք բոցը՝ մուտքերու ամբողջ հարցումը սկսելու կամ կեցնելու համար։</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Վիրթուալ կառավարիչներ</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Ընտրեցէք ելքի տեսակ մը, խցիկին սարքեր տուէք եւ սեղմեցէք քարտի մը վրայ՝ անոր համապատասխանեցումները ձեւաւորելու համար։</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>Ծառայութիւններ</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>Շարժման տուեալները, հեռախօսի ցանցային կառավարիչը եւ Հեռակայ կապը կը հոսին վարի այս մասէն։</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>Ընտրովի գործառոյթները հոս կը սպասեն՝ հեռախօսի ցանցային կառավարիչը, Հեռակայ կապը, շարժման սպասարկիչը եւ այլն։</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>Գործիքներու գիծ</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>Սարքերու թիւը, հարցման յաճախականութիւնը եւ շարժիչի բոցը՝ միշտ տեսանելի։</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Ցուցադրել ողջոյնի շրջայցը</value></data>
@@ -286,7 +288,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>ԵԼՔ</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Պաղ</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Նախադիտում</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>Ծառայութիւններ</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Լրացուցիչներ</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>Ընտրովի գործառոյթներ։ Իւրաքանչիւրը չի խանգարեր, մինչեւ որ զայն միացնէք։</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Խաղալու այլ ձեւեր</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Ուրիշ տեղ ղրկել</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>Պաստառի վրայ</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>Հեռախօս կամ թապլեթ գործածեցէք իբրեւ կառավարիչ։</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Շուրջը նայեցէք գլխու հետեւիչով կամ VR սաղաւարտով։</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Վարելու խաղերէն արագութիւնը, ոտնակները եւ փոխանցումները համապատասխանեցուցէք։</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>Թոյլ տուէք, որ դիտողները կոճակներ սեղմեն՝ զրուցարանին մէջ գրելով։</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Կառավարիչները բաժնեցէք ուրիշ համակարգիչի մը վրայ գործող PadForge ծրագրին հետ։</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Կառավարիչի շարժումը ղրկեցէք նմանակիչներուն։</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Ձգաններու եւ լոյսերու էֆեքթները առէք խաղի յաւելուածներէն։</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Խաղալու ընթացքին ցուցադրեցէք ցանկերը, շերտերը եւ փրոֆիլի փոխումները։</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Պաստառի վրայի հպման մակերես՝ PlayStation-ի հպման վահանակը գործածող խաղերու համար։</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Նկար, ժամաչափ կամ ժամացոյց՝ միւս պատուհաններուն վրայ։</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Փորթ, պարզ HTTP հասցէ, մուտքի ծածկագիր</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Վերակապուիլ, փորթ, ինքնութեան պաշտպանութիւն, միանալ հասցէով</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR միջավայր, UDP փորթ, իւրաքանչիւր առանցքի միջակայք</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Փորթ, DSX.exe փոխարինող</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Փորթեր, լրիւ արագութիւն, անհատական ձեւաչափեր</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Շարժման սպասարկիչ</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider հաղորդակարգի սպասարկիչ՝ ժիրոսքոփի եւ արագացման չափիչի տուեալներուն համար։</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Միացնել DSU շարժման սպասարկիչը (CemuHook Motion Provider հաղորդակարգ)</value></data>
@@ -3827,7 +3848,7 @@
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Բնիկի յայտնաբերումով ձայնի ուղղորդման կաղապար, հեղինակ՝ SundayMoments, «Հետեւիլ ականջակալի բնիկին» կարգաւորումին աղբիւրը։ Կարդացուած է որպէս փաստաթղթաւորում, AGPL-3.0։</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Բայթային կերպի QR կոդաւորիչ՝ վահանակին ցանցային կառավարիչի քարտին համար, փոխադրուած Nayuki-ի ուղենիշային իրականացումէն։ MIT։</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Բայթային կերպի QR կոդաւորիչ՝ Ցանցային կառավարիչի հասցէներուն համար, փոխադրուած Nayuki-ի ուղենիշային իրականացումէն։ MIT։</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>Մուկի պատկերը՝ «Ստեղնաշար + մուկ» պատկերացումին մէջ, հեղինակ՝ Igor Budzhak։ MIT։</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Ճնշումէն կախեալ արագութիւն</value></data>

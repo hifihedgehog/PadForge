@@ -2694,6 +2694,11 @@ namespace PadForge.Services
             // comes through here with an empty list and folds them all back.
             CardFoldState.Load(appSettings.OpenCards);
 
+            // What three Extras switches turned off last (#574).
+            _mainVm.Dashboard.HeadTrackingLastSources = appSettings.HeadTrackingLastSources;
+            _mainVm.Dashboard.OverlaysLastShown = appSettings.OverlaysLastShown;
+            _mainVm.Dashboard.ScreenOverlaysLastOn = appSettings.ScreenOverlaysLastOn;
+
             // Restore main window position/size (profile-independent).
             vm.MainWindowLeft = appSettings.MainWindowLeft;
             vm.MainWindowTop = appSettings.MainWindowTop;
@@ -5231,6 +5236,9 @@ namespace PadForge.Services
                 LegacyDriverCleanupOffered = vm.LegacyDriverCleanupOffered,
                 FirstRunTourCompleted = vm.FirstRunTourCompleted,
                 OpenCards = CardFoldState.Snapshot(),
+                HeadTrackingLastSources = _mainVm.Dashboard.HeadTrackingLastSources,
+                OverlaysLastShown = _mainVm.Dashboard.OverlaysLastShown,
+                ScreenOverlaysLastOn = _mainVm.Dashboard.ScreenOverlaysLastOn,
                 EnableInputHiding = vm.EnableInputHiding,
                 KeepHidHideCloaksBetweenLaunches = vm.KeepHidHideCloaksBetweenLaunches,
                 FlydigiEnhancedProtocol = vm.FlydigiEnhancedProtocol,
@@ -7458,6 +7466,27 @@ namespace PadForge.Services
         [XmlArrayItem("Card")]
         public List<string> OpenCards { get; set; } = new();
         public bool ShouldSerializeOpenCards() => OpenCards != null && OpenCards.Count > 0;
+
+        /// <summary>
+        /// What the Extras switch of Head Tracking turned off last (#574), so
+        /// it brings the same inputs back: the bits DashboardViewModel names.
+        /// Zero, and left out of the file, until the switch has turned any
+        /// off.
+        /// </summary>
+        [XmlElement]
+        public int HeadTrackingLastSources { get; set; }
+        public bool ShouldSerializeHeadTrackingLastSources() => HeadTrackingLastSources != 0;
+
+        /// <summary>The same for the Extras switch of Overlays.</summary>
+        [XmlElement]
+        public int OverlaysLastShown { get; set; }
+        public bool ShouldSerializeOverlaysLastShown() => OverlaysLastShown != 0;
+
+        /// <summary>The same for the Extras switch of Screen Overlay, a bit
+        /// for each overlay's number.</summary>
+        [XmlElement]
+        public int ScreenOverlaysLastOn { get; set; }
+        public bool ShouldSerializeScreenOverlaysLastOn() => ScreenOverlaysLastOn != 0;
 
         /// <summary>
         /// Global master switch for device hiding (HidHide + input hooks).

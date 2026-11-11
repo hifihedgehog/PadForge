@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>Дублювати</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Увімкнено</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Вимкнено</value></data>
+  <data name="Common_On" xml:space="preserve"><value>Увімкнено</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Вимкнено</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Більше</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Установлено</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Не встановлено</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>Недоступно на ARM64</value></data>
@@ -273,8 +276,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>Саме горно. Перемкніть полум'я, щоб запустити або зупинити все опитування введення.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Віртуальні контролери</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Виберіть тип виходу, дайте слоту пристрої та клацніть картку, щоб викувати її прив'язки.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>Служби</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>Дані руху, вебконтролер для телефона та Віддалений зв'язок транслюються звідси, знизу.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>Тут чекають додаткові можливості: вебконтролер для телефона, Віддалений зв'язок, сервер руху та інші.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>Рядок приладів</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>Кількість пристроїв, частота опитування та полум'я рушія завжди перед очима.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Показати вітальну екскурсію</value></data>
@@ -286,7 +288,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>ВИХІД</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Холодний</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Перегляд</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>Служби</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Додатково</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>Додаткові можливості. Кожна не заважає, доки ви її не ввімкнете.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Більше способів грати</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Надсилання кудись інде</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>На екрані</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>Використовуйте телефон або планшет як контролер.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Оглядайтеся за допомогою трекера голови або VR-шолома.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Прив'язуйте швидкість, педалі та передачі з гоночних ігор.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>Дозвольте глядачам натискати кнопки, пишучи в чаті.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Діліться контролерами з PadForge на іншому ПК.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Передає рух контролера до емуляторів.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Приймайте ефекти тригерів і світла від ігрових модів.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Показуйте меню, шари та перемикання профілів під час гри.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Екранна сенсорна поверхня для ігор, що використовують сенсорну панель PlayStation.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Зображення, таймер або годинник поверх інших вікон.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Порт, звичайна адреса HTTP, код доступу</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Повторне підключення, порт, захист посвідчення, підключення за адресою</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>Середовище виконання OpenXR, порт UDP, діапазон окремих осей</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Порт, замінник DSX.exe</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Порти, повна швидкість, власні формати</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Сервер руху</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Сервер протоколу DSU/CemuHook Motion Provider для даних гіроскопа й акселерометра.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Увімкнути сервер руху DSU (протокол CemuHook Motion Provider)</value></data>
@@ -3866,7 +3887,7 @@
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Схема маршрутизації звуку за виявленням гнізда від SundayMoments, еталон для режиму «За гніздом навушників». Використано як документацію; AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Байтовий QR-кодувальник для картки вебконтролера на інформаційній панелі, перенесений з еталонної реалізації Nayuki. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Байтовий QR-кодувальник для адрес вебконтролера, перенесений з еталонної реалізації Nayuki. MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>Зображення миші у візуалізації «Клавіатура + миша», від Igor Budzhak. MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Швидкість за тиском</value></data>

@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>Podvoji</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Omogočeno</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Onemogočeno</value></data>
+  <data name="Common_On" xml:space="preserve"><value>Vklopljeno</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Izklopljeno</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Več</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Nameščeno</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Ni nameščeno</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>Ni na voljo za ARM64</value></data>
@@ -288,8 +291,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>Kovačnica sama. S preklopom plamena zaženete ali ustavite vse poizvedovanje vnosov.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Navidezni krmilniki</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Izberite vrsto izhoda, reži dodelite naprave in kliknite kartico, da oblikujete njene preslikave.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>Storitve</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>Od tu se pretakajo podatki o gibanju, spletni krmilnik za telefon in Oddaljena povezava.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>Tu čakajo izbirne funkcije: spletni krmilnik za telefon, Oddaljena povezava, strežnik gibanja in še več.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>Vrstica instrumentov</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>Število naprav, hitrost poizvedovanja in plamen mehanizma, vedno na vidiku.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Pokaži uvodni ogled</value></data>
@@ -301,7 +303,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>IZHOD</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Hladno</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Predogled</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>Storitve</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Dodatki</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>Izbirne funkcije. Vsaka ostane ob strani, dokler je ne vklopite.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Več načinov igranja</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Pošlji drugam</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>Na zaslonu</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>Uporabite telefon ali tablico kot krmilnik.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Razgledujte se s sledilnikom glave ali slušalkami VR.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Preslikajte hitrost, pedala in prestave iz voznih iger.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>Gledalci naj pritiskajo gumbe s tipkanjem v klepetu.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Delite krmilnike s programom PadForge na drugem računalniku.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Pošiljajte gibanje krmilnika emulatorjem.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Prevzemite učinke sprožilcev in luči iz modifikacij iger.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Prikažite menije, plasti in zamenjave profilov med igranjem.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Zaslonska površina na dotik za igre, ki uporabljajo sledilno ploščico PlayStation.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Slika, časovnik ali ura nad drugimi okni.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Vrata, navaden naslov HTTP, koda za dostop</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Samodejna ponovna povezava, vrata, zaščita identitete, povezava prek naslova</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>Izvajalno okolje OpenXR, vrata UDP, obseg posamezne osi</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Vrata, nadomestek DSX.exe</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Vrata, polna hitrost, formati po meri</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Strežnik gibanja</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Strežnik protokola DSU/CemuHook Motion Provider za podatke žiroskopa in merilnika pospeška.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Omogoči strežnik gibanja DSU (protokol CemuHook Motion Provider)</value></data>
@@ -4065,7 +4086,7 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Vzorec usmerjanja zvoka z zaznavanjem priključka avtorja SundayMoments, referenca za možnost „Sledi priključku za slušalke“. Prebrano kot dokumentacija. AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Kodirnik QR v bajtnem načinu za kartico spletnega krmilnika na nadzorni plošči, prenesen iz referenčne implementacije avtorja Nayuki. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Kodirnik QR v bajtnem načinu za naslove spletnega krmilnika, prenesen iz referenčne implementacije avtorja Nayuki. MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>Slika miške v prikazu Tipkovnica + miška. Avtor: Igor Budzhak. MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Hitrost glede na pritisk</value></data>
@@ -4903,7 +4924,7 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>Omogoči prekrivni prikaz zaslona</value></data>
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Izberi, kaj prikazuje …</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>Prekrivni prikaz zaslona PadForge</value></data>
-  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Še ni ničesar za prikaz. Na nadzorni plošči izberite, kaj prikazuje.</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Še ni ničesar za prikaz. Na strani Prekrivni prikaz zaslona, pod Dodatki, izberite, kaj prikazuje.</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Preklopi prekrivni prikaz zaslona</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Preklopi prekrivni prikaz zaslona</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Prekrivni prikaz zaslona</value></data>

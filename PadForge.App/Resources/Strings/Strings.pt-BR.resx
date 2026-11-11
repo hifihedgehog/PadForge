@@ -72,6 +72,9 @@
   <data name="Common_Paste" xml:space="preserve"><value>Colar</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Ativado</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Desativado</value></data>
+  <data name="Common_On" xml:space="preserve"><value>Ativado</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Desativado</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Mais</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Instalado</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Não Instalado</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>Não Disponível em ARM64</value></data>
@@ -3123,7 +3126,6 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="About_WiimoteLibDesc" xml:space="preserve"><value>Documentação do comportamento da câmera IR do Wii e da Balance Board, por Brian Peek. MIT.</value></data>
   <data name="About_JoyconSinger" xml:space="preserve"><value>joycon-singer</value></data>
   <data name="About_JoyconSingerDesc" xml:space="preserve"><value>Documentação do formato de transmissão da vibração HD do Joy-Con, por Sergey004. Lida apenas para fatos do protocolo.</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>Serviços</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Slot</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Frio</value></data>
   <data name="Devices_EmptyHint" xml:space="preserve"><value>Selecione um dispositivo para inspecionar sua entrada bruta.</value></data>
@@ -3147,14 +3149,33 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Selecione uma macro à esquerda ou clique em Adicionar para criar uma.</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Dispositivo</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Prévia</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Extras</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>Recursos opcionais. Cada um fica fora do caminho até você ativá-lo.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Mais Formas de Jogar</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Envie para Outro Lugar</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>Na Tela</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>Use um celular ou tablet como controle.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Olhe ao redor com um rastreador de cabeça ou headset de RV.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Mapeie velocidade, pedais e marchas de jogos de direção.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>Deixe os espectadores apertarem botões digitando no chat.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Compartilhe controles com o PadForge em outro PC.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Envie o movimento do controle para emuladores.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Receba efeitos de gatilho e de luz de mods de jogos.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Mostre menus, camadas e trocas de perfil enquanto você joga.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Uma superfície de toque na tela para jogos que usam o touchpad do PlayStation.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Uma imagem, cronômetro ou relógio acima das outras janelas.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Porta, endereço HTTP sem criptografia, código de acesso</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Reconexão, porta, proteção de identidade, conexão por endereço</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>Runtime do OpenXR, porta UDP, alcance por eixo</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Porta, substituto do DSX.exe</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Portas, velocidade total, formatos personalizados</value></data>
   <data name="Pad_ToggleAnnotations" xml:space="preserve"><value>Anotações de Mapeamento</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Mostrar Tour de Boas-Vindas</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Escolha um tipo de saída, alimente o slot com dispositivos e clique em um card para moldar seus mapeamentos.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>Os recursos opcionais ficam aqui: o controle web pelo celular, o Remote Link, o servidor de movimento e mais.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Controles Virtuais</value></data>
   <data name="Tour_Engine_Body" xml:space="preserve"><value>A forja em si. Alterne a chama para iniciar ou parar toda a leitura de entradas.</value></data>
   <data name="Tour_Engine_Title" xml:space="preserve"><value>Motor de Entrada</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>Os dados de movimento, o controle web pelo celular e o Remote Link transmitem daqui.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>Serviços</value></data>
   <data name="Tour_Slots_Body" xml:space="preserve"><value>Cada controle virtual fica aqui. A chama mostra quais slots estão forjando agora.</value></data>
   <data name="Tour_Slots_Title" xml:space="preserve"><value>Slots</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>Contagem de dispositivos, taxa de polling e a chama do motor, sempre à vista.</value></data>
@@ -3997,7 +4018,7 @@ Deseja que o PadForge os desinstale agora? Isso exige elevação e pode levar um
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Padrão de roteamento de áudio por detecção de conector de SundayMoments, a referência de Seguir o conector de fone. Lido como documentação; AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Codificador QR em modo byte para o cartão do controle web no painel, portado da implementação de referência do Nayuki. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Codificador QR em modo byte para os endereços do Controle Web, portado da implementação de referência do Nayuki. MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>Arte do mouse na visualização de teclado e mouse, por Igor Budzhak. MIT.</value></data>
   <data name="DeviceType_HeadsetMotion" xml:space="preserve"><value>Rastreador do Headset</value></data>
@@ -4848,7 +4869,7 @@ Deseja que o PadForge os desinstale agora? Isso exige elevação e pode levar um
   <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>Ativar Sobreposição de Tela</value></data>
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Escolher o Que Ela Mostra…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>Sobreposição de Tela do PadForge</value></data>
-  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Ainda não há nada para mostrar. Escolha o que ela mostra no Painel.</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Ainda não há nada para mostrar. Escolha o que ela mostra na página Sobreposição de Tela, em Extras.</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Alternar Sobreposição de Tela</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Alternar Sobreposição de Tela</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Sobreposição de Tela</value></data>

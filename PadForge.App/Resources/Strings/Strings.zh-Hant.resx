@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>建立複本</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>已啟用</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>已停用</value></data>
+  <data name="Common_On" xml:space="preserve"><value>開啟</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>關閉</value></data>
+  <data name="Common_More" xml:space="preserve"><value>更多</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>已安裝</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>未安裝</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>無法在 ARM64 上使用</value></data>
@@ -288,8 +291,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>鍛造爐本身。切換火焰即可啟動或停止所有輸入輪詢。</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>虛擬控制器</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>選擇輸出類型、為插槽加入裝置，再按一下卡片來調整其對應。</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>服務</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>體感資料、手機網頁控制器和遠端連結都從下方這裡串流。</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>選用功能都在這裡：手機網頁控制器、遠端連結、體感伺服器等。</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>儀表列</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>裝置數量、輪詢率和引擎火焰，隨時可見。</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>顯示歡迎導覽</value></data>
@@ -301,7 +303,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>輸出</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>冷卻</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>預覽</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>服務</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>額外功能</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>選用功能。每一項在您開啟之前都不會打擾您。</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>更多玩法</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>傳送到別處</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>螢幕上</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>把手機或平板電腦當作控制器使用。</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>用頭部追蹤器或 VR 頭戴裝置環顧四周。</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>對應賽車遊戲的速度、踏板和檔位。</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>讓觀眾在聊天室輸入文字來按下按鈕。</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>與另一部電腦上的 PadForge 共用控制器。</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>將控制器的體感資料傳送給模擬器。</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>接收遊戲模組傳來的扳機和燈光效果。</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>遊玩時顯示選單、Shift 層和設定檔切換。</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>為使用 PlayStation 觸控板的遊戲提供螢幕上的觸控區。</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>顯示在其他視窗上方的圖片、計時器或時鐘。</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>連接埠、純 HTTP 位址、存取碼</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>重新連線、連接埠、身分保護、依位址連線</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR 執行階段、UDP 連接埠、各軸範圍</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>連接埠、DSX.exe 替身</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>連接埠、全速、自訂格式</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>體感伺服器</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>提供陀螺儀和加速度計資料的 DSU/CemuHook Motion Provider 通訊協定伺服器。</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>啟用 DSU 體感伺服器（CemuHook Motion Provider 通訊協定）</value></data>
@@ -4065,7 +4086,7 @@
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>SundayMoments 的插孔偵測音訊路由模式，是「跟隨耳機插孔」的參考依據。僅作為文件閱讀；AGPL-3.0。</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>用於「儀表板」網頁控制器卡片的位元組模式 QR 編碼器，移植自 Nayuki 的參考實作。MIT。</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>用於網頁控制器位址的位元組模式 QR 編碼器，移植自 Nayuki 的參考實作。MIT。</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>「鍵盤 + 滑鼠」視覺化中的滑鼠圖稿，作者：Igor Budzhak。MIT。</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>隨壓力調整速率</value></data>
@@ -4903,7 +4924,7 @@
   <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>啟用螢幕重疊介面</value></data>
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>選擇顯示內容…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge 螢幕重疊介面</value></data>
-  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>尚無內容可顯示。請在儀表板上選擇顯示內容。</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>尚無內容可顯示。請在「額外功能」下的螢幕重疊介面頁面上選擇顯示內容。</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>切換螢幕重疊介面</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>切換螢幕重疊介面</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>螢幕重疊介面</value></data>

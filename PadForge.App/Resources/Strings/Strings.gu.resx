@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>ડુપ્લિકેટ બનાવો</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>સક્ષમ</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>અક્ષમ</value></data>
+  <data name="Common_On" xml:space="preserve"><value>ચાલુ</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>બંધ</value></data>
+  <data name="Common_More" xml:space="preserve"><value>વધુ</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>ઇન્સ્ટોલ કરેલ</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>ઇન્સ્ટોલ કરેલ નથી</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>ARM64 પર ઉપલબ્ધ નથી</value></data>
@@ -273,8 +276,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>ફોર્જ પોતે. બધું ઇનપુટ પોલિંગ શરૂ અથવા બંધ કરવા જ્યોતને ટૉગલ કરો.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>વર્ચ્યુઅલ કંટ્રોલર</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>આઉટપુટ પ્રકાર પસંદ કરો, સ્લોટમાં ઉપકરણો આપો, અને તેના મેપિંગ ઘડવા કાર્ડ પર ક્લિક કરો.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>સેવાઓ</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>મોશન ડેટા, ફોન વેબ કંટ્રોલર અને રિમોટ લિંક અહીં નીચેથી સ્ટ્રીમ થાય છે.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>વૈકલ્પિક સુવિધાઓ અહીં રાહ જુએ છે: ફોન વેબ કંટ્રોલર, રિમોટ લિંક, મોશન સર્વર અને વધુ.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>ઇન્સ્ટ્રુમેન્ટ લાઇન</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>ઉપકરણની સંખ્યા, પોલિંગ દર અને એન્જિન જ્યોત, હંમેશા નજર સામે.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>સ્વાગત પરિચય બતાવો</value></data>
@@ -286,7 +288,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>OUT</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>ઠંડું</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>પૂર્વાવલોકન</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>સેવાઓ</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>એક્સ્ટ્રાઝ</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>વૈકલ્પિક સુવિધાઓ. દરેક સુવિધા તમે ચાલુ ન કરો ત્યાં સુધી વચ્ચે આવતી નથી.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>રમવાની વધુ રીતો</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>બીજે મોકલો</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>સ્ક્રીન પર</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>ફોન કે ટેબ્લેટને કંટ્રોલર તરીકે વાપરો.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>હેડ ટ્રૅકર કે VR હેડસેટથી આસપાસ જુઓ.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>ડ્રાઇવિંગ ગેમમાંથી ઝડપ, પેડલ અને ગિયર મેપ કરો.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>દર્શકોને ચેટમાં ટાઇપ કરીને બટન દબાવવા દો.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>બીજા PC પરના PadForge સાથે કંટ્રોલર શેર કરો.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>કંટ્રોલરનું મોશન ઇમ્યુલેટરને મોકલો.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>ગેમ મોડ્સમાંથી ટ્રિગર અને લાઇટ ઇફેક્ટ લો.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>રમતી વખતે મેનૂ, લેયર અને પ્રોફાઇલ સ્વિચ બતાવો.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation ટચપેડ વાપરતી ગેમ માટે ઑન-સ્ક્રીન ટચ સપાટી.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>અન્ય વિન્ડોની ઉપર ચિત્ર, ટાઇમર કે ઘડિયાળ.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>પોર્ટ, સાદું HTTP સરનામું, ઍક્સેસ કોડ</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>ફરી જોડાવું, પોર્ટ, ઓળખ સુરક્ષા, સરનામાથી જોડાવું</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR રનટાઇમ, UDP પોર્ટ, પ્રતિ અક્ષ શ્રેણી</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>પોર્ટ, DSX.exe સ્ટેન્ડઇન</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>પોર્ટ, પૂર્ણ ઝડપ, કસ્ટમ ફોર્મેટ</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>મોશન સર્વર</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>જાયરો અને એક્સેલરોમીટર ડેટા માટે DSU/CemuHook Motion Provider પ્રોટોકોલ સર્વર.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU મોશન સર્વર સક્ષમ કરો (CemuHook Motion Provider Protocol)</value></data>
@@ -3860,7 +3881,7 @@
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>SundayMoments દ્વારા જૅક-ડિટેક્ટ ઑડિયો રાઉટિંગ પેટર્ન, હેડફોન જૅકને અનુસરો પાછળનો સંદર્ભ. દસ્તાવેજીકરણ તરીકે વાંચ્યું; AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Nayuki ના રેફરન્સ અમલીકરણ પરથી પોર્ટ કરેલ, ડેશબોર્ડના વેબ કંટ્રોલર કાર્ડ માટે બાઇટ-મોડ QR એન્કોડર. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Nayuki ના રેફરન્સ અમલીકરણ પરથી પોર્ટ કરેલ, વેબ કંટ્રોલરના સરનામાં માટે બાઇટ મોડ QR એન્કોડર. MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>કીબોર્ડ + માઉસ વિઝ્યુલાઇઝેશનમાં માઉસ આર્ટવર્ક, Igor Budzhak દ્વારા. MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>દબાણ-આધારિત દર</value></data>

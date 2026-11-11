@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>Duplicare</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Activat</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Dezactivat</value></data>
+  <data name="Common_On" xml:space="preserve"><value>Activat</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Dezactivat</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Mai multe</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Instalat</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Neinstalat</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>Indisponibil pe ARM64</value></data>
@@ -288,8 +291,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>Forja propriu-zisă. Comutați flacăra pentru a porni sau opri toată interogarea intrărilor.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Controlere virtuale</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Alegeți un tip de ieșire, alimentați slotul cu dispozitive și faceți clic pe un card pentru a-i modela mapările.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>Servicii</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>Datele de mișcare, controlerul web de pe telefon și Legătura la distanță se transmit de aici, de jos.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>Aici așteaptă funcțiile opționale: controlerul web de pe telefon, Legătura la distanță, serverul de mișcare și altele.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>Linia de instrumente</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>Numărul de dispozitive, rata de interogare și flacăra motorului, mereu la vedere.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Afișare tur de bun venit</value></data>
@@ -301,7 +303,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>IEȘIRE</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Rece</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Previzualizare</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>Servicii</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Extra</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>Funcții opționale. Fiecare rămâne deoparte până când o activați.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Mai multe moduri de joc</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Trimitere în altă parte</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>Pe ecran</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>Folosiți un telefon sau o tabletă ca controler.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Priviți în jur cu un dispozitiv de urmărire a capului sau cu o cască VR.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Mapați viteza, pedalele și treptele de viteză din jocurile de condus.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>Lăsați spectatorii să apese butoane scriind în chat.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Partajați controlere cu PadForge de pe alt PC.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Trimiteți mișcarea controlerului către emulatoare.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Primiți efecte de trăgaci și de lumină de la modificările de joc.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Afișați meniuri, straturi și schimbări de profil în timp ce jucați.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>O suprafață tactilă pe ecran pentru jocurile care folosesc touchpadul PlayStation.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>O imagine, un cronometru sau un ceas deasupra celorlalte ferestre.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Port, adresă HTTP simplă, cod de acces</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Reconectare, port, protecția identității, conectare după adresă</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>Mediu de execuție OpenXR, port UDP, interval pe axă</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, substitut DSX.exe</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Porturi, viteză maximă, formate personalizate</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Server de mișcare</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Server pentru protocolul DSU/CemuHook Motion Provider, pentru datele giroscopului și ale accelerometrului.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Activare server de mișcare DSU (protocolul CemuHook Motion Provider)</value></data>
@@ -4065,7 +4086,7 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Model de direcționare audio cu detectarea mufei, de SundayMoments, referința din spatele opțiunii Urmărește mufa de căști. Citit ca documentație; AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Codificator QR în modul octet pentru cardul controlerului web din Tabloul de bord, portat din implementarea de referință a lui Nayuki. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Codificator QR în modul octet pentru adresele controlerului web, portat din implementarea de referință a lui Nayuki. MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>Grafica mouse-ului din vizualizarea Tastatură + mouse, de Igor Budzhak. MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Rată scalată după presiune</value></data>
@@ -4903,7 +4924,7 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>Activare suprapunere ecran</value></data>
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Alegeți ce afișează…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>Suprapunere ecran PadForge</value></data>
-  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Nu există încă nimic de afișat. Alegeți ce afișează în tabloul de bord.</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Nu există încă nimic de afișat. Alegeți ce afișează pe pagina Suprapunere ecran, din Extra.</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Comutare suprapunere ecran</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Comutare suprapunere ecran</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Suprapunere ecran</value></data>

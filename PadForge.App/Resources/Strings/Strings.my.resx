@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>ပွားယူ</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>ဖွင့်ထားသည်</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>ပိတ်ထားသည်</value></data>
+  <data name="Common_On" xml:space="preserve"><value>ဖွင့်</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>ပိတ်</value></data>
+  <data name="Common_More" xml:space="preserve"><value>နောက်ထပ်</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>ထည့်သွင်းပြီး</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>ထည့်သွင်းမထားပါ</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>ARM64 တွင် မရရှိနိုင်ပါ</value></data>
@@ -273,8 +276,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>ပန်းပဲဖို ကိုယ်တိုင်။ အဝင်ဖတ်ယူခြင်း အားလုံးကို စတင်ရန် သို့မဟုတ် ရပ်ရန် မီးတောက်ကို ဖွင့်/ပိတ် လုပ်ပါ။</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>ဗာချွယ်ကွန်ထရိုလာများ</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>အထွက်အမျိုးအစားတစ်ခု ရွေးပါ၊ ဆလော့ထဲသို့ စက်ပစ္စည်းများ ထည့်ပါ၊ ၎င်း၏ မက်ပင်းများကို ပုံဖော်ရန် ကတ်တစ်ခုကို နှိပ်ပါ။</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>ဝန်ဆောင်မှုများ</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>လှုပ်ရှားမှုဒေတာ၊ ဖုန်း ဝဘ်ကွန်ထရိုလာနှင့် အဝေးချိတ်ဆက်မှုတို့သည် ဤအောက်ပိုင်းမှ စီးဆင်းသည်။</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>ဖုန်း ဝဘ်ကွန်ထရိုလာ၊ အဝေးချိတ်ဆက်မှု၊ လှုပ်ရှားမှု ဆာဗာ စသည့် ရွေးချယ်နိုင်သော လုပ်ဆောင်ချက်များ ဤနေရာတွင် ရှိသည်။</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>တိုင်းထွာပြမျဉ်း</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>စက်ပစ္စည်းအရေအတွက်၊ ဖတ်ယူနှုန်းနှင့် အင်ဂျင်မီးတောက်ကို အမြဲ မြင်ရသည်။</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>ကြိုဆိုရေး လမ်းညွှန်ပြသမှုကို ပြရန်</value></data>
@@ -286,7 +288,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>အထွက်</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>အေးနေ</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>အစမ်းကြည့်</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>ဝန်ဆောင်မှုများ</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>အပိုများ</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>ရွေးချယ်နိုင်သော လုပ်ဆောင်ချက်များ။ တစ်ခုချင်းစီသည် သင် မဖွင့်မချင်း မနှောင့်ယှက်ပါ။</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>နောက်ထပ် ကစားနည်းများ</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>အခြားနေရာသို့ ပို့ရန်</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>ဖန်သားပြင်ပေါ်တွင်</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>ဖုန်း သို့မဟုတ် တက်ဘလက်ကို ကွန်ထရိုလာအဖြစ် အသုံးပြုပါ။</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>ခေါင်းခြေရာခံကိရိယာ သို့မဟုတ် VR ခေါင်းစွပ်ဖြင့် ပတ်ပတ်လည် ကြည့်ပါ။</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>ကားမောင်းဂိမ်းများမှ အမြန်နှုန်း၊ ခြေနင်းများနှင့် ဂီယာများကို မက်ပ်လုပ်ပါ။</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>ကြည့်ရှုသူများကို ချတ်တွင် စာရိုက်၍ ခလုတ်များ နှိပ်ခွင့်ပြုပါ။</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>အခြား PC ပေါ်ရှိ PadForge နှင့် ကွန်ထရိုလာများကို မျှဝေပါ။</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>ကွန်ထရိုလာ လှုပ်ရှားမှုကို အီမြူလေတာများသို့ ပို့ပါ။</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>ဂိမ်းမော့ဒ်များမှ ထရီဂါနှင့် အလင်း အကျိုးသက်ရောက်မှုများကို ယူပါ။</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>သင် ကစားနေစဉ် မီနူးများ၊ အလွှာများနှင့် ပရိုဖိုင် ပြောင်းခြင်းများကို ပြပါ။</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation တာ့ချ်ပက်ကို အသုံးပြုသော ဂိမ်းများအတွက် မျက်နှာပြင်ပေါ်ရှိ ထိတွေ့မျက်နှာပြင်။</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>အခြားဝင်းဒိုးများ၏ အပေါ်တွင် ပုံ၊ အချိန်တိုင်းကိရိယာ သို့မဟုတ် နာရီ။</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>ပေါ့တ်၊ ရိုးရိုး HTTP လိပ်စာ၊ ဝင်ရောက်ခွင့်ကုဒ်</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>ပြန်ချိတ်ဆက်ခြင်း၊ ပေါ့တ်၊ အထောက်အထား ကာကွယ်မှု၊ လိပ်စာဖြင့် ချိတ်ဆက်ခြင်း</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR ရန်တိုင်း၊ UDP ပေါ့တ်၊ ဝင်ရိုးအလိုက် အပိုင်းအခြား</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>ပေါ့တ်၊ DSX.exe အစားထိုး ပရိုဂရမ်</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>ပေါ့တ်များ၊ အပြည့် အမြန်နှုန်း၊ စိတ်ကြိုက် ဖော်မတ်များ</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>လှုပ်ရှားမှု ဆာဗာ</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>ဂိုင်ရိုနှင့် အရှိန်တိုင်းကိရိယာ ဒေတာအတွက် DSU/CemuHook Motion Provider ပရိုတိုကော ဆာဗာ။</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU လှုပ်ရှားမှု ဆာဗာကို ဖွင့်ရန် (CemuHook Motion Provider ပရိုတိုကော)</value></data>
@@ -3860,7 +3881,7 @@ PadForge က ၎င်းတို့ကို ယခုပင် ဖြုတ�
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>နားကြပ်ပေါက် ထောက်လှမ်းမှု အသံလမ်းကြောင်းပုံစံ၊ ရေးသားသူ SundayMoments၊ “နားကြပ်ပေါက်ကို လိုက်ရန်” ၏ ကိုးကားချက်။ စာရွက်စာတမ်းအဖြစ် ဖတ်ရှုထားသည်၊ AGPL-3.0။</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>ဒက်ရှ်ဘုတ်၏ ဝဘ်ကွန်ထရိုလာကတ်အတွက် byte-mode QR encoder၊ Nayuki ၏ ကိုးကား အကောင်အထည်ဖော်မှုမှ ပြောင်းရေးထားသည်။ MIT။</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>ဝဘ်ကွန်ထရိုလာ၏ လိပ်စာများအတွက် byte-mode QR encoder၊ Nayuki ၏ ကိုးကား အကောင်အထည်ဖော်မှုမှ ပြောင်းရေးထားသည်။ MIT။</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>ကီးဘုတ် + မောက်စ် ပုံဖော်ပြသမှုရှိ မောက်စ်ပုံ၊ ရေးဆွဲသူ Igor Budzhak။ MIT။</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>ဖိအားအလိုက် နှုန်း</value></data>

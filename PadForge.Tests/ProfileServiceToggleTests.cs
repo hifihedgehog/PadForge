@@ -349,31 +349,28 @@ namespace PadForge.Tests
             }
         }
 
-        /// <summary>Head Tracking is a Dashboard service (#355 move): a UDP
-        /// listener plus a FreeTrack reader with a live status that rides
-        /// profiles, so it sits with the services, after Remote Link and
-        /// before the Motion Server, under its own glyph (E77B, the
-        /// one the Settings card wore) with the status line and the footer
-        /// the Dashboard idiom gives every service. The Settings page no
-        /// longer carries it, and the strings moved with the card.</summary>
+        /// <summary>Head Tracking is one of the extras (#355 moved it from
+        /// Settings to the Dashboard's services, #574 gave the services a
+        /// page each): a UDP listener plus a FreeTrack reader with a live
+        /// status that rides profiles. Its page sits among the extras'
+        /// pages, after the Web Controller's and before Game Telemetry's,
+        /// under its own glyph (E77B, the one the Settings card wore), with
+        /// the status line and the footer every extra carries. The Settings
+        /// page and the Dashboard no longer carry it, and the strings moved
+        /// with the card.</summary>
         [Fact]
-        public void HeadTracking_IsADashboardSection_NotASettingsCard()
+        public void HeadTracking_IsAnExtrasPage_NotASettingsCard()
         {
-            string page = RepoText("PadForge.App", "Views", "DashboardPage.xaml");
-            Assert.Equal(1, page.Split(new[] { "&#xE77B;" }, StringSplitOptions.None).Length - 1);
-            int remote = page.IndexOf("Binding Dashboard_RemoteLink,", StringComparison.Ordinal);
-            int head = page.IndexOf("Binding Dashboard_HeadTracking,", StringComparison.Ordinal);
-            int motion = page.IndexOf("Binding Dashboard_MotionServer,", StringComparison.Ordinal);
-            Assert.True(remote > 0 && head > remote && motion > head, "Head Tracking sits between Remote Link and the Motion Server");
-            // The card runs to the NEXT section, whichever that is, not to the
-            // Motion Server by name. The claim being guarded is that head
-            // tracking is ONE card, and a section added in between (G-Keys,
-            // #454) must not read as head tracking having grown a second one.
-            int nextSection = page.IndexOf("Style=\"{StaticResource SectionTitle}\"", head, StringComparison.Ordinal);
-            nextSection = page.IndexOf("Style=\"{StaticResource SectionTitle}\"", nextSection + 1, StringComparison.Ordinal);
-            Assert.True(nextSection > head && nextSection <= motion + 400,
-                        "no section header found after Head Tracking");
-            string card = page.Substring(head, nextSection - head);
+            string page = RepoText("PadForge.App", "Views", "ExtrasPage.xaml");
+            // The glyph twice: on the catalog tile and beside the page's title.
+            Assert.Equal(2, page.Split(new[] { "&#xE77B;" }, StringSplitOptions.None).Length - 1);
+            int web = page.IndexOf("x:Name=\"WebControllerPage\"", StringComparison.Ordinal);
+            int head = page.IndexOf("x:Name=\"HeadTrackingPage\"", StringComparison.Ordinal);
+            int next = page.IndexOf("x:Name=\"GameTelemetryPage\"", StringComparison.Ordinal);
+            Assert.True(web > 0 && head > web && next > head, "Head Tracking's page sits between the Web Controller's and Game Telemetry's");
+            // The page runs to the NEXT page, whichever that is. The claim
+            // being guarded is that head tracking is ONE card on ONE page.
+            string card = page.Substring(head, next - head);
             foreach (var needle in new[]
             {
                 "Binding Dashboard_HeadTrackingDesc,", "Binding Dashboard_HeadTrackingEnable,", "Binding HeadTrackingEnabled",
@@ -384,9 +381,9 @@ namespace PadForge.Tests
                 "Binding HeadTrackingStatus", "Binding Dashboard_HeadTrackingFooter,",
             })
                 Assert.Contains(needle, card);
-            // One card: a single CardBorder between the section title and the Motion Server.
             Assert.Equal(1, card.Split(new[] { "StaticResource CardBorder" }, StringSplitOptions.None).Length - 1);
 
+            Assert.DoesNotContain("HeadTracking", RepoText("PadForge.App", "Views", "DashboardPage.xaml"));
             string settings = RepoText("PadForge.App", "Views", "SettingsPage.xaml");
             Assert.DoesNotContain("HeadTracking", settings);
             Assert.DoesNotContain("&#xE77B;", settings);
@@ -421,12 +418,16 @@ namespace PadForge.Tests
         [Fact]
         public void LightbarMirrors_LeftTheDashboard_ForTheVendorRows()
         {
-            string page = RepoText("PadForge.App", "Views", "DashboardPage.xaml");
-            Assert.Equal(0, page.Split(new[] { "&#xE781;" }, StringSplitOptions.None).Length - 1);
-            Assert.Equal(0, page.Split(new[] { "&#xE877;" }, StringSplitOptions.None).Length - 1);
-            foreach (var gone in new[] { "Dashboard_LightbarMirrors", "Dashboard_Chroma", "Dashboard_Lightsync",
-                                         "EnableChromaLightbar", "EnableLightsyncLightbar", "ChromaStatus", "LightsyncStatus" })
-                Assert.DoesNotContain(gone, page);
+            // Neither the Dashboard nor the Extras page, where its services went (#574).
+            foreach (string name in new[] { "DashboardPage.xaml", "ExtrasPage.xaml" })
+            {
+                string page = RepoText("PadForge.App", "Views", name);
+                Assert.Equal(0, page.Split(new[] { "&#xE781;" }, StringSplitOptions.None).Length - 1);
+                Assert.Equal(0, page.Split(new[] { "&#xE877;" }, StringSplitOptions.None).Length - 1);
+                foreach (var gone in new[] { "Dashboard_LightbarMirrors", "Dashboard_Chroma", "Dashboard_Lightsync",
+                                             "EnableChromaLightbar", "EnableLightsyncLightbar", "ChromaStatus", "LightsyncStatus" })
+                    Assert.DoesNotContain(gone, page);
+            }
 
             string designer = RepoText("PadForge.App", "Resources", "Strings", "Strings.Designer.cs");
             Assert.DoesNotContain("Dashboard_LightbarMirrors", designer);

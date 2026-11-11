@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>Dubleeri</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Lubatud</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Keelatud</value></data>
+  <data name="Common_On" xml:space="preserve"><value>Sees</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Väljas</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Rohkem</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Installitud</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Pole installitud</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>ARM64-s pole saadaval</value></data>
@@ -273,8 +276,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>Ääs ise. Lülitage leek sisse või välja, et käivitada või peatada kogu sisendi küsitlemine.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Virtuaalsed kontrollerid</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Valige väljunditüüp, andke pesale seadmed ja klõpsake kaarti, et selle vastendusi kujundada.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>Teenused</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>Liikumisandmed, telefoni veebikontroller ja Kaugühendus voogedastavad siit allt.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>Siin ootavad valikulised funktsioonid: telefoni veebikontroller, Kaugühendus, liikumisserver ja muud.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>Näidikuriba</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>Seadmete arv, küsitlussagedus ja mootori leek on alati nähtaval.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Näita tervitustutvustust</value></data>
@@ -286,7 +288,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>VÄLJUND</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Külm</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Eelvaade</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>Teenused</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Lisad</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>Valikulised funktsioonid. Igaüks püsib tagaplaanil, kuni selle sisse lülitate.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Rohkem viise mängida</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Saada mujale</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>Ekraanil</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>Kasutage telefoni või tahvelarvutit kontrollerina.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Vaadake ringi peajälgija või VR-peakomplektiga.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Vastendage sõidumängude kiirus, pedaalid ja käigud.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>Laske vaatajatel vestluses tippides nuppe vajutada.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Jagage kontrollereid teise arvuti programmiga PadForge.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Saatke kontrolleri liikumisandmed emulaatoritele.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Võtke päästiku- ja valgusefekte mängumodidelt.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Näidake mängimise ajal menüüsid, kihte ja profiilivahetusi.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Ekraanil kuvatav puutepind PlayStation-puuteplaadiga mängudele.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Pilt, taimer või kell teiste akende kohal.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Port, tavaline HTTP-aadress, pääsukood</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Uuesti ühendamine, port, identiteedi kaitse, ühendamine aadressi järgi</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR-i käituskeskkond, UDP-port, teljepõhine vahemik</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, DSX.exe asendaja</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Pordid, täiskiirus, kohandatud vormingud</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Liikumisserver</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider protokolli server güroskoobi ja kiirendusanduri andmete jaoks.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Luba DSU liikumisserver (CemuHook Motion Provider Protocol)</value></data>
@@ -3868,7 +3889,7 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Pesa tuvastamisel põhinev heli suunamise muster, autor SundayMoments, mis on valiku Järgi kõrvaklapipesa aluseks. Kasutatud dokumentatsioonina, AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Baidirežiimiga QR-kodeerija lehe Ülevaade veebikontrolleri kaardi jaoks, porditud Nayuki viiteteostusest. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Baidirežiimiga QR-kodeerija veebikontrolleri aadresside jaoks, porditud Nayuki viiteteostusest. MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>Hiire joonised visualiseeringus Klaviatuur + hiir, autor Igor Budzhak. MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Survega skaleeritud kiirus</value></data>

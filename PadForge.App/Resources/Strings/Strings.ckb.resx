@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>دووبارەکردنەوە</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>چالاکە</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>ناچالاکە</value></data>
+  <data name="Common_On" xml:space="preserve"><value>کراوە</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>داخراوە</value></data>
+  <data name="Common_More" xml:space="preserve"><value>زیاتر</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>دامەزراوە</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>دانەمەزراوە</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>لەسەر ARM64 بەردەست نییە</value></data>
@@ -273,8 +276,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>خودی کورەکە. بڵێسەکە بگۆڕە بۆ دەستپێکردن یان وەستاندنی هەموو پشکنینی تێخستن.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>کۆنترۆڵەرە مەجازییەکان</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>جۆرێکی دەرچوون هەڵبژێرە، ئامێر بدە بە شوێنەکە، و کلیک لە کارتێک بکە بۆ ڕێکخستنی بەستنەوەکانی.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>خزمەتگوزارییەکان</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>داتای جووڵە، کۆنترۆڵەری وێبی مۆبایل و بەستەری دوور لێرەی خوارەوە دەنێردرێن.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>تایبەتمەندییە ئارەزوومەندانەکان لێرەدان: کۆنترۆڵەری وێبی مۆبایل، بەستەری دوور، ڕاژەکاری جووڵە و زیاتر.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>هێڵی پیشاندەرەکان</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>ژمارەی ئامێرەکان، خێرایی پشکنین و بڵێسەی بزوێنەر، هەمیشە لەبەرچاو.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>پیشاندانی گەشتی بەخێرهاتن</value></data>
@@ -286,7 +288,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>دەرچوون</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>سارد</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>پێشبینین</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>خزمەتگوزارییەکان</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>زیادەکان</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>تایبەتمەندیی ئارەزوومەندانە. هەر یەکێکیان تا هەڵی نەکەیت کاری پێت نییە.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>ڕێگەی زیاتر بۆ یاریکردن</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>بینێرە بۆ شوێنێکی تر</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>لەسەر شاشە</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>مۆبایل یان تابلێت وەک کۆنترۆڵەر بەکاربهێنە.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>بە شوێنپێهەڵگرەری سەر یان کڵاوی VR بە دەوروبەردا بڕوانە.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>خێرایی، پێدال و گێڕەکانی یارییەکانی لێخوڕین ببەستەوە.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>با بینەران بە نووسین لە چاتدا دوگمەکان دابگرن.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>کۆنترۆڵەرەکان لەگەڵ PadForge لەسەر کۆمپیوتەرێکی تر هاوبەش بکە.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>جووڵەی کۆنترۆڵەر بنێرە بۆ ئیمولەیتەرەکان.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>کاریگەرییەکانی تریگەر و ڕووناکی لە مۆدەکانی یارییەوە وەربگرە.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>لە کاتی یاریکردندا مێنیو، چین و گۆڕینی پرۆفایل پیشان بدە.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>ڕووکاری دەستلێدان لەسەر شاشە بۆ ئەو یاریانەی تاچپادی PlayStation بەکاردەهێنن.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>وێنە، کاتژمێری پێوانە یان کاتژمێر لەسەرووی پەنجەرەکانی ترەوە.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>پۆرت، ناونیشانی HTTP ی سادە، کۆدی دەستگەیشتن</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>پەیوەستبوونەوە، پۆرت، پاراستنی ناسنامە، پەیوەستبوون بە ناونیشان</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>ڕانتایمی OpenXR، پۆرتی UDP، مەودای هەر تەوەرێک</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>پۆرت، جێگرەوەی DSX.exe</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>پۆرتەکان، خێرایی تەواو، فۆرماتە دڵخوازەکان</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>ڕاژەکاری جووڵە</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>ڕاژەکاری پرۆتۆکۆلی DSU/CemuHook Motion Provider بۆ داتای جایرۆ و ئەکسێلەرۆمیتەر.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>چالاککردنی ڕاژەکاری جووڵەی DSU (پرۆتۆکۆلی CemuHook Motion Provider)</value></data>
@@ -3856,7 +3877,7 @@
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>شێوازی ڕێڕەوکردنی دەنگ بە دۆزینەوەی جاک لەلایەن SundayMoments، سەرچاوەی شوێنکەوتنی جاکی هێدفۆن. وەک بەڵگەنامە خوێندراوەتەوە؛ AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>کۆدکەری QR بە دۆخی بایت بۆ کارتی کۆنترۆڵەری وێب لە داشبۆرد، گوازراوە لە جێبەجێکردنی سەرچاوەیی Nayuki. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>کۆدکەری QR بە دۆخی بایت بۆ ناونیشانەکانی کۆنترۆڵەری وێب، گوازراوە لە جێبەجێکردنی سەرچاوەیی Nayuki. MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>وێنەی ماوس لە پیشاندانی تەختەکلیل + ماوس، لەلایەن Igor Budzhak. MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>ڕێژەی پێوانەکراو بە پەستان</value></data>

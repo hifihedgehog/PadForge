@@ -369,8 +369,8 @@ namespace PadForge.Tests
             LibraryPath = typeof(object).Assembly.Location,
         };
 
-        /// <summary>The Dashboard's picker: the list, the two-way selection
-        /// and the caption, bound as DashboardPage.xaml binds them.</summary>
+        /// <summary>The Head Tracking page's picker: the list, the two-way
+        /// selection and the caption, bound as ExtrasPage.xaml binds them.</summary>
         private static ComboBox Bind(DashboardViewModel vm)
         {
             var box = new ComboBox

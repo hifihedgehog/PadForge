@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>ทำสำเนา</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>เปิดใช้งาน</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>ปิดใช้งาน</value></data>
+  <data name="Common_On" xml:space="preserve"><value>เปิด</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>ปิด</value></data>
+  <data name="Common_More" xml:space="preserve"><value>เพิ่มเติม</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>ติดตั้งแล้ว</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>ยังไม่ได้ติดตั้ง</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>ใช้ไม่ได้บน ARM64</value></data>
@@ -288,8 +291,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>ตัวเตาหลอมเอง เปิดหรือปิดเปลวไฟเพื่อเริ่มหรือหยุดการโพลอินพุตทั้งหมด</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>คอนโทรลเลอร์เสมือน</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>เลือกประเภทเอาต์พุต ป้อนอุปกรณ์ให้ช่อง แล้วคลิกการ์ดเพื่อปรับแต่งการแมป</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>บริการ</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>ข้อมูลการเคลื่อนไหว คอนโทรลเลอร์บนเว็บสำหรับโทรศัพท์ และลิงก์ระยะไกล สตรีมจากด้านล่างนี้</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>ฟีเจอร์เสริมอยู่ที่นี่ ได้แก่ คอนโทรลเลอร์บนเว็บสำหรับโทรศัพท์ ลิงก์ระยะไกล เซิร์ฟเวอร์การเคลื่อนไหว และอื่น ๆ</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>แถบเครื่องวัด</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>จำนวนอุปกรณ์ อัตราการโพล และเปลวไฟของเอนจิน มองเห็นได้ตลอดเวลา</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>แสดงทัวร์ต้อนรับ</value></data>
@@ -301,7 +303,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>เอาต์พุต</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>เย็น</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>แสดงตัวอย่าง</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>บริการ</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>ส่วนเสริม</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>ฟีเจอร์เสริม แต่ละอย่างจะไม่รบกวนจนกว่าคุณจะเปิดใช้</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>วิธีเล่นเพิ่มเติม</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>ส่งต่อไปที่อื่น</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>บนหน้าจอ</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>ใช้โทรศัพท์หรือแท็บเล็ตเป็นคอนโทรลเลอร์</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>มองไปรอบ ๆ ด้วยตัวติดตามศีรษะหรือชุดหูฟัง VR</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>แมปความเร็ว แป้นเหยียบ และเกียร์จากเกมขับรถ</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>ให้ผู้ชมกดปุ่มได้โดยพิมพ์ในแชต</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>แชร์คอนโทรลเลอร์กับ PadForge บนพีซีอีกเครื่อง</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>ส่งการเคลื่อนไหวของคอนโทรลเลอร์ไปยังอีมูเลเตอร์</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>รับเอฟเฟกต์ทริกเกอร์และไฟจากม็อดเกม</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>แสดงเมนู เลเยอร์ และการสลับโปรไฟล์ขณะเล่น</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>พื้นผิวสัมผัสบนหน้าจอสำหรับเกมที่ใช้ทัชแพดของ PlayStation</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>รูปภาพ ตัวจับเวลา หรือนาฬิกาเหนือหน้าต่างอื่น</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>พอร์ต ที่อยู่ HTTP ธรรมดา รหัสเข้าใช้</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>การเชื่อมต่อใหม่ พอร์ต การป้องกันข้อมูลระบุตัวตน การเชื่อมต่อด้วยที่อยู่</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>รันไทม์ OpenXR พอร์ต UDP ช่วงรายแกน</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>พอร์ต ตัวแทน DSX.exe</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>พอร์ต ความเร็วเต็มช่วง รูปแบบกำหนดเอง</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>เซิร์ฟเวอร์การเคลื่อนไหว</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>เซิร์ฟเวอร์โปรโตคอล DSU/CemuHook Motion Provider สำหรับข้อมูลไจโรและเซนเซอร์วัดความเร่ง</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>เปิดใช้งานเซิร์ฟเวอร์การเคลื่อนไหว DSU (โปรโตคอล CemuHook Motion Provider)</value></data>
@@ -4065,7 +4086,7 @@
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>รูปแบบการกำหนดเส้นทางเสียงด้วยการตรวจจับแจ็ก โดย SundayMoments ซึ่งเป็นแหล่งอ้างอิงของ “ตามแจ็กหูฟัง” ใช้อ่านเป็นเอกสารอ้างอิง; AGPL-3.0</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>ตัวเข้ารหัส QR โหมดไบต์สำหรับการ์ดคอนโทรลเลอร์บนเว็บในแดชบอร์ด พอร์ตมาจากโค้ดอ้างอิงของ Nayuki สัญญาอนุญาต MIT</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>ตัวเข้ารหัส QR โหมดไบต์สำหรับที่อยู่ของคอนโทรลเลอร์บนเว็บ พอร์ตมาจากโค้ดอ้างอิงของ Nayuki สัญญาอนุญาต MIT</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>ภาพกราฟิกเมาส์ในการแสดงภาพคีย์บอร์ด + เมาส์ โดย Igor Budzhak สัญญาอนุญาต MIT</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>อัตราตามแรงกด</value></data>
@@ -4903,7 +4924,7 @@
   <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>เปิดใช้งานโอเวอร์เลย์หน้าจอ</value></data>
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>เลือกสิ่งที่แสดง…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>โอเวอร์เลย์หน้าจอ PadForge</value></data>
-  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>ยังไม่มีสิ่งที่จะแสดง เลือกสิ่งที่แสดงได้ที่แดชบอร์ด</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>ยังไม่มีสิ่งที่จะแสดง เลือกสิ่งที่แสดงได้ที่หน้าโอเวอร์เลย์หน้าจอ ในส่วนเสริม</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>สลับเปิด/ปิดโอเวอร์เลย์หน้าจอ</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>สลับเปิด/ปิดโอเวอร์เลย์หน้าจอ</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>โอเวอร์เลย์หน้าจอ</value></data>

@@ -240,8 +240,11 @@ namespace PadForge.Tests
         {
             string file = RepoText("PadForge.App", "Resources", "ControllerIcons.xaml");
             int from = file.IndexOf("<Style x:Key=\"FoldHeaderToggle\"", StringComparison.Ordinal);
-            int to = file.LastIndexOf("</Style>", StringComparison.Ordinal) + "</Style>".Length;
-            Assert.True(from > 0 && to > from);
+            // The fold parts end where the Extras parts begin (ExtrasPartsTests builds those).
+            int next = file.IndexOf("Extras parts (#574)", StringComparison.Ordinal);
+            Assert.True(from > 0 && next > from);
+            int to = file.LastIndexOf("</Style>", next, StringComparison.Ordinal) + "</Style>".Length;
+            Assert.True(to > from);
             string assembly = typeof(FoldPart).Assembly.GetName().Name;
             string markup =
                 "<ResourceDictionary xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\""
@@ -320,6 +323,13 @@ namespace PadForge.Tests
             Assert.Equal("True", (string)open.Attribute("Value"));
             Assert.Contains(open.Elements(), e => (string)e.Attribute("TargetName") == "ExpandSite"
                 && (string)e.Attribute("Property") == "Visibility" && (string)e.Attribute("Value") == "Visible");
+
+            // The part hands the page's text color to what it holds. A
+            // control's Foreground starts at the system's black, so a title
+            // inside with no color of its own (the Head Tracking page's
+            // Per-Axis Range, 2026-11-10) drew black on the dark card.
+            var color = Assert.Single(style.Elements(), e => e.Name.LocalName == "Setter" && (string)e.Attribute("Property") == "Foreground");
+            Assert.Equal("{DynamicResource TextFillColorPrimaryBrush}", (string)color.Attribute("Value"));
         }
 
         /// <summary>A reset button rests with no ring and a dim glyph, and

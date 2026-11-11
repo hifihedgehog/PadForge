@@ -72,6 +72,9 @@
   <data name="Common_Paste" xml:space="preserve"><value>粘贴</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>已启用</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>已禁用</value></data>
+  <data name="Common_On" xml:space="preserve"><value>开</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>关</value></data>
+  <data name="Common_More" xml:space="preserve"><value>更多</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>已安装</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>未安装</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>在 ARM64 上不可用</value></data>
@@ -3129,7 +3132,6 @@
   <data name="About_WiimoteLibDesc" xml:space="preserve"><value>Wii IR 摄像头与平衡板行为文档，由 Brian Peek 提供。MIT。</value></data>
   <data name="About_JoyconSinger" xml:space="preserve"><value>joycon-singer</value></data>
   <data name="About_JoyconSingerDesc" xml:space="preserve"><value>Joy-Con HD 振动线格式文档，由 Sergey004 提供。仅用于协议事实参考。</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>服务</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>槽位</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>冷却</value></data>
   <data name="Devices_EmptyHint" xml:space="preserve"><value>选择一个设备以查看其原始输入。</value></data>
@@ -3153,14 +3155,33 @@
   <data name="Macro_EmptyHint" xml:space="preserve"><value>在左侧选择一个宏，或点击“添加”新建一个。</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>设备</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>预览</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>附加功能</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>可选功能。每一项在你开启之前都不会打扰你。</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>更多玩法</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>发送到别处</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>屏幕上</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>把手机或平板电脑用作控制器。</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>用头部追踪器或 VR 头显环顾四周。</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>映射驾驶游戏中的速度、踏板和档位。</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>让观众通过在聊天中输入来按下按钮。</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>与另一台 PC 上的 PadForge 共享控制器。</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>向模拟器发送控制器的体感数据。</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>接收来自游戏模组的扳机和灯光效果。</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>在游戏过程中显示菜单、层和配置文件切换。</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>为使用 PlayStation 触控板的游戏提供屏幕触摸表面。</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>在其他窗口上方显示图片、计时器或时钟。</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>端口、未加密的 HTTP 地址、访问码</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>自动重新连接、端口、身份保护、通过地址连接</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR 运行时、UDP 端口、每轴范围</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>端口、DSX.exe 替身程序</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>端口、满速、自定义格式</value></data>
   <data name="Pad_ToggleAnnotations" xml:space="preserve"><value>映射标注</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>显示欢迎导览</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>选择输出类型，为槽位分配设备，点击卡片即可调整其映射。</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>可选功能都在这里：手机网页控制器、Remote Link、体感服务器等。</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>虚拟控制器</value></data>
   <data name="Tour_Engine_Body" xml:space="preserve"><value>熔炉本身。切换火焰以启动或停止所有输入轮询。</value></data>
   <data name="Tour_Engine_Title" xml:space="preserve"><value>输入引擎</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>运动数据、手机网页控制器和 Remote Link 都从这里传输。</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>服务</value></data>
   <data name="Tour_Slots_Body" xml:space="preserve"><value>每个虚拟控制器都在这里。火焰显示当前正在锻造的槽位。</value></data>
   <data name="Tour_Slots_Title" xml:space="preserve"><value>槽位</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>设备数量、轮询速率和引擎火焰，始终可见。</value></data>
@@ -4003,7 +4024,7 @@
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>SundayMoments 的接口检测音频路由模式，跟随耳机接口功能的参考。仅作文档阅读；AGPL-3.0。</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>仪表板网页控制器卡片的字节模式 QR 编码器，移植自 Nayuki 的参考实现。MIT。</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>用于网页控制器地址的字节模式 QR 编码器，移植自 Nayuki 的参考实现。MIT。</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>键盘和鼠标可视化中的鼠标图形，由 Igor Budzhak 制作。MIT。</value></data>
   <data name="DeviceType_HeadsetMotion" xml:space="preserve"><value>耳机追踪器</value></data>
@@ -4854,7 +4875,7 @@
   <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>启用屏幕叠加层</value></data>
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>选择显示内容…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge 屏幕叠加层</value></data>
-  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>暂无可显示的内容。请在仪表盘上选择显示内容。</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>暂无可显示的内容。请在附加功能下的屏幕叠加层页面上选择显示内容。</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>切换屏幕叠加层</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>切换屏幕叠加层</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>屏幕叠加层</value></data>

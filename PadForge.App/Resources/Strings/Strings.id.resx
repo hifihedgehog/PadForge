@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>Duplikat</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Aktif</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Nonaktif</value></data>
+  <data name="Common_On" xml:space="preserve"><value>Aktif</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Nonaktif</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Lainnya</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Terinstal</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Belum terinstal</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>Tidak tersedia di ARM64</value></data>
@@ -288,8 +291,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>Inilah tungku tempanya. Klik nyala api untuk memulai atau menghentikan semua polling input.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Kontroler virtual</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Pilih jenis output, tetapkan perangkat ke slot, lalu klik kartu untuk menyusun pemetaannya.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>Layanan</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>Data gerakan, kontroler web ponsel, dan Tautan Jarak Jauh dialirkan dari bawah sini.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>Fitur opsional ada di sini: kontroler web ponsel, Tautan Jarak Jauh, server gerakan, dan lainnya.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>Baris instrumen</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>Jumlah perangkat, laju polling, dan nyala api mesin, selalu terlihat.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Tampilkan tur sambutan</value></data>
@@ -301,7 +303,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>OUTPUT</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Dingin</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Pratinjau</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>Layanan</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Ekstra</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>Fitur opsional. Masing-masing tidak mengganggu sampai Anda mengaktifkannya.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Cara bermain lainnya</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Kirim ke tempat lain</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>Di layar</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>Pakai ponsel atau tablet sebagai kontroler.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Melihat sekeliling dengan pelacak kepala atau headset VR.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Petakan kecepatan, pedal, dan gigi dari game balap.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>Biarkan penonton menekan tombol lewat ketikan di chat.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Bagikan kontroler dengan PadForge di PC lain.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Kirim gerakan kontroler ke emulator.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Terima efek pelatuk dan lampu dari mod game.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Tampilkan menu, lapisan, dan pergantian profil selagi Anda bermain.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Permukaan sentuh di layar untuk game yang memakai panel sentuh PlayStation.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Gambar, timer, atau jam di atas jendela lain.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Port, alamat HTTP biasa, kode akses</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Sambungan ulang, port, perlindungan identitas, sambungan lewat alamat</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>Runtime OpenXR, port UDP, rentang per sumbu</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, DSX.exe pengganti</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Port, kecepatan penuh, format kustom</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Server gerakan</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Server protokol DSU/CemuHook Motion Provider untuk data giroskop dan akselerometer.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Aktifkan server gerakan DSU (protokol CemuHook Motion Provider)</value></data>
@@ -4065,7 +4086,7 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Pola perutean audio dengan deteksi jack karya SundayMoments, referensi di balik Ikuti jack headphone. Dibaca sebagai dokumentasi; AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Enkoder QR mode byte untuk kartu kontroler web di Dasbor, di-port dari implementasi referensi Nayuki. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Enkoder QR mode byte untuk alamat Kontroler web, di-port dari implementasi referensi Nayuki. MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>Gambar mouse dalam visualisasi Keyboard + mouse, karya Igor Budzhak. MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Laju berskala tekanan</value></data>
@@ -4903,7 +4924,7 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>Aktifkan overlay layar</value></data>
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Pilih yang ditampilkan…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>Overlay layar PadForge</value></data>
-  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Belum ada yang ditampilkan. Pilih yang ditampilkan di Dasbor.</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Belum ada yang ditampilkan. Pilih yang ditampilkan di halaman Overlay layar, di bawah Ekstra.</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Alihkan overlay layar</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Alihkan overlay layar</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Overlay Layar</value></data>

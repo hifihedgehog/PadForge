@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>डुप्लिकेट बनाएँ</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>सक्षम</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>अक्षम</value></data>
+  <data name="Common_On" xml:space="preserve"><value>चालू</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>बंद</value></data>
+  <data name="Common_More" xml:space="preserve"><value>और</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>इंस्टॉल है</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>इंस्टॉल नहीं है</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>ARM64 पर उपलब्ध नहीं</value></data>
@@ -288,8 +291,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>यही है भट्ठी। सारी इनपुट पोलिंग शुरू करने या रोकने के लिए लौ को टॉगल करें।</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>वर्चुअल कंट्रोलर</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>आउटपुट प्रकार चुनें, स्लॉट को डिवाइस दें, और मैपिंग गढ़ने के लिए कार्ड पर क्लिक करें।</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>सेवाएँ</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>मोशन डेटा, फ़ोन का वेब कंट्रोलर और रिमोट लिंक यहाँ नीचे से स्ट्रीम होते हैं।</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>वैकल्पिक सुविधाएँ यहाँ मिलती हैं: फ़ोन का वेब कंट्रोलर, रिमोट लिंक, मोशन सर्वर और बहुत कुछ।</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>सूचक पट्टी</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>डिवाइस की संख्या, पोलिंग दर और इंजन की लौ, हमेशा नज़र के सामने।</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>स्वागत टूर दिखाएँ</value></data>
@@ -301,7 +303,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>आउट</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>ठंडा</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>पूर्वावलोकन</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>सेवाएँ</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>एक्स्ट्रा</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>वैकल्पिक सुविधाएँ। हर एक तब तक रास्ते से हटी रहती है, जब तक आप उसे चालू नहीं करते।</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>खेलने के और तरीके</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>इसे कहीं और भेजें</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>स्क्रीन पर</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>फ़ोन या टैबलेट को कंट्रोलर की तरह इस्तेमाल करें।</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>हेड ट्रैकर या वीआर हेडसेट से चारों ओर देखें।</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>ड्राइविंग गेम से गति, पैडल और गियर मैप करें।</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>दर्शकों को चैट में टाइप करके बटन दबाने दें।</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>कंट्रोलर को दूसरे PC पर मौजूद PadForge के साथ साझा करें।</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>कंट्रोलर का मोशन एम्यूलेटरों को भेजें।</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>गेम मॉड से ट्रिगर और लाइट इफ़ेक्ट लें।</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>खेलते समय मेनू, लेयर और प्रोफ़ाइल बदलाव दिखाएँ।</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation टचपैड इस्तेमाल करने वाले गेम के लिए ऑन-स्क्रीन टच सतह।</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>दूसरी विंडो के ऊपर एक चित्र, टाइमर या घड़ी।</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>पोर्ट, सादा HTTP पता, एक्सेस कोड</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>फिर से कनेक्ट करना, पोर्ट, पहचान सुरक्षा, पते से कनेक्ट करना</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR रनटाइम, UDP पोर्ट, हर अक्ष की रेंज</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>पोर्ट, DSX.exe स्टैंड-इन</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>पोर्ट, पूरी गति, कस्टम फ़ॉर्मैट</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>मोशन सर्वर</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>जाइरो और एक्सेलेरोमीटर डेटा के लिए DSU/CemuHook Motion Provider प्रोटोकॉल सर्वर।</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU मोशन सर्वर सक्षम करें (CemuHook Motion Provider प्रोटोकॉल)</value></data>
@@ -4065,7 +4086,7 @@
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>SundayMoments का जैक पहचानकर ऑडियो रूट करने का तरीका, जो “हेडफ़ोन जैक के अनुसार” का संदर्भ है। दस्तावेज़ के रूप में पढ़ा गया; AGPL-3.0।</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>डैशबोर्ड के वेब कंट्रोलर कार्ड के लिए बाइट-मोड QR एनकोडर, Nayuki के संदर्भ इम्प्लीमेंटेशन से पोर्ट किया गया। MIT।</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>वेब कंट्रोलर के पतों के लिए बाइट-मोड QR एनकोडर, Nayuki के संदर्भ इम्प्लीमेंटेशन से पोर्ट किया गया। MIT।</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>कीबोर्ड + माउस विज़ुअलाइज़ेशन में माउस का चित्र, Igor Budzhak द्वारा। MIT।</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>दबाव के अनुसार दर</value></data>
@@ -4903,7 +4924,7 @@
   <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>स्क्रीन ओवरले सक्षम करें</value></data>
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>चुनें कि क्या दिखे…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge स्क्रीन ओवरले</value></data>
-  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>अभी दिखाने के लिए कुछ नहीं है। डैशबोर्ड पर चुनें कि क्या दिखे।</value></data>
+  <data name="ScreenOverlay_Empty" xml:space="preserve"><value>अभी दिखाने के लिए कुछ नहीं है। एक्स्ट्रा के अंतर्गत स्क्रीन ओवरले पेज पर चुनें कि क्या दिखे।</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>स्क्रीन ओवरले टॉगल करें</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>स्क्रीन ओवरले टॉगल करें</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>स्क्रीन ओवरले</value></data>

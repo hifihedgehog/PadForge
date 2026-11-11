@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>Duplizéieren</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Aktivéiert</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Desaktivéiert</value></data>
+  <data name="Common_On" xml:space="preserve"><value>Un</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Aus</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Méi</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Installéiert</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Net installéiert</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>Op ARM64 net disponibel</value></data>
@@ -273,8 +276,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>Hei leeft d'Engine. Schalt d'Flam ëm, fir d'Ofroe vun allen Agaben ze starten oder ze stoppen.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Virtuell Controller</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Wielt en Ausgangstyp, gitt dem Slot Apparater a klickt op eng Kaart, fir hir Zouuerdnungen unzepassen.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>Déngschter</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>Beweegungsdaten, de Web-Controller fir den Handy a Remote Link lafe vun hei ënnen aus.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>Optional Funktioune waarden hei: de Web-Controller fir den Handy, Remote Link, de Beweegungsserver a méi.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>Instrumenteleescht</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>Unzuel vun Apparater, Ofrofrequenz an d'Flam vun der Engine, ëmmer am Bléck.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Begréissungstour weisen</value></data>
@@ -284,7 +286,26 @@
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Wielt lénks e Makro aus, oder dréckt op Derbäisetzen, fir een unzeleeën.</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Kal</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Virschau</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>Déngschter</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Extraen</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>Optional Funktiounen. Jiddereng bleift am Hannergrond, bis Dir se uschalt.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Méi Weeër fir ze spillen</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Anerwäerts schécken</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>Um Bildschierm</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>En Handy oder Tablet als Controller benotzen.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Mat engem Head-Tracker oder VR-Headset ronderëm kucken.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Vitess, Pedalen a Gäng aus Rennspiller zouuerdnen.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>Zuschauer Knäpp drécke loossen, andeems se am Chat tippen.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Controller mat PadForge op engem anere PC deelen.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Beweegungsdaten vum Controller un Emulatore schécken.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Trigger- a Liichteffekter vu Spill-Mods iwwerhuelen.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Menüen, Schichten a Profilwiessele weisen, wärend Dir spillt.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Eng Touch-Fläch um Bildschierm fir Spiller, déi den Touchpad vun der PlayStation benotzen.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>E Bild, en Timer oder eng Auer iwwer anere Fënsteren.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Port, onverschlësselt HTTP-Adress, Zougangscode</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Nei verbannen, Port, Schutz vun der Identitéit, iwwer eng Adress verbannen</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR-Runtime, UDP-Port, Beräich pro Achs</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, DSX.exe-Ersatz</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Ports, maximal Vitess, benotzerdefinéiert Formater</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Beweegungsserver</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook-Motion-Provider-Protokollserver fir Gyro- a Beschleunegungsdaten.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU-Beweegungsserver aktivéieren (CemuHook-Motion-Provider-Protokoll)</value></data>
@@ -3846,7 +3867,7 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Muster fir Audio-Routing no der Erkennung vum Uschloss, vu SundayMoments, d'Referenz hannert „Kopfhöreruschloss verfollegen“. Als Dokumentatioun gelies; AGPL-3.0.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>QR-Encoder am Byte-Modus fir d'Web-Controller-Kaart an der Iwwersiicht, portéiert vun der Referenzimplementatioun vum Nayuki. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>QR-Encoder am Byte-Modus fir d'Adresse vum Web-Controller, portéiert vun der Referenzimplementatioun vum Nayuki. MIT.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>Maus-Grafik an der Visualiséierung Tastatur + Maus, vum Igor Budzhak. MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Drockofhängegt Tempo</value></data>

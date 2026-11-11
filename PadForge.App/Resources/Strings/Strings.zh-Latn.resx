@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>Chuàngjiàn fùběn</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Yǐ qǐyòng</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Yǐ jìnyòng</value></data>
+  <data name="Common_On" xml:space="preserve"><value>Kāi</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Guān</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Gèngduō</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Yǐ ānzhuāng</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Wèi ānzhuāng</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>Zài ARM64 shàng bù kěyòng</value></data>
@@ -273,8 +276,7 @@
   <data name="Tour_Engine_Body" xml:space="preserve"><value>Rónglú běnshēn. Qiēhuàn huǒyàn yǐ qǐdòng huò tíngzhǐ suǒyǒu shūrù lúnxún.</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Xūnǐ kòngzhìqì</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Xuǎnzé shūchū lèixíng, wèi cáowèi fēnpèi shèbèi, diǎnjī kǎpiàn jí kě tiáozhěng qí yìngshè.</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>Fúwù</value></data>
-  <data name="Tour_Services_Body" xml:space="preserve"><value>Tǐgǎn shùjù, shǒujī wǎngyè kòngzhìqì hé Remote Link dōu cóng zhèlǐ chuánshū.</value></data>
+  <data name="Tour_Extras_Body" xml:space="preserve"><value>Kěxuǎn gōngnéng dōu zài zhèlǐ: shǒujī wǎngyè kòngzhìqì, Remote Link, tǐgǎn fúwùqì děng.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>Yíbiǎolán</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>Shèbèi shùliàng, lúnxún sùlǜ hé yǐnqíng huǒyàn, shǐzhōng kějiàn.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Xiǎnshì huānyíng dǎolǎn</value></data>
@@ -286,7 +288,26 @@
   <data name="Instr_Out" xml:space="preserve"><value>SHŪCHŪ</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Lěngquè</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Yùlǎn</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>Fúwù</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Kuòzhǎn gōngnéng</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>Kěxuǎn gōngnéng. Měi xiàng gōngnéng zài nín qǐyòng zhīqián dōu bú huì dǎrǎo nín.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Gèng duō wánfǎ</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Zhuǎnfā dào biéchù</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>Píngmù xiǎnshì</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>Jiāng shǒujī huò píngbǎn diànnǎo yòngzuò kòngzhìqì.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Tōngguò tóubù zhuīzōngqì huò VR tóuxiǎn huánshì sìzhōu.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Yìngshè sàichē yóuxì zhōng de chēsù, tàbǎn hé dǎngwèi.</value></data>
+  <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>Ràng guānzhòng zài liáotiān zhōng dǎzì lái àn jiàn.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Yǔ lìng yì tái diànnǎo shàng de PadForge gòngxiǎng kòngzhìqì.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Jiāng kòngzhìqì tǐgǎn shùjù fāsòng dào mónǐqì.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Cóng yóuxì mózǔ jiēshōu bānjī hé dēngguāng xiàoguǒ.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Zài yóuxì shí xiǎnshì càidān, qiēhuàn céng hé pèizhì wénjiàn qiēhuàn tíshì.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Wèi shǐyòng PlayStation chùkòngbǎn de yóuxì tígōng píngmù chùmō biǎomiàn.</value></data>
+  <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Zài qítā chuāngkǒu shàngfāng xiǎnshì túpiàn, jìshíqì huò shízhōng.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Duānkǒu, wèi jiāmì de HTTP dìzhǐ, fǎngwènmǎ</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Chóngxīn liánjiē, duānkǒu, shēnfèn bǎohù, tōngguò dìzhǐ liánjiē</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR yùnxíngshí, UDP duānkǒu, měi zhóu fànwéi</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Duānkǒu, DSX.exe tìshēn chéngxù</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Duānkǒu, mǎnfú chēsù, zìdìngyì géshì</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Tǐgǎn fúwùqì</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Yòng yú tuóluóyí hé jiāsùdùjì shùjù de DSU / CemuHook Motion Provider xiéyì fúwùqì.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Qǐyòng DSU tǐgǎn fúwùqì (CemuHook Motion Provider xiéyì)</value></data>
@@ -3830,7 +3851,7 @@ Yào ràng PadForge xiànzài xièzài tāmen ma? Cǐ cāozuò xūyào tíshēng
   <data name="Pad_Audio_OutputPath_FollowJack" xml:space="preserve"><value>Gēnsuí ěrjī jiēkǒu</value></data>
   <data name="About_DuaLibDesc" xml:space="preserve"><value>WujekFoliarz de DualSense shūchū bàogào zìjié duìzhàobiǎo yǔ Sony scePad yǔyì, shì PadForge xiàoguǒ hé yīnpín xiěrù de yījù. MIT.</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>SundayMoments de jiēkǒu jiǎncè yīnpín lùyóu móshì, “Gēnsuí ěrjī jiēkǒu” de cānkǎo láiyuán. Zuòwéi wéndàng yuèdú. AGPL-3.0.</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Yòngyú yíbiǎopán wǎngyè kòngzhìqì kǎpiàn de zìjié móshì QR biānmǎqì, yízhí zì Nayuki de cānkǎo shíxiàn. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Yòngyú wǎngyè kòngzhìqì dìzhǐ de zìjié móshì QR biānmǎqì, yízhí zì Nayuki de cānkǎo shíxiàn. MIT.</value></data>
   <data name="About_MouseArtDesc" xml:space="preserve"><value>Jiànpán + shǔbiāo kěshìhuà zhōng de shǔbiāo túxíng, yóu Igor Budzhak zhìzuò. MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Yāgǎn liánfā sùlǜ</value></data>
   <data name="Macro_PressureScaledRate_Tooltip" xml:space="preserve"><value>Liánfā sùlǜ gēnsuí suǒ xuǎn mónǐ lái yuán de ànyā lìdù. Qīng àn shí yǐ mànsù jiàngé liánfā, quánlì ànxià shí yǐ shàng fāng de jiàngé liánfā, liǎng zhě zhījiān pínghuá guòdù.</value></data>

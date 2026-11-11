@@ -203,11 +203,9 @@
   <data name="FirstRun_Done" xml:space="preserve"><value>Kwenziwe</value></data>
   <data name="Tour_Slots_Title" xml:space="preserve"><value>Izikhala</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Izilawuli ezibonakalayo</value></data>
-  <data name="Tour_Services_Title" xml:space="preserve"><value>Amasevisi</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Isikhala</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Idivayisi</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Buka kuqala</value></data>
-  <data name="Dashboard_Services" xml:space="preserve"><value>Amasevisi</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>Imbobo</value></data>
   <data name="Dashboard_WebControllerPort" xml:space="preserve"><value>Imbobo yesilawuli sewebhu</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Ama-mod emidlalo</value></data>

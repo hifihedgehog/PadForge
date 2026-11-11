@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>ရှာဖွေ...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>ဆက်လုပ်</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>ရပ်</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>စတင်</value></data>
   <data name="Common_Record" xml:space="preserve"><value>မှတ်တမ်းတင်</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>မှတ်တမ်းတင်နေသည်...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>ရှင်းလင်း</value></data>
@@ -125,6 +126,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>ယခင်ဆက်ရှင်မှ ကျန်နေသော ဗာချွယ်ကွန်ထရိုလာများကို ရှင်းလင်းနေသည်။</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> စက်ပစ္စည်း</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>ကွန်ထရိုလာ ထည့်ရန်</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>ပရိုဖိုင်</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>ဗာချွယ်ကွန်ထရိုလာကို ဖျက်ရန်</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>မျက်နှာပြင်အပြည့်</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>PadForge ကို ပြရန်</value></data>
@@ -254,10 +256,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>ဗာချွယ်ကွန်ထရိုလာ {0} ကို ဖျက်ပြီးပါပြီ။</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>ဒက်ရှ်ဘုတ်</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>ပင်မ</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>အဝင် အင်ဂျင်</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> စက်ပစ္စည်း အွန်လိုင်း</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>ဗာချွယ်ကွန်ထရိုလာများ</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>ကွန်ထရိုလာများ</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>အသုံးပြုနေသော အပိုများ</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>ကျန်သည်များသည် အပိုများတွင် ရှိပြီး သင် မဖွင့်မချင်း တစ်ခုချင်းစီ ပိတ်ထားသည်။</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>အပိုများကို ဖွင့်ရန်</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} ချိတ်ဆက်ထားပြီး အသုံးမပြုရသေးပါ။</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>အသုံးပြုရန်</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> ခု မက်ပ်ထား၊ </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> ခု ချိတ်ဆက်ထား</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>အင်ဂျင် လည်ပတ်နေသည်။ ရပ်ရန် နှိပ်ပါ။</value></data>
@@ -277,8 +284,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>ဗာချွယ်ကွန်ထရိုလာများ</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>အထွက်အမျိုးအစားတစ်ခု ရွေးပါ၊ ဆလော့ထဲသို့ စက်ပစ္စည်းများ ထည့်ပါ၊ ၎င်း၏ မက်ပင်းများကို ပုံဖော်ရန် ကတ်တစ်ခုကို နှိပ်ပါ။</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>ဖုန်း ဝဘ်ကွန်ထရိုလာ၊ အဝေးချိတ်ဆက်မှု၊ လှုပ်ရှားမှု ဆာဗာ စသည့် ရွေးချယ်နိုင်သော လုပ်ဆောင်ချက်များ ဤနေရာတွင် ရှိသည်။</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>တိုင်းထွာပြမျဉ်း</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>စက်ပစ္စည်းအရေအတွက်၊ ဖတ်ယူနှုန်းနှင့် အင်ဂျင်မီးတောက်ကို အမြဲ မြင်ရသည်။</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>ကြိုဆိုရေး လမ်းညွှန်ပြသမှုကို ပြရန်</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>ဆလော့</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>စက်ပစ္စည်း</value></data>
@@ -3910,11 +3915,13 @@ PadForge က ၎င်းတို့ကို ယခုပင် ဖြုတ�
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>ကွန်ထရိုလာကိုလည်း တုန်ခါစေရန်</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>အသိပေးချက် စမ်းသပ်ရန်</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>သတ်မှတ်ရန် အကြံပြုချက်များ</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>ဗာချွယ်ကွန်ထရိုလာ၏ စာမျက်နှာ ဖွင့်ထားစဉ် စက်ပစ္စည်းတစ်ခု ချိတ်ဆက်လာလျှင် PadForge က ၎င်းကို ထိုနေရာတွင် သတ်မှတ်ရန် အကြံပြုနိုင်သည်။ “သတ်မှတ်ရန်” ကို မနှိပ်မချင်း ဘာမှ မသတ်မှတ်ပါ။ ကီးဘုတ်များ၊ မောက်စ်များ၊ တာ့ချ်ပက်များနှင့် မီဒီယာကီးများကို ဘယ်တော့မှ အကြံမပြုပါ။</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>ဗာချွယ်ကွန်ထရိုလာ၏ စာမျက်နှာ ဖွင့်ထားစဉ် စက်ပစ္စည်းတစ်ခု ချိတ်ဆက်လာလျှင် PadForge က ၎င်းကို ထိုနေရာတွင် သတ်မှတ်ရန် အကြံပြုနိုင်ပြီး ပင်မက စက်ပစ္စည်းအသစ်တစ်ခုကို ၎င်း၏ ကိုယ်ပိုင် ဗာချွယ်ကွန်ထရိုလာတစ်ခု ပေးရန် အကြံပြုနိုင်သည်။ အကြံပြုချက်တစ်ခုကို သင် လက်မခံမချင်း ဘာမှ မသတ်မှတ်ပါ။ ကီးဘုတ်များ၊ မောက်စ်များ၊ တာ့ချ်ပက်များနှင့် မီဒီယာကီးများကို ဘယ်တော့မှ အကြံမပြုပါ။</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>စက်ပစ္စည်းအသစ်များကို ဖွင့်ထားသော ဗာချွယ်ကွန်ထရိုလာသို့ အကြံပြုရန်</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>PadForge တစ်ခါမှ မမြင်ဖူးသော စက်ပစ္စည်းများသာ။ သိပြီးသား စက်ပစ္စည်းများသည် အကြံပြုချက်မပါဘဲ ချိတ်ဆက်သည်။</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>ဖွင့်ထားသော ဗာချွယ်ကွန်ထရိုလာတွင် စက်ပစ္စည်းမရှိသည့်အခါ ချိတ်ဆက်လာသော မည်သည့်စက်ပစ္စည်းကိုမဆို အကြံပြုရန်</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>အသစ်ဖြစ်စေ၊ သိပြီးသားဖြစ်စေ။ ဗာချွယ်ကွန်ထရိုလာတွင် စက်ပစ္စည်းတစ်ခု သတ်မှတ်ပြီးသည်နှင့် ဤအကြံပြုချက် ပေါ်လာတော့မည် မဟုတ်ပါ။</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>စက်ပစ္စည်းအသစ်များကို ပင်မတွင် အကြံပြုရန်</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>မည်သည့် ဗာချွယ်ကွန်ထရိုလာကမှ အသုံးမပြုသော စက်ပစ္စည်းအသစ်တစ်ခုစီအကြောင်း ပင်မက တစ်ကြိမ်သာ မေးသည်။ “အသုံးပြုရန်” သည် ၎င်းအတွက် ဗာချွယ်ကွန်ထရိုလာတစ်ခု ပြုလုပ်ပေးပြီး “ယခု မလုပ်ပါ” သည် ထိုစက်ပစ္စည်းအတွက် အကြံပြုချက်ကို ရပ်လိုက်သည်။</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} ချိတ်ဆက်လာပါပြီ။ ၎င်းကို ဤဗာချွယ်ကွန်ထရိုလာသို့ သတ်မှတ်မလား။</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>သတ်မှတ်ရန်</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>ယခု မလုပ်ပါ</value></data>

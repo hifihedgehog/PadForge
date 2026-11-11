@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Procurar...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Prosseguir</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Parar</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Iniciar</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Gravar</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>A gravar...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Limpar</value></data>
@@ -125,6 +126,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>A limpar os comandos virtuais deixados por uma sessão anterior.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> dispositivos</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Adicionar comando</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Perfil</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Eliminar comando virtual</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Ecrã inteiro</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Mostrar o PadForge</value></data>
@@ -254,10 +256,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Comando virtual {0} eliminado.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>Painel</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>Início</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Motor de entrada</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> dispositivos online</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Comandos virtuais</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Comandos</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>Extras em uso</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>As restantes estão em Extras, cada uma desativada até a ativar.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>Abrir Extras</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} está ligado e não está em uso.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Usar</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> mapeados, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> ligados</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Motor em execução. Clique para parar.</value></data>
@@ -277,8 +284,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Comandos virtuais</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Escolha um tipo de saída, alimente o slot com dispositivos e clique num cartão para moldar os respetivos mapeamentos.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>As funcionalidades opcionais ficam aqui: o comando web do telemóvel, a Ligação Remota, o servidor de movimento e mais.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>Linha de instrumentos</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>Número de dispositivos, taxa de sondagem e a chama do motor, sempre à vista.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Mostrar visita guiada de boas-vindas</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Slot</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Dispositivo</value></data>
@@ -3920,11 +3925,13 @@ Pretende que o PadForge os desinstale agora? Esta operação requer elevação e
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Fazer também vibrar o comando</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Testar notificação</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Pedidos de atribuição</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Quando um dispositivo se liga enquanto a página de um comando virtual está aberta, o PadForge pode propor atribuí-lo aí. Nada é atribuído até clicar em Atribuir. Os teclados, os ratos, os painéis táteis e as teclas multimédia nunca são propostos.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Quando um dispositivo se liga enquanto a página de um comando virtual está aberta, o PadForge pode propor atribuí-lo aí, e o Início pode propor a um novo dispositivo um comando virtual próprio. Nada é atribuído até aceitar uma proposta. Os teclados, os ratos, os painéis táteis e as teclas multimédia nunca são propostos.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Propor novos dispositivos ao comando virtual aberto</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Apenas dispositivos que o PadForge nunca viu antes. Os dispositivos que já conhece ligam-se sem qualquer pedido.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Propor qualquer dispositivo que se ligue quando o comando virtual aberto não tiver dispositivos</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Novo ou já conhecido. Assim que o comando virtual tiver um dispositivo atribuído, este pedido deixa de aparecer.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>Propor novos dispositivos no Início</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>O Início pergunta uma só vez por cada novo dispositivo que nenhum comando virtual utilize. Usar cria um comando virtual para ele e Agora não termina a proposta para esse dispositivo.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} acabou de se ligar. Atribuí-lo a este comando virtual?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Atribuir</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Agora não</value></data>

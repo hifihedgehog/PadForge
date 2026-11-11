@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>مرور...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>ادامه</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>توقف</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>شروع</value></data>
   <data name="Common_Record" xml:space="preserve"><value>ضبط</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>در حال ضبط...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>پاک کردن</value></data>
@@ -136,6 +137,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>در حال پاک‌سازی کنترلرهای مجازی به‌جامانده از نشست قبلی.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> دستگاه</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>افزودن کنترلر</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>پروفایل</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>حذف کنترلر مجازی</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>تمام‌صفحه</value></data>
   <data name="Main_Minimize" xml:space="preserve"><value>کوچک‌سازی</value></data>
@@ -269,10 +271,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>کنترلر مجازی {0} حذف شد.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>داشبورد</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>خانه</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>موتور ورودی</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> دستگاه آنلاین</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>کنترلرهای مجازی</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>کنترلرها</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>افزونه‌های در حال استفاده</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>بقیه در افزونه‌ها هستند و هرکدام تا وقتی روشنش نکنید خاموش می‌ماند.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>باز کردن افزونه‌ها</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} وصل است و استفاده نمی‌شود.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>استفاده</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> نگاشت‌شده، </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> متصل</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>موتور در حال اجراست. برای توقف کلیک کنید.</value></data>
@@ -292,8 +299,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>کنترلرهای مجازی</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>نوع خروجی را انتخاب کنید، به اسلات دستگاه بدهید و برای شکل دادن به نگاشت‌هایش روی یک کارت کلیک کنید.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>ویژگی‌های اختیاری اینجا منتظرند: کنترلر وب تلفن، پیوند از راه دور، سرور حرکت و بیشتر.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>نوار نشان‌دهنده‌ها</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>تعداد دستگاه‌ها، نرخ نمونه‌برداری و شعله موتور، همیشه پیش چشم.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>نمایش تور خوشامدگویی</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>اسلات</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>دستگاه</value></data>
@@ -4119,11 +4124,13 @@
   <data name="Battery_FullTitle" xml:space="preserve"><value>کنترلر کاملاً شارژ شد</value></data>
   <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: کاملاً شارژ شد</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>پیشنهادهای اختصاص</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>وقتی دستگاهی در حالی وصل شود که صفحه یک کنترلر مجازی باز است، PadForge می‌تواند پیشنهاد دهد آن را به همان کنترلر اختصاص دهد. تا روی «اختصاص» کلیک نکنید، چیزی اختصاص داده نمی‌شود. صفحه‌کلیدها، ماوس‌ها، تاچ‌پدها و کلیدهای رسانه هرگز پیشنهاد داده نمی‌شوند.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>وقتی دستگاهی در حالی وصل شود که صفحه یک کنترلر مجازی باز است، PadForge می‌تواند پیشنهاد دهد آن را به همان کنترلر اختصاص دهد، و خانه می‌تواند به یک دستگاه جدید کنترلر مجازی مخصوص خودش را پیشنهاد کند. تا وقتی پیشنهادی را نپذیرید، چیزی اختصاص داده نمی‌شود. صفحه‌کلیدها، ماوس‌ها، تاچ‌پدها و کلیدهای رسانه هرگز پیشنهاد داده نمی‌شوند.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>پیشنهاد دستگاه‌های جدید به کنترلر مجازی باز</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>فقط دستگاه‌هایی که PadForge پیش‌تر هرگز ندیده است. دستگاه‌هایی که از قبل می‌شناسد بدون پیشنهاد وصل می‌شوند.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>پیشنهاد هر دستگاه در حال اتصال وقتی کنترلر مجازی باز هیچ دستگاهی ندارد</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>جدید یا از قبل شناخته‌شده. وقتی دستگاهی به کنترلر مجازی اختصاص یافت، این پیشنهاد دیگر نمایش داده نمی‌شود.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>پیشنهاد دستگاه‌های جدید در خانه</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>خانه درباره هر دستگاه جدیدی که هیچ کنترلر مجازی از آن استفاده نمی‌کند یک بار می‌پرسد. «استفاده» برای آن یک کنترلر مجازی می‌سازد و «اکنون نه» پیشنهاد آن دستگاه را پایان می‌دهد.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} همین الان وصل شد. به این کنترلر مجازی اختصاص داده شود؟</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>اختصاص</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>اکنون نه</value></data>

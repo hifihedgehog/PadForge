@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Gözat...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Devam et</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Durdur</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Başlat</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Kayda al</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Kayıt yapılıyor...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Temizle</value></data>
@@ -136,6 +137,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Önceki oturumdan kalan sanal kontrolcüler temizleniyor.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> cihaz</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Kontrolcü ekle</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Profil</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Sanal kontrolcüyü sil</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Tam ekran</value></data>
   <data name="Main_Minimize" xml:space="preserve"><value>Simge Durumuna Küçült</value></data>
@@ -269,10 +271,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Sanal kontrolcü {0} silindi.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>Gösterge paneli</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>Ana sayfa</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Giriş motoru</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> cihaz çevrimiçi</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Sanal kontrolcüler</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Kontrolcüler</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>Kullanılan ekstralar</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Diğerleri Ekstralar sayfasında, siz açana kadar her biri kapalı.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>Ekstralar'ı aç</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} bağlı ve kullanılmıyor.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Kullan</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> eşlenmiş, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> bağlı</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Motor çalışıyor. Durdurmak için tıklayın.</value></data>
@@ -292,8 +299,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Sanal kontrolcüler</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Bir çıkış türü seçin, yuvaya cihaz atayın ve eşlemelerini biçimlendirmek için bir karta tıklayın.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>İsteğe bağlı özellikler burada: telefondaki web kontrolcüsü, Uzak Bağlantı, hareket sunucusu ve daha fazlası.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>Gösterge satırı</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>Cihaz sayısı, yoklama hızı ve motor alevi her zaman göz önünde.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Karşılama turunu göster</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Yuva</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Cihaz</value></data>
@@ -4119,11 +4124,13 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Battery_FullTitle" xml:space="preserve"><value>Kontrolcü tamamen şarj oldu</value></data>
   <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: tamamen şarj oldu</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Atama istemleri</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Bir sanal kontrolcünün sayfası açıkken bir cihaz bağlandığında PadForge onu oraya atamayı önerebilir. Siz Ata'ya tıklayana kadar hiçbir şey atanmaz. Klavyeler, fareler, dokunmatik yüzeyler ve medya tuşları hiçbir zaman önerilmez.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Bir sanal kontrolcünün sayfası açıkken bir cihaz bağlandığında PadForge onu oraya atamayı önerebilir, Ana sayfa da yeni bir cihaza kendi sanal kontrolcüsünü önerebilir. Bir öneriyi kabul edene kadar hiçbir şey atanmaz. Klavyeler, fareler, dokunmatik yüzeyler ve medya tuşları hiçbir zaman önerilmez.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Yeni cihazları açık sanal kontrolcüye öner</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Yalnızca PadForge'un daha önce hiç görmediği cihazlar. Zaten tanıdığı cihazlar istem olmadan bağlanır.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Açık sanal kontrolcüde cihaz yokken bağlanan her cihazı öner</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Yeni veya zaten tanınan. Sanal kontrolcüye bir cihaz atandıktan sonra bu istem artık görünmez.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>Yeni cihazları Ana sayfada öner</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>Ana sayfa, hiçbir sanal kontrolcünün kullanmadığı her yeni cihaz için bir kez sorar. Kullan, cihaz için bir sanal kontrolcü oluşturur, Şimdi değil ise o cihaz için öneriyi sonlandırır.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} az önce bağlandı. Bu sanal kontrolcüye atansın mı?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Ata</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Şimdi değil</value></data>

@@ -69,6 +69,9 @@
   <data name="Common_Copy" xml:space="preserve"><value>Kopim</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>I on</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>I of</value></data>
+  <data name="Common_On" xml:space="preserve"><value>On</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Of</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Moa</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>I instol pinis</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>I no instol yet</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>I no stap long ARM64</value></data>
@@ -86,6 +89,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Painim...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Go het</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Stopim</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Kirapim</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Rekodim</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>I rekodim...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Klinim</value></data>
@@ -104,6 +108,7 @@
   <data name="Main_ShuttingDown" xml:space="preserve"><value>Pasim PadForge...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>Kirapim PadForge…</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Putim kontrola</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Profail</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Rausim virtual kontrola</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Pulap skrin</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Soim PadForge</value></data>
@@ -167,7 +172,7 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Virtual kontrola {0} i raus pinis.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Ol virtual kontrola</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Ol kontrola</value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> i konek</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Ensin i ran. Klikim bilong stopim.</value></data>
   <data name="Dashboard_EngineFlame_Idle" xml:space="preserve"><value>Ensin i malolo. Klikim bilong stopim.</value></data>
@@ -1728,4 +1733,12 @@
   <data name="MacroAction_TriggerEffect_EndStrength" xml:space="preserve"><value>Strong bilong pinis</value></data>
   <data name="MacroAction_TriggerEffect_HoldStopped" xml:space="preserve"><value>Inap long em i stop</value></data>
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>Taim</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Ol ekstra</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Salim i go long narapela hap</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>Long skrin</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Kisim ol efek bilong trika na lait long ol mod bilong gem.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Soim ol menu, ol lea na ol senis bilong profail taim yu pilai.</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Pot, senis bilong DSX.exe</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} i konek na i no stap long wok nau.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Yusim</value></data>
 </root>

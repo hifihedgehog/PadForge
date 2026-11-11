@@ -73,6 +73,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Chọgharịa...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Gaa n'ihu</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Kwụsị</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Malite</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Dekọọ</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Na-edekọ...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Kpochapụ</value></data>
@@ -1236,4 +1237,15 @@
   <data name="MacroAction_TriggerEffect_Timed_Format" xml:space="preserve"><value>{0} na {1} maka {2} ms</value></data>
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} na {1} mgbe a na-ejide ya</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} na {1} ruo mgbe a kwụsịrị ya</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Ihe ndị ọzọ</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Ụzọ ndị ọzọ iji gwuo egwu</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Ziga ya ebe ọzọ</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>Na ihuenyo</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Kenye ọsọ, pedal na gear sitere na egwuregwu ịkwọ ụgbọala.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Nata mmetụta trigger na ọkụ sitere na mod egwuregwu.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Gosi menu, layer na mgbanwe profile mgbe ị na-egwu egwu.</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, ihe nnọchi DSX.exe</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Port, ọsọ zuru ezu, usoro nke gị</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} jikọrọ, mana a naghị eji ya.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Jiri ya</value></data>
 </root>

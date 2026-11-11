@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Хайх...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Үргэлжлүүлэх</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Зогсоох</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Эхлүүлэх</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Бичих</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Бичиж байна...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Цэвэрлэх</value></data>
@@ -125,6 +126,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Өмнөх сессээс үлдсэн виртуал контроллерүүдийг цэвэрлэж байна.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> төхөөрөмж</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Контроллер нэмэх</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Профайл</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Виртуал контроллерийг устгах</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Бүтэн дэлгэц</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>PadForge-ийг харуулах</value></data>
@@ -254,10 +256,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Виртуал контроллер {0} устгагдлаа.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>Хянах самбар</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>Нүүр</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Оролтын хөдөлгүүр</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> төхөөрөмж онлайн</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Виртуал контроллерүүд</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Контроллерүүд</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>Ашиглаж буй Нэмэлтүүд</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Бусад нь Нэмэлтүүд хуудсанд байгаа бөгөөд та асаах хүртэл тус бүр унтраалттай байна.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>Нэмэлтүүдийг нээх</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} холбогдсон боловч ашиглагдаагүй байна.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Ашиглах</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> оноосон, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> холбогдсон</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Хөдөлгүүр ажиллаж байна. Зогсоохын тулд дарна уу.</value></data>
@@ -277,8 +284,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Виртуал контроллерүүд</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Гаралтын төрлөө сонгож, слотод төхөөрөмж өгөөд, карт дээр дарж оноолтоо тохируулна уу.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>Нэмэлт боломжууд энд байна: утасны веб контроллер, Алсын холболт, хөдөлгөөний сервер болон бусад.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>Хэмжүүрийн мөр</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>Төхөөрөмжийн тоо, уншилтын давтамж, хөдөлгүүрийн дөл үргэлж харагдана.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Мэндчилгээний танилцуулгыг харуулах</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Слот</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Төхөөрөмж</value></data>
@@ -3901,11 +3906,13 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Мөн контроллерыг чичиргэх</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Туршилтын мэдэгдэл</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Хуваарилах санал</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Виртуал контроллерын хуудас нээлттэй байх үед төхөөрөмж холбогдвол PadForge түүнийг тэнд хуваарилахыг санал болгож болно. Та Хуваарилах-ыг дарах хүртэл юу ч хуваарилагдахгүй. Гар, хулгана, мэдрэгч самбар, медиа товчлууруудыг хэзээ ч санал болгохгүй.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Виртуал контроллерын хуудас нээлттэй байх үед төхөөрөмж холбогдвол PadForge түүнийг тэнд хуваарилахыг санал болгож болох бөгөөд Нүүр хуудас шинэ төхөөрөмжид өөрийн гэсэн виртуал контроллер санал болгож болно. Та саналыг хүлээн авах хүртэл юу ч хуваарилагдахгүй. Гар, хулгана, мэдрэгч самбар, медиа товчлууруудыг хэзээ ч санал болгохгүй.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Шинэ төхөөрөмжийг нээлттэй виртуал контроллерт санал болгох</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Зөвхөн PadForge-ийн өмнө нь хэзээ ч хараагүй төхөөрөмжүүд. Танил төхөөрөмжүүд санал асуулгүй холбогдоно.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Нээлттэй виртуал контроллерт төхөөрөмж байхгүй үед холбогдсон дурын төхөөрөмжийг санал болгох</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Шинэ эсвэл аль хэдийн танил. Виртуал контроллерт төхөөрөмж хуваарилагдсаны дараа энэ санал гарахаа болино.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>Шинэ төхөөрөмжийг Нүүр хуудсанд санал болгох</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>Нүүр хуудас ямар ч виртуал контроллер ашиглаагүй шинэ төхөөрөмж бүрийн талаар нэг удаа асууна. Ашиглах нь түүнд виртуал контроллер үүсгэх бөгөөд Одоо биш нь тухайн төхөөрөмжийн саналыг дуусгана.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} саяхан холбогдлоо. Үүнийг энэ виртуал контроллерт хуваарилах уу?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Хуваарилах</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Одоо биш</value></data>

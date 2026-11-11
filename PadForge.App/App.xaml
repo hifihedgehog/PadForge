@@ -480,7 +480,7 @@
                 Applies the corrected template to every unstyled ui:Button.
                 Named styles based on DefaultUiButtonStyle bypass this
                 implicit style, so each of them repeats the Template setter
-                (EmberIconButton, EmberPrimaryButton, DashboardPage's page
+                (EmberIconButton, EmberPrimaryButton, HomePage's page
                 implicit, PadPage's MapAllPillButton).
             -->
             <Style TargetType="uictrl:Button" BasedOn="{StaticResource DefaultUiButtonStyle}">

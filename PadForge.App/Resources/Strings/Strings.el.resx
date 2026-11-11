@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Αναζήτηση...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Συνέχεια</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Διακοπή</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Έναρξη</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Καταγραφή</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Καταγραφή...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Εκκαθάριση</value></data>
@@ -136,6 +137,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Εκκαθάριση εικονικών χειριστηρίων που απέμειναν από προηγούμενη συνεδρία.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> συσκευές</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Προσθήκη χειριστηρίου</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Προφίλ</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Διαγραφή εικονικού χειριστηρίου</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Πλήρης οθόνη</value></data>
   <data name="Main_Minimize" xml:space="preserve"><value>Ελαχιστοποίηση</value></data>
@@ -269,10 +271,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Το εικονικό χειριστήριο {0} διαγράφηκε.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>Πίνακας ελέγχου</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>Αρχική</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Μηχανή εισόδου</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> συσκευές σε σύνδεση</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Εικονικά χειριστήρια</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Χειριστήρια</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>Επιπλέον σε χρήση</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Τα υπόλοιπα βρίσκονται στα Επιπλέον, καθένα απενεργοποιημένο μέχρι να το ενεργοποιήσετε.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>Άνοιγμα Επιπλέον</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>Η συσκευή {0} είναι συνδεδεμένη και δεν χρησιμοποιείται.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Χρήση</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> αντιστοιχισμένα, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> συνδεδεμένα</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Η μηχανή εκτελείται. Κάντε κλικ για διακοπή.</value></data>
@@ -292,8 +299,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Εικονικά χειριστήρια</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Επιλέξτε έναν τύπο εξόδου, δώστε συσκευές στην υποδοχή και κάντε κλικ σε μια κάρτα για να διαμορφώσετε τις αντιστοιχίσεις της.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>Εδώ βρίσκονται οι προαιρετικές λειτουργίες: το χειριστήριο web για τηλέφωνο, η Απομακρυσμένη σύνδεση, ο διακομιστής κίνησης και άλλα.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>Γραμμή ενδείξεων</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>Πλήθος συσκευών, ρυθμός δειγματοληψίας και η φλόγα της μηχανής, πάντα ορατά.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Εμφάνιση ξενάγησης καλωσορίσματος</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Υποδοχή</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Συσκευή</value></data>
@@ -4119,11 +4124,13 @@
   <data name="Battery_FullTitle" xml:space="preserve"><value>Πλήρης φόρτιση χειριστηρίου</value></data>
   <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: πλήρως φορτισμένο</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Προτροπές ανάθεσης</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Όταν συνδέεται μια συσκευή ενώ είναι ανοιχτή η σελίδα ενός εικονικού χειριστηρίου, το PadForge μπορεί να προτείνει την ανάθεσή της εκεί. Δεν γίνεται καμία ανάθεση μέχρι να κάνετε κλικ στην «Ανάθεση». Πληκτρολόγια, ποντίκια, επιφάνειες αφής και πλήκτρα πολυμέσων δεν προτείνονται ποτέ.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Όταν συνδέεται μια συσκευή ενώ είναι ανοιχτή η σελίδα ενός εικονικού χειριστηρίου, το PadForge μπορεί να προτείνει την ανάθεσή της εκεί και η Αρχική μπορεί να προτείνει σε μια νέα συσκευή ένα δικό της εικονικό χειριστήριο. Δεν γίνεται καμία ανάθεση μέχρι να αποδεχτείτε μια πρόταση. Πληκτρολόγια, ποντίκια, επιφάνειες αφής και πλήκτρα πολυμέσων δεν προτείνονται ποτέ.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Πρόταση νέων συσκευών στο ανοιχτό εικονικό χειριστήριο</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Μόνο συσκευές που το PadForge δεν έχει δει ποτέ πριν. Οι συσκευές που ήδη γνωρίζει συνδέονται χωρίς προτροπή.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Πρόταση κάθε συσκευής που συνδέεται όταν το ανοιχτό εικονικό χειριστήριο δεν έχει συσκευές</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Νέες ή ήδη γνωστές. Μόλις ανατεθεί μια συσκευή στο εικονικό χειριστήριο, αυτή η προτροπή δεν εμφανίζεται πλέον.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>Πρόταση νέων συσκευών στην Αρχική</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>Η Αρχική ρωτά μία φορά για κάθε νέα συσκευή που δεν χρησιμοποιεί κανένα εικονικό χειριστήριο. Η «Χρήση» δημιουργεί ένα εικονικό χειριστήριο για αυτήν και η «Όχι τώρα» τερματίζει την πρόταση για τη συσκευή.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>Η συσκευή {0} μόλις συνδέθηκε. Να ανατεθεί σε αυτό το εικονικό χειριστήριο;</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Ανάθεση</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Όχι τώρα</value></data>

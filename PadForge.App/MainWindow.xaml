@@ -24,14 +24,13 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <!-- Ember steel ground (#175). Sits over the Mica backdrop and under
              all content: near-black steel with a faint ember wash top-right
              and a cold wash on the left. Dark theme only. UpdateSteelLayer
              collapses it in Light. -->
-        <Grid x:Name="SteelLayer" Grid.RowSpan="3" IsHitTestVisible="False">
+        <Grid x:Name="SteelLayer" Grid.RowSpan="2" IsHitTestVisible="False">
             <Border Background="#F20B0E14"/>
             <Border>
                 <Border.Background>
@@ -81,6 +80,23 @@
                     </Border>
                 </ui:TitleBar.Header>
                 <ui:TitleBar.TrailingContent>
+                    <StackPanel Orientation="Horizontal">
+                    <!-- The profile switcher (#574): the pill the status bar
+                         carried, now beside the window's own buttons. A
+                         click opens the switcher under it, and an applied
+                         auto-switch flares it (both wired in code-behind).
+                         It binds itself to MainViewModel.Settings once it
+                         loads, so it needs nothing from this tree. wpf-ui's
+                         title bar leaves the pointer to whatever sits in
+                         TrailingContent (TitleBar.cs, the WM_NCHITTEST
+                         branch), so the pill takes its own clicks, and it
+                         is marked hit-testable in the chrome as the full
+                         screen button beside it is. Its AutomationId is the
+                         one it always had. -->
+                    <viewControls:ProfilePill x:Name="TitleProfilePill" ShowLabel="True"
+                                              VerticalAlignment="Top" Margin="0,4,8,0"
+                                              WindowChrome.IsHitTestVisibleInChrome="True"
+                                              AutomationProperties.AutomationId="ProfilePillStatusBar"/>
                     <controls:StateToggleButton x:Name="FullScreenBtn" AutomationProperties.Name="{Binding Main_FullScreen, Source={x:Static strings:Strings.Instance}}" Click="FullScreenBtn_Click" Width="44" Height="30"
                             Background="Transparent" BorderThickness="0" Padding="0"
                             VerticalAlignment="Top" Margin="0"
@@ -122,6 +138,7 @@
                              BINDERR on every launch. -->
                         <controls:GlyphText x:Name="FullScreenIcon" Text="&#xE740;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
                     </controls:StateToggleButton>
+                    </StackPanel>
                 </ui:TitleBar.TrailingContent>
             </ui:TitleBar>
         </Grid>
@@ -172,9 +189,135 @@
                 </ui:NavigationViewItem>
             </ui:NavigationView.FooterMenuItems>
 
+            <!-- The engine at the sidebar's foot (#574): the flame, the
+                 state and the polling rate, which the status bar carried.
+                 wpf-ui's left template draws PaneFooter under the footer
+                 entries (NavigationViewCompact.xaml,
+                 LeftNavigationViewTemplate). While the pane is closed there
+                 is room for the flame alone, so MainWindow.SetEngineFootMode
+                 hides the two texts. The bindings read MainViewModel, which
+                 the constructor hands this element by name. -->
+            <ui:NavigationView.PaneFooter>
+                <Border x:Name="EngineFoot" Margin="0,2,0,10" MinHeight="40" Padding="12,0" CornerRadius="8"
+                        Background="{DynamicResource SteelRaisedBrush}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Path x:Name="EngineFootFlame" FlowDirection="LeftToRight" Data="{StaticResource FlameOuterGeometry}"
+                              Width="14" Height="14" Stretch="Uniform"
+                              VerticalAlignment="Center">
+                            <Path.Style>
+                                <Style TargetType="Path">
+                                    <!-- Cold default: outline only. -->
+                                    <Setter Property="Fill" Value="Transparent"/>
+                                    <Setter Property="Stroke" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                    <Setter Property="StrokeThickness" Value="1.2"/>
+                                    <Style.Triggers>
+                                        <!-- Glow sweep (#175): static Effect set from triggers only,
+                                             never animated. Running blooms ember, Idle/Stopping faint gold. -->
+                                        <DataTrigger Binding="{Binding Dashboard.EngineStateKey}" Value="Running">
+                                            <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
+                                            <Setter Property="Stroke" Value="{x:Null}"/>
+                                            <Setter Property="Effect">
+                                                <Setter.Value>
+                                                    <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Dashboard.EngineStateKey}" Value="Idle">
+                                            <Setter Property="Fill" Value="{DynamicResource WaitBrush}"/>
+                                            <Setter Property="Stroke" Value="{x:Null}"/>
+                                            <Setter Property="Effect">
+                                                <Setter.Value>
+                                                    <DropShadowEffect Color="#E8B434" BlurRadius="8" ShadowDepth="0" Opacity="0.35"/>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Dashboard.EngineStateKey}" Value="Stopping">
+                                            <Setter Property="Fill" Value="{DynamicResource WaitBrush}"/>
+                                            <Setter Property="Stroke" Value="{x:Null}"/>
+                                            <Setter Property="Effect">
+                                                <Setter.Value>
+                                                    <DropShadowEffect Color="#E8B434" BlurRadius="8" ShadowDepth="0" Opacity="0.35"/>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Path.Style>
+                        </Path>
+                        <TextBlock x:Name="EngineFootState" Grid.Column="1" Text="{Binding EngineStatusText}"
+                                   FontSize="13" FontWeight="SemiBold" Margin="10,0,8,0"
+                                   VerticalAlignment="Center" TextTrimming="CharacterEllipsis"
+                                   AutomationProperties.AutomationId="EngineFootState">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Dashboard.EngineStateKey}" Value="Running">
+                                            <Setter Property="Foreground" Value="{DynamicResource EmberHotBrush}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                        <StackPanel x:Name="EngineFootRate" Grid.Column="2" Orientation="Horizontal"
+                                    VerticalAlignment="Center">
+                            <TextBlock Text="{Binding PollingFrequency, StringFormat='{}{0:F0}', Mode=OneWay}"
+                                       FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
+                                       Foreground="{DynamicResource ColdBrush}"/>
+                            <TextBlock Text=" Hz"
+                                       FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
+                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </ui:NavigationView.PaneFooter>
+
             <ui:NavigationView.ContentOverlay>
                 <Grid>
-                    <views:DashboardPage x:Name="DashboardPageView" Visibility="Visible"/>
+                    <!-- The message line (#574), where the status bar's
+                         message was. It is here only while there is a
+                         message: a plain one fades and clears after about
+                         five seconds (MainWindow.SweepStatusMessage), and one
+                         that reports a failure stays until the next. It is
+                         drawn over the page's lower corner and takes no row
+                         of its own, so a message that comes and goes never
+                         moves the page. First among the children and raised
+                         by its ZIndex, so the pages keep their order under
+                         it. The pointer passes through it. -->
+                    <Border x:Name="StatusMessageLine" Panel.ZIndex="10"
+                            HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                            Margin="16,0,16,12" Padding="12,6" CornerRadius="6" MaxWidth="720"
+                            Background="{DynamicResource SteelRaisedBrush}"
+                            BorderBrush="{DynamicResource SteelLineBrush}" BorderThickness="1"
+                            IsHitTestVisible="False">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding StatusText}" Value="">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding StatusText}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <TextBlock x:Name="StatusMessageText" AutomationProperties.LiveSetting="Polite"
+                                   Text="{Binding StatusText}"
+                                   VerticalAlignment="Center"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                   TextTrimming="CharacterEllipsis"/>
+                    </Border>
+                    <!-- Home's AutomationId is the one the Dashboard had, as
+                         its sidebar entry's is still Nav_Dashboard: UI tools
+                         pair Nav_<tag> with <tag>PageView, and #574 keeps
+                         every id. -->
+                    <views:HomePage x:Name="HomePageView" AutomationProperties.AutomationId="DashboardPageView" Visibility="Visible"/>
                     <views:PadPage x:Name="PadPageView" Visibility="Collapsed"/>
                     <views:DevicesPage x:Name="DevicesPageView" Visibility="Collapsed"/>
                     <views:ExtrasPage x:Name="ExtrasPageView" Visibility="Collapsed"/>
@@ -186,126 +329,10 @@
         </ui:NavigationView>
 
         <!-- ═══════════════════════════════════════════
-             Status Bar
-             ═══════════════════════════════════════════ -->
-        <Border x:Name="StatusBarBorder" Grid.Row="2"
-                Background="{DynamicResource StatusBarFillBrush}"
-                BorderBrush="{DynamicResource SteelLineSoftBrush}"
-                BorderThickness="0,1,0,0"
-                Padding="12,4">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-
-                <!-- Named so the #175 item 7 decay sweep can fade it out
-                     before the clear (code-behind BeginAnimation). -->
-                <TextBlock x:Name="StatusMessageText" Grid.Column="0" AutomationProperties.LiveSetting="Polite"
-                           Text="{Binding StatusText}"
-                           VerticalAlignment="Center"
-                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                           TextTrimming="CharacterEllipsis"/>
-
-                <!-- Active-profile pill (#175 item 8): joins the instrument
-                     cluster. Click opens the switcher flyout; an applied
-                     auto-switch flares it (both wired in code-behind). -->
-                <viewControls:ProfilePill x:Name="StatusProfilePill" Grid.Column="1"
-                                          VerticalAlignment="Center" Margin="16,0,0,0"
-                                          AutomationProperties.AutomationId="ProfilePillStatusBar"/>
-
-                <!-- Instrument line (#175): live counts and rate in cold
-                     telemetry mono, engine state as the flame. -->
-                <StackPanel Grid.Column="2" Orientation="Horizontal"
-                            VerticalAlignment="Center" Margin="16,0">
-                    <TextBlock Text="{Binding ConnectedDeviceCount, Mode=OneWay}"
-                               FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
-                               Foreground="{DynamicResource ColdBrush}"/>
-                    <TextBlock Text="{Binding Main_DevicesSuffix, Source={x:Static strings:Strings.Instance}}"
-                               FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
-                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                </StackPanel>
-
-                <StackPanel Grid.Column="3" Orientation="Horizontal"
-                            VerticalAlignment="Center" Margin="16,0">
-                    <TextBlock Text="{Binding PollingFrequency, StringFormat='{}{0:F0}', Mode=OneWay}"
-                               FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
-                               Foreground="{DynamicResource ColdBrush}"/>
-                    <TextBlock Text=" Hz"
-                               FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
-                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                </StackPanel>
-
-                <StackPanel Grid.Column="4" Orientation="Horizontal"
-                            VerticalAlignment="Center" Margin="16,0,0,0">
-                    <Path FlowDirection="LeftToRight" Data="{StaticResource FlameOuterGeometry}"
-                          Width="12" Height="12" Stretch="Uniform"
-                          VerticalAlignment="Center" Margin="0,0,6,0">
-                        <Path.Style>
-                            <Style TargetType="Path">
-                                <!-- Cold default: outline only. -->
-                                <Setter Property="Fill" Value="Transparent"/>
-                                <Setter Property="Stroke" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
-                                <Setter Property="StrokeThickness" Value="1.2"/>
-                                <Style.Triggers>
-                                    <!-- Glow sweep (#175): static Effect set from triggers only,
-                                         never animated. Running blooms ember, Idle/Stopping faint gold. -->
-                                    <DataTrigger Binding="{Binding Dashboard.EngineStateKey}" Value="Running">
-                                        <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
-                                        <Setter Property="Stroke" Value="{x:Null}"/>
-                                        <Setter Property="Effect">
-                                            <Setter.Value>
-                                                <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Dashboard.EngineStateKey}" Value="Idle">
-                                        <Setter Property="Fill" Value="{DynamicResource WaitBrush}"/>
-                                        <Setter Property="Stroke" Value="{x:Null}"/>
-                                        <Setter Property="Effect">
-                                            <Setter.Value>
-                                                <DropShadowEffect Color="#E8B434" BlurRadius="8" ShadowDepth="0" Opacity="0.35"/>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Dashboard.EngineStateKey}" Value="Stopping">
-                                        <Setter Property="Fill" Value="{DynamicResource WaitBrush}"/>
-                                        <Setter Property="Stroke" Value="{x:Null}"/>
-                                        <Setter Property="Effect">
-                                            <Setter.Value>
-                                                <DropShadowEffect Color="#E8B434" BlurRadius="8" ShadowDepth="0" Opacity="0.35"/>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Path.Style>
-                    </Path>
-                    <TextBlock Text="{Binding EngineStatusText}"
-                               FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12" FontWeight="SemiBold">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Dashboard.EngineStateKey}" Value="Running">
-                                        <Setter Property="Foreground" Value="{DynamicResource EmberHotBrush}"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                </StackPanel>
-            </Grid>
-        </Border>
-
-        <!-- ═══════════════════════════════════════════
              Driver operation overlay
              ═══════════════════════════════════════════ -->
         <Grid x:Name="DriverOverlay"
-              Grid.RowSpan="3"
+              Grid.RowSpan="2"
               Visibility="Collapsed"
               Panel.ZIndex="1000">
             <Border Background="#80000000"/>
@@ -337,7 +364,7 @@
              and tip card.
              ═══════════════════════════════════════════ -->
         <Grid x:Name="FirstRunOverlay"
-              Grid.RowSpan="3"
+              Grid.RowSpan="2"
               Visibility="Collapsed"
               Panel.ZIndex="900"
               SizeChanged="FirstRunOverlay_SizeChanged">
@@ -439,7 +466,7 @@
              Shutdown overlay
              ═══════════════════════════════════════════ -->
         <Grid x:Name="ShutdownOverlay"
-              Grid.RowSpan="3"
+              Grid.RowSpan="2"
               Visibility="Collapsed"
               Panel.ZIndex="1001">
             <Border Background="#CC000000"/>
@@ -470,7 +497,7 @@
              completes.
              ═══════════════════════════════════════════ -->
         <Grid x:Name="StartupOverlay"
-              Grid.RowSpan="3"
+              Grid.RowSpan="2"
               Visibility="Collapsed"
               Panel.ZIndex="1001">
             <Border Background="#CC000000"/>

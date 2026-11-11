@@ -99,6 +99,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>参照...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>続行</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>停止</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>開始</value></data>
   <data name="Common_Record" xml:space="preserve"><value>記録</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>記録中...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>クリア</value></data>
@@ -133,6 +134,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>前回のセッションから残った仮想コントローラーをクリーンアップしています。</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> 台のデバイス</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>コントローラーを追加</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>プロファイル</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>仮想コントローラーを削除</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>全画面表示</value></data>
   <data name="Main_Minimize" xml:space="preserve"><value>最小化</value></data>
@@ -259,10 +261,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>仮想コントローラー {0} を削除しました。</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>ダッシュボード</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>ホーム</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>入力エンジン</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> 台のデバイスがオンライン</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>仮想コントローラー</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>コントローラー</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>使用中の追加機能</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>ほかの機能は「追加機能」にあり、オンにするまでオフのままです。</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>追加機能を開く</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} が接続されていますが、使用されていません。</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>使う</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> 台がマッピング済み、</value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> 台が接続済み</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>エンジン実行中。クリックで停止します。</value></data>
@@ -3184,8 +3191,6 @@
   <data name="Tour_Engine_Title" xml:space="preserve"><value>入力エンジン</value></data>
   <data name="Tour_Slots_Body" xml:space="preserve"><value>各仮想コントローラーはここにあります。炎は、今どのスロットが鍛造中かを示します。</value></data>
   <data name="Tour_Slots_Title" xml:space="preserve"><value>スロット</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>デバイス数、ポーリングレート、エンジンの炎を常に表示します。</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>計器ライン</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
   <data name="About_OpenVR" xml:space="preserve"><value>OpenVR API</value></data>
   <data name="About_OpenVRDesc" xml:space="preserve"><value>Valve の OpenVR クライアント API（BSD 3-Clause）。VR ヘッドセットとモーションコントローラーを入力ソースとして利用。ネイティブランタイムはお使いの SteamVR から読み込まれます。</value></data>
@@ -4070,11 +4075,13 @@
   <data name="Battery_FullTitle" xml:space="preserve"><value>コントローラーの充電完了</value></data>
   <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: 充電完了</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>割り当ての提案</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>仮想コントローラーのページを開いているときにデバイスが接続されると、PadForge はそこへの割り当てを提案できます。「割り当て」をクリックするまで何も割り当てられません。キーボード、マウス、タッチパッド、メディアキーは提案されません。</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>仮想コントローラーのページを開いているときにデバイスが接続されると、PadForge はそこへの割り当てを提案できます。ホームでは、新しいデバイスに専用の仮想コントローラーを提案できます。提案を受け入れるまで何も割り当てられません。キーボード、マウス、タッチパッド、メディアキーは提案されません。</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>新しいデバイスを開いている仮想コントローラーに提案する</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>PadForge が初めて見るデバイスのみ。既知のデバイスは提案なしで接続します。</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>開いている仮想コントローラーにデバイスがないときは接続したすべてのデバイスを提案する</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>新規でも既知でも対象です。仮想コントローラーにデバイスが割り当てられると、この提案は表示されなくなります。</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>新しいデバイスをホームで提案する</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>ホームは、仮想コントローラーを使っていない新しいデバイスについて、一度だけ確認します。「使う」を押すとそのデバイス用の仮想コントローラーを作成し、「今はしない」を押すとそのデバイスの提案を終了します。</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} が接続されました。この仮想コントローラーに割り当てますか？</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>割り当て</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>今はしない</value></data>

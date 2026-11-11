@@ -4373,7 +4373,7 @@ namespace PadForge.Common.Input
         /// language.</summary>
         private void RaiseError(string message, string logLine, Exception ex)
         {
-            // The status bar shows only the headline; without this line the
+            // The message line shows only the headline. Without this line the
             // exception's mechanism is invisible everywhere (the VR-create
             // failure of 2026-08-08 surfaced as a bare "Failed to create Vr
             // virtual controller" with the sharing-violation detail dropped).

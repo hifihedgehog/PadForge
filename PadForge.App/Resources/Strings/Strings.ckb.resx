@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>گەڕان...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>بەردەوامبوون</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>وەستاندن</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>دەستپێکردن</value></data>
   <data name="Common_Record" xml:space="preserve"><value>تۆمارکردن</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>تۆماردەکرێت...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>پاککردنەوە</value></data>
@@ -125,6 +126,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>پاککردنەوەی ئەو کۆنترۆڵەرە مەجازییانەی لە دانیشتنی پێشوو ماونەتەوە.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> ئامێر</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>زیادکردنی کۆنترۆڵەر</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>پرۆفایل</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>سڕینەوەی کۆنترۆڵەری مەجازی</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>پڕبەشاشە</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>پیشاندانی PadForge</value></data>
@@ -254,10 +256,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>کۆنترۆڵەری مەجازی {0} سڕایەوە.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>داشبۆرد</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>ماڵەوە</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>بزوێنەری تێخستن</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> ئامێری سەرهێڵ</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>کۆنترۆڵەرە مەجازییەکان</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>کۆنترۆڵەرەکان</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>زیادەکانی بەکارهاتوو</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>ئەوانی تر لە زیادەکاندان، هەر یەکێکیان کوژاوەیە تا هەڵی دەکەیت.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>کردنەوەی زیادەکان</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} بەستراوەتەوە و بەکارنایەت.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>بەکارهێنان</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> بەستراوە، </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> پەیوەستکراو</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>بزوێنەر کاردەکات. کلیک بکە بۆ وەستاندن.</value></data>
@@ -277,8 +284,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>کۆنترۆڵەرە مەجازییەکان</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>جۆرێکی دەرچوون هەڵبژێرە، ئامێر بدە بە شوێنەکە، و کلیک لە کارتێک بکە بۆ ڕێکخستنی بەستنەوەکانی.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>تایبەتمەندییە ئارەزوومەندانەکان لێرەدان: کۆنترۆڵەری وێبی مۆبایل، بەستەری دوور، ڕاژەکاری جووڵە و زیاتر.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>هێڵی پیشاندەرەکان</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>ژمارەی ئامێرەکان، خێرایی پشکنین و بڵێسەی بزوێنەر، هەمیشە لەبەرچاو.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>پیشاندانی گەشتی بەخێرهاتن</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>شوێن</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>ئامێر</value></data>
@@ -3906,11 +3911,13 @@
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>هەروەها کۆنترۆڵەرەکە بلەرزێنە</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>تاقیکردنەوەی ئاگادارکردنەوە</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>پێشنیارەکانی دیاریکردن</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>کاتێک ئامێرێک دەبەسترێتەوە لەکاتێکدا لاپەڕەی کۆنترۆڵەرێکی مەجازی کراوەیە، PadForge دەتوانێت پێشنیار بکات لەوێ دیاری بکرێت. هیچ شتێک دیاری ناکرێت تا کلیک لە دیاریکردن نەکەیت. تەختەکلیل، ماوس، تاچپاد و کلیلەکانی میدیا هەرگیز پێشنیار ناکرێن.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>کاتێک ئامێرێک دەبەسترێتەوە لەکاتێکدا لاپەڕەی کۆنترۆڵەرێکی مەجازی کراوەیە، PadForge دەتوانێت پێشنیار بکات لەوێ دیاری بکرێت، و ماڵەوە دەتوانێت کۆنترۆڵەرێکی مەجازیی تایبەت بە خۆی بۆ ئامێرێکی نوێ پێشنیار بکات. هیچ شتێک دیاری ناکرێت تا پێشنیارێک قبووڵ نەکەیت. تەختەکلیل، ماوس، تاچپاد و کلیلەکانی میدیا هەرگیز پێشنیار ناکرێن.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>پێشنیارکردنی ئامێرە نوێیەکان بۆ کۆنترۆڵەرە مەجازییە کراوەکە</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>تەنها ئەو ئامێرانەی PadForge پێشتر هەرگیز نەیبینیون. ئەو ئامێرانەی پێشتر دەیانناسێت بەبێ پرسیار دەبەسترێنەوە.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>پێشنیارکردنی هەر ئامێرێکی بەستراو کاتێک کۆنترۆڵەرە مەجازییە کراوەکە هیچ ئامێرێکی نییە</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>نوێ یان پێشتر ناسراو. کاتێک ئامێرێک بۆ کۆنترۆڵەرە مەجازییەکە دیاری کرا، ئەم پرسیارە چیتر دەرناکەوێت.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>پێشنیارکردنی ئامێرە نوێیەکان لە ماڵەوە</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>ماڵەوە یەک جار دەربارەی هەر ئامێرێکی نوێ دەپرسێت کە هیچ کۆنترۆڵەرێکی مەجازی بەکاری ناهێنێت. بەکارهێنان کۆنترۆڵەرێکی مەجازی بۆی دروست دەکات، و ئێستا نا پێشنیارەکە بۆ ئەو ئامێرە کۆتایی پێدەهێنێت.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} ئێستا بەسترایەوە. بۆ ئەم کۆنترۆڵەرە مەجازییە دیاری بکرێت؟</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>دیاریکردن</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>ئێستا نا</value></data>

@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Shfleto...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Vazhdo</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Ndalo</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Nise</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Regjistro</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Po regjistron...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Pastro</value></data>
@@ -125,6 +126,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Po pastrohen kontrolluesit virtualë të mbetur nga seanca e mëparshme.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> pajisje</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Shto kontrollues</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Profili</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Fshi kontrolluesin virtual</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Ekran i plotë</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Shfaq PadForge</value></data>
@@ -254,10 +256,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Kontrolluesi virtual {0} u fshi.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>Paneli</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>Kreu</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Motori i hyrjes</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> pajisje në linjë</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Kontrollues virtualë</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Kontrolluesit</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>Shtesa në përdorim</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Të tjerat janë te Shtesa, secila e fikur derisa ta aktivizosh.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>Hap Shtesa</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} është i lidhur dhe nuk përdoret.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Përdore</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> të hartëzuar, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> të lidhur</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Motori është në punë. Kliko për ta ndalur.</value></data>
@@ -277,8 +284,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Kontrollues virtualë</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Zgjidh një lloj dalje, ushqe slotin me pajisje dhe kliko një kartë për të formësuar hartëzimet e saj.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>Veçoritë opsionale janë këtu: kontrolluesi në web i telefonit, Lidhja në distancë, serveri i lëvizjes dhe më shumë.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>Rreshti i instrumenteve</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>Numri i pajisjeve, shpejtësia e sondazhit dhe flaka e motorit, gjithmonë në pamje.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Shfaq turin e mirëseardhjes</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Slot</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Pajisje</value></data>
@@ -3866,11 +3871,13 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Dridhe edhe kontrolluesin</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Njoftim provë</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Kërkesat e caktimit</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Kur një pajisje lidhet ndërsa faqja e një kontrolluesi virtual është e hapur, PadForge mund të ofrojë ta caktojë atje. Asgjë nuk caktohet derisa të klikoni Cakto. Tastierat, mausat, touchpad-et dhe tastet e medias nuk ofrohen kurrë.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Kur një pajisje lidhet ndërsa faqja e një kontrolluesi virtual është e hapur, PadForge mund të ofrojë ta caktojë atje, dhe Kreu mund t'i ofrojë një pajisjeje të re një kontrollues virtual të vetin. Asgjë nuk caktohet derisa të pranoni një ofertë. Tastierat, mausat, touchpad-et dhe tastet e medias nuk ofrohen kurrë.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Ofro pajisje të reja për kontrolluesin virtual të hapur</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Vetëm pajisje që PadForge nuk i ka parë kurrë. Pajisjet që i njeh tashmë lidhen pa kërkesë.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Ofro çdo pajisje që lidhet kur kontrolluesi virtual i hapur nuk ka pajisje</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Të reja ose të njohura tashmë. Pasi kontrolluesi virtual ka një pajisje të caktuar, kjo kërkesë nuk shfaqet më.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>Ofro pajisje të reja te Kreu</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>Kreu pyet një herë për çdo pajisje të re që nuk e përdor asnjë kontrollues virtual. Përdore krijon një kontrollues virtual për të dhe Jo tani e mbyll ofertën për atë pajisje.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} sapo u lidh. Ta caktoni te ky kontrollues virtual?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Cakto</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Jo tani</value></data>

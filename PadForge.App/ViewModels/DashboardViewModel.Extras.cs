@@ -204,6 +204,9 @@ namespace PadForge.ViewModels
                     base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(ScreenOverlaysAnyEnabled)));
                     break;
             }
+            // Home's own followers: its engine button and its count of the
+            // extras in use (the Home part).
+            HomeFollows(e.PropertyName);
         }
     }
 }

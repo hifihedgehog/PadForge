@@ -70,6 +70,9 @@
   <data name="Common_Paste" xml:space="preserve"><value>Maxxansi</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Dandeessifameera</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Dhoorkameera</value></data>
+  <data name="Common_On" xml:space="preserve"><value>Banaa</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Cufaa</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Dabalata</value></data>
   <data name="Common_Ready" xml:space="preserve"><value>Qophaa'eera</value></data>
   <data name="Common_Stopped" xml:space="preserve"><value>Dhaabbateera</value></data>
   <data name="Common_Running" xml:space="preserve"><value>Hojjechaa jira</value></data>
@@ -85,6 +88,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Barbaadi...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Itti fufi</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Dhaabi</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Jalqabi</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Galmeessi</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Galmeessaa jira...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Qulqulleessi</value></data>
@@ -104,6 +108,7 @@
   <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge cufaa jira...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>PadForge jalqabaa jira…</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Kontirolaa ida'i</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Piroofaayilii</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Iskiriinii guutuu</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>PadForge agarsiisi</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>Injiniin dhaabbateera</value></data>
@@ -1857,4 +1862,10 @@
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>Yeroo</value></data>
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} {1} irratti yeroo qabamu</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} {1} irratti hanga dhaabbatutti</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Dabalataalee</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Karaalee taphaa dabalataa</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Hordofaa mataa ykn heedseetii VR fayyadamuun naannoo ilaali.</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>Raantaayimii OpenXR, poortii UDP, hangii akisii tokkoon tokkoo</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} wal qunnamee jira, garuu hojii irra hin jiru.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Itti fayyadami</value></data>
 </root>

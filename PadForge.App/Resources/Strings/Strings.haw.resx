@@ -70,6 +70,9 @@
   <data name="Common_Paste" xml:space="preserve"><value>Hoʻopili</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Ua hoʻā ʻia</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Ua hoʻopio ʻia</value></data>
+  <data name="Common_On" xml:space="preserve"><value>Ā</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Pio</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Hou aku</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Ua hoʻokomo ʻia</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>ʻAʻole i hoʻokomo ʻia</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>ʻAʻole loaʻa ma ARM64</value></data>
@@ -82,6 +85,7 @@
   <data name="Common_Unknown" xml:space="preserve"><value>ʻAʻole i ʻike ʻia</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Hoʻomau</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Hoʻōki</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Hoʻomaka</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Hoʻopaʻa</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Ke hoʻopaʻa nei...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Holoi</value></data>
@@ -933,4 +937,5 @@
   <data name="MacroAction_TriggerEffect_StrengthA" xml:space="preserve"><value>Ikaika A</value></data>
   <data name="MacroAction_TriggerEffect_StrengthB" xml:space="preserve"><value>Ikaika B</value></data>
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>Manawa</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Nā mea keu</value></data>
 </root>

@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Răsfoire...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Continuare</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Oprire</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Pornire</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Înregistrare</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Se înregistrează...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Golire</value></data>
@@ -136,6 +137,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Se curăță controlerele virtuale rămase dintr-o sesiune anterioară.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> dispozitive</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Adăugare controler</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Profil</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Ștergere controler virtual</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Ecran complet</value></data>
   <data name="Main_Minimize" xml:space="preserve"><value>Minimizare</value></data>
@@ -269,10 +271,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Controlerul virtual {0} a fost șters.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>Tablou de bord</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>Acasă</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Motor de intrare</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> dispozitive conectate</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Controlere virtuale</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Controlere</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>Extra în uz</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Restul sunt în Extra, fiecare dezactivată până când o activați.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>Deschidere Extra</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} este conectat și nu este folosit.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Utilizare</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> mapate, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> conectate</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Motorul rulează. Faceți clic pentru a-l opri.</value></data>
@@ -292,8 +299,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Controlere virtuale</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Alegeți un tip de ieșire, alimentați slotul cu dispozitive și faceți clic pe un card pentru a-i modela mapările.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>Aici așteaptă funcțiile opționale: controlerul web de pe telefon, Legătura la distanță, serverul de mișcare și altele.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>Linia de instrumente</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>Numărul de dispozitive, rata de interogare și flacăra motorului, mereu la vedere.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Afișare tur de bun venit</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Slot</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Dispozitiv</value></data>
@@ -4119,11 +4124,13 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Battery_FullTitle" xml:space="preserve"><value>Controler încărcat complet</value></data>
   <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: încărcat complet</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Solicitări de atribuire</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Când un dispozitiv se conectează cât timp pagina unui controler virtual este deschisă, PadForge se poate oferi să îl atribuie acolo. Nimic nu este atribuit până când nu faceți clic pe Atribuire. Tastaturile, mouse-urile, touchpadurile și tastele multimedia nu sunt oferite niciodată.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Când un dispozitiv se conectează cât timp pagina unui controler virtual este deschisă, PadForge se poate oferi să îl atribuie acolo, iar Acasă poate oferi unui dispozitiv nou un controler virtual propriu. Nimic nu este atribuit până când nu acceptați o ofertă. Tastaturile, mouse-urile, touchpadurile și tastele multimedia nu sunt oferite niciodată.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Oferire dispozitive noi controlerului virtual deschis</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Doar dispozitivele pe care PadForge nu le-a mai văzut. Dispozitivele deja cunoscute se conectează fără solicitare.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Oferire orice dispozitiv care se conectează când controlerul virtual deschis nu are dispozitive</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Nou sau deja cunoscut. După ce controlerul virtual are un dispozitiv atribuit, această solicitare nu mai apare.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>Oferire dispozitive noi în Acasă</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>Acasă întreabă o singură dată despre fiecare dispozitiv nou pe care niciun controler virtual nu îl folosește. Utilizare creează un controler virtual pentru el, iar Nu acum încheie oferta pentru acel dispozitiv.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} tocmai s-a conectat. Îl atribuiți acestui controler virtual?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Atribuire</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Nu acum</value></data>

@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>រកមើល...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>បន្ត</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>បញ្ឈប់</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>ចាប់ផ្ដើម</value></data>
   <data name="Common_Record" xml:space="preserve"><value>ថត</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>កំពុងថត...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>សម្អាត</value></data>
@@ -125,6 +126,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>កំពុងសម្អាតឧបករណ៍បញ្ជានិម្មិតដែលនៅសល់ពីវគ្គមុន។</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> ឧបករណ៍</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>បន្ថែមឧបករណ៍បញ្ជា</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>ប្រូហ្វាល់</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>លុបឧបករណ៍បញ្ជានិម្មិត</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>ពេញអេក្រង់</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>បង្ហាញ PadForge</value></data>
@@ -254,10 +256,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>ឧបករណ៍បញ្ជានិម្មិត {0} ត្រូវបានលុប។</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>ផ្ទាំងគ្រប់គ្រង</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>ទំព័រដើម</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>ម៉ាស៊ីនបញ្ចូល</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> ឧបករណ៍លើបណ្ដាញ</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>ឧបករណ៍បញ្ជានិម្មិត</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>ឧបករណ៍បញ្ជា</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>មុខងារបន្ថែមដែលកំពុងប្រើ</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>មុខងារដែលនៅសល់ស្ថិតនៅក្នុង «មុខងារបន្ថែម» ហើយនីមួយៗនៅបិទ រហូតដល់អ្នកបើកវា។</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>បើកមុខងារបន្ថែម</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} បានភ្ជាប់ ហើយមិនកំពុងប្រើទេ។</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>ប្រើវា</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> បានម៉ាប, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> បានភ្ជាប់</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>ម៉ាស៊ីនកំពុងដំណើរការ។ ចុចដើម្បីបញ្ឈប់។</value></data>
@@ -277,8 +284,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>ឧបករណ៍បញ្ជានិម្មិត</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>ជ្រើសប្រភេទលទ្ធផល ផ្ដល់ឧបករណ៍ឲ្យរន្ធ ហើយចុចកាតមួយដើម្បីកែតម្រូវការម៉ាបរបស់វា។</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>មុខងារជម្រើសរង់ចាំនៅទីនេះ៖ ឧបករណ៍បញ្ជាតាមវេបលើទូរសព្ទ តំណពីចម្ងាយ ម៉ាស៊ីនមេចលនា និងច្រើនទៀត។</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>ខ្សែឧបករណ៍វាស់</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>ចំនួនឧបករណ៍ អត្រាស្ទង់ និងអណ្ដាតភ្លើងម៉ាស៊ីន តែងតែមើលឃើញ។</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>បង្ហាញដំណើរទស្សនាស្វាគមន៍</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>រន្ធ</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>ឧបករណ៍</value></data>
@@ -3915,11 +3920,13 @@
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>ញ័រឧបករណ៍បញ្ជាផងដែរ</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>សាកល្បងការជូនដំណឹង</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>ការស្នើចាត់តាំង</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>ពេលឧបករណ៍មួយភ្ជាប់ ខណៈទំព័ររបស់ឧបករណ៍បញ្ជានិម្មិតកំពុងបើក PadForge អាចស្នើឱ្យចាត់តាំងវានៅទីនោះ។ គ្មានអ្វីត្រូវបានចាត់តាំងទេ រហូតដល់អ្នកចុច «ចាត់តាំង»។ ក្ដារចុច កណ្ដុរ ផ្ទាំងប៉ះ និងគ្រាប់ចុចមេឌៀ មិនត្រូវបានស្នើទេ។</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>ពេលឧបករណ៍មួយភ្ជាប់ ខណៈទំព័ររបស់ឧបករណ៍បញ្ជានិម្មិតកំពុងបើក PadForge អាចស្នើឱ្យចាត់តាំងវានៅទីនោះ ហើយទំព័រដើមអាចស្នើឧបករណ៍បញ្ជានិម្មិតផ្ទាល់ខ្លួនមួយដល់ឧបករណ៍ថ្មី។ គ្មានអ្វីត្រូវបានចាត់តាំងទេ រហូតដល់អ្នកទទួលយកការស្នើ។ ក្ដារចុច កណ្ដុរ ផ្ទាំងប៉ះ និងគ្រាប់ចុចមេឌៀ មិនត្រូវបានស្នើទេ។</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>ស្នើឧបករណ៍ថ្មីទៅឧបករណ៍បញ្ជានិម្មិតដែលកំពុងបើក</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>តែឧបករណ៍ដែល PadForge មិនធ្លាប់ឃើញពីមុនប៉ុណ្ណោះ។ ឧបករណ៍ដែលវាស្គាល់រួចហើយ ភ្ជាប់ដោយគ្មានការស្នើ។</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>ស្នើឧបករណ៍ណាមួយដែលកំពុងភ្ជាប់ ពេលឧបករណ៍បញ្ជានិម្មិតដែលកំពុងបើកគ្មានឧបករណ៍</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>ថ្មី ឬស្គាល់រួចហើយ។ ពេលឧបករណ៍បញ្ជានិម្មិតមានឧបករណ៍ចាត់តាំងហើយ ការស្នើនេះនឹងលែងបង្ហាញទៀត។</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>ស្នើឧបករណ៍ថ្មីនៅលើទំព័រដើម</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>ទំព័រដើមសួរម្ដងអំពីឧបករណ៍ថ្មីនីមួយៗ ដែលគ្មានឧបករណ៍បញ្ជានិម្មិតណាប្រើ។ «ប្រើវា» បង្កើតឧបករណ៍បញ្ជានិម្មិតមួយសម្រាប់វា ហើយ «មិនមែនឥឡូវនេះ» បញ្ចប់ការស្នើសម្រាប់ឧបករណ៍នោះ។</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} ទើបតែភ្ជាប់។ ចាត់តាំងវាទៅឧបករណ៍បញ្ជានិម្មិតនេះឬ?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>ចាត់តាំង</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>មិនមែនឥឡូវនេះ</value></data>

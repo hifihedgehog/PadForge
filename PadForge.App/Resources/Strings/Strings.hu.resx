@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Tallózás...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Folytatás</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Leállítás</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Indítás</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Rögzítés</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Rögzítés...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Törlés</value></data>
@@ -136,6 +137,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Az előző munkamenetből maradt virtuális kontrollerek eltávolítása.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> eszköz</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Kontroller hozzáadása</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Profil</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Virtuális kontroller törlése</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Teljes képernyő</value></data>
   <data name="Main_Minimize" xml:space="preserve"><value>Kicsinyítés</value></data>
@@ -269,10 +271,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>A(z) {0}. virtuális kontroller törölve.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>Irányítópult</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>Kezdőlap</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Bemeneti motor</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> eszköz online</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Virtuális kontrollerek</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Kontrollerek</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>Használatban lévő extrák</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>A többi az Extrák oldalon található, mindegyik kikapcsolva marad, amíg be nem kapcsolja.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>Extrák megnyitása</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>A(z) {0} csatlakoztatva van, de nincs használatban.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Használja</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> hozzárendelve, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> csatlakoztatva</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>A bemeneti motor fut. Kattintson a leállításhoz.</value></data>
@@ -292,8 +299,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Virtuális kontrollerek</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Válasszon kimeneti típust, adjon eszközöket a foglalathoz, majd kattintson egy kártyára a hozzárendelések alakításához.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>Itt várnak az opcionális funkciók: a telefonos webes kontroller, a Távoli kapcsolat, a mozgáskiszolgáló és még sok más.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>Műszersor</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>Eszközszám, lekérdezési gyakoriság és a bemeneti motor lángja, mindig szem előtt.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Üdvözlő bemutató megjelenítése</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Foglalat</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Eszköz</value></data>
@@ -4119,11 +4124,13 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Battery_FullTitle" xml:space="preserve"><value>A kontroller teljesen feltöltve</value></data>
   <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: teljesen feltöltve</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Hozzárendelési ajánlatok</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Ha egy eszköz akkor csatlakozik, amikor egy virtuális kontroller oldala nyitva van, a PadForge felajánlhatja, hogy oda rendeli. Semmi sem lesz hozzárendelve, amíg a Hozzárendelés gombra nem kattint. Billentyűzeteket, egereket, érintőpadokat és médiabillentyűket a program soha nem ajánl fel.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Ha egy eszköz akkor csatlakozik, amikor egy virtuális kontroller oldala nyitva van, a PadForge felajánlhatja, hogy oda rendeli, a Kezdőlap pedig egy új eszköznek felajánlhat egy saját virtuális kontrollert. Semmi sem lesz hozzárendelve, amíg el nem fogad egy ajánlatot. Billentyűzeteket, egereket, érintőpadokat és médiabillentyűket a program soha nem ajánl fel.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Új eszközök felajánlása a megnyitott virtuális kontrollernek</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Csak azok az eszközök, amelyeket a PadForge még sosem látott. A már ismert eszközök rákérdezés nélkül csatlakoznak.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Bármely csatlakozó eszköz felajánlása, ha a megnyitott virtuális kontrollernek nincs eszköze</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Új és már ismert eszközt egyaránt. Amint a virtuális kontrollerhez hozzá van rendelve egy eszköz, ez az ajánlat többé nem jelenik meg.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>Új eszközök felajánlása a Kezdőlapon</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>A Kezdőlap egyszer rákérdez minden új eszközre, amelyet egyetlen virtuális kontroller sem használ. A Használja gomb virtuális kontrollert hoz létre hozzá, a Most nem pedig lezárja az ajánlatot az adott eszközre.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} most csatlakozott. Hozzárendeli ehhez a virtuális kontrollerhez?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Hozzárendelés</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Most nem</value></data>

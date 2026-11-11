@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Selaa...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Jatka</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Pysäytä</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Käynnistä</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Nauhoita</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Nauhoitetaan...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Tyhjennä</value></data>
@@ -136,6 +137,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Siivotaan edellisestä istunnosta jääneitä virtuaaliohjaimia.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> laitetta</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Lisää ohjain</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Profiili</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Poista virtuaaliohjain</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Koko näyttö</value></data>
   <data name="Main_Minimize" xml:space="preserve"><value>Pienennä</value></data>
@@ -269,10 +271,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Virtuaaliohjain {0} poistettu.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>Koontinäyttö</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>Koti</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Syötemoottori</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> laitetta yhteydessä</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Virtuaaliohjaimet</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Ohjaimet</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>Käytössä olevat lisäosat</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Loput ovat Lisäosat-sivulla, ja jokainen on pois käytöstä, kunnes otat sen käyttöön.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>Avaa Lisäosat</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} on yhdistetty, mutta ei käytössä.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Käytä</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> määritetty, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> yhdistetty</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Moottori käynnissä. Pysäytä napsauttamalla.</value></data>
@@ -292,8 +299,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Virtuaaliohjaimet</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Valitse lähtötyyppi, anna paikalle laitteita ja muokkaa sen määrityksiä napsauttamalla korttia.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>Valinnaiset ominaisuudet odottavat täällä: puhelimen web-ohjain, Etälinkki, liikepalvelin ja muuta.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>Mittaririvi</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>Laitemäärä, kyselytaajuus ja moottorin liekki aina näkyvissä.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Näytä tervetuloesittely</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Paikka</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Laite</value></data>
@@ -4119,11 +4124,13 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="Battery_FullTitle" xml:space="preserve"><value>Ohjain ladattu täyteen</value></data>
   <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: ladattu täyteen</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Liittämiskehotteet</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Kun laite yhdistetään virtuaaliohjaimen sivun ollessa auki, PadForge voi tarjoutua liittämään sen siihen. Mitään ei liitetä, ennen kuin valitset Liitä. Näppäimistöjä, hiiriä, kosketuslevyjä ja medianäppäimiä ei koskaan tarjota.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Kun laite yhdistetään virtuaaliohjaimen sivun ollessa auki, PadForge voi tarjoutua liittämään sen siihen, ja Koti-sivu voi tarjota uudelle laitteelle oman virtuaaliohjaimen. Mitään ei liitetä, ennen kuin hyväksyt tarjouksen. Näppäimistöjä, hiiriä, kosketuslevyjä ja medianäppäimiä ei koskaan tarjota.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Tarjoa uusia laitteita avoinna olevaan virtuaaliohjaimeen</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Vain laitteet, joita PadForge ei ole ennen nähnyt. Jo tunnetut laitteet yhdistyvät ilman kehotetta.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Tarjoa mikä tahansa yhdistyvä laite, kun avoinna olevalla virtuaaliohjaimella ei ole laitteita</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Uusi tai jo tunnettu. Kun virtuaaliohjaimeen on liitetty laite, tätä kehotetta ei enää näytetä.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>Tarjoa uusia laitteita Koti-sivulla</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>Koti-sivu kysyy kerran jokaisesta uudesta laitteesta, jota mikään virtuaaliohjain ei käytä. Käytä luo sille virtuaaliohjaimen, ja Ei nyt päättää tarjouksen kyseisen laitteen osalta.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} yhdistettiin juuri. Liitetäänkö se tähän virtuaaliohjaimeen?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Liitä</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Ei nyt</value></data>

@@ -101,6 +101,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Chèche...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Kontinye</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Kanpe</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Demare</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Anrejistre</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Ap anrejistre...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Efase</value></data>
@@ -124,6 +125,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Ap netwaye kontwolè vityèl ki te rete nan yon sesyon anvan.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> aparèy</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Ajoute kontwolè</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Pwofil</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Efase kontwolè vityèl la</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Plen ekran</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Montre PadForge</value></data>
@@ -247,10 +249,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Kontwolè vityèl {0} efase.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>Tablo de bò</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>Akèy</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Motè antre</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> aparèy konekte</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Kontwolè vityèl</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Kontwolè</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>Ekstra ki aktive</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Rès yo nan Ekstra, epi chak rete etenn jiskaske ou aktive li.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>Louvri Ekstra</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} konekte, men okenn kontwolè vityèl pa itilize l.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Itilize l</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> asiyen, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> konekte</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Motè a ap mache. Klike pou kanpe l.</value></data>
@@ -270,8 +277,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Kontwolè vityèl</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Chwazi yon kalite sòti, bay plas la aparèy, epi klike sou yon kat pou fòme asiyasyon li yo.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>Fonksyon opsyonèl yo tann ou isit la: kontwolè web sou telefòn nan, Remote Link, sèvè mouvman an ak plis ankò.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>Liy enstriman</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>Kantite aparèy, frekans lekti, ak flanm motè a, toujou devan je ou.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Montre vizit akèy la</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Plas</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Aparèy</value></data>
@@ -3273,11 +3278,13 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Fè kontwolè a vibre tou</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Teste notifikasyon</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Pwopozisyon atribisyon</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Lè yon aparèy konekte pandan paj yon kontwolè vityèl louvri, PadForge ka pwopoze atribiye l la. Anyen pa atribiye toutotan ou pa klike sou Atribiye. Klavye, sourit, touchpad, ak touch medya pa janm pwopoze.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Lè yon aparèy konekte pandan paj yon kontwolè vityèl louvri, PadForge ka pwopoze atribiye l la, epi Akèy ka pwopoze yon nouvo aparèy yon kontwolè vityèl pa li. Anyen pa atribiye toutotan ou pa aksepte yon pwopozisyon. Klavye, sourit, touchpad, ak touch medya pa janm pwopoze.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Pwopoze nouvo aparèy yo bay kontwolè vityèl ki louvri a</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Sèlman aparèy PadForge poko janm wè. Aparèy li deja konnen konekte san pwopozisyon.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Pwopoze nenpòt aparèy k ap konekte lè kontwolè vityèl ki louvri a pa gen aparèy</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Nouvo oswa deja konnen. Depi kontwolè vityèl la gen yon aparèy atribiye, pwopozisyon sa a pa parèt ankò.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>Pwopoze nouvo aparèy yo sou Akèy</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>Akèy mande yon sèl fwa pou chak nouvo aparèy okenn kontwolè vityèl pa itilize. Itilize l kreye yon kontwolè vityèl pou li, epi Pa kounye a fini pwopozisyon an pou aparèy sa a.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} fèk konekte. Atribiye l bay kontwolè vityèl sa a?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Atribiye</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Pa kounye a</value></data>

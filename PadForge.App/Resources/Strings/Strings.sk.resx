@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Prehľadávať...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Pokračovať</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Zastaviť</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Spustiť</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Nahrať</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Nahráva sa...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Vymazať</value></data>
@@ -136,6 +137,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Odstraňujú sa virtuálne ovládače, ktoré zostali z predchádzajúcej relácie.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> zariadení</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Pridať ovládač</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Profil</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Odstrániť virtuálny ovládač</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Celá obrazovka</value></data>
   <data name="Main_Minimize" xml:space="preserve"><value>Minimalizovať</value></data>
@@ -269,10 +271,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Virtuálny ovládač {0} bol odstránený.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>Prehľad</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>Domov</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Vstupné jadro</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> zariadení online</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Virtuálne ovládače</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Ovládače</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>Používané doplnky</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Ostatné sú na stránke Doplnky, každý je vypnutý, kým ho nezapnete.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>Otvoriť Doplnky</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>Zariadenie {0} je pripojené a nepoužíva sa.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Použiť</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> namapovaných, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> pripojených</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Jadro beží. Kliknutím ho zastavíte.</value></data>
@@ -292,8 +299,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Virtuálne ovládače</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Vyberte typ výstupu, pridajte do slotu zariadenia a kliknutím na kartu upravte jeho mapovania.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>Voliteľné funkcie sú tu: webový ovládač pre telefón, Vzdialené prepojenie, server pohybu a ďalšie.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>Prístrojový riadok</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>Počet zariadení, frekvencia dotazovania a plameň jadra, vždy na očiach.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Zobraziť uvítaciu prehliadku</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Slot</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Zariadenie</value></data>
@@ -4119,11 +4124,13 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="Battery_FullTitle" xml:space="preserve"><value>Ovládač je úplne nabitý</value></data>
   <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: úplne nabité</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Výzvy na priradenie</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Keď sa zariadenie pripojí, kým je otvorená stránka virtuálneho ovládača, PadForge môže ponúknuť jeho priradenie. Nič sa nepriradí, kým nekliknete na Priradiť. Klávesnice, myši, touchpady a multimediálne klávesy sa nikdy neponúkajú.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Keď sa zariadenie pripojí, kým je otvorená stránka virtuálneho ovládača, PadForge môže ponúknuť jeho priradenie a stránka Domov môže novému zariadeniu ponúknuť vlastný virtuálny ovládač. Nič sa nepriradí, kým ponuku neprijmete. Klávesnice, myši, touchpady a multimediálne klávesy sa nikdy neponúkajú.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Ponúkať nové zariadenia otvorenému virtuálnemu ovládaču</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Iba zariadenia, ktoré PadForge predtým nikdy nevidel. Známe zariadenia sa pripoja bez výzvy.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Ponúkať každé pripájané zariadenie, keď otvorený virtuálny ovládač nemá žiadne zariadenia</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Nové aj známe. Keď má virtuálny ovládač priradené zariadenie, táto výzva sa už nezobrazuje.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>Ponúkať nové zariadenia na stránke Domov</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>Stránka Domov sa raz opýta na každé nové zariadenie, ktoré nepoužíva žiadny virtuálny ovládač. Použiť vytvorí pre zariadenie virtuálny ovládač a Teraz nie ukončí ponuku pre toto zariadenie.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>Práve sa pripojilo zariadenie {0}. Priradiť ho k tomuto virtuálnemu ovládaču?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Priradiť</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Teraz nie</value></data>

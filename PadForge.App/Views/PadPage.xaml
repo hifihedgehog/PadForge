@@ -559,7 +559,7 @@
                      minimum with the navigation pane open, so even on a line
                      of their own the last tabs ran past the edge. -->
                 <WrapPanel Orientation="Horizontal">
-                <!-- The active-profile pill lives in the status bar ONLY.
+                <!-- The active-profile pill lives in the title bar ONLY.
                      A copy sat here (#175 item 8) until a user read it as a
                      per-pad profile selector (2026-07-05). Profiles are
                      global, so the pad page carries none. -->

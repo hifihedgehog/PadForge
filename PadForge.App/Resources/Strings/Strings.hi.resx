@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>ब्राउज़ करें...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>आगे बढ़ें</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>रोकें</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>शुरू करें</value></data>
   <data name="Common_Record" xml:space="preserve"><value>रिकॉर्ड करें</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>रिकॉर्ड हो रहा है...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>साफ़ करें</value></data>
@@ -136,6 +137,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>पिछले सत्र से बचे वर्चुअल कंट्रोलर हटाए जा रहे हैं।</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> डिवाइस</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>कंट्रोलर जोड़ें</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>प्रोफ़ाइल</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>वर्चुअल कंट्रोलर हटाएँ</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>पूर्ण स्क्रीन</value></data>
   <data name="Main_Minimize" xml:space="preserve"><value>छोटा करें</value></data>
@@ -269,10 +271,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>वर्चुअल कंट्रोलर {0} हटाया गया।</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>डैशबोर्ड</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>होम</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>इनपुट इंजन</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> डिवाइस ऑनलाइन</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>वर्चुअल कंट्रोलर</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>कंट्रोलर</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>उपयोग में एक्स्ट्रा</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>बाकी एक्स्ट्रा में हैं, और हर एक तब तक बंद रहती है, जब तक आप उसे चालू नहीं करते।</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>एक्स्ट्रा खोलें</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} कनेक्ट है और उपयोग में नहीं है।</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>उपयोग करें</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> मैप किए गए, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> कनेक्टेड</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>इंजन चल रहा है। रोकने के लिए क्लिक करें।</value></data>
@@ -292,8 +299,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>वर्चुअल कंट्रोलर</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>आउटपुट प्रकार चुनें, स्लॉट को डिवाइस दें, और मैपिंग गढ़ने के लिए कार्ड पर क्लिक करें।</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>वैकल्पिक सुविधाएँ यहाँ मिलती हैं: फ़ोन का वेब कंट्रोलर, रिमोट लिंक, मोशन सर्वर और बहुत कुछ।</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>सूचक पट्टी</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>डिवाइस की संख्या, पोलिंग दर और इंजन की लौ, हमेशा नज़र के सामने।</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>स्वागत टूर दिखाएँ</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>स्लॉट</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>डिवाइस</value></data>
@@ -4119,11 +4124,13 @@
   <data name="Battery_FullTitle" xml:space="preserve"><value>कंट्रोलर पूरा चार्ज हो गया है</value></data>
   <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: पूरा चार्ज हो गया</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>असाइनमेंट प्रॉम्प्ट</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>जब किसी वर्चुअल कंट्रोलर का पेज खुला हो और कोई डिवाइस कनेक्ट हो, तो PadForge उसे वहीं असाइन करने की पेशकश कर सकता है। जब तक आप “असाइन करें” पर क्लिक नहीं करते, कुछ भी असाइन नहीं होता। कीबोर्ड, माउस, टचपैड और मीडिया कुंजियों की पेशकश कभी नहीं की जाती।</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>जब किसी वर्चुअल कंट्रोलर का पेज खुला हो और कोई डिवाइस कनेक्ट हो, तो PadForge उसे वहीं असाइन करने की पेशकश कर सकता है, और होम किसी नए डिवाइस को उसका अपना वर्चुअल कंट्रोलर देने की पेशकश कर सकता है। जब तक आप किसी पेशकश को स्वीकार नहीं करते, कुछ भी असाइन नहीं होता। कीबोर्ड, माउस, टचपैड और मीडिया कुंजियों की पेशकश कभी नहीं की जाती।</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>खुले वर्चुअल कंट्रोलर के लिए नए डिवाइसों की पेशकश करें</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>केवल वे डिवाइस जिन्हें PadForge ने पहले कभी नहीं देखा। जिन डिवाइसों को वह पहले से जानता है वे बिना प्रॉम्प्ट के कनेक्ट होते हैं।</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>खुले वर्चुअल कंट्रोलर में कोई डिवाइस न हो तो कनेक्ट होने वाले किसी भी डिवाइस की पेशकश करें</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>नया हो या पहले से जाना हुआ। वर्चुअल कंट्रोलर को कोई डिवाइस असाइन हो जाने के बाद यह प्रॉम्प्ट नहीं दिखता।</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>होम पर नए डिवाइस की पेशकश करें</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>होम हर ऐसे नए डिवाइस के बारे में एक बार पूछता है, जिसे कोई वर्चुअल कंट्रोलर उपयोग नहीं कर रहा। “उपयोग करें” उसके लिए एक वर्चुअल कंट्रोलर बनाता है, और “अभी नहीं” उस डिवाइस की पेशकश खत्म कर देता है।</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} अभी कनेक्ट हुआ। इसे इस वर्चुअल कंट्रोलर को असाइन करें?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>असाइन करें</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>अभी नहीं</value></data>

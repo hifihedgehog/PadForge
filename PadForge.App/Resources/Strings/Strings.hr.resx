@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Pregledaj...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Nastavi</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Zaustavi</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Pokreni</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Snimi</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Snimanje...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Očisti</value></data>
@@ -125,6 +126,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Čišćenje virtualnih kontrolera zaostalih iz prethodne sesije.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> uređaja</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Dodaj kontroler</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Profil</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Izbriši virtualni kontroler</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Cijeli zaslon</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Prikaži PadForge</value></data>
@@ -254,10 +256,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Virtualni kontroler {0} je izbrisan.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>Nadzorna ploča</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>Početna</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Ulazni mehanizam</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> uređaja na mreži</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Virtualni kontroleri</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Kontroleri</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>Dodaci u upotrebi</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Ostali su na stranici Dodaci, svaki isključen dok ga ne uključite.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>Otvori stranicu Dodaci</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>Uređaj {0} je povezan i nije u upotrebi.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Upotrijebi</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> mapirano, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> povezano</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Mehanizam radi. Kliknite za zaustavljanje.</value></data>
@@ -277,8 +284,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Virtualni kontroleri</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Odaberite vrstu izlaza, dodijelite utoru uređaje i kliknite karticu da biste oblikovali njezina mapiranja.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>Ovdje čekaju dodatne značajke: web-kontroler na telefonu, Udaljena veza, poslužitelj pokreta i još mnogo toga.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>Traka instrumenata</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>Broj uređaja, učestalost prozivanja i plamen mehanizma, uvijek na vidiku.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Prikaži uvodni obilazak</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Utor</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Uređaj</value></data>
@@ -3919,11 +3924,13 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Pokreni i vibraciju kontrolera</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Testna obavijest</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Ponude za dodjelu</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Kada se uređaj poveže dok je otvorena stranica virtualnog kontrolera, PadForge može ponuditi da ga dodijeli tom kontroleru. Ništa se ne dodjeljuje dok ne kliknete Dodijeli. Tipkovnice, miševi, dodirne pločice i medijske tipke nikad se ne nude.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Kada se uređaj poveže dok je otvorena stranica virtualnog kontrolera, PadForge može ponuditi da ga dodijeli tom kontroleru, a stranica Početna može novom uređaju ponuditi vlastiti virtualni kontroler. Ništa se ne dodjeljuje dok ne prihvatite ponudu. Tipkovnice, miševi, dodirne pločice i medijske tipke nikad se ne nude.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Ponudi nove uređaje otvorenom virtualnom kontroleru</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Samo uređaji koje PadForge nikad prije nije vidio. Uređaji koje već poznaje povezuju se bez upita.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Ponudi svaki uređaj koji se povezuje kada otvoreni virtualni kontroler nema uređaja</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Novi ili već poznati. Kada virtualni kontroler dobije dodijeljeni uređaj, ovaj se upit više ne pojavljuje.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>Ponudi nove uređaje na stranici Početna</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>Stranica Početna jednom pita za svaki novi uređaj koji nijedan virtualni kontroler ne koristi. Upotrijebi izrađuje virtualni kontroler za njega, a Ne sada završava ponudu za taj uređaj.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>Upravo je povezan uređaj {0}. Dodijeliti ga ovom virtualnom kontroleru?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Dodijeli</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Ne sada</value></data>

@@ -113,7 +113,7 @@ namespace PadForge.Tests
         [Fact]
         public void EveryNumberBoxOnTheExtrasPageHasItsOwnReset()
         {
-            Assert.DoesNotContain("<ui:NumberBox", File.ReadAllText(Path.Combine(ViewsDir(), "DashboardPage.xaml")));
+            Assert.DoesNotContain("<ui:NumberBox", File.ReadAllText(Path.Combine(ViewsDir(), "HomePage.xaml")));
             string file = Path.Combine(ViewsDir(), "ExtrasPage.xaml");
             string text = File.ReadAllText(file);
             var starts = Regex.Matches(text, @"<ui:NumberBox\b").Select(m => m.Index).ToList();

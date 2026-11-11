@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Browżja...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Kompli</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Waqqaf</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Ibda</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Irreġistra</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Qed jirreġistra...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Ikklirja</value></data>
@@ -125,6 +126,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Qed jitnaddfu l-kontrolluri virtwali li fadal minn sessjoni preċedenti.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> apparati</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Żid kontrollur</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Profil</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Ħassar il-kontrollur virtwali</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Skrin sħiħ</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Uri PadForge</value></data>
@@ -254,10 +256,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Il-Kontrollur virtwali {0} tħassar.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>Dashboard</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>Dar</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Magna tal-input</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> apparati online</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Kontrolluri virtwali</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Kontrolluri</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>Extras fl-użu</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Il-bqija jinsabu fl-Extras, kull waħda mitfija sakemm tixgħelha.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>Iftaħ l-Extras</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} huwa mqabbad u mhux qed jintuża.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Uża</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> mappjati, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> imqabbdin</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Il-magna qed taħdem. Ikklikkja biex twaqqaf.</value></data>
@@ -277,8 +284,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Kontrolluri virtwali</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Agħżel tip ta' output, agħti apparati lis-slot, u kklikkja karta biex tibdel il-mappjar tagħha.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>Karatteristiċi fakultattivi jinsabu hawn: il-web controller tat-telefon, Remote Link, is-server tal-moviment u aktar.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>Linja tal-istrumenti</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>L-għadd ta' apparati, ir-rata tal-polling u l-fjamma tal-engine, dejjem quddiem għajnejk.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Uri t-tour tat-tislima</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Slot</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Apparat</value></data>
@@ -3851,11 +3856,13 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Ivvibra wkoll il-kontrollur</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Notifika ta' prova</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Proposti ta' assenjazzjoni</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Meta apparat jitqabbad waqt li l-paġna ta' kontrollur virtwali tkun miftuħa, PadForge jista' joffri li jassenjah hemm. Xejn ma jiġi assenjat sakemm tikklikkja Assenja. It-tastieri, il-maws, it-touchpads u t-tasti tal-midja qatt ma jiġu offruti.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Meta apparat jitqabbad waqt li l-paġna ta' kontrollur virtwali tkun miftuħa, PadForge jista' joffri li jassenjah hemm, u d-Dar tista' toffri lil apparat ġdid kontrollur virtwali tiegħu stess. Xejn ma jiġi assenjat sakemm taċċetta proposta. It-tastieri, il-maws, it-touchpads u t-tasti tal-midja qatt ma jiġu offruti.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Offri apparati ġodda lill-kontrollur virtwali miftuħ</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Apparati li PadForge qatt ma ra qabel biss. Apparati li diġà jaf jitqabbdu mingħajr proposta.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Offri kwalunkwe apparat li jitqabbad meta l-kontrollur virtwali miftuħ ma jkollu l-ebda apparat</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Ġodda jew diġà magħrufa. Ladarba l-kontrollur virtwali jkollu apparat assenjat, din il-proposta ma tibqax tidher.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>Offri apparati ġodda fid-Dar</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>Id-Dar tistaqsi darba dwar kull apparat ġdid li ma jintuża minn ebda kontrollur virtwali. Uża jagħmel kontrollur virtwali għalih, u Mhux issa jtemm il-proposta għal dak l-apparat.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} għadu kif tqabbad. Tassenjah lil dan il-kontrollur virtwali?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Assenja</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Mhux issa</value></data>

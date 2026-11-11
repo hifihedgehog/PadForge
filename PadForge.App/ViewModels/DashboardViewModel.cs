@@ -8,22 +8,25 @@ using PadForge.Resources.Strings;
 namespace PadForge.ViewModels
 {
     /// <summary>
-    /// ViewModel for the Dashboard page. Shows an at-a-glance overview
-    /// of all 16 controller slots, engine status, connected devices, and
-    /// HIDMaestro / HidHide driver status.
+    /// ViewModel of the Home page and of the ten Extras pages (#574). Home
+    /// shows the engine's state, a card for each virtual controller slot,
+    /// the offer for a device not in use and the extras that are on. The
+    /// Extras pages hold the settings of the optional features. It keeps
+    /// the name it had while the two were one page, the Dashboard.
     /// </summary>
     public partial class DashboardViewModel : ViewModelBase
     {
         public DashboardViewModel()
         {
-            Title = Strings.Instance.Dashboard_Title;
+            Title = Strings.Instance.Home_Title;
             ScreenOverlays.Add(new ScreenOverlayItem(this, 1));
             // SlotSummaries starts empty; populated dynamically by RefreshActiveSlots().
         }
 
         protected override void OnCultureChanged()
         {
-            Title = Strings.Instance.Dashboard_Title;
+            Title = Strings.Instance.Home_Title;
+            RefreshHomeText();
             OnPropertyChanged(nameof(PollingFrequencyText));
             OnPropertyChanged(nameof(TouchpadOverlayStatus));
             foreach (var overlay in ScreenOverlays) overlay.RefreshText();

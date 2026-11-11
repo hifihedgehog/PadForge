@@ -99,6 +99,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>浏览...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>继续</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>停止</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>启动</value></data>
   <data name="Common_Record" xml:space="preserve"><value>录制</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>录制中...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>清除</value></data>
@@ -133,6 +134,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>正在清理上一次会话遗留的虚拟控制器。</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> 台设备</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>添加控制器</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>配置文件</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>删除虚拟控制器</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>全屏</value></data>
   <data name="Main_Minimize" xml:space="preserve"><value>最小化</value></data>
@@ -259,10 +261,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>虚拟控制器 {0} 已删除。</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>仪表盘</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>主页</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>输入引擎</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> 台设备在线</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>虚拟控制器</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>控制器</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>正在使用的附加功能</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>其余功能在“附加功能”页面中，每一项在你开启之前都保持关闭。</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>打开附加功能</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} 已接入，尚未使用。</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>使用</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> 已映射，</value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> 已连接</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>引擎运行中。点击停止。</value></data>
@@ -3184,8 +3191,6 @@
   <data name="Tour_Engine_Title" xml:space="preserve"><value>输入引擎</value></data>
   <data name="Tour_Slots_Body" xml:space="preserve"><value>每个虚拟控制器都在这里。火焰显示当前正在锻造的槽位。</value></data>
   <data name="Tour_Slots_Title" xml:space="preserve"><value>槽位</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>设备数量、轮询速率和引擎火焰，始终可见。</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>仪表栏</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
   <data name="About_OpenVR" xml:space="preserve"><value>OpenVR API</value></data>
   <data name="About_OpenVRDesc" xml:space="preserve"><value>Valve 的 OpenVR 客户端 API（BSD 3-Clause）：将 VR 头显和体感控制器用作输入源。原生运行时从您自己的 SteamVR 安装加载。</value></data>
@@ -4070,11 +4075,13 @@
   <data name="Battery_FullTitle" xml:space="preserve"><value>手柄已充满电</value></data>
   <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}：已充满电</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>分配提示</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>当虚拟控制器页面处于打开状态时有设备接入，PadForge 可以提示将其分配到该控制器。在你点击“分配”之前不会分配任何设备。键盘、鼠标、触摸板和媒体键不会被提示。</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>当虚拟控制器页面处于打开状态时有设备接入，PadForge 可以提示将其分配到该控制器，主页也可以为新设备提示创建专属的虚拟控制器。在你接受提示之前不会分配任何设备。键盘、鼠标、触摸板和媒体键不会被提示。</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>向已打开的虚拟控制器提示新设备</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>仅限 PadForge 从未见过的设备。已知设备接入时不会提示。</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>已打开的虚拟控制器没有设备时提示任何接入的设备</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>无论新设备还是已知设备。虚拟控制器分配了设备后，此提示不再出现。</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>在主页提示新设备</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>主页会对每个没有虚拟控制器使用的新设备提示一次。“使用”会为其创建一个虚拟控制器，“暂不”会结束对该设备的提示。</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} 刚刚接入。分配到此虚拟控制器？</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>分配</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>暂不</value></data>

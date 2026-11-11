@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Mag-browse...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Magpatuloy</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Ihinto</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Simulan</value></data>
   <data name="Common_Record" xml:space="preserve"><value>I-record</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Nagre-record...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>I-clear</value></data>
@@ -125,6 +126,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Nililinis ang mga virtual controller na naiwan mula sa nakaraang session.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> device</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Magdagdag ng controller</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Profile</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Burahin ang virtual controller</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Full screen</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Ipakita ang PadForge</value></data>
@@ -254,10 +256,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Nabura ang Virtual controller {0}.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>Dashboard</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>Home</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Input engine</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> device na online</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Mga virtual controller</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Mga Controller</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>Mga Extra na Ginagamit</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Ang iba pa ay nasa Mga Extra, at naka-off ang bawat isa hangga't hindi mo ino-on.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>Buksan ang Mga Extra</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>Nakakonekta ang {0} at hindi ito ginagamit.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Gamitin</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> naka-map, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> nakakonekta</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Tumatakbo ang engine. I-click para ihinto.</value></data>
@@ -277,8 +284,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Mga virtual controller</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Pumili ng uri ng output, maglagay ng mga device sa slot, at i-click ang isang card para hubugin ang mga mapping nito.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>Nandito ang mga opsyonal na feature: ang web controller sa phone, ang Remote Link, ang Motion Server at iba pa.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>Linya ng instrumento</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>Bilang ng device, polling rate, at ang apoy ng engine, laging nakikita.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Ipakita ang welcome tour</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Slot</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Device</value></data>
@@ -3733,11 +3738,13 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>I-vibrate Din ang Controller</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Subukan ang Abiso</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Mga Prompt sa Pag-assign</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Kapag may nakakonektang device habang bukas ang page ng isang virtual controller, maaaring mag-alok ang PadForge na i-assign ito roon. Walang ia-assign hangga't hindi ka nagki-click ng Assign. Hindi kailanman iniaalok ang mga keyboard, mouse, touchpad, at media key.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Kapag may nakakonektang device habang bukas ang page ng isang virtual controller, maaaring mag-alok ang PadForge na i-assign ito roon, at maaaring mag-alok ang Home ng sarili nitong virtual controller para sa isang bagong device. Walang ia-assign hangga't hindi ka tumatanggap ng alok. Hindi kailanman iniaalok ang mga keyboard, mouse, touchpad, at media key.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Mag-alok ng Mga Bagong Device sa Bukas na Virtual Controller</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Mga device lang na hindi pa nakikita ng PadForge. Kumokonekta nang walang prompt ang mga device na kilala na nito.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Mag-alok ng Anumang Nakakonektang Device Kapag Walang Device ang Bukas na Virtual Controller</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Bago o kilala na. Kapag may na-assign nang device sa virtual controller, hindi na lilitaw ang prompt na ito.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>Mag-alok ng Mga Bagong Device sa Home</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>Minsan lang magtatanong ang Home tungkol sa bawat bagong device na hindi ginagamit ng anumang virtual controller. Gumagawa ang Gamitin ng virtual controller para dito, at tinatapos ng Mamaya na ang alok para sa device na iyon.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>Kakakonekta lang ng {0}. I-assign ito sa virtual controller na ito?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>I-assign</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Mamaya na</value></data>

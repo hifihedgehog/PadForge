@@ -69,6 +69,7 @@
   <data name="Common_Unknown" xml:space="preserve"><value>Tekimanyiddwa</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Genda mu maaso</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Yimiriza</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Tandika</value></data>
   <data name="Common_None" xml:space="preserve"><value>Tewali</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -702,4 +703,5 @@
   <data name="MacroAction_TriggerEffect_StrengthA" xml:space="preserve"><value>Amaanyi A</value></data>
   <data name="MacroAction_TriggerEffect_StrengthB" xml:space="preserve"><value>Amaanyi B</value></data>
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>Ekiseera</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Ebyongerwako</value></data>
 </root>

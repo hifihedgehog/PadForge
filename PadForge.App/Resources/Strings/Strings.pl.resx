@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Przeglądaj...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Kontynuuj</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Zatrzymaj</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Uruchom</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Nagraj</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Nagrywanie...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Wyczyść</value></data>
@@ -136,6 +137,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Usuwanie wirtualnych kontrolerów pozostałych po poprzedniej sesji.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> urz.</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Dodaj kontroler</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Profil</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Usuń wirtualny kontroler</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Pełny ekran</value></data>
   <data name="Main_Minimize" xml:space="preserve"><value>Minimalizuj</value></data>
@@ -269,10 +271,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Usunięto wirtualny kontroler {0}.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>Panel główny</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>Strona główna</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Silnik wejścia</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> urz. online</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Wirtualne kontrolery</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Kontrolery</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>Używane dodatki</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Pozostałe są na stronie Dodatki, każdy wyłączony, dopóki go nie włączysz.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>Otwórz Dodatki</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>Podłączono urządzenie {0}, które nie jest używane.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Użyj go</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> zmapowane, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> połączone</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Silnik działa. Kliknij, aby zatrzymać.</value></data>
@@ -292,8 +299,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Wirtualne kontrolery</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Wybierz typ wyjścia, dodaj do slotu urządzenia i kliknij kartę, aby ukształtować jej mapowania.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>Tu czekają funkcje opcjonalne: kontroler webowy w telefonie, Łącze zdalne, serwer ruchu i inne.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>Pasek wskaźników</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>Liczba urządzeń, częstotliwość odpytywania i płomień silnika, zawsze na widoku.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Pokaż przewodnik powitalny</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Slot</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Urządzenie</value></data>
@@ -4119,11 +4124,13 @@ Czy PadForge ma je teraz odinstalować? Wymaga to uprawnień administratora i mo
   <data name="Battery_FullTitle" xml:space="preserve"><value>Kontroler w pełni naładowany</value></data>
   <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: bateria w pełni naładowana</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Propozycje przypisania</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Gdy urządzenie połączy się przy otwartej stronie wirtualnego kontrolera, PadForge może zaproponować przypisanie go do tego kontrolera. Nic nie zostanie przypisane, dopóki nie klikniesz Przypisz. Klawiatury, myszy, panele dotykowe i klawisze multimedialne nigdy nie są proponowane.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Gdy urządzenie połączy się przy otwartej stronie wirtualnego kontrolera, PadForge może zaproponować przypisanie go do tego kontrolera, a strona główna może zaproponować nowemu urządzeniu własny wirtualny kontroler. Nic nie zostanie przypisane, dopóki nie zaakceptujesz propozycji. Klawiatury, myszy, panele dotykowe i klawisze multimedialne nigdy nie są proponowane.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Proponuj przypisanie nowych urządzeń do otwartego wirtualnego kontrolera</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Tylko urządzenia, których PadForge nigdy wcześniej nie widział. Urządzenia już mu znane łączą się bez pytania.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Proponuj każde łączące się urządzenie, gdy otwarty wirtualny kontroler nie ma urządzeń</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Nowe lub już znane. Gdy wirtualny kontroler ma przypisane urządzenie, ta propozycja przestaje się pojawiać.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>Proponuj nowe urządzenia na stronie głównej</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>Strona główna pyta raz o każde nowe urządzenie, którego nie używa żaden wirtualny kontroler. Użyj go tworzy dla niego wirtualny kontroler, a Nie teraz kończy propozycję dla tego urządzenia.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>Właśnie połączono: {0}. Przypisać to urządzenie do tego wirtualnego kontrolera?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Przypisz</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Nie teraz</value></data>

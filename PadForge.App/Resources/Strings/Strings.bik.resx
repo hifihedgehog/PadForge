@@ -71,6 +71,7 @@
   <data name="Common_Stopped" xml:space="preserve"><value>Nakapondo</value></data>
   <data name="Common_Running" xml:space="preserve"><value>Nagdadalagan</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Pondohon</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Puonan</value></data>
   <data name="Common_None" xml:space="preserve"><value>Mayo</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -1171,4 +1172,15 @@
   <data name="MacroAction_TriggerEffect_Timed_Format" xml:space="preserve"><value>{0} sa {1} sa laog nin {2} ms</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} sa {1} sagkod na mapundo</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>Pundohon an epekto kan trigger sa {0}</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Mga extra</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Iba pang paagi sa pagkawat</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Ipadara sa ibang lugar</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>Sa screen</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>I-map an speed, mga pedal asin mga gear hale sa mga driving game.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Kuanon an mga epekto kan trigger asin ilaw hale sa mga game mod.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Ipahiling an mga menu, mga layer asin pagliwat nin profile mientras nagkakawat ka.</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, kasalili kan DSX.exe</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Mga port, bilog na speed, mga custom na format</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Profile</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Gamiton</value></data>
 </root>

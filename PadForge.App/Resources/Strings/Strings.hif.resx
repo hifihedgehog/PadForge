@@ -72,11 +72,15 @@
   <data name="Common_Paste" xml:space="preserve"><value>Paste karo</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Chalu</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Band</value></data>
+  <data name="Common_On" xml:space="preserve"><value>On</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Off</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Aur</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Install nahi hai</value></data>
   <data name="Common_Ready" xml:space="preserve"><value>Taiyaar</value></data>
   <data name="Common_Stopped" xml:space="preserve"><value>Ruk gais</value></data>
   <data name="Common_Running" xml:space="preserve"><value>Chalu hai</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Roko</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Shuru karo</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Record karo</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Saaf karo</value></data>
   <data name="Common_None" xml:space="preserve"><value>Kuch nahi</value></data>
@@ -932,4 +936,12 @@
   <data name="Telemetry_Channel_Handbrake" xml:space="preserve"><value>Handbrake (%)</value></data>
   <data name="MacroAction_TriggerEffect_Off" xml:space="preserve"><value>Band</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>{0} pe trigger effect band karo</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Extra</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Khele ke aur tarika</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Dusra jagah bhejo</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Driving game se speed, pedal aur gear map karo.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Game mod se trigger aur light effect lo.</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, DSX.exe ke badle</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Port, full speed, custom format</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Use karo</value></data>
 </root>

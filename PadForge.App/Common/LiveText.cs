@@ -20,7 +20,7 @@ namespace PadForge.Common
     ///
     /// <para>For lines that show a state (a server listening, an engine
     /// idle), a repeat of the same text is no change and is not spoken. The
-    /// status bar shows messages, which can repeat, so MainWindow calls
+    /// message line shows messages, which can repeat, so MainWindow calls
     /// Announce for each message.</para>
     /// </summary>
     public static class LiveText

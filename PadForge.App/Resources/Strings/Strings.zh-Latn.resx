@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Liúlǎn...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Jìxù</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Tíngzhǐ</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Qǐdòng</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Lùzhì</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Lùzhì zhōng...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Qīngchú</value></data>
@@ -125,6 +126,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Zhèngzài qīnglǐ shàng yí cì huìhuà yíliú de xūnǐ kòngzhìqì.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> tái shèbèi</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Tiānjiā kòngzhìqì</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Pèizhì wénjiàn</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Shānchú xūnǐ kòngzhìqì</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Quánpíng</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Xiǎnshì PadForge</value></data>
@@ -254,10 +256,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Xūnǐ kòngzhìqì {0} yǐ shānchú.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>Yíbiǎopán</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>Zhǔyè</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Shūrù yǐnqíng</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> tái shèbèi zàixiàn</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Xūnǐ kòngzhìqì</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Kòngzhìqì</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>Shǐyòng zhōng de kuòzhǎn gōngnéng</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Qíyú xiàngmù wèiyú Kuòzhǎn gōngnéng zhōng, měi xiàng zài nín qǐyòng zhīqián dōu bǎochí guānbì.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>Dǎkāi kuòzhǎn gōngnéng</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} yǐ jiērù, dàn wèi bèi shǐyòng.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Shǐyòng</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> yǐ yìngshè, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> yǐ liánjiē</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Yǐnqíng yùnxíng zhōng. Diǎnjī tíngzhǐ.</value></data>
@@ -277,8 +284,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Xūnǐ kòngzhìqì</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Xuǎnzé shūchū lèixíng, wèi cáowèi fēnpèi shèbèi, diǎnjī kǎpiàn jí kě tiáozhěng qí yìngshè.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>Kěxuǎn gōngnéng dōu zài zhèlǐ: shǒujī wǎngyè kòngzhìqì, Remote Link, tǐgǎn fúwùqì děng.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>Yíbiǎolán</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>Shèbèi shùliàng, lúnxún sùlǜ hé yǐnqíng huǒyàn, shǐzhōng kějiàn.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Xiǎnshì huānyíng dǎolǎn</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Cáowèi</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Shèbèi</value></data>
@@ -3879,11 +3884,13 @@ Yào ràng PadForge xiànzài xièzài tāmen ma? Cǐ cāozuò xūyào tíshēng
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Tóngshí ràng kòngzhìqì zhèndòng</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Cèshì tōngzhī</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Fēnpèi tíshì</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Dāng xūnǐ kòngzhìqì yèmiàn chǔyú dǎkāi zhuàngtài shí yǒu shèbèi jiērù, PadForge kěyǐ tíshì jiāng qí fēnpèi dào gāi kòngzhìqì. Zài nǐ diǎnjī “Fēnpèi” zhīqián, bù huì fēnpèi rènhé shèbèi. Jiànpán, shǔbiāo, chùkòngbǎn hé méitǐ jiàn bù huì bèi tíshì.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Dāng xūnǐ kòngzhìqì yèmiàn chǔyú dǎkāi zhuàngtài shí yǒu shèbèi jiērù, PadForge kěyǐ tíshì jiāng qí fēnpèi dào gāi kòngzhìqì, Zhǔyè yě kěyǐ tíshì wèi xīn shèbèi chuàngjiàn zhuānshǔ de xūnǐ kòngzhìqì. Zài nǐ jiēshòu tíshì zhīqián, bù huì fēnpèi rènhé shèbèi. Jiànpán, shǔbiāo, chùkòngbǎn hé méitǐ jiàn bù huì bèi tíshì.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Xiàng yǐ dǎkāi de xūnǐ kòngzhìqì tíshì xīn shèbèi</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Jǐn xiàn PadForge cóngwèi jiànguo de shèbèi. Yǐ zhī shèbèi jiērù shí bù huì tíshì.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Yǐ dǎkāi de xūnǐ kòngzhìqì méiyǒu shèbèi shí, tíshì rènhé jiērù de shèbèi</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Wúlùn xīn shèbèi háishi yǐ zhī shèbèi. Xūnǐ kòngzhìqì fēnpèi le shèbèi hòu, cǐ tíshì bù zài chūxiàn.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>Zài Zhǔyè tíshì xīn shèbèi</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>Zhǔyè huì duì méiyǒu bèi rènhé xūnǐ kòngzhìqì shǐyòng de měi gè xīn shèbèi tíshì yí cì. “Shǐyòng” huì wèi qí chuàngjiàn yí gè xūnǐ kòngzhìqì, “Zànbù” zé jiéshù duì gāi shèbèi de tíshì.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} gāng jiērù. Fēnpèi dào cǐ xūnǐ kòngzhìqì ma?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Fēnpèi</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Zànbù</value></data>

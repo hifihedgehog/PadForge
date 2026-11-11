@@ -16,6 +16,10 @@ namespace PadForge.Controls
     /// card's corner, so a click on the switch turns the extra on or off and
     /// never opens the page. Each carries an AutomationId made from
     /// <see cref="Key"/>: Extras_Open_ and Extras_Switch_ plus the key.</para>
+    ///
+    /// <para>Home shows an extra that is on as a smaller face of the same
+    /// control (the HomeExtraTile style): the glyph, the name and the
+    /// status, one button that opens the extra's page, and no switch.</para>
     /// </summary>
     [TemplatePart(Name = OpenPartName, Type = typeof(ButtonBase))]
     [TemplatePart(Name = SwitchPartName, Type = typeof(ToggleButton))]
@@ -26,9 +30,17 @@ namespace PadForge.Controls
         public const string OpenIdPrefix = "Extras_Open_";
         public const string SwitchIdPrefix = "Extras_Switch_";
 
+        /// <summary>What the button's AutomationId starts with on Home, where
+        /// an extra that is on has a second, smaller face (#574).</summary>
+        public const string HomeOpenIdPrefix = "Home_Extra_";
+
         public static readonly DependencyProperty KeyProperty = DependencyProperty.Register(
             nameof(Key), typeof(string), typeof(ExtraTile),
             new PropertyMetadata(null, (d, _) => ((ExtraTile)d).NameParts()));
+
+        public static readonly DependencyProperty OpenPrefixProperty = DependencyProperty.Register(
+            nameof(OpenPrefix), typeof(string), typeof(ExtraTile),
+            new PropertyMetadata(OpenIdPrefix, (d, _) => ((ExtraTile)d).NameParts()));
 
         public static readonly DependencyProperty GlyphProperty = DependencyProperty.Register(
             nameof(Glyph), typeof(string), typeof(ExtraTile), new PropertyMetadata(string.Empty));
@@ -69,6 +81,16 @@ namespace PadForge.Controls
         {
             get => (string)GetValue(KeyProperty);
             set => SetValue(KeyProperty, value);
+        }
+
+        /// <summary>What the button's AutomationId starts with, ahead of the
+        /// key. The catalog's tiles keep <see cref="OpenIdPrefix"/>. A row
+        /// on Home takes <see cref="HomeOpenIdPrefix"/>, so the two faces of
+        /// one extra never share an id.</summary>
+        public string OpenPrefix
+        {
+            get => (string)GetValue(OpenPrefixProperty);
+            set => SetValue(OpenPrefixProperty, value);
         }
 
         /// <summary>The extra's glyph, in Segoe MDL2 Assets.</summary>
@@ -146,7 +168,7 @@ namespace PadForge.Controls
         {
             string key = Key;
             if (string.IsNullOrEmpty(key)) return;
-            if (_open != null) AutomationProperties.SetAutomationId(_open, OpenIdPrefix + key);
+            if (_open != null) AutomationProperties.SetAutomationId(_open, (OpenPrefix ?? OpenIdPrefix) + key);
             if (_switch != null) AutomationProperties.SetAutomationId(_switch, SwitchIdPrefix + key);
         }
     }

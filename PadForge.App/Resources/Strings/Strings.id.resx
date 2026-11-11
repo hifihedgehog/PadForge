@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Telusuri...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Lanjutkan</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Hentikan</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Mulai</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Rekam</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Merekam...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Bersihkan</value></data>
@@ -136,6 +137,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Membersihkan kontroler virtual yang tersisa dari sesi sebelumnya.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> perangkat</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Tambah kontroler</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Profil</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Hapus kontroler virtual</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Layar penuh</value></data>
   <data name="Main_Minimize" xml:space="preserve"><value>Perkecil</value></data>
@@ -269,10 +271,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Kontroler Virtual {0} dihapus.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>Dasbor</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>Beranda</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Mesin input</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> perangkat online</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Kontroler virtual</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Kontroler</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>Ekstra yang dipakai</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Sisanya ada di Ekstra, masing-masing nonaktif sampai Anda mengaktifkannya.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>Buka Ekstra</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} tersambung dan belum dipakai.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Gunakan</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> dipetakan, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> tersambung</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Mesin berjalan. Klik untuk menghentikan.</value></data>
@@ -292,8 +299,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Kontroler virtual</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Pilih jenis output, tetapkan perangkat ke slot, lalu klik kartu untuk menyusun pemetaannya.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>Fitur opsional ada di sini: kontroler web ponsel, Tautan Jarak Jauh, server gerakan, dan lainnya.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>Baris instrumen</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>Jumlah perangkat, laju polling, dan nyala api mesin, selalu terlihat.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Tampilkan tur sambutan</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Slot</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Perangkat</value></data>
@@ -4119,11 +4124,13 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Battery_FullTitle" xml:space="preserve"><value>Kontroler terisi penuh</value></data>
   <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: baterai terisi penuh</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Tawaran penetapan</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Saat sebuah perangkat tersambung ketika halaman kontroler virtual terbuka, PadForge dapat menawarkan untuk menetapkannya di sana. Tidak ada yang ditetapkan sampai Anda mengeklik Tetapkan. Keyboard, mouse, panel sentuh, dan tombol media tidak pernah ditawarkan.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Saat sebuah perangkat tersambung ketika halaman kontroler virtual terbuka, PadForge dapat menawarkan untuk menetapkannya di sana, dan Beranda dapat menawarkan kontroler virtual tersendiri untuk perangkat baru. Tidak ada yang ditetapkan sampai Anda menerima tawaran. Keyboard, mouse, panel sentuh, dan tombol media tidak pernah ditawarkan.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Tawarkan perangkat baru ke kontroler virtual yang terbuka</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Hanya perangkat yang belum pernah dilihat PadForge. Perangkat yang sudah dikenalnya tersambung tanpa tawaran.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Tawarkan perangkat apa pun yang tersambung saat kontroler virtual yang terbuka belum memiliki perangkat</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Baru maupun sudah dikenal. Setelah kontroler virtual memiliki perangkat yang ditetapkan, tawaran ini tidak muncul lagi.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>Tawarkan perangkat baru di Beranda</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>Beranda bertanya sekali tentang setiap perangkat baru yang tidak dipakai kontroler virtual mana pun. Gunakan membuat kontroler virtual untuknya, dan Nanti saja mengakhiri tawaran untuk perangkat itu.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} baru saja tersambung. Tetapkan ke kontroler virtual ini?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Tetapkan</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Nanti saja</value></data>

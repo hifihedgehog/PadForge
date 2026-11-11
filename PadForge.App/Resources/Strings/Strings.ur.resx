@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>براؤز کریں...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>آگے بڑھیں</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>روکیں</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>شروع کریں</value></data>
   <data name="Common_Record" xml:space="preserve"><value>ریکارڈ کریں</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>ریکارڈنگ جاری ہے...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>صاف کریں</value></data>
@@ -136,6 +137,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>پچھلے سیشن سے رہ جانے والے ورچوئل کنٹرولرز صاف کیے جا رہے ہیں۔</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> آلات</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>کنٹرولر شامل کریں</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>پروفائل</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>ورچوئل کنٹرولر حذف کریں</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>پوری اسکرین</value></data>
   <data name="Main_Minimize" xml:space="preserve"><value>چھوٹا کریں</value></data>
@@ -269,10 +271,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>ورچوئل کنٹرولر {0} حذف ہو گیا۔</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>ڈیش بورڈ</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>ہوم</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>ان پٹ انجن</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> آلات آن لائن</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>ورچوئل کنٹرولرز</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>کنٹرولرز</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>زیر استعمال ایکسٹراز</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>باقی ایکسٹراز میں ہیں، ہر ایک اس وقت تک آف رہتا ہے جب تک آپ اسے آن نہ کریں۔</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>ایکسٹراز کھولیں</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} منسلک ہے اور استعمال میں نہیں۔</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>استعمال کریں</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> میپ شدہ، </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> منسلک</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>انجن چل رہا ہے۔ روکنے کے لیے کلک کریں۔</value></data>
@@ -292,8 +299,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>ورچوئل کنٹرولرز</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>آؤٹ پٹ کی قسم منتخب کریں، سلاٹ کو آلات دیں، اور اس کی میپنگز ترتیب دینے کے لیے کارڈ پر کلک کریں۔</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>اختیاری خصوصیات یہاں ملتی ہیں: فون کا ویب کنٹرولر، ریموٹ لنک، موشن سرور اور مزید۔</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>انسٹرومنٹ لائن</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>آلات کی تعداد، پولنگ ریٹ اور انجن کا شعلہ، ہمیشہ نظر کے سامنے۔</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>تعارفی دورہ دکھائیں</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>سلاٹ</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>آلہ</value></data>
@@ -4119,11 +4124,13 @@
   <data name="Battery_FullTitle" xml:space="preserve"><value>کنٹرولر مکمل چارج ہو گیا</value></data>
   <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: مکمل چارج ہو گیا</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>تفویض کی پیشکش</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>جب کسی ورچوئل کنٹرولر کا صفحہ کھلا ہو اور کوئی آلہ منسلک ہو تو PadForge اسے وہاں تفویض کرنے کی پیشکش کر سکتا ہے۔ جب تک آپ "تفویض کریں" پر کلک نہ کریں کچھ تفویض نہیں ہوتا۔ کی بورڈ، ماؤس، ٹچ پیڈ اور میڈیا کلیدیں کبھی پیش نہیں کی جاتیں۔</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>جب کسی ورچوئل کنٹرولر کا صفحہ کھلا ہو اور کوئی آلہ منسلک ہو تو PadForge اسے وہاں تفویض کرنے کی پیشکش کر سکتا ہے، اور ہوم کسی نئے آلے کو اس کا اپنا ورچوئل کنٹرولر پیش کر سکتا ہے۔ جب تک آپ کوئی پیشکش قبول نہ کریں کچھ تفویض نہیں ہوتا۔ کی بورڈ، ماؤس، ٹچ پیڈ اور میڈیا کلیدیں کبھی پیش نہیں کی جاتیں۔</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>نئے آلات کھلے ورچوئل کنٹرولر کو پیش کریں</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>صرف وہ آلات جو PadForge نے پہلے کبھی نہیں دیکھے۔ جن آلات کو یہ پہلے سے جانتا ہے وہ بغیر پوچھے منسلک ہو جاتے ہیں۔</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>جب کھلے ورچوئل کنٹرولر میں کوئی آلہ نہ ہو تو منسلک ہونے والا ہر آلہ پیش کریں</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>نیا ہو یا پہلے سے معلوم۔ جب ورچوئل کنٹرولر کو کوئی آلہ تفویض ہو جائے تو یہ پیشکش مزید نظر نہیں آتی۔</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>ہوم پر نئے آلات پیش کریں</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>ہوم ہر اس نئے آلے کے بارے میں ایک بار پوچھتا ہے جسے کوئی ورچوئل کنٹرولر استعمال نہیں کر رہا۔ استعمال کریں اس کے لیے ایک ورچوئل کنٹرولر بناتا ہے، اور ابھی نہیں اس آلے کی پیشکش ختم کر دیتا ہے۔</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} ابھی منسلک ہوا ہے۔ اسے اس ورچوئل کنٹرولر کو تفویض کریں؟</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>تفویض کریں</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>ابھی نہیں</value></data>

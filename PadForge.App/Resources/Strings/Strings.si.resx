@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>පිරික්සන්න...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>ඉදිරියට යන්න</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>නවත්වන්න</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>ආරම්භ කරන්න</value></data>
   <data name="Common_Record" xml:space="preserve"><value>පටිගත කරන්න</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>පටිගත කරමින්...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>හිස් කරන්න</value></data>
@@ -125,6 +126,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>පෙර සැසියකින් ඉතිරි වූ අතථ්‍ය පාලක පිරිසිදු කරමින්.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> උපාංග</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>පාලකයක් එක් කරන්න</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>පැතිකඩ</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>අතථ්‍ය පාලකය මකන්න</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>සම්පූර්ණ තිරය</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>PadForge පෙන්වන්න</value></data>
@@ -254,10 +256,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>අතථ්‍ය පාලකය {0} මකන ලදී.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>උපකරණ පුවරුව</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>මුල් පිටුව</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>ආදාන එන්ජිම</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> උපාංග සබැඳිව</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>අතථ්‍ය පාලක</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>පාලක</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>භාවිතයේ ඇති අමතර</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>ඉතිරි ඒවා අමතර තුළ ඇත, ඔබ ක්‍රියාත්මක කරන තුරු සෑම එකක්ම අක්‍රියව පවතී.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>අමතර විවෘත කරන්න</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} සම්බන්ධ වී ඇති නමුත් භාවිතයේ නැත.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>එය භාවිත කරන්න</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> සිතියම්ගත, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> සම්බන්ධිතයි</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>එන්ජිම ධාවනය වෙමින්. නැවැත්වීමට ක්ලික් කරන්න.</value></data>
@@ -277,8 +284,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>අතථ්‍ය පාලක</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>ප්‍රතිදාන වර්ගයක් තෝරන්න, ස්ලොට් එකට උපාංග ලබා දෙන්න, සහ එහි සිතියම්ගත කිරීම් සැකසීමට කාඩ්පතක් ක්ලික් කරන්න.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>විකල්ප විශේෂාංග මෙහි ඇත: දුරකථන වෙබ් පාලකය, දුරස්ථ සබැඳිය, චලන සේවාදායකය සහ තවත් දේ.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>උපකරණ රේඛාව</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>උපාංග ගණන, විමසීම් අනුපාතය සහ එන්ජින් ගින්න, සැමවිටම පෙනෙන ලෙස.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>සාදර චාරිකාව පෙන්වන්න</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>ස්ලොට්</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>උපාංගය</value></data>
@@ -3876,11 +3881,13 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>පාලකයද කම්පනය කරන්න</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>පරීක්ෂණ දැනුම්දීම</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>පැවරුම් විමසීම්</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>අතථ්‍ය පාලකයක පිටුව විවෘතව ඇති විට උපාංගයක් සම්බන්ධ වුවහොත්, PadForge හට එය එහි පැවරීමට යෝජනා කළ හැක. ඔබ "පවරන්න" ක්ලික් කරන තුරු කිසිවක් පැවරෙන්නේ නැත. යතුරුපුවරු, මූසික, ටච්පෑඩ් සහ මාධ්‍ය යතුරු කිසිදා යෝජනා නොකෙරේ.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>අතථ්‍ය පාලකයක පිටුව විවෘතව ඇති විට උපාංගයක් සම්බන්ධ වුවහොත්, PadForge හට එය එහි පැවරීමට යෝජනා කළ හැක, සහ මුල් පිටුවට නව උපාංගයකට එයටම අයත් අතථ්‍ය පාලකයක් යෝජනා කළ හැක. ඔබ යෝජනාවක් පිළිගන්නා තුරු කිසිවක් පැවරෙන්නේ නැත. යතුරුපුවරු, මූසික, ටච්පෑඩ් සහ මාධ්‍ය යතුරු කිසිදා යෝජනා නොකෙරේ.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>නව උපාංග විවෘත අතථ්‍ය පාලකයට යෝජනා කරන්න</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>PadForge මීට පෙර කිසිදා දැක නැති උපාංග පමණි. එය දැනටමත් දන්නා උපාංග විමසීමකින් තොරව සම්බන්ධ වේ.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>විවෘත අතථ්‍ය පාලකයට උපාංග නොමැති විට සම්බන්ධ වන ඕනෑම උපාංගයක් යෝජනා කරන්න</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>නව හෝ දැනටමත් දන්නා. අතථ්‍ය පාලකයට උපාංගයක් පැවරූ පසු, මෙම විමසීම තවදුරටත් නොපෙන්වයි.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>නව උපාංග මුල් පිටුවේ යෝජනා කරන්න</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>කිසිදු අතථ්‍ය පාලකයක් භාවිත නොකරන සෑම නව උපාංගයක් ගැනම මුල් පිටුව එක් වරක් විමසයි. "එය භාවිත කරන්න" එයට අතථ්‍ය පාලකයක් සාදයි, සහ "දැන් නොවේ" එම උපාංගය සඳහා යෝජනාව අවසන් කරයි.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} දැන් සම්බන්ධ විය. එය මෙම අතථ්‍ය පාලකයට පවරන්නද?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>පවරන්න</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>දැන් නොවේ</value></data>

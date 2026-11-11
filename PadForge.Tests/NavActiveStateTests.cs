@@ -10,9 +10,10 @@ namespace PadForge.Tests
     /// <summary>
     /// Discussion #340 (Xaklse): after running the Welcome Tour from the
     /// Settings page, BOTH "Dashboard" and "Settings" wore the orange
-    /// active bar while only the Dashboard was rendered.
+    /// active bar while only the Dashboard was rendered. The Dashboard is
+    /// Home since #574, and the rule these pin is the same.
     ///
-    /// <para>The rail is two collections. Dashboard, Profiles, Devices and
+    /// <para>The rail is two collections. Home, Devices, Profiles, Extras and
     /// the slots are MenuItems; Settings and About are FooterMenuItems. The
     /// tour restyled the rail with a hand-rolled loop that set its target
     /// active without clearing anything and swept only MenuItems, so the
@@ -54,7 +55,7 @@ namespace PadForge.Tests
         {
             var menu = new List<object>
             {
-                Item("Dashboard"), Item("Profiles"), Item("Devices"), Item("Pad1"),
+                Item("Home"), Item("Devices"), Item("Profiles"), Item("Pad1"),
             };
             var footer = new List<object>
             {
@@ -79,16 +80,16 @@ namespace PadForge.Tests
         }
 
         /// <summary>THE REPORTED BUG. Settings is lit (the user was on that
-        /// page), the tour activates Dashboard, and exactly one bar must
+        /// page), the tour activates Home, and exactly one bar must
         /// remain. The old code left two.</summary>
         [Fact]
-        public void TourFromSettings_LeavesOnlyTheDashboardLit()
+        public void TourFromSettings_LeavesOnlyHomeLit()
         {
             RunSta(() =>
             {
                 var (menu, footer) = Rail(activeTag: "Settings");
-                Assert.True(MainWindow.ApplyNavActive(menu, footer, "Dashboard"));
-                Assert.Equal(new[] { "Dashboard" }, ActiveTags(menu, footer));
+                Assert.True(MainWindow.ApplyNavActive(menu, footer, "Home"));
+                Assert.Equal(new[] { "Home" }, ActiveTags(menu, footer));
             });
         }
 
@@ -99,7 +100,7 @@ namespace PadForge.Tests
         {
             RunSta(() =>
             {
-                var (menu, footer) = Rail(activeTag: "Dashboard");
+                var (menu, footer) = Rail(activeTag: "Home");
                 Assert.True(MainWindow.ApplyNavActive(menu, footer, "Settings"));
                 Assert.Equal(new[] { "Settings" }, ActiveTags(menu, footer));
             });
@@ -107,7 +108,7 @@ namespace PadForge.Tests
 
         /// <summary>THE SECOND INSTANCE. The rail rebuild restores the
         /// previously selected tag, and a deleted slot leaves no match. The
-        /// caller falls back to the Dashboard, and the footer item that was
+        /// caller falls back to Home, and the footer item that was
         /// open must not stay lit alongside it.</summary>
         [Fact]
         public void RebuildFallback_AfterTheOpenSlotIsDeleted_LightsOnlyTheFallback()
@@ -120,8 +121,8 @@ namespace PadForge.Tests
                 // A miss must leave nothing lit, or the fallback would be
                 // a second bar rather than the only one.
                 Assert.Empty(ActiveTags(menu, footer));
-                Assert.True(MainWindow.ApplyNavActive(menu, footer, "Dashboard"));
-                Assert.Equal(new[] { "Dashboard" }, ActiveTags(menu, footer));
+                Assert.True(MainWindow.ApplyNavActive(menu, footer, "Home"));
+                Assert.Equal(new[] { "Home" }, ActiveTags(menu, footer));
             });
         }
 

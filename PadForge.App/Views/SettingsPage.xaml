@@ -402,12 +402,20 @@
                                   IsChecked="{Binding AssignOfferNewDevice}"/>
                         <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="AssignOfferNewDevice" SettingLabel="{Binding Settings_AssignOfferNew, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_SettingsViewModel_AssignOfferNewDevice_221"/>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                         <CheckBox VerticalAlignment="Center" Content="{Binding Settings_AssignOfferEmpty, Source={x:Static strings:Strings.Instance}}"
                                   ToolTip="{Binding Settings_AssignOfferEmpty_Tooltip, Source={x:Static strings:Strings.Instance}}"
                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                   IsChecked="{Binding AssignOfferEmptySlot}"/>
                         <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="AssignOfferEmptySlot" SettingLabel="{Binding Settings_AssignOfferEmpty, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_SettingsViewModel_AssignOfferEmptySlot_225"/>
+                    </StackPanel>
+                    <!-- Home's offer for a device PadForge has just met (#574). -->
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox VerticalAlignment="Center" Content="{Binding Settings_AssignOfferHome, Source={x:Static strings:Strings.Instance}}"
+                                  ToolTip="{Binding Settings_AssignOfferHome_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  IsChecked="{Binding AssignOfferHome}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="AssignOfferHome" SettingLabel="{Binding Settings_AssignOfferHome, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_SettingsViewModel_AssignOfferHome"/>
                     </StackPanel>
                 </StackPanel>
             </Border>

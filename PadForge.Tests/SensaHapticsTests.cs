@@ -568,7 +568,7 @@ namespace PadForge.Tests
             Assert.Contains("new LegacySwitch(PeripheralRowKind.RazerSensa, app?.EnableSensaHaptics ?? false,", migration);
 
             // Neither the Dashboard nor the Extras page, where its services went (#574).
-            foreach (string name in new[] { "DashboardPage.xaml", "ExtrasPage.xaml" })
+            foreach (string name in new[] { "HomePage.xaml", "ExtrasPage.xaml" })
             {
                 string page = RepoText("PadForge.App", "Views", name);
                 Assert.DoesNotContain("EnableSensaHaptics", page);

@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Прегледај...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Настави</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Заустави</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Покрени</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Сними</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Снимање...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Обриши</value></data>
@@ -136,6 +137,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Чишћење виртуелних контролера заосталих из претходне сесије.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> уређаја</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Додај контролер</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Профил</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Избриши виртуелни контролер</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Цео екран</value></data>
   <data name="Main_Minimize" xml:space="preserve"><value>Умањи</value></data>
@@ -269,10 +271,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Виртуелни контролер {0} је избрисан.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>Контролна табла</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>Почетна</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Улазни механизам</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> уређаја на мрежи</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Виртуелни контролери</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Контролери</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>Додаци у употреби</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Остали су међу Додацима, сваки је искључен док га не укључите.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>Отвори страницу Додаци</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} је повезан и не користи се.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Користи га</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> мапирано, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> повезано</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Механизам ради. Кликните да бисте га зауставили.</value></data>
@@ -292,8 +299,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Виртуелни контролери</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Изаберите тип излаза, доделите слоту уређаје и кликните на картицу да бисте обликовали њена мапирања.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>Овде чекају изборне функције: веб контролер за телефон, Удаљена веза, сервер покрета и још тога.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>Трака са инструментима</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>Број уређаја, учесталост очитавања и пламен механизма, увек на видику.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Прикажи уводни обилазак</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Слот</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Уређај</value></data>
@@ -4119,11 +4124,13 @@
   <data name="Battery_FullTitle" xml:space="preserve"><value>Контролер је потпуно напуњен</value></data>
   <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: потпуно напуњен</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Понуде за доделу</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Када се уређај повеже док је отворена страница виртуелног контролера, PadForge може да понуди да га тамо додели. Ништа се не додељује док не кликнете на „Додели“. Тастатуре, мишеви, тачпедови и медијски тастери се никада не нуде.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Када се уређај повеже док је отворена страница виртуелног контролера, PadForge може да понуди да га тамо додели, а Почетна може да понуди новом уређају виртуелни контролер само за њега. Ништа се не додељује док не прихватите понуду. Тастатуре, мишеви, тачпедови и медијски тастери се никада не нуде.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Понуди нове уређаје отвореном виртуелном контролеру</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Само уређаје које PadForge никада раније није видео. Уређаји које већ познаје повезују се без упита.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Понуди сваки уређај који се повезује када отворени виртуелни контролер нема уређаје</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Нове или већ познате. Када виртуелни контролер добије додељен уређај, овај упит се више не приказује.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>Понуди нове уређаје на страници Почетна</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>Почетна једном пита за сваки нови уређај који не користи ниједан виртуелни контролер. „Користи га“ прави виртуелни контролер за њега, а „Не сада“ прекида понуду за тај уређај.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} се управо повезао. Доделити га овом виртуелном контролеру?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Додели</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Не сада</value></data>

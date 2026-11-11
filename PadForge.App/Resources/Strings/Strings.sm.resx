@@ -78,6 +78,7 @@
   <data name="Common_Unknown" xml:space="preserve"><value>Lē iloa</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Faʻaauau</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Taofi</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Amata</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Puʻe</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>O loʻo puʻe...</value></data>
   <data name="Common_None" xml:space="preserve"><value>Leai</value></data>
@@ -1131,4 +1132,11 @@
   <data name="MacroAction_TriggerEffect_EndStrength" xml:space="preserve"><value>Malosi i le faʻaiuga</value></data>
   <data name="MacroAction_TriggerEffect_HoldStopped" xml:space="preserve"><value>Seʻia taofi</value></data>
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>Taimi</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Faʻaopoopo</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Auina atu i se isi mea</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>I luga o le lau</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Ave aafiaga o trigger ma moli mai mod o taʻaloga.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Faʻaali menu, layer ma suiga o profile a o e taʻalo.</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, sui mo DSX.exe</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Faʻaaogā</value></data>
 </root>

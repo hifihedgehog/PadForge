@@ -6,13 +6,13 @@ using Xunit;
 namespace PadForge.Tests
 {
     /// <summary>
-    /// The Dashboard, Extras and Settings pages carry their sections in a
-    /// decided order (2026-09-02, and 2026-11-10 for Extras). These pin the
-    /// full sequence of title keys on each page, so a moved or added card
-    /// fails here before it ships, and they pin the Dashboard's driver status
-    /// strip as gone: Settings carries the HidHide, HIDMaestro, MIDI Services
-    /// and SteamVR cards in full, so the Dashboard's three-row copy under the
-    /// ED5D glyph was a duplicate.
+    /// Home, Extras and Settings carry their sections in a decided order
+    /// (2026-09-02, and 2026-11-10 for Home and Extras). These pin the full
+    /// sequence on each page, so a moved or added card fails here before it
+    /// ships, and they pin the driver status strip the Dashboard once had as
+    /// gone: Settings carries the HidHide, HIDMaestro, MIDI Services and
+    /// SteamVR cards in full, so the three-row copy under the ED5D glyph was
+    /// a duplicate.
     /// </summary>
     public class PageOrderContractTests
     {
@@ -45,26 +45,51 @@ namespace PadForge.Tests
             }
         }
 
+        /// <summary>Home (#574), top to bottom: the engine's card, the offer,
+        /// the controllers under their heading, and the extras in use under
+        /// theirs with the line and the button at the foot. The engine's
+        /// card has no heading over it. Each extra is listed once, in the
+        /// catalog's order and by the catalog's own title.</summary>
         [Fact]
-        public void Dashboard_SectionsRunInTheDecidedOrder()
+        public void Home_SectionsRunInTheDecidedOrder()
         {
-            string page = RepoText("PadForge.App", "Views", "DashboardPage.xaml");
+            string page = RepoText("PadForge.App", "Views", "HomePage.xaml");
+            const string heading = ", Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}";
+            int last = -1;
+            foreach (string needle in new[]
+            {
+                "<Border x:Name=\"EngineCard\"",
+                "<Border x:Name=\"HomeOffer\"",
+                "{Binding Home_Controllers" + heading,
+                "<ItemsControl x:Name=\"SlotsItemsControl\">",
+                "{Binding Home_ExtrasInUse" + heading,
+                "<WrapPanel x:Name=\"ExtrasInUseRows\"",
+                "<WrapPanel x:Name=\"ExtrasFoot\">",
+            })
+            {
+                int at = page.IndexOf(needle, StringComparison.Ordinal);
+                Assert.True(at >= 0, needle + " is not on Home");
+                Assert.True(at == page.LastIndexOf(needle, StringComparison.Ordinal), needle + " is on Home twice");
+                Assert.True(at > last, needle + " is out of order");
+                last = at;
+            }
+            Assert.DoesNotContain("{Binding Dashboard_InputEngine" + heading, page);
             AssertTitleOrder(page,
-                "{Binding ", ", Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}",
-                new[]
-                {
-                    "Dashboard_InputEngine",
-                    "Dashboard_VirtualControllers",
-                });
+                "Title=\"{Binding ", ", Source={x:Static strings:Strings.Instance}}\"",
+                ExtrasTitleKeys);
 
             // The ten services left for the Extras page (#574), with their
-            // group header and the strings that named the group.
+            // group header and the strings that named the group. The
+            // Dashboard's own title and its controllers heading went with
+            // the page, and the status bar's tour stop with the status bar.
             Assert.DoesNotContain("ServicesSection", page);
             Assert.DoesNotContain("ServicesHeader", page);
-            foreach (string key in ExtrasTitleKeys)
-                Assert.DoesNotContain("{Binding " + key + ",", page);
             string designer = RepoText("PadForge.App", "Resources", "Strings", "Strings.Designer.cs");
-            foreach (string gone in new[] { "Dashboard_Services", "Tour_Services_Title", "Tour_Services_Body" })
+            foreach (string gone in new[]
+            {
+                "Dashboard_Services", "Tour_Services_Title", "Tour_Services_Body",
+                "Dashboard_Title", "Dashboard_VirtualControllers", "Tour_Status_Title", "Tour_Status_Body",
+            })
             {
                 Assert.DoesNotContain(gone, designer);
                 foreach (var f in Directory.GetFiles(Path.Combine(RepoRoot(), "PadForge.App", "Resources", "Strings"), "Strings*.resx"))
@@ -139,9 +164,9 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void Dashboard_DriverStatusStripIsGone()
+        public void Home_CarriesNoDriverStatusStrip()
         {
-            string page = RepoText("PadForge.App", "Views", "DashboardPage.xaml");
+            string page = RepoText("PadForge.App", "Views", "HomePage.xaml");
             Assert.DoesNotContain("&#xED5D;", page);
             Assert.DoesNotContain("Dashboard_Drivers", page);
             Assert.DoesNotContain("HidHideStatusText", page);

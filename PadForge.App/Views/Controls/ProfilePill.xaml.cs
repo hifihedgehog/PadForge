@@ -9,15 +9,35 @@ using System.Windows.Media.Effects;
 namespace PadForge.Views.Controls
 {
     /// <summary>
-    /// Active-profile pill (#175 item 8). Two instances exist (pad-page
-    /// tier-1 bar, status-bar instrument cluster); both show the same
-    /// authoritative MainViewModel.Settings.ActiveProfileInfo and both
-    /// flare when an auto-switch actually changes the profile.
+    /// Active-profile pill (#175 item 8). One instance exists, in the
+    /// title bar (#574). It shows the authoritative
+    /// MainViewModel.Settings.ActiveProfileInfo and flares when an
+    /// auto-switch actually changes the profile.
     /// </summary>
     public partial class ProfilePill : UserControl
     {
         /// <summary>Raised on pill click; MainWindow opens the switcher flyout.</summary>
         public event EventHandler Clicked;
+
+        public static readonly DependencyProperty ShowLabelProperty = DependencyProperty.Register(
+            nameof(ShowLabel), typeof(bool), typeof(ProfilePill),
+            new PropertyMetadata(false, (d, _) => ((ProfilePill)d).ApplyLabel()));
+
+        /// <summary>Whether the pill says Profile ahead of the name and
+        /// ends in a chevron. On for a host that has nothing beside the
+        /// pill to say what the name is.</summary>
+        public bool ShowLabel
+        {
+            get => (bool)GetValue(ShowLabelProperty);
+            set => SetValue(ShowLabelProperty, value);
+        }
+
+        private void ApplyLabel()
+        {
+            var shown = ShowLabel ? Visibility.Visible : Visibility.Collapsed;
+            PillLabel.Visibility = shown;
+            PillChevron.Visibility = shown;
+        }
 
         public ProfilePill()
         {
@@ -25,12 +45,12 @@ namespace PadForge.Views.Controls
 
             // Block DataContext inheritance until the Loaded rebind below:
             // the pill realizes under its host's context (MainViewModel in
-            // the status bar), where ActiveProfileInfo doesn't exist, so
+            // the main window), where ActiveProfileInfo doesn't exist, so
             // every launch logged a binding path error before Loaded fired.
             // A null context keeps the bindings dormant instead.
             PillBorder.DataContext = null;
 
-            // The hosts inherit different DataContexts. Rebind to the
+            // The host's DataContext is not the pill's. Rebind to the
             // single notifying source instead: MainViewModel.Settings.
             // Resolved on Loaded because MainWindow assigns its DataContext
             // after InitializeComponent (same lookup as PadPage's

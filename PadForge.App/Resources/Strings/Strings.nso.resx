@@ -79,6 +79,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Phuruphutša...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Tšwela pele</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Emiša</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Thoma</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Hlakola</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -1122,4 +1123,9 @@
   <data name="MacroAction_TriggerEffect_HoldDuration" xml:space="preserve"><value>Ka nako ye e beilwego</value></data>
   <data name="MacroAction_TriggerEffect_HoldStopped" xml:space="preserve"><value>Go fihlela e emišwa</value></data>
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>Nako</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Ditlaleletšo</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Ditsela tše dingwe tša go bapala</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Abela lebelo, dipedale le digiere go tšwa dipapading tša go otlela.</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Diport, lebelo ka botlalo, difomate tša go ikgethela</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Profaele</value></data>
 </root>

@@ -356,7 +356,6 @@ $script:SettleScaleValue = $SettleScale
 # PadForge frame whose sidebar shows any other number. Zero until known.
 $script:ExpectedSlots = 0
 $script:RunClock = [System.Diagnostics.Stopwatch]::StartNew()
-$script:RightToLeft = $false
 # Where the pointer was when Park-Pointer last moved it off the content, and
 # the run clock's milliseconds then.
 $script:PointerLeft = $null
@@ -390,8 +389,8 @@ function Start-Sleep {
 # The controller view's part of a maximized PadForge window, as fractions of
 # its width and height: right of the sidebar (16 %), under the slot's two tab
 # strips (15 %), down to the motor buttons (85 %). Measured off the
-# 2582x1550 colorway frames of 2026-10-23. The sidebar's flames and the
-# status bar move while the engine forges, so a stillness wait over the
+# 2582x1550 colorway frames of 2026-10-23. The sidebar's flames and its
+# polling rate move while the engine forges, so a stillness wait over the
 # whole window never ends before its ceiling.
 $script:ModelViewPart = @(0.16, 0.15, 0.84, 0.70)
 
@@ -1391,14 +1390,15 @@ function Dismiss-AssignBanner {
     return $false
 }
 
-# The run seeds both assignment prompts OFF (see the AppSettings seeding).
-# Five Settings frames show the card that governs them, and those frames
-# have to show the defaults, which are on. Cap sets the two boxes for each
-# of those frames and back after it. No pad page is open on Settings, so
-# turning them on raises no offer. Both boxes are found before either is
+# The run seeds the three assignment prompts OFF (see the AppSettings
+# seeding). Five Settings frames show the card that governs them, and those
+# frames have to show the defaults, which are on. Cap sets the three boxes
+# for each of those frames and back after it. No pad page and no Home is
+# open on Settings, so turning them on shows no offer, and Home's offer is
+# withdrawn when its box goes off again. Every box is found before any is
 # toggled: a change autosaves after 2 s of quiet and writes "Settings saved"
-# into the status bar, so the frame has to be taken inside that window.
-# Returns $false unless both boxes reached the wanted state.
+# on the message line, so the frame has to be taken inside that window.
+# Returns $false unless every box reached the wanted state.
 $script:AssignOfferFrames = @("settings-input-engine", "settings-assignment-prompts",
                               "settings-handheld-buttons", "settings-battery-alerts",
                               "settings-hidhide")
@@ -1407,18 +1407,19 @@ $script:AssignBoxesHwnd = [IntPtr]::Zero
 function Set-AssignOfferBoxes {
     param([bool]$On)
     $want = if ($On) { [System.Windows.Automation.ToggleState]::On } else { [System.Windows.Automation.ToggleState]::Off }
-    # The two boxes are found once for each window and kept: five frames
+    # The three boxes are found once for each window and kept: five frames
     # set them and set them back, and each search by name costs about 2 s on
     # the Settings page while the engine runs. A kept box that no longer
     # answers is looked up again.
     $boxes = @()
-    if ($script:AssignBoxesHwnd -eq [IntPtr]$script:hwnd -and (Get-Count $script:AssignBoxes) -eq 2) {
+    if ($script:AssignBoxesHwnd -eq [IntPtr]$script:hwnd -and (Get-Count $script:AssignBoxes) -eq 3) {
         try { foreach ($cb in $script:AssignBoxes) { [void]$cb.Current.Name }; $boxes = $script:AssignBoxes } catch { $boxes = @() }
     }
-    if ((Get-Count $boxes) -ne 2) {
+    if ((Get-Count $boxes) -ne 3) {
         $boxes = @()
         foreach ($label in @("Offer New Devices to the Open Virtual Controller",
-                             "Offer Any Connecting Device When the Open Virtual Controller Has No Devices")) {
+                             "Offer Any Connecting Device When the Open Virtual Controller Has No Devices",
+                             "Offer New Devices on Home")) {
             $cb = Find-UIA -Name $label -CT ([System.Windows.Automation.ControlType]::CheckBox)
             if (-not $cb) {
                 Write-Host "  !! assignment prompt box '$label' not found" -ForegroundColor Red
@@ -1450,9 +1451,10 @@ function Set-AssignOfferBoxes {
 }
 
 # Wait for the input engine to be FORGING before a preview capture. A
-# stopped engine draws an inert schematic and a 0 Hz status bar, and the
-# 4.4.0 Valve frames shipped exactly that. The status bar carries the word
-# as its own Text peer.
+# stopped engine draws an inert schematic and a 0 Hz rate, and the 4.4.0
+# Valve frames shipped exactly that. The sidebar's foot carries the word
+# as its own Text peer while the pane is open, and so does Home's engine
+# card.
 function Wait-EngineForging {
     param([int]$TimeoutSec = 25)
     $deadline = (Get-Date).AddSeconds($TimeoutSec)
@@ -1798,29 +1800,36 @@ function Want {
     return ($Only -contains $Name)
 }
 
-# Waits, up to TimeoutSec, for the status bar's message corner to go dark,
-# and says whether it did. See Cap for the thresholds. Right to left, the
-# message sits at the bar's other end.
-function Wait-StatusBarClear {
+# Waits, up to TimeoutSec, for the message line to go, and says whether it
+# did. PadForge 6 has no status bar: a message shows on a line over the
+# page's lower corner, and only while there is one (MainWindow.xaml,
+# StatusMessageLine). Its text is the element StatusMessageText, a child of
+# the window like the pages, since the grid they share has no peer. No such
+# element, or one with no name, is a clear corner. In either reading
+# direction: the element is asked, where the status bar's pixels were read.
+function Wait-MessageClear {
     param([int]$TimeoutSec = 12)
-    $sr = New-Object Win32+RECT
-    [Win32]::GetWindowRect($script:hwnd, [ref]$sr) | Out-Null
-    $sbX = if ($script:RightToLeft) { $sr.Right - 720 } else { $sr.Left + 20 }
-    $sbDeadline = (Get-Date).AddSeconds($TimeoutSec)
-    while ((Get-ScreenBrightCount -X $sbX -Y ($sr.Bottom - 44) -W 700 -H 28 -Min 30) -ge 20) {
-        if ((Get-Date) -gt $sbDeadline) { return $false }
+    $msgCond = New-Object System.Windows.Automation.PropertyCondition(
+        [System.Windows.Automation.AutomationElement]::AutomationIdProperty, "StatusMessageText")
+    $msgDeadline = (Get-Date).AddSeconds($TimeoutSec)
+    while ($true) {
+        $msg = $null
+        try { $msg = $script:uiaWin.FindFirst([System.Windows.Automation.TreeScope]::Children, $msgCond) } catch { }
+        $msgText = ""
+        if ($msg) { try { $msgText = "$($msg.Current.Name)" } catch { } }
+        if (-not $msgText) { return $true }
+        if ((Get-Date) -gt $msgDeadline) { return $false }
         Start-Sleep -Milliseconds 500
     }
-    return $true
 }
 
 # A fresh PadForge saves its settings once it has loaded them, and its
-# "Settings saved" line then holds the status bar for 5 to 10 s. A scene
-# recipe waits that out before its first frame: the file quiet past the
-# 2 s autosave, then the corner dark.
+# "Settings saved" message then shows for 5 to 10 s. A scene recipe waits
+# that out before its first frame: the file quiet past the 2 s autosave,
+# then the message line gone.
 function Wait-AfterRestartSave {
     Wait-FileQuiet -Path $PadForgeXml -QuietMs 2500 -TimeoutMs 8000 | Out-Null
-    [void](Wait-StatusBarClear -TimeoutSec 15)
+    [void](Wait-MessageClear -TimeoutSec 15)
 }
 
 function Cap {
@@ -1876,18 +1885,14 @@ function Cap {
     $r = New-Object Win32+RECT
     [Win32]::GetWindowRect($script:hwnd, [ref]$r) | Out-Null
     Park-Pointer -Settle
-    # "Settings saved to PadForge.xml." holds the status bar's left end for
-    # 5 to 10 s after each autosave, and a restart or one of this harness's
-    # clicks sets one off. Run 9 of the 5.0.0 prep photographed it on the
-    # Dashboard, Profiles, Devices and pad pages. Wait, up to 12 s, for that
-    # corner to go dark. The empty bar never reads above 21 on any channel
-    # there. The message reads 106 at full strength and still 43 to 58 while
-    # it fades out, which a first threshold of 70 let through on ten run-11
-    # frames, so anything above 30 counts. Dialog shots wait too, since most
-    # dialogs leave the corner in view. One that covers it with something
-    # bright costs the 12 s and is captured as it is.
-    if (-not (Wait-StatusBarClear -TimeoutSec 12)) {
-        Write-Host "  !! the status bar corner stayed lit for 12 s, so $Name may carry a message" -ForegroundColor Yellow
+    # "Settings saved to PadForge.xml." shows on the message line for 5 to
+    # 10 s after each autosave, and a restart or one of this harness's
+    # clicks sets one off. Run 9 of the 5.0.0 prep photographed it on four
+    # pages, in the status bar it showed in then. Wait, up to 12 s, for the
+    # line to go. Dialog shots wait too, since most dialogs leave the
+    # page's lower corner in view.
+    if (-not (Wait-MessageClear -TimeoutSec 12)) {
+        Write-Host "  !! the message line stayed up for 12 s, so $Name may carry a message" -ForegroundColor Yellow
     }
     # Last, so the frame lands inside the 2 s before the boxes' autosave.
     $aoFrame = $script:AssignOfferFrames -contains $Name
@@ -1928,7 +1933,7 @@ function Cap {
             Write-Host "  !! the assignment prompts may still be ON, so a later pad-page shot can carry an offer banner" -ForegroundColor Red
         }
         # Two toggles mean one autosave 2 s later. Wait for it, so the next
-        # frame's status bar check sees its message.
+        # frame's message check sees its message.
         [void](Wait-SettingsSaved -Since $aoBack -TimeoutMs 4000)
     }
 }
@@ -2110,8 +2115,8 @@ function Find-AllSlots {
         foreach ($item in $all) {
             # A controller entry carries the AutomationId Nav_Pad<N>
             # (MainWindow.SetNavAutomationId). Names will not do: the entries
-            # read "Slot 1", and so do the Dashboard's slot cards and the
-            # Devices page's slot badges, which are DataItems too.
+            # read "Slot 1", and so do the Devices page's slot badges, which
+            # are DataItems too.
             $aid = $item.Cached.AutomationId
             if ($aid -match '^Nav_Pad\d+$') {
                 Write-Host "    Slot: '$($item.Cached.Name)' ($aid)"
@@ -3426,7 +3431,9 @@ try {
         # therefore gets what PadForge writes for a device it has just met:
         # no serial, SDL GUID, display name, gun calibration or Falcon reach
         # (#521), every per-device switch off, no HidHide instance ids and no
-        # peripheral outputs. The aux sensors and the touchpad shape go with the HasGyro,
+        # peripheral outputs. It owes Home no offer either (HomeOfferPending,
+        # #574): a frame of Home must not ask about a row the script made.
+        # The aux sensors and the touchpad shape go with the HasGyro,
         # HasAccel and HasTouchpad flags the callers clear and then turn back
         # on for the hardware each row stands in for. Emits nothing, so a
         # caller's return value stays the row alone.
@@ -3434,7 +3441,8 @@ try {
             $set = { param($tag, $val) $n = $d.SelectSingleNode($tag); if ($n) { $n.InnerText = "$val" } }
             foreach ($tag in @("SerialNumber", "SdlGuid", "DisplayName", "GunCalibration", "FalconCalibration")) { & $set $tag "" }
             foreach ($tag in @("HidHideEnabled", "ConsumeInputEnabled", "ForceRawJoystickMode",
-                               "QuickChargeEnabled", "TouchpadOnlyInPadForge", "TouchpadKeepPending", "HasAccelAux", "HasGyroAux")) { & $set $tag "false" }
+                               "QuickChargeEnabled", "TouchpadOnlyInPadForge", "TouchpadKeepPending",
+                               "HomeOfferPending", "HasAccelAux", "HasGyroAux")) { & $set $tag "false" }
             foreach ($tag in @("IdleDisconnectSeconds", "PeripheralOutputs", "CapTouchpadCount")) { & $set $tag 0 }
             foreach ($tag in @("HidHideInstanceIds", "CapTouchpadFingerCounts")) {
                 $n = $d.SelectSingleNode($tag); if ($n) { $n.RemoveAll() }
@@ -3872,8 +3880,10 @@ if ($appSettings) {
     # page and the banner sat across the top of the frame. The real pads the
     # run assigns are new to this copy too. The one shot of the card that
     # governs the prompts turns them back on for its frame
-    # (Set-AssignOfferBoxes). The owner's values ride the backup.
-    foreach ($aoName in @("AssignOfferNewDevice", "AssignOfferEmptySlot")) {
+    # (Set-AssignOfferBoxes). The owner's values ride the backup. Home's
+    # offer (#574) is off with them: a device the run meets for the first
+    # time would put its offer across the top of every Home frame.
+    foreach ($aoName in @("AssignOfferNewDevice", "AssignOfferEmptySlot", "AssignOfferHome")) {
         $aoNode = $appSettings.SelectSingleNode($aoName)
         if (-not $aoNode) {
             $aoNode = $xml.CreateElement($aoName)
@@ -3881,7 +3891,7 @@ if ($appSettings) {
         }
         $aoNode.InnerText = "false"
     }
-    Write-Host "  Set AssignOfferNewDevice=false, AssignOfferEmptySlot=false for capture"
+    Write-Host "  Set AssignOfferNewDevice=false, AssignOfferEmptySlot=false, AssignOfferHome=false for capture"
 
     # Every run starts from a known view, because Set-ViewMode reads it from
     # this file: 2D for a run of nothing but 2D shots, which then never
@@ -4129,7 +4139,8 @@ if (-not $hamburger) {
     $hamburger = Find-UIA -Name "Toggle navigation" -CT ([System.Windows.Automation.ControlType]::Button)
 }
 if ($hamburger) {
-    $dash = Find-UIA -Name "Dashboard"
+    # Home's entry, by the id it has kept (Nav_Dashboard).
+    $dash = Find-SidebarEntry "Dashboard"
     $dashR = Get-Rect $dash
     if ($null -ne $dashR -and $dashR.Width -lt 120) {
         Write-Host "  Sidebar compact -- expanding..."
@@ -5361,9 +5372,10 @@ function Select-DeviceByName36 {
     # showing whatever had been selected before. Same rule the assignment path
     # already uses: in view, click. Out of view, scroll toward it and re-find.
     $listTop36 = Get-DeviceListTop
-    # 100, not 40: the list's viewport ends about 102 px above the window's
+    # 100, not 40: the list's viewport ended about 102 px above the window's
     # bottom, over the "Drag a device onto a sidebar controller card" hint
-    # and the status bar, so a last row that ends there still counts. Run 6 of the 5.0.0
+    # and the status bar PadForge had then. The status bar is gone since
+    # PadForge 6 and the margin stays, the safe side. Run 6 of the 5.0.0
     # capture clicked the Razer row at y=1435 of 1550, inside the window but
     # under the viewport's clip, the selection stayed on the Head Tracker,
     # and devices-analog-keyboard photographed that instead.
@@ -5466,8 +5478,8 @@ function Scroll-AnchorToTop {
     return ($null -ne $r -and $r.Y -ge ($wr.Top + 60))
 }
 
-# True when the named element's whole rect is inside the window, above the
-# status bar.
+# True when the named element's whole rect is inside the window, clear of
+# its lower edge.
 function Test-InFrame {
     param([string]$Name)
     $wr = New-Object Win32+RECT
@@ -5907,12 +5919,9 @@ function Capture-LanguageShots {
         $arabic = -join ([char[]]@(0x0627, 0x0644, 0x0639, 0x0631, 0x0628, 0x064A, 0x0629))
         $switchedAt = Get-Date
         if (Select-ComboItem $combo $arabic) {
-            # The switch saves 2 s later. Right to left, the status bar's
-            # message sits at its right end, so Cap watches that end.
+            # The switch saves 2 s later, and Cap waits out the message.
             [void](Wait-SettingsSaved -Since $switchedAt -TimeoutMs 5000)
-            $script:RightToLeft = $true
             Cap "settings-language-rtl"
-            $script:RightToLeft = $false
         } else { Refuse-Shots @("settings-language-rtl") "Arabic could not be selected" }
         $back = Find-LanguageCombo
         if (-not $back) { $back = $combo }
@@ -7198,11 +7207,11 @@ if ($Only.Count -gt 0) {
             if ($null -eq $wasOn) { Refuse-Shots @($t.Shot) "no '$($t.Check)' check box would turn on"; continue }
             if (-not $wasOn) {
                 # Turning the box on sets off PadForge's save 2 s later, and
-                # its "Settings saved" line then holds the status bar's
-                # corner for 5 to 10 s: on 2026-10-23 it was still there 12 s
-                # into the frame's own wait. Both are waited out first.
+                # its "Settings saved" message then shows for 5 to 10 s: on
+                # 2026-10-23 it was still there 12 s into the frame's own
+                # wait. Both are waited out first.
                 [void](Wait-SettingsSaved -Since $toggledAt -TimeoutMs 6000)
-                [void](Wait-StatusBarClear -TimeoutSec 15)
+                [void](Wait-MessageClear -TimeoutSec 15)
             }
         }
         if (Scroll-ToAnchor -Anchor $t.Anchor) {
@@ -7384,7 +7393,7 @@ if ($Only.Count -gt 0) {
         # Every synthetic device is offline, so nothing above starts the
         # engine. The full pass forges because the merged mouse, a real device,
         # sits on the keyboard-and-mouse slot (pad 3 in creation order). Without
-        # it the status bar reads 0 Hz Idle beside a set that reads Forging.
+        # it the sidebar's foot reads 0 Hz Idle beside a set that reads Forging.
         $m = Ensure-DeviceAssigned -DeviceNamePart "All Mice (Merged)" -PadIndex 3 -SlotType 4 `
             -XmlPath $PadForgeXml -ExePath $PadForgeExe | Select-Object -Last 1
         if ($x -ne $true -or $m -ne $true) {
@@ -7947,14 +7956,18 @@ $total = 39
 function Next { $script:n++; return $script:n }
 
 if (-not $SkipToTail) {
-# ---- 1. Dashboard ----
-Write-Host "[$(Next)/$total] Dashboard"
+# ---- 1. Home ----
+# Home took the Dashboard's place in PadForge 6 (#574). Its sidebar entry
+# kept the id Nav_Dashboard, so Nav still asks for "Dashboard", and the
+# shots keep the file names the docs link.
+Write-Host "[$(Next)/$total] Home"
 Nav "Dashboard"; Start-Sleep -Milliseconds 500; Cap "dashboard"
-# Dashboard slot card (Dashboard.md) and the live polling-rate readout on the
-# engine card (Input-Precision.md). Both live in the Dashboard's top view: the
-# engine card carries the live Hz next to the power flame while the engine is
-# forging (5 slots exist by now), and the slot cards sit right under it. Same
-# unscrolled view as "dashboard"; the wiki crops to the region it documents.
+# A Home slot card (Dashboard.md) and the live polling-rate readout on the
+# engine card (Input-Precision.md). Both live in Home's top view: the engine
+# card carries the live Hz between its state and its Stop button while the
+# engine is forging (5 slots exist by now), and the slot cards sit under it
+# and the offer, when there is one. Same unscrolled view as "dashboard". The
+# docs crop to the region they document.
 Cap "dashboard-polling-readout"
 Cap "dashboard-slot-card"
 

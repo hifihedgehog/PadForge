@@ -68,6 +68,7 @@
   <data name="Common_Running" xml:space="preserve"><value>A angang</value></data>
   <data name="Server_FailedToStart" xml:space="preserve"><value>Ese tongeni poputá</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Aúkú</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Poputá</value></data>
   <data name="Common_None" xml:space="preserve"><value>Esor</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>

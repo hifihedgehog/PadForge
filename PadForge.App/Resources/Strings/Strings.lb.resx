@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Duerchsichen...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Weidermaachen</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Stoppen</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Starten</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Ophuelen</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Gëtt opgeholl...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Eidelmaachen</value></data>
@@ -125,6 +126,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Virtuell Controller, déi vun enger viregter Sessioun iwwreg sinn, ginn opgeraumt.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> Apparater</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Controller derbäisetzen</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Profil</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Virtuelle Controller läschen</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Vollbild</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>PadForge weisen</value></data>
@@ -254,10 +256,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Virtuelle Controller {0} geläscht.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>Iwwersiicht</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>Startsäit</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Agab-Engine</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> Apparater online</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Virtuell Controller</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Controller</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>Extraen am Asaz</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Déi aner sinn an den Extraen, an all eenzel bleift aus, bis Dir se uschalt.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>Extraen opmaachen</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} ass verbonnen a gëtt net benotzt.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Benotzen</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> zougeuerdnet, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> verbonnen</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Engine leeft. Klickt, fir se ze stoppen.</value></data>
@@ -277,8 +284,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Virtuell Controller</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Wielt en Ausgangstyp, gitt dem Slot Apparater a klickt op eng Kaart, fir hir Zouuerdnungen unzepassen.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>Optional Funktioune waarden hei: de Web-Controller fir den Handy, Remote Link, de Beweegungsserver a méi.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>Instrumenteleescht</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>Unzuel vun Apparater, Ofrofrequenz an d'Flam vun der Engine, ëmmer am Bléck.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Begréissungstour weisen</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Slot</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Apparat</value></data>
@@ -3896,11 +3901,13 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Och de Controller vibréiere loossen</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Notifikatioun testen</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Zouweisungsufroen</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Wann en Apparat sech verbënnt, wärend d'Säit vun engem virtuelle Controller op ass, kann PadForge ubidden, en do zouzeweisen. Näischt gëtt zougewisen, bis Dir op „Zouweisen“ klickt. Tastaturen, Mais, Touchpads a Medientaste ginn ni ugebueden.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Wann en Apparat sech verbënnt, wärend d'Säit vun engem virtuelle Controller op ass, kann PadForge ubidden, en do zouzeweisen, an d'Startsäit kann engem neien Apparat en eegene virtuelle Controller ubidden. Näischt gëtt zougewisen, bis Dir en Ugebot unhuelt. Tastaturen, Mais, Touchpads a Medientaste ginn ni ugebueden.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Nei Apparater dem opgemaachte virtuelle Controller ubidden</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Nëmmen Apparater, déi PadForge nach ni gesinn huet. Apparater, déi et scho kennt, verbanne sech ouni Ufro.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>All Apparat ubidden, dee sech verbënnt, wann den opgemaachte virtuelle Controller keng Apparater huet</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Nei oder scho bekannt. Soubal dem virtuelle Controller en Apparat zougewise gouf, erschéngt dës Ufro net méi.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>Nei Apparater op der Startsäit ubidden</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>D'Startsäit freet fir all neien Apparat, deen kee virtuelle Controller benotzt, eng Kéier no. „Benotzen“ mécht e virtuelle Controller dofir, an „Elo net“ beendegt d'Ugebot fir dësen Apparat.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} gouf grad verbonnen. Dësem virtuelle Controller zouweisen?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Zouweisen</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Elo net</value></data>

@@ -75,6 +75,7 @@
   <data name="Common_Stopping" xml:space="preserve"><value>Sayachichkan…</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Mana yachasqa</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Sayachiy</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Qallariy</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Pichay</value></data>
   <data name="Common_None" xml:space="preserve"><value>Mana imapas</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
@@ -1412,4 +1413,15 @@
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0}, {1}-pi, hap'isqa kachkaptin</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0}, {1}-pi, sayachinankama</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>Gatillo efectota {0}-pi sayachiy</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Yapakuna</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Astawan pukllanapaq ñankuna</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Huk chiqaman kachay</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>Pantallapi</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Carro pukllaykunamanta velocidadta, pedalkunata, cambiokunatapas asignay.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Controlkunata huk PC-pi kaq PadForge nisqawan rakinakuy.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Pukllachkaspa menúkunata, capakunata, perfil t'ikraykunatapas rikuchiy.</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Watiqmanta tinkiy, puerto, identidad amachay, direcciónwan tinkiy</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Puertokuna, hunt'a velocidad, kikinchasqa formatokuna</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Perfil</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Llank'achiy</value></data>
 </root>

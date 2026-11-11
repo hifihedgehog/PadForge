@@ -99,6 +99,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Procurar...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Prosseguir</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Parar</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Iniciar</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Gravar</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Gravando...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Limpar</value></data>
@@ -133,6 +134,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Limpando controles virtuais deixados por uma sessão anterior.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> dispositivo(s)</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Adicionar Controle</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Perfil</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Excluir controle virtual</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Tela Cheia</value></data>
   <data name="Main_Minimize" xml:space="preserve"><value>Minimizar</value></data>
@@ -259,10 +261,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Controle Virtual {0} excluído.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>Painel</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>Início</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Motor de Entrada</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> dispositivos online</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Controles Virtuais</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Controles</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>Extras em Uso</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Os demais ficam em Extras, cada um desativado até você ativá-lo.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>Abrir Extras</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} está conectado e não está em uso.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Usar Este</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> mapeados, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> conectados</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Motor em execução. Clique para parar.</value></data>
@@ -3178,8 +3185,6 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Tour_Engine_Title" xml:space="preserve"><value>Motor de Entrada</value></data>
   <data name="Tour_Slots_Body" xml:space="preserve"><value>Cada controle virtual fica aqui. A chama mostra quais slots estão forjando agora.</value></data>
   <data name="Tour_Slots_Title" xml:space="preserve"><value>Slots</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>Contagem de dispositivos, taxa de polling e a chama do motor, sempre à vista.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>Linha de Instrumentos</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
   <data name="About_OpenVR" xml:space="preserve"><value>OpenVR API</value></data>
   <data name="About_OpenVRDesc" xml:space="preserve"><value>API de cliente OpenVR da Valve (BSD 3-Clause): headsets e controles de movimento VR como fontes de entrada. O runtime nativo é carregado da sua própria instalação do SteamVR.</value></data>
@@ -4064,11 +4069,13 @@ Deseja que o PadForge os desinstale agora? Isso exige elevação e pode levar um
   <data name="Battery_FullTitle" xml:space="preserve"><value>Controle Totalmente Carregado</value></data>
   <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: totalmente carregado</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Sugestões de Atribuição</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Quando um dispositivo se conecta com a página de um controle virtual aberta, o PadForge pode oferecer atribuí-lo ali. Nada é atribuído até você clicar em Atribuir. Teclados, mouses, touchpads e teclas de mídia nunca são oferecidos.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Quando um dispositivo se conecta com a página de um controle virtual aberta, o PadForge pode oferecer atribuí-lo ali, e o Início pode oferecer a um dispositivo novo um controle virtual só dele. Nada é atribuído até você aceitar uma sugestão. Teclados, mouses, touchpads e teclas de mídia nunca são oferecidos.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Oferecer Dispositivos Novos ao Controle Virtual Aberto</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Só dispositivos que o PadForge nunca viu. Os já conhecidos se conectam sem sugestão.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Oferecer qualquer dispositivo que se conectar quando o controle virtual aberto não tiver dispositivos</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Novo ou já conhecido. Assim que o controle virtual tiver um dispositivo atribuído, esta sugestão deixa de aparecer.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>Oferecer Dispositivos Novos no Início</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>O Início pergunta uma vez sobre cada dispositivo novo que nenhum controle virtual usa. Usar Este cria um controle virtual para ele, e Agora Não encerra a sugestão para esse dispositivo.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} acabou de se conectar. Atribuir a este controle virtual?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Atribuir</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Agora Não</value></data>

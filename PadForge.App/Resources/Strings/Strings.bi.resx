@@ -69,6 +69,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>Mekem wan kopi</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>I on</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>I of</value></data>
+  <data name="Common_On" xml:space="preserve"><value>On</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Of</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Moa</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>I instol finis</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>I no instol yet</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>I no gat long ARM64</value></data>
@@ -86,6 +89,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Lukaotem...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Gohed</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Stop</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Stat</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Rekodem</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>I stap rekod...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Klinim</value></data>
@@ -105,6 +109,7 @@
   <data name="Main_StartingUp" xml:space="preserve"><value>PadForge i stap stat…</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> divaes</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Putum wan kontrola</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Profael</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Rabemaot virtual kontrola</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Soem PadForge</value></data>
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>Virtual kontrola {0}</value></data>
@@ -1561,4 +1566,11 @@
   <data name="MacroAction_TriggerEffect_Timed_Format" xml:space="preserve"><value>{0} long {1} blong {2} ms</value></data>
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} long {1} taem yu holem</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} long {1} kasem we i stop</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Ol ekstra</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Moa fasin blong plei</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Sendem i go long narafala ples</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>Yusum wan fon o tablet olsem wan kontrola.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Tekem ol efek blong triga mo laet long ol mod blong gem.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Pot, plen HTTP adres, kod blong akses</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Pot, samting we i tekem ples blong DSX.exe</value></data>
 </root>

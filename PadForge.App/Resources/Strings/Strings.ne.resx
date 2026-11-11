@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>ब्राउज गर्नुहोस्...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>अगाडि बढ्नुहोस्</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>रोक्नुहोस्</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>सुरु गर्नुहोस्</value></data>
   <data name="Common_Record" xml:space="preserve"><value>रेकर्ड गर्नुहोस्</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>रेकर्ड हुँदैछ...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>खाली गर्नुहोस्</value></data>
@@ -136,6 +137,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>अघिल्लो सत्रबाट बाँकी रहेका भर्चुअल कन्ट्रोलरहरू सफा गरिँदैछ।</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> यन्त्रहरू</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>कन्ट्रोलर थप्नुहोस्</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>प्रोफाइल</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>भर्चुअल कन्ट्रोलर मेटाउनुहोस्</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>पूर्ण स्क्रिन</value></data>
   <data name="Main_Minimize" xml:space="preserve"><value>मिनिमाइज गर्नुहोस्</value></data>
@@ -269,10 +271,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>भर्चुअल कन्ट्रोलर {0} मेटाइयो।</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>ड्यासबोर्ड</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>गृहपृष्ठ</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>इनपुट इन्जिन</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> यन्त्र अनलाइन</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>भर्चुअल कन्ट्रोलरहरू</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>कन्ट्रोलरहरू</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>प्रयोगमा रहेका अतिरिक्त</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>बाँकी सुविधाहरू अतिरिक्तमा छन्, तपाईंले नखोलेसम्म हरेक बन्द रहन्छ।</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>अतिरिक्त खोल्नुहोस्</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} जडान भएको छ र प्रयोगमा छैन।</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>प्रयोग गर्नुहोस्</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> म्याप गरिएका, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> जोडिएका</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>इन्जिन चलिरहेको छ। रोक्न क्लिक गर्नुहोस्।</value></data>
@@ -292,8 +299,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>भर्चुअल कन्ट्रोलरहरू</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>आउटपुट प्रकार छान्नुहोस्, स्लटलाई यन्त्रहरू दिनुहोस्, र यसका म्यापिङहरू मिलाउन कार्डमा क्लिक गर्नुहोस्।</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>वैकल्पिक सुविधाहरू यहाँ छन्: फोनको वेब कन्ट्रोलर, रिमोट लिङ्क, मोसन सर्भर र अन्य।</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>स्थिति पट्टी</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>यन्त्र संख्या, पोलिङ दर र इन्जिनको ज्वाला, सधैँ देखिने।</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>स्वागत भ्रमण देखाउनुहोस्</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>स्लट</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>यन्त्र</value></data>
@@ -4119,11 +4124,13 @@ PadForge ले तिनलाई अहिले अनइन्स्टल �
   <data name="Battery_FullTitle" xml:space="preserve"><value>कन्ट्रोलर पूर्ण चार्ज भयो</value></data>
   <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: पूर्ण चार्ज भयो</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>असाइन गर्ने प्रस्तावहरू</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>भर्चुअल कन्ट्रोलरको पेज खुला रहँदा कुनै यन्त्र जडान भएमा PadForge ले त्यसलाई त्यहाँ असाइन गर्ने प्रस्ताव गर्न सक्छ। तपाईंले "असाइन गर्नुहोस्" क्लिक नगरेसम्म केही असाइन हुँदैन। किबोर्ड, माउस, टचप्याड र मिडिया कुञ्जीहरू कहिल्यै प्रस्ताव गरिँदैनन्।</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>भर्चुअल कन्ट्रोलरको पेज खुला रहँदा कुनै यन्त्र जडान भएमा PadForge ले त्यसलाई त्यहाँ असाइन गर्ने प्रस्ताव गर्न सक्छ, र गृहपृष्ठले नयाँ यन्त्रलाई त्यसको आफ्नै भर्चुअल कन्ट्रोलर प्रस्ताव गर्न सक्छ। तपाईंले प्रस्ताव स्वीकार नगरेसम्म केही असाइन हुँदैन। किबोर्ड, माउस, टचप्याड र मिडिया कुञ्जीहरू कहिल्यै प्रस्ताव गरिँदैनन्।</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>नयाँ यन्त्रहरू खुला भर्चुअल कन्ट्रोलरलाई प्रस्ताव गर्नुहोस्</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>PadForge ले पहिले कहिल्यै नदेखेका यन्त्रहरू मात्र। यसले चिनेका यन्त्रहरू सोधाइविना जडान हुन्छन्।</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>खुला भर्चुअल कन्ट्रोलरमा कुनै यन्त्र नहुँदा जडान हुने जुनसुकै यन्त्र प्रस्ताव गर्नुहोस्</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>नयाँ होस् वा पहिले नै चिनिएको। भर्चुअल कन्ट्रोलरमा यन्त्र असाइन भएपछि यो सोधाइ देखा पर्दैन।</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>गृहपृष्ठमा नयाँ यन्त्रहरू प्रस्ताव गर्नुहोस्</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>गृहपृष्ठले कुनै भर्चुअल कन्ट्रोलरले प्रयोग नगरेको हरेक नयाँ यन्त्रबारे एक पटक सोध्छ। "प्रयोग गर्नुहोस्" ले त्यसका लागि भर्चुअल कन्ट्रोलर बनाउँछ, र "अहिले होइन" ले त्यो यन्त्रका लागि प्रस्ताव अन्त्य गर्छ।</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} भर्खरै जडान भयो। यसलाई यो भर्चुअल कन्ट्रोलरमा असाइन गर्ने?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>असाइन गर्नुहोस्</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>अहिले होइन</value></data>

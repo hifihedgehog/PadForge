@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Arakatu...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Jarraitu</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Gelditu</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Hasi</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Grabatu</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Grabatzen...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Garbitu</value></data>
@@ -125,6 +126,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Aurreko saio batetik geratutako kontrolagailu birtualak garbitzen.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> gailu</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Gehitu kontrolagailua</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Profila</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Ezabatu kontrolagailu birtuala</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Pantaila osoa</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Erakutsi PadForge</value></data>
@@ -254,10 +256,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>{0}. kontrolagailu birtuala ezabatu da.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>Aginte-panela</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>Hasiera</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Sarrera-motorra</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> gailu linean</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Kontrolagailu birtualak</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Kontrolagailuak</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>Erabiltzen ari diren gehigarriak</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Gainerakoak Gehigarriak orrian daude, eta bakoitza desaktibatuta dago zuk aktibatu arte.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>Ireki Gehigarriak</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} konektatuta dago eta ez da erabiltzen.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Erabili</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> esleituta, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> konektatuta</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Motorra martxan dago. Egin klik gelditzeko.</value></data>
@@ -277,8 +284,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Kontrolagailu birtualak</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Aukeratu irteera mota bat, eman gailuak zirrikituari eta egin klik txartel batean haren esleipenak moldatzeko.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>Aukerako eginbideak hemen daude: telefonoko web-kontrolagailua, Urruneko lotura, mugimendu-zerbitzaria eta gehiago.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>Tresna-lerroa</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>Gailu kopurua, galdeketa-maiztasuna eta motorraren garra, beti bistan.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Erakutsi ongietorri-bisita</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Zirrikitua</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Gailua</value></data>
@@ -3912,11 +3917,13 @@ PadForge-k orain desinstalatzea nahi duzu? Horrek administratzaile-baimenak beha
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Kontrolagailua bibratu ere</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Probatu jakinarazpena</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Esleitzeko galderak</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Gailu bat konektatzen denean kontrolagailu birtual baten orria irekita dagoen bitartean, PadForge-k hor esleitzea eskain dezake. Ez da ezer esleitzen Esleitu sakatu arte. Teklatuak, saguak, ukipen-panelak eta multimedia-teklak ez dira inoiz eskaintzen.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Gailu bat konektatzen denean kontrolagailu birtual baten orria irekita dagoen bitartean, PadForge-k hor esleitzea eskain dezake, eta Hasierak gailu berri bati bere kontrolagailu birtuala eskain diezaioke. Ez da ezer esleitzen eskaintza bat onartu arte. Teklatuak, saguak, ukipen-panelak eta multimedia-teklak ez dira inoiz eskaintzen.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Eskaini gailu berriak irekitako kontrolagailu birtualari</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>PadForge-k inoiz ikusi ez dituen gailuak soilik. Dagoeneko ezagutzen dituenak galderarik gabe konektatzen dira.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Eskaini konektatzen den edozein gailu irekitako kontrolagailu birtualak gailurik ez duenean</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Berria edo ezaguna. Kontrolagailu birtualak gailu bat esleituta duenetik, galdera hau ez da gehiago agertzen.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>Eskaini gailu berriak Hasieran</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>Hasierak behin galdetzen du kontrolagailu birtualik erabiltzen ez duen gailu berri bakoitzari buruz. Erabili sakatuz gero, gailuarentzat kontrolagailu birtual bat sortzen da, eta Orain ez sakatuz gero, gailu horren eskaintza amaitzen da.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} oraintxe konektatu da. Kontrolagailu birtual honi esleitu?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Esleitu</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Orain ez</value></data>

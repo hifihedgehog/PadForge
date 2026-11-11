@@ -356,8 +356,8 @@ namespace PadForge.Tests
         /// pages, after the Web Controller's and before Game Telemetry's,
         /// under its own glyph (E77B, the one the Settings card wore), with
         /// the status line and the footer every extra carries. The Settings
-        /// page and the Dashboard no longer carry it, and the strings moved
-        /// with the card.</summary>
+        /// page no longer carries it, Home names it only in its one row
+        /// among the extras in use, and the strings moved with the card.</summary>
         [Fact]
         public void HeadTracking_IsAnExtrasPage_NotASettingsCard()
         {
@@ -383,7 +383,17 @@ namespace PadForge.Tests
                 Assert.Contains(needle, card);
             Assert.Equal(1, card.Split(new[] { "StaticResource CardBorder" }, StringSplitOptions.None).Length - 1);
 
-            Assert.DoesNotContain("HeadTracking", RepoText("PadForge.App", "Views", "DashboardPage.xaml"));
+            // Home has the extra's row while it is on, and none of its settings:
+            // the row reads the any-source switch and the status, nothing else.
+            string home = RepoText("PadForge.App", "Views", "HomePage.xaml");
+            Assert.Equal(1, home.Split(new[] { "Key=\"HeadTracking\"" }, StringSplitOptions.None).Length - 1);
+            Assert.Equal(1, home.Split(new[] { "&#xE77B;" }, StringSplitOptions.None).Length - 1);
+            foreach (var setting in new[]
+            {
+                "Binding HeadTrackingEnabled", "Binding HeadTrackingFreeTrack", "Binding HeadTrackingOpenXr",
+                "HeadTrackingUdpPort", "HeadTrackingRotationRange", "HeadTrackingTranslationRange", "Dashboard_HeadTrackingEnable",
+            })
+                Assert.DoesNotContain(setting, home);
             string settings = RepoText("PadForge.App", "Views", "SettingsPage.xaml");
             Assert.DoesNotContain("HeadTracking", settings);
             Assert.DoesNotContain("&#xE77B;", settings);
@@ -419,7 +429,7 @@ namespace PadForge.Tests
         public void LightbarMirrors_LeftTheDashboard_ForTheVendorRows()
         {
             // Neither the Dashboard nor the Extras page, where its services went (#574).
-            foreach (string name in new[] { "DashboardPage.xaml", "ExtrasPage.xaml" })
+            foreach (string name in new[] { "HomePage.xaml", "ExtrasPage.xaml" })
             {
                 string page = RepoText("PadForge.App", "Views", name);
                 Assert.Equal(0, page.Split(new[] { "&#xE781;" }, StringSplitOptions.None).Length - 1);

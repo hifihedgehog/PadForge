@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>ബ്രൗസ് ചെയ്യുക...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>തുടരുക</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>നിർത്തുക</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>ആരംഭിക്കുക</value></data>
   <data name="Common_Record" xml:space="preserve"><value>റെക്കോർഡ് ചെയ്യുക</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>റെക്കോർഡ് ചെയ്യുന്നു...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>മായ്ക്കുക</value></data>
@@ -125,6 +126,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>മുൻ സെഷനിൽ ബാക്കിയായ വെർച്വൽ കൺട്രോളറുകൾ വൃത്തിയാക്കുന്നു.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> ഉപകരണങ്ങൾ</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>കൺട്രോളർ ചേർക്കുക</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>പ്രൊഫൈൽ</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>വെർച്വൽ കൺട്രോളർ ഇല്ലാതാക്കുക</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>പൂർണ്ണ സ്ക്രീൻ</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>PadForge കാണിക്കുക</value></data>
@@ -254,10 +256,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>വെർച്വൽ കൺട്രോളർ {0} ഇല്ലാതാക്കി.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>ഡാഷ്ബോർഡ്</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>ഹോം</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>ഇൻപുട്ട് എഞ്ചിൻ</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> ഉപകരണങ്ങൾ ഓൺലൈൻ</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>വെർച്വൽ കൺട്രോളറുകൾ</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>കൺട്രോളറുകൾ</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>ഉപയോഗത്തിലുള്ള എക്സ്ട്രാസ്</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>ബാക്കിയുള്ളവ എക്സ്ട്രാസ് പേജിൽ ഉണ്ട്, നിങ്ങൾ ഓണാക്കുന്നതുവരെ ഓരോന്നും ഓഫായിരിക്കും.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>എക്സ്ട്രാസ് തുറക്കുക</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} കണക്റ്റ് ചെയ്തിട്ടുണ്ട്, പക്ഷേ ഉപയോഗത്തിലില്ല.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>ഉപയോഗിക്കുക</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> മാപ്പ് ചെയ്തു, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> കണക്റ്റ് ചെയ്തു</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>എഞ്ചിൻ പ്രവർത്തിക്കുന്നു. നിർത്താൻ ക്ലിക്ക് ചെയ്യുക.</value></data>
@@ -277,8 +284,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>വെർച്വൽ കൺട്രോളറുകൾ</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>ഔട്ട്പുട്ട് തരം തിരഞ്ഞെടുക്കുക, സ്ലോട്ടിലേക്ക് ഉപകരണങ്ങൾ ചേർക്കുക, അതിന്റെ മാപ്പിംഗുകൾ രൂപപ്പെടുത്താൻ കാർഡിൽ ക്ലിക്ക് ചെയ്യുക.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>ഓപ്ഷണൽ ഫീച്ചറുകൾ ഇവിടെയുണ്ട്: ഫോൺ വെബ് കൺട്രോളർ, റിമോട്ട് ലിങ്ക്, മോഷൻ സെർവർ തുടങ്ങിയവ.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>ഇൻസ്ട്രുമെന്റ് ലൈൻ</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>ഉപകരണങ്ങളുടെ എണ്ണം, പോളിംഗ് നിരക്ക്, എഞ്ചിൻ ജ്വാല എന്നിവ എപ്പോഴും കാണാം.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>സ്വാഗത ടൂർ കാണിക്കുക</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>സ്ലോട്ട്</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>ഉപകരണം</value></data>
@@ -3885,11 +3890,13 @@ PadForge ഇവ ഇപ്പോൾ അൺഇൻസ്റ്റാൾ ചെയ�
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>കൺട്രോളറും വൈബ്രേറ്റ് ചെയ്യിക്കുക</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>ടെസ്റ്റ് അറിയിപ്പ്</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>അസൈൻമെന്റ് പ്രോംപ്റ്റുകൾ</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>ഒരു വെർച്വൽ കൺട്രോളറിന്റെ പേജ് തുറന്നിരിക്കുമ്പോൾ ഒരു ഉപകരണം കണക്റ്റ് ചെയ്താൽ, അത് അവിടെ അസൈൻ ചെയ്യാൻ PadForge-ന് നിർദ്ദേശിക്കാം. നിങ്ങൾ അസൈൻ ക്ലിക്ക് ചെയ്യുന്നതുവരെ ഒന്നും അസൈൻ ചെയ്യപ്പെടില്ല. കീബോർഡുകൾ, മൗസുകൾ, ടച്ച്പാഡുകൾ, മീഡിയ കീകൾ എന്നിവ ഒരിക്കലും നിർദ്ദേശിക്കില്ല.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>ഒരു വെർച്വൽ കൺട്രോളറിന്റെ പേജ് തുറന്നിരിക്കുമ്പോൾ ഒരു ഉപകരണം കണക്റ്റ് ചെയ്താൽ, അത് അവിടെ അസൈൻ ചെയ്യാൻ PadForge-ന് നിർദ്ദേശിക്കാം, കൂടാതെ ഹോം പേജിന് ഒരു പുതിയ ഉപകരണത്തിന് സ്വന്തമായ ഒരു വെർച്വൽ കൺട്രോളർ നിർദ്ദേശിക്കാനും കഴിയും. നിങ്ങൾ ഒരു നിർദ്ദേശം സ്വീകരിക്കുന്നതുവരെ ഒന്നും അസൈൻ ചെയ്യപ്പെടില്ല. കീബോർഡുകൾ, മൗസുകൾ, ടച്ച്പാഡുകൾ, മീഡിയ കീകൾ എന്നിവ ഒരിക്കലും നിർദ്ദേശിക്കില്ല.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>തുറന്നിരിക്കുന്ന വെർച്വൽ കൺട്രോളറിന് പുതിയ ഉപകരണങ്ങൾ നിർദ്ദേശിക്കുക</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>PadForge മുമ്പ് കണ്ടിട്ടില്ലാത്ത ഉപകരണങ്ങൾ മാത്രം. ഇതിനകം അറിയാവുന്ന ഉപകരണങ്ങൾ പ്രോംപ്റ്റ് ഇല്ലാതെ കണക്റ്റ് ചെയ്യുന്നു.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>തുറന്നിരിക്കുന്ന വെർച്വൽ കൺട്രോളറിന് ഉപകരണങ്ങളില്ലാത്തപ്പോൾ കണക്റ്റ് ചെയ്യുന്ന ഏത് ഉപകരണവും നിർദ്ദേശിക്കുക</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>പുതിയതോ ഇതിനകം അറിയാവുന്നതോ. വെർച്വൽ കൺട്രോളറിന് ഒരു ഉപകരണം അസൈൻ ചെയ്തുകഴിഞ്ഞാൽ, ഈ പ്രോംപ്റ്റ് പിന്നെ വരില്ല.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>ഹോം പേജിൽ പുതിയ ഉപകരണങ്ങൾ നിർദ്ദേശിക്കുക</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>ഒരു വെർച്വൽ കൺട്രോളറും ഉപയോഗിക്കാത്ത ഓരോ പുതിയ ഉപകരണത്തെക്കുറിച്ചും ഹോം ഒരു തവണ ചോദിക്കും. ഉപയോഗിക്കുക അമർത്തിയാൽ അതിനായി ഒരു വെർച്വൽ കൺട്രോളർ ഉണ്ടാക്കും, ഇപ്പോൾ വേണ്ട അമർത്തിയാൽ ആ ഉപകരണത്തിനുള്ള നിർദ്ദേശം അവസാനിക്കും.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} ഇപ്പോൾ കണക്റ്റ് ചെയ്തു. ഇത് ഈ വെർച്വൽ കൺട്രോളറിന് അസൈൻ ചെയ്യണോ?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>അസൈൻ ചെയ്യുക</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>ഇപ്പോൾ വേണ്ട</value></data>

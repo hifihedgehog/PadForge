@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>ब्राउझ करा...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>पुढे जा</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>थांबवा</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>सुरू करा</value></data>
   <data name="Common_Record" xml:space="preserve"><value>रेकॉर्ड करा</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>रेकॉर्ड करत आहे...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>साफ करा</value></data>
@@ -125,6 +126,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>मागील सत्रातून उरलेले व्हर्च्युअल कंट्रोलर साफ करत आहे.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> डिव्हाइस</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>कंट्रोलर जोडा</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>प्रोफाइल</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>व्हर्च्युअल कंट्रोलर हटवा</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>पूर्ण स्क्रीन</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>PadForge दाखवा</value></data>
@@ -254,10 +256,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>व्हर्च्युअल कंट्रोलर {0} हटवला.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>डॅशबोर्ड</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>मुख्यपृष्ठ</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>इनपुट इंजिन</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> डिव्हाइस ऑनलाइन</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>व्हर्च्युअल कंट्रोलर</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>कंट्रोलर</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>वापरातील अतिरिक्त</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>बाकीचे अतिरिक्त मध्ये आहेत, प्रत्येक तुम्ही चालू करेपर्यंत बंद राहते.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>अतिरिक्त उघडा</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} जोडलेले आहे आणि वापरात नाही.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>वापरा</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> मॅप केलेले, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> जोडलेले</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>इंजिन सुरू आहे. थांबवण्यासाठी क्लिक करा.</value></data>
@@ -277,8 +284,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>व्हर्च्युअल कंट्रोलर</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>आउटपुट प्रकार निवडा, स्लॉटला डिव्हाइस जोडा आणि मॅपिंग घडवण्यासाठी कार्डवर क्लिक करा.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>पर्यायी वैशिष्ट्ये येथे आहेत: फोन वेब कंट्रोलर, रिमोट लिंक, मोशन सर्व्हर आणि बरेच काही.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>इन्स्ट्रुमेंट लाइन</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>डिव्हाइसची संख्या, पोलिंग दर आणि इंजिनची ज्योत, नेहमी नजरेसमोर.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>स्वागत दौरा दाखवा</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>स्लॉट</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>डिव्हाइस</value></data>
@@ -3910,11 +3915,13 @@ PadForge ने ते आता अनइन्स्टॉल करावे�
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>कंट्रोलरही कंपित करा</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>चाचणी सूचना</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>नेमणूक सूचना</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>व्हर्च्युअल कंट्रोलरचे पान उघडे असताना डिव्हाइस जोडले गेल्यास, PadForge ते तिथे नेमून देण्याची ऑफर देऊ शकते. नेमा क्लिक करेपर्यंत काहीही नेमले जात नाही. कीबोर्ड, माउस, टचपॅड आणि मीडिया की कधीही ऑफर केल्या जात नाहीत.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>व्हर्च्युअल कंट्रोलरचे पान उघडे असताना डिव्हाइस जोडले गेल्यास, PadForge ते तिथे नेमून देण्याची ऑफर देऊ शकते आणि मुख्यपृष्ठ नवीन डिव्हाइसला स्वतःचा व्हर्च्युअल कंट्रोलर देऊ करू शकते. तुम्ही ऑफर स्वीकारेपर्यंत काहीही नेमले जात नाही. कीबोर्ड, माउस, टचपॅड आणि मीडिया की कधीही ऑफर केल्या जात नाहीत.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>नवीन डिव्हाइस उघड्या व्हर्च्युअल कंट्रोलरला ऑफर करा</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>फक्त PadForge ने आधी कधी न पाहिलेली डिव्हाइस. त्याला आधीपासून माहीत असलेली डिव्हाइस सूचनेशिवाय जोडली जातात.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>उघड्या व्हर्च्युअल कंट्रोलरला डिव्हाइस नसताना जोडले जाणारे कोणतेही डिव्हाइस ऑफर करा</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>नवीन किंवा आधीपासून माहीत असलेले. व्हर्च्युअल कंट्रोलरला डिव्हाइस नेमले गेल्यावर ही सूचना पुन्हा दिसत नाही.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>मुख्यपृष्ठावर नवीन डिव्हाइस ऑफर करा</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>मुख्यपृष्ठ कोणत्याही व्हर्च्युअल कंट्रोलरने न वापरलेल्या प्रत्येक नवीन डिव्हाइसबद्दल एकदा विचारते. वापरा त्यासाठी व्हर्च्युअल कंट्रोलर बनवते आणि आता नको त्या डिव्हाइसची ऑफर संपवते.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} नुकतेच जोडले गेले. ते या व्हर्च्युअल कंट्रोलरला नेमायचे?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>नेमा</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>आता नको</value></data>

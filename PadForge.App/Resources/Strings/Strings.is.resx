@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Fletta...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Halda áfram</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Stöðva</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Ræsa</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Taka upp</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Tekur upp...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Hreinsa</value></data>
@@ -136,6 +137,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Hreinsar upp sýndarstýringar sem urðu eftir frá fyrri lotu.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> tæki</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Bæta við leikjastýringu</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Snið</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Eyða sýndarstýringu</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Heilskjár</value></data>
   <data name="Main_Minimize" xml:space="preserve"><value>Lágmarka</value></data>
@@ -269,10 +271,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Sýndarstýringu {0} eytt.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>Mælaborð</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>Heim</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Inntaksvél</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> tæki tengd</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Sýndarstýringar</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Leikjastýringar</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>Aukaeiginleikar í notkun</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Hinir eru undir Aukaeiginleikar og hver þeirra er óvirkur þar til þú kveikir á honum.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>Opna Aukaeiginleikar</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} er tengt og ekki í notkun.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Nota það</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> með vörpun, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> tengdar</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Vélin er í gangi. Smelltu til að stöðva.</value></data>
@@ -292,8 +299,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Sýndarstýringar</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Veldu gerð úttaks, tengdu tæki við raufina og smelltu á spjald til að móta varpanir þess.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>Valfrjálsir eiginleikar bíða hér: vefstýringin fyrir símann, Fjartenging, hreyfiþjónninn og fleira.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>Mælalína</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>Fjöldi tækja, könnunartíðni og logi vélarinnar, alltaf sýnilegt.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Sýna kynningarferð</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Rauf</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Tæki</value></data>
@@ -4119,11 +4124,13 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Battery_FullTitle" xml:space="preserve"><value>Leikjastýring fullhlaðin</value></data>
   <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: fullhlaðin</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Tillögur um úthlutun</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Þegar tæki tengist á meðan síða sýndarstýringar er opin getur PadForge boðist til að úthluta því þangað. Engu er úthlutað fyrr en þú smellir á „Úthluta“. Lyklaborð, mýs, snertifletir og margmiðlunarlyklar eru aldrei boðnir.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Þegar tæki tengist á meðan síða sýndarstýringar er opin getur PadForge boðist til að úthluta því þangað og Heim getur boðið nýju tæki sýndarstýringu út af fyrir sig. Engu er úthlutað fyrr en þú samþykkir tilboð. Lyklaborð, mýs, snertifletir og margmiðlunarlyklar eru aldrei boðnir.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Bjóða opnu sýndarstýringunni ný tæki</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Aðeins tæki sem PadForge hefur aldrei séð áður. Tæki sem það þekkir þegar tengjast án tillögu.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Bjóða öll tæki sem tengjast þegar opna sýndarstýringin hefur engin tæki</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Ný eða þegar þekkt. Þegar tæki hefur verið úthlutað á sýndarstýringuna birtist þessi tillaga ekki lengur.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>Bjóða ný tæki á Heim</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>Heim spyr einu sinni um hvert nýtt tæki sem engin sýndarstýring notar. „Nota það“ býr til sýndarstýringu fyrir það og „Ekki núna“ lýkur tilboðinu fyrir það tæki.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} var að tengjast. Úthluta því á þessa sýndarstýringu?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Úthluta</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Ekki núna</value></data>

@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>உலாவு...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>தொடர்</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>நிறுத்து</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>தொடங்கு</value></data>
   <data name="Common_Record" xml:space="preserve"><value>பதிவுசெய்</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>பதிவுசெய்கிறது...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>அழி</value></data>
@@ -136,6 +137,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>முந்தைய அமர்விலிருந்து மீதமுள்ள மெய்நிகர் கட்டுப்படுத்திகளை அகற்றுகிறது.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> சாதனங்கள்</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>கட்டுப்படுத்தியைச் சேர்</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>சுயவிவரம்</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>மெய்நிகர் கட்டுப்படுத்தியை நீக்கு</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>முழுத்திரை</value></data>
   <data name="Main_Minimize" xml:space="preserve"><value>சிறிதாக்கு</value></data>
@@ -269,10 +271,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>மெய்நிகர் கட்டுப்படுத்தி {0} நீக்கப்பட்டது.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>டாஷ்போர்டு</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>முகப்பு</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>உள்ளீட்டு இன்ஜின்</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> சாதனங்கள் ஆன்லைனில்</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>மெய்நிகர் கட்டுப்படுத்திகள்</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>கட்டுப்படுத்திகள்</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>பயன்பாட்டில் உள்ள கூடுதல்</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>மற்றவை கூடுதல் பக்கத்தில் உள்ளன, ஒவ்வொன்றும் நீங்கள் இயக்கும் வரை அணைந்தே இருக்கும்.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>கூடுதலைத் திற</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} இணைக்கப்பட்டுள்ளது, பயன்பாட்டில் இல்லை.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>பயன்படுத்து</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> மேப் செய்யப்பட்டவை, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> இணைக்கப்பட்டவை</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>இன்ஜின் இயங்குகிறது. நிறுத்த கிளிக் செய்யவும்.</value></data>
@@ -292,8 +299,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>மெய்நிகர் கட்டுப்படுத்திகள்</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>ஒரு வெளியீட்டு வகையைத் தேர்ந்தெடுத்து, ஸ்லாட்டுக்குச் சாதனங்களைச் சேர்க்கவும். பிறகு அதன் மேப்பிங்குகளை வடிவமைக்க ஒரு கார்டைக் கிளிக் செய்யவும்.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>விருப்ப அம்சங்கள் இங்கே காத்திருக்கின்றன: ஃபோன் வலைக் கட்டுப்படுத்தி, தொலை இணைப்பு, அசைவுச் சேவையகம் மற்றும் பல.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>அளவீட்டுப் பட்டி</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>சாதன எண்ணிக்கை, போலிங் வீதம், இன்ஜின் சுடர் ஆகியவை எப்போதும் பார்வையில் இருக்கும்.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>வரவேற்புச் சுற்றுப்பயணத்தைக் காட்டு</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>ஸ்லாட்</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>சாதனம்</value></data>
@@ -4119,11 +4124,13 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Battery_FullTitle" xml:space="preserve"><value>கட்டுப்படுத்தி முழுமையாக சார்ஜ் ஆனது</value></data>
   <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: முழுமையாக சார்ஜ் ஆனது</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>ஒதுக்கீட்டுப் பரிந்துரைகள்</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>ஒரு மெய்நிகர் கட்டுப்படுத்தியின் பக்கம் திறந்திருக்கும்போது ஒரு சாதனம் இணைந்தால், PadForge அதை அங்கே ஒதுக்கப் பரிந்துரைக்கலாம். நீங்கள் ஒதுக்கு என்பதைக் கிளிக் செய்யும் வரை எதுவும் ஒதுக்கப்படாது. விசைப்பலகைகள், சுட்டிகள், டச்பேடுகள், மீடியா விசைகள் ஒருபோதும் பரிந்துரைக்கப்படாது.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>ஒரு மெய்நிகர் கட்டுப்படுத்தியின் பக்கம் திறந்திருக்கும்போது ஒரு சாதனம் இணைந்தால், PadForge அதை அங்கே ஒதுக்கப் பரிந்துரைக்கலாம், மேலும் முகப்பு ஒரு புதிய சாதனத்துக்குத் தனக்கென ஒரு மெய்நிகர் கட்டுப்படுத்தியைப் பரிந்துரைக்கலாம். நீங்கள் ஒரு பரிந்துரையை ஏற்கும் வரை எதுவும் ஒதுக்கப்படாது. விசைப்பலகைகள், சுட்டிகள், டச்பேடுகள், மீடியா விசைகள் ஒருபோதும் பரிந்துரைக்கப்படாது.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>திறந்துள்ள மெய்நிகர் கட்டுப்படுத்திக்குப் புதிய சாதனங்களைப் பரிந்துரை</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>PadForge இதுவரை பார்த்திராத சாதனங்கள் மட்டும். ஏற்கெனவே அறிந்த சாதனங்கள் பரிந்துரையின்றி இணையும்.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>திறந்துள்ள மெய்நிகர் கட்டுப்படுத்தியில் சாதனங்கள் இல்லாதபோது, இணையும் எந்தச் சாதனத்தையும் பரிந்துரை</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>புதியதோ ஏற்கெனவே அறிந்ததோ. மெய்நிகர் கட்டுப்படுத்திக்கு ஒரு சாதனம் ஒதுக்கப்பட்டதும், இந்தப் பரிந்துரை இனி தோன்றாது.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>முகப்பில் புதிய சாதனங்களைப் பரிந்துரை</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>பயன்பாட்டில் இல்லாத ஒவ்வொரு புதிய சாதனத்தைப் பற்றியும் முகப்பு ஒருமுறை கேட்கும். பயன்படுத்து என்பது அதற்கு ஒரு மெய்நிகர் கட்டுப்படுத்தியை உருவாக்கும், இப்போது வேண்டாம் என்பது அந்தச் சாதனத்துக்கான பரிந்துரையை முடிக்கும்.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} இப்போதுதான் இணைந்தது. இதை இந்த மெய்நிகர் கட்டுப்படுத்திக்கு ஒதுக்கவா?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>ஒதுக்கு</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>இப்போது வேண்டாம்</value></data>

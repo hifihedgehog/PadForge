@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Duyệt...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Tiếp tục</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Dừng</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Bắt đầu</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Ghi</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Đang ghi...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Xóa</value></data>
@@ -136,6 +137,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Đang dọn dẹp các tay cầm ảo còn sót lại từ phiên trước.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> thiết bị</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Thêm tay cầm</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Hồ sơ</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Xóa tay cầm ảo</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Toàn màn hình</value></data>
   <data name="Main_Minimize" xml:space="preserve"><value>Thu nhỏ</value></data>
@@ -269,10 +271,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Đã xóa Tay cầm ảo {0}.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>Bảng điều khiển</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>Trang chủ</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Bộ máy đầu vào</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> thiết bị trực tuyến</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Tay cầm ảo</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Tay cầm</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>Tiện ích đang dùng</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Các tiện ích còn lại nằm trong Tiện ích, mỗi tiện ích tắt cho đến khi bạn bật nó.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>Mở Tiện ích</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} đã kết nối và chưa được dùng.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Dùng nó</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> đã ánh xạ, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> đã kết nối</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Bộ máy đang chạy. Nhấp để dừng.</value></data>
@@ -292,8 +299,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Tay cầm ảo</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Chọn loại đầu ra, cấp thiết bị cho khe, rồi nhấp vào một thẻ để định hình các ánh xạ của nó.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>Các tính năng tùy chọn nằm ở đây: tay cầm web trên điện thoại, Liên kết từ xa, máy chủ chuyển động và nhiều tính năng khác.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>Dòng chỉ báo</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>Số thiết bị, tần số thăm dò và ngọn lửa bộ máy, luôn trong tầm mắt.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Hiện chuyến tham quan chào mừng</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Khe</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Thiết bị</value></data>
@@ -4119,11 +4124,13 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Battery_FullTitle" xml:space="preserve"><value>Tay cầm đã sạc đầy</value></data>
   <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: đã sạc đầy</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Lời nhắc gán</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Khi một thiết bị kết nối trong lúc trang của một tay cầm ảo đang mở, PadForge có thể đề nghị gán thiết bị vào đó. Không có gì được gán cho đến khi bạn nhấp Gán. Bàn phím, chuột, bàn cảm ứng và phím đa phương tiện không bao giờ được đề nghị.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Khi một thiết bị kết nối trong lúc trang của một tay cầm ảo đang mở, PadForge có thể đề nghị gán thiết bị vào đó, và Trang chủ có thể đề nghị một tay cầm ảo riêng cho thiết bị mới. Không có gì được gán cho đến khi bạn chấp nhận một đề nghị. Bàn phím, chuột, bàn cảm ứng và phím đa phương tiện không bao giờ được đề nghị.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Đề nghị gán thiết bị mới cho tay cầm ảo đang mở</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Chỉ những thiết bị PadForge chưa từng thấy. Các thiết bị nó đã biết sẽ kết nối mà không có lời nhắc.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Đề nghị gán mọi thiết bị vừa kết nối khi tay cầm ảo đang mở chưa có thiết bị</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Mới hoặc đã biết. Khi tay cầm ảo đã có một thiết bị được gán, lời nhắc này không còn xuất hiện.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>Đề nghị thiết bị mới trên Trang chủ</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>Trang chủ hỏi một lần về mỗi thiết bị mới chưa có tay cầm ảo nào dùng. Dùng nó tạo một tay cầm ảo cho thiết bị đó, còn Để sau kết thúc đề nghị cho thiết bị đó.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} vừa kết nối. Gán nó cho tay cầm ảo này?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Gán</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Để sau</value></data>

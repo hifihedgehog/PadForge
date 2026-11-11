@@ -160,14 +160,24 @@ namespace PadForge.Tests
             var d = new AppSettingsData();
             Assert.True(d.AssignOfferNewDevice);
             Assert.True(d.AssignOfferEmptySlot);
+            // Home's prompt (#574), the third switch of the card.
+            Assert.True(d.AssignOfferHome);
 
             d.AssignOfferNewDevice = false;
+            d.AssignOfferHome = false;
             var ser = new System.Xml.Serialization.XmlSerializer(typeof(AppSettingsData));
             var sw = new StringWriter();
             ser.Serialize(sw, d);
             var back = (AppSettingsData)ser.Deserialize(new StringReader(sw.ToString()));
             Assert.False(back.AssignOfferNewDevice);
             Assert.True(back.AssignOfferEmptySlot);
+            Assert.False(back.AssignOfferHome);
+
+            // A file written before the switch existed reads as on.
+            string older = System.Text.RegularExpressions.Regex.Replace(
+                sw.ToString(), "<AssignOfferHome>false</AssignOfferHome>", string.Empty);
+            Assert.DoesNotContain("AssignOfferHome", older);
+            Assert.True(((AppSettingsData)ser.Deserialize(new StringReader(older))).AssignOfferHome);
         }
 
         // ── discussion #348: the row keeps its cells while selected ────

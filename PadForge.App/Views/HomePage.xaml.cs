@@ -13,9 +13,15 @@ using PadForge.Resources.Strings;
 
 namespace PadForge.Views
 {
-    public partial class DashboardPage : UserControl
+    /// <summary>Home (#574), the first page: whether the engine runs, the
+    /// offer for a device that is connected and not in use, one card for
+    /// each virtual controller, and the extras that are on. It took the
+    /// place of the Dashboard, whose service cards are the Extras page's.
+    /// Its view model is still <see cref="ViewModels.DashboardViewModel"/>,
+    /// which serves this page and the ten Extras pages.</summary>
+    public partial class HomePage : UserControl
     {
-        public DashboardPage()
+        public HomePage()
         {
             InitializeComponent();
             Loaded += (_, _) => WireDragHandlers();
@@ -60,9 +66,38 @@ namespace PadForge.Views
         /// <summary>Raised when the user clicks the engine power toggle.</summary>
         public event EventHandler EngineToggleRequested;
 
+        /// <summary>Raised by Use It on the offer, with the device offered
+        /// and the button the type bar opens under.</summary>
+        public event EventHandler<(Guid Device, FrameworkElement Anchor)> HomeOfferUseRequested;
+
+        /// <summary>Raised by a click on an extra that is in use, with the
+        /// extra's key (<see cref="ExtrasPage.Keys"/>).</summary>
+        public event EventHandler<string> ExtraOpenRequested;
+
+        /// <summary>Raised by Open Extras.</summary>
+        public event EventHandler OpenExtrasRequested;
+
+        // The flame and the worded button beside it are the one switch.
         private void EngineToggle_Click(object sender, RoutedEventArgs e)
         {
             EngineToggleRequested?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void HomeOfferUse_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.DashboardViewModel vm && vm.HasHomeOffer && sender is FrameworkElement anchor)
+                HomeOfferUseRequested?.Invoke(this, (vm.HomeOfferGuid, anchor));
+        }
+
+        private void ExtraInUse_OpenRequested(object sender, RoutedEventArgs e)
+        {
+            if (e.OriginalSource is PadForge.Controls.ExtraTile tile && !string.IsNullOrEmpty(tile.Key))
+                ExtraOpenRequested?.Invoke(this, tile.Key);
+        }
+
+        private void OpenExtras_Click(object sender, RoutedEventArgs e)
+        {
+            OpenExtrasRequested?.Invoke(this, EventArgs.Empty);
         }
 
         private void AddControllerCard_Click(object sender, RoutedEventArgs e)
@@ -87,7 +122,7 @@ namespace PadForge.Views
             {
                 // Invert GROUND TRUTH, not the SlotSummary VM: the summary
                 // refreshes on the (now 1 Hz-gated while backgrounded)
-                // dashboard lane, and a controller shortcut can flip
+                // Home lane, and a controller shortcut can flip
                 // SlotEnabled while this window is inactive. A click that
                 // also activates the window lands before the next publish,
                 // and inverting the stale VM value would re-write the
@@ -115,7 +150,7 @@ namespace PadForge.Views
         }
 
         // ─────────────────────────────────────────────
-        //  Dashboard card drag reordering
+        //  Controller card drag reordering
         // ─────────────────────────────────────────────
 
         private bool _isDragging;
@@ -248,7 +283,7 @@ namespace PadForge.Views
 
         /// <summary>Capture went away without a drop. Treat it as a cancel so
         /// the hidden card is restored: a drag that cannot be completed must
-        /// still leave the dashboard showing every slot it has.</summary>
+        /// still leave Home showing every slot it has.</summary>
         private void OnDragCaptureLost(object sender, MouseEventArgs e)
         {
             if (_isDragging) EndDrag(true);
@@ -539,7 +574,7 @@ namespace PadForge.Views
 
                     if (targetGlobalPos != _dragSourceVisualPos)
                     {
-                        // Translate global dashboard position to group-local
+                        // Translate the global card position to group-local
                         // (count cards in earlier groups). InputService.MoveSlot
                         // expects an index into the source group's order list.
                         var sourceType = GetSlotOutputType(_dragSourcePadIndex);
@@ -608,7 +643,7 @@ namespace PadForge.Views
                     }
                     catch (Exception ex)
                     {
-                        System.Diagnostics.Debug.WriteLine($"[Dashboard] GetCardBounds error: {ex.Message}");
+                        System.Diagnostics.Debug.WriteLine($"[Home] GetCardBounds error:{ex.Message}");
                     }
                 }
             }

@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>Duplika</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Ativadu</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Dizativadu</value></data>
+  <data name="Common_On" xml:space="preserve"><value>Ligadu</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Disligadu</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Más</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Instaladu</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Ka sta instaladu</value></data>
   <data name="Common_Ready" xml:space="preserve"><value>Prontu</value></data>
@@ -90,6 +93,7 @@
   <data name="Common_Default" xml:space="preserve"><value>Padron</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Kontinua</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Para</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Inisia</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Grava</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Ta grava...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Linpa</value></data>
@@ -111,6 +115,7 @@
   <data name="Main_StartingUp" xml:space="preserve"><value>Ta inisia PadForge…</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> dispozitivu</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Djunta komandu</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Perfil</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Apaga komandu virtual</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Mostra PadForge</value></data>
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>Komandu virtual {0}</value></data>
@@ -199,10 +204,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Komandu virtual {0} apagadu.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>Painel</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>Inísiu</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Motor di entrada</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> dispozitivu online</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Komandus virtual</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Komandus</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>Extras en usu</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Kes otu sta na Extras, kada un disligadu ti bu liga-l.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>Abri Extras</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} sta konektadu i ka sta en usu.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Uza-l</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> mapiadu, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> konektadu</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Motor ta funsiona. Klika pa para.</value></data>
@@ -2806,4 +2816,21 @@
   <data name="MacroAction_TriggerEffect_Timed_Format" xml:space="preserve"><value>{0} na {1} duranti {2} ms</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} na {1} ti ki e para</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>Para efeitu di gatilhu na {0}</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Extras</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Más manera di joga</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Manda pa otu lugar</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>Na ekran</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>Uza un telemóvel o tablet suma komandu.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Djobe pa tudu ladu ku un rastreador di kabesa o un óklus VR.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Mapia velosidadi, pedal i mudansa di jogus di kondusón.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Partilha komandus ku PadForge na otu PC.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Manda muvimentu di komandu pa emuladoris.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Toma efeitus di gatilhu i di lus di mods di jogu.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Mostra menu, kamadas i mudansa di perfil timenti bu sta ta joga.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Un superfísi di toki na ekran pa jogus ki ta uza touchpad di PlayStation.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Porta, enderesu HTTP simples, kódigu di asesu</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Rekoneson, porta, protekson di identidadi, konekson pa enderesu</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>Runtime OpenXR, porta UDP, intervalu pa eixu</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Porta, substitutu di DSX.exe</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Portas, velosidadi máxima, formatus personalizadu</value></data>
 </root>

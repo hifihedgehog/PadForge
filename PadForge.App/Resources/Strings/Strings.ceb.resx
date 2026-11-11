@@ -100,6 +100,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Pangitaa...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Padayon</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Hunonga</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Sugdi</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Irekord</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Nagrekord...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Hawani</value></data>
@@ -121,6 +122,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Ginalimpyohan ang mga virtual nga controller nga nabilin gikan sa miaging session.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> ka device</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Idugang og controller</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Profile</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Papasa ang virtual nga controller</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Ipakita ang PadForge</value></data>
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>Virtual nga controller {0}</value></data>
@@ -2880,11 +2882,13 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Pakurog usab ang controller</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Pagsulay nga pahibalo</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Mga pangutana sa pag-assign</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Kung adunay device nga mokonektar samtang abli ang panid sa virtual nga controller, mahimong motanyag ang PadForge nga i-assign kini didto. Walay ma-assign hangtod mo-click ka sa I-assign. Ang mga keyboard, mouse, touchpad, ug media key dili gyud itanyag.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Kung adunay device nga mokonektar samtang abli ang panid sa virtual nga controller, mahimong motanyag ang PadForge nga i-assign kini didto, ug mahimong motanyag ang Balay og kaugalingong virtual nga controller sa bag-ong device. Walay ma-assign hangtod modawat ka og tanyag. Ang mga keyboard, mouse, touchpad, ug media key dili gyud itanyag.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Itanyag ang bag-ong mga device sa abli nga virtual nga controller</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Mga device lang nga wala pa makita sa PadForge kaniadto. Ang mga device nga nailhan na niini mokonektar nga walay pangutana.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Itanyag ang bisan unsang mokonektar nga device kung walay device ang abli nga virtual nga controller</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Bag-o o nailhan na. Kung adunay device nga na-assign na sa virtual nga controller, dili na makita kini nga pangutana.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>Itanyag ang bag-ong mga device sa Balay</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>Mangutana ang Balay kausa bahin sa matag bag-ong device nga walay virtual nga controller nga naggamit niini. Ang Gamita maghimo og virtual nga controller para niini, ug ang Dili pa karon motapos sa tanyag para nianang device.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>Bag-o lang mikonektar ang {0}. I-assign kini niini nga virtual nga controller?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>I-assign</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Dili pa karon</value></data>
@@ -3552,4 +3556,11 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR runtime, UDP port, range kada axis</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, puli nga DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Mga port, kinatas-ang katulin, custom nga mga format</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>Balay</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Mga controller</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>Mga dugang nga gigamit</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Ang uban anaa sa Mga dugang, ug patay ang matag usa hangtod nga i-on nimo.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>Ablihi ang Mga dugang</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>Nakakonektar ang {0} ug wala gigamit.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Gamita</value></data>
 </root>

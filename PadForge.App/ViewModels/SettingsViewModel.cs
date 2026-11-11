@@ -1200,6 +1200,17 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _assignOfferEmptySlot, value);
         }
 
+        private bool _assignOfferHome = true;
+
+        /// <summary>Assignment Prompts: Home offers a device PadForge has
+        /// just met a virtual controller of its own, once, while no virtual
+        /// controller uses it (#574). Default on, like the two above.</summary>
+        public bool AssignOfferHome
+        {
+            get => _assignOfferHome;
+            set => SetProperty(ref _assignOfferHome, value);
+        }
+
         private bool _handheldButtonsEnabled;
 
         /// <summary>Handheld PC Buttons (issue #343): adds the per-machine

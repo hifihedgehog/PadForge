@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>瀏覽...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>繼續</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>停止</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>啟動</value></data>
   <data name="Common_Record" xml:space="preserve"><value>錄製</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>正在錄製...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>清除</value></data>
@@ -136,6 +137,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>正在清理上次執行時遺留的虛擬控制器。</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> 部裝置</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>新增控制器</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>設定檔</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>刪除虛擬控制器</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>全熒幕</value></data>
   <data name="Main_Minimize" xml:space="preserve"><value>最小化</value></data>
@@ -269,10 +271,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>虛擬控制器 {0} 已刪除。</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>儀表板</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>主頁</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>輸入引擎</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> 部裝置在線</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>虛擬控制器</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>控制器</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>使用中的附加功能</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>其餘功能在附加功能頁面，每項在你開啟之前都會保持關閉。</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>開啟附加功能</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} 已連接，但未被使用。</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>使用</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> 個已對應，</value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> 個已連接</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>引擎執行中。按一下即可停止。</value></data>
@@ -292,8 +299,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>虛擬控制器</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>選擇輸出類型，為插槽加入裝置，再按一下卡片來調整其對應。</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>選用功能都在這裡：手機網頁控制器、遠端連線、體感伺服器等等。</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>儀表列</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>裝置數量、輪詢率和引擎火焰，隨時可見。</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>顯示歡迎導覽</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>插槽</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>裝置</value></data>
@@ -4119,11 +4124,13 @@
   <data name="Battery_FullTitle" xml:space="preserve"><value>控制器已充滿電</value></data>
   <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}：已充滿電</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>指派提示</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>在虛擬控制器的頁面開啟期間有裝置連接時，PadForge 可提出把它指派到該控制器。在你按一下「指派」之前，不會指派任何裝置。鍵盤、滑鼠、觸控板和媒體鍵不會出現此提示。</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>在虛擬控制器的頁面開啟期間有裝置連接時，PadForge 可提出把它指派到該控制器，主頁亦可為新裝置提出建立專屬的虛擬控制器。在你接受提示之前，不會指派任何裝置。鍵盤、滑鼠、觸控板和媒體鍵不會出現此提示。</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>提出把新裝置指派到已開啟的虛擬控制器</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>只限 PadForge 從未見過的裝置。已認識的裝置連接時不會出現提示。</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>已開啟的虛擬控制器沒有裝置時，提出指派任何連接的裝置</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>不論是新裝置還是已認識的裝置。虛擬控制器一旦有裝置指派，此提示便不會再出現。</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>在主頁提出新裝置</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>主頁會就每個沒有虛擬控制器使用的新裝置詢問一次。按「使用」會為它建立虛擬控制器，按「暫時不要」則會結束該裝置的提示。</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} 剛剛連接。要把它指派到此虛擬控制器嗎？</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>指派</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>暫時不要</value></data>

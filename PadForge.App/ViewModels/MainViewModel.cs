@@ -162,7 +162,7 @@ namespace PadForge.ViewModels
             Dashboard.RemoteLink = Settings;
 
             // Default to Dashboard page.
-            _selectedNavTag = "Dashboard";
+            _selectedNavTag = "Home";
         }
 
         /// <summary>Leaves every Menus tab record button's Recording state,
@@ -410,7 +410,7 @@ namespace PadForge.ViewModels
         /// <summary>
         /// The tag string of the currently selected navigation item.
         /// Used by MainWindow to determine which page to display.
-        /// Values: "Dashboard", "Pad1"–"Pad16", "Devices", "Settings", "About"
+        /// Values: "Home", "Pad1"–"Pad16", "Devices", "Settings", "About"
         /// </summary>
         public string SelectedNavTag
         {
@@ -466,11 +466,14 @@ namespace PadForge.ViewModels
         //  App-wide status
         // ─────────────────────────────────────────────
 
-        private string _statusText = Strings.Instance.Common_Ready;
+        // Empty at the start. The status bar opened on the word Ready, which
+        // filled its idle corner. The message line (#574) is there only
+        // while there is a message, and a start with nothing to say is none.
+        private string _statusText = string.Empty;
 
         // Status decay (#175 item 7): info-class messages ("Settings saved…",
         // "Copied…") clear ~5 s after the last write instead of burning into
-        // the status bar forever. Persistent messages (failures, in-flight
+        // the message line forever. Persistent messages (failures, in-flight
         // prompts like "Now map …") hold until the next write replaces them.
         // The sweep rides MainWindow's existing 5 s driver-status timer, so
         // no timer lives here.
@@ -479,8 +482,8 @@ namespace PadForge.ViewModels
         private long _statusStampTick = Environment.TickCount64;
 
         /// <summary>
-        /// Status bar text displayed at the bottom of the main window.
-        /// Plain writes are info-class and decay after ~5 s. Post failures
+        /// The message on the message line, over the page's lower corner.
+        /// Empty means no line. Plain writes are info-class and decay after ~5 s. Post failures
         /// and active prompts through <see cref="SetStatus"/> instead.
         /// </summary>
         public string StatusText
@@ -497,7 +500,7 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>
-        /// Writes the status bar with an explicit class. persist=true
+        /// Writes the message line with an explicit class. persist=true
         /// (failures, prompts that a later write always terminates) exempts
         /// the message from the decay sweep until the next write.
         /// </summary>

@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Vinjari...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Endelea</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Simamisha</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Anzisha</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Rekodi</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Inarekodi...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Safisha</value></data>
@@ -125,6 +126,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Inasafisha vidhibiti pepe vilivyobaki kutoka kwenye kipindi kilichopita.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> vifaa</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Ongeza kidhibiti</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Wasifu</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Futa kidhibiti pepe</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Skrini nzima</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Onyesha PadForge</value></data>
@@ -254,10 +256,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Kidhibiti pepe {0} kimefutwa.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>Dashibodi</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>Mwanzo</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Injini ya ingizo</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> vifaa viko mtandaoni</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Vidhibiti pepe</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Vidhibiti</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>Vipengele vya ziada vinavyotumika</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Vilivyobaki viko kwenye Vipengele vya ziada, kila kimoja kimezimwa hadi utakapokiwasha.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>Fungua Vipengele vya ziada</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} imeunganishwa na haitumiki.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Kitumie</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> vimepangwa, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> vimeunganishwa</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Injini inaendesha. Bofya ili kusimamisha.</value></data>
@@ -277,8 +284,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Vidhibiti pepe</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Chagua aina ya towe, lisha vifaa kwenye nafasi, kisha bofya kadi ili kuunda ramani zake.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>Vipengele vya hiari viko hapa: kidhibiti cha wavuti cha simu, Remote Link, seva ya mwendo na zaidi.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>Mstari wa vipimo</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>Idadi ya vifaa, kasi ya ukaguzi, na mwali wa injini, vikionekana kila wakati.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Onyesha ziara ya kukaribisha</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Nafasi</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Kifaa</value></data>
@@ -3861,11 +3866,13 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Tetemesha Kidhibiti Pia</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Jaribu Arifa</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Vidokezo vya Kuagiza</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Kifaa kinapounganishwa huku ukurasa wa kidhibiti pepe ukiwa wazi, PadForge inaweza kutoa kukiagiza hapo. Hakuna kinachoagizwa hadi ubofye Agiza. Kibodi, vipanya, touchpad, na vitufe vya midia havitolewi kamwe.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Kifaa kinapounganishwa huku ukurasa wa kidhibiti pepe ukiwa wazi, PadForge inaweza kutoa kukiagiza hapo, na Mwanzo inaweza kutoa kwa kifaa kipya kidhibiti pepe chake chenyewe. Hakuna kinachoagizwa hadi ukubali ofa. Kibodi, vipanya, touchpad, na vitufe vya midia havitolewi kamwe.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Toa Vifaa Vipya kwa Kidhibiti Pepe Kilicho Wazi</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Vifaa ambavyo PadForge haijawahi kuviona pekee. Vifaa inavyovijua tayari huunganishwa bila kidokezo.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Toa Kifaa Chochote Kinachounganishwa Kidhibiti Pepe Kilicho Wazi Kisipokuwa na Vifaa</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Kipya au kinachojulikana tayari. Kidhibiti pepe kikishapewa kifaa, kidokezo hiki hakionekani tena.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>Toa Vifaa Vipya kwenye Mwanzo</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>Mwanzo huuliza mara moja kuhusu kila kifaa kipya ambacho hakitumiwi na kidhibiti pepe chochote. Kitumie huunda kidhibiti pepe kwa ajili yake, na Sio Sasa humaliza ofa kwa kifaa hicho.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} imeunganishwa sasa hivi. Kiagize kwa kidhibiti pepe hiki?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Agiza</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Sio Sasa</value></data>

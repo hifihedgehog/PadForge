@@ -71,6 +71,9 @@
   <data name="Common_Paste" xml:space="preserve"><value>Lo</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Qhib</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Kaw</value></data>
+  <data name="Common_On" xml:space="preserve"><value>Qhib</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Kaw</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Ntxiv</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Nruab lawm</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Tsis tau nruab</value></data>
   <data name="Common_Ready" xml:space="preserve"><value>Npaj txhij</value></data>
@@ -84,6 +87,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Nrhiav...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Mus ntxiv</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Nres</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Pib</value></data>
   <data name="Common_None" xml:space="preserve"><value>Tsis muaj</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -1349,4 +1353,8 @@
   <data name="MacroAction_TriggerEffect_Timed_Format" xml:space="preserve"><value>{0} ntawm {1} rau {2} ms</value></data>
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} ntawm {1} thaum nias tuav</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} ntawm {1} txog thaum nres</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Yam ntxiv</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>Saum lub vijtsam</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Qhia cov menu, cov txheej thiab kev hloov profile thaum koj ua si.</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Profile</value></data>
 </root>

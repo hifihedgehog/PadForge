@@ -72,6 +72,9 @@
   <data name="Common_Paste" xml:space="preserve"><value>Namathisela</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Kunikwe amandla</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Kukhutshaziwe</value></data>
+  <data name="Common_On" xml:space="preserve"><value>Vuliwe</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Valiwe</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Okuningi</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Kufakiwe</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Akufakiwe</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>Akutholakali ku-ARM64</value></data>
@@ -92,6 +95,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Phequlula...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Qhubeka</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Misa</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Qala</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Rekhoda</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Iyarekhoda...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Sula</value></data>
@@ -113,6 +117,7 @@
   <data name="Main_StartingUp" xml:space="preserve"><value>Kuqalwa i-PadForge…</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> amadivayisi</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Engeza isilawuli</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Iphrofayela</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Susa isilawuli esibonakalayo</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Isikrini esigcwele</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Bonisa i-PadForge</value></data>
@@ -193,8 +198,13 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Isilawuli esibonakalayo {0} sisusiwe.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>Ideshibhodi</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Izilawuli ezibonakalayo</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>Ikhaya</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Izilawuli</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>Okwengeziwe okusetshenziswayo</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Okusele kusekhasini elithi Okwengeziwe, ngakunye kuvaliwe uze ukuvule.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>Vula Okwengeziwe</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} ixhunyiwe futhi ayisetshenziswa.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Yisebenzise</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Injini iyasebenza. Chofoza ukuze uyimise.</value></data>
   <data name="Dashboard_EngineFlame_Stopped" xml:space="preserve"><value>Injini imisiwe. Chofoza ukuze uyiqale.</value></data>
   <data name="Dashboard_SlotCard_Configure" xml:space="preserve"><value>Lungiselela lesi silawuli</value></data>
@@ -206,6 +216,7 @@
   <data name="Dashboard_Slot" xml:space="preserve"><value>Isikhala</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Idivayisi</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Buka kuqala</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Okwengeziwe</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>Imbobo</value></data>
   <data name="Dashboard_WebControllerPort" xml:space="preserve"><value>Imbobo yesilawuli sewebhu</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Ama-mod emidlalo</value></data>
@@ -2388,4 +2399,16 @@
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} ku-{1} ngenkathi kubanjiwe</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} ku-{1} kuze kumiswe</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>Misa umphumela wethrigha ku-{0}</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Ezinye izindlela zokudlala</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Kuthumele kwenye indawo</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>Esikrinini</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>Sebenzisa ifoni noma ithebulethi njengesilawuli.</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Bheka nxazonke ngesilandeleli sekhanda noma ngehedsethi ye-VR.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Mepha isivinini, amaphedali namagiya emidlalweni yokushayela.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Thatha imiphumela ye-trigger neyokukhanya kuma-mod emidlalo.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Bonisa amamenyu, izendlalelo nokushintshwa kwamaphrofayela ngenkathi udlala.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Imbobo, ikheli elivamile le-HTTP, ikhodi yokungena</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>I-runtime ye-OpenXR, imbobo ye-UDP, ibanga le-eksisi ngayinye</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Imbobo, i-DSX.exe engumbambeli</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Izimbobo, isivinini esiphelele, amafomethi angokwezifiso</value></data>
 </root>

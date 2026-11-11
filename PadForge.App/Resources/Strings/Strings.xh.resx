@@ -71,6 +71,7 @@
   <data name="Common_Ready" xml:space="preserve"><value>Ilungile</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Qhubeka</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Yima</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Qalisa</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Rekhoda</value></data>
   <data name="Common_None" xml:space="preserve"><value>Akukho</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -1643,4 +1644,15 @@
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} ku-{1} ngelixa ibanjiwe</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} ku-{1} ide imiswe</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>Misa isiphumo se-trigger ku-{0}</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Izongezelelo</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Ezinye iindlela zokudlala</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Yithumele kwenye indawo</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>Esikrinini</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Mepha isantya, iipedali neegiya ezivela kwimidlalo yokuqhuba.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Fumana iziphumo zezitrigger nezezibane kwii-mod zemidlalo.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Bonisa iimenyu, umaleko notshintsho lweprofayile ngoxa udlala.</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Izibuko, endaweni ye DSX.exe</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Amazibuko, isantya esipheleleyo, iifomathi zakho</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Iprofayile</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Sebenzisa</value></data>
 </root>

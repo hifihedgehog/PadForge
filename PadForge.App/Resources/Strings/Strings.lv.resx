@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Pārlūkot...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Turpināt</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Apturēt</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Palaist</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Ierakstīt</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Ieraksta...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Notīrīt</value></data>
@@ -136,6 +137,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Notiek iepriekšējās sesijas atstāto virtuālo kontrolleru tīrīšana.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> ierīces</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Pievienot kontrolleri</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Profils</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Dzēst virtuālo kontrolleri</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Pilnekrāns</value></data>
   <data name="Main_Minimize" xml:space="preserve"><value>Minimizēt</value></data>
@@ -269,10 +271,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Virtuālais kontrolleris {0} izdzēsts.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>Pārskats</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>Sākums</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Ievades dzinējs</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> ierīces tiešsaistē</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Virtuālie kontrolleri</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Kontrolleri</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>Izmantotās papildiespējas</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Pārējās ir sadaļā Papildiespējas, katra ir izslēgta, kamēr to neieslēdzat.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>Atvērt papildiespējas</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} ir pievienots, bet netiek izmantots.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Izmantot</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> piesaistīti, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> pievienoti</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Dzinējs darbojas. Noklikšķiniet, lai apturētu.</value></data>
@@ -292,8 +299,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Virtuālie kontrolleri</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Izvēlieties izvades veidu, piešķiriet slotam ierīces un noklikšķiniet uz kartītes, lai veidotu tā piesaistes.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>Šeit gaida papildu iespējas: tālruņa tīmekļa kontrolleris, Attālais savienojums, kustību serveris un citas.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>Instrumentu josla</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>Ierīču skaits, aptaujas biežums un dzinēja liesma vienmēr redzamā vietā.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Rādīt iepazīšanās ekskursiju</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Slots</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Ierīce</value></data>
@@ -4119,11 +4124,13 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="Battery_FullTitle" xml:space="preserve"><value>Kontrollera akumulators ir pilnībā uzlādēts</value></data>
   <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: pilnībā uzlādēts</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Piešķiršanas piedāvājumi</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Ja ierīce tiek pievienota, kamēr ir atvērta virtuālā kontrollera lapa, PadForge var piedāvāt to piešķirt tam. Nekas netiek piešķirts, kamēr nenoklikšķināt uz „Piešķirt”. Tastatūras, peles, skārienpaliktņi un multivides taustiņi nekad netiek piedāvāti.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Ja ierīce tiek pievienota, kamēr ir atvērta virtuālā kontrollera lapa, PadForge var piedāvāt to piešķirt tam, un lapa Sākums var piedāvāt jaunai ierīcei savu virtuālo kontrolleri. Nekas netiek piešķirts, kamēr nepieņemat piedāvājumu. Tastatūras, peles, skārienpaliktņi un multivides taustiņi nekad netiek piedāvāti.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Piedāvāt jaunas ierīces atvērtajam virtuālajam kontrollerim</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Tikai ierīces, ko PadForge vēl nekad nav redzējis. Jau zināmās ierīces pievienojas bez piedāvājuma.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Piedāvāt jebkuru pievienoto ierīci, ja atvērtajam virtuālajam kontrollerim nav ierīču</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Jaunas vai jau zināmas. Tiklīdz virtuālajam kontrollerim ir piešķirta ierīce, šis piedāvājums vairs neparādās.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>Piedāvāt jaunas ierīces lapā Sākums</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>Lapa Sākums vienreiz pajautā par katru jaunu ierīci, ko neizmanto neviens virtuālais kontrolleris. „Izmantot” izveido tai virtuālo kontrolleri, un „Ne tagad” beidz piedāvājumu šai ierīcei.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>Tikko pievienota ierīce {0}. Piešķirt to šim virtuālajam kontrollerim?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Piešķirt</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Ne tagad</value></data>

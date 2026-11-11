@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>ຊອກຫາ...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>ດຳເນີນການຕໍ່</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>ຢຸດ</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>ເລີ່ມ</value></data>
   <data name="Common_Record" xml:space="preserve"><value>ອັດ</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>ກຳລັງອັດ...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>ລ້າງ</value></data>
@@ -125,6 +126,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>ກຳລັງລ້າງຕົວຄວບຄຸມສະເໝືອນທີ່ຄ້າງຢູ່ຈາກເຊດຊັນກ່ອນ.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> ອຸປະກອນ</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>ເພີ່ມຕົວຄວບຄຸມ</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>ໂປຣໄຟລ໌</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>ລຶບຕົວຄວບຄຸມສະເໝືອນ</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>ເຕັມຈໍ</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>ສະແດງ PadForge</value></data>
@@ -254,10 +256,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>ລຶບຕົວຄວບຄຸມສະເໝືອນ {0} ແລ້ວ.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>ໜ້າພາບລວມ</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>ໜ້າຫຼັກ</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>ເອັນຈິນອິນພຸດ</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> ອຸປະກອນອອນລາຍ</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>ຕົວຄວບຄຸມສະເໝືອນ</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>ຕົວຄວບຄຸມ</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>ສ່ວນເສີມທີ່ໃຊ້ຢູ່</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>ອັນອື່ນໆຢູ່ໃນໜ້າ ສ່ວນເສີມ, ແຕ່ລະອັນປິດຢູ່ຈົນກວ່າທ່ານຈະເປີດມັນ.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>ເປີດສ່ວນເສີມ</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} ເຊື່ອມຕໍ່ຢູ່ ແລະ ບໍ່ໄດ້ຖືກໃຊ້ງານ.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>ໃຊ້ມັນ</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> ແມັບແລ້ວ, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> ເຊື່ອມຕໍ່ແລ້ວ</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>ເອັນຈິນກຳລັງເຮັດວຽກ. ຄລິກເພື່ອຢຸດ.</value></data>
@@ -277,8 +284,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>ຕົວຄວບຄຸມສະເໝືອນ</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>ເລືອກປະເພດເອົາພຸດ, ປ້ອນອຸປະກອນໃຫ້ຊ່ອງ, ແລະ ຄລິກບັດເພື່ອປັບການແມັບຂອງມັນ.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>ຄຸນສົມບັດເສີມລໍຖ້າຢູ່ທີ່ນີ້: ຕົວຄວບຄຸມເວັບໃນໂທລະສັບ, ການເຊື່ອມຕໍ່ທາງໄກ, ເຊີບເວີການເຄື່ອນໄຫວ ແລະ ອື່ນໆ.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>ແຖບສະຖານະ</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>ຈຳນວນອຸປະກອນ, ອັດຕາການອ່ານ ແລະ ແປວໄຟຂອງເອັນຈິນ ເຫັນໄດ້ຕະຫຼອດ.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>ສະແດງການນຳທ່ຽວຕ້ອນຮັບ</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>ຊ່ອງ</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>ອຸປະກອນ</value></data>
@@ -3901,11 +3906,13 @@
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>ສັ່ນຕົວຄວບຄຸມນຳ</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>ທົດສອບການແຈ້ງເຕືອນ</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>ການສະເໜີກຳນົດອຸປະກອນ</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>ເມື່ອອຸປະກອນເຊື່ອມຕໍ່ໃນຂະນະທີ່ໜ້າຂອງຕົວຄວບຄຸມສະເໝືອນເປີດຢູ່ PadForge ສາມາດສະເໜີໃຫ້ກຳນົດມັນໃສ່ບ່ອນນັ້ນ ຈະບໍ່ມີຫຍັງຖືກກຳນົດຈົນກວ່າທ່ານຄລິກ “ກຳນົດ” ແປ້ນພິມ, ເມົ້າ, ທັດແພດ ແລະ ປຸ່ມມີເດຍຈະບໍ່ຖືກສະເໜີ</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>ເມື່ອອຸປະກອນເຊື່ອມຕໍ່ໃນຂະນະທີ່ໜ້າຂອງຕົວຄວບຄຸມສະເໝືອນເປີດຢູ່ PadForge ສາມາດສະເໜີໃຫ້ກຳນົດມັນໃສ່ບ່ອນນັ້ນ ແລະ ໜ້າຫຼັກສາມາດສະເໜີຕົວຄວບຄຸມສະເໝືອນຂອງມັນເອງໃຫ້ອຸປະກອນໃໝ່ ຈະບໍ່ມີຫຍັງຖືກກຳນົດຈົນກວ່າທ່ານຈະຍອມຮັບການສະເໜີ ແປ້ນພິມ, ເມົ້າ, ທັດແພດ ແລະ ປຸ່ມມີເດຍຈະບໍ່ຖືກສະເໜີ</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>ສະເໜີອຸປະກອນໃໝ່ໃຫ້ຕົວຄວບຄຸມສະເໝືອນທີ່ເປີດຢູ່</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>ສະເພາະອຸປະກອນທີ່ PadForge ບໍ່ເຄີຍເຫັນມາກ່ອນ ອຸປະກອນທີ່ຮູ້ຈັກແລ້ວຈະເຊື່ອມຕໍ່ໂດຍບໍ່ມີການຖາມ</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>ສະເໜີທຸກອຸປະກອນທີ່ເຊື່ອມຕໍ່ ເມື່ອຕົວຄວບຄຸມສະເໝືອນທີ່ເປີດຢູ່ບໍ່ມີອຸປະກອນ</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>ທັງອຸປະກອນໃໝ່ ແລະ ທີ່ຮູ້ຈັກແລ້ວ ເມື່ອຕົວຄວບຄຸມສະເໝືອນມີອຸປະກອນຖືກກຳນົດແລ້ວ ການຖາມນີ້ຈະບໍ່ປາກົດອີກ</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>ສະເໜີອຸປະກອນໃໝ່ໃນໜ້າຫຼັກ</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>ໜ້າຫຼັກຈະຖາມເທື່ອດຽວກ່ຽວກັບອຸປະກອນໃໝ່ແຕ່ລະອັນທີ່ບໍ່ມີຕົວຄວບຄຸມສະເໝືອນໃດໃຊ້. “ໃຊ້ມັນ” ຈະສ້າງຕົວຄວບຄຸມສະເໝືອນໃຫ້ມັນ, ແລະ “ບໍ່ແມ່ນຕອນນີ້” ຈະຢຸດການສະເໜີສຳລັບອຸປະກອນນັ້ນ.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} ຫາກໍເຊື່ອມຕໍ່ ກຳນົດມັນໃຫ້ຕົວຄວບຄຸມສະເໝືອນນີ້ບໍ?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>ກຳນົດ</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>ບໍ່ແມ່ນຕອນນີ້</value></data>

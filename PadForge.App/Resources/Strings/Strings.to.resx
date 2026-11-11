@@ -69,6 +69,7 @@
   <data name="Common_Unknown" xml:space="preserve"><value>Taʻeʻiloa</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Hoko atu</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Taʻofi</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Kamata</value></data>
   <data name="Common_None" xml:space="preserve"><value>ʻIkai ha meʻa</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -722,4 +723,5 @@
   <data name="MacroAction_TriggerEffect_StartStrength" xml:space="preserve"><value>Mālohi ʻi he kamataʻanga</value></data>
   <data name="MacroAction_TriggerEffect_EndStrength" xml:space="preserve"><value>Mālohi ʻi he ngataʻanga</value></data>
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>Taimi</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Ngaahi meʻa fakalahi</value></data>
 </root>

@@ -99,6 +99,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Examinar...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Continuar</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Detener</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Iniciar</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Grabar</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Grabando...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Limpiar</value></data>
@@ -133,6 +134,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Limpiando controles virtuales dejados por una sesión anterior.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> dispositivo(s)</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Agregar control</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Perfil</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Eliminar control virtual</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Pantalla completa</value></data>
   <data name="Main_Minimize" xml:space="preserve"><value>Minimizar</value></data>
@@ -259,10 +261,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Control virtual {0} eliminado.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>Panel</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>Inicio</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Motor de entrada</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> dispositivos en línea</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Controles virtuales</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Controles</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>Extras en uso</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Los demás están en Extras, cada uno desactivado hasta que lo actives.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>Abrir Extras</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} está conectado y sin usar.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Usarlo</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> asignados, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> conectados</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Motor en ejecución. Clic para detenerlo.</value></data>
@@ -3184,8 +3191,6 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Tour_Engine_Title" xml:space="preserve"><value>Motor de entrada</value></data>
   <data name="Tour_Slots_Body" xml:space="preserve"><value>Cada mando virtual vive aquí. La llama muestra qué ranuras están forjando en este momento.</value></data>
   <data name="Tour_Slots_Title" xml:space="preserve"><value>Ranuras</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>Número de dispositivos, frecuencia de sondeo y la llama del motor, siempre a la vista.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>Línea de instrumentos</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
   <data name="About_OpenVR" xml:space="preserve"><value>OpenVR API</value></data>
   <data name="About_OpenVRDesc" xml:space="preserve"><value>API de cliente OpenVR de Valve (BSD 3-Clause): visores y mandos de movimiento VR como fuentes de entrada. El runtime nativo se carga desde su propia instalación de SteamVR.</value></data>
@@ -4070,11 +4075,13 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Battery_FullTitle" xml:space="preserve"><value>Mando completamente cargado</value></data>
   <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: batería completamente cargada</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Avisos de asignación</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Cuando un dispositivo se conecta mientras está abierta la página de un mando virtual, PadForge puede ofrecer asignarlo ahí. No se asigna nada hasta que pulses Asignar. Los teclados, ratones, paneles táctiles y teclas multimedia nunca se ofrecen.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Cuando un dispositivo se conecta mientras está abierta la página de un mando virtual, PadForge puede ofrecer asignarlo ahí, e Inicio puede ofrecer a un dispositivo nuevo un mando virtual propio. No se asigna nada hasta que aceptes una oferta. Los teclados, ratones, paneles táctiles y teclas multimedia nunca se ofrecen.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Ofrecer dispositivos nuevos al mando virtual abierto</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Solo dispositivos que PadForge nunca ha visto. Los ya conocidos se conectan sin aviso.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Ofrecer cualquier dispositivo que se conecte cuando el mando virtual abierto no tiene dispositivos</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Nuevo o ya conocido. En cuanto el mando virtual tiene un dispositivo asignado, este aviso deja de aparecer.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>Ofrecer dispositivos nuevos en Inicio</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>Inicio pregunta una vez por cada dispositivo nuevo que ningún mando virtual usa. Usarlo crea un mando virtual para él y Ahora no termina la oferta para ese dispositivo.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} se acaba de conectar. ¿Asignarlo a este mando virtual?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Asignar</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Ahora no</value></data>

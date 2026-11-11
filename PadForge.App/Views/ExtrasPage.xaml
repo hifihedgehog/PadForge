@@ -16,7 +16,7 @@
          page shows the extra's switch, the one thing to do and its live
          status, and keeps the rest under a More row. Every control came
          over as it was: its binding, its AutomationId, its reset button
-         and its tooltip. The data context is the Dashboard's view model.
+         and its tooltip. The data context is DashboardViewModel, Home's too.
          ExtrasPage.xaml.cs shows one of the eleven panels at a time. -->
     <UserControl.Resources>
         <!-- Hover glow (#175): every hover color change carries a glow in

@@ -231,7 +231,7 @@
              With the stomp in the light trigger's EnterActions, every
              light/HC launch died in Storyboard.VerifyPathIsAnimatable
              ("'BorderBrush' property does not point to a
-             DependencyObject") while MainWindow loaded DashboardPage
+             DependencyObject") while MainWindow loaded its first page
              (v4.0.0 crash-on-launch, Discord report 2026-07). Dark
              never crashed because IsDark=True keeps the light trigger
              inactive at load. Live flips still stomp both ways via the
@@ -722,6 +722,59 @@
                             <Setter TargetName="StatusText" Property="Visibility" Value="Visible"/>
                         </Trigger>
                         <!-- No status line of its own: nothing to show under the word. -->
+                        <Trigger Property="Status" Value="">
+                            <Setter TargetName="StatusText" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+                        <Trigger Property="Status" Value="{x:Null}">
+                            <Setter TargetName="StatusText" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- An extra that is on, as Home shows it: the glyph on its chip, the
+         extra's name, and its live status under the name. The whole face is
+         one button that opens the extra's page. It has no switch: an extra
+         is turned off on its own page or on its tile in the catalog. The
+         face carries the name and the status for a screen reader, as the
+         catalog's tile does, and its AutomationId starts Home_Extra_, so it
+         never shares one with that tile. -->
+    <Style x:Key="HomeExtraTile" TargetType="{x:Type controls:ExtraTile}">
+        <Setter Property="OpenPrefix" Value="Home_Extra_"/>
+        <Setter Property="Width" Value="300"/>
+        <Setter Property="Margin" Value="0,0,12,12"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:ExtraTile}">
+                    <Border Style="{StaticResource CardBorder}" Padding="0" Margin="0">
+                        <Button x:Name="PART_Open" Style="{StaticResource ExtraTileOpenButton}"
+                                AutomationProperties.Name="{Binding Title, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue='', FallbackValue=''}"
+                                AutomationProperties.ItemStatus="{TemplateBinding Status}">
+                            <Grid Margin="14,12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Border Width="36" Height="36" CornerRadius="9" VerticalAlignment="Center"
+                                        Background="{DynamicResource SteelRaisedBrush}">
+                                    <controls:GlyphText Text="{TemplateBinding Glyph}"
+                                                        FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                                        Foreground="{DynamicResource EmberBrush}"
+                                                        HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
+                                    <TextBlock Text="{TemplateBinding Title}" Style="{StaticResource CardTitle}"
+                                               TextTrimming="CharacterEllipsis"/>
+                                    <TextBlock x:Name="StatusText" Text="{TemplateBinding Status}" TextWrapping="Wrap"
+                                               FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11"
+                                               Foreground="{DynamicResource ColdBrush}" Margin="0,2,0,0"/>
+                                </StackPanel>
+                            </Grid>
+                        </Button>
+                    </Border>
+                    <ControlTemplate.Triggers>
                         <Trigger Property="Status" Value="">
                             <Setter TargetName="StatusText" Property="Visibility" Value="Collapsed"/>
                         </Trigger>

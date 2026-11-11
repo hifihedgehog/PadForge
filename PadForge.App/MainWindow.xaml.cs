@@ -281,6 +281,8 @@ namespace PadForge
             // Fade compact icons in when pane closes, fade out when it opens.
             NavView.PaneClosed += (_, _) =>
             {
+                SetEngineFootMode(compact: true);
+                SetControllersLabelMode(compact: true);
                 _isCardFading = true;
                 // Clear any leftover animation state from previous cycle.
                 foreach (var mi in NavView.MenuItems)
@@ -312,6 +314,8 @@ namespace PadForge
             };
             NavView.PaneOpened += (_, _) =>
             {
+                SetEngineFootMode(compact: false);
+                SetControllersLabelMode(compact: false);
                 _isCardFading = true;
                 foreach (var mi in NavView.MenuItems)
                     if (mi is NavigationViewItem nvi && IsCardFadeItem(nvi))
@@ -386,9 +390,14 @@ namespace PadForge
             // Create root ViewModel.
             _viewModel = new MainViewModel();
             DataContext = _viewModel;
+            // The engine foot is the sidebar's PaneFooter, a value of the
+            // NavigationView and no child of this window until wpf-ui's
+            // template takes it in. Handing it the view model by name keeps
+            // its bindings from waiting on that.
+            EngineFoot.DataContext = _viewModel;
 
             // Set child DataContexts.
-            DashboardPageView.DataContext = _viewModel.Dashboard;
+            HomePageView.DataContext = _viewModel.Dashboard;
             // The Extras page shows the same view model's extras (#574).
             ExtrasPageView.DataContext = _viewModel.Dashboard;
             DevicesPageView.DataContext = _viewModel.Devices;
@@ -497,7 +506,7 @@ namespace PadForge
             // Wire driver uninstall guards. Both read the PERSISTED slot
             // topology (SlotCreated plus the per-type order lists), the same
             // source the sidebar rail builds from, rather than walking the
-            // dashboard's pad view models for an OutputType. A guard that
+            // pad view models for an OutputType. A guard that
             // depends on view-model population can read "no MIDI slots" while
             // the rail is showing one.
             _viewModel.Settings.HasAnyMidiSlots = () =>
@@ -557,7 +566,7 @@ namespace PadForge
                 // so each removal's kernel-slot bubble-down cascade never
                 // re-shuffles a slot this loop is about to delete anyway.
                 if (_viewModel.SelectedPadIndex >= 0)
-                    SelectNavItemByTag("Dashboard");
+                    SelectNavItemByTag("Home");
                 for (int i = PadForge.Common.Input.InputManager.MaxPads - 1; i >= 0; i--)
                 {
                     if (!SettingsManager.SlotCreated[i]) continue;
@@ -613,6 +622,10 @@ namespace PadForge
                 // not.
                 if (e.PropertyName == nameof(SettingsViewModel.KeyboardScreensEnabled))
                     _inputService?.KeyboardScreensSwitched(_viewModel.Settings.KeyboardScreensEnabled);
+                // Home's offer follows its switch at once (#574): off takes
+                // the offer off the page, and on brings back one still owed.
+                if (e.PropertyName == nameof(SettingsViewModel.AssignOfferHome))
+                    _inputService?.ReEvaluateHomeOffer();
                 // (#439) Always Show in System Tray keeps the tray icon up while
                 // the window is open. Follow the toggle live, and leave the icon
                 // alone while the window is hidden in the tray, where it is
@@ -639,6 +652,7 @@ namespace PadForge
                      or nameof(SettingsViewModel.HandheldButtonsEnabled)
                      or nameof(SettingsViewModel.AssignOfferNewDevice)
                      or nameof(SettingsViewModel.AssignOfferEmptySlot)
+                     or nameof(SettingsViewModel.AssignOfferHome)
                      or nameof(SettingsViewModel.BatteryNotifyEnabled)
                      or nameof(SettingsViewModel.BatteryNotifyThreshold)
                      or nameof(SettingsViewModel.BatteryNotifyVibrate)
@@ -2295,37 +2309,64 @@ namespace PadForge
             // type bar now reads it when it opens (discussion #543), and the
             // early probe still gives both view-models their first value
             // before anything shows. Safe this early: the method only writes
-            // the two view-models and null-guards _navDashboard, which
+            // the two view-models and null-guards _navHome, which
             // BuildNavigationItems creates.
             RefreshMidiServicesStatus();
 
             // Build the sidebar navigation items dynamically.
             BuildNavigationItems();
 
-            // Wire Dashboard "Add Controller" to show type-selection popup.
-            DashboardPageView.AddControllerRequested += (s, e) =>
+            // Wire Home's "Add Controller" to show type-selection popup.
+            HomePageView.AddControllerRequested += (s, e) =>
             {
-                ShowControllerTypePopup(DashboardPageView.AddControllerCardElement, PlacementMode.Bottom);
+                ShowControllerTypePopup(HomePageView.AddControllerCardElement, PlacementMode.Bottom);
             };
 
             // Wire the active-profile pill (#175 item 8): click opens the
-            // switcher flyout above the status bar, and an applied
-            // auto-switch flares it. The status bar is the pill's only
-            // home. The pad-page copy read as a per-pad profile selector
-            // (user report 2026-07-05), but profiles are global.
-            StatusProfilePill.Clicked += (s, e) =>
-                ShowProfileSwitcherPopup(StatusProfilePill, PlacementMode.Top);
+            // switcher flyout under the title bar, and an applied
+            // auto-switch flares it. The title bar is the pill's only
+            // home (#574), as the status bar was before it. The pad-page
+            // copy read as a per-pad profile selector (user report
+            // 2026-07-05), but profiles are global.
+            // The title bar can deliver one finger tap as two clicks, which
+            // is why FullScreenBtn_Click drops a second one inside
+            // TouchClickDebounceMs. The switcher toggles too: a second click
+            // would close the flyout the first one opened.
+            TitleProfilePill.Clicked += (s, e) =>
+            {
+                long now = Environment.TickCount64;
+                if (now - _lastProfilePillClickTick < TouchClickDebounceMs) return;
+                _lastProfilePillClickTick = now;
+                ShowProfileSwitcherPopup(TitleProfilePill, PlacementMode.Bottom);
+            };
             _inputService.AutoProfileSwitchApplied += () =>
-                StatusProfilePill.Flare();
+                TitleProfilePill.Flare();
 
-            // Wire Dashboard delete + toggle events.
-            DashboardPageView.DeleteSlotRequested += (s, slotIndex) =>
+            // Home's offer (#574): Use It opens the type bar under its own
+            // button, and the controller made there takes the device. The
+            // offer stays up until the device is on a virtual controller,
+            // so a bar closed with nothing picked leaves it standing.
+            HomePageView.HomeOfferUseRequested += (s, args) =>
+                ShowControllerTypePopup(args.Anchor, PlacementMode.Bottom, deviceForNewSlot: args.Device);
+
+            // An extra that is in use opens its own page, and Open Extras
+            // opens the catalog, which is where arriving at Extras from
+            // another page lands (NavigateToTag).
+            HomePageView.ExtraOpenRequested += (s, key) =>
+            {
+                SelectNavItemByTag("Extras");
+                ExtrasPageView.Show(key);
+            };
+            HomePageView.OpenExtrasRequested += (s, e) => SelectNavItemByTag("Extras");
+
+            // Wire Home's delete + toggle events.
+            HomePageView.DeleteSlotRequested += (s, slotIndex) =>
             {
                 // Deferred — DeleteSlot fires DeviceAssignmentChanged → RebuildControllerSection.
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
                     if (_viewModel.SelectedPadIndex == slotIndex)
-                        SelectNavItemByTag("Dashboard");
+                        SelectNavItemByTag("Home");
 
                     // Capture VC-active state BEFORE the delete so the
                     // bubble-down cascade in OnSlotDeleted knows whether
@@ -2342,13 +2383,13 @@ namespace PadForge
                 }));
             };
 
-            DashboardPageView.SlotEnabledToggled += (s, args) =>
+            HomePageView.SlotEnabledToggled += (s, args) =>
             {
                 _deviceService.SetSlotEnabled(args.SlotIndex, args.IsEnabled);
                 RefreshSlotPowerViews();
             };
 
-            DashboardPageView.EngineToggleRequested += (s, e) =>
+            HomePageView.EngineToggleRequested += (s, e) =>
             {
                 if (_viewModel.IsEngineRunning)
                 {
@@ -2374,24 +2415,24 @@ namespace PadForge
                 }
             };
 
-            // A Dashboard card's type chip opens the type bar under its card
+            // A Home card's type chip opens the type bar under its card
             // (discussion #543), and the bar runs ChangeSlotType.
-            DashboardPageView.SlotTypeChipClicked += (s, args) =>
+            HomePageView.SlotTypeChipClicked += (s, args) =>
                 ShowControllerTypePopup(args.Card, PlacementMode.Bottom, args.SlotIndex, args.Chip);
 
-            DashboardPageView.SlotSwapRequested += (s, args) =>
+            HomePageView.SlotSwapRequested += (s, args) =>
             {
                 _inputService.SwapSlots(args.PadIndexA, args.PadIndexB);
                 _settingsService.MarkDirty();
             };
 
-            DashboardPageView.SlotMoveRequested += (s, args) =>
+            HomePageView.SlotMoveRequested += (s, args) =>
             {
                 _inputService.MoveSlot(args.SourcePadIndex, args.TargetVisualPos);
                 _settingsService.MarkDirty();
             };
 
-            DashboardPageView.SlotCardClicked += (s, slotIndex) =>
+            HomePageView.SlotCardClicked += (s, slotIndex) =>
             {
                 NavigateToSlot(slotIndex);
             };
@@ -2506,8 +2547,8 @@ namespace PadForge
             {
                 if (e.PropertyName == nameof(MainViewModel.StatusText))
                 {
-                    StatusMessageText.BeginAnimation(UIElement.OpacityProperty, null);
-                    StatusMessageText.Opacity = 1.0;
+                    StatusMessageLine.BeginAnimation(UIElement.OpacityProperty, null);
+                    StatusMessageLine.Opacity = 1.0;
                     // A screen reader hears a new message once the binding
                     // has put it on screen.
                     if (!string.IsNullOrEmpty(_viewModel.StatusText))
@@ -2534,7 +2575,7 @@ namespace PadForge
                 }
             };
 
-            // Populate sidebar and dashboard with saved slots regardless of engine state,
+            // Populate the sidebar and Home with saved slots regardless of engine state,
             // so virtual controllers are visible for configuration even when the engine is off.
             _viewModel.RefreshNavControllerItems();
             RefreshDashboardActiveSlots();
@@ -2821,7 +2862,7 @@ namespace PadForge
 
         /// <summary>Whether the bind on offer would move another device of
         /// the model with the chosen one, which it is then not made for
-        /// (VendorUsbDriverInstaller.WhyNotBind). Says so in the status bar
+        /// (VendorUsbDriverInstaller.WhyNotBind). Says so on the message line
         /// when it would, with what to do about it.</summary>
         private bool TakesOthersAlong(Services.VendorUsbDriverInstaller.OptInOffer offer,
             System.Collections.Generic.IReadOnlyList<Services.VendorUsbDriverInstaller.UsbNode> nodes, Action<string> log)
@@ -3204,7 +3245,7 @@ namespace PadForge
         }
 
         /// <summary>
-        /// Clears an info-class status bar message once it has outlived its
+        /// Clears an info-class status message once it has outlived its
         /// ~5 s decay window (#175 item 7). Persistent messages (failures,
         /// active prompts) are left alone until the next write. With OS
         /// animations on, a short opacity fade runs first and the clear
@@ -3224,10 +3265,10 @@ namespace PadForge
             fade.Completed += (s, ev) =>
             {
                 _viewModel.ClearDecayedStatus();  // no-op if restamped mid-fade
-                StatusMessageText.BeginAnimation(UIElement.OpacityProperty, null);
-                StatusMessageText.Opacity = 1.0;
+                StatusMessageLine.BeginAnimation(UIElement.OpacityProperty, null);
+                StatusMessageLine.Opacity = 1.0;
             };
-            StatusMessageText.BeginAnimation(UIElement.OpacityProperty, fade);
+            StatusMessageLine.BeginAnimation(UIElement.OpacityProperty, fade);
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
@@ -3244,7 +3285,7 @@ namespace PadForge
             }
 
             // Ambient-motion gate: the always-on breathes (rail heat ring,
-            // dashboard/profiles auras, selection pulses) pay WPF's fixed
+            // Home and Profiles auras, selection pulses) pay WPF's fixed
             // per-animation-frame pipeline cost (~18% of a core per breathe
             // at 60fps, measured in isolation 2026-07-16) even when the app
             // is buried behind a game. Foreground state flips the probe; the
@@ -3545,10 +3586,16 @@ namespace PadForge
 
 
         /// <summary>Static nav items whose Content must be refreshed on culture change.</summary>
-        private NavigationViewItem _navDashboard, _navProfiles, _navDevices, _navExtras;
+        private NavigationViewItem _navHome, _navProfiles, _navDevices, _navExtras;
 
-        /// <summary>Index in NavView.MenuItems where the first controller entry goes (after Dashboard, Profiles, Devices, Extras).</summary>
-        private const int ControllerInsertIndex = 4;
+        /// <summary>The word Controllers over the sidebar's slot entries
+        /// (#574). A text, not an entry: it takes no click and no selection,
+        /// and it is a heading to a screen reader. It hides while the pane
+        /// is closed, where there is no room for a word.</summary>
+        private System.Windows.Controls.TextBlock _navControllersLabel;
+
+        /// <summary>Index in NavView.MenuItems where the first controller entry goes (after Home, Devices, Profiles, Extras and the Controllers label).</summary>
+        private const int ControllerInsertIndex = 5;
 
         /// <summary>Re-entrancy guard for <see cref="RebuildControllerSection"/>.</summary>
         private bool _rebuildingControllerSection;
@@ -3558,7 +3605,7 @@ namespace PadForge
 
         /// <summary>
         /// Programmatically builds the NavigationView menu items.
-        /// Static items: Dashboard, Profiles, Devices, Extras.
+        /// Static items: Home, Devices, Profiles, Extras, and the Controllers label.
         /// Dynamic items: controller entries + "Add" button, rebuilt when NavControllerItems changes.
         /// </summary>
         private void BuildNavigationItems()
@@ -3588,15 +3635,29 @@ namespace PadForge
                 return icon;
             }
 
-            // Dashboard.
-            _navDashboard = new NavigationViewItem
+            // Home (#574), where the Dashboard was. E80F is the house, the
+            // page header's own glyph. Its AutomationId is still
+            // Nav_Dashboard: the ids are what UI tools select by, and #574
+            // keeps every one of them.
+            _navHome = new NavigationViewItem
             {
-                Content = Strings.Instance.Dashboard_Title,
-                Tag = "Dashboard",
-                Icon = EmberNavIcon("\uF404")
+                Content = Strings.Instance.Home_Title,
+                Tag = "Home",
+                Icon = EmberNavIcon("\uE80F")
             };
-            SetNavAutomationId(_navDashboard, "Dashboard");
-            NavView.MenuItems.Add(_navDashboard);
+            SetNavAutomationId(_navHome, "Dashboard");
+            NavView.MenuItems.Add(_navHome);
+
+            // Devices, ahead of Profiles since #574: what is plugged in
+            // comes before what is saved.
+            _navDevices = new NavigationViewItem
+            {
+                Content = Strings.Instance.Devices_Title,
+                Tag = "Devices",
+                Icon = EmberNavIcon("\uE772")
+            };
+            SetNavAutomationId(_navDevices, "Devices");
+            NavView.MenuItems.Add(_navDevices);
 
             // Profiles.
             _navProfiles = new NavigationViewItem
@@ -3607,16 +3668,6 @@ namespace PadForge
             };
             SetNavAutomationId(_navProfiles, "Profiles");
             NavView.MenuItems.Add(_navProfiles);
-
-            // Devices.
-            _navDevices = new NavigationViewItem
-            {
-                Content = Strings.Instance.Devices_Title,
-                Tag = "Devices",
-                Icon = EmberNavIcon("\uE772")
-            };
-            SetNavAutomationId(_navDevices, "Devices");
-            NavView.MenuItems.Add(_navDevices);
 
             // Extras (#574): the optional features that were the Dashboard's
             // Services cards. E74C is Segoe MDL2 OEM, three squares with a
@@ -3630,6 +3681,28 @@ namespace PadForge
             };
             SetNavAutomationId(_navExtras, "Extras");
             NavView.MenuItems.Add(_navExtras);
+
+            // The word Controllers over the slot entries (#574). wpf-ui walks
+            // MenuItems for NavigationViewItems alone (NavigationView.Base.cs,
+            // AddItemsToDictionaries and UpdateMenuItemsTemplate), and so does
+            // every loop here, so a text among them is drawn and otherwise
+            // left alone. The rebuild below keeps everything ahead of
+            // ControllerInsertIndex, this label included.
+            _navControllersLabel = new System.Windows.Controls.TextBlock
+            {
+                Text = Strings.Instance.Home_Controllers,
+                FontSize = 12,
+                FontWeight = FontWeights.SemiBold,
+                Margin = new Thickness(12, 14, 12, 6),
+                TextTrimming = TextTrimming.CharacterEllipsis,
+            };
+            _navControllersLabel.SetResourceReference(System.Windows.Controls.TextBlock.ForegroundProperty, "TextFillColorTertiaryBrush");
+            System.Windows.Automation.AutomationProperties.SetHeadingLevel(_navControllersLabel,
+                System.Windows.Automation.AutomationHeadingLevel.Level2);
+            System.Windows.Automation.AutomationProperties.SetAutomationId(_navControllersLabel, "Nav_ControllersLabel");
+            NavView.MenuItems.Add(_navControllersLabel);
+            SetControllersLabelMode(compact: !NavView.IsPaneOpen);
+            SetEngineFootMode(compact: !NavView.IsPaneOpen);
 
             // Controller entries. None at first. They are populated dynamically.
             RebuildControllerSection();
@@ -3648,7 +3721,7 @@ namespace PadForge
                         RefreshDashboardActiveSlots();
                         _viewModel.Devices.RefreshSlotButtons();
                         // SlotOrders changed — recompute every device row's
-                        // badge numbers so they track the dashboard cards'
+                        // badge numbers so they track the Home cards'
                         // visual ordering, not the original create order.
                         _viewModel.Devices.RefreshAllSlotBadges();
                         _inputService.RefreshProfileTopology();
@@ -3670,12 +3743,34 @@ namespace PadForge
             }
         }
 
+        /// <summary>The Controllers label shows with the open pane and hides
+        /// with the closed one, where the rail is 48 wide.</summary>
+        private void SetControllersLabelMode(bool compact)
+        {
+            if (_navControllersLabel != null)
+                _navControllersLabel.Visibility = compact ? Visibility.Collapsed : Visibility.Visible;
+        }
+
+        /// <summary>The engine foot with the pane open or closed. Open, it
+        /// reads flame, state, rate. Closed, the rail has room for the
+        /// flame alone, centered like the entries' icons above it.</summary>
+        private void SetEngineFootMode(bool compact)
+        {
+            var texts = compact ? Visibility.Collapsed : Visibility.Visible;
+            EngineFootState.Visibility = texts;
+            EngineFootRate.Visibility = texts;
+            EngineFoot.Padding = compact ? new Thickness(0) : new Thickness(12, 0, 12, 0);
+            System.Windows.Controls.Grid.SetColumnSpan(EngineFootFlame, compact ? 3 : 1);
+            EngineFootFlame.HorizontalAlignment = compact ? HorizontalAlignment.Center : HorizontalAlignment.Left;
+        }
+
         private void OnCultureChanged()
         {
-            if (_navDashboard != null) _navDashboard.Content = Strings.Instance.Dashboard_Title;
+            if (_navHome != null) _navHome.Content = Strings.Instance.Home_Title;
             if (_navProfiles != null) _navProfiles.Content = Strings.Instance.Profiles_Title;
             if (_navDevices != null) _navDevices.Content = Strings.Instance.Devices_Title;
             if (_navExtras != null) _navExtras.Content = Strings.Instance.Extras_Title;
+            if (_navControllersLabel != null) _navControllersLabel.Text = Strings.Instance.Home_Controllers;
 
             // Footer items. Use x:Name references directly.
             NavSettings.Content = Strings.Instance.Settings_Title;
@@ -3690,7 +3785,7 @@ namespace PadForge
 
         /// <summary>
         /// Rebuilds only the controller section of the sidebar (between the two separators).
-        /// Preserves Dashboard, Profiles, Devices, Extras, and footer items.
+        /// Preserves Home, Devices, Profiles, Extras, the Controllers label and the footer items.
         ///
         /// Uses a re-entrancy guard because <see cref="RefreshNavControllerItems"/> fires
         /// CollectionChanged once for Clear() and once per Add(), each of which would
@@ -3781,7 +3876,7 @@ namespace PadForge
                 }
 
                 // "Add Controller" entry (visible if any controller type has remaining capacity).
-                // Minified twin of the Dashboard's Add Controller card; collapses to a bare "+".
+                // Minified twin of Home's Add Controller card. It collapses to a bare "+".
                 if (HasAnyControllerTypeCapacity())
                 {
                     NavView.MenuItems.Add(BuildAddControllerNavItem());
@@ -3799,7 +3894,7 @@ namespace PadForge
             {
                 // Styling only: the rebuild restores which item looks
                 // selected and must not re-navigate. Falls back to the
-                // Dashboard when the previously selected tag is gone,
+                // Home when the previously selected tag is gone,
                 // which is what deleting the open slot does.
                 //
                 // The hand-rolled search this replaces scanned only
@@ -3809,7 +3904,7 @@ namespace PadForge
                 // discussion #340, reachable from any slot create, delete
                 // or reorder.
                 if (!SetNavActiveByTag(selectedTag))
-                    SetNavActiveByTag("Dashboard");
+                    SetNavActiveByTag("Home");
             }
 
             // Refresh uninstall button guards (disabled when slots of that type exist).
@@ -3850,7 +3945,7 @@ namespace PadForge
             if (!navItem.IsEnabled) { lit = false; cooling = false; }
             else if (navItem.IsInitializing) { lit = true; cooling = false; }
             // Nothing mapped reads COLD (outline flame, steel rim), matching the
-            // Dashboard card's HasMappedDevices==false state. Without this, an empty
+            // Home card's HasMappedDevices==false state. Without this, an empty
             // slot and a slot awaiting its assigned devices both looked gold/cooling.
             else if (navItem.MappedDeviceCount == 0) { lit = false; cooling = false; }
             else if (!_viewModel.IsEngineRunning) { lit = false; cooling = true; }
@@ -4198,7 +4293,7 @@ namespace PadForge
                     ? navItem.InstanceLabel
                     : "#" + navItem.InstanceLabel,
                 // Telemetry mono (#175 font sweep): the "#N" token matches
-                // the dashboard card's instance label face.
+                // the Home card's instance label face.
                 FontFamily = (System.Windows.Media.FontFamily)FindResource("TelemetryFontFamily"),
                 FontSize = 11,
                 VerticalAlignment = VerticalAlignment.Center,
@@ -4312,7 +4407,7 @@ namespace PadForge
                 card.BorderBrush = new System.Windows.Media.SolidColorBrush(
                     System.Windows.Media.Color.FromArgb(0x2E, 0xFF, 0x6B, 0x2C));
                 // Awaiting devices (mapped but not live): a static faint ember bloom,
-                // matching the Dashboard awaiting card. No breathe. The breathe is the
+                // matching Home's awaiting card. No breathe. The breathe is the
                 // live state's tell.
                 card.Effect = new System.Windows.Media.Effects.DropShadowEffect
                 {
@@ -4530,7 +4625,7 @@ namespace PadForge
         }
 
         /// <summary>Builds the drawer "Add Controller" entry as a minified twin
-        /// of the Dashboard's Add Controller card (dashed steel outline, muted
+        /// of Home's Add Controller card (dashed steel outline, muted
         /// "+" glyph + label). Expanded it wears the card; collapsed it
         /// crossfades down to a bare "+" symbol on the same 200/200/220 ms
         /// window as the controller mini cards. Every brush is DynamicResource,
@@ -4902,7 +4997,7 @@ namespace PadForge
         /// the one Effect slot); the collapsed icon is set directly.</summary>
         private void RefreshControllerSelectionVisuals()
         {
-            if (_navDashboard == null) return;
+            if (_navHome == null) return;
             string sel = _viewModel.SelectedNavTag;
             if (sel == null || !sel.StartsWith("Pad")) sel = null;
             if (sel == _glowSelectedControllerTag) return;
@@ -4936,7 +5031,7 @@ namespace PadForge
         /// own selection feedback. The Compact template (PaneDisplayMode=Left)
         /// paints those via DynamicResource brush keys, so shadowing the keys
         /// in the item's local resource scope transparently overrides them for
-        /// this item alone. Standard entries (Dashboard, About) never get this
+        /// this item alone. Standard entries (Home, About) never get this
         /// call and keep the default selection highlight. Keys verified against
         /// the cloned Wpf.Ui 4.3.0 NavigationViewCompact.xaml + its theme
         /// dictionaries. Transparent is theme-neutral, so dark and light both
@@ -4953,7 +5048,7 @@ namespace PadForge
         }
 
         /// <summary>The muted "+" the collapsed rail shows for Add Controller.
-        /// Tertiary-gray to match the Dashboard card's add sign, DynamicResource
+        /// Tertiary-gray to match the Home card's add sign, DynamicResource
         /// so it re-tints on a theme flip.</summary>
         private static FontIcon MakeAddControllerCollapsedIcon()
         {
@@ -4967,7 +5062,7 @@ namespace PadForge
         }
 
         /// <summary>The expanded Add Controller card: a minified copy of the
-        /// Dashboard tile (DashboardPage.xaml), sized to the mini-card pill
+        /// Home tile (HomePage.xaml), sized to the mini-card pill
         /// (212 wide, radius 10). WPF Border can't dash, so a Rectangle wears
         /// the dashed SteelLineBrush outline; a centered "+" glyph + label sit
         /// in TextFillColorTertiaryBrush. Hover matches the mini cards: a 2 px
@@ -5023,7 +5118,7 @@ namespace PadForge
                 // and MinHeight 36 = the pill's rendered height (the fixed 22 px
                 // delete-button row + 12 px padding + 2 px border in
                 // UpdateControllerNavItemContent). NO Padding here: like the
-                // Dashboard card, the Rectangle must fill the full card bounds,
+                // Home card, the Rectangle must fill the full card bounds,
                 // not sit inset. Inset shrinks the box and makes the glow hug a
                 // smaller inner outline.
                 CornerRadius = new CornerRadius(10),
@@ -5214,7 +5309,7 @@ namespace PadForge
         }
 
         /// <summary>Redraws both cards after slots are turned on or off. The
-        /// sidebar card rebuilds from its nav item. The Dashboard card's flame
+        /// sidebar card rebuilds from its nav item. The Home card's flame
         /// reads its slot summary, which the engine's display timer refreshes,
         /// so with the engine stopped it kept the old state until the engine
         /// started (discussion #543). UpdatePadDeviceInfo refreshes the
@@ -5254,7 +5349,7 @@ namespace PadForge
         }
 
         /// <summary>Changes a slot's output type: the one type-change path. The
-        /// type bar that a sidebar or Dashboard card's type chip opens calls it
+        /// type bar that a sidebar or Home card's type chip opens calls it
         /// (discussion #543). The two cards' seven tiles had their own copies,
         /// and the copies drifted. The Dashboard's never passed the slot's
         /// Extended layout, so a switch to an unlettered Extended profile such
@@ -5328,7 +5423,7 @@ namespace PadForge
                 {
                     // Navigate away if we're viewing the slot being deleted.
                     if (_viewModel.SelectedPadIndex == slotIndex)
-                        SelectNavItemByTag("Dashboard");
+                        SelectNavItemByTag("Home");
 
                     bool hadActiveVc = _inputService.IsHmVcAt(slotIndex);
                     var info = _deviceService.DeleteSlot(slotIndex);
@@ -5947,10 +6042,12 @@ namespace PadForge
         /// type and navigates to it. With a slot it is that card's type chip's
         /// (discussion #543): the slot's type is lit, and a click runs
         /// ChangeSlotType. The opener takes the keyboard focus back when the bar
-        /// closes, and defaults to the anchor.
+        /// closes, and defaults to the anchor. With a device it is Home's offer's
+        /// (#574): the new slot takes that device, by the entry point a device
+        /// dropped on a slot takes.
         /// </summary>
         private void ShowControllerTypePopup(UIElement anchor, PlacementMode placement = PlacementMode.Right,
-            int retypeSlot = -1, UIElement opener = null)
+            int retypeSlot = -1, UIElement opener = null, Guid deviceForNewSlot = default)
         {
             // If the popup is already open, close it instead of opening a duplicate.
             if (_controllerTypePopup != null && _controllerTypePopup.IsOpen)
@@ -6134,13 +6231,7 @@ namespace PadForge
             xboxBtn.Click += (s, e) =>
             {
                 if (xboxDisabled) return;
-                popup.IsOpen = false;
-                int newSlot = _deviceService.CreateSlot(VirtualControllerType.Xbox);
-                if (newSlot >= 0)
-                {
-                    int nav = FindLastSlotOfType(VirtualControllerType.Xbox);
-                    Dispatcher.BeginInvoke(new Action(() => NavigateToSlot(nav >= 0 ? nav : newSlot)));
-                }
+                CreateFromBar(VirtualControllerType.Xbox);
             };
             stack.Children.Add(xboxBtn);
 
@@ -6177,13 +6268,7 @@ namespace PadForge
             playstationBtn.Click += (s, e) =>
             {
                 if (playstationDisabled) return;
-                popup.IsOpen = false;
-                int newSlot = _deviceService.CreateSlot(VirtualControllerType.PlayStation);
-                if (newSlot >= 0)
-                {
-                    int nav = FindLastSlotOfType(VirtualControllerType.PlayStation);
-                    Dispatcher.BeginInvoke(new Action(() => NavigateToSlot(nav >= 0 ? nav : newSlot)));
-                }
+                CreateFromBar(VirtualControllerType.PlayStation);
             };
             stack.Children.Add(playstationBtn);
 
@@ -6219,13 +6304,7 @@ namespace PadForge
             nintendoBtn.Click += (s, e) =>
             {
                 if (nintendoDisabled) return;
-                popup.IsOpen = false;
-                int newSlot = _deviceService.CreateSlot(VirtualControllerType.Nintendo);
-                if (newSlot >= 0)
-                {
-                    int nav = FindLastSlotOfType(VirtualControllerType.Nintendo);
-                    Dispatcher.BeginInvoke(new Action(() => NavigateToSlot(nav >= 0 ? nav : newSlot)));
-                }
+                CreateFromBar(VirtualControllerType.Nintendo);
             };
             stack.Children.Add(nintendoBtn);
 
@@ -6260,14 +6339,7 @@ namespace PadForge
             extendedBtn.Click += (s, e) =>
             {
                 if (extendedDisabled) return;
-                popup.IsOpen = false;
-
-                int newSlot = _deviceService.CreateSlot(VirtualControllerType.Extended);
-                if (newSlot >= 0)
-                {
-                    int nav = FindLastSlotOfType(VirtualControllerType.Extended);
-                    Dispatcher.BeginInvoke(new Action(() => NavigateToSlot(nav >= 0 ? nav : newSlot)));
-                }
+                CreateFromBar(VirtualControllerType.Extended);
             };
             stack.Children.Add(extendedBtn);
 
@@ -6301,13 +6373,7 @@ namespace PadForge
             kbmPopupBtn.Click += (s, e) =>
             {
                 if (kbmDisabled) return;
-                popup.IsOpen = false;
-                int newSlot = _deviceService.CreateSlot(VirtualControllerType.KeyboardMouse);
-                if (newSlot >= 0)
-                {
-                    int nav = FindLastSlotOfType(VirtualControllerType.KeyboardMouse);
-                    Dispatcher.BeginInvoke(new Action(() => NavigateToSlot(nav >= 0 ? nav : newSlot)));
-                }
+                CreateFromBar(VirtualControllerType.KeyboardMouse);
             };
             stack.Children.Add(kbmPopupBtn);
 
@@ -6344,13 +6410,7 @@ namespace PadForge
             midiBtn.Click += (s, e) =>
             {
                 if (midiDisabled) return;
-                popup.IsOpen = false;
-                int newSlot = _deviceService.CreateSlot(VirtualControllerType.Midi);
-                if (newSlot >= 0)
-                {
-                    int nav = FindLastSlotOfType(VirtualControllerType.Midi);
-                    Dispatcher.BeginInvoke(new Action(() => NavigateToSlot(nav >= 0 ? nav : newSlot)));
-                }
+                CreateFromBar(VirtualControllerType.Midi);
             };
             stack.Children.Add(midiBtn);
 
@@ -6387,13 +6447,7 @@ namespace PadForge
             vrBtn.Click += (s, e) =>
             {
                 if (vrDisabled) return;
-                popup.IsOpen = false;
-                int newSlot = _deviceService.CreateSlot(VirtualControllerType.Vr);
-                if (newSlot >= 0)
-                {
-                    int nav = FindLastSlotOfType(VirtualControllerType.Vr);
-                    Dispatcher.BeginInvoke(new Action(() => NavigateToSlot(nav >= 0 ? nav : newSlot)));
-                }
+                CreateFromBar(VirtualControllerType.Vr);
             };
             stack.Children.Add(vrBtn);
 
@@ -6405,6 +6459,24 @@ namespace PadForge
                 popup.Child = container;
                 PadForge.Common.KeyboardPopup.Wire(popup, opener ?? anchor, container);
                 popup.IsOpen = true;
+            }
+
+            // What a click on an available type does, for all seven: the bar
+            // closes, a slot of that type is made, and its page opens. Opened
+            // by Home's offer, the slot first takes the offered device, and
+            // the offer is looked at again so it goes at once.
+            void CreateFromBar(VirtualControllerType type)
+            {
+                popup.IsOpen = false;
+                int newSlot = _deviceService.CreateSlot(type);
+                if (newSlot < 0) return;
+                if (deviceForNewSlot != Guid.Empty)
+                {
+                    _deviceService.AssignDeviceToSlot(deviceForNewSlot, newSlot);
+                    _inputService.ReEvaluateHomeOffer();
+                }
+                int nav = FindLastSlotOfType(type);
+                Dispatcher.BeginInvoke(new Action(() => NavigateToSlot(nav >= 0 ? nav : newSlot)));
             }
         }
 
@@ -6890,7 +6962,7 @@ namespace PadForge
             // Fallback navigation: if SelectionChanged didn't fire, handle it here.
             if (sender.SelectedItem is NavigationViewItem selected)
             {
-                var tag = selected.Tag?.ToString() ?? "Dashboard";
+                var tag = selected.Tag?.ToString() ?? "Home";
                 if (!_rebuildingControllerSection)
                     NavigateToTag(tag);
             }
@@ -6927,7 +6999,7 @@ namespace PadForge
             }
         }
 
-        /// <summary>Announces the status bar's message, a polite live region.
+        /// <summary>Announces the message line's text, a polite live region.
         /// The bar shows messages, which can repeat, so each one is announced
         /// as it is set, on the conditions every live line shares
         /// (LiveText.Announce).</summary>
@@ -7308,6 +7380,7 @@ namespace PadForge
         private const int TouchClickDebounceMs = 400;
         private long _lastFullScreenClickTick;
         private long _lastMaximizeClickTick;
+        private long _lastProfilePillClickTick;
 
         /// <summary>Where the window was before full screen took it, so
         /// leaving full screen puts it back rather than always dropping it
@@ -7414,7 +7487,7 @@ namespace PadForge
                 return;
 
             if (NavView.SelectedItem is NavigationViewItem item)
-                NavigateToTag(item.Tag?.ToString() ?? "Dashboard");
+                NavigateToTag(item.Tag?.ToString() ?? "Home");
         }
 
         private void NavigateToTag(string tag)
@@ -7426,7 +7499,7 @@ namespace PadForge
             RefreshControllerSelectionVisuals();
 
             // Swap visible page.
-            DashboardPageView.Visibility = tag == "Dashboard" ? Visibility.Visible : Visibility.Collapsed;
+            HomePageView.Visibility = tag == "Home" ? Visibility.Visible : Visibility.Collapsed;
             DevicesPageView.Visibility = tag == "Devices" ? Visibility.Visible : Visibility.Collapsed;
             // Coming to Extras from another page lands on the catalog, as a
             // category in Windows Settings opens on its list. Only then: the
@@ -7443,7 +7516,7 @@ namespace PadForge
             bool isPad = tag.StartsWith("Pad") && tag.Length >= 4 && int.TryParse(tag.Substring(3), out _);
             PadPageView.Visibility = isPad ? Visibility.Visible : Visibility.Collapsed;
 
-            // Mirror the focused controller onto the Dashboard so its card wears
+            // Mirror the focused controller onto Home so its card wears
             // the same selection glow (-1 = no controller focused).
             int selectedPadIndex = -1;
             if (isPad && int.TryParse(tag.Substring(3), out int selPad1Based))
@@ -8426,11 +8499,10 @@ namespace PadForge
 
         private (FrameworkElement Target, string Title, string Body)[] BuildTourStops() => new[]
         {
-            ((FrameworkElement)DashboardPageView.EngineCard, Strings.Instance.Tour_Engine_Title, Strings.Instance.Tour_Engine_Body),
-            (DashboardPageView.SlotsItemsControl, Strings.Instance.Tour_Cards_Title, Strings.Instance.Tour_Cards_Body),
+            ((FrameworkElement)HomePageView.EngineCard, Strings.Instance.Tour_Engine_Title, Strings.Instance.Tour_Engine_Body),
+            (HomePageView.SlotsItemsControl, Strings.Instance.Tour_Cards_Title, Strings.Instance.Tour_Cards_Body),
             (NavView, Strings.Instance.Tour_Slots_Title, Strings.Instance.Tour_Slots_Body),
             (_navExtras, Strings.Instance.Extras_Title, Strings.Instance.Tour_Extras_Body),
-            (StatusBarBorder, Strings.Instance.Tour_Status_Title, Strings.Instance.Tour_Status_Body),
         };
 
         private void MaybeShowFirstRun(object sender, RoutedEventArgs e)
@@ -8461,11 +8533,11 @@ namespace PadForge
         {
             // Navigate AND restyle, through the one helper that clears the
             // other items first. The hand-rolled loop this replaces set
-            // Dashboard active without clearing anything and scanned only
-            // MenuItems, so starting the tour from Settings (whose item
+            // the first page active without clearing anything and scanned
+            // only MenuItems, so starting the tour from Settings (whose item
             // lives in FooterMenuItems) left two rail items wearing the
             // active bar at once (discussion #340).
-            SelectNavItemByTag("Dashboard");
+            SelectNavItemByTag("Home");
             WelcomePanel.Visibility = Visibility.Visible;
             TourCanvas.Visibility = Visibility.Collapsed;
             // Welcome state dims everything: no cutout until a step runs.
@@ -8475,10 +8547,10 @@ namespace PadForge
 
         private void FirstRunBegin_Click(object sender, RoutedEventArgs e)
         {
-            // The tour's first two stops live on the Dashboard, and the
-            // sidebar's two show beside it. Make sure it is the visible
-            // page even if the user navigated away before clicking Begin.
-            NavigateToTag("Dashboard");
+            // The tour's first two stops live on Home, and the sidebar's
+            // two show beside it. Make sure it is the visible page even if
+            // the user navigated away before clicking Begin.
+            NavigateToTag("Home");
             WelcomePanel.Visibility = Visibility.Collapsed;
             TourCanvas.Visibility = Visibility.Visible;
             ShowTourStep(0);
@@ -8526,17 +8598,14 @@ namespace PadForge
                 double ow = FirstRunOverlay.ActualWidth, oh = FirstRunOverlay.ActualHeight;
 
                 // Every edge of the ring stays on-screen. Edge-flush targets
-                // (nav pane, status bar) and taller-than-viewport ones (slot
-                // grid, services group) used to push ring sides past the
-                // window, which cut them off. Page rings stop above the
-                // status bar; the status bar's own ring stops at the window
-                // edge instead.
-                double statusTop = StatusBarBorder.TransformToVisual(FirstRunOverlay).Transform(new Point(0, 0)).Y;
+                // (the nav pane) and taller-than-viewport ones (the slot
+                // grid) used to push ring sides past the window, which cut
+                // them off. With the status bar gone (#574) the window's
+                // own lower edge is the bound.
                 double left = Math.Max(origin.X - 4, 2);
                 double top = Math.Max(origin.Y - 4, 2);
                 double right = Math.Min(origin.X + w + 4, ow - 2);
-                double bottom = Math.Min(origin.Y + h + 4,
-                    ReferenceEquals(target, StatusBarBorder) ? oh - 2 : statusTop - 6);
+                double bottom = Math.Min(origin.Y + h + 4, oh - 2);
                 System.Windows.Controls.Canvas.SetLeft(TourHighlight, left);
                 System.Windows.Controls.Canvas.SetTop(TourHighlight, top);
                 TourHighlight.Width = Math.Max(0, right - left);
@@ -9808,11 +9877,11 @@ namespace PadForge
         internal static void LogDriverFailure(Exception ex)
             => Engine.SdlDiagLog.WriteLine($"DRIVER operation failed: {ex.GetType().Name}: {ex.Message}");
 
-        /// <summary>The engine stop the Dashboard toggle runs on a worker,
+        /// <summary>The engine stop Home's toggle runs on a worker,
         /// kept until the next one replaces it.</summary>
         private Task _engineStopTask;
 
-        /// <summary>The Dashboard's Stopping state, shown at once for a stop
+        /// <summary>Home's Stopping state, shown at once for a stop
         /// that runs on a worker.</summary>
         private void ShowEngineStopping()
         {
@@ -9827,7 +9896,7 @@ namespace PadForge
         /// Removes HIDMaestro from the PC (#516, #518), after the user
         /// confirmed it against HIDMaestro's own preview.
         ///
-        /// <para>The engine stops first, through the stop the Dashboard
+        /// <para>The engine stops first, through the stop Home's
         /// toggle runs, which removes PadForge's virtual controllers and
         /// disposes its HIDMaestro context. HIDMaestro would remove those
         /// controllers anyway, but a controller PadForge still held would
@@ -9882,7 +9951,7 @@ namespace PadForge
         /// Removes BthPS3 from the PC, after the user confirmed it against
         /// the removal's preview (BthPS3Removal).
         ///
-        /// <para>The engine stops first, through the stop the Dashboard toggle
+        /// <para>The engine stops first, through the stop Home's toggle
         /// runs, which closes every PlayStation 3, Move and Navigation
         /// controller PadForge reads through BthPS3 or WinUSB, and binds no
         /// WinUSB driver while the removal runs. A stop the toggle already
@@ -9927,12 +9996,12 @@ namespace PadForge
             => _viewModel.Settings.IsBthPS3Installed = Ds3DriverInstaller.IsAnyBthPs3DriverInstalled();
 
         /// <summary>
-        /// Rebuilds the dashboard SlotSummaries from SettingsManager state.
+        /// Rebuilds Home's SlotSummaries from SettingsManager state.
         /// Used at startup and when slots change while the engine is off.
         /// </summary>
         private void RefreshDashboardActiveSlots()
         {
-            // Iterate per-group in the fixed visual order so the dashboard
+            // Iterate per-group in the fixed visual order so Home
             // matches the sidebar's per-group rendering. Slot indices are
             // stable identifiers; group order owns the layout.
             var activeSlots = new System.Collections.Generic.List<int>();
@@ -10086,7 +10155,7 @@ namespace PadForge
             // only when availability actually flips. The first sweep just
             // records the baseline: the cards were already built against the
             // current state at startup, so no rebuild is needed for it.
-            if (_navDashboard != null && _lastMidiAvailableForNav != midiAvailable)
+            if (_navHome != null && _lastMidiAvailableForNav != midiAvailable)
             {
                 bool firstSweep = _lastMidiAvailableForNav == null;
                 _lastMidiAvailableForNav = midiAvailable;
@@ -10094,7 +10163,7 @@ namespace PadForge
             }
 
             // Same flip-only rebuild for the VR tile's SteamVR gate.
-            if (_navDashboard != null && _lastSteamVrInstalledForNav != steamVr)
+            if (_navHome != null && _lastSteamVrInstalledForNav != steamVr)
             {
                 bool firstSweep = _lastSteamVrInstalledForNav == null;
                 _lastSteamVrInstalledForNav = steamVr;

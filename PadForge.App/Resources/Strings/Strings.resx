@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Browse...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Proceed</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Stop</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Start</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Record</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Recording...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Clear</value></data>
@@ -136,6 +137,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Cleaning up virtual controllers left from a previous session.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> devices</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Add Controller</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Profile</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Delete virtual controller</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Full Screen</value></data>
   <data name="Main_Minimize" xml:space="preserve"><value>Minimize</value></data>
@@ -269,10 +271,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Virtual Controller {0} deleted.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>Dashboard</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>Home</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Input Engine</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> devices online</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Virtual Controllers</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Controllers</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>Extras in Use</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>The rest are in Extras, each off until you turn it on.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>Open Extras</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} is connected and not in use.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Use It</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> mapped, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> connected</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Engine running. Click to stop.</value></data>
@@ -292,8 +299,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Virtual Controllers</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Pick an output type, feed the slot devices, and click a card to shape its mappings.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>Optional features wait here: the phone web controller, Remote Link, the motion server and more.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>Instrument Line</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>Device count, polling rate, and the engine flame, always in view.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Show Welcome Tour</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Slot</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Device</value></data>
@@ -4140,11 +4145,13 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="Battery_FullTitle" xml:space="preserve"><value>Controller Fully Charged</value></data>
   <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: fully charged</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Assignment Prompts</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>When a device connects while a virtual controller's page is open, PadForge can offer to assign it there. Nothing is assigned until you click Assign. Keyboards, mice, touchpads, and media keys are never offered.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>When a device connects while a virtual controller's page is open, PadForge can offer to assign it there, and Home can offer a new device a virtual controller of its own. Nothing is assigned until you accept an offer. Keyboards, mice, touchpads, and media keys are never offered.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Offer New Devices to the Open Virtual Controller</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Only devices PadForge has never seen before. Devices it already knows connect without a prompt.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Offer Any Connecting Device When the Open Virtual Controller Has No Devices</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>New or already known. Once the virtual controller has a device assigned, this prompt no longer appears.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>Offer New Devices on Home</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>Home asks once about each new device that no virtual controller uses. Use It makes a virtual controller for it, and Not Now ends the offer for that device.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} just connected. Assign it to this virtual controller?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Assign</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Not Now</value></data>

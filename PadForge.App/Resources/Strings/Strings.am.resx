@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>አስስ...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>ቀጥል</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>አቁም</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>ጀምር</value></data>
   <data name="Common_Record" xml:space="preserve"><value>ቅረጽ</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>በመቅረጽ ላይ...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>አጽዳ</value></data>
@@ -125,6 +126,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>ከቀድሞው ክፍለ ጊዜ የቀሩ ምናባዊ መቆጣጠሪያዎችን በማጽዳት ላይ።</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> መሣሪያዎች</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>መቆጣጠሪያ አክል</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>መገለጫ</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>ምናባዊ መቆጣጠሪያን ሰርዝ</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>ሙሉ ማያ ገጽ</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>PadForgeን አሳይ</value></data>
@@ -254,10 +256,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>ምናባዊ መቆጣጠሪያ {0} ተሰርዟል።</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>ዳሽቦርድ</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>መነሻ</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>የግብዓት ሞተር</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> መሣሪያዎች መስመር ላይ</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>ምናባዊ መቆጣጠሪያዎች</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>መቆጣጠሪያዎች</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>በአገልግሎት ላይ ያሉ ተጨማሪዎች</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>ሌሎቹ በተጨማሪዎች ውስጥ ናቸው፣ እያንዳንዱም እስኪያበሩት ድረስ ጠፍቶ ይቆያል።</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>ተጨማሪዎችን ክፈት</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} ተገናኝቷል፣ ግን ጥቅም ላይ አልዋለም።</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>ተጠቀምበት</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> ተዛምደዋል፣ </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> ተገናኝተዋል</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>ሞተሩ እየሄደ ነው። ለማቆም ጠቅ ያድርጉ።</value></data>
@@ -277,8 +284,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>ምናባዊ መቆጣጠሪያዎች</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>የውጽዓት ዓይነት ይምረጡ፣ ለቦታው መሣሪያዎችን ይመድቡ፣ እና ማዛመጃዎቹን ለማስተካከል ካርድን ጠቅ ያድርጉ።</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>አማራጭ ባህሪያት እዚህ ይገኛሉ፦ የስልክ የድር መቆጣጠሪያ፣ የርቀት ትስስር፣ የእንቅስቃሴ አገልጋይ እና ሌሎችም።</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>የመለኪያ መስመር</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>የመሣሪያ ብዛት፣ የንባብ ፍጥነት እና የሞተሩ ነበልባል ሁልጊዜ ይታያሉ።</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>የእንኳን ደህና መጡ ጉብኝትን አሳይ</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>ቦታ</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>መሣሪያ</value></data>
@@ -3883,11 +3888,13 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>መቆጣጠሪያውንም አንዝር</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>የሙከራ ማሳወቂያ</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>የመመደብ ጥያቄዎች</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>የምናባዊ መቆጣጠሪያ ገጽ ክፍት ሆኖ ሳለ መሣሪያ ሲገናኝ PadForge እዚያ እንዲመድበው ሊጠይቅ ይችላል። «መድብ» ጠቅ እስኪያደርጉ ድረስ ምንም አይመደብም። የቁልፍ ሰሌዳዎች፣ መዳፊቶች፣ የመዳሰሻ ሰሌዳዎች እና የሚዲያ ቁልፎች በፍጹም አይቀርቡም።</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>የምናባዊ መቆጣጠሪያ ገጽ ክፍት ሆኖ ሳለ መሣሪያ ሲገናኝ PadForge እዚያ እንዲመድበው ሊጠይቅ ይችላል፣ መነሻም ለአዲስ መሣሪያ የራሱ የሆነ ምናባዊ መቆጣጠሪያ ሊያቀርብ ይችላል። አንድ ቅናሽ እስኪቀበሉ ድረስ ምንም አይመደብም። የቁልፍ ሰሌዳዎች፣ መዳፊቶች፣ የመዳሰሻ ሰሌዳዎች እና የሚዲያ ቁልፎች በፍጹም አይቀርቡም።</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>አዳዲስ መሣሪያዎችን ለተከፈተው ምናባዊ መቆጣጠሪያ አቅርብ</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>PadForge ከዚህ በፊት አይቶ የማያውቃቸው መሣሪያዎች ብቻ። አስቀድሞ የሚያውቃቸው መሣሪያዎች ያለ ጥያቄ ይገናኛሉ።</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>የተከፈተው ምናባዊ መቆጣጠሪያ ምንም መሣሪያ ከሌለው ማንኛውንም የሚገናኝ መሣሪያ አቅርብ</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>አዲስም ሆነ አስቀድሞ የታወቀ። ምናባዊ መቆጣጠሪያው መሣሪያ ከተመደበለት በኋላ ይህ ጥያቄ ከእንግዲህ አይታይም።</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>አዳዲስ መሣሪያዎችን በመነሻ ላይ አቅርብ</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>መነሻ ምንም ምናባዊ መቆጣጠሪያ ስለማይጠቀምበት እያንዳንዱ አዲስ መሣሪያ አንድ ጊዜ ይጠይቃል። «ተጠቀምበት» ለእሱ ምናባዊ መቆጣጠሪያ ይፈጥራል፣ «አሁን አይደለም» ደግሞ ለዚያ መሣሪያ ቅናሹን ያቆማል።</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} አሁን ተገናኝቷል። ለዚህ ምናባዊ መቆጣጠሪያ ይመደብ?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>መድብ</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>አሁን አይደለም</value></data>

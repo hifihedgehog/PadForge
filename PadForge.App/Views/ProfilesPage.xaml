@@ -84,7 +84,7 @@
                          (the service does not track otherwise). Cold mono
                          filename. Flame + ember text while it matches a
                          profile. The FOREGROUND token is a locale-neutral
-                         mono literal, like the status bar's "Hz". -->
+                         mono literal, like the engine foot's "Hz". -->
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8"
                                 Visibility="{Binding EnableAutoProfileSwitching, Converter={StaticResource BoolToVisibilityConverter}}">
                         <TextBlock Text="FOREGROUND"

@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>ব্রাউজ করুন...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>এগিয়ে যান</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>থামান</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>চালু করুন</value></data>
   <data name="Common_Record" xml:space="preserve"><value>রেকর্ড করুন</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>রেকর্ড হচ্ছে...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>সাফ করুন</value></data>
@@ -136,6 +137,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>আগের সেশন থেকে রয়ে যাওয়া ভার্চুয়াল কন্ট্রোলারগুলো পরিষ্কার করা হচ্ছে।</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> ডিভাইস</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>কন্ট্রোলার যোগ করুন</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>প্রোফাইল</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>ভার্চুয়াল কন্ট্রোলার মুছুন</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>পূর্ণ স্ক্রিন</value></data>
   <data name="Main_Minimize" xml:space="preserve"><value>মিনিমাইজ করুন</value></data>
@@ -269,10 +271,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>ভার্চুয়াল কন্ট্রোলার {0} মুছে ফেলা হয়েছে।</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>ড্যাশবোর্ড</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>হোম</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>ইনপুট ইঞ্জিন</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> ডিভাইস অনলাইন</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>ভার্চুয়াল কন্ট্রোলার</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>কন্ট্রোলার</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>ব্যবহারে থাকা এক্সট্রা</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>বাকিগুলো এক্সট্রা পাতায় আছে, চালু না করা পর্যন্ত প্রতিটি বন্ধ থাকে।</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>এক্সট্রা খুলুন</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} সংযুক্ত আছে, কিন্তু ব্যবহার হচ্ছে না।</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>ব্যবহার করুন</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> ম্যাপ করা, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> সংযুক্ত</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>ইঞ্জিন চলছে। থামাতে ক্লিক করুন।</value></data>
@@ -292,8 +299,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>ভার্চুয়াল কন্ট্রোলার</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>একটি আউটপুটের ধরন বেছে নিন, স্লটে ডিভাইস দিন, আর এর ম্যাপিং সাজাতে একটি কার্ডে ক্লিক করুন।</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>ঐচ্ছিক ফিচারগুলো এখানে অপেক্ষা করছে: ফোনের ওয়েব কন্ট্রোলার, রিমোট লিংক, মোশন সার্ভার আর আরও অনেক কিছু।</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>নির্দেশক সারি</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>ডিভাইসের সংখ্যা, পোলিং রেট আর ইঞ্জিনের শিখা, সব সময় চোখের সামনে।</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>স্বাগত ট্যুর দেখান</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>স্লট</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>ডিভাইস</value></data>
@@ -4119,11 +4124,13 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="Battery_FullTitle" xml:space="preserve"><value>কন্ট্রোলার পুরো চার্জ হয়েছে</value></data>
   <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: পুরো চার্জ হয়েছে</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>বরাদ্দের প্রস্তাব</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>কোনো ভার্চুয়াল কন্ট্রোলারের পৃষ্ঠা খোলা থাকা অবস্থায় একটি ডিভাইস সংযুক্ত হলে PadForge সেটি সেখানে বরাদ্দ করার প্রস্তাব দিতে পারে। আপনি “বরাদ্দ করুন”-এ ক্লিক না করা পর্যন্ত কিছুই বরাদ্দ হয় না। কীবোর্ড, মাউস, টাচপ্যাড ও মিডিয়া কী কখনো প্রস্তাব করা হয় না।</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>কোনো ভার্চুয়াল কন্ট্রোলারের পৃষ্ঠা খোলা থাকা অবস্থায় একটি ডিভাইস সংযুক্ত হলে PadForge সেটি সেখানে বরাদ্দ করার প্রস্তাব দিতে পারে, আর হোম একটি নতুন ডিভাইসকে তার নিজের ভার্চুয়াল কন্ট্রোলারের প্রস্তাব দিতে পারে। আপনি কোনো প্রস্তাব গ্রহণ না করা পর্যন্ত কিছুই বরাদ্দ হয় না। কীবোর্ড, মাউস, টাচপ্যাড ও মিডিয়া কী কখনো প্রস্তাব করা হয় না।</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>নতুন ডিভাইস খোলা ভার্চুয়াল কন্ট্রোলারে বরাদ্দের প্রস্তাব দিন</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>কেবল সেসব ডিভাইস, যা PadForge আগে কখনো দেখেনি। আগে থেকে চেনা ডিভাইস কোনো প্রস্তাব ছাড়াই সংযুক্ত হয়।</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>খোলা ভার্চুয়াল কন্ট্রোলারে কোনো ডিভাইস না থাকলে সংযুক্ত হওয়া যেকোনো ডিভাইসের প্রস্তাব দিন</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>নতুন বা আগে থেকে চেনা, দুই-ই। ভার্চুয়াল কন্ট্রোলারে একটি ডিভাইস বরাদ্দ হলে এই প্রস্তাব আর দেখা যায় না।</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>হোমে নতুন ডিভাইসের প্রস্তাব দিন</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>হোম প্রতিটি নতুন ডিভাইস নিয়ে একবার জিজ্ঞাসা করে, যেটি কোনো ভার্চুয়াল কন্ট্রোলার ব্যবহার করছে না। “ব্যবহার করুন” সেটির জন্য একটি ভার্চুয়াল কন্ট্রোলার তৈরি করে, আর “এখন নয়” ওই ডিভাইসের প্রস্তাব শেষ করে দেয়।</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} এইমাত্র সংযুক্ত হয়েছে। এটি এই ভার্চুয়াল কন্ট্রোলারে বরাদ্দ করবেন?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>বরাদ্দ করুন</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>এখন নয়</value></data>

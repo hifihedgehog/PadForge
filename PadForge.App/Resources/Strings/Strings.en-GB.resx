@@ -76,7 +76,6 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Pick an output type, feed the slot devices and click a card to shape its mappings.</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>Device count, polling rate and the engine flame, always in view.</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Provides gyro and accelerometer data to Cemu, Dolphin, Yuzu etc.</value></data>
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>No Logitech G-key SDK on this machine. It is installed with Logitech Gaming Software 8.55 or later.</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>Read Analogue Keyboards</value></data>

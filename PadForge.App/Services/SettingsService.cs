@@ -2388,6 +2388,7 @@ namespace PadForge.Services
             vm.BatteryNotifyFull = appSettings.BatteryNotifyFull;
             vm.AssignOfferNewDevice = appSettings.AssignOfferNewDevice;
             vm.AssignOfferEmptySlot = appSettings.AssignOfferEmptySlot;
+            vm.AssignOfferHome = appSettings.AssignOfferHome;
             vm.StartMinimized = appSettings.StartMinimized;
             vm.DiagnosticsLoggingEnabled = appSettings.DiagnosticsLoggingEnabled;
             // Arm the mirror on cold start (#303): the toggle's
@@ -5147,6 +5148,7 @@ namespace PadForge.Services
                 BatteryNotifyFull = vm.BatteryNotifyFull,
                 AssignOfferNewDevice = vm.AssignOfferNewDevice,
                 AssignOfferEmptySlot = vm.AssignOfferEmptySlot,
+                AssignOfferHome = vm.AssignOfferHome,
                 StartMinimized = vm.StartMinimized,
                 DiagnosticsLoggingEnabled = vm.DiagnosticsLoggingEnabled,
                 StartAtLogin = vm.StartAtLogin,
@@ -7097,6 +7099,11 @@ namespace PadForge.Services
         /// Both default on. Nothing is ever assigned without a click.</summary>
         [XmlElement] public bool AssignOfferNewDevice { get; set; } = true;
         [XmlElement] public bool AssignOfferEmptySlot { get; set; } = true;
+
+        /// <summary>Assignment Prompts: Home offers a device PadForge has
+        /// just met a virtual controller of its own (#574). On by default,
+        /// and on for a file from before it.</summary>
+        [XmlElement] public bool AssignOfferHome { get; set; } = true;
 
         [XmlElement]
         public bool StartMinimized { get; set; }

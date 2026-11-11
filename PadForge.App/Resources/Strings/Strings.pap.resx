@@ -73,6 +73,9 @@
   <data name="Common_Duplicate" xml:space="preserve"><value>Dupliká</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Aktivá</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Desaktivá</value></data>
+  <data name="Common_On" xml:space="preserve"><value>Sendí</value></data>
+  <data name="Common_Off" xml:space="preserve"><value>Pagá</value></data>
+  <data name="Common_More" xml:space="preserve"><value>Mas</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Instalá</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>No instalá</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>No ta disponibel riba ARM64</value></data>
@@ -99,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Buska...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Sigui</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Para</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Kuminsá</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Graba</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Ta graba...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Limpia</value></data>
@@ -121,6 +125,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Ta limpia kontrolnan virtual ku a keda di un seshon anterior.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> aparatonan</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Agregá kontrol</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Perfil</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Eliminá kontrol virtual</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Pantaya kompleto</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Mustra PadForge</value></data>
@@ -243,10 +248,13 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Kontrol virtual {0} eliminá.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>Dashboard</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>Inisio</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Motor di entrada</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> aparatonan online</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Kontrolnan virtual</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Kontrolnan</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>Ekstra den uso</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>E restu ta den Ekstra, kada un pagá te ora bo sende e.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>Habri Ekstra</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> asigná, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> konektá</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Motor ta kore. Klik pa para.</value></data>
@@ -2472,4 +2480,21 @@
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} riba {1} miéntras e ta primí</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} riba {1} te ora e stòp</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>Stòp efekto di trigger riba {0}</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Ekstra</value></data>
+  <data name="Extras_Subtitle" xml:space="preserve"><value>Funshonnan opshonal. Kada un ta keda fuera di kaminda te ora bo aktivá e.</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Mas manera pa hunga</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Manda e pa otro kaminda</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>Riba pantaya</value></data>
+  <data name="Extras_Tile_WebController" xml:space="preserve"><value>Usa un telefòn òf tablet komo kontrol.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Asigná velosidat, pedalnan i marchanan for di wega di kore.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Kompartí kontrolnan ku PadForge riba otro PC.</value></data>
+  <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Manda movementu di kontrol na emuladónan.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Tuma efektonan di trigger i di lus for di mods di wega.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Mustra menu, kapanan i kambionan di perfil miéntras bo ta hunga.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Un superfisie di toke riba pantaya pa wega ku ta usa e touchpad di PlayStation.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Pòrt, adrès HTTP simpel, kódigo di akseso</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Konektá atrobe, pòrt, protekshon di identidat, konekshon pa medio di adrès</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Pòrt, sustituto di DSX.exe</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Pòrtnan, velosidat máksimo, formatonan personalisá</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Usa e</value></data>
 </root>

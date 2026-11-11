@@ -1111,8 +1111,10 @@ namespace PadForge.Common.Input
                     // but a failed load used to leave the row
                     // product-less and therefore invisible to every
                     // adoption scan forever.
+                    // A unit PadForge has not met before, like the one made
+                    // at step 3 below: Home owes it its offer (#574).
                     var twin = new UserDevice
-                    { InstanceGuid = Guid.NewGuid(), ProductGuid = productGuid };
+                    { InstanceGuid = Guid.NewGuid(), ProductGuid = productGuid, HomeOfferPending = true };
                     devices.Items.Add(twin);
                     return twin;
                 }
@@ -1204,8 +1206,12 @@ namespace PadForge.Common.Input
                     }
                 }
 
-                // 3. No match: create a new device.
-                var ud = new UserDevice { InstanceGuid = instanceGuid };
+                // 3. No match: create a new device. PadForge meets it for the
+                //    first time, so Home owes it its offer (#574). The flag
+                //    is set here and at the twin above and nowhere else: a
+                //    row a settings file brings, or one an adoption re-keys,
+                //    is a device already known.
+                var ud = new UserDevice { InstanceGuid = instanceGuid, HomeOfferPending = true };
                 devices.Items.Add(ud);
                 return ud;
             }

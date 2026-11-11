@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Ընտրել...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Շարունակել</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Կանգնեցնել</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Սկսել</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Գրանցել</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Գրանցվում է...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Մաքրել</value></data>
@@ -125,6 +126,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Մաքրվում են նախորդ սեսիայից մնացած վիրտուալ կառավարիչները։</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> սարք</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Ավելացնել կառավարիչ</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Պրոֆիլ</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Ջնջել վիրտուալ կառավարիչը</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Լրիվ էկրան</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Ցույց տալ PadForge-ը</value></data>
@@ -254,10 +256,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Վիրտուալ կառավարիչ {0}-ը ջնջվեց։</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>Վահանակ</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>Գլխավոր</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Մուտքի մեխանիզմ</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> սարք առցանց</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Վիրտուալ կառավարիչներ</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Կառավարիչներ</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>Օգտագործվող հավելումներ</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Մնացածը «Հավելումներ» էջում են, և յուրաքանչյուրն անջատված է, քանի դեռ չեք միացրել այն։</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>Բացել հավելումները</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0}-ը միացված է և չի օգտագործվում։</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Օգտագործել</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> կապակցված, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> միացված</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Մեխանիզմն աշխատում է։ Սեղմեք՝ կանգնեցնելու համար։</value></data>
@@ -277,8 +284,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Վիրտուալ կառավարիչներ</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Ընտրեք ելքի տեսակը, սնուցեք սլոթի սարքերը և սեղմեք քարտին՝ դրա կապակցումները ձևավորելու համար։</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>Ընտրովի գործառույթներն այստեղ են՝ հեռախոսի վեբ կառավարիչը, Հեռակա կապը, շարժման սերվերը և այլն։</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>Գործիքների տող</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>Սարքերի քանակը, հարցման հաճախականությունը և մեխանիզմի բոցը՝ միշտ աչքի առաջ։</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Ցույց տալ ողջույնի շրջայցը</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Սլոթ</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Սարք</value></data>
@@ -3880,11 +3885,13 @@
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Նաև թրթռացնել կառավարիչը</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Փորձնական ծանուցում</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Նշանակման հուշումներ</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Երբ սարքը միանում է, մինչ վիրտուալ կառավարչի էջը բաց է, PadForge-ը կարող է առաջարկել այն նշանակել այնտեղ։ Ոչինչ չի նշանակվում, մինչև չսեղմեք «Նշանակել»։ Ստեղնաշարերը, մկնիկները, հպահարթակները և մեդիա ստեղները երբեք չեն առաջարկվում։</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Երբ սարքը միանում է, մինչ վիրտուալ կառավարչի էջը բաց է, PadForge-ը կարող է առաջարկել այն նշանակել այնտեղ, իսկ «Գլխավոր» էջը կարող է նոր սարքին առաջարկել սեփական վիրտուալ կառավարիչ։ Ոչինչ չի նշանակվում, մինչև չընդունեք առաջարկը։ Ստեղնաշարերը, մկնիկները, հպահարթակները և մեդիա ստեղները երբեք չեն առաջարկվում։</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Առաջարկել նոր սարքերը բաց վիրտուալ կառավարչին</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Միայն սարքեր, որոնք PadForge-ը երբեք չի տեսել։ Արդեն ծանոթ սարքերը միանում են առանց հուշման։</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Առաջարկել ցանկացած միացող սարք, երբ բաց վիրտուալ կառավարիչը սարքեր չունի</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Նոր կամ արդեն ծանոթ։ Երբ վիրտուալ կառավարչին սարք է նշանակվում, այս հուշումն այլևս չի երևում։</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>Առաջարկել նոր սարքերը «Գլխավոր» էջում</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>«Գլխավոր» էջը մեկ անգամ հարցնում է յուրաքանչյուր նոր սարքի մասին, որը ոչ մի վիրտուալ կառավարիչ չի օգտագործում։ «Օգտագործել» կոճակը դրա համար ստեղծում է վիրտուալ կառավարիչ, իսկ «Հիմա ոչ» կոճակը ավարտում է այդ սարքի առաջարկը։</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0}-ը նոր միացավ։ Նշանակե՞լ այն այս վիրտուալ կառավարչին։</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Նշանակել</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Հիմա ոչ</value></data>

@@ -188,6 +188,7 @@ public class Strings : INotifyPropertyChanged
     public string Common_Browse => Get("Common_Browse");
     public string Common_Proceed => Get("Common_Proceed");
     public string Common_Stop => Get("Common_Stop");
+    public string Common_Start => Get("Common_Start");
     public string Common_Record => Get("Common_Record");
     public string Common_Recording => Get("Common_Recording");
     public string Common_Clear => Get("Common_Clear");
@@ -218,6 +219,7 @@ public class Strings : INotifyPropertyChanged
     public string Main_CleaningPreviousSession => Get("Main_CleaningPreviousSession");
     public string Main_DevicesSuffix => Get("Main_DevicesSuffix");
     public string Main_AddController => Get("Main_AddController");
+    public string Main_ProfileLabel => Get("Main_ProfileLabel");
     public string Main_DeleteVC => Get("Main_DeleteVC");
     public string Main_FullScreen => Get("Main_FullScreen");
     public string Main_Minimize => Get("Main_Minimize");
@@ -352,10 +354,15 @@ public class Strings : INotifyPropertyChanged
     public string Status_DeviceHidden => Get("Status_DeviceHidden");
     public string Status_DeviceRemoved => Get("Status_DeviceRemoved");
     public string Status_VCDeleted_Format => Get("Status_VCDeleted_Format");
-    public string Dashboard_Title => Get("Dashboard_Title");
+    public string Home_Title => Get("Home_Title");
     public string Dashboard_InputEngine => Get("Dashboard_InputEngine");
     public string Dashboard_DevicesOnline => Get("Dashboard_DevicesOnline");
-    public string Dashboard_VirtualControllers => Get("Dashboard_VirtualControllers");
+    public string Home_Controllers => Get("Home_Controllers");
+    public string Home_ExtrasInUse => Get("Home_ExtrasInUse");
+    public string Home_MoreExtras => Get("Home_MoreExtras");
+    public string Home_OpenExtras => Get("Home_OpenExtras");
+    public string Home_Offer_Format => Get("Home_Offer_Format");
+    public string Home_Offer_Use => Get("Home_Offer_Use");
     public string Dashboard_Mapped => Get("Dashboard_Mapped");
     public string Dashboard_Connected => Get("Dashboard_Connected");
     public string Dashboard_EngineFlame_Running => Get("Dashboard_EngineFlame_Running");
@@ -375,8 +382,6 @@ public class Strings : INotifyPropertyChanged
     public string Tour_Cards_Title => Get("Tour_Cards_Title");
     public string Tour_Cards_Body => Get("Tour_Cards_Body");
     public string Tour_Extras_Body => Get("Tour_Extras_Body");
-    public string Tour_Status_Title => Get("Tour_Status_Title");
-    public string Tour_Status_Body => Get("Tour_Status_Body");
     public string Settings_ShowTour => Get("Settings_ShowTour");
     public string Dashboard_Slot => Get("Dashboard_Slot");
     public string Pad_ScopeDevice => Get("Pad_ScopeDevice");
@@ -479,6 +484,8 @@ public class Strings : INotifyPropertyChanged
     public string Settings_AssignOfferNew_Tooltip => Get("Settings_AssignOfferNew_Tooltip");
     public string Settings_AssignOfferEmpty => Get("Settings_AssignOfferEmpty");
     public string Settings_AssignOfferEmpty_Tooltip => Get("Settings_AssignOfferEmpty_Tooltip");
+    public string Settings_AssignOfferHome => Get("Settings_AssignOfferHome");
+    public string Settings_AssignOfferHome_Tooltip => Get("Settings_AssignOfferHome_Tooltip");
     public string Pad_AssignOffer_Format => Get("Pad_AssignOffer_Format");
     public string Pad_AssignOffer_Assign => Get("Pad_AssignOffer_Assign");
     public string Pad_AssignOffer_Dismiss => Get("Pad_AssignOffer_Dismiss");

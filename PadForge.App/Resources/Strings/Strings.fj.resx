@@ -67,6 +67,7 @@
   <data name="Common_Unknown" xml:space="preserve"><value>Sega ni kilai</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Toso</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Tarova</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Tekivuna</value></data>
   <data name="Common_None" xml:space="preserve"><value>Sega</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -704,4 +705,5 @@
   <data name="MacroAction_TriggerEffect_StrengthA" xml:space="preserve"><value>Kaukauwa A</value></data>
   <data name="MacroAction_TriggerEffect_StrengthB" xml:space="preserve"><value>Kaukauwa B</value></data>
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>Gauna</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Profile</value></data>
 </root>

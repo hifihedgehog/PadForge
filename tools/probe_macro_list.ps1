@@ -76,8 +76,8 @@ function Click-Named([string]$name) {
     return $false
 }
 
-# Dashboard, first slot card, Macros tab.
-Click-Named "Dashboard" | Out-Null
+# Home, first slot card, Macros tab.
+Click-Named "Home" | Out-Null
 Start-Sleep -Milliseconds 900
 $slots = $win.FindFirst($TD, (New-Object System.Windows.Automation.PropertyCondition(
     [System.Windows.Automation.AutomationElement]::AutomationIdProperty, "SlotsItemsControl")))

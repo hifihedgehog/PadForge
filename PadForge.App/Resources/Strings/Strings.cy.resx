@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Pori...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Bwrw ymlaen</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Stopio</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Cychwyn</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Recordio</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Yn recordio...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Clirio</value></data>
@@ -125,6 +126,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Yn glanhau'r rheolyddion rhithwir a adawyd o sesiwn flaenorol.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> dyfais</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Ychwanegu Rheolydd</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Proffil</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Dileu rheolydd rhithwir</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Sgrin Lawn</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Dangos PadForge</value></data>
@@ -254,10 +256,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Dilëwyd Rheolydd Rhithwir {0}.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>Dangosfwrdd</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>Hafan</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Injan Mewnbwn</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> dyfais ar-lein</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Rheolyddion Rhithwir</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Rheolyddion</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>Ychwanegion ar Waith</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Mae'r gweddill yn Ychwanegion, pob un wedi'i ddiffodd nes i chi ei droi ymlaen.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>Agor Ychwanegion</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>Mae {0} wedi'i gysylltu ac nid yw'n cael ei ddefnyddio.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Ei Ddefnyddio</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> wedi'u mapio, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> wedi'u cysylltu</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Injan yn rhedeg. Cliciwch i stopio.</value></data>
@@ -277,8 +284,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Rheolyddion Rhithwir</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Dewiswch fath o allbwn, bwydwch ddyfeisiau'r slot, a chliciwch ar gerdyn i lunio ei fapiadau.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>Mae nodweddion dewisol yn aros yma: y rheolydd gwe ar y ffôn, Dolen Bell, y gweinydd symudiad a mwy.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>Llinell Offer</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>Nifer y dyfeisiau, cyfradd holi, a fflam yr injan, bob amser yn y golwg.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Dangos y Daith Groeso</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Slot</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Dyfais</value></data>
@@ -3916,11 +3921,13 @@ Hoffech chi i PadForge eu dadosod nawr? Mae hyn angen caniatâd gweinyddwr ac ef
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Dirgrynu'r Rheolydd Hefyd</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Hysbysiad Prawf</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Anogwyr Neilltuo</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Pan fydd dyfais yn cysylltu tra bod tudalen rheolydd rhithwir ar agor, gall PadForge gynnig ei neilltuo yno. Ni neilltuir dim nes i chi glicio Neilltuo. Ni chynigir bysellfyrddau, llygod, padiau cyffwrdd na bysellau cyfryngau byth.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Pan fydd dyfais yn cysylltu tra bod tudalen rheolydd rhithwir ar agor, gall PadForge gynnig ei neilltuo yno, a gall Hafan gynnig rheolydd rhithwir ei hun i ddyfais newydd. Ni neilltuir dim nes i chi dderbyn cynnig. Ni chynigir bysellfyrddau, llygod, padiau cyffwrdd na bysellau cyfryngau byth.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Cynnig Dyfeisiau Newydd i'r Rheolydd Rhithwir Agored</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Dim ond dyfeisiau nad yw PadForge erioed wedi'u gweld o'r blaen. Mae dyfeisiau y mae'n eu hadnabod eisoes yn cysylltu heb anogwr.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Cynnig Unrhyw Ddyfais sy'n Cysylltu Pan Nad Oes Gan y Rheolydd Rhithwir Agored Ddyfeisiau</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Newydd neu hysbys eisoes. Unwaith y bydd dyfais wedi'i neilltuo i'r rheolydd rhithwir, nid yw'r anogwr hwn yn ymddangos mwyach.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>Cynnig Dyfeisiau Newydd ar Hafan</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>Mae Hafan yn gofyn unwaith am bob dyfais newydd nad oes unrhyw reolydd rhithwir yn ei defnyddio. Mae Ei Ddefnyddio yn gwneud rheolydd rhithwir ar ei chyfer, ac mae Nid Nawr yn dod â'r cynnig i ben ar gyfer y ddyfais honno.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>Mae {0} newydd gysylltu. Ei neilltuo i'r rheolydd rhithwir hwn?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Neilltuo</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Nid Nawr</value></data>

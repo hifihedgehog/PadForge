@@ -604,6 +604,17 @@ namespace PadForge.Engine.Data
         [DefaultValue(false)]
         public bool TouchpadKeepPending { get; set; }
 
+        /// <summary>Home still owes this device its offer (#574). Set when
+        /// PadForge meets a device for the first time, and cleared for good
+        /// by Use It, by Not Now, or by any assignment to a virtual
+        /// controller. A file from before version 6 holds no such element, so
+        /// a device known for years is never offered. The file holds it while
+        /// it is set, so a device met just before PadForge closed is still
+        /// offered at the next start.</summary>
+        [XmlElement]
+        [DefaultValue(false)]
+        public bool HomeOfferPending { get; set; }
+
         /// <summary>Whether to bypass SDL's gamepad remapping and read raw joystick indices instead.</summary>
         [XmlElement]
         public bool ForceRawJoystickMode { get; set; }

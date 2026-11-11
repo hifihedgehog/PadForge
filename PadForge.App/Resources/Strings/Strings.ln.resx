@@ -73,6 +73,7 @@
   <data name="Common_Unknown" xml:space="preserve"><value>Eyebani te</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Kokoba</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Kotelemisa</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Kobanda</value></data>
   <data name="Common_None" xml:space="preserve"><value>Eloko te</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -88,6 +89,7 @@
   <data name="Main_ShuttingDown" xml:space="preserve"><value>Kokanga PadForge...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>Kobanda PadForge…</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Kobakisa manette</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Profil</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Kolimwisa manette virtuelle</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Kolakisa PadForge</value></data>
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>Manette virtuelle {0}</value></data>
@@ -1707,4 +1709,16 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>Ntango</value></data>
   <data name="MacroAction_TriggerEffect_Timed_Format" xml:space="preserve"><value>{0} na {1} mpo na {2} ms</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>Kotelemisa effet ya gâchette na {0}</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Ba extra</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Banzela mosusu ya kosakana</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Kotinda yango esika mosusu</value></data>
+  <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Tala zingazinga na tracker ya motó to casque ya VR.</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Tia vitesse, ba pédale mpe ba rapport ya ba masano ya motuka.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Zwa ba effet ya gâchette mpe ya mwinda uta na ba mod ya masano.</value></data>
+  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>Runtime OpenXR, port UDP, étendue ya axe moko moko</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, mokitani ya DSX.exe</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Ba port, vitesse mobimba, ba format personnalisé</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} ekangani mpe ezali kosalelama te.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Kosalela yango</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>Ndako etunaka mbala moko mpo na appareil moko moko ya sika oyo manette virtuelle moko te ezali kosalela. Kosalela yango esalaka manette virtuelle mpo na yango, mpe Sikoyo te esukisaka motuna mpo na appareil wana.</value></data>
 </root>

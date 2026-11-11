@@ -85,6 +85,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Tirotiro...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Haere tonu</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Whakamutu</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Tīmata</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Ūkui</value></data>
   <data name="Common_None" xml:space="preserve"><value>Kore</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
@@ -156,6 +157,7 @@
   <data name="FirstRun_Done" xml:space="preserve"><value>Kua oti</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Pūrere</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Arokite</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Ngā āpiti</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Ngā mod kēmu</value></data>
   <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Ka taea e ngā mod kēmu i hangaia mō DSX te whakarite i ngā trigger urutau, te lightbar, ngā rama kaitākaro me te rama wahangū o ō controller PlayStation.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Whakaae ki ngā mod kēmu DSX</value></data>
@@ -1768,4 +1770,13 @@
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} i {1} i te wā e puritia ana</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} i {1} kia whakamutua rā anō</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>Whakamutu pānga trigger i {0}</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Ētahi atu huarahi tākaro</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Tukuna ki wāhi kē</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Tautapahia te tere, ngā pedal me ngā gear o ngā kēmu taraiwa.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Whiwhi i ngā pānga trigger me ngā pānga rama mai i ngā mod kēmu.</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, whakakapi DSX.exe</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Ngā port, tere mōrahi, ngā hōputu ritenga</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Kōtaha</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>Kua hono a {0}, ā, kāore e whakamahia ana.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Whakamahia</value></data>
 </root>

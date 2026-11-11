@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Bla gjennom...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Fortsett</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Stopp</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Start</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Ta opp</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Tar opp...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Tøm</value></data>
@@ -136,6 +137,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Rydder opp virtuelle kontrollere fra en tidligere økt.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> enheter</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Legg til kontroller</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Profil</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Slett virtuell kontroller</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Fullskjerm</value></data>
   <data name="Main_Minimize" xml:space="preserve"><value>Minimer</value></data>
@@ -269,10 +271,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Virtuell kontroller {0} er slettet.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>Oversikt</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>Hjem</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Inndatamotor</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> enheter tilkoblet</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Virtuelle kontrollere</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Kontrollere</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>Ekstra i bruk</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Resten finner du under Ekstra, og hver av dem er av til du slår den på.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>Åpne Ekstra</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} er tilkoblet og ikke i bruk.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Bruk den</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> tilordnet, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> tilkoblet</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Motoren kjører. Klikk for å stoppe.</value></data>
@@ -292,8 +299,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Virtuelle kontrollere</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Velg en utdatatype, gi sporet enheter, og klikk på et kort for å forme tilordningene.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>Valgfrie funksjoner finnes her: nettkontrolleren for telefonen, Fjernkobling, bevegelsesserveren og mer.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>Instrumentlinje</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>Antall enheter, avspørringsfrekvens og motorflammen, alltid synlig.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Vis velkomstomvisning</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Spor</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Enhet</value></data>
@@ -4119,11 +4124,13 @@ Vil du at PadForge skal avinstallere dem nå? Dette krever administratorrettighe
   <data name="Battery_FullTitle" xml:space="preserve"><value>Kontrolleren er fulladet</value></data>
   <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: fulladet</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Forslag om tilordning</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Når en enhet kobles til mens siden for en virtuell kontroller er åpen, kan PadForge tilby å tilordne den dit. Ingenting tilordnes før du klikker Tilordne. Tastaturer, mus, berøringsplater og medietaster blir aldri foreslått.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Når en enhet kobles til mens siden for en virtuell kontroller er åpen, kan PadForge tilby å tilordne den dit, og Hjem kan tilby en ny enhet en virtuell kontroller for seg selv. Ingenting tilordnes før du godtar et forslag. Tastaturer, mus, berøringsplater og medietaster blir aldri foreslått.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Foreslå nye enheter for den åpne virtuelle kontrolleren</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Bare enheter PadForge aldri har sett før. Enheter programmet allerede kjenner, kobles til uten spørsmål.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Foreslå enhver enhet som kobles til, når den åpne virtuelle kontrolleren ikke har noen enheter</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Nye eller allerede kjente. Når den virtuelle kontrolleren har fått tilordnet en enhet, vises ikke dette spørsmålet lenger.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>Foreslå nye enheter på Hjem</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>Hjem spør én gang om hver nye enhet som ingen virtuell kontroller bruker. Bruk den lager en virtuell kontroller for den, og Ikke nå avslutter forslaget for den enheten.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} ble nettopp koblet til. Vil du tilordne den til denne virtuelle kontrolleren?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Tilordne</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Ikke nå</value></data>

@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Прелистај...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Продолжи</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Запри</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Стартувај</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Сними</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Снимање...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Исчисти</value></data>
@@ -136,6 +137,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Се чистат виртуелните контролери останати од претходната сесија.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> уреди</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Додај контролер</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Профил</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Избриши виртуелен контролер</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Цел екран</value></data>
   <data name="Main_Minimize" xml:space="preserve"><value>Минимизирај</value></data>
@@ -269,10 +271,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Виртуелниот контролер {0} е избришан.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>Контролна табла</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>Почетна</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Мотор за влез</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> уреди онлајн</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Виртуелни контролери</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Контролери</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>Додатоци во употреба</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Останатите се во Додатоци, секој е исклучен додека не го вклучите.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>Отвори ги Додатоците</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} е поврзан и не се користи.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Користи го</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> мапирани, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> поврзани</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Моторот работи. Кликнете за да го запрете.</value></data>
@@ -292,8 +299,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Виртуелни контролери</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Изберете тип на излез, доделете уреди на слотот и кликнете на картичка за да ги обликувате нејзините мапирања.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>Тука ги чекаат изборните функции: веб-контролерот на телефонот, Далечинската врска, серверот за движење и повеќе.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>Лента со инструменти</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>Број на уреди, фреквенција на читање и пламенот на моторот, секогаш на видик.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Прикажи ја воведната обиколка</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Слот</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Уред</value></data>
@@ -4119,11 +4124,13 @@
   <data name="Battery_FullTitle" xml:space="preserve"><value>Контролерот е целосно наполнет</value></data>
   <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: целосно наполнет</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Понуди за доделување</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Кога уред ќе се поврзе додека е отворена страницата на виртуелен контролер, PadForge може да понуди да го додели таму. Ништо не се доделува додека не кликнете „Додели“. Тастатурите, глувците, допирните табли и медиумските тастери никогаш не се нудат.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Кога уред ќе се поврзе додека е отворена страницата на виртуелен контролер, PadForge може да понуди да го додели таму, а Почетна може да понуди на нов уред свој виртуелен контролер. Ништо не се доделува додека не прифатите понуда. Тастатурите, глувците, допирните табли и медиумските тастери никогаш не се нудат.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Нуди нови уреди на отворениот виртуелен контролер</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Само уреди што PadForge никогаш досега не ги видел. Уредите што веќе ги познава се поврзуваат без прашање.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Нуди го секој уред што се поврзува кога отворениот виртуелен контролер нема уреди</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Нов или веќе познат. Штом на виртуелниот контролер ќе му се додели уред, ова прашање повеќе не се појавува.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>Нуди нови уреди на Почетна</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>Почетна прашува еднаш за секој нов уред што не го користи ниту еден виртуелен контролер. „Користи го“ создава виртуелен контролер за него, а „Не сега“ ја завршува понудата за тој уред.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} штотуку се поврза. Да се додели на овој виртуелен контролер?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Додели</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Не сега</value></data>

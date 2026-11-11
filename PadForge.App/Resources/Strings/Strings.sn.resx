@@ -69,6 +69,7 @@
   <data name="Common_Unknown" xml:space="preserve"><value>Hazvizivikanwi</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Enderera mberi</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Misa</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Tanga</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Rekodha</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Kurekodha...</value></data>
   <data name="Common_None" xml:space="preserve"><value>Hapana</value></data>
@@ -1321,4 +1322,6 @@
   <data name="MacroAction_TriggerEffect_HoldDuration" xml:space="preserve"><value>Kwenguva yakatarwa</value></data>
   <data name="MacroAction_TriggerEffect_HoldStopped" xml:space="preserve"><value>Kusvikira yamiswa</value></data>
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>Nguva</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Zvekuwedzera</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Purofaira</value></data>
 </root>

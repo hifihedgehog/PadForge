@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>დათვალიერება...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>გაგრძელება</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>გაჩერება</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>დაწყება</value></data>
   <data name="Common_Record" xml:space="preserve"><value>ჩაწერა</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>ჩაწერა...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>გასუფთავება</value></data>
@@ -125,6 +126,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>წინა სესიიდან დარჩენილი ვირტუალური კონტროლერების გასუფთავება.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> მოწყობილობა</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>კონტროლერის დამატება</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>პროფილი</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>ვირტუალური კონტროლერის წაშლა</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>სრული ეკრანი</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>PadForge-ის ჩვენება</value></data>
@@ -254,10 +256,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>ვირტუალური კონტროლერი {0} წაიშალა.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>მთავარი პანელი</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>მთავარი</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>შეყვანის ძრავა</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> მოწყობილობა ონლაინ</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>ვირტუალური კონტროლერები</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>კონტროლერები</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>გამოყენებული დამატებითი</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>დანარჩენი დამატებითშია, თითოეული გამორთულია, სანამ არ ჩართავთ.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>დამატებითის გახსნა</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} დაკავშირებულია და არ გამოიყენება.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>გამოყენება</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> მიბმულია, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> დაკავშირებულია</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>ძრავა მუშაობს. დააწკაპუნეთ გასაჩერებლად.</value></data>
@@ -277,8 +284,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>ვირტუალური კონტროლერები</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>აირჩიეთ გამოსასვლელი ტიპი, მიაწოდეთ სლოტს მოწყობილობები და დააწკაპუნეთ ბარათზე მისი მიბმების გასაწყობად.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>აქ დამატებითი ფუნქციები გელოდებათ: ტელეფონის ვებ-კონტროლერი, დისტანციური კავშირი, მოძრაობის სერვერი და სხვა.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>ინსტრუმენტების ზოლი</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>მოწყობილობების რაოდენობა, გამოკითხვის სიხშირე და ძრავის ალი ყოველთვის თვალწინ.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>მისალმების ტურის ჩვენება</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>სლოტი</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>მოწყობილობა</value></data>
@@ -3918,11 +3923,13 @@
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>ასევე კონტროლერის ვიბრაცია</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>სატესტო შეტყობინება</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>მინიჭების შეთავაზებები</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>როცა მოწყობილობა უერთდება ვირტუალური კონტროლერის გვერდის გახსნისას, PadForge-ს შეუძლია შესთავაზოს მისი იქ მინიჭება. არაფერი ენიჭება, სანამ არ დააჭერთ მინიჭებას. კლავიატურები, მაუსები, ტაჩპედები და მედია კლავიშები არასოდეს შემოგთავაზდება.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>როცა მოწყობილობა უერთდება ვირტუალური კონტროლერის გვერდის გახსნისას, PadForge-ს შეუძლია შესთავაზოს მისი იქ მინიჭება, ხოლო მთავარს შეუძლია ახალ მოწყობილობას შესთავაზოს საკუთარი ვირტუალური კონტროლერი. არაფერი ენიჭება, სანამ შეთავაზებას არ მიიღებთ. კლავიატურები, მაუსები, ტაჩპედები და მედია კლავიშები არასოდეს შემოგთავაზდება.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>ახალი მოწყობილობების შეთავაზება გახსნილ ვირტუალურ კონტროლერზე</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>მხოლოდ მოწყობილობები, რომლებიც PadForge-ს არასდროს უნახავს. უკვე ცნობილი მოწყობილობები შეთავაზების გარეშე უერთდება.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>ნებისმიერი დაკავშირებული მოწყობილობის შეთავაზება, როცა გახსნილ ვირტუალურ კონტროლერს მოწყობილობა არ აქვს</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>ახალი ან უკვე ცნობილი. როცა ვირტუალურ კონტროლერს მოწყობილობა ენიჭება, ეს შეთავაზება აღარ ჩნდება.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>ახალი მოწყობილობების შეთავაზება მთავარზე</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>მთავარი ერთხელ იკითხავს თითოეულ ახალ მოწყობილობაზე, რომელსაც არც ერთი ვირტუალური კონტროლერი არ იყენებს. გამოყენება მისთვის ვირტუალურ კონტროლერს ქმნის, ახლა არა კი ამ მოწყობილობის შეთავაზებას წყვეტს.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} ახლახან დაუკავშირდა. მივანიჭოთ ამ ვირტუალურ კონტროლერს?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>მინიჭება</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>ახლა არა</value></data>

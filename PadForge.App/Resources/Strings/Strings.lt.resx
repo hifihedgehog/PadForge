@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Naršyti...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Tęsti</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Stabdyti</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Paleisti</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Įrašyti</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Įrašoma...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Išvalyti</value></data>
@@ -125,6 +126,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Išvalomi virtualūs valdikliai, likę po ankstesnio seanso.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> įrenginiai</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Pridėti valdiklį</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Profilis</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Ištrinti virtualų valdiklį</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Visas ekranas</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Rodyti „PadForge“</value></data>
@@ -254,10 +256,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Virtualus valdiklis {0} ištrintas.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>Suvestinė</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>Pradžia</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Įvesties variklis</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> įrenginiai prijungti</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Virtualūs valdikliai</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Valdikliai</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>Naudojami papildai</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Kiti papildai yra puslapyje „Papildai“, kiekvienas išjungtas, kol jo neįjungiate.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>Atidaryti papildus</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} prijungtas ir nenaudojamas.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Naudoti</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> priskirta, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> prijungta</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Variklis veikia. Spustelėkite, kad sustabdytumėte.</value></data>
@@ -277,8 +284,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Virtualūs valdikliai</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Pasirinkite išvesties tipą, priskirkite lizdui įrenginius ir spustelėkite kortelę, kad suformuotumėte jo priskyrimus.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>Čia laukia pasirenkamos funkcijos: telefono žiniatinklio valdiklis, nuotolinis ryšys, judesio serveris ir kita.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>Prietaisų eilutė</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>Įrenginių skaičius, apklausos dažnis ir variklio liepsna – visada matomi.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Rodyti pasveikinimo apžvalgą</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Lizdas</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Įrenginys</value></data>
@@ -3915,11 +3920,13 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Taip pat vibruoti valdiklį</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Bandomasis pranešimas</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Priskyrimo pasiūlymai</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Kai įrenginys prijungiamas, kol atidarytas virtualaus valdiklio puslapis, „PadForge“ gali pasiūlyti jį ten priskirti. Niekas nepriskiriama, kol nespustelėsite „Priskirti“. Klaviatūros, pelės, jutikliniai skydeliai ir medijos klavišai niekada nesiūlomi.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Kai įrenginys prijungiamas, kol atidarytas virtualaus valdiklio puslapis, „PadForge“ gali pasiūlyti jį ten priskirti, o „Pradžia“ gali pasiūlyti naujam įrenginiui atskirą virtualų valdiklį. Niekas nepriskiriama, kol nepriimsite pasiūlymo. Klaviatūros, pelės, jutikliniai skydeliai ir medijos klavišai niekada nesiūlomi.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Siūlyti naujus įrenginius atidarytam virtualiam valdikliui</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Tik įrenginiai, kurių „PadForge“ dar niekada nematė. Jau žinomi įrenginiai prisijungia be pasiūlymo.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Siūlyti bet kurį prisijungiantį įrenginį, kai atidarytas virtualus valdiklis neturi įrenginių</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Naujas arba jau žinomas. Kai virtualiam valdikliui priskiriamas įrenginys, šis pasiūlymas nebepasirodo.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>Siūlyti naujus įrenginius pradžioje</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>Pradžia vieną kartą paklausia apie kiekvieną naują įrenginį, kurio nenaudoja joks virtualus valdiklis. „Naudoti“ sukuria jam virtualų valdiklį, o „Ne dabar“ baigia pasiūlymą tam įrenginiui.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>Ką tik prisijungė {0}. Priskirti jį šiam virtualiam valdikliui?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Priskirti</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Ne dabar</value></data>

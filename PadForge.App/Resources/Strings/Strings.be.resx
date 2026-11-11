@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Выбраць...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Працягнуць</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Спыніць</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Запусціць</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Запісаць</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Запіс...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Ачысціць</value></data>
@@ -136,6 +137,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Ачыстка віртуальных кантролераў, што засталіся ад папярэдняга сеанса.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> прылад</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Дадаць кантролер</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Профіль</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Выдаліць віртуальны кантролер</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Поўны экран</value></data>
   <data name="Main_Minimize" xml:space="preserve"><value>Згарнуць</value></data>
@@ -269,10 +271,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Віртуальны кантролер {0} выдалены.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>Агляд</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>Галоўная</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Рухавік уводу</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> прылад падключана</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Віртуальныя кантролеры</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Кантролеры</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>Дадаткова ў ужытку</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Астатняе ў раздзеле «Дадаткова», кожная функцыя выключана, пакуль вы яе не ўключыце.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>Адкрыць «Дадаткова»</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} падключана, але не выкарыстоўваецца.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Выкарыстаць</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> прызначана, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> падключана</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Рухавік працуе. Націсніце, каб спыніць.</value></data>
@@ -292,8 +299,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Віртуальныя кантролеры</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Выберыце тып выхаду, прызначце слоту прылады і націсніце на картку, каб наладзіць яе прызначэнні.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>Тут чакаюць дадатковыя функцыі: вэб-кантролер для тэлефона, Аддаленая сувязь, сервер руху і іншае.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>Радок прыбораў</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>Колькасць прылад, частата апытання і полымя рухавіка заўсёды на віду.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Паказаць вітальную экскурсію</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Слот</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Прылада</value></data>
@@ -4119,11 +4124,13 @@
   <data name="Battery_FullTitle" xml:space="preserve"><value>Кантролер цалкам зараджаны</value></data>
   <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: цалкам зараджаны</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Прапановы прызначэння</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Калі прылада падключаецца, пакуль адкрыта старонка віртуальнага кантролера, PadForge можа прапанаваць прызначыць яе туды. Нічога не прызначаецца, пакуль вы не націснеце «Прызначыць». Клавіятуры, мышы, сэнсарныя панэлі і медыяклавішы ніколі не прапануюцца.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Калі прылада падключаецца, пакуль адкрыта старонка віртуальнага кантролера, PadForge можа прапанаваць прызначыць яе туды, а «Галоўная» можа прапанаваць новай прыладзе ўласны віртуальны кантролер. Нічога не прызначаецца, пакуль вы не прыміце прапанову. Клавіятуры, мышы, сэнсарныя панэлі і медыяклавішы ніколі не прапануюцца.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Прапаноўваць новыя прылады адкрытаму віртуальнаму кантролеру</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Толькі прылады, якіх PadForge ніколі не бачыў. Ужо вядомыя прылады падключаюцца без запыту.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Прапаноўваць любую прыладу, што падключаецца, калі ў адкрытага віртуальнага кантролера няма прылад</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Новая або ўжо вядомая. Пасля таго як віртуальнаму кантролеру прызначана прылада, гэты запыт больш не з'яўляецца.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>Прапаноўваць новыя прылады на старонцы «Галоўная»</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>«Галоўная» адзін раз пытаецца пра кожную новую прыладу, якой не карыстаецца ніводны віртуальны кантролер. «Выкарыстаць» стварае для яе віртуальны кантролер, а «Не зараз» завяршае прапанову для гэтай прылады.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} толькі што падключана. Прызначыць яе гэтаму віртуальнаму кантролеру?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Прызначыць</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Не зараз</value></data>

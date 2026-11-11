@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>เรียกดู...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>ดำเนินการต่อ</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>หยุด</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>เริ่ม</value></data>
   <data name="Common_Record" xml:space="preserve"><value>บันทึกอินพุต</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>กำลังบันทึก...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>ล้าง</value></data>
@@ -136,6 +137,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>กำลังล้างคอนโทรลเลอร์เสมือนที่ค้างจากเซสชันก่อนหน้า</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> อุปกรณ์</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>เพิ่มคอนโทรลเลอร์</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>โปรไฟล์</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>ลบคอนโทรลเลอร์เสมือน</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>เต็มหน้าจอ</value></data>
   <data name="Main_Minimize" xml:space="preserve"><value>ย่อเล็กสุด</value></data>
@@ -269,10 +271,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>ลบคอนโทรลเลอร์เสมือน {0} แล้ว</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>แดชบอร์ด</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>หน้าแรก</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>เอนจินอินพุต</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> อุปกรณ์ออนไลน์</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>คอนโทรลเลอร์เสมือน</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>คอนโทรลเลอร์</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>ส่วนเสริมที่ใช้อยู่</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>ส่วนที่เหลืออยู่ในส่วนเสริม และแต่ละอย่างจะปิดอยู่จนกว่าคุณจะเปิดใช้</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>เปิดส่วนเสริม</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} เชื่อมต่ออยู่และยังไม่ได้ใช้งาน</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>ใช้เลย</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> แมปแล้ว, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> เชื่อมต่ออยู่</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>เอนจินกำลังทำงาน คลิกเพื่อหยุด</value></data>
@@ -292,8 +299,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>คอนโทรลเลอร์เสมือน</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>เลือกประเภทเอาต์พุต ป้อนอุปกรณ์ให้ช่อง แล้วคลิกการ์ดเพื่อปรับแต่งการแมป</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>ฟีเจอร์เสริมอยู่ที่นี่ ได้แก่ คอนโทรลเลอร์บนเว็บสำหรับโทรศัพท์ ลิงก์ระยะไกล เซิร์ฟเวอร์การเคลื่อนไหว และอื่น ๆ</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>แถบเครื่องวัด</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>จำนวนอุปกรณ์ อัตราการโพล และเปลวไฟของเอนจิน มองเห็นได้ตลอดเวลา</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>แสดงทัวร์ต้อนรับ</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>ช่อง</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>อุปกรณ์</value></data>
@@ -4119,11 +4124,13 @@
   <data name="Battery_FullTitle" xml:space="preserve"><value>ชาร์จคอนโทรลเลอร์เต็มแล้ว</value></data>
   <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: ชาร์จเต็มแล้ว</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>ข้อความเสนอการกำหนด</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>เมื่อมีอุปกรณ์เชื่อมต่อขณะที่หน้าของคอนโทรลเลอร์เสมือนเปิดอยู่ PadForge สามารถเสนอให้กำหนดอุปกรณ์นั้นให้คอนโทรลเลอร์เสมือนดังกล่าวได้ จะไม่มีการกำหนดใด ๆ จนกว่าคุณจะคลิก “กำหนด” คีย์บอร์ด เมาส์ ทัชแพด และคีย์สื่อจะไม่ถูกเสนอเลย</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>เมื่อมีอุปกรณ์เชื่อมต่อขณะที่หน้าของคอนโทรลเลอร์เสมือนเปิดอยู่ PadForge สามารถเสนอให้กำหนดอุปกรณ์นั้นให้คอนโทรลเลอร์เสมือนดังกล่าวได้ และหน้าแรกสามารถเสนอคอนโทรลเลอร์เสมือนของตัวเองให้อุปกรณ์ใหม่ได้ จะไม่มีการกำหนดใด ๆ จนกว่าคุณจะยอมรับข้อเสนอ คีย์บอร์ด เมาส์ ทัชแพด และคีย์สื่อจะไม่ถูกเสนอเลย</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>เสนออุปกรณ์ใหม่ให้คอนโทรลเลอร์เสมือนที่เปิดอยู่</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>เฉพาะอุปกรณ์ที่ PadForge ไม่เคยเห็นมาก่อน อุปกรณ์ที่รู้จักอยู่แล้วจะเชื่อมต่อโดยไม่มีข้อความเสนอ</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>เสนออุปกรณ์ใดก็ได้ที่เชื่อมต่อ เมื่อคอนโทรลเลอร์เสมือนที่เปิดอยู่ยังไม่มีอุปกรณ์</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>ทั้งอุปกรณ์ใหม่และที่รู้จักอยู่แล้ว เมื่อคอนโทรลเลอร์เสมือนมีอุปกรณ์ที่กำหนดไว้แล้ว ข้อความเสนอนี้จะไม่ปรากฏอีก</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>เสนออุปกรณ์ใหม่ในหน้าแรก</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>หน้าแรกจะถามเพียงครั้งเดียวสำหรับอุปกรณ์ใหม่แต่ละตัวที่ไม่มีคอนโทรลเลอร์เสมือนใช้อยู่ ใช้เลย จะสร้างคอนโทรลเลอร์เสมือนให้อุปกรณ์นั้น ส่วน ไม่ใช่ตอนนี้ จะจบข้อเสนอสำหรับอุปกรณ์นั้น</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} เพิ่งเชื่อมต่อ กำหนดให้คอนโทรลเลอร์เสมือนนี้หรือไม่?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>กำหนด</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>ไม่ใช่ตอนนี้</value></data>

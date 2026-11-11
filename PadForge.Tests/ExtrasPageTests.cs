@@ -75,7 +75,7 @@ namespace PadForge.Tests
         public void EveryMovedControl_KeepsItsIdAndItsName()
         {
             string page = Page();
-            string dashboard = RepoText("PadForge.App", "Views", "DashboardPage.xaml");
+            string dashboard = RepoText("PadForge.App", "Views", "HomePage.xaml");
             foreach (string id in new[]
             {
                 "EnableWebControllerCheckBox", "Reset_DashboardViewModel_EnableWebController_1488",
@@ -118,7 +118,7 @@ namespace PadForge.Tests
             // The format editor's button kept its handler, which moved with it.
             Assert.Contains("Click=\"GameTelemetryFormatsButton_Click\"", page);
             Assert.Contains("private void GameTelemetryFormatsButton_Click(", RepoText("PadForge.App", "Views", "ExtrasPage.xaml.cs"));
-            Assert.DoesNotContain("GameTelemetryFormatsButton_Click", RepoText("PadForge.App", "Views", "DashboardPage.xaml.cs"));
+            Assert.DoesNotContain("GameTelemetryFormatsButton_Click", RepoText("PadForge.App", "Views", "HomePage.xaml.cs"));
         }
 
         // ── what shows first, and what More holds ──────────────────────
@@ -328,13 +328,15 @@ namespace PadForge.Tests
             int click = window.IndexOf("if (tag == \"Extras\") ExtrasPageView.ShowCatalog();", activate, StringComparison.Ordinal);
             Assert.True(activate > 0 && click > activate && click < navigate, "a click on the Extras item goes back to the catalog");
             Assert.Equal(2, Count(window, "ExtrasPageView.ShowCatalog();"));
-            // The sidebar item, after Devices and ahead of the controllers.
+            // The sidebar item, after Devices and Profiles and ahead of the
+            // Controllers label and the controllers under it (HomePageTests
+            // pins the whole order).
             int devices = window.IndexOf("NavView.MenuItems.Add(_navDevices);", StringComparison.Ordinal);
             int extras = window.IndexOf("NavView.MenuItems.Add(_navExtras);", StringComparison.Ordinal);
             int controllers = window.IndexOf("RebuildControllerSection();", extras, StringComparison.Ordinal);
             Assert.True(devices > 0 && extras > devices && controllers > extras);
             Assert.Contains("SetNavAutomationId(_navExtras, \"Extras\");", window);
-            Assert.Contains("private const int ControllerInsertIndex = 4;", window);
+            Assert.Contains("private const int ControllerInsertIndex = 5;", window);
             Assert.Contains("if (_navExtras != null) _navExtras.Content = Strings.Instance.Extras_Title;", window);
             // The Welcome Tour's stop on the services points at the item now.
             Assert.Contains("(_navExtras, Strings.Instance.Extras_Title, Strings.Instance.Tour_Extras_Body),", window);
@@ -663,6 +665,58 @@ namespace PadForge.Tests
             tile.Key = "RemoteLink";
             Assert.Equal("Extras_Open_RemoteLink", AutomationProperties.GetAutomationId(open));
             Assert.Equal("Extras_Switch_RemoteLink", AutomationProperties.GetAutomationId(toggle));
+        });
+
+        /// <summary>The tile's second face, the row Home shows for an extra
+        /// that is on (the HomeExtraTile style): one button over the whole
+        /// row that asks for the extra's page, under an id that starts
+        /// Home_Extra_ so it never shares one with the catalog's tile, the
+        /// live status while there is one, and no switch.</summary>
+        [Fact]
+        public void HomesRow_BuildsFromItsShippedTemplate_OpensThePage_AndHasNoSwitch() => RunSta(() =>
+        {
+            var styles = ShippedStyles();
+            var row = new ExtraTile
+            {
+                Key = "MotionServer",
+                Glyph = "",
+                Title = "Motion Server",
+                Status = "Listening on port 26760",
+                IsOn = true,
+                Resources = styles,
+                Style = (Style)styles["HomeExtraTile"],
+            };
+            Assert.True(row.ApplyTemplate(), "Home's row has no template");
+            Assert.Equal(ExtraTile.HomeOpenIdPrefix, row.OpenPrefix);
+
+            var open = Assert.IsType<Button>(row.Template.FindName(ExtraTile.OpenPartName, row));
+            Assert.Null(row.Template.FindName(ExtraTile.SwitchPartName, row));
+            Assert.Null(row.Template.FindName("StateWord", row));
+            var status = Assert.IsType<TextBlock>(row.Template.FindName("StatusText", row));
+
+            Assert.Equal("Home_Extra_MotionServer", AutomationProperties.GetAutomationId(open));
+            Assert.Equal("Motion Server", AutomationProperties.GetName(open));
+            Assert.Equal("Listening on port 26760", AutomationProperties.GetItemStatus(open));
+            Assert.Equal(Visibility.Visible, status.Visibility);
+            Assert.Equal("Listening on port 26760", status.Text);
+
+            // An extra with no status line shows its name alone.
+            row.Status = "";
+            Assert.Equal(Visibility.Collapsed, status.Visibility);
+            row.Status = null;
+            Assert.Equal(Visibility.Collapsed, status.Visibility);
+
+            var opened = new List<object>();
+            row.OpenRequested += (_, e) => opened.Add(e.OriginalSource);
+            open.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+            Assert.Same(row, Assert.Single(opened));
+
+            // The catalog's tile of the same extra keeps its own id.
+            var tile = new ExtraTile { Key = "MotionServer", Resources = styles };
+            tile.Style = (Style)styles[typeof(ExtraTile)];
+            Assert.True(tile.ApplyTemplate());
+            Assert.Equal("Extras_Open_MotionServer",
+                AutomationProperties.GetAutomationId(Assert.IsType<Button>(tile.Template.FindName(ExtraTile.OpenPartName, tile))));
         });
 
         [Fact]

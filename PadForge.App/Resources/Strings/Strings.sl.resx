@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Prebrskaj ...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Nadaljuj</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Ustavi</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Zaženi</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Posnemi</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Snemanje ...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Počisti</value></data>
@@ -136,6 +137,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Čiščenje navideznih krmilnikov, ki so ostali iz prejšnje seje.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> naprav</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Dodaj krmilnik</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Profil</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Izbriši navidezni krmilnik</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Celozaslonski način</value></data>
   <data name="Main_Minimize" xml:space="preserve"><value>Pomanjšaj</value></data>
@@ -269,10 +271,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Navidezni krmilnik {0} je izbrisan.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>Nadzorna plošča</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>Domov</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Mehanizem vnosa</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> povezanih naprav</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Navidezni krmilniki</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Krmilniki</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>Dodatki v uporabi</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Preostali so med dodatki, vsak je izklopljen, dokler ga ne vklopite.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>Odpri dodatke</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>Naprava {0} je povezana in ni v uporabi.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Uporabi</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> preslikanih, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> povezanih</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Mehanizem deluje. Kliknite za ustavitev.</value></data>
@@ -292,8 +299,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Navidezni krmilniki</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Izberite vrsto izhoda, reži dodelite naprave in kliknite kartico, da oblikujete njene preslikave.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>Tu čakajo izbirne funkcije: spletni krmilnik za telefon, Oddaljena povezava, strežnik gibanja in še več.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>Vrstica instrumentov</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>Število naprav, hitrost poizvedovanja in plamen mehanizma, vedno na vidiku.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Pokaži uvodni ogled</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Reža</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Naprava</value></data>
@@ -4119,11 +4124,13 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="Battery_FullTitle" xml:space="preserve"><value>Krmilnik je napolnjen</value></data>
   <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: baterija je polna</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Pozivi za dodelitev</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Ko se naprava poveže, medtem ko je odprta stran navideznega krmilnika, lahko PadForge ponudi, da jo dodeli temu krmilniku. Nič se ne dodeli, dokler ne kliknete „Dodeli“. Tipkovnice, miške, sledilne ploščice in večpredstavnostne tipke se nikoli ne ponudijo.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Ko se naprava poveže, medtem ko je odprta stran navideznega krmilnika, lahko PadForge ponudi, da jo dodeli temu krmilniku, stran Domov pa lahko novi napravi ponudi lasten navidezni krmilnik. Nič se ne dodeli, dokler ne sprejmete ponudbe. Tipkovnice, miške, sledilne ploščice in večpredstavnostne tipke se nikoli ne ponudijo.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Ponudi nove naprave odprtemu navideznemu krmilniku</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Samo naprave, ki jih PadForge še ni videl. Znane naprave se povežejo brez poziva.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Ponudi vsako napravo, ki se poveže, ko odprti navidezni krmilnik nima naprav</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Nove ali že znane. Ko ima navidezni krmilnik dodeljeno napravo, se ta poziv ne prikaže več.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>Ponudi nove naprave na strani Domov</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>Stran Domov enkrat vpraša za vsako novo napravo, ki je noben navidezni krmilnik ne uporablja. Uporabi ji ustvari navidezni krmilnik, Ne zdaj pa konča ponudbo za to napravo.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>Pravkar se je povezala naprava {0}. Ali jo želite dodeliti temu navideznemu krmilniku?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Dodeli</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Ne zdaj</value></data>

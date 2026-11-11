@@ -83,6 +83,7 @@
   <data name="Common_Unknown" xml:space="preserve"><value>Wala mahibal-an</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Padayon</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Untat</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Sugod</value></data>
   <data name="Common_Record" xml:space="preserve"><value>I-record</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Gina-record...</value></data>
   <data name="Common_None" xml:space="preserve"><value>Wala</value></data>
@@ -100,6 +101,7 @@
   <data name="Main_ShuttingDown" xml:space="preserve"><value>Ginasirhan ang PadForge...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>Ginasugdan ang PadForge…</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Magdugang sang controller</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Profile</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Panasa ang virtual controller</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Ipakita ang PadForge</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>Nag-untat ang engine</value></data>
@@ -1478,4 +1480,15 @@
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} sa {1} samtang ginauyatan</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} sa {1} tubtob mauntat</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>Untata ang epekto sang trigger sa {0}</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Mga ekstra</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Dugang nga paagi sa pagdula</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Ipadala sa iban nga lugar</value></data>
+  <data name="Extras_Group_Screen" xml:space="preserve"><value>Sa screen</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>I-map ang tulin, pedal kag gear gikan sa mga dula sang pagdrayb.</value></data>
+  <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Kuhaa ang mga epekto sang trigger kag suga gikan sa mga game mod.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Ipakita ang mga menu, layer kag pagbaylo sang profile samtang nagadula ka.</value></data>
+  <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, pulili sang DSX.exe</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Mga port, bug-os nga tulin, custom nga mga format</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>Naka-connect ang {0} kag wala ginagamit.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Gamita ini</value></data>
 </root>

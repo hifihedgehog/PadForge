@@ -1693,6 +1693,8 @@ namespace PadForge.Tests
             Assert.False(ud.QuickChargeEnabled, who);
             Assert.False(ud.TouchpadOnlyInPadForge, who);
             Assert.False(ud.TouchpadKeepPending, who);
+            // A row the script made owes Home no offer (#574).
+            Assert.False(ud.HomeOfferPending, who);
             Assert.Equal(0, ud.IdleDisconnectSeconds);
             Assert.Equal(0, ud.PeripheralOutputs);
             Assert.False(ud.HasAccelAux, who);

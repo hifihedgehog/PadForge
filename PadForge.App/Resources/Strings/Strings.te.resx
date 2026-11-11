@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>బ్రౌజ్ చేయి...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>కొనసాగించు</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>ఆపు</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>ప్రారంభించు</value></data>
   <data name="Common_Record" xml:space="preserve"><value>రికార్డ్ చేయి</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>రికార్డ్ అవుతోంది...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>క్లియర్ చేయి</value></data>
@@ -136,6 +137,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>మునుపటి సెషన్ నుండి మిగిలిపోయిన వర్చువల్ కంట్రోలర్లను శుభ్రం చేస్తోంది.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> పరికరాలు</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>కంట్రోలర్ జోడించు</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>ప్రొఫైల్</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>వర్చువల్ కంట్రోలర్‌ను తొలగించు</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>పూర్తి స్క్రీన్</value></data>
   <data name="Main_Minimize" xml:space="preserve"><value>కనిష్టీకరించు</value></data>
@@ -269,10 +271,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>వర్చువల్ కంట్రోలర్ {0} తొలగించబడింది.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>డాష్బోర్డ్</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>హోమ్</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>ఇన్పుట్ ఇంజిన్</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> పరికరాలు ఆన్‌లైన్‌లో ఉన్నాయి</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>వర్చువల్ కంట్రోలర్లు</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>కంట్రోలర్లు</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>వాడుకలో ఉన్న ఎక్స్‌ట్రాలు</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>మిగిలినవి ఎక్స్‌ట్రాలు పేజీలో ఉన్నాయి, మీరు ఆన్ చేసే వరకు ప్రతిదీ ఆఫ్‌లో ఉంటుంది.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>ఎక్స్‌ట్రాలు తెరువు</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} కనెక్ట్ అయి ఉంది, వాడుకలో లేదు.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>దీన్ని వాడు</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> మ్యాప్ చేయబడ్డాయి, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> కనెక్ట్ అయ్యాయి</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>ఇంజిన్ నడుస్తోంది. ఆపడానికి క్లిక్ చేయండి.</value></data>
@@ -292,8 +299,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>వర్చువల్ కంట్రోలర్లు</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>అవుట్పుట్ రకం ఎంచుకోండి, స్లాట్‌కు పరికరాలను జోడించండి, దాని మ్యాపింగ్‌లను తీర్చిదిద్దడానికి కార్డ్‌పై క్లిక్ చేయండి.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>ఐచ్ఛిక ఫీచర్లు ఇక్కడ ఉంటాయి: ఫోన్ వెబ్ కంట్రోలర్, రిమోట్ లింక్, మోషన్ సర్వర్ ఇంకా మరిన్ని.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>ఇన్స్ట్రుమెంట్ లైన్</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>పరికరాల సంఖ్య, పోలింగ్ రేటు, ఇంజిన్ జ్వాల ఎల్లప్పుడూ కనిపిస్తాయి.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>స్వాగత టూర్ చూపించు</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>స్లాట్</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>పరికరం</value></data>
@@ -4119,11 +4124,13 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="Battery_FullTitle" xml:space="preserve"><value>కంట్రోలర్ పూర్తిగా ఛార్జ్ అయింది</value></data>
   <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: పూర్తిగా ఛార్జ్ అయింది</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>కేటాయింపు ప్రాంప్ట్లు</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>వర్చువల్ కంట్రోలర్ పేజీ తెరిచి ఉండగా పరికరం కనెక్ట్ అయితే, PadForge దానిని అక్కడ కేటాయించమని సూచించగలదు. మీరు కేటాయించు క్లిక్ చేసే వరకు ఏదీ కేటాయించబడదు. కీబోర్డ్లు, మౌస్లు, టచ్ ప్యాడ్లు మరియు మీడియా కీలు ఎప్పుడూ సూచించబడవు.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>వర్చువల్ కంట్రోలర్ పేజీ తెరిచి ఉండగా పరికరం కనెక్ట్ అయితే, PadForge దానిని అక్కడ కేటాయించమని సూచించగలదు, అలాగే హోమ్ కొత్త పరికరానికి దాని స్వంత వర్చువల్ కంట్రోలర్‌ను సూచించగలదు. మీరు సూచనను అంగీకరించే వరకు ఏదీ కేటాయించబడదు. కీబోర్డ్లు, మౌస్లు, టచ్ ప్యాడ్లు మరియు మీడియా కీలు ఎప్పుడూ సూచించబడవు.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>కొత్త పరికరాలను తెరిచి ఉన్న వర్చువల్ కంట్రోలర్కు సూచించు</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>PadForge ఇంతకు ముందు చూడని పరికరాలు మాత్రమే. ఇప్పటికే తెలిసిన పరికరాలు ప్రాంప్ట్ లేకుండా కనెక్ట్ అవుతాయి.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>తెరిచి ఉన్న వర్చువల్ కంట్రోలర్కు పరికరాలు లేనప్పుడు కనెక్ట్ అయ్యే ఏ పరికరాన్నైనా సూచించు</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>కొత్తవి లేదా ఇప్పటికే తెలిసినవి. వర్చువల్ కంట్రోలర్కు ఒక పరికరం కేటాయించిన తర్వాత, ఈ ప్రాంప్ట్ ఇక కనిపించదు.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>హోమ్‌లో కొత్త పరికరాలను సూచించు</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>ఏ వర్చువల్ కంట్రోలర్ వాడని ప్రతి కొత్త పరికరం గురించి హోమ్ ఒక్కసారి అడుగుతుంది. దీన్ని వాడు దాని కోసం వర్చువల్ కంట్రోలర్‌ను తయారు చేస్తుంది, ఇప్పుడు కాదు ఆ పరికరానికి సూచనను ముగిస్తుంది.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} ఇప్పుడే కనెక్ట్ అయింది. దీన్ని ఈ వర్చువల్ కంట్రోలర్కు కేటాయించాలా?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>కేటాయించు</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>ఇప్పుడు కాదు</value></data>

@@ -99,6 +99,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Parcourir...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Continuer</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Arrêter</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Démarrer</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Enregistrer</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Enregistrement...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Effacer</value></data>
@@ -133,6 +134,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Nettoyage des contrôleurs virtuels laissés par une session précédente.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> appareil(s)</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Ajouter un contrôleur</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Profil</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Supprimer le contrôleur virtuel</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Plein écran</value></data>
   <data name="Main_Minimize" xml:space="preserve"><value>Réduire</value></data>
@@ -259,10 +261,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Contrôleur virtuel {0} supprimé.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>Tableau de bord</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>Accueil</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Moteur d'entrée</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> appareils en ligne</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Contrôleurs virtuels</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Manettes</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>Extras utilisés</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Les autres se trouvent dans Extras, chacun désactivé tant que vous ne l'activez pas.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>Ouvrir Extras</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} est connecté et inutilisé.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>L'utiliser</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> assignés, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> connectés</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Moteur en marche. Clic pour l'arrêter.</value></data>
@@ -3184,8 +3191,6 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Tour_Engine_Title" xml:space="preserve"><value>Moteur d'entrée</value></data>
   <data name="Tour_Slots_Body" xml:space="preserve"><value>Chaque manette virtuelle réside ici. La flamme indique quels emplacements sont en forge en ce moment.</value></data>
   <data name="Tour_Slots_Title" xml:space="preserve"><value>Emplacements</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>Le nombre d'appareils, la fréquence d'interrogation et la flamme du moteur, toujours visibles.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>Barre d'instruments</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
   <data name="About_OpenVR" xml:space="preserve"><value>OpenVR API</value></data>
   <data name="About_OpenVRDesc" xml:space="preserve"><value>API client OpenVR de Valve (BSD 3-Clause) : casques et manettes de mouvement VR comme sources d’entrée. Le runtime natif est chargé depuis votre installation SteamVR.</value></data>
@@ -4070,11 +4075,13 @@ Voulez-vous que PadForge les désinstalle maintenant ? Cette opération nécessi
   <data name="Battery_FullTitle" xml:space="preserve"><value>Manette entièrement chargée</value></data>
   <data name="Battery_FullText_Format" xml:space="preserve"><value>{0} : batterie pleine</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Propositions d'affectation</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Quand un périphérique se connecte alors que la page d'une manette virtuelle est ouverte, PadForge peut proposer de l'y affecter. Rien n'est affecté tant que vous ne cliquez pas sur Affecter. Les claviers, souris, pavés tactiles et touches multimédia ne sont jamais proposés.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Quand un périphérique se connecte alors que la page d'une manette virtuelle est ouverte, PadForge peut proposer de l'y affecter, et Accueil peut proposer à un nouvel appareil une manette virtuelle à lui. Rien n'est affecté tant que vous n'acceptez pas une proposition. Les claviers, souris, pavés tactiles et touches multimédia ne sont jamais proposés.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Proposer les nouveaux périphériques à la manette virtuelle ouverte</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Uniquement les périphériques que PadForge n'a jamais vus. Ceux déjà connus se connectent sans proposition.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Proposer tout périphérique qui se connecte quand la manette virtuelle ouverte n'a aucun périphérique</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Nouveau ou déjà connu. Dès qu'un périphérique est affecté à la manette virtuelle, cette proposition n'apparaît plus.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>Proposer les nouveaux appareils sur Accueil</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>Accueil demande une seule fois pour chaque nouvel appareil qu'aucune manette virtuelle n'utilise. L'utiliser crée une manette virtuelle pour lui, et Pas maintenant met fin à la proposition pour cet appareil.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} vient de se connecter. L'affecter à cette manette virtuelle ?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Affecter</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Pas maintenant</value></data>

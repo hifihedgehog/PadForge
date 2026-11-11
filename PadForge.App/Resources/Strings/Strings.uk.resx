@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Огляд...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Продовжити</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Зупинити</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Запустити</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Записати</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Запис...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Очистити</value></data>
@@ -125,6 +126,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Очищення віртуальних контролерів, що залишилися з попереднього сеансу.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> пристр.</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Додати контролер</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Профіль</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Видалити віртуальний контролер</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>На весь екран</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Показати PadForge</value></data>
@@ -254,10 +256,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Віртуальний контролер {0} видалено.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>Інформаційна панель</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>Головна</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Рушій введення</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> пристр. онлайн</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Віртуальні контролери</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Контролери</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>Додатково в користуванні</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Решта на сторінці «Додатково», кожна вимкнена, доки ви її не ввімкнете.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>Відкрити «Додатково»</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} підключено, але не використовується.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Використати</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> прив'язано, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> підключено</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Рушій працює. Клацніть, щоб зупинити.</value></data>
@@ -277,8 +284,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Віртуальні контролери</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Виберіть тип виходу, дайте слоту пристрої та клацніть картку, щоб викувати її прив'язки.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>Тут чекають додаткові можливості: вебконтролер для телефона, Віддалений зв'язок, сервер руху та інші.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>Рядок приладів</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>Кількість пристроїв, частота опитування та полум'я рушія завжди перед очима.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Показати вітальну екскурсію</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Слот</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Пристрій</value></data>
@@ -3916,11 +3921,13 @@
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Також вібрувати контролером</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Перевірити сповіщення</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Пропозиції призначення</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Коли пристрій підключається, поки відкрито сторінку віртуального контролера, PadForge може запропонувати призначити його туди. Нічого не призначається, доки ви не натиснете «Призначити». Клавіатури, миші, сенсорні панелі та мультимедійні клавіші ніколи не пропонуються.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Коли пристрій підключається, поки відкрито сторінку віртуального контролера, PadForge може запропонувати призначити його туди, а сторінка «Головна» може запропонувати новому пристрою власний віртуальний контролер. Нічого не призначається, доки ви не приймете пропозицію. Клавіатури, миші, сенсорні панелі та мультимедійні клавіші ніколи не пропонуються.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Пропонувати нові пристрої відкритому віртуальному контролеру</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Лише пристрої, яких PadForge ще ніколи не бачив. Уже відомі йому пристрої підключаються без запиту.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Пропонувати будь-який пристрій, що підключається, коли відкритий віртуальний контролер не має пристроїв</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Новий або вже відомий. Щойно віртуальному контролеру призначено пристрій, цей запит більше не з'являється.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>Пропонувати нові пристрої на сторінці «Головна»</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>Сторінка «Головна» один раз питає про кожен новий пристрій, який не використовує жоден віртуальний контролер. Кнопка «Використати» створює для нього віртуальний контролер, а «Не зараз» завершує пропозицію для цього пристрою.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} щойно підключено. Призначити цьому віртуальному контролеру?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Призначити</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Не зараз</value></data>

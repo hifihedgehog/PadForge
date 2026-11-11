@@ -1273,6 +1273,12 @@
   },
   {
     "File": "PadForge.App/Views/SettingsPage.xaml",
+    "Id": "Reset_SettingsViewModel_AssignOfferHome",
+    "Owner": "PadForge.ViewModels.SettingsViewModel",
+    "Property": "AssignOfferHome"
+  },
+  {
+    "File": "PadForge.App/Views/SettingsPage.xaml",
     "Id": "Reset_SettingsViewModel_HandheldButtonsEnabled_245",
     "Owner": "PadForge.ViewModels.SettingsViewModel",
     "Property": "HandheldButtonsEnabled"

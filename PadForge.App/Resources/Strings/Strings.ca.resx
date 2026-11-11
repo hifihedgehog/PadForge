@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Navega...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Continua</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Atura</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Inicia</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Enregistra</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>S'està enregistrant...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Esborra</value></data>
@@ -125,6 +126,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>S'estan netejant els comandaments virtuals que han quedat d'una sessió anterior.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> dispositius</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Afegeix un comandament</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Perfil</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Suprimeix el comandament virtual</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Pantalla completa</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Mostra PadForge</value></data>
@@ -254,10 +256,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>S'ha suprimit el comandament virtual {0}.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>Tauler</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>Inici</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Motor d'entrada</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> dispositius en línia</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Comandaments virtuals</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Comandaments</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>Extres en ús</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>La resta són a Extres, cadascuna desactivada fins que l'actives.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>Obre Extres</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} està connectat i no s'utilitza.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Fes-lo servir</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> assignats, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> connectats</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Motor en execució. Fes clic per aturar-lo.</value></data>
@@ -277,8 +284,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Comandaments virtuals</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Tria un tipus de sortida, alimenta la ranura amb dispositius i fes clic en una targeta per donar forma a les seves assignacions.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>Aquí hi ha les funcions opcionals: el comandament web del telèfon, l'Enllaç remot, el servidor de moviment i més.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>Línia d'instruments</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>Nombre de dispositius, freqüència de sondeig i la flama del motor, sempre a la vista.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Mostra la visita de benvinguda</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Ranura</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Dispositiu</value></data>
@@ -3920,11 +3925,13 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Fes vibrar també el comandament</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Prova l'avís</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Suggeriments d'assignació</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Quan es connecta un dispositiu mentre la pàgina d'un comandament virtual està oberta, PadForge pot oferir-se a assignar-l'hi. No s'assigna res fins que fas clic a Assigna. Mai no s'ofereixen teclats, ratolins, panells tàctils ni tecles multimèdia.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Quan es connecta un dispositiu mentre la pàgina d'un comandament virtual està oberta, PadForge pot oferir-se a assignar-l'hi, i Inici pot oferir a un dispositiu nou un comandament virtual propi. No s'assigna res fins que acceptes una oferta. Mai no s'ofereixen teclats, ratolins, panells tàctils ni tecles multimèdia.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Ofereix els dispositius nous al comandament virtual obert</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Només els dispositius que PadForge no ha vist mai. Els que ja coneix es connecten sense cap avís.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Ofereix qualsevol dispositiu que es connecti quan el comandament virtual obert no té dispositius</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Nou o ja conegut. Quan el comandament virtual ja té un dispositiu assignat, aquest avís deixa d'aparèixer.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>Ofereix els dispositius nous a Inici</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>Inici pregunta una sola vegada per cada dispositiu nou que cap comandament virtual no utilitza. Fes-lo servir crea un comandament virtual per a aquest dispositiu, i Ara no tanca l'oferta per a aquest dispositiu.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} s'acaba de connectar. Vols assignar-lo a aquest comandament virtual?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Assigna</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Ara no</value></data>

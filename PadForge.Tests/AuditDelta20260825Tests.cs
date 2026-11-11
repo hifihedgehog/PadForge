@@ -287,6 +287,8 @@ namespace PadForge.Tests
             foreach (string prop in new[]
             {
                 "AssignOfferNewDevice", "AssignOfferEmptySlot",
+                // Home's prompt (#574), the card's third switch.
+                "AssignOfferHome",
                 // The sibling set of the same defect: these three sit
                 // directly above the assign-offer pair in the Settings page
                 // and had the identical gap.

@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Bläddra...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Fortsätt</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Stoppa</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Starta</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Spela in</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Spelar in...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Rensa</value></data>
@@ -136,6 +137,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Rensar bort virtuella handkontroller som blivit kvar från en tidigare session.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> enheter</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Lägg till handkontroll</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Profil</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Radera virtuell handkontroll</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Helskärm</value></data>
   <data name="Main_Minimize" xml:space="preserve"><value>Minimera</value></data>
@@ -269,10 +271,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Virtuell handkontroll {0} har raderats.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>Översikt</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>Hem</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Inmatningsmotor</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> enheter online</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Virtuella handkontroller</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Handkontroller</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>Tillägg som används</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Resten finns under Tillägg, och var och en är avstängd tills du slår på den.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>Öppna Tillägg</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} är ansluten och används inte.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Använd den</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> mappade, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> anslutna</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Motorn körs. Klicka för att stoppa.</value></data>
@@ -292,8 +299,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Virtuella handkontroller</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Välj en utdatatyp, mata platsen med enheter och klicka på ett kort för att forma dess mappningar.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>Här väntar valfria funktioner: telefonens webbhandkontroll, Fjärrlänk, rörelseservern med mera.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>Instrumentrad</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>Antal enheter, avläsningsfrekvens och motorns låga, alltid synliga.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Visa välkomstrundturen</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Plats</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Enhet</value></data>
@@ -4119,11 +4124,13 @@ Vill du att PadForge avinstallerar dem nu? Detta kräver förhöjd behörighet o
   <data name="Battery_FullTitle" xml:space="preserve"><value>Handkontrollen är fulladdad</value></data>
   <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: fulladdad</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Tilldelningsfrågor</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>När en enhet ansluts medan sidan för en virtuell handkontroll är öppen kan PadForge erbjuda att tilldela den dit. Ingenting tilldelas förrän du klickar på Tilldela. Tangentbord, möss, styrplattor och medietangenter erbjuds aldrig.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>När en enhet ansluts medan sidan för en virtuell handkontroll är öppen kan PadForge erbjuda att tilldela den dit, och Hem kan erbjuda en ny enhet en egen virtuell handkontroll. Ingenting tilldelas förrän du godtar ett erbjudande. Tangentbord, möss, styrplattor och medietangenter erbjuds aldrig.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Erbjud nya enheter till den öppna virtuella handkontrollen</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Bara enheter som PadForge aldrig har sett förut. Enheter som programmet redan känner till ansluts utan fråga.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Erbjud alla anslutande enheter när den öppna virtuella handkontrollen saknar enheter</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Nya eller redan kända. När den virtuella handkontrollen har en enhet tilldelad visas inte längre den här frågan.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>Erbjud nya enheter på Hem</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>Hem frågar en gång om varje ny enhet som ingen virtuell handkontroll använder. Använd den skapar en virtuell handkontroll åt den, och Inte nu avslutar erbjudandet för den enheten.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} anslöts just. Tilldela den till den här virtuella handkontrollen?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Tilldela</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Inte nu</value></data>

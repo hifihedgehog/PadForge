@@ -99,6 +99,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Bladeren...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Doorgaan</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Stoppen</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Starten</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Opnemen</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Bezig met opnemen...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Wissen</value></data>
@@ -133,6 +134,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Virtuele controllers van een vorige sessie worden opgeruimd.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> apparaat/apparaten</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Controller toevoegen</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Profiel</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Virtuele controller verwijderen</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Volledig scherm</value></data>
   <data name="Main_Minimize" xml:space="preserve"><value>Minimaliseren</value></data>
@@ -259,10 +261,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Virtuele controller {0} verwijderd.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>Dashboard</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>Startpagina</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Invoer-engine</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> apparaten online</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Virtuele Controllers</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Controllers</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>Extra's in gebruik</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>De rest staat in Extra's, elke functie blijft uit tot je hem inschakelt.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>Extra's openen</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} is verbonden en wordt niet gebruikt.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Gebruiken</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> toegewezen, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> verbonden</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Engine actief. Klik om te stoppen.</value></data>
@@ -3204,8 +3211,6 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Tour_Engine_Title" xml:space="preserve"><value>Invoer-engine</value></data>
   <data name="Tour_Slots_Body" xml:space="preserve"><value>Elke virtuele controller staat hier. De vlam laat zien welke slots op dit moment smeden.</value></data>
   <data name="Tour_Slots_Title" xml:space="preserve"><value>Slots</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>Aantal apparaten, pollingsnelheid en de engine-vlam, altijd in beeld.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>Instrumentenbalk</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
   <data name="About_OpenVR" xml:space="preserve"><value>OpenVR API</value></data>
   <data name="About_OpenVRDesc" xml:space="preserve"><value>Valves OpenVR-client-API (BSD 3-Clause): VR-headsets en motion-controllers als invoerbronnen. De native runtime wordt geladen vanuit uw eigen SteamVR-installatie.</value></data>
@@ -4090,11 +4095,13 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="Battery_FullTitle" xml:space="preserve"><value>Controller volledig opgeladen</value></data>
   <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: volledig opgeladen</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Toewijzingsvoorstellen</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Als een apparaat verbinding maakt terwijl de pagina van een virtuele controller open is, kan PadForge voorstellen het daar toe te wijzen. Er wordt niets toegewezen tot je op Toewijzen klikt. Toetsenborden, muizen, touchpads en mediatoetsen worden nooit voorgesteld.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Als een apparaat verbinding maakt terwijl de pagina van een virtuele controller open is, kan PadForge voorstellen het daar toe te wijzen, en kan de Startpagina een nieuw apparaat een eigen virtuele controller voorstellen. Er wordt niets toegewezen tot je een voorstel accepteert. Toetsenborden, muizen, touchpads en mediatoetsen worden nooit voorgesteld.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Nieuwe apparaten voorstellen aan de geopende virtuele controller</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Alleen apparaten die PadForge nog nooit heeft gezien. Al bekende apparaten verbinden zonder voorstel.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Elk verbindend apparaat voorstellen als de geopende virtuele controller geen apparaten heeft</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Nieuw of al bekend. Zodra de virtuele controller een apparaat toegewezen heeft, verschijnt dit voorstel niet meer.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>Nieuwe apparaten voorstellen op de Startpagina</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>De Startpagina vraagt eenmaal naar elk nieuw apparaat dat geen virtuele controller gebruikt. Gebruiken maakt er een virtuele controller voor, en Niet nu beëindigt het voorstel voor dat apparaat.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} is zojuist verbonden. Toewijzen aan deze virtuele controller?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Toewijzen</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Niet nu</value></data>

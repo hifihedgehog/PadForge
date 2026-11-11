@@ -43,7 +43,8 @@ PadForge.sln
 │
 ├── PadForge.App/             (WPF Application -- net10.0-windows10.0.26100.0)
 │   ├── App.xaml / .cs             Entry point, WPF-UI resources, converter registration
-│   ├── MainWindow.xaml / .cs      Shell: NavigationView + status bar + page switching
+│   ├── MainWindow.xaml / .cs      Shell: title bar with the profile switcher, NavigationView with
+│   │                              the engine state at its foot, page switching, the message line
 │   │
 │   ├── Common/
 │   │   ├── SettingsManager.cs     Static: device/setting collections, assignment, defaults
@@ -69,7 +70,7 @@ PadForge.sln
 │   │       └── MidiBackend*.cs                The three MIDI APIs behind one interface
 │   │
 │   ├── Views/
-│   │   ├── DashboardPage.xaml / .cs         Slot cards, engine stats, driver status
+│   │   ├── HomePage.xaml / .cs              Engine state, slot cards, the extras in use, the offer for a new device
 │   │   ├── PadPage.xaml / .cs               Mapping grid, deadzones, force feedback, macros
 │   │   ├── DevicesPage.xaml / .cs           Card-based device list + visual raw input state
 │   │   ├── ExtrasPage.xaml / .cs            Optional features: a catalog of tiles and a page for each
@@ -105,7 +106,7 @@ PadForge.sln
 │   ├── ViewModels/
 │   │   ├── ViewModelBase.cs            INotifyPropertyChanged base
 │   │   ├── MainViewModel.cs            Root: navigation, pads, engine status, commands
-│   │   ├── DashboardViewModel.cs       Overview: slot summaries, engine stats, driver info
+│   │   ├── DashboardViewModel.cs       Home and the Extras pages: slot summaries, engine state, the extras' settings
 │   │   ├── PadViewModel.cs             Per-slot: visualizer, mappings, deadzones, macros
 │   │   ├── MappingItem.cs              Single mapping row: target, source, recording, options
 │   │   ├── MacroItem.cs                Macro: trigger, actions, timing, button style, extended targets

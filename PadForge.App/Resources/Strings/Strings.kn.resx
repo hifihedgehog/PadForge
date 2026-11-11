@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>ಬ್ರೌಸ್ ಮಾಡಿ...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>ಮುಂದುವರಿಸಿ</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>ನಿಲ್ಲಿಸಿ</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>ಪ್ರಾರಂಭಿಸಿ</value></data>
   <data name="Common_Record" xml:space="preserve"><value>ರೆಕಾರ್ಡ್ ಮಾಡಿ</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>ರೆಕಾರ್ಡ್ ಆಗುತ್ತಿದೆ...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>ತೆರವುಗೊಳಿಸಿ</value></data>
@@ -125,6 +126,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>ಹಿಂದಿನ ಸೆಷನ್‌ನಿಂದ ಉಳಿದಿರುವ ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್‌ಗಳನ್ನು ಸ್ವಚ್ಛಗೊಳಿಸಲಾಗುತ್ತಿದೆ.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> ಸಾಧನಗಳು</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>ಕಂಟ್ರೋಲರ್ ಸೇರಿಸಿ</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>ಪ್ರೊಫೈಲ್</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್ ಅಳಿಸಿ</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>ಪೂರ್ಣ ಪರದೆ</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>PadForge ತೋರಿಸಿ</value></data>
@@ -254,10 +256,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್ {0} ಅಳಿಸಲಾಗಿದೆ.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>ಡ್ಯಾಶ್‌ಬೋರ್ಡ್</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>ಮುಖಪುಟ</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>ಇನ್‌ಪುಟ್ ಎಂಜಿನ್</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> ಸಾಧನಗಳು ಆನ್‌ಲೈನ್‌ನಲ್ಲಿವೆ</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್‌ಗಳು</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>ಕಂಟ್ರೋಲರ್‌ಗಳು</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>ಬಳಕೆಯಲ್ಲಿರುವ ಹೆಚ್ಚುವರಿ</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>ಉಳಿದವು ಹೆಚ್ಚುವರಿ ಪುಟದಲ್ಲಿವೆ, ನೀವು ಆನ್ ಮಾಡುವವರೆಗೆ ಪ್ರತಿಯೊಂದೂ ಆಫ್ ಆಗಿರುತ್ತದೆ.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>ಹೆಚ್ಚುವರಿ ತೆರೆಯಿರಿ</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} ಸಂಪರ್ಕಗೊಂಡಿದೆ ಮತ್ತು ಬಳಕೆಯಲ್ಲಿಲ್ಲ.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>ಬಳಸಿ</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> ಮ್ಯಾಪ್ ಆಗಿವೆ, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> ಸಂಪರ್ಕಗೊಂಡಿವೆ</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>ಎಂಜಿನ್ ಚಾಲನೆಯಲ್ಲಿದೆ. ನಿಲ್ಲಿಸಲು ಕ್ಲಿಕ್ ಮಾಡಿ.</value></data>
@@ -277,8 +284,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್‌ಗಳು</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>ಔಟ್‌ಪುಟ್ ಪ್ರಕಾರ ಆರಿಸಿ, ಸ್ಲಾಟ್‌ಗೆ ಸಾಧನಗಳನ್ನು ನೀಡಿ, ಮತ್ತು ಅದರ ಮ್ಯಾಪಿಂಗ್‌ಗಳನ್ನು ರೂಪಿಸಲು ಕಾರ್ಡ್ ಮೇಲೆ ಕ್ಲಿಕ್ ಮಾಡಿ.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>ಐಚ್ಛಿಕ ವೈಶಿಷ್ಟ್ಯಗಳು ಇಲ್ಲಿವೆ: ಫೋನ್ ವೆಬ್ ಕಂಟ್ರೋಲರ್, ರಿಮೋಟ್ ಲಿಂಕ್, ಮೋಷನ್ ಸರ್ವರ್ ಮತ್ತು ಇನ್ನಷ್ಟು.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>ಉಪಕರಣ ಪಟ್ಟಿ</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>ಸಾಧನಗಳ ಸಂಖ್ಯೆ, ಪೋಲಿಂಗ್ ದರ ಮತ್ತು ಎಂಜಿನ್ ಜ್ವಾಲೆ, ಯಾವಾಗಲೂ ಕಣ್ಣೆದುರು.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>ಸ್ವಾಗತ ಪ್ರವಾಸ ತೋರಿಸಿ</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>ಸ್ಲಾಟ್</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>ಸಾಧನ</value></data>
@@ -3903,11 +3908,13 @@ PadForge ಅವುಗಳನ್ನು ಈಗ ಅನ್‌ಇನ್‌ಸ್ಟಾ
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>ಕಂಟ್ರೋಲರ್ ಅನ್ನು ಸಹ ಕಂಪಿಸು</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>ಪರೀಕ್ಷಾ ಅಧಿಸೂಚನೆ</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>ನಿಯೋಜನೆ ಪ್ರಾಂಪ್ಟ್‌ಗಳು</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್‌ನ ಪುಟ ತೆರೆದಿರುವಾಗ ಸಾಧನ ಸಂಪರ್ಕಗೊಂಡರೆ, PadForge ಅದನ್ನು ಅಲ್ಲಿ ನಿಯೋಜಿಸಲು ಸೂಚಿಸಬಹುದು. ನೀವು ನಿಯೋಜಿಸು ಕ್ಲಿಕ್ ಮಾಡುವವರೆಗೆ ಏನನ್ನೂ ನಿಯೋಜಿಸಲಾಗುವುದಿಲ್ಲ. ಕೀಬೋರ್ಡ್‌ಗಳು, ಮೌಸ್‌ಗಳು, ಟಚ್‌ಪ್ಯಾಡ್‌ಗಳು ಮತ್ತು ಮೀಡಿಯಾ ಕೀಗಳನ್ನು ಎಂದಿಗೂ ಸೂಚಿಸುವುದಿಲ್ಲ.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್‌ನ ಪುಟ ತೆರೆದಿರುವಾಗ ಸಾಧನ ಸಂಪರ್ಕಗೊಂಡರೆ, PadForge ಅದನ್ನು ಅಲ್ಲಿ ನಿಯೋಜಿಸಲು ಸೂಚಿಸಬಹುದು, ಮತ್ತು ಮುಖಪುಟವು ಹೊಸ ಸಾಧನಕ್ಕೆ ಅದರದೇ ಆದ ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್ ಅನ್ನು ಸೂಚಿಸಬಹುದು. ನೀವು ಸೂಚನೆಯನ್ನು ಒಪ್ಪಿಕೊಳ್ಳುವವರೆಗೆ ಏನನ್ನೂ ನಿಯೋಜಿಸಲಾಗುವುದಿಲ್ಲ. ಕೀಬೋರ್ಡ್‌ಗಳು, ಮೌಸ್‌ಗಳು, ಟಚ್‌ಪ್ಯಾಡ್‌ಗಳು ಮತ್ತು ಮೀಡಿಯಾ ಕೀಗಳನ್ನು ಎಂದಿಗೂ ಸೂಚಿಸುವುದಿಲ್ಲ.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>ತೆರೆದಿರುವ ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್‌ಗೆ ಹೊಸ ಸಾಧನಗಳನ್ನು ಸೂಚಿಸು</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>PadForge ಹಿಂದೆಂದೂ ನೋಡಿರದ ಸಾಧನಗಳು ಮಾತ್ರ. ಈಗಾಗಲೇ ತಿಳಿದಿರುವ ಸಾಧನಗಳು ಪ್ರಾಂಪ್ಟ್ ಇಲ್ಲದೆ ಸಂಪರ್ಕಗೊಳ್ಳುತ್ತವೆ.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>ತೆರೆದಿರುವ ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್‌ಗೆ ಸಾಧನಗಳಿಲ್ಲದಿದ್ದರೆ ಸಂಪರ್ಕಗೊಳ್ಳುವ ಯಾವುದೇ ಸಾಧನವನ್ನು ಸೂಚಿಸು</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>ಹೊಸದು ಅಥವಾ ಈಗಾಗಲೇ ತಿಳಿದಿರುವುದು. ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್‌ಗೆ ಸಾಧನ ನಿಯೋಜಿಸಿದ ನಂತರ ಈ ಪ್ರಾಂಪ್ಟ್ ಕಾಣಿಸುವುದಿಲ್ಲ.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>ಮುಖಪುಟದಲ್ಲಿ ಹೊಸ ಸಾಧನಗಳನ್ನು ಸೂಚಿಸು</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>ಯಾವುದೇ ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್ ಬಳಸದ ಪ್ರತಿ ಹೊಸ ಸಾಧನದ ಬಗ್ಗೆ ಮುಖಪುಟ ಒಮ್ಮೆ ಕೇಳುತ್ತದೆ. ಬಳಸಿ ಎಂದರೆ ಅದಕ್ಕೆ ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್ ರಚಿಸುತ್ತದೆ, ಈಗ ಬೇಡ ಎಂದರೆ ಆ ಸಾಧನದ ಸೂಚನೆ ಕೊನೆಗೊಳ್ಳುತ್ತದೆ.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} ಈಗಷ್ಟೇ ಸಂಪರ್ಕಗೊಂಡಿತು. ಇದನ್ನು ಈ ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್‌ಗೆ ನಿಯೋಜಿಸಬೇಕೆ?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>ನಿಯೋಜಿಸು</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>ಈಗ ಬೇಡ</value></data>

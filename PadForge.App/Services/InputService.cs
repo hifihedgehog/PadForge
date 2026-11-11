@@ -913,6 +913,9 @@ namespace PadForge.Services
                 _mainVm.Pads[i].ActiveDeviceConfigPropertyChanged += OnDeviceConfigChanged;
                 _mainVm.Pads[i].AssignOfferDismissed += OnAssignOfferDismissed;
             }
+            // Home's offer (#574): Not Now ends it for that device.
+            _mainVm.Dashboard.HomeOfferDismissed -= OnHomeOfferDismissed;
+            _mainVm.Dashboard.HomeOfferDismissed += OnHomeOfferDismissed;
             // The first DevicesUpdated after a start is the enumeration, not
             // a wave of connections. Re-armed on every Start so an engine
             // restart re-baselines instead of offering every pad at once.
@@ -2446,7 +2449,7 @@ namespace PadForge.Services
             // toggle offered Stop, and every retry hit Start's own
             // already-running guard forever. Tear the half-built session down
             // instead, so the user can fix the cause and press Start again. The
-            // failure text already reached the status bar.
+            // failure text already reached the message line.
             if (!_inputManager.IsRunning)
             {
                 Stop();
@@ -2688,6 +2691,11 @@ namespace PadForge.Services
                     pad.AssignOfferDismissed -= OnAssignOfferDismissed;
                     pad.ClearAssignOffer();
                 }
+                // Home's offer goes with the engine too: nothing reads which
+                // devices are connected while it is stopped. What each
+                // device still owes stays on the device.
+                _mainVm.Dashboard.HomeOfferDismissed -= OnHomeOfferDismissed;
+                _mainVm.Dashboard.ClearHomeOffer();
                 _inputManager.Stop();
                 _inputManager.Dispose();
                 _inputManager = null;
@@ -5250,6 +5258,123 @@ namespace PadForge.Services
         {
             if (sender is PadViewModel pvm && guid != Guid.Empty)
                 _assignOfferDismissed.Add((guid, pvm.PadIndex));
+        }
+
+        // ─────────────────────────────────────────────
+        //  Home's offer (Settings > Assignment Prompts, #574)
+        // ─────────────────────────────────────────────
+
+        // The pad page's offer above asks "assign it here?" of a device that
+        // connects while a slot's page is open, and forgets its answers with
+        // the session. Home's asks a wider question, "use this at all?", so
+        // it must not ask it twice: the device itself holds whether the
+        // offer is still owed (UserDevice.HomeOfferPending, in the settings
+        // file). The registry sets it when it first meets a device. Use It,
+        // Not Now and any assignment to a virtual controller clear it, and
+        // nothing sets it again. A device PadForge knew before version 6
+        // never had it, so an upgrade offers nothing for a room full of
+        // devices left unassigned on purpose.
+        //
+        // State-driven like the offer above: every DevicesUpdated reads the
+        // registry again, so the offer stands while its device is connected
+        // and owed, and goes the moment either stops being true.
+
+        /// <summary>The Home offer's rule. Static so the tests pin it without
+        /// a device. An offer is made only while the prompt is on, the
+        /// device still owes its answer, it is connected, it is a game
+        /// controller, and no virtual controller uses it.</summary>
+        public static bool HomeOfferDecision(bool enabled, bool pending, bool online, bool eligible, bool assigned)
+            => enabled && pending && online && eligible && !assigned;
+
+        /// <summary>Home offers game controllers only: the joystick, gamepad,
+        /// wheel, flight and the two other game types a controller reports,
+        /// less PadForge's own virtual ones. The pad page's offer takes any
+        /// input row, since there the user has a slot open and is choosing
+        /// what feeds it. Home's offer makes a virtual controller for the
+        /// device, which is the wrong thing to say of a microphone, a head
+        /// tracker, a telemetry row or a keyboard's screen.</summary>
+        internal static bool IsHomeOfferEligible(UserDevice ud)
+        {
+            if (!IsAssignOfferEligible(ud)) return false;
+            return ud.CapType is InputDeviceType.Joystick or InputDeviceType.Gamepad or InputDeviceType.Driving
+                or InputDeviceType.Flight or InputDeviceType.FirstPerson or InputDeviceType.Supplemental;
+        }
+
+        /// <summary>Runs on every DevicesUpdated after the pad rosters, and
+        /// when the prompt's setting changes. Settles what each device still
+        /// owes, then makes, keeps or withdraws Home's one offer. Internal
+        /// for the tests, which run it over a registry they filled.</summary>
+        internal void EvaluateHomeOffer()
+        {
+            try
+            {
+                var home = _mainVm.Dashboard;
+                var settings = _mainVm.Settings;
+                var items = SettingsManager.UserDevices?.Items;
+                if (home == null || settings == null || items == null) return;
+                UserDevice[] snapshot;
+                lock (SettingsManager.UserDevices.SyncRoot)
+                    snapshot = items.ToArray();
+
+                bool settled = false;
+                bool standing = false;
+                UserDevice first = null;
+                foreach (var ud in snapshot)
+                {
+                    if (ud == null || !ud.HomeOfferPending) continue;
+                    bool eligible = IsHomeOfferEligible(ud);
+                    bool assigned = SettingsManager.GetAssignedSlots(ud.InstanceGuid).Count > 0;
+                    // In use: it has its answer. And a row that is no game
+                    // controller owes nothing, which is known once it has
+                    // connected and its kind is read.
+                    if (assigned || (ud.IsOnline && !eligible))
+                    {
+                        ud.HomeOfferPending = false;
+                        settled = true;
+                        continue;
+                    }
+                    if (!HomeOfferDecision(settings.AssignOfferHome, true, ud.IsOnline, eligible, assigned)) continue;
+                    if (ud.InstanceGuid == home.HomeOfferGuid) standing = true;
+                    first ??= ud;
+                }
+                if (settled) _settingsService?.MarkDirty();
+
+                // The offer on screen stands while its device still qualifies.
+                if (home.HasHomeOffer && standing) return;
+                home.ClearHomeOffer();
+                if (first != null)
+                    home.SetHomeOffer(first.InstanceGuid, LocalizedDeviceName(first) ?? first.ResolvedName);
+            }
+            catch { /* an offer must never break the device walk */ }
+        }
+
+        /// <summary>Re-reads Home's offer between device walks: the prompt's
+        /// setting changed (off withdraws the offer at once, on brings back
+        /// one still owed), or Use It has just put the device on a virtual
+        /// controller. With the engine stopped there is nothing to read:
+        /// Stop took the offer down, and the next start's first walk makes
+        /// it again.</summary>
+        public void ReEvaluateHomeOffer()
+        {
+            if (_inputManager == null) return;
+            EvaluateHomeOffer();
+        }
+
+        /// <summary>Not Now on Home's offer: the device has its answer, for
+        /// good. The next device still owed, if one is connected, is offered
+        /// by the evaluation that follows.</summary>
+        private void OnHomeOfferDismissed(object sender, Guid guid)
+        {
+            if (guid == Guid.Empty) return;
+            var items = SettingsManager.UserDevices?.Items;
+            if (items == null) return;
+            lock (SettingsManager.UserDevices.SyncRoot)
+            {
+                foreach (var ud in items)
+                    if (ud != null && ud.InstanceGuid == guid) ud.HomeOfferPending = false;
+            }
+            _settingsService?.MarkDirty();
+            EvaluateHomeOffer();
         }
 
         private void NotifyBatteryEdge(UserDevice ud, string name, int pct, bool charging)
@@ -10585,6 +10710,7 @@ namespace PadForge.Services
                 // After the rosters, so "slot has devices" and "already on
                 // the slot" read this walk's truth.
                 EvaluateAssignOffers();
+                EvaluateHomeOffer();
                 // A Bliss-Box port read through SDL's gamepad mapping can be
                 // placed once it connects.
                 CompleteOwedBlissBoxMappings();
@@ -10739,13 +10865,13 @@ namespace PadForge.Services
             _dispatcher.BeginInvoke(new Action(() => ShowError(e.Message)));
         }
 
-        /// <summary>The engine error last written to the status bar: the
-        /// message it reported and the line as written. The bar holds one
+        /// <summary>The engine error last written to the message line: the
+        /// message it reported and the line as written. The line holds one
         /// line, so only the last error written can still be showing.</summary>
         private string _shownErrorMessage;
         private string _shownErrorLine;
 
-        /// <summary>Writes an engine error to the status bar and records the
+        /// <summary>Writes an engine error to the message line and records the
         /// line, so <see cref="ClearResolvedError"/> takes back the text that
         /// was written. Re-formatting it in the current language would miss a
         /// line written before a language change.</summary>
@@ -14568,7 +14694,7 @@ namespace PadForge.Services
         private string _hidHideRefusalStatus;
         private string _hidHideInverseStatus;
 
-        /// <summary>Clears the status bar when it still shows the line in
+        /// <summary>Clears the message line when it still shows the line in
         /// <paramref name="written"/>, and forgets the line either way. A
         /// message written since is left alone.</summary>
         private void TakeBackStatus(ref string written)

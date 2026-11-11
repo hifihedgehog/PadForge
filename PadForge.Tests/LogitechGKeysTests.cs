@@ -419,7 +419,7 @@ namespace PadForge.Tests
             Assert.True(engine > 0 && gkeys > engine, "the G-Keys row is not inside the Input Engine card");
             Assert.Contains("CommandParameter=\"GKeysEnabled\"", settingsPage);
 
-            string dashboard = RepoFile("PadForge.App", "Views", "DashboardPage.xaml");
+            string dashboard = RepoFile("PadForge.App", "Views", "HomePage.xaml");
             Assert.DoesNotContain("GKeys", dashboard);
             // Nor among the extras, which is where the Dashboard's services went (#574).
             Assert.DoesNotContain("GKeys", RepoFile("PadForge.App", "Views", "ExtrasPage.xaml"));

@@ -36,6 +36,7 @@ namespace PadForge.ViewModels
             nameof(HmInactivityDestroyTimeoutSeconds) or
             nameof(AssignOfferNewDevice) or
             nameof(AssignOfferEmptySlot) or
+            nameof(AssignOfferHome) or
             nameof(HandheldButtonsEnabled) or
             nameof(BatteryNotifyEnabled) or
             nameof(BatteryNotifyThreshold) or
@@ -166,6 +167,11 @@ namespace PadForge.ViewModels
                 case nameof(AssignOfferEmptySlot):
                 {
                     AssignOfferEmptySlot = true;
+                    break;
+                }
+                case nameof(AssignOfferHome):
+                {
+                    AssignOfferHome = true;
                     break;
                 }
                 case nameof(HandheldButtonsEnabled):

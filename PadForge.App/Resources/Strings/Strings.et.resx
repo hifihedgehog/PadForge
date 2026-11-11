@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Sirvi...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Jätka</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Peata</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Käivita</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Lindista</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Lindistamine...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Tühjenda</value></data>
@@ -125,6 +126,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Eelmisest seansist alles jäänud virtuaalsete kontrollerite eemaldamine.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> seadet</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Lisa kontroller</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Profiil</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Kustuta virtuaalne kontroller</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Täisekraan</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Kuva PadForge</value></data>
@@ -254,10 +256,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Virtuaalne kontroller {0} kustutati.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>Ülevaade</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>Avaleht</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Sisendimootor</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> seadet võrgus</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Virtuaalsed kontrollerid</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Kontrollerid</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>Kasutusel olevad lisad</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Ülejäänud on lehel Lisad, igaüks välja lülitatud, kuni selle sisse lülitate.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>Ava Lisad</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} on ühendatud ja kasutamata.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Kasuta seda</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> vastendatud, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> ühendatud</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Mootor töötab. Klõpsake peatamiseks.</value></data>
@@ -277,8 +284,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Virtuaalsed kontrollerid</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Valige väljunditüüp, andke pesale seadmed ja klõpsake kaarti, et selle vastendusi kujundada.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>Siin ootavad valikulised funktsioonid: telefoni veebikontroller, Kaugühendus, liikumisserver ja muud.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>Näidikuriba</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>Seadmete arv, küsitlussagedus ja mootori leek on alati nähtaval.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Näita tervitustutvustust</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Pesa</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Seade</value></data>
@@ -3918,11 +3923,13 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Vibreeri ka kontrollerit</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Testteavitus</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Määramisviibad</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Kui seade ühendatakse ajal, mil virtuaalse kontrolleri leht on avatud, saab PadForge pakkuda selle sinna määramist. Midagi ei määrata enne, kui klõpsate Määra. Klaviatuure, hiiri, puuteplaate ja meediaklahve ei pakuta kunagi.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Kui seade ühendatakse ajal, mil virtuaalse kontrolleri leht on avatud, saab PadForge pakkuda selle sinna määramist ja Avaleht saab pakkuda uuele seadmele oma virtuaalset kontrollerit. Midagi ei määrata enne, kui pakkumise vastu võtate. Klaviatuure, hiiri, puuteplaate ja meediaklahve ei pakuta kunagi.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Paku uusi seadmeid avatud virtuaalsele kontrollerile</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Ainult seadmed, mida PadForge pole varem näinud. Juba tuntud seadmed ühenduvad ilma viibata.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Paku iga ühenduvat seadet, kui avatud virtuaalsel kontrolleril pole seadmeid</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Uued või juba tuntud. Kui virtuaalsele kontrollerile on seade määratud, seda viipa enam ei kuvata.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>Paku uusi seadmeid Avalehel</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>Avaleht küsib iga uue seadme kohta üks kord, kui ükski virtuaalne kontroller seda ei kasuta. Kasuta seda loob sellele virtuaalse kontrolleri ja Mitte praegu lõpetab selle seadme pakkumise.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} ühendati just. Kas määrata see sellele virtuaalsele kontrollerile?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Määra</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Mitte praegu</value></data>

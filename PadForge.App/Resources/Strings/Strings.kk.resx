@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Шолу...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Жалғастыру</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Тоқтату</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Іске қосу</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Жазу</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Жазылуда...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Тазалау</value></data>
@@ -125,6 +126,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Алдыңғы сеанстан қалған виртуалды контроллерлер тазалануда.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> құрылғы</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Контроллер қосу</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Профиль</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Виртуалды контроллерді жою</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Толық экран</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>PadForge терезесін көрсету</value></data>
@@ -254,10 +256,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Виртуалды контроллер {0} жойылды.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>Бақылау тақтасы</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>Басты бет</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Кіріс қозғалтқышы</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> құрылғы желіде</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Виртуалды контроллерлер</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Контроллерлер</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>Қолданыстағы қосымша мүмкіндіктер</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Қалғандары Қосымша мүмкіндіктер бетінде, әрқайсысы сіз қосқанша өшірулі тұрады.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>Қосымша мүмкіндіктерді ашу</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} қосылған, бірақ пайдаланылмайды.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Пайдалану</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> тағайындалған, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> қосылған</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Қозғалтқыш жұмыс істеп тұр. Тоқтату үшін басыңыз.</value></data>
@@ -277,8 +284,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Виртуалды контроллерлер</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Шығыс түрін таңдаңыз, ұяшыққа құрылғыларды беріңіз және тағайындауларын баптау үшін карточканы басыңыз.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>Қосымша мүмкіндіктер осында: телефондағы веб-контроллер, Қашықтан байланыс, қозғалыс сервері және тағы басқалары.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>Көрсеткіштер жолағы</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>Құрылғылар саны, сұрау жиілігі және қозғалтқыш жалыны әрдайым көз алдыңызда.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Таныстыруды көрсету</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Ұяшық</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Құрылғы</value></data>
@@ -3915,11 +3920,13 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Контроллерді де дірілдету</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Хабарландыруды сынау</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Қосу ұсыныстары</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Виртуалды контроллер беті ашық кезде құрылғы қосылса, PadForge оны сонда қосуды ұсына алады. Қосу түймесін басқанша ештеңе қосылмайды. Пернетақталар, тінтуірлер, сенсорлық тақталар және медиа пернелер ешқашан ұсынылмайды.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Виртуалды контроллер беті ашық кезде құрылғы қосылса, PadForge оны сонда қосуды ұсына алады, ал Басты бет жаңа құрылғыға жеке виртуалды контроллер ұсына алады. Ұсынысты қабылдағанша ештеңе қосылмайды. Пернетақталар, тінтуірлер, сенсорлық тақталар және медиа пернелер ешқашан ұсынылмайды.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Жаңа құрылғыларды ашық виртуалды контроллерге ұсыну</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Тек PadForge бұрын көрмеген құрылғылар. Таныс құрылғылар сұраусыз қосылады.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Ашық виртуалды контроллерде құрылғы жоқ кезде кез келген қосылатын құрылғыны ұсыну</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Жаңа немесе бұрыннан таныс. Виртуалды контроллерге құрылғы қосылғаннан кейін бұл ұсыныс бұдан былай көрінбейді.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>Жаңа құрылғыларды Басты бетте ұсыну</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>Басты бет виртуалды контроллер пайдаланбайтын әр жаңа құрылғы туралы бір рет сұрайды. Пайдалану оған виртуалды контроллер жасайды, ал Қазір емес сол құрылғыға арналған ұсынысты аяқтайды.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} қосылды. Оны осы виртуалды контроллерге қосу керек пе?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Қосу</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Қазір емес</value></data>

@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Semak imbas...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Teruskan</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Henti</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Mula</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Rakam</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Merakam...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Kosongkan</value></data>
@@ -125,6 +126,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Membersihkan pengawal maya yang tertinggal daripada sesi sebelumnya.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> peranti</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Tambah Pengawal</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Profil</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Padam pengawal maya</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Skrin Penuh</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Tunjukkan PadForge</value></data>
@@ -254,10 +256,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Pengawal Maya {0} dipadam.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>Papan Pemuka</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>Laman Utama</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Enjin Input</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> peranti dalam talian</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Pengawal Maya</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Pengawal</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>Tambahan yang Digunakan</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Yang selebihnya berada dalam Tambahan, setiap satu dimatikan sehingga anda menghidupkannya.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>Buka Tambahan</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} telah disambungkan dan tidak digunakan.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Gunakan</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> dipetakan, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> disambungkan</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Enjin berjalan. Klik untuk menghentikan.</value></data>
@@ -277,8 +284,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Pengawal Maya</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Pilih jenis output, bekalkan peranti ke slot, dan klik kad untuk membentuk pemetaannya.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>Ciri pilihan menanti di sini: pengawal web telefon, Pautan Jauh, pelayan gerakan dan banyak lagi.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>Baris Instrumen</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>Bilangan peranti, kadar pengundian, dan nyalaan enjin, sentiasa kelihatan.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Tunjukkan Lawatan Selamat Datang</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Slot</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Peranti</value></data>
@@ -3916,11 +3921,13 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Getarkan Pengawal Juga</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Uji Pemberitahuan</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Gesaan Umpukan</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Apabila peranti disambungkan semasa halaman pengawal maya dibuka, PadForge boleh menawarkan untuk mengumpukkannya di situ. Tiada apa-apa diumpukkan sehingga anda klik Umpuk. Papan kekunci, tetikus, pad sentuh dan kekunci media tidak pernah ditawarkan.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Apabila peranti disambungkan semasa halaman pengawal maya dibuka, PadForge boleh menawarkan untuk mengumpukkannya di situ, dan Laman Utama boleh menawarkan pengawal maya tersendiri kepada peranti baharu. Tiada apa-apa diumpukkan sehingga anda menerima tawaran. Papan kekunci, tetikus, pad sentuh dan kekunci media tidak pernah ditawarkan.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Tawarkan Peranti Baharu kepada Pengawal Maya yang Dibuka</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Hanya peranti yang PadForge tidak pernah lihat sebelum ini. Peranti yang sudah dikenalinya bersambung tanpa gesaan.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Tawarkan Mana-mana Peranti yang Bersambung Apabila Pengawal Maya yang Dibuka Tiada Peranti</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Baharu atau sudah dikenali. Sebaik sahaja pengawal maya mempunyai peranti yang diumpukkan, gesaan ini tidak lagi muncul.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>Tawarkan Peranti Baharu di Laman Utama</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>Laman Utama bertanya sekali tentang setiap peranti baharu yang tidak digunakan oleh mana-mana pengawal maya. Gunakan membuat pengawal maya untuknya, dan Bukan Sekarang menamatkan tawaran untuk peranti itu.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} baru sahaja bersambung. Umpukkan kepada pengawal maya ini?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Umpuk</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Bukan Sekarang</value></data>

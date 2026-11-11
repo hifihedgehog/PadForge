@@ -601,7 +601,7 @@ namespace PadForge.Tests
             int analog = page.IndexOf("Binding Settings_AnalogKeyboards,", StringComparison.Ordinal);
             Assert.True(engine > 0 && analog > engine, "the analog keyboards row is not inside the Input Engine card");
             Assert.Contains("CommandParameter=\"AnalogKeyboardsEnabled\"", page);
-            Assert.DoesNotContain("AnalogKeyboards", RepoFile("PadForge.App", "Views", "DashboardPage.xaml"));
+            Assert.DoesNotContain("AnalogKeyboards", RepoFile("PadForge.App", "Views", "HomePage.xaml"));
             Assert.DoesNotContain("AnalogKeyboards", RepoFile("PadForge.App", "Views", "ExtrasPage.xaml"));
         }
 

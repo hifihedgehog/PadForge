@@ -102,6 +102,7 @@
   <data name="Common_Browse" xml:space="preserve"><value>Blaai...</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Gaan voort</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Stop</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Begin</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Neem op</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Neem tans op...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Maak skoon</value></data>
@@ -125,6 +126,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Virtuele controllers uit 'n vorige sessie word opgeruim.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> toestelle</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Voeg controller by</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Profiel</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Skrap virtuele controller</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Volskerm</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Wys PadForge</value></data>
@@ -254,10 +256,15 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Virtuele Controller {0} geskrap.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="Dashboard_Title" xml:space="preserve"><value>Paneelbord</value></data>
+  <data name="Home_Title" xml:space="preserve"><value>Tuis</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Invoerenjin</value></data>
   <data name="Dashboard_DevicesOnline" xml:space="preserve"><value> toestelle aanlyn</value></data>
-  <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Virtuele Controllers</value></data>
+  <data name="Home_Controllers" xml:space="preserve"><value>Controllers</value></data>
+  <data name="Home_ExtrasInUse" xml:space="preserve"><value>Ekstras in gebruik</value></data>
+  <data name="Home_MoreExtras" xml:space="preserve"><value>Die res is op Ekstras, elk af totdat jy dit aanskakel.</value></data>
+  <data name="Home_OpenExtras" xml:space="preserve"><value>Maak Ekstras oop</value></data>
+  <data name="Home_Offer_Format" xml:space="preserve"><value>{0} is gekoppel en nie in gebruik nie.</value></data>
+  <data name="Home_Offer_Use" xml:space="preserve"><value>Gebruik dit</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> toegewys, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> gekoppel</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Enjin loop. Klik om te stop.</value></data>
@@ -277,8 +284,6 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Virtuele controllers</value></data>
   <data name="Tour_Cards_Body" xml:space="preserve"><value>Kies 'n uitvoertipe, voed die gleuftoestelle, en klik op 'n kaart om sy toewysings te vorm.</value></data>
   <data name="Tour_Extras_Body" xml:space="preserve"><value>Opsionele kenmerke wag hier: die foon-webcontroller, Afstandskakel, die bewegingsbediener en meer.</value></data>
-  <data name="Tour_Status_Title" xml:space="preserve"><value>Instrumentlyn</value></data>
-  <data name="Tour_Status_Body" xml:space="preserve"><value>Toestelgetal, peilfrekwensie en die enjinvlam, altyd in sig.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Wys verwelkomingstoer</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Gleuf</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Toestel</value></data>
@@ -3785,11 +3790,13 @@ Wil jy hê PadForge moet dit nou deïnstalleer? Dit vereis verhoogde regte en ka
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Laat die controller ook vibreer</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Toets kennisgewing</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Toewysingsvoorstelle</value></data>
-  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Wanneer 'n toestel koppel terwyl 'n virtuele controller se bladsy oop is, kan PadForge aanbied om dit daar toe te wys. Niks word toegewys totdat jy op Wys toe klik nie. Sleutelborde, muise, raakplate en mediasleutels word nooit aangebied nie.</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Wanneer 'n toestel koppel terwyl 'n virtuele controller se bladsy oop is, kan PadForge aanbied om dit daar toe te wys, en Tuis kan 'n nuwe toestel 'n eie virtuele controller aanbied. Niks word toegewys totdat jy 'n aanbod aanvaar nie. Sleutelborde, muise, raakplate en mediasleutels word nooit aangebied nie.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Bied nuwe toestelle aan die oop virtuele controller aan</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Slegs toestelle wat PadForge nog nooit gesien het nie. Toestelle wat dit reeds ken, koppel sonder 'n voorstel.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Bied enige koppelende toestel aan wanneer die oop virtuele controller geen toestelle het nie</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Nuut of reeds bekend. Sodra die virtuele controller 'n toestel toegewys het, verskyn hierdie voorstel nie meer nie.</value></data>
+  <data name="Settings_AssignOfferHome" xml:space="preserve"><value>Bied nuwe toestelle aan op Tuis</value></data>
+  <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>Tuis vra een keer oor elke nuwe toestel wat geen virtuele controller gebruik nie. Gebruik dit maak 'n virtuele controller daarvoor, en Nie nou nie beëindig die aanbod vir daardie toestel.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} het sopas gekoppel. Wys dit aan hierdie virtuele controller toe?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Wys toe</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Nie nou nie</value></data>

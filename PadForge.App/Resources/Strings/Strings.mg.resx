@@ -80,6 +80,7 @@
   <data name="Common_Unknown" xml:space="preserve"><value>Tsy fantatra</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Tohizo</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Ajanony</value></data>
+  <data name="Common_Start" xml:space="preserve"><value>Atombohy</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Raketo</value></data>
   <data name="Common_Recording" xml:space="preserve"><value>Mandrakitra...</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Fafao</value></data>
@@ -1979,4 +1980,12 @@
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>Fotoana</value></data>
   <data name="MacroAction_TriggerEffect_Timed_Format" xml:space="preserve"><value>{0} amin'ny {1} mandritra ny {2} ms</value></data>
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} amin'ny {1} raha mbola tazomina</value></data>
+  <data name="Extras_Title" xml:space="preserve"><value>Fanampiny</value></data>
+  <data name="Extras_Group_Play" xml:space="preserve"><value>Fomba hafa hilalaovana</value></data>
+  <data name="Extras_Group_Send" xml:space="preserve"><value>Alefaso any an-kafa</value></data>
+  <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Tendreo ny hafainganana, ny pedal ary ny vitesy avy amin'ny lalao fiara.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Zarao amin'ny PadForge ao amin'ny PC hafa ny contrôleur.</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Fifandraisana indray, port, fiarovana ny maha izy anao, fifandraisana amin'ny adiresy</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Port, hafainganana feno, format manokana</value></data>
+  <data name="Main_ProfileLabel" xml:space="preserve"><value>Profil</value></data>
 </root>

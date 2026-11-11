@@ -589,6 +589,7 @@
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>I-reset ang wala nga trigger</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>I-reset ang tuo nga trigger</value></data>
   <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Kanunay nga pwersa sa trigger</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Padayon nga pwersa sa matag motor sa trigger</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Idirekta ang mga main rumble motor ngadto sa channel sa trigger, usa ka trigger matag higayon. Molihok kini uban sa XInput rumble ug force feedback. Ang activator makapugong niini aron mo-buzz lang ang trigger samtang gikuptan nimo ang button.</value></data>
   <data name="Pad_TriggerRouting_LeftTrigger" xml:space="preserve"><value>Wala nga trigger</value></data>
   <data name="Pad_TriggerRouting_RightTrigger" xml:space="preserve"><value>Tuo nga trigger</value></data>
@@ -616,6 +617,7 @@
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>I-reset ang wala nga trigger</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>I-reset ang tuo nga trigger</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Trigger rumble gikan sa bass sa audio</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Trigger rumble gikan sa bass sa audio sa sistema</value></data>
   <data name="Pad_AudioTriggerRumble_Description" xml:space="preserve"><value>Padaganon ang mga motor sa trigger gikan sa bass sa audio sa sistema. Ang pwersa sa trigger gikan sa dula mopuli samtang aktibo kini.</value></data>
   <data name="Pad_AudioTriggerRumble_Toggle" xml:space="preserve"><value>Padaganon ang mga motor sa trigger gikan sa audio</value></data>
   <data name="Pad_AudioTriggerRumble_Sensitivity" xml:space="preserve"><value>Sensitivity</value></data>
@@ -696,6 +698,7 @@
   <data name="Pad_Lighting_MicLed_FollowDevice" xml:space="preserve"><value>Sunda ang audio device</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice_Picker" xml:space="preserve"><value>Audio device</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>Mga indicator LED</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Kahayag sa LED, Pattern sa magdudula, Mode sa mute LED</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>I-reset ang lightbar</value></data>
   <data name="Pad_ResetIndicatorLeds" xml:space="preserve"><value>I-reset ang mga indicator LED</value></data>
   <data name="Pad_ResetForceFeedback" xml:space="preserve"><value>I-reset ang force feedback</value></data>
@@ -991,6 +994,7 @@
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>I-calibrate ang sentro</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Sentro nga punto</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Deadzone</value></data>
+  <data name="Pad_More_Stick" xml:space="preserve"><value>Offset sa sentro, porma sa deadzone ug bili matag axis, kurba matag axis, range, pagmaneho</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Range</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Nag-sample...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Center offset X</value></data>
@@ -1272,6 +1276,7 @@
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Numero sa touchpad</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Unsang touchpad niini nga controller ang gamitan sa mga setting sa ubos. Ang matag touchpad adunay kaugalingong mga gesture, pamati sa mouse, ug rehiyon sa pointer.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Pag-ila sa gesture</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>I-on ang mga gesture niini nga touchpad</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>I-enable ang mga gesture niini nga touchpad</value></data>
   <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>Ilhon</value></data>
   <data name="Pad_Touchpad_Mode_CustomOnly" xml:space="preserve"><value>Custom lang</value></data>
@@ -1293,6 +1298,7 @@
   <data name="Pad_Touchpad_FiveFinger" xml:space="preserve"><value>Tap gamit ang lima ka tudlo</value></data>
   <data name="Pad_Touchpad_MatchThreshold" xml:space="preserve"><value>Threshold sa pagtugma sa porma</value></data>
   <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>Custom nga mga gesture</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>I-record ang imong kaugalingon</value></data>
   <data name="Pad_Touchpad_RecordNew" xml:space="preserve"><value>+ Pag-record og bag-ong gesture</value></data>
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>Walay custom nga gesture nga na-record alang niini nga profile. I-click ang Pag-record og bag-ong gesture aron makakuha og usa.</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 ka tudlo</value></data>
@@ -1300,6 +1306,7 @@
 
   <!-- Stick / D-pad output card -->
   <data name="Pad_Touchpad_Stick_Header" xml:space="preserve"><value>Output sa stick / D-pad</value></data>
+  <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Gamita ang touchpad isip stick o D-pad</value></data>
   <data name="Pad_Touchpad_StickEnabled" xml:space="preserve"><value>I-enable ang output sa stick / D-pad</value></data>
   <data name="Pad_Touchpad_StickMaxRadius" xml:space="preserve"><value>Labing dako nga radius</value></data>
   <data name="Pad_Touchpad_StickInnerDeadzone" xml:space="preserve"><value>Sulod nga deadzone</value></data>
@@ -1311,6 +1318,7 @@
 
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Output sa mouse</value></data>
+  <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Baliha, Momentum, Response, Pagpaspas, fling</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Sensitivity sa mouse X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Multiplier sa pahigda nga touchpad → mouse delta. Ubos sa 1.0 mohinay ang cursor. Labaw sa 1.0 mopaspas kini.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityY" xml:space="preserve"><value>Sensitivity sa mouse Y</value></data>
@@ -1336,6 +1344,7 @@
   <data name="Pad_Touchpad_RotateThreshold_Tooltip" xml:space="preserve"><value>Unsa kalayo ang kinahanglan nga pagtuyok sa duha ka tudlo sa dili pa molihok ang tuyok.</value></data>
   <data name="Pad_ResetTouchpadRotateThresholdDegrees" xml:space="preserve"><value>I-reset ang threshold sa tuyok</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>Absolute nga pointer</value></data>
+  <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>Ang bahin sa screen nga maabot sa pad</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Gilapdon sa rehiyon</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Gilapdon sa bahin sa screen nga gi-map niini nga pad, isip bahin sa gilapdon sa screen. Ang 1.00 motabon sa tibuok gilapdon. Ang 0.50 magpugong sa cursor sa katunga sa screen.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY" xml:space="preserve"><value>Gitas-on sa rehiyon</value></data>
@@ -1347,6 +1356,7 @@
 
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Haptics sa swipe</value></data>
+  <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>Gagmay nga pulso samtang molihok ang imong tudlo</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>I-enable ang haptics sa swipe</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>Kusog sa pulso</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity_Tooltip" xml:space="preserve"><value>Kusog sa matag tick. Ang rumble sa dula kanunay nga gamiton kon mas kusog kini.</value></data>
@@ -1489,6 +1499,7 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibrasyon</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensitivity</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Yunit, Space, baliha ang mga axis, Real-World Calibration</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>Giunsa pagkupti</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Baliha ang pitch (Y)</value></data>
   <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Baliha ang yaw (X)</value></data>
@@ -1496,8 +1507,10 @@
   <data name="Pad_ResetGyroInvertYaw" xml:space="preserve"><value>I-reset ang pagbaliha sa yaw</value></data>
   <data name="Pad_ResetGyroInvertRoll" xml:space="preserve"><value>I-reset ang pagbaliha sa roll</value></data>
   <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>Compass</value></data>
+  <data name="Pad_Compass_FoldHint" xml:space="preserve"><value>Gipunting ang yaw sa magnetic north</value></data>
   <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>I-reset sa default (Off)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Simulation sa pitch ug roll</value></data>
+  <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Pitch ug roll nga gikuwenta gikan sa accelerometer</value></data>
   <data name="Settings_GyroSimulation" xml:space="preserve"><value>I-simulate ang pitch ug roll</value></data>
   <data name="Settings_GyroSimulation_Tooltip" xml:space="preserve"><value>Pun-on ang pitch ug roll og mga rate gikan sa accelerometer. Ang yaw magpabilin nga kaugalingong pagbasa sa gyro. Off sa default.</value></data>
   <data name="Pad_ResetGyroSimulation" xml:space="preserve"><value>I-reset ang pag-simulate sa pitch ug roll</value></data>
@@ -1542,6 +1555,7 @@
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Hilig sa gyro X</value></data>
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>Hilig sa gyro Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>Hilig sa gyro</value></data>
+  <data name="Pad_GyroTilt_FoldHint" xml:space="preserve"><value>Tibuok range sa hilig, Deadzone sa hilig</value></data>
   <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>Tibuok range sa hilig</value></data>
   <data name="Pad_GyroTilt_Deadzone" xml:space="preserve"><value>Deadzone sa hilig</value></data>
   <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>I-reset ang tibuok range sa hilig</value></data>
@@ -1669,6 +1683,7 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Min range Y (ubos)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Max range Y (taas)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Axis X</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>Duha ka axis</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Axis Y</value></data>
   <data name="Pad_SensitivityCurve" xml:space="preserve"><value>Kurba sa sensitivity</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>I-double-click aron magdugang og punto. I-right-click aron tangtangon. I-drag aron i-adjust.</value></data>
@@ -1685,6 +1700,7 @@
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Makanunayon nga pwersa</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Padayon nga pwersa hangtod imong i-off</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Paghatag og padayon nga pwersa niining device hangtod imong i-toggle kini pagpalong. Ang pwersa gikan sa dula, gikan sa bisan unsang tinubdan, mo-override samtang aktibo kini, ug ang makanunayon nga pwersa mobalik kung mohunong ang dula.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Gamita ang makanunayon nga pwersa</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>I-drag sulod sa grid aron itakda ang direksyon ug kusog.</value></data>
@@ -1908,6 +1924,7 @@
 
   <!-- ═══ Audio Bass Rumble ═══ -->
   <data name="Settings_AudioRumble" xml:space="preserve"><value>Rumble gikan sa audio</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Rumble gikan sa bass sa audio sa sistema</value></data>
   <data name="Settings_AudioRumbleDesc" xml:space="preserve"><value>Paandara ang rumble sa controller gikan sa bass frequency sa audio sa sistema.</value></data>
   <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>I-enable ang rumble gikan sa audio</value></data>
   <data name="Settings_AudioRumble_LeftMotor" xml:space="preserve"><value>Wala nga motor</value></data>
@@ -1998,6 +2015,8 @@
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>I-reset ang gawas nga deadzone sa pagkiling</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>I-reset ang oryentasyon sa controller</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Pagmaneho gamit ang motion</value></data>
+  <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° hangtod {1}°</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Mga deadzone sa pagkiling, Oryentasyon sa controller</value></data>
   <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Mga setting alang sa input nga Kiling sa motion: ikiling ang controller sama sa manibela. I-map ang “Kiling sa motion” sa usa ka stick axis gikan sa dropdown sa input sa Mappings.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>I-reset ang pagmaneho gamit ang motion</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick stick (tuong stick)</value></data>
@@ -2006,6 +2025,7 @@
   <data name="Mapping_LeftStickRing" xml:space="preserve"><value>Singsing sa walang stick</value></data>
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>Singsing sa tuong stick</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick stick</value></data>
+  <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Pag-tune sa mga input sa flick stick</value></data>
   <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Mga setting sa mga input sa flick stick: itudlo ang stick ug motuyok ang camera aron motakdo, ilibot ang stick sa ngilit aron pinong motuyok. I-mapping ang "Flick stick (tuong stick)" sa Mouse X gikan sa dropdown sa input sa Mappings, sa bisan unsang layer.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>I-reset ang flick stick</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Mga dot matag 360°</value></data>
@@ -2041,6 +2061,7 @@
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Kung moaktibo ang layer nga adunay Flick Stick samtang nakatulod na ang stick, ipalihok dayon ang flick. Ang off magpabilin sa camera ug mosunod sa pagtuyok gikan sa kasamtangang anggulo sa stick.</value></data>
   <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>I-reset ang Tugoti ang flick inig aktibo</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Feedback sa lock sa pagmaneho</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Cue sa full lock alang sa stick sa mode sa pagmaneho</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Kung ang stick nga naka-set sa mode sa pagmaneho gituyok hangtod sa full lock, magpatokar og cue (rumble, trigger, o lightbar) aron mabati nimo ang limitasyon. Off tanan sa default.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Rumble nga pulso sa lock</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Pagkurog sa trigger sa lock</value></data>
@@ -2086,6 +2107,7 @@
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Ang mga tingog sa macro ug ang gisalamin nga audio sa sistema motokar pinaagi sa built-in nga speaker sa napiling controller, pinaagi sa USB o Bluetooth. Pilia ang device sa dropdown sa ibabaw. Ang matag setting dinhi mosunod niini.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Output sa tingog</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Tinubdan sa salamin, haptics, Volume sa headphone, Crossfeed, Parametric EQ, Limiter</value></data>
   <data name="Pad_Audio_SystemDefault" xml:space="preserve"><value>Default sa sistema</value></data>
   <data name="Pad_Audio_SourceUnavailable" xml:space="preserve"><value>(Device nga dili magamit)</value></data>
   <data name="Pad_Audio_MasterVolume" xml:space="preserve"><value>Master nga volume</value></data>
@@ -2143,6 +2165,7 @@
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>Ang file dili mabasa nga PadForge profile.</value></data>
   <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Pagpili og tingog gikan sa {0}</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Mga package sa tingog</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Mga zip file sa tingog alang sa mga macro sa tingog</value></data>
   <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>Ang package sa tingog usa ka zip file sa mga tingog nga adunay .pfsounds nga extension. Idugang ang usa dinhi, unya pilia ang mga tingog niini sa bisan unsang macro sa tingog. Ang PadForge mobasa direkta gikan sa file ug dili gayud kini i-unpack. Ibutang ang mga package tupad sa PadForge.exe aron magpabiling portable.</value></data>
   <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>Idugang ang package…</value></data>
   <data name="Pad_Audio_Packages_Add_Tooltip" xml:space="preserve"><value>Idugang ang anaa nang .pfsounds nga file sa lista.</value></data>
@@ -2167,6 +2190,7 @@
   <data name="Emoji_Category_Objects" xml:space="preserve"><value>Mga butang</value></data>
   <data name="Emoji_Category_Symbols" xml:space="preserve"><value>Mga simbolo</value></data>
   <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>Mga package sa icon</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Mga zip file sa hulagway alang sa mga cell sa menu</value></data>
   <data name="Pad_Menus_IconPackages_Desc" xml:space="preserve"><value>Ang package sa icon usa ka zip file sa mga hulagway nga adunay .pficons nga extension. Idugang ang usa dinhi, unya pilia ang mga icon niini sa bisan unsang cell sa menu. Ang PadForge mobasa direkta gikan sa file ug dili gayud kini i-unpack. Ibutang ang mga package tupad sa PadForge.exe aron magpabiling portable.</value></data>
   <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>Idugang ang package…</value></data>
   <data name="Pad_Menus_IconPackages_Add_Tooltip" xml:space="preserve"><value>Idugang ang anaa nang .pficons nga file sa lista.</value></data>
@@ -2514,6 +2538,7 @@
   <data name="MacroAction_SetChromaColor_Format" xml:space="preserve"><value>Chroma {0} sulod sa {1} ms</value></data>
   <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>Ibalhin sa layer {0}</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>LED sa Guide button</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Ang suga sa Guide o Home button</value></data>
   <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>Default sa device</value></data>
   <data name="Pad_Lighting_GuideLed_Fixed" xml:space="preserve"><value>Pirmi nga kahayag</value></data>
   <data name="Pad_Lighting_GuideLed_Battery" xml:space="preserve"><value>Lebel sa baterya</value></data>
@@ -2688,6 +2713,7 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Mga timailhan sa screen nga gipakita sa PadForge samtang nagdula ka. Ang pag-off sa usa dili gayud mousab sa pamatasan, kung gipahibalo lang kini o dili.</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Overlay sa pagbalhin og profile</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Rumble ngadto sa audio</value></data>
+  <data name="Pad_More_BassShakers" xml:space="preserve"><value>Device sa output, mga channel, gain, tono alang sa matag motor</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>I-reset ang Rumble ngadto sa audio</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Ipadala ang rumble ngadto sa audio output</value></data>
   <data name="Pad_RumbleAudio_OutputDevice" xml:space="preserve"><value>Device sa output</value></data>
@@ -3068,6 +3094,7 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Naghulat sa data sa FreeTrack shared memory.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>Dili magamit ang FreeTrack shared memory.</value></data>
   <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Rumble sa anggulo sa steering</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Rumble nga mokusog samtang ang axis sa stick mopalayo sa sentro</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Magdugang og padayon nga rumble samtang ang napiling virtual nga axis sa stick molihok palayo sa sentro. Gigamit ang na-map nga output gikan sa tanang na-assign nga source. Kon "Gibahin sumala sa direksyon" ang napili, ang negatibo nga lihok mopaandar sa wala nga motor ug ang positibo sa tuo. Ang "Wala nga motor" o "Tuo nga motor" magbutang sa duha ka direksyon sa maong usa ka motor. Para sa Xbox ug PlayStation nga output nga adunay rumble nga device. Gilaktawan niini ang mga manibela, ang ubang device nga adunay padayon nga force feedback, ug ang mga pedal sa Fanatec.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>I-enable ang rumble sa anggulo sa steering</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Virtual nga axis</value></data>
@@ -3393,6 +3420,7 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="Status_FalconDriverDeclined" xml:space="preserve"><value>Wala gi-install sa Windows ang driver sa Force Dimension. Kung mangutana ang Windows kung saligan ba ang Force Dimension, pilia ang Install.</value></data>
   <data name="Status_FalconDriverNotBound" xml:space="preserve"><value>Na-install na ang driver, apan wala pa mobalhin ang Falcon niini. Tangtanga ang saksak sa Falcon ug isaksak kini pag-usab.</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>Sipa, uyog, pagpalig-on, preload, grabidad</value></data>
   <data name="Pad_Falcon_Description" xml:space="preserve"><value>Ang PadForge nagkuwenta sa matag kusog sa kuptanan sa Falcon mga usa ka libo ka higayon kada segundo, base sa posisyon sa kuptanan ug sa gipadagan sa dula. Kini nga mga setting para lang niini nga slot.</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>I-reset ang Novint Falcon</value></data>
   <data name="Pad_Falcon_Feel" xml:space="preserve"><value>Pagbati</value></data>
@@ -3576,4 +3604,11 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Unsang pislit ang makita sa dula kung ang duha ka button sa usa ka pares gikuptan</value></data>
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Unsang pislit ang makita sa dula kung ang duha ka key sa usa ka pares gikuptan</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Nagkupot og gamay nga pagtipas sa stick aron magpadayon ang mga dula sa pagpakita sa mga prompt sa controller</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Ipadala ang rumble sa mga nag-unang motor ngadto sa mga trigger</value></data>
+  <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Deadzone, pagpahapsay, Pagpaspas, Kurba sa output</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Button sa pag-engage sa aim, mode sa pag-engage, Threshold sa Easy Aim</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Swipe, tap, pinch, mga porma</value></data>
+  <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Kontrola ang suga niini nga device, pagkupti sa suga</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Gain matag motor, rumble sa trigger, ilisan ang motor</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Gain matag trigger, ilisan ang motor, adaptive trigger nga pagkurog</value></data>
 </root>

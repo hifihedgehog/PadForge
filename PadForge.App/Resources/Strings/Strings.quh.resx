@@ -350,6 +350,7 @@
   <data name="Pad_Formula_Chip_Half" xml:space="preserve"><value>0.5: kuskan</value></data>
   <data name="Curve_Linear" xml:space="preserve"><value>Lineal</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Zona muerta</value></data>
+  <data name="Pad_More_Stick" xml:space="preserve"><value>Chawpi allinchaykuna, zona muertapa rikch'aynin, sapa ejepaq chaninkuna, curvakuna, Rango, volante</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Rango</value></data>
   <data name="Pad_MouseMovement" xml:space="preserve"><value>Mouseq kuyuynin</value></data>
   <data name="Pad_ScrollUp" xml:space="preserve"><value>Wichayman</value></data>
@@ -566,6 +567,7 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Giroscopio</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Calibración</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensibilidad</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Unidadkuna, espacio, ejekunata t'ikray, Real-World Calibration</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Pitch t'ikray (Y)</value></data>
   <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Yaw t'ikray (X)</value></data>
   <data name="Settings_GyroInvertRoll" xml:space="preserve"><value>Roll t'ikray (X)</value></data>
@@ -672,6 +674,7 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Rango mín. Y (Uray)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Rango máx. Y (Hanaq)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X eje</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>Iskaynin eje</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y eje</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Rango</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti zona muerta</value></data>
@@ -681,6 +684,7 @@
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Force feedback / Vibración / Háptica</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Sapa motorpa kallpan, gatillo vibración, motorkunata tikray</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Lluq'i motor</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Paña motor</value></data>
 
@@ -904,6 +908,7 @@
 
   <!-- ═══ Audio Bass Rumble ═══ -->
   <data name="Settings_AudioRumble" xml:space="preserve"><value>Audio vibración</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Sistema audiopa bajonmanta vibración</value></data>
   <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>Sensibilidad</value></data>
   <data name="Settings_AudioRumble_LeftMotor" xml:space="preserve"><value>Lluq'i motor</value></data>
   <data name="Settings_AudioRumble_RightMotor" xml:space="preserve"><value>Paña motor</value></data>
@@ -937,6 +942,7 @@
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick stick (lluq'i palanca)</value></data>
   <data name="Mapping_FlickStickTouchpad_Format" xml:space="preserve"><value>Flick stick (touchpad {0})</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick stick</value></data>
+  <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Flick stick yaykuykunapaq allinchay</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Flick stickta ñawpaqman kutichiy</value></data>
   <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>14400-man kutichiy</value></data>
   <data name="Pad_ResetFlickTime" xml:space="preserve"><value>0.1 s-man kutichiy</value></data>
@@ -1064,6 +1070,7 @@
   <data name="Mapping_MouseGesture_Format" xml:space="preserve"><value>Mouse gesto: {0} + {1}</value></data>
   <data name="Macro_GuideLedBrightnessName" xml:space="preserve"><value>Guide LED-pa k'anchaynin</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>Guide botónpa LED-nin</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Guide utaq Home botónpa k'anchaynin</value></data>
   <data name="Pad_Lighting_GuideLed_Brightness" xml:space="preserve"><value>K'anchay</value></data>
   <data name="Pad_ResetGuideLed" xml:space="preserve"><value>Guide botónpa LED-ninta ñawpaqman kutichiy</value></data>
   <data name="Pad_ResetGuideLedBrightness" xml:space="preserve"><value>Guide LED-pa k'anchayninta ñawpaqman kutichiy</value></data>
@@ -1338,6 +1345,7 @@
   <data name="Settings_Falcon" xml:space="preserve"><value>Novint Falcon-ta purichiy</value></data>
   <data name="Status_InstallingFalconDriver" xml:space="preserve"><value>Force Dimension-pa Falcon controladorninta instalashan…</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>Kick, chhapchiy, takyachiy, preload, gravedad</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>Novint Falcon-ta ñawpaqman kutichiy</value></data>
   <data name="Pad_Falcon_Feel_Joystick" xml:space="preserve"><value>Joystick</value></data>
   <data name="Pad_Falcon_Button1" xml:space="preserve"><value>Botón 1</value></data>
@@ -1436,4 +1444,21 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Kuyuy &amp; Llamiy</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>K'anchaykuna &amp; Audio</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Macrokuna &amp; Menúkuna</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Volante modopi palanca tukukama chayaqtin willakuy</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Palancapa ejen chawpimanta karunchakuqtin wiñaq vibración</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Mana tikrakuq kallpa, wañuchinaykikama</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Hatun motorkunapa vibraciónninta gatillokunaman apachin</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Sapa gatillo motorpi mana tikrakuq kallpa</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Sistema audiopa bajonmanta gatillo vibración</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Kinrayaypa zona muertankuna, controlpa orientacionnin</value></data>
+  <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Zona muerta, llamp'uchay, Aceleración, lluqsiy curva</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Punteríata qallarichiq botón, qallarichiy modo, Easy Aim umbral</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Kay touchpadpa gestonkunata qallarichin</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Llust'ichiykuna, takyaykuna, ch'apiykuna, rikch'aykuna</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Qampa kikiykita grabay</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>LED k'anchay, pukllaqpa patronnin, ch'inyachiy LED modo</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Sonido macrokunapaq sonidokunayuq zip archivokuna</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Menú celdakunapaq imagenkunayuq zip archivokuna</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Sapa gatillopa kallpan, motorkunata tikray, adaptive gatillo vibracionkuna</value></data>
+  <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>T'ikray, impulso, kutichiy, Aceleración, fling</value></data>
 </root>

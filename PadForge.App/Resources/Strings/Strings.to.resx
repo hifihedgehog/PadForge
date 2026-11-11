@@ -368,6 +368,7 @@
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->
   <data name="Pad_XAxis" xml:space="preserve"><value>Axis X</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>Axis Fakatouʻosi</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Axis Y</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
@@ -690,6 +691,7 @@
   <data name="Falcon_Status_Line_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Settings_Falcon_Title" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>Tuʻi, lulu, poupou, fakamamafa, kalaviti</value></data>
   <data name="Pad_Falcon_NewtonsUnit" xml:space="preserve"><value>N</value></data>
   <data name="Dashboard_GameTelemetryGame" xml:space="preserve"><value>Vaʻinga</value></data>
   <data name="Telemetry_Game_Forza" xml:space="preserve"><value>Forza Motorsport mo Forza Horizon</value></data>
@@ -726,4 +728,20 @@
   <data name="Extras_Title" xml:space="preserve"><value>Ngaahi meʻa fakalahi</value></data>
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>Ngalulu mo e Ongoʻi</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Maama mo e Leʻo</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Fakaʻilonga ʻi he ngataʻanga ʻo e stick ʻi he mode fakaʻuli</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Tetetete ʻoku lahi ange ʻi he mavahe ʻa e axis stick mei loto</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Mālohi tuʻumaʻu kae ʻoua ke ke tamateʻi</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Tetetete mei he bass ʻi he ongo ʻo e sisitemi</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Fekauʻi ʻa e tetetete ʻo e ongo motor lalahi ki he ongo trigger</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Mālohi tuʻumaʻu ʻi he motor ʻo e trigger taki taha</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Tetetete trigger mei he bass ʻi he ongo ʻo e sisitemi</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Deadzone fakatafaʻaki, Fakahangatonu ʻo e Controller</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Button Fakaʻaongaʻi Taumuʻa, Mode Fakaʻaongaʻi, Threshold Taumuʻa Faingofua</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Fakaava ʻa e ngaahi gesture ʻo e touchpad ko eni</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Lekooti hoʻo ngaahi gesture pē ʻaʻau</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Ngingila LED, Sīpinga ʻo e Tokotaha Vaʻinga, Mode LED Fakalongolongo</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Ngaahi faile Zip ʻo e ngaahi ongo ki he ngaahi macro ongo</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Ngaahi faile Zip ʻo e ngaahi ʻīmisi ki he ngaahi puha ʻo e menu</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Gain ʻo e motor taki taha, tetetete trigger, fetongi motor</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Gain ʻo e trigger taki taha, fetongi motor, tetetete trigger adaptive</value></data>
 </root>

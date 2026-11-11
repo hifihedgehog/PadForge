@@ -870,6 +870,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Calibrer le centre</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Point central</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Zone morte</value></data>
+  <data name="Pad_More_Stick" xml:space="preserve"><value>Décalages du centre, forme et valeurs de zone morte par axe, une courbe par axe, plage, direction</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Plage</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Calibrer la limite est la méthode recommandée pour corriger un stick. Elle balaie le bord physiquement atteignable, puis remet à l'échelle proportionnellement chaque position par rapport à ce bord mesuré, de sorte que tout le mouvement natif, sous chaque angle et à chaque déflexion, se projette sur un cercle idéal sans aucun écrêtage. Les quatre curseurs ci-dessous ne plafonnent que les axes cardinaux. Utilisez-les pour limiter la plage volontairement, pas pour corriger.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Échantillonnage...</value></data>
@@ -1182,6 +1183,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Plage min. Y (Bas) </value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Plage max. Y (Haut) </value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Axe X</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>Les deux axes</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Axe Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Plage </value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-zone morte </value></data>
@@ -1190,6 +1192,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_Preset_Label" xml:space="preserve"><value>Préréglage </value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Axe de gâchette</value></data>
   <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Retour de force / Vibration</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Gain par moteur, vibration des gâchettes, inversion des moteurs</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Gain global </value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Moteur gauche </value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Moteur droit </value></data>
@@ -1199,6 +1202,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_TestRumble" xml:space="preserve"><value>Tester la vibration</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Activité moteur</value></data>
   <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Force constante</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Une force continue jusqu'à la désactivation</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Applique une force continue à ce périphérique jusqu'à ce que vous la désactiviez. La force émise par un jeu prend le dessus tant qu'elle est active et reprend dès que le jeu s'arrête.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Appliquer une force constante</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Faites glisser dans la grille pour définir la direction et l'intensité.</value></data>
@@ -1534,6 +1538,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
 
   <!-- ═══ Audio Bass Rumble ═══ -->
   <data name="Settings_AudioRumble" xml:space="preserve"><value>Vibration audio</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Vibration issue des basses de l'audio système</value></data>
   <data name="Settings_AudioRumbleDesc" xml:space="preserve"><value>Piloter la vibration du contrôleur à partir des fréquences basses de l'audio système.</value></data>
   <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>Activer la vibration audio</value></data>
   <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>Sensibilité</value></data>
@@ -1592,7 +1597,9 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Règle la façon dont le capteur de mouvement de cette manette pilote la souris ou le stick. Étalonne d'abord sur une surface plane pour annuler la dérive au repos, puis ajuste sensibilité, lissage et règles d'activation à ton goût.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Étalonnage</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensibilité</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Unités, Espace, inversion des axes, Étalonnage réel</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Forme de réponse</value></data>
+  <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Zone morte, lissage, Accélération, Courbe de sortie</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Espace</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Local = axes bruts du contrôleur. Player = le lacet est projeté sur la verticale réelle (gravité), le tangage reste local. Défaut recommandé par Jibb Smart pour un ressenti naturel quelle que soit l'inclinaison. World = lacet et tangage projetés sur les axes du monde.</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>Tenue comme</value></data>
@@ -1606,11 +1613,13 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_ResetGyroInvertYaw" xml:space="preserve"><value>Réinitialiser l’inversion du lacet</value></data>
   <data name="Pad_ResetGyroInvertRoll" xml:space="preserve"><value>Réinitialiser l’inversion du roulis</value></data>
   <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>Boussole</value></data>
+  <data name="Pad_Compass_FoldHint" xml:space="preserve"><value>Ancre le lacet au nord magnétique</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Cette manette embarque un magnétomètre. Ancrer le lacet au nord magnétique supprime la dérive horizontale lente de la visée gyroscopique. Calibrez d'abord : appuyez sur Calibrer, faites tourner la manette en huit dans toutes les orientations pendant quelques secondes, puis appuyez de nouveau.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Ancrer le lacet à la boussole</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Ajoute un petit taux correctif qui ramène la visée horizontale vers le cap magnétique, de sorte que la dérive ne peut pas s'accumuler. Nécessite une calibration du magnétomètre enregistrée. Les échantillons perturbés par du métal ou des aimants proches sont rejetés automatiquement.</value></data>
   <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Réinitialiser par défaut (désactivé)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Simulation du tangage et du roulis</value></data>
+  <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Tangage et roulis déduits de l'accéléromètre</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>Le gyroscope de cette manette ne détecte que la rotation vers la gauche et la droite. Avec la simulation activée, PadForge déduit le tangage et le roulis de l’accéléromètre et les envoie avec le lacet du gyroscope aux affectations et au mouvement de la manette virtuelle. Un accéléromètre ne distingue pas une poussée d’une inclinaison, donc déplacer la manette sur le côté ou vers l’avant sans la tourner se lit comme une brève rotation.</value></data>
   <data name="Settings_GyroSimulation" xml:space="preserve"><value>Simuler le tangage et le roulis</value></data>
   <data name="Settings_GyroSimulation_Tooltip" xml:space="preserve"><value>Remplit le tangage et le roulis avec des vitesses déduites de l’accéléromètre. Le lacet reste la mesure propre du gyroscope. Désactivé par défaut.</value></data>
@@ -1651,6 +1660,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Bas (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Haut (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Activation</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Bouton d'activation de la visée, Mode d'activation, Seuil Easy Aim</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Restrictions optionnelles qui limitent l'activité du gyroscope. La déflexion du stick droit et un bouton d'activation peuvent chacun conditionner la sortie. Configurez l'un ou les deux. Si les deux sont configurés, ils doivent être actifs simultanément.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Local</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Joueur</value></data>
@@ -1701,6 +1711,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Inclinaison gyro réglable X</value></data>
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>Inclinaison gyro réglable Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>Inclinaison réglable</value></data>
+  <data name="Pad_GyroTilt_FoldHint" xml:space="preserve"><value>Plage d'inclinaison complète, Zone morte d'inclinaison</value></data>
   <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>Enveloppe des entrées Inclinaison gyro réglable X / Y : maintenez l'inclinaison et le stick garde sa déflexion, comme le mode Déflexion du joystick de Steam. Déflexion complète à la plage définie ici ; Recentrer le gyroscope remet à zéro la prise de repos. Le lacet (rotation à plat) est invisible pour la gravité et ne bouge pas ces entrées.</value></data>
   <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>Plage d'inclinaison complète</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>Degrés d'inclinaison depuis la prise de repos comptant comme déflexion complète. Plus petit = plus sensible. 25° est la valeur la plus courante dans les configurations Steam.</value></data>
@@ -1827,6 +1838,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>Ce contrôleur virtuel éclaire l’appareil avec les mêmes modes que la barre lumineuse d’une DualSense, réglés ici pour ce seul contrôleur. Sur un contrôleur virtuel PlayStation, un jeu qui écrit la barre lumineuse prend la main comme sur une DualSense.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Contrôler l’éclairage de cet appareil</value></data>
   <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>Contrôle de l’éclairage</value></data>
+  <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Contrôler l’éclairage de cet appareil, Emprise sur l’éclairage</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>Désactivé empêche ce contrôleur virtuel d’éclairer l’appareil. Une ligne de fabricant, ou un autre appareil du même type éclairé par le même logiciel, peut encore fixer sa couleur. Une macro « Définir la couleur Chroma » de ce contrôleur virtuel colore quand même un appareil Razer.</value></data>
   <data name="Pad_Lighting_ClaimLevel" xml:space="preserve"><value>Emprise sur l’éclairage</value></data>
   <data name="Pad_Lighting_ClaimLevel_Colors" xml:space="preserve"><value>Couleurs seulement</value></data>
@@ -1883,6 +1895,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_Lighting_MicLed_FollowDevice" xml:space="preserve"><value>Suivre le périphérique audio</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice_Picker" xml:space="preserve"><value>Périphérique audio</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>LED indicatrices</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Luminosité de la LED, Motif joueur, Mode de la LED de mute</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>Rangée du numéro de joueur (5 LED sous le pavé tactile) et la LED de mute au-dessus du micro. Le contrôle de luminosité n'agit physiquement que sur la rangée joueur. Le firmware expose les états de la LED de mute (Éteint / Fixe / Pulsé) mais pas de registre de luminosité distinct.</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>Réinitialiser la barre lumineuse</value></data>
   <data name="Pad_ResetIndicatorLeds" xml:space="preserve"><value>Réinitialiser les LED indicatrices</value></data>
@@ -2124,6 +2137,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Si coché, le bouton activateur continue de piloter toute ligne qui l'utilise comme source. Une pression change la couche ET déclenche le mapping propre du bouton. Si non coché (par défaut), la pression est consommée uniquement par le changement de couche.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Lorsque coché, les cibles que cette couche n'affecte pas explicitement retombent sur la couche Base. Lorsque décoché (par défaut), la couche remplace entièrement Base et les cibles non affectées restent désactivées.</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Gâchettes Impulse</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Gain par gâchette, inversion des moteurs, vibrations des gâchettes adaptatives</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Transmet les commandes par moteur de gâchette (gâchettes Impulse Xbox) du contrôleur virtuel vers le contrôleur physique Xbox One, Elite ou Series assigné. La vibration de gâchette générée par un jeu est transmise automatiquement. Les contrôles ci-dessous ajustent l'amplitude par gâchette.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Gâchette gauche</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Gâchette droite</value></data>
@@ -2141,7 +2155,9 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Réinitialiser la gâchette gauche</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Réinitialiser la gâchette droite</value></data>
   <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Force constante sur gâchettes</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Une force continue sur chaque moteur de gâchette</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Routage des gâchettes</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Envoie la vibration des moteurs principaux aux gâchettes</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Route les moteurs de vibration principaux vers le canal de gâchette, une gâchette à la fois. Fonctionne avec la vibration XInput et le retour de force. Un activateur peut le conditionner pour que la gâchette ne vibre que lorsqu'un bouton est maintenu.</value></data>
   <data name="Pad_ResetTriggerRouting" xml:space="preserve"><value>Réinitialiser le routage des gâchettes</value></data>
   <data name="Pad_TriggerRouting_LeftTrigger" xml:space="preserve"><value>Gâchette gauche</value></data>
@@ -2173,6 +2189,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Réinitialiser la gâchette gauche</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Réinitialiser la gâchette droite</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Vibration de gâchette par basses audio</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Vibration des gâchettes issue des basses de l'audio système</value></data>
   <data name="Pad_AudioTriggerRumble_Description" xml:space="preserve"><value>Pilote les moteurs de gâchette à partir des basses du son système. La force de gâchette émise par un jeu prend le dessus tant qu'elle est active.</value></data>
   <data name="Pad_AudioTriggerRumble_Toggle" xml:space="preserve"><value>Piloter les moteurs de gâchette depuis l'audio</value></data>
   <data name="Pad_AudioTriggerRumble_Sensitivity" xml:space="preserve"><value>Sensibilité</value></data>
@@ -2247,6 +2264,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Numéro de pavé tactile</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Le pavé tactile de cette manette auquel s'appliquent les réglages ci-dessous. Chaque pavé garde ses propres gestes, son comportement de souris et sa zone de pointeur.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Détection des gestes</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Active les gestes de ce pavé tactile</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Activer les gestes sur ce pavé tactile</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Bascule principale pour ce pavé tactile. Désactivé, aucun descripteur de geste n'est déclenché pour ce pavé tactile. Les affectations doigt / clic / position existantes continuent de fonctionner.</value></data>
   <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>Reconnaître</value></data>
@@ -2257,6 +2275,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>Délai de repos</value></data>
   <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>Après le déclenchement d'un geste, ignore les nouveaux gestes sur ce pavé tactile pendant ce nombre de millisecondes. Empêche les déclenchements en rebond dus à un mouvement rapide d'aller-retour.</value></data>
   <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>Gestes intégrés</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Balayages, tapotements, pincements, formes</value></data>
   <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>Balayages 4 directions (haut / bas / gauche / droite)</value></data>
   <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>Balayages 8 directions (ajoute les diagonales)</value></data>
   <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>Distance de balayage (0..1)</value></data>
@@ -2282,11 +2301,13 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>Gestes de formes (Cercle, Carré, Triangle, Z, Coche)</value></data>
   <data name="Pad_Touchpad_MatchThreshold" xml:space="preserve"><value>Seuil de correspondance de forme</value></data>
   <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>Gestes personnalisés</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Enregistrez les vôtres</value></data>
   <data name="Pad_Touchpad_RecordNew" xml:space="preserve"><value>+ Enregistrer un nouveau geste</value></data>
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>Aucun geste personnalisé enregistré pour ce profil. Clique sur Enregistrer un nouveau geste pour en capturer un.</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 doigt</value></data>
   <data name="Pad_Touchpad_CustomGesture_NFingers_Format" xml:space="preserve"><value>{0} doigts</value></data>
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Sortie souris</value></data>
+  <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Inversion, Inertie, Réponse, Accélération, impulsion</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Règle la vitesse du curseur quand un doigt du pavé tactile est mappé sur Souris X/Y d'une manette virtuelle Clavier / Souris. 1.0 est la valeur par défaut. Augmente un axe pour un curseur plus rapide, baisse-le pour le ralentir. Inverser retourne l'axe correspondant.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Sensibilité de la souris X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Multiplicateur du delta horizontal pavé tactile → souris. En dessous de 1.0 ralentit le curseur, au-dessus de 1.0 l'accélère.</value></data>
@@ -2297,6 +2318,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_Touchpad_MouseInvertY" xml:space="preserve"><value>Inverser souris Y</value></data>
   <data name="Pad_Touchpad_MouseInvertY_Tooltip" xml:space="preserve"><value>Retourne le mouvement vertical. Le doigt vers le bas déplace le curseur vers le haut.</value></data>
   <data name="Pad_Touchpad_Stick_Header" xml:space="preserve"><value>Sortie stick / Croix directionnelle</value></data>
+  <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Utiliser le pavé tactile comme stick ou croix directionnelle</value></data>
   <data name="Pad_Touchpad_Stick_Subtitle" xml:space="preserve"><value>Transforme le pavé tactile en stick analogique virtuel ou croix directionnelle. La sortie est ancrée là où ton doigt se pose. La position actuelle relative à cet ancrage pilote la valeur du stick et, en option, les bits de direction maintenus de la croix.</value></data>
   <data name="Pad_Touchpad_StickEnabled" xml:space="preserve"><value>Activer Sortie Stick / Croix directionnelle</value></data>
   <data name="Pad_Touchpad_StickEnabled_Tooltip" xml:space="preserve"><value>Affiche les descripteurs Pavé tactile Stick X, Stick Y et Croix directionnelle dans le sélecteur de mapping. Fonctionne en complément des sources de doigt et de gestes existantes, pas à leur place.</value></data>
@@ -2424,9 +2446,12 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Réinitialiser la zone morte extérieure d'inclinaison</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Réinitialiser l'orientation de la manette</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Direction par mouvement</value></data>
+  <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° à {1}°</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Zones mortes d'inclinaison, Orientation de la manette</value></data>
   <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Réglages de l’entrée "Inclinaison de mouvement" : inclinez la manette comme un volant. Affectez "Inclinaison de mouvement" à un axe de stick depuis la liste des entrées dans Mappages.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Réinitialiser la direction par mouvement</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Retour en butée de braquage</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Un signal en butée pour un stick en mode direction</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Quand un stick configuré en mode direction est tourné à fond jusqu'en butée de braquage, déclenche un signal (vibration, gâchette ou barre lumineuse) pour vous faire sentir la limite. Tout est désactivé par défaut.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Pulsation de vibration en butée</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Vibration des gâchettes en butée</value></data>
@@ -2482,6 +2507,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Les sons de macro et l’audio dupliqué jouent par le haut-parleur intégré de la manette sélectionnée, en USB ou Bluetooth. Choisissez le périphérique dans la liste au-dessus. Tout ici le suit.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Sortie audio</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Source du miroir, haptique, Volume du casque, Crossfeed, Parametric EQ, limiteur</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Les sons sont dirigés automatiquement vers la manette sélectionnée. En USB, le point de sortie audio est associé par conteneur matériel. En Bluetooth, l’audio est transmis en trames HID Sony.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Source du miroir</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Périphérique de lecture à refléter vers le haut-parleur de la manette. Les jeux qui envoient certains sons vers un périphérique de lecture distinct peuvent cibler celui-ci.</value></data>
@@ -2561,6 +2587,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>Le fichier n'est pas un profil PadForge lisible.</value></data>
   <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Choisir un son dans {0}</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Paquets de sons</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Fichiers ZIP de sons pour les macros sonores</value></data>
   <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>Un paquet de sons est un seul fichier ZIP de sons portant l'extension .pfsounds. Ajoutez-en un ici, puis choisissez ses sons dans n'importe quelle macro sonore. PadForge lit directement dans le fichier et ne le décompresse jamais. Gardez les paquets à côté de PadForge.exe pour que tout reste portable.</value></data>
   <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>Ajouter un paquet…</value></data>
   <data name="Pad_Audio_Packages_Add_Tooltip" xml:space="preserve"><value>Ajouter un fichier .pfsounds existant à la liste.</value></data>
@@ -2586,6 +2613,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Emoji_Category_Objects" xml:space="preserve"><value>Objets</value></data>
   <data name="Emoji_Category_Symbols" xml:space="preserve"><value>Symboles</value></data>
   <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>Packs d'icônes</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Fichiers ZIP d'images pour les cellules de menu</value></data>
   <data name="Pad_Menus_IconPackages_Desc" xml:space="preserve"><value>Un pack d'icônes est un fichier zip d'images portant l'extension .pficons. Ajoutez-le ici, puis choisissez ses icônes sur n'importe quelle cellule de menu. PadForge lit directement le fichier et ne le décompresse jamais. Gardez les packs à côté de PadForge.exe pour rester portable.</value></data>
   <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>Ajouter un pack…</value></data>
   <data name="Pad_Menus_IconPackages_Add_Tooltip" xml:space="preserve"><value>Ajouter un fichier .pficons existant à la liste.</value></data>
@@ -3384,6 +3412,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_Kbm_Socd_Pairs_Label" xml:space="preserve"><value>Paires de touches</value></data>
   <data name="Pad_Kbm_Socd_Pairs_Tooltip" xml:space="preserve"><value>Les paires de touches que la règle nettoie. Chaque paire est suivie séparément.</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>LED du bouton Guide</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>La lueur du bouton Guide ou Home</value></data>
   <data name="Pad_Lighting_GuideLed_Battery" xml:space="preserve"><value>Niveau de batterie</value></data>
   <data name="Pad_Lighting_GuideLed_Brightness" xml:space="preserve"><value>Luminosité</value></data>
   <data name="Pad_Lighting_GuideLed_Brightness_Tooltip" xml:space="preserve"><value>Luminosité de la LED du bouton Guide de 0% (éteinte) à 100% (pleine). S'applique tant que le mode est Luminosité fixe.</value></data>
@@ -3591,6 +3620,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_Touchpad_RotateThreshold_Tooltip" xml:space="preserve"><value>Rotation nécessaire des deux doigts pour déclencher une rotation.</value></data>
   <data name="Pad_ResetTouchpadRotateThresholdDegrees" xml:space="preserve"><value>Réinitialiser le seuil de rotation</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>Pointeur absolu</value></data>
+  <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>La partie de l'écran couverte par le pavé</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Règle les sources Pointeur X/Y du pavé tactile, qui placent le curseur à la position du doigt sur le pad (à mapper sur souris X/Y d'une manette virtuelle clavier / souris). Taille 1.00 avec centre 0.50 fait correspondre le pad à tout l'écran. Réduisez la taille pour confiner le curseur à une partie, et déplacez le centre pour la situer.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Largeur de la Zone</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Largeur de la zone d'écran à laquelle ce pad correspond, en fraction de la largeur d'écran. 1.00 couvre toute la largeur ; 0.50 confine le curseur à la moitié.</value></data>
@@ -3601,12 +3631,14 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_Touchpad_PointerRegionCenterY" xml:space="preserve"><value>Centre de la Zone Y</value></data>
   <data name="Pad_Touchpad_PointerRegionCenterY_Tooltip" xml:space="preserve"><value>Position verticale. 0.00 est le bord supérieur, 0.50 le milieu, 1.00 le bord inférieur.</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Haptique de balayage</value></data>
+  <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>Des tics au fil du doigt</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Fait vibrer l'haptique de la manette pendant que le doigt parcourt ce pavé tactile, comme les tics de trackpad de Steam Input. Les Steam Controller et le Steam Deck font tiquer l'actionneur sous le pavé ; DualSense et DualShock 4 pulsent les moteurs de vibration.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Activer l'haptique de balayage</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>Émet un bref tic haptique chaque fois que le doigt parcourt une distance définie sur ce pavé. Poser un doigt ou cliquer sur le pavé ne fait jamais tiquer. Désactivé par défaut.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>Intensité des impulsions</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity_Tooltip" xml:space="preserve"><value>Force de chaque tic. La vibration du jeu gagne toujours quand elle est plus forte.</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Header" xml:space="preserve"><value>Pression synthétique</value></data>
+  <data name="Pad_SyntheticPressure_FoldHint" xml:space="preserve"><value>Pression pour les pavés qui signalent un toucher complet</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Subtitle" xml:space="preserve"><value>Simule les boutons sensibles à la pression des DualShock 2 / DualShock 3 sur les pavés qui signalent un toucher comme une pression complète (DualShock 4, DualSense, Steam Controller 2015). Tant qu&apos;elle est activée, les sources de mappage de pression de cet appareil lisent l&apos;absence de toucher comme 0%, un toucher au repos comme le niveau de pression du toucher et un clic du pavé comme 100%.</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled" xml:space="preserve"><value>Activer la pression synthétique</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled_Tooltip" xml:space="preserve"><value>Façonne les sources de mappage de pression de cet appareil en trois paliers : l&apos;absence de toucher lit 0%, un toucher au repos lit le niveau de pression du toucher et un clic du pavé lit 100%. Désactivée par défaut, ce qui conserve les lectures brutes sur les pavés à vraie pression analogique.</value></data>
@@ -3629,6 +3661,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Mapping_LeftStickRing" xml:space="preserve"><value>Anneau du stick gauche</value></data>
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>Anneau du stick droit</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
+  <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Réglages des entrées Flick Stick</value></data>
   <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Réglages des entrées Flick Stick : pointez le stick et la caméra tourne pour correspondre, longez le bord pour affiner la rotation. Affectez « Flick Stick (stick droit) » à Souris X depuis la liste d'entrées dans Mappings, sur n'importe quelle couche.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Réinitialiser le Flick Stick</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Pas par 360°</value></data>
@@ -3844,6 +3877,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shakers</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Route la vibration et le retour de force de jeu reçus par cette manette virtuelle vers une sortie audio sous forme de sons basse fréquence pour bass shakers et caissons de basses.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibration vers audio</value></data>
+  <data name="Pad_More_BassShakers" xml:space="preserve"><value>Périphérique de sortie, canaux, gain, une tonalité par moteur</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Fonctionne avec les manettes virtuelles Xbox, DualShock 3, DualShock 4 / DualSense et Nintendo Switch Pro, ainsi que les manettes virtuelles Étendu à retour de force, comme les volants de course, et le Steam Deck Controller (Composite). Le retour du jeu et la vibration de test passent par la sortie audio. La vibration de macro reste sur la manette.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Réinitialiser la vibration vers audio</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Router la vibration vers une sortie audio</value></data>
@@ -4303,6 +4337,7 @@ Voulez-vous que PadForge les désinstalle maintenant ? Cette opération nécessi
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>En attente de données dans la mémoire partagée FreeTrack.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>La mémoire partagée FreeTrack n'est pas disponible.</value></data>
   <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Vibration selon l’angle de braquage</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Vibration qui augmente quand un axe s'éloigne du centre</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Ajoute une vibration continue lorsque l’axe virtuel choisi s’éloigne du centre. Utilise la sortie mappée de toutes les sources assignées. Avec Séparé par direction, un mouvement négatif active le moteur gauche et un mouvement positif le droit. Moteur gauche ou Moteur droit place les deux directions sur ce seul moteur. Pour les sorties Xbox et PlayStation avec des périphériques vibrants. Les volants, les autres périphériques à retour de force constant et les pédales Fanatec sont ignorés.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Activer la vibration selon l’angle de braquage</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Axe virtuel</value></data>
@@ -4657,6 +4692,7 @@ Voulez-vous que PadForge les désinstalle maintenant ? Cette opération nécessi
   <data name="Status_FalconDriverDeclined" xml:space="preserve"><value>Windows n'a pas installé le pilote de Force Dimension. Si Windows demande s'il faut faire confiance à Force Dimension, choisissez Installer.</value></data>
   <data name="Status_FalconDriverNotBound" xml:space="preserve"><value>Le pilote est installé, mais le Falcon n'est pas passé dessus. Débranchez le Falcon puis rebranchez-le.</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>Recul, secousses, stabilisation, précharge, gravité</value></data>
   <data name="Pad_Falcon_Description" xml:space="preserve"><value>PadForge calcule chaque force sur la poignée du Falcon environ mille fois par seconde, d'après la position de la poignée et ce que joue le jeu. Ces réglages appartiennent à cet emplacement.</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>Réinitialiser le Novint Falcon</value></data>
   <data name="Pad_Falcon_Feel" xml:space="preserve"><value>Sensation</value></data>

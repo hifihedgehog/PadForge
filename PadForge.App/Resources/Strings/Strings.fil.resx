@@ -861,6 +861,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Mga Impulse Trigger</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Mga Impulse Trigger</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Gain bawat trigger, pagpapalit ng motor, mga adaptive trigger vibration</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Ipinapasa ang mga motor command ng bawat trigger (Xbox Impulse Triggers) mula sa virtual controller papunta sa nakatalagang pisikal na Xbox One, Elite, o Series controller. Awtomatikong dumadaan ang trigger rumble na galing sa laro. Ini-scale ng mga kontrol sa ibaba ang lakas bawat trigger.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Kaliwang Trigger</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Kanang Trigger</value></data>
@@ -879,7 +880,9 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>I-reset ang Kaliwang Trigger</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>I-reset ang Kanang Trigger</value></data>
   <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Constant Trigger Force</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Tuloy-tuloy na force sa bawat trigger motor</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Trigger Routing</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Ipinapadala ang rumble ng mga pangunahing motor sa mga trigger</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>I-route ang mga pangunahing rumble motor sa trigger channel, isang trigger bawat beses. Gumagana sa XInput rumble at force feedback. Maaaring i-gate ito ng activator para mag-buzz lang ang trigger habang may hawak kang button.</value></data>
   <data name="Pad_ResetTriggerRouting" xml:space="preserve"><value>I-reset ang Trigger Routing</value></data>
   <data name="Pad_TriggerRouting_LeftTrigger" xml:space="preserve"><value>Kaliwang Trigger</value></data>
@@ -911,6 +914,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>I-reset ang Kaliwang Trigger</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>I-reset ang Kanang Trigger</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Audio Bass Trigger Rumble</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Trigger rumble mula sa bass ng audio ng system</value></data>
   <data name="Pad_AudioTriggerRumble_Description" xml:space="preserve"><value>Patakbuhin ang mga trigger motor mula sa bass ng audio ng system. Nangingibabaw ang puwersa ng trigger na galing sa laro habang aktibo ito.</value></data>
   <data name="Pad_AudioTriggerRumble_Toggle" xml:space="preserve"><value>Patakbuhin ang Trigger Motor mula sa Audio</value></data>
   <data name="Pad_AudioTriggerRumble_Sensitivity" xml:space="preserve"><value>Sensitivity</value></data>
@@ -1008,6 +1012,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice" xml:space="preserve"><value>Sundan ang Audio Device</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice_Picker" xml:space="preserve"><value>Audio Device</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>Mga Indicator LED</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Liwanag ng LED, Pattern ng Player, Mute LED Mode</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>Hilera ng numero ng player (5 LED sa ilalim ng touchpad) at ang mute LED sa ibabaw ng mic. Pisikal na nakaaapekto lang sa hilera ng player ang kontrol sa liwanag. Inilalantad ng firmware ang mga estado ng mute LED (Off / Solid / Pulse) pero walang hiwalay na register ng liwanag para sa mute.</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>I-reset ang Lightbar</value></data>
   <data name="Pad_ResetIndicatorLeds" xml:space="preserve"><value>I-reset ang Indicator LED</value></data>
@@ -1394,6 +1399,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>I-calibrate ang Gitna</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Gitnang Punto</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Deadzone</value></data>
+  <data name="Pad_More_Stick" xml:space="preserve"><value>Mga offset ng gitna, hugis ng deadzone at halaga bawat axis, curve para sa bawat axis, range, steering</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Range</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Ang Calibrate Boundary ang inirerekomendang paraan para ayusin ang isang stick. Ini-sweep nito ang gilid na pisikal na naaabot ng stick, saka proporsyonal na ini-rescale ang bawat posisyon batay sa sinukat na gilid, kaya ang buong natural na galaw, sa bawat anggulo at bawat deflection, ay napupunta sa isang ideal na bilog nang walang naputol. Nililimitahan lang ng apat na slider sa ibaba ang mga cardinal axis. Gamitin ang mga ito para sadyang limitahan ang range, hindi para itama ito.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Nagsa-sample...</value></data>
@@ -1727,6 +1733,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Numero ng Touchpad</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Aling touchpad ng controller na ito ang sakop ng mga setting sa ibaba. May sariling gesture, pakiramdam ng mouse, at pointer region ang bawat touchpad.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Pagtukoy ng Gesture</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Binubuksan ang mga gesture ng touchpad na ito</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>I-enable ang mga Gesture sa Touchpad na Ito</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Pangunahing toggle para sa touchpad na ito. Kapag naka-off, walang gesture descriptor na gagana para sa touchpad na ito. Gumagana pa rin ang mga umiiral na mapping ng daliri / click / posisyon.</value></data>
   <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>Kilalanin</value></data>
@@ -1737,6 +1744,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>Cooldown</value></data>
   <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>Pagkatapos gumana ang isang gesture, babalewalain ang mga bagong gesture sa touchpad na ito sa loob ng ganitong karaming millisecond. Pinipigilan ang paulit-ulit na pag-fire dahil sa mabilis na pabalik-balik na galaw.</value></data>
   <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>Mga In-Box na Gesture</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Mga swipe, tap, pinch, hugis</value></data>
   <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>4-Way na Swipe (Pataas / Pababa / Pakaliwa / Pakanan)</value></data>
   <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>8-Way na Swipe (May Dayagonal)</value></data>
   <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>Layo ng Swipe (0..1)</value></data>
@@ -1762,6 +1770,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>Mga Gesture na Hugis (Bilog, Parisukat, Tatsulok, Z, Check Mark)</value></data>
   <data name="Pad_Touchpad_MatchThreshold" xml:space="preserve"><value>Threshold ng Pagtugma ng Hugis</value></data>
   <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>Mga Custom na Gesture</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Mag-record ng sarili mo</value></data>
   <data name="Pad_Touchpad_RecordNew" xml:space="preserve"><value>+ Mag-record ng Bagong Gesture</value></data>
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>Walang naka-record na custom na gesture para sa profile na ito. I-click ang Mag-record ng Bagong Gesture para kumuha ng isa.</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 daliri</value></data>
@@ -1769,6 +1778,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
 
   <!-- Stick / D-pad output card -->
   <data name="Pad_Touchpad_Stick_Header" xml:space="preserve"><value>Output ng Stick / D-Pad</value></data>
+  <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Gamitin ang touchpad bilang stick o D-pad</value></data>
   <data name="Pad_Touchpad_Stick_Subtitle" xml:space="preserve"><value>Gawing virtual analog stick o D-pad ang touchpad. Ang output ay naka-anchor kung saan unang dumapo ang daliri mo. Ang kasalukuyang posisyon kaugnay ng anchor na iyon ang nagtatakda ng halaga ng stick at (opsyonal) ng naka-latch na direksyon ng D-pad.</value></data>
   <data name="Pad_Touchpad_StickEnabled" xml:space="preserve"><value>I-enable ang Output ng Stick / D-Pad</value></data>
   <data name="Pad_Touchpad_StickEnabled_Tooltip" xml:space="preserve"><value>Inilalabas ang mga descriptor ng Touchpad Stick X, Stick Y, at D-Pad sa mapping picker. Gumagana kasabay ng mga umiiral na source ng daliri at gesture ng touchpad, hindi bilang kapalit ng mga ito.</value></data>
@@ -1783,6 +1793,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
 
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Output ng Mouse</value></data>
+  <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Invert, Momentum, Response, Acceleration, fling</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Inaayos ang bilis ng cursor kapag ang daliri sa touchpad ay naka-map sa mouse X/Y sa isang Keyboard / Mouse na virtual controller. Ang 1.0 ang default. Itaas ang alinmang axis para sa mas mabilis na cursor, ibaba para sa mas mabagal. Binabaligtad ng Invert ang alinmang axis.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Sensitivity ng Mouse X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Multiplier sa pahalang na delta ng touchpad → mouse. Kapag mas mababa sa 1.0, bumabagal ang cursor. Kapag mas mataas sa 1.0, bumibilis ito.</value></data>
@@ -1810,6 +1821,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_Touchpad_RotateThreshold_Tooltip" xml:space="preserve"><value>Gaano kalayo dapat umikot ang dalawang daliri bago gumana ang ikot.</value></data>
   <data name="Pad_ResetTouchpadRotateThresholdDegrees" xml:space="preserve"><value>I-reset ang Threshold ng Ikot</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>Absolute Pointer</value></data>
+  <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>Ang bahagi ng screen na naaabot ng pad</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Inaayos ang mga source ng Touchpad Pointer X/Y, na naglilipat ng cursor sa posisyon ng daliri mo sa pad (i-map ang mga ito sa mouse X/Y sa isang Keyboard / Mouse na virtual controller). Ang laki na 1.00 na may gitnang 0.50 ay nagma-map ng pad sa buong screen. Paliitin ang laki para limitahan ang cursor sa bahagi ng screen, at ilipat ang gitna para ilagay ito.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Lapad ng Region</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Lapad ng bahagi ng screen na sakop ng pad na ito, bilang bahagi ng lapad ng screen. Sinasaklaw ng 1.00 ang buong lapad. Nililimitahan ng 0.50 ang cursor sa kalahati ng screen.</value></data>
@@ -1822,12 +1834,14 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
 
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Haptics ng Swipe</value></data>
+  <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>Mga tik habang gumagalaw ang daliri mo</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Nagpapadala ng pulso sa haptics ng controller habang gumagalaw ang daliri mo sa touchpad na ito, tulad ng mga tick ng trackpad ng Steam Input. Ang mga Steam Controller at ang Steam Deck ay nag-ti-tick ng actuator sa ilalim ng pad. Ang DualSense at DualShock 4 ay nagpupulso ng mga rumble motor.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>I-enable ang Haptics ng Swipe</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>Nagpapadala ng maikling haptic tick sa tuwing gumagalaw ang daliri ng itinakdang layo sa pad na ito. Hindi nag-ti-tick ang pagdampi ng daliri o pag-click sa pad. Naka-off bilang default.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>Lakas ng Pulso</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity_Tooltip" xml:space="preserve"><value>Lakas ng bawat tick. Laging nananaig ang rumble ng laro kapag mas malakas ito.</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Header" xml:space="preserve"><value>Synthetic Pressure</value></data>
+  <data name="Pad_SyntheticPressure_FoldHint" xml:space="preserve"><value>Diin para sa mga pad na full ang ulat sa bawat hawak</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Subtitle" xml:space="preserve"><value>Ginagaya ang mga pressure button ng DualShock 2 / DualShock 3 sa mga pad na nag-uulat ng hawak bilang buong diin (DualShock 4, DualSense, Steam Controller 2015). Habang naka-enable, binabasa ng mga Pressure mapping source ng device na ito ang walang hawak bilang 0%, ang nakapahingang hawak bilang Antas ng Diin ng Hawak, at ang click ng pad bilang 100%.</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled" xml:space="preserve"><value>I-enable ang Synthetic Pressure</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled_Tooltip" xml:space="preserve"><value>Hinuhubog ang mga Pressure mapping source ng device na ito sa tatlong hakbang: ang walang hawak ay 0%, ang nakapahingang hawak ay ang Antas ng Diin ng Hawak, at ang pag-click sa pad ay 100%. Naka-off bilang default, na nagpapanatili ng raw na basa sa mga pad na may totoong analog na diin.</value></data>
@@ -2005,7 +2019,9 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Ayusin kung paano pinapagalaw ng motion sensor ng pad na ito ang output ng mouse at stick. Mag-calibrate sa patag na surface para gawing zero ang drift habang nakapahinga, saka ayusin ang sensitivity, smoothing, at mga patakaran sa engage ayon sa gusto mo.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Calibration</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensitivity</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Units, Space, i-invert ang mga axis, Real-World Calibration</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Paghubog ng Response</value></data>
+  <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Deadzone, smoothing, Acceleration, Output Curve</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Space</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Kung paano binibigyang-kahulugan ang galaw ng gyro. Ginagamit ng Local ang mga raw na axis ng controller. Ipinoproject ng Player ang pahalang na galaw sa tunay na patayo (gravity) para ang parehong pihit ng pulso ay laging nagpapaliko ng camera, gaano man hawakan ang pad. Muling ipinoproject pa ng World ang patayong galaw sa mga axis ng mundo.</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>Paraan ng Paghawak</value></data>
@@ -2019,11 +2035,13 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_ResetGyroInvertYaw" xml:space="preserve"><value>I-reset ang Pag-invert ng Yaw</value></data>
   <data name="Pad_ResetGyroInvertRoll" xml:space="preserve"><value>I-reset ang Pag-invert ng Roll</value></data>
   <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>Compass</value></data>
+  <data name="Pad_Compass_FoldHint" xml:space="preserve"><value>Pinapanatili ang yaw sa magnetic north</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>May magnetometer ang controller na ito. Ang pag-anchor ng yaw sa magnetic north ay nag-aalis ng mabagal na pahalang na drift sa gyro aiming. Mag-calibrate muna: pindutin ang Calibrate, paikutin ang controller sa lahat ng oryentasyon na hugis 8 sa loob ng ilang segundo, saka pindutin muli.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>I-anchor ang Yaw sa Compass</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Nagdaragdag ng maliit na pamawing rate na humihila sa pahalang na aim papunta sa magnetic heading, kaya hindi maipon ang drift. Nangangailangan ng nakaimbak na calibration ng magnetometer. Awtomatikong tinatanggihan ang mga sample na ginambala ng kalapit na metal o magnet.</value></data>
   <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>I-reset sa Default (Off)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Simulation ng Pitch at Roll</value></data>
+  <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Pitch at roll na kinuwenta mula sa accelerometer</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>Pakaliwa at pakanan lang ang nararamdaman ng gyro ng controller na ito. Kapag naka-on ang simulation, kinukuha ng PadForge ang pitch at roll mula sa accelerometer at ipinapadala ang mga ito kasama ng yaw ng gyro sa mga mapping row at sa motion ng virtual controller. Hindi makilala ng accelerometer ang tulak sa ikiling, kaya ang paggalaw ng controller nang patagilid o pasulong nang hindi umiikot ay nababasa bilang saglit na pag-ikot.</value></data>
   <data name="Settings_GyroSimulation" xml:space="preserve"><value>I-simulate ang Pitch at Roll</value></data>
   <data name="Settings_GyroSimulation_Tooltip" xml:space="preserve"><value>Pinupunan ang pitch at roll ng mga rate na hinango sa accelerometer. Ang yaw ay nananatiling sariling basa ng gyro. Naka-off bilang default.</value></data>
@@ -2064,6 +2082,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Ibaba (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Itaas (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Engage</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Aim Engage Button, Engage Mode, Threshold ng Easy Aim</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Mga opsyonal na gate na naglilimita kung kailan aktibo ang gyro. Maaaring i-configure ang deflection ng kanang stick at ang aim engage button. Gumagana lang ang gyro habang aktibo ang bawat naka-configure na gate.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Local</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Player</value></data>
@@ -2114,6 +2133,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Gyro Tilt X</value></data>
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>Gyro Tilt Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>Gyro Tilt</value></data>
+  <data name="Pad_GyroTilt_FoldHint" xml:space="preserve"><value>Range ng Buong Tilt, Deadzone ng Tilt</value></data>
   <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>Envelope para sa mga input na Gyro Tilt X / Gyro Tilt Y: hawakan ang isang tilt at hawak din ng stick ang deflection nito, tulad ng Joystick Deflection mode ng Steam. Buong deflection sa range na itinakda mo rito. Ang Gyro Recenter ay nagre-zero muli sa hawak na nakapahinga. Ang yaw (pag-ikot ng controller nang patag) ay hindi nakikita ng gravity at hindi gumagalaw sa mga input na ito.</value></data>
   <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>Range ng Buong Tilt</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>Digri ng tilt mula sa hawak na nakapahinga na itinuturing na buong deflection ng stick. Mas maliit = mas sensitibo. Ang 25° ang pinakakaraniwang halaga sa mga Steam config.</value></data>
@@ -2583,6 +2603,8 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>I-reset ang Outer Deadzone ng Lean</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>I-reset ang Oryentasyon ng Controller</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Motion Steering</value></data>
+  <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° hanggang {1}°</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Mga deadzone ng lean, Oryentasyon ng Controller</value></data>
   <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Mga setting para sa Motion Lean input: ikiling ang controller na parang manibela. I-map ang "Motion Lean" sa isang stick axis mula sa input dropdown sa Mappings.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>I-reset ang Motion Steering</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (Kanang Stick)</value></data>
@@ -2591,6 +2613,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Mapping_LeftStickRing" xml:space="preserve"><value>Ring ng Kaliwang Stick</value></data>
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>Ring ng Kanang Stick</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
+  <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Pag-tune sa mga input ng Flick Stick</value></data>
   <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Mga setting para sa mga input ng Flick Stick: ituro ang stick at iikot ang camera para tumugma, i-sweep ang gilid para sa pinong pag-ikot. I-map ang "Flick Stick (Kanang Stick)" sa Mouse X mula sa input dropdown sa Mappings, sa anumang layer.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>I-reset ang Flick Stick</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Dots bawat 360°</value></data>
@@ -2627,6 +2650,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Kapag nag-engage ang layer na may Flick Stick habang naka-deflect na ang stick, agad i-fire ang flick. Kapag naka-off, nananatiling nakatigil ang camera at sinusubaybayan ang pag-ikot mula sa kasalukuyang anggulo ng stick.</value></data>
   <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>I-reset ang Payagan ang Flick sa Engage</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Feedback sa Steering Lock</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Cue sa full lock para sa stick na nasa steering mode</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Kapag ang stick na naka-set sa steering mode ay iniikot hanggang full lock, magpapatugtog ng cue (rumble, trigger, o lightbar) para maramdaman mo ang limitasyon. Naka-off lahat bilang default.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Rumble Pulse sa Lock</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Vibration ng Trigger sa Lock</value></data>
@@ -2682,6 +2706,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Ang mga tunog ng macro at ang na-mirror na audio ng system ay pinapatugtog sa built-in na speaker ng napiling controller, sa USB o Bluetooth. Piliin ang device sa dropdown sa itaas. Sinusunod ito ng bawat setting dito.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Output ng Tunog</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Mirror Source, haptics, Headphone Volume, Crossfeed, Parametric EQ, Limiter</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Awtomatikong napupunta ang mga tunog sa napiling controller. Sa USB, tinutugma ang sariling audio endpoint ng pad ayon sa hardware container. Sa Bluetooth, ini-stream ang audio sa mga Sony HID frame.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Pinagmulan ng Mirror</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Aling playback device ang i-mi-mirror sa speaker ng controller. Maaaring ituon dito ng mga larong nagpapadala ng partikular na tunog sa hiwalay na playback device.</value></data>
@@ -2755,6 +2780,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>Hindi nababasang PadForge profile ang file.</value></data>
   <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Pumili ng tunog mula sa {0}</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Mga Sound Package</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Mga zip file ng tunog para sa mga sound macro</value></data>
   <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>Ang sound package ay isang zip file ng mga tunog na may extension na .pfsounds. Magdagdag ng isa rito, saka piliin ang mga tunog nito sa anumang sound macro. Direktang nagbabasa ang PadForge sa file at hindi ito kailanman ina-unpack. Ilagay ang mga package sa tabi ng PadForge.exe para manatiling portable.</value></data>
   <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>Magdagdag ng Package…</value></data>
   <data name="Pad_Audio_Packages_Add_Tooltip" xml:space="preserve"><value>Magdagdag ng umiiral na .pfsounds file sa listahan.</value></data>
@@ -2780,6 +2806,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Emoji_Category_Objects" xml:space="preserve"><value>Mga Bagay</value></data>
   <data name="Emoji_Category_Symbols" xml:space="preserve"><value>Mga Simbolo</value></data>
   <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>Mga Icon Package</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Mga zip file ng larawan para sa mga cell ng menu</value></data>
   <data name="Pad_Menus_IconPackages_Desc" xml:space="preserve"><value>Ang icon package ay isang zip file ng mga larawan na may extension na .pficons. Magdagdag ng isa rito, saka piliin ang mga icon nito sa anumang menu cell. Direktang nagbabasa ang PadForge sa file at hindi ito kailanman ina-unpack. Ilagay ang mga package sa tabi ng PadForge.exe para manatiling portable.</value></data>
   <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>Magdagdag ng Package…</value></data>
   <data name="Pad_Menus_IconPackages_Add_Tooltip" xml:space="preserve"><value>Magdagdag ng umiiral na .pficons file sa listahan.</value></data>
@@ -3162,6 +3189,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>Lumipat sa layer {0}</value></data>
   <data name="Macro_SwitchLayer_Hint" xml:space="preserve"><value>Inililipat ang slot na ito sa napiling shift layer. Mananatiling aktibo ang layer hanggang sa susunod na switch, isang Latch o Cycle activator, o paglipat ng profile. Ibinabalik ng Base ang base layer. I-scope ang macro na ito sa isang layer sa itaas para iba ang lipat ng parehong button sa bawat layer.</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>Guide Button LED</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Ang ningning ng Guide o Home button</value></data>
   <data name="Pad_Lighting_GuideLed_Subtitle" xml:space="preserve"><value>Liwanag ng kumikinang na Guide o Home button. Tinatanggap ito ng mga Xbox One at mas bagong controller sa USB. Tinatanggap ito ng 2015 Steam Controller sa anumang koneksyon, at iisang liwanag ang ginagamit ng lahat ng Steam Controller. Tinatanggap ito ng mga Switch Pro Controller at kanang Joy-Con (mag-isa, naka-pair, o nasa charging grip) sa anumang koneksyon.</value></data>
   <data name="Pad_Lighting_GuideLed_Mode_Tooltip" xml:space="preserve"><value>Iniiwan ng Default ng Device ang LED ayon mismo sa itinakda ng firmware ng controller. Pinananatili ng Nakatakdang Liwanag ang antas sa ibaba. Pinaliliwanag ng Antas ng Baterya ang LED habang mas puno ang baterya at hindi ito bumababa sa 10%. Tumatanggap lamang ng Guide LED command ang mga Xbox controller sa USB, kaya walang epekto ang setting na ito sa Bluetooth na koneksyon. Tumatanggap ng Home LED command ang mga Switch controller sa anumang koneksyon.</value></data>
   <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>Default ng Device</value></data>
@@ -3526,6 +3554,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass Shakers</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Nagruruta ng game rumble at force feedback na natatanggap ng virtual controller na ito sa isang audio output bilang mga low-frequency na tone para sa mga bass shaker at subwoofer.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Rumble to Audio</value></data>
+  <data name="Pad_More_BassShakers" xml:space="preserve"><value>Output device, mga channel, gain, tono para sa bawat motor</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Gumagana sa mga virtual controller na Xbox, DualShock 3, DualShock 4 / DualSense, at Nintendo Switch Pro, at sa mga Extended virtual controller na may force feedback, tulad ng racing wheel, at sa Steam Deck Controller (Composite). Tumutugtog sa audio output ang game feedback at Test Rumble. Nananatili sa controller ang macro rumble.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>I-reset ang Rumble to Audio</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>I-route ang Rumble sa Audio Output</value></data>
@@ -3964,6 +3993,7 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Naghihintay ng data ng FreeTrack shared memory.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>Hindi available ang FreeTrack shared memory.</value></data>
   <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Steering Angle Rumble</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Rumble na lumalakas habang lumalayo ang stick axis sa gitna</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Nagdaragdag ng tuloy-tuloy na rumble habang lumalayo sa gitna ang napiling virtual stick axis. Ginagamit ang mapped output mula sa lahat ng naka-assign na source. Sa Hatiin ayon sa Direksyon, ang negatibong galaw ay nagpapagana sa kaliwang motor at ang positibo sa kanan. Ang Kaliwang Motor o Kanang Motor ay naglalagay ng magkabilang direksyon sa iisang motor. Para sa Xbox at PlayStation output na may mga rumble device. Lalaktawan nito ang mga wheel, ang iba pang device na may constant force feedback, at ang mga pedal ng Fanatec.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>I-enable ang Steering Angle Rumble</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Virtual Axis</value></data>
@@ -4282,6 +4312,7 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="Status_FalconDriverDeclined" xml:space="preserve"><value>Hindi na-install ng Windows ang driver ng Force Dimension. Kung itanong ng Windows kung pagkakatiwalaan ang Force Dimension, piliin ang Install.</value></data>
   <data name="Status_FalconDriverNotBound" xml:space="preserve"><value>Naka-install na ang driver, pero hindi pa lumilipat dito ang Falcon. Hugutin ang Falcon at isaksak muli.</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>Kick, shake, brace, preload, gravity</value></data>
   <data name="Pad_Falcon_Description" xml:space="preserve"><value>Kinukuwenta ng PadForge ang bawat force sa handle ng Falcon nang humigit-kumulang isang libong beses kada segundo, mula sa posisyon ng handle at sa pinapatugtog ng laro. Para sa slot na ito ang mga setting na ito.</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>I-reset ang Novint Falcon</value></data>
   <data name="Pad_Falcon_Feel" xml:space="preserve"><value>Pakiramdam</value></data>
@@ -4439,4 +4470,8 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} sa {1} habang hawak</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} sa {1} hanggang ihinto</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>Ihinto ang trigger effect sa {0}</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Tuloy-tuloy na force hanggang patayin mo</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Rumble mula sa bass ng audio ng system</value></data>
+  <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Kontrolin ang Ilaw ng Device na Ito, Hawak sa Ilaw</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Gain bawat motor, trigger rumble, pagpapalit ng motor</value></data>
 </root>

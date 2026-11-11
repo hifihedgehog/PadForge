@@ -2300,13 +2300,15 @@ function Scroll-PadGroupToTop {
     }
 }
 
-# Open every fold card of a group of the pad page, through each card's expand
-# pattern, so the pointer stays parked. The output cards under the picture
-# fold to one line each, and a shot of them wants them open. False when the
-# group is not on the page, which is how a recipe learns the slot type has no
-# such cards.
+# Open every fold card and every More row under an element of the pad page,
+# through each one's expand pattern, so the pointer stays parked. Cards open
+# small since PadForge 6 (#574): some fold to one line and some keep settings
+# under a More row, and a shot wants every setting in view. The element is
+# the group of output cards under the picture, or a section's scrolling
+# column, each of which has a peer. False when it is not on the page, which
+# is how a recipe learns the slot type has no such cards.
 function Open-PadCards {
-    param([string]$GroupAid, [string]$Label, [int]$Tries = 6)
+    param([string]$GroupAid, [string]$Label, [int]$Tries = 6, [switch]$Quiet)
     $group = $null
     for ($i = 0; $i -lt $Tries -and -not $group; $i++) {
         if ($i -gt 0) { Start-Sleep -Milliseconds 400 }
@@ -2315,16 +2317,19 @@ function Open-PadCards {
         $group = Find-UIA -Parent $searchIn -Aid $GroupAid
     }
     if (-not $group) {
-        Write-Host "  !! ${Label}: the page has no such group ($GroupAid) for this slot" -ForegroundColor Yellow
+        if (-not $Quiet) { Write-Host "  !! ${Label}: the page has no such group ($GroupAid) for this slot" -ForegroundColor Yellow }
         return $false
     }
     $canExpand = New-Object System.Windows.Automation.PropertyCondition(
         [System.Windows.Automation.AutomationElement]::IsExpandCollapsePatternAvailableProperty, $true)
     $opened = 0
+    # Two passes: a More row inside a fold card is in the tree once its card
+    # is open.
+    for ($pass = 0; $pass -lt 2; $pass++) {
     foreach ($card in $group.FindAll($TD, $canExpand)) {
-        # A fold card is an Expander whose id ends in FoldCard. A combo box
-        # inside an open card expands too and is left alone.
-        if ($card.Current.AutomationId -notlike "*FoldCard") { continue }
+        # A fold card and a More row are Expanders, which report as a group.
+        # A combo box inside an open card expands too and is left alone.
+        if ($card.Current.ControlType -ne [System.Windows.Automation.ControlType]::Group) { continue }
         try {
             $ecp = $card.GetCurrentPattern([System.Windows.Automation.ExpandCollapsePattern]::Pattern)
             if ($ecp.Current.ExpandCollapseState -ne [System.Windows.Automation.ExpandCollapseState]::Expanded) { $ecp.Expand() }
@@ -2334,6 +2339,7 @@ function Open-PadCards {
         }
     }
     if ($opened -gt 0) { Start-Sleep -Milliseconds 500 }
+    }
     return $true
 }
 
@@ -2358,6 +2364,9 @@ function Tab {
                 if ($part) { $ok = Select-PadStripButton -El $part -Label "Tab:$Name" }
                 if ($ok -and $t.ContainsKey("Cards")) { $ok = Open-PadCards -GroupAid $t.Cards -Label "Tab:$Name" }
             } else {
+                # Open the section's cards first: they change how far down
+                # the group sits.
+                $null = Open-PadCards -GroupAid $t.Column -Label "Tab:$Name" -Tries 2 -Quiet
                 $ok = Scroll-PadGroupToTop -ColumnAid $t.Column -GroupAid $t.Group -Label "Tab:$Name"
             }
         }
@@ -2414,8 +2423,9 @@ function Wait-PadTab {
                 if (-not $t.ContainsKey("Cards")) { return $true }
                 if (Open-PadCards -GroupAid $t.Cards -Label "Tab:$Name" -Tries 1) { return $true }
             }
-        } elseif (Scroll-PadGroupToTop -ColumnAid $t.Column -GroupAid $t.Group -Label "Tab:$Name" -Tries 1 -Quiet) {
-            return $true
+        } else {
+            $null = Open-PadCards -GroupAid $t.Column -Label "Tab:$Name" -Tries 1 -Quiet
+            if (Scroll-PadGroupToTop -ColumnAid $t.Column -GroupAid $t.Group -Label "Tab:$Name" -Tries 1 -Quiet) { return $true }
         }
     }
     return $false

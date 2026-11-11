@@ -172,8 +172,10 @@ namespace PadForge.Tests
             Assert.Contains("CardFoldState.Load(appSettings.OpenCards);", service, StringComparison.Ordinal);
             Assert.Contains("OpenCards = CardFoldState.Snapshot(),", service, StringComparison.Ordinal);
 
+            // A change is saved as interface state, which the autosave
+            // writes without the saved message (ViewStateSaveTests).
             string window = RepoText("PadForge.App", "MainWindow.xaml.cs");
-            Assert.Contains("CardFoldState.Changed += (_, _) => _settingsService.MarkDirty();", window, StringComparison.Ordinal);
+            Assert.Contains("CardFoldState.Changed += (_, _) => _settingsService.MarkViewStateDirty();", window, StringComparison.Ordinal);
         }
 
         // ── the parts ──────────────────────────────────────────────────

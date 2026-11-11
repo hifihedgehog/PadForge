@@ -571,6 +571,7 @@
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->
   <data name="Pad_XAxis" xml:space="preserve"><value>Axis X</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>Axis abụọ</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Axis Y</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
@@ -784,6 +785,7 @@
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>Faịlụ a abụghị profile PadForge a pụrụ ịgụ.</value></data>
   <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Họrọ ụda site na {0}</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Ngwugwu ụda</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Faịlụ zip nke ụda maka macro ụda</value></data>
   <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>Tinye ngwugwu…</value></data>
   <data name="Pad_Audio_Packages_Add_Tooltip" xml:space="preserve"><value>Tinye faịlụ .pfsounds dị adị na ndepụta.</value></data>
   <data name="Pad_Audio_Packages_Create" xml:space="preserve"><value>Mepụta ngwugwu…</value></data>
@@ -803,6 +805,7 @@
   <data name="Emoji_Category_Objects" xml:space="preserve"><value>Ihe</value></data>
   <data name="Emoji_Category_Symbols" xml:space="preserve"><value>Akara</value></data>
   <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>Ngwugwu akara ngosi</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Faịlụ zip nke onyonyo maka cell menu</value></data>
   <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>Tinye ngwugwu…</value></data>
   <data name="Pad_Menus_IconPackages_Add_Tooltip" xml:space="preserve"><value>Tinye faịlụ .pficons dị adị na ndepụta.</value></data>
   <data name="Pad_Menus_IconPackages_Create" xml:space="preserve"><value>Mepụta ngwugwu…</value></data>
@@ -1182,6 +1185,7 @@
   <data name="Status_InstallingFalconDriver" xml:space="preserve"><value>Na-awụnye driver Falcon nke Force Dimension…</value></data>
   <data name="Status_FalconNotPluggedIn" xml:space="preserve"><value>Ọ dịghị Falcon ejikọrọ.</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>Ịgba, ịma jijiji, nkwado, ibu mbụ, ndọda</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>Tọgharịa Novint Falcon</value></data>
   <data name="Pad_Falcon_Button1" xml:space="preserve"><value>Bọtịn 1</value></data>
   <data name="Pad_Falcon_Button2" xml:space="preserve"><value>Bọtịn 2</value></data>
@@ -1253,4 +1257,20 @@
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>Stick na Trigger</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Ọkụ na Ụda</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Macro na Menu</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Ngosi mgbe stick n'ọnọdụ steering ruru njedebe ya</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Rumble na-eto ka axis stick na-apụ n'etiti</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Ike na-adịgide ruo mgbe ị gbanyụrụ ya</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Rumble sitere na bass nke ụda sistemụ</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Na-eziga rumble nke motor ndị isi na trigger</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Ike na-adịgide na motor trigger ọ bụla</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Rumble trigger sitere na bass nke ụda sistemụ</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Deadzone ịdabere, Ntụziaka njikwa</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Bọtịnụ Aim Engage, Ọnọdụ Engage, Oke Easy Aim</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Na-agbanye mmegharị touchpad a</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Ịkpụ aka, ịpị, ịmịkọ, ọdịdị</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Dekọọ nke gị</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Brightness LED, Usoro onye egwuregwu, Ọnọdụ LED mute</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Ìhè bọtịnụ Guide ma ọ bụ Home</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Ike motor ọ bụla, rumble trigger, ịgbanwe motor</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Ike trigger ọ bụla, ịgbanwe motor, ịma jijiji adaptive trigger</value></data>
 </root>

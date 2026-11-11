@@ -861,6 +861,7 @@
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>ទ្រីហ្គឺ Impulse</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>ទ្រីហ្គឺ Impulse</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>កម្លាំងទ្រីហ្គឺនីមួយៗ, ការប្ដូរម៉ូទ័រ, ការញ័រទ្រីហ្គឺបន្សាំ</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>បញ្ជូនពាក្យបញ្ជាម៉ូទ័រតាមទ្រីហ្គឺនីមួយៗ (Xbox Impulse Triggers) ពីឧបករណ៍បញ្ជានិម្មិតទៅឧបករណ៍បញ្ជា Xbox One, Elite ឬ Series ពិតដែលបានកំណត់។ ការញ័រទ្រីហ្គឺដែលហ្គេមបញ្ជា ឆ្លងកាត់ដោយស្វ័យប្រវត្តិ។ ការគ្រប់គ្រងខាងក្រោមកំណត់មាត្រដ្ឋានកម្លាំងតាមទ្រីហ្គឺនីមួយៗ។</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>ទ្រីហ្គឺឆ្វេង</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>ទ្រីហ្គឺស្ដាំ</value></data>
@@ -879,7 +880,9 @@
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>កំណត់ទ្រីហ្គឺឆ្វេងឡើងវិញ</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>កំណត់ទ្រីហ្គឺស្ដាំឡើងវិញ</value></data>
   <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>កម្លាំងទ្រីហ្គឺថេរ</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>កម្លាំងជាប់ជានិច្ចលើម៉ូទ័រទ្រីហ្គឺនីមួយៗ</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>ការនាំផ្លូវទ្រីហ្គឺ</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>បញ្ជូនការញ័ររបស់ម៉ូទ័រមេទៅទ្រីហ្គឺ</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>នាំម៉ូទ័រញ័រមេទៅកាន់ឆានែលទ្រីហ្គឺ ម្ដងមួយទ្រីហ្គឺ។ ដំណើរការជាមួយការញ័រ XInput និងកម្លាំងតប។ ការបញ្ចូលបើកអាចគ្រប់គ្រងវា ដើម្បីឱ្យទ្រីហ្គឺញ័រតែពេលអ្នកសង្កត់ប៊ូតុងជាប់ប៉ុណ្ណោះ។</value></data>
   <data name="Pad_ResetTriggerRouting" xml:space="preserve"><value>កំណត់ការនាំផ្លូវទ្រីហ្គឺឡើងវិញ</value></data>
   <data name="Pad_TriggerRouting_LeftTrigger" xml:space="preserve"><value>ទ្រីហ្គឺឆ្វេង</value></data>
@@ -911,6 +914,7 @@
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>កំណត់ទ្រីហ្គឺឆ្វេងឡើងវិញ</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>កំណត់ទ្រីហ្គឺស្ដាំឡើងវិញ</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>ការញ័រទ្រីហ្គឺតាមសំឡេងបាស</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>ការញ័រទ្រីហ្គឺពីសំឡេងបាសនៃសំឡេងប្រព័ន្ធ</value></data>
   <data name="Pad_AudioTriggerRumble_Description" xml:space="preserve"><value>បញ្ជាម៉ូទ័រទ្រីហ្គឺពីសំឡេងបាសរបស់ប្រព័ន្ធ។ កម្លាំងទ្រីហ្គឺដែលហ្គេមបញ្ជា មានអាទិភាពខណៈវាសកម្ម។</value></data>
   <data name="Pad_AudioTriggerRumble_Toggle" xml:space="preserve"><value>បញ្ជាម៉ូទ័រទ្រីហ្គឺពីសំឡេង</value></data>
   <data name="Pad_AudioTriggerRumble_Sensitivity" xml:space="preserve"><value>ភាពរសើប</value></data>
@@ -1008,6 +1012,7 @@
   <data name="Pad_Lighting_MicLed_FollowDevice" xml:space="preserve"><value>តាមឧបករណ៍សំឡេង</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice_Picker" xml:space="preserve"><value>ឧបករណ៍សំឡេង</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>LED សូចនាករ</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>កម្រិតពន្លឺ LED, លំនាំអ្នកលេង, របៀប LED បិទសំឡេង</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>ជួរលេខអ្នកលេង (LED 5 នៅក្រោមផ្ទាំងប៉ះ) និង LED បិទសំឡេងនៅពីលើមីក្រូហ្វូន។ ការគ្រប់គ្រងកម្រិតពន្លឺ មានឥទ្ធិពលជាក់ស្ដែងតែលើជួរអ្នកលេងប៉ុណ្ណោះ។ ហ្វឺមវែរផ្ដល់ស្ថានភាព LED បិទសំឡេង (បិទ / ភ្លឺជាប់ / ជីពចរ) ប៉ុន្តែគ្មានរេជីស្ទ័រកម្រិតពន្លឺដាច់ដោយឡែកសម្រាប់ LED បិទសំឡេងទេ។</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>កំណត់របារភ្លើងឡើងវិញ</value></data>
   <data name="Pad_ResetIndicatorLeds" xml:space="preserve"><value>កំណត់ LED សូចនាករឡើងវិញ</value></data>
@@ -1394,6 +1399,7 @@
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>ក្រិតកណ្ដាល</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>ចំណុចកណ្ដាល</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>តំបន់ងាប់</value></data>
+  <data name="Pad_More_Stick" xml:space="preserve"><value>ការរំកិលកណ្ដាល, រាងតំបន់ងាប់ និងតម្លៃតាមអ័ក្ស, ខ្សែកោងសម្រាប់អ័ក្សនីមួយៗ, ជួរ, ការបត់ចង្កូត</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>ជួរ</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>«ក្រិតព្រំដែន» គឺជាវិធីដែលណែនាំសម្រាប់កែដងបញ្ជាឱ្យត្រឹមត្រូវ។ វាវាស់គែមដែលដងបញ្ជាអាចទៅដល់ពិតប្រាកដ រួចធ្វើមាត្រដ្ឋានឡើងវិញគ្រប់ទីតាំងតាមសមាមាត្រធៀបនឹងគែមដែលបានវាស់នោះ ដូច្នេះចលនាដើមពេញលេញ នៅគ្រប់មុំ និងគ្រប់កម្រិតរុញ ត្រូវបានម៉ាបទៅលើរង្វង់ល្អឥតខ្ចោះ ដោយគ្មានអ្វីត្រូវកាត់ចោល។ របាររំកិលទាំងបួនខាងក្រោមគ្រាន់តែកំណត់ត្រឹមអ័ក្សទិសគោលប៉ុណ្ណោះ។ ប្រើវាដើម្បីកំណត់ជួរដោយចេតនា មិនមែនដើម្បីកែវាទេ។</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>កំពុងយកគំរូ...</value></data>
@@ -1727,6 +1733,7 @@
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>លេខផ្ទាំងប៉ះ</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>ផ្ទាំងប៉ះនៅលើឧបករណ៍បញ្ជានេះ ដែលការកំណត់ខាងក្រោមត្រូវអនុវត្ត។ ផ្ទាំងប៉ះនីមួយៗរក្សាកាយវិការ អារម្មណ៍កណ្ដុរ និងតំបន់ទ្រនិចរបស់ខ្លួន។</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>ការរកឃើញកាយវិការ</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>បើកកាយវិការរបស់ផ្ទាំងប៉ះនេះ</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>បើកកាយវិការលើផ្ទាំងប៉ះនេះ</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>កុងតាក់មេសម្រាប់ផ្ទាំងប៉ះនេះ។ ពេលបិទ គ្មានកាយវិការណាមួយដំណើរការសម្រាប់ផ្ទាំងប៉ះនេះទេ។ ការម៉ាបម្រាមដៃ / ការចុច / ទីតាំងដែលមានស្រាប់ នៅតែដំណើរការ។</value></data>
   <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>ស្គាល់</value></data>
@@ -1737,6 +1744,7 @@
   <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>រយៈពេលរង់ចាំ</value></data>
   <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>បន្ទាប់ពីកាយវិការមួយដំណើរការ មិនអើពើកាយវិការថ្មីលើផ្ទាំងប៉ះនេះ ក្នុងរយៈពេលប៉ុន្មានមីលីវិនាទីនេះ។ ការពារការដំណើរការដដែលៗពីចលនាទៅមកលឿន។</value></data>
   <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>កាយវិការភ្ជាប់មកស្រាប់</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>ការអូស, ការប៉ះ, ការច្បិច, រាង</value></data>
   <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>ការអូស 4 ទិស (ឡើងលើ / ចុះក្រោម / ឆ្វេង / ស្ដាំ)</value></data>
   <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>ការអូស 8 ទិស (បន្ថែមទិសទ្រេត)</value></data>
   <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>ចម្ងាយអូស (0..1)</value></data>
@@ -1762,6 +1770,7 @@
   <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>កាយវិការរាង (រង្វង់ ការ៉េ ត្រីកោណ Z សញ្ញាធីក)</value></data>
   <data name="Pad_Touchpad_MatchThreshold" xml:space="preserve"><value>កម្រិតត្រូវគ្នានៃរាង</value></data>
   <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>កាយវិការផ្ទាល់ខ្លួន</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>ថតកាយវិការផ្ទាល់ខ្លួនរបស់អ្នក</value></data>
   <data name="Pad_Touchpad_RecordNew" xml:space="preserve"><value>+ ថតកាយវិការថ្មី</value></data>
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>មិនទាន់មានកាយវិការផ្ទាល់ខ្លួនបានថតសម្រាប់ប្រូហ្វាល់នេះទេ។ ចុច «ថតកាយវិការថ្មី» ដើម្បីថតមួយ។</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>ម្រាមដៃ 1</value></data>
@@ -1769,6 +1778,7 @@
 
   <!-- Stick / D-pad output card -->
   <data name="Pad_Touchpad_Stick_Header" xml:space="preserve"><value>ទិន្នផលដងបញ្ជា / ប៊ូតុងទិសដៅ</value></data>
+  <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>ប្រើផ្ទាំងប៉ះជាដងបញ្ជា ឬប៊ូតុងទិសដៅ</value></data>
   <data name="Pad_Touchpad_Stick_Subtitle" xml:space="preserve"><value>ប្រែផ្ទាំងប៉ះឲ្យទៅជាដងបញ្ជាអាណាឡូក ឬប៊ូតុងទិសដៅនិម្មិត។ ទិន្នផលយកចំណុចដែលម្រាមដៃប៉ះដំបូងជាគោល។ ទីតាំងបច្ចុប្បន្នធៀបនឹងចំណុចគោលនោះ កំណត់តម្លៃដងបញ្ជា និង (ជាជម្រើស) ទិសប៊ូតុងទិសដៅដែលជាប់។</value></data>
   <data name="Pad_Touchpad_StickEnabled" xml:space="preserve"><value>បើកទិន្នផលដងបញ្ជា / ប៊ូតុងទិសដៅ</value></data>
   <data name="Pad_Touchpad_StickEnabled_Tooltip" xml:space="preserve"><value>បង្ហាញប្រភព ដងបញ្ជា X ដងបញ្ជា Y និងប៊ូតុងទិសដៅនៃផ្ទាំងប៉ះ ក្នុងបញ្ជីជ្រើសរើសការម៉ាប។ ដំណើរការរួមជាមួយប្រភពម្រាមដៃផ្ទាំងប៉ះ និងកាយវិការផ្ទាំងប៉ះដែលមានស្រាប់ មិនមែនជំនួសពួកវាទេ។</value></data>
@@ -1783,6 +1793,7 @@
 
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>ទិន្នផលកណ្ដុរ</value></data>
+  <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>ការបញ្ច្រាស, សន្ទុះ, ការឆ្លើយតប, ការបង្កើនល្បឿន, ការផាត់</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>កែល្បឿនទ្រនិចកណ្ដុរ ពេលម្រាមដៃលើផ្ទាំងប៉ះត្រូវបានម៉ាបទៅកណ្ដុរ X/Y លើឧបករណ៍បញ្ជានិម្មិតប្រភេទ ក្ដារចុច / កណ្ដុរ។ 1.0 ជាលំនាំដើម។ បង្កើនអ័ក្សណាមួយដើម្បីឲ្យទ្រនិចលឿនជាង បន្ថយដើម្បីឲ្យយឺតជាង។ «បញ្ច្រាស» ត្រឡប់អ័ក្សណាមួយ។</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>ភាពរសើបកណ្ដុរ X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>មេគុណលើ ផ្ទាំងប៉ះផ្ដេក → បម្លាស់ទីកណ្ដុរ។ ក្រោម 1.0 ធ្វើឲ្យទ្រនិចយឺត។ លើស 1.0 ធ្វើឲ្យវាលឿន។</value></data>
@@ -1810,6 +1821,7 @@
   <data name="Pad_Touchpad_RotateThreshold_Tooltip" xml:space="preserve"><value>ម្រាមដៃពីរត្រូវបង្វិលប៉ុណ្ណា មុនពេលការបង្វិលដំណើរការ។</value></data>
   <data name="Pad_ResetTouchpadRotateThresholdDegrees" xml:space="preserve"><value>កំណត់កម្រិតចាប់ផ្ដើមបង្វិលឡើងវិញ</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>ទ្រនិចដាច់ខាត</value></data>
+  <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>ផ្នែកនៃអេក្រង់ដែលផ្ទាំងប៉ះទៅដល់</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>កែប្រភព ទ្រនិច X/Y នៃផ្ទាំងប៉ះ ដែលផ្លាស់ទ្រនិចកណ្ដុរភ្លាមទៅទីតាំងម្រាមដៃរបស់អ្នកលើផ្ទាំង (ម៉ាបពួកវាទៅកណ្ដុរ X/Y លើឧបករណ៍បញ្ជានិម្មិតប្រភេទ ក្ដារចុច / កណ្ដុរ)។ ទំហំ 1.00 ជាមួយកណ្ដាល 0.50 ម៉ាបផ្ទាំងទៅអេក្រង់ទាំងមូល។ បង្រួមទំហំដើម្បីបង្ខាំងទ្រនិចក្នុងផ្នែកមួយនៃអេក្រង់ ហើយផ្លាស់ទីកណ្ដាលដើម្បីដាក់ទីតាំងវា។</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>ទទឹងតំបន់</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>ទទឹងនៃផ្ទៃអេក្រង់ដែលផ្ទាំងនេះម៉ាបទៅ ជាប្រភាគនៃទទឹងអេក្រង់។ 1.00 គ្របទទឹងពេញ។ 0.50 បង្ខាំងទ្រនិចក្នុងពាក់កណ្ដាលអេក្រង់។</value></data>
@@ -1822,12 +1834,14 @@
 
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>ការញ័រលម្អិតពេលអូស</value></data>
+  <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>ញ័រតិចៗ ពេលម្រាមដៃរបស់អ្នកផ្លាស់ទី</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>ធ្វើឲ្យការញ័រលម្អិតរបស់ឧបករណ៍បញ្ជាញ័រជាចង្វាក់ ពេលម្រាមដៃរបស់អ្នកផ្លាស់ទីលើផ្ទាំងប៉ះនេះ ដូចការញ័រផ្ទាំងប៉ះរបស់ Steam Input។ Steam Controller និង Steam Deck ញ័រឧបករណ៍ញ័រនៅក្រោមផ្ទាំង។ DualSense និង DualShock 4 ញ័រម៉ូទ័រញ័រ។</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>បើកការញ័រលម្អិតពេលអូស</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>បញ្ចេញការញ័រខ្លីមួយ រាល់ពេលម្រាមដៃផ្លាស់ទីបានចម្ងាយកំណត់លើផ្ទាំងនេះ។ ការដាក់ម្រាមដៃ ឬការចុចផ្ទាំង មិនដែលបង្កការញ័រទេ។ បិទតាមលំនាំដើម។</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>កម្លាំងញ័រ</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity_Tooltip" xml:space="preserve"><value>កម្លាំងនៃការញ័រនីមួយៗ។ ការញ័ររបស់ហ្គេមតែងតែត្រូវបានប្រើ ពេលវាខ្លាំងជាង។</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Header" xml:space="preserve"><value>សម្ពាធសំយោគ</value></data>
+  <data name="Pad_SyntheticPressure_FoldHint" xml:space="preserve"><value>សម្ពាធសម្រាប់ផ្ទាំងដែលរាយការណ៍ការប៉ះជាសម្ពាធពេញ</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Subtitle" xml:space="preserve"><value>ក្លែងប៊ូតុងសម្ពាធរបស់ DualShock 2 / DualShock 3 លើផ្ទាំងដែលរាយការណ៍ការប៉ះជាសម្ពាធពេញ (DualShock 4, DualSense, Steam Controller 2015)។ ពេលបើក ប្រភពការម៉ាប «សម្ពាធ» របស់ឧបករណ៍នេះ អានការមិនប៉ះជា 0% ការប៉ះដាក់ជា «កម្រិតសម្ពាធប៉ះ» និងការចុចផ្ទាំងជា 100%។</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled" xml:space="preserve"><value>បើកសម្ពាធសំយោគ</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled_Tooltip" xml:space="preserve"><value>បង្កើតប្រភពការម៉ាប «សម្ពាធ» របស់ឧបករណ៍នេះជាបីកម្រិត៖ មិនប៉ះអាន 0% ការប៉ះដាក់អាន «កម្រិតសម្ពាធប៉ះ» ហើយការចុចផ្ទាំងអាន 100%។ បិទតាមលំនាំដើម ដែលរក្សាការអានដើមលើផ្ទាំងដែលមានសម្ពាធអាណាឡូកពិត។</value></data>
@@ -2005,7 +2019,9 @@
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>កែរបៀបដែលឧបករណ៍ចាប់ចលនារបស់ឧបករណ៍បញ្ជានេះ បញ្ជាទិន្នផលកណ្ដុរ និងដងបញ្ជា។ ក្រិតលើផ្ទៃរាបស្មើ ដើម្បីលុបការរំកិលពេលនៅស្ងៀម បន្ទាប់មកកែភាពរសើប ការធ្វើឲ្យរលូន និងច្បាប់បើកដំណើរការ តាមចិត្ត។</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>ការក្រិត</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>ភាពរសើប</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>ឯកតា, លំហ, ការបញ្ច្រាសអ័ក្ស, ការក្រិតតាមពិភពពិត</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>ការកែរាងការឆ្លើយតប</value></data>
+  <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>តំបន់ងាប់, ការធ្វើឲ្យរលូន, ការបង្កើនល្បឿន, ខ្សែកោងទិន្នផល</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>លំហ</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>របៀបបកស្រាយចលនាហ្ស៊ីរ៉ូ។ «មូលដ្ឋាន» ប្រើអ័ក្សដើមរបស់ឧបករណ៍បញ្ជា។ «អ្នកលេង» បញ្ចាំងចលនាផ្ដេកទៅលើអ័ក្សបញ្ឈរពិត (ទំនាញ) ដូច្នេះការបង្វិលកដៃដូចគ្នាតែងតែបង្វិលកាមេរ៉ា មិនថាអ្នកកាន់ឧបករណ៍បញ្ជាយ៉ាងណាទេ។ «ពិភពលោក» បញ្ចាំងចលនាបញ្ឈរទៅលើអ័ក្សពិភពលោកផងដែរ។</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>កាន់ជា</value></data>
@@ -2019,11 +2035,13 @@
   <data name="Pad_ResetGyroInvertYaw" xml:space="preserve"><value>កំណត់បញ្ច្រាសងាកឆ្វេងស្ដាំឡើងវិញ</value></data>
   <data name="Pad_ResetGyroInvertRoll" xml:space="preserve"><value>កំណត់បញ្ច្រាសផ្អៀងឡើងវិញ</value></data>
   <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>ត្រីវិស័យ</value></data>
+  <data name="Pad_Compass_FoldHint" xml:space="preserve"><value>ភ្ជាប់ការងាកឆ្វេងស្ដាំទៅទិសខាងជើងម៉ាញេទិច</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>ឧបករណ៍បញ្ជានេះមានឧបករណ៍វាស់ដែនម៉ាញេទិច។ ការភ្ជាប់ការងាកឆ្វេងស្ដាំទៅទិសខាងជើងម៉ាញេទិច លុបការរំកិលផ្ដេកយឺតៗចេញពីការតម្រង់ដោយហ្ស៊ីរ៉ូ។ ក្រិតជាមុនសិន៖ ចុច «ក្រិត» បង្វិលឧបករណ៍បញ្ជាគ្រប់ទិសជារាងលេខ 8 ពីរបីវិនាទី រួចចុចម្ដងទៀត។</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>ភ្ជាប់ការងាកឆ្វេងស្ដាំទៅត្រីវិស័យ</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>បន្ថែមអត្រាកែតម្រូវតូចមួយ ដែលទាញការតម្រង់ផ្ដេកទៅរកទិសម៉ាញេទិច ដូច្នេះការរំកិលមិនអាចកកកុញបានទេ។ ត្រូវការការក្រិតឧបករណ៍វាស់ដែនម៉ាញេទិចដែលបានរក្សាទុក។ គំរូដែលរំខានដោយលោហៈ ឬមេដែកនៅជិត ត្រូវបានបដិសេធដោយស្វ័យប្រវត្តិ។</value></data>
   <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>កំណត់ទៅលំនាំដើមវិញ (បិទ)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>ការក្លែងងើបឱន និងផ្អៀង</value></data>
+  <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>ងើបឱន និងផ្អៀង គណនាពីឧបករណ៍វាស់សំទុះ</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>ហ្ស៊ីរ៉ូរបស់ឧបករណ៍បញ្ជានេះចាប់បានតែការងាកឆ្វេង និងស្ដាំប៉ុណ្ណោះ។ ពេលបើកការក្លែង PadForge គណនាងើបឱន និងផ្អៀងពីឧបករណ៍វាស់សំទុះ ហើយផ្ញើពួកវាជាមួយការងាកឆ្វេងស្ដាំរបស់ហ្ស៊ីរ៉ូ ទៅជួរការម៉ាប និងចលនារបស់ឧបករណ៍បញ្ជានិម្មិត។ ឧបករណ៍វាស់សំទុះមិនអាចបែងចែកការរុញពីការទ្រេតបានទេ ដូច្នេះការផ្លាស់ទីឧបករណ៍បញ្ជាទៅចំហៀង ឬទៅមុខដោយមិនបង្វិល នឹងត្រូវអានជាការបង្វិលខ្លីមួយ។</value></data>
   <data name="Settings_GyroSimulation" xml:space="preserve"><value>ក្លែងងើបឱន និងផ្អៀង</value></data>
   <data name="Settings_GyroSimulation_Tooltip" xml:space="preserve"><value>បំពេញងើបឱន និងផ្អៀងដោយអត្រាដែលគណនាពីឧបករណ៍វាស់សំទុះ។ ងាកឆ្វេងស្ដាំនៅតែជាការអានរបស់ហ្ស៊ីរ៉ូផ្ទាល់។ បិទតាមលំនាំដើម។</value></data>
@@ -2064,6 +2082,7 @@
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>ចុះក្រោម (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>ឡើងលើ (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>ការបើក</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>ប៊ូតុងបើកការតម្រង់, របៀបបើក, កម្រិតចាប់ផ្ដើមការតម្រង់ងាយស្រួល</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>លក្ខខណ្ឌជាជម្រើស ដែលកំណត់ពេលហ្ស៊ីរ៉ូសកម្ម។ កម្រិតរុញដងបញ្ជាស្ដាំ និងប៊ូតុងបើកការតម្រង់ អាចកំណត់បានម្នាក់ៗ។ ហ្ស៊ីរ៉ូដំណើរការតែពេលលក្ខខណ្ឌដែលបានកំណត់ទាំងអស់សកម្ម។</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>មូលដ្ឋាន</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>អ្នកលេង</value></data>
@@ -2114,6 +2133,7 @@
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>ហ្ស៊ីរ៉ូ ទ្រេត X</value></data>
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>ហ្ស៊ីរ៉ូ ទ្រេត Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>ហ្ស៊ីរ៉ូ ទ្រេត</value></data>
+  <data name="Pad_GyroTilt_FoldHint" xml:space="preserve"><value>ជួរទ្រេតពេញ, តំបន់ងាប់ទ្រេត</value></data>
   <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>ការកំណត់សម្រាប់ការបញ្ចូល «ហ្ស៊ីរ៉ូ ទ្រេត X» / «ហ្ស៊ីរ៉ូ ទ្រេត Y»៖ សង្កត់ការទ្រេតមួយ ហើយដងបញ្ជារក្សាកម្រិតរុញរបស់វា ដូចរបៀប Joystick Deflection របស់ Steam។ កម្រិតរុញពេញកើតឡើងនៅជួរដែលអ្នកកំណត់នៅទីនេះ។ ការកំណត់ហ្ស៊ីរ៉ូកណ្ដាលវិញ កំណត់ការកាន់ពេលសម្រាកជាសូន្យឡើងវិញ។ ការងាកឆ្វេងស្ដាំ (បង្វិលឧបករណ៍បញ្ជាលើផ្ទៃរាប) ទំនាញមិនអាចចាប់បាន ហើយមិនផ្លាស់ទីការបញ្ចូលទាំងនេះទេ។</value></data>
   <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>ជួរទ្រេតពេញ</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>ដឺក្រេនៃការទ្រេតពីការកាន់ពេលសម្រាក ដែលរាប់ជាកម្រិតរុញដងបញ្ជាពេញ។ តូចជាង = រសើបជាង។ 25° ជាតម្លៃដែលគេប្រើញឹកញាប់បំផុតក្នុងការកំណត់ Steam។</value></data>
@@ -2312,6 +2332,7 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>ជួរអប្បបរមា Y (ក្រោម)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>ជួរអតិបរមា Y (លើ)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>អ័ក្ស X</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>អ័ក្សទាំងពីរ</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>អ័ក្ស Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>ជួរ</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>តំបន់ប្រឆាំងតំបន់ងាប់</value></data>
@@ -2322,6 +2343,7 @@
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>កម្លាំងតប / ការញ័រ / ការញ័រលម្អិត</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>កម្លាំងម៉ូទ័រនីមួយៗ, ការញ័រទ្រីហ្គឺ, ការប្ដូរម៉ូទ័រ</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>កម្រិតពង្រីកសរុប</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>ម៉ូទ័រឆ្វេង</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>ម៉ូទ័រស្ដាំ</value></data>
@@ -2333,6 +2355,7 @@
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>កម្លាំងថេរ</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>កម្លាំងជាប់ជានិច្ច រហូតដល់អ្នកបិទវា</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>អនុវត្តកម្លាំងជាប់ជានិច្ចលើឧបករណ៍នេះ រហូតដល់អ្នកបិទវា។ កម្លាំងដែលហ្គេមបញ្ជាពីប្រភពណាមួយ នឹងជំនួសវាខណៈពេលកម្លាំងនោះសកម្ម ហើយវាបន្តវិញនៅពេលហ្គេមឈប់។</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>អនុវត្តកម្លាំងថេរ</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>អូសក្នុងក្រឡាចត្រង្គ ដើម្បីកំណត់ទិសដៅ និងកម្លាំង។</value></data>
@@ -2657,6 +2680,7 @@
 
   <!-- ═══ Audio Bass Rumble ═══ -->
   <data name="Settings_AudioRumble" xml:space="preserve"><value>ការញ័រតាមសំឡេង</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>ការញ័រពីសំឡេងបាសនៃសំឡេងប្រព័ន្ធ</value></data>
   <data name="Settings_AudioRumbleDesc" xml:space="preserve"><value>បញ្ជាការញ័ររបស់ឧបករណ៍បញ្ជា ពីប្រេកង់បាសនៃសំឡេងប្រព័ន្ធ។</value></data>
   <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>បើកការញ័រតាមសំឡេង</value></data>
   <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>ភាពរសើប</value></data>
@@ -2767,6 +2791,8 @@
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>កំណត់តំបន់ងាប់ខាងក្រៅនៃការផ្អៀងឡើងវិញ</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>កំណត់ទិសរបស់ឧបករណ៍បញ្ជាឡើងវិញ</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>ការបត់ចង្កូតដោយចលនា</value></data>
+  <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° ដល់ {1}°</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>តំបន់ងាប់នៃការផ្អៀង, ទិសរបស់ឧបករណ៍បញ្ជា</value></data>
   <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>ការកំណត់សម្រាប់ការបញ្ចូល ការផ្អៀងដោយចលនា៖ ផ្អៀងឧបករណ៍បញ្ជាដូចចង្កូត។ ម៉ាប «ការផ្អៀងដោយចលនា» ទៅអ័ក្សដងបញ្ជា ពីបញ្ជីទម្លាក់ចុះនៃការបញ្ចូលក្នុងផ្ទាំងការម៉ាប។</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>កំណត់ការបត់ចង្កូតដោយចលនាឡើងវិញ</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>ហ្វ្លិកស្ទីក (ដងបញ្ជាស្ដាំ)</value></data>
@@ -2775,6 +2801,7 @@
   <data name="Mapping_LeftStickRing" xml:space="preserve"><value>រង្វង់ដងបញ្ជាឆ្វេង</value></data>
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>រង្វង់ដងបញ្ជាស្ដាំ</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>ហ្វ្លិកស្ទីក</value></data>
+  <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>ការកែតម្រូវសម្រាប់ការបញ្ចូលហ្វ្លិកស្ទីក</value></data>
   <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>ការកំណត់សម្រាប់ការបញ្ចូលហ្វ្លិកស្ទីក៖ ចង្អុលដងបញ្ជា ហើយកាមេរ៉ាបង្វិលតាម អូសតាមគែមដើម្បីបង្វិលបន្តិចៗ។ ម៉ាប «ហ្វ្លិកស្ទីក (ដងបញ្ជាស្ដាំ)» ទៅកណ្ដុរ X ពីបញ្ជីទម្លាក់ចុះនៃការបញ្ចូលក្នុងផ្ទាំងការម៉ាប លើស្រទាប់ណាមួយ។</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>កំណត់ហ្វ្លិកស្ទីកឡើងវិញ</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>ចំណុចក្នុងមួយ 360°</value></data>
@@ -2811,6 +2838,7 @@
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>ពេលស្រទាប់ដែលមានហ្វ្លិកស្ទីកក្លាយជាសកម្ម ខណៈដងបញ្ជាត្រូវបានរុញរួចហើយ ធ្វើការហ្វ្លិកភ្លាមៗ។ បិទ រក្សាកាមេរ៉ានៅស្ងៀម ហើយតាមដានការបង្វិលពីមុំដងបញ្ជាបច្ចុប្បន្ន។</value></data>
   <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>កំណត់ការអនុញ្ញាតហ្វ្លិកពេលសកម្មឡើងវិញ</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>សញ្ញាពេលបត់ចង្កូតដល់កំណត់</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>សញ្ញាពេលដងបញ្ជារបៀបបត់ចង្កូតបត់ដល់កំណត់ពេញ</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>ពេលដងបញ្ជាដែលកំណត់ជារបៀបបត់ចង្កូត ត្រូវបានបត់រហូតដល់កំណត់ពេញ បញ្ចេញសញ្ញា (ការញ័រ ទ្រីហ្គឺ ឬរបារភ្លើង) ដើម្បីឱ្យអ្នកដឹងពីដែនកំណត់។ ទាំងអស់បិទតាមលំនាំដើម។</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>ការញ័រខ្លីពេលដល់កំណត់</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>ការញ័រទ្រីហ្គឺពេលដល់កំណត់</value></data>
@@ -2866,6 +2894,7 @@
   <data name="Pad_Audio_Header" xml:space="preserve"><value>សំឡេង</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>សំឡេងម៉ាក្រូ និងសំឡេងប្រព័ន្ធដែលចម្លង ចាក់តាមឧបករណ៍បំពងសំឡេងដែលភ្ជាប់មកជាមួយឧបករណ៍បញ្ជាដែលបានជ្រើស តាម USB ឬ Bluetooth។ ជ្រើសរើសឧបករណ៍ក្នុងបញ្ជីទម្លាក់ចុះខាងលើ។ ការកំណត់ទាំងអស់នៅទីនេះអនុវត្តតាមវា។</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>លទ្ធផលសំឡេង</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>ប្រភពចម្លង, ការញ័រលម្អិត, កម្រិតសំឡេងកាស, ការលាយឆ្លង, EQ ប៉ារ៉ាម៉ែត្រ, ឧបករណ៍កំណត់កម្រិត</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>សំឡេងបញ្ជូនទៅឧបករណ៍បញ្ជាដែលបានជ្រើសដោយស្វ័យប្រវត្តិ។ តាម USB ចំណុចបញ្ចប់សំឡេងរបស់ឧបករណ៍បញ្ជាផ្ទាល់ត្រូវបានរកឃើញតាមកុងតឺន័រផ្នែករឹង។ តាម Bluetooth សំឡេងត្រូវបានបញ្ជូនជាស៊ុម HID របស់ Sony។</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>ប្រភពចម្លង</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>ឧបករណ៍ចាក់សំឡេងដែលត្រូវចម្លងទៅឧបករណ៍បំពងសំឡេងរបស់ឧបករណ៍បញ្ជា។ ហ្គេមដែលបញ្ជូនសំឡេងជាក់លាក់ទៅឧបករណ៍ចាក់ដាច់ដោយឡែក អាចកំណត់គោលដៅលើឧបករណ៍នេះ។</value></data>
@@ -2939,6 +2968,7 @@
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>ឯកសារនេះមិនមែនជាប្រូហ្វាល់ PadForge ដែលអាចអានបានទេ។</value></data>
   <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>ជ្រើសរើសសំឡេងពី {0}</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>កញ្ចប់សំឡេង</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>ឯកសារ zip នៃសំឡេងសម្រាប់ម៉ាក្រូសំឡេង</value></data>
   <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>កញ្ចប់សំឡេងគឺជាឯកសារ zip មួយដែលមានសំឡេង ជាមួយកន្ទុយ .pfsounds។ បន្ថែមមួយនៅទីនេះ បន្ទាប់មកជ្រើសរើសសំឡេងរបស់វានៅក្នុងម៉ាក្រូសំឡេងណាមួយ។ PadForge អានដោយផ្ទាល់ពីឯកសារ ហើយមិនដែលពន្លាវាទេ។ ទុកកញ្ចប់នៅជាប់ PadForge.exe ដើម្បីឱ្យនៅតែចល័តបាន។</value></data>
   <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>បន្ថែមកញ្ចប់…</value></data>
   <data name="Pad_Audio_Packages_Add_Tooltip" xml:space="preserve"><value>បន្ថែមឯកសារ .pfsounds ដែលមានស្រាប់ទៅក្នុងបញ្ជី។</value></data>
@@ -2964,6 +2994,7 @@
   <data name="Emoji_Category_Objects" xml:space="preserve"><value>វត្ថុ</value></data>
   <data name="Emoji_Category_Symbols" xml:space="preserve"><value>និមិត្តសញ្ញា</value></data>
   <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>កញ្ចប់រូបតំណាង</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>ឯកសារ zip នៃរូបភាពសម្រាប់ក្រឡាម៉ឺនុយ</value></data>
   <data name="Pad_Menus_IconPackages_Desc" xml:space="preserve"><value>កញ្ចប់រូបតំណាងគឺជាឯកសារ zip មួយដែលមានរូបភាព ជាមួយកន្ទុយ .pficons។ បន្ថែមមួយនៅទីនេះ បន្ទាប់មកជ្រើសរើសរូបតំណាងរបស់វានៅលើក្រឡាម៉ឺនុយណាមួយ។ PadForge អានដោយផ្ទាល់ពីឯកសារ ហើយមិនដែលពន្លាវាទេ។ ទុកកញ្ចប់នៅជាប់ PadForge.exe ដើម្បីឱ្យនៅតែចល័តបាន។</value></data>
   <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>បន្ថែមកញ្ចប់…</value></data>
   <data name="Pad_Menus_IconPackages_Add_Tooltip" xml:space="preserve"><value>បន្ថែមឯកសារ .pficons ដែលមានស្រាប់ទៅក្នុងបញ្ជី។</value></data>
@@ -3345,6 +3376,7 @@
   <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>ប្ដូរទៅស្រទាប់ {0}</value></data>
   <data name="Macro_SwitchLayer_Hint" xml:space="preserve"><value>នាំរន្ធនេះទៅស្រទាប់ប្ដូរដែលបានជ្រើស។ ស្រទាប់នៅតែសកម្មរហូតដល់មានការប្ដូរផ្សេង ការបញ្ចូលបើក «ចាក់សោ» ឬ «វិលជុំ» ឬការប្ដូរប្រូហ្វាល់។ «គោល» ត្រឡប់ទៅស្រទាប់គោលវិញ។ កំណត់ម៉ាក្រូនេះទៅស្រទាប់ខាងលើ ដើម្បីឱ្យប៊ូតុងដដែលលោតខុសគ្នាតាមស្រទាប់នីមួយៗ។</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>LED ប៊ូតុង Guide</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>ពន្លឺនៃប៊ូតុង Guide ឬ Home</value></data>
   <data name="Pad_Lighting_GuideLed_Subtitle" xml:space="preserve"><value>កម្រិតពន្លឺនៃប៊ូតុង Guide ឬ Home ដែលភ្លឺ។ ឧបករណ៍បញ្ជា Xbox One និងក្រោយមកទទួលវាតាម USB។ Steam Controller ឆ្នាំ 2015 ទទួលវាតាមការតភ្ជាប់ណាមួយ ហើយ Steam Controller ទាំងអស់ចែករំលែកកម្រិតពន្លឺតែមួយ។ Switch Pro Controller និង Joy-Con ខាងស្ដាំ (តែឯង ផ្គូផ្គងជាគូ ឬនៅក្នុងឧបករណ៍កាន់សាកថ្ម) ទទួលវាតាមការតភ្ជាប់ណាមួយ។</value></data>
   <data name="Pad_Lighting_GuideLed_Mode_Tooltip" xml:space="preserve"><value>«លំនាំដើមឧបករណ៍» ទុក LED ឱ្យដូចដែលហ្វឺមវែររបស់ឧបករណ៍បញ្ជាបានកំណត់។ «កម្រិតពន្លឺថេរ» រក្សាកម្រិតខាងក្រោម។ «កម្រិតថ្ម» ធ្វើឱ្យភ្លឺជាងនៅពេលថ្មពេញជាង ហើយមិនដែលធ្លាក់ក្រោម 10% ទេ។ ឧបករណ៍បញ្ជា Xbox ទទួលពាក្យបញ្ជា LED Guide តាម USB តែប៉ុណ្ណោះ ដូច្នេះការកំណត់នេះគ្មានប្រសិទ្ធិភាពលើការតភ្ជាប់ Bluetooth ទេ។ ឧបករណ៍បញ្ជា Switch ទទួលពាក្យបញ្ជា LED Home តាមការតភ្ជាប់ណាមួយ។</value></data>
   <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>លំនាំដើមឧបករណ៍</value></data>
@@ -3709,6 +3741,7 @@
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>ឧបករណ៍រំញ័របាស</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>បញ្ជូនការញ័រ និងកម្លាំងតបពីហ្គេមដែលឧបករណ៍បញ្ជានិម្មិតនេះទទួល ទៅលទ្ធផលសំឡេងជាសំឡេងប្រេកង់ទាប សម្រាប់ឧបករណ៍រំញ័របាស និងសាប់វូហ្វឺរ។</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>ការញ័រទៅសំឡេង</value></data>
+  <data name="Pad_More_BassShakers" xml:space="preserve"><value>ឧបករណ៍លទ្ធផល, ឆានែល, កម្រិតពង្រីក, សំឡេងសម្រាប់ម៉ូទ័រនីមួយៗ</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>ដំណើរការជាមួយឧបករណ៍បញ្ជានិម្មិត Xbox, DualShock 3, DualShock 4 / DualSense និង Nintendo Switch Pro ព្រមទាំងឧបករណ៍បញ្ជានិម្មិត Extended ដែលមានកម្លាំងតប ដូចជាចង្កូតប្រណាំង និង Steam Deck Controller (Composite)។ មតិតបពីហ្គេម និង «សាកល្បងការញ័រ» លេងតាមលទ្ធផលសំឡេង។ ការញ័រពីម៉ាក្រូនៅតែនៅលើឧបករណ៍បញ្ជា។</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>កំណត់ការញ័រទៅសំឡេងឡើងវិញ</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>បញ្ជូនការញ័រទៅលទ្ធផលសំឡេង</value></data>
@@ -4146,6 +4179,7 @@
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>កំពុងរង់ចាំទិន្នន័យអង្គចងចាំរួម FreeTrack។</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>អង្គចងចាំរួម FreeTrack មិនអាចប្រើបានទេ។</value></data>
   <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>ការញ័រតាមមុំចង្កូត</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>ការញ័រដែលខ្លាំងឡើង ពេលអ័ក្សដងបញ្ជាឃ្លាតពីកណ្ដាល</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>បន្ថែមការញ័របន្តបន្ទាប់ ខណៈអ័ក្សដងបញ្ជានិម្មិតដែលបានជ្រើសរើសផ្លាស់ទីឆ្ងាយពីកណ្ដាល។ ប្រើលទ្ធផលដែលបានម៉ាបពីប្រភពដែលបានចាត់តាំងទាំងអស់។ នៅពេលជ្រើស «បែងចែកតាមទិសដៅ» ចលនាអវិជ្ជមានបើកម៉ូទ័រឆ្វេង ហើយចលនាវិជ្ជមានបើកម៉ូទ័រស្ដាំ។ «ម៉ូទ័រឆ្វេង» ឬ «ម៉ូទ័រស្ដាំ» ដាក់ទិសទាំងពីរលើម៉ូទ័រតែមួយនោះ។ សម្រាប់លទ្ធផល Xbox និង PlayStation ជាមួយឧបករណ៍ដែលមានការញ័រ។ វារំលងចង្កូត ឧបករណ៍ផ្សេងទៀតដែលមានកម្លាំងតបថេរ និងឈ្នាន់ Fanatec។</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>បើកការញ័រតាមមុំចង្កូត</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>អ័ក្សនិម្មិត</value></data>
@@ -4464,6 +4498,7 @@
   <data name="Status_FalconDriverDeclined" xml:space="preserve"><value>Windows មិនបានដំឡើងដ្រាយវ័ររបស់ Force Dimension ទេ។ ប្រសិនបើ Windows សួរថាតើត្រូវទុកចិត្ត Force Dimension ឬទេ សូមជ្រើស «ដំឡើង»។</value></data>
   <data name="Status_FalconDriverNotBound" xml:space="preserve"><value>ដ្រាយវ័រត្រូវបានដំឡើងហើយ ប៉ុន្តែ Falcon មិនទាន់ប្ដូរទៅប្រើវានៅឡើយទេ។ សូមដក Falcon ចេញ ហើយដោតវាចូលវិញ។</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>ទាត់, រង្គើ, ទប់លំនឹង, រុញស្រាល, ទំនាញ</value></data>
   <data name="Pad_Falcon_Description" xml:space="preserve"><value>PadForge គណនាកម្លាំងនីមួយៗលើដៃកាន់របស់ Falcon ប្រហែលមួយពាន់ដងក្នុងមួយវិនាទី ពីទីតាំងរបស់ដៃកាន់ និងអ្វីដែលហ្គេមកំពុងលេង។ ការកំណត់ទាំងនេះជារបស់រន្ធនេះ។</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>កំណត់ Novint Falcon ឡើងវិញ</value></data>
   <data name="Pad_Falcon_Feel" xml:space="preserve"><value>អារម្មណ៍</value></data>
@@ -4624,4 +4659,5 @@
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} លើ {1} ពេលសង្កត់ជាប់</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} លើ {1} រហូតដល់ត្រូវបានបញ្ឈប់</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>បញ្ឈប់បែបផែនទ្រីហ្គឺលើ {0}</value></data>
+  <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>គ្រប់គ្រងពន្លឺរបស់ឧបករណ៍នេះ, ការកាន់កាប់ពន្លឺ</value></data>
 </root>

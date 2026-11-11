@@ -859,6 +859,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Gallets d'impuls</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Gallets d'impuls</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Guany per gallet, intercanvi de motors, vibracions dels gallets adaptatius</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Reenvia les ordres dels motors de cada gallet (gallets d'impuls de Xbox) del comandament virtual al comandament físic Xbox One, Elite o Series assignat. La vibració dels gallets que genera el joc passa automàticament. Els controls de sota escalen la intensitat de cada gallet.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Gallet esquerre</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Gallet dret</value></data>
@@ -877,7 +878,9 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Restableix el gallet esquerre</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Restableix el gallet dret</value></data>
   <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Força constant als gallets</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Una força constant a cada motor dels gallets</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Encaminament als gallets</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Envia la vibració dels motors principals als gallets</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Encamina els motors de vibració principals cap al canal dels gallets, un gallet cada vegada. Funciona amb la vibració XInput i la retroacció de força. Un activador pot condicionar-lo perquè el gallet només vibri mentre mantens premut un botó.</value></data>
   <data name="Pad_ResetTriggerRouting" xml:space="preserve"><value>Restableix l'encaminament als gallets</value></data>
   <data name="Pad_TriggerRouting_LeftTrigger" xml:space="preserve"><value>Gallet esquerre</value></data>
@@ -909,6 +912,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Restableix el gallet esquerre</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Restableix el gallet dret</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Vibració dels gallets amb els greus de l'àudio</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Vibració dels gallets amb els greus de l'àudio del sistema</value></data>
   <data name="Pad_AudioTriggerRumble_Description" xml:space="preserve"><value>Acciona els motors dels gallets amb els greus de l'àudio del sistema. La força dels gallets que genera el joc té prioritat mentre està activa.</value></data>
   <data name="Pad_AudioTriggerRumble_Toggle" xml:space="preserve"><value>Acciona els motors dels gallets amb l'àudio</value></data>
   <data name="Pad_AudioTriggerRumble_Sensitivity" xml:space="preserve"><value>Sensibilitat</value></data>
@@ -1006,6 +1010,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice" xml:space="preserve"><value>Segueix el dispositiu d'àudio</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice_Picker" xml:space="preserve"><value>Dispositiu d'àudio</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>LED indicadors</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Brillantor dels LED, patró de jugador, mode del LED de silenci</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>Fila del número de jugador (5 LED sota el panell tàctil) i el LED de silenci sobre el micròfon. El control de brillantor només afecta físicament la fila de jugador. El microprogramari ofereix estats del LED de silenci (Desactivat / Fix / Intermitent), però cap registre de brillantor del silenci independent.</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>Restableix la barra de llum</value></data>
   <data name="Pad_ResetIndicatorLeds" xml:space="preserve"><value>Restableix els LED indicadors</value></data>
@@ -1392,6 +1397,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Calibra el centre</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Punt central</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Zona morta</value></data>
+  <data name="Pad_More_Stick" xml:space="preserve"><value>Desplaçaments del centre, forma i valors de la zona morta per eix, una corba per a cada eix, rang, direcció</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Rang</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Calibra el límit és la manera recomanada d'ajustar una palanca. Escombra la vora que la palanca pot assolir físicament i després reescala proporcionalment cada posició respecte a aquesta vora mesurada, de manera que tot el moviment natiu, a cada angle i a cada desviació, es projecta sobre un cercle ideal sense retallar res. Els quatre controls lliscants de sota només limiten els eixos cardinals. Fes-los servir per limitar el rang expressament, no per corregir-lo.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>S'està mostrejant...</value></data>
@@ -1725,6 +1731,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Número del panell tàctil</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>El panell tàctil d'aquest comandament al qual s'aplica la configuració de sota. Cada panell tàctil conserva els seus gestos, el comportament del ratolí i la regió del punter.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Detecció de gestos</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Activa els gestos d'aquest panell tàctil</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Activa els gestos en aquest panell tàctil</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Interruptor general d'aquest panell tàctil. Quan està desactivat, no s'activa cap descriptor de gest en aquest panell tàctil. Les assignacions de dit / clic / posició existents continuen funcionant.</value></data>
   <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>Reconeix</value></data>
@@ -1735,6 +1742,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>Temps d'espera</value></data>
   <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>Després que s'activi un gest, s'ignoren els gestos nous en aquest panell tàctil durant aquests mil·lisegons. Evita activacions per rebot causades per moviments ràpids d'anada i tornada.</value></data>
   <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>Gestos integrats</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Lliscaments, tocs, pessics, formes</value></data>
   <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>Lliscaments en 4 direccions (amunt / avall / esquerra / dreta)</value></data>
   <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>Lliscaments en 8 direccions (afegeix diagonals)</value></data>
   <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>Distància del lliscament (0..1)</value></data>
@@ -1760,6 +1768,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>Gestos de forma (cercle, quadrat, triangle, Z, marca de validació)</value></data>
   <data name="Pad_Touchpad_MatchThreshold" xml:space="preserve"><value>Llindar de coincidència de forma</value></data>
   <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>Gestos personalitzats</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Enregistra els teus</value></data>
   <data name="Pad_Touchpad_RecordNew" xml:space="preserve"><value>+ Enregistra un gest nou</value></data>
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>No s'ha enregistrat cap gest personalitzat per a aquest perfil. Fes clic a Enregistra un gest nou per capturar-ne un.</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 dit</value></data>
@@ -1767,6 +1776,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
 
   <!-- Stick / D-pad output card -->
   <data name="Pad_Touchpad_Stick_Header" xml:space="preserve"><value>Sortida de palanca / creueta</value></data>
+  <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Fes servir el panell tàctil com a palanca o creueta</value></data>
   <data name="Pad_Touchpad_Stick_Subtitle" xml:space="preserve"><value>Converteix el panell tàctil en una palanca analògica o una creueta virtual. La sortida s'ancora on toca primer el dit. La posició actual respecte a aquest punt d'ancoratge determina el valor de la palanca i, opcionalment, les direccions retingudes de la creueta.</value></data>
   <data name="Pad_Touchpad_StickEnabled" xml:space="preserve"><value>Activa la sortida de palanca / creueta</value></data>
   <data name="Pad_Touchpad_StickEnabled_Tooltip" xml:space="preserve"><value>Mostra els descriptors Palanca X, Palanca Y i Creueta del panell tàctil al selector d'assignacions. Funciona al costat de les fonts de dits i de gestos del panell tàctil existents, no en lloc d'elles.</value></data>
@@ -1781,6 +1791,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
 
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Sortida de ratolí</value></data>
+  <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Inversió, inèrcia, resposta, acceleració, llançament</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Ajusta la velocitat del cursor quan un dit del panell tàctil està assignat a X/Y del ratolí en un comandament virtual de teclat / ratolí. El valor per defecte és 1.0. Apuja qualsevol eix per tenir un cursor més ràpid, o abaixa'l per tenir-lo més lent. Inverteix capgira qualsevol eix.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Sensibilitat del ratolí X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Multiplicador del desplaçament horitzontal del panell tàctil → ratolí. Per sota d'1.0 alenteix el cursor. Per sobre d'1.0 l'accelera.</value></data>
@@ -1808,6 +1819,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_Touchpad_RotateThreshold_Tooltip" xml:space="preserve"><value>Quant han de girar dos dits perquè s'activi una rotació.</value></data>
   <data name="Pad_ResetTouchpadRotateThresholdDegrees" xml:space="preserve"><value>Restableix el llindar de rotació</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>Punter absolut</value></data>
+  <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>La part de la pantalla que arriba a cobrir el comandament</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Ajusta les fonts Punter X/Y del panell tàctil, que porten el cursor a la posició del dit al panell (assigna-les a X/Y del ratolí en un comandament virtual de teclat / ratolí). Una mida d'1.00 amb el centre a 0.50 fa correspondre el panell a tota la pantalla. Redueix la mida per limitar el cursor a una part de la pantalla i mou el centre per situar-la.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Amplada de la regió</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Amplada de l'àrea de la pantalla a la qual correspon aquest panell, com a fracció de l'amplada de la pantalla. 1.00 cobreix tota l'amplada i 0.50 limita el cursor a la meitat de la pantalla.</value></data>
@@ -1820,12 +1832,14 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
 
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Resposta hàptica en lliscar</value></data>
+  <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>Tics mentre mous el dit</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Fa polsar la resposta hàptica del comandament mentre el dit recorre aquest panell tàctil, com els tics de trackpad de Steam Input. Als Steam Controller i a la Steam Deck, els tics els fa l'actuador de sota el panell, i al DualSense i al DualShock 4, els motors de vibració.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Activa la resposta hàptica en lliscar</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>Emet un tic hàptic breu cada vegada que el dit es mou una distància determinada en aquest panell. Posar-hi un dit o fer-hi clic no fa mai cap tic. Desactivat per defecte.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>Intensitat del pols</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity_Tooltip" xml:space="preserve"><value>Força de cada tic. La vibració del joc sempre té prioritat quan és més forta.</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Header" xml:space="preserve"><value>Pressió sintètica</value></data>
+  <data name="Pad_SyntheticPressure_FoldHint" xml:space="preserve"><value>Pressió per a panells que informen d'un contacte com a total</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Subtitle" xml:space="preserve"><value>Simula els botons de pressió del DualShock 2 / DualShock 3 en panells que informen d'un contacte com a pressió completa (DualShock 4, DualSense, Steam Controller 2015). Mentre està activat, les fonts d'assignació de pressió d'aquest dispositiu llegeixen l'absència de contacte com a 0%, un contacte en repòs com el Nivell de pressió del contacte i un clic del panell com a 100%.</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled" xml:space="preserve"><value>Activa la pressió sintètica</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled_Tooltip" xml:space="preserve"><value>Converteix les fonts d'assignació de pressió d'aquest dispositiu en tres nivells: sense contacte es llegeix 0%, un contacte en repòs llegeix el Nivell de pressió del contacte i un clic al panell llegeix 100%. Desactivat per defecte, de manera que es conserven les lectures en brut als panells amb pressió analògica real.</value></data>
@@ -2003,7 +2017,9 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Ajusta com el sensor de moviment d'aquest comandament controla la sortida de ratolí i de palanca. Calibra'l sobre una superfície plana per anul·lar la deriva en repòs i, després, ajusta la sensibilitat, el suavitzat i les regles d'activació al teu gust.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Calibratge</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensibilitat</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Unitats, espai, inversió d'eixos, calibratge amb el món real</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Forma de la resposta</value></data>
+  <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Zona morta, suavitzat, acceleració, corba de sortida</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Espai</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Com s'interpreta el moviment del giroscopi. Local fa servir els eixos del comandament en brut. Jugador projecta el moviment horitzontal sobre la vertical real (la gravetat), de manera que el mateix gir de canell sempre fa girar la càmera, independentment de com aguantis el comandament. Món, a més, torna a projectar el moviment vertical sobre els eixos del món.</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>Subjecció</value></data>
@@ -2017,11 +2033,13 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_ResetGyroInvertYaw" xml:space="preserve"><value>Restableix la inversió de la guinyada</value></data>
   <data name="Pad_ResetGyroInvertRoll" xml:space="preserve"><value>Restableix la inversió del balanceig</value></data>
   <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>Brúixola</value></data>
+  <data name="Pad_Compass_FoldHint" xml:space="preserve"><value>Manté la guinyada cap al nord magnètic</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Aquest comandament té un magnetòmetre. Ancorar la guinyada al nord magnètic elimina la deriva horitzontal lenta de la punteria amb giroscopi. Primer calibra'l: prem Calibra el magnetòmetre, fes girar el comandament per totes les orientacions dibuixant un vuit durant uns segons i torna a prémer el botó.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Ancora la guinyada a la brúixola</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Afegeix una petita velocitat correctiva que atreu la punteria horitzontal cap al rumb magnètic, de manera que la deriva no es pot acumular. Necessita un calibratge del magnetòmetre desat. Les mostres alterades per metalls o imants propers es rebutgen automàticament.</value></data>
   <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Restableix el valor per defecte (desactivat)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Simulació del capcineig i el balanceig</value></data>
+  <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Capcineig i balanceig calculats a partir de l'acceleròmetre</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>El giroscopi d'aquest comandament només detecta els girs a esquerra i dreta. Amb la simulació activada, PadForge obté el capcineig i el balanceig de l'acceleròmetre i els envia, juntament amb la guinyada del giroscopi, a les files d'assignació i al moviment del comandament virtual. Un acceleròmetre no pot distingir una empenta d'una inclinació, així que moure el comandament cap a un costat o endavant sense girar-lo es llegeix com una rotació breu.</value></data>
   <data name="Settings_GyroSimulation" xml:space="preserve"><value>Simula el capcineig i el balanceig</value></data>
   <data name="Settings_GyroSimulation_Tooltip" xml:space="preserve"><value>Omple el capcineig i el balanceig amb velocitats derivades de l'acceleròmetre. La guinyada continua sent la lectura pròpia del giroscopi. Desactivat per defecte.</value></data>
@@ -2062,6 +2080,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Avall (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Amunt (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Activació</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Botó d'activació de la punteria, mode d'activació, llindar de punteria fàcil</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Condicions opcionals que limiten quan està actiu el giroscopi. Es poden configurar la desviació de la palanca dreta i el botó d'activació de la punteria. El giroscopi només actua mentre totes les condicions configurades estan actives.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Local</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Jugador</value></data>
@@ -2112,6 +2131,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Basculament del giroscopi X</value></data>
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>Basculament del giroscopi Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>Basculament del giroscopi</value></data>
+  <data name="Pad_GyroTilt_FoldHint" xml:space="preserve"><value>Rang de basculament complet, zona morta del basculament</value></data>
   <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>Envolupant per a les entrades Basculament del giroscopi X / Basculament del giroscopi Y: mantén una inclinació i la palanca manté la seva desviació, com el mode Joystick Deflection de Steam. La desviació completa s'assoleix al rang que defineixis aquí, i Recentra el giroscopi torna a posar a zero la posició de repòs. La guinyada (girar el comandament en pla) és invisible per a la gravetat i no mou aquestes entrades.</value></data>
   <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>Rang de basculament complet</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>Graus de basculament des de la posició de repòs que compten com a desviació completa de la palanca. Més petit = més sensible. 25° és el valor més habitual a les configuracions de Steam.</value></data>
@@ -2313,6 +2333,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Rang mínim Y (avall)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Rang màxim Y (amunt)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Eix X</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>Tots dos eixos</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Eix Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Rang</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Antizona morta</value></data>
@@ -2323,6 +2344,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Retroacció de força / vibració / hàptica</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Guany per motor, vibració dels gallets, intercanvi de motors</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Guany general</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Motor esquerre</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Motor dret</value></data>
@@ -2334,6 +2356,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Força constant</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Una força constant fins que la desactives</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Aplica una força contínua a aquest dispositiu fins que la desactivis. La força que genera el joc, sigui quina sigui la font, té prioritat mentre està activa, i la força constant es reprèn quan el joc s'atura.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Aplica una força constant</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Arrossega dins de la graella per definir la direcció i la força.</value></data>
@@ -2660,6 +2683,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
 
   <!-- ═══ Audio Bass Rumble ═══ -->
   <data name="Settings_AudioRumble" xml:space="preserve"><value>Vibració per àudio</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Vibració amb els greus de l'àudio del sistema</value></data>
   <data name="Settings_AudioRumbleDesc" xml:space="preserve"><value>Fa vibrar el comandament amb les freqüències greus de l'àudio del sistema.</value></data>
   <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>Activa la vibració per àudio</value></data>
   <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>Sensibilitat</value></data>
@@ -2770,6 +2794,8 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Restableix la zona morta exterior de la inclinació</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Restableix l'orientació del comandament</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Direcció per moviment</value></data>
+  <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° a {1}°</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Zones mortes de la inclinació, orientació del comandament</value></data>
   <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Configuració de l'entrada Inclinació de moviment: inclina el comandament com un volant. Assigna «Inclinació de moviment» a un eix de palanca des de la llista desplegable d'entrades a Assignacions.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Restableix la direcció per moviment</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (palanca dreta)</value></data>
@@ -2778,6 +2804,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Mapping_LeftStickRing" xml:space="preserve"><value>Anell de la palanca esquerra</value></data>
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>Anell de la palanca dreta</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
+  <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Ajust de les entrades Flick Stick</value></data>
   <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Configuració de les entrades Flick Stick: apunta amb la palanca i la càmera gira en aquella direcció, i escombra la vora per afinar el gir. Assigna «Flick Stick (palanca dreta)» a Ratolí X des de la llista desplegable d'entrades a Assignacions, en qualsevol capa.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Restableix el Flick Stick</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Punts per 360°</value></data>
@@ -2814,6 +2841,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Quan la capa que conté el Flick Stick s'activa amb la palanca ja desviada, fa el flick immediatament. Desactivat manté la càmera quieta i segueix la rotació des de l'angle actual de la palanca.</value></data>
   <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Restableix Permet el flick en activar</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Avís de tope de direcció</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Un senyal al tope d'una palanca en mode de direcció</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Quan una palanca configurada en un mode de direcció es gira fins al tope, reprodueix un senyal (vibració, gallet o barra de llum) perquè notis el límit. Tot desactivat per defecte.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Pols de vibració al tope</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Vibració dels gallets al tope</value></data>
@@ -2869,6 +2897,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Àudio</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Els sons de les macros i l'àudio del sistema replicat es reprodueixen per l'altaveu integrat del comandament seleccionat, per USB o Bluetooth. Tria el dispositiu a la llista desplegable de dalt. Tota la configuració d'aquí s'hi aplica.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Sortida de so</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Font de la rèplica, resposta hàptica, volum dels auriculars, mescla creuada, EQ paramètric, limitador</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Els sons s'envien automàticament al comandament seleccionat. Per USB, el punt final d'àudio del comandament es fa correspondre pel contenidor de maquinari. Per Bluetooth, l'àudio es transmet en trames HID de Sony.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Font de la rèplica</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Quin dispositiu de reproducció es replica a l'altaveu del comandament. Els jocs que envien sons concrets a un dispositiu de reproducció a part poden fer servir aquest.</value></data>
@@ -2942,6 +2971,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>El fitxer no és un perfil de PadForge llegible.</value></data>
   <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Tria un so de {0}</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Paquets de so</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Fitxers zip de sons per a macros de so</value></data>
   <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>Un paquet de so és un fitxer zip de sons amb l'extensió .pfsounds. Afegeix-ne un aquí i després tria'n els sons en qualsevol macro de so. PadForge llegeix directament del fitxer i no el descomprimeix mai. Desa els paquets al costat de PadForge.exe perquè tot continuï sent portable.</value></data>
   <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>Afegeix un paquet…</value></data>
   <data name="Pad_Audio_Packages_Add_Tooltip" xml:space="preserve"><value>Afegeix a la llista un fitxer .pfsounds existent.</value></data>
@@ -2967,6 +2997,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Emoji_Category_Objects" xml:space="preserve"><value>Objectes</value></data>
   <data name="Emoji_Category_Symbols" xml:space="preserve"><value>Símbols</value></data>
   <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>Paquets d'icones</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Fitxers zip d'imatges per a cel·les de menú</value></data>
   <data name="Pad_Menus_IconPackages_Desc" xml:space="preserve"><value>Un paquet d'icones és un fitxer zip d'imatges amb l'extensió .pficons. Afegeix-ne un aquí i després tria'n les icones en qualsevol cel·la de menú. PadForge llegeix directament del fitxer i no el descomprimeix mai. Desa els paquets al costat de PadForge.exe perquè tot continuï sent portable.</value></data>
   <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>Afegeix un paquet…</value></data>
   <data name="Pad_Menus_IconPackages_Add_Tooltip" xml:space="preserve"><value>Afegeix a la llista un fitxer .pficons existent.</value></data>
@@ -3349,6 +3380,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>Canvia a la capa {0}</value></data>
   <data name="Macro_SwitchLayer_Hint" xml:space="preserve"><value>Fa saltar aquesta ranura a la capa triada. La capa es manté activa fins a un altre canvi, un activador de Fixació o de Cicle, o un canvi de perfil. Base torna a la capa base. Limita aquesta macro a una capa a dalt perquè el mateix botó salti de manera diferent segons la capa.</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>LED del botó Guia</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>La llum del botó Guia o d'inici</value></data>
   <data name="Pad_Lighting_GuideLed_Subtitle" xml:space="preserve"><value>Brillantor del botó lluminós Guia o Home. Els comandaments Xbox One i posteriors l'accepten per USB. El Steam Controller del 2015 l'accepta amb qualsevol connexió, i tots els Steam Controller comparteixen una mateixa brillantor. Els Switch Pro Controller i els Joy-Con drets (sols, aparellats o al suport de càrrega) l'accepten amb qualsevol connexió.</value></data>
   <data name="Pad_Lighting_GuideLed_Mode_Tooltip" xml:space="preserve"><value>Per defecte del dispositiu deixa el LED exactament com l'ha configurat el microprogramari del comandament. Brillantor fixa manté el nivell de sota. Nivell de bateria fa que una bateria més plena brilli més i no baixa mai del 10%. Els comandaments Xbox només accepten ordres del LED Guia per USB, així que aquesta opció no té cap efecte amb una connexió Bluetooth. Els comandaments de Switch accepten ordres del LED Home amb qualsevol connexió.</value></data>
   <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>Per defecte del dispositiu</value></data>
@@ -3713,6 +3745,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shakers</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Envia la vibració i la retroacció de força del joc que rep aquest comandament virtual a una sortida d'àudio com a tons de baixa freqüència per a bass shakers i subwoofers.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibració a àudio</value></data>
+  <data name="Pad_More_BassShakers" xml:space="preserve"><value>Dispositiu de sortida, canals, guany, un to per a cada motor</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Funciona amb els comandaments virtuals Xbox, DualShock 3, DualShock 4 / DualSense i Nintendo Switch Pro, a més dels comandaments virtuals ampliats amb retroacció de força, com els volants de curses, i el Steam Deck Controller (Composite). La resposta del joc i Prova la vibració es reprodueixen per la sortida d'àudio. La vibració de les macros es manté al comandament.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Restableix la vibració a àudio</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Envia la vibració a una sortida d'àudio</value></data>
@@ -4151,6 +4184,7 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>S'estan esperant dades de la memòria compartida de FreeTrack.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>La memòria compartida de FreeTrack no està disponible.</value></data>
   <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Vibració segons l'angle de direcció</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Vibració que creix quan un eix de la palanca s'allunya del centre</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Afegeix una vibració contínua a mesura que l'eix de palanca virtual seleccionat s'allunya del centre. Fa servir la sortida assignada de totes les fonts assignades. Amb Dividit per direcció, el moviment negatiu acciona el motor esquerre i el positiu, el dret. Motor esquerre o Motor dret posa les dues direccions en aquell únic motor. Per a sortides Xbox i PlayStation amb dispositius de vibració. Omet els volants, altres dispositius amb retroacció de força constant i els pedals de Fanatec.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Activa la vibració segons l'angle de direcció</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Eix virtual</value></data>
@@ -4476,6 +4510,7 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="Status_FalconDriverDeclined" xml:space="preserve"><value>Windows no ha instal·lat el controlador de Force Dimension. Si Windows pregunta si confies en Force Dimension, tria Instal·la.</value></data>
   <data name="Status_FalconDriverNotBound" xml:space="preserve"><value>El controlador està instal·lat, però el Falcon no hi ha passat. Desconnecta el Falcon i torna'l a connectar.</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>Cop, sacseig, estabilització, precàrrega, gravetat</value></data>
   <data name="Pad_Falcon_Description" xml:space="preserve"><value>PadForge calcula cada força sobre el mànec del Falcon unes mil vegades per segon, a partir de la posició del mànec i del que reprodueix el joc. Aquesta configuració pertany a aquesta ranura.</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>Restableix el Novint Falcon</value></data>
   <data name="Pad_Falcon_Feel" xml:space="preserve"><value>Sensació</value></data>
@@ -4637,4 +4672,5 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} a {1} mentre es manté premut</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} a {1} fins que s'aturi</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>Atura l'efecte de gallet a {0}</value></data>
+  <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Controla la il·luminació d'aquest dispositiu, nivell de control de la il·luminació</value></data>
 </root>

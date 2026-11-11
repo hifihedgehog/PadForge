@@ -474,6 +474,7 @@
   <data name="Pad_Formula_Var_NotYetMapped" xml:space="preserve"><value>ammallee hin walqabsiifamne</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Tuqaa giddu-galeessaa</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Deedzoonii</value></data>
+  <data name="Pad_More_Stick" xml:space="preserve"><value>Sirreeffama giddugaleessaa, boca deedzoonii fi gatii aksisii tokkoon tokkoo, kurfii aksisii tokkoon tokkoof, daangaa, konkolaachisuu</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Daangaa</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Sirreeffama giddu-galeessaa X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Sirreeffama giddu-galeessaa Y</value></data>
@@ -667,6 +668,7 @@
   <data name="Pad_Touchpad_FourFinger" xml:space="preserve"><value>Mallattoo quba afurii</value></data>
   <data name="Pad_Touchpad_FiveFinger" xml:space="preserve"><value>Quba shaniin tuquu</value></data>
   <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>Mallattoo dhuunfaa</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Kan kee galmeessi</value></data>
   <data name="Pad_Touchpad_RecordNew" xml:space="preserve"><value>+ Mallattoo haaraa galmeessi</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>quba 1</value></data>
   <data name="Pad_Touchpad_CustomGesture_NFingers_Format" xml:space="preserve"><value>quba {0}</value></data>
@@ -762,6 +764,7 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Jayiroo</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kaalibireeshinii</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Miira</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Safartuu, Iddoo, aksisii garagalchi, Real-World Calibration</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Piichii garagalchi (Y)</value></data>
   <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Yaawu garagalchi (X)</value></data>
   <data name="Settings_GyroInvertRoll" xml:space="preserve"><value>Roolii garagalchi (X)</value></data>
@@ -908,6 +911,7 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Daangaa xiqqaa Y (gadi)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Daangaa guddaa Y (ol)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Aksisii X</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>Aksisii lamaanuu</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Aksisii Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Daangaa</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-deedzoonii</value></data>
@@ -918,6 +922,7 @@
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Force feedback / Raafama / Haaptiksii</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Cimina mootora tokkoon tokkoo, raafama tiriigarii, jijjiirraa mootoraa</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Mootora bitaa</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Mootora mirgaa</value></data>
   <data name="Pad_SwapMotors" xml:space="preserve"><value>Mootora bitaa fi mirgaa wal jijjiiri</value></data>
@@ -926,6 +931,7 @@
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Humna dhaabbataa</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Humna dhaabbataa hanga ati cuftutti</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Humna dhaabbataa fayyadami</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
@@ -1131,6 +1137,7 @@
 
   <!-- ═══ Audio Bass Rumble ═══ -->
   <data name="Settings_AudioRumble" xml:space="preserve"><value>Raafama sagalee</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Raafama sagalee gadi aanaa sirnaa irraa</value></data>
   <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>Raafama sagalee dandeessisi</value></data>
   <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>Miira</value></data>
   <data name="Settings_AudioRumble_LeftMotor" xml:space="preserve"><value>Mootora bitaa</value></data>
@@ -1179,6 +1186,7 @@
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick stick (Sitikii bitaa)</value></data>
   <data name="Mapping_FlickStickTouchpad_Format" xml:space="preserve"><value>Flick stick (Taachpaadii {0})</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick stick</value></data>
+  <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Qindaa'ina galtee Flick stick</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Flick stick deebisi</value></data>
   <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Gara 14400tti deebisi</value></data>
   <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Gara 0.1 s tti deebisi</value></data>
@@ -1425,6 +1433,7 @@
   <data name="Macro_Dreamcast_Repeat" xml:space="preserve"><value>Lakkoofsa irra deebii</value></data>
   <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>Gara sadarkaa {0}-tti jijjiiri</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>LED qabduu Guide</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Ifa qabduu Guide ykn Home</value></data>
   <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>Durtii meeshaa</value></data>
   <data name="Pad_Lighting_GuideLed_Fixed" xml:space="preserve"><value>Ifa dhaabbataa</value></data>
   <data name="Pad_Lighting_GuideLed_Battery" xml:space="preserve"><value>Hamma baatirii</value></data>
@@ -1513,6 +1522,7 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Sochii fi tuqiinsa</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Ibsaa fi sagalee</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Raafama gara sagaleetti</value></data>
+  <data name="Pad_More_BassShakers" xml:space="preserve"><value>Meeshaa bahiinsaa, chaanaloota, cimina, sagalee mootora tokkoon tokkoof</value></data>
   <data name="Pad_RumbleAudio_OutputDevice" xml:space="preserve"><value>Meeshaa bahiinsaa</value></data>
   <data name="Pad_RumbleAudio_ResetOutputDevice" xml:space="preserve"><value>Meeshaa bahiinsaa deebisi</value></data>
   <data name="Pad_RumbleAudio_Status_Inactive" xml:space="preserve"><value>Bahiinsi sagalee hojii irra hin jiru.</value></data>
@@ -1811,6 +1821,7 @@
   <data name="Settings_Falcon" xml:space="preserve"><value>Novint Falcon hojjechiisi</value></data>
   <data name="Status_InstallingFalconDriver" xml:space="preserve"><value>Draayivarii Falcon kan Force Dimension fe'amaa jira…</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>Dhiituu, raasuu, jabeessuu, duraffe'uu, harkisa</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>Novint Falcon deebisi</value></data>
   <data name="Pad_Falcon_Feel_Joystick" xml:space="preserve"><value>Joystick</value></data>
   <data name="Pad_Falcon_Button1" xml:space="preserve"><value>Qabduu 1</value></data>
@@ -1875,4 +1886,20 @@
   <data name="Extras_More_HeadTracking" xml:space="preserve"><value>Raantaayimii OpenXR, poortii UDP, hangii akisii tokkoon tokkoo</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} wal qunnamee jira, garuu hojii irra hin jiru.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Itti fayyadami</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Akeekkachiisa sitikii konkolaachisuu yeroo daangaa guutuu ga'u</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Raafama aksisiin sitikii giddugaleessa irraa fagaachuun guddatu</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Raafama mootora ijoo gara tiriigaraatti erga</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Humna dhaabbataa mootora tiriigarii hunda irratti</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Raafama tiriigarii sagalee gadi aanaa sirnaa irraa</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Deedzoonii jallachuu, Kallattii kontirolaa</value></data>
+  <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Deedzoonii, lallaafsuu, Ariitii, Kurfii bahiinsaa</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Qabduu akeekaa kaasuu, Haala kaasuu, Daangaa akeeka salphaa</value></data>
+  <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Taachpaadii akka sitikii ykn D-pad fayyadami</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Mallattoo taachpaadii kanaa dandeessisa</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Harkisuu, tuquu, cuniinsuu, bocawwan</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Ifa LED, Akkaataa taphataa, Haala LED callisaa</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Faayilii Zip sagalee maakroo sagaleetiif</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Faayilii Zip suuraa seelii menuutiif</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Cimina tiriigarii tokkoon tokkoo, jijjiirraa mootoraa, raafama tiriigarii adaptive</value></data>
+  <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Garagalchi, Momentum, Deebii, Ariitii, darbuu</value></data>
 </root>

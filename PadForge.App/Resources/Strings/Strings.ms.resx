@@ -861,6 +861,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Pencetus Impuls</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Pencetus Impuls</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Gandaan setiap pencetus, tukar motor, getaran pencetus adaptif</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Memajukan arahan motor bagi setiap pencetus (Xbox Impulse Triggers) daripada pengawal maya ke pengawal Xbox One, Elite atau Series fizikal yang ditetapkan. Getaran pencetus yang dipacu permainan lalu secara automatik. Kawalan di bawah menskala magnitud bagi setiap pencetus.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Pencetus Kiri</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Pencetus Kanan</value></data>
@@ -879,7 +880,9 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Tetap Semula Pencetus Kiri</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Tetap Semula Pencetus Kanan</value></data>
   <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Daya Pencetus Malar</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Daya mantap pada setiap motor pencetus</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Penghalaan Pencetus</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Menghantar getaran motor utama ke pencetus</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Halakan motor getaran utama ke saluran pencetus, satu pencetus pada satu masa. Berfungsi dengan getaran XInput dan maklum balas daya. Pengaktif boleh mengawalnya supaya pencetus hanya berdengung semasa anda menahan butang.</value></data>
   <data name="Pad_ResetTriggerRouting" xml:space="preserve"><value>Tetap Semula Penghalaan Pencetus</value></data>
   <data name="Pad_TriggerRouting_LeftTrigger" xml:space="preserve"><value>Pencetus Kiri</value></data>
@@ -911,6 +914,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Tetap Semula Pencetus Kiri</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Tetap Semula Pencetus Kanan</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Getaran Pencetus Bass Audio</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Getaran pencetus daripada bass dalam audio sistem</value></data>
   <data name="Pad_AudioTriggerRumble_Description" xml:space="preserve"><value>Pacu motor pencetus daripada bass audio sistem. Daya pencetus yang dipacu permainan mengatasinya semasa ia aktif.</value></data>
   <data name="Pad_AudioTriggerRumble_Toggle" xml:space="preserve"><value>Pacu Motor Pencetus daripada Audio</value></data>
   <data name="Pad_AudioTriggerRumble_Sensitivity" xml:space="preserve"><value>Kepekaan</value></data>
@@ -1008,6 +1012,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice" xml:space="preserve"><value>Ikut Peranti Audio</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice_Picker" xml:space="preserve"><value>Peranti Audio</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>LED Penunjuk</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Kecerahan LED, Corak Pemain, Mod LED Senyap</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>Baris nombor pemain (5 LED di bawah pad sentuh) dan LED senyap di atas mikrofon. Kawalan kecerahan secara fizikal hanya menjejaskan baris pemain. Perisian tegar mendedahkan keadaan LED senyap (Mati / Pepejal / Denyut) tetapi tiada daftar kecerahan senyap yang berasingan.</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>Tetap Semula Bar Cahaya</value></data>
   <data name="Pad_ResetIndicatorLeds" xml:space="preserve"><value>Tetap Semula LED Penunjuk</value></data>
@@ -1394,6 +1399,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Tentukur Tengah</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Titik Tengah</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Zon Mati</value></data>
+  <data name="Pad_More_Stick" xml:space="preserve"><value>Ofset tengah, bentuk zon mati dan nilai setiap paksi, lengkung untuk setiap paksi, julat, stereng</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Julat</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Tentukur Sempadan ialah cara yang disyorkan untuk membetulkan kayu bedik. Ia menyapu tepi yang boleh dicapai kayu bedik secara fizikal, kemudian menskala semula setiap kedudukan secara berkadar terhadap tepi yang diukur itu, supaya seluruh gerakan asal, pada setiap sudut dan setiap pesongan, dipetakan ke bulatan ideal tanpa apa-apa yang terpotong. Empat peluncur di bawah hanya menghadkan paksi kardinal. Gunakannya untuk mengehadkan julat dengan sengaja, bukan untuk membetulkannya.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Mengambil sampel...</value></data>
@@ -1727,6 +1733,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Nombor pad sentuh</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Pad sentuh pada pengawal ini yang dikenakan tetapan di bawah. Setiap pad sentuh menyimpan gerak isyarat, rasa tetikus dan rantau penuding sendiri.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Pengesanan gerak isyarat</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Menghidupkan gerak isyarat pad sentuh ini</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Dayakan gerak isyarat pada pad sentuh ini</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Suis utama untuk pad sentuh ini. Apabila dimatikan, tiada penerang gerak isyarat dilaksanakan untuk pad sentuh ini. Pemetaan jari / klik / kedudukan sedia ada masih berfungsi.</value></data>
   <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>Kenal pasti</value></data>
@@ -1737,6 +1744,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>Masa bertenang</value></data>
   <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>Selepas gerak isyarat dilaksanakan, abaikan gerak isyarat baharu pada pad sentuh ini selama sekian milisaat. Menghalang pelaksanaan berulang akibat gerakan ulang-alik yang pantas.</value></data>
   <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>Gerak isyarat terbina dalam</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Leretan, ketikan, cubitan, bentuk</value></data>
   <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>Leret 4 arah (atas / bawah / kiri / kanan)</value></data>
   <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>Leret 8 arah (termasuk pepenjuru)</value></data>
   <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>Jarak leret (0..1)</value></data>
@@ -1762,6 +1770,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>Gerak isyarat bentuk (bulatan, segi empat sama, segi tiga, Z, tanda semak)</value></data>
   <data name="Pad_Touchpad_MatchThreshold" xml:space="preserve"><value>Ambang padanan bentuk</value></data>
   <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>Gerak isyarat tersuai</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Rakam gerak isyarat anda sendiri</value></data>
   <data name="Pad_Touchpad_RecordNew" xml:space="preserve"><value>+ Rakam gerak isyarat baharu</value></data>
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>Tiada gerak isyarat tersuai dirakam untuk profil ini. Klik Rakam gerak isyarat baharu untuk merakamnya.</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 jari</value></data>
@@ -1769,6 +1778,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
 
   <!-- Stick / D-pad output card -->
   <data name="Pad_Touchpad_Stick_Header" xml:space="preserve"><value>Output kayu bedik / D-pad</value></data>
+  <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Guna pad sentuh sebagai kayu bedik atau D-pad</value></data>
   <data name="Pad_Touchpad_Stick_Subtitle" xml:space="preserve"><value>Jadikan pad sentuh kayu bedik analog maya atau D-pad. Output berpangkal di tempat jari mula mendarat. Kedudukan semasa berbanding pangkal itu menentukan nilai kayu bedik dan (secara pilihan) bool arah D-pad yang dikunci.</value></data>
   <data name="Pad_Touchpad_StickEnabled" xml:space="preserve"><value>Dayakan output kayu bedik / D-pad</value></data>
   <data name="Pad_Touchpad_StickEnabled_Tooltip" xml:space="preserve"><value>Memaparkan penerang Kayu bedik X, Kayu bedik Y dan D-pad pad sentuh dalam pemilih pemetaan. Berfungsi bersama sumber jari pad sentuh dan gerak isyarat pad sentuh yang sedia ada, bukan menggantikannya.</value></data>
@@ -1783,6 +1793,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
 
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Output tetikus</value></data>
+  <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Songsang, Momentum, Sambutan, Pecutan, lontaran</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Melaras kelajuan kursor apabila jari pad sentuh dipetakan ke tetikus X/Y pada pengawal maya Papan kekunci / Tetikus. 1.0 ialah lalai. Naikkan mana-mana paksi untuk kursor lebih laju, turunkan untuk lebih perlahan. Songsangkan membalikkan mana-mana paksi.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Kepekaan tetikus X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Pengganda bagi delta pad sentuh → tetikus mendatar. Di bawah 1.0 memperlahankan kursor. Di atas 1.0 melajukannya.</value></data>
@@ -1810,6 +1821,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_Touchpad_RotateThreshold_Tooltip" xml:space="preserve"><value>Sejauh mana dua jari mesti berputar sebelum putaran dilaksanakan.</value></data>
   <data name="Pad_ResetTouchpadRotateThresholdDegrees" xml:space="preserve"><value>Tetap semula ambang putar</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>Penuding mutlak</value></data>
+  <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>Bahagian skrin yang dicapai pad</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Melaras sumber Penuding pad sentuh X/Y, yang melontarkan kursor ke kedudukan jari anda pada pad (petakan ke tetikus X/Y pada pengawal maya Papan kekunci / Tetikus). Saiz 1.00 dengan pusat 0.50 memetakan pad ke seluruh skrin. Kecilkan saiz untuk mengehadkan kursor kepada sebahagian skrin, dan alihkan pusat untuk meletakkannya.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Lebar rantau</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Lebar kawasan skrin yang dipetakan oleh pad ini, sebagai pecahan lebar skrin. 1.00 meliputi seluruh lebar. 0.50 mengehadkan kursor kepada separuh skrin.</value></data>
@@ -1822,12 +1834,14 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
 
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Haptik leretan</value></data>
+  <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>Ketikan semasa jari anda bergerak</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Mendenyutkan haptik pengawal semasa jari anda bergerak merentasi pad sentuh ini, seperti detik pad jejak Steam Input. Steam Controller dan Steam Deck mengetik penggerak di bawah pad. DualSense dan DualShock 4 mendenyutkan motor getaran.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Dayakan haptik leretan</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>Melepaskan detik haptik pendek setiap kali jari bergerak sejauh jarak tertentu pada pad ini. Mendaratkan jari atau mengklik pad tidak pernah menghasilkan detik. Mati secara lalai.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>Keamatan denyutan</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity_Tooltip" xml:space="preserve"><value>Kekuatan setiap detik. Getaran permainan sentiasa diutamakan apabila ia lebih kuat.</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Header" xml:space="preserve"><value>Tekanan sintetik</value></data>
+  <data name="Pad_SyntheticPressure_FoldHint" xml:space="preserve"><value>Tekanan untuk pad yang melaporkan sentuhan sebagai penuh</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Subtitle" xml:space="preserve"><value>Menyimulasikan butang tekanan DualShock 2 / DualShock 3 pada pad yang melaporkan sentuhan sebagai tekanan penuh (DualShock 4, DualSense, Steam Controller 2015). Apabila didayakan, sumber pemetaan Tekanan peranti ini membaca tiada sentuhan sebagai 0%, sentuhan rehat sebagai Aras tekanan sentuhan, dan klik pad sebagai 100%.</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled" xml:space="preserve"><value>Dayakan tekanan sintetik</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled_Tooltip" xml:space="preserve"><value>Membentuk sumber pemetaan Tekanan peranti ini kepada tiga langkah: tiada sentuhan dibaca 0%, sentuhan rehat dibaca Aras tekanan sentuhan, dan mengklik pad dibaca 100%. Mati secara lalai, yang mengekalkan bacaan mentah pada pad dengan tekanan analog sebenar.</value></data>
@@ -2005,7 +2019,9 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Laraskan cara penderia gerakan pad ini menggerakkan output tetikus dan kayu bedik. Tentukur pada permukaan rata untuk menyifarkan hanyutan pegun, kemudian tetapkan kepekaan, pelicinan dan peraturan pelibatan mengikut selera.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Penentukuran</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Kepekaan</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Unit, Ruang, songsangkan paksi, Penentukuran dunia sebenar</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Pembentukan sambutan</value></data>
+  <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Zon mati, pelicinan, Pecutan, Lengkung output</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Ruang</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Cara gerakan giro ditafsirkan. Tempatan menggunakan paksi pengawal mentah. Pemain memproyeksikan gerakan mendatar ke arah menegak dunia sebenar (graviti) supaya putaran pergelangan tangan yang sama sentiasa memusingkan kamera, tanpa mengira cara anda memegang pad. Dunia turut memproyeksikan semula gerakan menegak ke paksi dunia.</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>Dipegang sebagai</value></data>
@@ -2019,11 +2035,13 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_ResetGyroInvertYaw" xml:space="preserve"><value>Tetap semula songsangkan yaw</value></data>
   <data name="Pad_ResetGyroInvertRoll" xml:space="preserve"><value>Tetap semula songsangkan golek</value></data>
   <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>Kompas</value></data>
+  <data name="Pad_Compass_FoldHint" xml:space="preserve"><value>Mengekalkan yaw ke utara magnet</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Pengawal ini mempunyai magnetometer. Menambat yaw pada utara magnet menghilangkan hanyutan mendatar perlahan daripada bidikan giro. Tentukur dahulu: tekan Tentukur, putarkan pengawal melalui semua orientasi dalam bentuk angka 8 selama beberapa saat, kemudian tekan sekali lagi.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Tambat yaw pada kompas</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Menambah kadar pembetulan kecil yang menarik bidikan mendatar ke arah haluan magnet, supaya hanyutan tidak dapat terkumpul. Memerlukan penentukuran magnetometer yang disimpan. Sampel yang diganggu oleh logam atau magnet berdekatan ditolak secara automatik.</value></data>
   <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Tetap semula kepada lalai (Mati)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Simulasi pic dan golek</value></data>
+  <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Pic dan golek dikira daripada pecutan ukur</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>Giro pengawal ini hanya mengesan pusingan kiri dan kanan. Dengan simulasi hidup, PadForge memperoleh pic dan golek daripada meter pecutan dan menghantarnya bersama yaw giro ke baris pemetaan dan gerakan pengawal maya. Meter pecutan tidak dapat membezakan tolakan daripada condongan, jadi menggerakkan pengawal ke sisi atau ke hadapan tanpa memusingkannya dibaca sebagai putaran ringkas.</value></data>
   <data name="Settings_GyroSimulation" xml:space="preserve"><value>Simulasi pic dan golek</value></data>
   <data name="Settings_GyroSimulation_Tooltip" xml:space="preserve"><value>Mengisi pic dan golek dengan kadar yang diperoleh daripada meter pecutan. Yaw kekal bacaan giro sendiri. Mati secara lalai.</value></data>
@@ -2064,6 +2082,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Bawah (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Atas (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Pelibatan</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Butang pelibatan bidikan, Mod pelibatan, Ambang bidikan mudah</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Pintu pilihan yang mengehadkan bila giro aktif. Pesongan kayu bedik kanan dan butang pelibatan bidikan masing-masing boleh dikonfigurasikan. Giro berfungsi hanya apabila setiap pintu yang dikonfigurasikan aktif.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Tempatan</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Pemain</value></data>
@@ -2114,6 +2133,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Condongan giro X</value></data>
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>Condongan giro Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>Condongan giro</value></data>
+  <data name="Pad_GyroTilt_FoldHint" xml:space="preserve"><value>Julat condongan penuh, Zon mati condongan</value></data>
   <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>Sampul bagi input Condongan giro X / Condongan giro Y: tahan satu condongan dan kayu bedik mengekalkan pesongannya, seperti mod Joystick Deflection Steam. Pesongan penuh pada julat yang anda tetapkan di sini. Pemusatan semula giro menyifarkan semula pegangan rehat. Yaw (memusingkan pengawal secara rata) tidak dapat dikesan oleh graviti dan tidak menggerakkan input ini.</value></data>
   <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>Julat condongan penuh</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>Darjah condongan dari pegangan rehat yang dikira sebagai pesongan kayu bedik penuh. Lebih kecil = lebih peka. 25° ialah nilai paling biasa dalam konfigurasi Steam.</value></data>
@@ -2314,6 +2334,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Julat Min Y (Bawah)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Julat Maks Y (Atas)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Paksi X</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>Kedua-dua Paksi</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Paksi Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Julat</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-Zon Mati</value></data>
@@ -2324,6 +2345,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Maklum Balas Daya / Getaran / Haptik</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Gandaan setiap motor, getaran pencetus, tukar motor</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Gandaan Keseluruhan</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Motor Kiri</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Motor Kanan</value></data>
@@ -2335,6 +2357,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Daya Malar</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Daya mantap sehingga anda mematikannya</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Gunakan daya berterusan pada peranti ini sehingga anda mematikannya. Daya yang dipacu permainan daripada mana-mana sumber menindih semasa ia aktif dan disambung semula apabila permainan berhenti.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Gunakan Daya Malar</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Seret dalam grid untuk menetapkan arah dan kekuatan.</value></data>
@@ -2656,6 +2679,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
 
   <!-- ═══ Audio Bass Rumble ═══ -->
   <data name="Settings_AudioRumble" xml:space="preserve"><value>Getaran Audio</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Getaran daripada bass dalam audio sistem</value></data>
   <data name="Settings_AudioRumbleDesc" xml:space="preserve"><value>Pacu getaran pengawal daripada frekuensi bass audio sistem.</value></data>
   <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>Dayakan Getaran Audio</value></data>
   <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>Kepekaan</value></data>
@@ -2766,6 +2790,8 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Tetap Semula Zon Mati Luar Condong</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Tetap Semula Orientasi Pengawal</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Stereng Gerakan</value></data>
+  <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° hingga {1}°</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Zon mati condong, Orientasi Pengawal</value></data>
   <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Tetapan untuk input Condong Gerakan: condongkan pengawal seperti roda. Petakan "Condong Gerakan" kepada paksi kayu bedik daripada senarai juntai bawah input dalam Pemetaan.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Tetap Semula Stereng Gerakan</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (Kayu Bedik Kanan)</value></data>
@@ -2774,6 +2800,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Mapping_LeftStickRing" xml:space="preserve"><value>Gelang Kayu Bedik Kiri</value></data>
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>Gelang Kayu Bedik Kanan</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
+  <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Penalaan untuk input Flick Stick</value></data>
   <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Tetapan untuk input Flick Stick: halakan kayu bedik dan kamera berpusing mengikutnya, sapu rim untuk pusingan halus. Petakan "Flick Stick (Kayu Bedik Kanan)" kepada Tetikus X daripada senarai juntai bawah input dalam Pemetaan, pada mana-mana lapisan.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Tetap Semula Flick Stick</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Titik setiap 360°</value></data>
@@ -2810,6 +2837,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Apabila lapisan yang menjadi hos Flick Stick diaktifkan dengan kayu bedik sudah terpesong, laksanakan flick serta-merta. Mati mengekalkan kamera diam dan menjejak putaran daripada sudut kayu bedik semasa.</value></data>
   <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Tetap Semula Benarkan Flick semasa Diaktifkan</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Maklum Balas Kunci Stereng</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Isyarat pada kunci penuh untuk kayu bedik dalam mod stereng</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Apabila kayu bedik yang ditetapkan kepada mod stereng diputar sepenuhnya ke kunci penuh, mainkan isyarat (getaran, pencetus atau bar cahaya) supaya anda merasai had. Semuanya mati secara lalai.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Denyut Getaran semasa Kunci</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Getaran Pencetus semasa Kunci</value></data>
@@ -2865,6 +2893,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Bunyi makro dan audio sistem yang dicerminkan dimainkan melalui pembesar suara terbina dalam pengawal yang dipilih, melalui USB atau Bluetooth. Pilih peranti dalam juntai bawah di atas. Setiap tetapan di sini mengikutinya.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Output Bunyi</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Sumber Cermin, haptik, Kelantangan Fon Kepala, Crossfeed, EQ Parametrik, Pengehad</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Bunyi dihalakan ke pengawal yang dipilih secara automatik. Melalui USB, titik akhir audio pad itu sendiri dipadankan mengikut bekas perkakasan. Melalui Bluetooth, audio distrim dalam bingkai Sony HID.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Sumber Cermin</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Peranti main balik yang mana satu hendak dicerminkan ke pembesar suara pengawal. Permainan yang menghantar bunyi tertentu ke peranti main balik berasingan boleh menyasarkan yang ini.</value></data>
@@ -2938,6 +2967,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>Fail ini bukan profil PadForge yang boleh dibaca.</value></data>
   <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Pilih bunyi daripada {0}</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Pakej Bunyi</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Fail zip bunyi untuk makro bunyi</value></data>
   <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>Pakej bunyi ialah satu fail zip bunyi dengan sambungan .pfsounds. Tambah satu di sini, kemudian pilih bunyinya dalam mana-mana makro bunyi. PadForge membaca terus daripada fail dan tidak pernah menyahmampatkannya. Simpan pakej bersebelahan PadForge.exe supaya kekal mudah alih.</value></data>
   <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>Tambah Pakej…</value></data>
   <data name="Pad_Audio_Packages_Add_Tooltip" xml:space="preserve"><value>Tambah fail .pfsounds sedia ada ke senarai.</value></data>
@@ -2963,6 +2993,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Emoji_Category_Objects" xml:space="preserve"><value>Objek</value></data>
   <data name="Emoji_Category_Symbols" xml:space="preserve"><value>Simbol</value></data>
   <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>Pakej Ikon</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Fail zip imej untuk sel menu</value></data>
   <data name="Pad_Menus_IconPackages_Desc" xml:space="preserve"><value>Pakej ikon ialah satu fail zip imej dengan sambungan .pficons. Tambah satu di sini, kemudian pilih ikonnya pada mana-mana sel menu. PadForge membaca terus daripada fail dan tidak pernah menyahmampatkannya. Simpan pakej bersebelahan PadForge.exe supaya kekal mudah alih.</value></data>
   <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>Tambah Pakej…</value></data>
   <data name="Pad_Menus_IconPackages_Add_Tooltip" xml:space="preserve"><value>Tambah fail .pficons sedia ada ke senarai.</value></data>
@@ -3345,6 +3376,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>Tukar ke lapisan {0}</value></data>
   <data name="Macro_SwitchLayer_Hint" xml:space="preserve"><value>Melompatkan slot ini ke lapisan alih yang dipilih. Lapisan kekal aktif sehingga pertukaran lain, pengaktif Latch atau Cycle, atau pertukaran profil. Base kembali ke lapisan asas. Skopkan makro ini kepada lapisan di atas supaya butang yang sama melompat secara berbeza bagi setiap lapisan.</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>LED Butang Guide</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Cahaya butang Guide atau Home</value></data>
   <data name="Pad_Lighting_GuideLed_Subtitle" xml:space="preserve"><value>Kecerahan butang Guide atau Home yang bercahaya. Pengawal Xbox One dan yang lebih baharu menerimanya melalui USB. Steam Controller 2015 menerimanya pada sebarang sambungan, dan semua Steam Controller berkongsi satu kecerahan. Switch Pro Controller dan Joy-Con kanan (bersendirian, digandingkan, atau dalam grip pengecasan) menerimanya pada sebarang sambungan.</value></data>
   <data name="Pad_Lighting_GuideLed_Mode_Tooltip" xml:space="preserve"><value>Lalai Peranti membiarkan LED tepat seperti yang ditetapkan oleh perisian tegar pengawal. Kecerahan Tetap mengekalkan tahap di bawah. Tahap Bateri menjadikan bateri yang lebih penuh lebih cerah dan tidak pernah jatuh di bawah 10%. Pengawal Xbox menerima arahan LED Guide melalui USB sahaja, jadi tetapan ini tidak memberi kesan pada sambungan Bluetooth. Pengawal Switch menerima arahan LED Home pada sebarang sambungan.</value></data>
   <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>Lalai Peranti</value></data>
@@ -3709,6 +3741,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass Shaker</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Menghalakan getaran dan maklum balas daya permainan yang diterima pengawal maya ini ke output audio sebagai nada frekuensi rendah untuk bass shaker dan subwoofer.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Getaran ke Audio</value></data>
+  <data name="Pad_More_BassShakers" xml:space="preserve"><value>Peranti output, saluran, gandaan, nada untuk setiap motor</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Berfungsi dengan pengawal maya Xbox, DualShock 3, DualShock 4 / DualSense dan Nintendo Switch Pro, serta pengawal maya Extended dengan maklum balas daya, seperti roda lumba, dan Steam Deck Controller (Composite). Maklum balas permainan dan Uji Getaran dimainkan melalui output audio. Getaran makro kekal pada pengawal.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Tetap Semula Getaran ke Audio</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Halakan Getaran ke Output Audio</value></data>
@@ -4147,6 +4180,7 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Menunggu data memori kongsi FreeTrack.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>Memori kongsi FreeTrack tidak tersedia.</value></data>
   <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Getaran Sudut Stereng</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Getaran yang meningkat apabila paksi kayu bedik menjauhi tengah</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Menambah getaran berterusan apabila paksi kayu bedik maya yang dipilih bergerak menjauhi tengah. Menggunakan output terpeta daripada semua sumber yang diumpukkan. Dengan Pisah Mengikut Arah, gerakan negatif memacu motor kiri dan gerakan positif motor kanan. Motor Kiri atau Motor Kanan meletakkan kedua-dua arah pada satu motor itu. Untuk output Xbox dan PlayStation dengan peranti getaran. Ia melangkau roda stereng, peranti lain dengan maklum balas daya malar, dan pedal Fanatec.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Dayakan Getaran Sudut Stereng</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Paksi Maya</value></data>
@@ -4465,6 +4499,7 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="Status_FalconDriverDeclined" xml:space="preserve"><value>Windows tidak memasang pemacu Force Dimension. Jika Windows bertanya sama ada mahu mempercayai Force Dimension, pilih Pasang.</value></data>
   <data name="Status_FalconDriverNotBound" xml:space="preserve"><value>Pemacu telah dipasang, tetapi Falcon belum beralih kepadanya. Cabut Falcon dan palamkan semula.</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>Sentak, goncang, sokong, daya awal, graviti</value></data>
   <data name="Pad_Falcon_Description" xml:space="preserve"><value>PadForge mengira setiap daya pada pemegang Falcon kira-kira seribu kali sesaat, berdasarkan kedudukan pemegang dan apa yang dimainkan oleh permainan. Tetapan ini milik slot ini.</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>Tetap Semula Novint Falcon</value></data>
   <data name="Pad_Falcon_Feel" xml:space="preserve"><value>Rasa</value></data>
@@ -4626,4 +4661,5 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} pada {1} semasa ditahan</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} pada {1} sehingga dihentikan</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>Henti kesan pencetus pada {0}</value></data>
+  <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Kawal Pencahayaan Peranti Ini, Pegangan Pencahayaan</value></data>
 </root>

@@ -804,6 +804,7 @@
 
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Putanga kiore</value></data>
+  <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Kōaro, torohaki, Urupare, Whakaterenga, whiu</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Tairongo kiore X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityY" xml:space="preserve"><value>Tairongo kiore Y</value></data>
   <data name="Pad_Touchpad_MouseInvertX" xml:space="preserve"><value>Kōaro kiore X</value></data>
@@ -874,7 +875,9 @@
   <data name="Pad_Gyro" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Tairongo</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Waeine, mokowā, kōaro tuaka, Real-World Calibration</value></data>
   <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>Kāpehu</value></data>
+  <data name="Pad_Compass_FoldHint" xml:space="preserve"><value>Ka pupuri i te yaw ki te raki autō</value></data>
   <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Tautuhi anō ki te taunoa (Weto)</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Pupuri</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>Toggle</value></data>
@@ -997,6 +1000,7 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Awhe iti rawa Y (Raro)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Awhe nui rawa Y (Runga)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Tuaka X</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>Tuaka e rua</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Tuaka Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Awhe</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-deadzone</value></data>
@@ -1006,6 +1010,7 @@
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Force feedback / Wiri / Haptics</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Te kaha o ia mōta, te wiri trigger, te whakawhiti mōta</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Mōta mauī</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Mōta matau</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Whakamātau wiri</value></data>
@@ -1189,6 +1194,7 @@
 
   <!-- ═══ Audio Bass Rumble ═══ -->
   <data name="Settings_AudioRumble" xml:space="preserve"><value>Wiri oro</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>He wiri mai i te bass o te oro pūnaha</value></data>
   <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>Whakahohe i te wiri oro</value></data>
   <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>Tairongo</value></data>
   <data name="Settings_AudioRumble_LeftMotor" xml:space="preserve"><value>Mōta mauī</value></data>
@@ -1225,6 +1231,7 @@
   <data name="Pad_Pointer_Mode_FpsMouse" xml:space="preserve"><value>Kiore FPS</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Oro</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Putanga oro</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Pūtake whakaata, haptics, rōrahi tīhoka taringa, Crossfeed, Parametric EQ, Limiter</value></data>
   <data name="Pad_Audio_SystemDefault" xml:space="preserve"><value>Taunoa pūnaha</value></data>
   <data name="Pad_Audio_MasterVolume" xml:space="preserve"><value>Rōrahi matua</value></data>
   <data name="Pad_Audio_Reset_MasterVolume" xml:space="preserve"><value>Tautuhi anō i te rōrahi matua</value></data>
@@ -1691,6 +1698,7 @@
   <data name="Status_InstallingFalconDriver" xml:space="preserve"><value>E tāuta ana i te taraiwa Falcon a Force Dimension…</value></data>
   <data name="Status_FalconNotPluggedIn" xml:space="preserve"><value>Kāore he Falcon kua honoa.</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>Whana, rūrū, tautoko, utaina, tō o te papa</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>Tautuhi anō i te Novint Falcon</value></data>
   <data name="Pad_Falcon_Feel_Joystick" xml:space="preserve"><value>Joystick</value></data>
   <data name="Pad_Falcon_Button1" xml:space="preserve"><value>Pātene 1</value></data>
@@ -1789,4 +1797,25 @@
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Rama me te oro</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Ngā mākoro me ngā tahua</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Ka pupuri i tētahi paku whakanekenga o te rākau kia whakaatu tonu ngā kēmu i ngā tohu controller</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>He tohu ina tae te stick urungi ki tōna mutunga</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>He wiri e kaha haere ana i te wehenga o te tuaka stick i te pokapū</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>He kaha pūmau kia whakawetohia rā anō e koe</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Ka tuku i te wiri o ngā mōta matua ki ngā trigger</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>He kaha pūmau ki ia mōta trigger</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>He wiri trigger mai i te bass o te oro pūnaha</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Ngā deadzone tītaha, te takotoranga o te controller</value></data>
+  <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Deadzone, whakamāeneene, Whakaterenga, Ānau putanga</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Pātene whakahohe whāinga, aratau whakahohe, paepae whāinga māmā</value></data>
+  <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Whakamahia te touchpad hei stick, hei D-pad rānei</value></data>
+  <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>Te wāhanga o te mata ka taea e te papa</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Ka whakahohe i ngā gesture o tēnei touchpad</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Ngā whiu, ngā pātō, ngā kōwhiti, ngā āhua</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Hopukina āu ake</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Brightness LED, tauira kaitākaro, aratau LED wahangū</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Te kanapa o te pātene Guide, Home rānei</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Ngā kōnae zip o ngā oro mō ngā macro oro</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Ngā kōnae zip o ngā atahanga mō ngā pūtau tahua</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Te kaha o ia trigger, te whakawhiti mōta, ngā wiri trigger urutau</value></data>
+  <data name="Pad_More_BassShakers" xml:space="preserve"><value>Pūrere huaputa, ngā hongere, te kaha, he oro mō ia mōta</value></data>
+  <data name="Pad_More_Stick" xml:space="preserve"><value>Ngā center offset, te āhua me ngā uara deadzone o ia tuaka, he ānau mō ia tuaka, Awhe, urungi</value></data>
 </root>

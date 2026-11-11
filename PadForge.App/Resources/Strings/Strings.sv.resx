@@ -917,6 +917,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Impulsavtryckare</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulsavtryckare</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Förstärkning per avtryckare, byte av motor, vibrationer från adaptiva avtryckare</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Vidarebefordrar motorkommandon per avtryckare (Xbox Impulse Triggers) från den virtuella handkontrollen till den tilldelade fysiska Xbox One-, Elite- eller Series-handkontrollen. Avtryckarvibration som styrs av spelet släpps igenom automatiskt. Reglagen nedan skalar styrkan per avtryckare.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Vänster avtryckare</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Höger avtryckare</value></data>
@@ -935,7 +936,9 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Återställ vänster avtryckare</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Återställ höger avtryckare</value></data>
   <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Konstant avtryckarkraft</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>En jämn kraft på varje avtryckarmotor</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Avtryckardirigering</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Skickar huvudmotorernas vibration till avtryckarna</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Dirigera de huvudsakliga vibrationsmotorerna till avtryckarkanalen, en avtryckare i taget. Fungerar med XInput-vibration och kraftåterkoppling. En aktiverare kan styra det så att avtryckaren bara surrar medan du håller ned en knapp.</value></data>
   <data name="Pad_ResetTriggerRouting" xml:space="preserve"><value>Återställ avtryckardirigering</value></data>
   <data name="Pad_TriggerRouting_LeftTrigger" xml:space="preserve"><value>Vänster avtryckare</value></data>
@@ -967,6 +970,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Återställ vänster avtryckare</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Återställ höger avtryckare</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Avtryckarvibration från ljudbas</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Avtryckarvibration från basen i systemljudet</value></data>
   <data name="Pad_AudioTriggerRumble_Description" xml:space="preserve"><value>Driv avtryckarmotorerna med basen i systemljudet. Avtryckarkraft som styrs av ett spel tar över medan den är aktiv.</value></data>
   <data name="Pad_AudioTriggerRumble_Toggle" xml:space="preserve"><value>Driv avtryckarmotorerna med ljud</value></data>
   <data name="Pad_AudioTriggerRumble_Sensitivity" xml:space="preserve"><value>Känslighet</value></data>
@@ -1028,6 +1032,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>Den här virtuella handkontrollen lyser upp enheten med samma lägen som ljusfältet på en DualSense har, inställda här för enbart den här handkontrollen. På en virtuell PlayStation-handkontroll tar ett spel som skriver till ljusfältet över, på samma sätt som på en DualSense.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Styr den här enhetens belysning</value></data>
   <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>Belysningskontroll</value></data>
+  <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Styr den här enhetens belysning, Kontroll över belysningen</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>Av hindrar den här virtuella handkontrollen från att lysa upp enheten. En tillverkarrad, eller en annan enhet av samma slag som lyses upp via samma programvara, kan fortfarande ange dess färg. Ett makro med Ange Chroma-färg på den här virtuella handkontrollen färgar fortfarande en Razer-enhet.</value></data>
   <data name="Pad_Lighting_ClaimLevel" xml:space="preserve"><value>Kontroll över belysningen</value></data>
   <data name="Pad_Lighting_ClaimLevel_Colors" xml:space="preserve"><value>Endast färger</value></data>
@@ -1084,6 +1089,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_Lighting_MicLed_FollowDevice" xml:space="preserve"><value>Följ ljudenhet</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice_Picker" xml:space="preserve"><value>Ljudenhet</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>Indikatorlampor</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>LED-ljusstyrka, Spelarmönster, Läge för mute-LED</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>Raden med spelarnummer (5 lampor under styrplattan) och LED-lampan för avstängd mikrofon ovanför mikrofonen. Ljusstyrkereglaget påverkar fysiskt bara spelarraden. Firmware har tillstånd för mikrofonens LED-lampa (Av / Fast / Puls) men inget separat register för dess ljusstyrka.</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>Återställ ljusfält</value></data>
   <data name="Pad_ResetIndicatorLeds" xml:space="preserve"><value>Återställ indikatorlampor</value></data>
@@ -1558,6 +1564,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Kalibrera centrum</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Centrumpunkt</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Dödzon</value></data>
+  <data name="Pad_More_Stick" xml:space="preserve"><value>Centrumförskjutning, dödzonens form och värden per axel, en kurva för varje axel, omfång, styrning</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Omfång</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Kalibrera ytterkant är det rekommenderade sättet att rikta upp en spak. Funktionen sveper längs den kant som spaken fysiskt kan nå och skalar sedan om varje position proportionellt mot den uppmätta kanten, så att hela den naturliga rörelsen, i varje vinkel och vid varje utslag, avbildas på en ideal cirkel utan att något klipps. De fyra reglagen nedan begränsar bara huvudaxlarna. Använd dem för att begränsa omfånget med avsikt, inte för att korrigera det.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Samplar...</value></data>
@@ -1891,6 +1898,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Styrplattans nummer</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Vilken styrplatta på den här handkontrollen som inställningarna nedan gäller. Varje styrplatta har sina egna gester, sin egen muskänsla och sitt eget pekarområde.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Gestigenkänning</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Slår på gester på den här styrplattan</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Aktivera gester på den här styrplattan</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Huvudbrytare för den här styrplattan. När den är av utlöses inga gestdeskriptorer för styrplattan. Befintliga mappningar av finger / klick / position fungerar fortfarande.</value></data>
   <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>Känn igen</value></data>
@@ -1901,6 +1909,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>Spärrtid</value></data>
   <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>När en gest har utlösts ignoreras nya gester på den här styrplattan i så här många millisekunder. Förhindrar studsutlösningar vid snabba rörelser fram och tillbaka.</value></data>
   <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>Inbyggda gester</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Svep, tryck, nyp, former</value></data>
   <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>Svep i 4 riktningar (upp / ned / vänster / höger)</value></data>
   <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>Svep i 8 riktningar (lägger till diagonaler)</value></data>
   <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>Svepavstånd (0..1)</value></data>
@@ -1926,6 +1935,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>Formgester (cirkel, kvadrat, triangel, Z, bock)</value></data>
   <data name="Pad_Touchpad_MatchThreshold" xml:space="preserve"><value>Tröskelvärde för formmatchning</value></data>
   <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>Egna gester</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Spela in egna</value></data>
   <data name="Pad_Touchpad_RecordNew" xml:space="preserve"><value>+ Spela in ny gest</value></data>
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>Inga egna gester har spelats in för den här profilen. Klicka på Spela in ny gest för att fånga en.</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 finger</value></data>
@@ -1933,6 +1943,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
 
   <!-- Stick / D-pad output card -->
   <data name="Pad_Touchpad_Stick_Header" xml:space="preserve"><value>Utdata för spak / styrkors</value></data>
+  <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Använd styrplattan som spak eller styrkors</value></data>
   <data name="Pad_Touchpad_Stick_Subtitle" xml:space="preserve"><value>Gör styrplattan till en virtuell analog spak eller ett styrkors. Utdata förankras där fingret först landar. Den aktuella positionen i förhållande till den ankarpunkten styr spakvärdet och (valfritt) låsta riktningsvärden för styrkorset.</value></data>
   <data name="Pad_Touchpad_StickEnabled" xml:space="preserve"><value>Aktivera utdata för spak / styrkors</value></data>
   <data name="Pad_Touchpad_StickEnabled_Tooltip" xml:space="preserve"><value>Gör deskriptorerna Styrplatta Spak X, Spak Y och Styrkors tillgängliga i mappningsväljaren. Fungerar vid sidan av de befintliga källorna för styrplattefinger och styrplattegest, inte i stället för dem.</value></data>
@@ -1947,6 +1958,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
 
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Musutdata</value></data>
+  <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Invertera, Tröghet, Respons, Acceleration, kast</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Justerar muspekarens hastighet när ett styrplattefinger är mappat till mus X/Y på en virtuell handkontroll av typen Tangentbord / mus. 1.0 är standard. Höj en axel för snabbare muspekare, sänk för långsammare. Invertera vänder en axel.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Muskänslighet X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Multiplikator för horisontell rörelse från styrplatta → mus. Under 1.0 gör muspekaren långsammare. Över 1.0 gör den snabbare.</value></data>
@@ -1974,6 +1986,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_Touchpad_RotateThreshold_Tooltip" xml:space="preserve"><value>Hur långt två fingrar måste vridas innan en rotation utlöses.</value></data>
   <data name="Pad_ResetTouchpadRotateThresholdDegrees" xml:space="preserve"><value>Återställ tröskelvärde för rotation</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>Absolut pekare</value></data>
+  <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>Den del av skärmen som plattan når</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Justerar källorna Styrplatta pekare X/Y, som flyttar muspekaren direkt till fingrets position på plattan (mappa dem till mus X/Y på en virtuell handkontroll av typen Tangentbord / mus). Storlek 1.00 med mitt 0.50 mappar plattan till hela skärmen. Minska storleken för att begränsa muspekaren till en del av skärmen, och flytta mitten för att placera den.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Områdets bredd</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Bredden på det skärmområde som plattan mappas till, som andel av skärmens bredd. 1.00 täcker hela bredden; 0.50 begränsar muspekaren till halva skärmen.</value></data>
@@ -1986,12 +1999,14 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
 
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Svephaptik</value></data>
+  <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>Tick medan fingret rör sig</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Pulserar handkontrollens haptik när fingret rör sig över den här styrplattan, som styrplattetickandet i Steam Input. Steam Controller-handkontroller och Steam Deck tickar med aktuatorn under plattan; DualSense och DualShock 4 pulserar med vibrationsmotorerna.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Aktivera svephaptik</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>Avger ett kort haptiskt tick varje gång fingret rör sig en viss sträcka på den här plattan. Att sätta ned ett finger eller klicka på plattan ger aldrig något tick. Av som standard.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>Pulsintensitet</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity_Tooltip" xml:space="preserve"><value>Styrkan på varje tick. Spelets vibration går alltid före när den är starkare.</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Header" xml:space="preserve"><value>Syntetiskt tryck</value></data>
+  <data name="Pad_SyntheticPressure_FoldHint" xml:space="preserve"><value>Tryck för plattor som rapporterar en beröring som full</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Subtitle" xml:space="preserve"><value>Simulerar tryckkänsliga knappar från DualShock 2 / DualShock 3 på styrplattor som rapporterar en beröring som fullt tryck (DualShock 4, DualSense, Steam Controller 2015). När det är aktiverat läser enhetens mappningskällor för tryck ingen beröring som 0 %, en vilande beröring som Trycknivå vid beröring och ett klick på plattan som 100 %.</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled" xml:space="preserve"><value>Aktivera syntetiskt tryck</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled_Tooltip" xml:space="preserve"><value>Formar enhetens mappningskällor för tryck i tre steg: ingen beröring ger 0 %, en vilande beröring ger Trycknivå vid beröring och ett klick på plattan ger 100 %. Av som standard, vilket behåller råa avläsningar på plattor med äkta analogt tryck.</value></data>
@@ -2169,7 +2184,9 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Justera hur den här handkontrollens rörelsesensor styr mus- och spakutdata. Kalibrera på en plan yta för att nollställa drift i vila, och ställ sedan in känslighet, utjämning och aktiveringsregler efter smak.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibrering</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Känslighet</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Måttenhet, Koordinatrum, invertera axlar, Verklighetskalibrering</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Responsformning</value></data>
+  <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Dödzon, utjämning, Acceleration, Utdatakurva</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Koordinatrum</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Hur gyrorörelsen tolkas. Lokalt använder handkontrollens råa axlar. Spelare projicerar horisontell rörelse på den verkliga lodlinjen (gravitationen), så att samma handledsvridning alltid vrider kameran oavsett hur du håller handkontrollen. Värld projicerar dessutom om vertikal rörelse på världsaxlarna.</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>Hålls som</value></data>
@@ -2183,11 +2200,13 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_ResetGyroInvertYaw" xml:space="preserve"><value>Återställ Invertera gir</value></data>
   <data name="Pad_ResetGyroInvertRoll" xml:space="preserve"><value>Återställ Invertera roll</value></data>
   <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>Kompass</value></data>
+  <data name="Pad_Compass_FoldHint" xml:space="preserve"><value>Håller gir mot magnetiska norr</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Den här handkontrollen har en magnetometer. Genom att förankra giren mot magnetisk nord tas långsam horisontell drift bort från gyrosiktet. Kalibrera först: tryck på Kalibrera, rotera handkontrollen genom alla riktningar i en åtta i några sekunder och tryck sedan igen.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Förankra gir mot kompass</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Lägger till en liten korrigerande hastighet som drar det horisontella siktet mot den magnetiska kursen, så att drift inte kan ackumuleras. Kräver en sparad magnetometerkalibrering. Mätvärden som störs av metall eller magneter i närheten avvisas automatiskt.</value></data>
   <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Återställ till standard (av)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Simulering av tipp och roll</value></data>
+  <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Tipp och roll beräknade från accelerometern</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>Den här handkontrollens gyro känner bara av vridning åt vänster och höger. Med simuleringen på härleder PadForge tipp och roll från accelerometern och skickar dem tillsammans med gyrots gir till mappningsraderna och den virtuella handkontrollens rörelse. En accelerometer kan inte skilja en knuff från en lutning, så om du flyttar handkontrollen i sidled eller framåt utan att vrida den tolkas det som en kort rotation.</value></data>
   <data name="Settings_GyroSimulation" xml:space="preserve"><value>Simulera tipp och roll</value></data>
   <data name="Settings_GyroSimulation_Tooltip" xml:space="preserve"><value>Fyller tipp och roll med hastigheter härledda från accelerometern. Gir förblir gyrots egen avläsning. Av som standard.</value></data>
@@ -2228,6 +2247,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Ned (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Upp (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Aktivering</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Knapp för aktivering av sikte, Aktiveringsläge, Tröskelvärde för enkelt sikte</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Valfria villkor som begränsar när gyrot är aktivt. Utslaget på höger spak och knappen för siktaktivering kan konfigureras var för sig. Gyrot är bara aktivt medan alla konfigurerade villkor är uppfyllda.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Lokalt</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Spelare</value></data>
@@ -2278,6 +2298,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Gyrotilt X</value></data>
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>Gyrotilt Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>Gyrotilt</value></data>
+  <data name="Pad_GyroTilt_FoldHint" xml:space="preserve"><value>Fullt tiltomfång, Tiltdödzon</value></data>
   <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>Envelopp för inmatningarna Gyrotilt X / Gyrotilt Y: håll en lutning så håller spaken sitt utslag, som Steams läge Joystick Deflection. Fullt utslag vid det omfång du anger här; Centrera gyro nollställer vilogreppet på nytt. Gir (att vrida handkontrollen plant) är osynlig för gravitationen och påverkar inte de här inmatningarna.</value></data>
   <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>Fullt tiltomfång</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>Antal grader lutning från vilogreppet som räknas som fullt spakutslag. Mindre = känsligare. 25° är det vanligaste värdet i Steam-konfigurationer.</value></data>
@@ -2479,6 +2500,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Minomfång Y (ned)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Maxomfång Y (upp)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X-axel</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>Båda axlarna</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y-axel</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Omfång</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-dödzon</value></data>
@@ -2489,6 +2511,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Kraftåterkoppling / vibration / haptik</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Förstärkning per motor, avtryckarvibration, byte av motor</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Total förstärkning</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Vänster motor</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Höger motor</value></data>
@@ -2500,6 +2523,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Konstant kraft</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>En jämn kraft tills du stänger av den</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Lägg en kontinuerlig kraft på den här enheten tills du slår av det. Kraft som styrs av ett spel, oavsett källa, tar över medan den är aktiv, och den konstanta kraften återupptas när spelet slutar.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Använd konstant kraft</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Dra i rutnätet för att ange riktning och styrka.</value></data>
@@ -2826,6 +2850,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
 
   <!-- ═══ Audio Bass Rumble ═══ -->
   <data name="Settings_AudioRumble" xml:space="preserve"><value>Ljudstyrd vibration</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Vibration från basen i systemljudet</value></data>
   <data name="Settings_AudioRumbleDesc" xml:space="preserve"><value>Driv handkontrollens vibration med basfrekvenserna i systemljudet.</value></data>
   <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>Aktivera ljudstyrd vibration</value></data>
   <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>Känslighet</value></data>
@@ -2936,6 +2961,8 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Återställ yttre dödzon för lutning</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Återställ handkontrollens orientering</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Rörelsestyrning</value></data>
+  <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° till {1}°</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Döda zoner för lutning, Handkontrollens orientering</value></data>
   <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Inställningar för inmatningen Rörelse lutning: luta handkontrollen som en ratt. Mappa ”Rörelse lutning” till en spakaxel från inmatningslistan i Mappningar.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Återställ rörelsestyrning</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick stick (höger spak)</value></data>
@@ -2944,6 +2971,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Mapping_LeftStickRing" xml:space="preserve"><value>Vänster spak ring</value></data>
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>Höger spak ring</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick stick</value></data>
+  <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Justering av inmatningarna Flick stick</value></data>
   <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Inställningar för inmatningarna Flick stick: peka med spaken så vrids kameran dit, svep längs kanten för att finjustera. Mappa ”Flick stick (höger spak)” till Mus X från inmatningslistan i Mappningar, på valfritt lager.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Återställ flick stick</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Punkter per 360°</value></data>
@@ -2980,6 +3008,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>När lagret som innehåller Flick stick aktiveras med spaken redan utslagen utlöses snärten direkt. Av håller kameran stilla och följer rotationen från spakens aktuella vinkel.</value></data>
   <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Återställ Tillåt snärt vid aktivering</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Återkoppling vid fullt styrutslag</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>En signal vid fullt utslag för en spak i ett styrningsläge</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>När en spak som är inställd på ett styrningsläge vrids hela vägen till fullt utslag spelas en signal upp (vibration, avtryckare eller ljusfält) så att du känner gränsen. Allt är av som standard.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Vibrationspuls vid fullt utslag</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Avtryckarvibration vid fullt utslag</value></data>
@@ -3035,6 +3064,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Ljud</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Makroljud och speglat systemljud spelas upp genom den valda handkontrollens inbyggda högtalare, via USB eller Bluetooth. Välj enheten i listan ovan. Alla inställningar här följer den.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Ljudutdata</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Speglingskälla, haptik, Hörlursvolym, Crossfeed, Parametric EQ, Begränsare</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Ljud dirigeras automatiskt till den valda handkontrollen. Via USB matchas handkontrollens egen ljudslutpunkt utifrån maskinvarubehållare. Via Bluetooth strömmas ljudet i Sonys HID-ramar.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Speglingskälla</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Vilken uppspelningsenhet som ska speglas till handkontrollens högtalare. Spel som skickar särskilda ljud till en separat uppspelningsenhet kan rikta dem hit.</value></data>
@@ -3108,6 +3138,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>Filen är inte en läsbar PadForge-profil.</value></data>
   <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Välj ett ljud från {0}</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Ljudpaket</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Zip-filer med ljud för ljudmakron</value></data>
   <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>Ett ljudpaket är en zip-fil med ljud som har filändelsen .pfsounds. Lägg till ett här och välj sedan dess ljud i valfritt ljudmakro. PadForge läser direkt från filen och packar aldrig upp den. Förvara paketen bredvid PadForge.exe så att installationen förblir portabel.</value></data>
   <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>Lägg till paket…</value></data>
   <data name="Pad_Audio_Packages_Add_Tooltip" xml:space="preserve"><value>Lägg till en befintlig .pfsounds-fil i listan.</value></data>
@@ -3133,6 +3164,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Emoji_Category_Objects" xml:space="preserve"><value>Objekt</value></data>
   <data name="Emoji_Category_Symbols" xml:space="preserve"><value>Symboler</value></data>
   <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>Ikonpaket</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Zip-filer med bilder för menyceller</value></data>
   <data name="Pad_Menus_IconPackages_Desc" xml:space="preserve"><value>Ett ikonpaket är en zip-fil med bilder som har filändelsen .pficons. Lägg till ett här och välj sedan dess ikoner på valfri menycell. PadForge läser direkt från filen och packar aldrig upp den. Förvara paketen bredvid PadForge.exe så att installationen förblir portabel.</value></data>
   <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>Lägg till paket…</value></data>
   <data name="Pad_Menus_IconPackages_Add_Tooltip" xml:space="preserve"><value>Lägg till en befintlig .pficons-fil i listan.</value></data>
@@ -3542,6 +3574,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>Byt till lager {0}</value></data>
   <data name="Macro_SwitchLayer_Hint" xml:space="preserve"><value>Flyttar den här platsen till det valda skiftlagret. Lagret förblir aktivt tills ett nytt byte, en aktiverare av typen Lås eller Bläddra, eller ett profilbyte. Bas återgår till baslagret. Begränsa makrot till ett lager ovan för att låta samma knapp hoppa olika per lager.</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>LED i Guide-knappen</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Ljuset i Guide- eller Home-knappen</value></data>
   <data name="Pad_Lighting_GuideLed_Subtitle" xml:space="preserve"><value>Ljusstyrkan för den lysande Guide- eller Home-knappen. Handkontroller från Xbox One och senare tar emot den via USB. Steam Controller från 2015 tar emot den oavsett anslutning, och alla Steam Controller-handkontroller delar en och samma ljusstyrka. Switch Pro Controller och högra Joy-Con (ensam, parkopplad eller i laddningsgreppet) tar emot den oavsett anslutning.</value></data>
   <data name="Pad_Lighting_GuideLed_Mode_Tooltip" xml:space="preserve"><value>Enhetens standard lämnar LED-lampan precis som handkontrollens firmware ställde in den. Fast ljusstyrka håller nivån nedan. Batterinivå gör ett fullare batteri ljusare och går aldrig under 10 %. Xbox-handkontroller tar bara emot kommandon för Guide-LED via USB, så den här inställningen har ingen effekt vid en Bluetooth-anslutning. Switch-handkontroller tar emot kommandon för Home-LED oavsett anslutning.</value></data>
   <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>Enhetens standard</value></data>
@@ -3906,6 +3939,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Basskakare</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Dirigerar den vibration och kraftåterkoppling från spel som den här virtuella handkontrollen tar emot till en ljudutgång som lågfrekventa toner för basskakare och subwoofrar.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibration till ljud</value></data>
+  <data name="Pad_More_BassShakers" xml:space="preserve"><value>Utdataenhet, kanaler, förstärkning, en ton för varje motor</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Fungerar med virtuella handkontroller av typen Xbox, DualShock 3, DualShock 4 / DualSense och Nintendo Switch Pro, samt Utökade virtuella handkontroller med kraftåterkoppling, till exempel racingrattar, och Steam Deck Controller (Composite). Spelets återkoppling och Testa vibration spelas upp via ljudutgången. Makrovibration stannar kvar på handkontrollen.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Återställ Vibration till ljud</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Dirigera vibration till en ljudutgång</value></data>
@@ -4352,6 +4386,7 @@ Vill du att PadForge avinstallerar dem nu? Detta kräver förhöjd behörighet o
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Väntar på data från det delade FreeTrack-minnet.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>Det delade FreeTrack-minnet är inte tillgängligt.</value></data>
   <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Vibration efter styrvinkel</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Vibration som ökar när en spakaxel lämnar mitten</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Lägger till kontinuerlig vibration när den valda virtuella spakaxeln rör sig bort från mitten. Använder den mappade utdatan från alla tilldelade källor. Med Dela efter riktning driver negativ rörelse vänster motor och positiv rörelse höger. Vänster motor eller Höger motor lägger båda riktningarna på just den motorn. För Xbox- och PlayStation-utdata med vibrationsenheter. Den hoppar över ratter, andra enheter med konstant kraftåterkoppling och Fanatec-pedaler.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Aktivera vibration efter styrvinkel</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Virtuell axel</value></data>
@@ -4706,6 +4741,7 @@ Vill du att PadForge avinstallerar dem nu? Detta kräver förhöjd behörighet o
   <data name="Status_FalconDriverDeclined" xml:space="preserve"><value>Windows installerade inte Force Dimensions drivrutin. Om Windows frågar om du litar på Force Dimension, välj Installera.</value></data>
   <data name="Status_FalconDriverNotBound" xml:space="preserve"><value>Drivrutinen är installerad, men Falcon har inte flyttat över till den. Koppla ur Falcon och anslut den igen.</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>Rekyl, skak, stöd, förspänning, tyngdkraft</value></data>
   <data name="Pad_Falcon_Description" xml:space="preserve"><value>PadForge räknar ut varje kraft på Falcons handtag ungefär tusen gånger i sekunden, utifrån var handtaget är och vad spelet spelar. Inställningarna gäller den här platsen.</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>Återställ Novint Falcon</value></data>
   <data name="Pad_Falcon_Feel" xml:space="preserve"><value>Känsla</value></data>

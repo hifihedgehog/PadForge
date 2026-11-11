@@ -4918,9 +4918,11 @@ namespace PadForge.Services
                 PadForge.Common.Input.Peripherals.KeyboardProfileBackups.Persisted(_profileBackupsBuilt);
 
                 IsDirty = false;
+                _onlyViewStateIsDirty = false;
                 System.Threading.Interlocked.Increment(ref _saveCount);
                 _mainVm.Settings.HasUnsavedChanges = false;
-                _mainVm.StatusText = string.Format(Strings.Instance.Status_SettingsSaved_Format, Path.GetFileName(filePath));
+                if (_announceSave)
+                    _mainVm.StatusText = string.Format(Strings.Instance.Status_SettingsSaved_Format, Path.GetFileName(filePath));
                 return true;
             }
             catch (Exception ex)
@@ -6461,12 +6463,41 @@ namespace PadForge.Services
         /// autosave dead for the whole session (audit F8). The dirty flags
         /// are set immediately; the timer work marshals to the UI dispatcher.
         /// </summary>
-        public void MarkDirty()
+        public void MarkDirty() => MarkDirtyCore(viewState: false);
+
+        /// <summary>True while everything waiting to be saved is interface
+        /// state: which cards are open.</summary>
+        private volatile bool _onlyViewStateIsDirty;
+
+        /// <summary>Whether the next autosave would be one of interface
+        /// state alone, and so a quiet one.</summary>
+        internal bool OnlyViewStateIsDirty => _onlyViewStateIsDirty;
+
+        /// <summary>False while the autosave writes interface state alone,
+        /// so that save raises no message.</summary>
+        private bool _announceSave = true;
+
+        /// <summary>
+        /// Marks interface state changed: a card opened further or folded
+        /// back (#574). It is saved like any change, on the same timer, and
+        /// the autosave that writes nothing else raises no saved message.
+        /// Every card a user opened used to put "Settings saved to
+        /// PadForge.xml." on the message line two seconds later (seen
+        /// 2026-11-11), which reads as if a setting had changed. A setting
+        /// that changes before that save makes it an ordinary one, message
+        /// and all.
+        /// </summary>
+        public void MarkViewStateDirty() => MarkDirtyCore(viewState: true);
+
+        private void MarkDirtyCore(bool viewState)
         {
             // A reload that only mirrors stored state marks nothing.
             if (System.Threading.Volatile.Read(ref _mirrorDepth) > 0
                 && Environment.CurrentManagedThreadId == System.Threading.Volatile.Read(ref _mirrorThread))
                 return;
+            // Quiet only while nothing but interface state waits: this mark
+            // is one, and so was whatever was already waiting.
+            _onlyViewStateIsDirty = viewState && (!IsDirty || _onlyViewStateIsDirty);
             InvalidateAssignmentSnapshot();
             IsDirty = true;
 
@@ -6542,8 +6573,12 @@ namespace PadForge.Services
                     _autoSaveTimer.Stop();
                     if (IsDirty)
                     {
-                        // Tier 2: the full persist.
-                        Save();
+                        // Tier 2: the full persist. It says so on the
+                        // message line unless all it writes is which cards
+                        // are open.
+                        _announceSave = !_onlyViewStateIsDirty;
+                        try { Save(); }
+                        finally { _announceSave = true; }
                         AutoSaved?.Invoke(this, EventArgs.Empty);
                     }
                 };

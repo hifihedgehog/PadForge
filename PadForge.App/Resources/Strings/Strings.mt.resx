@@ -860,6 +860,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Impulse Triggers</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulse Triggers</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Gain għal kull trigger, tibdil tal-muturi, vibrazzjonijiet tat-triggers adattivi</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Jgħaddi l-kmandi tal-mutur għal kull trigger (Xbox Impulse Triggers) mill-kontrollur virtwali għall-kontrollur fiżiku Xbox One, Elite jew Series assenjat. Ir-rumble tat-triggers li tibgħat il-logħba jgħaddi awtomatikament. Il-kontrolli hawn taħt jiskalaw l-intensità għal kull trigger.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Trigger tax-xellug</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Trigger tal-lemin</value></data>
@@ -878,7 +879,9 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Irrisettja t-trigger tax-xellug</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Irrisettja t-trigger tal-lemin</value></data>
   <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Forza kostanti fit-triggers</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Forza kostanti fuq kull mutur tat-trigger</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Rotta tat-triggers</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Ibgħat ir-rumble tal-muturi ewlenin lit-triggers</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Ibgħat il-muturi ewlenin tar-rumble fil-kanal tat-trigger, trigger wieħed kull darba. Jaħdem mar-rumble XInput u mal-force feedback. Attivatur jista' jikkontrollah biex it-trigger jivvibra biss waqt li żżomm buttuna.</value></data>
   <data name="Pad_ResetTriggerRouting" xml:space="preserve"><value>Irrisettja r-rotta tat-triggers</value></data>
   <data name="Pad_TriggerRouting_LeftTrigger" xml:space="preserve"><value>Trigger tax-xellug</value></data>
@@ -910,6 +913,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Irrisettja t-trigger tax-xellug</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Irrisettja t-trigger tal-lemin</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Rumble tat-triggers mill-bass tal-awdjo</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Rumble tat-triggers mill-bass tal-awdjo tas-sistema</value></data>
   <data name="Pad_AudioTriggerRumble_Description" xml:space="preserve"><value>Ħaddem il-muturi tat-triggers mill-bass tal-awdjo tas-sistema. Il-forza tat-triggers li tibgħat il-logħba għandha l-prijorità waqt li tkun attiva.</value></data>
   <data name="Pad_AudioTriggerRumble_Toggle" xml:space="preserve"><value>Ħaddem il-muturi tat-triggers mill-awdjo</value></data>
   <data name="Pad_AudioTriggerRumble_Sensitivity" xml:space="preserve"><value>Sensittività</value></data>
@@ -1007,6 +1011,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice" xml:space="preserve"><value>Segwi l-apparat tal-awdjo</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice_Picker" xml:space="preserve"><value>Apparat tal-awdjo</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>LEDs indikaturi</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Luminożità tal-LED, Disinn tal-plejer, modalità tal-LED tal-mute</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>Ringiela tan-numru tal-plejer (5 LEDs taħt it-touchpad) u l-LED tal-mute fuq il-mikrofonu. Il-kontroll tal-luminożità fiżikament jaffettwa biss ir-ringiela tal-plejer. Il-firmware jesponi stati tal-LED tal-mute (Mitfi / Fiss / Pulsazzjoni) iżda l-ebda reġistru separat għal-luminożità tal-mute.</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>Irrisettja l-lightbar</value></data>
   <data name="Pad_ResetIndicatorLeds" xml:space="preserve"><value>Irrisettja l-LEDs indikaturi</value></data>
@@ -1393,6 +1398,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Ikkalibra ċ-ċentru</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Punt taċ-ċentru</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Żona mejta</value></data>
+  <data name="Pad_More_Stick" xml:space="preserve"><value>Offsets taċ-ċentru, forma taż-żona mejta u valuri għal kull assi, kurva għal kull assi, firxa, sewqan</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Firxa</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Ikkalibra l-konfini huwa l-mod rakkomandat biex tallinja stick. Jiskennja t-tarf li l-istick jista' jilħaq fiżikament, imbagħad jerġa' jiskala kull pożizzjoni b'mod proporzjonali skont dak it-tarf imkejjel, biex il-moviment nattiv kollu, f'kull angolu u f'kull devjazzjoni, jiġi mmappjat fuq ċirku ideali mingħajr xejn maqtugħ. L-erba' sliders hawn taħt jillimitaw biss l-assi kardinali. Użahom biex tillimita l-firxa apposta, mhux biex tikkoreġiha.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Qed jieħu kampjuni...</value></data>
@@ -1726,6 +1732,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Numru tat-touchpad</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Liema touchpad ta' dan il-kontrollur japplikaw għalih is-settings ta' hawn taħt. Kull touchpad iżomm il-ġesti tiegħu, is-sens tal-maws u r-reġjun tal-indikatur.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Rikonoxximent tal-ġesti</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Jixgħel il-ġesti ta' dan it-touchpad</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Attiva l-ġesti fuq dan it-touchpad</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Swiċċ ewlieni għal dan it-touchpad. Meta jkun mitfi, l-ebda deskrittur ta' ġest ma jiskatta għal dan it-touchpad. Il-mappjar eżistenti ta' saba' / klikk / pożizzjoni jibqa' jaħdem.</value></data>
   <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>Agħraf</value></data>
@@ -1736,6 +1743,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>Waqfa</value></data>
   <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>Wara li jiskatta ġest, injora ġesti ġodda fuq dan it-touchpad għal dawn il-millisekondi. Jevita skattar doppju minn moviment mgħaġġel 'l hawn u 'l hemm.</value></data>
   <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>Ġesti integrati</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Swipes, tapijiet, pinches, forom</value></data>
   <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>Swipe f'4 direzzjonijiet (fuq / isfel / xellug / lemin)</value></data>
   <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>Swipe fi 8 direzzjonijiet (iżżid id-dijagonali)</value></data>
   <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>Distanza tas-swipe (0..1)</value></data>
@@ -1761,6 +1769,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>Ġesti ta' forom (ċirku, kwadru, trijangolu, Z, marka ta' verifika)</value></data>
   <data name="Pad_Touchpad_MatchThreshold" xml:space="preserve"><value>Limitu tat-tqabbil tal-forma</value></data>
   <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>Ġesti personalizzati</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Irreġistra tiegħek</value></data>
   <data name="Pad_Touchpad_RecordNew" xml:space="preserve"><value>+ Irreġistra ġest ġdid</value></data>
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>L-ebda ġest personalizzat ma ġie rreġistrat għal dan il-profil. Ikklikkja Irreġistra ġest ġdid biex taqbad wieħed.</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>saba' wieħed</value></data>
@@ -1768,6 +1777,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
 
   <!-- Stick / D-pad output card -->
   <data name="Pad_Touchpad_Stick_Header" xml:space="preserve"><value>Output ta' stick / D-pad</value></data>
+  <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Uża t-touchpad bħala stick jew D-pad</value></data>
   <data name="Pad_Touchpad_Stick_Subtitle" xml:space="preserve"><value>Ibdel it-touchpad fi stick analogu jew D-pad virtwali. L-output jankra fejn jinżel subgħajk l-ewwel darba. Il-pożizzjoni attwali meta mqabbla ma' dak l-ankra tmexxi l-valur tal-istick u (jekk trid) direzzjonijiet tad-D-pad miżmuma bħala valuri booleani.</value></data>
   <data name="Pad_Touchpad_StickEnabled" xml:space="preserve"><value>Attiva l-output ta' stick / D-pad</value></data>
   <data name="Pad_Touchpad_StickEnabled_Tooltip" xml:space="preserve"><value>Iżżid id-deskritturi Stick X, Stick Y u D-pad tat-touchpad fil-lista tal-mappjar. Jaħdmu flimkien mas-sorsi eżistenti tas-swaba' u tal-ġesti tat-touchpad, mhux minflokhom.</value></data>
@@ -1782,6 +1792,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
 
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Output tal-maws</value></data>
+  <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Ibdel id-direzzjoni, Momentum, Rispons, Aċċelerazzjoni, tfigħ</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Jaġġusta l-veloċità tal-kursur meta saba' tat-touchpad ikun immappjat fuq X/Y tal-maws f'kontrollur virtwali Tastiera / Maws. 1.0 huwa d-default. Għolli kwalunkwe assi għal kursur aktar mgħaġġel, baxxih għal kursur aktar bil-mod. L-għażliet ta' bdil tad-direzzjoni jaqilbu kull assi.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Sensittività tal-maws X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Multiplikatur fuq id-delta orizzontali touchpad → maws. Taħt 1.0 jnaqqas il-veloċità tal-kursur. Fuq 1.0 iżidha.</value></data>
@@ -1809,6 +1820,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_Touchpad_RotateThreshold_Tooltip" xml:space="preserve"><value>Kemm iridu jduru żewġ swaba' qabel ma jiskatta dawran.</value></data>
   <data name="Pad_ResetTouchpadRotateThresholdDegrees" xml:space="preserve"><value>Irrisettja l-limitu tad-dawran</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>Indikatur assolut</value></data>
+  <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>Il-parti tal-iskrin li jilħaq il-pad</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Jaġġusta s-sorsi Indikatur X/Y tat-touchpad, li jġibu l-kursur fil-pożizzjoni ta' subgħajk fuq it-touchpad (immappjahom fuq X/Y tal-maws f'kontrollur virtwali Tastiera / Maws). Daqs 1.00 b'ċentru 0.50 jimmappja t-touchpad fuq l-iskrin kollu. Naqqas id-daqs biex iżżomm il-kursur f'parti mill-iskrin, u ċaqlaq iċ-ċentru biex tpoġġiha.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Wisa' tar-reġjun</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Il-wisa' taż-żona tal-iskrin li fuqha jimmappja dan it-touchpad, bħala frazzjoni tal-wisa' tal-iskrin. 1.00 ikopri l-wisa' kollha; 0.50 iżomm il-kursur f'nofs l-iskrin.</value></data>
@@ -1821,12 +1833,14 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
 
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Haptics tas-swipe</value></data>
+  <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>Ticks hekk kif subgħajk jimxi</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Jibgħat impulsi bil-haptics tal-kontrollur hekk kif subgħajk jimxi fuq dan it-touchpad, bħat-ticks tat-trackpad ta' Steam Input. Steam Controller u Steam Deck iħabbtu l-attwatur taħt it-touchpad; DualSense u DualShock 4 jibagħtu impulsi lill-muturi tar-rumble.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Attiva l-haptics tas-swipe</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>Jagħti tick haptic qasir kull darba li s-saba' jimxi distanza stabbilita fuq dan it-touchpad. Meta tpoġġi saba' jew tikklikkja t-touchpad qatt ma jagħti tick. Mitfi b'mod default.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>Intensità tal-impuls</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity_Tooltip" xml:space="preserve"><value>Il-qawwa ta' kull tick. Ir-rumble tal-logħba dejjem jieħu preċedenza meta jkun aktar qawwi.</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Header" xml:space="preserve"><value>Pressjoni sintetika</value></data>
+  <data name="Pad_SyntheticPressure_FoldHint" xml:space="preserve"><value>Pressjoni għal pads li jirrappurtaw mess bħala sħiħ</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Subtitle" xml:space="preserve"><value>Jissimula l-buttuni tal-pressjoni ta' DualShock 2 / DualShock 3 fuq touchpads li jirrappurtaw mess bħala pressjoni sħiħa (DualShock 4, DualSense, Steam Controller 2015). Waqt li jkun attivat, is-sorsi ta' mappjar Pressjoni ta' dan l-apparat jaqraw l-ebda mess bħala 0%, mess mistrieħ bħala l-Livell tal-pressjoni tal-mess, u klikk tat-touchpad bħala 100%.</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled" xml:space="preserve"><value>Attiva l-pressjoni sintetika</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled_Tooltip" xml:space="preserve"><value>Jifforma s-sorsi ta' mappjar Pressjoni ta' dan l-apparat fi tliet livelli: l-ebda mess jaqra 0%, mess mistrieħ jaqra l-Livell tal-pressjoni tal-mess, u klikk tat-touchpad jaqra 100%. Mitfi b'mod default, u hekk jinżamm il-qari mhux ipproċessat fuq touchpads bi pressjoni analoga vera.</value></data>
@@ -2004,7 +2018,9 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Aġġusta kif is-sensur tal-moviment ta' dan il-kontrollur imexxi l-output tal-maws u tal-istick. Ikkalibra fuq wiċċ ċatt biex tneħħi d-drift fil-mistrieħ, imbagħad aġġusta s-sensittività, it-twittija u r-regoli tal-attivazzjoni kif tixtieq.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibrazzjoni</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensittività</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Unitajiet, Spazju, id-direzzjoni tal-assi, Kalibrazzjoni tad-dinja reali</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Iffurmar tar-rispons</value></data>
+  <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Żona mejta, twittija, Aċċelerazzjoni, Kurva tal-output</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Spazju</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Kif jiġi interpretat il-moviment tal-ġiroskopju. Lokali juża l-assi mhux ipproċessati tal-kontrollur. Plejer jipproġetta l-moviment orizzontali fuq il-vertikali tad-dinja reali (il-gravità), biex l-istess dawra tal-polz dejjem iddawwar il-kamera, ikun kif ikun iżżomm il-kontrollur. Dinja jipproġetta wkoll il-moviment vertikali fuq l-assi tad-dinja.</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>Miżmum bħala</value></data>
@@ -2018,11 +2034,13 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_ResetGyroInvertYaw" xml:space="preserve"><value>Irrisettja l-bdil tad-direzzjoni tal-yaw</value></data>
   <data name="Pad_ResetGyroInvertRoll" xml:space="preserve"><value>Irrisettja l-bdil tad-direzzjoni tar-roll</value></data>
   <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>Boxxla</value></data>
+  <data name="Pad_Compass_FoldHint" xml:space="preserve"><value>Iżomm il-yaw mat-tramuntana manjetika</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Dan il-kontrollur għandu manjetometru. L-ankrar tal-yaw mat-tramuntana manjetika jneħħi d-drift orizzontali bil-mod mill-immirar bil-ġiroskopju. Ikkalibra l-ewwel: agħfas Ikkalibra, dawwar il-kontrollur fl-orjentazzjonijiet kollha f'forma ta' 8 għal ftit sekondi, imbagħad agħfas mill-ġdid.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Ankra l-yaw mal-boxxla</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Iżżid rata korrettiva żgħira li tiġbed l-immirar orizzontali lejn id-direzzjoni manjetika, biex id-drift ma jakkumulax. Teħtieġ kalibrazzjoni tal-manjetometru maħżuna. Kampjuni disturbati minn metall jew kalamiti fil-qrib jiġu miċħuda awtomatikament.</value></data>
   <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Irrisettja għad-default (mitfi)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Simulazzjoni tal-pitch u r-roll</value></data>
+  <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Pitch u roll miksuba mill-aċċelerometru</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>Il-ġiroskopju ta' dan il-kontrollur iħoss biss id-dawran lejn ix-xellug u l-lemin. Bis-simulazzjoni mixgħula, PadForge joħroġ il-pitch u r-roll mill-aċċelerometru u jibgħathom flimkien mal-yaw tal-ġiroskopju lir-ringieli tal-mappjar u lill-moviment tal-kontrollur virtwali. Aċċelerometru ma jistax jiddistingwi bejn imbuttatura u inklinazzjoni, għalhekk meta tċaqlaq il-kontrollur lateralment jew 'il quddiem mingħajr ma ddawru, jinqara bħala rotazzjoni qasira.</value></data>
   <data name="Settings_GyroSimulation" xml:space="preserve"><value>Issimula l-pitch u r-roll</value></data>
   <data name="Settings_GyroSimulation_Tooltip" xml:space="preserve"><value>Jimla l-pitch u r-roll b'rati derivati mill-aċċelerometru. Il-yaw jibqa' l-qari tal-ġiroskopju stess. Mitfi b'mod default.</value></data>
@@ -2063,6 +2081,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Isfel (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Fuq (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Attivazzjoni</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Buttuna tal-attivazzjoni, modalità tal-attivazzjoni, Limitu tal-immirar faċli</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Kundizzjonijiet mhux obbligatorji li jillimitaw meta l-ġiroskopju jkun attiv. Id-devjazzjoni tal-istick tal-lemin u l-buttuna tal-attivazzjoni tal-immirar jistgħu jiġu kkonfigurati kull waħda għaliha. Il-ġiroskopju jaħdem biss waqt li kull kundizzjoni kkonfigurata tkun attiva.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Lokali</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Plejer</value></data>
@@ -2113,6 +2132,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Inklinazzjoni tal-ġiroskopju X</value></data>
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>Inklinazzjoni tal-ġiroskopju Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>Inklinazzjoni tal-ġiroskopju</value></data>
+  <data name="Pad_GyroTilt_FoldHint" xml:space="preserve"><value>Firxa tal-inklinazzjoni sħiħa, Żona mejta tal-inklinazzjoni</value></data>
   <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>Firxa għall-inputs Inklinazzjoni tal-ġiroskopju X / Inklinazzjoni tal-ġiroskopju Y: żomm inklinazzjoni u l-istick iżomm id-devjazzjoni tiegħu, bħall-modalità Joystick Deflection ta' Steam. Devjazzjoni sħiħa fil-firxa li tissettja hawn; ir-riċentrar tal-ġiroskopju jerġa' jpoġġi ż-żero fiż-żamma fil-mistrieħ. Il-yaw (meta ddawwar il-kontrollur ċatt) ma jidhirx għall-gravità u ma jċaqlaqx dawn l-inputs.</value></data>
   <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>Firxa tal-inklinazzjoni sħiħa</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>Gradi ta' inklinazzjoni miż-żamma fil-mistrieħ li jitqiesu devjazzjoni sħiħa tal-istick. Iżgħar = aktar sensittiv. 25° huwa l-aktar valur komuni fil-konfigurazzjonijiet ta' Steam.</value></data>
@@ -2290,6 +2310,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Firxa minima Y (isfel)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Firxa massima Y (fuq)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Assi X</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>Iż-żewġ assi</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Assi Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Firxa</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-żona mejta</value></data>
@@ -2300,6 +2321,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Force feedback / rumble / haptics</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Gain għal kull mutur, rumble tat-triggers, tibdil tal-muturi</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Qawwa ġenerali</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Mutur tax-xellug</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Mutur tal-lemin</value></data>
@@ -2311,6 +2333,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Forza kostanti</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Forza kostanti sakemm titfiha</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Applika forza kontinwa fuq dan l-apparat sakemm titfiha. Il-forza mil-logħba, minn kwalunkwe sors, tieħu postha waqt li tkun attiva, u din terġa' tibda meta l-logħba tieqaf.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Applika forza kostanti</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Kaxkar ġewwa l-grilja biex tagħżel id-direzzjoni u l-qawwa.</value></data>
@@ -2600,6 +2623,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
 
   <!-- ═══ Audio Bass Rumble ═══ -->
   <data name="Settings_AudioRumble" xml:space="preserve"><value>Rumble mill-awdjo</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Rumble mill-bass tal-awdjo tas-sistema</value></data>
   <data name="Settings_AudioRumbleDesc" xml:space="preserve"><value>Ħaddem ir-rumble tal-kontrollur mill-frekwenzi tal-bass tal-awdjo tas-sistema.</value></data>
   <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>Attiva r-rumble mill-awdjo</value></data>
   <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>Sensittività</value></data>
@@ -2710,6 +2734,8 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Irrisettja ż-żona mejta esterna tal-inklinazzjoni</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Irrisettja l-orjentazzjoni tal-kontrollur</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Sewqan bil-moviment</value></data>
+  <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° sa {1}°</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Żoni mejta tal-inklinazzjoni, Orjentazzjoni tal-kontrollur</value></data>
   <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Settings għall-input Inklinazzjoni bil-moviment: inklina l-kontrollur bħal rota tas-sewqan. Immappja “Inklinazzjoni bil-moviment” fuq assi ta' stick mil-lista tal-input fil-Mappjar.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Irrisettja s-sewqan bil-moviment</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick stick (stick tal-lemin)</value></data>
@@ -2718,6 +2744,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Mapping_LeftStickRing" xml:space="preserve"><value>Ċirku tal-istick tax-xellug</value></data>
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>Ċirku tal-istick tal-lemin</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick stick</value></data>
+  <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Settings għall-inputs tal-flick stick</value></data>
   <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Settings għall-inputs tal-flick stick: ipponta l-istick u l-kamera ddur biex taqbel, iġbed tul it-tarf biex iddawwar b'mod fin. Immappja “Flick stick (stick tal-lemin)” fuq Maws X mil-lista tal-input fil-Mappjar, fi kwalunkwe saff.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Irrisettja l-flick stick</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Punti għal kull 360°</value></data>
@@ -2754,6 +2781,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Meta s-saff li fih hemm il-flick stick jattiva bl-istick diġà mbiegħed miċ-ċentru, il-flick isir minnufih. Mitfi jżomm il-kamera wieqfa u jsegwi r-rotazzjoni mill-angolu attwali tal-istick.</value></data>
   <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Irrisettja Ippermetti flick mal-attivazzjoni</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Feedback fil-limitu tas-sewqan</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Sinjal fil-limitu sħiħ għal stick f'modalità tas-sewqan</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Meta stick issettjat għal modalità tas-sewqan jiddawwar sal-limitu sħiħ, agħti sinjal (rumble, trigger jew lightbar) biex tħoss il-limitu. Kollha mitfija b'default.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Polz ta' rumble fil-limitu</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Vibrazzjoni tat-trigger fil-limitu</value></data>
@@ -2809,6 +2837,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Awdjo</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Il-ħsejjes tal-makro u l-awdjo tas-sistema kkopjat jindaqqu mill-ispeaker integrat tal-kontrollur magħżul, permezz ta' USB jew Bluetooth. Agħżel l-apparat fil-lista ta' hawn fuq. Kull setting hawn isegwih.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Ħruġ tal-ħoss</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Sors tal-kopja, haptics, Volum tal-headphones, Crossfeed, Parametric EQ, Limiter</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Il-ħsejjes jintbagħtu lill-kontrollur magħżul awtomatikament. Permezz ta' USB, l-endpoint tal-awdjo tal-pad stess jiġi identifikat mill-container tal-ħardwer. Permezz ta' Bluetooth, l-awdjo jiġi streamjat fi frames HID ta' Sony.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Sors tal-kopja</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Liema apparat tad-daqq jiġi kkopjat fl-ispeaker tal-kontrollur. Logħob li jibgħat ħsejjes speċifiċi lil apparat tad-daqq separat jista' juża dan.</value></data>
@@ -2882,6 +2911,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>Il-fajl mhuwiex profil ta' PadForge li jista' jinqara.</value></data>
   <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Agħżel ħoss minn {0}</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Pakketti tal-ħoss</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Fajls zip ta' ħsejjes għal makros tal-ħoss</value></data>
   <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>Pakkett tal-ħoss huwa fajl zip wieħed ta' ħsejjes bl-estensjoni .pfsounds. Żid wieħed hawn, imbagħad agħżel il-ħsejjes tiegħu fi kwalunkwe makro tal-ħoss. PadForge jaqra direttament mill-fajl u qatt ma jestrattah. Żomm il-pakketti ħdejn PadForge.exe biex jibqgħu portabbli.</value></data>
   <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>Żid pakkett…</value></data>
   <data name="Pad_Audio_Packages_Add_Tooltip" xml:space="preserve"><value>Żid fajl .pfsounds eżistenti mal-lista.</value></data>
@@ -2907,6 +2937,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Emoji_Category_Objects" xml:space="preserve"><value>Oġġetti</value></data>
   <data name="Emoji_Category_Symbols" xml:space="preserve"><value>Simboli</value></data>
   <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>Pakketti tal-ikoni</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Fajls zip ta' immaġnijiet għaċ-ċelloli tal-menu</value></data>
   <data name="Pad_Menus_IconPackages_Desc" xml:space="preserve"><value>Pakkett tal-ikoni huwa fajl zip wieħed ta' immaġnijiet bl-estensjoni .pficons. Żid wieħed hawn, imbagħad agħżel l-ikoni tiegħu fi kwalunkwe ċellola tal-menu. PadForge jaqra direttament mill-fajl u qatt ma jestrattah. Żomm il-pakketti ħdejn PadForge.exe biex jibqgħu portabbli.</value></data>
   <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>Żid pakkett…</value></data>
   <data name="Pad_Menus_IconPackages_Add_Tooltip" xml:space="preserve"><value>Żid fajl .pficons eżistenti mal-lista.</value></data>
@@ -3289,6 +3320,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>Aqleb għas-saff {0}</value></data>
   <data name="Macro_SwitchLayer_Hint" xml:space="preserve"><value>Jaqbeż dan is-slot għas-saff tax-shift magħżul. Is-saff jibqa' attiv sal-qlib li jmiss, attivatur Latch jew Cycle, jew bidla tal-profil. Base jerġa' lura għas-saff bażi. Illimita din il-makro għal saff ta' hawn fuq biex l-istess buttuna taqbeż b'mod differenti f'kull saff.</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>LED tal-buttuna Guide</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Id-dija tal-buttuna Guide jew Home</value></data>
   <data name="Pad_Lighting_GuideLed_Subtitle" xml:space="preserve"><value>Il-luminożità tal-buttuna Guide jew Home li tixgħel. Il-kontrolluri Xbox One u aktar ġodda jaċċettawha permezz ta' USB. Is-Steam Controller tal-2015 jaċċettaha fuq kwalunkwe konnessjoni, u l-Steam Controllers kollha jaqsmu luminożità waħda. Is-Switch Pro Controllers u l-Joy-Cons tal-lemin (waħedhom, f'par, jew fil-charging grip) jaċċettawha fuq kwalunkwe konnessjoni.</value></data>
   <data name="Pad_Lighting_GuideLed_Mode_Tooltip" xml:space="preserve"><value>Default tal-apparat iħalli l-LED eżattament kif issettjah il-firmware tal-kontrollur. Luminożità fissa żżomm il-livell ta' hawn taħt. Livell tal-batterija jagħmel il-LED aktar qawwi meta l-batterija tkun aktar mimlija u qatt ma jinżel taħt l-10%. Il-kontrolluri Xbox jaċċettaw kmandi tal-LED tal-Guide permezz ta' USB biss, għalhekk dan l-issettjar ma għandu l-ebda effett fuq konnessjoni Bluetooth. Il-kontrolluri Switch jaċċettaw kmandi tal-LED tal-Home fuq kwalunkwe konnessjoni.</value></data>
   <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>Default tal-apparat</value></data>
@@ -3650,6 +3682,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shakers</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Jibgħat ir-rumble u l-force feedback tal-logħba li jirċievi dan il-kontrollur virtwali lejn output tal-awdjo bħala toni ta' frekwenza baxxa għal bass shakers u subwoofers.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Rumble għall-awdjo</value></data>
+  <data name="Pad_More_BassShakers" xml:space="preserve"><value>Apparat tal-output, kanali, gain, ton għal kull mutur</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Jaħdem mal-kontrolluri virtwali Xbox, DualShock 3, DualShock 4 / DualSense u Nintendo Switch Pro, kif ukoll mal-kontrolluri virtwali Extended b'force feedback, bħal roti tas-sewqan, u mas-Steam Deck Controller (Composite). Il-feedback tal-logħba u Test Rumble jindaqqu permezz tal-output tal-awdjo. Ir-rumble tal-makros jibqa' fuq il-kontrollur.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Irrisettja Rumble għall-awdjo</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Ibgħat ir-rumble lejn output tal-awdjo</value></data>
@@ -4082,6 +4115,7 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Qed jistenna d-data tal-memorja kondiviża ta' FreeTrack.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>Il-memorja kondiviża ta' FreeTrack mhix disponibbli.</value></data>
   <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Rumble tal-angolu tat-tmun</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Rumble li jikber hekk kif assi tal-istick jitbiegħed miċ-ċentru</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Iżid rumble kontinwu hekk kif l-assi virtwali magħżul tal-istick jitbiegħed miċ-ċentru. Juża l-output immappjat mis-sorsi assenjati kollha. Bl-għażla “Maqsum skont id-direzzjoni”, il-moviment negattiv iħaddem il-mutur tax-xellug u l-moviment pożittiv dak tal-lemin. “Mutur tax-xellug” jew “Mutur tal-lemin” ipoġġi ż-żewġ direzzjonijiet fuq dak il-mutur waħdu. Għall-output Xbox u PlayStation b'apparati tar-rumble. Jaqbeż ir-roti tas-sewqan, apparati oħra b'force feedback kostanti, u l-pedali Fanatec.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Ixgħel ir-rumble tal-angolu tat-tmun</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Assi virtwali</value></data>
@@ -4400,6 +4434,7 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="Status_FalconDriverDeclined" xml:space="preserve"><value>Windows ma installax id-driver ta' Force Dimension. Jekk Windows jistaqsik jekk tafdax lil Force Dimension, agħżel Installa.</value></data>
   <data name="Status_FalconDriverNotBound" xml:space="preserve"><value>Id-driver huwa installat, iżda l-Falcon għadu ma qalibx għalih. Aqla' l-Falcon u erġa' qabbdu.</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>Daqqa, tħezziż, istabbilizzar, preload, gravità</value></data>
   <data name="Pad_Falcon_Description" xml:space="preserve"><value>PadForge jikkalkula kull forza fuq il-maqbad tal-Falcon madwar elf darba fis-sekonda, skont fejn ikun il-maqbad u x'qed tagħmel il-logħba. Dawn is-settings huma ta' dan is-slot.</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>Irrisettja n-Novint Falcon</value></data>
   <data name="Pad_Falcon_Feel" xml:space="preserve"><value>Sensazzjoni</value></data>
@@ -4559,4 +4594,5 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} fuq {1} waqt li jinżamm</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} fuq {1} sakemm jitwaqqaf</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>Waqqaf l-effett tat-trigger fuq {0}</value></data>
+  <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Ikkontrolla d-dawl ta' dan l-apparat, Żamma tad-dawl</value></data>
 </root>

@@ -475,6 +475,7 @@
   <data name="Pad_Combine_XOR_Name" xml:space="preserve"><value>Wan nomo</value></data>
   <data name="Pad_Formula_Status_And" xml:space="preserve"><value>mo</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Dedzon</value></data>
+  <data name="Pad_More_Stick" xml:space="preserve"><value>Ofset blong medel, sep mo valiu blong dedzon long evri aksis, kev blong evri aksis, renj, stia</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Renj</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Center offset X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Center offset Y</value></data>
@@ -692,6 +693,7 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gaero</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibresen</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensitiviti</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Ol yunit, Spes, invert ol aksis, Real-World Calibration</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Invert pitch (Y)</value></data>
   <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Invert yaw (X)</value></data>
   <data name="Settings_GyroInvertRoll" xml:space="preserve"><value>Invert roll (X)</value></data>
@@ -792,6 +794,7 @@
   <data name="Pad_SensitivityX" xml:space="preserve"><value>Sensitiviti X</value></data>
   <data name="Pad_SensitivityY" xml:space="preserve"><value>Sensitiviti Y</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Aksis X</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>Tufala aksis</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Aksis Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Renj</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-dedzon</value></data>
@@ -959,6 +962,7 @@
 
   <!-- ═══ Audio Bass Rumble ═══ -->
   <data name="Settings_AudioRumble" xml:space="preserve"><value>Seksek blong saon</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Seksek we i kam long bes blong saon blong sistem</value></data>
   <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>Sensitiviti</value></data>
   <data name="Settings_AudioRumble_LeftMotor" xml:space="preserve"><value>Lef mota</value></data>
   <data name="Settings_AudioRumble_RightMotor" xml:space="preserve"><value>Raet mota</value></data>
@@ -999,6 +1003,7 @@
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick stick (stik long lefsaed)</value></data>
   <data name="Mapping_FlickStickTouchpad_Format" xml:space="preserve"><value>Flick stick (tajpad {0})</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick stick</value></data>
+  <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Stretem ol input blong Flick stick</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Putum bak flick stick</value></data>
   <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Putum bak long 14400</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>Taem blong flick</value></data>
@@ -1231,6 +1236,7 @@
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>Tekemaot pija</value></data>
   <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>Jenis i go long layer {0}</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>LED blong baton Guide</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Laet blong baton Guide o Home</value></data>
   <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>Orijinol blong divaes</value></data>
   <data name="Pad_Lighting_GuideLed_Brightness" xml:space="preserve"><value>Braet</value></data>
   <data name="Pad_ResetGuideLed" xml:space="preserve"><value>Putum bak LED blong baton Guide</value></data>
@@ -1528,6 +1534,7 @@
   <data name="Status_FalconDriverDeclined" xml:space="preserve"><value>Windows i no instolem draeva blong Force Dimension. Sapos Windows i askem sapos yu trastem Force Dimension, jusum Install.</value></data>
   <data name="Status_FalconDriverNotBound" xml:space="preserve"><value>Draeva i instol finis, be Falcon i no muv i go long hem yet. Tekemaot plag blong Falcon mo plagem bakegen.</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>Kik, seksek, sapot, preload, graviti</value></data>
   <data name="Pad_Falcon_Description" xml:space="preserve"><value>PadForge i kaontem evri fos long hanel blong Falcon samwe long wan taosen taem long wan sekon, folem ples blong hanel mo samting we gem i pleim. Ol seting ia oli blong slot ia.</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>Putum bak Novint Falcon</value></data>
   <data name="Pad_Falcon_Feel_Joystick" xml:space="preserve"><value>Joystick</value></data>
@@ -1585,4 +1592,23 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Muv mo taj</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Laet mo saon</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makro mo menu</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Wan saen taem stik blong stia i kasem en blong hem</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Seksek we i kam strong taem aksis blong stik i muv longwe long medel</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Wan fos we i stap gogo yu tanem i of</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>I sanem seksek blong ol bigfala mota i go long ol triga</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Wan fos we i stap oltaem long mota blong evri triga</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Seksek blong triga we i kam long bes blong saon blong sistem</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Ol dedzon blong lin, Daereksen blong kontrola</value></data>
+  <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Dedzon, smudim, Akselereisen, Kev blong aotput</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Baton blong stat eim, Mod blong stat, Threshold blong Easy Aim</value></data>
+  <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Yusum tajpad olsem stik o D-pad</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>I tanem on ol jesja blong tajpad ia</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Swaep, tap, pinj, sep</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Rekodem blong yu wan</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Braet blong LED, Paten blong plea, Mod blong LED blong mute</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Ol fael zip blong saon blong ol saon makro</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Ol fael zip blong pikja blong ol sel blong menu</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Paoa blong evri mota, seksek blong triga, jenisim ol mota</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Paoa blong evri triga, jenisim ol mota, seksek blong adaptive triga</value></data>
+  <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Invert, Momentum, Respons, Akselereisen, fling</value></data>
 </root>

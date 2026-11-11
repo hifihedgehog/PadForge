@@ -917,6 +917,7 @@
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>इम्पल्स ट्रिगर</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>इम्पल्स ट्रिगर</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>प्रत्येक ट्रिगरको गेन, मोटर साटासाट, एड्याप्टिभ ट्रिगर भाइब्रेसन</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>भर्चुअल कन्ट्रोलरबाट प्रति-ट्रिगर मोटर आदेशहरू (Xbox Impulse Triggers) असाइन गरिएको भौतिक Xbox One, Elite वा Series कन्ट्रोलरमा पठाउँछ। गेमले चलाउने ट्रिगर कम्पन आफैँ पास हुन्छ। तलका नियन्त्रणहरूले प्रत्येक ट्रिगरको मात्रा मापन गर्छन्।</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>बायाँ ट्रिगर</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>दायाँ ट्रिगर</value></data>
@@ -935,7 +936,9 @@
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>बायाँ ट्रिगर रिसेट गर्नुहोस्</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>दायाँ ट्रिगर रिसेट गर्नुहोस्</value></data>
   <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>स्थिर ट्रिगर बल</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>प्रत्येक ट्रिगर मोटरमा निरन्तर बल</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>ट्रिगर राउटिङ</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>मुख्य मोटरहरूको कम्पन ट्रिगरहरूमा पठाउँछ</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>मुख्य कम्पन मोटरहरूलाई एक पटकमा एउटा ट्रिगर गरी ट्रिगर च्यानलमा पठाउनुहोस्। XInput कम्पन र फोर्स फिडब्याक दुवैसँग काम गर्छ। एक्टिभेटरले यसलाई नियन्त्रण गर्न सक्छ, ताकि तपाईंले बटन थिचिराखेको बेला मात्र ट्रिगर कम्पन होस्।</value></data>
   <data name="Pad_ResetTriggerRouting" xml:space="preserve"><value>ट्रिगर राउटिङ रिसेट गर्नुहोस्</value></data>
   <data name="Pad_TriggerRouting_LeftTrigger" xml:space="preserve"><value>बायाँ ट्रिगर</value></data>
@@ -967,6 +970,7 @@
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>बायाँ ट्रिगर रिसेट गर्नुहोस्</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>दायाँ ट्रिगर रिसेट गर्नुहोस्</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>अडियो बास ट्रिगर कम्पन</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>प्रणाली अडियोको बासबाट ट्रिगर कम्पन</value></data>
   <data name="Pad_AudioTriggerRumble_Description" xml:space="preserve"><value>प्रणाली अडियोको बासबाट ट्रिगर मोटरहरू चलाउनुहोस्। गेमले चलाउने ट्रिगर बल सक्रिय रहँदा यसलाई ओभरराइड गर्छ।</value></data>
   <data name="Pad_AudioTriggerRumble_Toggle" xml:space="preserve"><value>अडियोबाट ट्रिगर मोटरहरू चलाउनुहोस्</value></data>
   <data name="Pad_AudioTriggerRumble_Sensitivity" xml:space="preserve"><value>संवेदनशीलता</value></data>
@@ -1028,6 +1032,7 @@
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>यो भर्चुअल कन्ट्रोलरले DualSense लाइटबारमा भएकै मोडहरूले यन्त्रलाई बाल्छ, जुन यहाँ यो कन्ट्रोलरका लागि मात्र सेट गरिन्छ। PlayStation भर्चुअल कन्ट्रोलरमा, लाइटबार लेख्ने गेमले DualSense मा जस्तै नियन्त्रण लिन्छ।</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>यो यन्त्रको लाइटिङ नियन्त्रण गर्नुहोस्</value></data>
   <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>लाइटिङ नियन्त्रण</value></data>
+  <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>यो यन्त्रको लाइटिङ नियन्त्रण गर्नुहोस्, लाइटिङ नियन्त्रण स्तर</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>बन्द गर्दा यो भर्चुअल कन्ट्रोलरले यन्त्र बाल्न छोड्छ। विक्रेता पङ्क्ति, वा उही सफ्टवेयरमार्फत बालिएको उही प्रकारको अर्को यन्त्रले अझै यसको रङ सेट गर्न सक्छ। यो भर्चुअल कन्ट्रोलरको Set Chroma Color म्याक्रोले अझै Razer यन्त्रमा रङ लगाउँछ।</value></data>
   <data name="Pad_Lighting_ClaimLevel" xml:space="preserve"><value>लाइटिङ नियन्त्रण स्तर</value></data>
   <data name="Pad_Lighting_ClaimLevel_Colors" xml:space="preserve"><value>रङ मात्र</value></data>
@@ -1084,6 +1089,7 @@
   <data name="Pad_Lighting_MicLed_FollowDevice" xml:space="preserve"><value>अडियो यन्त्र पछ्याउनुहोस्</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice_Picker" xml:space="preserve"><value>अडियो यन्त्र</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>सूचक LED</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>LED चमक, खेलाडी ढाँचा, म्युट LED मोड</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>खेलाडी नम्बर पङ्क्ति (टचप्याडमुनि 5 वटा LED) र माइकमाथिको म्युट LED। चमक नियन्त्रणले भौतिक रूपमा खेलाडी पङ्क्तिमा मात्र असर गर्छ। फर्मवेयरले म्युट LED का अवस्थाहरू (बन्द / स्थिर / पल्स) दिन्छ तर म्युटको छुट्टै चमक रजिस्टर दिँदैन।</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>लाइटबार रिसेट गर्नुहोस्</value></data>
   <data name="Pad_ResetIndicatorLeds" xml:space="preserve"><value>सूचक LED रिसेट गर्नुहोस्</value></data>
@@ -1558,6 +1564,7 @@
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>केन्द्र क्यालिब्रेट गर्नुहोस्</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>केन्द्र बिन्दु</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>डेडजोन</value></data>
+  <data name="Pad_More_Stick" xml:space="preserve"><value>केन्द्र अफसेट, डेडजोन आकार र प्रत्येक अक्षको मान, प्रत्येक अक्षको कर्भ, दायरा, स्टियरिङ</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>दायरा</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>स्टिक मिलाउने सिफारिस गरिएको तरिका 'सीमा क्यालिब्रेट गर्नुहोस्' हो। यसले स्टिक भौतिक रूपमा पुग्न सक्ने किनारा नाप्छ, त्यसपछि प्रत्येक स्थितिलाई त्यो मापन गरिएको किनाराअनुसार समानुपातिक रूपमा पुनः स्केल गर्छ, ताकि हरेक कोण र हरेक विचलनमा पूरा मूल चाल केही नकाटिई आदर्श वृत्तमा म्याप होस्। तलका चार स्लाइडरले मुख्य अक्षहरूलाई मात्र सीमित गर्छन्। दायरा जानाजानी सीमित गर्न तिनलाई प्रयोग गर्नुहोस्, सच्याउन होइन।</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>नमूना लिँदै...</value></data>
@@ -1891,6 +1898,7 @@
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>टचप्याड नम्बर</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>तलका सेटिङहरू यो कन्ट्रोलरको कुन टचप्याडमा लागू हुन्छन्। प्रत्येक टचप्याडले आफ्नै इसारा, माउस अनुभूति र पोइन्टर क्षेत्र राख्छ।</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>इसारा पहिचान</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>यो टचप्याडका इसाराहरू खोल्छ</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>यो टचप्याडमा इसारा सक्षम गर्नुहोस्</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>यो टचप्याडको मुख्य टगल। बन्द हुँदा यो टचप्याडमा कुनै इसारा सक्रिय हुँदैन। अहिलेका औंला / क्लिक / स्थिति म्यापिङहरू भने काम गरिरहन्छन्।</value></data>
   <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>पहिचान</value></data>
@@ -1901,6 +1909,7 @@
   <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>कूलडाउन</value></data>
   <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>इसारा सक्रिय भएपछि, यति मिलिसेकेन्डसम्म यो टचप्याडमा नयाँ इसाराहरू बेवास्ता गरिन्छन्। छिटो अगाडि-पछाडिको चालबाट हुने दोहोरो सक्रियता रोक्छ।</value></data>
   <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>बिल्ट-इन इसाराहरू</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>स्वाइप, ट्याप, पिन्च, आकृति</value></data>
   <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>4-दिशा स्वाइप (माथि / तल / बायाँ / दायाँ)</value></data>
   <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>8-दिशा स्वाइप (विकर्णसहित)</value></data>
   <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>स्वाइप दूरी (0..1)</value></data>
@@ -1926,6 +1935,7 @@
   <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>आकार इसाराहरू (वृत्त, वर्ग, त्रिभुज, Z, टिक चिन्ह)</value></data>
   <data name="Pad_Touchpad_MatchThreshold" xml:space="preserve"><value>आकार मिलान थ्रेसहोल्ड</value></data>
   <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>कस्टम इसाराहरू</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>आफ्नै इसारा रेकर्ड गर्नुहोस्</value></data>
   <data name="Pad_Touchpad_RecordNew" xml:space="preserve"><value>+ नयाँ इसारा रेकर्ड गर्नुहोस्</value></data>
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>यो प्रोफाइलका लागि कुनै कस्टम इसारा रेकर्ड गरिएको छैन। एउटा रेकर्ड गर्न “नयाँ इसारा रेकर्ड गर्नुहोस्” मा क्लिक गर्नुहोस्।</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 औंला</value></data>
@@ -1933,6 +1943,7 @@
 
   <!-- Stick / D-pad output card -->
   <data name="Pad_Touchpad_Stick_Header" xml:space="preserve"><value>स्टिक / डी-प्याड आउटपुट</value></data>
+  <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>टचप्याडलाई स्टिक वा डी-प्याडका रूपमा प्रयोग गर्नुहोस्</value></data>
   <data name="Pad_Touchpad_Stick_Subtitle" xml:space="preserve"><value>टचप्याडलाई भर्चुअल एनालग स्टिक वा डी-प्याडमा बदल्नुहोस्। तपाईंको औंला पहिलो पटक राखिएको ठाउँ आउटपुटको आधार बिन्दु बन्छ। त्यस बिन्दुको सापेक्ष हालको स्थितिले स्टिकको मान र (वैकल्पिक रूपमा) डी-प्याड दिशाको स्थिर अवस्था निर्धारण गर्छ।</value></data>
   <data name="Pad_Touchpad_StickEnabled" xml:space="preserve"><value>स्टिक / डी-प्याड आउटपुट सक्षम गर्नुहोस्</value></data>
   <data name="Pad_Touchpad_StickEnabled_Tooltip" xml:space="preserve"><value>म्यापिङ सूचीमा टचप्याड स्टिक X, स्टिक Y र डी-प्याड स्रोतहरू देखाउँछ। यी अहिलेका टचप्याड-औंला र टचप्याड-इसारा स्रोतहरूसँगै काम गर्छन्, तिनको सट्टामा होइन।</value></data>
@@ -1947,6 +1958,7 @@
 
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>माउस आउटपुट</value></data>
+  <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>उल्टाउने, संवेग, प्रतिक्रिया, प्रवेग, फ्लिङ</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>किबोर्ड / माउस भर्चुअल कन्ट्रोलरमा टचप्याड औंलालाई माउस X/Y मा म्याप गर्दा कर्सरको गति मिलाउँछ। 1.0 पूर्वनिर्धारित हो। छिटो कर्सरका लागि कुनै पनि अक्ष बढाउनुहोस्, ढिलोका लागि घटाउनुहोस्। उल्टाउने विकल्पले कुनै पनि अक्ष उल्टाउँछ।</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>माउस संवेदनशीलता X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>तेर्सो टचप्याड → माउस परिवर्तनको गुणक। 1.0 भन्दा कमले कर्सर ढिलो बनाउँछ। 1.0 भन्दा बढीले छिटो बनाउँछ।</value></data>
@@ -1974,6 +1986,7 @@
   <data name="Pad_Touchpad_RotateThreshold_Tooltip" xml:space="preserve"><value>घुमाइ सक्रिय हुनुअघि दुई औंला कति घुम्नुपर्छ।</value></data>
   <data name="Pad_ResetTouchpadRotateThresholdDegrees" xml:space="preserve"><value>घुमाइ थ्रेसहोल्ड रिसेट गर्नुहोस्</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>निरपेक्ष पोइन्टर</value></data>
+  <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>प्याडले पुग्ने स्क्रिनको भाग</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>टचप्याड पोइन्टर X/Y स्रोतहरू मिलाउँछ, जसले कर्सरलाई प्याडमा तपाईंको औंलाको स्थानमा सार्छन् (किबोर्ड / माउस भर्चुअल कन्ट्रोलरमा तिनलाई माउस X/Y मा म्याप गर्नुहोस्)। आकार 1.00 र केन्द्र 0.50 ले प्याडलाई पूरै स्क्रिनमा म्याप गर्छ। कर्सरलाई स्क्रिनको एक भागमा सीमित गर्न आकार घटाउनुहोस्, र त्यसलाई राख्न केन्द्र सार्नुहोस्।</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>क्षेत्रको चौडाइ</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>यो प्याड म्याप हुने स्क्रिन क्षेत्रको चौडाइ, स्क्रिन चौडाइको अंशका रूपमा। 1.00 ले पूरा चौडाइ ढाक्छ। 0.50 ले कर्सरलाई आधा स्क्रिनमा सीमित गर्छ।</value></data>
@@ -1986,12 +1999,14 @@
 
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>स्वाइप ह्याप्टिक्स</value></data>
+  <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>औंला सर्दा साना टिकहरू</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>तपाईंको औंला यो टचप्याडमा सर्दा कन्ट्रोलरको ह्याप्टिक्स पल्स गर्छ, Steam Input को ट्र्याकप्याड टिकजस्तै। Steam Controller र Steam Deck ले प्याडमुनिको एक्चुएटरमा टिक गर्छन्। DualSense र DualShock 4 ले कम्पन मोटरहरू पल्स गर्छन्।</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>स्वाइप ह्याप्टिक्स सक्षम गर्नुहोस्</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>यो प्याडमा औंला तोकिएको दूरी सर्दा प्रत्येक पटक छोटो ह्याप्टिक टिक दिन्छ। औंला राख्दा वा प्याड क्लिक गर्दा कहिल्यै टिक हुँदैन। पूर्वनिर्धारित रूपमा बन्द।</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>पल्स तीव्रता</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity_Tooltip" xml:space="preserve"><value>प्रत्येक टिकको बल। खेलको कम्पन बलियो हुँदा सधैं त्यही लागू हुन्छ।</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Header" xml:space="preserve"><value>कृत्रिम दबाब</value></data>
+  <data name="Pad_SyntheticPressure_FoldHint" xml:space="preserve"><value>स्पर्शलाई पूर्ण दबाब भनी रिपोर्ट गर्ने प्याडहरूका लागि दबाब</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Subtitle" xml:space="preserve"><value>स्पर्शलाई पूर्ण दबाबका रूपमा रिपोर्ट गर्ने प्याडहरूमा (DualShock 4, DualSense, Steam Controller 2015) DualShock 2 / DualShock 3 का दबाब बटनहरूको नक्कल गर्छ। सक्षम हुँदा, यो यन्त्रका दबाब म्यापिङ स्रोतहरूले स्पर्श नहुँदा 0%, राखिएको स्पर्शलाई स्पर्श दबाब स्तर, र प्याड क्लिकलाई 100% पढ्छन्।</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled" xml:space="preserve"><value>कृत्रिम दबाब सक्षम गर्नुहोस्</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled_Tooltip" xml:space="preserve"><value>यो यन्त्रका दबाब म्यापिङ स्रोतहरूलाई तीन चरणमा ढाल्छ: स्पर्श नहुँदा 0%, राखिएको स्पर्शमा स्पर्श दबाब स्तर, र प्याड क्लिक गर्दा 100%। पूर्वनिर्धारित रूपमा बन्द, जसले साँचो एनालग दबाब भएका प्याडमा कच्चा मान राख्छ।</value></data>
@@ -2169,7 +2184,9 @@
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>यो प्याडको मोसन सेन्सरले माउस र स्टिक आउटपुट कसरी चलाउँछ भनेर मिलाउनुहोस्। स्थिर अवस्थाको ड्रिफ्ट शून्य बनाउन समतल सतहमा क्यालिब्रेट गर्नुहोस्, त्यसपछि संवेदनशीलता, स्मूदिङ र सक्रियता नियमहरू आफ्नो रुचिअनुसार मिलाउनुहोस्।</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>क्यालिब्रेसन</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>संवेदनशीलता</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>एकाइ, स्पेस, अक्ष उल्टाउने, वास्तविक-संसार क्यालिब्रेसन</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>प्रतिक्रिया आकार</value></data>
+  <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>डेडजोन, स्मूदिङ, प्रवेग, आउटपुट कर्भ</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>स्पेस</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>जाइरो चाल कसरी बुझिन्छ। स्थानीयले कन्ट्रोलरका कच्चा अक्षहरू प्रयोग गर्छ। खेलाडीले तेर्सो चाललाई वास्तविक संसारको ठाडो (गुरुत्व) मा प्रक्षेपण गर्छ, त्यसैले तपाईंले प्याड जसरी समाते पनि उही नाडी घुमाइले सधैं क्यामेरा घुमाउँछ। विश्वले थप रूपमा ठाडो चाललाई पनि विश्व अक्षहरूमा पुनः प्रक्षेपण गर्छ।</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>समाउने तरिका</value></data>
@@ -2183,11 +2200,13 @@
   <data name="Pad_ResetGyroInvertYaw" xml:space="preserve"><value>“याउ उल्टाउनुहोस्” रिसेट गर्नुहोस्</value></data>
   <data name="Pad_ResetGyroInvertRoll" xml:space="preserve"><value>“रोल उल्टाउनुहोस्” रिसेट गर्नुहोस्</value></data>
   <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>कम्पास</value></data>
+  <data name="Pad_Compass_FoldHint" xml:space="preserve"><value>याउलाई चुम्बकीय उत्तरसँग जोड्छ</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>यो कन्ट्रोलरमा म्याग्नेटोमिटर छ। याउलाई चुम्बकीय उत्तरसँग जोड्दा जाइरो लक्ष्यबाट ढिलो तेर्सो ड्रिफ्ट हट्छ। पहिले क्यालिब्रेट गर्नुहोस्: क्यालिब्रेट थिच्नुहोस्, केही सेकेन्डसम्म कन्ट्रोलरलाई 8 आकारमा सबै दिशातिर घुमाउनुहोस्, अनि फेरि थिच्नुहोस्।</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>याउलाई कम्पाससँग जोड्नुहोस्</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>तेर्सो लक्ष्यलाई चुम्बकीय दिशातिर तान्ने सानो सुधारात्मक दर थप्छ, त्यसैले ड्रिफ्ट जम्मा हुन सक्दैन। भण्डारण गरिएको म्याग्नेटोमिटर क्यालिब्रेसन चाहिन्छ। नजिकैको धातु वा चुम्बकले बिगारेका नमुनाहरू स्वतः अस्वीकार गरिन्छन्।</value></data>
   <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>पूर्वनिर्धारितमा रिसेट गर्नुहोस् (बन्द)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>पिच र रोल सिमुलेसन</value></data>
+  <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>एक्सेलेरोमिटरबाट निकालिएको पिच र रोल</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>यो कन्ट्रोलरको जाइरोले बायाँ-दायाँ घुमाइ मात्र थाहा पाउँछ। सिमुलेसन खुला हुँदा, PadForge ले एक्सेलेरोमिटरबाट पिच र रोल निकाल्छ र तिनलाई जाइरोको याउसँगै म्यापिङ पङ्क्तिहरू र भर्चुअल कन्ट्रोलरको मोसनमा पठाउँछ। एक्सेलेरोमिटरले धक्का र झुकाव छुट्याउन सक्दैन, त्यसैले कन्ट्रोलरलाई नघुमाई छेउतिर वा अगाडि सार्दा छोटो घुमाइजस्तो पढिन्छ।</value></data>
   <data name="Settings_GyroSimulation" xml:space="preserve"><value>पिच र रोल सिमुलेट गर्नुहोस्</value></data>
   <data name="Settings_GyroSimulation_Tooltip" xml:space="preserve"><value>पिच र रोललाई एक्सेलेरोमिटरबाट निकालिएका दरले भर्छ। याउ जाइरोको आफ्नै रिडिङ रहन्छ। पूर्वनिर्धारित रूपमा बन्द।</value></data>
@@ -2228,6 +2247,7 @@
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>तल (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>माथि (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>सक्रियता</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>लक्ष्य सक्रिय गर्ने बटन, सक्रिय गर्ने मोड, सजिलो लक्ष्य थ्रेसहोल्ड</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>जाइरो कहिले सक्रिय हुन्छ भनेर सीमित गर्ने वैकल्पिक सर्तहरू। दायाँ स्टिक विचलन र लक्ष्य सक्रिय गर्ने बटन प्रत्येक छुट्टै सेट गर्न सकिन्छ। सेट गरिएका सबै सर्त सक्रिय हुँदा मात्र जाइरो सक्रिय हुन्छ।</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>स्थानीय</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>खेलाडी</value></data>
@@ -2278,6 +2298,7 @@
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>जाइरो ढल्काइ X</value></data>
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>जाइरो ढल्काइ Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>जाइरो ढल्काइ</value></data>
+  <data name="Pad_GyroTilt_FoldHint" xml:space="preserve"><value>पूर्ण ढल्काइ दायरा, ढल्काइ डेडजोन</value></data>
   <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>जाइरो ढल्काइ X / जाइरो ढल्काइ Y इनपुटहरूको दायरा: ढल्काइ कायम राख्दा स्टिकले पनि आफ्नो विचलन कायम राख्छ, Steam को Joystick Deflection मोडजस्तै। यहाँ सेट गरेको दायरामा पूर्ण विचलन हुन्छ। जाइरो रिसेन्टरले आरामको समाइलाई फेरि शून्य बनाउँछ। याउ (कन्ट्रोलरलाई समतल घुमाउनु) गुरुत्वले देख्दैन र यसले यी इनपुटहरू सार्दैन।</value></data>
   <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>पूर्ण ढल्काइ दायरा</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>आरामको समाइबाट कति डिग्री ढल्काइलाई पूर्ण स्टिक विचलन मानिन्छ। सानो = बढी संवेदनशील। Steam कन्फिगमा 25° सबैभन्दा सामान्य मान हो।</value></data>
@@ -2479,6 +2500,7 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>न्यूनतम दायरा Y (तल)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>अधिकतम दायरा Y (माथि)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X अक्ष</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>दुवै अक्ष</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y अक्ष</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>दायरा</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>एन्टि-डेडजोन</value></data>
@@ -2489,6 +2511,7 @@
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>फोर्स फिडब्याक / कम्पन / ह्याप्टिक्स</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>प्रत्येक मोटरको गेन, ट्रिगर कम्पन, मोटर साटासाट</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>समग्र गेन</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>बायाँ मोटर</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>दायाँ मोटर</value></data>
@@ -2500,6 +2523,7 @@
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>स्थिर बल</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>तपाईंले बन्द नगरेसम्म निरन्तर बल</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>तपाईंले टगल बन्द नगरेसम्म यो यन्त्रमा निरन्तर बल लगाउनुहोस्। कुनै पनि स्रोतबाट खेलले चलाएको बल सक्रिय रहँदा यसलाई अधिलेखन गर्छ, र खेलले रोकेपछि यो फेरि सुरु हुन्छ।</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>स्थिर बल लगाउनुहोस्</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>दिशा र शक्ति सेट गर्न ग्रिडभित्र तान्नुहोस्।</value></data>
@@ -2826,6 +2850,7 @@
 
   <!-- ═══ Audio Bass Rumble ═══ -->
   <data name="Settings_AudioRumble" xml:space="preserve"><value>अडियो कम्पन</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>प्रणाली अडियोको बेसबाट कम्पन</value></data>
   <data name="Settings_AudioRumbleDesc" xml:space="preserve"><value>प्रणाली अडियोको बेस आवृत्तिबाट कन्ट्रोलरको कम्पन चलाउनुहोस्।</value></data>
   <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>अडियो कम्पन सक्षम गर्नुहोस्</value></data>
   <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>संवेदनशीलता</value></data>
@@ -2936,6 +2961,8 @@
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>झुकावको बाहिरी डेडजोन रिसेट गर्नुहोस्</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>कन्ट्रोलरको दिशा रिसेट गर्नुहोस्</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>मोसन स्टियरिङ</value></data>
+  <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° देखि {1}° सम्म</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>झुकावका डेडजोनहरू, कन्ट्रोलरको दिशा</value></data>
   <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>मोसन झुकाव इनपुटका सेटिङहरू: कन्ट्रोलरलाई ह्विलजस्तै झुकाउनुहोस्। म्यापिङहरूमा इनपुट ड्रपडाउनबाट "मोसन झुकाव" लाई स्टिक अक्षमा म्याप गर्नुहोस्।</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>मोसन स्टियरिङ रिसेट गर्नुहोस्</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>फ्लिक स्टिक (दायाँ स्टिक)</value></data>
@@ -2944,6 +2971,7 @@
   <data name="Mapping_LeftStickRing" xml:space="preserve"><value>बायाँ स्टिक रिङ</value></data>
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>दायाँ स्टिक रिङ</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>फ्लिक स्टिक</value></data>
+  <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>सबै फ्लिक स्टिक इनपुटहरूको समायोजन</value></data>
   <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>फ्लिक स्टिक इनपुटका सेटिङहरू: स्टिक जता देखाउनुहुन्छ क्यामेरा त्यतै घुम्छ, सूक्ष्म घुमाइका लागि किनारामा स्टिक घुमाउनुहोस्। म्यापिङहरूमा इनपुट ड्रपडाउनबाट "फ्लिक स्टिक (दायाँ स्टिक)" लाई माउस X मा म्याप गर्नुहोस्, कुनै पनि लेयरमा।</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>फ्लिक स्टिक रिसेट गर्नुहोस्</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>प्रति 360° डट</value></data>
@@ -2980,6 +3008,7 @@
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>फ्लिक स्टिक भएको लेयर स्टिक पहिल्यै विचलित अवस्थामा सक्रिय हुँदा, फ्लिक तुरुन्तै चलाउनुहोस्। बन्द हुँदा क्यामेरा स्थिर रहन्छ र हालको स्टिक कोणबाट घुमाइ ट्र्याक गर्छ।</value></data>
   <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>सक्रिय हुँदा फ्लिक अनुमति रिसेट गर्नुहोस्</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>स्टियरिङ लक फिडब्याक</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>स्टियरिङ मोडको स्टिक पूरा लकमा पुग्दा संकेत</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>स्टियरिङ मोडमा सेट गरिएको स्टिक पूरा लकसम्म घुमाइँदा, सीमा महसुस होस् भनेर संकेत (कम्पन, ट्रिगर वा लाइटबार) दिनुहोस्। पूर्वनिर्धारित रूपमा सबै बन्द।</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>लकमा कम्पन पल्स</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>लकमा ट्रिगर कम्पन</value></data>
@@ -3035,6 +3064,7 @@
   <data name="Pad_Audio_Header" xml:space="preserve"><value>अडियो</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>म्याक्रो ध्वनिहरू र मिरर गरिएको प्रणाली अडियो छानिएको कन्ट्रोलरको बिल्ट-इन स्पिकरबाट, USB वा Bluetooth मार्फत बज्छन्। माथिको ड्रपडाउनमा यन्त्र छान्नुहोस्। यहाँका सबै सेटिङहरू त्यसैलाई पछ्याउँछन्।</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>ध्वनि आउटपुट</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>मिरर स्रोत, ह्याप्टिक्स, हेडफोन भोल्युम, क्रसफिड, प्यारामेट्रिक EQ, लिमिटर</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>ध्वनिहरू स्वतः छानिएको कन्ट्रोलरमा पठाइन्छन्। USB मा प्याडको आफ्नै अडियो एन्डपोइन्ट हार्डवेयर कन्टेनरद्वारा मिलाइन्छ। Bluetooth मा अडियो Sony HID फ्रेमहरूमा स्ट्रिम गरिन्छ।</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>मिरर स्रोत</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>कन्ट्रोलरको स्पिकरमा कुन प्लेब्याक यन्त्र मिरर गर्ने। विशेष ध्वनिहरू छुट्टै प्लेब्याक यन्त्रमा पठाउने खेलहरूले यसलाई लक्षित गर्न सक्छन्।</value></data>
@@ -3108,6 +3138,7 @@
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>फाइल पढ्न मिल्ने PadForge प्रोफाइल होइन।</value></data>
   <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>{0} बाट ध्वनि छान्नुहोस्</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>ध्वनि प्याकेजहरू</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>ध्वनि म्याक्रोका लागि ध्वनिहरूका zip फाइल</value></data>
   <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>ध्वनि प्याकेज .pfsounds एक्सटेन्सन भएको ध्वनिहरूको एउटा zip फाइल हो। यहाँ एउटा थप्नुहोस्, अनि कुनै पनि ध्वनि म्याक्रोमा यसका ध्वनिहरू छान्नुहोस्। PadForge ले फाइलबाट सिधै पढ्छ र यसलाई कहिल्यै अनप्याक गर्दैन। पोर्टेबल रहन प्याकेजहरू PadForge.exe को छेउमा राख्नुहोस्।</value></data>
   <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>प्याकेज थप्नुहोस्…</value></data>
   <data name="Pad_Audio_Packages_Add_Tooltip" xml:space="preserve"><value>सूचीमा अवस्थित .pfsounds फाइल थप्नुहोस्।</value></data>
@@ -3133,6 +3164,7 @@
   <data name="Emoji_Category_Objects" xml:space="preserve"><value>वस्तुहरू</value></data>
   <data name="Emoji_Category_Symbols" xml:space="preserve"><value>प्रतीकहरू</value></data>
   <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>आइकन प्याकेजहरू</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>मेनु सेलका लागि छविहरूका zip फाइल</value></data>
   <data name="Pad_Menus_IconPackages_Desc" xml:space="preserve"><value>आइकन प्याकेज .pficons एक्सटेन्सन भएको छविहरूको एउटा zip फाइल हो। यहाँ एउटा थप्नुहोस्, अनि कुनै पनि मेनु सेलमा यसका आइकनहरू छान्नुहोस्। PadForge ले फाइलबाट सिधै पढ्छ र यसलाई कहिल्यै अनप्याक गर्दैन। पोर्टेबल रहन प्याकेजहरू PadForge.exe को छेउमा राख्नुहोस्।</value></data>
   <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>प्याकेज थप्नुहोस्…</value></data>
   <data name="Pad_Menus_IconPackages_Add_Tooltip" xml:space="preserve"><value>सूचीमा अवस्थित .pficons फाइल थप्नुहोस्।</value></data>
@@ -3542,6 +3574,7 @@
   <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>लेयर {0} मा बदल्नुहोस्</value></data>
   <data name="Macro_SwitchLayer_Hint" xml:space="preserve"><value>यो स्लटलाई छानिएको सिफ्ट लेयरमा लैजान्छ। अर्को स्विच, लच वा साइकल एक्टिभेटर, वा प्रोफाइल परिवर्तन नभएसम्म लेयर सक्रिय रहन्छ। “आधार” छान्दा आधार लेयरमा फर्किन्छ। एउटै बटनलाई प्रत्येक लेयरमा फरक लेयरमा लैजान यो म्याक्रोलाई माथिको कुनै लेयरमा सीमित गर्नुहोस्।</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>Guide बटन LED</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Guide वा Home बटनको चमक</value></data>
   <data name="Pad_Lighting_GuideLed_Subtitle" xml:space="preserve"><value>चम्किने Guide वा Home बटनको चमक। Xbox One र त्यसपछिका कन्ट्रोलरहरूले USB मार्फत यो स्वीकार्छन्। 2015 को Steam Controller ले कुनै पनि जडानमा स्वीकार्छ, र सबै Steam Controller हरूको एउटै चमक हुन्छ। Switch Pro Controller र दायाँ Joy-Con हरूले (एक्लै, जोडीमा, वा चार्जिङ ग्रिपमा) कुनै पनि जडानमा स्वीकार्छन्।</value></data>
   <data name="Pad_Lighting_GuideLed_Mode_Tooltip" xml:space="preserve"><value>यन्त्र पूर्वनिर्धारितले LED लाई कन्ट्रोलर फर्मवेयरले सेट गरेजस्तै छोड्छ। स्थिर चमकले तलको स्तर कायम राख्छ। ब्याट्री स्तरले ब्याट्री जति भरिएको छ LED त्यति उज्यालो बनाउँछ र कहिल्यै 10% भन्दा तल झार्दैन। Xbox कन्ट्रोलरहरूले Guide LED आदेशहरू USB मार्फत मात्र स्वीकार्छन्, त्यसैले Bluetooth जडानमा यो सेटिङको कुनै असर हुँदैन। Switch कन्ट्रोलरहरूले Home LED आदेशहरू कुनै पनि जडानमा स्वीकार्छन्।</value></data>
   <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>यन्त्र पूर्वनिर्धारित</value></data>
@@ -3906,6 +3939,7 @@
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>बेस शेकरहरू</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>यो भर्चुअल कन्ट्रोलरले प्राप्त गर्ने खेलको कम्पन र फोर्स फिडब्याकलाई बेस शेकर र सबवुफरका लागि कम-आवृत्तिका टोनका रूपमा अडियो आउटपुटमा पठाउँछ।</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>कम्पनबाट अडियो</value></data>
+  <data name="Pad_More_BassShakers" xml:space="preserve"><value>आउटपुट यन्त्र, च्यानल, गेन, प्रत्येक मोटरको टोन</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox, DualShock 3, DualShock 4 / DualSense, र Nintendo Switch Pro भर्चुअल कन्ट्रोलरहरूसँग काम गर्छ, साथै रेसिङ ह्विलजस्ता फोर्स फिडब्याक भएका Extended भर्चुअल कन्ट्रोलरहरू र Steam Deck Controller (Composite) सँग पनि। खेलको फिडब्याक र कम्पन परीक्षण अडियो आउटपुटमार्फत बज्छन्। म्याक्रो कम्पन कन्ट्रोलरमै रहन्छ।</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>कम्पनबाट अडियो रिसेट गर्नुहोस्</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>कम्पनलाई अडियो आउटपुटमा पठाउनुहोस्</value></data>
@@ -4352,6 +4386,7 @@ PadForge ले तिनलाई अहिले अनइन्स्टल �
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>FreeTrack साझा मेमोरी डाटाको प्रतीक्षा गर्दै।</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>FreeTrack साझा मेमोरी उपलब्ध छैन।</value></data>
   <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>स्टेयरिङ कोण कम्पन</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>स्टिक अक्ष केन्द्रबाट टाढा सर्दा बढ्ने कम्पन</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>चयन गरिएको भर्चुअल स्टिक अक्ष केन्द्रबाट टाढा सर्दा निरन्तर कम्पन थप्छ। सबै असाइन गरिएका स्रोतहरूको म्याप गरिएको आउटपुट प्रयोग गर्छ। "दिशाअनुसार विभाजन" छानिएको बेला ऋणात्मक चालले बायाँ मोटर चलाउँछ र धनात्मक चालले दायाँ। "बायाँ मोटर" वा "दायाँ मोटर" ले दुवै दिशालाई त्यही एउटै मोटरमा राख्छ। कम्पन यन्त्रहरूसहितको Xbox र PlayStation आउटपुटका लागि। ह्विलहरू, स्थिर फोर्स फिडब्याक भएका अन्य यन्त्रहरू र Fanatec पेडलहरू यसमा समावेश छैनन्।</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>स्टेयरिङ कोण कम्पन सक्षम गर्नुहोस्</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>भर्चुअल अक्ष</value></data>
@@ -4706,6 +4741,7 @@ PadForge ले तिनलाई अहिले अनइन्स्टल �
   <data name="Status_FalconDriverDeclined" xml:space="preserve"><value>Windows ले Force Dimension को ड्राइभर स्थापना गरेन। Windows ले Force Dimension लाई विश्वास गर्ने कि नगर्ने भनेर सोधेमा, “स्थापना गर्नुहोस्” छान्नुहोस्।</value></data>
   <data name="Status_FalconDriverNotBound" xml:space="preserve"><value>ड्राइभर स्थापना भयो, तर Falcon त्यसमा सरेको छैन। Falcon निकालेर फेरि जोड्नुहोस्।</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>किक, हल्लाइ, स्थिरता, प्रिलोड, गुरुत्व</value></data>
   <data name="Pad_Falcon_Description" xml:space="preserve"><value>ह्यान्डल कहाँ छ र गेमले के चलाउँछ भन्ने आधारमा PadForge ले Falcon को ह्यान्डलमा पर्ने हरेक बल एक सेकेन्डमा करिब एक हजार पटक गणना गर्छ। यी सेटिङहरू यो स्लटका हुन्।</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>Novint Falcon रिसेट गर्नुहोस्</value></data>
   <data name="Pad_Falcon_Feel" xml:space="preserve"><value>अनुभूति</value></data>

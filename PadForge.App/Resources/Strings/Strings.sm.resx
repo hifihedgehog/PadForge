@@ -706,6 +706,7 @@
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick stick (stick agavale)</value></data>
   <data name="Mapping_FlickStickTouchpad_Format" xml:space="preserve"><value>Flick stick (touchpad {0})</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick stick</value></data>
+  <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Faʻatulagaga mo le Flick stick</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Toe setiina le flick stick</value></data>
   <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Toe setiina i le 14400</value></data>
   <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Toe setiina i le 0.1 s</value></data>
@@ -850,6 +851,7 @@
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>Faʻaopoopo se ata…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>Aveese le ata</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>LED o le faʻamau Guide</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Le susulu o le faʻamau Guide poʻo Home</value></data>
   <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>Masani o le masini</value></data>
   <data name="Pad_Lighting_GuideLed_Fixed" xml:space="preserve"><value>Susulu tumau</value></data>
   <data name="Pad_Lighting_GuideLed_Brightness" xml:space="preserve"><value>Susulu</value></data>
@@ -902,6 +904,7 @@
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Overlay o le menu</value></data>
   <data name="Dashboard_Overlays" xml:space="preserve"><value>Overlay</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Gatete i le leo</value></data>
+  <data name="Pad_More_BassShakers" xml:space="preserve"><value>Masini e alu i ai, auala leo, malosi, se leo mo afi taʻitasi</value></data>
   <data name="Pad_RumbleAudio_Voice_Low" xml:space="preserve"><value>Afi maualalo</value></data>
   <data name="Pad_RumbleAudio_Voice_High" xml:space="preserve"><value>Afi maualuga</value></data>
   <data name="Pad_RumbleAudio_Voice_TriggerLeft" xml:space="preserve"><value>Trigger agavale</value></data>
@@ -1100,6 +1103,7 @@
   <data name="Settings_Falcon_Title" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Status_FalconLibraryPicked_Format" xml:space="preserve"><value>Ua setiina le library a le Falcon i le {0}. E faʻaaogā e PadForge i totonu o ni nai sekone, ma o se Falcon o loʻo tatala i se isi kopi e toe tatala i lenei kopi.</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>Tuʻi, lulu, taofi, utamua, kalave</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>Toe setiina le Novint Falcon</value></data>
   <data name="Pad_Falcon_Button1" xml:space="preserve"><value>Faʻamau 1</value></data>
   <data name="Pad_Falcon_Button2" xml:space="preserve"><value>Faʻamau 2</value></data>
@@ -1144,4 +1148,20 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Gaioiga ma Paʻi</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Moli ma Leo</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Macro ma Menu</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Se faʻailo pe a oʻo le stick foeuli i lona tapulaʻa</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Gatete e faʻateleina pe a alu ese le axis mai le ogatotonu</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Se malosi tumau seʻia e tapeina</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Gatete mai le bass i le leo o le komepiuta</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>E auina atu le gatete o afi autū i trigger</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Se malosi tumau i afi taʻitasi o trigger</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Gatete o trigger mai le bass i le leo o le komepiuta</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Deadzone o le faʻasipa, Faʻasaga o le controller</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Faʻamau e faʻaola ai le taulaʻi, Faiga o le faʻaolaina, Tapulaʻa o le Easy Aim</value></data>
+  <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Faʻaaogā le touchpad o se stick poʻo se D-pad</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Faʻamaumau au lava gaioiga</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Susulu o le LED, Mamanu o le tagata taʻalo, Faiga o le LED Mute</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Faila Zip o leo mo macro o leo</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Faila Zip o ata mo sela o le menu</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Malosi o afi taʻitasi, gatete o trigger, fesuiaʻi afi</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Malosi o trigger taʻitasi, fesuiaʻi afi, gatete o adaptive trigger</value></data>
 </root>

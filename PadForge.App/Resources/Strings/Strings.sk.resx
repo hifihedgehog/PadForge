@@ -917,6 +917,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Impulzné spúšte</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulzné spúšte</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Zosilnenie pre každú spúšť, zámena motorov, vibrácie adaptívnych spúští</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Preposiela príkazy motorov jednotlivých spúští (Xbox Impulse Triggers) z virtuálneho ovládača do priradeného fyzického ovládača Xbox One, Elite alebo Series. Vibrácie spúští riadené hrou sa prepúšťajú automaticky. Ovládacie prvky nižšie menia intenzitu pre každú spúšť zvlášť.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Ľavá spúšť</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Pravá spúšť</value></data>
@@ -935,7 +936,9 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Resetovať ľavú spúšť</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Resetovať pravú spúšť</value></data>
   <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Konštantná sila spúští</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Stála sila na každom motore spúšte</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Smerovanie do spúští</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Posiela vibrácie hlavných motorov do spúští</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Presmeruje hlavné vibračné motory do kanála spúští, pre každú spúšť zvlášť. Funguje s vibráciami XInput aj so silovou spätnou väzbou. Aktivátor ho môže podmieniť tak, aby spúšť bzučala, len kým držíte tlačidlo.</value></data>
   <data name="Pad_ResetTriggerRouting" xml:space="preserve"><value>Resetovať smerovanie do spúští</value></data>
   <data name="Pad_TriggerRouting_LeftTrigger" xml:space="preserve"><value>Ľavá spúšť</value></data>
@@ -967,6 +970,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Resetovať ľavú spúšť</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Resetovať pravú spúšť</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Vibrácie spúští podľa basov zvuku</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Vibrácie spúští podľa basov systémového zvuku</value></data>
   <data name="Pad_AudioTriggerRumble_Description" xml:space="preserve"><value>Poháňa motory spúští basmi zo systémového zvuku. Sila spúští riadená hrou má počas svojho pôsobenia prednosť.</value></data>
   <data name="Pad_AudioTriggerRumble_Toggle" xml:space="preserve"><value>Poháňať motory spúští zvukom</value></data>
   <data name="Pad_AudioTriggerRumble_Sensitivity" xml:space="preserve"><value>Citlivosť</value></data>
@@ -1028,6 +1032,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>Tento virtuálny ovládač osvetľuje zariadenie rovnakými režimami, aké má svetelná lišta ovládača DualSense, nastavenými tu iba pre tento ovládač. Na virtuálnom ovládači PlayStation hra, ktorá zapisuje do svetelnej lišty, prevezme kontrolu rovnako ako na ovládači DualSense.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Ovládať osvetlenie tohto zariadenia</value></data>
   <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>Ovládanie osvetlenia</value></data>
+  <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Ovládať osvetlenie tohto zariadenia, Prevzatie osvetlenia</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>Keď je vypnuté, tento virtuálny ovládač zariadenie neosvetľuje. Jeho farbu môže stále nastaviť riadok výrobcu alebo iné zariadenie rovnakého druhu osvetlené cez ten istý softvér. Makro Nastaviť farbu Chroma na tomto virtuálnom ovládači stále zafarbí zariadenie Razer.</value></data>
   <data name="Pad_Lighting_ClaimLevel" xml:space="preserve"><value>Prevzatie osvetlenia</value></data>
   <data name="Pad_Lighting_ClaimLevel_Colors" xml:space="preserve"><value>Iba farby</value></data>
@@ -1084,6 +1089,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice" xml:space="preserve"><value>Podľa zvukového zariadenia</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice_Picker" xml:space="preserve"><value>Zvukové zariadenie</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>Indikačné LED</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Jas LED, Vzor hráča, Režim LED stlmenia</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>Rad čísla hráča (5 LED pod touchpadom) a LED stlmenia nad mikrofónom. Ovládanie jasu fyzicky ovplyvňuje iba rad hráča. Firmvér sprístupňuje stavy LED stlmenia (Vypnuté / Svieti / Pulzuje), ale nie samostatný register jasu stlmenia.</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>Resetovať svetelnú lištu</value></data>
   <data name="Pad_ResetIndicatorLeds" xml:space="preserve"><value>Resetovať indikačné LED</value></data>
@@ -1558,6 +1564,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Kalibrovať stred</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Stredový bod</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Mŕtva zóna</value></data>
+  <data name="Pad_More_Stick" xml:space="preserve"><value>Posuny stredu, tvar mŕtvej zóny a hodnoty pre každú os, krivka pre každú os, rozsah, riadenie</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Rozsah</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Kalibrovať hranicu je odporúčaný spôsob, ako páčku presne vyrovnať. Zmapuje okraj, ktorý páčka fyzicky dosiahne, a potom proporcionálne preškáluje každú polohu podľa tohto nameraného okraja, takže celý prirodzený pohyb v každom uhle a pri každom vychýlení sa premietne na ideálny kruh bez orezania. Štyri posuvníky nižšie iba obmedzujú hlavné osi. Používajte ich na zámerné obmedzenie rozsahu, nie na jeho opravu.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Vzorkuje sa...</value></data>
@@ -1891,6 +1898,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Číslo touchpadu</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Na ktorý touchpad tohto ovládača sa vzťahujú nastavenia nižšie. Každý touchpad má vlastné gestá, správanie myši a oblasť ukazovateľa.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Rozpoznávanie gest</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Zapína gestá tohto touchpadu</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Povoliť gestá na tomto touchpade</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Hlavný vypínač pre tento touchpad. Keď je vypnutý, pre tento touchpad sa nespúšťajú žiadne deskriptory gest. Existujúce mapovania prstov, kliknutí a polohy fungujú ďalej.</value></data>
   <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>Rozpoznávať</value></data>
@@ -1901,6 +1909,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>Ochranný čas</value></data>
   <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>Po spustení gesta sa nové gestá na tomto touchpade počas zadaného počtu milisekúnd ignorujú. Zabraňuje opakovanému spúšťaniu pri rýchlom pohybe tam a späť.</value></data>
   <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>Vstavané gestá</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Potiahnutia, klepnutia, štipnutia, tvary</value></data>
   <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>Potiahnutia v 4 smeroch (hore / dole / vľavo / vpravo)</value></data>
   <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>Potiahnutia v 8 smeroch (pridá uhlopriečky)</value></data>
   <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>Dĺžka potiahnutia (0..1)</value></data>
@@ -1926,6 +1935,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>Gestá tvarov (kruh, štvorec, trojuholník, Z, fajka)</value></data>
   <data name="Pad_Touchpad_MatchThreshold" xml:space="preserve"><value>Prah zhody tvaru</value></data>
   <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>Vlastné gestá</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Nahrajte si vlastné</value></data>
   <data name="Pad_Touchpad_RecordNew" xml:space="preserve"><value>+ Nahrať nové gesto</value></data>
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>Pre tento profil nie sú nahraté žiadne vlastné gestá. Kliknutím na Nahrať nové gesto nejaké zachytíte.</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 prst</value></data>
@@ -1933,6 +1943,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
 
   <!-- Stick / D-pad output card -->
   <data name="Pad_Touchpad_Stick_Header" xml:space="preserve"><value>Výstup páčky / D-padu</value></data>
+  <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Touchpad ako páčka alebo D-pad</value></data>
   <data name="Pad_Touchpad_Stick_Subtitle" xml:space="preserve"><value>Zmení touchpad na virtuálnu analógovú páčku alebo D-pad. Výstup sa ukotví v mieste, kde sa prst prvýkrát dotkne. Aktuálna poloha voči tejto kotve určuje hodnotu páčky a (voliteľne) zachytené smery D-padu.</value></data>
   <data name="Pad_Touchpad_StickEnabled" xml:space="preserve"><value>Povoliť výstup páčky / D-padu</value></data>
   <data name="Pad_Touchpad_StickEnabled_Tooltip" xml:space="preserve"><value>Zobrazí vo výbere mapovania deskriptory touchpadu Páčka X, Páčka Y a D-pad. Funguje popri existujúcich zdrojoch prstov a gest touchpadu, nie namiesto nich.</value></data>
@@ -1947,6 +1958,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
 
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Výstup myši</value></data>
+  <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Invertovanie, Zotrvačnosť, Odozva, Zrýchlenie, švihnutie</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Ladí rýchlosť kurzora, keď je prst na touchpade namapovaný na X/Y myši na virtuálnom ovládači Klávesnica / myš. Predvolená hodnota je 1.0. Zvýšením ktorejkoľvek osi kurzor zrýchlite, znížením spomalíte. Invertovanie obráti ktorúkoľvek os.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Citlivosť myši X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Násobiteľ pre vodorovný posun touchpad → myš. Pod 1.0 kurzor spomaľuje. Nad 1.0 ho zrýchľuje.</value></data>
@@ -1974,6 +1986,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Pad_Touchpad_RotateThreshold_Tooltip" xml:space="preserve"><value>O koľko sa musia dva prsty otočiť, aby sa spustilo otočenie.</value></data>
   <data name="Pad_ResetTouchpadRotateThresholdDegrees" xml:space="preserve"><value>Resetovať prah otočenia</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>Absolútny ukazovateľ</value></data>
+  <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>Časť obrazovky, ktorú touchpad pokrýva</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Ladí zdroje Ukazovateľ touchpadu X/Y, ktoré presúvajú kurzor na polohu prsta na touchpade (namapujte ich na X/Y myši na virtuálnom ovládači Klávesnica / myš). Veľkosť 1.00 so stredom 0.50 mapuje touchpad na celú obrazovku. Zmenšením veľkosti obmedzíte kurzor na časť obrazovky a posunutím stredu ju umiestnite.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Šírka oblasti</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Šírka oblasti obrazovky, na ktorú sa touchpad mapuje, ako podiel šírky obrazovky. 1.00 pokrýva celú šírku, 0.50 obmedzí kurzor na polovicu obrazovky.</value></data>
@@ -1986,12 +1999,14 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
 
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Haptika pri potiahnutí</value></data>
+  <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>Tiknutia pri pohybe prsta</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Pri pohybe prsta po tomto touchpade vysiela haptické impulzy ovládača, podobne ako tiknutia trackpadu v Steam Input. Ovládače Steam Controller a Steam Deck tikajú aktuátorom pod touchpadom, DualSense a DualShock 4 pulzujú vibračnými motormi.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Povoliť haptiku pri potiahnutí</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>Vyšle krátke haptické tiknutie zakaždým, keď sa prst na tomto touchpade posunie o nastavenú vzdialenosť. Dotyk prstom ani kliknutie touchpadu tiknutie nikdy nespustia. Predvolene vypnuté.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>Intenzita impulzu</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity_Tooltip" xml:space="preserve"><value>Sila každého tiknutia. Vibrácie hry majú vždy prednosť, ak sú silnejšie.</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Header" xml:space="preserve"><value>Syntetický tlak</value></data>
+  <data name="Pad_SyntheticPressure_FoldHint" xml:space="preserve"><value>Tlak pre touchpady, ktoré hlásia dotyk ako plný</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Subtitle" xml:space="preserve"><value>Simuluje tlakové tlačidlá DualShock 2 / DualShock 3 na touchpadoch, ktoré hlásia dotyk ako plný tlak (DualShock 4, DualSense, Steam Controller 2015). Keď je povolené, zdroje mapovania Tlak tohto zariadenia čítajú žiadny dotyk ako 0 %, pokojný dotyk ako Úroveň tlaku dotyku a kliknutie touchpadu ako 100 %.</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled" xml:space="preserve"><value>Povoliť syntetický tlak</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled_Tooltip" xml:space="preserve"><value>Upraví zdroje mapovania Tlak tohto zariadenia do troch krokov: žiadny dotyk sa číta ako 0 %, pokojný dotyk ako Úroveň tlaku dotyku a kliknutie touchpadu ako 100 %. Predvolene vypnuté, čím sa na touchpadoch so skutočným analógovým tlakom zachovajú surové hodnoty.</value></data>
@@ -2169,7 +2184,9 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Nastavte, ako pohybový senzor tohto ovládača riadi výstup myši a páčky. Kalibrujte na rovnom povrchu, aby sa vynuloval drift v pokoji, a potom podľa chuti dolaďte citlivosť, vyhladzovanie a pravidlá aktivácie.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibrácia</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Citlivosť</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Jednotky, Priestor, invertovanie osí, Kalibrácia podľa reálneho sveta</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Tvarovanie odozvy</value></data>
+  <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Mŕtva zóna, vyhladzovanie, Zrýchlenie, Výstupná krivka</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Priestor</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Ako sa interpretuje pohyb gyroskopu. Lokálny používa surové osi ovládača. Hráč premieta vodorovný pohyb na skutočnú zvislicu (gravitáciu), takže rovnaké otočenie zápästím vždy otočí kameru bez ohľadu na to, ako ovládač držíte. Svet navyše premieta zvislý pohyb na osi sveta.</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>Držanie</value></data>
@@ -2183,11 +2200,13 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Pad_ResetGyroInvertYaw" xml:space="preserve"><value>Resetovať invertovanie otáčania</value></data>
   <data name="Pad_ResetGyroInvertRoll" xml:space="preserve"><value>Resetovať invertovanie náklonu</value></data>
   <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>Kompas</value></data>
+  <data name="Pad_Compass_FoldHint" xml:space="preserve"><value>Drží otáčanie podľa magnetického severu</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Tento ovládač má magnetometer. Ukotvenie otáčania k magnetickému severu odstráni pomalý vodorovný drift pri mierení gyroskopom. Najprv kalibrujte: stlačte Kalibrovať, niekoľko sekúnd otáčajte ovládačom do všetkých smerov v tvare osmičky a potom stlačte znova.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Ukotviť otáčanie ku kompasu</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Pridá malú korekčnú rýchlosť, ktorá ťahá vodorovné mierenie k magnetickému kurzu, takže drift sa nemôže hromadiť. Vyžaduje uloženú kalibráciu magnetometra. Vzorky narušené blízkym kovom alebo magnetmi sa automaticky odmietnu.</value></data>
   <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Resetovať na predvolené (vypnuté)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Simulácia sklonu a náklonu</value></data>
+  <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Sklon a náklon vypočítané z akcelerometra</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>Gyroskop tohto ovládača sníma iba otáčanie doľava a doprava. So zapnutou simuláciou PadForge odvodí sklon a náklon z akcelerometra a pošle ich spolu s otáčaním z gyroskopu do riadkov mapovania a do pohybu virtuálneho ovládača. Akcelerometer nerozozná posun od naklonenia, takže posunutie ovládača do strany alebo dopredu bez otočenia sa prečíta ako krátka rotácia.</value></data>
   <data name="Settings_GyroSimulation" xml:space="preserve"><value>Simulovať sklon a náklon</value></data>
   <data name="Settings_GyroSimulation_Tooltip" xml:space="preserve"><value>Doplní sklon a náklon rýchlosťami odvodenými z akcelerometra. Otáčanie zostáva vlastnou hodnotou gyroskopu. Predvolene vypnuté.</value></data>
@@ -2228,6 +2247,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Dole (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Hore (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Aktivácia</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Tlačidlo aktivácie mierenia, Režim aktivácie, Prah ľahkého mierenia</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Voliteľné podmienky, ktoré obmedzujú, kedy je gyroskop aktívny. Nastaviť možno vychýlenie pravej páčky aj tlačidlo aktivácie mierenia. Gyroskop pracuje, iba kým sú splnené všetky nastavené podmienky.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Lokálny</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Hráč</value></data>
@@ -2278,6 +2298,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Naklonenie gyroskopu X</value></data>
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>Naklonenie gyroskopu Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>Naklonenie gyroskopu</value></data>
+  <data name="Pad_GyroTilt_FoldHint" xml:space="preserve"><value>Rozsah plného naklonenia, Mŕtva zóna naklonenia</value></data>
   <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>Obálka pre vstupy Naklonenie gyroskopu X / Naklonenie gyroskopu Y: podržte naklonenie a páčka podrží svoje vychýlenie, ako v režime Joystick Deflection v Steame. Plné vychýlenie nastane pri rozsahu, ktorý tu nastavíte, a vycentrovanie gyroskopu znova vynuluje pokojový úchop. Otáčanie (otočenie ovládača naplocho) gravitácia nezaznamená, preto tieto vstupy nemení.</value></data>
   <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>Rozsah plného naklonenia</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>Stupne naklonenia od pokojového úchopu, ktoré sa počítajú ako plné vychýlenie páčky. Menej = citlivejšie. 25° je najbežnejšia hodnota v konfiguráciách Steamu.</value></data>
@@ -2479,6 +2500,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Min. rozsah Y (dole)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Max. rozsah Y (hore)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Os X</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>Obe osi</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Os Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Rozsah</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-mŕtva zóna</value></data>
@@ -2489,6 +2511,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Silová spätná väzba / vibrácie / haptika</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Zosilnenie pre každý motor, vibrácie spúští, zámena motorov</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Celkové zosilnenie</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Ľavý motor</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Pravý motor</value></data>
@@ -2500,6 +2523,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Konštantná sila</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Stála sila, kým ju nevypnete</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Pôsobí na toto zariadenie nepretržitou silou, kým ju nevypnete. Sila riadená hrou z akéhokoľvek zdroja má počas svojho pôsobenia prednosť a po skončení hry sa táto sila obnoví.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Použiť konštantnú silu</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Ťahaním v mriežke nastavíte smer a silu.</value></data>
@@ -2826,6 +2850,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
 
   <!-- ═══ Audio Bass Rumble ═══ -->
   <data name="Settings_AudioRumble" xml:space="preserve"><value>Vibrácie podľa zvuku</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Vibrácie podľa basov systémového zvuku</value></data>
   <data name="Settings_AudioRumbleDesc" xml:space="preserve"><value>Poháňa vibrácie ovládača basovými frekvenciami systémového zvuku.</value></data>
   <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>Povoliť vibrácie podľa zvuku</value></data>
   <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>Citlivosť</value></data>
@@ -2936,6 +2961,8 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Resetovať vonkajšiu mŕtvu zónu nakláňania</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Resetovať orientáciu ovládača</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Riadenie pohybom</value></data>
+  <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° až {1}°</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Mŕtve zóny nakláňania, Orientácia ovládača</value></data>
   <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Nastavenia vstupu Pohyb – nakláňanie: nakláňajte ovládač ako volant. Namapujte „Pohyb – nakláňanie“ na os páčky z rozbaľovacieho zoznamu vstupov na karte Mapovania.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Resetovať riadenie pohybom</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick stick (pravá páčka)</value></data>
@@ -2944,6 +2971,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Mapping_LeftStickRing" xml:space="preserve"><value>Kruh ľavej páčky</value></data>
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>Kruh pravej páčky</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick stick</value></data>
+  <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Ladenie vstupov Flick stick</value></data>
   <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Nastavenia vstupov Flick stick: namierte páčku a kamera sa otočí rovnakým smerom, pohybom po okraji jemne dotáčate. Namapujte „Flick stick (pravá páčka)“ na Myš X z rozbaľovacieho zoznamu vstupov na karte Mapovania, v ľubovoľnej vrstve.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Resetovať flick stick</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Body na 360°</value></data>
@@ -2980,6 +3008,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Keď sa vrstva s flick stick aktivuje pri už vychýlenej páčke, švihnutie sa vykoná okamžite. Vypnuté ponechá kameru na mieste a otáčanie sleduje od aktuálneho uhla páčky.</value></data>
   <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Resetovať povolenie švihnutia pri aktivácii</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Odozva pri plnom natočení</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Signál na doraze pre páčku v režime riadenia</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Keď sa páčka v režime riadenia natočí až na doraz, prehrá sa signál (vibrácie, spúšť alebo svetelná lišta), aby ste cítili hranicu. Predvolene je všetko vypnuté.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Impulz vibrácií na doraze</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Vibrácie spúšte na doraze</value></data>
@@ -3035,6 +3064,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Zvuk</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Zvuky makier a zrkadlený systémový zvuk sa prehrávajú cez vstavaný reproduktor vybratého ovládača, cez USB alebo Bluetooth. Zariadenie vyberte v rozbaľovacom zozname vyššie. Všetky nastavenia tu sa riadia ním.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Výstup zvuku</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Zdroj zrkadlenia, haptika, Hlasitosť slúchadiel, Prelínanie kanálov, Parametric EQ, Limiter</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Zvuky sa automaticky smerujú do vybratého ovládača. Cez USB sa vlastné zvukové zariadenie ovládača priradí podľa hardvérového kontajnera. Cez Bluetooth sa zvuk streamuje v rámcoch Sony HID.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Zdroj zrkadlenia</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Ktoré prehrávacie zariadenie sa zrkadlí do reproduktora ovládača. Hry, ktoré posielajú určité zvuky na samostatné prehrávacie zariadenie, môžu cieliť na toto.</value></data>
@@ -3108,6 +3138,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>Súbor nie je čitateľný profil PadForge.</value></data>
   <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Vyberte zvuk z {0}</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Zvukové balíky</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Súbory zip so zvukmi pre zvukové makrá</value></data>
   <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>Zvukový balík je jeden súbor zip so zvukmi s príponou .pfsounds. Pridajte ho tu a potom vyberajte jeho zvuky v ľubovoľnom zvukovom makre. PadForge číta priamo zo súboru a nikdy ho nerozbaľuje. Ak chcete zostať prenosní, ukladajte balíky vedľa súboru PadForge.exe.</value></data>
   <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>Pridať balík…</value></data>
   <data name="Pad_Audio_Packages_Add_Tooltip" xml:space="preserve"><value>Pridá existujúci súbor .pfsounds do zoznamu.</value></data>
@@ -3133,6 +3164,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Emoji_Category_Objects" xml:space="preserve"><value>Predmety</value></data>
   <data name="Emoji_Category_Symbols" xml:space="preserve"><value>Symboly</value></data>
   <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>Balíky ikon</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Súbory zip s obrázkami pre bunky ponuky</value></data>
   <data name="Pad_Menus_IconPackages_Desc" xml:space="preserve"><value>Balík ikon je jeden súbor zip s obrázkami s príponou .pficons. Pridajte ho tu a potom vyberajte jeho ikony v ľubovoľnej bunke ponuky. PadForge číta priamo zo súboru a nikdy ho nerozbaľuje. Ak chcete zostať prenosní, ukladajte balíky vedľa súboru PadForge.exe.</value></data>
   <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>Pridať balík…</value></data>
   <data name="Pad_Menus_IconPackages_Add_Tooltip" xml:space="preserve"><value>Pridá existujúci súbor .pficons do zoznamu.</value></data>
@@ -3542,6 +3574,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>Prepnúť na vrstvu {0}</value></data>
   <data name="Macro_SwitchLayer_Hint" xml:space="preserve"><value>Prepne tento slot na zvolenú vrstvu Shift. Vrstva zostane aktívna až do ďalšieho prepnutia, aktivátora Zaistenie alebo Cyklus alebo prepnutia profilu. Základná vráti na základnú vrstvu. Ak toto makro obmedzíte na vrstvu vyššie, rovnaké tlačidlo môže v každej vrstve prepínať inam.</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>LED tlačidla Guide</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Žiara tlačidla Guide alebo Home</value></data>
   <data name="Pad_Lighting_GuideLed_Subtitle" xml:space="preserve"><value>Jas svietiaceho tlačidla Guide alebo Home. Ovládače Xbox One a novšie ho prijímajú cez USB. Steam Controller z roku 2015 ho prijíma pri akomkoľvek pripojení a všetky Steam Controllery zdieľajú jeden jas. Ovládače Switch Pro Controller a pravé Joy-Con (samostatne, v páre alebo v nabíjacom držiaku) ho prijímajú pri akomkoľvek pripojení.</value></data>
   <data name="Pad_Lighting_GuideLed_Mode_Tooltip" xml:space="preserve"><value>Predvolené zariadením ponechá LED presne tak, ako ju nastavil firmvér ovládača. Pevný jas drží úroveň nastavenú nižšie. Úroveň batérie rozsvieti LED tým viac, čím je batéria nabitejšia, a nikdy neklesne pod 10 %. Ovládače Xbox prijímajú príkazy pre LED tlačidla Guide iba cez USB, preto toto nastavenie nemá pri pripojení cez Bluetooth žiadny vplyv. Ovládače Switch prijímajú príkazy pre LED tlačidla Home pri akomkoľvek pripojení.</value></data>
   <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>Predvolené zariadením</value></data>
@@ -3906,6 +3939,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Basové shakery</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Smeruje vibrácie hry a silovú spätnú väzbu, ktoré tento virtuálny ovládač prijíma, na zvukový výstup ako nízkofrekvenčné tóny pre basové shakery a subwoofery.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibrácie do zvuku</value></data>
+  <data name="Pad_More_BassShakers" xml:space="preserve"><value>Výstupné zariadenie, kanály, zosilnenie, tón pre každý motor</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Funguje s virtuálnymi ovládačmi Xbox, DualShock 3, DualShock 4 / DualSense a Nintendo Switch Pro, ďalej s rozšírenými virtuálnymi ovládačmi so silovou spätnou väzbou, napríklad pretekárskymi volantmi, a s ovládačom Steam Deck Controller (Composite). Spätná väzba z hry a Otestovať vibrácie sa prehrávajú cez zvukový výstup. Vibrácie z makier zostávajú na ovládači.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Resetovať vibrácie do zvuku</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Smerovať vibrácie na zvukový výstup</value></data>
@@ -4352,6 +4386,7 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Čaká sa na údaje zo zdieľanej pamäte FreeTrack.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>Zdieľaná pamäť FreeTrack nie je k dispozícii.</value></data>
   <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Vibrácie podľa uhla riadenia</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Vibrácie, ktoré sa zosilňujú so vzďaľovaním páčky od stredu</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Pridáva nepretržité vibrácie, keď sa vybratá os virtuálnej páčky vzďaľuje od stredu. Používa namapovaný výstup zo všetkých priradených zdrojov. Pri voľbe Rozdeliť podľa smeru záporný pohyb poháňa ľavý motor a kladný pravý. Voľba Ľavý motor alebo Pravý motor posiela oba smery na tento jeden motor. Pre výstup Xbox a PlayStation so zariadeniami s vibráciami. Preskakuje volanty, iné zariadenia so stálou silovou spätnou väzbou a pedále Fanatec.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Povoliť vibrácie podľa uhla riadenia</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Virtuálna os</value></data>
@@ -4706,6 +4741,7 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="Status_FalconDriverDeclined" xml:space="preserve"><value>Windows nenainštaloval ovládač Force Dimension. Ak sa Windows opýta, či dôverujete Force Dimension, vyberte Nainštalovať.</value></data>
   <data name="Status_FalconDriverNotBound" xml:space="preserve"><value>Ovládač je nainštalovaný, ale Falcon sa naň ešte neprepol. Odpojte Falcon a znova ho pripojte.</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>Ráz, trasenie, opora, predpätie, gravitácia</value></data>
   <data name="Pad_Falcon_Description" xml:space="preserve"><value>PadForge približne tisíckrát za sekundu vypočíta každú silu pôsobiacu na rukoväť zariadenia Falcon podľa polohy rukoväte a toho, čo hra prehráva. Tieto nastavenia patria tomuto slotu.</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>Resetovať Novint Falcon</value></data>
   <data name="Pad_Falcon_Feel" xml:space="preserve"><value>Pocit</value></data>

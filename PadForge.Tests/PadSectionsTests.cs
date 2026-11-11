@@ -710,10 +710,12 @@ namespace PadForge.Tests
                 {
                     Assert.Equal("Output", row.Groups["name"].Value);
                     Assert.Equal("TabController", row.Groups["part"].Value);
-                    // The script opens a card by an id that ends in FoldCard.
+                    // The script opens every fold card and More row under
+                    // the group: each is an Expander, which reports as a
+                    // group, and a combo box that expands too is left alone.
                     var cards = Named(page, "OutputGroup").Descendants().Where(e => e.Name.LocalName == "FoldCard").ToList();
                     Assert.Equal(new[] { "SocdFoldCard", "KbmSocdFoldCard", "KeepAwakeFoldCard" }, cards.Select(Name));
-                    Assert.Contains("if ($card.Current.AutomationId -notlike \"*FoldCard\") { continue }", script);
+                    Assert.Contains("if ($card.Current.ControlType -ne [System.Windows.Automation.ControlType]::Group) { continue }", script);
                 }
                 Assert.True(tabOfId.TryGetValue(id, out int tab), row.Groups["name"].Value + " names an id the page does not have: " + id);
                 Assert.True(seen.Add(tab), "two rows reach tab " + tab);

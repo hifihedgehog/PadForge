@@ -917,6 +917,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Impulssiliipaisimet</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulssiliipaisimet</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Liipaisinkohtainen vahvistus, moottorien vaihto, mukautuvien liipaisimien värinät</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Välittää liipaisinkohtaiset moottorikomennot (Xbox Impulse Triggers) virtuaaliohjaimelta liitettyyn fyysiseen Xbox One-, Elite- tai Series-ohjaimeen. Pelin ohjaama liipaisintärinä välittyy automaattisesti. Alla olevat säätimet skaalaavat voimakkuutta liipaisinkohtaisesti.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Vasen liipaisin</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Oikea liipaisin</value></data>
@@ -935,7 +936,9 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Palauta vasen liipaisin</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Palauta oikea liipaisin</value></data>
   <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Jatkuva liipaisinvoima</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Tasainen voima kumpaankin liipaisinmoottoriin</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Liipaisinreititys</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Ohjaa päämoottorien tärinän liipaisimiin</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Reititä päätärinämoottorit liipaisinkanavaan liipaisin kerrallaan. Toimii XInput-tärinän ja voimapalautteen kanssa. Aktivoija voi rajata sen niin, että liipaisin surisee vain, kun pidät painiketta painettuna.</value></data>
   <data name="Pad_ResetTriggerRouting" xml:space="preserve"><value>Palauta liipaisinreititys</value></data>
   <data name="Pad_TriggerRouting_LeftTrigger" xml:space="preserve"><value>Vasen liipaisin</value></data>
@@ -967,6 +970,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Palauta vasen liipaisin</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Palauta oikea liipaisin</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Liipaisintärinä äänen bassosta</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Liipaisintärinä järjestelmän äänen bassosta</value></data>
   <data name="Pad_AudioTriggerRumble_Description" xml:space="preserve"><value>Ohjaa liipaisinmoottoreita järjestelmän äänen bassotaajuuksilla. Pelin ohjaama liipaisinvoima ohittaa tämän niin kauan kuin se on aktiivinen.</value></data>
   <data name="Pad_AudioTriggerRumble_Toggle" xml:space="preserve"><value>Ohjaa liipaisinmoottoreita äänellä</value></data>
   <data name="Pad_AudioTriggerRumble_Sensitivity" xml:space="preserve"><value>Herkkyys</value></data>
@@ -1028,6 +1032,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>Tämä virtuaaliohjain valaisee laitteen samoilla tiloilla kuin DualSense-ohjaimen valopalkissa on, ja ne asetetaan täällä vain tälle ohjaimelle. PlayStation-virtuaaliohjaimessa valopalkkia ohjaava peli ottaa ohjauksen samoin kuin DualSense-ohjaimessa.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Ohjaa tämän laitteen valaistusta</value></data>
   <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>Valaistuksen ohjaus</value></data>
+  <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Ohjaa tämän laitteen valaistusta, Valaistuksen haltuunotto</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>Pois-asetus estää tätä virtuaaliohjainta valaisemasta laitetta. Valmistajarivi tai toinen saman ohjelmiston kautta valaistu samanlainen laite voi silti asettaa sen värin. Tämän virtuaaliohjaimen Aseta Chroma-väri -makro värittää silti Razer-laitteen.</value></data>
   <data name="Pad_Lighting_ClaimLevel" xml:space="preserve"><value>Valaistuksen haltuunotto</value></data>
   <data name="Pad_Lighting_ClaimLevel_Colors" xml:space="preserve"><value>Vain värit</value></data>
@@ -1084,6 +1089,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice" xml:space="preserve"><value>Seuraa äänilaitetta</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice_Picker" xml:space="preserve"><value>Äänilaite</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>Merkkivalot</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>LED-valojen kirkkaus, Pelaajakuvio, Mykistyksen LED-tila</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>Pelaajanumerorivi (5 LED-valoa kosketuslevyn alla) ja mykistyksen LED-valo mikrofonin yläpuolella. Kirkkauden säätö vaikuttaa fyysisesti vain pelaajariviin. Laiteohjelmisto tarjoaa mykistyksen LED-valon tilat (Pois / Jatkuva / Sykkivä), mutta ei erillistä mykistyksen kirkkausrekisteriä.</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>Palauta valopalkki</value></data>
   <data name="Pad_ResetIndicatorLeds" xml:space="preserve"><value>Palauta merkkivalot</value></data>
@@ -1558,6 +1564,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Kalibroi keskipiste</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Keskipiste</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Kuollut alue</value></data>
+  <data name="Pad_More_Stick" xml:space="preserve"><value>Keskipisteen siirrot, kuolleen alueen muoto ja akselikohtaiset arvot, käyrä kullekin akselille, vaihteluväli, ohjaus</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Vaihteluväli</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Kalibroi reuna -toiminto on suositeltu tapa oikaista sauva. Se kartoittaa reunan, johon sauva fyysisesti yltää, ja skaalaa sitten jokaisen asennon suhteessa mitattuun reunaan, jolloin koko alkuperäinen liike jokaisessa kulmassa ja jokaisella poikkeamalla vastaa ihanteellista ympyrää ilman leikkautumista. Alla olevat neljä liukusäädintä rajaavat vain pääakseleita. Käytä niitä vaihteluvälin tarkoitukselliseen rajoittamiseen, ei sen korjaamiseen.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Näytteistetään...</value></data>
@@ -1891,6 +1898,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Kosketuslevyn numero</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Mitä tämän ohjaimen kosketuslevyä alla olevat asetukset koskevat. Jokaisella kosketuslevyllä on omat eleensä, hiiren tuntumansa ja osoitinalueensa.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Eleiden tunnistus</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Ottaa tämän kosketuslevyn eleet käyttöön</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Ota eleet käyttöön tällä kosketuslevyllä</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Tämän kosketuslevyn pääkytkin. Kun se on pois päältä, tämän kosketuslevyn elekuvaajat eivät laukea. Olemassa olevat sormi-, napsautus- ja sijaintimääritykset toimivat edelleen.</value></data>
   <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>Tunnista</value></data>
@@ -1901,6 +1909,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>Odotusaika</value></data>
   <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>Kun ele laukeaa, tämän kosketuslevyn uudet eleet ohitetaan näin monen millisekunnin ajan. Estää nopean edestakaisen liikkeen aiheuttamat toistolaukaisut.</value></data>
   <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>Sisäänrakennetut eleet</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Pyyhkäisyt, napautukset, nipistykset, muodot</value></data>
   <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>4-suuntaiset pyyhkäisyt (ylös / alas / vasemmalle / oikealle)</value></data>
   <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>8-suuntaiset pyyhkäisyt (lisää vinosuunnat)</value></data>
   <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>Pyyhkäisyn pituus (0..1)</value></data>
@@ -1926,6 +1935,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>Muotoeleet (ympyrä, neliö, kolmio, Z, valintamerkki)</value></data>
   <data name="Pad_Touchpad_MatchThreshold" xml:space="preserve"><value>Muodon vastaavuuden kynnys</value></data>
   <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>Mukautetut eleet</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Nauhoita omasi</value></data>
   <data name="Pad_Touchpad_RecordNew" xml:space="preserve"><value>+ Nauhoita uusi ele</value></data>
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>Tälle profiilille ei ole nauhoitettu mukautettuja eleitä. Nauhoita ele valitsemalla Nauhoita uusi ele.</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 sormi</value></data>
@@ -1933,6 +1943,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
 
   <!-- Stick / D-pad output card -->
   <data name="Pad_Touchpad_Stick_Header" xml:space="preserve"><value>Sauva- / ristiohjainlähtö</value></data>
+  <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Käytä kosketuslevyä sauvana tai ristiohjaimena</value></data>
   <data name="Pad_Touchpad_Stick_Subtitle" xml:space="preserve"><value>Muuta kosketuslevy virtuaaliseksi analogiseksi sauvaksi tai ristiohjaimeksi. Lähtö ankkuroituu kohtaan, johon sormi ensin osuu. Nykyinen sijainti suhteessa ankkuriin määrää sauvan arvon ja (valinnaisesti) lukittuvat ristiohjaimen suuntien totuusarvot.</value></data>
   <data name="Pad_Touchpad_StickEnabled" xml:space="preserve"><value>Ota sauva- / ristiohjainlähtö käyttöön</value></data>
   <data name="Pad_Touchpad_StickEnabled_Tooltip" xml:space="preserve"><value>Tuo määritysvalitsimeen kosketuslevyn kuvaajat Sauva X, Sauva Y ja Ristiohjain. Toimii olemassa olevien kosketuslevyn sormi- ja elelähteiden rinnalla eikä niiden sijaan.</value></data>
@@ -1947,6 +1958,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
 
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Hiirilähtö</value></data>
+  <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Käännä, Inertia, Vaste, Kiihdytys, heitto</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Säätää osoittimen nopeutta, kun kosketuslevyn sormi on määritetty hiiren X/Y-akseleille Näppäimistö / hiiri -virtuaaliohjaimessa. Oletus on 1.0. Nosta kummankin akselin arvoa nopeuttaaksesi osoitinta tai laske hidastaaksesi. Käännä-asetus kääntää kumman tahansa akselin.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Hiiren herkkyys X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Kerroin vaakasuuntaiselle kosketuslevy → hiiri -muutokselle. Alle 1.0 hidastaa osoitinta. Yli 1.0 nopeuttaa sitä.</value></data>
@@ -1974,6 +1986,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_Touchpad_RotateThreshold_Tooltip" xml:space="preserve"><value>Kuinka paljon kahden sormen on käännyttävä, ennen kuin kierto laukeaa.</value></data>
   <data name="Pad_ResetTouchpadRotateThresholdDegrees" xml:space="preserve"><value>Palauta kierron kynnys</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>Absoluuttinen osoitin</value></data>
+  <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>Näytön osa, johon levy yltää</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Säätää kosketuslevyn osoitin X/Y -lähteitä, jotka siirtävät osoittimen sormen kohtaan levyllä (määritä ne hiiren X/Y-akseleille Näppäimistö / hiiri -virtuaaliohjaimessa). Koko 1.00 ja keskikohta 0.50 vastaavat koko näyttöä. Pienennä kokoa rajataksesi osoittimen osaan näytöstä ja siirrä keskikohtaa sijoittaaksesi sen.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Alueen leveys</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Näytön alueen leveys, johon tämä levy kuvautuu, osuutena näytön leveydestä. 1.00 kattaa koko leveyden, 0.50 rajaa osoittimen puoleen näytöstä.</value></data>
@@ -1986,12 +1999,14 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
 
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Pyyhkäisyhaptiikka</value></data>
+  <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>Naksahdukset sormen liikkuessa</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Sykäyttää ohjaimen haptiikkaa, kun sormi liikkuu tämän kosketuslevyn poikki, kuten Steam Inputin ohjauslevyn naksahdukset. Steam Controller -ohjaimet ja Steam Deck naksauttavat levyn alla olevaa toimilaitetta, DualSense ja DualShock 4 sykäyttävät tärinämoottoreita.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Ota pyyhkäisyhaptiikka käyttöön</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>Antaa lyhyen haptisen naksahduksen aina, kun sormi liikkuu tietyn matkan tällä levyllä. Sormen laskeminen tai levyn napsautus ei koskaan naksahda. Oletuksena pois päältä.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>Pulssin voimakkuus</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity_Tooltip" xml:space="preserve"><value>Kunkin naksahduksen voimakkuus. Pelin tärinä on aina etusijalla, kun se on voimakkaampi.</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Header" xml:space="preserve"><value>Synteettinen paine</value></data>
+  <data name="Pad_SyntheticPressure_FoldHint" xml:space="preserve"><value>Paine levyille, jotka ilmoittavat kosketuksen täytenä</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Subtitle" xml:space="preserve"><value>Simuloi DualShock 2- / DualShock 3 -paineherkkiä painikkeita levyillä, jotka ilmoittavat kosketuksen täytenä paineena (DualShock 4, DualSense, Steam Controller 2015). Kun tämä on käytössä, laitteen Paine-määrityslähteet lukevat kosketuksettoman tilan arvona 0 %, lepäävän kosketuksen arvona asetetun kosketuksen painetason ja levyn napsautuksen arvona 100 %.</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled" xml:space="preserve"><value>Ota synteettinen paine käyttöön</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled_Tooltip" xml:space="preserve"><value>Muokkaa laitteen Paine-määrityslähteet kolmeen portaaseen: ei kosketusta = 0 %, lepäävä kosketus = kosketuksen painetaso ja levyn napsautus = 100 %. Oletuksena pois päältä, jolloin aidosti analogista painetta ilmoittavien levyjen raakalukemat säilyvät.</value></data>
@@ -2169,7 +2184,9 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Säädä, miten tämän ohjaimen liikeanturi ohjaa hiiri- ja sauvalähtöä. Kalibroi tasaisella pinnalla lepotilan ryöminnän nollaamiseksi ja säädä sitten herkkyys, tasoitus ja kytkentäsäännöt mieleisiksesi.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibrointi</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Herkkyys</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Yksiköt, Koordinaatisto, akselien kääntö, Todellisen maailman kalibrointi</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Vasteen muokkaus</value></data>
+  <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Kuollut alue, tasoitus, Kiihdytys, Lähtökäyrä</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Koordinaatisto</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Miten gyron liike tulkitaan. Paikallinen-tila käyttää ohjaimen raaka-akseleita. Pelaaja-tila projisoi vaakaliikkeen todellisen maailman pystysuuntaan (painovoima), joten sama ranteen kierto kääntää kameraa aina samalla tavalla riippumatta siitä, miten pidät ohjainta. Maailma-tila projisoi lisäksi pystyliikkeen maailman akseleille.</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>Pitotapa</value></data>
@@ -2183,11 +2200,13 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_ResetGyroInvertYaw" xml:space="preserve"><value>Palauta kiertymän kääntö</value></data>
   <data name="Pad_ResetGyroInvertRoll" xml:space="preserve"><value>Palauta kallistuksen kääntö</value></data>
   <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>Kompassi</value></data>
+  <data name="Pad_Compass_FoldHint" xml:space="preserve"><value>Sitoo kiertymän magneettiseen pohjoiseen</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Tässä ohjaimessa on magnetometri. Kiertymän ankkurointi magneettiseen pohjoiseen poistaa hitaan vaakasuuntaisen ryöminnän gyrotähtäyksestä. Kalibroi ensin: paina Kalibroi, kääntele ohjainta kaikkiin asentoihin kahdeksikon muodossa muutaman sekunnin ajan ja paina sitten uudelleen.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Ankkuroi kiertymä kompassiin</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Lisää pienen korjaavan nopeuden, joka vetää vaakatähtäystä kohti magneettista suuntaa, joten ryömintää ei pääse kertymään. Vaatii tallennetun magnetometrin kalibroinnin. Lähellä olevan metallin tai magneettien häiritsemät näytteet hylätään automaattisesti.</value></data>
   <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Palauta oletus (pois)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Nyökkäyksen ja kallistuksen simulointi</value></data>
+  <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Nyökkäys ja kallistus laskettuna kiihtyvyysanturista</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>Tämän ohjaimen gyro havaitsee vain kääntymisen vasemmalle ja oikealle. Kun simulointi on käytössä, PadForge johtaa nyökkäyksen ja kallistuksen kiihtyvyysanturista ja lähettää ne gyron kiertymän kanssa määritysriveille ja virtuaaliohjaimen liikkeeseen. Kiihtyvyysanturi ei erota työntöä kallistuksesta, joten ohjaimen liikuttaminen sivulle tai eteenpäin kääntämättä sitä tulkitaan lyhyeksi kierroksi.</value></data>
   <data name="Settings_GyroSimulation" xml:space="preserve"><value>Simuloi nyökkäys ja kallistus</value></data>
   <data name="Settings_GyroSimulation_Tooltip" xml:space="preserve"><value>Täyttää nyökkäyksen ja kallistuksen kiihtyvyysanturista johdetuilla nopeuksilla. Kiertymä pysyy gyron omana lukemana. Oletuksena pois päältä.</value></data>
@@ -2228,6 +2247,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Alas (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Ylös (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Kytkentä</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Tähtäyksen kytkentäpainike, Kytkentätila, Helpon tähtäyksen kynnys</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Valinnaiset ehdot, jotka rajoittavat, milloin gyro on aktiivinen. Oikean sauvan poikkeaman ja tähtäyksen kytkentäpainikkeen voi määrittää kumpikin erikseen. Gyro toimii vain, kun jokainen määritetty ehto on aktiivinen.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Paikallinen</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Pelaaja</value></data>
@@ -2278,6 +2298,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Gyron kaltevuus X</value></data>
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>Gyron kaltevuus Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>Gyron kaltevuus</value></data>
+  <data name="Pad_GyroTilt_FoldHint" xml:space="preserve"><value>Täyden kaltevuuden vaihteluväli, Kaltevuuden kuollut alue</value></data>
   <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>Verhokäyrä syötteille Gyron kaltevuus X / Gyron kaltevuus Y: pidä ohjainta kallellaan, niin sauva pitää poikkeamansa, kuten Steamin Joystick Deflection -tilassa. Täysi poikkeama saavutetaan tässä asettamallasi vaihteluvälillä. Gyron keskitys nollaa lepoasennon otteen. Kiertymä (ohjaimen kääntäminen vaakatasossa) ei näy painovoimalle eikä liikuta näitä syötteitä.</value></data>
   <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>Täyden kaltevuuden vaihteluväli</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>Kaltevuusasteet lepoasennosta, jotka vastaavat sauvan täyttä poikkeamaa. Pienempi = herkempi. 25° on yleisin arvo Steamin määrityksissä.</value></data>
@@ -2479,6 +2500,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Vaihteluvälin minimi Y (alas)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Vaihteluvälin maksimi Y (ylös)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X-akseli</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>Molemmat akselit</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y-akseli</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Vaihteluväli</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Kuolleen alueen kompensointi</value></data>
@@ -2489,6 +2511,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Voimapalaute / tärinä / haptiikka</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Moottorikohtainen vahvistus, liipaisintärinä, moottorien vaihto</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Kokonaisvahvistus</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Vasen moottori</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Oikea moottori</value></data>
@@ -2500,6 +2523,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Jatkuva voima</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Tasainen voima, kunnes kytket sen pois</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Käytä jatkuvaa voimaa tähän laitteeseen, kunnes kytket sen pois. Pelin ohjaama voima mistä tahansa lähteestä ohittaa sen niin kauan kuin se on aktiivinen, ja jatkuva voima palaa, kun peli lopettaa.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Käytä jatkuvaa voimaa</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Aseta suunta ja voimakkuus vetämällä ruudukon sisällä.</value></data>
@@ -2826,6 +2850,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
 
   <!-- ═══ Audio Bass Rumble ═══ -->
   <data name="Settings_AudioRumble" xml:space="preserve"><value>Äänitärinä</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Tärinä järjestelmän äänen bassosta</value></data>
   <data name="Settings_AudioRumbleDesc" xml:space="preserve"><value>Ohjaa ohjaimen tärinää järjestelmän äänen bassotaajuuksilla.</value></data>
   <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>Ota äänitärinä käyttöön</value></data>
   <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>Herkkyys</value></data>
@@ -2936,6 +2961,8 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Palauta nojauksen ulompi kuollut alue</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Palauta ohjaimen suunta</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Liikeohjaus</value></data>
+  <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>välillä {0}° ja {1}°</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Nojauksen kuolleet alueet, Ohjaimen suunta</value></data>
   <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Liikkeen nojaus -syötteen asetukset: kallista ohjainta kuin rattia. Määritä ”Liikkeen nojaus” sauva-akselille Määritykset-välilehden syötevalikosta.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Palauta liikeohjaus</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (oikea sauva)</value></data>
@@ -2944,6 +2971,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Mapping_LeftStickRing" xml:space="preserve"><value>Vasemman sauvan rengas</value></data>
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>Oikean sauvan rengas</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
+  <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Flick Stick -syötteiden säädöt</value></data>
   <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Flick Stick -syötteiden asetukset: osoita sauvalla, niin kamera kääntyy samaan suuntaan, ja hienosäädä kääntöä kiertämällä reunaa. Määritä ”Flick Stick (oikea sauva)” Hiiri X -kohteelle Määritykset-välilehden syötevalikosta millä tahansa kerroksella.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Palauta Flick Stick</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Pisteitä 360° kohden</value></data>
@@ -2980,6 +3008,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Kun Flick Stick -syötteen sisältävä kerros aktivoituu sauvan ollessa jo poikkeutettuna, heilautus laukeaa heti. Pois päältä pitää kameran paikallaan ja seuraa kiertoa sauvan nykyisestä kulmasta.</value></data>
   <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Palauta Salli heilautus aktivoitaessa</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Ohjauksen ääriasentopalaute</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Vihje ääriasennossa ohjaustilaan asetetulle sauvalle</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Kun ohjaustilaan asetettu sauva käännetään ääriasentoon asti, toistetaan vihje (tärinä, liipaisin tai valopalkki), jotta tunnet rajan. Kaikki oletuksena pois päältä.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Tärinäpulssi ääriasennossa</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Liipaisinvärinä ääriasennossa</value></data>
@@ -3035,6 +3064,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Ääni</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Makrojen äänet ja peilattu järjestelmän ääni toistetaan valitun ohjaimen sisäänrakennetusta kaiuttimesta USB- tai Bluetooth-yhteyden kautta. Valitse laite yllä olevasta pudotusvalikosta. Kaikki tämän sivun asetukset koskevat sitä.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Äänilähtö</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Peilauslähde, haptiikka, Kuulokkeiden äänenvoimakkuus, Ristisyöttö, Parametric EQ, Rajoitin</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Äänet ohjataan valittuun ohjaimeen automaattisesti. USB-yhteydellä ohjaimen oma äänipäätepiste tunnistetaan laitteistosäiliön perusteella. Bluetooth-yhteydellä ääni suoratoistetaan Sonyn HID-kehyksissä.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Peilauslähde</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Mikä toistolaite peilataan ohjaimen kaiuttimeen. Pelit, jotka lähettävät tiettyjä ääniä erilliseen toistolaitteeseen, voivat kohdistaa ne tähän.</value></data>
@@ -3108,6 +3138,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>Tiedosto ei ole luettava PadForge-profiili.</value></data>
   <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Valitse ääni paketista {0}</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Äänipaketit</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Äänimakrojen ääniä sisältävät zip-tiedostot</value></data>
   <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>Äänipaketti on yksi äänitiedostoja sisältävä zip-tiedosto, jonka tiedostopääte on .pfsounds. Lisää paketti täällä ja valitse sen ääniä missä tahansa äänimakrossa. PadForge lukee suoraan tiedostosta eikä koskaan pura sitä. Pidä paketit samassa kansiossa kuin PadForge.exe, jotta kokonaisuus pysyy siirrettävänä.</value></data>
   <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>Lisää paketti…</value></data>
   <data name="Pad_Audio_Packages_Add_Tooltip" xml:space="preserve"><value>Lisää olemassa oleva .pfsounds-tiedosto luetteloon.</value></data>
@@ -3133,6 +3164,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Emoji_Category_Objects" xml:space="preserve"><value>Esineet</value></data>
   <data name="Emoji_Category_Symbols" xml:space="preserve"><value>Symbolit</value></data>
   <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>Kuvakepaketit</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Valikkosolujen kuvia sisältävät zip-tiedostot</value></data>
   <data name="Pad_Menus_IconPackages_Desc" xml:space="preserve"><value>Kuvakepaketti on yksi kuvia sisältävä zip-tiedosto, jonka tiedostopääte on .pficons. Lisää paketti täällä ja valitse sen kuvakkeita mihin tahansa valikon soluun. PadForge lukee suoraan tiedostosta eikä koskaan pura sitä. Pidä paketit samassa kansiossa kuin PadForge.exe, jotta kokonaisuus pysyy siirrettävänä.</value></data>
   <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>Lisää paketti…</value></data>
   <data name="Pad_Menus_IconPackages_Add_Tooltip" xml:space="preserve"><value>Lisää olemassa oleva .pficons-tiedosto luetteloon.</value></data>
@@ -3542,6 +3574,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>Vaihda kerrokseen {0}</value></data>
   <data name="Macro_SwitchLayer_Hint" xml:space="preserve"><value>Siirtää tämän paikan valittuun vaihtokerrokseen. Kerros pysyy aktiivisena seuraavaan vaihtoon, Lukitus- tai Kierto-aktivoijaan tai profiilin vaihtoon asti. Perus palaa peruskerrokseen. Rajaa tämä makro yllä kerrokseen, jos haluat saman painikkeen siirtyvän eri kerroksissa eri tavalla.</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>Guide-painikkeen LED-valo</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Guide- tai Home-painikkeen hehku</value></data>
   <data name="Pad_Lighting_GuideLed_Subtitle" xml:space="preserve"><value>Hehkuvan Guide- tai Home-painikkeen kirkkaus. Xbox One- ja uudemmat ohjaimet hyväksyvät sen USB-yhteydellä. Vuoden 2015 Steam Controller hyväksyy sen millä tahansa yhteydellä, ja kaikilla Steam Controller -ohjaimilla on yhteinen kirkkaus. Switch Pro Controller -ohjaimet ja oikeat Joy-Con-ohjaimet (yksin, parina tai latauskahvassa) hyväksyvät sen millä tahansa yhteydellä.</value></data>
   <data name="Pad_Lighting_GuideLed_Mode_Tooltip" xml:space="preserve"><value>Laitteen oletus -tila jättää LED-valon täsmälleen sellaiseksi kuin ohjaimen laiteohjelmisto sen asetti. Kiinteä kirkkaus -tila pitää alla olevan tason. Akun varaus -tila tekee valosta sitä kirkkaamman, mitä täydempi akku on, eikä laske koskaan alle 10 %:n. Xbox-ohjaimet hyväksyvät Guide-LED-komennot vain USB-yhteydellä, joten tällä asetuksella ei ole vaikutusta Bluetooth-yhteydellä. Switch-ohjaimet hyväksyvät Home-LED-komennot millä tahansa yhteydellä.</value></data>
   <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>Laitteen oletus</value></data>
@@ -3906,6 +3939,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bassotäristimet</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Reitittää tämän virtuaaliohjaimen vastaanottaman pelin tärinän ja voimapalautteen äänilähtöön matalataajuisina sävyinä bassotäristimille ja subwoofereille.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Tärinä ääneksi</value></data>
+  <data name="Pad_More_BassShakers" xml:space="preserve"><value>Lähtölaite, kanavat, vahvistus, sävel kullekin moottorille</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Toimii Xbox-, DualShock 3-, DualShock 4- / DualSense- ja Nintendo Switch Pro -virtuaaliohjainten sekä voimapalautteella varustettujen laajennettujen virtuaaliohjainten, kuten kilpa-ajorattien, ja Steam Deck Controller (Composite) -ohjaimen kanssa. Pelin palaute ja Testaa tärinää toistetaan äänilähdön kautta. Makrojen tärinä pysyy ohjaimessa.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Palauta Tärinä ääneksi</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Reititä tärinä äänilähtöön</value></data>
@@ -4352,6 +4386,7 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Odotetaan FreeTrack-jaetun muistin tietoja.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>FreeTrack-jaettu muisti ei ole käytettävissä.</value></data>
   <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Ohjauskulman tärinä</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Tärinä, joka voimistuu sauvan akselin siirtyessä keskeltä</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Lisää jatkuvaa tärinää, kun valittu virtuaalisen sauvan akseli liikkuu pois keskeltä. Käyttää kaikkien liitettyjen lähteiden määritettyä lähtöä. Valinnalla Jaa suunnan mukaan negatiivinen liike ohjaa vasenta moottoria ja positiivinen oikeaa. Valinnalla Vasen moottori tai Oikea moottori molemmat suunnat toistuvat vain tällä moottorilla. Xbox- ja PlayStation-lähdölle tärinälaitteiden kanssa. Se ohittaa ratit, muut jatkuvaa voimapalautetta käyttävät laitteet ja Fanatec-polkimet.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Ota ohjauskulman tärinä käyttöön</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Virtuaaliakseli</value></data>
@@ -4706,6 +4741,7 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="Status_FalconDriverDeclined" xml:space="preserve"><value>Windows ei asentanut Force Dimensionin ajuria. Jos Windows kysyy, luotetaanko Force Dimensioniin, valitse Asenna.</value></data>
   <data name="Status_FalconDriverNotBound" xml:space="preserve"><value>Ajuri on asennettu, mutta Falcon ei ole siirtynyt käyttämään sitä. Irrota Falcon ja kytke se takaisin.</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>Potku, ravistus, tuki, esikuormitus, painovoima</value></data>
   <data name="Pad_Falcon_Description" xml:space="preserve"><value>PadForge laskee Falcon-laitteen kahvaan kohdistuvat voimat noin tuhat kertaa sekunnissa kahvan sijainnin ja pelin toistamien tehosteiden perusteella. Nämä asetukset kuuluvat tälle paikalle.</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>Palauta Novint Falcon</value></data>
   <data name="Pad_Falcon_Feel" xml:space="preserve"><value>Tuntuma</value></data>

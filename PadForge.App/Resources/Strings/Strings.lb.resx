@@ -852,6 +852,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Impulse Triggers</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulse Triggers</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Verstäerkung pro Trigger, Motoren tauschen, Vibratioune vun adaptiven Trigger</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Leet d'Motorbefeeler pro Trigger (Xbox Impulse Triggers) vum virtuelle Controller un den zougewisene physesche Xbox-One-, Elite- oder Series-Controller weider. Vibratioun vun den Trigger, déi d'Spill steiert, geet automatesch duerch. D'Regler hei ënnendrënner skaléieren d'Stäerkt pro Trigger.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Lénken Trigger</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Rietsen Trigger</value></data>
@@ -870,7 +871,9 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Lénken Trigger zrécksetzen</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Rietsen Trigger zrécksetzen</value></data>
   <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Konstant Trigger-Kraaft</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Eng konstant Kraaft op all Trigger-Motor</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Trigger-Weiderleedung</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Leet d'Vibratioun vun den Haaptmotoren op d'Trigger</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Leet d'Haapt-Vibratiounsmotoren an den Trigger-Kanal, een Trigger no deem aneren. Funktionéiert mat XInput-Vibratioun a Force Feedback. En Aktivator kann et uschalten, sou datt den Trigger nëmme vibréiert, soulaang Dir e Knäppchen haalt.</value></data>
   <data name="Pad_ResetTriggerRouting" xml:space="preserve"><value>Trigger-Weiderleedung zrécksetzen</value></data>
   <data name="Pad_TriggerRouting_LeftTrigger" xml:space="preserve"><value>Lénken Trigger</value></data>
@@ -902,6 +905,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Lénken Trigger zrécksetzen</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Rietsen Trigger zrécksetzen</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Trigger-Vibratioun vum Audio-Bass</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Trigger-Vibratioun aus dem Bass vum System-Audio</value></data>
   <data name="Pad_AudioTriggerRumble_Description" xml:space="preserve"><value>Steiert d'Trigger-Motoren iwwer de Bass vum Systemaudio. Trigger-Kraaft, déi e Spill steiert, huet Virrang, soulaang se aktiv ass.</value></data>
   <data name="Pad_AudioTriggerRumble_Toggle" xml:space="preserve"><value>Trigger-Motoren iwwer Audio steieren</value></data>
   <data name="Pad_AudioTriggerRumble_Sensitivity" xml:space="preserve"><value>Empfindlechkeet</value></data>
@@ -999,6 +1003,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice" xml:space="preserve"><value>Dem Audioapparat nogoen</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice_Picker" xml:space="preserve"><value>Audioapparat</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>Indikator-LEDen</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>LED-Hellegkeet, Spillermuster, Stomm-LED-Modus</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>D'Spillernummer-Rei (5 LEDen ënner dem Touchpad) an d'Stomm-LED iwwer dem Mikro. D'Hellegkeetsreegelung wierkt physesch nëmmen op d'Spillerrei. D'Firmware bitt Zoustänn fir d'Stomm-LED (Aus / Dauerliicht / Pulséieren), awer kee separat Hellegkeetsregister fir d'Stomm-LED.</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>Liichtbalken zrécksetzen</value></data>
   <data name="Pad_ResetIndicatorLeds" xml:space="preserve"><value>Indikator-LEDen zrécksetzen</value></data>
@@ -1385,6 +1390,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Mëtt kalibréieren</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Mëttelpunkt</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Doudzon</value></data>
+  <data name="Pad_More_Stick" xml:space="preserve"><value>Mëttelpunkt-Offsets, Doudzonform a Wäerter pro Achs, eng Kurv fir all Achs, Beräich, Steierung</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Beräich</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Grenz kalibréieren ass de recommandéierte Wee, fir e Stick ze justéieren. Et fiert de Rand of, deen de Stick physesch erreeche kann, a skaléiert dann all Positioun proportional op dee gemoossene Rand, sou datt déi ganz natiirlech Beweegung, an all Wénkel a bei all Ausschlag, op en ideale Krees ofgebilt gëtt, ouni datt eppes ofgeschnidde gëtt. Déi véier Regeler hei ënnen begrenzen nëmmen d'Haaptachsen. Benotzt se, fir de Beräich gewollt ze begrenzen, net fir en ze korrigéieren.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Gëtt gemooss...</value></data>
@@ -1718,6 +1724,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Touchpad-Nummer</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Op wéi en Touchpad vun dësem Controller sech d'Astellungen hei drënner bezéien. All Touchpad huet seng eege Gesten, säin eegent Mausgefill a säin eegene Zeigerberäich.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Gestenerkennung</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Schalt d'Gesten op dësem Touchpad an</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Gesten op dësem Touchpad aktivéieren</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Haaptschalter fir dësen Touchpad. Wann en aus ass, léisen op dësem Touchpad keng Gesten aus. Bestoend Fanger-, Klick- a Positiounszouuerdnunge funktionéieren weider.</value></data>
   <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>Erkennen</value></data>
@@ -1728,6 +1735,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>Spärzäit</value></data>
   <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>Nodeems eng Geste ausgeléist gouf, ignoréiert dësen Touchpad nei Gesten fir esou vill Millisekonnen. Verhënnert, datt séier Hin-an-hier-Beweegungen eng Geste e puer Mol ausléisen.</value></data>
   <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>Agebaut Gesten</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Swipen, Tippen, Knäifen, Formen</value></data>
   <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>Swipen a 4 Richtungen (uewen / ënnen / lénks / riets)</value></data>
   <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>Swipen a 8 Richtungen (mat Diagonalen)</value></data>
   <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>Swipe-Distanz (0..1)</value></data>
@@ -1753,6 +1761,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>Formgesten (Krees, Quadrat, Dräieck, Z, Haken)</value></data>
   <data name="Pad_Touchpad_MatchThreshold" xml:space="preserve"><value>Schwell fir d'Formerkennung</value></data>
   <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>Eege Gesten</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Eege Gesten ophuelen</value></data>
   <data name="Pad_Touchpad_RecordNew" xml:space="preserve"><value>+ Nei Geste ophuelen</value></data>
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>Fir dëse Profil sinn nach keng eege Gesten opgeholl. Klickt op „Nei Geste ophuelen“, fir eng opzehuelen.</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 Fanger</value></data>
@@ -1760,6 +1769,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
 
   <!-- Stick / D-pad output card -->
   <data name="Pad_Touchpad_Stick_Header" xml:space="preserve"><value>Stick- / D-Pad-Ausgab</value></data>
+  <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Den Touchpad als Stick oder D-Pad benotzen</value></data>
   <data name="Pad_Touchpad_Stick_Subtitle" xml:space="preserve"><value>Mécht aus dem Touchpad e virtuellen Analogstick oder en D-Pad. D'Ausgab gëtt do verankert, wou de Fanger fir d'éischt opsetzt. Déi aktuell Positioun relativ zu deem Ankerpunkt steiert de Stickwäert an (optional) gehale D-Pad-Richtungen.</value></data>
   <data name="Pad_Touchpad_StickEnabled" xml:space="preserve"><value>Stick- / D-Pad-Ausgab aktivéieren</value></data>
   <data name="Pad_Touchpad_StickEnabled_Tooltip" xml:space="preserve"><value>Weist d'Quellen Touchpad Stick X, Stick Y an D-Pad an der Auswiel vun den Zouuerdnungen. Funktionéiert zousätzlech zu de bestoende Touchpad-Fanger- an Touchpad-Gestequellen, net amplaz vun hinnen.</value></data>
@@ -1774,6 +1784,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
 
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Mausausgab</value></data>
+  <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Invertéieren, Schwong, Reaktioun, Beschleunegung, Schwongverstäerkung</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Stellt d'Vitess vum Mauszeiger an, wann e Fanger vum Touchpad op Maus X/Y vun engem virtuelle Controller Tastatur / Maus zougeuerdnet ass. 1.0 ass de Standard. Méi héich mécht de Mauszeiger méi séier, méi déif méi lues. Invertéieren dréint déi jeeweileg Achs ëm.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Mausempfindlechkeet X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Multiplikator fir déi horizontal Beweegung Touchpad → Maus. Ënner 1.0 gëtt de Mauszeiger méi lues, iwwer 1.0 méi séier.</value></data>
@@ -1801,6 +1812,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_Touchpad_RotateThreshold_Tooltip" xml:space="preserve"><value>Wéi wäit zwee Fangere sech mussen dréien, ier en Dréien ausléist.</value></data>
   <data name="Pad_ResetTouchpadRotateThresholdDegrees" xml:space="preserve"><value>Dréischwell zrécksetzen</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>Absolute Zeiger</value></data>
+  <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>Den Deel vum Ecran, deen den Touchpad erreecht</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Stellt d'Quellen Touchpad Zeiger X/Y an, déi de Mauszeiger op d'Positioun vum Fanger um Touchpad setzen (ordnet se Maus X/Y op engem virtuelle Controller Tastatur / Maus zou). Gréisst 1.00 mat Mëtt 0.50 bilt den Touchpad op de ganzen Ecran of. Mat enger méi klenger Gréisst bleift de Mauszeiger an engem Deel vum Ecran, an d'Mëtt leet fest, wou deen Deel läit.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Breet vum Beräich</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Breet vum Ecranberäich, op deen dësen Touchpad ofgebilt gëtt, als Undeel vun der Ecranbreet. 1.00 deckt déi ganz Breet of, 0.50 hält de Mauszeiger op der hallwer Breet.</value></data>
@@ -1813,12 +1825,14 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
 
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Swipe-Haptik</value></data>
+  <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>Ticks, wärend de Fanger iwwer de Touchpad fiert</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Léist kuerz Haptik-Ticks um Controller aus, wärend de Fanger iwwer dësen Touchpad fiert, wéi d'Trackpad-Ticks vu Steam Input. Steam Controller an de Steam Deck ticken mam Aktuator ënner dem Touchpad, DualSense an DualShock 4 pulséieren d'Vibratiounsmotoren.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Swipe-Haptik aktivéieren</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>Léist e kuerzen Haptik-Tick aus, all Kéier wann de Fanger eng bestëmmt Distanz op dësem Touchpad zréckleet. Opsetzen oder Klicken um Touchpad tickt ni. Standardméisseg aus.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>Pulsintensitéit</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity_Tooltip" xml:space="preserve"><value>Stäerkt vun all Tick. D'Vibratioun vum Spill geet ëmmer vir, wann se méi staark ass.</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Header" xml:space="preserve"><value>Drocksimulatioun</value></data>
+  <data name="Pad_SyntheticPressure_FoldHint" xml:space="preserve"><value>Drock fir Touchpads, déi eng Beréierung als vollen Drock mellen</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Subtitle" xml:space="preserve"><value>Simuléiert drockempfindlech Knäppercher vun DualShock 2 / DualShock 3 op Touchpads, déi eng Beréierung als vollen Drock mellen (DualShock 4, DualSense, Steam Controller 2015). Wann se aktivéiert ass, liesen d'Drock-Zouuerdnungsquelle vun dësem Apparat keng Beréierung als 0%, eng roueg Beréierung als Beréierungsdrock an e Klick um Touchpad als 100%.</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled" xml:space="preserve"><value>Drocksimulatioun aktivéieren</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled_Tooltip" xml:space="preserve"><value>Deelt d'Drock-Zouuerdnungsquelle vun dësem Apparat an dräi Stufen op: keng Beréierung gëtt 0%, eng roueg Beréierung gëtt de Beréierungsdrock, an e Klick um Touchpad gëtt 100%. Standardméisseg aus, sou datt Touchpads mat echtem analoge Drock hir réi Wäerter behalen.</value></data>
@@ -1996,7 +2010,9 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Stellt an, wéi de Beweegungssensor vun dësem Controller Maus- a Stick-Ausgab steiert. Kalibréiert op enger flaacher Fläch, fir den Drift a Rou op null ze setzen, a stellt dann Empfindlechkeet, Glättung an Aktivéierungsreegelen no Wonsch an.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibréierung</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Empfindlechkeet</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Eenheeten, Referenzsystem, Achsen invertéieren, Realitéitskalibréierung</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Reaktiounsform</value></data>
+  <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Doudzon, Glättung, Beschleunegung, Ausgabkurv</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Referenzsystem</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Wéi d'Gyro-Beweegung interpretéiert gëtt. Lokal benotzt déi réi Achse vum Controller. Spiller projizéiert déi horizontal Beweegung op déi richteg Vertikal (Schwéierkraaft), sou datt déiselwecht Dréiung vum Handgelenk ëmmer d'Kamera dréint, egal wéi Dir de Controller haalt. Welt projizéiert zousätzlech déi vertikal Beweegung op d'Weltachsen.</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>Haltung</value></data>
@@ -2010,11 +2026,13 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_ResetGyroInvertYaw" xml:space="preserve"><value>Yaw invertéieren zrécksetzen</value></data>
   <data name="Pad_ResetGyroInvertRoll" xml:space="preserve"><value>Roll invertéieren zrécksetzen</value></data>
   <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>Kompass</value></data>
+  <data name="Pad_Compass_FoldHint" xml:space="preserve"><value>Verankert de Yaw um magneteschen Norden</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Dëse Controller huet e Magnetometer. Wann de Yaw um magneteschen Norden verankert ass, verschwënnt de luesen horizontalen Drift beim Zielen mam Gyro. Fir d'éischt kalibréieren: dréckt op Kalibréieren, dréit de Controller e puer Sekonnen an enger Aacht duerch all Richtungen, an dréckt dann nach eng Kéier.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Yaw um Kompass verankeren</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Setzt eng kleng Korrektur dobäi, déi d'horizontal Zielen Richtung magnetesche Kurs zitt, sou datt sech keen Drift ka sammelen. Brauch eng gespäichert Kalibréierung vum Magnetometer. Moosswäerter, déi vu Metall oder Magnéiten an der Géigend gestéiert sinn, ginn automatesch ignoréiert.</value></data>
   <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Op Standard zrécksetzen (Aus)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Simulatioun vu Pitch a Roll</value></data>
+  <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Pitch a Roll aus dem Beschleunegungssensor berechent</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>De Gyro vun dësem Controller mierkt nëmmen Dréiunge no lénks a riets. Mat der Simulatioun leet PadForge Pitch a Roll aus dem Beschleunegungssensor of a schéckt se mam Yaw vum Gyro un d'Zouuerdnungen an un d'Beweegung vum virtuelle Controller. E Beschleunegungssensor kann e Stouss net vun enger Neigung ënnerscheeden, dofir gëtt eng Beweegung vum Controller op d'Säit oder no vir ouni Dréien als kuerz Dréiung gelies.</value></data>
   <data name="Settings_GyroSimulation" xml:space="preserve"><value>Pitch a Roll simuléieren</value></data>
   <data name="Settings_GyroSimulation_Tooltip" xml:space="preserve"><value>Fëllt Pitch a Roll mat Raten aus dem Beschleunegungssensor. Yaw bleift déi eege Moossung vum Gyro. Standardméisseg aus.</value></data>
@@ -2055,6 +2073,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Ënnen (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Uewen (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Aktivéierung</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Aktivéierungsknäppchen, Aktivéierungsmodus, Easy-Aim-Schwell</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Optional Bedéngungen, déi limitéieren, wéini de Gyro aktiv ass. Den Ausschlag vum rietse Stick an dat Aktivéierungsknäppchen kënnen all eenzel agestallt ginn. Gyro reagéiert nëmmen, soulaang all agestallte Bedéngung aktiv ass.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Lokal</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Spiller</value></data>
@@ -2105,6 +2124,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Gyro-Kippwénkel X</value></data>
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>Gyro-Kippwénkel Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>Gyro-Kippwénkel</value></data>
+  <data name="Pad_GyroTilt_FoldHint" xml:space="preserve"><value>Ganze Kippberäich, Neigungs-Doudzon</value></data>
   <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>Beräich fir d'Agaben Gyro-Kippwénkel X / Gyro-Kippwénkel Y: haalt eng Neigung, an de Stick hält säin Ausschlag, wéi am Modus Joystick Deflection vu Steam. Vollen Ausschlag beim Beräich, deen Dir hei astellt. Gyro Recenter setzt d'Rouhaltung nees op null. Yaw (de Controller flaach dréien) gesäit d'Schwéierkraaft net a beweegt dës Agaben net.</value></data>
   <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>Ganze Kippberäich</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>Grad Neigung vun der Rouhaltung aus, déi als vollen Ausschlag vum Stick zielen. Méi kleng = méi empfindlech. 25° ass de meescht benotzte Wäert a Steam-Konfiguratiounen.</value></data>
@@ -2301,6 +2321,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Min. Beräich Y (erof)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Max. Beräich Y (erop)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X-Achs</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>Béid Achsen</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y-Achs</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Beräich</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-Doudzon</value></data>
@@ -2311,6 +2332,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Force Feedback / Vibratioun / Haptik</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Verstäerkung pro Motor, Trigger-Vibratioun, Motoren tauschen</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Gesamtverstäerkung</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Motor lénks</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Motor riets</value></data>
@@ -2322,6 +2344,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Konstant Kraaft</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Eng konstant Kraaft, bis Dir se ausschalt</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Wendt eng kontinuéierlech Kraaft op dësen Apparat un, bis Dir se ausschalt. Kraaft vum Spill aus iergendenger Quell huet Virrang, soulaang se aktiv ass, an d'konstant Kraaft fänkt erëm un, wann d'Spill ophält.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Konstant Kraaft uwenden</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Am Gitter zéien, fir Richtung a Stäerkt festzeleeën.</value></data>
@@ -2638,6 +2661,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
 
   <!-- ═══ Audio Bass Rumble ═══ -->
   <data name="Settings_AudioRumble" xml:space="preserve"><value>Audio-Vibratioun</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Vibratioun aus dem Bass vum System-Audio</value></data>
   <data name="Settings_AudioRumbleDesc" xml:space="preserve"><value>Controller-Vibratioun iwwer d'Bassfrequenze vum System-Audio steieren.</value></data>
   <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>Audio-Vibratioun aktivéieren</value></data>
   <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>Empfindlechkeet</value></data>
@@ -2748,6 +2772,8 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Baussenzeg Neigungs-Doudzon zrécksetzen</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Orientéierung vum Controller zrécksetzen</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Beweegungssteierung</value></data>
+  <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° bis {1}°</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Neigungs-Doudzonen, Orientéierung vum Controller</value></data>
   <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Astellunge fir d'Agab „Beweegungsneigung“: kippt de Controller wéi e Steierrad. Ordnet „Beweegungsneigung“ an den Zouuerdnungen iwwer d'Agab-Lëscht enger Stick-Achs zou.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Beweegungssteierung zrécksetzen</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (rietse Stick)</value></data>
@@ -2756,6 +2782,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Mapping_LeftStickRing" xml:space="preserve"><value>Rank vum lénkse Stick</value></data>
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>Rank vum rietse Stick</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
+  <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Astellunge fir d'Flick-Stick-Agaben</value></data>
   <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Astellunge fir d'Flick-Stick-Agaben: weist mam Stick an eng Richtung an d'Kamera dréint sech mat, fuert laanscht de Rand fir fein ze dréien. Ordnet „Flick Stick (rietse Stick)“ an den Zouuerdnungen iwwer d'Agab-Lëscht Maus X zou, op all Schicht.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Flick Stick zrécksetzen</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Punkte pro 360°</value></data>
@@ -2792,6 +2819,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Wann d'Schicht mam Flick Stick aktivéiert gëtt, wärend de Stick schonn ausgeschloen ass, gëtt de Flick direkt ausgeléist. Aus hält d'Kamera roueg a verfollegt d'Dréiung vum aktuelle Stickwénkel aus.</value></data>
   <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>„Flick beim Aktivéieren erlaben“ zrécksetzen</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Feedback um Steieruschlag</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>E Signal beim Uschlag fir e Stick an engem Steiermodus</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Wann e Stick an engem Steiermodus bis zum Uschlag gedréint gëtt, spillt e Signal (Vibratioun, Trigger oder Liichtbalken), fir datt Dir d'Limit spiert. Standardméisseg alles aus.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Vibratiounspuls um Uschlag</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Trigger-Vibratioun um Uschlag</value></data>
@@ -2847,6 +2875,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Makro-Téin a gespigelten System-Audio spillen iwwer den agebaute Lautsprecher vum gewielte Controller, iwwer USB oder Bluetooth. Wielt den Apparat an der Lëscht uewendriwwer. All Astellung hei follegt him.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Tounausgab</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Spigelquell, Haptik, Kopfhörer-Lautstäerkt, Crossfeed, Parametreschen EQ, Limiter</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Téin ginn automatesch op de gewielte Controller geleet. Iwwer USB gëtt den eegenen Audio-Endpunkt vum Pad iwwer den Hardware-Container fonnt. Iwwer Bluetooth gëtt den Audio a Sony-HID-Frames gestreamt.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Spigelquell</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Wéi en Ofspillapparat op de Lautsprecher vum Controller gespigelt gëtt. Spiller, déi bestëmmten Téin op en separaten Ofspillapparat schécken, kënnen dësen hei uspriechen.</value></data>
@@ -2920,6 +2949,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>D'Datei ass kee liesbaart PadForge-Profil.</value></data>
   <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Toun aus {0} wielen</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Tounpaketen</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>ZIP-Dateie mat Téin fir Toun-Makroen</value></data>
   <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>En Tounpaket ass eng eenzeg ZIP-Datei mat Téin an der Endung .pfsounds. Setzt hei eent derbäi, a wielt dann seng Téin an all Toun-Makro. PadForge liest direkt aus der Datei a pakt se ni aus. Haalt d'Paketen nieft PadForge.exe, fir portabel ze bleiwen.</value></data>
   <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>Paket derbäisetzen…</value></data>
   <data name="Pad_Audio_Packages_Add_Tooltip" xml:space="preserve"><value>Eng existent .pfsounds-Datei an d'Lëscht derbäisetzen.</value></data>
@@ -2945,6 +2975,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Emoji_Category_Objects" xml:space="preserve"><value>Objeten</value></data>
   <data name="Emoji_Category_Symbols" xml:space="preserve"><value>Symboler</value></data>
   <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>Symbolpaketen</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>ZIP-Dateie mat Biller fir Menüzellen</value></data>
   <data name="Pad_Menus_IconPackages_Desc" xml:space="preserve"><value>E Symbolpaket ass eng eenzeg ZIP-Datei mat Biller an der Endung .pficons. Setzt hei eent derbäi, a wielt dann seng Symboler op all Menüzell. PadForge liest direkt aus der Datei a pakt se ni aus. Haalt d'Paketen nieft PadForge.exe, fir portabel ze bleiwen.</value></data>
   <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>Paket derbäisetzen…</value></data>
   <data name="Pad_Menus_IconPackages_Add_Tooltip" xml:space="preserve"><value>Eng existent .pficons-Datei an d'Lëscht derbäisetzen.</value></data>
@@ -3327,6 +3358,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>Op d'Schicht {0} wiesselen</value></data>
   <data name="Macro_SwitchLayer_Hint" xml:space="preserve"><value>Setzt dëse Slot op déi gewielt Ëmschaltschicht. D'Schicht bleift aktiv bis zum nächste Wiessel, engem Latch- oder Cycle-Aktivator oder engem Profilwiessel. Basis bréngt zréck op d'Basisschicht. Begrenzt dëse Makro uewen op eng Schicht, fir datt dee selwechte Knäppchen pro Schicht anescht wiesselt.</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>Guide-Knäppchen-LED</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>D'Liicht vum Guide- oder Home-Knäppchen</value></data>
   <data name="Pad_Lighting_GuideLed_Subtitle" xml:space="preserve"><value>Hellegkeet vum liichtende Guide- oder Home-Knäppchen. Xbox-One-Controller an neier akzeptéieren se iwwer USB. De Steam Controller vun 2015 akzeptéiert se iwwer all Verbindung, an all Steam Controller deelen eng Hellegkeet. Switch-Pro-Controller an déi riets Joy-Cons (eleng, zu zwee oder an der Luedhalterung) akzeptéieren se iwwer all Verbindung.</value></data>
   <data name="Pad_Lighting_GuideLed_Mode_Tooltip" xml:space="preserve"><value>Standard vum Apparat léisst d'LED genee sou, wéi d'Firmware vum Controller se gesat huet. Fix Hellegkeet hält de Wäert ënnen. Batterieniveau mécht d'LED méi hell, wat d'Batterie méi voll ass, a geet ni ënner 10%. Xbox-Controller akzeptéieren Guide-LED-Befeeler just iwwer USB, dofir huet dës Astellung bei enger Bluetooth-Verbindung keen Effekt. Switch-Controller akzeptéieren Home-LED-Befeeler iwwer all Verbindung.</value></data>
   <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>Standard vum Apparat</value></data>
@@ -3689,6 +3721,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass-Shaker</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Leet d'Vibratioun an d'Force Feedback vum Spill, déi dëse virtuelle Controller kritt, als déif Téin un eng Audio-Ausgab fir Bass-Shaker a Subwoofer.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibratioun op Audio</value></data>
+  <data name="Pad_More_BassShakers" xml:space="preserve"><value>Ausgabapparat, Kanalmodus, Verstäerkung, en Toun fir all Motor</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Funktionéiert mat virtuellen Xbox-, DualShock 3-, DualShock 4- / DualSense- an Nintendo-Switch-Pro-Controller, an och mat erweiderte virtuelle Controller mat Force Feedback, wéi Rennsteierrieder, an dem Steam Deck Controller (Composite). Feedback vum Spill an Test-Vibratioun lafen iwwer d'Audio-Ausgab. Makro-Vibratioun bleift um Controller.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Vibratioun op Audio zrécksetzen</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Vibratioun op eng Audio-Ausgab leeden</value></data>
@@ -4127,6 +4160,7 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Waart op Daten am gedeelte FreeTrack-Späicher.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>De gedeelte FreeTrack-Späicher ass net disponibel.</value></data>
   <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Steierwénkel-Vibratioun</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Vibratioun, déi wiisst, wa sech eng Stick-Achs vun der Mëtt ewech beweegt</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Setzt eng kontinuéierlech Vibratioun derbäi, wa sech déi gewielte virtuell Stick-Achs vun der Mëtt ewech beweegt. Benotzt déi zougeuerdent Ausgab vun alle zougewisene Quellen. Mat „No Richtung opgedeelt“ dreift negativ Beweegung de lénke Motor un a positiv Beweegung de rietsen. „Motor lénks“ oder „Motor riets“ leet béid Richtungen op dee jeeweilege Motor. Fir Xbox- a PlayStation-Ausgab mat Vibratiounsapparater. Steierrieder, aner Apparater mat konstantem Force Feedback a Fanatec-Pedalen ginn ausgelooss.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Steierwénkel-Vibratioun aktivéieren</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Virtuell Achs</value></data>
@@ -4443,6 +4477,7 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
   <data name="Status_FalconDriverDeclined" xml:space="preserve"><value>Windows huet den Treiber vu Force Dimension net installéiert. Wann Windows freet, ob et Force Dimension vertraue soll, wielt „Installéieren“.</value></data>
   <data name="Status_FalconDriverNotBound" xml:space="preserve"><value>Den Treiber ass installéiert, mä de Falcon benotzt en nach net. Zitt de Stecker vum Falcon eraus a schléisst en nees un.</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>Stouss, Rëselen, Stabiliséierung, Virspannung, Schwéierkraaft</value></data>
   <data name="Pad_Falcon_Description" xml:space="preserve"><value>PadForge berechent all Kraaft um Grëff vum Falcon ongeféier dausendmol pro Sekonn, aus der Positioun vum Grëff an deem, wat d'Spill spillt. Dës Astellunge gëlle fir dëse Slot.</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>Novint Falcon zrécksetzen</value></data>
   <data name="Pad_Falcon_Feel" xml:space="preserve"><value>Gefill</value></data>
@@ -4603,4 +4638,5 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} op {1}, soulaang gehale gëtt</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} op {1}, bis e gestoppt gëtt</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>Trigger-Effekt op {0} stoppen</value></data>
+  <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Beliichtung vun dësem Apparat steieren, Beliichtungskontroll</value></data>
 </root>

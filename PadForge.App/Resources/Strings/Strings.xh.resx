@@ -406,6 +406,7 @@
   <data name="Pad_Formula_Var_PositionD" xml:space="preserve"><value>Umthombo wesine</value></data>
   <data name="Curve_Delay" xml:space="preserve"><value>Ukulibazisa</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>I-deadzone</value></data>
+  <data name="Pad_More_Stick" xml:space="preserve"><value>Ukutyibilika kombindi, imilo ye-deadzone namaxabiso e-axis nganye, igophe le-axis nganye, uluhlu, ukuqhuba</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Uluhlu</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>I-center offset X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>I-center offset Y</value></data>
@@ -617,6 +618,7 @@
 
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>I-haptics yokuswayipha</value></data>
+  <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>Ukubetha okuncinci njengoko umnwe wakho uhamba</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Vula i-haptics yokuswayipha</value></data>
 
   <!-- Reset-All tooltips per card -->
@@ -712,12 +714,14 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>I-gyro</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Ukulinganisa</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Uvakalelo</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Iiyunithi, Isithuba, guqula ii-axis, Ukulinganisa kwehlabathi lokwenyani</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Guqula i-pitch (Y)</value></data>
   <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Guqula i-yaw (X)</value></data>
   <data name="Settings_GyroInvertRoll" xml:space="preserve"><value>Guqula i-roll (X)</value></data>
   <data name="Pad_ResetGyroInvertYaw" xml:space="preserve"><value>Seta kwakhona ukuguqula i-yaw</value></data>
   <data name="Pad_ResetGyroInvertRoll" xml:space="preserve"><value>Seta kwakhona ukuguqula i-roll</value></data>
   <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>Ikhampasi</value></data>
+  <data name="Pad_Compass_FoldHint" xml:space="preserve"><value>Igcina i-yaw ijonge kumntla wemagnethi</value></data>
   <data name="Pad_Gyro_MagCalibrate_Stop" xml:space="preserve"><value>Gqiba ukulinganisa</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Bamba</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>I-toggle</value></data>
@@ -744,6 +748,7 @@
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Ukuthambeka kwe-gyro X</value></data>
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>Ukuthambeka kwe-gyro Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>Ukuthambeka kwe-gyro</value></data>
+  <data name="Pad_GyroTilt_FoldHint" xml:space="preserve"><value>Uluhlu olupheleleyo lokuthambeka, I-deadzone yokuthambeka</value></data>
   <data name="Pad_GyroTilt_Deadzone" xml:space="preserve"><value>I-deadzone yokuthambeka</value></data>
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>Seta kwakhona i-deadzone yokuthambeka</value></data>
   <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Seta kwakhona ukuthambeka kwe-gyro</value></data>
@@ -819,6 +824,7 @@
   <data name="Pad_SensitivityX" xml:space="preserve"><value>Uvakalelo X</value></data>
   <data name="Pad_SensitivityY" xml:space="preserve"><value>Uvakalelo Y</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>I-axis X</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>Ii-axis zombini</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>I-axis Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Uluhlu</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>I-anti-deadzone</value></data>
@@ -1008,6 +1014,7 @@
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>I-flick stick (intonga yasekhohlo)</value></data>
   <data name="Mapping_FlickStickTouchpad_Format" xml:space="preserve"><value>I-flick stick (i-touchpad {0})</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>I-flick stick</value></data>
+  <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Ulungiso lwezinto zokufaka ze-flick stick</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Seta kwakhona i-flick stick</value></data>
   <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Seta kwakhona ku-14400</value></data>
   <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Seta kwakhona ku-0.1 s</value></data>
@@ -1058,6 +1065,7 @@
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>Ifayile ayiyiyo iprofayile ye-PadForge efundekayo.</value></data>
   <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Khetha isandi ku-{0}</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Iipakethe zezandi</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Iifayile ze-zip zezandi zee-macro zezandi</value></data>
   <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>Yongeza ipakethe…</value></data>
   <data name="Pad_Audio_Packages_Add_Tooltip" xml:space="preserve"><value>Yongeza ifayile ye-.pfsounds esele ikhona kuluhlu.</value></data>
   <data name="Pad_Audio_Packages_Create" xml:space="preserve"><value>Yenza ipakethe…</value></data>
@@ -1258,6 +1266,7 @@
   <data name="Macro_Dreamcast_Repeat" xml:space="preserve"><value>Inani lokuphinda</value></data>
   <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>Tshintshela kumaleko {0}</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>I-LED yeqhosha le-Guide</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Ukukhanya kweqhosha le-Guide okanye le-Home</value></data>
   <data name="Pad_Lighting_GuideLed_Fixed" xml:space="preserve"><value>Ukuqaqamba okumiselweyo</value></data>
   <data name="Pad_Lighting_GuideLed_Battery" xml:space="preserve"><value>Inqanaba lebhetri</value></data>
   <data name="Pad_Lighting_GuideLed_Brightness" xml:space="preserve"><value>Ukuqaqamba</value></data>
@@ -1562,6 +1571,7 @@
   <data name="Status_InstallingFalconDriver" xml:space="preserve"><value>Kufakwa idrayiva ye-Falcon ye-Force Dimension…</value></data>
   <data name="Status_FalconNotPluggedIn" xml:space="preserve"><value>Akukho Falcon ixhunyiweyo.</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>Ukukhaba, ukungcangcazela, ukuxhasa, ukulayisha, umxhuzulane</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>Seta kwakhona i-Novint Falcon</value></data>
   <data name="Pad_Falcon_Button1" xml:space="preserve"><value>Iqhosha 1</value></data>
   <data name="Pad_Falcon_Button2" xml:space="preserve"><value>Iqhosha 2</value></data>
@@ -1667,4 +1677,24 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Intshukumo &amp; Ukuchukumisa</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Ukukhanya &amp; Isandi</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Iimakhro &amp; Iimenyu</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Uphawu xa intonga yokuqhuba ifika esiphelweni</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Ukungcangcazela okukhula njengoko i-axis yentonga isuka embindini</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Amandla aqhubekayo de uwacime</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Ukungcangcazela okuvela kwi-bass yesandi senkqubo</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Ithumela ukungcangcazela kweemoto eziphambili kwii-trigger</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Amandla aqhubekayo kwimoto nganye ye-trigger</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Ukungcangcazela kwe-trigger okuvela kwi-bass yesandi senkqubo</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Ii-deadzone zokuthambeka, Ukuma kwesilawuli</value></data>
+  <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>I-deadzone, ukuthambisa, Ukukhawuleza, Igophe lesiphumo</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Iqhosha lokuvula ukujolisa, Imowudi yokuvula, Umda wokujolisa okulula</value></data>
+  <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Sebenzisa i-touchpad njengentonga okanye i-D-pad</value></data>
+  <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>Inxalenye yesikrini efikelelwa yi-touchpad</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Ivula ii-gesture zale touchpad</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Ukuswayipha, ukucofa, ukuncinza, iimilo</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Rekhoda ezakho</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Ukuqaqamba kwe-LED, Ipatheni yomdlali, Imowudi ye-LED yokuthulisa</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Iifayile ze-zip zemifanekiso yeeseli zemenyu</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Amandla emoto nganye, ukungcangcazela kwe-trigger, ukutshintshiselana kweemoto</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Amandla e-trigger nganye, ukutshintshiselana kweemoto, ukungcangcazela kwe-adaptive trigger</value></data>
+  <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Guqula, Isantya esiqhubekayo, Impendulo, Ukukhawuleza, ukuphosa</value></data>
 </root>

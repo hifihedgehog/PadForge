@@ -382,6 +382,7 @@
   <data name="Pad_Formula_Chip_Add" xml:space="preserve"><value>Ntxiv</value></data>
   <data name="Pad_Formula_Chip_Divide" xml:space="preserve"><value>Faib</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Deadzone</value></data>
+  <data name="Pad_More_Stick" xml:space="preserve"><value>Kev txav nruab nrab, duab thiab nqi deadzone txhua axis, kab nkhaus rau txhua axis, range, kev tsav</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Range</value></data>
   <data name="Pad_ScrollUp" xml:space="preserve"><value>Nce</value></data>
   <data name="Pad_ScrollDown" xml:space="preserve"><value>Nqis</value></data>
@@ -557,6 +558,7 @@
   <data name="Pad_Gyro" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Kev rhiab</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Chav ntsuas, Qhov chaw, ntxeev axis, Kev ntsuas raws ntiaj teb tiag</value></data>
   <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Rov qab mus rau neej ntawd (Kaw)</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Nias tuav</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>Toggle</value></data>
@@ -660,6 +662,7 @@
   <data name="Pad_SensitivityX" xml:space="preserve"><value>Kev rhiab X</value></data>
   <data name="Pad_SensitivityY" xml:space="preserve"><value>Kev rhiab Y</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Axis X</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>Ob qho Axis</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Axis Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Range</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-deadzone</value></data>
@@ -843,6 +846,7 @@
 
   <!-- ═══ Audio Bass Rumble ═══ -->
   <data name="Settings_AudioRumble" xml:space="preserve"><value>Kev co los ntawm suab</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Kev co los ntawm suab bass ntawm lub computer</value></data>
   <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>Qhib kev co los ntawm suab</value></data>
   <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>Kev rhiab</value></data>
   <data name="Settings_AudioRumble_LeftMotor" xml:space="preserve"><value>Motor sab laug</value></data>
@@ -872,6 +876,7 @@
   <data name="Pad_Steering_Orient_Right" xml:space="preserve"><value>Sab xis</value></data>
   <data name="Pad_Steering_Orient_Backward" xml:space="preserve"><value>Tom qab</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick stick</value></data>
+  <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Kho cov kev nkag rau Flick stick</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Rov teeb tsa flick stick dua</value></data>
   <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Rov teeb tsa dua rau 14400</value></data>
   <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Rov teeb tsa dua rau 0.1 s</value></data>
@@ -1311,6 +1316,7 @@
   <data name="Status_FalconDriverDeclined" xml:space="preserve"><value>Windows tsis tau nruab Force Dimension tus driver. Yog Windows nug seb puas ntseeg Force Dimension, xaiv Install.</value></data>
   <data name="Status_FalconDriverNotBound" xml:space="preserve"><value>Tus driver nruab lawm, tab sis lub Falcon tseem tsis tau hloov mus siv nws. Rho lub Falcon tawm thiab ntsaws rov qab.</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>Ncaws, co, tiv, thawb ua ntej, nqus</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>Rov teeb tsa Novint Falcon dua</value></data>
   <data name="Pad_Falcon_Feel_Joystick" xml:space="preserve"><value>Joystick</value></data>
   <data name="Pad_Falcon_Feel_Aim" xml:space="preserve"><value>Tsom</value></data>
@@ -1369,4 +1375,22 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Kev txav thiab kev kov</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Teeb thiab suab</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Cov macro thiab menu</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Lub cim thaum stick tig kawg nkaus hauv hom tsav tsheb</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Kev co uas loj zuj zus thaum axis stick tawm ntawm nruab nrab</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Lub zog ruaj khov mus txog thaum koj kaw</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Xa kev co ntawm cov motor loj mus rau cov trigger</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Lub zog ruaj khov rau txhua lub motor trigger</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Kev co trigger los ntawm suab bass ntawm lub computer</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Deadzone thaum qaij, Kev taw ntawm lub controller</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Khawm qhib kev tsom, Hom qhib, Ciam tsom yooj yim</value></data>
+  <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Siv touchpad ua stick lossis D-pad</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Qhib cov kev txav ntawm touchpad no</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Rub, kov, nias ob ntiv, kos duab</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Kaw cia koj tus kheej li</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Kev ci LED, Qauv tus ua si, Hom LED kaw suab</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Kev ci ntawm khawm Guide lossis Home</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Cov ntaub ntawv zip ntawm suab rau macro suab</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Cov ntaub ntawv zip ntawm duab rau cov cell menu</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Lub zog txhua lub motor, kev co trigger, pauv motor</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Lub zog txhua lub trigger, pauv motor, kev co trigger adaptive</value></data>
 </root>

@@ -1475,7 +1475,8 @@ public class GyroSimulationTests
             Assert.Contains(k, vm);
 
         string xaml = RepoText("PadForge.App", "Views", "PadPage.xaml");
-        Assert.Contains("x:Name=\"GyroSimulationCard\" Style=\"{StaticResource CardBorder}\" Visibility=\"Collapsed\"", xaml);
+        // The card folds to one line since #574 and starts hidden, as before.
+        Assert.Contains("<controls:FoldCard x:Name=\"GyroSimulationCard\" StateKey=\"Pad.Motion.Simulation\" Visibility=\"Collapsed\"", xaml);
         Assert.Contains("IsChecked=\"{Binding GyroSimulation, Mode=TwoWay}\"", xaml);
         Assert.Contains("Minimum=\"20\" Maximum=\"250\"", xaml);
         Assert.Contains("ResetGyroSimulationCardCommand", xaml);

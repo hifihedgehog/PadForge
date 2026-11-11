@@ -917,6 +917,7 @@
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>ఇంపల్స్ ట్రిగ్గర్లు</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>ఇంపల్స్ ట్రిగ్గర్లు</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>ఒక్కో ట్రిగ్గర్ గెయిన్, మోటార్ల మార్పిడి, అడాప్టివ్ ట్రిగ్గర్ వైబ్రేషన్లు</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>వర్చువల్ కంట్రోలర్ నుండి ప్రతి ట్రిగ్గర్ మోటార్ ఆదేశాలను (Xbox ఇంపల్స్ ట్రిగ్గర్లు) కేటాయించిన భౌతిక Xbox One, Elite లేదా Series కంట్రోలర్కు పంపుతుంది. గేమ్ నడిపే ట్రిగ్గర్ రంబుల్ ఆటోమేటిక్గా వెళ్తుంది. కింది నియంత్రణలు ప్రతి ట్రిగ్గర్ తీవ్రతను స్కేల్ చేస్తాయి.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>ఎడమ ట్రిగ్గర్</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>కుడి ట్రిగ్గర్</value></data>
@@ -935,7 +936,9 @@
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>ఎడమ ట్రిగ్గర్ను రీసెట్ చేయి</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>కుడి ట్రిగ్గర్ను రీసెట్ చేయి</value></data>
   <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>స్థిర ట్రిగ్గర్ బలం</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>ప్రతి ట్రిగ్గర్ మోటార్‌పై స్థిరమైన బలం</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>ట్రిగ్గర్ రూటింగ్</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>ప్రధాన మోటార్ల రంబుల్‌ను ట్రిగ్గర్లకు పంపుతుంది</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>ప్రధాన రంబుల్ మోటార్లను ట్రిగ్గర్ ఛానెల్లోకి, ఒక్కో ట్రిగ్గర్కు మళ్లించండి. XInput రంబుల్ మరియు ఫోర్స్ ఫీడ్బ్యాక్తో పని చేస్తుంది. యాక్టివేటర్ దీన్ని నియంత్రించగలదు, తద్వారా మీరు బటన్ను నొక్కి ఉంచినప్పుడు మాత్రమే ట్రిగ్గర్ కంపిస్తుంది.</value></data>
   <data name="Pad_ResetTriggerRouting" xml:space="preserve"><value>ట్రిగ్గర్ రూటింగ్ను రీసెట్ చేయి</value></data>
   <data name="Pad_TriggerRouting_LeftTrigger" xml:space="preserve"><value>ఎడమ ట్రిగ్గర్</value></data>
@@ -967,6 +970,7 @@
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>ఎడమ ట్రిగ్గర్ను రీసెట్ చేయి</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>కుడి ట్రిగ్గర్ను రీసెట్ చేయి</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>ఆడియో బాస్ ట్రిగ్గర్ రంబుల్</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>సిస్టమ్ ఆడియోలోని బాస్ నుండి ట్రిగ్గర్ రంబుల్</value></data>
   <data name="Pad_AudioTriggerRumble_Description" xml:space="preserve"><value>సిస్టమ్ ఆడియో బాస్తో ట్రిగ్గర్ మోటార్లను నడపండి. ఇది చురుకుగా ఉన్నప్పుడు గేమ్ నడిపే ట్రిగ్గర్ బలం దీన్ని అధిగమిస్తుంది.</value></data>
   <data name="Pad_AudioTriggerRumble_Toggle" xml:space="preserve"><value>ఆడియో నుండి ట్రిగ్గర్ మోటార్లను నడపండి</value></data>
   <data name="Pad_AudioTriggerRumble_Sensitivity" xml:space="preserve"><value>సున్నితత్వం</value></data>
@@ -1028,6 +1032,7 @@
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>ఈ వర్చువల్ కంట్రోలర్ DualSense లైట్ బార్కు ఉండే అవే మోడ్లతో పరికరాన్ని వెలిగిస్తుంది, ఈ కంట్రోలర్కు మాత్రమే ఇక్కడ సెట్ చేయబడతాయి. PlayStation వర్చువల్ కంట్రోలర్పై, లైట్ బార్ను రాసే గేమ్ DualSenseపై చేసినట్లే స్వాధీనం చేసుకుంటుంది.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>ఈ పరికర లైటింగ్ను నియంత్రించు</value></data>
   <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>లైటింగ్ నియంత్రణ</value></data>
+  <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>ఈ పరికర లైటింగ్ నియంత్రణ, లైటింగ్ పట్టు</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>ఆఫ్ చేస్తే ఈ వర్చువల్ కంట్రోలర్ పరికరాన్ని వెలిగించదు. విక్రేత వరుస, లేదా అదే సాఫ్ట్వేర్ ద్వారా వెలిగే అదే రకమైన మరో పరికరం, ఇంకా దాని రంగును సెట్ చేయవచ్చు. ఈ వర్చువల్ కంట్రోలర్పై Set Chroma Color మాక్రో ఇంకా Razer పరికరానికి రంగు వేస్తుంది.</value></data>
   <data name="Pad_Lighting_ClaimLevel" xml:space="preserve"><value>లైటింగ్ పట్టు</value></data>
   <data name="Pad_Lighting_ClaimLevel_Colors" xml:space="preserve"><value>రంగులు మాత్రమే</value></data>
@@ -1084,6 +1089,7 @@
   <data name="Pad_Lighting_MicLed_FollowDevice" xml:space="preserve"><value>ఆడియో పరికరాన్ని అనుసరించు</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice_Picker" xml:space="preserve"><value>ఆడియో పరికరం</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>సూచిక LEDలు</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>LED ప్రకాశం, ప్లేయర్ నమూనా, మ్యూట్ LED మోడ్</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>ప్లేయర్ సంఖ్య వరుస (టచ్ ప్యాడ్ కింద 5 LEDలు) మరియు మైక్ పైన మ్యూట్ LED. ప్రకాశ నియంత్రణ భౌతికంగా ప్లేయర్ వరుసను మాత్రమే ప్రభావితం చేస్తుంది. ఫర్మ్వేర్ మ్యూట్ LED స్థితులను (ఆఫ్ / స్థిరం / పల్స్) అందిస్తుంది కానీ ప్రత్యేక మ్యూట్ ప్రకాశ రిజిస్టర్ లేదు.</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>లైట్ బార్ను రీసెట్ చేయి</value></data>
   <data name="Pad_ResetIndicatorLeds" xml:space="preserve"><value>సూచిక LEDలను రీసెట్ చేయి</value></data>
@@ -1558,6 +1564,7 @@
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>మధ్యను క్రమాంకనం చేయి</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>మధ్య బిందువు</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>డెడ్ జోన్</value></data>
+  <data name="Pad_More_Stick" xml:space="preserve"><value>మధ్య ఆఫ్‌సెట్లు, డెడ్ జోన్ ఆకారం మరియు ఒక్కో అక్షం విలువలు, ఒక్కో అక్షానికి వక్రరేఖ, పరిధి, స్టీరింగ్</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>పరిధి</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>స్టిక్‌ను సరిచేయడానికి సరిహద్దు క్రమాంకనం సిఫార్సు చేయబడిన మార్గం. ఇది స్టిక్ భౌతికంగా చేరగల అంచును స్వీప్ చేసి, ప్రతి స్థానాన్ని ఆ కొలిచిన అంచుకు అనుపాతంగా తిరిగి స్కేల్ చేస్తుంది, కాబట్టి ప్రతి కోణంలో, ప్రతి విక్షేపం వద్ద పూర్తి సహజ కదలిక ఏదీ కత్తిరించబడకుండా ఆదర్శ వృత్తంపైకి మ్యాప్ అవుతుంది. కింద ఉన్న నాలుగు స్లైడర్లు ప్రధాన అక్షాలను మాత్రమే పరిమితం చేస్తాయి. పరిధిని సరిచేయడానికి కాదు, ఉద్దేశపూర్వకంగా పరిమితం చేయడానికి వాటిని వాడండి.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>నమూనా తీస్తోంది...</value></data>
@@ -1891,6 +1898,7 @@
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>టచ్ ప్యాడ్ సంఖ్య</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>ఈ కంట్రోలర్‌లోని ఏ టచ్ ప్యాడ్‌కు కింది సెట్టింగులు వర్తిస్తాయో ఎంచుకోండి. ప్రతి టచ్ ప్యాడ్‌కు దాని స్వంత సంజ్ఞలు, మౌస్ అనుభూతి, పాయింటర్ ప్రాంతం ఉంటాయి.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>సంజ్ఞ గుర్తింపు</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>ఈ టచ్ ప్యాడ్ సంజ్ఞలను ఆన్ చేస్తుంది</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>ఈ టచ్ ప్యాడ్‌లో సంజ్ఞలను ప్రారంభించు</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>ఈ టచ్ ప్యాడ్ కోసం ప్రధాన స్విచ్. ఆఫ్‌లో ఉంటే ఈ టచ్ ప్యాడ్‌కు ఏ సంజ్ఞ డిస్క్రిప్టర్లూ పని చేయవు. ఇప్పటికే ఉన్న వేలు / క్లిక్ / స్థానం మ్యాపింగ్‌లు యథావిధిగా పని చేస్తాయి.</value></data>
   <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>గుర్తించు</value></data>
@@ -1901,6 +1909,7 @@
   <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>కూల్‌డౌన్</value></data>
   <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>ఒక సంజ్ఞ పని చేసిన తర్వాత, ఇన్ని మిల్లీసెకన్ల పాటు ఈ టచ్ ప్యాడ్‌లో కొత్త సంజ్ఞలను పట్టించుకోదు. వేగంగా ముందుకు వెనక్కి కదిలినప్పుడు పదేపదే పని చేయడాన్ని నివారిస్తుంది.</value></data>
   <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>ఇన్-బాక్స్ సంజ్ఞలు</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>స్వైప్‌లు, ట్యాప్‌లు, పించ్‌లు, ఆకారాలు</value></data>
   <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>4-దిశల స్వైప్‌లు (పైకి / కిందికి / ఎడమకు / కుడికి)</value></data>
   <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>8-దిశల స్వైప్‌లు (కర్ణాలతో సహా)</value></data>
   <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>స్వైప్ దూరం (0..1)</value></data>
@@ -1926,6 +1935,7 @@
   <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>ఆకార సంజ్ఞలు (వృత్తం, చతురస్రం, త్రిభుజం, Z, టిక్ గుర్తు)</value></data>
   <data name="Pad_Touchpad_MatchThreshold" xml:space="preserve"><value>ఆకార సరిపోలిక థ్రెషోల్డ్</value></data>
   <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>కస్టమ్ సంజ్ఞలు</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>మీ స్వంతవి రికార్డ్ చేయండి</value></data>
   <data name="Pad_Touchpad_RecordNew" xml:space="preserve"><value>+ కొత్త సంజ్ఞను రికార్డ్ చేయి</value></data>
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>ఈ ప్రొఫైల్ కోసం అనుకూల సంజ్ఞలు ఏవీ రికార్డ్ చేయబడలేదు. ఒకదాన్ని రికార్డ్ చేయడానికి కొత్త సంజ్ఞను రికార్డ్ చేయి క్లిక్ చేయండి.</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 వేలు</value></data>
@@ -1933,6 +1943,7 @@
 
   <!-- Stick / D-pad output card -->
   <data name="Pad_Touchpad_Stick_Header" xml:space="preserve"><value>స్టిక్ / D-ప్యాడ్ అవుట్‌పుట్</value></data>
+  <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>టచ్ ప్యాడ్‌ను స్టిక్ లేదా D-ప్యాడ్‌గా వాడండి</value></data>
   <data name="Pad_Touchpad_Stick_Subtitle" xml:space="preserve"><value>టచ్ ప్యాడ్ను వర్చువల్ అనలాగ్ స్టిక్ లేదా D-ప్యాడ్గా మార్చండి. మీ వేలు మొదట తాకిన చోట అవుట్పుట్ స్థిరపడుతుంది. ఆ స్థానానికి సంబంధించి ప్రస్తుత స్థానం స్టిక్ విలువను, (ఐచ్ఛికంగా) లాచ్ చేసిన D-ప్యాడ్ దిశ విలువలను నిర్ణయిస్తుంది.</value></data>
   <data name="Pad_Touchpad_StickEnabled" xml:space="preserve"><value>స్టిక్ / D-ప్యాడ్ అవుట్‌పుట్‌ను ప్రారంభించు</value></data>
   <data name="Pad_Touchpad_StickEnabled_Tooltip" xml:space="preserve"><value>టచ్ ప్యాడ్ స్టిక్ X, స్టిక్ Y మరియు D-ప్యాడ్ మూలాలను మ్యాపింగ్ ఎంపిక జాబితాలో చూపిస్తుంది. ఇప్పటికే ఉన్న టచ్ ప్యాడ్ వేలు, టచ్ ప్యాడ్ సంజ్ఞ మూలాలతో పాటు పనిచేస్తుంది, వాటికి బదులుగా కాదు.</value></data>
@@ -1947,6 +1958,7 @@
 
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>మౌస్ అవుట్‌పుట్</value></data>
+  <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>విలోమం, మొమెంటం, ప్రతిస్పందన, త్వరణం, ఫ్లింగ్</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>కీబోర్డ్ / మౌస్ వర్చువల్ కంట్రోలర్లో టచ్ ప్యాడ్ వేలు మౌస్ X/Y కు మ్యాప్ చేయబడినప్పుడు కర్సర్ వేగాన్ని సర్దుబాటు చేస్తుంది. 1.0 డిఫాల్ట్. కర్సర్ వేగంగా కదలాలంటే ఏ అక్షాన్నైనా పెంచండి, నెమ్మదిగా కదలాలంటే తగ్గించండి. విలోమం ఏ అక్షాన్నైనా తిప్పుతుంది.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>మౌస్ సున్నితత్వం X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>క్షితిజ సమాంతర టచ్ ప్యాడ్ → మౌస్ డెల్టాపై గుణకం. 1.0 కంటే తక్కువ కర్సర్ను నెమ్మదిస్తుంది. 1.0 కంటే ఎక్కువ దాన్ని వేగవంతం చేస్తుంది.</value></data>
@@ -1974,6 +1986,7 @@
   <data name="Pad_Touchpad_RotateThreshold_Tooltip" xml:space="preserve"><value>తిప్పడం పనిచేయడానికి ముందు రెండు వేళ్లు ఎంత తిరగాలి.</value></data>
   <data name="Pad_ResetTouchpadRotateThresholdDegrees" xml:space="preserve"><value>తిప్పే థ్రెషోల్డ్‌ను రీసెట్ చేయి</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>ఖచ్చిత పాయింటర్</value></data>
+  <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>ప్యాడ్ చేరే స్క్రీన్ భాగం</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>టచ్ ప్యాడ్ పాయింటర్ X/Y మూలాలను సర్దుబాటు చేస్తుంది. ఇవి కర్సర్ను ప్యాడ్పై మీ వేలి స్థానానికి తరలిస్తాయి (వాటిని కీబోర్డ్ / మౌస్ వర్చువల్ కంట్రోలర్లో మౌస్ X/Y కు మ్యాప్ చేయండి). పరిమాణం 1.00, మధ్య 0.50 అయితే ప్యాడ్ మొత్తం స్క్రీన్కు మ్యాప్ అవుతుంది. కర్సర్ను స్క్రీన్లోని ఒక భాగానికి పరిమితం చేయడానికి పరిమాణాన్ని తగ్గించండి, ఆ భాగాన్ని ఉంచడానికి మధ్యను జరపండి.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>ప్రాంతం వెడల్పు</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>ఈ ప్యాడ్ మ్యాప్ అయ్యే స్క్రీన్ ప్రాంతం వెడల్పు, స్క్రీన్ వెడల్పులో భాగంగా. 1.00 పూర్తి వెడల్పును కవర్ చేస్తుంది. 0.50 కర్సర్ను సగం స్క్రీన్కు పరిమితం చేస్తుంది.</value></data>
@@ -1986,12 +1999,14 @@
 
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>స్వైప్ హాప్టిక్స్</value></data>
+  <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>వేలు కదిలే కొద్దీ టిక్‌లు</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>మీ వేలు ఈ టచ్ ప్యాడ్పై కదులుతున్నప్పుడు Steam Input ట్రాక్ప్యాడ్ టిక్ల లాగా కంట్రోలర్ హాప్టిక్స్ను పల్స్ చేస్తుంది. Steam Controller లు మరియు Steam Deck ప్యాడ్ కింద ఉన్న యాక్చుయేటర్ను టిక్ చేస్తాయి. DualSense మరియు DualShock 4 రంబుల్ మోటార్లను పల్స్ చేస్తాయి.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>స్వైప్ హాప్టిక్స్‌ను ప్రారంభించు</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>ఈ ప్యాడ్పై వేలు నిర్ణీత దూరం కదిలిన ప్రతిసారీ చిన్న హాప్టిక్ టిక్ను పంపుతుంది. వేలు ఆనించడం లేదా ప్యాడ్ను క్లిక్ చేయడం ఎప్పుడూ టిక్ చేయదు. డిఫాల్ట్గా ఆఫ్.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>పల్స్ తీవ్రత</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity_Tooltip" xml:space="preserve"><value>ప్రతి టిక్ బలం. గేమ్ రంబుల్ దీనికంటే బలంగా ఉన్నప్పుడు ఎల్లప్పుడూ గేమ్ రంబుల్నే ఉపయోగిస్తారు.</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Header" xml:space="preserve"><value>కృత్రిమ ఒత్తిడి</value></data>
+  <data name="Pad_SyntheticPressure_FoldHint" xml:space="preserve"><value>స్పర్శను పూర్తి ఒత్తిడిగా చూపే ప్యాడ్‌ల కోసం ఒత్తిడి</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Subtitle" xml:space="preserve"><value>స్పర్శను పూర్తి ఒత్తిడిగా నివేదించే ప్యాడ్లపై (DualShock 4, DualSense, Steam Controller 2015) DualShock 2 / DualShock 3 ఒత్తిడి బటన్లను అనుకరిస్తుంది. ప్రారంభించినప్పుడు, ఈ పరికరం యొక్క ఒత్తిడి మ్యాపింగ్ మూలాలు స్పర్శ లేనప్పుడు 0%, విశ్రాంత స్పర్శను స్పర్శ ఒత్తిడి స్థాయిగా, ప్యాడ్ క్లిక్ను 100%గా చదువుతాయి.</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled" xml:space="preserve"><value>కృత్రిమ ఒత్తిడిని ప్రారంభించు</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled_Tooltip" xml:space="preserve"><value>ఈ పరికరం యొక్క ఒత్తిడి మ్యాపింగ్ మూలాలను మూడు దశలుగా మారుస్తుంది: స్పర్శ లేనప్పుడు 0%, విశ్రాంత స్పర్శకు స్పర్శ ఒత్తిడి స్థాయి, ప్యాడ్ క్లిక్కు 100%. డిఫాల్ట్గా ఆఫ్, దీనివల్ల నిజమైన అనలాగ్ ఒత్తిడి ఉన్న ప్యాడ్లపై ముడి రీడింగ్లు అలాగే ఉంటాయి.</value></data>
@@ -2169,7 +2184,9 @@
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>ఈ ప్యాడ్ మోషన్ సెన్సార్ మౌస్ మరియు స్టిక్ అవుట్పుట్ను ఎలా నడిపిస్తుందో సర్దుబాటు చేయండి. విశ్రాంత డ్రిఫ్ట్ను సున్నా చేయడానికి చదునైన ఉపరితలంపై క్రమాంకనం చేయండి, తర్వాత సున్నితత్వం, స్మూతింగ్, ఎంగేజ్ నియమాలను మీ ఇష్టానుసారం సెట్ చేయండి.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>క్రమాంకనం</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>సున్నితత్వం</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>యూనిట్లు, స్పేస్, అక్షాల విలోమం, వాస్తవ ప్రపంచ క్రమాంకనం</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>ప్రతిస్పందన రూపకల్పన</value></data>
+  <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>డెడ్ జోన్, స్మూతింగ్, త్వరణం, అవుట్‌పుట్ వక్రరేఖ</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>స్పేస్</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>గైరో కదలికను ఎలా అర్థం చేసుకోవాలి. Local ముడి కంట్రోలర్ అక్షాలను ఉపయోగిస్తుంది. Player క్షితిజ సమాంతర కదలికను వాస్తవ ప్రపంచపు నిలువు దిశ (గురుత్వాకర్షణ) పైకి ప్రొజెక్ట్ చేస్తుంది, కాబట్టి మీరు ప్యాడ్ను ఎలా పట్టుకున్నా అదే మణికట్టు తిప్పడం ఎల్లప్పుడూ కెమెరాను తిప్పుతుంది. World అదనంగా నిలువు కదలికను ప్రపంచ అక్షాలపైకి మళ్లీ ప్రొజెక్ట్ చేస్తుంది.</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>పట్టుకునే విధానం</value></data>
@@ -2183,11 +2200,13 @@
   <data name="Pad_ResetGyroInvertYaw" xml:space="preserve"><value>యా విలోమాన్ని రీసెట్ చేయి</value></data>
   <data name="Pad_ResetGyroInvertRoll" xml:space="preserve"><value>రోల్ విలోమాన్ని రీసెట్ చేయి</value></data>
   <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>దిక్సూచి</value></data>
+  <data name="Pad_Compass_FoldHint" xml:space="preserve"><value>యాను అయస్కాంత ఉత్తరానికి స్థిరపరుస్తుంది</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>ఈ కంట్రోలర్లో మాగ్నెటోమీటర్ ఉంది. యా దిశను అయస్కాంత ఉత్తరానికి స్థిరపరచడం గైరో లక్ష్యం నుండి నెమ్మదైన క్షితిజ సమాంతర డ్రిఫ్ట్ను తొలగిస్తుంది. ముందుగా క్రమాంకనం చేయండి: క్రమాంకనం చేయి నొక్కండి, కొన్ని సెకన్ల పాటు కంట్రోలర్ను 8 ఆకారంలో అన్ని దిశలలో తిప్పండి, తర్వాత మళ్లీ నొక్కండి.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>యాను దిక్సూచికి ఆంకర్ చేయి</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>క్షితిజ సమాంతర లక్ష్యాన్ని అయస్కాంత దిశ వైపు లాగే చిన్న సరిదిద్దే రేటును జోడిస్తుంది, కాబట్టి డ్రిఫ్ట్ పేరుకుపోదు. నిల్వ చేసిన మాగ్నెటోమీటర్ క్రమాంకనం అవసరం. సమీపంలోని లోహం లేదా అయస్కాంతాల వల్ల చెదిరిన నమూనాలు స్వయంచాలకంగా తిరస్కరించబడతాయి.</value></data>
   <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>డిఫాల్ట్‌కు రీసెట్ చేయి (ఆఫ్)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>పిచ్ మరియు రోల్ అనుకరణ</value></data>
+  <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>యాక్సిలరోమీటర్ నుండి లెక్కించిన పిచ్ మరియు రోల్</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>ఈ కంట్రోలర్ గైరో ఎడమకు, కుడికి తిరగడాన్ని మాత్రమే గ్రహిస్తుంది. సిమ్యులేషన్ ఆన్ చేసి ఉన్నప్పుడు, PadForge యాక్సిలరోమీటర్ నుండి పిచ్ మరియు రోల్ను లెక్కించి, వాటిని గైరో యా తో పాటు మ్యాపింగ్ వరుసలకు, వర్చువల్ కంట్రోలర్ మోషన్కు పంపుతుంది. యాక్సిలరోమీటర్ నెట్టడాన్ని వంపు నుండి వేరు చేయలేదు, కాబట్టి కంట్రోలర్ను తిప్పకుండా పక్కకు లేదా ముందుకు కదిలిస్తే అది క్షణిక భ్రమణంగా చదవబడుతుంది.</value></data>
   <data name="Settings_GyroSimulation" xml:space="preserve"><value>పిచ్ మరియు రోల్‌ను అనుకరించు</value></data>
   <data name="Settings_GyroSimulation_Tooltip" xml:space="preserve"><value>యాక్సిలరోమీటర్ నుండి లెక్కించిన రేట్లతో పిచ్ మరియు రోల్ను నింపుతుంది. యా గైరో సొంత రీడింగ్గానే ఉంటుంది. డిఫాల్ట్గా ఆఫ్.</value></data>
@@ -2228,6 +2247,7 @@
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>కింద (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>పైన (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>ఎంగేజ్</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>లక్ష్య ఎంగేజ్ బటన్, ఎంగేజ్ మోడ్, ఈజీ ఎయిమ్ థ్రెషోల్డ్</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>గైరో ఎప్పుడు సక్రియంగా ఉంటుందో పరిమితం చేసే ఐచ్ఛిక గేట్లు. కుడి స్టిక్ విక్షేపం, లక్ష్య ఎంగేజ్ బటన్ ఒక్కొక్కటిగా కాన్ఫిగర్ చేయవచ్చు. కాన్ఫిగర్ చేసిన ప్రతి గేట్ సక్రియంగా ఉన్నప్పుడు మాత్రమే గైరో పనిచేస్తుంది.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>లోకల్</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>ప్లేయర్</value></data>
@@ -2278,6 +2298,7 @@
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>గైరో టిల్ట్ X</value></data>
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>గైరో టిల్ట్ Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>గైరో టిల్ట్</value></data>
+  <data name="Pad_GyroTilt_FoldHint" xml:space="preserve"><value>పూర్తి టిల్ట్ పరిధి, టిల్ట్ డెడ్ జోన్</value></data>
   <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>గైరో టిల్ట్ X / గైరో టిల్ట్ Y ఇన్పుట్ల పరిధి సెట్టింగులు: వంపును అలాగే ఉంచితే స్టిక్ తన విక్షేపాన్ని అలాగే ఉంచుతుంది, Steam యొక్క Joystick Deflection మోడ్ లాగా. మీరు ఇక్కడ సెట్ చేసిన పరిధి వద్ద పూర్తి విక్షేపం వస్తుంది. గైరో రీసెంటర్ విశ్రాంత పట్టును మళ్లీ సున్నా చేస్తుంది. యా (కంట్రోలర్ను చదునుగా తిప్పడం) గురుత్వాకర్షణకు కనిపించదు, ఈ ఇన్పుట్లను కదిలించదు.</value></data>
   <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>పూర్తి టిల్ట్ పరిధి</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>పూర్తి స్టిక్ విక్షేపంగా లెక్కించబడే, విశ్రాంత పట్టు నుండి వంపు డిగ్రీలు. చిన్నది = మరింత సున్నితం. Steam కాన్ఫిగ్లలో 25° అత్యంత సాధారణ విలువ.</value></data>
@@ -2479,6 +2500,7 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>కనిష్ఠ పరిధి Y (కిందికి)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>గరిష్ఠ పరిధి Y (పైకి)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X అక్షం</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>రెండు అక్షాలు</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y అక్షం</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>పరిధి</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>యాంటీ-డెడ్ జోన్</value></data>
@@ -2489,6 +2511,7 @@
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>ఫోర్స్ ఫీడ్బ్యాక్ / రంబుల్ / హాప్టిక్స్</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>ఒక్కో మోటార్ గెయిన్, ట్రిగ్గర్ రంబుల్, మోటార్ల మార్పిడి</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>మొత్తం గెయిన్</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>ఎడమ మోటార్</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>కుడి మోటార్</value></data>
@@ -2500,6 +2523,7 @@
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>స్థిర బలం</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>ఆఫ్ చేసే వరకు స్థిరమైన బలం</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>మీరు ఆఫ్ చేసే వరకు ఈ పరికరానికి నిరంతర బలాన్ని వర్తింపజేస్తుంది. ఏ మూలం నుండైనా గేమ్ ఇచ్చే బలం, ఇది యాక్టివ్‌గా ఉన్నప్పుడు దీన్ని భర్తీ చేస్తుంది, గేమ్ ఆగాక ఇది తిరిగి కొనసాగుతుంది.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>స్థిర బలాన్ని వర్తింపజేయి</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>దిశ, బలాన్ని సెట్ చేయడానికి గ్రిడ్ లోపల లాగండి.</value></data>
@@ -2826,6 +2850,7 @@
 
   <!-- ═══ Audio Bass Rumble ═══ -->
   <data name="Settings_AudioRumble" xml:space="preserve"><value>ఆడియో రంబుల్</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>సిస్టమ్ ఆడియోలోని బాస్ నుండి రంబుల్</value></data>
   <data name="Settings_AudioRumbleDesc" xml:space="preserve"><value>సిస్టమ్ ఆడియోలోని బాస్ ఫ్రీక్వెన్సీల నుండి కంట్రోలర్ రంబుల్‌ను నడిపిస్తుంది.</value></data>
   <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>ఆడియో రంబుల్ ప్రారంభించు</value></data>
   <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>సున్నితత్వం</value></data>
@@ -2936,6 +2961,8 @@
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>లీన్ బాహ్య డెడ్ జోన్ రీసెట్ చేయి</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>కంట్రోలర్ ఓరియెంటేషన్ రీసెట్ చేయి</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>మోషన్ స్టీరింగ్</value></data>
+  <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° నుండి {1}° వరకు</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>లీన్ డెడ్ జోన్లు, కంట్రోలర్ ఓరియెంటేషన్</value></data>
   <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>మోషన్ లీన్ ఇన్పుట్ కోసం సెట్టింగులు: కంట్రోలర్ను స్టీరింగ్ వీల్లా వంచండి. మ్యాపింగ్స్లోని ఇన్పుట్ డ్రాప్డౌన్ నుండి "మోషన్ లీన్" ను ఒక స్టిక్ అక్షానికి మ్యాప్ చేయండి.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>మోషన్ స్టీరింగ్ రీసెట్ చేయి</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>ఫ్లిక్ స్టిక్ (కుడి స్టిక్)</value></data>
@@ -2944,6 +2971,7 @@
   <data name="Mapping_LeftStickRing" xml:space="preserve"><value>ఎడమ స్టిక్ రింగ్</value></data>
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>కుడి స్టిక్ రింగ్</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>ఫ్లిక్ స్టిక్</value></data>
+  <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>ఫ్లిక్ స్టిక్ ఇన్పుట్ల సర్దుబాటు</value></data>
   <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>ఫ్లిక్ స్టిక్ ఇన్పుట్ల సెట్టింగులు: స్టిక్ను ఒక దిశలో చూపిస్తే కెమెరా అటు తిరుగుతుంది, అంచున తిప్పితే సూక్ష్మంగా తిరుగుతుంది. మ్యాపింగ్స్లోని ఇన్పుట్ డ్రాప్డౌన్ నుండి ఏ లేయర్లోనైనా "ఫ్లిక్ స్టిక్ (కుడి స్టిక్)" ను మౌస్ X కు మ్యాప్ చేయండి.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>ఫ్లిక్ స్టిక్ రీసెట్ చేయి</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>360°కి డాట్లు</value></data>
@@ -2980,6 +3008,7 @@
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>ఫ్లిక్ స్టిక్ను ఉంచే లేయర్ క్రియాశీలమైనప్పుడు స్టిక్ ఇప్పటికే వంగి ఉంటే, ఫ్లిక్ వెంటనే జరుగుతుంది. ఆఫ్ అయితే కెమెరా కదలకుండా ఉండి, ప్రస్తుత స్టిక్ కోణం నుండి భ్రమణాన్ని అనుసరిస్తుంది.</value></data>
   <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>క్రియాశీలమైనప్పుడు ఫ్లిక్ అనుమతి రీసెట్ చేయి</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>స్టీరింగ్ లాక్ ఫీడ్బ్యాక్</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>స్టీరింగ్ మోడ్‌లోని స్టిక్ పూర్తి లాక్‌కు చేరినప్పుడు సూచన</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>స్టీరింగ్ మోడ్కు సెట్ చేసిన స్టిక్ను పూర్తి లాక్ వరకు తిప్పినప్పుడు, పరిమితిని అనుభవించేలా సూచన (రంబుల్, ట్రిగ్గర్ లేదా లైట్ బార్) ప్లే అవుతుంది. అన్నీ డిఫాల్ట్గా ఆఫ్.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>లాక్ వద్ద రంబుల్ పల్స్</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>లాక్ వద్ద ట్రిగ్గర్ కంపనం</value></data>
@@ -3035,6 +3064,7 @@
   <data name="Pad_Audio_Header" xml:space="preserve"><value>ఆడియో</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>మాక్రో శబ్దాలు, ప్రతిబింబించిన సిస్టమ్ ఆడియో USB లేదా బ్లూటూత్ ద్వారా ఎంచుకున్న కంట్రోలర్ అంతర్నిర్మిత స్పీకర్లో ప్లే అవుతాయి. పైన డ్రాప్డౌన్లో పరికరాన్ని ఎంచుకోండి. ఇక్కడి ప్రతి సెట్టింగ్ దానిని అనుసరిస్తుంది.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>సౌండ్ అవుట్పుట్</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>మిర్రర్ మూలం, హాప్టిక్స్, హెడ్ఫోన్ వాల్యూమ్, క్రాస్ఫీడ్, Parametric EQ, లిమిటర్</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>శబ్దాలు ఎంచుకున్న కంట్రోలర్కు స్వయంచాలకంగా వెళ్తాయి. USB ద్వారా ప్యాడ్ సొంత ఆడియో ఎండ్పాయింట్ హార్డ్వేర్ కంటైనర్ ద్వారా సరిపోలుతుంది. బ్లూటూత్ ద్వారా ఆడియో Sony HID ఫ్రేమ్లలో స్ట్రీమ్ అవుతుంది.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>మిర్రర్ మూలం</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>కంట్రోలర్ స్పీకర్కు ఏ ప్లేబ్యాక్ పరికరాన్ని ప్రతిబింబించాలి. నిర్దిష్ట శబ్దాలను వేరే ప్లేబ్యాక్ పరికరానికి పంపే ఆటలు దీనిని లక్ష్యంగా చేసుకోవచ్చు.</value></data>
@@ -3108,6 +3138,7 @@
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>ఈ ఫైల్ చదవగలిగే PadForge ప్రొఫైల్ కాదు.</value></data>
   <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>{0} నుండి ఒక శబ్దాన్ని ఎంచుకోండి</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>సౌండ్ ప్యాకేజీలు</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>సౌండ్ మాక్రోల కోసం శబ్దాల zip ఫైళ్లు</value></data>
   <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>సౌండ్ ప్యాకేజీ అంటే .pfsounds పొడిగింపు ఉన్న శబ్దాల ఒక zip ఫైల్. దీన్ని ఇక్కడ జోడించి, ఏ సౌండ్ మాక్రోలోనైనా దాని శబ్దాలను ఎంచుకోండి. PadForge ఫైల్ నుండి నేరుగా చదువుతుంది, ఎప్పుడూ అన్ప్యాక్ చేయదు. పోర్టబుల్గా ఉండటానికి ప్యాకేజీలను PadForge.exe పక్కనే ఉంచండి.</value></data>
   <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>ప్యాకేజీ జోడించు…</value></data>
   <data name="Pad_Audio_Packages_Add_Tooltip" xml:space="preserve"><value>ఇప్పటికే ఉన్న .pfsounds ఫైల్ను జాబితాకు జోడించండి.</value></data>
@@ -3133,6 +3164,7 @@
   <data name="Emoji_Category_Objects" xml:space="preserve"><value>వస్తువులు</value></data>
   <data name="Emoji_Category_Symbols" xml:space="preserve"><value>చిహ్నాలు</value></data>
   <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>ఐకాన్ ప్యాకేజీలు</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>మెను సెల్‌ల కోసం చిత్రాల zip ఫైళ్లు</value></data>
   <data name="Pad_Menus_IconPackages_Desc" xml:space="preserve"><value>ఐకాన్ ప్యాకేజీ అంటే .pficons పొడిగింపు ఉన్న చిత్రాల ఒక zip ఫైల్. దీన్ని ఇక్కడ జోడించి, ఏ మెను సెల్లోనైనా దాని ఐకాన్లను ఎంచుకోండి. PadForge ఫైల్ నుండి నేరుగా చదువుతుంది, ఎప్పుడూ అన్ప్యాక్ చేయదు. పోర్టబుల్గా ఉండటానికి ప్యాకేజీలను PadForge.exe పక్కనే ఉంచండి.</value></data>
   <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>ప్యాకేజీ జోడించు…</value></data>
   <data name="Pad_Menus_IconPackages_Add_Tooltip" xml:space="preserve"><value>ఇప్పటికే ఉన్న .pficons ఫైల్ను జాబితాకు జోడించండి.</value></data>
@@ -3542,6 +3574,7 @@
   <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>లేయర్ {0} కు మారు</value></data>
   <data name="Macro_SwitchLayer_Hint" xml:space="preserve"><value>ఈ స్లాట్ను ఎంచుకున్న షిఫ్ట్ లేయర్కు మారుస్తుంది. మరొక మార్పు, లాచ్ లేదా సైకిల్ యాక్టివేటర్, లేదా ప్రొఫైల్ మార్పు వచ్చే వరకు లేయర్ అలాగే ఉంటుంది. “బేస్” ఎంపిక బేస్ లేయర్కు తిరిగి వస్తుంది. ప్రతి లేయర్లో ఒకే బటన్ వేర్వేరుగా మారేలా చేయడానికి ఈ మాక్రోను పైన ఉన్న లేయర్కు పరిమితం చేయండి.</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>గైడ్ బటన్ LED</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>గైడ్ లేదా హోమ్ బటన్ వెలుగు</value></data>
   <data name="Pad_Lighting_GuideLed_Subtitle" xml:space="preserve"><value>వెలిగే గైడ్ లేదా హోమ్ బటన్ ప్రకాశం. Xbox One, ఆ తర్వాతి కంట్రోలర్లు దీన్ని USB ద్వారా అంగీకరిస్తాయి. 2015 Steam Controller ఏ కనెక్షన్లోనైనా అంగీకరిస్తుంది, అన్ని Steam Controller లు ఒకే ప్రకాశాన్ని పంచుకుంటాయి. Switch Pro Controller లు, కుడి Joy-Con లు (ఒంటరిగా, జతగా, లేదా ఛార్జింగ్ గ్రిప్లో) ఏ కనెక్షన్లోనైనా అంగీకరిస్తాయి.</value></data>
   <data name="Pad_Lighting_GuideLed_Mode_Tooltip" xml:space="preserve"><value>పరికర డిఫాల్ట్ కంట్రోలర్ ఫర్మ్వేర్ సెట్ చేసినట్లే LED ని ఉంచుతుంది. స్థిర ప్రకాశం కింది స్థాయిని పట్టుకుంటుంది. బ్యాటరీ స్థాయి బ్యాటరీ ఎక్కువగా ఉంటే ప్రకాశాన్ని పెంచుతుంది, 10% కంటే తక్కువకు ఎప్పుడూ పోదు. Xbox కంట్రోలర్లు గైడ్ LED ఆదేశాలను USB ద్వారా మాత్రమే అంగీకరిస్తాయి, కాబట్టి Bluetooth కనెక్షన్లో ఈ సెట్టింగ్ ప్రభావం చూపదు. Switch కంట్రోలర్లు హోమ్ LED ఆదేశాలను ఏ కనెక్షన్లోనైనా అంగీకరిస్తాయి.</value></data>
   <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>పరికర డిఫాల్ట్</value></data>
@@ -3906,6 +3939,7 @@
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>బాస్ షేకర్లు</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>ఈ వర్చువల్ కంట్రోలర్ అందుకునే గేమ్ రంబుల్, ఫోర్స్ ఫీడ్బ్యాక్ను బాస్ షేకర్లు, సబ్వూఫర్ల కోసం తక్కువ ఫ్రీక్వెన్సీ టోన్లుగా ఆడియో అవుట్పుట్కు పంపుతుంది.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>ఆడియోకు రంబుల్</value></data>
+  <data name="Pad_More_BassShakers" xml:space="preserve"><value>అవుట్పుట్ పరికరం, ఛానెల్‌లు, గెయిన్, ప్రతి మోటార్‌కు ఒక స్వరం</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox, DualShock 3, DualShock 4 / DualSense, Nintendo Switch Pro వర్చువల్ కంట్రోలర్లతో, అలాగే రేసింగ్ వీల్స్ వంటి ఫోర్స్ ఫీడ్బ్యాక్ ఉన్న ఎక్స్టెండెడ్ వర్చువల్ కంట్రోలర్లతో, Steam Deck Controller (Composite) తో పనిచేస్తుంది. గేమ్ ఫీడ్బ్యాక్, టెస్ట్ రంబుల్ ఆడియో అవుట్పుట్ ద్వారా వినిపిస్తాయి. మాక్రో రంబుల్ కంట్రోలర్లోనే ఉంటుంది.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>ఆడియోకు రంబుల్ రీసెట్ చేయి</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>రంబుల్ను ఆడియో అవుట్పుట్కు పంపు</value></data>
@@ -4352,6 +4386,7 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>FreeTrack షేర్డ్ మెమరీ డేటా కోసం వేచి ఉంది.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>FreeTrack షేర్డ్ మెమరీ అందుబాటులో లేదు.</value></data>
   <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>స్టీరింగ్ యాంగిల్ రంబుల్</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>స్టిక్ అక్షం మధ్య నుండి దూరమయ్యే కొద్దీ పెరిగే రంబుల్</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>ఎంచుకున్న వర్చువల్ స్టిక్ అక్షం మధ్య నుండి దూరంగా కదిలేకొద్దీ నిరంతర రంబుల్ను జోడిస్తుంది. కేటాయించిన అన్ని మూలాల మ్యాప్ అయిన అవుట్పుట్ను ఉపయోగిస్తుంది. దిశ వారీగా విభజన ఎంచుకుంటే, ప్రతికూల కదలిక ఎడమ మోటార్ను, ధనాత్మక కదలిక కుడి మోటార్ను నడుపుతాయి. ఎడమ మోటార్ లేదా కుడి మోటార్ ఎంచుకుంటే రెండు దిశలూ ఆ ఒక్క మోటార్లోనే ప్లే అవుతాయి. రంబుల్ పరికరాలతో Xbox మరియు PlayStation అవుట్పుట్ కోసం. ఇది స్టీరింగ్ వీల్స్ను, స్థిరమైన ఫోర్స్ ఫీడ్బ్యాక్ ఉన్న ఇతర పరికరాలను, Fanatec పెడల్స్ను వదిలివేస్తుంది.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>స్టీరింగ్ యాంగిల్ రంబుల్ను ప్రారంభించు</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>వర్చువల్ అక్షం</value></data>
@@ -4706,6 +4741,7 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="Status_FalconDriverDeclined" xml:space="preserve"><value>Windows Force Dimension డ్రైవర్‌ను ఇన్స్టాల్ చేయలేదు. Force Dimension ను నమ్మాలా అని Windows అడిగితే, ఇన్స్టాల్ ఎంచుకోండి.</value></data>
   <data name="Status_FalconDriverNotBound" xml:space="preserve"><value>డ్రైవర్ ఇన్స్టాల్ అయింది, కానీ Falcon దానికి మారలేదు. Falcon ను అన్‌ప్లగ్ చేసి మళ్లీ ప్లగ్ చేయండి.</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>కిక్, షేక్, బ్రేస్, ప్రీలోడ్, గ్రావిటీ</value></data>
   <data name="Pad_Falcon_Description" xml:space="preserve"><value>PadForge Falcon హ్యాండిల్‌పై ఉన్న ప్రతి ఫోర్స్‌ను సెకనుకు సుమారు వెయ్యిసార్లు లెక్కిస్తుంది, హ్యాండిల్ ఎక్కడ ఉంది మరియు గేమ్ ఏమి ప్లే చేస్తోంది అనే దాని నుండి. ఈ సెట్టింగులు ఈ స్లాట్‌కు చెందినవి.</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>Novint Falcon రీసెట్ చేయి</value></data>
   <data name="Pad_Falcon_Feel" xml:space="preserve"><value>అనుభూతి</value></data>

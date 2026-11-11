@@ -380,6 +380,7 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Calibration</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensitivity</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Units, Space, axis ulta karo, Real-World Calibration</value></data>
   <data name="Pad_Gyro_MagCalibrate_Stop" xml:space="preserve"><value>Calibration khatam karo</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Dabaae rakho</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>Toggle</value></data>
@@ -445,6 +446,7 @@
   <data name="Pad_SensitivityX" xml:space="preserve"><value>Sensitivity X</value></data>
   <data name="Pad_SensitivityY" xml:space="preserve"><value>Sensitivity Y</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X axis</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>Dono axis</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y axis</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Range</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-deadzone</value></data>
@@ -566,6 +568,7 @@
 
   <!-- ═══ Audio Bass Rumble ═══ -->
   <data name="Settings_AudioRumble" xml:space="preserve"><value>Audio rumble</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>System audio ke bass se rumble</value></data>
   <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>Sensitivity</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>+ Shift layer</value></data>
@@ -879,6 +882,7 @@
   <data name="Status_InstallingFalconDriver" xml:space="preserve"><value>Force Dimension ke Falcon driver install hoe raha hai…</value></data>
   <data name="Status_FalconNotPluggedIn" xml:space="preserve"><value>Koi Falcon nahi lagaa hai.</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>Kick, shake, brace, preload, gravity</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>Novint Falcon reset karo</value></data>
   <data name="Pad_Falcon_Feel_Joystick" xml:space="preserve"><value>Joystick</value></data>
   <data name="Pad_Falcon_Button1" xml:space="preserve"><value>Button 1</value></data>
@@ -955,4 +959,17 @@
   <data name="Pad_View_List" xml:space="preserve"><value>List</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Ek control pe click karo, phir uu input dabao jon ke ise chalae ke chahi.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>{0} ke intezaar hoe raha. Apne device pe input dabao.</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Stick axis center se jitna hatta, utna rumble badhta</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Ek barabar force jab tak aap band nahi karo</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Lean deadzone, controller orientation</value></data>
+  <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Deadzone, smoothing, acceleration, output curve</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Aim engage button, engage mode, easy aim threshold</value></data>
+  <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Touchpad ke stick ya D-pad ke rakam use karo</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Is touchpad ke gesture chalu kare</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Apan khud ke record karo</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>LED Brightness, player pattern, mute LED mode</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Guide ya Home button ke roshni</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Sound macro khatir sound ke zip file</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Menu cell khatir image ke zip file</value></data>
+  <data name="Pad_More_Stick" xml:space="preserve"><value>Center offset, deadzone ke shape aur har axis ke value, har axis ke curve, range, steering</value></data>
 </root>

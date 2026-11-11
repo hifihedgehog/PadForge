@@ -455,6 +455,7 @@
   <data name="Pad_Formula_Status_And" xml:space="preserve"><value>na</value></data>
   <data name="Pad_Formula_Var_NotYetMapped" xml:space="preserve"><value>i no gat mapin yet</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Deadzone</value></data>
+  <data name="Pad_More_Stick" xml:space="preserve"><value>Ol ofset bilong namel, sep bilong deadzone na namba bilong wanwan eksis, kev bilong wanwan eksis, renj, stiaring</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Renj</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Center offset X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Center offset Y</value></data>
@@ -697,6 +698,7 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Jairo</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibresen</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensitiviti</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Yunit, Spes, tanim eksis i go baksait, Real-World Calibration</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Tanim pitch i go baksait (Y)</value></data>
   <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Tanim yaw i go baksait (X)</value></data>
   <data name="Settings_GyroInvertRoll" xml:space="preserve"><value>Tanim roll i go baksait (X)</value></data>
@@ -806,6 +808,7 @@
   <data name="Pad_SensitivityX" xml:space="preserve"><value>Sensitiviti X</value></data>
   <data name="Pad_SensitivityY" xml:space="preserve"><value>Sensitiviti Y</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Eksis X</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>Tupela eksis</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Eksis Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Renj</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-deadzone</value></data>
@@ -816,6 +819,7 @@
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Force feedback / Guria / Haptics</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Strong bilong wanwan mota, guria bilong triga, senisim mota</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Lephan mota</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Raithan mota</value></data>
   <data name="Pad_SwapMotors" xml:space="preserve"><value>Senisim ples bilong lephan na raithan mota</value></data>
@@ -978,6 +982,7 @@
 
   <!-- ═══ Audio Bass Rumble ═══ -->
   <data name="Settings_AudioRumble" xml:space="preserve"><value>Guria bilong nois</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Guria long bes bilong nois bilong sistem</value></data>
   <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>Tanim on guria bilong nois</value></data>
   <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>Sensitiviti</value></data>
   <data name="Settings_AudioRumble_LeftMotor" xml:space="preserve"><value>Lephan mota</value></data>
@@ -1055,6 +1060,8 @@
   <data name="Pad_Steering_Orient_Backward" xml:space="preserve"><value>I go bek</value></data>
   <data name="Pad_Steering_Reset_Mode" xml:space="preserve"><value>Reset pasin bilong stiaring</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Stiaring wantaim muv</value></data>
+  <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° i go inap {1}°</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Ol deadzone bilong slip, Sait bilong kontrola</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Reset stiaring wantaim muv</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick stick (Raithan stik)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick stick (Lephan stik)</value></data>
@@ -1062,6 +1069,7 @@
   <data name="Mapping_LeftStickRing" xml:space="preserve"><value>Ring bilong lephan stik</value></data>
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>Ring bilong raithan stik</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick stick</value></data>
+  <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Stretim ol input bilong Flick stick</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Reset flick stick</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Ol dot long 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Hamas maus kaunt long wanpela tanim 360° bilong kamera. I dipen long sensitiviti bilong maus long gem: apim sapos flick i no tanim inap, daunim sapos em i tanim tumas.</value></data>
@@ -1094,6 +1102,7 @@
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Nois</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Ol nois bilong makro na nois bilong sistem i kam long spika insait long kontrola yu makim, long USB o Bluetooth. Makim masin long dropdown antap. Olgeta seting hia i bihainim em.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Nois i go aut</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Sos bilong mira, haptics, Strong bilong hetfon, Crossfeed, Parametric EQ, Limiter</value></data>
   <data name="Pad_Audio_SystemDefault" xml:space="preserve"><value>Default bilong sistem</value></data>
   <data name="Pad_Audio_SourceUnavailable" xml:space="preserve"><value>(Masin i no stap)</value></data>
   <data name="Pad_Audio_MasterVolume" xml:space="preserve"><value>Nois i strong bilong olgeta</value></data>
@@ -1325,6 +1334,7 @@
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>Rausim piksa</value></data>
   <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>Senis i go long lea {0}</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>LED bilong Guide baten</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Lait bilong Guide o Home baten</value></data>
   <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>Default bilong masin</value></data>
   <data name="Pad_Lighting_GuideLed_Brightness" xml:space="preserve"><value>Lait i strong</value></data>
   <data name="Pad_ResetGuideLed" xml:space="preserve"><value>Reset LED bilong Guide baten</value></data>
@@ -1688,6 +1698,7 @@
   <data name="Status_FalconDriverDeclined" xml:space="preserve"><value>Windows i no instolim draiva bilong Force Dimension. Sapos Windows i askim sapos yu trastim Force Dimension, makim Install.</value></data>
   <data name="Status_FalconDriverNotBound" xml:space="preserve"><value>Draiva i instol pinis, tasol Falcon i no go long en yet. Rausim Falcon na konektim gen.</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>Kik, seksek, strongim, redim, graviti</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>Reset Novint Falcon</value></data>
   <data name="Pad_Falcon_Feel_Joystick" xml:space="preserve"><value>Joystick</value></data>
   <data name="Pad_Falcon_Button1" xml:space="preserve"><value>Baten 1</value></data>
@@ -1752,4 +1763,21 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Muvmen na tasim</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Ol lait na nois</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Ol makro na menu</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Saen taim stik bilong stiaring i kamap long las hap</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Guria i kamap strong taim eksis bilong stik i lusim namel</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Strong i stap oltaim inap yu tanim of</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Salim guria bilong bikpela mota i go long ol triga</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Strong i stap oltaim long wanwan mota bilong triga</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Guria bilong triga long bes bilong nois bilong sistem</value></data>
+  <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Deadzone, mekim isi, Spid i go antap, Kev bilong aut</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Baten bilong aim, Pasin bilong kirap, Threshold bilong isi aim</value></data>
+  <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Yusim touchpad olsem stik o D-pad</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Tanim on ol gesture bilong dispela touchpad</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Ol swipe, ol tap, ol pinch, ol sep</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Rekodim bilong yu yet</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Lait bilong LED, Pasin bilong plea, Pasin bilong LED bilong mute</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Ol zip fail bilong nois long ol makro bilong nois</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Ol zip fail bilong piksa long ol sel bilong menu</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Strong bilong wanwan triga, senisim mota, guria bilong adaptive triga</value></data>
+  <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Tanim i go baksait, Momentum, Respons, Spid i go antap, flick</value></data>
 </root>

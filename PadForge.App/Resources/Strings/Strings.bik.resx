@@ -417,6 +417,7 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibrasyon</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensitivity</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Units, Space, pagbaliktad kan mga axis, Real-World Calibration</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Baliktadon an pitch (Y)</value></data>
   <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Baliktadon an yaw (X)</value></data>
   <data name="Settings_GyroInvertRoll" xml:space="preserve"><value>Baliktadon an roll (X)</value></data>
@@ -499,6 +500,7 @@
   <data name="Pad_SensitivityX" xml:space="preserve"><value>Sensitivity X</value></data>
   <data name="Pad_SensitivityY" xml:space="preserve"><value>Sensitivity Y</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Axis X</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>Duwang axis</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Axis Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Range</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-deadzone</value></data>
@@ -683,6 +685,7 @@
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick stick (stick sa wala)</value></data>
   <data name="Mapping_FlickStickTouchpad_Format" xml:space="preserve"><value>Flick stick (touchpad {0})</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick stick</value></data>
+  <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Pag-ayos kan mga input kan Flick stick</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>I-reset an flick stick</value></data>
   <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>I-reset sa 14400</value></data>
   <data name="Pad_ResetFlickTime" xml:space="preserve"><value>I-reset sa 0.1 s</value></data>
@@ -725,6 +728,7 @@
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>An file bakong profile kan PadForge na mababasa.</value></data>
   <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Magpili nin tunog hale sa {0}</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Mga package nin tunog</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Mga zip file nin tunog para sa mga macro nin tunog</value></data>
   <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>Magdugang nin package…</value></data>
   <data name="Pad_Audio_Packages_Create" xml:space="preserve"><value>Maggibo nin package…</value></data>
   <data name="Pad_Audio_Packages_Create_Tooltip" xml:space="preserve"><value>Magpili nin mga file nin tunog asin i-save sinda bilang bagong .pfsounds na package.</value></data>
@@ -741,6 +745,7 @@
   <data name="Emoji_Category_Objects" xml:space="preserve"><value>Mga bagay</value></data>
   <data name="Emoji_Category_Symbols" xml:space="preserve"><value>Mga simbolo</value></data>
   <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>Mga package nin icon</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Mga zip file nin ladawan para sa mga cell kan menu</value></data>
   <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>Magdugang nin package…</value></data>
   <data name="Pad_Menus_IconPackages_Create" xml:space="preserve"><value>Maggibo nin package…</value></data>
   <data name="Pad_Menus_IconPackages_Create_Tooltip" xml:space="preserve"><value>Magpili nin mga file nin ladawan asin i-save sinda bilang bagong .pficons na package.</value></data>
@@ -1121,6 +1126,7 @@
   <data name="Falcon_Calibrate_Done_Format" xml:space="preserve"><value>Tapos na an kalibrasyon. {0}</value></data>
   <data name="Settings_Falcon_Title" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>Kick, shake, brace, preload, gravity</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>I-reset an Novint Falcon</value></data>
   <data name="Pad_Falcon_Feel_Joystick" xml:space="preserve"><value>Joystick</value></data>
   <data name="Pad_Falcon_Button1" xml:space="preserve"><value>Button 1</value></data>
@@ -1193,4 +1199,23 @@
   <data name="Pad_View_List" xml:space="preserve"><value>Lista</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Mag-click nin sarong kontrol, dangan pindota an input na dapat magpalakaw kaiyan.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Naghahalat sa {0}. Pindota an input sa saimong device.</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Rumble na nagdadakula mantang an axis kan stick nagharayo sa sentro</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Pirmeng puwersa sagkod na patayon mo</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Rumble gikan sa bass kan audio kan sistema</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Ipinapadara an rumble kan mga pangenot na motor sa mga trigger</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Pirmeng puwersa sa kada motor kan trigger</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Rumble kan trigger gikan sa bass kan audio kan sistema</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Mga deadzone kan pagkiling, Oryentasyon kan controller</value></data>
+  <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Deadzone, pagpakinis, Akselerasyon, Curve kan output</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Buton sa pag-engage kan aim, Mode kan engage, Threshold kan Easy Aim</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Binubuhay an mga gesture kan touchpad na ini</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Mga swipe, tap, pinch, korte</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Irekord an saimong sadiri</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Liwanag kan LED, Pattern kan player, Mode kan mute LED</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>An silaw kan buton na Guide o Home</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Gain kada motor, rumble kan trigger, pagsalyo kan motor</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Gain kada trigger, pagsalyo kan motor, mga vibration kan adaptive trigger</value></data>
+  <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Pagbaliktad, Momentum, Response, Akselerasyon, fling</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Mirror Source, haptics, Volume kan headphone, Crossfeed, Parametric EQ, Limiter</value></data>
+  <data name="Pad_More_Stick" xml:space="preserve"><value>Mga offset kan sentro, korte kan deadzone asin halaga kada axis, curve kada axis, range, steering</value></data>
 </root>

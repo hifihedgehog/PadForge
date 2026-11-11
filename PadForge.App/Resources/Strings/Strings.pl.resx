@@ -917,6 +917,7 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Spusty impulsowe</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Spusty impulsowe</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Wzmocnienie spustów, zamiana silników, adaptacyjne wibracje spustów</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Przekazuje polecenia silników poszczególnych spustów (spusty impulsowe Xbox) z wirtualnego kontrolera do przypisanego fizycznego kontrolera Xbox One, Elite lub Series. Wibracje spustów sterowane przez grę są przekazywane automatycznie. Poniższe ustawienia skalują siłę dla każdego spustu.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Lewy spust</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Prawy spust</value></data>
@@ -935,7 +936,9 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Resetuj lewy spust</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Resetuj prawy spust</value></data>
   <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Stała siła spustów</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Stała siła na każdym silniku spustu</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Kierowanie do spustów</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Przekazuje wibracje silników głównych do spustów</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Kieruje główne silniki wibracji do kanału spustów, osobno dla każdego spustu. Działa z wibracjami XInput i force feedback. Aktywator może to bramkować, aby spust wibrował tylko wtedy, gdy przytrzymujesz przycisk.</value></data>
   <data name="Pad_ResetTriggerRouting" xml:space="preserve"><value>Resetuj kierowanie do spustów</value></data>
   <data name="Pad_TriggerRouting_LeftTrigger" xml:space="preserve"><value>Lewy spust</value></data>
@@ -967,6 +970,7 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Resetuj lewy spust</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Resetuj prawy spust</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Wibracje spustów z basów dźwięku</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Wibracje spustów z basów dźwięku systemowego</value></data>
   <data name="Pad_AudioTriggerRumble_Description" xml:space="preserve"><value>Steruje silnikami spustów na podstawie basów dźwięku systemowego. Siła spustów sterowana przez grę ma pierwszeństwo, gdy jest aktywna.</value></data>
   <data name="Pad_AudioTriggerRumble_Toggle" xml:space="preserve"><value>Steruj silnikami spustów na podstawie dźwięku</value></data>
   <data name="Pad_AudioTriggerRumble_Sensitivity" xml:space="preserve"><value>Czułość</value></data>
@@ -1028,6 +1032,7 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>Ten wirtualny kontroler podświetla urządzenie w tych samych trybach, jakie ma pasek świetlny DualSense, ustawianych tutaj tylko dla tego kontrolera. Na wirtualnym kontrolerze PlayStation gra, która zapisuje pasek świetlny, przejmuje kontrolę tak samo jak na DualSense.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Steruj podświetleniem tego urządzenia</value></data>
   <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>Sterowanie podświetleniem</value></data>
+  <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Steruj podświetleniem tego urządzenia, Kontrola podświetlenia</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>Wyłączenie sprawia, że ten wirtualny kontroler nie podświetla urządzenia. Wiersz producenta albo inne urządzenie tego rodzaju podświetlane przez to samo oprogramowanie nadal może ustawiać jego kolor. Makro Ustaw kolor Chroma na tym wirtualnym kontrolerze nadal koloruje urządzenie Razer.</value></data>
   <data name="Pad_Lighting_ClaimLevel" xml:space="preserve"><value>Kontrola podświetlenia</value></data>
   <data name="Pad_Lighting_ClaimLevel_Colors" xml:space="preserve"><value>Tylko kolory</value></data>
@@ -1084,6 +1089,7 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice" xml:space="preserve"><value>Zgodnie z urządzeniem dźwiękowym</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice_Picker" xml:space="preserve"><value>Urządzenie dźwiękowe</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>Wskaźniki LED</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Jasność diod LED, Wzór gracza, Tryb diody wyciszenia</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>Rząd numeru gracza (5 diod LED pod panelem dotykowym) i dioda LED wyciszenia nad mikrofonem. Regulacja jasności fizycznie wpływa tylko na rząd gracza. Oprogramowanie układowe udostępnia stany diody LED wyciszenia (Wyłączone / Stałe / Pulsowanie), ale nie ma osobnego rejestru jasności wyciszenia.</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>Resetuj pasek świetlny</value></data>
   <data name="Pad_ResetIndicatorLeds" xml:space="preserve"><value>Resetuj wskaźniki LED</value></data>
@@ -1558,6 +1564,7 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Kalibruj środek</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Punkt środkowy</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Martwa strefa</value></data>
+  <data name="Pad_More_Stick" xml:space="preserve"><value>Punkt środkowy, kształt martwej strefy i wartości osi, krzywa dla każdej osi, zakres, kierowanie</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Zakres</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Kalibruj granicę to zalecany sposób skorygowania drążka. Funkcja mierzy krawędź, do której drążek fizycznie sięga, a następnie proporcjonalnie przeskalowuje każdą pozycję względem tej zmierzonej krawędzi, dzięki czemu pełny naturalny ruch, pod każdym kątem i przy każdym wychyleniu, jest odwzorowany na idealnym okręgu bez żadnego obcinania. Cztery suwaki poniżej tylko ograniczają osie główne. Używaj ich do celowego ograniczenia zakresu, a nie do jego korygowania.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Próbkowanie...</value></data>
@@ -1891,6 +1898,7 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Numer panelu dotykowego</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Którego panelu dotykowego tego kontrolera dotyczą poniższe ustawienia. Każdy panel dotykowy ma własne gesty, ustawienia działania myszy i obszar wskaźnika.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Wykrywanie gestów</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Włącza gesty tego panelu dotykowego</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Włącz gesty na tym panelu dotykowym</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Główny przełącznik tego panelu dotykowego. Gdy jest wyłączony, żadne deskryptory gestów nie działają dla tego panelu dotykowego. Istniejące mapowania palców / kliknięć / pozycji nadal działają.</value></data>
   <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>Rozpoznawaj</value></data>
@@ -1901,6 +1909,7 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>Czas odnowienia</value></data>
   <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>Po wykryciu gestu nowe gesty na tym panelu dotykowym są ignorowane przez tyle milisekund. Zapobiega to przypadkowym powtórzeniom przy szybkim ruchu tam i z powrotem.</value></data>
   <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>Gesty wbudowane</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Przesunięcia, stuknięcia, szczypnięcia, kształty</value></data>
   <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>Przesunięcia w 4 kierunkach (góra / dół / lewo / prawo)</value></data>
   <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>Przesunięcia w 8 kierunkach (dodaje skosy)</value></data>
   <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>Dystans przesunięcia (0..1)</value></data>
@@ -1926,6 +1935,7 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>Gesty kształtów (okrąg, kwadrat, trójkąt, Z, znacznik wyboru)</value></data>
   <data name="Pad_Touchpad_MatchThreshold" xml:space="preserve"><value>Próg dopasowania kształtu</value></data>
   <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>Gesty niestandardowe</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Nagraj własne</value></data>
   <data name="Pad_Touchpad_RecordNew" xml:space="preserve"><value>+ Nagraj nowy gest</value></data>
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>W tym profilu nie nagrano gestów niestandardowych. Kliknij Nagraj nowy gest, aby przechwycić gest.</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 palec</value></data>
@@ -1933,6 +1943,7 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
 
   <!-- Stick / D-pad output card -->
   <data name="Pad_Touchpad_Stick_Header" xml:space="preserve"><value>Wyjście drążka / krzyżaka</value></data>
+  <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Panel dotykowy jako drążek lub krzyżak</value></data>
   <data name="Pad_Touchpad_Stick_Subtitle" xml:space="preserve"><value>Zamienia panel dotykowy w wirtualny drążek analogowy lub krzyżak. Punktem odniesienia wyjścia jest miejsce pierwszego dotknięcia palcem. Bieżąca pozycja względem tego punktu steruje wartością drążka i (opcjonalnie) zatrzaskiwanymi stanami kierunków krzyżaka.</value></data>
   <data name="Pad_Touchpad_StickEnabled" xml:space="preserve"><value>Włącz wyjście drążka / krzyżaka</value></data>
   <data name="Pad_Touchpad_StickEnabled_Tooltip" xml:space="preserve"><value>Udostępnia na liście wyboru mapowania deskryptory panelu dotykowego: Drążek X, Drążek Y i Krzyżak. Działa obok istniejących źródeł palców i gestów panelu dotykowego, a nie zamiast nich.</value></data>
@@ -1947,6 +1958,7 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
 
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Wyjście myszy</value></data>
+  <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Odwróć, Bezwładność, Reakcja, Przyspieszenie, rzut</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Dostraja szybkość kursora, gdy palec na panelu dotykowym jest zmapowany na X/Y myszy na wirtualnym kontrolerze Klawiatura + mysz. Wartość domyślna to 1.0. Zwiększ wartość dowolnej osi, aby przyspieszyć kursor, lub zmniejsz, aby go spowolnić. Odwrócenie zmienia kierunek dowolnej osi.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Czułość myszy X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Mnożnik poziomego przesunięcia panel dotykowy → mysz. Poniżej 1.0 spowalnia kursor. Powyżej 1.0 go przyspiesza.</value></data>
@@ -1974,6 +1986,7 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Pad_Touchpad_RotateThreshold_Tooltip" xml:space="preserve"><value>O ile muszą się obrócić dwa palce, zanim zadziała obrót.</value></data>
   <data name="Pad_ResetTouchpadRotateThresholdDegrees" xml:space="preserve"><value>Resetuj próg obrotu</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>Wskaźnik bezwzględny</value></data>
+  <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>Część ekranu, którą obejmuje panel</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Dostraja źródła Wskaźnik X/Y panelu dotykowego, które przenoszą kursor w miejsce odpowiadające pozycji palca na panelu (zmapuj je na X/Y myszy na wirtualnym kontrolerze Klawiatura + mysz). Rozmiar 1.00 ze środkiem 0.50 odwzorowuje panel na cały ekran. Zmniejsz rozmiar, aby ograniczyć kursor do części ekranu, i przesuń środek, aby ustawić jej położenie.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Szerokość obszaru</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Szerokość obszaru ekranu, na który odwzorowany jest ten panel, jako ułamek szerokości ekranu. 1.00 obejmuje pełną szerokość; 0.50 ogranicza kursor do połowy ekranu.</value></data>
@@ -1986,12 +1999,14 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
 
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Haptyka przesunięć</value></data>
+  <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>Tyknięcia, gdy przesuwasz palec</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Wysyła impulsy haptyki kontrolera, gdy palec przesuwa się po tym panelu dotykowym, podobnie jak tyknięcia gładzika w Steam Input. Kontrolery Steam Controller i Steam Deck tykają aktuatorem pod panelem; DualSense i DualShock 4 wysyłają impulsy do silników wibracji.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Włącz haptykę przesunięć</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>Wysyła krótkie tyknięcie haptyczne za każdym razem, gdy palec pokona ustalony dystans na tym panelu. Położenie palca ani kliknięcie panelu nigdy nie powoduje tyknięcia. Domyślnie wyłączone.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>Intensywność impulsu</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity_Tooltip" xml:space="preserve"><value>Siła każdego tyknięcia. Wibracje z gry zawsze mają pierwszeństwo, gdy są silniejsze.</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Header" xml:space="preserve"><value>Syntetyczny nacisk</value></data>
+  <data name="Pad_SyntheticPressure_FoldHint" xml:space="preserve"><value>Nacisk dla paneli zgłaszających dotyk jako pełny</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Subtitle" xml:space="preserve"><value>Symuluje przyciski czułe na nacisk z DualShock 2 / DualShock 3 na panelach, które zgłaszają dotyk jako pełny nacisk (DualShock 4, DualSense, Steam Controller 2015). Gdy opcja jest włączona, źródła mapowania Nacisk tego urządzenia odczytują brak dotyku jako 0%, spoczywający dotyk jako Poziom nacisku dotyku, a kliknięcie panelu jako 100%.</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled" xml:space="preserve"><value>Włącz syntetyczny nacisk</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled_Tooltip" xml:space="preserve"><value>Dzieli źródła mapowania Nacisk tego urządzenia na trzy stopnie: brak dotyku daje 0%, spoczywający dotyk daje Poziom nacisku dotyku, a kliknięcie panelu daje 100%. Domyślnie wyłączone, co zachowuje surowe odczyty na panelach z prawdziwym analogowym naciskiem.</value></data>
@@ -2169,7 +2184,9 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Dostrój sposób, w jaki czujnik ruchu tego pada steruje wyjściem myszy i drążka. Skalibruj na płaskiej powierzchni, aby wyzerować dryf w spoczynku, a potem ustaw według uznania czułość, wygładzanie i reguły aktywacji.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibracja</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Czułość</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Jednostki, Przestrzeń, odwracanie osi, Kalibracja rzeczywista</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Kształtowanie reakcji</value></data>
+  <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Martwa strefa, wygładzanie, Przyspieszenie, Krzywa wyjściowa</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Przestrzeń</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Sposób interpretacji ruchu żyroskopu. Lokalna używa surowych osi kontrolera. Gracza rzutuje ruch poziomy na rzeczywistą oś pionową (grawitację), więc ten sam obrót nadgarstka zawsze obraca kamerę, niezależnie od sposobu trzymania pada. Świata dodatkowo rzutuje ruch pionowy na osie świata.</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>Sposób trzymania</value></data>
@@ -2183,11 +2200,13 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Pad_ResetGyroInvertYaw" xml:space="preserve"><value>Resetuj odwrócenie odchylenia</value></data>
   <data name="Pad_ResetGyroInvertRoll" xml:space="preserve"><value>Resetuj odwrócenie przechylenia</value></data>
   <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>Kompas</value></data>
+  <data name="Pad_Compass_FoldHint" xml:space="preserve"><value>Utrzymuje odchylenie w północy magnetycznej</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Ten kontroler ma magnetometr. Zakotwiczenie odchylenia w północy magnetycznej usuwa powolny dryf poziomy z celowania żyroskopem. Najpierw wykonaj kalibrację: naciśnij Kalibruj, przez kilka sekund obracaj kontroler we wszystkich kierunkach ruchem ósemki, a potem naciśnij ponownie.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Zakotwicz odchylenie w kompasie</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Dodaje niewielką korektę, która przyciąga celowanie w poziomie do kursu magnetycznego, więc dryf nie może się kumulować. Wymaga zapisanej kalibracji magnetometru. Próbki zakłócone przez pobliski metal lub magnesy są automatycznie odrzucane.</value></data>
   <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Przywróć domyślne (wyłączone)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Symulacja pochylenia i przechylenia</value></data>
+  <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Pochylenie i przechył wyliczane z akcelerometru</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>Żyroskop tego kontrolera wykrywa tylko obrót w lewo i w prawo. Gdy symulacja jest włączona, PadForge wyznacza pochylenie i przechylenie z akcelerometru i wysyła je razem z odchyleniem z żyroskopu do wierszy mapowania i do ruchu wirtualnego kontrolera. Akcelerometr nie odróżnia pchnięcia od przechyłu, więc przesunięcie kontrolera w bok lub do przodu bez obracania jest odczytywane jako krótki obrót.</value></data>
   <data name="Settings_GyroSimulation" xml:space="preserve"><value>Symuluj pochylenie i przechylenie</value></data>
   <data name="Settings_GyroSimulation_Tooltip" xml:space="preserve"><value>Wypełnia pochylenie i przechylenie prędkościami wyznaczonymi z akcelerometru. Odchylenie pozostaje własnym odczytem żyroskopu. Domyślnie wyłączone.</value></data>
@@ -2228,6 +2247,7 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>W dół (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>W górę (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Aktywacja</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Drążek aktywacji, Kierunek aktywacji, Próg łatwego celowania</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Opcjonalne bramki ograniczające, kiedy żyroskop jest aktywny. Można osobno skonfigurować wychylenie prawego drążka i przycisk aktywacji celowania. Żyroskop działa tylko wtedy, gdy aktywna jest każda skonfigurowana bramka.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Lokalna</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Gracza</value></data>
@@ -2278,6 +2298,7 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Żyroskop: przechył X</value></data>
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>Żyroskop: przechył Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>Przechył żyroskopu</value></data>
+  <data name="Pad_GyroTilt_FoldHint" xml:space="preserve"><value>Zakres pełnego przechyłu, Martwa strefa przechyłu</value></data>
   <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>Obwiednia dla wejść Żyroskop: przechył X / Żyroskop: przechył Y: utrzymaj przechył, a drążek utrzyma wychylenie, jak w trybie wychylenia joysticka w Steam. Pełne wychylenie następuje przy zakresie ustawionym tutaj; wyśrodkowanie żyroskopu ponownie zeruje chwyt spoczynkowy. Odchylenie (obracanie kontrolera na płasko) jest niewidoczne dla grawitacji i nie porusza tych wejść.</value></data>
   <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>Zakres pełnego przechyłu</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>Liczba stopni przechyłu od chwytu spoczynkowego, która liczy się jako pełne wychylenie drążka. Mniej = większa czułość. 25° to najczęstsza wartość w konfiguracjach Steam.</value></data>
@@ -2479,6 +2500,7 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Min. zakres Y (dół)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Maks. zakres Y (góra)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Oś X</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>Obie osie</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Oś Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Zakres</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Antymartwa strefa</value></data>
@@ -2489,6 +2511,7 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Force feedback / wibracje / haptyka</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Wzmocnienie silników, wibracje spustów, zamiana silników</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Wzmocnienie ogólne</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Lewy silnik</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Prawy silnik</value></data>
@@ -2500,6 +2523,7 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Stała siła</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Stała siła, dopóki jej nie wyłączysz</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Przykłada stałą siłę do tego urządzenia, dopóki jej nie wyłączysz. Siła sterowana przez grę z dowolnego źródła ma pierwszeństwo, gdy jest aktywna, a stała siła wraca, gdy gra przestaje.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Stosuj stałą siłę</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Przeciągnij wewnątrz siatki, aby ustawić kierunek i siłę.</value></data>
@@ -2826,6 +2850,7 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
 
   <!-- ═══ Audio Bass Rumble ═══ -->
   <data name="Settings_AudioRumble" xml:space="preserve"><value>Wibracje z dźwięku</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Wibracje z basów dźwięku systemowego</value></data>
   <data name="Settings_AudioRumbleDesc" xml:space="preserve"><value>Steruje wibracjami kontrolera na podstawie basów dźwięku systemowego.</value></data>
   <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>Włącz wibracje z dźwięku</value></data>
   <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>Czułość</value></data>
@@ -2936,6 +2961,8 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Resetuj zewnętrzną martwą strefę nachylenia</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Resetuj orientację kontrolera</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Kierowanie ruchem</value></data>
+  <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° do {1}°</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Wewnętrzna martwa strefa nachylenia, Orientacja kontrolera</value></data>
   <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Ustawienia wejścia Ruch: nachylenie: przechylaj kontroler jak kierownicę. Zmapuj „Ruch: nachylenie” na oś drążka z listy rozwijanej wejść na karcie Mapowania.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Resetuj kierowanie ruchem</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick stick (prawy drążek)</value></data>
@@ -2944,6 +2971,7 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Mapping_LeftStickRing" xml:space="preserve"><value>Pierścień lewego drążka</value></data>
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>Pierścień prawego drążka</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick stick</value></data>
+  <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Ustawienia wejść Flick stick</value></data>
   <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Ustawienia wejść Flick stick: wskaż kierunek drążkiem, a kamera obróci się w tę stronę; przesuwaj drążek po krawędzi, aby obracać precyzyjnie. Zmapuj „Flick stick (prawy drążek)” na Mysz X z listy rozwijanej wejść na karcie Mapowania, na dowolnej warstwie.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Resetuj flick stick</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Punkty na 360°</value></data>
@@ -2980,6 +3008,7 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Gdy warstwa z flick stickiem aktywuje się przy już wychylonym drążku, flick jest wykonywany natychmiast. Wyłączenie pozostawia kamerę w miejscu i śledzi obrót od bieżącego kąta drążka.</value></data>
   <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Resetuj zezwalanie na flick przy aktywacji</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Sygnał pełnego skrętu</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Sygnał przy pełnym skręcie drążka w trybie kierowania</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Gdy drążek ustawiony w trybie kierowania zostanie obrócony do pełnego skrętu, odtwarzany jest sygnał (wibracje, spust lub pasek świetlny), aby można było poczuć granicę. Domyślnie wszystko wyłączone.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Impuls wibracji przy pełnym skręcie</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Wibracje spustów przy pełnym skręcie</value></data>
@@ -3035,6 +3064,7 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Dźwięk</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Dźwięki makr i dublowany dźwięk systemowy są odtwarzane przez wbudowany głośnik wybranego kontrolera, przez USB lub Bluetooth. Wybierz urządzenie z listy rozwijanej powyżej. Wszystkie ustawienia tutaj dotyczą tego urządzenia.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Wyjście dźwięku</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Dublowane źródło, haptyka, Głośność słuchawek, Crossfeed, Parametric EQ, Limiter</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Dźwięki są automatycznie kierowane do wybranego kontrolera. Przez USB własny punkt końcowy audio pada jest dopasowywany według kontenera sprzętowego. Przez Bluetooth dźwięk jest przesyłany strumieniowo w ramkach HID Sony.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Dublowane źródło</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Które urządzenie odtwarzające dublować na głośniku kontrolera. Gry, które wysyłają określone dźwięki do osobnego urządzenia odtwarzającego, mogą kierować je właśnie tutaj.</value></data>
@@ -3108,6 +3138,7 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>Ten plik nie jest czytelnym profilem PadForge.</value></data>
   <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Wybierz dźwięk z pakietu {0}</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Pakiety dźwięków</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Pliki zip z dźwiękami do makr dźwiękowych</value></data>
   <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>Pakiet dźwięków to jeden plik zip z dźwiękami, z rozszerzeniem .pfsounds. Dodaj go tutaj, a potem wybieraj jego dźwięki w dowolnym makrze dźwiękowym. PadForge czyta bezpośrednio z pliku i nigdy go nie rozpakowuje. Aby zachować przenośność, przechowuj pakiety obok PadForge.exe.</value></data>
   <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>Dodaj pakiet…</value></data>
   <data name="Pad_Audio_Packages_Add_Tooltip" xml:space="preserve"><value>Dodaje do listy istniejący plik .pfsounds.</value></data>
@@ -3133,6 +3164,7 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Emoji_Category_Objects" xml:space="preserve"><value>Przedmioty</value></data>
   <data name="Emoji_Category_Symbols" xml:space="preserve"><value>Symbole</value></data>
   <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>Pakiety ikon</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Pliki zip z obrazami do komórek menu</value></data>
   <data name="Pad_Menus_IconPackages_Desc" xml:space="preserve"><value>Pakiet ikon to jeden plik zip z obrazami, z rozszerzeniem .pficons. Dodaj go tutaj, a potem wybieraj jego ikony w dowolnej komórce menu. PadForge czyta bezpośrednio z pliku i nigdy go nie rozpakowuje. Aby zachować przenośność, przechowuj pakiety obok PadForge.exe.</value></data>
   <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>Dodaj pakiet…</value></data>
   <data name="Pad_Menus_IconPackages_Add_Tooltip" xml:space="preserve"><value>Dodaje do listy istniejący plik .pficons.</value></data>
@@ -3542,6 +3574,7 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>Przełącz na warstwę {0}</value></data>
   <data name="Macro_SwitchLayer_Hint" xml:space="preserve"><value>Przełącza ten slot na wybraną warstwę Shift. Warstwa pozostaje aktywna do kolejnego przełączenia, do użycia aktywatora Zatrzask lub Cykl albo do przełączenia profilu. Bazowa wraca do warstwy bazowej. Przypisz to makro powyżej do konkretnej warstwy, aby ten sam przycisk przełączał inaczej na każdej warstwie.</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>Dioda LED przycisku Guide</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Blask przycisku Guide lub Home</value></data>
   <data name="Pad_Lighting_GuideLed_Subtitle" xml:space="preserve"><value>Jasność świecącego przycisku Guide lub Home. Kontrolery Xbox One i nowsze przyjmują to ustawienie przez USB. Steam Controller z 2015 r. przyjmuje je przy każdym połączeniu, a wszystkie kontrolery Steam Controller mają wspólną jasność. Kontrolery Switch Pro i prawe Joy-Cony (osobno, w parze lub w uchwycie ładującym) przyjmują je przy każdym połączeniu.</value></data>
   <data name="Pad_Lighting_GuideLed_Mode_Tooltip" xml:space="preserve"><value>Domyślne urządzenia pozostawia diodę LED dokładnie tak, jak ustawiło ją oprogramowanie układowe kontrolera. Stała jasność utrzymuje poziom podany poniżej. Poziom baterii sprawia, że im pełniejsza bateria, tym jaśniejsza dioda, przy czym jasność nigdy nie spada poniżej 10%. Kontrolery Xbox przyjmują polecenia diody LED Guide tylko przez USB, więc to ustawienie nie działa przy połączeniu Bluetooth. Kontrolery Switch przyjmują polecenia diody LED Home przy każdym połączeniu.</value></data>
   <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>Domyślne urządzenia</value></data>
@@ -3906,6 +3939,7 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shakery</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Kieruje wibracje z gry i force feedback odbierane przez ten wirtualny kontroler do wyjścia dźwiękowego jako tony o niskiej częstotliwości dla bass shakerów i subwooferów.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Wibracje na dźwięk</value></data>
+  <data name="Pad_More_BassShakers" xml:space="preserve"><value>Urządzenie wyjściowe, kanały, wzmocnienie, ton dla każdego silnika</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Działa z wirtualnymi kontrolerami Xbox, DualShock 3, DualShock 4 / DualSense i Nintendo Switch Pro, a także z wirtualnymi kontrolerami Rozszerzony z force feedback, takimi jak kierownice wyścigowe, oraz ze Steam Deck Controller (Composite). Efekty z gry i funkcja Testuj wibracje są odtwarzane przez wyjście dźwiękowe. Wibracje z makr pozostają na kontrolerze.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Resetuj wibracje na dźwięk</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Kieruj wibracje do wyjścia dźwiękowego</value></data>
@@ -4352,6 +4386,7 @@ Czy PadForge ma je teraz odinstalować? Wymaga to uprawnień administratora i mo
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Oczekiwanie na dane z pamięci współdzielonej FreeTrack.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>Pamięć współdzielona FreeTrack jest niedostępna.</value></data>
   <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Wibracje kąta skrętu</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Wibracje rosnące wraz z wychyleniem osi drążka</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Dodaje ciągłe wibracje, gdy wybrana oś wirtualnego drążka oddala się od środka. Używa zmapowanego wyjścia ze wszystkich przypisanych źródeł. Przy opcji Podział według kierunku ruch ujemny steruje lewym silnikiem, a dodatni prawym. Opcja Lewy silnik lub Prawy silnik kieruje oba kierunki na ten jeden silnik. Dla wyjścia Xbox i PlayStation z urządzeniami z wibracjami. Pomija kierownice, inne urządzenia ze stałym force feedback oraz pedały Fanatec.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Włącz wibracje kąta skrętu</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Oś wirtualna</value></data>
@@ -4706,6 +4741,7 @@ Czy PadForge ma je teraz odinstalować? Wymaga to uprawnień administratora i mo
   <data name="Status_FalconDriverDeclined" xml:space="preserve"><value>Windows nie zainstalował sterownika Force Dimension. Jeśli Windows zapyta, czy ufać Force Dimension, wybierz Zainstaluj.</value></data>
   <data name="Status_FalconDriverNotBound" xml:space="preserve"><value>Sterownik jest zainstalowany, ale Falcon nie przeszedł na niego. Odłącz Falcona i podłącz go ponownie.</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>Odrzut, drgania, stabilizacja, obciążenie wstępne, grawitacja</value></data>
   <data name="Pad_Falcon_Description" xml:space="preserve"><value>PadForge oblicza każdą siłę działającą na uchwyt Falcona około tysiąc razy na sekundę, na podstawie położenia uchwytu i tego, co odtwarza gra. Te ustawienia dotyczą tego slotu.</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>Resetuj Novint Falcon</value></data>
   <data name="Pad_Falcon_Feel" xml:space="preserve"><value>Odczucie</value></data>

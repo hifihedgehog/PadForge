@@ -307,6 +307,7 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Calibration</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensitivity</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Iwase, Space, vukica na axis, Real-World Calibration</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Taura</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>Toggle</value></data>
   <data name="Settings_GyroEngageStickSide_Right" xml:space="preserve"><value>Stick imatau</value></data>
@@ -681,6 +682,7 @@
   <data name="Falcon_Status_Open" xml:space="preserve"><value>dola</value></data>
   <data name="Settings_Falcon_Title" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>Caqe, yavala, tokona, vakavakarau, gravity</value></data>
   <data name="Pad_Falcon_NewtonsUnit" xml:space="preserve"><value>N</value></data>
   <data name="Dashboard_GameTelemetryGame" xml:space="preserve"><value>Qito</value></data>
   <data name="Telemetry_Game_Forza" xml:space="preserve"><value>Forza Motorsport kei Forza Horizon</value></data>
@@ -710,4 +712,19 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Yavala kei na Tara</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Rarama kei na Rorogo</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Macro kei na Menu</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Ivakatakilakila ni stick ena iyalayala ni kena vuki</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Yavavala e levu cake ni toso na axis ni stick mai na loma</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Kaukauwa dei me yacova ni vakamatei</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Yavavala mai na bass ni domo ni sisitemu</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Deadzone ni seva, Ituvaki ni controller</value></data>
+  <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Deadzone, vakamalumutaki, Vakatotolotaki, Kaba ni output</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Bulukau ni Aim Engage, Ivakarau ni Engage, Iyalayala ni Easy Aim</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Vakayacora na gesture ni touchpad oqo</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Tasoso, tabaki, dreta vata, ivakatakarakara</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Katona na nomu</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Rarama ni LED, Ivakarau ni Dauqito, Ivakarau ni LED ni Mute</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Rarama ni bulukau Guide se Home</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Faile zip ni domo me baleta na macro ni domo</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Faile zip ni iyaloyalo me baleta na sela ni menu</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Kaukauwa ni motor yadua, yavavala ni trigger, veisau motor</value></data>
 </root>

@@ -648,6 +648,7 @@
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>Pagá</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice_Picker" xml:space="preserve"><value>Aparato di audio</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>LED indikadó</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Klaridat di LED, Patron di hugadó, Modo di LED di mute</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>Reset lightbar</value></data>
   <data name="Pad_ResetIndicatorLeds" xml:space="preserve"><value>Reset LED indikadó</value></data>
   <data name="Pad_ResetForceFeedback" xml:space="preserve"><value>Reset force feedback</value></data>
@@ -843,6 +844,7 @@
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Kalibrá sentro</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Punto sentral</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Zona morto</value></data>
+  <data name="Pad_More_Stick" xml:space="preserve"><value>Desplasamentu di sentro, forma di zona morto i balor pa kada eje, un kurva pa kada eje, rango, stür</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Rango</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Korekshon di sentro X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Korekshon di sentro Y</value></data>
@@ -1070,6 +1072,7 @@
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Número di touchpad</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Detekshon di gesto</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Ta aktivá e gestonan di e touchpad aki</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Aktivá gesto riba e touchpad aki</value></data>
   <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>Rekonosé</value></data>
   <data name="Pad_Touchpad_Mode_Both" xml:space="preserve"><value>Tur dos</value></data>
@@ -1105,8 +1108,10 @@
 
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Háptika di swipe</value></data>
+  <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>Pulso chikí segun bo dede ta move</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Aktivá háptika di swipe</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Header" xml:space="preserve"><value>Preshon sintétiko</value></data>
+  <data name="Pad_SyntheticPressure_FoldHint" xml:space="preserve"><value>Preshon pa pad ku ta reportá un toke komo kompleto</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled" xml:space="preserve"><value>Aktivá preshon sintétiko</value></data>
   <data name="Pad_Touchpad_SyntheticTouchLevel" xml:space="preserve"><value>Nivel di preshon di toke</value></data>
 
@@ -1200,6 +1205,7 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Giroskopio</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibrashon</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensibilidat</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Unidat, Espasio, invertí eje, Kalibrashon di mundu real</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Espasio</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Invertí pitch (Y)</value></data>
   <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Invertí yaw (X)</value></data>
@@ -1207,7 +1213,9 @@
   <data name="Pad_ResetGyroInvertYaw" xml:space="preserve"><value>Reset invertí yaw</value></data>
   <data name="Pad_ResetGyroInvertRoll" xml:space="preserve"><value>Reset invertí roll</value></data>
   <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>Kompas</value></data>
+  <data name="Pad_Compass_FoldHint" xml:space="preserve"><value>Ta tene yaw dirigí na nort magnétiko</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Simulashon di pitch i roll</value></data>
+  <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Pitch i roll kalkulá for di e aselerómetro</value></data>
   <data name="Settings_GyroSimulation" xml:space="preserve"><value>Simulá pitch i roll</value></data>
   <data name="Pad_ResetGyroSimulation" xml:space="preserve"><value>Reset simulá pitch i roll</value></data>
   <data name="Pad_Gyro_ResetSimulation_All_Tooltip" xml:space="preserve"><value>Reset simulashon di pitch i roll</value></data>
@@ -1343,6 +1351,7 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Rango mínimo Y (abou)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Rango máksimo Y (ariba)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Eje X</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>Tur dos eje</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Eje Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Rango</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-zona morto</value></data>
@@ -1352,6 +1361,7 @@
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Force feedback / Vibrashon / Háptika</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Fortalesa pa kada motor, vibrashon di trigger, kambio di motor</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Motor robes</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Motor drechi</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Purba vibrashon</value></data>
@@ -1359,6 +1369,7 @@
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Forsa konstante</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Un forsa stabil te ora bo pag'é</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Apliká forsa konstante</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
@@ -1563,6 +1574,7 @@
 
   <!-- ═══ Audio Bass Rumble ═══ -->
   <data name="Settings_AudioRumble" xml:space="preserve"><value>Vibrashon di audio</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Vibrashon for di e bas den audio di sistema</value></data>
   <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>Aktivá vibrashon di audio</value></data>
   <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>Sensibilidat</value></data>
   <data name="Settings_AudioRumble_LeftMotor" xml:space="preserve"><value>Motor robes</value></data>
@@ -1635,6 +1647,7 @@
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick (stick robes)</value></data>
   <data name="Mapping_FlickStickTouchpad_Format" xml:space="preserve"><value>Flick Stick (touchpad {0})</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
+  <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Ahuste pa e inputnan di Flick Stick</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Reset Flick Stick</value></data>
   <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Reset na 14400</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>Tempu di flick</value></data>
@@ -1699,6 +1712,7 @@
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>E archivo no ta un perfil di PadForge ku por wòrdu lesá.</value></data>
   <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Skohe un zonido for di {0}</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Paketenan di zonido</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Archivo zip di zonido pa makro di zonido</value></data>
   <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>Agregá pakete…</value></data>
   <data name="Pad_Audio_Packages_Add_Tooltip" xml:space="preserve"><value>Agregá un archivo .pfsounds ku ta eksistí kaba na e lista.</value></data>
   <data name="Pad_Audio_Packages_Create" xml:space="preserve"><value>Traha pakete…</value></data>
@@ -1719,6 +1733,7 @@
   <data name="Emoji_Category_Objects" xml:space="preserve"><value>Obheto</value></data>
   <data name="Emoji_Category_Symbols" xml:space="preserve"><value>Símbolo</value></data>
   <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>Paketenan di ikono</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Archivo zip di imágen pa seldanan di menu</value></data>
   <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>Agregá pakete…</value></data>
   <data name="Pad_Menus_IconPackages_Add_Tooltip" xml:space="preserve"><value>Agregá un archivo .pficons ku ta eksistí kaba na e lista.</value></data>
   <data name="Pad_Menus_IconPackages_Create" xml:space="preserve"><value>Traha pakete…</value></data>
@@ -1915,6 +1930,7 @@
   <data name="MacroAction_SetChromaColor_Format" xml:space="preserve"><value>Chroma {0} pa {1} ms</value></data>
   <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>Kambia pa kapa {0}</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>LED di botòn Guide</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>E lus di e botòn Guide òf Home</value></data>
   <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>Standard di aparato</value></data>
   <data name="Pad_Lighting_GuideLed_Fixed" xml:space="preserve"><value>Klaridat fiho</value></data>
   <data name="Pad_Lighting_GuideLed_Battery" xml:space="preserve"><value>Nivel di bateria</value></data>
@@ -2050,6 +2066,7 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Indikadónan riba pantaya ku PadForge ta mustra miéntras bo ta hunga. Desaktivá un di nan nunka ta kambia e funshonamentu, solamente si e ta wòrdu anunsiá.</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Overlay di kambio di perfil</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibrashon pa audio</value></data>
+  <data name="Pad_More_BassShakers" xml:space="preserve"><value>Aparato di output, kanal, fortalesa, un tono pa kada motor</value></data>
   <data name="Pad_RumbleAudio_ChannelMode" xml:space="preserve"><value>Modo di kanal</value></data>
   <data name="Pad_RumbleAudio_Mode_Mono" xml:space="preserve"><value>Mono (tur kanal)</value></data>
   <data name="Pad_RumbleAudio_ResetChannelMode" xml:space="preserve"><value>Reset modo di kanal</value></data>
@@ -2356,6 +2373,7 @@
   <data name="Status_FalconDriverDeclined" xml:space="preserve"><value>Windows no a instalá e driver di Force Dimension. Si Windows puntra si e mester konfia den Force Dimension, skohe Install.</value></data>
   <data name="Status_FalconDriverNotBound" xml:space="preserve"><value>E driver ta instalá, pero e Falcon no a pasa n'e ainda. Deskonektá e Falcon i konekt'é atrobe.</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>Golpi, sakudí, apoyo, prekarga, gravedat</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>Reset Novint Falcon</value></data>
   <data name="Pad_Falcon_Feel_Joystick" xml:space="preserve"><value>Joystick</value></data>
   <data name="Pad_Falcon_Feel_Aim" xml:space="preserve"><value>Apuntá</value></data>
@@ -2509,4 +2527,17 @@
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Lus i zonido</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makro i menu</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Ta tene e palanka un tiki fo'i sentro pa wega keda mustra indikashon di kontrol</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Un señal ora un stick den modo di stür yega su límite</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Vibrashon ku ta krese ora un eje di stick ta bai leu for di sentro</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Ta manda vibrashon di e motornan prinsipal na e triggernan</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Un forsa stabil riba kada motor di trigger</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Vibrashon di trigger for di e bas den audio di sistema</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Zona morto di inklinashon, Orientashon di kontrol</value></data>
+  <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Zona morto, suavisashon, Akselerashon, Kurva di output</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Botòn pa aktivá apuntamentu, Modo di aktivashon, Límite di Easy Aim</value></data>
+  <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Usa e touchpad komo stick òf D-pad</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Swipe, toke, pinch, forma</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Graba bo mes gestonan</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Fortalesa pa kada trigger, kambio di motor, vibrashon di trigger adaptivo</value></data>
+  <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Invertí, Momento, Respuesta, Akselerashon, lansamentu</value></data>
 </root>

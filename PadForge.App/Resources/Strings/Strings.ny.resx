@@ -632,6 +632,7 @@
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->
   <data name="Pad_SensitivityCurves" xml:space="preserve"><value>Ma curve a sensitivity</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Axis ya X</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>Ma axis onse awiri</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Axis ya Y</value></data>
   <data name="Pad_SensitivityCurve" xml:space="preserve"><value>Curve ya sensitivity</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Axis ya trigger</value></data>
@@ -775,6 +776,7 @@
 
   <!-- ═══ Audio Bass Rumble ═══ -->
   <data name="Settings_AudioRumble" xml:space="preserve"><value>Kunjenjemera kwa mawu</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Kunjenjemera kochokera ku bass ya mawu a kompyuta</value></data>
   <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>Yatsani kunjenjemera kwa mawu</value></data>
   <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>Sensitivity</value></data>
   <data name="Settings_AudioRumble_LeftMotor" xml:space="preserve"><value>Mota yakumanzere</value></data>
@@ -826,6 +828,7 @@
   <data name="Pad_Pointer_SensorBar_Below" xml:space="preserve"><value>Pansi pa sikirini</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Mawu</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Kutulutsa mawu</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Gwero la mawu, haptics, Voliyumu ya mahedifoni, Crossfeed, Parametric EQ, Limiter</value></data>
   <data name="Pad_Audio_MasterVolume" xml:space="preserve"><value>Voliyumu yaikulu</value></data>
   <data name="Pad_Audio_Reset_MasterVolume" xml:space="preserve"><value>Bwezeretsani voliyumu yaikulu</value></data>
   <data name="Pad_Audio_Test" xml:space="preserve"><value>Yesani</value></data>
@@ -858,6 +861,7 @@
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>Fayiloyi si mbiri ya PadForge yowerengeka.</value></data>
   <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Sankhani mawu kuchokera mu {0}</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Mapaketi a mawu</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Mafayilo a zip a mawu a ma macro a mawu</value></data>
   <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>Onjezani paketi…</value></data>
   <data name="Pad_Audio_Packages_Add_Tooltip" xml:space="preserve"><value>Onjezani fayilo ya .pfsounds yomwe ilipo kale pa mndandanda.</value></data>
   <data name="Pad_Audio_Packages_Create" xml:space="preserve"><value>Pangani paketi…</value></data>
@@ -1244,6 +1248,7 @@
   <data name="Status_FalconLibraryPicked_Format" xml:space="preserve"><value>Laibulale ya Falcon yakhazikitsidwa ku {0}. PadForge imaitsegula pakatha masekondi ochepa, ndipo Falcon yotsegulidwa pa kopi ina imatsegulidwanso pa iyi.</value></data>
   <data name="Status_FalconNotPluggedIn" xml:space="preserve"><value>Palibe Falcon yolumikizidwa.</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>Kumenya, kugwedeza, kulimbitsa, preload, mphamvu yokoka</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>Bwezeretsani Novint Falcon</value></data>
   <data name="Pad_Falcon_Feel_Joystick" xml:space="preserve"><value>Joystick</value></data>
   <data name="Pad_Falcon_Button1" xml:space="preserve"><value>Batani 1</value></data>
@@ -1297,4 +1302,24 @@
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Mbiri</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>Ma stick ndi ma trigger</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Magetsi ndi mawu</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Chizindikiro pamene stick yoyendetsa yafika kumapeto</value></data>
+  <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Zokonza za Flick Stick</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Kunjenjemera kumene kumakula pamene axis ya stick ichoka pakati</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Mphamvu yokhazikika mpaka mutayizimitsa</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Imatumiza kunjenjemera kwa mota zazikulu ku ma trigger</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Mphamvu yokhazikika pa mota ya trigger iliyonse</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Kunjenjemera kwa trigger kochokera ku bass ya mawu a kompyuta</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Ma deadzone opendekera, Kaimidwe ka controller</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Batani loyatsa kuloza, Njira yoyatsira, Malire a Easy Aim</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Imayatsa gesture za touchpad iyi</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Kusesa, kugogoda, kutsina, mawonekedwe</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Jambulani zanu</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Kuwala kwa LED, Chitsanzo cha wosewera, Njira ya LED yosalankhula</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Kuwala kwa batani la Guide kapena Home</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Mafayilo a zip a zithunzi za maselo a menyu</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Mphamvu ya mota iliyonse, kunjenjemera kwa trigger, kusinthanitsa mota</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Mphamvu ya trigger iliyonse, kusinthanitsa mota, kunjenjemera kwa adaptive trigger</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Mayunitsi, Malo, tembenuza ma axis, Real-World Calibration</value></data>
+  <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Tembenuza, Momentum, Kuyankha, Kuthamanga, fling</value></data>
+  <data name="Pad_More_Stick" xml:space="preserve"><value>Kusuntha kwa pakati, mawonekedwe a deadzone ndi mitengo ya axis iliyonse, curve ya axis iliyonse, mtunda, kuyendetsa</value></data>
 </root>

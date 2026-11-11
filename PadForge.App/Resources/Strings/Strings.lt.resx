@@ -859,6 +859,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Impulsiniai gaidukai</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulsiniai gaidukai</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Kiekvieno gaiduko stiprinimas, variklių sukeitimas, adaptyviųjų gaidukų vibracijos</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Perduoda kiekvieno gaiduko variklių komandas („Xbox Impulse Triggers“) iš virtualaus valdiklio priskirtam fiziniam „Xbox One“, „Elite“ ar „Series“ valdikliui. Žaidimo valdoma gaidukų vibracija perduodama automatiškai. Toliau esantys nustatymai keičia kiekvieno gaiduko vibracijos stiprumą.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Kairysis gaidukas</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Dešinysis gaidukas</value></data>
@@ -877,7 +878,9 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Nustatyti kairįjį gaiduką iš naujo</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Nustatyti dešinįjį gaiduką iš naujo</value></data>
   <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Pastovi gaidukų jėga</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Pastovi jėga kiekvienam gaiduko varikliui</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Gaidukų nukreipimas</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Pagrindinių variklių vibracija siunčiama į gaidukus</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Nukreipkite pagrindinius vibracijos variklius į gaidukų kanalą, po vieną gaiduką. Veikia su XInput vibracija ir jėgos grįžtamuoju ryšiu. Aktyviklis gali tai riboti, kad gaidukas vibruotų tik laikant mygtuką.</value></data>
   <data name="Pad_ResetTriggerRouting" xml:space="preserve"><value>Nustatyti gaidukų nukreipimą iš naujo</value></data>
   <data name="Pad_TriggerRouting_LeftTrigger" xml:space="preserve"><value>Kairysis gaidukas</value></data>
@@ -909,6 +912,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Nustatyti kairįjį gaiduką iš naujo</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Nustatyti dešinįjį gaiduką iš naujo</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Gaidukų vibracija pagal žemuosius dažnius</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Gaidukų vibracija pagal sistemos garso žemuosius dažnius</value></data>
   <data name="Pad_AudioTriggerRumble_Description" xml:space="preserve"><value>Valdykite gaidukų variklius pagal sistemos garso žemuosius dažnius. Kol žaidimo valdoma gaidukų jėga aktyvi, ji turi pirmenybę.</value></data>
   <data name="Pad_AudioTriggerRumble_Toggle" xml:space="preserve"><value>Valdyti gaidukų variklius pagal garsą</value></data>
   <data name="Pad_AudioTriggerRumble_Sensitivity" xml:space="preserve"><value>Jautrumas</value></data>
@@ -1006,6 +1010,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice" xml:space="preserve"><value>Pagal garso įrenginį</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice_Picker" xml:space="preserve"><value>Garso įrenginys</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>Indikatoriniai LED</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>LED ryškumas, žaidėjo LED raštas, nutildymo LED režimas</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>Žaidėjo numerio eilutė (5 LED po jutikliniu skydeliu) ir nutildymo LED virš mikrofono. Ryškumo nustatymas fiziškai veikia tik žaidėjo eilutę. Programinė aparatinė įranga leidžia nustatyti nutildymo LED būsenas („Išjungta“ / „Šviečia nuolat“ / „Pulsuoja“), bet neturi atskiro nutildymo LED ryškumo registro.</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>Nustatyti šviesos juostą iš naujo</value></data>
   <data name="Pad_ResetIndicatorLeds" xml:space="preserve"><value>Nustatyti indikatorinius LED iš naujo</value></data>
@@ -1392,6 +1397,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Kalibruoti centrą</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Centro taškas</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Nejautros zona</value></data>
+  <data name="Pad_More_Stick" xml:space="preserve"><value>Centro poslinkiai, nejautros zonos forma ir reikšmės kiekvienai ašiai, kiekvienos ašies kreivė, diapazonas, vairavimas</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Diapazonas</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>„Kalibruoti ribą“ yra rekomenduojamas būdas sureguliuoti svirtelę. Ši funkcija išmatuoja kraštą, kurį svirtelė fiziškai pasiekia, tada proporcingai perskaičiuoja kiekvieną padėtį pagal išmatuotą kraštą, todėl visas natūralus judesys bet kokiu kampu ir bet kokiu nuokrypiu atvaizduojamas į idealų apskritimą nieko nenukerpant. Keturi toliau esantys slankikliai tik riboja pagrindines ašis. Naudokite juos sąmoningai apriboti diapazoną, o ne jį taisyti.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Matuojama...</value></data>
@@ -1725,6 +1731,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Jutiklinio skydelio numeris</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Kuriam šio valdiklio jutikliniam skydeliui taikomi toliau esantys nustatymai. Kiekvienas jutiklinis skydelis turi savo gestus, pelės pojūtį ir žymeklio sritį.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Gestų atpažinimas</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Įjungia šio jutiklinio skydelio gestus</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Įjungti gestus šiame jutikliniame skydelyje</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Pagrindinis šio jutiklinio skydelio jungiklis. Kai išjungta, šiam jutikliniam skydeliui nesuveikia jokie gestų deskriptoriai. Esami piršto / paspaudimo / padėties priskyrimai vis tiek veikia.</value></data>
   <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>Atpažinti</value></data>
@@ -1735,6 +1742,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>Atvėsimo laikas</value></data>
   <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>Suveikus gestui, tiek milisekundžių nepaisoma naujų gestų šiame jutikliniame skydelyje. Apsaugo nuo pakartotinių suveikimų dėl greito judesio pirmyn ir atgal.</value></data>
   <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>Integruoti gestai</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Perbraukimai, palietimai, suspaudimai, formos</value></data>
   <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>4 krypčių perbraukimai (aukštyn / žemyn / kairėn / dešinėn)</value></data>
   <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>8 krypčių perbraukimai (pridedamos įstrižainės)</value></data>
   <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>Perbraukimo atstumas (0..1)</value></data>
@@ -1760,6 +1768,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>Formų gestai (apskritimas, kvadratas, trikampis, Z, varnelė)</value></data>
   <data name="Pad_Touchpad_MatchThreshold" xml:space="preserve"><value>Formos atitikimo slenkstis</value></data>
   <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>Pasirinktiniai gestai</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Įrašykite savo</value></data>
   <data name="Pad_Touchpad_RecordNew" xml:space="preserve"><value>+ Įrašyti naują gestą</value></data>
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>Šiam profiliui neįrašyta jokių pasirinktinių gestų. Spustelėkite „Įrašyti naują gestą“, kad jį užfiksuotumėte.</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 pirštas</value></data>
@@ -1767,6 +1776,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
 
   <!-- Stick / D-pad output card -->
   <data name="Pad_Touchpad_Stick_Header" xml:space="preserve"><value>Svirtelės / kryptinio mygtuko išvestis</value></data>
+  <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Jutiklinis skydelis kaip svirtelė ar kryptinis mygtukas</value></data>
   <data name="Pad_Touchpad_Stick_Subtitle" xml:space="preserve"><value>Paverskite jutiklinį skydelį virtualia analogine svirtele arba kryptiniu mygtuku. Išvestis įtvirtinama ten, kur pirštas pirmą kartą paliečia skydelį. Dabartinė padėtis to taško atžvilgiu nustato svirtelės reikšmę ir (pasirinktinai) užfiksuotas kryptinio mygtuko krypčių logines reikšmes.</value></data>
   <data name="Pad_Touchpad_StickEnabled" xml:space="preserve"><value>Įjungti svirtelės / kryptinio mygtuko išvestį</value></data>
   <data name="Pad_Touchpad_StickEnabled_Tooltip" xml:space="preserve"><value>Priskyrimų parinkiklyje parodo jutiklinio skydelio deskriptorius „Svirtelė X“, „Svirtelė Y“ ir kryptinio mygtuko deskriptorius. Veikia kartu su esamais jutiklinio skydelio piršto ir gestų šaltiniais, o ne vietoj jų.</value></data>
@@ -1781,6 +1791,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
 
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Pelės išvestis</value></data>
+  <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Invertavimas, inercija, atsakas, pagreitis, mestelėjimas</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Reguliuoja žymeklio greitį, kai jutiklinio skydelio pirštas priskirtas pelės X/Y virtualiame valdiklyje „Klaviatūra / pelė“. Numatytoji reikšmė – 1.0. Padidinkite bet kurią ašį, kad žymeklis judėtų greičiau, sumažinkite – lėčiau. „Invertuoti“ apverčia bet kurią ašį.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Pelės jautrumas X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Horizontalaus jutiklinio skydelio → pelės poslinkio daugiklis. Mažiau nei 1.0 sulėtina žymeklį. Daugiau nei 1.0 jį pagreitina.</value></data>
@@ -1808,6 +1819,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_Touchpad_RotateThreshold_Tooltip" xml:space="preserve"><value>Kiek turi pasisukti du pirštai, kad suveiktų pasukimas.</value></data>
   <data name="Pad_ResetTouchpadRotateThresholdDegrees" xml:space="preserve"><value>Nustatyti pasukimo slenkstį iš naujo</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>Absoliutusis žymeklis</value></data>
+  <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>Ekrano dalis, kurią pasiekia skydelis</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Reguliuoja jutiklinio skydelio žymeklio X/Y šaltinius, kurie perkelia žymeklį į piršto padėtį skydelyje (priskirkite juos pelės X/Y virtualiame valdiklyje „Klaviatūra / pelė“). Dydis 1.00 su centru 0.50 atvaizduoja skydelį į visą ekraną. Sumažinkite dydį, kad žymeklis būtų apribotas ekrano dalimi, ir perkelkite centrą, kad nustatytumėte jos vietą.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Srities plotis</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Ekrano srities, į kurią atvaizduojamas šis skydelis, plotis ekrano pločio dalimis. 1.00 apima visą plotį, 0.50 apriboja žymeklį puse ekrano.</value></data>
@@ -1820,12 +1832,14 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
 
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Perbraukimo haptika</value></data>
+  <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>Tiksėjimai, kai pirštas slenka</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Kai pirštas slenka šiuo jutikliniu skydeliu, valdiklio haptika siunčia impulsus, kaip „Steam Input“ jutiklinio kilimėlio tiksėjimai. „Steam Controller“ ir „Steam Deck“ tiksi po skydeliu esančiu vykdikliu, o „DualSense“ ir „DualShock 4“ – vibracijos varikliais.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Įjungti perbraukimo haptiką</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>Kaskart pirštui pasislinkus nustatytu atstumu šiame skydelyje, siunčiamas trumpas haptinis tiksėjimas. Piršto prisilietimas ar skydelio paspaudimas tiksėjimo nesukelia. Pagal numatytuosius nustatymus išjungta.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>Impulso intensyvumas</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity_Tooltip" xml:space="preserve"><value>Kiekvieno tiksėjimo stiprumas. Žaidimo vibracija visada turi pirmenybę, kai ji stipresnė.</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Header" xml:space="preserve"><value>Sintetinis spaudimas</value></data>
+  <data name="Pad_SyntheticPressure_FoldHint" xml:space="preserve"><value>Spaudimas skydeliams, kurie prisilietimą praneša kaip visišką</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Subtitle" xml:space="preserve"><value>Imituoja „DualShock 2“ / „DualShock 3“ spaudimui jautrius mygtukus skydeliuose, kurie prisilietimą praneša kaip visišką spaudimą („DualShock 4“, „DualSense“, „Steam Controller 2015“). Kai įjungta, šio įrenginio spaudimo priskyrimų šaltiniai nelietimą skaito kaip 0%, ramų prisilietimą – kaip „Prisilietimo spaudimo lygis“, o skydelio paspaudimą – kaip 100%.</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled" xml:space="preserve"><value>Įjungti sintetinį spaudimą</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled_Tooltip" xml:space="preserve"><value>Paverčia šio įrenginio spaudimo priskyrimų šaltinius trimis pakopomis: nelietimas – 0%, ramus prisilietimas – „Prisilietimo spaudimo lygis“, skydelio paspaudimas – 100%. Pagal numatytuosius nustatymus išjungta, todėl skydeliuose su tikru analoginiu spaudimu išlieka neapdoroti rodmenys.</value></data>
@@ -2003,7 +2017,9 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Nustatykite, kaip šio pulto judesio jutiklis valdo pelės ir svirtelės išvestį. Kalibruokite ant lygaus paviršiaus, kad pašalintumėte ramybės būsenos dreifą, tada pagal skonį sureguliuokite jautrumą, glotninimą ir įjungimo taisykles.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibravimas</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Jautrumas</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Vienetai, erdvė, ašių invertavimas, realaus pasaulio kalibravimas</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Atsako formavimas</value></data>
+  <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Nejautros zona, glotninimas, pagreitis, išvesties kreivė</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Erdvė</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Kaip interpretuojamas giroskopo judesys. „Vietinė“ naudoja neapdorotas valdiklio ašis. „Žaidėjo“ projektuoja horizontalų judesį į realaus pasaulio vertikalę (gravitaciją), todėl tas pats riešo pasukimas visada suka kamerą, nesvarbu, kaip laikote pultą. „Pasaulio“ papildomai projektuoja vertikalų judesį į pasaulio ašis.</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>Laikoma kaip</value></data>
@@ -2017,11 +2033,13 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_ResetGyroInvertYaw" xml:space="preserve"><value>Nustatyti posūkio invertavimą iš naujo</value></data>
   <data name="Pad_ResetGyroInvertRoll" xml:space="preserve"><value>Nustatyti posvyrio invertavimą iš naujo</value></data>
   <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>Kompasas</value></data>
+  <data name="Pad_Compass_FoldHint" xml:space="preserve"><value>Susieja posūkį su magnetine šiaure</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Šiame valdiklyje yra magnetometras. Susiejus posūkį su magnetine šiaure, pašalinamas lėtas horizontalus giroskopo taikymo dreifas. Pirmiausia kalibruokite: spustelėkite kalibravimo mygtuką, kelias sekundes sukite valdiklį visomis kryptimis aštuoniuke, tada spustelėkite dar kartą.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Susieti posūkį su kompasu</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Prideda nedidelį korekcinį greitį, kuris traukia horizontalų taikymą magnetinės krypties link, todėl dreifas negali kauptis. Reikia išsaugoto magnetometro kalibravimo. Netoliese esančio metalo ar magnetų iškreipti mėginiai atmetami automatiškai.</value></data>
   <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Atkurti numatytąjį (išjungta)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Polinkio ir posvyrio imitavimas</value></data>
+  <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Polinkis ir posvyris apskaičiuojami pagal akselerometrą</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>Šio valdiklio giroskopas jaučia tik pasukimą į kairę ir dešinę. Įjungus imitavimą, „PadForge“ apskaičiuoja polinkį ir posvyrį pagal akselerometrą ir siunčia juos kartu su giroskopo posūkiu į priskyrimų eilutes ir virtualaus valdiklio judesį. Akselerometras negali atskirti stūmimo nuo pakreipimo, todėl valdiklio judinimas į šoną ar į priekį jo nesukant užfiksuojamas kaip trumpas pasisukimas.</value></data>
   <data name="Settings_GyroSimulation" xml:space="preserve"><value>Imituoti polinkį ir posvyrį</value></data>
   <data name="Settings_GyroSimulation_Tooltip" xml:space="preserve"><value>Užpildo polinkį ir posvyrį iš akselerometro apskaičiuotais greičiais. Posūkis lieka paties giroskopo rodmuo. Pagal numatytuosius nustatymus išjungta.</value></data>
@@ -2062,6 +2080,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Žemyn (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Aukštyn (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Įjungimas</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Taikymo įjungimo mygtukas, įjungimo režimas, lengvo taikymo slenkstis</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Pasirenkamos sąlygos, ribojančios, kada giroskopas aktyvus. Galima atskirai sukonfigūruoti dešiniosios svirtelės nuokrypį ir taikymo įjungimo mygtuką. Giroskopas veikia tik tada, kai tenkinamos visos sukonfigūruotos sąlygos.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Vietinė</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Žaidėjo</value></data>
@@ -2112,6 +2131,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Giroskopo pakreipimas X</value></data>
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>Giroskopo pakreipimas Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>Giroskopo pakreipimas</value></data>
+  <data name="Pad_GyroTilt_FoldHint" xml:space="preserve"><value>Viso pakreipimo diapazonas, pakreipimo nejautros zona</value></data>
   <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>Įvesčių „Giroskopo pakreipimas X“ / „Giroskopo pakreipimas Y“ ribos: išlaikykite pakreipimą, ir svirtelė išlaikys nuokrypį, kaip „Steam“ režime „Joystick Deflection“. Visas nuokrypis pasiekiamas čia nustatytame diapazone, o „Giroskopo centravimas“ iš naujo nunulina ramybės padėtį. Posūkis (valdiklio sukimas gulsčiai) gravitacijai nematomas ir šių įvesčių nejudina.</value></data>
   <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>Viso pakreipimo diapazonas</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>Pakreipimo nuo ramybės padėties laipsniai, laikomi visu svirtelės nuokrypiu. Mažiau = jautriau. 25° yra dažniausia reikšmė „Steam“ konfigūracijose.</value></data>
@@ -2313,6 +2333,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Min. diapazonas Y (apačia)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Maks. diapazonas Y (viršus)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X ašis</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>Abi ašys</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y ašis</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Diapazonas</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Nejautros zonos kompensacija</value></data>
@@ -2323,6 +2344,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Jėgos grįžtamasis ryšys / vibracija / haptika</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Kiekvieno variklio stiprinimas, gaidukų vibracija, variklių sukeitimas</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Bendras stiprinimas</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Kairysis variklis</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Dešinysis variklis</value></data>
@@ -2334,6 +2356,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Pastovi jėga</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Pastovi jėga, kol išjungsite</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Šiam įrenginiui taikoma nuolatinė jėga, kol ją išjungsite. Žaidimo valdoma jėga iš bet kurio šaltinio ją pakeičia, kol yra aktyvi, o žaidimui sustojus nuolatinė jėga vėl taikoma.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Taikyti pastovią jėgą</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Vilkite tinklelio viduje, kad nustatytumėte kryptį ir stiprumą.</value></data>
@@ -2655,6 +2678,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
 
   <!-- ═══ Audio Bass Rumble ═══ -->
   <data name="Settings_AudioRumble" xml:space="preserve"><value>Garso vibracija</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Vibracija pagal sistemos garso žemuosius dažnius</value></data>
   <data name="Settings_AudioRumbleDesc" xml:space="preserve"><value>Valdykite valdiklio vibraciją pagal sistemos garso žemuosius dažnius.</value></data>
   <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>Įjungti garso vibraciją</value></data>
   <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>Jautrumas</value></data>
@@ -2765,6 +2789,8 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Nustatyti pakrypimo išorinę nejautros zoną iš naujo</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Nustatyti valdiklio orientaciją iš naujo</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Vairavimas judesiu</value></data>
+  <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° iki {1}°</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Pakrypimo nejautros zonos, valdiklio orientacija</value></data>
   <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Įvesties „Judesio pakrypimas“ nustatymai: kreipkite valdiklį kaip vairą. Skirtuke „Priskyrimai“ įvesties išskleidžiamajame sąraše priskirkite „Judesio pakrypimas“ svirtelės ašiai.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Nustatyti vairavimą judesiu iš naujo</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Mostelėjimo svirtelė (dešinioji svirtelė)</value></data>
@@ -2773,6 +2799,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Mapping_LeftStickRing" xml:space="preserve"><value>Kairiosios svirtelės žiedas</value></data>
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>Dešiniosios svirtelės žiedas</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Mostelėjimo svirtelė</value></data>
+  <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Mostelėjimo svirtelės įvesčių derinimas</value></data>
   <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Mostelėjimo svirtelės įvesčių nustatymai: nukreipkite svirtelę, ir kamera pasisuks ta kryptimi, o vesdami svirtelę kraštu tiksliai pasukite kamerą. Skirtuke „Priskyrimai“ įvesties išskleidžiamajame sąraše priskirkite „Mostelėjimo svirtelė (dešinioji svirtelė)“ išvesčiai „Pelė X“ bet kuriame sluoksnyje.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Nustatyti mostelėjimo svirtelę iš naujo</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Taškų per 360°</value></data>
@@ -2809,6 +2836,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Kai mostelėjimo svirtelę turintis sluoksnis įsijungia, o svirtelė jau pakreipta, mostelėjimas įvykdomas iš karto. Išjungus kamera lieka nejudanti, o sukimas sekamas nuo dabartinio svirtelės kampo.</value></data>
   <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Nustatyti „Leisti mostelėjimą įsijungiant“ iš naujo</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Kraštinės vairo padėties signalas</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Signalas kraštinėje padėtyje vairavimo režimo svirtelei</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Kai vairavimo režimu nustatyta svirtelė pasukama iki galo į kraštinę padėtį, pateikiamas signalas (vibracija, gaidukas ar šviesos juosta), kad pajustumėte ribą. Pagal numatytuosius nustatymus viskas išjungta.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Vibracijos impulsas kraštinėje padėtyje</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Gaiduko vibracija kraštinėje padėtyje</value></data>
@@ -2864,6 +2892,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Garsas</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Makrokomandų garsai ir atkartojamas sistemos garsas leidžiami per pasirinkto valdiklio integruotą garsiakalbį per USB arba „Bluetooth“. Įrenginį pasirinkite aukščiau esančiame išskleidžiamajame sąraše. Visi čia esantys nustatymai taikomi jam.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Garso išvestis</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Atkartojimo šaltinis, haptika, ausinių garsumas, kryžminis maišymas, parametrinis glodintuvas, ribotuvas</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Garsai į pasirinktą valdiklį nukreipiami automatiškai. Per USB pulto garso galinis įrenginys atpažįstamas pagal aparatinės įrangos konteinerį. Per „Bluetooth“ garsas transliuojamas „Sony“ HID kadrais.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Atkartojimo šaltinis</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Kurio atkūrimo įrenginio garsą atkartoti valdiklio garsiakalbyje. Žaidimai, siunčiantys tam tikrus garsus į atskirą atkūrimo įrenginį, gali nukreipti juos į šį.</value></data>
@@ -2937,6 +2966,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>Failas nėra skaitomas „PadForge“ profilis.</value></data>
   <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Pasirinkite garsą iš paketo „{0}“</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Garso paketai</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>ZIP failai su garsais garso makrokomandoms</value></data>
   <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>Garso paketas yra vienas garsų ZIP failas su plėtiniu .pfsounds. Pridėkite jį čia, tada jo garsus pasirinkite bet kurioje garso makrokomandoje. „PadForge“ skaito tiesiai iš failo ir niekada jo neišpakuoja. Laikykite paketus šalia PadForge.exe, kad viskas liktų perkeliama.</value></data>
   <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>Pridėti paketą…</value></data>
   <data name="Pad_Audio_Packages_Add_Tooltip" xml:space="preserve"><value>Pridėti esamą .pfsounds failą į sąrašą.</value></data>
@@ -2962,6 +2992,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Emoji_Category_Objects" xml:space="preserve"><value>Daiktai</value></data>
   <data name="Emoji_Category_Symbols" xml:space="preserve"><value>Simboliai</value></data>
   <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>Piktogramų paketai</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>ZIP failai su paveikslėliais meniu langeliams</value></data>
   <data name="Pad_Menus_IconPackages_Desc" xml:space="preserve"><value>Piktogramų paketas yra vienas paveikslėlių ZIP failas su plėtiniu .pficons. Pridėkite jį čia, tada jo piktogramas pasirinkite bet kuriame meniu langelyje. „PadForge“ skaito tiesiai iš failo ir niekada jo neišpakuoja. Laikykite paketus šalia PadForge.exe, kad viskas liktų perkeliama.</value></data>
   <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>Pridėti paketą…</value></data>
   <data name="Pad_Menus_IconPackages_Add_Tooltip" xml:space="preserve"><value>Pridėti esamą .pficons failą į sąrašą.</value></data>
@@ -3344,6 +3375,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>Perjungti į sluoksnį {0}</value></data>
   <data name="Macro_SwitchLayer_Hint" xml:space="preserve"><value>Perjungia šį lizdą į pasirinktą perjungimo sluoksnį. Sluoksnis lieka įjungtas iki kito perjungimo, užfiksavimo ar ciklo aktyviklio arba profilio perjungimo. „Bazinis“ grąžina į bazinį sluoksnį. Aukščiau priskirkite šią makrokomandą sluoksniui, kad tas pats mygtukas kiekviename sluoksnyje perjungtų skirtingai.</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>„Guide“ mygtuko LED</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>„Guide“ arba „Home“ mygtuko švytėjimas</value></data>
   <data name="Pad_Lighting_GuideLed_Subtitle" xml:space="preserve"><value>Šviečiančio „Guide“ arba „Home“ mygtuko ryškumas. „Xbox One“ ir naujesni valdikliai jį priima per USB. 2015 m. „Steam Controller“ jį priima bet kokiu ryšiu, o visi „Steam Controller“ valdikliai turi bendrą ryškumą. „Switch Pro Controller“ ir dešinieji „Joy-Con“ (atskirai, suporuoti ar įkrovimo laikiklyje) jį priima bet kokiu ryšiu.</value></data>
   <data name="Pad_Lighting_GuideLed_Mode_Tooltip" xml:space="preserve"><value>„Įrenginio numatytasis“ palieka LED tiksliai tokį, kokį nustatė valdiklio programinė aparatinė įranga. „Fiksuotas ryškumas“ išlaiko toliau nurodytą lygį. „Akumuliatoriaus lygis“ pilnesnį akumuliatorių rodo ryškiau ir niekada nenukrenta žemiau 10%. „Xbox“ valdikliai „Guide“ LED komandas priima tik per USB, todėl šis nustatymas neturi poveikio „Bluetooth“ ryšiu. „Switch“ valdikliai „Home“ LED komandas priima bet kokiu ryšiu.</value></data>
   <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>Įrenginio numatytasis</value></data>
@@ -3708,6 +3740,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Žemųjų dažnių vibratoriai</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Nukreipia šio virtualaus valdiklio gaunamą žaidimo vibraciją ir jėgos grįžtamąjį ryšį į garso išvestį kaip žemo dažnio tonus žemųjų dažnių vibratoriams ir žemadažniams garsiakalbiams.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibracija į garsą</value></data>
+  <data name="Pad_More_BassShakers" xml:space="preserve"><value>Išvesties įrenginys, kanalai, stiprinimas, kiekvieno variklio tonas</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Veikia su „Xbox“, „DualShock 3“, „DualShock 4“ / „DualSense“ ir „Nintendo Switch Pro“ virtualiais valdikliais, taip pat su išplėstiniais virtualiais valdikliais su jėgos grįžtamuoju ryšiu, pavyzdžiui, lenktynių vairais, ir „Steam Deck Controller (Composite)“. Žaidimo grįžtamasis ryšys ir „Išbandyti vibraciją“ leidžiami per garso išvestį. Makrokomandų vibracija lieka valdiklyje.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Nustatyti „Vibracija į garsą“ iš naujo</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Nukreipti vibraciją į garso išvestį</value></data>
@@ -4146,6 +4179,7 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Laukiama FreeTrack bendrosios atminties duomenų.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>FreeTrack bendroji atmintis nepasiekiama.</value></data>
   <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Vibracija pagal vairo kampą</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Vibracija stiprėja svirtelės ašiai tolstant nuo centro</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Prideda nuolatinę vibraciją, kai pasirinkta virtualios svirtelės ašis tolsta nuo centro. Naudoja visų priskirtų šaltinių priskirtą išvestį. Pasirinkus „Padalyti pagal kryptį“, neigiamas judesys valdo kairįjį variklį, teigiamas – dešinįjį. Pasirinkus „Kairysis variklis“ arba „Dešinysis variklis“, abi kryptys vibruoja per tą vieną variklį. Skirta „Xbox“ ir „PlayStation“ išvesčiai su vibruojančiais įrenginiais. Praleidžia vairus, kitus įrenginius su pastoviu jėgos grįžtamuoju ryšiu ir Fanatec pedalus.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Įjungti vibraciją pagal vairo kampą</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Virtuali ašis</value></data>
@@ -4464,6 +4498,7 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="Status_FalconDriverDeclined" xml:space="preserve"><value>Windows neįdiegė Force Dimension tvarkyklės. Jei Windows klausia, ar pasitikite Force Dimension, pasirinkite „Įdiegti“.</value></data>
   <data name="Status_FalconDriverNotBound" xml:space="preserve"><value>Tvarkyklė įdiegta, bet Falcon dar neperėjo prie jos. Atjunkite Falcon ir prijunkite iš naujo.</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>Atatranka, drebinimas, atrama, išankstinė apkrova, gravitacija</value></data>
   <data name="Pad_Falcon_Description" xml:space="preserve"><value>PadForge apskaičiuoja kiekvieną Falcon rankenos jėgą maždaug tūkstantį kartų per sekundę pagal rankenos padėtį ir tai, ką groja žaidimas. Šie nustatymai priklauso šiam lizdui.</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>Nustatyti Novint Falcon iš naujo</value></data>
   <data name="Pad_Falcon_Feel" xml:space="preserve"><value>Pojūtis</value></data>
@@ -4625,4 +4660,5 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0}: {1}, kol laikoma</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0}: {1}, kol bus sustabdyta</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>Stabdyti gaiduko efektą: {0}</value></data>
+  <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Valdyti šio įrenginio apšvietimą, apšvietimo perėmimas</value></data>
 </root>

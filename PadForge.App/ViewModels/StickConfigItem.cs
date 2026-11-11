@@ -69,7 +69,7 @@ namespace PadForge.ViewModels
         public double DeadZoneX
         {
             get => _deadZoneX;
-            set { if (SetProperty(ref _deadZoneX, Math.Clamp(value, 0, 100))) { OnPropertyChanged(nameof(DeadZoneXDigit)); OnPropertyChanged(nameof(DeadZoneSteelGeometry)); RebuildCurvePoints(); } }
+            set { if (SetProperty(ref _deadZoneX, Math.Clamp(value, 0, 100))) { OnPropertyChanged(nameof(DeadZoneXDigit)); OnPropertyChanged(nameof(DeadZoneSteelGeometry)); RaiseDeadZoneBoth(); RebuildCurvePoints(); } }
         }
         public int DeadZoneXDigit
         {
@@ -81,8 +81,69 @@ namespace PadForge.ViewModels
         public double DeadZoneY
         {
             get => _deadZoneY;
-            set { if (SetProperty(ref _deadZoneY, Math.Clamp(value, 0, 100))) { OnPropertyChanged(nameof(DeadZoneYDigit)); OnPropertyChanged(nameof(DeadZoneSteelGeometry)); RebuildCurvePoints(); } }
+            set { if (SetProperty(ref _deadZoneY, Math.Clamp(value, 0, 100))) { OnPropertyChanged(nameof(DeadZoneYDigit)); OnPropertyChanged(nameof(DeadZoneSteelGeometry)); RaiseDeadZoneBoth(); RebuildCurvePoints(); } }
         }
+
+        // ── The card's two up-front controls (#574) ──
+        // A stick card opens on one Deadzone slider and one Sensitivity
+        // preset. Each reads and writes the X and Y settings above, so
+        // nothing new is stored and the per-axis rows under More stay the
+        // truth.
+
+        /// <summary>The stick's deadzone as one value: the larger of X and
+        /// Y, which is the one fully in force along its axis. Setting it
+        /// sets both.</summary>
+        public double DeadZoneBoth
+        {
+            get => Math.Max(_deadZoneX, _deadZoneY);
+            set
+            {
+                double both = Math.Clamp(value, 0, 100);
+                DeadZoneX = both;
+                DeadZoneY = both;
+            }
+        }
+
+        public int DeadZoneBothDigit
+        {
+            get => PctToDigit(DeadZoneBoth);
+            set => DeadZoneBoth = DigitToPct(value);
+        }
+
+        private void RaiseDeadZoneBoth()
+        {
+            OnPropertyChanged(nameof(DeadZoneBoth));
+            OnPropertyChanged(nameof(DeadZoneBothDigit));
+        }
+
+        /// <summary>The stick's sensitivity curve as one: the X curve, and
+        /// setting it sets the Y curve too.</summary>
+        public string SensitivityCurveBoth
+        {
+            get => _sensitivityCurveX;
+            set
+            {
+                SensitivityCurveX = value;
+                SensitivityCurveY = value;
+            }
+        }
+
+        /// <summary>The preset both axes follow, or Custom when the two
+        /// curves differ or follow none.</summary>
+        public string PresetNameBoth
+            => Common.CurveLut.Normalize(_sensitivityCurveX) == Common.CurveLut.Normalize(_sensitivityCurveY)
+                ? PresetNameX
+                : Resources.Strings.Strings.Instance.Curve_Custom;
+
+        private void RaiseSensitivityBoth()
+        {
+            OnPropertyChanged(nameof(SensitivityCurveBoth));
+            OnPropertyChanged(nameof(PresetNameBoth));
+        }
+
+        /// <summary>The key this stick's More row is stored under, so each
+        /// stick opens and stays open on its own.</summary>
+        public string MoreStateKey => "Pad.Sticks.Stick" + Index.ToString(System.Globalization.CultureInfo.InvariantCulture) + ".More";
         public int DeadZoneYDigit
         {
             get => PctToDigit(_deadZoneY);
@@ -151,14 +212,14 @@ namespace PadForge.ViewModels
         public string SensitivityCurveX
         {
             get => _sensitivityCurveX;
-            set { if (SetProperty(ref _sensitivityCurveX, value ?? "0,0;1,1")) { RebuildCurvePoints(); OnPropertyChanged(nameof(PresetNameX)); } }
+            set { if (SetProperty(ref _sensitivityCurveX, value ?? "0,0;1,1")) { RebuildCurvePoints(); OnPropertyChanged(nameof(PresetNameX)); RaiseSensitivityBoth(); } }
         }
 
         private string _sensitivityCurveY = "0,0;1,1";
         public string SensitivityCurveY
         {
             get => _sensitivityCurveY;
-            set { if (SetProperty(ref _sensitivityCurveY, value ?? "0,0;1,1")) { RebuildCurvePoints(); OnPropertyChanged(nameof(PresetNameY)); } }
+            set { if (SetProperty(ref _sensitivityCurveY, value ?? "0,0;1,1")) { RebuildCurvePoints(); OnPropertyChanged(nameof(PresetNameY)); RaiseSensitivityBoth(); } }
         }
 
         private double _maxRangeX = 100;
@@ -630,6 +691,11 @@ namespace PadForge.ViewModels
         public ICommand ResetStickSensitivityCommand => _resetStickSensitivityCommand ??= new RelayCommand(() => Sensitivity = 1.0);
         public ICommand ResetSensitivityXCommand => _resetSensitivityXCommand ??= new RelayCommand(() => SensitivityCurveX = "0,0;1,1");
         public ICommand ResetSensitivityYCommand => _resetSensitivityYCommand ??= new RelayCommand(() => SensitivityCurveY = "0,0;1,1");
+        // The up-front pair (#574) resets both axes to the defaults the
+        // two per-axis resets above give.
+        private ICommand _resetDeadZoneBothCommand, _resetSensitivityBothCommand;
+        public ICommand ResetDeadZoneBothCommand => _resetDeadZoneBothCommand ??= new RelayCommand(() => DeadZoneBoth = 0);
+        public ICommand ResetSensitivityBothCommand => _resetSensitivityBothCommand ??= new RelayCommand(() => SensitivityCurveBoth = "0,0;1,1");
         private ICommand _resetMaxRangeXCommand, _resetMaxRangeYCommand;
         public ICommand ResetMaxRangeXCommand => _resetMaxRangeXCommand ??= new RelayCommand(() => MaxRangeX = 100);
         public ICommand ResetMaxRangeYCommand => _resetMaxRangeYCommand ??= new RelayCommand(() => MaxRangeY = 100);

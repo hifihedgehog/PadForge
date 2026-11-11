@@ -860,6 +860,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Këmbëza impulsi</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Këmbëza impulsi</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Forca për çdo këmbëz, këmbimi i motorëve, dridhjet e këmbëzave adaptive</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Përcjell komandat e motorit për çdo këmbëz (Xbox Impulse Triggers) nga kontrolluesi virtual te kontrolluesi fizik i caktuar Xbox One, Elite ose Series. Dridhja e këmbëzave e drejtuar nga loja kalon automatikisht. Kontrollet më poshtë shkallëzojnë madhësinë për çdo këmbëz.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Këmbëza e majtë</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Këmbëza e djathtë</value></data>
@@ -878,7 +879,9 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Rivendos këmbëzën e majtë</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Rivendos këmbëzën e djathtë</value></data>
   <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Forca e vazhdueshme e këmbëzës</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Forcë e vazhdueshme në çdo motor këmbëze</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Përcjellja e këmbëzës</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Dërgon dridhjen e motorëve kryesorë te këmbëzat</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Përcjell motorët kryesorë të dridhjes te kanali i këmbëzës, një këmbëz në herë. Funksionon me dridhjen XInput dhe force feedback. Një aktivizues mund ta kontrollojë që këmbëza të dridhet vetëm ndërsa mbani shtypur një buton.</value></data>
   <data name="Pad_ResetTriggerRouting" xml:space="preserve"><value>Rivendos përcjelljen e këmbëzës</value></data>
   <data name="Pad_TriggerRouting_LeftTrigger" xml:space="preserve"><value>Këmbëza e majtë</value></data>
@@ -910,6 +913,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Rivendos këmbëzën e majtë</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Rivendos këmbëzën e djathtë</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Dridhja e këmbëzave nga basi i audios</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Dridhje e këmbëzave nga basi i audios së sistemit</value></data>
   <data name="Pad_AudioTriggerRumble_Description" xml:space="preserve"><value>Drejton motorët e këmbëzave nga basi i audios së sistemit. Forca e këmbëzës e drejtuar nga loja e mbivendos ndërsa është aktive.</value></data>
   <data name="Pad_AudioTriggerRumble_Toggle" xml:space="preserve"><value>Drejto motorët e këmbëzave nga audio</value></data>
   <data name="Pad_AudioTriggerRumble_Sensitivity" xml:space="preserve"><value>Ndjeshmëria</value></data>
@@ -1007,6 +1011,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Lighting_MicLed_FollowDevice" xml:space="preserve"><value>Ndiq pajisjen audio</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice_Picker" xml:space="preserve"><value>Pajisja audio</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>LED-et treguese</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Shkëlqimi i LED-eve, Modeli i lojtarit, Mënyra e LED-it të heshtjes</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>Rreshti i numrit të lojtarit (5 LED nën touchpad) dhe LED-i i heshtjes mbi mikrofon. Kontrolli i shkëlqimit ndikon fizikisht vetëm rreshtin e lojtarit. Firmueri ekspozon gjendjet e LED-it të heshtjes (Fikur / Konstante / Pulsim) por jo regjistër të veçantë shkëlqimi për heshtjen.</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>Rivendos shiritin e dritës</value></data>
   <data name="Pad_ResetIndicatorLeds" xml:space="preserve"><value>Rivendos LED-et treguese</value></data>
@@ -1393,6 +1398,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Kalibro qendrën</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Pika qendrore</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Zona e vdekur</value></data>
+  <data name="Pad_More_Stick" xml:space="preserve"><value>Zhvendosjet e qendrës, forma e zonës së vdekur dhe vlerat për çdo bosht, një kurbë për çdo bosht, diapazoni, drejtimi</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Diapazoni</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Kalibrimi i kufirit është mënyra e rekomanduar për ta saktësuar një levë. Fshin skajin që leva mund ta arrijë fizikisht, pastaj rishkallëzon proporcionalisht çdo pozicion kundrejt atij skaji të matur, ndaj e gjithë lëvizja e natyrshme, në çdo kënd dhe çdo devijim, përkon me një rreth ideal pa asgjë të prerë. Katër rrëshqitësit më poshtë kufizojnë vetëm boshtet kardinale. Përdori për ta kufizuar diapazonin me qëllim, jo për ta korrigjuar.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Po mostrohet...</value></data>
@@ -1726,6 +1732,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Numri i touchpad-it</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Se cilit touchpad të këtij kontrolluesi i vlejnë cilësimet më poshtë. Çdo touchpad ka gjestet, ndjesinë e mausit dhe zonën e treguesit të vet.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Zbulimi i gjesteve</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Aktivizon gjestet e këtij touchpad-i</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Aktivizo gjestet në këtë touchpad</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Çelësi kryesor i këtij touchpad-i. Kur është i çaktivizuar, asnjë gjest nuk lëshohet për këtë touchpad. Hartëzimet ekzistuese të gishtit, klikut dhe pozicionit funksionojnë ende.</value></data>
   <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>Njih</value></data>
@@ -1736,6 +1743,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>Pauzë</value></data>
   <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>Pasi lëshohet një gjest, injoro gjestet e reja në këtë touchpad për kaq milisekonda. Parandalon lëshimet e përsëritura nga lëvizja e shpejtë para-mbrapa.</value></data>
   <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>Gjestet e brendshme</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Rrëshqitje, trokitje, pinçime, forma</value></data>
   <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>Rrëshqitje në 4 drejtime (lart / poshtë / majtas / djathtas)</value></data>
   <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>Rrëshqitje në 8 drejtime (shton diagonalet)</value></data>
   <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>Largësia e rrëshqitjes (0..1)</value></data>
@@ -1761,6 +1769,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>Gjeste formash (rreth, katror, trekëndësh, Z, shenjë shënimi)</value></data>
   <data name="Pad_Touchpad_MatchThreshold" xml:space="preserve"><value>Pragu i përputhjes së formës</value></data>
   <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>Gjeste të personalizuara</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Regjistro të tuat</value></data>
   <data name="Pad_Touchpad_RecordNew" xml:space="preserve"><value>+ Regjistro gjest të ri</value></data>
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>Asnjë gjest i personalizuar i regjistruar për këtë profil. Klikoni Regjistro gjest të ri për ta kapur një.</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 gisht</value></data>
@@ -1768,6 +1777,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
 
   <!-- Stick / D-pad output card -->
   <data name="Pad_Touchpad_Stick_Header" xml:space="preserve"><value>Dalje levë / D-pad</value></data>
+  <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Përdor touchpad-in si levë ose D-pad</value></data>
   <data name="Pad_Touchpad_Stick_Subtitle" xml:space="preserve"><value>Shndërroni touchpad-in në një levë analoge virtuale ose D-pad. Dalja ankorohet aty ku zbret gishti i parë. Pozicioni aktual ndaj asaj ankore përcakton vlerën e levës dhe (opsionalisht) drejtimet e mbajtura të D-pad-it.</value></data>
   <data name="Pad_Touchpad_StickEnabled" xml:space="preserve"><value>Aktivizo daljen levë / D-pad</value></data>
   <data name="Pad_Touchpad_StickEnabled_Tooltip" xml:space="preserve"><value>Shfaq përshkruesit Touchpad Levë X, Levë Y dhe D-pad në zgjedhësin e hartëzimit. Punon krahas burimeve ekzistuese të gishtit dhe gjesteve të touchpad-it, jo në vend të tyre.</value></data>
@@ -1782,6 +1792,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
 
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Dalja e mausit</value></data>
+  <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Përmbysja, Vrulli, Përgjigjja, Përshpejtimi, hedhja</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Rregullon shpejtësinë e kursorit kur një gisht i touchpad-it hartëzohet te maus X/Y në një kontrollues virtual Tastierë / Maus. 1.0 është parazgjedhja. Rritni njërin bosht për kursor më të shpejtë, ulni për më të ngadaltë. Përmbysja kthen përmbys cilindo bosht.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Ndjeshmëria e mausit X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Shumëzues për lëvizjen horizontale touchpad → maus. Nën 1.0 e ngadalëson kursorin. Mbi 1.0 e shpejton.</value></data>
@@ -1809,6 +1820,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Touchpad_RotateThreshold_Tooltip" xml:space="preserve"><value>Sa duhet të rrotullohen dy gishta para se të lëshohet një rrotullim.</value></data>
   <data name="Pad_ResetTouchpadRotateThresholdDegrees" xml:space="preserve"><value>Rivendos pragun e rrotullimit</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>Tregues absolut</value></data>
+  <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>Pjesa e ekranit që arrin touchpad-i</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Rregullon burimet Touchpad Tregues X/Y, që e çojnë kursorin te pozicioni i gishtit tuaj në touchpad (hartëzojini te maus X/Y në një kontrollues virtual Tastierë / Maus). Madhësia 1.00 me qendër 0.50 e hartëzon touchpad-in në gjithë ekranin. Zvogëloni madhësinë që ta kufizoni kursorin në një pjesë të ekranit dhe lëvizni qendrën që ta vendosni.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Gjerësia e zonës</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Gjerësia e zonës së ekranit ku hartëzohet ky touchpad, si pjesë e gjerësisë së ekranit. 1.00 mbulon gjithë gjerësinë, 0.50 e kufizon kursorin në gjysmën e ekranit.</value></data>
@@ -1821,12 +1833,14 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
 
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Haptikë rrëshqitjeje</value></data>
+  <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>Tikje ndërsa gishti udhëton</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Lëshon pulse haptike të kontrolluesit ndërsa gishti udhëton nëpër këtë touchpad, si tiket e trackpad-it të Steam Input. Steam Controller dhe Steam Deck tikin aktuatorin nën touchpad. DualSense dhe DualShock 4 pulsojnë motorët e dridhjes.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Aktivizo haptikët e rrëshqitjes</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>Lëshon një tik të shkurtër haptik sa herë që gishti lëviz një largësi të caktuar në këtë touchpad. Uljes së gishtit ose klikut në touchpad nuk i bën kurrë tik. Joaktiv si parazgjedhje.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>Fuqia e pulsit</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity_Tooltip" xml:space="preserve"><value>Forca e çdo tiku. Dridhja e lojës fiton gjithmonë kur është më e fortë.</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Header" xml:space="preserve"><value>Trysni sintetike</value></data>
+  <data name="Pad_SyntheticPressure_FoldHint" xml:space="preserve"><value>Trysni për touchpad-e që e raportojnë prekjen si të plotë</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Subtitle" xml:space="preserve"><value>Simulon butonat me trysni të DualShock 2 / DualShock 3 në touchpad-e që e raportojnë një prekje si trysni të plotë (DualShock 4, DualSense, Steam Controller 2015). Kur është aktive, burimet e hartëzimit Trysni të kësaj pajisjeje e lexojnë mungesën e prekjes si 0%, një prekje pushuese si Nivelin e trysnisë së prekjes dhe një klik në touchpad si 100%.</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled" xml:space="preserve"><value>Aktivizo trysninë sintetike</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled_Tooltip" xml:space="preserve"><value>I jep formë burimeve të hartëzimit Trysni të kësaj pajisjeje në tre hapa: pa prekje lexon 0%, prekja pushuese lexon Nivelin e trysnisë së prekjes dhe klikimi i touchpad-it lexon 100%. Joaktiv si parazgjedhje, që i ruan leximet e papërpunuara në touchpad-e me trysni të vërtetë analoge.</value></data>
@@ -2004,7 +2018,9 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Rregulloni si e drejton sensori i lëvizjes i këtij kontrolluesi daljen e mausit dhe të levës. Kalibroni në një sipërfaqe të sheshtë për të zeruar zhvendosjen në pushim, pastaj rregulloni ndjeshmërinë, zbutjen dhe rregullat e aktivizimit sipas dëshirës.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibrimi</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Ndjeshmëria</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Njësitë, Hapësira, përmbysja e boshteve, Kalibrimi në botën reale</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Formësimi i përgjigjes</value></data>
+  <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Zona e vdekur, Zbutja, Përshpejtimi, Kurba e daljes</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Hapësira</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Si interpretohet lëvizja e xhirës. Lokale përdor boshtet e papërpunuara të kontrolluesit. Lojtari e projekton lëvizjen horizontale mbi vertikalen reale (gravitetin), kështu që i njëjti kthim i kyçit e kthen gjithmonë kamerën, pa marrë parasysh si e mbani kontrolluesin. Bota e riprojekton edhe lëvizjen vertikale mbi boshtet e botës.</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>Mbahet si</value></data>
@@ -2018,11 +2034,13 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_ResetGyroInvertYaw" xml:space="preserve"><value>Rivendos përmbysjen e kthimit</value></data>
   <data name="Pad_ResetGyroInvertRoll" xml:space="preserve"><value>Rivendos përmbysjen e rrotullimit</value></data>
   <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>Busull</value></data>
+  <data name="Pad_Compass_FoldHint" xml:space="preserve"><value>Ankoron kthimin te veriu magnetik</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Ky kontrollues ka një magnetometër. Ankorimi i kthimit te veriu magnetik heq zhvendosjen e ngadaltë horizontale nga synimi me xhirë. Kalibroni së pari: shtypni Kalibro, rrotulloni kontrolluesin në të gjitha orientimet në formë 8-she për disa sekonda, pastaj shtypni sërish.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Ankoro kthimin te busulla</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Shton një shpejtësi të vogël korrigjuese që e tërheq synimin horizontal drejt drejtimit magnetik, kështu që zhvendosja nuk mund të grumbullohet. Kërkon një kalibrim të ruajtur të magnetometrit. Kampionët e shqetësuar nga metali ose magnetët aty pranë hidhen poshtë automatikisht.</value></data>
   <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Rivendos në parazgjedhje (joaktiv)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Simulimi i animit dhe rrotullimit</value></data>
+  <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Animi dhe rrotullimi nga akselerometri</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>Xhira e këtij kontrolluesi ndien vetëm kthimin majtas e djathtas. Me simulimin aktiv, PadForge nxjerr animin dhe rrotullimin nga akselerometri dhe i dërgon me kthimin e xhirës te rreshtat e hartëzimit dhe te lëvizja e kontrolluesit virtual. Një akselerometër nuk e dallon shtytjen nga pjerrja, prandaj lëvizja anash ose përpara e kontrolluesit pa e kthyer lexohet si rrotullim i shkurtër.</value></data>
   <data name="Settings_GyroSimulation" xml:space="preserve"><value>Simulo animin dhe rrotullimin</value></data>
   <data name="Settings_GyroSimulation_Tooltip" xml:space="preserve"><value>I mbush animin dhe rrotullimin me shpejtësi të nxjerra nga akselerometri. Kthimi mbetet leximi vetjak i xhirës. Joaktiv si parazgjedhje.</value></data>
@@ -2063,6 +2081,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Poshtë (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Lart (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Aktivizimi</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Butoni i aktivizimit të synimit, Mënyra e aktivizimit, Pragu i synimit të lehtë</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Porta opsionale që kufizojnë kur është aktive xhira. Devijimi i levës së djathtë dhe butoni i aktivizimit të synimit mund të konfigurohen secili. Xhira lëshohet vetëm kur çdo portë e konfiguruar është aktive.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Lokale</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Lojtari</value></data>
@@ -2113,6 +2132,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Pjerrje e xhirës X</value></data>
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>Pjerrje e xhirës Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>Pjerrje e xhirës</value></data>
+  <data name="Pad_GyroTilt_FoldHint" xml:space="preserve"><value>Diapazoni i pjerrjes së plotë, Zona e vdekur e pjerrjes</value></data>
   <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>Zarfi për hyrjet Pjerrje e xhirës X / Pjerrje e xhirës Y: mbani një pjerrje dhe leva e mban devijimin, si mënyra Joystick Deflection e Steam. Devijim i plotë në diapazonin që vendosni këtu. Ricentrimi i xhirës e zeron sërish mbajtjen në pushim. Kthimi (kthimi i kontrolluesit sheshtë) është i padukshëm për gravitetin dhe nuk i lëviz këto hyrje.</value></data>
   <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>Diapazoni i pjerrjes së plotë</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>Gradë pjerrjeje nga mbajtja në pushim që numërohen si devijim i plotë i levës. Më i vogël = më i ndjeshëm. 25° është vlera më e zakonshme në konfigurimet e Steam.</value></data>
@@ -2303,6 +2323,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Diapazoni min. Y (poshtë)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Diapazoni maks. Y (lart)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Boshti X</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>Të dy boshtet</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Boshti Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Diapazoni</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-zona e vdekur</value></data>
@@ -2313,6 +2334,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Force feedback / dridhje / haptikë</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Forca për çdo motor, dridhja e këmbëzave, këmbimi i motorëve</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Fitimi i përgjithshëm</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Motori i majtë</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Motori i djathtë</value></data>
@@ -2324,6 +2346,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Forca konstante</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Forcë e qëndrueshme deri sa ta çaktivizosh</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Apliko një forcë të vazhdueshme në këtë pajisje derisa ta çaktivizosh. Forca e dërguar nga loja, nga çdo burim, e zëvendëson atë për sa kohë është aktive dhe ajo rifillon kur loja ndalon.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Apliko forcë konstante</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Zvarrit brenda rrjetës për të caktuar drejtimin dhe fuqinë.</value></data>
@@ -2606,6 +2629,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
 
   <!-- ═══ Audio Bass Rumble ═══ -->
   <data name="Settings_AudioRumble" xml:space="preserve"><value>Dridhja nga audioja</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Dridhje nga basi i audios së sistemit</value></data>
   <data name="Settings_AudioRumbleDesc" xml:space="preserve"><value>Drejto dridhjen e kontrolluesit nga frekuencat e basit të audios së sistemit.</value></data>
   <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>Aktivizo dridhjen nga audioja</value></data>
   <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>Ndjeshmëri</value></data>
@@ -2716,6 +2740,8 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Rivendos zonën e vdekur të jashtme të pjerrjes</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Rivendos orientimin e kontrolluesit</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Drejtimi me lëvizje</value></data>
+  <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° deri në {1}°</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Zona e vdekur e brendshme e pjerrjes, Zona e vdekur e jashtme e pjerrjes, Orientimi i kontrolluesit</value></data>
   <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Cilësimet për hyrjen e pjerrjes me lëvizje: anoje kontrolluesin si timon. Hartëzo "Pjerrje me lëvizje" te një bosht leve nga lista e hyrjeve te Hartëzimet.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Rivendos drejtimin me lëvizje</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (Leva e djathtë)</value></data>
@@ -2724,6 +2750,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Mapping_LeftStickRing" xml:space="preserve"><value>Unaza e levës së majtë</value></data>
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>Unaza e levës së djathtë</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
+  <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Rregullime për hyrjet Flick Stick</value></data>
   <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Cilësimet për hyrjet Flick Stick: drejto levën dhe kamera kthehet njësoj, rrëshqit buzën për kthim të imët. Hartëzo "Flick Stick (Leva e djathtë)" te Maus X nga lista e hyrjeve te Hartëzimet, në çdo shtresë.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Rivendos Flick Stick</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Pika për 360°</value></data>
@@ -2760,6 +2787,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Kur shtresa që strehon Flick Stick aktivizohet me levën tashmë të devijuar, flick-u zhvillohet menjëherë. Joaktiv e mban kamerën të qetë dhe ndjek rrotullimin nga këndi aktual i levës.</value></data>
   <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Rivendos Lejo flick-un në aktivizim</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Reagimi i kyçjes së drejtimit</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Sinjal në kyçje të plotë për një levë në mënyrë drejtimi</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Kur një levë me mënyrë drejtimi kthehet deri në kyçje të plotë, luaj një sinjal (dridhje, këmbëz ose shirit drite) që ta ndiesh kufirin. Të gjitha joaktive si parazgjedhje.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Puls dridhjeje në kyçje</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Dridhje e këmbëzës në kyçje</value></data>
@@ -2815,6 +2843,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Tingujt e makrove dhe audioja e pasqyruar e sistemit luhen përmes altoparlantit të integruar të kontrolluesit të zgjedhur, me USB ose Bluetooth. Zgjidh pajisjen te lista sipër. Çdo cilësim këtu e ndjek atë.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Dalja e zërit</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Burimi i pasqyrës, haptikët, Volumi i kufjeve, Crossfeed, Parametric EQ, Limiter</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Tingujt drejtohen automatikisht te kontrolluesi i zgjedhur. Me USB, pika e audios e vetë kontrolluesit përputhet sipas kontejnerit të harduerit. Me Bluetooth, audioja transmetohet në kuadro Sony HID.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Burimi i pasqyrës</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Cila pajisje luajtjeje të pasqyrohet te altoparlanti i kontrolluesit. Lojërat që dërgojnë tinguj të veçantë te një pajisje tjetër luajtjeje mund ta synojnë këtë.</value></data>
@@ -2888,6 +2917,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>Skedari nuk është profil i lexueshëm i PadForge.</value></data>
   <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Zgjidh një tingull nga {0}</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Paketat e tingujve</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Skedarë zip me tinguj për makrot e tingullit</value></data>
   <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>Një paketë tingujsh është një skedar zip me tinguj me shtesën .pfsounds. Shtoje një këtu, pastaj zgjidh tingujt e saj në çdo makro tingulli. PadForge lexon drejtpërdrejt nga skedari dhe nuk e shpaketon kurrë. Mbaji paketat pranë PadForge.exe që të mbeten portabël.</value></data>
   <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>Shto paketë…</value></data>
   <data name="Pad_Audio_Packages_Add_Tooltip" xml:space="preserve"><value>Shto një skedar .pfsounds ekzistues te lista.</value></data>
@@ -2913,6 +2943,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Emoji_Category_Objects" xml:space="preserve"><value>Objekte</value></data>
   <data name="Emoji_Category_Symbols" xml:space="preserve"><value>Simbole</value></data>
   <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>Paketat e ikonave</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Skedarë zip me imazhe për qelizat e menysë</value></data>
   <data name="Pad_Menus_IconPackages_Desc" xml:space="preserve"><value>Një paketë ikonash është një skedar zip me imazhe me shtesën .pficons. Shtoje një këtu, pastaj zgjidh ikonat e saj në çdo qelizë menyje. PadForge lexon drejtpërdrejt nga skedari dhe nuk e shpaketon kurrë. Mbaji paketat pranë PadForge.exe që të mbeten portabël.</value></data>
   <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>Shto paketë…</value></data>
   <data name="Pad_Menus_IconPackages_Add_Tooltip" xml:space="preserve"><value>Shto një skedar .pficons ekzistues te lista.</value></data>
@@ -3295,6 +3326,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>Kalo te shtresa {0}</value></data>
   <data name="Macro_SwitchLayer_Hint" xml:space="preserve"><value>E çon këtë slot te shtresa e zgjedhur e ndërrimit. Shtresa mbetet e angazhuar deri te një ndërrim tjetër, një aktivizues Latch ose Cycle, ose një ndërrim profili. Base kthen te shtresa bazë.</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>LED i butonit Guide</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Ndriçimi i butonit Guide ose Home</value></data>
   <data name="Pad_Lighting_GuideLed_Subtitle" xml:space="preserve"><value>Shkëlqimi i butonit Guide ose Home që ndriçon. Kontrolluesit Xbox One e më vonë e pranojnë përmes USB.</value></data>
   <data name="Pad_Lighting_GuideLed_Mode_Tooltip" xml:space="preserve"><value>„Parazgjedhje e pajisjes“ e lë LED-in saktësisht siç e caktoi firmueri i kontrolluesit. „Shkëlqim fiks“ mban nivelin më poshtë. „Niveli i baterisë“ e bën dritën më të fortë kur bateria është më e mbushur dhe nuk zbret kurrë nën 10%. Kontrolluesit Xbox i pranojnë komandat për LED-in Guide vetëm përmes USB, ndaj ky cilësim nuk ka efekt në një lidhje Bluetooth. Kontrolluesit Switch i pranojnë komandat për LED-in Home në çdo lidhje.</value></data>
   <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>Parazgjedhja e pajisjes</value></data>
@@ -3659,6 +3691,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass Shakers</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Dërgon dridhjen e lojës dhe force feedback që merr ky kontrollues virtual te një dalje audio si tone me frekuencë të ulët për bass shaker dhe subwoofer.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Dridhje në audio</value></data>
+  <data name="Pad_More_BassShakers" xml:space="preserve"><value>Pajisja e daljes, kanalet, përforcimi, një tone për çdo motor</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Funksionon me kontrolluesit virtualë Xbox, DualShock 3, DualShock 4 / DualSense dhe Nintendo Switch Pro, si dhe me kontrolluesit virtualë Extended me force feedback, si timonët e garave, dhe me Steam Deck Controller (Composite). Reagimi i lojës dhe „Testo dridhjen“ luhen përmes daljes audio. Dridhja e makrove mbetet në kontrollues.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Rivendos dridhjen në audio</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Dërgo dridhjen te një dalje audio</value></data>
@@ -4097,6 +4130,7 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Po pritet për të dhënat e memories së përbashkët FreeTrack.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>Memoria e përbashkët FreeTrack nuk është e disponueshme.</value></data>
   <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Dridhja e këndit të drejtimit</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Dridhje që rritet kur një bosht leve largohet nga qendra</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Shton dridhje të vazhdueshme ndërsa boshti i zgjedhur virtual i levës largohet nga qendra. Përdor daljen e hartëzuar nga të gjitha burimet e caktuara. Me "Ndarë sipas drejtimit", lëvizja negative drejton motorin e majtë dhe ajo pozitive motorin e djathtë. "Motori i majtë" ose "Motori i djathtë" i vendos të dyja drejtimet në atë motor. Për dalje Xbox dhe PlayStation me pajisje dridhjeje. Anashkalon timonët, pajisjet e tjera me force feedback konstant dhe pedalet Fanatec.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Aktivizo dridhjen e këndit të drejtimit</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Boshti virtual</value></data>
@@ -4415,6 +4449,7 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="Status_FalconDriverDeclined" xml:space="preserve"><value>Windows nuk e instaloi drajverin e Force Dimension. Nëse Windows pyet nëse i beson Force Dimension, zgjidh Instalo.</value></data>
   <data name="Status_FalconDriverNotBound" xml:space="preserve"><value>Drajveri është instaluar, por Falcon nuk ka kaluar te ai. Hiqe Falcon nga priza dhe lidhe përsëri.</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>Goditja, tundja, stabilizimi, parangarkesa, graviteti</value></data>
   <data name="Pad_Falcon_Description" xml:space="preserve"><value>PadForge llogarit çdo forcë mbi dorezën e Falcon rreth një mijë herë në sekondë, nga pozicioni i dorezës dhe nga ajo që luan loja. Këto cilësime i përkasin këtij slot.</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>Rivendos Novint Falcon</value></data>
   <data name="Pad_Falcon_Feel" xml:space="preserve"><value>Ndjesia</value></data>
@@ -4573,4 +4608,5 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} në {1} ndërsa mbahet</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} në {1} deri sa të ndalohet</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>Ndalo efektin e këmbëzës në {0}</value></data>
+  <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Kontrollo ndriçimin e kësaj pajisjeje, Mbajtja e ndriçimit</value></data>
 </root>

@@ -856,6 +856,7 @@
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>ಇಂಪಲ್ಸ್ ಟ್ರಿಗರ್‌ಗಳು</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>ಇಂಪಲ್ಸ್ ಟ್ರಿಗರ್‌ಗಳು</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>ಪ್ರತಿ ಟ್ರಿಗರ್‌ಗೆ ಗೇನ್, ಮೋಟಾರ್ ಅದಲುಬದಲು, ಅಡಾಪ್ಟಿವ್ ಟ್ರಿಗರ್ ಕಂಪನಗಳು</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್‌ನಿಂದ ನಿಯೋಜಿಸಲಾದ ಭೌತಿಕ Xbox One, Elite ಅಥವಾ Series ಕಂಟ್ರೋಲರ್‌ಗೆ ಪ್ರತಿ ಟ್ರಿಗರ್‌ನ ಮೋಟಾರ್ ಆದೇಶಗಳನ್ನು (Xbox ಇಂಪಲ್ಸ್ ಟ್ರಿಗರ್‌ಗಳು) ಫಾರ್ವರ್ಡ್ ಮಾಡುತ್ತದೆ. ಆಟ ಚಾಲಿತ ಟ್ರಿಗರ್ ಕಂಪನ ತಾನಾಗಿಯೇ ಹಾದುಹೋಗುತ್ತದೆ. ಕೆಳಗಿನ ನಿಯಂತ್ರಣಗಳು ಪ್ರತಿ ಟ್ರಿಗರ್‌ನ ಪ್ರಮಾಣವನ್ನು ಅಳೆಯುತ್ತವೆ.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>ಎಡ ಟ್ರಿಗರ್</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>ಬಲ ಟ್ರಿಗರ್</value></data>
@@ -874,7 +875,9 @@
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>ಎಡ ಟ್ರಿಗರ್ ಮರುಹೊಂದಿಸಿ</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>ಬಲ ಟ್ರಿಗರ್ ಮರುಹೊಂದಿಸಿ</value></data>
   <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>ಸ್ಥಿರ ಟ್ರಿಗರ್ ಬಲ</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>ಪ್ರತಿ ಟ್ರಿಗರ್ ಮೋಟಾರ್‌ಗೆ ಸ್ಥಿರ ಬಲ</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>ಟ್ರಿಗರ್ ರೂಟಿಂಗ್</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>ಮುಖ್ಯ ಮೋಟಾರ್‌ಗಳ ಕಂಪನವನ್ನು ಟ್ರಿಗರ್‌ಗಳಿಗೆ ಕಳುಹಿಸುತ್ತದೆ</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>ಮುಖ್ಯ ಕಂಪನ ಮೋಟಾರ್‌ಗಳನ್ನು ಒಂದೊಂದು ಟ್ರಿಗರ್‌ನಂತೆ ಟ್ರಿಗರ್ ಚಾನಲ್‌ಗೆ ರೂಟ್ ಮಾಡಿ. XInput ಕಂಪನ ಮತ್ತು ಫೋರ್ಸ್ ಫೀಡ್‌ಬ್ಯಾಕ್‌ನೊಂದಿಗೆ ಕೆಲಸ ಮಾಡುತ್ತದೆ. ಸಕ್ರಿಯಕಾರಕವು ಇದನ್ನು ನಿಯಂತ್ರಿಸಬಹುದು, ಇದರಿಂದ ನೀವು ಬಟನ್ ಒತ್ತಿ ಹಿಡಿದಿರುವಾಗ ಮಾತ್ರ ಟ್ರಿಗರ್ ಝೇಂಕರಿಸುತ್ತದೆ.</value></data>
   <data name="Pad_ResetTriggerRouting" xml:space="preserve"><value>ಟ್ರಿಗರ್ ರೂಟಿಂಗ್ ಮರುಹೊಂದಿಸಿ</value></data>
   <data name="Pad_TriggerRouting_LeftTrigger" xml:space="preserve"><value>ಎಡ ಟ್ರಿಗರ್</value></data>
@@ -906,6 +909,7 @@
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>ಎಡ ಟ್ರಿಗರ್ ಮರುಹೊಂದಿಸಿ</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>ಬಲ ಟ್ರಿಗರ್ ಮರುಹೊಂದಿಸಿ</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>ಆಡಿಯೊ ಬಾಸ್ ಟ್ರಿಗರ್ ಕಂಪನ</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>ಸಿಸ್ಟಂ ಆಡಿಯೊದ ಬಾಸ್‌ನಿಂದ ಟ್ರಿಗರ್ ಕಂಪನ</value></data>
   <data name="Pad_AudioTriggerRumble_Description" xml:space="preserve"><value>ಸಿಸ್ಟಮ್ ಆಡಿಯೊ ಬಾಸ್‌ನಿಂದ ಟ್ರಿಗರ್ ಮೋಟಾರ್‌ಗಳನ್ನು ನಡೆಸಿ. ಇದು ಸಕ್ರಿಯವಾಗಿರುವಾಗ ಆಟ ಚಾಲಿತ ಟ್ರಿಗರ್ ಬಲ ಇದನ್ನು ಮೀರಿಸುತ್ತದೆ.</value></data>
   <data name="Pad_AudioTriggerRumble_Toggle" xml:space="preserve"><value>ಆಡಿಯೊದಿಂದ ಟ್ರಿಗರ್ ಮೋಟಾರ್‌ಗಳನ್ನು ನಡೆಸಿ</value></data>
   <data name="Pad_AudioTriggerRumble_Sensitivity" xml:space="preserve"><value>ಸಂವೇದನಾಶೀಲತೆ</value></data>
@@ -1003,6 +1007,7 @@
   <data name="Pad_Lighting_MicLed_FollowDevice" xml:space="preserve"><value>ಆಡಿಯೊ ಸಾಧನವನ್ನು ಅನುಸರಿಸಿ</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice_Picker" xml:space="preserve"><value>ಆಡಿಯೊ ಸಾಧನ</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>ಸೂಚಕ LED ಗಳು</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>LED ಪ್ರಕಾಶಮಾನತೆ, ಪ್ಲೇಯರ್ ವಿನ್ಯಾಸ, ಮ್ಯೂಟ್ LED ಮೋಡ್</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>ಪ್ಲೇಯರ್ ಸಂಖ್ಯೆ ಸಾಲು (ಟಚ್‌ಪ್ಯಾಡ್ ಕೆಳಗಿನ 5 LED ಗಳು) ಮತ್ತು ಮೈಕ್ ಮೇಲಿನ ಮ್ಯೂಟ್ LED. ಪ್ರಕಾಶಮಾನತೆ ನಿಯಂತ್ರಣ ಭೌತಿಕವಾಗಿ ಪ್ಲೇಯರ್ ಸಾಲಿನ ಮೇಲೆ ಮಾತ್ರ ಪರಿಣಾಮ ಬೀರುತ್ತದೆ. ಫರ್ಮ್‌ವೇರ್ ಮ್ಯೂಟ್ LED ಸ್ಥಿತಿಗಳನ್ನು (ಆಫ್ / ಸ್ಥಿರ / ಪಲ್ಸ್) ಒದಗಿಸುತ್ತದೆ, ಆದರೆ ಪ್ರತ್ಯೇಕ ಮ್ಯೂಟ್ ಪ್ರಕಾಶಮಾನತೆ ರಿಜಿಸ್ಟರ್ ಇಲ್ಲ.</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>ಲೈಟ್ ಬಾರ್ ಮರುಹೊಂದಿಸಿ</value></data>
   <data name="Pad_ResetIndicatorLeds" xml:space="preserve"><value>ಸೂಚಕ LED ಗಳನ್ನು ಮರುಹೊಂದಿಸಿ</value></data>
@@ -1389,6 +1394,7 @@
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>ಕೇಂದ್ರವನ್ನು ಕ್ಯಾಲಿಬ್ರೇಟ್ ಮಾಡಿ</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>ಕೇಂದ್ರ ಬಿಂದು</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>ಡೆಡ್ ಜೋನ್</value></data>
+  <data name="Pad_More_Stick" xml:space="preserve"><value>ಕೇಂದ್ರ ಆಫ್‌ಸೆಟ್‌ಗಳು, ಡೆಡ್ ಜೋನ್ ಆಕಾರ ಮತ್ತು ಪ್ರತಿ ಅಕ್ಷದ ಮೌಲ್ಯಗಳು, ಪ್ರತಿ ಅಕ್ಷಕ್ಕೆ ವಕ್ರರೇಖೆ, ವ್ಯಾಪ್ತಿ, ಸ್ಟೀರಿಂಗ್</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>ವ್ಯಾಪ್ತಿ</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>ಮಾದರಿ ತೆಗೆದುಕೊಳ್ಳಲಾಗುತ್ತಿದೆ...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>ಕೇಂದ್ರ ಆಫ್‌ಸೆಟ್ X</value></data>
@@ -1721,6 +1727,7 @@
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>ಟಚ್‌ಪ್ಯಾಡ್ ಸಂಖ್ಯೆ</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>ಈ ಕಂಟ್ರೋಲರ್‌ನ ಯಾವ ಟಚ್‌ಪ್ಯಾಡ್‌ಗೆ ಕೆಳಗಿನ ಸೆಟ್ಟಿಂಗ್ಸ್ ಅನ್ವಯಿಸುತ್ತವೆ ಎಂಬುದನ್ನು ಇದು ಆರಿಸುತ್ತದೆ. ಪ್ರತಿ ಟಚ್‌ಪ್ಯಾಡ್ ತನ್ನದೇ ಸನ್ನೆಗಳು, ಮೌಸ್ ಅನುಭವ ಮತ್ತು ಪಾಯಿಂಟರ್ ಪ್ರದೇಶವನ್ನು ಹೊಂದಿರುತ್ತದೆ.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>ಸನ್ನೆ ಪತ್ತೆ</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>ಈ ಟಚ್‌ಪ್ಯಾಡ್‌ನ ಸನ್ನೆಗಳನ್ನು ಆನ್ ಮಾಡುತ್ತದೆ</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>ಈ ಟಚ್‌ಪ್ಯಾಡ್‌ನಲ್ಲಿ ಸನ್ನೆಗಳನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>ಈ ಟಚ್‌ಪ್ಯಾಡ್‌ನ ಮುಖ್ಯ ಸ್ವಿಚ್. ಆಫ್ ಇದ್ದಾಗ ಈ ಟಚ್‌ಪ್ಯಾಡ್‌ಗೆ ಯಾವುದೇ ಸನ್ನೆ ಸಂಕೇತ ಹೊರಡುವುದಿಲ್ಲ. ಈಗಿರುವ ಬೆರಳು / ಕ್ಲಿಕ್ / ಸ್ಥಾನ ಮ್ಯಾಪಿಂಗ್‌ಗಳು ಮೊದಲಿನಂತೆ ಕೆಲಸ ಮಾಡುತ್ತವೆ.</value></data>
   <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>ಗುರುತಿಸು</value></data>
@@ -1731,6 +1738,7 @@
   <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>ವಿಶ್ರಾಂತಿ ಅವಧಿ</value></data>
   <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>ಒಂದು ಸನ್ನೆ ಹೊರಟ ನಂತರ ಇಷ್ಟು ಮಿಲಿಸೆಕೆಂಡ್‌ಗಳ ಕಾಲ ಈ ಟಚ್‌ಪ್ಯಾಡ್‌ನ ಹೊಸ ಸನ್ನೆಗಳನ್ನು ಕಡೆಗಣಿಸಲಾಗುತ್ತದೆ. ವೇಗದ ಹಿಂದೆ-ಮುಂದೆ ಚಲನೆಯಿಂದ ಆಗುವ ಪುನರಾವರ್ತಿತ ಸಂಕೇತಗಳನ್ನು ತಡೆಯುತ್ತದೆ.</value></data>
   <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>ಅಂತರ್ನಿರ್ಮಿತ ಸನ್ನೆಗಳು</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>ಸ್ವೈಪ್, ಟ್ಯಾಪ್, ಪಿಂಚ್, ಆಕಾರಗಳು</value></data>
   <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>4-ದಿಕ್ಕಿನ ಸ್ವೈಪ್ (ಮೇಲೆ / ಕೆಳಗೆ / ಎಡ / ಬಲ)</value></data>
   <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>8-ದಿಕ್ಕಿನ ಸ್ವೈಪ್ (ಕರ್ಣ ದಿಕ್ಕುಗಳೂ ಸೇರಿ)</value></data>
   <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>ಸ್ವೈಪ್ ದೂರ (0..1)</value></data>
@@ -1756,6 +1764,7 @@
   <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>ಆಕಾರ ಸನ್ನೆಗಳು (ವೃತ್ತ, ಚೌಕ, ತ್ರಿಕೋನ, Z, ಟಿಕ್ ಗುರುತು)</value></data>
   <data name="Pad_Touchpad_MatchThreshold" xml:space="preserve"><value>ಆಕಾರ ಹೊಂದಾಣಿಕೆ ಮಿತಿ</value></data>
   <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>ಕಸ್ಟಮ್ ಸನ್ನೆಗಳು</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>ನಿಮ್ಮದೇ ಸನ್ನೆ ರೆಕಾರ್ಡ್ ಮಾಡಿ</value></data>
   <data name="Pad_Touchpad_RecordNew" xml:space="preserve"><value>+ ಹೊಸ ಸನ್ನೆ ರೆಕಾರ್ಡ್ ಮಾಡಿ</value></data>
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>ಈ ಪ್ರೊಫೈಲ್‌ಗೆ ಯಾವುದೇ ಕಸ್ಟಮ್ ಸನ್ನೆ ರೆಕಾರ್ಡ್ ಆಗಿಲ್ಲ. ಒಂದನ್ನು ಸೆರೆಹಿಡಿಯಲು ಹೊಸ ಸನ್ನೆ ರೆಕಾರ್ಡ್ ಮಾಡಿ ಅನ್ನು ಕ್ಲಿಕ್ ಮಾಡಿ.</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 ಬೆರಳು</value></data>
@@ -1763,6 +1772,7 @@
 
   <!-- Stick / D-pad output card -->
   <data name="Pad_Touchpad_Stick_Header" xml:space="preserve"><value>ಸ್ಟಿಕ್ / ಡಿ-ಪ್ಯಾಡ್ ಔಟ್‌ಪುಟ್</value></data>
+  <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>ಟಚ್‌ಪ್ಯಾಡ್ ಅನ್ನು ಸ್ಟಿಕ್ ಅಥವಾ ಡಿ-ಪ್ಯಾಡ್ ಆಗಿ ಬಳಸಿ</value></data>
   <data name="Pad_Touchpad_Stick_Subtitle" xml:space="preserve"><value>ಟಚ್‌ಪ್ಯಾಡ್ ಅನ್ನು ವರ್ಚುವಲ್ ಅನಲಾಗ್ ಸ್ಟಿಕ್ ಅಥವಾ ಡಿ-ಪ್ಯಾಡ್ ಆಗಿ ಬದಲಿಸಿ. ನಿಮ್ಮ ಬೆರಳು ಮೊದಲು ಇಳಿದ ಸ್ಥಳದಲ್ಲಿ ಔಟ್‌ಪುಟ್ ಆಧಾರಗೊಳ್ಳುತ್ತದೆ. ಆ ಆಧಾರಕ್ಕೆ ಹೋಲಿಸಿದ ಈಗಿನ ಸ್ಥಾನವು ಸ್ಟಿಕ್ ಮೌಲ್ಯವನ್ನು ಮತ್ತು (ಬಯಸಿದರೆ) ಹಿಡಿದಿಟ್ಟ ಡಿ-ಪ್ಯಾಡ್ ದಿಕ್ಕಿನ ಬೂಲಿಯನ್‌ಗಳನ್ನು ನಿಯಂತ್ರಿಸುತ್ತದೆ.</value></data>
   <data name="Pad_Touchpad_StickEnabled" xml:space="preserve"><value>ಸ್ಟಿಕ್ / ಡಿ-ಪ್ಯಾಡ್ ಔಟ್‌ಪುಟ್ ಸಕ್ರಿಯಗೊಳಿಸಿ</value></data>
   <data name="Pad_Touchpad_StickEnabled_Tooltip" xml:space="preserve"><value>ಮ್ಯಾಪಿಂಗ್ ಪಿಕ್ಕರ್‌ನಲ್ಲಿ ಟಚ್‌ಪ್ಯಾಡ್ ಸ್ಟಿಕ್ X, ಸ್ಟಿಕ್ Y ಮತ್ತು ಡಿ-ಪ್ಯಾಡ್ ವಿವರಣೆಗಳನ್ನು ತೋರಿಸುತ್ತದೆ. ಈಗಿರುವ ಟಚ್‌ಪ್ಯಾಡ್-ಬೆರಳು ಮತ್ತು ಟಚ್‌ಪ್ಯಾಡ್-ಸನ್ನೆ ಮೂಲಗಳ ಜೊತೆಗೇ ಕೆಲಸ ಮಾಡುತ್ತದೆ, ಅವುಗಳ ಬದಲಿಗೆ ಅಲ್ಲ.</value></data>
@@ -1777,6 +1787,7 @@
 
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>ಮೌಸ್ ಔಟ್‌ಪುಟ್</value></data>
+  <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>ವಿಲೋಮ, ಮೊಮೆಂಟಮ್, ಪ್ರತಿಕ್ರಿಯೆ, ವೇಗವರ್ಧನೆ, ಚಿಮ್ಮು</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>ಕೀಬೋರ್ಡ್ / ಮೌಸ್ ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್‌ನಲ್ಲಿ ಟಚ್‌ಪ್ಯಾಡ್ ಬೆರಳನ್ನು ಮೌಸ್ X/Y ಗೆ ಮ್ಯಾಪ್ ಮಾಡಿದಾಗ ಕರ್ಸರ್ ವೇಗವನ್ನು ಹೊಂದಿಸುತ್ತದೆ. 1.0 ಡೀಫಾಲ್ಟ್. ಕರ್ಸರ್ ವೇಗವಾಗಲು ಯಾವುದೇ ಅಕ್ಷವನ್ನು ಹೆಚ್ಚಿಸಿ, ನಿಧಾನವಾಗಲು ಕಡಿಮೆ ಮಾಡಿ. ವಿಲೋಮಗೊಳಿಸು ಯಾವುದೇ ಅಕ್ಷವನ್ನು ತಿರುಗಿಸುತ್ತದೆ.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>ಮೌಸ್ ಸಂವೇದನಾಶೀಲತೆ X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>ಅಡ್ಡ ಟಚ್‌ಪ್ಯಾಡ್ → ಮೌಸ್ ಚಲನೆಗೆ ಗುಣಕ. 1.0 ಕ್ಕಿಂತ ಕಡಿಮೆ ಇದ್ದರೆ ಕರ್ಸರ್ ನಿಧಾನ. 1.0 ಕ್ಕಿಂತ ಹೆಚ್ಚು ಇದ್ದರೆ ವೇಗ.</value></data>
@@ -1804,6 +1815,7 @@
   <data name="Pad_Touchpad_RotateThreshold_Tooltip" xml:space="preserve"><value>ತಿರುಗಿಸುವಿಕೆ ಹೊರಡುವ ಮೊದಲು ಎರಡು ಬೆರಳುಗಳು ಎಷ್ಟು ತಿರುಗಬೇಕು ಎಂಬುದು.</value></data>
   <data name="Pad_ResetTouchpadRotateThresholdDegrees" xml:space="preserve"><value>ತಿರುಗಿಸುವ ಮಿತಿ ಮರುಹೊಂದಿಸು</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>ನಿಖರ ಪಾಯಿಂಟರ್</value></data>
+  <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>ಪ್ಯಾಡ್ ತಲುಪುವ ಪರದೆಯ ಭಾಗ</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>ಟಚ್‌ಪ್ಯಾಡ್ ಪಾಯಿಂಟರ್ X/Y ಮೂಲಗಳನ್ನು ಹೊಂದಿಸುತ್ತದೆ. ಇವು ಪ್ಯಾಡ್‌ನಲ್ಲಿ ನಿಮ್ಮ ಬೆರಳಿನ ಸ್ಥಾನಕ್ಕೆ ಕರ್ಸರ್ ಅನ್ನು ಜಿಗಿಸುತ್ತವೆ (ಕೀಬೋರ್ಡ್ / ಮೌಸ್ ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್‌ನಲ್ಲಿ ಇವನ್ನು ಮೌಸ್ X/Y ಗೆ ಮ್ಯಾಪ್ ಮಾಡಿ). ಗಾತ್ರ 1.00 ಮತ್ತು ಕೇಂದ್ರ 0.50 ಇದ್ದರೆ ಪ್ಯಾಡ್ ಇಡೀ ಪರದೆಗೆ ಮ್ಯಾಪ್ ಆಗುತ್ತದೆ. ಕರ್ಸರ್ ಅನ್ನು ಪರದೆಯ ಒಂದು ಭಾಗಕ್ಕೆ ಸೀಮಿತಗೊಳಿಸಲು ಗಾತ್ರ ಕಡಿಮೆ ಮಾಡಿ, ಸ್ಥಾನ ಇಡಲು ಕೇಂದ್ರವನ್ನು ಸರಿಸಿ.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>ಪ್ರದೇಶದ ಅಗಲ</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>ಈ ಪ್ಯಾಡ್ ಮ್ಯಾಪ್ ಆಗುವ ಪರದೆ ಪ್ರದೇಶದ ಅಗಲ, ಪರದೆ ಅಗಲದ ಭಿನ್ನರಾಶಿಯಾಗಿ. 1.00 ಪೂರ್ಣ ಅಗಲವನ್ನು ಆವರಿಸುತ್ತದೆ. 0.50 ಕರ್ಸರ್ ಅನ್ನು ಅರ್ಧ ಪರದೆಗೆ ಸೀಮಿತಗೊಳಿಸುತ್ತದೆ.</value></data>
@@ -1816,12 +1828,14 @@
 
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>ಸ್ವೈಪ್ ಹ್ಯಾಪ್ಟಿಕ್ಸ್</value></data>
+  <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>ಬೆರಳು ಚಲಿಸುವಾಗ ಟಿಕ್ ಸ್ಪಂದನ</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>ಈ ಟಚ್‌ಪ್ಯಾಡ್‌ನಾದ್ಯಂತ ನಿಮ್ಮ ಬೆರಳು ಚಲಿಸುವಾಗ ಕಂಟ್ರೋಲರ್‌ನ ಹ್ಯಾಪ್ಟಿಕ್ಸ್ ಅನ್ನು ಸ್ಪಂದಿಸುತ್ತದೆ, Steam Input ನ ಟ್ರ್ಯಾಕ್‌ಪ್ಯಾಡ್ ಟಿಕ್‌ಗಳಂತೆ. Steam Controller ಗಳು ಮತ್ತು Steam Deck ಪ್ಯಾಡ್ ಕೆಳಗಿನ ಆಕ್ಚುಯೇಟರ್ ಅನ್ನು ಟಿಕ್ ಮಾಡುತ್ತವೆ. DualSense ಮತ್ತು DualShock 4 ಕಂಪನ ಮೋಟಾರ್‌ಗಳನ್ನು ಸ್ಪಂದಿಸುತ್ತವೆ.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>ಸ್ವೈಪ್ ಹ್ಯಾಪ್ಟಿಕ್ಸ್ ಸಕ್ರಿಯಗೊಳಿಸಿ</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>ಬೆರಳು ಈ ಪ್ಯಾಡ್‌ನಲ್ಲಿ ನಿಗದಿತ ದೂರ ಚಲಿಸಿದಾಗಲೆಲ್ಲ ಒಂದು ಚಿಕ್ಕ ಹ್ಯಾಪ್ಟಿಕ್ ಟಿಕ್ ಹೊರಡಿಸುತ್ತದೆ. ಬೆರಳು ಇಳಿಸಿದಾಗ ಅಥವಾ ಪ್ಯಾಡ್ ಕ್ಲಿಕ್ ಮಾಡಿದಾಗ ಟಿಕ್ ಆಗುವುದಿಲ್ಲ. ಡೀಫಾಲ್ಟ್ ಆಗಿ ಆಫ್.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>ಸ್ಪಂದನ ತೀವ್ರತೆ</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity_Tooltip" xml:space="preserve"><value>ಪ್ರತಿ ಟಿಕ್‌ನ ಬಲ. ಆಟದ ಕಂಪನ ಹೆಚ್ಚು ಬಲವಾಗಿದ್ದರೆ ಅದೇ ಮೇಲುಗೈ ಸಾಧಿಸುತ್ತದೆ.</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Header" xml:space="preserve"><value>ಕೃತಕ ಒತ್ತಡ</value></data>
+  <data name="Pad_SyntheticPressure_FoldHint" xml:space="preserve"><value>ಸ್ಪರ್ಶವನ್ನು ಪೂರ್ಣ ಎಂದು ವರದಿ ಮಾಡುವ ಪ್ಯಾಡ್‌ಗಳಿಗೆ ಒತ್ತಡ</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Subtitle" xml:space="preserve"><value>ಸ್ಪರ್ಶವನ್ನು ಪೂರ್ಣ ಒತ್ತಡ ಎಂದು ವರದಿ ಮಾಡುವ ಪ್ಯಾಡ್‌ಗಳಲ್ಲಿ (DualShock 4, DualSense, Steam Controller 2015) DualShock 2 / DualShock 3 ಒತ್ತಡ ಬಟನ್‌ಗಳನ್ನು ಅನುಕರಿಸುತ್ತದೆ. ಸಕ್ರಿಯವಾಗಿದ್ದಾಗ ಈ ಸಾಧನದ ಒತ್ತಡ ಮ್ಯಾಪಿಂಗ್ ಮೂಲಗಳು ಸ್ಪರ್ಶ ಇಲ್ಲದಿದ್ದರೆ 0%, ಸುಮ್ಮನೆ ಇರುವ ಸ್ಪರ್ಶವನ್ನು ಸ್ಪರ್ಶ ಒತ್ತಡ ಮಟ್ಟವಾಗಿ ಮತ್ತು ಪ್ಯಾಡ್ ಕ್ಲಿಕ್ ಅನ್ನು 100% ಆಗಿ ಓದುತ್ತವೆ.</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled" xml:space="preserve"><value>ಕೃತಕ ಒತ್ತಡ ಸಕ್ರಿಯಗೊಳಿಸಿ</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled_Tooltip" xml:space="preserve"><value>ಈ ಸಾಧನದ ಒತ್ತಡ ಮ್ಯಾಪಿಂಗ್ ಮೂಲಗಳನ್ನು ಮೂರು ಹಂತಗಳಾಗಿ ರೂಪಿಸುತ್ತದೆ: ಸ್ಪರ್ಶ ಇಲ್ಲದಿದ್ದರೆ 0%, ಸುಮ್ಮನೆ ಇರುವ ಸ್ಪರ್ಶ ಇದ್ದರೆ ಸ್ಪರ್ಶ ಒತ್ತಡ ಮಟ್ಟ, ಪ್ಯಾಡ್ ಕ್ಲಿಕ್ ಮಾಡಿದರೆ 100%. ಡೀಫಾಲ್ಟ್ ಆಗಿ ಆಫ್, ನಿಜವಾದ ಅನಲಾಗ್ ಒತ್ತಡವಿರುವ ಪ್ಯಾಡ್‌ಗಳಲ್ಲಿ ಮೂಲ ಓದುವಿಕೆಗಳನ್ನು ಉಳಿಸುತ್ತದೆ.</value></data>
@@ -1999,7 +2013,9 @@
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>ಈ ಪ್ಯಾಡ್ ಚಲನೆ ಸಂವೇದಕವು ಮೌಸ್ ಮತ್ತು ಸ್ಟಿಕ್ ಫಲಿತಾಂಶವನ್ನು ಹೇಗೆ ನಿಯಂತ್ರಿಸುತ್ತದೆ ಎಂದು ಹೊಂದಿಸಿ. ವಿಶ್ರಾಂತಿ ಡ್ರಿಫ್ಟ್ ಸೊನ್ನೆ ಮಾಡಲು ಸಮತಟ್ಟಾದ ಮೇಲ್ಮೈಯಲ್ಲಿ ಕ್ಯಾಲಿಬ್ರೇಟ್ ಮಾಡಿ, ನಂತರ ಸಂವೇದನಾಶೀಲತೆ, ಸ್ಮೂಥಿಂಗ್ ಮತ್ತು ತೊಡಗಿಸುವ ನಿಯಮಗಳನ್ನು ನಿಮ್ಮ ಇಷ್ಟಕ್ಕೆ ತಕ್ಕಂತೆ ಹೊಂದಿಸಿ.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>ಕ್ಯಾಲಿಬ್ರೇಶನ್</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>ಸಂವೇದನಾಶೀಲತೆ</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>ಘಟಕಗಳು, ಸ್ಪೇಸ್, ಅಕ್ಷ ವಿಲೋಮ, ನೈಜ-ಜಗತ್ತಿನ ಕ್ಯಾಲಿಬ್ರೇಶನ್</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>ಪ್ರತಿಕ್ರಿಯೆ ರೂಪಿಸುವಿಕೆ</value></data>
+  <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>ಡೆಡ್ ಜೋನ್, ಸ್ಮೂಥಿಂಗ್, ವೇಗವರ್ಧನೆ, ಫಲಿತಾಂಶ ವಕ್ರರೇಖೆ</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>ಸ್ಪೇಸ್</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>ಜೈರೋ ಚಲನೆಯನ್ನು ಹೇಗೆ ವ್ಯಾಖ್ಯಾನಿಸಲಾಗುತ್ತದೆ. ಸ್ಥಳೀಯ ಕಚ್ಚಾ ಕಂಟ್ರೋಲರ್ ಅಕ್ಷಗಳನ್ನು ಬಳಸುತ್ತದೆ. ಆಟಗಾರ ಅಡ್ಡ ಚಲನೆಯನ್ನು ನಿಜ ಜಗತ್ತಿನ ಲಂಬಕ್ಕೆ (ಗುರುತ್ವ) ಪ್ರಕ್ಷೇಪಿಸುತ್ತದೆ, ಆದ್ದರಿಂದ ನೀವು ಪ್ಯಾಡ್ ಅನ್ನು ಹೇಗೆ ಹಿಡಿದಿದ್ದರೂ ಅದೇ ಮಣಿಕಟ್ಟಿನ ತಿರುವು ಯಾವಾಗಲೂ ಕ್ಯಾಮೆರಾವನ್ನು ತಿರುಗಿಸುತ್ತದೆ. ಜಗತ್ತು ಹೆಚ್ಚುವರಿಯಾಗಿ ಲಂಬ ಚಲನೆಯನ್ನು ಜಗತ್ತಿನ ಅಕ್ಷಗಳಿಗೆ ಮರು-ಪ್ರಕ್ಷೇಪಿಸುತ್ತದೆ.</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>ಹಿಡಿದ ವಿಧ</value></data>
@@ -2013,11 +2029,13 @@
   <data name="Pad_ResetGyroInvertYaw" xml:space="preserve"><value>ಯಾ ವಿಲೋಮ ಮರುಹೊಂದಿಸು</value></data>
   <data name="Pad_ResetGyroInvertRoll" xml:space="preserve"><value>ರೋಲ್ ವಿಲೋಮ ಮರುಹೊಂದಿಸು</value></data>
   <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>ದಿಕ್ಸೂಚಿ</value></data>
+  <data name="Pad_Compass_FoldHint" xml:space="preserve"><value>ಯಾ ಅನ್ನು ಉತ್ತರ ದಿಕ್ಕಿಗೆ ಹಿಡಿದಿಡುತ್ತದೆ</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>ಈ ಕಂಟ್ರೋಲರ್ ಮ್ಯಾಗ್ನೆಟೋಮೀಟರ್ ಹೊಂದಿದೆ. ಯಾ ಅನ್ನು ಕಾಂತೀಯ ಉತ್ತರಕ್ಕೆ ಲಂಗರು ಹಾಕುವುದು ಜೈರೋ ಗುರಿಯಲ್ಲಿನ ನಿಧಾನ ಅಡ್ಡ ಡ್ರಿಫ್ಟ್ ಅನ್ನು ತೆಗೆದುಹಾಕುತ್ತದೆ. ಮೊದಲು ಕ್ಯಾಲಿಬ್ರೇಟ್ ಮಾಡಿ: ಕ್ಯಾಲಿಬ್ರೇಟ್ ಒತ್ತಿ, ಕೆಲವು ಸೆಕೆಂಡ್ ಕಂಟ್ರೋಲರ್ ಅನ್ನು ಎಲ್ಲ ದಿಕ್ಕುಗಳಲ್ಲಿ 8 ಆಕಾರದಲ್ಲಿ ತಿರುಗಿಸಿ, ನಂತರ ಮತ್ತೆ ಒತ್ತಿ.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>ಯಾ ಅನ್ನು ದಿಕ್ಸೂಚಿಗೆ ಲಂಗರಿಸಿ</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>ಕಾಂತೀಯ ದಿಕ್ಕಿನತ್ತ ಅಡ್ಡ ಗುರಿಯನ್ನು ಎಳೆಯುವ ಸಣ್ಣ ತಿದ್ದುಪಡಿ ದರವನ್ನು ಸೇರಿಸುತ್ತದೆ, ಆದ್ದರಿಂದ ಡ್ರಿಫ್ಟ್ ಸಂಗ್ರಹವಾಗದು. ಸಂಗ್ರಹಿಸಿದ ಮ್ಯಾಗ್ನೆಟೋಮೀಟರ್ ಕ್ಯಾಲಿಬ್ರೇಶನ್ ಅಗತ್ಯ. ಹತ್ತಿರದ ಲೋಹ ಅಥವಾ ಆಯಸ್ಕಾಂತಗಳಿಂದ ತೊಂದರೆಗೊಳಗಾದ ಮಾದರಿಗಳನ್ನು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ತಿರಸ್ಕರಿಸಲಾಗುತ್ತದೆ.</value></data>
   <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>ಮರುಹೊಂದಿಸು: ಡೀಫಾಲ್ಟ್ (ಆಫ್)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>ಪಿಚ್ ಮತ್ತು ರೋಲ್ ಸಿಮ್ಯುಲೇಶನ್</value></data>
+  <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>ಆಕ್ಸೆಲೆರೋಮೀಟರ್‌ನಿಂದ ಲೆಕ್ಕಿಸಿದ ಪಿಚ್ ಮತ್ತು ರೋಲ್</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>ಈ ಕಂಟ್ರೋಲರ್ ಜೈರೋ ಎಡ-ಬಲ ತಿರುವನ್ನು ಮಾತ್ರ ಗ್ರಹಿಸುತ್ತದೆ. ಸಿಮ್ಯುಲೇಶನ್ ಆನ್ ಇದ್ದಾಗ PadForge ಆಕ್ಸೆಲರೋಮೀಟರ್ ಮೂಲಕ ಪಿಚ್ ಮತ್ತು ರೋಲ್ ಅನ್ನು ಪಡೆದು, ಜೈರೋದ ಯಾ ಜೊತೆಗೆ ಮ್ಯಾಪಿಂಗ್ ಸಾಲುಗಳಿಗೆ ಮತ್ತು ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್ ಚಲನೆಗೆ ಕಳುಹಿಸುತ್ತದೆ. ಆಕ್ಸೆಲರೋಮೀಟರ್ ತಳ್ಳುವಿಕೆ ಮತ್ತು ವಾಲುವಿಕೆಯನ್ನು ಬೇರ್ಪಡಿಸಲಾರದು, ಆದ್ದರಿಂದ ಕಂಟ್ರೋಲರ್ ಅನ್ನು ತಿರುಗಿಸದೆ ಪಕ್ಕಕ್ಕೆ ಅಥವಾ ಮುಂದಕ್ಕೆ ಚಲಿಸಿದರೆ ಅದು ಸಂಕ್ಷಿಪ್ತ ತಿರುಗುವಿಕೆಯಂತೆ ಓದಲ್ಪಡುತ್ತದೆ.</value></data>
   <data name="Settings_GyroSimulation" xml:space="preserve"><value>ಪಿಚ್ ಮತ್ತು ರೋಲ್ ಅನುಕರಿಸಿ</value></data>
   <data name="Settings_GyroSimulation_Tooltip" xml:space="preserve"><value>ಆಕ್ಸೆಲರೋಮೀಟರ್ ಮೂಲಕ ಪಡೆದ ದರಗಳಿಂದ ಪಿಚ್ ಮತ್ತು ರೋಲ್ ಅನ್ನು ತುಂಬುತ್ತದೆ. ಯಾ ಜೈರೋದ ಸ್ವಂತ ರೀಡಿಂಗ್ ಆಗಿಯೇ ಉಳಿಯುತ್ತದೆ. ಡೀಫಾಲ್ಟ್: ಆಫ್.</value></data>
@@ -2058,6 +2076,7 @@
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>ಕೆಳಗೆ (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>ಮೇಲೆ (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>ತೊಡಗಿಸು</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>ಗುರಿ ತೊಡಗಿಸುವ ಬಟನ್, ತೊಡಗಿಸುವ ಮೋಡ್, ಸುಲಭ ಗುರಿ ಮಿತಿ</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>ಜೈರೋ ಯಾವಾಗ ಸಕ್ರಿಯವಾಗಿರಬೇಕು ಎಂಬುದನ್ನು ಮಿತಿಗೊಳಿಸುವ ಐಚ್ಛಿಕ ಷರತ್ತುಗಳು. ಬಲ ಸ್ಟಿಕ್ ವಿಚಲನೆ ಮತ್ತು ಗುರಿ ತೊಡಗಿಸುವ ಬಟನ್ ಇವುಗಳಲ್ಲಿ ಪ್ರತಿಯೊಂದನ್ನೂ ಹೊಂದಿಸಬಹುದು. ಹೊಂದಿಸಿದ ಎಲ್ಲ ಷರತ್ತುಗಳು ಸಕ್ರಿಯವಾಗಿರುವಾಗ ಮಾತ್ರ ಜೈರೋ ಕೆಲಸ ಮಾಡುತ್ತದೆ.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>ಸ್ಥಳೀಯ</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>ಆಟಗಾರ</value></data>
@@ -2108,6 +2127,7 @@
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>ಜೈರೋ ಓರೆ X</value></data>
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>ಜೈರೋ ಓರೆ Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>ಜೈರೋ ಓರೆ</value></data>
+  <data name="Pad_GyroTilt_FoldHint" xml:space="preserve"><value>ಪೂರ್ಣ ಓರೆ ವ್ಯಾಪ್ತಿ, ಓರೆ ಡೆಡ್ ಜೋನ್</value></data>
   <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>ಜೈರೋ ಓರೆ X / ಜೈರೋ ಓರೆ Y ಇನ್ಪುಟ್ ವ್ಯಾಪ್ತಿ: ಓರೆಯನ್ನು ಹಿಡಿದರೆ ಸ್ಟಿಕ್ ತನ್ನ ವಿಚಲನೆಯನ್ನು ಹಿಡಿದಿಡುತ್ತದೆ, Steam Joystick Deflection ಮೋಡ್ ಹಾಗೆ. ಇಲ್ಲಿ ಹೊಂದಿಸಿದ ವ್ಯಾಪ್ತಿಯಲ್ಲಿ ಪೂರ್ಣ ವಿಚಲನೆ. ಜೈರೋ ಮರುಕೇಂದ್ರ ವಿಶ್ರಾಂತಿ ಹಿಡಿತವನ್ನು ಮತ್ತೆ ಸೊನ್ನೆ ಮಾಡುತ್ತದೆ. ಯಾ (ಕಂಟ್ರೋಲರ್ ಅನ್ನು ಸಮತಟ್ಟಾಗಿ ತಿರುಗಿಸುವುದು) ಗುರುತ್ವಕ್ಕೆ ಕಾಣಿಸುವುದಿಲ್ಲ, ಆದ್ದರಿಂದ ಈ ಇನ್ಪುಟ್ ಅನ್ನು ಚಲಿಸುವುದಿಲ್ಲ.</value></data>
   <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>ಪೂರ್ಣ ಓರೆ ವ್ಯಾಪ್ತಿ</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>ವಿಶ್ರಾಂತಿ ಹಿಡಿತದಿಂದ ಪೂರ್ಣ ಸ್ಟಿಕ್ ವಿಚಲನೆ ಎಂದು ಪರಿಗಣಿಸುವ ಓರೆಯ ಡಿಗ್ರಿಗಳು. ಚಿಕ್ಕದು = ಹೆಚ್ಚು ಸಂವೇದನಾಶೀಲ. Steam ಸಂರಚನೆಗಳಲ್ಲಿ 25° ಅತ್ಯಂತ ಸಾಮಾನ್ಯ ಮೌಲ್ಯ.</value></data>
@@ -2309,6 +2329,7 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>ಕನಿಷ್ಠ ವ್ಯಾಪ್ತಿ Y (ಕೆಳಗೆ)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>ಗರಿಷ್ಠ ವ್ಯಾಪ್ತಿ Y (ಮೇಲೆ)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X ಅಕ್ಷ</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>ಎರಡೂ ಅಕ್ಷಗಳು</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y ಅಕ್ಷ</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>ವ್ಯಾಪ್ತಿ</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>ಆಂಟಿ-ಡೆಡ್ ಜೋನ್</value></data>
@@ -2319,6 +2340,7 @@
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>ಫೋರ್ಸ್ ಫೀಡ್‌ಬ್ಯಾಕ್ / ಕಂಪನ / ಹ್ಯಾಪ್ಟಿಕ್ಸ್</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>ಪ್ರತಿ ಮೋಟಾರ್‌ಗೆ ಗೇನ್, ಟ್ರಿಗರ್ ಕಂಪನ, ಮೋಟಾರ್ ಅದಲುಬದಲು</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>ಒಟ್ಟಾರೆ ಗೇನ್</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>ಎಡ ಮೋಟಾರ್</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>ಬಲ ಮೋಟಾರ್</value></data>
@@ -2330,6 +2352,7 @@
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>ಸ್ಥಿರ ಬಲ</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>ನೀವು ಆಫ್ ಮಾಡುವವರೆಗೆ ಒಂದೇ ಸ್ಥಿರ ಬಲ</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>ನೀವು ಆಫ್ ಮಾಡುವವರೆಗೆ ಈ ಸಾಧನಕ್ಕೆ ನಿರಂತರ ಬಲವನ್ನು ಅನ್ವಯಿಸಿ. ಇದು ಸಕ್ರಿಯವಾಗಿರುವಾಗ ಯಾವುದೇ ಮೂಲದಿಂದ ಬರುವ ಗೇಮ್-ಚಾಲಿತ ಬಲ ಅದನ್ನು ಮೀರಿಸುತ್ತದೆ ಮತ್ತು ಗೇಮ್ ನಿಂತಾಗ ಪುನರಾರಂಭವಾಗುತ್ತದೆ.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>ಸ್ಥಿರ ಬಲ ಅನ್ವಯಿಸಿ</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>ದಿಕ್ಕು ಮತ್ತು ಬಲವನ್ನು ಹೊಂದಿಸಲು ಗ್ರಿಡ್ ಒಳಗೆ ಎಳೆಯಿರಿ.</value></data>
@@ -2643,6 +2666,7 @@
 
   <!-- ═══ Audio Bass Rumble ═══ -->
   <data name="Settings_AudioRumble" xml:space="preserve"><value>ಆಡಿಯೊ ಕಂಪನ</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>ಸಿಸ್ಟಂ ಆಡಿಯೊದ ಬಾಸ್‌ನಿಂದ ಕಂಪನ</value></data>
   <data name="Settings_AudioRumbleDesc" xml:space="preserve"><value>ಸಿಸ್ಟಮ್ ಆಡಿಯೊದ ಬಾಸ್ ಆವರ್ತನಗಳಿಂದ ಕಂಟ್ರೋಲರ್ ಕಂಪನವನ್ನು ಚಾಲನೆ ಮಾಡಿ.</value></data>
   <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>ಆಡಿಯೊ ಕಂಪನವನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ</value></data>
   <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>ಸಂವೇದನಾಶೀಲತೆ</value></data>
@@ -2753,6 +2777,8 @@
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>ಓರೆಯ ಹೊರ ಡೆಡ್ ಜೋನ್ ಮರುಹೊಂದಿಸು</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>ಕಂಟ್ರೋಲರ್ ದಿಕ್ಕು ಮರುಹೊಂದಿಸು</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>ಚಲನೆಯ ಸ್ಟೀರಿಂಗ್</value></data>
+  <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° ರಿಂದ {1}°</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>ಓರೆಯ ಡೆಡ್ ಜೋನ್, ಕಂಟ್ರೋಲರ್ ದಿಕ್ಕು</value></data>
   <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>"ಚಲನೆ ಓರೆ" ಇನ್‌ಪುಟ್‌ನ ಸೆಟ್ಟಿಂಗ್ಸ್: ಕಂಟ್ರೋಲರ್ ಅನ್ನು ಸ್ಟೀರಿಂಗ್ ವೀಲ್‌ನಂತೆ ಓರೆಯಾಗಿಸಿ. ಮ್ಯಾಪಿಂಗ್ಸ್‌ನ ಇನ್‌ಪುಟ್ ಡ್ರಾಪ್‌ಡೌನ್‌ನಿಂದ "ಚಲನೆ ಓರೆ" ಅನ್ನು ಸ್ಟಿಕ್ ಅಕ್ಷಕ್ಕೆ ಮ್ಯಾಪ್ ಮಾಡಿ.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>ಚಲನೆಯ ಸ್ಟೀರಿಂಗ್ ಮರುಹೊಂದಿಸು</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>ಫ್ಲಿಕ್ ಸ್ಟಿಕ್ (ಬಲ ಸ್ಟಿಕ್)</value></data>
@@ -2761,6 +2787,7 @@
   <data name="Mapping_LeftStickRing" xml:space="preserve"><value>ಎಡ ಸ್ಟಿಕ್ ರಿಂಗ್</value></data>
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>ಬಲ ಸ್ಟಿಕ್ ರಿಂಗ್</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>ಫ್ಲಿಕ್ ಸ್ಟಿಕ್</value></data>
+  <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>ಫ್ಲಿಕ್ ಸ್ಟಿಕ್ ಇನ್‌ಪುಟ್‌ಗಳ ಹೊಂದಾಣಿಕೆ</value></data>
   <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>ಫ್ಲಿಕ್ ಸ್ಟಿಕ್ ಇನ್‌ಪುಟ್‌ಗಳ ಸೆಟ್ಟಿಂಗ್ಸ್: ಸ್ಟಿಕ್ ಅನ್ನು ಒಂದು ದಿಕ್ಕಿಗೆ ತೋರಿಸಿದರೆ ಕ್ಯಾಮೆರಾ ಆ ದಿಕ್ಕಿಗೆ ತಿರುಗುತ್ತದೆ, ಅಂಚಿನ ಸುತ್ತ ಸವರಿದರೆ ಸೂಕ್ಷ್ಮವಾಗಿ ತಿರುಗುತ್ತದೆ. ಮ್ಯಾಪಿಂಗ್ಸ್‌ನ ಇನ್‌ಪುಟ್ ಡ್ರಾಪ್‌ಡೌನ್‌ನಿಂದ "ಫ್ಲಿಕ್ ಸ್ಟಿಕ್ (ಬಲ ಸ್ಟಿಕ್)" ಅನ್ನು ಯಾವುದೇ ಲೇಯರ್‌ನಲ್ಲಿ ಮೌಸ್ X ಗೆ ಮ್ಯಾಪ್ ಮಾಡಿ.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>ಫ್ಲಿಕ್ ಸ್ಟಿಕ್ ಮರುಹೊಂದಿಸು</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>360° ಗೆ ಡಾಟ್‌ಗಳು</value></data>
@@ -2797,6 +2824,7 @@
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>ಫ್ಲಿಕ್ ಸ್ಟಿಕ್ ಇರುವ ಲೇಯರ್ ತೊಡಗುವಾಗ ಸ್ಟಿಕ್ ಈಗಾಗಲೇ ವಾಲಿದ್ದರೆ, ಫ್ಲಿಕ್ ತಕ್ಷಣ ಕಾರ್ಯಗತವಾಗುತ್ತದೆ. ಆಫ್ ಇದ್ದರೆ ಕ್ಯಾಮೆರಾ ಸ್ಥಿರವಾಗಿರುತ್ತದೆ ಮತ್ತು ಈಗಿನ ಸ್ಟಿಕ್ ಕೋನದಿಂದ ತಿರುಗುವಿಕೆಯನ್ನು ಅನುಸರಿಸುತ್ತದೆ.</value></data>
   <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>ತೊಡಗುವಾಗ ಫ್ಲಿಕ್ ಅನುಮತಿಸು ಮರುಹೊಂದಿಸು</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>ಸ್ಟೀರಿಂಗ್ ಲಾಕ್ ಪ್ರತಿಕ್ರಿಯೆ</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>ಸ್ಟೀರಿಂಗ್ ಮೋಡ್‌ನ ಸ್ಟಿಕ್ ಪೂರ್ಣ ಲಾಕ್ ತಲುಪಿದಾಗ ಸೂಚನೆ</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>ಸ್ಟೀರಿಂಗ್ ಮೋಡ್‌ಗೆ ಹೊಂದಿಸಿದ ಸ್ಟಿಕ್ ಅನ್ನು ಪೂರ್ಣ ಲಾಕ್‌ವರೆಗೆ ತಿರುಗಿಸಿದಾಗ, ಮಿತಿಯನ್ನು ಅನುಭವಿಸಲು ಒಂದು ಸೂಚನೆಯನ್ನು (ಕಂಪನ, ಟ್ರಿಗರ್ ಅಥವಾ ಲೈಟ್ ಬಾರ್) ನೀಡುತ್ತದೆ. ಎಲ್ಲವೂ ಡೀಫಾಲ್ಟ್ ಆಗಿ ಆಫ್.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>ಲಾಕ್‌ನಲ್ಲಿ ಕಂಪನ ಪಲ್ಸ್</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>ಲಾಕ್‌ನಲ್ಲಿ ಟ್ರಿಗರ್ ಕಂಪನ</value></data>
@@ -2852,6 +2880,7 @@
   <data name="Pad_Audio_Header" xml:space="preserve"><value>ಆಡಿಯೊ</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>ಮ್ಯಾಕ್ರೋ ಧ್ವನಿಗಳು ಮತ್ತು ಪ್ರತಿಬಿಂಬಿತ ಸಿಸ್ಟಮ್ ಆಡಿಯೊ ಆಯ್ಕೆಮಾಡಿದ ಕಂಟ್ರೋಲರ್‌ನ ಅಂತರ್ನಿರ್ಮಿತ ಸ್ಪೀಕರ್‌ನಲ್ಲಿ, USB ಅಥವಾ ಬ್ಲೂಟೂತ್ ಮೂಲಕ ಪ್ಲೇ ಆಗುತ್ತವೆ. ಮೇಲಿನ ಡ್ರಾಪ್‌ಡೌನ್‌ನಲ್ಲಿ ಸಾಧನವನ್ನು ಆಯ್ಕೆಮಾಡಿ. ಇಲ್ಲಿನ ಪ್ರತಿ ಸೆಟ್ಟಿಂಗ್ ಅದನ್ನು ಅನುಸರಿಸುತ್ತದೆ.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>ಧ್ವನಿ ಔಟ್‌ಪುಟ್</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>ಮಿರರ್ ಮೂಲ, ಹ್ಯಾಪ್ಟಿಕ್ಸ್, ಹೆಡ್‌ಫೋನ್ ವಾಲ್ಯೂಮ್, ಕ್ರಾಸ್‌ಫೀಡ್, ಪ್ಯಾರಾಮೆಟ್ರಿಕ್ EQ, ಲಿಮಿಟರ್</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>ಧ್ವನಿಗಳು ಆಯ್ಕೆಮಾಡಿದ ಕಂಟ್ರೋಲರ್‌ಗೆ ತಾನಾಗಿ ಹೋಗುತ್ತವೆ. USB ಮೂಲಕ ಪ್ಯಾಡ್‌ನ ಸ್ವಂತ ಆಡಿಯೊ ಎಂಡ್‌ಪಾಯಿಂಟ್ ಅನ್ನು ಹಾರ್ಡ್‌ವೇರ್ ಕಂಟೈನರ್ ಮೂಲಕ ಹೊಂದಿಸಲಾಗುತ್ತದೆ. ಬ್ಲೂಟೂತ್ ಮೂಲಕ ಆಡಿಯೊವನ್ನು Sony HID ಫ್ರೇಮ್‌ಗಳಲ್ಲಿ ಸ್ಟ್ರೀಮ್ ಮಾಡಲಾಗುತ್ತದೆ.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>ಮಿರರ್ ಮೂಲ</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>ಕಂಟ್ರೋಲರ್ ಸ್ಪೀಕರ್‌ಗೆ ಯಾವ ಪ್ಲೇಬ್ಯಾಕ್ ಸಾಧನವನ್ನು ಪ್ರತಿಬಿಂಬಿಸಬೇಕು. ನಿರ್ದಿಷ್ಟ ಧ್ವನಿಗಳನ್ನು ಪ್ರತ್ಯೇಕ ಪ್ಲೇಬ್ಯಾಕ್ ಸಾಧನಕ್ಕೆ ಕಳುಹಿಸುವ ಆಟಗಳು ಇದನ್ನು ಗುರಿಯಾಗಿಸಬಹುದು.</value></data>
@@ -2925,6 +2954,7 @@
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>ಈ ಫೈಲ್ ಓದಬಲ್ಲ PadForge ಪ್ರೊಫೈಲ್ ಅಲ್ಲ.</value></data>
   <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>{0} ನಿಂದ ಧ್ವನಿ ಆಯ್ಕೆಮಾಡಿ</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>ಧ್ವನಿ ಪ್ಯಾಕೇಜ್‌ಗಳು</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>ಧ್ವನಿ ಮ್ಯಾಕ್ರೋಗಳ ಧ್ವನಿಗಳ ಜಿಪ್ ಫೈಲ್‌ಗಳು</value></data>
   <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>ಧ್ವನಿ ಪ್ಯಾಕೇಜ್ ಎಂದರೆ .pfsounds ವಿಸ್ತರಣೆಯ, ಧ್ವನಿಗಳ ಒಂದು ಜಿಪ್ ಫೈಲ್. ಇಲ್ಲಿ ಒಂದನ್ನು ಸೇರಿಸಿ, ನಂತರ ಯಾವುದೇ ಧ್ವನಿ ಮ್ಯಾಕ್ರೋದಲ್ಲಿ ಅದರ ಧ್ವನಿಗಳನ್ನು ಆಯ್ಕೆಮಾಡಿ. PadForge ಫೈಲ್‌ನಿಂದ ನೇರವಾಗಿ ಓದುತ್ತದೆ ಮತ್ತು ಎಂದೂ ಅನ್‌ಪ್ಯಾಕ್ ಮಾಡುವುದಿಲ್ಲ. ಪೋರ್ಟಬಲ್ ಆಗಿರಲು ಪ್ಯಾಕೇಜ್‌ಗಳನ್ನು PadForge.exe ಪಕ್ಕದಲ್ಲಿ ಇರಿಸಿ.</value></data>
   <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>ಪ್ಯಾಕೇಜ್ ಸೇರಿಸಿ…</value></data>
   <data name="Pad_Audio_Packages_Add_Tooltip" xml:space="preserve"><value>ಅಸ್ತಿತ್ವದಲ್ಲಿರುವ .pfsounds ಫೈಲ್ ಅನ್ನು ಪಟ್ಟಿಗೆ ಸೇರಿಸಿ.</value></data>
@@ -2950,6 +2980,7 @@
   <data name="Emoji_Category_Objects" xml:space="preserve"><value>ವಸ್ತುಗಳು</value></data>
   <data name="Emoji_Category_Symbols" xml:space="preserve"><value>ಚಿಹ್ನೆಗಳು</value></data>
   <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>ಐಕಾನ್ ಪ್ಯಾಕೇಜ್‌ಗಳು</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>ಮೆನು ಕೋಶಗಳ ಚಿತ್ರಗಳ ಜಿಪ್ ಫೈಲ್‌ಗಳು</value></data>
   <data name="Pad_Menus_IconPackages_Desc" xml:space="preserve"><value>ಐಕಾನ್ ಪ್ಯಾಕೇಜ್ ಎಂದರೆ .pficons ವಿಸ್ತರಣೆಯ, ಚಿತ್ರಗಳ ಒಂದು ಜಿಪ್ ಫೈಲ್. ಇಲ್ಲಿ ಒಂದನ್ನು ಸೇರಿಸಿ, ನಂತರ ಯಾವುದೇ ಮೆನು ಸೆಲ್‌ನಲ್ಲಿ ಅದರ ಐಕಾನ್‌ಗಳನ್ನು ಆಯ್ಕೆಮಾಡಿ. PadForge ಫೈಲ್‌ನಿಂದ ನೇರವಾಗಿ ಓದುತ್ತದೆ ಮತ್ತು ಎಂದೂ ಅನ್‌ಪ್ಯಾಕ್ ಮಾಡುವುದಿಲ್ಲ. ಪೋರ್ಟಬಲ್ ಆಗಿರಲು ಪ್ಯಾಕೇಜ್‌ಗಳನ್ನು PadForge.exe ಪಕ್ಕದಲ್ಲಿ ಇರಿಸಿ.</value></data>
   <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>ಪ್ಯಾಕೇಜ್ ಸೇರಿಸಿ…</value></data>
   <data name="Pad_Menus_IconPackages_Add_Tooltip" xml:space="preserve"><value>ಅಸ್ತಿತ್ವದಲ್ಲಿರುವ .pficons ಫೈಲ್ ಅನ್ನು ಪಟ್ಟಿಗೆ ಸೇರಿಸಿ.</value></data>
@@ -3332,6 +3363,7 @@
   <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>ಲೇಯರ್ {0} ಗೆ ಬದಲಿಸಿ</value></data>
   <data name="Macro_SwitchLayer_Hint" xml:space="preserve"><value>ಈ ಸ್ಲಾಟ್ ಅನ್ನು ಆರಿಸಿದ ಶಿಫ್ಟ್ ಲೇಯರ್‌ಗೆ ಜಿಗಿಸುತ್ತದೆ. ಇನ್ನೊಂದು ಬದಲಾವಣೆ, ಲ್ಯಾಚ್ ಅಥವಾ ಸೈಕಲ್ ಸಕ್ರಿಯಕಾರಕ, ಅಥವಾ ಪ್ರೊಫೈಲ್ ಬದಲಾವಣೆಯವರೆಗೆ ಲೇಯರ್ ಸಕ್ರಿಯವಾಗಿರುತ್ತದೆ. ಬೇಸ್ ಮೂಲ ಲೇಯರ್‌ಗೆ ಹಿಂತಿರುಗಿಸುತ್ತದೆ. ಒಂದೇ ಬಟನ್ ಪ್ರತಿ ಲೇಯರ್‌ನಲ್ಲಿ ಬೇರೆ ಬೇರೆ ಜಿಗಿಯುವಂತೆ ಮಾಡಲು ಈ ಮ್ಯಾಕ್ರೋವನ್ನು ಮೇಲಿನ ಲೇಯರ್‌ಗೆ ಸೀಮಿತಗೊಳಿಸಿ.</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>ಗೈಡ್ ಬಟನ್ LED</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>ಗೈಡ್ ಅಥವಾ ಹೋಮ್ ಬಟನ್‌ನ ಹೊಳಪು</value></data>
   <data name="Pad_Lighting_GuideLed_Subtitle" xml:space="preserve"><value>ಬೆಳಗುವ ಗೈಡ್ ಅಥವಾ ಹೋಮ್ ಬಟನ್‌ನ ಪ್ರಕಾಶಮಾನತೆ. Xbox One ಮತ್ತು ನಂತರದ ಕಂಟ್ರೋಲರ್‌ಗಳು ಇದನ್ನು USB ಮೂಲಕ ಸ್ವೀಕರಿಸುತ್ತವೆ. 2015 Steam Controller ಇದನ್ನು ಯಾವುದೇ ಸಂಪರ್ಕದಲ್ಲಿ ಸ್ವೀಕರಿಸುತ್ತದೆ, ಮತ್ತು ಎಲ್ಲಾ Steam Controller ಗಳು ಒಂದೇ ಪ್ರಕಾಶಮಾನತೆ ಹಂಚಿಕೊಳ್ಳುತ್ತವೆ. Switch Pro Controller ಗಳು ಮತ್ತು ಬಲ Joy-Con ಗಳು (ಒಂಟಿಯಾಗಿ, ಜೋಡಿಯಾಗಿ, ಅಥವಾ ಚಾರ್ಜಿಂಗ್ ಗ್ರಿಪ್‌ನಲ್ಲಿ) ಇದನ್ನು ಯಾವುದೇ ಸಂಪರ್ಕದಲ್ಲಿ ಸ್ವೀಕರಿಸುತ್ತವೆ.</value></data>
   <data name="Pad_Lighting_GuideLed_Mode_Tooltip" xml:space="preserve"><value>ಸಾಧನ ಡೀಫಾಲ್ಟ್ LED ಅನ್ನು ಕಂಟ್ರೋಲರ್ ಫರ್ಮ್‌ವೇರ್ ಹೊಂದಿಸಿದಂತೆಯೇ ಬಿಡುತ್ತದೆ. ನಿಗದಿತ ಪ್ರಕಾಶಮಾನತೆ ಕೆಳಗಿನ ಮಟ್ಟವನ್ನು ಹಿಡಿದಿಡುತ್ತದೆ. ಬ್ಯಾಟರಿ ಮಟ್ಟ ಬ್ಯಾಟರಿ ಹೆಚ್ಚಿದ್ದಷ್ಟು ಪ್ರಕಾಶವನ್ನು ಹೆಚ್ಚಿಸುತ್ತದೆ ಮತ್ತು 10% ಕ್ಕಿಂತ ಕೆಳಗೆ ಇಳಿಯುವುದಿಲ್ಲ. Xbox ಕಂಟ್ರೋಲರ್‌ಗಳು ಗೈಡ್ LED ಆಜ್ಞೆಗಳನ್ನು USB ಮೂಲಕ ಮಾತ್ರ ಸ್ವೀಕರಿಸುತ್ತವೆ, ಆದ್ದರಿಂದ Bluetooth ಸಂಪರ್ಕದಲ್ಲಿ ಈ ಸೆಟ್ಟಿಂಗ್ ಪರಿಣಾಮ ಬೀರುವುದಿಲ್ಲ. Switch ಕಂಟ್ರೋಲರ್‌ಗಳು ಹೋಮ್ LED ಆಜ್ಞೆಗಳನ್ನು ಯಾವುದೇ ಸಂಪರ್ಕದಲ್ಲಿ ಸ್ವೀಕರಿಸುತ್ತವೆ.</value></data>
   <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>ಸಾಧನ ಡೀಫಾಲ್ಟ್</value></data>
@@ -3696,6 +3728,7 @@
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>ಬಾಸ್ ಶೇಕರ್‌ಗಳು</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>ಈ ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್ ಪಡೆಯುವ ಆಟದ ಕಂಪನ ಮತ್ತು ಫೋರ್ಸ್ ಫೀಡ್‌ಬ್ಯಾಕ್ ಅನ್ನು ಬಾಸ್ ಶೇಕರ್‌ಗಳು ಮತ್ತು ಸಬ್‌ವೂಫರ್‌ಗಳಿಗಾಗಿ ಕಡಿಮೆ ಆವರ್ತನದ ಸ್ವರಗಳಾಗಿ ಆಡಿಯೊ ಔಟ್‌ಪುಟ್‌ಗೆ ರವಾನಿಸುತ್ತದೆ.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>ಕಂಪನ ಆಡಿಯೊಗೆ</value></data>
+  <data name="Pad_More_BassShakers" xml:space="preserve"><value>ಔಟ್‌ಪುಟ್ ಸಾಧನ, ಚಾನೆಲ್‌ಗಳು, ಗೇನ್, ಪ್ರತಿ ಮೋಟಾರ್‌ಗೆ ಒಂದು ಸ್ವರ</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox, DualShock 3, DualShock 4 / DualSense ಮತ್ತು Nintendo Switch Pro ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್‌ಗಳೊಂದಿಗೆ, ಜೊತೆಗೆ ರೇಸಿಂಗ್ ವೀಲ್‌ಗಳಂತಹ ಫೋರ್ಸ್ ಫೀಡ್‌ಬ್ಯಾಕ್ ಇರುವ ವಿಸ್ತೃತ ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್‌ಗಳು ಮತ್ತು Steam Deck Controller (Composite) ನೊಂದಿಗೆ ಕೆಲಸ ಮಾಡುತ್ತದೆ. ಆಟದ ಫೀಡ್‌ಬ್ಯಾಕ್ ಮತ್ತು ಕಂಪನ ಪರೀಕ್ಷೆ ಆಡಿಯೊ ಔಟ್‌ಪುಟ್ ಮೂಲಕ ಪ್ಲೇ ಆಗುತ್ತವೆ. ಮ್ಯಾಕ್ರೋ ಕಂಪನ ಕಂಟ್ರೋಲರ್‌ನಲ್ಲೇ ಉಳಿಯುತ್ತದೆ.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>ಕಂಪನ ಆಡಿಯೊಗೆ ಮರುಹೊಂದಿಸಿ</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>ಕಂಪನವನ್ನು ಆಡಿಯೊ ಔಟ್‌ಪುಟ್‌ಗೆ ರವಾನಿಸಿ</value></data>
@@ -4132,6 +4165,7 @@ PadForge ಅವುಗಳನ್ನು ಈಗ ಅನ್‌ಇನ್‌ಸ್ಟಾ
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>FreeTrack ಹಂಚಿಕೆಯ ಮೆಮೊರಿ ಡೇಟಾಗಾಗಿ ಕಾಯಲಾಗುತ್ತಿದೆ.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>FreeTrack ಹಂಚಿಕೆಯ ಮೆಮೊರಿ ಲಭ್ಯವಿಲ್ಲ.</value></data>
   <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>ಸ್ಟೀರಿಂಗ್ ಕೋನ ಕಂಪನ</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>ಸ್ಟಿಕ್ ಅಕ್ಷ ಕೇಂದ್ರದಿಂದ ದೂರ ಹೋದಂತೆ ಹೆಚ್ಚುವ ಕಂಪನ</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>ಆಯ್ದ ವರ್ಚುವಲ್ ಸ್ಟಿಕ್ ಅಕ್ಷ ಕೇಂದ್ರದಿಂದ ದೂರ ಸರಿದಂತೆ ನಿರಂತರ ಕಂಪನ ಸೇರಿಸುತ್ತದೆ. ನಿಯೋಜಿತ ಎಲ್ಲ ಮೂಲಗಳ ಮ್ಯಾಪ್ ಮಾಡಿದ ಔಟ್‌ಪುಟ್ ಬಳಸುತ್ತದೆ. ದಿಕ್ಕಿನ ಪ್ರಕಾರ ವಿಭಜನೆ ಆಯ್ಕೆಯಲ್ಲಿ ಋಣಾತ್ಮಕ ಚಲನೆ ಎಡ ಮೋಟಾರ್ ಅನ್ನು, ಧನಾತ್ಮಕ ಚಲನೆ ಬಲ ಮೋಟಾರ್ ಅನ್ನು ಚಾಲಿಸುತ್ತದೆ. ಎಡ ಮೋಟಾರ್ ಅಥವಾ ಬಲ ಮೋಟಾರ್ ಆರಿಸಿದರೆ ಎರಡೂ ದಿಕ್ಕುಗಳು ಆ ಒಂದೇ ಮೋಟಾರ್‌ನಲ್ಲಿ ಕಂಪಿಸುತ್ತವೆ. ಕಂಪನ ಸಾಧನಗಳಿರುವ Xbox ಮತ್ತು PlayStation ಔಟ್‌ಪುಟ್‌ಗಾಗಿ. ಇದು ಸ್ಟೀರಿಂಗ್ ವೀಲ್‌ಗಳು, ಸ್ಥಿರ ಫೋರ್ಸ್ ಫೀಡ್‌ಬ್ಯಾಕ್ ಇರುವ ಇತರ ಸಾಧನಗಳು ಮತ್ತು Fanatec ಪೆಡಲ್‌ಗಳನ್ನು ಬಿಟ್ಟುಬಿಡುತ್ತದೆ.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>ಸ್ಟೀರಿಂಗ್ ಕೋನ ಕಂಪನ ಸಕ್ರಿಯಗೊಳಿಸಿ</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>ವರ್ಚುವಲ್ ಅಕ್ಷ</value></data>
@@ -4438,6 +4472,7 @@ PadForge ಅವುಗಳನ್ನು ಈಗ ಅನ್‌ಇನ್‌ಸ್ಟಾ
   <data name="Status_FalconDriverDeclined" xml:space="preserve"><value>Windows Force Dimension ಡ್ರೈವರ್ ಅನ್ನು ಸ್ಥಾಪಿಸಲಿಲ್ಲ. Force Dimension ಅನ್ನು ನಂಬಬೇಕೇ ಎಂದು Windows ಕೇಳಿದರೆ, ಸ್ಥಾಪಿಸಿ ಆರಿಸಿ.</value></data>
   <data name="Status_FalconDriverNotBound" xml:space="preserve"><value>ಡ್ರೈವರ್ ಸ್ಥಾಪಿತವಾಗಿದೆ, ಆದರೆ Falcon ಅದಕ್ಕೆ ಬದಲಾಗಿಲ್ಲ. Falcon ಅನ್ನು ತೆಗೆದು ಮತ್ತೆ ಪ್ಲಗ್ ಮಾಡಿ.</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>ಕಿಕ್, ಶೇಕ್, ಬ್ರೇಸ್, ಪ್ರೀಲೋಡ್, ಗುರುತ್ವ</value></data>
   <data name="Pad_Falcon_Description" xml:space="preserve"><value>PadForge Falcon ಹ್ಯಾಂಡಲ್ ಮೇಲಿನ ಪ್ರತಿ ಬಲವನ್ನು ಸೆಕೆಂಡಿಗೆ ಸುಮಾರು ಒಂದು ಸಾವಿರ ಬಾರಿ ಲೆಕ್ಕಿಸುತ್ತದೆ, ಹ್ಯಾಂಡಲ್ ಇರುವ ಸ್ಥಳ ಮತ್ತು ಆಟ ಏನನ್ನು ಪ್ಲೇ ಮಾಡುತ್ತದೆ ಎಂಬುದರ ಆಧಾರದ ಮೇಲೆ. ಈ ಸೆಟ್ಟಿಂಗ್ಸ್ ಈ ಸ್ಲಾಟ್ ಒಂದಕ್ಕೇ ಅನ್ವಯಿಸುತ್ತವೆ.</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>Novint Falcon ಮರುಹೊಂದಿಸು</value></data>
   <data name="Pad_Falcon_Feel" xml:space="preserve"><value>ಅನುಭವ</value></data>
@@ -4599,4 +4634,5 @@ PadForge ಅವುಗಳನ್ನು ಈಗ ಅನ್‌ಇನ್‌ಸ್ಟಾ
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{1} ನಲ್ಲಿ {0}, ಒತ್ತಿ ಹಿಡಿದಿರುವಾಗ</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{1} ನಲ್ಲಿ {0}, ನಿಲ್ಲಿಸುವವರೆಗೆ</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>{0} ನಲ್ಲಿ ಟ್ರಿಗರ್ ಪರಿಣಾಮ ನಿಲ್ಲಿಸಿ</value></data>
+  <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>ಈ ಸಾಧನದ ಬೆಳಕನ್ನು ನಿಯಂತ್ರಿಸಿ, ಬೆಳಕಿನ ಹಿಡಿತ</value></data>
 </root>

@@ -870,6 +870,7 @@
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>校准中心</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>中心点</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>死区</value></data>
+  <data name="Pad_More_Stick" xml:space="preserve"><value>中心偏移、死区形状及各轴数值、各轴曲线、范围、转向</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>范围</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>校准边界是校正摇杆的推荐方式。它先扫描摇杆物理上可达的边缘，再将每个位置按该实测边缘成比例地重新缩放，使全部原生行程在每个角度、每个偏移量上都无裁剪地映射到理想圆形。下方四个滑块仅限制主轴方向。请仅在有意限制范围时使用滑块，而非用于校正。</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>采样中...</value></data>
@@ -1182,6 +1183,7 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>最小范围 Y（下）</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>最大范围 Y（上）</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X 轴</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>双轴</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y 轴</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>范围</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>反死区</value></data>
@@ -1190,6 +1192,7 @@
   <data name="Pad_Preset_Label" xml:space="preserve"><value>预设</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>扳机轴</value></data>
   <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>力反馈 / 振动</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>各马达强度、扳机震动、交换马达</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>总增益</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>左马达</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>右马达</value></data>
@@ -1199,6 +1202,7 @@
   <data name="Pad_TestRumble" xml:space="preserve"><value>测试振动</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>马达活动</value></data>
   <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>恒力</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>持续施力，直到你关闭</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>持续向此设备施加力，直到你关闭开关。游戏发出的力在生效期间优先，游戏停止后恒力会自动恢复。</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>应用恒力</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>在网格中拖动以设置方向和强度。</value></data>
@@ -1534,6 +1538,7 @@
 
   <!-- ═══ Audio Bass Rumble ═══ -->
   <data name="Settings_AudioRumble" xml:space="preserve"><value>音频振动</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>随系统音频的低音振动</value></data>
   <data name="Settings_AudioRumbleDesc" xml:space="preserve"><value>通过系统音频的低音频率驱动控制器振动。</value></data>
   <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>启用音频振动</value></data>
   <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>灵敏度</value></data>
@@ -1592,7 +1597,9 @@
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>调整这只手柄的运动传感器如何驱动鼠标或摇杆输出。先在平面上完成校准以清除静止时的漂移，然后按个人喜好微调灵敏度、平滑与触发条件。</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>校准</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>灵敏度</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>单位、坐标系、反转各轴、真实世界校准</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>响应整形</value></data>
+  <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>死区、平滑、加速、输出曲线</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>坐标系</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Local = 手柄原始本地轴。Player = 把偏航投影到真实垂直轴（重力），俯仰保持本地。Jibb Smart 推荐的默认值，在任意倾斜角度都自然。World = 偏航与俯仰均投影到世界坐标轴。</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>握持方式</value></data>
@@ -1606,11 +1613,13 @@
   <data name="Pad_ResetGyroInvertYaw" xml:space="preserve"><value>重置偏航反转</value></data>
   <data name="Pad_ResetGyroInvertRoll" xml:space="preserve"><value>重置滚转反转</value></data>
   <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>指南针</value></data>
+  <data name="Pad_Compass_FoldHint" xml:space="preserve"><value>将偏航锚定到磁北</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>此控制器带有磁力计。将偏航锚定到磁北可消除陀螺仪瞄准的缓慢水平漂移。请先校准：按下校准，将控制器以 8 字形转动几秒经过所有朝向，然后再按一次。</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>将偏航锚定到指南针</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>添加一个小的校正速率，将水平瞄准拉向磁航向，使漂移无法累积。需要已保存的磁力计校准。受附近金属或磁铁干扰的采样会被自动剔除。</value></data>
   <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>重置为默认值（关闭）</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>俯仰与滚转模拟</value></data>
+  <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>由加速度计推算俯仰与滚转</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>此手柄的陀螺仪只能感知左右转动。开启模拟后，PadForge 会根据加速度计推算俯仰和滚转，并与陀螺仪的偏航一起发送到映射和虚拟手柄的体感。加速度计无法区分推动和倾斜，因此不转动而向侧面或前方移动手柄会被读成短暂的旋转。</value></data>
   <data name="Settings_GyroSimulation" xml:space="preserve"><value>模拟俯仰与滚转</value></data>
   <data name="Settings_GyroSimulation_Tooltip" xml:space="preserve"><value>用由加速度计推算的速率填充俯仰和滚转。偏航仍是陀螺仪自身的读数。默认关闭。</value></data>
@@ -1651,6 +1660,7 @@
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>下 (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>上 (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>激活</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>激活按键、激活模式、Easy Aim 阈值</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>可选条件，用以限制陀螺仪何时生效。右摇杆偏移与激活按键各自可门控输出。可单独配置或同时配置。两者都配置时必须同时满足，陀螺仪才会触发。</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>本地</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>玩家</value></data>
@@ -1701,6 +1711,7 @@
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>陀螺仪倾角 X</value></data>
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>陀螺仪倾角 Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>陀螺仪倾角</value></data>
+  <data name="Pad_GyroTilt_FoldHint" xml:space="preserve"><value>满偏转角度、倾斜死区</value></data>
   <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>陀螺仪倾角 X / Y 输入的包络设置：保持倾斜，摇杆就保持偏转，类似 Steam 的摇杆偏转模式。在此设定的范围内达到满偏转；陀螺仪重新居中会重置静止握姿。偏航（平放旋转）对重力不可见，不会移动这些输入。</value></data>
   <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>满偏转角度</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>从静止握姿倾斜多少度算作满偏转。越小越灵敏。25° 是 Steam 配置中最常见的值。</value></data>
@@ -1826,6 +1837,7 @@
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>此虚拟控制器以与 DualSense 灯条相同的模式点亮该设备，此处的设置仅作用于这个控制器。在 PlayStation 虚拟控制器上，游戏写入灯条时会像在 DualSense 上一样接管灯光。</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>控制此设备的灯光</value></data>
   <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>灯光控制</value></data>
+  <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>控制此设备的灯光、灯光接管</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>关闭后，此虚拟控制器不再点亮该设备。厂商行，或通过同一软件点亮的同类其他设备，仍可设置它的颜色。此虚拟控制器上的“设置 Chroma 颜色”宏仍会为 Razer 设备着色。</value></data>
   <data name="Pad_Lighting_ClaimLevel" xml:space="preserve"><value>灯光接管</value></data>
   <data name="Pad_Lighting_ClaimLevel_Colors" xml:space="preserve"><value>仅颜色</value></data>
@@ -1882,6 +1894,7 @@
   <data name="Pad_Lighting_MicLed_FollowDevice" xml:space="preserve"><value>跟随音频设备</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice_Picker" xml:space="preserve"><value>音频设备</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>指示 LED</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>LED 亮度、玩家图案、静音 LED 模式</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>玩家编号一排(触摸板下的 5 个 LED)和麦克风上方的静音 LED。亮度控制实际上只影响玩家排。固件提供静音 LED 状态(关闭 / 常亮 / 脉冲),但没有独立的静音亮度寄存器。</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>重置灯条</value></data>
   <data name="Pad_ResetIndicatorLeds" xml:space="preserve"><value>重置指示 LED</value></data>
@@ -2123,6 +2136,7 @@
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>选中时，激活器按钮继续驱动以它为源的任何行。一次按压同时切换层并触发按钮自身的映射。未选中（默认）时，按压仅被层切换消费。</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>选中时,此层未明确映射的目标会回退到基础层。未选中时(默认),层完全替换基础,未映射的目标保持关闭。</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>冲击扳机</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>各扳机增益、交换马达、自适应扳机震动</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>将每个扳机的电机指令（Xbox 冲击扳机）从虚拟控制器转发到所分配的物理 Xbox One / Elite / Series 手柄。游戏产生的扳机振动自动通过。下方控件可分别调节每个扳机的强度。</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>左扳机</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>右扳机</value></data>
@@ -2140,7 +2154,9 @@
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>重置左扳机</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>重置右扳机</value></data>
   <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>扳机持续力</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>对每个扳机马达持续施力</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>扳机路由</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>将主马达的振动送到扳机</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>将主振动马达路由到扳机通道，每个扳机单独设置。支持 XInput 振动和力反馈。激活器可对其进行门控，使扳机仅在按住按钮时振动。</value></data>
   <data name="Pad_ResetTriggerRouting" xml:space="preserve"><value>重置扳机路由</value></data>
   <data name="Pad_TriggerRouting_LeftTrigger" xml:space="preserve"><value>左扳机</value></data>
@@ -2172,6 +2188,7 @@
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>重置左扳机</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>重置右扳机</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>音频低音扳机振动</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>扳机随系统音频的低音振动</value></data>
   <data name="Pad_AudioTriggerRumble_Description" xml:space="preserve"><value>用系统音频的低音驱动扳机马达。游戏产生的扳机力在生效期间优先。</value></data>
   <data name="Pad_AudioTriggerRumble_Toggle" xml:space="preserve"><value>用音频驱动扳机马达</value></data>
   <data name="Pad_AudioTriggerRumble_Sensitivity" xml:space="preserve"><value>灵敏度</value></data>
@@ -2246,6 +2263,7 @@
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>触控板编号</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>下方设置适用于此手柄上的哪块触控板。每块触控板各自保留手势、鼠标手感和指针区域。</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>手势检测</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>开启此触控板的手势</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>在此触控板上启用手势</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>此触控板的总开关。关闭时，此触控板不触发任何手势描述符。现有的手指、点击与位置映射仍正常工作。</value></data>
   <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>识别</value></data>
@@ -2256,6 +2274,7 @@
   <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>冷却时间</value></data>
   <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>手势触发后，在此毫秒数内忽略此触控板上的新手势。防止快速来回动作引发的连发。</value></data>
   <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>内置手势</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>滑动、轻点、捏合、形状</value></data>
   <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>4 向滑动（上、下、左、右）</value></data>
   <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>8 向滑动（加入对角方向）</value></data>
   <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>滑动距离 (0..1)</value></data>
@@ -2281,11 +2300,13 @@
   <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>形状手势（圆形、方形、三角形、Z、对勾）</value></data>
   <data name="Pad_Touchpad_MatchThreshold" xml:space="preserve"><value>形状匹配阈值</value></data>
   <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>自定义手势</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>录制你自己的手势</value></data>
   <data name="Pad_Touchpad_RecordNew" xml:space="preserve"><value>+ 录制新手势</value></data>
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>此配置尚未录制自定义手势。点击“录制新手势”进行采集。</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 根手指</value></data>
   <data name="Pad_Touchpad_CustomGesture_NFingers_Format" xml:space="preserve"><value>{0} 根手指</value></data>
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>鼠标输出</value></data>
+  <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>反转、惯性、响应、加速、甩动</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>当触控板手指被映射到“键盘 / 鼠标”虚拟控制器的鼠标 X/Y 时，调整光标速度。1.0 为默认值。提升任意轴使光标变快，降低则变慢。反转可翻转对应轴。</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>鼠标灵敏度 X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>横向触控板 → 鼠标增量的乘数。低于 1.0 减慢光标，高于 1.0 加快。</value></data>
@@ -2296,6 +2317,7 @@
   <data name="Pad_Touchpad_MouseInvertY" xml:space="preserve"><value>反转鼠标 Y</value></data>
   <data name="Pad_Touchpad_MouseInvertY_Tooltip" xml:space="preserve"><value>翻转纵向移动。手指向下移动时，光标向上移动。</value></data>
   <data name="Pad_Touchpad_Stick_Header" xml:space="preserve"><value>摇杆 / 方向键输出</value></data>
+  <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>将触控板用作摇杆或方向键</value></data>
   <data name="Pad_Touchpad_Stick_Subtitle" xml:space="preserve"><value>将触控板变为虚拟模拟摇杆或方向键。输出以手指首次落下的位置为锚点。相对该锚点的当前位置驱动摇杆值并（可选）保持方向键方向位。</value></data>
   <data name="Pad_Touchpad_StickEnabled" xml:space="preserve"><value>启用摇杆 / 方向键输出</value></data>
   <data name="Pad_Touchpad_StickEnabled_Tooltip" xml:space="preserve"><value>在映射选择器中显示触控板的摇杆 X、摇杆 Y 和方向键描述符。与现有的触控板手指和手势源并存，而非替代。</value></data>
@@ -2423,9 +2445,12 @@
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>重置倾斜外死区</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>重置手柄朝向</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>体感转向</value></data>
+  <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° 至 {1}°</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>倾斜内死区、倾斜外死区、手柄朝向</value></data>
   <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>像方向盘一样倾斜手柄来转向所选轴。实体摇杆不受影响。</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>重置体感转向</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>转向极限反馈</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>转向模式摇杆到达极限时的提示</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>当设为转向模式的摇杆转到极限时，发出提示（震动、扳机或灯条），让你感受到极限。默认全部关闭。</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>到达极限时震动脉冲</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>到达极限时扳机振动</value></data>
@@ -2540,6 +2565,7 @@
   <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>在“宏”选项卡中打开此宏</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>声音会自动路由到所选手柄。USB 下按硬件容器匹配手柄自身的音频端点。蓝牙下音频以 Sony HID 帧流式发送。</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>声音输出</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>镜像来源、触觉反馈、耳机音量、串扰、参量均衡器、限幅器</value></data>
   <data name="Pad_Audio_Reset_MasterVolume" xml:space="preserve"><value>重置主音量</value></data>
   <data name="Pad_Audio_SoundMacroName_Format" xml:space="preserve"><value>声音宏 {0}</value></data>
   <data name="Pad_Audio_SourceUnavailable" xml:space="preserve"><value>（设备不可用）</value></data>
@@ -2561,6 +2587,7 @@
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>该文件不是可读取的 PadForge 配置文件。</value></data>
   <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>从 {0} 中选择声音</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>声音包</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>供声音宏使用的声音 ZIP 文件</value></data>
   <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>声音包是一个扩展名为 .pfsounds 的 ZIP 文件，里面装着声音文件。在这里添加后，任何声音宏都能选用其中的声音。PadForge 直接从文件中读取，从不解压。把声音包放在 PadForge.exe 旁边，整个文件夹就能随身携带。</value></data>
   <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>添加声音包…</value></data>
   <data name="Pad_Audio_Packages_Add_Tooltip" xml:space="preserve"><value>把现有的 .pfsounds 文件添加到列表。</value></data>
@@ -2586,6 +2613,7 @@
   <data name="Emoji_Category_Objects" xml:space="preserve"><value>物品</value></data>
   <data name="Emoji_Category_Symbols" xml:space="preserve"><value>符号</value></data>
   <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>图标包</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>供菜单单元格使用的图像 ZIP 文件</value></data>
   <data name="Pad_Menus_IconPackages_Desc" xml:space="preserve"><value>图标包是一个扩展名为 .pficons 的图像 zip 文件。在此添加后，即可在任何菜单单元格中选择其中的图标。PadForge 直接从文件读取，绝不解压。将图标包放在 PadForge.exe 旁边即可保持便携。</value></data>
   <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>添加图标包…</value></data>
   <data name="Pad_Menus_IconPackages_Add_Tooltip" xml:space="preserve"><value>将现有的 .pficons 文件添加到列表。</value></data>
@@ -3384,6 +3412,7 @@
   <data name="Pad_Kbm_Socd_Pairs_Label" xml:space="preserve"><value>按键对</value></data>
   <data name="Pad_Kbm_Socd_Pairs_Tooltip" xml:space="preserve"><value>规则处理的按键对。每对独立跟踪。</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>指南键 LED</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>指南键或 Home 键的发光亮度</value></data>
   <data name="Pad_Lighting_GuideLed_Battery" xml:space="preserve"><value>电池电量</value></data>
   <data name="Pad_Lighting_GuideLed_Brightness" xml:space="preserve"><value>亮度</value></data>
   <data name="Pad_Lighting_GuideLed_Brightness_Tooltip" xml:space="preserve"><value>指南键 LED 的亮度，从 0%（熄灭）到 100%（最亮）。仅在模式为固定亮度时生效。</value></data>
@@ -3591,6 +3620,7 @@
   <data name="Pad_Touchpad_RotateThreshold_Tooltip" xml:space="preserve"><value>两指需要转动多少才会触发旋转。</value></data>
   <data name="Pad_ResetTouchpadRotateThresholdDegrees" xml:space="preserve"><value>重置旋转阈值</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>绝对指针</value></data>
+  <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>触控板覆盖的屏幕区域</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>调整触控板指针 X/Y 源，它会把光标移动到手指在触控板上的位置（请将其映射到键盘 / 鼠标虚拟控制器的鼠标 X/Y）。大小 1.00、中心 0.50 时触控板对应整个屏幕。缩小大小可将光标限制在屏幕的一部分，并用中心确定其位置。</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>区域宽度</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>此触控板映射到的屏幕区域宽度，以屏幕宽度的比例表示。1.00 覆盖整个宽度；0.50 将光标限制在半屏内。</value></data>
@@ -3601,12 +3631,14 @@
   <data name="Pad_Touchpad_PointerRegionCenterY" xml:space="preserve"><value>区域中心 Y</value></data>
   <data name="Pad_Touchpad_PointerRegionCenterY_Tooltip" xml:space="preserve"><value>垂直位置。0.00 为上边缘，0.50 为中间，1.00 为下边缘。</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>滑动触觉反馈</value></data>
+  <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>手指滑动时的咔嗒反馈</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>当手指在此触控板上滑动时使手柄的触觉反馈产生脉冲，类似 Steam Input 的触控板咔嗒反馈。Steam Controller 和 Steam Deck 通过触控板下方的致动器产生咔嗒；DualSense 和 DualShock 4 则脉冲震动马达。</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>启用滑动触觉反馈</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>手指在此触控板上每移动设定距离就发出一次短促的触觉咔嗒。手指落下或按下触控板不会产生咔嗒。默认关闭。</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>脉冲强度</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity_Tooltip" xml:space="preserve"><value>每次咔嗒的强度。当游戏震动更强时始终以游戏震动为准。</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Header" xml:space="preserve"><value>合成压力</value></data>
+  <data name="Pad_SyntheticPressure_FoldHint" xml:space="preserve"><value>为把触摸报告为最大压力的触控板提供压力</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Subtitle" xml:space="preserve"><value>在将触摸报告为最大压力的触控板（DualShock 4、DualSense、Steam Controller 2015）上模拟 DualShock 2 / DualShock 3 的压敏按键。启用期间，此设备的压力映射源将无触摸读取为 0%，静止触摸读取为触摸压力级别，按下触控板读取为 100%。</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled" xml:space="preserve"><value>启用合成压力</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled_Tooltip" xml:space="preserve"><value>将此设备的压力映射源变为三档：无触摸读取 0%，静止触摸读取触摸压力级别，按下触控板读取 100%。默认关闭，具有真实模拟压力的触控板保持原始读数。</value></data>
@@ -3629,6 +3661,7 @@
   <data name="Mapping_LeftStickRing" xml:space="preserve"><value>左摇杆环</value></data>
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>右摇杆环</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
+  <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Flick Stick 输入的调节</value></data>
   <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Flick Stick 输入的设置：推动摇杆，镜头随之转向；沿边缘滑动可微调转向。在映射的输入下拉框中将"Flick Stick（右摇杆）"映射到鼠标 X，任何层均可。</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>重置快拨摇杆</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>每 360° 计数</value></data>
@@ -3844,6 +3877,7 @@
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>低音振动器</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>将此虚拟手柄收到的游戏振动和力反馈转换为低频音，输出到音频设备，用于低音振动器和低音炮。</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>振动转音频</value></data>
+  <data name="Pad_More_BassShakers" xml:space="preserve"><value>输出设备、声道、增益、各马达的音调</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>适用于 Xbox、DualShock 3、DualShock 4 / DualSense、Nintendo Switch Pro、支持力反馈的扩展虚拟手柄（例如赛车方向盘）以及 Steam Deck Controller (Composite)。游戏反馈和测试振动会进入音频输出。宏振动仍留在手柄上。</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>重置振动转音频</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>将振动发送到音频输出</value></data>
@@ -4303,6 +4337,7 @@
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>正在等待 FreeTrack 共享内存数据。</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>FreeTrack 共享内存不可用。</value></data>
   <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>转向角度振动</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>摇杆轴离开中心时振动渐强</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>所选虚拟摇杆轴离中心越远，持续振动就越强。使用所有已分配来源映射后的输出。选择“按方向分配”时，负方向驱动左马达，正方向驱动右马达。选择“左马达”或“右马达”时，两个方向都由该马达振动。适用于使用振动设备的 Xbox 和 PlayStation 输出。会跳过方向盘、其他带恒定力反馈的设备以及 Fanatec 踏板。</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>启用转向角度振动</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>虚拟轴</value></data>
@@ -4657,6 +4692,7 @@
   <data name="Status_FalconDriverDeclined" xml:space="preserve"><value>Windows 未安装 Force Dimension 的驱动。如果 Windows 询问是否信任 Force Dimension，请选择“安装”。</value></data>
   <data name="Status_FalconDriverNotBound" xml:space="preserve"><value>驱动已安装，但 Falcon 尚未切换到该驱动。请拔下 Falcon 再重新插上。</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>后坐、抖动、稳定、预压、重力</value></data>
   <data name="Pad_Falcon_Description" xml:space="preserve"><value>PadForge 根据握柄的位置和游戏播放的内容，每秒约一千次计算作用在 Falcon 握柄上的每一个力。这些设置属于此插槽。</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>重置 Novint Falcon</value></data>
   <data name="Pad_Falcon_Feel" xml:space="preserve"><value>手感</value></data>

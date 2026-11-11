@@ -861,6 +861,7 @@
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Իմպուլսային ձգաններ</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Իմպուլսային ձգաններ</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Ձգանի առանձին ուժեղացում, շարժիչների փոխանակում, հարմարվող ձգանների թրթռումներ</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Փոխանցում է ձգանի շարժիչների հրամանները (Xbox Impulse Triggers) վիրտուալ կառավարչից դեպի վերագրված ֆիզիկական Xbox One, Elite կամ Series կառավարիչ։ Խաղի կողմից կառավարվող ձգանի թրթռոցն անցնում է ինքնաբերաբար։ Ստորև բերված կարգավորիչները մասշտաբավորում են ուժգնությունը յուրաքանչյուր ձգանի համար։</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Ձախ ձգան</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Աջ ձգան</value></data>
@@ -879,7 +880,9 @@
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Վերականգնել ձախ ձգանը</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Վերականգնել աջ ձգանը</value></data>
   <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Ձգանի հաստատուն ուժ</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Հաստատուն ուժ յուրաքանչյուր ձգանի շարժիչի վրա</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Ձգանի երթուղավորում</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Հիմնական թրթռաշարժիչների թրթռոցը ուղարկում է ձգաններին</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Երթուղավորում է հիմնական թրթռաշարժիչները ձգանի ալիք, մեկ ձգան միաժամանակ։ Աշխատում է XInput թրթռոցի և հետադարձ ուժի հետ։ Ակտիվացնողը կարող է սահմանափակել այն, որպեսզի ձգանը թրթա միայն կոճակը պահելիս։</value></data>
   <data name="Pad_ResetTriggerRouting" xml:space="preserve"><value>Վերականգնել ձգանի երթուղավորումը</value></data>
   <data name="Pad_TriggerRouting_LeftTrigger" xml:space="preserve"><value>Ձախ ձգան</value></data>
@@ -911,6 +914,7 @@
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Վերականգնել ձախ ձգանը</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Վերականգնել աջ ձգանը</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Աուդիո բասով ձգանի թրթռոց</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Ձգանների թրթռոց համակարգի աուդիոյի բասից</value></data>
   <data name="Pad_AudioTriggerRumble_Description" xml:space="preserve"><value>Վարում է ձգանի շարժիչները համակարգի աուդիոյի բասից։ Խաղի կողմից կառավարվող ձգանի ուժը գերակայում է այն ակտիվ լինելու ընթացքում։</value></data>
   <data name="Pad_AudioTriggerRumble_Toggle" xml:space="preserve"><value>Վարել ձգանի շարժիչները աուդիոյից</value></data>
   <data name="Pad_AudioTriggerRumble_Sensitivity" xml:space="preserve"><value>Զգայունություն</value></data>
@@ -1008,6 +1012,7 @@
   <data name="Pad_Lighting_MicLed_FollowDevice" xml:space="preserve"><value>Հետևել աուդիո սարքին</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice_Picker" xml:space="preserve"><value>Աուդիո սարք</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>Ինդիկատոր LED-ներ</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>LED-ի պայծառություն, խաղացողի նմուշ, խոսափողի LED-ի ռեժիմ</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>Խաղացողի համարի շարք (5 LED հպահարթակի տակ) և խոսափողի վերևի խլացման LED։ Պայծառության կարգավորիչը ֆիզիկապես ազդում է միայն խաղացողի շարքի վրա։ Որոնվածքը ցույց է տալիս խլացման LED-ի վիճակները (Անջատված / Հաստատուն / Բաբախում), բայց խլացման առանձին պայծառության ռեգիստր չունի։</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>Վերականգնել լուսաշերտը</value></data>
   <data name="Pad_ResetIndicatorLeds" xml:space="preserve"><value>Վերականգնել ինդիկատոր LED-ները</value></data>
@@ -1394,6 +1399,7 @@
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Չափաբերել կենտրոնը</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Կենտրոնի կետ</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Մեռյալ գոտի</value></data>
+  <data name="Pad_More_Stick" xml:space="preserve"><value>Կենտրոնի շեղումներ, մեռյալ գոտու ձև և արժեքներ ըստ առանցքի, կոր յուրաքանչյուր առանցքի համար, միջակայք, ղեկավարում</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Միջակայք</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Եզրի չափաբերումը ձողը ճշգրտելու խորհուրդ տրվող եղանակն է։ Այն սահում է այն եզրով, որին ձողը ֆիզիկապես հասնում է, ապա համաչափորեն վերամասշտաբում է բոլոր դիրքերը չափված եզրի նկատմամբ, այնպես որ ամբողջ բնական շարժումը, ցանկացած անկյան և ցանկացած շեղման դեպքում, արտապատկերվում է իդեալական շրջանագծի վրա՝ առանց որևէ բան կտրելու։ Ներքևի չորս սահոցները սահմանափակում են միայն հիմնական առանցքները։ Օգտագործեք դրանք միջակայքը միտումնավոր սահմանափակելու համար, ոչ թե այն ուղղելու։</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Նմուշառում...</value></data>
@@ -1727,6 +1733,7 @@
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Հպահարթակի համար</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Այս կառավարիչի որ հպահարթակին են վերաբերում ստորև բերված կարգավորումները։ Յուրաքանչյուր հպահարթակ ունի իր ժեստերը, մկնիկի զգացողությունը և ցուցիչի տարածքը։</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Ժեստերի ճանաչում</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Միացնում է այս հպահարթակի ժեստերը</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Միացնել ժեստերն այս հպահարթակում</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Այս հպահարթակի գլխավոր անջատիչը։ Անջատված վիճակում այս հպահարթակի համար ժեստերի ոչ մի նկարագրիչ չի գործարկվում։ Մատի, սեղմման և դիրքի առկա կապակցումները շարունակում են աշխատել։</value></data>
   <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>Ճանաչել</value></data>
@@ -1737,6 +1744,7 @@
   <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>Դադար</value></data>
   <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>Ժեստը գործարկվելուց հետո այս հպահարթակում նոր ժեստերն անտեսվում են այսքան միլիվայրկյան։ Կանխում է արագ առաջ-հետ շարժումից կրկնվող գործարկումները։</value></data>
   <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>Ներկառուցված ժեստեր</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Սահեցումներ, հպումներ, մատների մոտեցումներ, ձևեր</value></data>
   <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>4 ուղղությամբ սահեցումներ (վերև / ներքև / ձախ / աջ)</value></data>
   <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>8 ուղղությամբ սահեցումներ (ավելացնում է անկյունագծերը)</value></data>
   <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>Սահեցման հեռավորություն (0..1)</value></data>
@@ -1762,6 +1770,7 @@
   <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>Ձևերի ժեստեր (շրջան, քառակուսի, եռանկյուն, Z, ստուգանշան)</value></data>
   <data name="Pad_Touchpad_MatchThreshold" xml:space="preserve"><value>Ձևի համընկնման շեմ</value></data>
   <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>Հատուկ ժեստեր</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Գրանցեք ձերը</value></data>
   <data name="Pad_Touchpad_RecordNew" xml:space="preserve"><value>+ Գրանցել նոր ժեստ</value></data>
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>Այս պրոֆիլի համար հատուկ ժեստեր գրանցված չեն։ Սեղմեք «Գրանցել նոր ժեստ»՝ մեկը ձայնագրելու համար։</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 մատ</value></data>
@@ -1769,6 +1778,7 @@
 
   <!-- Stick / D-pad output card -->
   <data name="Pad_Touchpad_Stick_Header" xml:space="preserve"><value>Ձողի / D-pad ելք</value></data>
+  <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Հպահարթակը որպես ձող կամ D-pad</value></data>
   <data name="Pad_Touchpad_Stick_Subtitle" xml:space="preserve"><value>Հպահարթակը դարձրեք վիրտուալ անալոգային ձող կամ D-pad։ Ելքը խարսխվում է այնտեղ, որտեղ մատը առաջին անգամ հպվում է։ Այդ խարիսխի նկատմամբ ընթացիկ դիրքը որոշում է ձողի արժեքը և (ըստ ցանկության) D-pad-ի պահվող ուղղությունների արժեքները։</value></data>
   <data name="Pad_Touchpad_StickEnabled" xml:space="preserve"><value>Միացնել ձողի / D-pad ելքը</value></data>
   <data name="Pad_Touchpad_StickEnabled_Tooltip" xml:space="preserve"><value>Կապակցումների ընտրիչում ցույց է տալիս հպահարթակի ձող X, ձող Y և D-pad նկարագրիչները։ Աշխատում է հպահարթակի մատի և ժեստի առկա աղբյուրների հետ միասին, այլ ոչ թե դրանց փոխարեն։</value></data>
@@ -1783,6 +1793,7 @@
 
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Մկնիկի ելք</value></data>
+  <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Շրջում, իներցիա, արձագանք, արագացում, նետում</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Կարգավորում է ցուցիչի արագությունը, երբ հպահարթակի մատը կապակցված է մկնիկի X/Y-ին «Ստեղնաշար / մկնիկ» վիրտուալ կառավարիչի վրա։ Լռելյայն արժեքը 1.0 է։ Ավելացրեք որևէ առանցք՝ ցուցիչը արագացնելու, պակասեցրեք՝ դանդաղեցնելու համար։ «Շրջել»-ը շրջում է որևէ առանցք։</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Մկնիկի զգայունություն X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Հորիզոնական հպահարթակ → մկնիկ տեղաշարժի բազմապատկիչ։ 1.0-ից ցածրը դանդաղեցնում է ցուցիչը։ 1.0-ից բարձրը արագացնում է։</value></data>
@@ -1810,6 +1821,7 @@
   <data name="Pad_Touchpad_RotateThreshold_Tooltip" xml:space="preserve"><value>Որքան պետք է պտտվեն երկու մատերը, որպեսզի պտույտը գործարկվի։</value></data>
   <data name="Pad_ResetTouchpadRotateThresholdDegrees" xml:space="preserve"><value>Վերականգնել պտույտի շեմը</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>Բացարձակ ցուցիչ</value></data>
+  <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>Էկրանի այն հատվածը, որին հասնում է հարթակը</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Կարգավորում է հպահարթակի ցուցիչ X/Y աղբյուրները, որոնք ցուցիչը տեղափոխում են ձեր մատի դիրքին՝ հարթակի վրա (կապակցեք դրանք մկնիկի X/Y-ին «Ստեղնաշար / մկնիկ» վիրտուալ կառավարիչի վրա)։ 1.00 չափսը և 0.50 կենտրոնը հարթակը համապատասխանեցնում են ամբողջ էկրանին։ Փոքրացրեք չափսը՝ ցուցիչը էկրանի մի մասով սահմանափակելու համար, իսկ կենտրոնը տեղափոխեք՝ այն տեղադրելու համար։</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Տարածքի լայնություն</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Էկրանի այն տարածքի լայնությունը, որին համապատասխանում է այս հարթակը՝ էկրանի լայնության մասով։ 1.00-ը ծածկում է ամբողջ լայնությունը. 0.50-ը ցուցիչը սահմանափակում է էկրանի կեսով։</value></data>
@@ -1822,12 +1834,14 @@
 
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Սահեցման հապտիկա</value></data>
+  <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>Թրթիռներ՝ մատի շարժմանը համընթաց</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Կառավարիչի հապտիկան իմպուլսներով է աշխատում, երբ մատը շարժվում է այս հպահարթակով, ինչպես Steam Input-ի թրեքփեդի տիկտակները։ Steam Controller-ները և Steam Deck-ը տիկտակում են հարթակի տակի շարժիչով, իսկ DualSense-ը և DualShock 4-ը իմպուլսներ են տալիս թրթռաշարժիչներով։</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Միացնել սահեցման հապտիկան</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>Կարճ հապտիկ տիկ է տալիս, երբ մատը այս հարթակի վրա անցնում է որոշակի հեռավորություն։ Մատի հպումը կամ հարթակի սեղմումը երբեք տիկ չի տալիս։ Լռելյայն անջատված է։</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>Իմպուլսի ուժգնություն</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity_Tooltip" xml:space="preserve"><value>Յուրաքանչյուր տիկի ուժը։ Խաղի թրթռոցը միշտ հաղթում է, երբ ավելի ուժեղ է։</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Header" xml:space="preserve"><value>Սինթետիկ ճնշում</value></data>
+  <data name="Pad_SyntheticPressure_FoldHint" xml:space="preserve"><value>Ճնշում այն հարթակների համար, որոնք հպումը զեկուցում են որպես լրիվ</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Subtitle" xml:space="preserve"><value>Նմանակում է DualShock 2 / DualShock 3 ճնշման կոճակները այն հարթակների վրա, որոնք հպումը հայտնում են որպես լրիվ ճնշում (DualShock 4, DualSense, Steam Controller 2015)։ Միացված ժամանակ այս սարքի ճնշման կապակցման աղբյուրները առանց հպման կարդում են 0%, հանգստի հպումը՝ որպես հպման ճնշման մակարդակ, իսկ հարթակի սեղմումը՝ 100%։</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled" xml:space="preserve"><value>Միացնել սինթետիկ ճնշումը</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled_Tooltip" xml:space="preserve"><value>Այս սարքի ճնշման կապակցման աղբյուրները ձևավորում է երեք աստիճանի. առանց հպման՝ 0%, հանգստի հպում՝ հպման ճնշման մակարդակ, հարթակի սեղմում՝ 100%։ Լռելյայն անջատված է, ինչը իրական անալոգային ճնշմամբ հարթակների վրա պահպանում է հում ցուցմունքները։</value></data>
@@ -2005,7 +2019,9 @@
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Կարգավորեք, թե ինչպես է այս կառավարիչի շարժման սենսորը կառավարում մկնիկի և ձողի ելքը։ Չափաբերեք հարթ մակերևույթի վրա՝ անշարժ վիճակի շեղումը զրոյացնելու համար, ապա ըստ ցանկության կարգավորեք զգայունությունը, հարթեցումը և միացման կանոնները։</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Չափաբերում</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Զգայունություն</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Միավորներ, տարածք, առանցքների շրջում, իրական աշխարհի չափաբերում</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Արձագանքի ձևավորում</value></data>
+  <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Մեռյալ գոտի, հարթեցում, արագացում, ելքի կոր</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Տարածք</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Ինչպես է մեկնաբանվում գիրոյի շարժումը։ «Տեղական»-ը օգտագործում է կառավարիչի հում առանցքները։ «Խաղացող»-ը հորիզոնական շարժումը պրոյեկտում է իրական աշխարհի ուղղահայացի (ծանրության) վրա, այնպես որ դաստակի նույն ոլորումը միշտ պտտում է տեսախցիկը՝ անկախ այն բանից, թե ինչպես եք բռնել կառավարիչը։ «Աշխարհ»-ը լրացուցիչ նորից պրոյեկտում է ուղղահայաց շարժումը աշխարհի առանցքների վրա։</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>Բռնելու ձև</value></data>
@@ -2019,11 +2035,13 @@
   <data name="Pad_ResetGyroInvertYaw" xml:space="preserve"><value>Վերականգնել պտույտի շրջումը</value></data>
   <data name="Pad_ResetGyroInvertRoll" xml:space="preserve"><value>Վերականգնել գլորման շրջումը</value></data>
   <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>Կողմնացույց</value></data>
+  <data name="Pad_Compass_FoldHint" xml:space="preserve"><value>Պտույտը պահում է մագնիսական հյուսիսին</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Այս կառավարիչն ունի մագնիսաչափ։ Պտույտը մագնիսական հյուսիսին խարսխելը վերացնում է գիրոյով նպատակադրման դանդաղ հորիզոնական շեղումը։ Նախ չափաբերեք. սեղմեք «Չափաբերել», մի քանի վայրկյան պտտեք կառավարիչը բոլոր դիրքերով ութի նշանի տեսքով, ապա նորից սեղմեք։</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Խարսխել պտույտը կողմնացույցին</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Ավելացնում է փոքր ուղղիչ արագություն, որը հորիզոնական նպատակադրումը քաշում է դեպի մագնիսական ուղղությունը, այնպես որ շեղումը չի կարող կուտակվել։ Պահանջում է պահված մագնիսաչափի չափաբերում։ Մոտակա մետաղից կամ մագնիսներից խանգարված նմուշները ավտոմատ մերժվում են։</value></data>
   <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Վերականգնել լռելյայնը (անջատված)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Թեքման և գլորման նմանակում</value></data>
+  <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Թեքումն ու գլորումը հաշվարկվում են արագացուցիչից</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>Այս կառավարիչի գիրոն զգում է միայն ձախ ու աջ պտույտը։ Նմանակումը միացնելիս PadForge-ը արագացուցաչափից ստանում է թեքումը և գլորումը և դրանք գիրոյի պտույտի հետ ուղարկում է կապակցման տողերին և վիրտուալ կառավարչի շարժմանը։ Արագացուցաչափը չի կարող տարբերել հրումը թեքումից, այնպես որ կառավարիչը առանց պտտելու կողքով կամ առաջ շարժելը կարդացվում է որպես կարճ պտույտ։</value></data>
   <data name="Settings_GyroSimulation" xml:space="preserve"><value>Նմանակել թեքումը և գլորումը</value></data>
   <data name="Settings_GyroSimulation_Tooltip" xml:space="preserve"><value>Թեքումը և գլորումը լցնում է արագացուցաչափից ստացված արագություններով։ Պտույտը մնում է գիրոյի սեփական ցուցմունքը։ Լռելյայն անջատված է։</value></data>
@@ -2064,6 +2082,7 @@
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Ներքև (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Վերև (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Միացում</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Միացման կոճակ, միացման ռեժիմ, հեշտ նպատակադրման շեմ</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Կամընտիր դարպասներ, որոնք սահմանափակում են, թե երբ է գիրոն ակտիվ։ Աջ ձողի շեղումը և նպատակադրման միացման կոճակը կարող են առանձին կարգավորվել։ Գիրոն աշխատում է միայն երբ բոլոր կարգավորված դարպասները ակտիվ են։</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Տեղական</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Խաղացող</value></data>
@@ -2114,6 +2133,7 @@
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Գիրոյի թեքում X</value></data>
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>Գիրոյի թեքում Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>Գիրոյի թեքում</value></data>
+  <data name="Pad_GyroTilt_FoldHint" xml:space="preserve"><value>Լրիվ թեքման տիրույթ, թեքման մեռյալ գոտի</value></data>
   <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>Գիրոյի թեքում X / Գիրոյի թեքում Y մուտքերի ծրարը. պահեք թեքումը և ձողը պահում է իր շեղումը, ինչպես Steam-ի «Joystick Deflection» ռեժիմում։ Լրիվ շեղում այստեղ սահմանած տիրույթում. «Գիրոյի վերակենտրոնացումը» նորից զրոյացնում է հանգստի բռնելը։ Պտույտը (կառավարիչը հարթ պտտելը) ծանրության համար անտեսանելի է և այս մուտքերը չի շարժում։</value></data>
   <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>Լրիվ թեքման տիրույթ</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>Հանգստի բռնելուց թեքման աստիճանները, որոնք հաշվվում են ձողի լրիվ շեղում։ Փոքրը = ավելի զգայուն։ 25°-ը Steam-ի կարգավորումներում ամենատարածված արժեքն է։</value></data>
@@ -2304,6 +2324,7 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Նվազագույն միջակայք Y (ներքև)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Առավելագույն միջակայք Y (վերև)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X առանցք</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>Երկու առանցքները</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y առանցք</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Միջակայք</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Հակամեռյալ գոտի</value></data>
@@ -2314,6 +2335,7 @@
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Հետադարձ ուժ / թրթռոց / հապտիկա</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Թրթռաշարժիչի առանձին ուժեղացում, ձգանների թրթռոց, թրթռաշարժիչների տեղափոխում</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Ընդհանուր ուժեղացում</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Ձախ թրթռաշարժիչ</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Աջ թրթռաշարժիչ</value></data>
@@ -2325,6 +2347,7 @@
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Հաստատուն ուժ</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Հաստատուն ուժ մինչև անջատելը</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Կիրառում է շարունակական ուժ այս սարքի վրա, մինչև չանջատեք։ Խաղի ուժը ցանկացած աղբյուրից գերակայում է հաստատուն ուժի վրա, մինչ ակտիվ է, իսկ խաղի դադարելուց հետո հաստատուն ուժը վերսկսվում է։</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Կիրառել հաստատուն ուժ</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Քաշեք ցանցի մեջ՝ ուղղությունն ու ուժգնությունը սահմանելու համար։</value></data>
@@ -2620,6 +2643,7 @@
 
   <!-- ═══ Audio Bass Rumble ═══ -->
   <data name="Settings_AudioRumble" xml:space="preserve"><value>Աուդիո թրթռոց</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Թրթռոց համակարգի աուդիոյի բասից</value></data>
   <data name="Settings_AudioRumbleDesc" xml:space="preserve"><value>Կառավարում է կառավարչի թրթռոցը համակարգի աուդիոյի բասային հաճախականություններից։</value></data>
   <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>Միացնել աուդիո թրթռոցը</value></data>
   <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>Զգայունություն</value></data>
@@ -2730,6 +2754,8 @@
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Վերականգնել թեքման արտաքին մեռյալ գոտին</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Վերականգնել կառավարիչի դիրքավորումը</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Շարժումային ղեկավարում</value></data>
+  <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° մինչև {1}°</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Թեքման մեռյալ գոտիներ, կառավարիչի դիրքավորում</value></data>
   <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Շարժումային թեքման մուտքի կարգավորումներ. թեքեք կառավարիչը ղեկի պես։ Կապակցումներում մուտքի բացվող ցանկից «Շարժումային թեքում» մուտքը կապակցեք ձողի առանցքին։</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Վերականգնել շարժումային ղեկավարումը</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (աջ ձող)</value></data>
@@ -2738,6 +2764,7 @@
   <data name="Mapping_LeftStickRing" xml:space="preserve"><value>Ձախ ձողի օղակ</value></data>
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>Աջ ձողի օղակ</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
+  <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Flick Stick մուտքերի կարգավորում</value></data>
   <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Flick Stick մուտքերի կարգավորումներ. ուղղեք ձողը, և տեսախցիկը կշրջվի նույն ուղղությամբ, իսկ եզրով սահեցնելով կարելի է մանրակրկիտ պտտել։ Կապակցումներում մուտքի բացվող ցանկից ցանկացած շերտում «Flick Stick (աջ ձող)» մուտքը կապակցեք Մկնիկ X-ին։</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Վերականգնել Flick Stick-ը</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Կետեր 360°-ում</value></data>
@@ -2774,6 +2801,7 @@
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Երբ Flick Stick-ն ընդունող շերտը միանում է արդեն շեղված ձողով, ֆլիքը գործարկվում է անմիջապես։ Անջատված դեպքում տեսախցիկը մնում է անշարժ, և պտույտը հետևվում է ձողի ընթացիկ անկյունից։</value></data>
   <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Վերականգնել «Թույլատրել ֆլիքը միացնելիս»</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Ղեկի արգելափակման հետադարձ կապ</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Ազդանշան լրիվ արգելափակման ժամանակ ղեկավարման ռեժիմով ձողի համար</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Երբ ղեկավարման ռեժիմով ձողը պտտվում է մինչև լրիվ արգելափակում, միանում է ազդանշան (թրթռոց, ձգան կամ լուսաշերտ), որպեսզի զգաք սահմանը։ Լռելյայն բոլորն անջատված են։</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Թրթռոցի իմպուլս արգելափակման ժամանակ</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Ձգանի թրթռում արգելափակման ժամանակ</value></data>
@@ -2829,6 +2857,7 @@
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Աուդիո</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Մակրոների ձայները և հայելացված համակարգային աուդիոն հնչում են ընտրված կառավարիչի ներկառուցված բարձրախոսով՝ USB կամ Bluetooth-ով։ Սարքն ընտրեք վերևի բացվող ցանկում։ Այստեղի բոլոր կարգավորումները հետևում են դրան։</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Ձայնի ելք</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Հայելացման աղբյուր, հապտիկա, ականջակալների ձայնի ուժգնություն, խաչաձև խառնում, Parametric EQ, սահմանափակիչ</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Ձայները ինքնաբերաբար ուղղվում են ընտրված կառավարիչին։ USB-ով կառավարիչի սեփական աուդիո վերջնակետը համընկնում է սարքակազմի կոնտեյներով։ Bluetooth-ով աուդիոն հոսում է Sony HID շրջանակներով։</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Հայելացման աղբյուր</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Նվագարկման որ սարքը հայելացնել կառավարիչի բարձրախոսին։ Այն խաղերը, որոնք որոշակի ձայներ ուղարկում են առանձին նվագարկման սարքի, կարող են ուղղվել այս սարքին։</value></data>
@@ -2902,6 +2931,7 @@
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>Ֆայլը PadForge-ի ընթեռնելի պրոֆիլ չէ։</value></data>
   <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Ընտրեք ձայն՝ {0}</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Ձայնային փաթեթներ</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Ձայնային մակրոների ձայների zip ֆայլեր</value></data>
   <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>Ձայնային փաթեթը .pfsounds ընդլայնմամբ ձայների մեկ zip ֆայլ է։ Ավելացրեք մեկն այստեղ, ապա ընտրեք դրա ձայները ցանկացած ձայնային մակրոյում։ PadForge-ը կարդում է անմիջապես ֆայլից և երբեք չի բացում այն։ Պահեք փաթեթները PadForge.exe-ի կողքին՝ շարժական մնալու համար։</value></data>
   <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>Ավելացնել փաթեթ…</value></data>
   <data name="Pad_Audio_Packages_Add_Tooltip" xml:space="preserve"><value>Ավելացնել առկա .pfsounds ֆայլ ցանկում։</value></data>
@@ -2927,6 +2957,7 @@
   <data name="Emoji_Category_Objects" xml:space="preserve"><value>Առարկաներ</value></data>
   <data name="Emoji_Category_Symbols" xml:space="preserve"><value>Նշաններ</value></data>
   <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>Պատկերակների փաթեթներ</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Մենյուի բջիջների պատկերների zip ֆայլեր</value></data>
   <data name="Pad_Menus_IconPackages_Desc" xml:space="preserve"><value>Պատկերակների փաթեթը .pficons ընդլայնմամբ պատկերների մեկ zip ֆայլ է։ Ավելացրեք մեկն այստեղ, ապա ընտրեք դրա պատկերակները ընտրացանկի ցանկացած վանդակում։ PadForge-ը կարդում է անմիջապես ֆայլից և երբեք չի բացում այն։ Պահեք փաթեթները PadForge.exe-ի կողքին՝ շարժական մնալու համար։</value></data>
   <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>Ավելացնել փաթեթ…</value></data>
   <data name="Pad_Menus_IconPackages_Add_Tooltip" xml:space="preserve"><value>Ավելացնել առկա .pficons ֆայլ ցանկում։</value></data>
@@ -3309,6 +3340,7 @@
   <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>Անցնել {0} շերտին</value></data>
   <data name="Macro_SwitchLayer_Hint" xml:space="preserve"><value>Այս սլոթը տեղափոխում է ընտրված շիֆթ շերտին։ Շերտը մնում է միացած մինչև մեկ այլ անցում, «Ամրակցել» կամ «Շրջանառել» ակտիվացնողը կամ պրոֆիլի փոփոխությունը։ «Հիմնական»-ը վերադարձնում է հիմնական շերտին։ Այս մակրոն սահմանափակեք վերևի շերտով, որպեսզի նույն կոճակը յուրաքանչյուր շերտում տարբեր անցում կատարի։</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>Guide կոճակի LED</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Guide կամ Home կոճակի շողքը</value></data>
   <data name="Pad_Lighting_GuideLed_Subtitle" xml:space="preserve"><value>Շողացող Guide կամ Home կոճակի պայծառությունը։ Xbox One և ավելի նոր կառավարիչները ընդունում են այն USB-ով։ 2015 թվականի Steam Controller-ը ընդունում է այն ցանկացած միացմամբ, և բոլոր Steam Controller-ները կիսում են մեկ պայծառություն։ Switch Pro Controller-ները և աջ Joy-Con-երը (առանձին, զույգված կամ լիցքավորման բռնակում) ընդունում են այն ցանկացած միացմամբ։</value></data>
   <data name="Pad_Lighting_GuideLed_Mode_Tooltip" xml:space="preserve"><value>«Սարքի լռելյայն»-ը թողնում է LED-ը ճիշտ այնպես, ինչպես սահմանել է կառավարիչի որոնվածքը։ «Ֆիքսված պայծառություն»-ը պահում է ստորև նշված մակարդակը։ «Մարտկոցի մակարդակ»-ը լիցքավորված մարտկոցի դեպքում ավելի պայծառ է և երբեք 10%-ից ցածր չի իջնում։ Xbox կառավարիչները ընդունում են Guide LED հրամանները միայն USB-ով, ուստի Bluetooth միացման դեպքում այս կարգավորումն ազդեցություն չունի։ Switch կառավարիչները ընդունում են Home LED հրամանները ցանկացած միացմամբ։</value></data>
   <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>Սարքի լռելյայն</value></data>
@@ -3673,6 +3705,7 @@
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Բաս շեյքերներ</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Այս վիրտուալ կառավարիչի ստացած խաղի թրթռոցը և հետադարձ ուժը ուղղորդում է աուդիո ելքին՝ որպես ցածր հաճախականության տոներ բաս շեյքերների և սաբվուֆերների համար։</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Թրթռոց դեպի աուդիո</value></data>
+  <data name="Pad_More_BassShakers" xml:space="preserve"><value>Ելքային սարք, ալիքներ, ուժեղացում, հնչերանգ յուրաքանչյուր շարժիչի համար</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Աշխատում է Xbox, DualShock 3, DualShock 4 / DualSense և Nintendo Switch Pro վիրտուալ կառավարիչների հետ, ինչպես նաև հետադարձ ուժով Extended վիրտուալ կառավարիչների, օրինակ մրցարշավային ղեկերի, և Steam Deck Controller-ի (Composite) հետ։ Խաղի հետադարձ կապը և «Փորձարկել թրթռոցը» նվագարկվում են աուդիո ելքով։ Մակրոյի թրթռոցը մնում է կառավարիչի վրա։</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Վերականգնել թրթռոցը դեպի աուդիո</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Ուղղորդել թրթռոցը աուդիո ելքին</value></data>
@@ -4111,6 +4144,7 @@
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Սպասում է FreeTrack-ի ընդհանուր հիշողության տվյալներին։</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>FreeTrack-ի ընդհանուր հիշողությունը հասանելի չէ։</value></data>
   <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Ղեկի անկյան թրթռոց</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Թրթռոց, որն ուժեղանում է, երբ ձողի առանցքը հեռանում է կենտրոնից</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Ավելացնում է անընդհատ թրթռոց, երբ ընտրված վիրտուալ ձողի առանցքը հեռանում է կենտրոնից։ Օգտագործում է բոլոր նշանակված աղբյուրների կապակցված ելքը։ «Բաժանել ըստ ուղղության» ռեժիմում բացասական շարժումը վարում է ձախ թրթռաշարժիչը, դրականը՝ աջը։ «Ձախ թրթռաշարժիչ» կամ «Աջ թրթռաշարժիչ» ընտրելիս երկու ուղղություններն էլ գնում են այդ մեկ թրթռաշարժիչին։ Xbox-ի և PlayStation-ի ելքի համար՝ թրթռոցով սարքերով։ Բացառում է ղեկերը, հաստատուն հետադարձ ուժով այլ սարքերը և Fanatec-ի ոտնակները։</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Միացնել ղեկի անկյան թրթռոցը</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Վիրտուալ առանցք</value></data>
@@ -4429,6 +4463,7 @@
   <data name="Status_FalconDriverDeclined" xml:space="preserve"><value>Windows-ը չտեղադրեց Force Dimension-ի դրայվերը։ Եթե Windows-ը հարցնի՝ վստահե՞լ Force Dimension-ին, ընտրեք Տեղադրել։</value></data>
   <data name="Status_FalconDriverNotBound" xml:space="preserve"><value>Դրայվերը տեղադրված է, բայց Falcon-ը դեռ չի անցել դրան։ Անջատեք Falcon-ը և նորից միացրեք։</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>Հարված, ցնցում, ամրացում, նախաբեռնում, ծանրություն</value></data>
   <data name="Pad_Falcon_Description" xml:space="preserve"><value>PadForge-ը հաշվում է Falcon-ի բռնակի վրա ազդող յուրաքանչյուր ուժ վայրկյանում մոտ հազար անգամ՝ ըստ բռնակի դիրքի և այն բանի, ինչ խաղում է խաղը։ Այս կարգավորումները պատկանում են այս սլոթին։</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>Վերականգնել Novint Falcon-ը</value></data>
   <data name="Pad_Falcon_Feel" xml:space="preserve"><value>Զգացողություն</value></data>
@@ -4590,4 +4625,5 @@
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0}՝ {1}, մինչ պահված է</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0}՝ {1}, մինչև դադարեցումը</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>Դադարեցնել ձգանի էֆեկտը՝ {0}</value></data>
+  <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Վերահսկել այս սարքի լուսավորությունը, լուսավորության պահում</value></data>
 </root>

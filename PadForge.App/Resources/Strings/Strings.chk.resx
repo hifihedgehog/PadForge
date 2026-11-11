@@ -606,6 +606,7 @@
   <data name="Falcon_Status_Line_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Settings_Falcon_Title" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>Kick, chechchech, brace, preload, gravity</value></data>
   <data name="Pad_Falcon_NewtonsUnit" xml:space="preserve"><value>N</value></data>
   <data name="Telemetry_Game_Forza" xml:space="preserve"><value>Forza Motorsport me Forza Horizon</value></data>
   <data name="Telemetry_Game_EaSportsWrc" xml:space="preserve"><value>EA SPORTS WRC</value></data>
@@ -615,4 +616,14 @@
   <data name="Telemetry_Game_TruckSimulator" xml:space="preserve"><value>Euro Truck Simulator 2 me American Truck Simulator</value></data>
   <data name="Telemetry_Formats_KindJson" xml:space="preserve"><value>JSON</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Apachaatá eú device</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Chechchech mi watteló lupwen eú stick axis a towu seni lukalapan</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Eú pwóór mi nimenim tori kopwe aúkúúkú</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Chechchech seni bass lon ngingiin ewe system</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Atoto chechchechen ekkewe motor mi lap ngeni ekkewe trigger</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Ataraka ekkewe gesture won ei touchpad</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Swipe, tap, pinch, napanap</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Saramen LED, Napanapen chón urumwot, Mute LED Mode</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Zip file mi kepich ngingiin ren sound macro</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Zip file mi kepich image ren menu cell</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Gain ren eú me eú motor, trigger rumble, siwilin motor</value></data>
 </root>

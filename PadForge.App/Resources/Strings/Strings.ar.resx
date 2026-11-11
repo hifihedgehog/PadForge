@@ -861,6 +861,7 @@
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>الأزندة النبضية</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>الأزندة النبضية</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>كسب كل زناد، تبديل المحركين، اهتزازات الأزندة التكيفية</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>يمرر أوامر محرك كل زناد (Xbox Impulse Triggers) من وحدة التحكم الظاهرية إلى وحدة التحكم الفعلية المعينة من نوع Xbox One أو Elite أو Series. اهتزاز الأزندة الذي تشغّله اللعبة يمر تلقائيا. عناصر التحكم أدناه تضبط الشدة لكل زناد.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>الزناد الأيسر</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>الزناد الأيمن</value></data>
@@ -879,7 +880,9 @@
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>إعادة ضبط الزناد الأيسر</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>إعادة ضبط الزناد الأيمن</value></data>
   <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>قوة ثابتة للزناد</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>قوة ثابتة على محرك كل زناد</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>توجيه الأزندة</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>يرسل اهتزاز المحركين الرئيسيين إلى الأزندة</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>توجيه محركات الاهتزاز الرئيسية إلى قناة الأزندة، لكل زناد على حدة. يعمل مع اهتزاز XInput وردود فعل القوة. يمكن أن يقيده مدخل تفعيل، فلا يطن الزناد إلا أثناء ضغطك المستمر على زر.</value></data>
   <data name="Pad_ResetTriggerRouting" xml:space="preserve"><value>إعادة ضبط توجيه الأزندة</value></data>
   <data name="Pad_TriggerRouting_LeftTrigger" xml:space="preserve"><value>الزناد الأيسر</value></data>
@@ -911,6 +914,7 @@
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>إعادة ضبط الزناد الأيسر</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>إعادة ضبط الزناد الأيمن</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>اهتزاز الأزندة بجهير الصوت</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>اهتزاز الأزندة من جهير صوت النظام</value></data>
   <data name="Pad_AudioTriggerRumble_Description" xml:space="preserve"><value>تشغيل محركات الأزندة بجهير صوت النظام. قوة الزناد التي تشغّلها اللعبة تتجاوزه ما دامت نشطة.</value></data>
   <data name="Pad_AudioTriggerRumble_Toggle" xml:space="preserve"><value>تشغيل محركات الأزندة من الصوت</value></data>
   <data name="Pad_AudioTriggerRumble_Sensitivity" xml:space="preserve"><value>الحساسية</value></data>
@@ -1008,6 +1012,7 @@
   <data name="Pad_Lighting_MicLed_FollowDevice" xml:space="preserve"><value>اتباع جهاز الصوت</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice_Picker" xml:space="preserve"><value>جهاز الصوت</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>مصابيح المؤشرات</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>سطوع LED، نمط اللاعب، وضع مصباح LED لكتم الصوت</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>صف رقم اللاعب (5 مصابيح LED أسفل لوحة اللمس) ومصباح LED لكتم الصوت أعلى الميكروفون. عنصر التحكم في السطوع لا يؤثر فعليا إلا في صف اللاعب. يتيح البرنامج الثابت حالات مصباح LED لكتم الصوت (إيقاف / ثابت / نبض) لكن بلا سجل مستقل لسطوع مصباح الكتم.</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>إعادة ضبط شريط الإضاءة</value></data>
   <data name="Pad_ResetIndicatorLeds" xml:space="preserve"><value>إعادة ضبط مصابيح المؤشرات</value></data>
@@ -1394,6 +1399,7 @@
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>معايرة المركز</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>نقطة المركز</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>المنطقة الميتة</value></data>
+  <data name="Pad_More_Stick" xml:space="preserve"><value>إزاحات المركز، شكل المنطقة الميتة وقيمها لكل محور، منحنى لكل محور، النطاق، التوجيه</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>النطاق</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>«معايرة الحدود» هي الطريقة الموصى بها لضبط العصا. تمسح الحافة التي تستطيع العصا بلوغها فعليا، ثم تعيد تحجيم كل موضع بالتناسب مع تلك الحافة المقيسة، فتتطابق الحركة الأصلية الكاملة، عند كل زاوية وكل انحراف، مع دائرة مثالية دون اقتطاع شيء. أشرطة التمرير الأربعة أدناه تحد المحاور الأساسية فقط. استخدمها لتقييد النطاق عمدا، لا لتصحيحه.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>جارٍ أخذ العينات...</value></data>
@@ -1727,6 +1733,7 @@
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>رقم لوحة اللمس</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>لوحة اللمس في وحدة التحكم هذه التي تسري عليها الإعدادات أدناه. تحتفظ كل لوحة لمس بإيماءاتها وإحساس الماوس ومنطقة المؤشر الخاصة بها.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>اكتشاف الإيماءات</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>يفعّل إيماءات لوحة اللمس هذه</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>تفعيل الإيماءات على لوحة اللمس هذه</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>المفتاح الرئيسي للوحة اللمس هذه. عند الإيقاف، لا يعمل أي واصف إيماءة للوحة اللمس هذه. تعيينات الإصبع / الضغطة / الموضع الموجودة تظل تعمل.</value></data>
   <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>التعرف على</value></data>
@@ -1737,6 +1744,7 @@
   <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>فترة التهدئة</value></data>
   <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>بعد انطلاق إيماءة، يتم تجاهل الإيماءات الجديدة على لوحة اللمس هذه لهذا العدد من المللي ثانية. يمنع الانطلاق المتكرر الناتج عن حركة سريعة ذهابا وإيابا.</value></data>
   <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>الإيماءات المدمجة</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>السحب، النقر، القرص، الأشكال</value></data>
   <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>سحب في 4 اتجاهات (أعلى / أسفل / يسار / يمين)</value></data>
   <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>سحب في 8 اتجاهات (يضيف الاتجاهات القطرية)</value></data>
   <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>مسافة السحب (0..1)</value></data>
@@ -1762,6 +1770,7 @@
   <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>إيماءات الأشكال (دائرة، مربع، مثلث، Z، علامة صح)</value></data>
   <data name="Pad_Touchpad_MatchThreshold" xml:space="preserve"><value>عتبة مطابقة الشكل</value></data>
   <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>الإيماءات المخصصة</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>سجّل إيماءاتك الخاصة</value></data>
   <data name="Pad_Touchpad_RecordNew" xml:space="preserve"><value>+ تسجيل إيماءة جديدة</value></data>
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>لا توجد إيماءات مخصصة مسجلة لملف التعريف هذا. انقر «تسجيل إيماءة جديدة» لالتقاط إيماءة.</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>إصبع واحد</value></data>
@@ -1769,6 +1778,7 @@
 
   <!-- Stick / D-pad output card -->
   <data name="Pad_Touchpad_Stick_Header" xml:space="preserve"><value>إخراج العصا / لوحة الاتجاهات</value></data>
+  <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>استخدام لوحة اللمس كعصا أو لوحة اتجاهات</value></data>
   <data name="Pad_Touchpad_Stick_Subtitle" xml:space="preserve"><value>تحويل لوحة اللمس إلى عصا تناظرية ظاهرية أو لوحة اتجاهات. يتثبت الإخراج حيث ينزل إصبعك أول مرة. الموضع الحالي نسبة إلى نقطة التثبيت تلك يحدد قيمة العصا و(اختياريا) قيم اتجاهات لوحة الاتجاهات المثبتة.</value></data>
   <data name="Pad_Touchpad_StickEnabled" xml:space="preserve"><value>تفعيل إخراج العصا / لوحة الاتجاهات</value></data>
   <data name="Pad_Touchpad_StickEnabled_Tooltip" xml:space="preserve"><value>يظهر واصفات «العصا X» و«العصا Y» ولوحة الاتجاهات الخاصة بلوحة اللمس في منتقي التعيين. يعمل بجانب مصادر أصابع لوحة اللمس وإيماءاتها الموجودة، لا بدلا منها.</value></data>
@@ -1783,6 +1793,7 @@
 
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>إخراج الماوس</value></data>
+  <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>العكس، الزخم، الاستجابة، التسارع، تعزيز الدفعة</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>يضبط سرعة المؤشر عندما يكون إصبع لوحة اللمس معينا إلى الماوس X/Y في وحدة تحكم ظاهرية من نوع لوحة مفاتيح / ماوس. القيمة الافتراضية 1.0. ارفع أي محور لمؤشر أسرع، واخفضه لمؤشر أبطأ. العكس يقلب أي محور.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>حساسية الماوس X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>معامل ضرب لفرق الحركة الأفقي (لوحة اللمس ← الماوس). أقل من 1.0 يبطئ المؤشر. أكثر من 1.0 يسرّعه.</value></data>
@@ -1810,6 +1821,7 @@
   <data name="Pad_Touchpad_RotateThreshold_Tooltip" xml:space="preserve"><value>مقدار الدوران اللازم للإصبعين قبل انطلاق التدوير.</value></data>
   <data name="Pad_ResetTouchpadRotateThresholdDegrees" xml:space="preserve"><value>إعادة ضبط عتبة التدوير</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>المؤشر المطلق</value></data>
+  <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>الجزء من الشاشة الذي تصل إليه اللوحة</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>يضبط مصدري «مؤشر لوحة اللمس X/Y»، اللذين ينقلان المؤشر إلى موضع إصبعك على اللوحة (عيّنهما إلى الماوس X/Y في وحدة تحكم ظاهرية من نوع لوحة مفاتيح / ماوس). الحجم 1.00 مع المركز 0.50 يطابق اللوحة مع الشاشة كلها. صغّر الحجم لحصر المؤشر في جزء من الشاشة، وحرّك المركز لتحديد موضعه.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>عرض المنطقة</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>عرض مساحة الشاشة التي تطابقها هذه اللوحة، كنسبة من عرض الشاشة. 1.00 تغطي العرض كله؛ 0.50 تحصر المؤشر في نصف الشاشة.</value></data>
@@ -1822,12 +1834,14 @@
 
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>ردود الفعل اللمسية للسحب</value></data>
+  <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>نقرات أثناء تحرك إصبعك</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>يشغّل نبضات لمسية في وحدة التحكم أثناء تحرك إصبعك على لوحة اللمس هذه، مثل نقرات لوحة التتبع في Steam Input. وحدات Steam Controller وجهاز Steam Deck تنقر المشغل الموجود تحت اللوحة؛ أما DualSense وDualShock 4 فتنبض محركات الاهتزاز.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>تفعيل ردود الفعل اللمسية للسحب</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>يطلق نقرة لمسية قصيرة كلما تحرك الإصبع مسافة محددة على هذه اللوحة. نزول الإصبع أو ضغط اللوحة لا يطلق نقرة أبدا. متوقف افتراضيا.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>شدة النبضة</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity_Tooltip" xml:space="preserve"><value>شدة كل نقرة. اهتزاز اللعبة له الأولوية دائما عندما يكون أقوى.</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Header" xml:space="preserve"><value>ضغط اصطناعي</value></data>
+  <data name="Pad_SyntheticPressure_FoldHint" xml:space="preserve"><value>ضغط للوحات التي تبلغ عن اللمس كضغط كامل</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Subtitle" xml:space="preserve"><value>يحاكي أزرار الضغط في DualShock 2 / DualShock 3 على اللوحات التي تبلغ عن اللمس كضغط كامل (DualShock 4 وDualSense وSteam Controller 2015). ما دام مفعلا، تقرأ مصادر تعيين «الضغط» لهذا الجهاز عدم اللمس على أنه 0%، واللمس الساكن على أنه «مستوى ضغط اللمس»، وضغطة اللوحة على أنها 100%.</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled" xml:space="preserve"><value>تفعيل الضغط الاصطناعي</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled_Tooltip" xml:space="preserve"><value>يشكّل مصادر تعيين «الضغط» لهذا الجهاز في ثلاث درجات: عدم اللمس يقرأ 0%، واللمس الساكن يقرأ «مستوى ضغط اللمس»، وضغط اللوحة يقرأ 100%. متوقف افتراضيا، مما يبقي القراءات الخام على اللوحات ذات الضغط التناظري الحقيقي.</value></data>
@@ -2005,7 +2019,9 @@
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>اضبط كيفية تحكم مستشعر الحركة في ذراع التحكم هذا في إخراج الماوس والعصا. عاير على سطح مستو لتصفير الانجراف في وضع السكون، ثم اضبط الحساسية والتنعيم وقواعد التفعيل كما يناسبك.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>المعايرة</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>الحساسية</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>الوحدات، الفضاء، عكس المحاور، معايرة العالم الحقيقي</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>تشكيل الاستجابة</value></data>
+  <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>المنطقة الميتة، التنعيم، التسارع، منحنى الإخراج</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>الفضاء</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>كيفية تفسير حركة الجيروسكوب. «محلي» يستخدم محاور وحدة التحكم الخام. «اللاعب» يسقط الحركة الأفقية على المحور الرأسي في العالم الحقيقي (الجاذبية) فتدير لفة المعصم نفسها الكاميرا دائما، مهما كانت طريقة إمساكك بذراع التحكم. «العالم» يعيد كذلك إسقاط الحركة العمودية على محاور العالم.</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>طريقة الإمساك</value></data>
@@ -2019,11 +2035,13 @@
   <data name="Pad_ResetGyroInvertYaw" xml:space="preserve"><value>إعادة ضبط عكس الانعراج</value></data>
   <data name="Pad_ResetGyroInvertRoll" xml:space="preserve"><value>إعادة ضبط عكس الدحرجة</value></data>
   <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>البوصلة</value></data>
+  <data name="Pad_Compass_FoldHint" xml:space="preserve"><value>يثبت الانعراج على الشمال المغناطيسي</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>تحتوي وحدة التحكم هذه على مقياس مغناطيسية. تثبيت الانعراج على الشمال المغناطيسي يزيل الانجراف الأفقي البطيء من التصويب بالجيروسكوب. عاير أولا: اضغط «معايرة»، ثم أدر وحدة التحكم في كل الاتجاهات على شكل الرقم 8 لبضع ثوان، ثم اضغط مرة أخرى.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>تثبيت الانعراج على البوصلة</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>يضيف معدلا تصحيحيا صغيرا يسحب التصويب الأفقي نحو الاتجاه المغناطيسي، فلا يتراكم الانجراف. يتطلب معايرة مخزنة لمقياس المغناطيسية. العينات التي يشوشها معدن أو مغناطيس قريب يتم رفضها تلقائيا.</value></data>
   <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>إعادة الضبط إلى الافتراضي (متوقف)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>محاكاة الانحدار والدحرجة</value></data>
+  <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>الانحدار والدحرجة من مقياس التسارع</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>جيروسكوب وحدة التحكم هذه لا يستشعر سوى الدوران يمينا ويسارا. عند تشغيل المحاكاة، يشتق PadForge الانحدار والدحرجة من مقياس التسارع ويرسلهما مع انعراج الجيروسكوب إلى صفوف التعيين وإلى حركة وحدة التحكم الظاهرية. مقياس التسارع لا يميز الدفع من الإمالة، لذا تحريك وحدة التحكم جانبا أو إلى الأمام دون تدويرها يقرأ كدوران وجيز.</value></data>
   <data name="Settings_GyroSimulation" xml:space="preserve"><value>محاكاة الانحدار والدحرجة</value></data>
   <data name="Settings_GyroSimulation_Tooltip" xml:space="preserve"><value>يملأ الانحدار والدحرجة بمعدلات مشتقة من مقياس التسارع. يبقى الانعراج قراءة الجيروسكوب نفسه. متوقف افتراضيا.</value></data>
@@ -2064,6 +2082,7 @@
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>أسفل (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>أعلى (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>التفعيل</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>زر تفعيل التصويب، وضع التفعيل، عتبة التصويب السهل</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>شروط اختيارية تحدد متى يكون الجيروسكوب نشطا. يمكن إعداد كل من انحراف العصا اليمنى وزر تفعيل التصويب. لا يعمل الجيروسكوب إلا ما دام كل شرط معد محققا.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>محلي</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>اللاعب</value></data>
@@ -2114,6 +2133,7 @@
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>إمالة الجيروسكوب X</value></data>
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>إمالة الجيروسكوب Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>إمالة الجيروسكوب</value></data>
+  <data name="Pad_GyroTilt_FoldHint" xml:space="preserve"><value>نطاق الإمالة الكاملة، المنطقة الميتة للإمالة</value></data>
   <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>نطاق مدخلي «إمالة الجيروسكوب X» / «إمالة الجيروسكوب Y»: ثبّت الإمالة فتثبت العصا على انحرافها، مثل وضع Joystick Deflection في Steam. الانحراف الكامل يكون عند النطاق الذي تضبطه هنا؛ و«إعادة توسيط الجيروسكوب» تعيد تصفير وضعية الإمساك الساكنة. الانعراج (تدوير وحدة التحكم وهي مسطحة) لا تلتقطه الجاذبية ولا يحرّك هذين المدخلين.</value></data>
   <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>نطاق الإمالة الكاملة</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>درجات الإمالة عن وضعية الإمساك الساكنة التي تحتسب انحرافا كاملا للعصا. الأصغر = أكثر حساسية. 25° هي القيمة الأكثر شيوعا في إعدادات Steam.</value></data>
@@ -2314,6 +2334,7 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>أدنى نطاق Y (أسفل)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>أقصى نطاق Y (أعلى)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>المحور X</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>المحوران</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>المحور Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>النطاق</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>مضاد المنطقة الميتة</value></data>
@@ -2324,6 +2345,7 @@
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>ردود فعل القوة / الاهتزاز / ردود الفعل اللمسية</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>كسب كل محرك، اهتزاز الأزندة، تبديل المحركين</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>الكسب الإجمالي</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>المحرك الأيسر</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>المحرك الأيمن</value></data>
@@ -2335,6 +2357,7 @@
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>قوة ثابتة</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>قوة ثابتة إلى أن توقفها</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>تطبيق قوة مستمرة على هذا الجهاز إلى أن توقفها. القوة التي تشغّلها اللعبة من أي مصدر تتجاوزها ما دامت نشطة، وتعود القوة الثابتة عندما تتوقف اللعبة.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>تطبيق قوة ثابتة</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>اسحب داخل الشبكة لتحديد الاتجاه والشدة.</value></data>
@@ -2661,6 +2684,7 @@
 
   <!-- ═══ Audio Bass Rumble ═══ -->
   <data name="Settings_AudioRumble" xml:space="preserve"><value>الاهتزاز بالصوت</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>اهتزاز من جهير صوت النظام</value></data>
   <data name="Settings_AudioRumbleDesc" xml:space="preserve"><value>تشغيل اهتزاز وحدة التحكم بترددات الجهير في صوت النظام.</value></data>
   <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>تفعيل الاهتزاز بالصوت</value></data>
   <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>الحساسية</value></data>
@@ -2771,6 +2795,8 @@
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>إعادة ضبط المنطقة الميتة الخارجية للميل</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>إعادة ضبط اتجاه وحدة التحكم</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>التوجيه بالحركة</value></data>
+  <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° إلى {1}°</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>المنطقة الميتة للميل، اتجاه وحدة التحكم</value></data>
   <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>إعدادات مدخل «ميل الحركة»: أمل وحدة التحكم كعجلة القيادة. عيّن «ميل الحركة» إلى محور عصا من القائمة المنسدلة للمدخلات في «التعيينات».</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>إعادة ضبط التوجيه بالحركة</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>عصا الالتفات السريع (العصا اليمنى)</value></data>
@@ -2779,6 +2805,7 @@
   <data name="Mapping_LeftStickRing" xml:space="preserve"><value>حلقة العصا اليسرى</value></data>
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>حلقة العصا اليمنى</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>عصا الالتفات السريع</value></data>
+  <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>ضبط مدخلات عصا الالتفات السريع</value></data>
   <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>إعدادات مدخلات عصا الالتفات السريع (Flick Stick): وجّه العصا فتلتفت الكاميرا إلى الاتجاه نفسه، وحرّكها على الحافة للالتفات الدقيق. عيّن «عصا الالتفات السريع (العصا اليمنى)» إلى «الماوس X» من القائمة المنسدلة للمدخلات في «التعيينات»، في أي طبقة.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>إعادة ضبط عصا الالتفات السريع</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>نقاط لكل 360°</value></data>
@@ -2815,6 +2842,7 @@
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>عندما تتفعل الطبقة التي تحتوي عصا الالتفات السريع والعصا منحرفة بالفعل، ينطلق الالتفات فورا. الإيقاف يبقي الكاميرا ثابتة ويتتبع الدوران من زاوية العصا الحالية.</value></data>
   <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>إعادة ضبط السماح بالالتفات عند التفعيل</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>ردود فعل أقصى انعطاف</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>إشارة عند أقصى انعطاف لعصا في وضع توجيه</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>عند إدارة عصا مضبوطة على وضع توجيه حتى أقصى انعطاف، يتم تشغيل إشارة (اهتزاز أو زناد أو شريط إضاءة) لتشعر بالحد. كلها متوقفة افتراضيا.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>نبضة اهتزاز عند أقصى انعطاف</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>اهتزاز الزناد عند أقصى انعطاف</value></data>
@@ -2870,6 +2898,7 @@
   <data name="Pad_Audio_Header" xml:space="preserve"><value>الصوت</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>أصوات الماكرو وصوت النظام المنسوخ تعمل عبر مكبر الصوت المدمج في وحدة التحكم المحددة، عبر USB أو Bluetooth. اختر الجهاز من القائمة المنسدلة أعلاه. كل إعداد هنا يتبعه.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>إخراج الصوت</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>مصدر النسخ، ردود الفعل اللمسية، مستوى صوت سماعات الرأس، التغذية المتقاطعة، المعادل البارامتري، المحدد</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>يتم توجيه الأصوات إلى وحدة التحكم المحددة تلقائيا. عبر USB تتم مطابقة نقطة نهاية الصوت الخاصة بذراع التحكم بحسب حاوية العتاد. عبر Bluetooth يتم بث الصوت في إطارات Sony HID.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>مصدر النسخ</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>جهاز التشغيل الذي يتم نسخ صوته إلى مكبر صوت وحدة التحكم. الألعاب التي ترسل أصواتا محددة إلى جهاز تشغيل مستقل يمكنها استهداف هذا الجهاز.</value></data>
@@ -2943,6 +2972,7 @@
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>الملف ليس ملف تعريف PadForge قابلا للقراءة.</value></data>
   <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>اختر صوتا من {0}</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>حزم الصوت</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>ملفات zip من الأصوات لماكرو الصوت</value></data>
   <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>حزمة الصوت ملف zip واحد من الأصوات بالامتداد pfsounds. أضف حزمة هنا، ثم اختر أصواتها في أي ماكرو صوت. يقرأ PadForge من الملف مباشرة ولا يفك ضغطه أبدا. أبق الحزم بجوار PadForge.exe لتبقى محمولة.</value></data>
   <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>إضافة حزمة…</value></data>
   <data name="Pad_Audio_Packages_Add_Tooltip" xml:space="preserve"><value>إضافة ملف pfsounds موجود إلى القائمة.</value></data>
@@ -2968,6 +2998,7 @@
   <data name="Emoji_Category_Objects" xml:space="preserve"><value>الأشياء</value></data>
   <data name="Emoji_Category_Symbols" xml:space="preserve"><value>الرموز</value></data>
   <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>حزم الأيقونات</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>ملفات zip من الصور لخلايا القوائم</value></data>
   <data name="Pad_Menus_IconPackages_Desc" xml:space="preserve"><value>حزمة الأيقونات ملف zip واحد من الصور بالامتداد pficons. أضف حزمة هنا، ثم اختر أيقوناتها في أي خلية قائمة. يقرأ PadForge من الملف مباشرة ولا يفك ضغطه أبدا. أبق الحزم بجوار PadForge.exe لتبقى محمولة.</value></data>
   <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>إضافة حزمة…</value></data>
   <data name="Pad_Menus_IconPackages_Add_Tooltip" xml:space="preserve"><value>إضافة ملف pficons موجود إلى القائمة.</value></data>
@@ -3350,6 +3381,7 @@
   <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>التبديل إلى الطبقة {0}</value></data>
   <data name="Macro_SwitchLayer_Hint" xml:space="preserve"><value>ينقل هذه الخانة إلى طبقة Shift المختارة. تبقى الطبقة مفعلة إلى أن يحدث تبديل آخر، أو يعمل مدخل تفعيل من نوع «تثبيت» أو «دورة»، أو يتبدل ملف التعريف. «الأساسية» تعيد إلى الطبقة الأساسية. اقصر هذا الماكرو على طبقة من الأعلى ليقفز الزر نفسه قفزة مختلفة في كل طبقة.</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>مصباح LED لزر Guide</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>توهج زر Guide أو Home</value></data>
   <data name="Pad_Lighting_GuideLed_Subtitle" xml:space="preserve"><value>سطوع زر Guide أو Home المضيء. وحدات تحكم Xbox One وما بعدها تقبله عبر USB. وحدة Steam Controller لعام 2015 تقبله على أي اتصال، وكل وحدات Steam Controller تتشارك سطوعا واحدا. وحدات Switch Pro Controller ووحدات Joy-Con اليمنى (منفردة أو مقترنة أو في مقبض الشحن) تقبله على أي اتصال.</value></data>
   <data name="Pad_Lighting_GuideLed_Mode_Tooltip" xml:space="preserve"><value>«افتراضي الجهاز» يترك مصباح LED تماما كما ضبطه البرنامج الثابت لوحدة التحكم. «سطوع ثابت» يثبت المستوى أدناه. «مستوى البطارية» يجعل البطارية الأكثر امتلاء أسطع ولا ينزل أبدا عن 10%. وحدات تحكم Xbox تقبل أوامر LED لزر Guide عبر USB فقط، لذا لا تأثير لهذا الإعداد على اتصال Bluetooth. وحدات تحكم Switch تقبل أوامر LED لزر Home على أي اتصال.</value></data>
   <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>افتراضي الجهاز</value></data>
@@ -3714,6 +3746,7 @@
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>هزازات الجهير</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>يوجه اهتزاز اللعبة وردود فعل القوة التي تستقبلها وحدة التحكم الظاهرية هذه إلى مخرج صوت في صورة نغمات منخفضة التردد لهزازات الجهير ومضخمات الصوت الفرعية.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>الاهتزاز إلى صوت</value></data>
+  <data name="Pad_More_BassShakers" xml:space="preserve"><value>جهاز الإخراج، القنوات، الكسب، نغمة لكل محرك</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>يعمل مع وحدات التحكم الظاهرية Xbox وDualShock 3 وDualShock 4 / DualSense وNintendo Switch Pro، ومع وحدات التحكم الظاهرية الموسعة ذات ردود فعل القوة، مثل عجلات السباق، ووحدة Steam Deck Controller (Composite). ردود فعل اللعبة و«اختبار الاهتزاز» تعمل عبر مخرج الصوت. اهتزاز الماكرو يبقى على وحدة التحكم.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>إعادة ضبط الاهتزاز إلى صوت</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>توجيه الاهتزاز إلى مخرج صوت</value></data>
@@ -4152,6 +4185,7 @@
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>بانتظار بيانات الذاكرة المشتركة FreeTrack.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>الذاكرة المشتركة FreeTrack غير متوفرة.</value></data>
   <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>اهتزاز زاوية التوجيه</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>اهتزاز يزداد كلما ابتعد محور العصا عن المركز</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>يضيف اهتزازا مستمرا كلما ابتعد محور العصا الظاهرية المحدد عن المركز. يستخدم المخرج المعين من كل المصادر المعينة. مع تقسيم حسب الاتجاه، تشغّل الحركة السالبة المحرك الأيسر والموجبة الأيمن. اختيار المحرك الأيسر أو المحرك الأيمن يضع الاتجاهين على ذلك المحرك وحده. لإخراج Xbox وPlayStation مع أجهزة تدعم الاهتزاز. يتخطى العجلات والأجهزة الأخرى ذات ردود فعل القوة الثابتة ودواسات Fanatec.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>تفعيل اهتزاز زاوية التوجيه</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>المحور الظاهري</value></data>
@@ -4477,6 +4511,7 @@
   <data name="Status_FalconDriverDeclined" xml:space="preserve"><value>لم يثبّت Windows برنامج تشغيل Force Dimension. إذا سأل Windows هل تثق بـ Force Dimension، فاختر تثبيت.</value></data>
   <data name="Status_FalconDriverNotBound" xml:space="preserve"><value>تم تثبيت برنامج التشغيل، لكن Falcon لم ينتقل إليه. افصل Falcon ثم أعد توصيله.</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>الارتداد، الهز، التثبيت، الحمل المسبق، الجاذبية</value></data>
   <data name="Pad_Falcon_Description" xml:space="preserve"><value>يحسب PadForge كل قوة على مقبض Falcon نحو ألف مرة في الثانية، بحسب موضع المقبض وما تعرضه اللعبة. هذه الإعدادات خاصة بهذه الخانة.</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>إعادة ضبط Novint Falcon</value></data>
   <data name="Pad_Falcon_Feel" xml:space="preserve"><value>الإحساس</value></data>
@@ -4638,4 +4673,5 @@
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} على {1} أثناء الضغط</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} على {1} حتى الإيقاف</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>إيقاف تأثير الزناد على {0}</value></data>
+  <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>التحكم في إضاءة هذا الجهاز، الاستحواذ على الإضاءة</value></data>
 </root>

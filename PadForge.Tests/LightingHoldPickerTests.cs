@@ -529,9 +529,12 @@ namespace PadForge.Tests
             // The switch and the hold are the Lighting Control card's rows,
             // the hold last, and the route line stays with the tab's text
             // above the cards (#557: no setting sits outside a card).
+            // The card folds to one line since #574, and its rows are the
+            // fold card's one panel.
             var card = Named("PeripheralLightingCard");
-            Assert.Equal("{StaticResource CardBorder}", (string)card.Attribute("Style"));
-            var rows = card.Elements().Single().Elements().Select(e => (string)e.Attribute(x + "Name")).ToList();
+            Assert.Equal("FoldCard", card.Name.LocalName);
+            var rows = card.Elements().Single(e => e.Name.LocalName == "StackPanel")
+                .Elements().Select(e => (string)e.Attribute(x + "Name")).ToList();
             int control = rows.IndexOf("PeripheralLightingControlRow");
             Assert.True(control >= 0);
             Assert.Equal("PeripheralClaimLevelRow", rows[control + 1]);
@@ -601,8 +604,11 @@ namespace PadForge.Tests
             string[] settings = { "CheckBox", "ComboBox", "Slider", "TextBox", "ToggleSwitch", "RadioButton", "SettingResetButton" };
             var loose = scroller.Descendants()
                 .Where(n => settings.Contains(n.Name.LocalName))
+                // A card is a border in the card style, or a card that
+                // folds to one line (#574), which draws that border itself.
                 .Where(n => !n.Ancestors().TakeWhile(a => a != scroller)
-                    .Any(a => a.Name.LocalName == "Border" && ((string)a.Attribute("Style") ?? "").Contains("CardBorder")))
+                    .Any(a => a.Name.LocalName == "FoldCard"
+                        || (a.Name.LocalName == "Border" && ((string)a.Attribute("Style") ?? "").Contains("CardBorder"))))
                 .Select(n => n.Name.LocalName + " " + ((string)n.Attribute("Content") ?? (string)n.Attribute("AutomationProperties.AutomationId") ?? ""))
                 .ToList();
             Assert.True(loose.Count == 0, "outside a card: " + string.Join("; ", loose));

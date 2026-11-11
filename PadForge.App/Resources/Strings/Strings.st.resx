@@ -951,6 +951,7 @@
   <data name="Settings_Falcon" xml:space="preserve"><value>Tsamaisa Novint Falcon</value></data>
   <data name="Status_InstallingFalconDriver" xml:space="preserve"><value>Ho kenya driver ya Falcon ya Force Dimension…</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>Ho raha, ho sisinya, tshehetso, preload, kgoheli</value></data>
   <data name="Pad_Falcon_Feel_Joystick" xml:space="preserve"><value>Joystick</value></data>
   <data name="Pad_Falcon_KickButton" xml:space="preserve"><value>Konopo ya ho raha</value></data>
   <data name="Pad_Falcon_Button1" xml:space="preserve"><value>Konopo 1</value></data>
@@ -1021,4 +1022,17 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Motsamao le ho Ama</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Mabone le Molumo</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Macros le Dimenyu</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Tshupo ha stick e fihla pheletsong mokgweng wa ho kganna</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Matla a tsitsitseng ho fihlela o a tima</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>E romela ho thothomela ha di-motor tse kgolo ho di-trigger</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Ho thothomela ha trigger ho tswa ho bass ya modumo wa sistimi</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Di-deadzone tsa ho sekama, Tsela eo controller e lebileng ka yona</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>E bulela di-gesture tsa touchpad ena</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Ho swaipa, ho tobetsa, ho kopanya menwana, dibopeho</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Rekota tsa hao</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Kganya ya LED, Paterone ya sebapadi, Mokgwa wa LED ya ho kgutsisa</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Kganya ya konopo ya Guide kapa Home</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Difaele tsa zip tsa medumo bakeng sa di-macro tsa modumo</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Difaele tsa zip tsa ditshwantsho bakeng sa disele tsa menu</value></data>
+  <data name="Pad_More_Stick" xml:space="preserve"><value>Di-offset tsa bohareng, sebopeho sa deadzone le ditekanyetso tsa axis ka nngwe, curve bakeng sa axis ka nngwe, sebaka, ho kganna</value></data>
 </root>

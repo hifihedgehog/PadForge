@@ -458,6 +458,7 @@
 
   <!-- ═══ Audio Bass Rumble ═══ -->
   <data name="Settings_AudioRumble" xml:space="preserve"><value>Okukankana kw'eddoboozi</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Okukankana okuva ku bass mu ddoboozi lya kompyuta</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Kwata</value></data>
   <data name="Pad_Shift_KindButton" xml:space="preserve"><value>Eppeesa</value></data>
@@ -677,6 +678,7 @@
   <data name="Falcon_PickLibrary" xml:space="preserve"><value>Londa dhd64.dll…</value></data>
   <data name="Settings_Falcon_Title" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>Okusamba, okukankanya, okunyweza, okusooka, obuzito</value></data>
   <data name="Pad_Falcon_Button1" xml:space="preserve"><value>Eppeesa 1</value></data>
   <data name="Pad_Falcon_Button2" xml:space="preserve"><value>Eppeesa 2</value></data>
   <data name="Pad_Falcon_Button3" xml:space="preserve"><value>Eppeesa 3</value></data>
@@ -707,4 +709,17 @@
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>Ekiseera</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>Ebyongerwako</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Ettaala n'Eddoboozi</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Akabonero stick bw'etuuka ku nkomerero mu nkola y'okuvuga</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Amaanyi ag'olubeerera okutuusa lw'ogazikiza</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Esindika okukankana kwa mmota enkulu ku triggers</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Okukankana kwa triggers okuva ku bass mu ddoboozi lya kompyuta</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Deadzones z'okwekiika, Obulagirizi bwa controller</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Eppeesa ly'okutandika aim, Enkola y'okutandika, Ekipimo kya Easy Aim</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Etandika gestures za touchpad eno</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Okusika, okukonya, okunyiga, ebifaananyi</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Kwata gestures zo</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Okwaka kwa LED, Enkola y'Omuzannyi, Enkola ya LED ya Mute</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Ekitangaala ky'eppeesa lya Guide oba Home</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Fayiro za Zip ez'amaloboozi ga macro z'amaloboozi</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Fayiro za Zip ez'ebifaananyi by'obusenge bwa menu</value></data>
 </root>

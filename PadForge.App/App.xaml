@@ -1081,6 +1081,8 @@
             <conv:CrossGeometryConverter x:Key="CrossGeometryConverter" />
             <conv:SlopedWedgeGeometryConverter x:Key="SlopedWedgeGeometryConverter" />
             <conv:NullToCollapsedConverter x:Key="NullToCollapsedConverter" />
+            <conv:OnOffTextConverter x:Key="OnOffTextConverter" />
+            <conv:FormatTextConverter x:Key="FormatTextConverter" />
             <conv:StringToVisibilityConverter x:Key="StringToVisibility" />
             <conv:EnumIndexConverter x:Key="EnumIndexConverter" />
             <conv:EnumEqualityVisibilityConverter x:Key="EnumEqualityVisibilityConverter" />

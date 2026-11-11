@@ -861,6 +861,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Impulsspäästikud</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulsspäästikud</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Päästikute võimendus, mootorite vahetus, adaptiivsete päästikute vibratsioonid</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Edastab päästikupõhised mootorikäsud (Xbox Impulse Triggers) virtuaalselt kontrollerilt määratud füüsilisele Xbox One, Elite või Series kontrollerile. Mängu juhitud päästikuvibratsioon edastatakse automaatselt. Allolevad juhtelemendid skaleerivad tugevust iga päästiku jaoks eraldi.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Vasak päästik</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Parem päästik</value></data>
@@ -879,7 +880,9 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Lähtesta vasak päästik</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Lähtesta parem päästik</value></data>
   <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Päästiku püsijõud</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Püsijõud igale päästikumootorile</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Päästiku suunamine</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Suunab põhimootorite vibratsiooni päästikutele</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Suunab põhivibratsioonimootorid päästikukanalisse, korraga ühele päästikule. Töötab XInput-vibratsiooni ja jõutagasisidega. Aktivaator võib seda piirata, nii et päästik vibreerib ainult siis, kui hoiate nuppu all.</value></data>
   <data name="Pad_ResetTriggerRouting" xml:space="preserve"><value>Lähtesta päästiku suunamine</value></data>
   <data name="Pad_TriggerRouting_LeftTrigger" xml:space="preserve"><value>Vasak päästik</value></data>
@@ -911,6 +914,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Lähtesta vasak päästik</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Lähtesta parem päästik</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Helibassi päästikuvibratsioon</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Päästikuvibratsioon süsteemi heli bassist</value></data>
   <data name="Pad_AudioTriggerRumble_Description" xml:space="preserve"><value>Juhib päästikumootoreid süsteemi heli bassi järgi. Mängu juhitud päästikujõud alistab selle, kuni see on aktiivne.</value></data>
   <data name="Pad_AudioTriggerRumble_Toggle" xml:space="preserve"><value>Juhi päästikumootoreid heli järgi</value></data>
   <data name="Pad_AudioTriggerRumble_Sensitivity" xml:space="preserve"><value>Tundlikkus</value></data>
@@ -1008,6 +1012,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice" xml:space="preserve"><value>Järgi heliseadet</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice_Picker" xml:space="preserve"><value>Heliseade</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>LED-märgutuled</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>LED-i heledus, Mängijamuster, Vaigistuse LED-i režiim</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>Mängijanumbri rida (5 LED-i puuteplaadi all) ja vaigistuse LED mikrofoni kohal. Heleduse juhtelement mõjutab füüsiliselt ainult mängijarida. Püsivara pakub vaigistuse LED-i olekuid (Väljas / Püsiv / Pulseeriv), kuid eraldi vaigistuse heleduse registrit pole.</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>Lähtesta valgusriba</value></data>
   <data name="Pad_ResetIndicatorLeds" xml:space="preserve"><value>Lähtesta LED-märgutuled</value></data>
@@ -1394,6 +1399,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Kalibreeri keskpunkt</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Keskpunkt</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Surnud tsoon</value></data>
+  <data name="Pad_More_Stick" xml:space="preserve"><value>Keskpunkti nihked, surnud tsooni kuju ja väärtused telgede kaupa, kõver iga telje jaoks, vahemik, roolimine</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Vahemik</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Soovitatav viis kangi täpseks häälestamiseks on „Kalibreeri piir“. See mõõdab serva, milleni kang füüsiliselt ulatub, ja skaleerib seejärel iga asendi selle mõõdetud serva suhtes proportsionaalselt ümber, nii et kogu algne liikumine igas nurgas ja iga kõrvalekalde korral vastendub ideaalsele ringile ilma midagi ära lõikamata. Neli allolevat liugurit piiravad ainult põhisuundade telgi. Kasutage neid vahemiku teadlikuks piiramiseks, mitte parandamiseks.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Proovide võtmine...</value></data>
@@ -1727,6 +1733,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Puuteplaadi number</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Selle kontrolleri puuteplaat, millele allolevad sätted kehtivad. Igal puuteplaadil on oma žestid, hiiretunnetus ja osutiala.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Žestide tuvastamine</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Lülitab selle puuteplaadi žestid sisse</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Luba sellel puuteplaadil žestid</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Selle puuteplaadi pealüliti. Kui see on väljas, ei käivitu selle puuteplaadi jaoks ükski žestikirjeldaja. Olemasolevad sõrme / klõpsu / asukoha vastendused töötavad endiselt.</value></data>
   <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>Tuvasta</value></data>
@@ -1737,6 +1744,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>Ooteaeg</value></data>
   <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>Pärast žesti käivitumist eiratakse selle puuteplaadi uusi žeste nii mitme millisekundi jooksul. Hoiab ära korduvkäivitused kiirest edasi-tagasi liikumisest.</value></data>
   <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>Sisseehitatud žestid</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Pühkimised, koputused, näpistused, kujundid</value></data>
   <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>4 suunaga pühkimised (üles / alla / vasakule / paremale)</value></data>
   <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>8 suunaga pühkimised (lisab diagonaalid)</value></data>
   <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>Pühkimise vahemaa (0..1)</value></data>
@@ -1762,6 +1770,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>Kujundžestid (ring, ruut, kolmnurk, Z, linnuke)</value></data>
   <data name="Pad_Touchpad_MatchThreshold" xml:space="preserve"><value>Kujundi sobivuse lävi</value></data>
   <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>Kohandatud žestid</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Lindistage enda omad</value></data>
   <data name="Pad_Touchpad_RecordNew" xml:space="preserve"><value>+ Lindista uus žest</value></data>
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>Selle profiili jaoks pole kohandatud žeste lindistatud. Žesti jäädvustamiseks klõpsake Lindista uus žest.</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 sõrm</value></data>
@@ -1769,6 +1778,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
 
   <!-- Stick / D-pad output card -->
   <data name="Pad_Touchpad_Stick_Header" xml:space="preserve"><value>Kangi / suunanuppude väljund</value></data>
+  <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Puuteplaat kangi või suunanuppudena</value></data>
   <data name="Pad_Touchpad_Stick_Subtitle" xml:space="preserve"><value>Muudab puuteplaadi virtuaalseks analoogkangiks või suunanuppudeks. Väljundi lähtepunkt on koht, kuhu sõrm esimesena puudutab. Praegune asukoht selle lähtepunkti suhtes määrab kangi väärtuse ja (valikuliselt) lukustatud suunanuppude tõeväärtused.</value></data>
   <data name="Pad_Touchpad_StickEnabled" xml:space="preserve"><value>Luba kangi / suunanuppude väljund</value></data>
   <data name="Pad_Touchpad_StickEnabled_Tooltip" xml:space="preserve"><value>Kuvab vastenduse valijas puuteplaadi kirjeldajad Kang X, Kang Y ja suunanupud. Töötab olemasolevate puuteplaadi sõrme- ja žestiallikate kõrval, mitte nende asemel.</value></data>
@@ -1783,6 +1793,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
 
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Hiire väljund</value></data>
+  <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Ümberpööramine, Inerts, Reageerimine, Kiirendus, viske sätted</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Häälestab kursori kiirust, kui puuteplaadi sõrm on vastendatud klaviatuuri / hiire virtuaalse kontrolleri hiire X/Y-le. Vaikeväärtus on 1.0. Kiirema kursori jaoks suurendage kumbagi telge, aeglasema jaoks vähendage. Ümberpööramine pöörab kumbagi telge.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Hiire tundlikkus X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Kordaja horisontaalsele puuteplaat → hiir muutusele. Alla 1.0 aeglustab kursorit. Üle 1.0 kiirendab seda.</value></data>
@@ -1810,6 +1821,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_Touchpad_RotateThreshold_Tooltip" xml:space="preserve"><value>Kui palju peavad kaks sõrme pöörduma, enne kui pööramine käivitub.</value></data>
   <data name="Pad_ResetTouchpadRotateThresholdDegrees" xml:space="preserve"><value>Lähtesta pööramise lävi</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>Absoluutne osuti</value></data>
+  <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>Ekraani osa, kuhu plaat ulatub</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Häälestab puuteplaadi osuti X/Y-allikaid, mis viivad kursori sõrme asukohta plaadil (vastendage need klaviatuuri / hiire virtuaalse kontrolleri hiire X/Y-le). Suurus 1.00 ja keskpunkt 0.50 vastendavad plaadi kogu ekraanile. Kursori piiramiseks ekraani osaga vähendage suurust ja paigutamiseks liigutage keskpunkti.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Ala laius</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Ekraaniala laius, millele see plaat vastendub, murdosana ekraani laiusest. 1.00 katab kogu laiuse, 0.50 piirab kursori poole ekraaniga.</value></data>
@@ -1822,12 +1834,14 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
 
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Pühkimise haptika</value></data>
+  <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>Tiksud sõrme liikudes</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Annab kontrolleri haptikaga impulsse, kui sõrm üle selle puuteplaadi liigub, nagu Steam Inputi puuteplaadi tiksud. Steam Controllerid ja Steam Deck tiksuvad plaadi all oleva täituriga, DualSense ja DualShock 4 annavad impulsse vibratsioonimootoritega.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Luba pühkimise haptika</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>Annab lühikese haptilise tiksu iga kord, kui sõrm liigub sellel plaadil teatud vahemaa. Sõrme asetamine või plaadil klõpsamine ei tiksu kunagi. Vaikimisi väljas.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>Impulsi intensiivsus</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity_Tooltip" xml:space="preserve"><value>Iga tiksu tugevus. Mängu vibratsioon on alati ülimuslik, kui see on tugevam.</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Header" xml:space="preserve"><value>Sünteetiline surve</value></data>
+  <data name="Pad_SyntheticPressure_FoldHint" xml:space="preserve"><value>Surve plaatidele, mis teatavad puudutusest kui täissurvest</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Subtitle" xml:space="preserve"><value>Simuleerib DualShock 2 / DualShock 3 survetundlikke nuppe plaatidel, mis teatavad puudutusest kui täissurvest (DualShock 4, DualSense, Steam Controller 2015). Kui see on lubatud, loevad selle seadme surve vastendusallikad puudutuse puudumise väärtuseks 0%, puhkava puudutuse väärtuseks puutesurve taseme ja plaadi klõpsu väärtuseks 100%.</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled" xml:space="preserve"><value>Luba sünteetiline surve</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled_Tooltip" xml:space="preserve"><value>Kujundab selle seadme surve vastendusallikad kolmeastmeliseks: puudutuse puudumine annab 0%, puhkav puudutus annab puutesurve taseme ja plaadil klõpsamine annab 100%. Vaikimisi väljas, mis säilitab tõelise analoogsurvega plaatidel toorväärtused.</value></data>
@@ -2005,7 +2019,9 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Häälestage, kuidas selle mängupuldi liikumisandur juhib hiire ja kangi väljundit. Kalibreerige tasasel pinnal, et nullida puhkeoleku triiv, seejärel seadke tundlikkus, silumine ja rakendumisreeglid oma maitse järgi.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibreerimine</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Tundlikkus</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Ühikud, Ruum, telgede ümberpööramine, Reaalmaailma kalibreerimine</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Reageerimise kujundamine</value></data>
+  <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Surnud tsoon, silumine, Kiirendus, Väljundkõver</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Ruum</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Kuidas güroskoobi liikumist tõlgendatakse. Kohalik kasutab kontrolleri tooreid telgi. Mängija projitseerib horisontaalse liikumise reaalse maailma vertikaalile (raskusjõud), nii et sama randmepööre pöörab alati kaamerat, olenemata sellest, kuidas mängupulti hoiate. Maailm projitseerib lisaks ka vertikaalse liikumise maailma telgedele.</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>Hoiak</value></data>
@@ -2019,11 +2035,13 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_ResetGyroInvertYaw" xml:space="preserve"><value>Lähtesta pöörde ümberpööramine</value></data>
   <data name="Pad_ResetGyroInvertRoll" xml:space="preserve"><value>Lähtesta külgkalde ümberpööramine</value></data>
   <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>Kompass</value></data>
+  <data name="Pad_Compass_FoldHint" xml:space="preserve"><value>Seob pöörde magnetilise põhjaga</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Sellel kontrolleril on magnetomeeter. Pöörde sidumine magnetilise põhjaga eemaldab güroskoobiga sihtimisest aeglase horisontaalse triivi. Kõigepealt kalibreerige: vajutage kalibreerimisnuppu, pöörake kontrollerit mõne sekundi jooksul kaheksakujuliselt läbi kõigi asendite ja vajutage uuesti.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Seo pööre kompassiga</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Lisab väikese parandava kiiruse, mis tõmbab horisontaalset sihtimist magnetilise kursi poole, nii et triiv ei saa koguneda. Vajab salvestatud magnetomeetri kalibreeringut. Lähedal asuva metalli või magnetite poolt häiritud näidud lükatakse automaatselt tagasi.</value></data>
   <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Lähtesta vaikeväärtusele (väljas)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Pikikalde ja külgkalde simulatsioon</value></data>
+  <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Pikikalle ja külgkalle kiirendusanduri järgi</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>Selle kontrolleri güroskoop tajub ainult pööramist vasakule ja paremale. Kui simulatsioon on sisse lülitatud, tuletab PadForge pikikalde ja külgkalde kiirendusandurist ning saadab need koos güroskoobi pöördega vastenduse ridadele ja virtuaalse kontrolleri liikumisse. Kiirendusandur ei erista lükkamist kallutamisest, seega loetakse kontrolleri liigutamist külgsuunas või ettepoole ilma pööramata lühiajaliseks pöördeks.</value></data>
   <data name="Settings_GyroSimulation" xml:space="preserve"><value>Simuleeri pikikallet ja külgkallet</value></data>
   <data name="Settings_GyroSimulation_Tooltip" xml:space="preserve"><value>Täidab pikikalde ja külgkalde kiirendusandurist tuletatud kiirustega. Pööre jääb güroskoobi enda näiduks. Vaikimisi väljas.</value></data>
@@ -2064,6 +2082,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Alla (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Üles (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Rakendumine</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Sihtimise rakendusnupp, Rakendusrežiim, Lihtsa sihtimise lävi</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Valikulised piirangud, mis määravad, millal güroskoop on aktiivne. Seadistada saab nii parema kangi kõrvalekalde kui ka sihtimise rakendusnupu. Güroskoop töötab ainult siis, kui kõik seadistatud piirangud on aktiivsed.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Kohalik</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Mängija</value></data>
@@ -2114,6 +2133,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Güroskoobi kalle X</value></data>
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>Güroskoobi kalle Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>Güroskoobi kalle</value></data>
+  <data name="Pad_GyroTilt_FoldHint" xml:space="preserve"><value>Täiskalde vahemik, Kalde surnud tsoon</value></data>
   <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>Sisendite Güroskoobi kalle X / Güroskoobi kalle Y mähisjoon: hoidke kallet ja kang hoiab oma kõrvalekallet, nagu Steami režiimis Joystick Deflection. Täielik kõrvalekalle saavutatakse siin määratud vahemikus ning toiming Güroskoobi tsentreerimine nullib puhkeasendi haarde. Pööre (kontrolleri pööramine lapiti) on raskusjõule nähtamatu ega liiguta neid sisendeid.</value></data>
   <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>Täiskalde vahemik</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>Kalde kraadid puhkeasendist, mis loetakse kangi täielikuks kõrvalekaldeks. Väiksem = tundlikum. Steami konfiguratsioonides on kõige levinum väärtus 25°.</value></data>
@@ -2315,6 +2335,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Vahemiku miinimum Y (alla)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Vahemiku maksimum Y (üles)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X-telg</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>Mõlemad teljed</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y-telg</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Vahemik</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Surnud tsooni kompensatsioon</value></data>
@@ -2325,6 +2346,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Jõutagasiside / vibratsioon / haptika</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Mootorite võimendus, päästikuvibratsioon, mootorite vahetus</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Üldvõimendus</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Vasak mootor</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Parem mootor</value></data>
@@ -2336,6 +2358,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Püsijõud</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Püsiv jõud, kuni selle välja lülitate</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Rakendab sellele seadmele pidevat jõudu, kuni selle välja lülitate. Mängu juhitud jõud mis tahes allikast alistab selle, kuni see on aktiivne, ja püsijõud jätkub, kui mäng lõpetab.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Rakenda püsijõudu</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Suuna ja tugevuse määramiseks lohistage ruudustiku sees.</value></data>
@@ -2661,6 +2684,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
 
   <!-- ═══ Audio Bass Rumble ═══ -->
   <data name="Settings_AudioRumble" xml:space="preserve"><value>Helivibratsioon</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Vibratsioon süsteemi heli bassist</value></data>
   <data name="Settings_AudioRumbleDesc" xml:space="preserve"><value>Juhib kontrolleri vibratsiooni süsteemi heli bassisageduste järgi.</value></data>
   <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>Luba helivibratsioon</value></data>
   <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>Tundlikkus</value></data>
@@ -2771,6 +2795,8 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Lähtesta kallutuse välimine surnud tsoon</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Lähtesta kontrolleri suund</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Liikumisega roolimine</value></data>
+  <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° kuni {1}°</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Kallutuse surnud tsoonid, Kontrolleri suund</value></data>
   <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Sisendi „Liikumine: kallutus“ sätted: kallutage kontrollerit nagu rooli. Vastendage vahekaardil Vastendused sisendi ripploendist „Liikumine: kallutus“ kangiteljele.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Lähtesta liikumisega roolimine</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (parem kang)</value></data>
@@ -2779,6 +2805,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Mapping_LeftStickRing" xml:space="preserve"><value>Vasaku kangi ring</value></data>
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>Parema kangi ring</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
+  <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Flick Sticki sisendite häälestus</value></data>
   <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Flick Sticki sisendite sätted: suunake kangi ja kaamera pöörab vastavalt, liigutage kangi mööda serva täpseks pööramiseks. Vastendage vahekaardil Vastendused sisendi ripploendist „Flick Stick (parem kang)“ väljundile Hiir X, mis tahes kihis.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Lähtesta Flick Stick</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Punkte 360° kohta</value></data>
@@ -2815,6 +2842,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Kui Flick Sticki sisaldav kiht aktiveerub ajal, mil kang on juba kõrvale kallutatud, käivitatakse nips kohe. Väljas hoiab kaamera paigal ja jälgib pööret kangi praegusest nurgast.</value></data>
   <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Lähtesta nipsu lubamine aktiveerimisel</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Roolilukuni jõudmise tagasiside</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Märguanne lõppasendis roolimisrežiimi kangile</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Kui roolimisrežiimile seatud kang keeratakse lõpuni välja, esitatakse märguanne (vibratsioon, päästik või valgusriba), et tunneksite piiri. Vaikimisi kõik väljas.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Vibratsiooniimpulss lõppasendis</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Päästikuvibratsioon lõppasendis</value></data>
@@ -2870,6 +2898,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Heli</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Makrohelid ja peegeldatud süsteemiheli esitatakse valitud kontrolleri sisseehitatud kõlari kaudu, USB või Bluetoothi kaudu. Valige seade ülalolevast ripploendist. Kõik siinsed sätted järgivad seda.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Heliväljund</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Peegeldusallikas, haptika, Kõrvaklappide helitugevus, Kanalite ristsegamine, Parametric EQ, Limiter</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Helid suunatakse valitud kontrollerile automaatselt. USB kaudu leitakse mängupuldi enda heli lõpp-punkt riistvarakonteineri järgi. Bluetoothi kaudu voogedastatakse heli Sony HID-kaadrites.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Peegeldusallikas</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Milline taasesitusseade peegeldatakse kontrolleri kõlarisse. Mängud, mis saadavad teatud helisid eraldi taasesitusseadmesse, saavad sihtida seda.</value></data>
@@ -2943,6 +2972,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>See fail pole loetav PadForge'i profiil.</value></data>
   <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Valige heli paketist {0}</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Helipaketid</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Helide zip-failid helimakrodele</value></data>
   <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>Helipakett on üks helidega zip-fail laiendiga .pfsounds. Lisage pakett siin ja valige seejärel selle helid mis tahes helimakros. PadForge loeb otse failist ega paki seda kunagi lahti. Kaasaskantavuse säilitamiseks hoidke pakette faili PadForge.exe kõrval.</value></data>
   <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>Lisa pakett…</value></data>
   <data name="Pad_Audio_Packages_Add_Tooltip" xml:space="preserve"><value>Lisa loendisse olemasolev .pfsounds-fail.</value></data>
@@ -2968,6 +2998,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Emoji_Category_Objects" xml:space="preserve"><value>Esemed</value></data>
   <data name="Emoji_Category_Symbols" xml:space="preserve"><value>Sümbolid</value></data>
   <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>Ikoonipaketid</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Piltide zip-failid menüülahtritele</value></data>
   <data name="Pad_Menus_IconPackages_Desc" xml:space="preserve"><value>Ikoonipakett on üks piltidega zip-fail laiendiga .pficons. Lisage pakett siin ja valige seejärel selle ikoonid mis tahes menüülahtris. PadForge loeb otse failist ega paki seda kunagi lahti. Kaasaskantavuse säilitamiseks hoidke pakette faili PadForge.exe kõrval.</value></data>
   <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>Lisa pakett…</value></data>
   <data name="Pad_Menus_IconPackages_Add_Tooltip" xml:space="preserve"><value>Lisa loendisse olemasolev .pficons-fail.</value></data>
@@ -3350,6 +3381,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>Lülitu kihile {0}</value></data>
   <data name="Macro_SwitchLayer_Hint" xml:space="preserve"><value>Viib selle pesa valitud Shift-kihile. Kiht jääb aktiivseks kuni järgmise vahetuse, lukustus- või tsükliaktivaatori või profiili vahetamiseni. Valik Põhikiht viib tagasi põhikihti. Määrake see makro ülal mõnele kihile, et sama nupp viiks igas kihis erinevasse kohta.</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>Guide-nupu LED</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Guide- või Home-nupu hõõgus</value></data>
   <data name="Pad_Lighting_GuideLed_Subtitle" xml:space="preserve"><value>Helendava Guide- või Home-nupu heledus. Xbox One ja uuemad kontrollerid aktsepteerivad seda USB kaudu. 2015. aasta Steam Controller aktsepteerib seda iga ühenduse kaudu ja kõigil Steam Controlleritel on ühine heledus. Switch Pro kontrollerid ja parempoolsed Joy-Con-kontrollerid (eraldi, paaris või laadimishoidikus) aktsepteerivad seda iga ühenduse kaudu.</value></data>
   <data name="Pad_Lighting_GuideLed_Mode_Tooltip" xml:space="preserve"><value>Seadme vaikesäte jätab LED-i täpselt selliseks, nagu kontrolleri püsivara selle määras. Fikseeritud heledus hoiab allolevat taset. Aku tase muudab täisama aku korral tule heledamaks ega lange kunagi alla 10%. Xboxi kontrollerid aktsepteerivad Guide-LED-i käske ainult USB kaudu, seega ei mõju see säte Bluetooth-ühenduse puhul. Switchi kontrollerid aktsepteerivad Home-LED-i käske iga ühenduse kaudu.</value></data>
   <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>Seadme vaikesäte</value></data>
@@ -3714,6 +3746,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bassivibraatorid</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Suunab selle virtuaalse kontrolleri vastu võetud mängu vibratsiooni ja jõutagasiside heliväljundisse madalsageduslike toonidena bassivibraatorite ja subwooferite jaoks.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibratsioon heliks</value></data>
+  <data name="Pad_More_BassShakers" xml:space="preserve"><value>Väljundseade, kanalid, võimendus, iga mootori toon</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Töötab virtuaalsete kontrolleritega Xbox, DualShock 3, DualShock 4 / DualSense ja Nintendo Switch Pro, samuti jõutagasisidega laiendatud virtuaalsete kontrolleritega, nagu võidusõiduroolid, ning kontrolleriga Steam Deck Controller (Composite). Mängu tagasiside ja testvibratsioon esitatakse heliväljundi kaudu. Makrovibratsioon jääb kontrollerile.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Lähtesta vibratsioon heliks</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Suuna vibratsioon heliväljundisse</value></data>
@@ -4149,6 +4182,7 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>FreeTrack-ühismälu andmete ootamine.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>FreeTrack-ühismälu pole saadaval.</value></data>
   <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Roolinurga vibratsioon</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Vibratsioon, mis tugevneb kangitelje keskelt eemaldudes</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Lisab pideva vibratsiooni, kui valitud virtuaalne kangitelg liigub keskelt eemale. Kasutab kõigi määratud allikate vastendatud väljundit. Valiku Suuna järgi jagatud korral juhib negatiivne liikumine vasakut mootorit ja positiivne paremat. Valik Vasak mootor või Parem mootor suunab mõlemad suunad sellele ühele mootorile. Xbox- ja PlayStation-väljundile vibratsiooniga seadmetega. Välja jäetakse roolid, muud pidevat jõutagasisidet kasutavad seadmed ja Fanatec pedaalid.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Luba roolinurga vibratsioon</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Virtuaalne telg</value></data>
@@ -4467,6 +4501,7 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="Status_FalconDriverDeclined" xml:space="preserve"><value>Windows ei installinud Force Dimensioni draiverit. Kui Windows küsib, kas Force Dimensionit usaldada, vali Installi.</value></data>
   <data name="Status_FalconDriverNotBound" xml:space="preserve"><value>Draiver on installitud, kuid Falcon pole sellele üle läinud. Eemalda Falcon ja ühenda see uuesti.</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>Tagasilöök, raputus, toestus, eelpinge, raskus</value></data>
   <data name="Pad_Falcon_Description" xml:space="preserve"><value>PadForge arvutab Falconi käepidemele mõjuvad jõud umbes tuhat korda sekundis, lähtudes käepideme asukohast ja sellest, mida mäng esitab. Need sätted kuuluvad sellele pesale.</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>Lähtesta Novint Falcon</value></data>
   <data name="Pad_Falcon_Feel" xml:space="preserve"><value>Tunnetus</value></data>
@@ -4628,4 +4663,5 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0}: {1}, kuni hoitakse</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0}: {1}, kuni peatamiseni</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>Peata päästiku efekt: {0}</value></data>
+  <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Juhi selle seadme valgustust, Valgustuse hõivamine</value></data>
 </root>

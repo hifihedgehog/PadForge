@@ -861,6 +861,7 @@
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Импульсийн гох</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Импульсийн гох</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Гох тус бүрийн өсгөлт, моторыг солих, дасан зохицох гохны чичиргээ</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Гох тус бүрийн моторын командыг (Xbox Impulse Triggers) виртуал контроллероос оноосон физик Xbox One, Elite эсвэл Series контроллер руу дамжуулна. Тоглоомын үүсгэсэн гохны чичиргээ автоматаар дамжина. Доорх тохиргоонууд гох тус бүрийн хүчийг тохируулна.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Зүүн гох</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Баруун гох</value></data>
@@ -879,7 +880,9 @@
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Зүүн гохыг дахин тохируулах</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Баруун гохыг дахин тохируулах</value></data>
   <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Гохны тогтмол хүч</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Гохны мотор бүрт тогтвортой хүч</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Гохны чиглүүлэлт</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Гол моторуудын чичиргээг гох руу илгээнэ</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Гол чичиргээний моторуудыг гохны суваг руу, нэг удаад нэг гохоор чиглүүлнэ. XInput чичиргээ болон хүчний эргэх холбоотой ажиллана. Идэвхжүүлэгч ашиглан зөвхөн товч дарж барих үед гох чичрэх болгож болно.</value></data>
   <data name="Pad_ResetTriggerRouting" xml:space="preserve"><value>Гохны чиглүүлэлтийг дахин тохируулах</value></data>
   <data name="Pad_TriggerRouting_LeftTrigger" xml:space="preserve"><value>Зүүн гох</value></data>
@@ -911,6 +914,7 @@
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Зүүн гохыг дахин тохируулах</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Баруун гохыг дахин тохируулах</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Аудионы бассаас гохны чичиргээ</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Системийн аудионы бассаас гохны чичиргээ</value></data>
   <data name="Pad_AudioTriggerRumble_Description" xml:space="preserve"><value>Гохны моторуудыг системийн аудионы бассаар ажиллуулна. Тоглоомын гохны хүч идэвхтэй үедээ давамгайлна.</value></data>
   <data name="Pad_AudioTriggerRumble_Toggle" xml:space="preserve"><value>Гохны моторуудыг аудиогоор ажиллуулах</value></data>
   <data name="Pad_AudioTriggerRumble_Sensitivity" xml:space="preserve"><value>Мэдрэмж</value></data>
@@ -1008,6 +1012,7 @@
   <data name="Pad_Lighting_MicLed_FollowDevice" xml:space="preserve"><value>Аудио төхөөрөмжийг дагах</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice_Picker" xml:space="preserve"><value>Аудио төхөөрөмж</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>Заагч LED</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>LED-ийн тод байдал, Тоглогчийн хээ, Дуу хаах LED-ийн горим</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>Тоглогчийн дугаарын мөр (мэдрэгч самбарын доорх 5 LED) болон микрофоны дээрх дуу хаах LED. Тод байдлын тохиргоо физикийн хувьд зөвхөн тоглогчийн мөрөнд нөлөөлнө. Фирмвэр дуу хаах LED-ийн төлөвүүдийг (Унтраалттай / Тогтмол / Лугшилт) нээлттэй болгодог ч дуу хаахын тусдаа тод байдлын регистргүй.</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>Гэрлийн зурвасыг дахин тохируулах</value></data>
   <data name="Pad_ResetIndicatorLeds" xml:space="preserve"><value>Заагч LED-ийг дахин тохируулах</value></data>
@@ -1394,6 +1399,7 @@
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Төвийг калибровк хийх</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Төв цэг</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Үхсэн бүс</value></data>
+  <data name="Pad_More_Stick" xml:space="preserve"><value>Төвийн шилжилт, үхсэн бүсийн хэлбэр ба тэнхлэг тус бүрийн утга, тэнхлэг бүрийн муруй, муж, жолоодлого</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Муж</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Хилийн калибровк бол стикийг тэгшлэх санал болгох арга. Энэ нь стикийн физикийн хувьд хүрч чадах ирмэгийг тойруулан хэмжиж, дараа нь байрлал бүрийг тэр хэмжсэн ирмэгтэй харьцуулан пропорциональ дахин масштаблана. Ингэснээр бүх өнцөг, бүх хазайлт дахь анхны бүтэн хөдөлгөөн юу ч тайрагдалгүйгээр төгс тойрогт буулгагдана. Доорх дөрвөн гулсуур зөвхөн үндсэн чиглэлийн тэнхлэгүүдийг хязгаарладаг. Тэдгээрийг мужийг засах бус, зориуд хязгаарлахад ашиглана уу.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Түүвэрлэж байна...</value></data>
@@ -1727,6 +1733,7 @@
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Мэдрэгч самбарын дугаар</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Доорх тохиргоо энэ контроллерийн аль мэдрэгч самбарт хамаарахыг заана. Мэдрэгч самбар бүр өөрийн дохио, хулганы мэдрэмж, заагчийн мужтай.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Дохио илрүүлэлт</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Энэ мэдрэгч самбарын дохиог асаана</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Энэ мэдрэгч самбар дээр дохиог идэвхжүүлэх</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Энэ мэдрэгч самбарын ерөнхий унтраалга. Унтраалттай үед энэ мэдрэгч самбарт ямар ч дохионы тодорхойлогч ажиллахгүй. Байгаа хуруу / дарах / байрлалын оноолтууд ажилласаар байна.</value></data>
   <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>Таних</value></data>
@@ -1737,6 +1744,7 @@
   <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>Хүлээлтийн хугацаа</value></data>
   <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>Дохио ажилласны дараа энэ мэдрэгч самбар дээрх шинэ дохиог заасан миллисекундын турш үл тооно. Хурдан нааш цааш хөдөлгөөнөөс үүсэх давхар ажиллалтаас сэргийлнэ.</value></data>
   <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>Суурилагдсан дохионууд</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Шудралт, товшилт, чимхэлт, дүрс</value></data>
   <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>4 чиглэлийн шудралт (дээш / доош / зүүн / баруун)</value></data>
   <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>8 чиглэлийн шудралт (диагональ нэмнэ)</value></data>
   <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>Шудрах зай (0..1)</value></data>
@@ -1762,6 +1770,7 @@
   <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>Дүрсийн дохио (тойрог, дөрвөлжин, гурвалжин, Z, зөв тэмдэг)</value></data>
   <data name="Pad_Touchpad_MatchThreshold" xml:space="preserve"><value>Дүрс тааруулах босго</value></data>
   <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>Өөрийн дохионууд</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Өөрийн дохиог бичих</value></data>
   <data name="Pad_Touchpad_RecordNew" xml:space="preserve"><value>+ Шинэ дохио бичих</value></data>
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>Энэ профайлд өөрийн дохио бичигдээгүй байна. Нэгийг бичихийн тулд “Шинэ дохио бичих” дээр дарна уу.</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 хуруу</value></data>
@@ -1769,6 +1778,7 @@
 
   <!-- Stick / D-pad output card -->
   <data name="Pad_Touchpad_Stick_Header" xml:space="preserve"><value>Стик / D-pad гаралт</value></data>
+  <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Мэдрэгч самбарыг стик эсвэл D-pad болгон ашиглах</value></data>
   <data name="Pad_Touchpad_Stick_Subtitle" xml:space="preserve"><value>Мэдрэгч самбарыг виртуал аналог стик эсвэл D-pad болгоно. Гаралт таны хуруу анх буусан цэгт бэхлэгдэнэ. Тэр бэхэлгээтэй харьцуулсан одоогийн байрлал стикийн утгыг болон (сонголтоор) бэхэлсэн D-pad чиглэлийн логик утгуудыг тодорхойлно.</value></data>
   <data name="Pad_Touchpad_StickEnabled" xml:space="preserve"><value>Стик / D-pad гаралтыг идэвхжүүлэх</value></data>
   <data name="Pad_Touchpad_StickEnabled_Tooltip" xml:space="preserve"><value>Оноолтын сонгогчид мэдрэгч самбарын Стик X, Стик Y болон D-pad тодорхойлогчдыг гаргана. Мэдрэгч самбарын хуруу болон дохионы эх үүсвэрүүдийг орлохгүй, тэдгээртэй зэрэгцэн ажиллана.</value></data>
@@ -1783,6 +1793,7 @@
 
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Хулганы гаралт</value></data>
+  <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Урвуулах, Инерц, Хариу үйлдэл, Хурдатгал, шидэлт</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Мэдрэгч самбарын хурууг Гар / хулгана виртуал контроллер дээрх хулганы X/Y-д оноосон үед курсорын хурдыг тохируулна. Үндсэн утга 1.0. Курсорыг хурдасгах бол аль нэг тэнхлэгийг өсгөж, удаашруулах бол бууруулна уу. Урвуулах нь аль ч тэнхлэгийг эсрэгээр болгоно.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Хулганы мэдрэмж X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Хэвтээ чиглэлийн мэдрэгч самбар → хулганы шилжилтийн үржүүлэгч. 1.0-ээс бага бол курсорыг удаашруулна. 1.0-ээс их бол хурдасгана.</value></data>
@@ -1810,6 +1821,7 @@
   <data name="Pad_Touchpad_RotateThreshold_Tooltip" xml:space="preserve"><value>Эргүүлэх ажиллахаас өмнө хоёр хуруу хэр их эргэх ёстойг заана.</value></data>
   <data name="Pad_ResetTouchpadRotateThresholdDegrees" xml:space="preserve"><value>Эргүүлэх босгыг дахин тохируулах</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>Абсолют заагч</value></data>
+  <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>Самбарын хүрэх дэлгэцийн хэсэг</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Курсорыг самбар дээрх хурууны тань байрлал руу шууд шилжүүлдэг Мэдрэгч самбарын заагч X/Y эх үүсвэрүүдийг тохируулна (тэдгээрийг Гар / хулгана виртуал контроллер дээрх хулганы X/Y-д онооно уу). Хэмжээ 1.00, төв 0.50 бол самбарыг бүх дэлгэцэд буулгана. Курсорыг дэлгэцийн хэсэгт хязгаарлахын тулд хэмжээг багасгаж, байрлуулахын тулд төвийг зөөнө үү.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Мужийн өргөн</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Энэ самбарын буулгах дэлгэцийн хэсгийн өргөн, дэлгэцийн өргөний хувиар. 1.00 нь бүтэн өргөнийг хамарна; 0.50 нь курсорыг дэлгэцийн хагаст хязгаарлана.</value></data>
@@ -1822,12 +1834,14 @@
 
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Шудралтын хаптик</value></data>
+  <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>Хуруу гулсахад тачигнана</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Steam Input-ийн трекпадын тачигнах мэдрэмжтэй адил, хуруу тань энэ мэдрэгч самбар дээгүүр гулсахад контроллерийн хаптикийг импульсээр ажиллуулна. Steam Controller болон Steam Deck самбарын доорх актуатороор тачигнуулдаг; DualSense болон DualShock 4 чичиргээний моторуудаар импульс өгнө.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Шудралтын хаптикийг идэвхжүүлэх</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>Хуруу энэ самбар дээр тогтоосон зайд шилжих бүрд богино хаптик тачигнал үүсгэнэ. Хуруу буулгах эсвэл самбарыг дарах үед хэзээ ч тачигнахгүй. Үндсэн тохиргоогоор унтраалттай.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>Импульсийн эрчим</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity_Tooltip" xml:space="preserve"><value>Тачигнал бүрийн хүч. Тоглоомын чичиргээ илүү хүчтэй бол үргэлж давамгайлна.</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Header" xml:space="preserve"><value>Дуурайсан даралт</value></data>
+  <data name="Pad_SyntheticPressure_FoldHint" xml:space="preserve"><value>Хүрэлтийг бүрэн гэж мэдээлдэг самбаруудад даралт</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Subtitle" xml:space="preserve"><value>Хүрэлтийг бүрэн даралт гэж мэдээлдэг самбаруудад (DualShock 4, DualSense, Steam Controller 2015) DualShock 2 / DualShock 3-ын даралтат товчийг дуурайна. Идэвхтэй үед энэ төхөөрөмжийн Даралт оноолтын эх үүсвэрүүд хүрэлтгүйг 0%, тайван хүрэлтийг Хүрэлтийн даралтын түвшин, самбарыг дарахыг 100% гэж уншина.</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled" xml:space="preserve"><value>Дуурайсан даралтыг идэвхжүүлэх</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled_Tooltip" xml:space="preserve"><value>Энэ төхөөрөмжийн Даралт оноолтын эх үүсвэрүүдийг гурван шат болгоно: хүрэлтгүй үед 0%, тайван хүрэлт Хүрэлтийн даралтын түвшин, самбарыг дарахад 100%. Үндсэн тохиргоогоор унтраалттай бөгөөд ингэснээр жинхэнэ аналог даралттай самбаруудын түүхий утга хадгалагдана.</value></data>
@@ -2005,7 +2019,9 @@
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Энэ геймпадын хөдөлгөөний мэдрэгч хулгана болон стикийн гаралтыг хэрхэн удирдахыг тохируулна. Тайван үеийн шилжилтийг тэглэхийн тулд тэгш гадаргуу дээр калибровк хийгээд, дараа нь мэдрэмж, зөөллөлт, идэвхжүүлэх дүрмийг дуртайгаараа тохируулна уу.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Калибровк</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Мэдрэмж</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Нэгж, Орон зай, тэнхлэгийг урвуулах, Бодит ертөнцийн калибровк</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Хариу үйлдлийн хэлбэржүүлэлт</value></data>
+  <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Үхсэн бүс, зөөллөлт, Хурдатгал, Гаралтын муруй</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Орон зай</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Гироскопын хөдөлгөөнийг хэрхэн тайлбарлахыг заана. Локал нь контроллерийн түүхий тэнхлэгүүдийг ашиглана. Тоглогч нь хэвтээ хөдөлгөөнийг бодит ертөнцийн босоо (таталцлын) тэнхлэгт тусгадаг тул геймпадыг яаж барьснаас үл хамааран бугуйн ижил эргэлт камерыг үргэлж эргүүлнэ. Ертөнц нь үүн дээр нэмж босоо хөдөлгөөнийг ертөнцийн тэнхлэгүүдэд дахин тусгана.</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>Барих байдал</value></data>
@@ -2019,11 +2035,13 @@
   <data name="Pad_ResetGyroInvertYaw" xml:space="preserve"><value>Зүүн-баруун эргэлтийн урвуулалтыг дахин тохируулах</value></data>
   <data name="Pad_ResetGyroInvertRoll" xml:space="preserve"><value>Хажуу тийш хазайлтын урвуулалтыг дахин тохируулах</value></data>
   <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>Луужин</value></data>
+  <data name="Pad_Compass_FoldHint" xml:space="preserve"><value>Зүүн-баруун эргэлтийг соронзон хойд зүгт бэхэлнэ</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Энэ контроллер магнитометртэй. Зүүн-баруун эргэлтийг соронзон хойд зүгт бэхлэх нь гироскопын онилгын удаан хэвтээ шилжилтийг арилгана. Эхлээд калибровк хийнэ үү: “Калибровк хийх” дээр дараад, контроллерийг хэдэн секундын турш 8 тоон хэлбэрээр бүх чиглэлд эргүүлж, дахин дарна уу.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Зүүн-баруун эргэлтийг луужинд бэхлэх</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Хэвтээ онилгыг соронзон чиглэл рүү татах бага хэмжээний засах хурд нэмдэг тул шилжилт хуримтлагдахгүй. Хадгалсан магнитометрийн калибровк шаардлагатай. Ойролцоох металл эсвэл соронзонд саатуулагдсан дээжүүдийг автоматаар хасна.</value></data>
   <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Үндсэн утгад буцаах (унтраалттай)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Урагш-хойш болон хажуу тийш хазайлтын дуурайлт</value></data>
+  <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Акселерометрээс гаргасан урагш-хойш болон хажуу тийш хазайлт</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>Энэ контроллерийн гироскоп зөвхөн зүүн, баруун тийш эргэхийг мэдэрдэг. Дуурайлт асаалттай үед PadForge урагш-хойш болон хажуу тийш хазайлтыг акселерометрээс гаргаж, гироскопын зүүн-баруун эргэлтийн хамт оноолтын мөрүүд болон виртуал контроллерийн хөдөлгөөн рүү илгээнэ. Акселерометр түлхэлтийг хазайлтаас ялгаж чаддаггүй тул контроллерийг эргүүлэлгүйгээр хажуу тийш эсвэл урагш хөдөлгөхөд богино эргэлт гэж уншигдана.</value></data>
   <data name="Settings_GyroSimulation" xml:space="preserve"><value>Урагш-хойш болон хажуу тийш хазайлтыг дуурайх</value></data>
   <data name="Settings_GyroSimulation_Tooltip" xml:space="preserve"><value>Урагш-хойш болон хажуу тийш хазайлтыг акселерометрээс гаргасан хурдаар бөглөнө. Зүүн-баруун эргэлт гироскопын өөрийн уншилт хэвээр үлдэнэ. Үндсэн тохиргоогоор унтраалттай.</value></data>
@@ -2064,6 +2082,7 @@
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Доош (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Дээш (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Идэвхжүүлэх</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Онилго идэвхжүүлэх товч, Идэвхжүүлэх горим, Хялбар онилгын босго</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Гироскоп хэзээ идэвхтэй байхыг хязгаарлах нэмэлт хаалтууд. Баруун стикийн хазайлт болон онилго идэвхжүүлэх товчийг тус тусад нь тохируулж болно. Гироскоп зөвхөн тохируулсан бүх хаалт идэвхтэй үед ажиллана.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Локал</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Тоглогч</value></data>
@@ -2114,6 +2133,7 @@
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Гироскопын хэвийлт X</value></data>
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>Гироскопын хэвийлт Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>Гироскопын хэвийлт</value></data>
+  <data name="Pad_GyroTilt_FoldHint" xml:space="preserve"><value>Бүтэн хэвийлтийн муж, Хэвийлтийн үхсэн бүс</value></data>
   <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>Гироскопын хэвийлт X / Гироскопын хэвийлт Y оролтуудын тохиргоо: Steam-ийн Joystick Deflection горимын адил хэвийлтийг барихад стик хазайлтаа барина. Энд тохируулсан мужид бүтэн хазайлт гарна; гироскопыг төвлөрүүлэх нь тайван барилтыг дахин тэглэнэ. Зүүн-баруун эргэлт (контроллерийг хэвтээгээр эргүүлэх) таталцалд үл мэдрэгдэх тул эдгээр оролтыг хөдөлгөхгүй.</value></data>
   <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>Бүтэн хэвийлтийн муж</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>Стикийн бүтэн хазайлт гэж тооцогдох, тайван барилтаас хэвийх градус. Бага = илүү мэдрэмтгий. Steam тохиргоонуудад хамгийн түгээмэл утга нь 25°.</value></data>
@@ -2315,6 +2335,7 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Доод муж Y (доош)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Дээд муж Y (дээш)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X тэнхлэг</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>Хоёр тэнхлэг</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y тэнхлэг</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Муж</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Үхсэн бүсийн нөхөлт</value></data>
@@ -2325,6 +2346,7 @@
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Хүчний эргэх холбоо / Чичиргээ / Хаптик</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Мотор тус бүрийн өсгөлт, гохны чичиргээ, моторыг солих</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Нийт өсгөлт</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Зүүн мотор</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Баруун мотор</value></data>
@@ -2336,6 +2358,7 @@
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Тогтмол хүч</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Унтраах хүртэл тогтвортой хүч</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Унтраах хүртэл энэ төхөөрөмжид тасралтгүй хүч үзүүлнэ. Аливаа эх үүсвэрээс ирэх тоглоомын хүч идэвхтэй байх хугацаандаа давамгайлж, тоглоом зогсоход энэ хүч дахин үргэлжилнэ.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Тогтмол хүч хэрэглэх</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Чиглэл ба хүчийг тохируулахын тулд торон дотор чирнэ үү.</value></data>
@@ -2662,6 +2685,7 @@
 
   <!-- ═══ Audio Bass Rumble ═══ -->
   <data name="Settings_AudioRumble" xml:space="preserve"><value>Аудио чичиргээ</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Системийн аудионы бассаас үүсэх чичиргээ</value></data>
   <data name="Settings_AudioRumbleDesc" xml:space="preserve"><value>Контроллерийн чичиргээг системийн аудионы бага давтамжаар (басс) удирдана.</value></data>
   <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>Аудио чичиргээг идэвхжүүлэх</value></data>
   <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>Мэдрэмж</value></data>
@@ -2772,6 +2796,8 @@
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Налалтын гадаад үхсэн бүсийг дахин тохируулах</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Контроллерийн чиглэлийг дахин тохируулах</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Хөдөлгөөнөөр жолоодох</value></data>
+  <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}°-аас {1}° хүртэл</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Налалтын үхсэн бүсүүд, Контроллерийн чиглэл</value></data>
   <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>“Хөдөлгөөн: налалт” оролтын тохиргоо: контроллерийг жолоо шиг хэвийлгэнэ. Оноолт табын оролтын унждаг жагсаалтаас “Хөдөлгөөн: налалт”-ыг стикийн тэнхлэгт онооно уу.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Хөдөлгөөнөөр жолоодохыг дахин тохируулах</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Флик стик (баруун стик)</value></data>
@@ -2780,6 +2806,7 @@
   <data name="Mapping_LeftStickRing" xml:space="preserve"><value>Зүүн стикийн цагираг</value></data>
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>Баруун стикийн цагираг</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Флик стик</value></data>
+  <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Флик стик оролтуудын тохиргоо</value></data>
   <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Флик стик оролтуудын тохиргоо: стикийг чиглүүлэхэд камер тэр зүг рүү эргэнэ, ирмэгийн дагуу гүйлгэхэд нарийн эргэлт хийнэ. Оноолт табын оролтын унждаг жагсаалтаас “Флик стик (баруун стик)”-ийг аль ч давхарга дээр Хулгана X-д онооно уу.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Флик стикийг дахин тохируулах</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>360°-д ногдох цэг</value></data>
@@ -2816,6 +2843,7 @@
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Флик стик байрлах давхарга стик аль хэдийн хазайсан үед идэвхжвэл фликийг шууд гүйцэтгэнэ. Унтраалттай үед камер хөдлөхгүй бөгөөд эргэлтийг стикийн одоогийн өнцгөөс эхлэн хянана.</value></data>
   <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Идэвхжихэд флик зөвшөөрөхийг дахин тохируулах</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Жолооны хязгаарын эргэх холбоо</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Жолоодлогын горимын стик бүрэн хязгаарт хүрэхэд өгөх дохио</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Жолоодлогын горимд тохируулсан стикийг бүрэн хязгаар хүртэл эргүүлэхэд хязгаарыг мэдрэхийн тулд дохио (чичиргээ, гох эсвэл гэрлийн зурвас) өгнө. Үндсэн тохиргоогоор бүгд унтраалттай.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Хязгаарт чичиргээний импульс</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Хязгаарт гохны чичиргээ</value></data>
@@ -2871,6 +2899,7 @@
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Аудио</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Макроны дуу болон давхардуулсан системийн аудио сонгосон контроллерийн суурилагдсан чанга яригчаар USB эсвэл Bluetooth-ээр тоглогдоно. Дээрх унждаг жагсаалтаас төхөөрөмжөө сонгоно уу. Энд байгаа бүх тохиргоо түүнийг дагана.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Дууны гаралт</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Давхардуулах эх үүсвэр, хаптик, Чихэвчний дууны түвшин, Сувгийн холилт, Параметрт эквалайзер, Хязгаарлагч</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Дуу сонгосон контроллер руу автоматаар чиглэнэ. USB-ээр холбогдсон үед геймпадын өөрийн аудио төгсгөлийг тоног төхөөрөмжийн контейнероор тааруулна. Bluetooth-ээр холбогдсон үед аудиог Sony HID фреймүүдээр дамжуулна.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Давхардуулах эх үүсвэр</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Аль тоглуулах төхөөрөмжийг контроллерийн чанга яригч руу давхардуулахыг заана. Тодорхой дууг тусдаа тоглуулах төхөөрөмж рүү илгээдэг тоглоомууд үүнийг зорилт болгож болно.</value></data>
@@ -2944,6 +2973,7 @@
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>Энэ файл уншигдах PadForge профайл биш байна.</value></data>
   <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>{0} багцаас дуу сонгох</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Дууны багцууд</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Дууны макронд зориулсан дуунуудын zip файл</value></data>
   <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>Дууны багц нь .pfsounds өргөтгөлтэй, дуунуудыг агуулсан нэг zip файл юм. Энд нэмээд дараа нь аль ч дууны макрод түүний дууг сонгоно уу. PadForge файлаас шууд уншдаг бөгөөд хэзээ ч задалдаггүй. Зөөврөөр ашиглахын тулд багцуудыг PadForge.exe-ийн хажууд хадгална уу.</value></data>
   <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>Багц нэмэх…</value></data>
   <data name="Pad_Audio_Packages_Add_Tooltip" xml:space="preserve"><value>Байгаа .pfsounds файлыг жагсаалтад нэмнэ.</value></data>
@@ -2969,6 +2999,7 @@
   <data name="Emoji_Category_Objects" xml:space="preserve"><value>Эд зүйлс</value></data>
   <data name="Emoji_Category_Symbols" xml:space="preserve"><value>Тэмдэгтүүд</value></data>
   <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>Дүрс тэмдгийн багцууд</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Цэсний нүдэнд зориулсан зургуудын zip файл</value></data>
   <data name="Pad_Menus_IconPackages_Desc" xml:space="preserve"><value>Дүрс тэмдгийн багц нь .pficons өргөтгөлтэй, зургуудыг агуулсан нэг zip файл юм. Энд нэмээд дараа нь аль ч цэсний нүдэнд түүний дүрс тэмдгийг сонгоно уу. PadForge файлаас шууд уншдаг бөгөөд хэзээ ч задалдаггүй. Зөөврөөр ашиглахын тулд багцуудыг PadForge.exe-ийн хажууд хадгална уу.</value></data>
   <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>Багц нэмэх…</value></data>
   <data name="Pad_Menus_IconPackages_Add_Tooltip" xml:space="preserve"><value>Байгаа .pficons файлыг жагсаалтад нэмнэ.</value></data>
@@ -3351,6 +3382,7 @@
   <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>Давхарга руу шилжих: {0}</value></data>
   <data name="Macro_SwitchLayer_Hint" xml:space="preserve"><value>Энэ слотыг сонгосон шилжих давхарга руу шилжүүлнэ. Давхарга нь өөр шилжилт, түгжих эсвэл ээлжлэх идэвхжүүлэгч, эсвэл профайл солигдох хүртэл идэвхтэй хэвээр байна. Суурь сонголт нь суурь давхарга руу буцаана. Нэг товчийг давхарга бүрт өөрөөр шилжүүлэхийн тулд энэ макрог дээрх давхаргад хамааруулна уу.</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>Guide товчны LED</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Guide эсвэл Home товчны гэрэл</value></data>
   <data name="Pad_Lighting_GuideLed_Subtitle" xml:space="preserve"><value>Гэрэлтдэг Guide эсвэл Home товчны тод байдал. Xbox One болон түүнээс хойшхи контроллерууд үүнийг USB-ээр хүлээн авна. 2015 оны Steam Controller аль ч холболтоор хүлээн авах ба бүх Steam Controller нэг тод байдлыг хуваалцана. Switch Pro Controller болон баруун Joy-Con (дангаараа, хосоороо эсвэл цэнэглэх бариулд) аль ч холболтоор хүлээн авна.</value></data>
   <data name="Pad_Lighting_GuideLed_Mode_Tooltip" xml:space="preserve"><value>«Төхөөрөмжийн үндсэн» нь LED-ийг контроллерын фирмвэрийн тохируулснаар нь яг үлдээнэ. «Тогтмол тод байдал» доорх түвшинг барина. «Батарейн түвшин» нь батарей дүүрэн байх тусам тодруулах ба хэзээ ч 10%-иас доош буулгахгүй. Xbox контроллерууд Guide LED командыг зөвхөн USB-ээр хүлээн авдаг тул Bluetooth холболтод энэ тохиргоо нөлөөгүй. Switch контроллерууд Home LED командыг аль ч холболтоор хүлээн авна.</value></data>
   <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>Төхөөрөмжийн үндсэн</value></data>
@@ -3712,6 +3744,7 @@
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Гэрэл ба дуу</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Макро ба цэсүүд</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Чичиргээг аудио руу</value></data>
+  <data name="Pad_More_BassShakers" xml:space="preserve"><value>Гаралтын төхөөрөмж, суваг, өсгөлт, мотор бүрийн ая</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Чичиргээг аудио гаралт руу чиглүүлэх</value></data>
   <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>Энэ виртуал контроллерын хүлээн авсан тоглоомын чичиргээ болон хүчний эргэх холбоог сонгосон аудио гаралтад бага давтамжийн дуу болгон тоглуулна. Унтраахад бүх тохиргоо хадгалагдана.</value></data>
   <data name="Pad_RumbleAudio_ResetEnable" xml:space="preserve"><value>Чичиргээний чиглүүлэлтийг дахин тохируулах</value></data>
@@ -4133,6 +4166,7 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>FreeTrack хуваалцсан санах ойн өгөгдлийг хүлээж байна.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>FreeTrack хуваалцсан санах ой боломжгүй байна.</value></data>
   <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Жолооны өнцгийн чичиргээ</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Стикийн тэнхлэг төвөөс холдох тусам өсөх чичиргээ</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Сонгосон виртуал стикийн тэнхлэг төвөөс холдох тусам тасралтгүй чичиргээ нэмнэ. Хуваарилсан бүх эх үүсвэрийн оноолтын гаралтыг ашиглана. «Чиглэлээр хуваах» сонголтод сөрөг хөдөлгөөн зүүн моторыг, эерэг хөдөлгөөн баруун моторыг ажиллуулна. «Зүүн мотор» эсвэл «Баруун мотор» сонголт хоёр чиглэлийг хоёуланг нь тухайн нэг моторт өгнө. Чичиргээтэй төхөөрөмжтэй Xbox ба PlayStation гаралтад зориулагдсан. Жолоо, тогтмол хүчний эргэх холбоотой бусад төхөөрөмж болон Fanatec дөрөөг алгасна.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Жолооны өнцгийн чичиргээг идэвхжүүлэх</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Виртуал тэнхлэг</value></data>
@@ -4450,6 +4484,7 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="Status_FalconDriverDeclined" xml:space="preserve"><value>Windows Force Dimension-ы драйверыг суулгасангүй. Windows Force Dimension-д итгэх эсэхийг асуувал «Суулгах»-ыг сонгоно уу.</value></data>
   <data name="Status_FalconDriverNotBound" xml:space="preserve"><value>Драйвер суусан боловч Falcon түүн рүү шилжээгүй байна. Falcon-ыг салгаад дахин залгана уу.</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>Цохилт, сэгсрэлт, тогтворжуулалт, урьдчилсан ачаалал, хүндийн хүч</value></data>
   <data name="Pad_Falcon_Description" xml:space="preserve"><value>PadForge Falcon-ы бариул дээрх хүч бүрийг секундэд мянга орчим удаа бариулын байрлал болон тоглоомын тоглуулж буй зүйлээс хамааруулан тооцоолно. Эдгээр тохиргоо энэ слотод хамаарна.</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>Novint Falcon-ыг дахин тохируулах</value></data>
   <data name="Pad_Falcon_Feel" xml:space="preserve"><value>Мэдрэмж</value></data>
@@ -4610,4 +4645,5 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{1} дээр {0}, дарж барих үед</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{1} дээр {0}, зогсоох хүртэл</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>{0} дээрх гохны эффектийг зогсоох</value></data>
+  <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Энэ төхөөрөмжийн гэрэлтүүлгийг удирдах, Гэрэлтүүлгийн хяналт</value></data>
 </root>

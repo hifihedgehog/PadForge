@@ -858,6 +858,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Vichochezi vya Impulse</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Vichochezi vya Impulse</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Gain ya kila kichochezi, kubadilishana motor, mitetemo ya vichochezi vinavyojirekebisha</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Hupitisha amri za motor kwa kila kichochezi (Xbox Impulse Triggers) kutoka kidhibiti pepe hadi kidhibiti halisi kilichogawiwa cha Xbox One, Elite, au Series. Mtetemo wa vichochezi unaoendeshwa na mchezo hupita kiotomatiki. Vidhibiti vilivyo hapa chini hupima ukubwa kwa kila kichochezi.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Kichochezi cha Kushoto</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Kichochezi cha Kulia</value></data>
@@ -876,7 +877,9 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Weka Upya Kichochezi cha Kushoto</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Weka Upya Kichochezi cha Kulia</value></data>
   <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Nguvu Endelevu ya Kichochezi</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Nguvu endelevu kwa kila motor ya kichochezi</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Uelekezaji wa Kichochezi</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Hupeleka mtetemo wa motor kuu kwa vichochezi</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Elekeza motor kuu za mtetemo kwenye chaneli ya kichochezi, kichochezi kimoja kwa wakati. Hufanya kazi na mtetemo wa XInput na force feedback. Kianzishi kinaweza kukidhibiti ili kichochezi kivume tu unaposhikilia kitufe.</value></data>
   <data name="Pad_ResetTriggerRouting" xml:space="preserve"><value>Weka Upya Uelekezaji wa Kichochezi</value></data>
   <data name="Pad_TriggerRouting_LeftTrigger" xml:space="preserve"><value>Kichochezi cha Kushoto</value></data>
@@ -908,6 +911,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Weka Upya Kichochezi cha Kushoto</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Weka Upya Kichochezi cha Kulia</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Mtetemo wa Kichochezi kwa Besi ya Sauti</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Mtetemo wa kichochezi kutokana na besi ya sauti ya mfumo</value></data>
   <data name="Pad_AudioTriggerRumble_Description" xml:space="preserve"><value>Endesha motor za vichochezi kwa besi ya sauti ya mfumo. Nguvu ya kichochezi inayoendeshwa na mchezo hutangulia ikiwa hai.</value></data>
   <data name="Pad_AudioTriggerRumble_Toggle" xml:space="preserve"><value>Endesha Motor za Vichochezi kwa Sauti</value></data>
   <data name="Pad_AudioTriggerRumble_Sensitivity" xml:space="preserve"><value>Unyeti</value></data>
@@ -1005,6 +1009,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice" xml:space="preserve"><value>Fuata Kifaa cha Sauti</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice_Picker" xml:space="preserve"><value>Kifaa cha Sauti</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>LED za Viashiria</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Mwangaza wa LED, Muundo wa Mchezaji, Hali ya LED ya Kunyamazisha</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>Safu ya nambari ya mchezaji (LED 5 chini ya touchpad) na LED ya kunyamazisha juu ya maikrofoni. Kidhibiti cha mwangaza huathiri tu safu ya mchezaji kimwili. Firmware huonyesha hali za LED ya kunyamazisha (Imezimwa / Imara / Mpigo) lakini haina rejista tofauti ya mwangaza wa kunyamazisha.</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>Weka Upya Lightbar</value></data>
   <data name="Pad_ResetIndicatorLeds" xml:space="preserve"><value>Weka Upya LED za Viashiria</value></data>
@@ -1391,6 +1396,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Sawazisha Kituo</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Sehemu ya Kituo</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Deadzone</value></data>
+  <data name="Pad_More_Stick" xml:space="preserve"><value>Marekebisho ya kituo, umbo la deadzone na thamani kwa kila mhimili, mkunjo kwa kila mhimili, masafa, usukani</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Masafa</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Sawazisha Mpaka ndiyo njia inayopendekezwa ya kunyoosha kijiti. Hufagia ukingo ambao kijiti kinaweza kufikia kimwili, kisha hupima upya kila nafasi kulingana na ukingo huo uliopimwa, ili mwendo wote wa asili, kwa kila pembe na kila mkengeuko, ulingane na duara bora bila kukatwa chochote. Vitelezi vinne vilivyo hapa chini hudhibiti tu mihimili minne mikuu. Vitumie kupunguza masafa kwa makusudi, si kuyasahihisha.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Inapima...</value></data>
@@ -1724,6 +1730,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Nambari ya touchpad</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Touchpad ipi ya kidhibiti hiki ambayo mipangilio iliyo hapa chini inaihusu. Kila touchpad ina ishara zake, hisia yake ya kipanya na eneo lake la kielekezi.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Utambuzi wa ishara</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Huwasha ishara za touchpad hii</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Washa ishara kwenye touchpad hii</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Swichi kuu ya touchpad hii. Ikizimwa, hakuna ishara itakayotambuliwa kwenye touchpad hii. Ramani zilizopo za kidole / mbofyo / nafasi bado zinafanya kazi.</value></data>
   <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>Tambua</value></data>
@@ -1734,6 +1741,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>Muda wa kupoa</value></data>
   <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>Baada ya ishara kuanzishwa, puuza ishara mpya kwenye touchpad hii kwa milisekunde hizi. Huzuia kuanzishwa mara mbili kutokana na mwendo wa haraka wa kwenda na kurudi.</value></data>
   <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>Ishara zilizojengewa ndani</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Kutelezesha, kugonga, kubana, maumbo</value></data>
   <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>Kutelezesha pande 4 (juu / chini / kushoto / kulia)</value></data>
   <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>Kutelezesha pande 8 (huongeza pembe)</value></data>
   <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>Umbali wa kutelezesha (0..1)</value></data>
@@ -1759,6 +1767,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>Ishara za maumbo (duara, mraba, pembetatu, Z, tiki)</value></data>
   <data name="Pad_Touchpad_MatchThreshold" xml:space="preserve"><value>Kizingiti cha ulinganifu wa umbo</value></data>
   <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>Ishara maalum</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Rekodi zako mwenyewe</value></data>
   <data name="Pad_Touchpad_RecordNew" xml:space="preserve"><value>+ Rekodi ishara mpya</value></data>
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>Hakuna ishara maalum zilizorekodiwa kwa wasifu huu. Bofya Rekodi ishara mpya ili kunasa moja.</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>kidole 1</value></data>
@@ -1766,6 +1775,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
 
   <!-- Stick / D-pad output card -->
   <data name="Pad_Touchpad_Stick_Header" xml:space="preserve"><value>Pato la kijiti / D-pad</value></data>
+  <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Tumia touchpad kama kijiti au D-pad</value></data>
   <data name="Pad_Touchpad_Stick_Subtitle" xml:space="preserve"><value>Geuza touchpad kuwa kijiti cha analogi pepe au D-pad. Pato huanzia mahali kidole chako kinapogusa kwanza. Nafasi ya sasa kulingana na nanga hiyo huendesha thamani ya kijiti na (hiari) thamani za mwelekeo wa D-pad zinazoshikiliwa.</value></data>
   <data name="Pad_Touchpad_StickEnabled" xml:space="preserve"><value>Washa pato la kijiti / D-pad</value></data>
   <data name="Pad_Touchpad_StickEnabled_Tooltip" xml:space="preserve"><value>Huonyesha vyanzo vya Kijiti X, Kijiti Y na D-pad vya touchpad kwenye kiteuzi cha ramani. Hufanya kazi pamoja na vyanzo vilivyopo vya kidole cha touchpad na ishara za touchpad, si badala yake.</value></data>
@@ -1780,6 +1790,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
 
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Pato la kipanya</value></data>
+  <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Geuza, Momentum, Mwitikio, Mchapuko, msukumo wa ziada</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Hurekebisha kasi ya kielekezi wakati kidole cha touchpad kimewekewa ramani ya kipanya X/Y kwenye kidhibiti pepe cha Kibodi / Kipanya. 1.0 ndiyo chaguomsingi. Ongeza mhimili wowote kwa kielekezi cha kasi zaidi, punguza kwa cha polepole zaidi. Geuza hugeuza mhimili wowote.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Unyeti wa kipanya X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Kizidishi cha mwendo wa mlalo wa touchpad → kipanya. Chini ya 1.0 hupunguza kasi ya kielekezi. Zaidi ya 1.0 huiongeza.</value></data>
@@ -1807,6 +1818,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_Touchpad_RotateThreshold_Tooltip" xml:space="preserve"><value>Vidole viwili lazima vizunguke kiasi gani kabla ya kuzungusha kuanzishwa.</value></data>
   <data name="Pad_ResetTouchpadRotateThresholdDegrees" xml:space="preserve"><value>Weka upya kizingiti cha kuzungusha</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>Kielekezi kamili</value></data>
+  <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>Sehemu ya skrini ambayo pedi hufikia</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Hurekebisha vyanzo vya Kielekezi X/Y cha touchpad, vinavyohamishia kielekezi hadi nafasi ya kidole chako kwenye pedi (viwekee ramani ya kipanya X/Y kwenye kidhibiti pepe cha Kibodi / Kipanya). Ukubwa 1.00 na kituo 0.50 huweka pedi kwenye skrini nzima. Punguza ukubwa ili kufunga kielekezi kwenye sehemu ya skrini, na usogeze kituo ili kukiweka.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Upana wa eneo</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Upana wa eneo la skrini ambalo pedi hii inaliwekea ramani, kama sehemu ya upana wa skrini. 1.00 hufunika upana wote, 0.50 hufunga kielekezi kwenye nusu ya skrini.</value></data>
@@ -1819,12 +1831,14 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
 
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Haptics ya kutelezesha</value></data>
+  <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>Tiki kidole chako kinaposafiri</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Hupiga mapigo ya haptics ya kidhibiti kidole chako kinaposafiri kwenye touchpad hii, kama tiki za trackpad za Steam Input. Steam Controller na Steam Deck hupiga tiki kwenye actuator iliyo chini ya pedi. DualSense na DualShock 4 hupiga motor za mtetemo.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Washa haptics ya kutelezesha</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>Hutoa tiki fupi ya haptic kila kidole kinaposogea umbali uliowekwa kwenye pedi hii. Kuweka kidole au kubofya pedi hakutoi tiki kamwe. Imezimwa kwa chaguomsingi.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>Nguvu ya mapigo</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity_Tooltip" xml:space="preserve"><value>Nguvu ya kila tiki. Mtetemo wa mchezo hushinda kila mara unapokuwa na nguvu zaidi.</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Header" xml:space="preserve"><value>Shinikizo bandia</value></data>
+  <data name="Pad_SyntheticPressure_FoldHint" xml:space="preserve"><value>Shinikizo kwa pedi zinazoripoti mguso kama kamili</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Subtitle" xml:space="preserve"><value>Huiga vitufe vya shinikizo vya DualShock 2 / DualShock 3 kwenye pedi zinazoripoti mguso kama shinikizo kamili (DualShock 4, DualSense, Steam Controller 2015). Ikiwashwa, vyanzo vya ramani vya Shinikizo vya kifaa hiki husoma bila mguso kama 0%, mguso wa kupumzika kama Kiwango cha shinikizo la mguso, na mbofyo wa pedi kama 100%.</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled" xml:space="preserve"><value>Washa shinikizo bandia</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled_Tooltip" xml:space="preserve"><value>Hupanga vyanzo vya ramani vya Shinikizo vya kifaa hiki kuwa hatua tatu: bila mguso husomwa 0%, mguso wa kupumzika husomwa Kiwango cha shinikizo la mguso, na kubofya pedi husomwa 100%. Imezimwa kwa chaguomsingi, hivyo husalia usomaji ghafi kwenye pedi zenye shinikizo halisi la analogi.</value></data>
@@ -2002,7 +2016,9 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Rekebisha jinsi kihisi cha mwendo cha pedi hii kinavyoendesha pato la kipanya na kijiti. Sawazisha kwenye uso tambarare ili kuondoa kuteleza kwa hali tulivu, kisha weka unyeti, ulainishaji na sheria za kuwasha upendavyo.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Usawazishaji</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Unyeti</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Vizio, Mfumo, geuza mihimili, Usawazishaji wa ulimwengu halisi</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Kuunda mwitikio</value></data>
+  <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Deadzone, ulainishaji, mchapuko, mkunjo wa pato</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Mfumo</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Jinsi mwendo wa gyro unavyofasiriwa. Wa ndani hutumia mihimili ghafi ya kidhibiti. Wa mchezaji huweka mwendo wa mlalo kwenye wima halisi wa dunia (uvutano) ili msokoto uleule wa kifundo cha mkono ugeuze kamera kila mara, bila kujali unavyoshika pedi. Wa ulimwengu huweka tena mwendo wa wima kwenye mihimili ya ulimwengu.</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>Jinsi inavyoshikwa</value></data>
@@ -2016,11 +2032,13 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_ResetGyroInvertYaw" xml:space="preserve"><value>Weka upya geuza yaw</value></data>
   <data name="Pad_ResetGyroInvertRoll" xml:space="preserve"><value>Weka upya geuza roll</value></data>
   <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>Dira</value></data>
+  <data name="Pad_Compass_FoldHint" xml:space="preserve"><value>Hushikilia yaw kwenye kaskazini ya sumaku</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Kidhibiti hiki kina magnetometer. Kutia nanga yaw kwenye kaskazini ya sumaku huondoa kuteleza polepole kwa mlalo kwenye kulenga kwa gyro. Sawazisha kwanza: bofya Sawazisha, zungusha kidhibiti katika mielekeo yote kwa umbo la 8 kwa sekunde chache, kisha bofya tena.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Tia nanga yaw kwenye dira</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Huongeza kasi ndogo ya kusahihisha inayovuta lengo la mlalo kuelekea mwelekeo wa sumaku, ili kuteleza kusijikusanye. Inahitaji usawazishaji wa magnetometer uliohifadhiwa. Sampuli zinazovurugwa na chuma au sumaku zilizo karibu hukataliwa kiotomatiki.</value></data>
   <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Weka upya hadi chaguomsingi (imezimwa)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Uigaji wa pitch na roll</value></data>
+  <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Pitch na roll zinazokokotolewa kutoka kwenye accelerometer</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>Gyro ya kidhibiti hiki hutambua kugeuka kushoto na kulia tu. Uigaji ukiwashwa, PadForge hupata pitch na roll kutoka kwenye accelerometer na kuzituma pamoja na yaw ya gyro kwa safu za ramani na mwendo wa kidhibiti pepe. Accelerometer haiwezi kutofautisha kusukuma na kuinamisha, kwa hivyo kusogeza kidhibiti kando au mbele bila kukigeuza husomwa kama mzunguko mfupi.</value></data>
   <data name="Settings_GyroSimulation" xml:space="preserve"><value>Igiza pitch na roll</value></data>
   <data name="Settings_GyroSimulation_Tooltip" xml:space="preserve"><value>Hujaza pitch na roll kwa kasi zinazotokana na accelerometer. Yaw hubaki usomaji wa gyro yenyewe. Imezimwa kwa chaguomsingi.</value></data>
@@ -2061,6 +2079,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Chini (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Juu (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Kuwasha</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Kitufe cha kuwasha lengo, hali ya kuwasha, Kizingiti cha lengo rahisi</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Vizuizi vya hiari vinavyopunguza wakati gyro inapofanya kazi. Mkengeuko wa kijiti cha kulia na kitufe cha kuwasha lengo vinaweza kuwekwa kila kimoja. Gyro huanzishwa tu wakati kila kizuizi kilichowekwa kiko hai.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Wa ndani</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Wa mchezaji</value></data>
@@ -2111,6 +2130,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Mwinamo wa gyro X</value></data>
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>Mwinamo wa gyro Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>Mwinamo wa gyro</value></data>
+  <data name="Pad_GyroTilt_FoldHint" xml:space="preserve"><value>Masafa kamili ya mwinamo, Deadzone ya mwinamo</value></data>
   <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>Bahasha ya ingizo za Mwinamo wa gyro X / Mwinamo wa gyro Y: shikilia mwinamo na kijiti hushikilia mkengeuko wake, kama modi ya Joystick Deflection ya Steam. Mkengeuko kamili kwenye masafa unayoweka hapa. Gyro Recenter huweka upya shikio la kupumzika. Yaw (kugeuza kidhibiti kikiwa tambarare) haionekani kwa uvutano na haisogezi ingizo hizi.</value></data>
   <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>Masafa kamili ya mwinamo</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>Digrii za mwinamo kutoka shikio la kupumzika zinazohesabiwa kama mkengeuko kamili wa kijiti. Ndogo = nyeti zaidi. 25° ndiyo thamani ya kawaida zaidi kwenye usanidi wa Steam.</value></data>
@@ -2296,6 +2316,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Masafa ya Chini Y (Chini)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Masafa ya Juu Y (Juu)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Mhimili wa X</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>Mihimili Yote Miwili</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Mhimili wa Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Masafa</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-deadzone</value></data>
@@ -2306,6 +2327,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Force feedback / Mtetemo / Haptics</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Gain ya kila motor, mtetemo wa kichochezi, kubadilishana motor</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Ukuzaji wa Jumla</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Motor ya Kushoto</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Motor ya Kulia</value></data>
@@ -2317,6 +2339,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Nguvu ya Kudumu</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Nguvu ya kudumu hadi uizime</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Tumia nguvu endelevu kwenye kifaa hiki hadi uizime. Nguvu inayotoka kwenye mchezo kutoka chanzo chochote hubatilisha ikiwa hai na kurudi mchezo unaposimama.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Tumia Nguvu ya Kudumu</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Buruta ndani ya gridi kuweka mwelekeo na nguvu.</value></data>
@@ -2603,6 +2626,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
 
   <!-- ═══ Audio Bass Rumble ═══ -->
   <data name="Settings_AudioRumble" xml:space="preserve"><value>Mtetemo wa Sauti</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Mtetemo kutokana na besi ya sauti ya mfumo</value></data>
   <data name="Settings_AudioRumbleDesc" xml:space="preserve"><value>Hutetemesha kidhibiti kutokana na masafa ya besi ya sauti ya mfumo.</value></data>
   <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>Washa Mtetemo wa Sauti</value></data>
   <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>Unyeti</value></data>
@@ -2713,6 +2737,8 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Weka Upya Deadzone ya Nje ya Kuegemea</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Weka Upya Mwelekeo wa Kidhibiti</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Usukani wa Mwendo</value></data>
+  <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° hadi {1}°</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Deadzone za Kuegemea, Mwelekeo wa Kidhibiti</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Weka Upya Usukani wa Mwendo</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (Kijiti cha Kulia)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick (Kijiti cha Kushoto)</value></data>
@@ -2720,6 +2746,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Mapping_LeftStickRing" xml:space="preserve"><value>Pete ya Kijiti cha Kushoto</value></data>
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>Pete ya Kijiti cha Kulia</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
+  <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Mipangilio ya ingizo za Flick Stick</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Weka Upya Flick Stick</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Nukta kwa kila 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Hesabu za kipanya kwa mgeuko mmoja kamili wa kamera wa 360°. Inategemea unyeti wa kipanya wa mchezo: ongeza ikiwa flick inazungusha pungufu, punguza ikiwa inazungusha kupita kiasi.</value></data>
@@ -2755,6 +2782,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Tabaka linalohifadhi Flick Stick likiwashwa kijiti kikiwa tayari kimekengeushwa, tekeleza flick mara moja. Ikizimwa, kamera hubaki tuli na hufuatilia mzunguko kutoka pembe ya sasa ya kijiti.</value></data>
   <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Weka Upya Ruhusu Flick Wakati wa Kuwasha</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Mrejesho wa Kufunga Usukani</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Ishara ya kufunga kikamilifu kwa kijiti cha usukani</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Kijiti kilichowekwa hali ya usukani kikigeuzwa hadi kufunga kikamilifu, cheza ishara (mtetemo, kichochezi, au lightbar) ili uhisi kikomo. Vyote vimezimwa kwa chaguomsingi.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Mdundo wa Mtetemo Wakati wa Kufunga</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Mtetemo wa Kichochezi Wakati wa Kufunga</value></data>
@@ -2810,6 +2838,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Sauti</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Sauti za makro na sauti ya mfumo iliyoakisiwa hucheza kupitia spika iliyojengewa ndani ya kidhibiti kilichochaguliwa, kupitia USB au Bluetooth. Chagua kifaa kwenye orodha ya juu. Kila mpangilio hapa unakifuata.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Pato la Sauti</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Chanzo cha Kuakisi, haptics, Sauti ya Vipokea Sauti, Crossfeed, Parametric EQ, Limiter</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Sauti hupelekwa kwa kidhibiti kilichochaguliwa kiotomatiki. Kupitia USB, sehemu ya sauti ya pedi yenyewe hulinganishwa kwa kontena la maunzi. Kupitia Bluetooth sauti hutiririshwa kwa fremu za Sony HID.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Chanzo cha Kuakisi</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Kifaa kipi cha kucheza sauti kiakisiwe kwenye spika ya kidhibiti. Michezo inayotuma sauti maalum kwa kifaa tofauti cha kucheza inaweza kulenga hiki.</value></data>
@@ -2883,6 +2912,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>Faili si wasifu wa PadForge unaosomeka.</value></data>
   <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Chagua sauti kutoka {0}</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Vifurushi vya Sauti</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Faili za zip za sauti kwa makro za sauti</value></data>
   <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>Kifurushi cha sauti ni faili moja ya zip ya sauti yenye kiendelezi cha .pfsounds. Kiongeze hapa, kisha chagua sauti zake kwenye makro yoyote ya sauti. PadForge husoma moja kwa moja kutoka kwenye faili na haikifungui kamwe. Weka vifurushi karibu na PadForge.exe ili vibaki vinavyobebeka.</value></data>
   <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>Ongeza Kifurushi…</value></data>
   <data name="Pad_Audio_Packages_Add_Tooltip" xml:space="preserve"><value>Ongeza faili ya .pfsounds iliyopo kwenye orodha.</value></data>
@@ -2908,6 +2938,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Emoji_Category_Objects" xml:space="preserve"><value>Vitu</value></data>
   <data name="Emoji_Category_Symbols" xml:space="preserve"><value>Alama</value></data>
   <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>Vifurushi vya Aikoni</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Faili za zip za picha kwa visanduku vya menyu</value></data>
   <data name="Pad_Menus_IconPackages_Desc" xml:space="preserve"><value>Kifurushi cha aikoni ni faili moja ya zip ya picha yenye kiendelezi cha .pficons. Kiongeze hapa, kisha chagua aikoni zake kwenye kisanduku chochote cha menyu. PadForge husoma moja kwa moja kutoka kwenye faili na haikifungui kamwe. Weka vifurushi karibu na PadForge.exe ili vibaki vinavyobebeka.</value></data>
   <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>Ongeza Kifurushi…</value></data>
   <data name="Pad_Menus_IconPackages_Add_Tooltip" xml:space="preserve"><value>Ongeza faili ya .pficons iliyopo kwenye orodha.</value></data>
@@ -3290,6 +3321,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>Hamia kwenye tabaka {0}</value></data>
   <data name="Macro_SwitchLayer_Hint" xml:space="preserve"><value>Huhamisha nafasi hii hadi tabaka la shift lililochaguliwa. Tabaka hubaki likiwa limewashwa hadi kuhamia lingine, kianzishi cha Latch au Cycle, au kubadilisha wasifu. Base hurudi kwenye tabaka la msingi. Elekeza makro hii kwenye tabaka lililo hapo juu ili kitufe kile kile kihamie tofauti kwa kila tabaka.</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>LED ya Kitufe cha Guide</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Mwanga wa kitufe cha Guide au Home</value></data>
   <data name="Pad_Lighting_GuideLed_Subtitle" xml:space="preserve"><value>Mwangaza wa kitufe cha Guide au Home kinachong'aa. Vidhibiti vya Xbox One na vya baadaye huukubali kupitia USB. Steam Controller ya 2015 huukubali kwenye muunganisho wowote, na Steam Controller zote hushiriki mwangaza mmoja. Switch Pro Controller na Joy-Con za kulia (peke yake, zilizooanishwa, au kwenye grip ya kuchaji) huukubali kwenye muunganisho wowote.</value></data>
   <data name="Pad_Lighting_GuideLed_Mode_Tooltip" xml:space="preserve"><value>Chaguomsingi la Kifaa huacha LED kama firmware ya kidhibiti ilivyoiweka. Mwangaza Usiobadilika hushikilia kiwango kilicho hapa chini. Kiwango cha Betri hufanya betri iliyojaa zaidi iwe angavu zaidi na haishuki chini ya 10%. Vidhibiti vya Xbox hukubali amri za LED ya Guide kupitia USB pekee, kwa hivyo mpangilio huu hauna athari kwenye muunganisho wa Bluetooth. Vidhibiti vya Switch hukubali amri za LED ya Home kwenye muunganisho wowote.</value></data>
   <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>Chaguomsingi la Kifaa</value></data>
@@ -3654,6 +3686,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass Shakers</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Huelekeza mtetemo wa mchezo na force feedback ambayo kidhibiti pepe hiki hupokea kwenye towe la sauti kama toni za masafa ya chini kwa bass shakers na subwoofer.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Mtetemo hadi Sauti</value></data>
+  <data name="Pad_More_BassShakers" xml:space="preserve"><value>Kifaa cha towe, chaneli, gain, toni kwa kila motor</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Hufanya kazi na vidhibiti pepe vya Xbox, DualShock 3, DualShock 4 / DualSense, na Nintendo Switch Pro, pamoja na vidhibiti pepe vya Extended vyenye force feedback, kama usukani wa mbio, na Steam Deck Controller (Composite). Maoni ya mchezo na Test Rumble hucheza kupitia towe la sauti. Mtetemo wa makro hubaki kwenye kidhibiti.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Weka Upya Mtetemo hadi Sauti</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Elekeza Mtetemo kwenye Towe la Sauti</value></data>
@@ -4089,6 +4122,7 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Inasubiri data ya shared memory ya FreeTrack.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>Shared memory ya FreeTrack haipatikani.</value></data>
   <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Mtetemo wa Pembe ya Usukani</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Mtetemo unaoongezeka mhimili wa kijiti unapoondoka kituoni</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Huongeza mtetemo endelevu mhimili pepe wa kijiti uliochaguliwa unavyosogea mbali na kituo. Hutumia matokeo yaliyoramaniwa kutoka vyanzo vyote vilivyoagizwa. Kwa Gawanya kwa Mwelekeo, mwendo hasi huendesha motor ya kushoto na mwendo chanya motor ya kulia. Motor ya Kushoto au Motor ya Kulia huweka pande zote mbili kwenye motor hiyo moja. Kwa matokeo ya Xbox na PlayStation yenye vifaa vya mtetemo. Haitumiki kwa usukani, vifaa vingine vyenye force feedback ya nguvu thabiti, na kanyagio za Fanatec.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Washa Mtetemo wa Pembe ya Usukani</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Mhimili Pepe</value></data>
@@ -4399,6 +4433,7 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="Status_FalconDriverDeclined" xml:space="preserve"><value>Windows haikusakinisha kiendeshi cha Force Dimension. Windows ikiuliza kama inaamini Force Dimension, chagua Sakinisha.</value></data>
   <data name="Status_FalconDriverNotBound" xml:space="preserve"><value>Kiendeshi kimesakinishwa, lakini Falcon haijahamia kwacho. Chomoa Falcon kisha uichomeke tena.</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>Teke, kutikisa, brace, preload, uvutano</value></data>
   <data name="Pad_Falcon_Description" xml:space="preserve"><value>PadForge hukokotoa kila nguvu kwenye kishikio cha Falcon takriban mara elfu moja kwa sekunde, kutokana na mahali kishikio kilipo na kile mchezo unachocheza. Mipangilio hii ni ya nafasi hii.</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>Weka Upya Novint Falcon</value></data>
   <data name="Pad_Falcon_Feel" xml:space="preserve"><value>Hisia</value></data>
@@ -4560,4 +4595,5 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} kwenye {1} ikishikiliwa</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} kwenye {1} hadi isimamishwe</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>Simamisha athari ya kichochezi kwenye {0}</value></data>
+  <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Dhibiti Taa za Kifaa Hiki, Ushikiliaji wa Taa</value></data>
 </root>

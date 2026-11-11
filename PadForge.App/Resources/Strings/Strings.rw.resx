@@ -485,6 +485,7 @@
   <data name="Curve_Delay" xml:space="preserve"><value>Gutinda</value></data>
   <data name="Curve_Custom" xml:space="preserve"><value>Byihariye</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Deadzone</value></data>
+  <data name="Pad_More_Stick" xml:space="preserve"><value>Ihindagurika rya hagati, imiterere ya deadzone n'agaciro ka buri murongo, umurongo uhetamye kuri buri murongo, intera, kuyobora</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Intera</value></data>
   <data name="Pad_ScrollUp" xml:space="preserve"><value>Hejuru</value></data>
   <data name="Pad_ScrollDown" xml:space="preserve"><value>Hasi</value></data>
@@ -686,6 +687,7 @@
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Nimero ya touchpad</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Kumenya ibimenyetso</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Ifungura ibimenyetso by'iyi touchpad</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Fungura ibimenyetso kuri iyi touchpad</value></data>
   <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>Kumenya</value></data>
   <data name="Pad_Touchpad_Mode_Both" xml:space="preserve"><value>Byombi</value></data>
@@ -701,6 +703,7 @@
   <data name="Pad_Touchpad_FourFinger" xml:space="preserve"><value>Ibimenyetso by'intoki enye</value></data>
   <data name="Pad_Touchpad_FiveFinger" xml:space="preserve"><value>Gukoraho n'intoki eshanu</value></data>
   <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>Ibimenyetso byihariye</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Andika ibimenyetso byawe bwite</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>Urutoki 1</value></data>
   <data name="Pad_Touchpad_CustomGesture_NFingers_Format" xml:space="preserve"><value>Intoki {0}</value></data>
 
@@ -791,6 +794,7 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Calibration</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensitivity</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Ibipimo, umwanya, guhindura imirongo, Real-World Calibration</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Hindura icyerekezo cya pitch (Y)</value></data>
   <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Hindura icyerekezo cya yaw (X)</value></data>
   <data name="Settings_GyroInvertRoll" xml:space="preserve"><value>Hindura icyerekezo cya roll (X)</value></data>
@@ -900,6 +904,7 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Intera ntoya Y (hasi)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Intera nini Y (hejuru)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Umurongo X</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>Imirongo yombi</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Umurongo Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Intera</value></data>
   <data name="Pad_SensitivityCurve" xml:space="preserve"><value>Umurongo uhetamye wa sensitivity</value></data>
@@ -1067,6 +1072,7 @@
 
   <!-- ═══ Audio Bass Rumble ═══ -->
   <data name="Settings_AudioRumble" xml:space="preserve"><value>Kunyeganyega guturuka ku majwi</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Bass y'amajwi ya sisitemu itera kunyeganyega</value></data>
   <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>Koresha kunyeganyega guturuka ku majwi</value></data>
   <data name="Settings_AudioRumble_LeftMotor" xml:space="preserve"><value>Moteri y'ibumoso</value></data>
   <data name="Settings_AudioRumble_RightMotor" xml:space="preserve"><value>Moteri y'iburyo</value></data>
@@ -1104,6 +1110,7 @@
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick stick (agati k'ibumoso)</value></data>
   <data name="Mapping_FlickStickTouchpad_Format" xml:space="preserve"><value>Flick stick (touchpad {0})</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick stick</value></data>
+  <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Igenamiterere ry'injiza za Flick stick</value></data>
   <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Subiza kuri 14400</value></data>
   <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Subiza kuri 0.1 s</value></data>
   <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Subiza kuri 0.9</value></data>
@@ -1623,6 +1630,7 @@
   <data name="Status_InstallingFalconDriver" xml:space="preserve"><value>Gushyiramo driver ya Falcon ya Force Dimension…</value></data>
   <data name="Status_FalconNotPluggedIn" xml:space="preserve"><value>Nta Falcon icometse.</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>Gukubita, kunyeganyega, kwihagararaho, gutegura, uburemere</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>Subiza Novint Falcon uko yari iri</value></data>
   <data name="Pad_Falcon_Feel_Joystick" xml:space="preserve"><value>Joystick</value></data>
   <data name="Pad_Falcon_Button1" xml:space="preserve"><value>Buto 1</value></data>
@@ -1689,4 +1697,23 @@
   <data name="Extras_More_HeadTracking" xml:space="preserve"><value>Runtime ya OpenXR, port ya UDP, intera ya buri murongo</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, igisimbura cya DSX.exe</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Umwirondoro</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Ikimenyetso iyo agati ko kuyobora kageze ku iherezo</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Kunyeganyega kwiyongera uko umurongo w'agati uva hagati</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Imbaraga zihoraho kugeza uzizimije</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Yohereza kunyeganyega kwa moteri nkuru kuri trigger</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Imbaraga zihoraho kuri moteri ya buri trigger</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Bass y'amajwi ya sisitemu itera trigger kunyeganyega</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Deadzone zo guhengama, icyerekezo cya controller</value></data>
+  <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Deadzone, koroshya, kwihutisha, umurongo uhetamye w'isohoka</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Buto yo gufungura kuboneza, uburyo bwo gufungura, urugero rwa Easy Aim</value></data>
+  <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Koresha touchpad nk'agati cyangwa D-pad</value></data>
+  <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>Igice cya ecran touchpad igeraho</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Swipe, gukoraho, gukomatanya intoki, imiterere</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Urumuri rwa LED, imiterere y'umukinnyi, uburyo bwa LED yo gucecekesha</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Urumuri rwa buto ya Guide cyangwa Home</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Dosiye za zip z'amajwi zikoreshwa na macro z'amajwi</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Dosiye za zip z'amashusho y'ibice bya menu</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Imbaraga za buri moteri, kunyeganyega kwa trigger, gusimburanya moteri</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Imbaraga za buri trigger, gusimburanya moteri, kunyeganyega kwa adaptive trigger</value></data>
+  <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Guhindura icyerekezo, Momentum, igisubizo, kwihutisha, fling</value></data>
 </root>

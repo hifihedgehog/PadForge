@@ -5158,6 +5158,22 @@ namespace PadForge.Views
             }
         }
 
+        /// <summary>The stick card's one Sensitivity preset (#574): the
+        /// chosen preset becomes the curve of both axes. Custom names no
+        /// preset, so picking it changes nothing.</summary>
+        private void StickPresetBoth_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is ComboBox cb && cb.SelectedItem is string name && cb.Tag is StickConfigItem item)
+            {
+                if (!ReferenceEquals(cb.DataContext, item)) return;
+                var serialized = FindPresetSerialized(name);
+                if (serialized == null) return;
+                string wanted = CurveLut.Normalize(serialized);
+                if (CurveLut.Normalize(item.SensitivityCurveX) != wanted || CurveLut.Normalize(item.SensitivityCurveY) != wanted)
+                    item.SensitivityCurveBoth = serialized;
+            }
+        }
+
         private void StickPresetY_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (sender is ComboBox cb && cb.SelectedItem is string name && cb.Tag is StickConfigItem item)

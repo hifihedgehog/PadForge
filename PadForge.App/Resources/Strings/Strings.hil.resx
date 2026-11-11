@@ -394,6 +394,7 @@
   <data name="Pad_Formula_Chip_Min" xml:space="preserve"><value>Ang mas diutay sa duha ka balor</value></data>
   <data name="Pad_Formula_Chip_Max" xml:space="preserve"><value>Ang mas daku sa duha ka balor</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Deadzone</value></data>
+  <data name="Pad_More_Stick" xml:space="preserve"><value>Offset sang tunga, porma kag balor sang deadzone sa kada axis, curve para sa kada axis, Range, steering</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Range</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Center offset X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Center offset Y</value></data>
@@ -861,6 +862,7 @@
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>Sa ibabaw sang screen</value></data>
   <data name="Pad_Pointer_SensorBar_Below" xml:space="preserve"><value>Sa idalom sang screen</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Output sang tunog</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Mirror Source, haptics, Volume sang headphone, Crossfeed, Parametric EQ, Limiter</value></data>
   <data name="Pad_Audio_SystemDefault" xml:space="preserve"><value>Default sang sistema</value></data>
   <data name="Pad_Audio_Test" xml:space="preserve"><value>I-test</value></data>
   <data name="Pad_Audio_Test_Tooltip" xml:space="preserve"><value>Magpatunog sang malip-ot nga beep sa napili nga output device</value></data>
@@ -884,6 +886,7 @@
   <data name="Status_ProfileExported_Format" xml:space="preserve"><value>Na-export ang profile nga "{0}".</value></data>
   <data name="Status_ProfileImported_Format" xml:space="preserve"><value>Na-import ang profile nga "{0}" ({1} ka sound package ang narehistro).</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Mga sound package</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Mga zip file sang tunog para sa mga sound macro</value></data>
   <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>Magdugang sang package…</value></data>
   <data name="Pad_Audio_Packages_Add_Tooltip" xml:space="preserve"><value>Idugang sa listahan ang isa ka .pfsounds file nga ara na.</value></data>
   <data name="Pad_Audio_Packages_Create" xml:space="preserve"><value>Maghimo sang package…</value></data>
@@ -898,6 +901,7 @@
   <data name="Emoji_Category_Animals" xml:space="preserve"><value>Mga sapat</value></data>
   <data name="Emoji_Category_Food" xml:space="preserve"><value>Pagkaon</value></data>
   <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>Mga icon package</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Mga zip file sang imahe para sa mga cell sang menu</value></data>
   <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>Magdugang sang package…</value></data>
   <data name="Pad_Menus_IconPackages_Add_Tooltip" xml:space="preserve"><value>Idugang sa listahan ang isa ka .pficons file nga ara na.</value></data>
   <data name="Pad_Menus_IconPackages_Create" xml:space="preserve"><value>Maghimo sang package…</value></data>
@@ -1033,6 +1037,7 @@
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>Kuhaa ang litrato</value></data>
   <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>Magbalhin sa layer {0}</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>LED sang Guide button</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Ang siga sang Guide ukon Home button</value></data>
   <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>Default sang device</value></data>
   <data name="Pad_Lighting_GuideLed_Battery" xml:space="preserve"><value>Lebel sang baterya</value></data>
   <data name="Pad_Lighting_GuideLed_Brightness" xml:space="preserve"><value>Kasanag</value></data>
@@ -1394,6 +1399,7 @@
   <data name="Status_InstallingFalconDriver" xml:space="preserve"><value>Gina-install ang Falcon driver sang Force Dimension…</value></data>
   <data name="Status_FalconNotPluggedIn" xml:space="preserve"><value>Wala sing Falcon nga naka-plug in.</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>Sipa, uyog, suporta, preload, grabidad</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>I-reset ang Novint Falcon</value></data>
   <data name="Pad_Falcon_Feel_Joystick" xml:space="preserve"><value>Joystick</value></data>
   <data name="Pad_Falcon_Button1" xml:space="preserve"><value>Button 1</value></data>
@@ -1501,4 +1507,20 @@
   <data name="Pad_View_List" xml:space="preserve"><value>Listahan</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Mag-click sang kontrol, dayon pinduta ang input nga magapadalagan sini.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Ginahulat ang input para sa {0}. Pinduta ang input sa imo device.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Senyas kon ang stick sa steering mode umabot sa full lock</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Rumble nga nagadaku samtang ang axis sang stick nagalayo sa tunga</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Padayon nga kusog tubtob patayon mo ini</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Rumble halin sa bass sang audio sang sistema</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Ginapadala ang rumble sang main motor sa mga trigger</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Padayon nga kusog sa kada motor sang trigger</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Rumble sang trigger halin sa bass sang audio sang sistema</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Mga deadzone sang pagkiling, Orientasyon sang controller</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Button sang Aim Engage, Engage Mode, Threshold sang Easy Aim</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Ginapasiga ang mga gesture sang sini nga touchpad</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Swipe, tap, pinch, mga porma</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Magrekord sang imo kaugalingon</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Kasanag sang LED, Pattern sang player, Mode sang mute LED</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Gain sang kada motor, rumble sang trigger, pagbaylo sang motor</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Gain sang kada trigger, pagbaylo sang motor, adaptive trigger nga vibration</value></data>
+  <data name="Pad_More_BassShakers" xml:space="preserve"><value>Output nga device, mga channel, gain, tono para sa kada motor</value></data>
 </root>

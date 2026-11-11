@@ -496,6 +496,7 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Giroscopio</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Calibración</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensibilidad</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Unidad, Espacio, invertir eje, Calibración mundo añetegua</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Invertir pitch (Y)</value></data>
   <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Invertir yaw (X)</value></data>
   <data name="Settings_GyroInvertRoll" xml:space="preserve"><value>Invertir roll (X)</value></data>
@@ -585,6 +586,7 @@
   <data name="Pad_SensitivityX" xml:space="preserve"><value>Sensibilidad X</value></data>
   <data name="Pad_SensitivityY" xml:space="preserve"><value>Sensibilidad Y</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Eje X</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>Mokõive eje</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Eje Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Rango</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti zona muerta</value></data>
@@ -757,6 +759,7 @@
   <data name="Pad_Steering_Orient_Right" xml:space="preserve"><value>Akatúape</value></data>
   <data name="Pad_Steering_Orient_Backward" xml:space="preserve"><value>Tapykuépe</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
+  <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Ñemboheko Flick Stick jeikérã</value></data>
   <data name="Settings_FlickSnapMode_Half" xml:space="preserve"><value>180 grado</value></data>
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 grado</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 grado</value></data>
@@ -1063,6 +1066,7 @@
   <data name="Falcon_Status_Open" xml:space="preserve"><value>ijuruja</value></data>
   <data name="Settings_Falcon_Title" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>Patada, sacudida, apoyo, precarga, gravedad</value></data>
   <data name="Pad_Falcon_Feel_Joystick" xml:space="preserve"><value>Joystick</value></data>
   <data name="Pad_Falcon_Button1" xml:space="preserve"><value>Votõ 1</value></data>
   <data name="Pad_Falcon_Button2" xml:space="preserve"><value>Votõ 2</value></data>
@@ -1095,4 +1099,24 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Ñemongu'e ha ñepoko</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Tesape ha audio</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Macro ha menúkuéra</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Señal palanca volante ohupytývo ipaha</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Vibración okakuaáva eje osẽ jave mbytégui</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Mbarete opytáva remboguepeve</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Vibración sistema audio bajo rehegua</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Omondo motor guasu vibración gatillokuérape</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Mbarete opytáva peteĩteĩ gatillo motorpe</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Gatillo vibración sistema audio bajo rehegua</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Zona muerta ñembojere, Control orientación</value></data>
+  <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Zona muerta, suavizado, Aceleración, Curva ñesẽ</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Votõ apuntar ñepyrũ, Modo ñepyrũ, Umbral apuntar hasy'ỹ</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Omyandy ko touchpad gestokuéra</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Deslizar, toque, pellizco, forma</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Egrava nde mba'éva</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>LED brillo, Patrón jugador, Modo LED mute</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Guide térã Home votõ resape</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Zip archivo ryapu macro ryapúrã</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Zip archivo ta'anga menú celda peguarã</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Ganancia peteĩteĩ motor, gatillo vibración, motor ñemoambue</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Ganancia peteĩteĩ gatillo, motor ñemoambue, gatillo adaptativo vibración</value></data>
+  <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Invertir, Impulso, Respuesta, Aceleración, ñemombo</value></data>
 </root>

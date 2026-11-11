@@ -547,6 +547,7 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Calibration</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensitivity</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Mayuniti, Nzvimbo, kupidigura maaxis, Real-World Calibration</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Pidigura pitch (Y)</value></data>
   <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Pidigura yaw (X)</value></data>
   <data name="Settings_GyroInvertRoll" xml:space="preserve"><value>Pidigura roll (X)</value></data>
@@ -646,6 +647,7 @@
   <data name="Pad_SensitivityX" xml:space="preserve"><value>Sensitivity X</value></data>
   <data name="Pad_SensitivityY" xml:space="preserve"><value>Sensitivity Y</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Axis X</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>Axis dzese</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Axis Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Range</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-deadzone</value></data>
@@ -654,6 +656,7 @@
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Force feedback / kudedera / haptics</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Simba remota imwe neimwe, kudedera kwetrigger, kuchinjanisa mota</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Mota yekuruboshwe</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Mota yekurudyi</value></data>
   <data name="Pad_SwapMotors" xml:space="preserve"><value>Chinjanisa mota dzekuruboshwe nekurudyi</value></data>
@@ -813,6 +816,7 @@
 
   <!-- ═══ Audio Bass Rumble ═══ -->
   <data name="Settings_AudioRumble" xml:space="preserve"><value>Kudedera kweinzwi</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Kudedera kunobva kubass yeinzwi resystem</value></data>
   <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>Batidza kudedera kweinzwi</value></data>
   <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>Sensitivity</value></data>
   <data name="Settings_AudioRumble_LeftMotor" xml:space="preserve"><value>Mota yekuruboshwe</value></data>
@@ -1264,6 +1268,7 @@
   <data name="Status_FalconDriverDeclined" xml:space="preserve"><value>Windows haina kuisa dhiraivha yeForce Dimension. Kana Windows ikakubvunza kana uchivimba neForce Dimension, sarudza Install.</value></data>
   <data name="Status_FalconDriverNotBound" xml:space="preserve"><value>Dhiraivha yaiswa, asi Falcon haisati yatanga kuishandisa. Bvisa Falcon wozoibatanidza zvakare.</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>Kukava, kuzunza, kutsigira, kufanorodha, giravhiti</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>Dzorera Novint Falcon</value></data>
   <data name="Pad_Falcon_Button1" xml:space="preserve"><value>Bhatani 1</value></data>
   <data name="Pad_Falcon_Button2" xml:space="preserve"><value>Bhatani 2</value></data>
@@ -1330,4 +1335,22 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Kufamba neKubata</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Mwenje neInzwi</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Mamacro neMenyu</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Chiratidzo kana stick yekutyaira yasvika pamugumo</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Kudedera kunowedzera axis yestick ichibva pakati</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Simba risingachinje kusvikira waridzima</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Inotumira kudedera kwemota huru kumatrigger</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Simba risingachinje pamota yega yega yetrigger</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Kudedera kwetrigger kunobva kubass yeinzwi resystem</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Deadzone dzekurereka, Kutarisa kwecontroller</value></data>
+  <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Deadzone, kutsetsenura, Kumhanyisa, Curve yekubuda</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Bhatani rekunongedza, Mode yekubatidza, Mwero weEasy Aim</value></data>
+  <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Shandisa touchpad sestick kana D-pad</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Inobatidza gesture dzetouchpad iyi</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Rekodha dzako</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Kupenya kwe-LED, Patani yemutambi, Mode ye-LED yekunyararisa</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Kupenya kwebhatani reGuide kana Home</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Mafaira ezip ane manzwi emacro emanzwi</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Mafaira ezip ane mifananidzo yemaseru emenu</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Simba retrigger imwe neimwe, kuchinjanisa mota, kudedera kweadaptive trigger</value></data>
+  <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Kupidigura, Momentum, Mhinduro, Kumhanyisa, kukanda</value></data>
 </root>

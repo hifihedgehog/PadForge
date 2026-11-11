@@ -916,6 +916,7 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyroscope</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Calibration</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensibilité</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Singa, habaka, fivadihan'ny axe, Real-World Calibration</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Avadika ny pitch (Y)</value></data>
   <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Avadika ny yaw (X)</value></data>
   <data name="Settings_GyroInvertRoll" xml:space="preserve"><value>Avadika ny roll (X)</value></data>
@@ -1030,6 +1031,7 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Elanelana kely indrindra Y (Ambany)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Elanelana lehibe indrindra Y (Ambony)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Axe X</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>Axe roa</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Axe Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Elanelana</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-deadzone</value></data>
@@ -1037,6 +1039,7 @@
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Force feedback / Vibration / Haptique</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Tanjaky ny motera tsirairay, vibration amin'ny gâchette, fifanakalozana motera</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Motera havia</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Motera havanana</value></data>
   <data name="Pad_SwapMotors" xml:space="preserve"><value>Ifanakalozy ny motera havia sy havanana</value></data>
@@ -1223,6 +1226,7 @@
 
   <!-- ═══ Audio Bass Rumble ═══ -->
   <data name="Settings_AudioRumble" xml:space="preserve"><value>Vibration avy amin'ny feo</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Vibration avy amin'ny bass ao amin'ny feon'ny rafitra</value></data>
   <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>Ampandehano ny vibration avy amin'ny feo</value></data>
   <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>Sensibilité</value></data>
   <data name="Settings_AudioRumble_LeftMotor" xml:space="preserve"><value>Motera havia</value></data>
@@ -1266,6 +1270,7 @@
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick stick (stick havia)</value></data>
   <data name="Mapping_FlickStickTouchpad_Format" xml:space="preserve"><value>Flick stick (touchpad {0})</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick stick</value></data>
+  <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Fanitsiana ny fidiran'ny Flick stick</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Avereno ny flick stick</value></data>
   <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Avereno ho 14400</value></data>
   <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Avereno ho 0.1 s</value></data>
@@ -1292,6 +1297,7 @@
   <data name="Pad_ResetPointerFpsSpeed" xml:space="preserve"><value>Avereno ny hafainganana FPS</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Feo</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Fivoahan'ny feo</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Loharanon'ny dika, haptique, feon'ny écouteur, Crossfeed, Parametric EQ, Limiter</value></data>
   <data name="Pad_Audio_SystemDefault" xml:space="preserve"><value>Par défaut an'ny rafitra</value></data>
   <data name="Pad_Audio_SourceUnavailable" xml:space="preserve"><value>(Fitaovana tsy misy)</value></data>
   <data name="Pad_Audio_MasterVolume" xml:space="preserve"><value>Hamafin'ny feo ankapobeny</value></data>
@@ -1329,6 +1335,7 @@
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>Tsy profil PadForge azo vakiana io rakitra io.</value></data>
   <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Misafidiana feo ao amin'ny {0}</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Fonosana feo</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Rakitra zip misy feo ho an'ny macro feo</value></data>
   <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>Ampio fonosana…</value></data>
   <data name="Pad_Audio_Packages_Add_Tooltip" xml:space="preserve"><value>Ampio amin'ny lisitra ny rakitra .pfsounds efa misy.</value></data>
   <data name="Pad_Audio_Packages_Create" xml:space="preserve"><value>Mamorona fonosana…</value></data>
@@ -1349,6 +1356,7 @@
   <data name="Emoji_Category_Objects" xml:space="preserve"><value>Zavatra</value></data>
   <data name="Emoji_Category_Symbols" xml:space="preserve"><value>Marika</value></data>
   <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>Fonosana kisary</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Rakitra zip misy sary ho an'ny sela menio</value></data>
   <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>Ampio fonosana…</value></data>
   <data name="Pad_Menus_IconPackages_Add_Tooltip" xml:space="preserve"><value>Ampio amin'ny lisitra ny rakitra .pficons efa misy.</value></data>
   <data name="Pad_Menus_IconPackages_Create" xml:space="preserve"><value>Mamorona fonosana…</value></data>
@@ -1903,6 +1911,7 @@
   <data name="Status_FalconDriverDeclined" xml:space="preserve"><value>Tsy napetraky ny Windows ny pilote an'ny Force Dimension. Raha manontany ny Windows raha hatoky ny Force Dimension, safidio ny Installer.</value></data>
   <data name="Status_FalconDriverNotBound" xml:space="preserve"><value>Voapetraka ny pilote, saingy mbola tsy nifindra tany aminy ny Falcon. Esory ny Falcon ary ampifandraiso indray.</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>Fanosehana, hovitrovitra, fampitoniana, preload, gravité</value></data>
   <data name="Pad_Falcon_Description" xml:space="preserve"><value>Kajian'ny PadForge in-arivo eo ho eo isan-tsegondra ny hery rehetra eo amin'ny tahon'ny Falcon, araka ny toerana misy ny tahony sy izay alefan'ny lalao. An'ity slot ity ireo fikirakirana ireo.</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>Avereno ny Novint Falcon</value></data>
   <data name="Pad_Falcon_Feel" xml:space="preserve"><value>Fahatsapana</value></data>
@@ -2001,4 +2010,22 @@
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Profil</value></data>
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Izay fanindriana hitan'ny lalao rehefa samy tazomina ny bokotra fitendry roa</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Mitazona deflection kely amin'ny stick mba hampisehoan'ny lalao foana ny famantarana contrôleur</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Famantarana rehefa tonga amin'ny fetrany ny stick amin'ny fomba familiana</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Vibration mitombo rehefa miala afovoany ny axe an'ny stick</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Hery maharitra mandra-pamonoanao azy</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Mandefa ny vibration an'ny motera lehibe any amin'ny gâchette</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Hery maharitra amin'ny moteran'ny gâchette tsirairay</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Vibration amin'ny gâchette avy amin'ny bass ao amin'ny feon'ny rafitra</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Deadzone amin'ny fitongilanana, fironan'ny contrôleur</value></data>
+  <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Deadzone, fanalefahana, fanafainganana, fiolahan'ny fivoahana</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Bokotra fampandehanana ny fikendrena, fomba fampandehanana, seuil an'ny Easy Aim</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Mampandeha ny geste amin'ity touchpad ity</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Fikosehana, fikitihana, fanendahana, endrika</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Raketo ny geste anao manokana</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Hazavan'ny LED, lamina mpilalao, fomban'ny LED fanakatonana feo</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Ny hazavan'ny bokotra Guide na Home</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Tanjaky ny gâchette tsirairay, fifanakalozana motera, vibration adaptive trigger</value></data>
+  <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Fivadihana, momentum, valiny, fanafainganana, fling</value></data>
+  <data name="Pad_More_BassShakers" xml:space="preserve"><value>Fitaovana fivoahana, fantsona, tanjaka, feo iray isaky ny motera</value></data>
+  <data name="Pad_More_Stick" xml:space="preserve"><value>Fiovan'ny teboka afovoany, endriky ny deadzone sy ny sandany isaky ny axe, fiolahana isaky ny axe, elanelana, familiana</value></data>
 </root>

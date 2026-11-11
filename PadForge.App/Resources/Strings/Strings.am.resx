@@ -860,6 +860,7 @@
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>ኢምፐልስ ትሪገሮች</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>ኢምፐልስ ትሪገሮች</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>የእያንዳንዱ ትሪገር ማጉላት፣ ሞተሮችን ማለዋወጥ፣ የአዳፕቲቭ ትሪገር ንዝረቶች</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>ለእያንዳንዱ ትሪገር የሞተር ትዕዛዞችን (Xbox Impulse Triggers) ከምናባዊ መቆጣጠሪያው ወደ ተመደበው አካላዊ Xbox One፣ Elite ወይም Series መቆጣጠሪያ ያስተላልፋል። በጨዋታ የሚነዳ የትሪገር ንዝረት በራስ-ሰር ያልፋል። ከታች ያሉት መቆጣጠሪያዎች ለእያንዳንዱ ትሪገር መጠኑን ያስተካክላሉ።</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>ግራ ትሪገር</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>ቀኝ ትሪገር</value></data>
@@ -878,7 +879,9 @@
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>ግራ ትሪገርን ዳግም አስጀምር</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>ቀኝ ትሪገርን ዳግም አስጀምር</value></data>
   <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>ቋሚ የትሪገር ኃይል</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>በእያንዳንዱ ትሪገር ሞተር ላይ ቋሚ ኃይል</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>የትሪገር ማዘዋወሪያ</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>የዋና ሞተሮችን ንዝረት ወደ ትሪገሮች ይልካል</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>ዋናዎቹን የንዝረት ሞተሮች ወደ ትሪገር ቻናሉ፣ አንድ ትሪገር በአንድ ጊዜ፣ አዛውር። ከXInput ንዝረት እና ከኃይል ግብረመልስ ጋር ይሠራል። ትሪገሩ አዝራር ስትይዝ ብቻ እንዲንዘር አንቂ ሊገድበው ይችላል።</value></data>
   <data name="Pad_ResetTriggerRouting" xml:space="preserve"><value>የትሪገር ማዘዋወሪያን ዳግም አስጀምር</value></data>
   <data name="Pad_TriggerRouting_LeftTrigger" xml:space="preserve"><value>ግራ ትሪገር</value></data>
@@ -910,6 +913,7 @@
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>ግራ ትሪገርን ዳግም አስጀምር</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>ቀኝ ትሪገርን ዳግም አስጀምር</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>የድምጽ ባስ ትሪገር ንዝረት</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>ከስርዓቱ ድምጽ ባስ የሚመጣ የትሪገር ንዝረት</value></data>
   <data name="Pad_AudioTriggerRumble_Description" xml:space="preserve"><value>የትሪገር ሞተሮችን በስርዓቱ ድምጽ ባስ አንቀሳቅስ። በጨዋታ የሚነዳ የትሪገር ኃይል ንቁ ሆኖ ሳለ ይሽረዋል።</value></data>
   <data name="Pad_AudioTriggerRumble_Toggle" xml:space="preserve"><value>የትሪገር ሞተሮችን በድምጽ አንቀሳቅስ</value></data>
   <data name="Pad_AudioTriggerRumble_Sensitivity" xml:space="preserve"><value>ትብነት</value></data>
@@ -1007,6 +1011,7 @@
   <data name="Pad_Lighting_MicLed_FollowDevice" xml:space="preserve"><value>የድምጽ መሣሪያን ተከተል</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice_Picker" xml:space="preserve"><value>የድምጽ መሣሪያ</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>የአመልካች LED መብራቶች</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>LED ብሩህነት፣ የተጫዋች ንድፍ፣ የድምጸ-ከል LED ሁነታ</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>የተጫዋች ቁጥር ረድፍ (ከመዳሰሻ ሰሌዳው በታች 5 LED መብራቶች) እና ከማይክሮፎኑ በላይ ያለው የድምጸ-ከል LED። የብሩህነት መቆጣጠሪያው በአካል የሚነካው የተጫዋች ረድፉን ብቻ ነው። ፈርምዌሩ የድምጸ-ከል LED ሁኔታዎችን (ጠፍቷል / ቋሚ / ምት) ያቀርባል፣ ግን የተለየ የድምጸ-ከል ብሩህነት መመዝገቢያ የለውም።</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>የብርሃን አሞሌን ዳግም አስጀምር</value></data>
   <data name="Pad_ResetIndicatorLeds" xml:space="preserve"><value>የአመልካች LED መብራቶችን ዳግም አስጀምር</value></data>
@@ -1393,6 +1398,7 @@
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>መሃልን አስተካክል</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>የመሃል ነጥብ</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>የሞተ ቀጠና</value></data>
+  <data name="Pad_More_Stick" xml:space="preserve"><value>የመሃል ማካካሻዎች፣ የሞተ ቀጠና ቅርጽ እና የእያንዳንዱ ዘንግ እሴቶች፣ ለእያንዳንዱ ዘንግ ኩርባ፣ ክልል፣ መሪ ማዞር</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>ክልል</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>ስቲክን ለማስተካከል የሚመከረው መንገድ «ወሰንን አስተካክል» ነው። ስቲኩ በአካል ሊደርስበት የሚችለውን ጠርዝ ይቃኛል፣ ከዚያም እያንዳንዱን ቦታ ከዚያ የተለካ ጠርዝ አንጻር በተመጣጣኝ ሁኔታ እንደገና ይመዝናል፣ ስለዚህ ሙሉው የተፈጥሮ እንቅስቃሴ፣ በእያንዳንዱ ማዕዘን እና በእያንዳንዱ ማፈንገጥ፣ ምንም ሳይቆረጥ ወደ ፍጹም ክብ ይዛመዳል። ከታች ያሉት አራቱ ተንሸራታቾች ዋናዎቹን ዘንጎች ብቻ ይገድባሉ። ክልሉን ሆን ብለህ ለመገደብ ተጠቀምባቸው እንጂ ለማስተካከል አይደለም።</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>ናሙና በመውሰድ ላይ...</value></data>
@@ -1726,6 +1732,7 @@
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>የመዳሰሻ ሰሌዳ ቁጥር</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>ከታች ያሉት ቅንብሮች በዚህ መቆጣጠሪያ ላይ የትኛውን የመዳሰሻ ሰሌዳ እንደሚመለከቱ። እያንዳንዱ የመዳሰሻ ሰሌዳ የራሱን የእጅ ምልክቶች፣ የመዳፊት ስሜት እና የጠቋሚ አካባቢ ይይዛል።</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>የእጅ ምልክት ማወቂያ</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>የዚህን የመዳሰሻ ሰሌዳ የእጅ ምልክቶች ያበራል</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>በዚህ የመዳሰሻ ሰሌዳ ላይ የእጅ ምልክቶችን አንቃ</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>የዚህ የመዳሰሻ ሰሌዳ ዋና ማብሪያ። ሲጠፋ ለዚህ የመዳሰሻ ሰሌዳ ምንም የእጅ ምልክት አይቀሰቀስም። ነባር የጣት / የጠቅታ / የአቀማመጥ ማዛመጃዎች መሥራታቸውን ይቀጥላሉ።</value></data>
   <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>ለይቶ ማወቅ</value></data>
@@ -1736,6 +1743,7 @@
   <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>የእረፍት ጊዜ</value></data>
   <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>አንድ የእጅ ምልክት ከተቀሰቀሰ በኋላ በዚህ የመዳሰሻ ሰሌዳ ላይ ለዚህ ያህል ሚሊሰከንድ አዲስ የእጅ ምልክቶችን ችላ በል። ፈጣን ወዲያና ወዲህ እንቅስቃሴ የሚያስከትለውን ድግግሞሽ ይከላከላል።</value></data>
   <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>አብሮገነብ የእጅ ምልክቶች</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>ማንሸራተቶች፣ መታ ማድረጎች፣ መቆንጠጦች፣ ቅርጾች</value></data>
   <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>ባለ 4 አቅጣጫ ማንሸራተቶች (ላይ / ታች / ግራ / ቀኝ)</value></data>
   <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>ባለ 8 አቅጣጫ ማንሸራተቶች (ሰያፎችን ያክላል)</value></data>
   <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>የማንሸራተት ርቀት (0..1)</value></data>
@@ -1761,6 +1769,7 @@
   <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>የቅርጽ የእጅ ምልክቶች (ክብ፣ ካሬ፣ ሦስት ማዕዘን፣ Z፣ የትክክል ምልክት)</value></data>
   <data name="Pad_Touchpad_MatchThreshold" xml:space="preserve"><value>የቅርጽ ተዛማጅነት ገደብ</value></data>
   <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>ብጁ የእጅ ምልክቶች</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>የራስዎን ይቅረጹ</value></data>
   <data name="Pad_Touchpad_RecordNew" xml:space="preserve"><value>+ አዲስ የእጅ ምልክት መዝግብ</value></data>
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>ለዚህ መገለጫ ምንም ብጁ የእጅ ምልክት አልተመዘገበም። አንድ ለመቅረጽ «አዲስ የእጅ ምልክት መዝግብ»ን ጠቅ አድርግ።</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 ጣት</value></data>
@@ -1768,6 +1777,7 @@
 
   <!-- Stick / D-pad output card -->
   <data name="Pad_Touchpad_Stick_Header" xml:space="preserve"><value>የስቲክ / የአቅጣጫ ቁልፍ ውጤት</value></data>
+  <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>የመዳሰሻ ሰሌዳውን እንደ ስቲክ ወይም የአቅጣጫ ቁልፍ ይጠቀሙ</value></data>
   <data name="Pad_Touchpad_Stick_Subtitle" xml:space="preserve"><value>የመዳሰሻ ሰሌዳውን ወደ ምናባዊ አናሎግ ስቲክ ወይም የአቅጣጫ ቁልፍ ቀይር። ውጤቱ ጣትህ መጀመሪያ ባረፈበት ስፍራ ይመሠረታል። ከዚያ መነሻ አንጻር ያለው የአሁኑ አቀማመጥ የስቲኩን እሴት እና (እንደ አማራጭ) የተያዙ የአቅጣጫ ቁልፍ አቅጣጫ እሴቶችን ይወስናል።</value></data>
   <data name="Pad_Touchpad_StickEnabled" xml:space="preserve"><value>የስቲክ / የአቅጣጫ ቁልፍ ውጤትን አንቃ</value></data>
   <data name="Pad_Touchpad_StickEnabled_Tooltip" xml:space="preserve"><value>የመዳሰሻ ሰሌዳ ስቲክ X፣ ስቲክ Y እና የአቅጣጫ ቁልፍ ምንጮችን በማዛመጃ መምረጫው ውስጥ ያሳያል። ከነባሮቹ የመዳሰሻ ሰሌዳ ጣት እና የእጅ ምልክት ምንጮች ጋር አብሮ ይሠራል እንጂ አይተካቸውም።</value></data>
@@ -1782,6 +1792,7 @@
 
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>የመዳፊት ውጤት</value></data>
+  <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>መገልበጥ፣ ሞመንተም፣ ምላሽ፣ ማፋጠን፣ ውርወራ</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>የመዳሰሻ ሰሌዳ ጣት በቁልፍ ሰሌዳ / መዳፊት ምናባዊ መቆጣጠሪያ ላይ ከመዳፊት X/Y ጋር ሲዛመድ የጠቋሚውን ፍጥነት ያስተካክላል። ነባሪው 1.0 ነው። ለፈጣን ጠቋሚ ማንኛውንም ዘንግ ጨምር፣ ለዝግተኛ ቀንስ። ገልብጥ ማንኛውንም ዘንግ ይገለብጣል።</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>የመዳፊት ትብነት X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>ለአግድም የመዳሰሻ ሰሌዳ → የመዳፊት ለውጥ ማባዣ። ከ1.0 በታች ጠቋሚውን ያዘገያል። ከ1.0 በላይ ያፈጥነዋል።</value></data>
@@ -1809,6 +1820,7 @@
   <data name="Pad_Touchpad_RotateThreshold_Tooltip" xml:space="preserve"><value>ማሽከርከር ከመቀስቀሱ በፊት ሁለት ጣቶች ምን ያህል መዞር እንዳለባቸው።</value></data>
   <data name="Pad_ResetTouchpadRotateThresholdDegrees" xml:space="preserve"><value>የማሽከርከር ገደብን ዳግም አስጀምር</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>ፍጹም ጠቋሚ</value></data>
+  <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>ሰሌዳው የሚደርስበት የማያ ገጽ ክፍል</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>ጠቋሚውን በሰሌዳው ላይ ወዳለው የጣትህ አቀማመጥ የሚያዘልሉትን የመዳሰሻ ሰሌዳ ጠቋሚ X/Y ምንጮችን ያስተካክላል (በቁልፍ ሰሌዳ / መዳፊት ምናባዊ መቆጣጠሪያ ላይ ከመዳፊት X/Y ጋር አዛምዳቸው)። መጠን 1.00 ከመሃል 0.50 ጋር ሰሌዳውን ከመላው ማያ ገጽ ጋር ያዛምዳል። ጠቋሚውን በማያ ገጹ ክፍል ውስጥ ለመገደብ መጠኑን አሳንስ፣ ለማስቀመጥ ደግሞ መሃሉን አንቀሳቅስ።</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>የአካባቢ ስፋት</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>ይህ ሰሌዳ የሚዛመድበት የማያ ገጽ አካባቢ ስፋት፣ ከማያ ገጹ ስፋት እንደ ክፍልፋይ። 1.00 ሙሉውን ስፋት ይሸፍናል፤ 0.50 ጠቋሚውን በግማሹ ማያ ገጽ ይገድባል።</value></data>
@@ -1821,12 +1833,14 @@
 
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>የማንሸራተት ሃፕቲክስ</value></data>
+  <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>ጣትዎ ሲጓዝ የሚሰሙ ምቶች</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>ጣትህ በዚህ የመዳሰሻ ሰሌዳ ላይ ሲጓዝ የመቆጣጠሪያውን ሃፕቲክስ ያስመታል፣ ልክ እንደ Steam Input የትራክፓድ ምቶች። Steam Controller እና Steam Deck ከሰሌዳው ስር ያለውን አንቀሳቃሽ ያስመታሉ፤ DualSense እና DualShock 4 የንዝረት ሞተሮችን ያስመታሉ።</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>የማንሸራተት ሃፕቲክስን አንቃ</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>ጣቱ በዚህ ሰሌዳ ላይ የተወሰነ ርቀት በተንቀሳቀሰ ቁጥር አጭር የሃፕቲክ ምት ይልካል። ጣት ማሳረፍ ወይም ሰሌዳውን ጠቅ ማድረግ ምንም ምት አያስከትልም። በነባሪ ጠፍቷል።</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>የምት ጥንካሬ</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity_Tooltip" xml:space="preserve"><value>የእያንዳንዱ ምት ጥንካሬ። የጨዋታው ንዝረት ይበልጥ ጠንካራ ሲሆን ሁልጊዜ እሱ ይቀድማል።</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Header" xml:space="preserve"><value>ሰው ሰራሽ ግፊት</value></data>
+  <data name="Pad_SyntheticPressure_FoldHint" xml:space="preserve"><value>ንክኪን እንደ ሙሉ ግፊት ለሚዘግቡ ሰሌዳዎች ግፊት</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Subtitle" xml:space="preserve"><value>ንክኪን እንደ ሙሉ ግፊት በሚዘግቡ ሰሌዳዎች ላይ (DualShock 4፣ DualSense፣ Steam Controller 2015) DualShock 2 / DualShock 3 ዓይነት የግፊት አዝራሮችን ያስመስላል። ሲነቃ፣ የዚህ መሣሪያ የግፊት ማዛመጃ ምንጮች ንክኪ ከሌለ 0%፣ ያረፈ ንክኪን እንደ የንክኪ ግፊት ደረጃ፣ የሰሌዳ ጠቅታን ደግሞ 100% አድርገው ያነባሉ።</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled" xml:space="preserve"><value>ሰው ሰራሽ ግፊትን አንቃ</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled_Tooltip" xml:space="preserve"><value>የዚህን መሣሪያ የግፊት ማዛመጃ ምንጮች በሦስት ደረጃዎች ይቀርጻል፦ ንክኪ ከሌለ 0%፣ ያረፈ ንክኪ የንክኪ ግፊት ደረጃን፣ ሰሌዳውን ጠቅ ማድረግ ደግሞ 100% ያነባል። በነባሪ ጠፍቷል፤ ይህም እውነተኛ አናሎግ ግፊት ባላቸው ሰሌዳዎች ላይ ጥሬ ንባቦችን ይጠብቃል።</value></data>
@@ -2004,7 +2018,9 @@
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>የዚህ መቆጣጠሪያ የእንቅስቃሴ ዳሳሽ የመዳፊት እና የስቲክ ውጤትን እንዴት እንደሚመራ አስተካክል። የእረፍት መንሸራተትን ለማጥፋት በጠፍጣፋ ገጽ ላይ አስተካክል፣ ከዚያ ትብነትን፣ ማለስለስን እና የማንቃት ደንቦችን እንደፍላጎትህ አዘጋጅ።</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>ማስተካከያ</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>ትብነት</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>አሃዶች፣ ምህዳር፣ ዘንጎችን መገልበጥ፣ የእውነተኛ ዓለም ማስተካከያ</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>የምላሽ ቅርጽ</value></data>
+  <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>የሞተ ቀጠና፣ ማለስለስ፣ ማፋጠን፣ የውጤት ኩርባ</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>ምህዳር</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>የጋይሮ እንቅስቃሴ እንዴት እንደሚተረጎም። አካባቢያዊ ጥሬ የመቆጣጠሪያ ዘንጎችን ይጠቀማል። ተጫዋች አግድም እንቅስቃሴን በእውነተኛው ዓለም ቁመታዊ (ስበት) ላይ ያሳርፋል፣ ስለዚህ መቆጣጠሪያውን እንዴትም ብትይዘው ተመሳሳይ የእጅ አንጓ መጠምዘዝ ሁልጊዜ ካሜራውን ያዞራል። ዓለም በተጨማሪ ቁመታዊ እንቅስቃሴን በዓለም ዘንጎች ላይ ያሳርፋል።</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>አያያዝ</value></data>
@@ -2018,11 +2034,13 @@
   <data name="Pad_ResetGyroInvertYaw" xml:space="preserve"><value>«ያው ገልብጥ»ን ዳግም አስጀምር</value></data>
   <data name="Pad_ResetGyroInvertRoll" xml:space="preserve"><value>«ሮል ገልብጥ»ን ዳግም አስጀምር</value></data>
   <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>ኮምፓስ</value></data>
+  <data name="Pad_Compass_FoldHint" xml:space="preserve"><value>ያውን ከመግነጢሳዊ ሰሜን ጋር ያያይዛል</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>ይህ መቆጣጠሪያ ማግኔቶሜትር አለው። ያውን ከመግነጢሳዊ ሰሜን ጋር ማያያዝ ከጋይሮ ማነጣጠር ዝግተኛ አግድም መንሸራተትን ያስወግዳል። መጀመሪያ አስተካክል፦ «አስተካክል»ን ተጫን፣ መቆጣጠሪያውን ለጥቂት ሰከንዶች በ8 ቅርጽ በሁሉም አቅጣጫዎች አሽከርክር፣ ከዚያ እንደገና ተጫን።</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>ያውን ከኮምፓስ ጋር አያይዝ</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>አግድም አላማውን ወደ መግነጢሳዊው አቅጣጫ የሚጎትት ትንሽ የማስተካከያ ፍጥነት ያክላል፣ ስለዚህ መንሸራተት ሊከማች አይችልም። የተቀመጠ የማግኔቶሜትር ማስተካከያ ያስፈልገዋል። በአቅራቢያ ባለ ብረት ወይም ማግኔት የተረበሹ ናሙናዎች በራስ-ሰር ውድቅ ይደረጋሉ።</value></data>
   <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>ወደ ነባሪ ዳግም አስጀምር (ጠፍቷል)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>የፒች እና ሮል ማስመሰል</value></data>
+  <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>ከአክስሌሮሜትሩ የሚሰሉ ፒች እና ሮል</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>የዚህ መቆጣጠሪያ ጋይሮ የሚገነዘበው ወደ ግራ እና ወደ ቀኝ መዞርን ብቻ ነው። ማስመሰል ሲበራ PadForge ፒች እና ሮልን ከአክስሌሮሜትሩ ያወጣና ከጋይሮው ያው ጋር ወደ ማዛመጃ ረድፎች እና ወደ ምናባዊ መቆጣጠሪያው እንቅስቃሴ ይልካቸዋል። አክስሌሮሜትር መግፋትን ከማዘንበል መለየት ስለማይችል፣ መቆጣጠሪያውን ሳታዞር ወደ ጎን ወይም ወደ ፊት ማንቀሳቀስ እንደ አጭር ማሽከርከር ይነበባል።</value></data>
   <data name="Settings_GyroSimulation" xml:space="preserve"><value>ፒች እና ሮልን አስመስል</value></data>
   <data name="Settings_GyroSimulation_Tooltip" xml:space="preserve"><value>ፒች እና ሮልን ከአክስሌሮሜትሩ በተገኙ ፍጥነቶች ይሞላል። ያው የጋይሮው የራሱ ንባብ ሆኖ ይቀራል። በነባሪ ጠፍቷል።</value></data>
@@ -2063,6 +2081,7 @@
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>ታች (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>ላይ (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>ማንቃት</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>የአላማ ማንቂያ አዝራር፣ የማንቂያ ሁነታ፣ የቀላል አላማ ገደብ</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>ጋይሮ መቼ ንቁ እንደሚሆን የሚገድቡ አማራጭ ሁኔታዎች። የቀኝ ስቲክ ማፈንገጥ እና የአላማ ማንቂያ አዝራር እያንዳንዳቸው ሊዋቀሩ ይችላሉ። ጋይሮ የሚሠራው እያንዳንዱ የተዋቀረ ሁኔታ ንቁ ሲሆን ብቻ ነው።</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>አካባቢያዊ</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>ተጫዋች</value></data>
@@ -2113,6 +2132,7 @@
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>የጋይሮ ማዘንበል X</value></data>
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>የጋይሮ ማዘንበል Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>የጋይሮ ማዘንበል</value></data>
+  <data name="Pad_GyroTilt_FoldHint" xml:space="preserve"><value>ሙሉ የማዘንበል ክልል፣ የማዘንበል የሞተ ቀጠና</value></data>
   <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>ለጋይሮ ማዘንበል X / የጋይሮ ማዘንበል Y ግብዓቶች ወሰን፦ ማዘንበሉን ያዝ፣ ስቲኩም ማፈንገጡን ይይዛል፣ ልክ እንደ Steam ውስጥ ያለው Joystick Deflection ሁነታ። እዚህ ባዘጋጀኸው ክልል ሙሉ ማፈንገጥ ይደርሳል፤ ጋይሮን ወደ መሃል መመለስ የእረፍት አያያዙን ወደ ዜሮ ይመልሳል። ያው (መቆጣጠሪያውን ተኝቶ ማዞር) በስበት አይታይም እና እነዚህን ግብዓቶች አያንቀሳቅስም።</value></data>
   <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>ሙሉ የማዘንበል ክልል</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>እንደ ሙሉ የስቲክ ማፈንገጥ የሚቆጠሩ ከእረፍት አያያዝ የማዘንበል ዲግሪዎች። ያነሰ = ይበልጥ ትብ። 25° በ Steam ውቅሮች ውስጥ በጣም የተለመደው እሴት ነው።</value></data>
@@ -2308,6 +2328,7 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>ዝቅተኛ ክልል Y (ታች)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>ከፍተኛ ክልል Y (ላይ)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X ዘንግ</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>ሁለቱም ዘንጎች</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y ዘንግ</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>ክልል</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>ፀረ-የሞተ ቀጠና</value></data>
@@ -2318,6 +2339,7 @@
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>የኃይል ግብረመልስ / ንዝረት / ሃፕቲክስ</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>የእያንዳንዱ ሞተር ማጉላት፣ የትሪገር ንዝረት፣ ሞተሮችን ማለዋወጥ</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>አጠቃላይ ማጉላት</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>የግራ ሞተር</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>የቀኝ ሞተር</value></data>
@@ -2329,6 +2351,7 @@
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>ቋሚ ኃይል</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>እስኪያጠፉት ድረስ የሚቆይ ቋሚ ኃይል</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>እስክታጠፋው ድረስ በዚህ መሣሪያ ላይ ቀጣይነት ያለው ኃይል ተግብር። ከማንኛውም ምንጭ በጨዋታ የሚላክ ኃይል ገባሪ ሆኖ ሳለ ይቀድማል፣ ጨዋታው ሲያቆም ደግሞ ይህ ኃይል ይቀጥላል።</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>ቋሚ ኃይል ተግብር</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>አቅጣጫና ጥንካሬ ለማዘጋጀት በፍርግርጉ ውስጥ ጎትት።</value></data>
@@ -2623,6 +2646,7 @@
 
   <!-- ═══ Audio Bass Rumble ═══ -->
   <data name="Settings_AudioRumble" xml:space="preserve"><value>የድምጽ ንዝረት</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>ከስርዓቱ ድምጽ ባስ የሚመጣ ንዝረት</value></data>
   <data name="Settings_AudioRumbleDesc" xml:space="preserve"><value>የመቆጣጠሪያ ንዝረትን ከስርዓቱ ድምጽ የባስ ድግግሞሾች አንቀሳቅስ።</value></data>
   <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>የድምጽ ንዝረትን አንቃ</value></data>
   <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>ትብነት</value></data>
@@ -2733,6 +2757,8 @@
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>የማዘንበል ውጫዊ የሞተ ቀጠናን ዳግም አስጀምር</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>የመቆጣጠሪያ አቅጣጫን ዳግም አስጀምር</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>በእንቅስቃሴ መሪ ማዞር</value></data>
+  <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>ከ{0}° እስከ {1}°</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>የማዘንበል የሞተ ቀጠናዎች፣ የመቆጣጠሪያ አቅጣጫ</value></data>
   <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>ለእንቅስቃሴ ማዘንበል ግብዓት ቅንብሮች፦ መቆጣጠሪያውን እንደ መሪ ያዘንብሉት። በማዛመጃዎች ውስጥ ካለው የግብዓት ተቆልቋይ ዝርዝር «እንቅስቃሴ ማዘንበል»ን ወደ ስቲክ ዘንግ ያዛምዱ።</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>በእንቅስቃሴ መሪ ማዞርን ዳግም አስጀምር</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>ፍሊክ ስቲክ (ቀኝ ስቲክ)</value></data>
@@ -2741,6 +2767,7 @@
   <data name="Mapping_LeftStickRing" xml:space="preserve"><value>የግራ ስቲክ ቀለበት</value></data>
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>የቀኝ ስቲክ ቀለበት</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>ፍሊክ ስቲክ</value></data>
+  <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>ለፍሊክ ስቲክ ግብዓቶች ማስተካከያ</value></data>
   <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>ለፍሊክ ስቲክ ግብዓቶች ቅንብሮች፦ ስቲኩን ወደ አንድ አቅጣጫ ይጠቁሙ፣ ካሜራውም ተከትሎ ይዞራል። በጥቂቱ ለማዞር በጠርዙ ዙሪያ ያንሸራቱ። በማዛመጃዎች ውስጥ ካለው የግብዓት ተቆልቋይ ዝርዝር «ፍሊክ ስቲክ (ቀኝ ስቲክ)»ን ወደ መዳፊት X ያዛምዱ፣ በማንኛውም ንብርብር ላይ።</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>ፍሊክ ስቲክን ዳግም አስጀምር</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>ነጥቦች በ360°</value></data>
@@ -2777,6 +2804,7 @@
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>ፍሊክ ስቲክን የያዘው ንብርብር ስቲኩ አስቀድሞ ተገፍቶ እያለ ሲነቃ፣ ፍሊኩ ወዲያውኑ ይፈጸማል። ሲጠፋ ካሜራው ሳይንቀሳቀስ ይቆያል፣ ዙሩንም ከአሁኑ የስቲክ ማዕዘን ጀምሮ ይከታተላል።</value></data>
   <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>«ሲነቃ ፍሊክ ፍቀድ»ን ዳግም አስጀምር</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>የመሪ መቆለፊያ ግብረመልስ</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>በመሪ ሁነታ ያለ ስቲክ ሙሉ መቆለፊያ ሲደርስ የሚጫወት ምልክት</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>ወደ መሪ ሁነታ የተዘጋጀ ስቲክ እስከ ሙሉ መቆለፊያ ድረስ ሲዞር፣ ገደቡ እንዲሰማዎት ምልክት (ንዝረት፣ ትሪገር ወይም የብርሃን አሞሌ) ይጫወታል። ሁሉም በነባሪ ጠፍተዋል።</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>በመቆለፊያ ላይ የንዝረት ምት</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>በመቆለፊያ ላይ የትሪገር ንዝረት</value></data>
@@ -2832,6 +2860,7 @@
   <data name="Pad_Audio_Header" xml:space="preserve"><value>ድምጽ</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>የማክሮ ድምጾች እና የተንጸባረቀ የስርዓት ድምጽ በተመረጠው መቆጣጠሪያ አብሮገነብ ድምጽ ማጉያ በUSB ወይም በBluetooth ይጫወታሉ። መሣሪያውን ከላይ ባለው ተቆልቋይ ዝርዝር ይምረጡ። እዚህ ያለው እያንዳንዱ ቅንብር እሱን ይከተላል።</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>የድምጽ ውጽዓት</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>የማንጸባረቂያ ምንጭ፣ ሃፕቲክስ፣ የጆሮ ማዳመጫ የድምጽ መጠን፣ ክሮስፊድ፣ Parametric EQ፣ ገዳቢ</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>ድምጾች ወደ ተመረጠው መቆጣጠሪያ በራስ-ሰር ይላካሉ። በUSB ላይ የመቆጣጠሪያው የራሱ የድምጽ መዳረሻ ነጥብ በሃርድዌር ኮንቴይነር ይዛመዳል። በBluetooth ላይ ድምጹ በSony HID ፍሬሞች ይተላለፋል።</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>የማንጸባረቂያ ምንጭ</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>ወደ መቆጣጠሪያው ድምጽ ማጉያ የሚንጸባረቀው የትኛው የመልሶ ማጫወቻ መሣሪያ እንደሆነ። የተወሰኑ ድምጾችን ወደ ተለየ የመልሶ ማጫወቻ መሣሪያ የሚልኩ ጨዋታዎች ይህን ሊያነጣጥሩ ይችላሉ።</value></data>
@@ -2905,6 +2934,7 @@
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>ፋይሉ ሊነበብ የሚችል የPadForge መገለጫ አይደለም።</value></data>
   <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>ከ{0} ድምጽ ይምረጡ</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>የድምጽ ጥቅሎች</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>ለድምጽ ማክሮዎች የድምጾች zip ፋይሎች</value></data>
   <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>የድምጽ ጥቅል .pfsounds ቅጥያ ያለው አንድ የድምጾች zip ፋይል ነው። እዚህ አንዱን ያክሉ፣ ከዚያም ድምጾቹን በማንኛውም የድምጽ ማክሮ ውስጥ ይምረጡ። PadForge በቀጥታ ከፋይሉ ያነባል፣ በጭራሽ አይፈታውም። ተንቀሳቃሽ ሆነው እንዲቆዩ ጥቅሎችን ከPadForge.exe አጠገብ ያስቀምጡ።</value></data>
   <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>ጥቅል አክል…</value></data>
   <data name="Pad_Audio_Packages_Add_Tooltip" xml:space="preserve"><value>ነባር .pfsounds ፋይል ወደ ዝርዝሩ ያክሉ።</value></data>
@@ -2930,6 +2960,7 @@
   <data name="Emoji_Category_Objects" xml:space="preserve"><value>ዕቃዎች</value></data>
   <data name="Emoji_Category_Symbols" xml:space="preserve"><value>ምልክቶች</value></data>
   <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>የአዶ ጥቅሎች</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>ለምናሌ ሕዋሶች የምስሎች zip ፋይሎች</value></data>
   <data name="Pad_Menus_IconPackages_Desc" xml:space="preserve"><value>የአዶ ጥቅል .pficons ቅጥያ ያለው አንድ የምስሎች zip ፋይል ነው። እዚህ አንዱን ያክሉ፣ ከዚያም አዶዎቹን በማንኛውም የምናሌ ሕዋስ ላይ ይምረጡ። PadForge በቀጥታ ከፋይሉ ያነባል፣ በጭራሽ አይፈታውም። ተንቀሳቃሽ ሆነው እንዲቆዩ ጥቅሎችን ከPadForge.exe አጠገብ ያስቀምጡ።</value></data>
   <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>ጥቅል አክል…</value></data>
   <data name="Pad_Menus_IconPackages_Add_Tooltip" xml:space="preserve"><value>ነባር .pficons ፋይል ወደ ዝርዝሩ ያክሉ።</value></data>
@@ -3312,6 +3343,7 @@
   <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>ወደ ንብርብር {0} ቀይር</value></data>
   <data name="Macro_SwitchLayer_Hint" xml:space="preserve"><value>ይህን ቦታ ወደተመረጠው የሺፍት ንብርብር ያሸጋግራል። ንብርብሩ ሌላ መቀየር፣ የመቆለፊያ ወይም የዙር አንቂ፣ ወይም የመገለጫ መቀየር እስኪመጣ ድረስ ንቁ ሆኖ ይቆያል። «መሠረት» ወደ መሠረታዊው ንብርብር ይመልሳል። ተመሳሳዩ አዝራር በየንብርብሩ በተለያየ መንገድ እንዲቀይር ይህን ማክሮ ከላይ ላለ ንብርብር ይገድቡት።</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>የGuide አዝራር LED</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>የGuide ወይም Home አዝራር ብርሃን</value></data>
   <data name="Pad_Lighting_GuideLed_Subtitle" xml:space="preserve"><value>የሚያበራው የGuide ወይም Home አዝራር ብሩህነት። Xbox One እና ከዚያ በኋላ ያሉ መቆጣጠሪያዎች በUSB ይቀበሉታል። የ2015 Steam Controller በማንኛውም ግንኙነት ይቀበለዋል፣ ሁሉም Steam Controllers አንድ ብሩህነት ይጋራሉ። Switch Pro Controllers እና የቀኝ Joy-Cons (ለብቻቸው፣ ተጣምረው ወይም በኃይል መሙያ መያዣው ውስጥ) በማንኛውም ግንኙነት ይቀበሉታል።</value></data>
   <data name="Pad_Lighting_GuideLed_Mode_Tooltip" xml:space="preserve"><value>የመሣሪያ ነባሪ የLED መብራቱን የመቆጣጠሪያው ፈርምዌር ባዘጋጀው መሠረት ይተወዋል። ቋሚ ብሩህነት ከታች ያለውን ደረጃ ይይዛል። የባትሪ ደረጃ የበለጠ የተሞላ ባትሪን የበለጠ ብሩህ ያደርጋል፣ ከ10% በታችም በፍጹም አይወርድም። የXbox መቆጣጠሪያዎች የGuide LED ትዕዛዞችን በUSB ብቻ ይቀበላሉ፣ ስለዚህ ይህ ቅንብር በBluetooth ግንኙነት ላይ ምንም ውጤት የለውም። የSwitch መቆጣጠሪያዎች የHome LED ትዕዛዞችን በማንኛውም ግንኙነት ይቀበላሉ።</value></data>
   <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>የመሣሪያ ነባሪ</value></data>
@@ -3676,6 +3708,7 @@
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>ባስ ሼከሮች</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>ይህ ምናባዊ መቆጣጠሪያ የሚቀበለውን የጨዋታ ንዝረትና የኃይል ግብረመልስ ለባስ ሼከሮችና ለሰብዉፈሮች እንደ ዝቅተኛ ድግግሞሽ ድምጾች ወደ ድምጽ ውፅዓት ይልካል።</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>ንዝረትን ወደ ድምጽ</value></data>
+  <data name="Pad_More_BassShakers" xml:space="preserve"><value>የውፅዓት መሣሪያ፣ ቻናሎች፣ ማጉላት፣ ለእያንዳንዱ ሞተር ድምፀት</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>ከXbox፣ DualShock 3፣ DualShock 4 / DualSense እና Nintendo Switch Pro ምናባዊ መቆጣጠሪያዎች፣ የኃይል ግብረመልስ ካላቸው የተራዘሙ ምናባዊ መቆጣጠሪያዎች (እንደ የእሽቅድምድም መሪዎች) እና ከSteam Deck Controller (Composite) ጋር ይሠራል። የጨዋታ ግብረመልስ እና የሙከራ ንዝረት በድምጽ ውፅዓቱ ይጫወታሉ። የማክሮ ንዝረት በመቆጣጠሪያው ላይ ይቆያል።</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>ንዝረትን ወደ ድምጽ ዳግም አስጀምር</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>ንዝረትን ወደ ድምጽ ውፅዓት ላክ</value></data>
@@ -4114,6 +4147,7 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>የFreeTrack የጋራ ማህደረ ትውስታ ውሂብን በመጠበቅ ላይ።</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>የFreeTrack የጋራ ማህደረ ትውስታ አይገኝም።</value></data>
   <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>የመሪ ማዕዘን ንዝረት</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>የስቲክ ዘንግ ከመሃል ሲርቅ የሚጨምር ንዝረት</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>የተመረጠው ምናባዊ የስቲክ ዘንግ ከመሃል ሲርቅ ቀጣይነት ያለው ንዝረት ያክላል። ከሁሉም የተመደቡ ምንጮች የተዛመደውን ውጤት ይጠቀማል። «በአቅጣጫ የተከፈለ» ሲመረጥ፣ አሉታዊ እንቅስቃሴ የግራውን ሞተር፣ አዎንታዊ እንቅስቃሴ ደግሞ የቀኙን ያንቀሳቅሳል። «የግራ ሞተር» ወይም «የቀኝ ሞተር» ሁለቱንም አቅጣጫዎች በዚያ አንድ ሞተር ላይ ያደርጋል። ለXbox እና PlayStation ውጤት ከንዝረት መሣሪያዎች ጋር። መሪዎችን፣ ቋሚ የኃይል ግብረመልስ ያላቸውን ሌሎች መሣሪያዎች እና የFanatec ፔዳሎችን ይዘልላል።</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>የመሪ ማዕዘን ንዝረትን አንቃ</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>ምናባዊ ዘንግ</value></data>
@@ -4439,6 +4473,7 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="Status_FalconDriverDeclined" xml:space="preserve"><value>Windows የForce Dimension አሽከርካሪን አልጫነም። Windows Force Dimensionን ማመን እንዳለበት ከጠየቀ «ጫን»ን ምረጥ።</value></data>
   <data name="Status_FalconDriverNotBound" xml:space="preserve"><value>አሽከርካሪው ተጭኗል፣ ነገር ግን Falcon ወደ እሱ አልተዛወረም። Falconን ነቅለህ መልሰህ ሰካው።</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>ምት፣ መንቀጥቀጥ፣ ማረጋጊያ፣ ቅድመ ግፊት፣ ስበት</value></data>
   <data name="Pad_Falcon_Description" xml:space="preserve"><value>PadForge በFalcon እጀታ ላይ ያለውን እያንዳንዱን ኃይል በሰከንድ አንድ ሺህ ያህል ጊዜ ያሰላል፣ እጀታው ባለበት ቦታ እና ጨዋታው በሚያጫውተው ላይ ተመሥርቶ። እነዚህ ቅንብሮች የዚህ ቦታ ናቸው።</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>Novint Falconን ዳግም አስጀምር</value></data>
   <data name="Pad_Falcon_Feel" xml:space="preserve"><value>ስሜት</value></data>
@@ -4599,4 +4634,5 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} በ{1} ላይ ተጭኖ እያለ</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} በ{1} ላይ እስኪቆም ድረስ</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>በ{0} ላይ የትሪገር ተፅዕኖ አቁም</value></data>
+  <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>የዚህን መሣሪያ መብራት ተቆጣጠር፣ የመብራት ይዞታ</value></data>
 </root>

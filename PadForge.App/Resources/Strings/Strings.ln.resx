@@ -317,6 +317,7 @@
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Ba gâchette Impulse</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Ba gâchette Impulse</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Gain ya gâchette moko moko, kobongola ba moteur, ba vibration ya gâchette adaptative</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Gâchette ya loboko ya mwasi</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Gâchette ya loboko ya mobali</value></data>
   <data name="Pad_ImpulseTriggers_AtTranslate_Tooltip" xml:space="preserve"><value>Ntango lisano moko ezali kotambwisa esika oyo lokola DualSense virtuelle, to mod moko ya lisano ezali kotinda ba effet ya gâchette, ba effet ya gâchette adaptative ya lolenge ya vibration ebetamaka na ba moteur ya ba gâchette Impulse ya manette oyo. Ba effet ya lolenge ya résistance ezali na vibration oyo ekokani na yango te, yango wana etikamaka pembeni.</value></data>
@@ -462,6 +463,7 @@
   <data name="Pad_Formula_Var_PositionC" xml:space="preserve"><value>Source ya misato</value></data>
   <data name="Pad_Formula_Var_PositionD" xml:space="preserve"><value>Source ya minei</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Zone morte</value></data>
+  <data name="Pad_More_Stick" xml:space="preserve"><value>Décalage ya katikati, lolenge ya zone morte mpe motuya ya axe moko moko, courbe mpo na axe moko moko, plage, volant</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Plage</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Décalage ya katikati X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Décalage ya katikati Y</value></data>
@@ -728,6 +730,7 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyroscope</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Calibrage</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensibilité</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Ba unité, Espace, kobalola ba axe, Real-World Calibration</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Kobalola tangage (Y)</value></data>
   <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Kobalola lacet (X)</value></data>
   <data name="Settings_GyroInvertRoll" xml:space="preserve"><value>Kobalola roulis (X)</value></data>
@@ -852,6 +855,7 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Plage minimum Y (nsé)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Plage maximum Y (likoló)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Axe X</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>Axe nyonso mibale</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Axe Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Plage</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-zone morte</value></data>
@@ -861,6 +865,7 @@
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Retour de force / Vibration / Haptique</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Gain ya moteur moko moko, vibration ya gâchette, kobongola ba moteur</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Moteur ya mwasi</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Moteur ya mobali</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Komeka vibration</value></data>
@@ -1064,6 +1069,7 @@
 
   <!-- ═══ Audio Bass Rumble ═══ -->
   <data name="Settings_AudioRumble" xml:space="preserve"><value>Vibration ya audio</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Basse ya audio ya système eningisaka manette</value></data>
   <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>Sensibilité</value></data>
   <data name="Settings_AudioRumble_LeftMotor" xml:space="preserve"><value>Moteur ya mwasi</value></data>
   <data name="Settings_AudioRumble_RightMotor" xml:space="preserve"><value>Moteur ya mobali</value></data>
@@ -1104,6 +1110,7 @@
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick stick (stick ya loboko ya mwasi)</value></data>
   <data name="Mapping_FlickStickTouchpad_Format" xml:space="preserve"><value>Flick stick (pavé tactile {0})</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
+  <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Mibongiseli ya ba entrée ya Flick Stick</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Kozongisa flick stick</value></data>
   <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Kozongisa na 14400</value></data>
   <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Kozongisa na 0.1 s</value></data>
@@ -1254,6 +1261,7 @@
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>Bakisa elili…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>Longola elili</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>LED ya bouton Guide</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Mwinda ya bouton Guide to Home</value></data>
   <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>Par défaut ya appareil</value></data>
   <data name="Pad_Lighting_GuideLed_Battery" xml:space="preserve"><value>Niveau ya batterie</value></data>
   <data name="Pad_Lighting_GuideLed_Brightness" xml:space="preserve"><value>Luminosité</value></data>
@@ -1619,6 +1627,7 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Status_FalconLibraryPicked_Format" xml:space="preserve"><value>Bibliothèque ya Falcon etiami na {0}. PadForge ekozwa yango na kati ya ba seconde moke, mpe Falcon oyo efungwami na copie mosusu ekofungwama lisusu na oyo.</value></data>
   <data name="Status_InstallingFalconDriver" xml:space="preserve"><value>Installation ya pilote ya Falcon ya Force Dimension…</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>Recul, koningisa, soutien, précharge, gravité</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>Kozongisa Novint Falcon</value></data>
   <data name="Pad_Falcon_Feel_Joystick" xml:space="preserve"><value>Joystick</value></data>
   <data name="Pad_Falcon_Spring" xml:space="preserve"><value>Ressort ya katikati</value></data>
@@ -1732,4 +1741,22 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Pad_View_List" xml:space="preserve"><value>Liste</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Pona contrôle moko, sima finá entrée oyo ekotambwisa yango.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Tozali kozela {0}. Finá entrée na appareil na yo.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Elembo ntango stick ya volant ekómi na nsuka</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Vibration oyo ekoli ntango axe ya stick elongwe na katikati</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Makasi ya ntango nyonso tii okozimisa yango</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Etindi vibration ya ba moteur monene na ba gâchette</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Makasi ya ntango nyonso na moteur ya gâchette moko moko</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Vibration ya gâchette uta na basse ya audio ya système</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Ba zone morte ya kogumbama, Orientation ya manette</value></data>
+  <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Zone morte, lissage, Accélération, Courbe ya kobima</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Bouton ya activation ya visée, Mode ya activation, Seuil ya Easy Aim</value></data>
+  <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Salela touchpad lokola stick to croix directionnelle</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Efungoli ba geste ya touchpad oyo</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Glissement, kobeta, pincement, ba forme</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Enregistrer oyo ya yo moko</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Luminosité ya LED, Motif ya mosakani, Mode ya LED ya muet</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Ba fichier zip ya ba son mpo na ba macro ya son</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Ba fichier zip ya ba image mpo na ba case ya menu</value></data>
+  <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Kobalola, Élan, Réponse, Accélération, kobwaka</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Source ya miroir, haptique, Volume ya casque, Crossfeed, Parametric EQ, Limiteur</value></data>
 </root>

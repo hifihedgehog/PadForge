@@ -861,6 +861,7 @@
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Імпульсні тригери</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Імпульсні тригери</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Сила кожного тригера, обмін моторів, вібрації адаптивних тригерів</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Пересилає команди моторів окремих тригерів (Xbox Impulse Triggers) від віртуального контролера до призначеного фізичного контролера Xbox One, Elite або Series. Вібрація тригерів, якою керує гра, передається автоматично. Елементи керування нижче масштабують силу для кожного тригера.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Лівий тригер</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Правий тригер</value></data>
@@ -879,7 +880,9 @@
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Скинути лівий тригер</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Скинути правий тригер</value></data>
   <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Постійна сила тригерів</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Постійна сила на мотор кожного тригера</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Маршрутизація тригерів</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Спрямовує вібрацію основних моторів на тригери</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Спрямовує основні мотори вібрації в канал тригерів, окремо для кожного тригера. Працює з вібрацією XInput і силовим зворотним зв'язком. Активатор може обмежити це так, щоб тригер вібрував, лише поки ви утримуєте кнопку.</value></data>
   <data name="Pad_ResetTriggerRouting" xml:space="preserve"><value>Скинути маршрутизацію тригерів</value></data>
   <data name="Pad_TriggerRouting_LeftTrigger" xml:space="preserve"><value>Лівий тригер</value></data>
@@ -911,6 +914,7 @@
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Скинути лівий тригер</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Скинути правий тригер</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Вібрація тригерів від басів</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Вібрація тригерів за басами системного звуку</value></data>
   <data name="Pad_AudioTriggerRumble_Description" xml:space="preserve"><value>Керує моторами тригерів за басами системного звуку. Сила тригерів, якою керує гра, має пріоритет, поки вона активна.</value></data>
   <data name="Pad_AudioTriggerRumble_Toggle" xml:space="preserve"><value>Керувати моторами тригерів за звуком</value></data>
   <data name="Pad_AudioTriggerRumble_Sensitivity" xml:space="preserve"><value>Чутливість</value></data>
@@ -1008,6 +1012,7 @@
   <data name="Pad_Lighting_MicLed_FollowDevice" xml:space="preserve"><value>За аудіопристроєм</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice_Picker" xml:space="preserve"><value>Аудіопристрій</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>LED-індикатори</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Яскравість LED-індикаторів, візерунок гравця, режим LED-індикатора вимкнення мікрофона</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>Ряд номера гравця (5 LED-індикаторів під сенсорною панеллю) та LED-індикатор вимкнення мікрофона над мікрофоном. Регулятор яскравості фізично впливає лише на ряд гравця. Прошивка надає стани LED-індикатора вимкнення мікрофона (вимкнено / постійно / пульсація), але не має окремого регістра його яскравості.</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>Скинути світлову панель</value></data>
   <data name="Pad_ResetIndicatorLeds" xml:space="preserve"><value>Скинути LED-індикатори</value></data>
@@ -1394,6 +1399,7 @@
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Калібрувати центр</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Центральна точка</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Мертва зона</value></data>
+  <data name="Pad_More_Stick" xml:space="preserve"><value>Зсуви центру, форма мертвої зони та значення для кожної осі, крива для кожної осі, діапазон, кермування</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Діапазон</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Вирівнювати стік рекомендовано через «Калібрувати межу». Ця функція обходить край, якого стік може фізично досягти, а потім пропорційно перемасштабовує кожне положення відносно виміряного краю, тож увесь природний хід під будь-яким кутом і за будь-якого відхилення лягає на ідеальне коло без обрізання. Чотири повзунки нижче лише обмежують основні осі. Використовуйте їх, щоб навмисно обмежити діапазон, а не щоб його виправити.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Вимірювання...</value></data>
@@ -1727,6 +1733,7 @@
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Номер сенсорної панелі</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>До якої сенсорної панелі цього контролера застосовуються налаштування нижче. Кожна сенсорна панель має власні жести, поведінку миші та область вказівника.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Розпізнавання жестів</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Вмикає жести цієї сенсорної панелі</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Увімкнути жести на цій сенсорній панелі</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Головний перемикач для цієї сенсорної панелі. Коли вимкнено, жоден дескриптор жесту для неї не спрацьовує. Наявні прив'язки пальців, натискання та положення працюють і далі.</value></data>
   <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>Розпізнавати</value></data>
@@ -1737,6 +1744,7 @@
   <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>Пауза після жесту</value></data>
   <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>Після спрацьовування жесту нові жести на цій сенсорній панелі ігноруються протягом стількох мілісекунд. Запобігає хибним повторним спрацьовуванням від швидких рухів туди й назад.</value></data>
   <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>Вбудовані жести</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Проведення, дотики, щипки, фігури</value></data>
   <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>Проведення в 4 напрямках (вгору / вниз / вліво / вправо)</value></data>
   <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>Проведення у 8 напрямках (додає діагоналі)</value></data>
   <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>Відстань проведення (0..1)</value></data>
@@ -1762,6 +1770,7 @@
   <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>Жести-фігури (коло, квадрат, трикутник, Z, галочка)</value></data>
   <data name="Pad_Touchpad_MatchThreshold" xml:space="preserve"><value>Поріг збігу фігури</value></data>
   <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>Власні жести</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Запишіть власні</value></data>
   <data name="Pad_Touchpad_RecordNew" xml:space="preserve"><value>+ Записати новий жест</value></data>
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>Для цього профілю не записано власних жестів. Натисніть «Записати новий жест», щоб створити жест.</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 палець</value></data>
@@ -1769,6 +1778,7 @@
 
   <!-- Stick / D-pad output card -->
   <data name="Pad_Touchpad_Stick_Header" xml:space="preserve"><value>Вихід стіка / хрестовини</value></data>
+  <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Сенсорна панель як стік або хрестовина</value></data>
   <data name="Pad_Touchpad_Stick_Subtitle" xml:space="preserve"><value>Перетворює сенсорну панель на віртуальний аналоговий стік або хрестовину. Точкою відліку стає місце першого дотику пальця. Поточне положення відносно цієї точки задає значення стіка та (за бажання) зафіксовані логічні напрямки хрестовини.</value></data>
   <data name="Pad_Touchpad_StickEnabled" xml:space="preserve"><value>Увімкнути вихід стіка / хрестовини</value></data>
   <data name="Pad_Touchpad_StickEnabled_Tooltip" xml:space="preserve"><value>Додає до списку вибору прив'язок дескриптори сенсорної панелі «Стік X», «Стік Y» і «Хрестовина». Працює разом із наявними джерелами пальців і жестів сенсорної панелі, а не замість них.</value></data>
@@ -1783,6 +1793,7 @@
 
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Вихід миші</value></data>
+  <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Інвертування, інерція, реакція, прискорення, підсилення кидка</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Налаштовує швидкість курсора, коли палець на сенсорній панелі прив'язано до осей миші X/Y на віртуальному контролері «Клавіатура + миша». Типове значення 1.0. Збільште значення осі, щоб курсор рухався швидше, зменште, щоб повільніше. Інверсія перевертає відповідну вісь.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Чутливість миші X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Множник горизонтального зміщення «сенсорна панель → миша». Менше 1.0 сповільнює курсор. Більше 1.0 пришвидшує його.</value></data>
@@ -1810,6 +1821,7 @@
   <data name="Pad_Touchpad_RotateThreshold_Tooltip" xml:space="preserve"><value>Наскільки мають повернутися два пальці, щоб спрацювало обертання.</value></data>
   <data name="Pad_ResetTouchpadRotateThresholdDegrees" xml:space="preserve"><value>Скинути поріг обертання</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>Абсолютний вказівник</value></data>
+  <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>Частина екрана, яку охоплює панель</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Налаштовує джерела «Сенсорна панель, вказівник X/Y», які переносять курсор у положення вашого пальця на панелі (прив'яжіть їх до осей миші X/Y на віртуальному контролері «Клавіатура + миша»). Розмір 1.00 із центром 0.50 відображає панель на весь екран. Зменште розмір, щоб обмежити курсор частиною екрана, і пересуньте центр, щоб розмістити цю область.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Ширина області</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Ширина області екрана, на яку відображається ця панель, як частка ширини екрана. 1.00 охоплює всю ширину; 0.50 обмежує курсор половиною екрана.</value></data>
@@ -1822,12 +1834,14 @@
 
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Тактильний відгук проведення</value></data>
+  <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>Клацання, поки рухається палець</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Подає імпульси тактильного відгуку контролера, коли ваш палець рухається цією сенсорною панеллю, як клацання трекпада в Steam Input. Steam Controller і Steam Deck клацають приводом під панеллю; DualSense і DualShock 4 подають імпульси моторами вібрації.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Увімкнути тактильний відгук проведення</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>Видає короткий тактильний імпульс щоразу, коли палець проходить задану відстань цією панеллю. Дотик пальця чи натискання панелі імпульсів не викликають. Типово вимкнено.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>Інтенсивність імпульсу</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity_Tooltip" xml:space="preserve"><value>Сила кожного імпульсу. Вібрація від гри завжди має пріоритет, коли вона сильніша.</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Header" xml:space="preserve"><value>Синтетичний тиск</value></data>
+  <data name="Pad_SyntheticPressure_FoldHint" xml:space="preserve"><value>Тиск для панелей, що повідомляють дотик як повний</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Subtitle" xml:space="preserve"><value>Імітує чутливі до тиску кнопки DualShock 2 / DualShock 3 на панелях, які повідомляють дотик як повний тиск (DualShock 4, DualSense, Steam Controller 2015). Поки ввімкнено, джерела прив'язок «Тиск» цього пристрою читають відсутність дотику як 0%, дотик без натискання як «Рівень тиску дотику», а натискання панелі як 100%.</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled" xml:space="preserve"><value>Увімкнути синтетичний тиск</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled_Tooltip" xml:space="preserve"><value>Зводить джерела прив'язок «Тиск» цього пристрою до трьох сходинок: без дотику 0%, дотик без натискання дає «Рівень тиску дотику», а натискання панелі дає 100%. Типово вимкнено, тож на панелях зі справжнім аналоговим тиском зберігаються сирі показники.</value></data>
@@ -2005,7 +2019,9 @@
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Налаштуйте, як датчик руху цього геймпада керує виходом миші та стіка. Відкалібруйте на рівній поверхні, щоб обнулити дрейф у стані спокою, а потім підберіть на свій смак чутливість, згладжування та правила задіяння.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Калібрування</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Чутливість</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Одиниці, простір, інвертування осей, калібрування за реальним світом</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Формування реакції</value></data>
+  <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Мертва зона, згладжування, прискорення, крива виходу</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Простір</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Як інтерпретується рух гіроскопа. «Локальний» використовує сирі осі контролера. «Гравець» проєктує горизонтальний рух на реальну вертикаль (гравітацію), тож той самий поворот зап'ястка завжди повертає камеру незалежно від того, як ви тримаєте геймпад. «Світ» додатково перепроєктовує вертикальний рух на світові осі.</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>Спосіб тримання</value></data>
@@ -2019,11 +2035,13 @@
   <data name="Pad_ResetGyroInvertYaw" xml:space="preserve"><value>Скинути інверсію рискання</value></data>
   <data name="Pad_ResetGyroInvertRoll" xml:space="preserve"><value>Скинути інверсію крену</value></data>
   <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>Компас</value></data>
+  <data name="Pad_Compass_FoldHint" xml:space="preserve"><value>Утримує рискання за магнітною північчю</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Цей контролер має магнітометр. Прив'язка рискання до магнітної півночі прибирає повільний горизонтальний дрейф прицілювання гіроскопом. Спершу відкалібруйте: натисніть «Калібрувати», кілька секунд обертайте контролер вісімкою через усі орієнтації, а потім натисніть ще раз.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Прив'язати рискання до компаса</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Додає невелику коригувальну швидкість, що підтягує горизонтальний приціл до магнітного курсу, тож дрейф не накопичується. Потрібне збережене калібрування магнітометра. Вимірювання, спотворені металом чи магнітами поблизу, відкидаються автоматично.</value></data>
   <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Скинути до типового (вимкнено)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Імітація тангажу та крену</value></data>
+  <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Тангаж і крен, обчислені з акселерометра</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>Гіроскоп цього контролера відчуває лише повороти вліво і вправо. Коли імітацію ввімкнено, PadForge обчислює тангаж і крен з акселерометра та надсилає їх разом із рисканням гіроскопа до рядків прив'язок і до руху віртуального контролера. Акселерометр не відрізняє поштовх від нахилу, тому переміщення контролера вбік або вперед без повороту читається як короткий поворот.</value></data>
   <data name="Settings_GyroSimulation" xml:space="preserve"><value>Імітувати тангаж і крен</value></data>
   <data name="Settings_GyroSimulation_Tooltip" xml:space="preserve"><value>Заповнює тангаж і крен швидкостями, обчисленими з акселерометра. Рискання залишається власним показником гіроскопа. Типово вимкнено.</value></data>
@@ -2064,6 +2082,7 @@
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Вниз (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Вгору (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Задіяння</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Кнопка задіяння прицілювання, стік задіяння, поріг легкого прицілювання</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Необов'язкові умови, що обмежують, коли гіроскоп активний. Можна налаштувати і відхилення правого стіка, і кнопку задіяння прицілювання. Гіроскоп працює, лише поки активні всі налаштовані умови.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Локальний</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Гравець</value></data>
@@ -2114,6 +2133,7 @@
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Гіроскоп: кут нахилу X</value></data>
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>Гіроскоп: кут нахилу Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>Кут нахилу гіроскопа</value></data>
+  <data name="Pad_GyroTilt_FoldHint" xml:space="preserve"><value>Діапазон повного нахилу, мертва зона нахилу</value></data>
   <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>Межі для входів «Гіроскоп: кут нахилу X» і «Гіроскоп: кут нахилу Y»: утримуйте нахил, і стік утримує своє відхилення, як у режимі Joystick Deflection у Steam. Повне відхилення досягається на заданому тут діапазоні; «Центрування гіроскопа» заново обнуляє положення спокою. Рискання (поворот контролера в горизонтальній площині) невидиме для гравітації й не рухає ці входи.</value></data>
   <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>Діапазон повного нахилу</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>Градуси нахилу від положення спокою, що вважаються повним відхиленням стіка. Менше = чутливіше. 25° є найпоширенішим значенням у конфігураціях Steam.</value></data>
@@ -2315,6 +2335,7 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Мін. діапазон Y (вниз)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Макс. діапазон Y (вгору)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Вісь X</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>Обидві осі</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Вісь Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Діапазон</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Антимертва зона</value></data>
@@ -2325,6 +2346,7 @@
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Силовий зворотний зв'язок / вібрація / тактильний відгук</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Сила кожного мотора, вібрація тригерів, обмін моторів</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Загальне підсилення</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Лівий мотор</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Правий мотор</value></data>
@@ -2336,6 +2358,7 @@
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Постійна сила</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Постійна сила, доки ви її не вимкнете</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Подає безперервну силу на цей пристрій, доки ви не вимкнете. Сила, якою керує гра, з будь-якого джерела має пріоритет, поки вона активна, а постійна сила відновлюється, коли гра зупиняється.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Застосувати постійну силу</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Перетягуйте всередині сітки, щоб задати напрямок і силу.</value></data>
@@ -2657,6 +2680,7 @@
 
   <!-- ═══ Audio Bass Rumble ═══ -->
   <data name="Settings_AudioRumble" xml:space="preserve"><value>Вібрація від звуку</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Вібрація за басами системного звуку</value></data>
   <data name="Settings_AudioRumbleDesc" xml:space="preserve"><value>Керує вібрацією контролера за басовими частотами системного звуку.</value></data>
   <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>Увімкнути вібрацію від звуку</value></data>
   <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>Чутливість</value></data>
@@ -2767,6 +2791,8 @@
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Скинути зовнішню мертву зону нахилу</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Скинути орієнтацію контролера</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Кермування рухом</value></data>
+  <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° до {1}°</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Внутрішня мертва зона нахилу, зовнішня мертва зона нахилу, орієнтація контролера</value></data>
   <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Налаштування входу «Рух: нахил»: нахиляйте контролер, як кермо. Прив'яжіть «Рух: нахил» до осі стіка зі списку входів на вкладці «Прив'язки».</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Скинути кермування рухом</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Флік-стік (правий стік)</value></data>
@@ -2775,6 +2801,7 @@
   <data name="Mapping_LeftStickRing" xml:space="preserve"><value>Кільце лівого стіка</value></data>
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>Кільце правого стіка</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Флік-стік</value></data>
+  <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Налаштування входів флік-стіка</value></data>
   <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Налаштування входів флік-стіка: спрямуйте стік, і камера повернеться в той самий бік, а для точного повороту ведіть стік по краю. Прив'яжіть «Флік-стік (правий стік)» до «Миша X» зі списку входів на вкладці «Прив'язки», на будь-якому шарі.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Скинути флік-стік</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Точок на 360°</value></data>
@@ -2811,6 +2838,7 @@
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Коли шар із флік-стіком задіюється за вже відхиленого стіка, флік виконується негайно. Якщо вимкнено, камера залишається нерухомою, а поворот відстежується від поточного кута стіка.</value></data>
   <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Скинути «Дозволити флік під час задіяння»</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Відгук на упор керма</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Сигнал на упорі для стіка в режимі кермування</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Коли стік у режимі кермування повернуто до упору, відтворюється сигнал (вібрація, тригер або світлова панель), щоб ви відчули межу. Типово все вимкнено.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Імпульс вібрації на упорі</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Вібрація тригерів на упорі</value></data>
@@ -2866,6 +2894,7 @@
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Звук</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Звуки макросів і дзеркальований системний звук відтворюються через вбудований динамік вибраного контролера, через USB або Bluetooth. Виберіть пристрій у списку вище. Усі налаштування тут стосуються його.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Вивід звуку</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Джерело дзеркалювання, тактильний відгук, гучність навушників, кросфід, параметричний еквалайзер, обмежувач</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Звуки автоматично спрямовуються на вибраний контролер. Через USB власна аудіоточка геймпада визначається за апаратним контейнером. Через Bluetooth звук передається потоком у HID-кадрах Sony.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Джерело дзеркалювання</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Який пристрій відтворення дзеркалювати на динамік контролера. Ігри, що надсилають певні звуки на окремий пристрій відтворення, можуть використовувати саме його.</value></data>
@@ -2939,6 +2968,7 @@
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>Цей файл не є придатним для читання профілем PadForge.</value></data>
   <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Виберіть звук із {0}</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Звукові пакети</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Zip-файли зі звуками для звукових макросів</value></data>
   <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>Звуковий пакет є одним zip-файлом зі звуками з розширенням .pfsounds. Додайте пакет тут, а потім вибирайте його звуки в будь-якому звуковому макросі. PadForge читає просто з файлу й ніколи його не розпаковує. Тримайте пакети поруч із PadForge.exe, щоб зберегти портативність.</value></data>
   <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>Додати пакет…</value></data>
   <data name="Pad_Audio_Packages_Add_Tooltip" xml:space="preserve"><value>Додати до списку наявний файл .pfsounds.</value></data>
@@ -2964,6 +2994,7 @@
   <data name="Emoji_Category_Objects" xml:space="preserve"><value>Об'єкти</value></data>
   <data name="Emoji_Category_Symbols" xml:space="preserve"><value>Символи</value></data>
   <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>Пакети піктограм</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Zip-файли із зображеннями для комірок меню</value></data>
   <data name="Pad_Menus_IconPackages_Desc" xml:space="preserve"><value>Пакет піктограм є одним zip-файлом із зображеннями з розширенням .pficons. Додайте пакет тут, а потім вибирайте його піктограми для будь-якої комірки меню. PadForge читає просто з файлу й ніколи його не розпаковує. Тримайте пакети поруч із PadForge.exe, щоб зберегти портативність.</value></data>
   <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>Додати пакет…</value></data>
   <data name="Pad_Menus_IconPackages_Add_Tooltip" xml:space="preserve"><value>Додати до списку наявний файл .pficons.</value></data>
@@ -3346,6 +3377,7 @@
   <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>Перемкнути на шар {0}</value></data>
   <data name="Macro_SwitchLayer_Hint" xml:space="preserve"><value>Перемикає цей слот на вибраний шар. Шар залишається задіяним до наступного перемикання, спрацьовування активатора «Закріплення» чи «Цикл» або перемикання профілю. «Базовий» повертає до базового шару. Обмежте цей макрос шаром у полі вище, щоб та сама кнопка перемикала по-різному на різних шарах.</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>LED-індикатор кнопки Guide</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Світіння кнопки Guide або Home</value></data>
   <data name="Pad_Lighting_GuideLed_Subtitle" xml:space="preserve"><value>Яскравість підсвіченої кнопки Guide або Home. Контролери Xbox One і новіші приймають її через USB. Steam Controller 2015 року приймає її за будь-якого підключення, і всі Steam Controller мають спільну яскравість. Контролери Switch Pro і праві Joy-Con (окремо, у парі або в зарядному тримачі) приймають її за будь-якого підключення.</value></data>
   <data name="Pad_Lighting_GuideLed_Mode_Tooltip" xml:space="preserve"><value>«Типово для пристрою» залишає LED-індикатор точно таким, яким його задала прошивка контролера. «Фіксована яскравість» тримає рівень, заданий нижче. «Рівень заряду» робить індикатор яскравішим за повнішої батареї й ніколи не опускає яскравість нижче 10%. Контролери Xbox приймають команди LED-індикатора Guide лише через USB, тому за підключення через Bluetooth це налаштування не діє. Контролери Switch приймають команди LED-індикатора Home за будь-якого підключення.</value></data>
   <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>Типово для пристрою</value></data>
@@ -3710,6 +3742,7 @@
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Бас-шейкери</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Спрямовує вібрацію від гри та силовий зворотний зв'язок, які отримує цей віртуальний контролер, на аудіовихід у вигляді низькочастотних тонів для бас-шейкерів і сабвуферів.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Вібрація у звук</value></data>
+  <data name="Pad_More_BassShakers" xml:space="preserve"><value>Пристрій виводу, режим каналів, підсилення, тон для кожного мотора</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Працює з віртуальними контролерами Xbox, DualShock 3, DualShock 4 / DualSense і Nintendo Switch Pro, а також із розширеними віртуальними контролерами із силовим зворотним зв'язком, як-от гоночні керма, і Steam Deck Controller (Composite). Відгук від гри та «Перевірити вібрацію» відтворюються через аудіовихід. Вібрація з макросів залишається на контролері.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Скинути «Вібрація у звук»</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Спрямовувати вібрацію на аудіовихід</value></data>
@@ -4147,6 +4180,7 @@
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Очікування даних спільної пам'яті FreeTrack.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>Спільна пам'ять FreeTrack недоступна.</value></data>
   <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Вібрація за кутом керма</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Вібрація, що посилюється, коли вісь стіка відходить від центру</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Додає безперервну вібрацію, коли вибрана вісь віртуального стіка відходить від центру. Використовує прив'язаний вихід з усіх призначених джерел. Для варіанта «Розділення за напрямком» від'ємний рух керує лівим мотором, а додатний правим. Варіант «Лівий мотор» або «Правий мотор» спрямовує обидва напрямки на цей один мотор. Для виходу Xbox і PlayStation із пристроями з вібрацією. Пропускає керма, інші пристрої з постійним силовим зворотним зв'язком і педалі Fanatec.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Увімкнути вібрацію за кутом керма</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Віртуальна вісь</value></data>
@@ -4465,6 +4499,7 @@
   <data name="Status_FalconDriverDeclined" xml:space="preserve"><value>Windows не встановила драйвер Force Dimension. Якщо Windows запитає, чи довіряти Force Dimension, виберіть «Установити».</value></data>
   <data name="Status_FalconDriverNotBound" xml:space="preserve"><value>Драйвер встановлено, але Falcon ще не перейшов на нього. Відключіть Falcon і підключіть знову.</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>Віддача, тряска, упор, попереднє навантаження, гравітація</value></data>
   <data name="Pad_Falcon_Description" xml:space="preserve"><value>PadForge обчислює кожну силу на рукоятці Falcon приблизно тисячу разів на секунду, виходячи з положення рукоятки та того, що відтворює гра. Ці налаштування стосуються цього слота.</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>Скинути Novint Falcon</value></data>
   <data name="Pad_Falcon_Feel" xml:space="preserve"><value>Відчуття</value></data>
@@ -4626,4 +4661,5 @@
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} ({1}), поки утримується</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} ({1}), до зупинки</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>Зупинити ефект тригера: {0}</value></data>
+  <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Керувати підсвічуванням цього пристрою, обсяг керування підсвічуванням</value></data>
 </root>

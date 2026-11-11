@@ -1300,6 +1300,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_ForceFeedback => Get("Pad_ForceFeedback");
     public string Pad_ImpulseTriggers => Get("Pad_ImpulseTriggers");
     public string Pad_ImpulseTriggers_Header => Get("Pad_ImpulseTriggers_Header");
+    public string Pad_More_ImpulseTriggers => Get("Pad_More_ImpulseTriggers");
     public string Pad_ImpulseTriggers_Subtitle => Get("Pad_ImpulseTriggers_Subtitle");
     public string Pad_ImpulseTriggers_LeftTrigger => Get("Pad_ImpulseTriggers_LeftTrigger");
     public string Pad_ImpulseTriggers_RightTrigger => Get("Pad_ImpulseTriggers_RightTrigger");
@@ -1317,7 +1318,9 @@ public class Strings : INotifyPropertyChanged
     public string Pad_ResetImpulseLeft => Get("Pad_ResetImpulseLeft");
     public string Pad_ResetImpulseRight => Get("Pad_ResetImpulseRight");
     public string Pad_ConstantTriggerForce_Header => Get("Pad_ConstantTriggerForce_Header");
+    public string Pad_ConstantTriggerForce_FoldHint => Get("Pad_ConstantTriggerForce_FoldHint");
     public string Pad_TriggerRouting_Header => Get("Pad_TriggerRouting_Header");
+    public string Pad_TriggerRouting_FoldHint => Get("Pad_TriggerRouting_FoldHint");
     public string Pad_TriggerRouting_Description => Get("Pad_TriggerRouting_Description");
     public string Pad_ResetTriggerRouting => Get("Pad_ResetTriggerRouting");
     public string Pad_TriggerRouting_LeftTrigger => Get("Pad_TriggerRouting_LeftTrigger");
@@ -1349,6 +1352,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_ResetConstantTriggerLeft => Get("Pad_ResetConstantTriggerLeft");
     public string Pad_ResetConstantTriggerRight => Get("Pad_ResetConstantTriggerRight");
     public string Pad_AudioTriggerRumble_Header => Get("Pad_AudioTriggerRumble_Header");
+    public string Pad_AudioTriggerRumble_FoldHint => Get("Pad_AudioTriggerRumble_FoldHint");
     public string Pad_AudioTriggerRumble_Description => Get("Pad_AudioTriggerRumble_Description");
     public string Pad_AudioTriggerRumble_Toggle => Get("Pad_AudioTriggerRumble_Toggle");
     public string Pad_AudioTriggerRumble_Sensitivity => Get("Pad_AudioTriggerRumble_Sensitivity");
@@ -1407,6 +1411,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Lighting_PlayerIdle_Hint => Get("Pad_Lighting_PlayerIdle_Hint");
     public string Pad_Lighting_PeripheralSubtitle => Get("Pad_Lighting_PeripheralSubtitle");
     public string Pad_Lighting_ControlCard => Get("Pad_Lighting_ControlCard");
+    public string Pad_LightingControl_FoldHint => Get("Pad_LightingControl_FoldHint");
     public string Pad_Lighting_ControlDevice => Get("Pad_Lighting_ControlDevice");
     public string Pad_Lighting_ControlDevice_Tooltip => Get("Pad_Lighting_ControlDevice_Tooltip");
     public string Pad_Lighting_ClaimLevel => Get("Pad_Lighting_ClaimLevel");
@@ -1514,6 +1519,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Lighting_MicLed_FollowDevice => Get("Pad_Lighting_MicLed_FollowDevice");
     public string Pad_Lighting_MicLed_FollowDevice_Picker => Get("Pad_Lighting_MicLed_FollowDevice_Picker");
     public string Pad_Lighting_IndicatorLeds => Get("Pad_Lighting_IndicatorLeds");
+    public string Pad_IndicatorLeds_FoldHint => Get("Pad_IndicatorLeds_FoldHint");
     public string Pad_Lighting_IndicatorLeds_Subtitle => Get("Pad_Lighting_IndicatorLeds_Subtitle");
     public string Pad_ResetLightbar => Get("Pad_ResetLightbar");
     public string Pad_ResetIndicatorLeds => Get("Pad_ResetIndicatorLeds");
@@ -1700,6 +1706,8 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Steering_Reset_MotionOuterDz => Get("Pad_Steering_Reset_MotionOuterDz");
     public string Pad_Steering_Reset_Orientation => Get("Pad_Steering_Reset_Orientation");
     public string Pad_MotionSteer_Header => Get("Pad_MotionSteer_Header");
+    public string Pad_DegreeRange_Format => Get("Pad_DegreeRange_Format");
+    public string Pad_MotionSteering_FoldHint => Get("Pad_MotionSteering_FoldHint");
     public string Pad_MotionSteer_Subtitle => Get("Pad_MotionSteer_Subtitle");
     public string Pad_MotionSteer_Reset_All => Get("Pad_MotionSteer_Reset_All");
     public string Mapping_FlickStickRight => Get("Mapping_FlickStickRight");
@@ -1708,6 +1716,7 @@ public class Strings : INotifyPropertyChanged
     public string Mapping_LeftStickRing => Get("Mapping_LeftStickRing");
     public string Mapping_RightStickRing => Get("Mapping_RightStickRing");
     public string Pad_FlickStick_Header => Get("Pad_FlickStick_Header");
+    public string Pad_FlickStick_FoldHint => Get("Pad_FlickStick_FoldHint");
     public string Pad_FlickStick_Subtitle => Get("Pad_FlickStick_Subtitle");
     public string Pad_FlickStick_Reset_All => Get("Pad_FlickStick_Reset_All");
     public string Settings_FlickCountsPer360 => Get("Settings_FlickCountsPer360");
@@ -1745,6 +1754,7 @@ public class Strings : INotifyPropertyChanged
     public string Settings_FlickOnEngage_Tooltip => Get("Settings_FlickOnEngage_Tooltip");
     public string Pad_ResetFlickOnEngage => Get("Pad_ResetFlickOnEngage");
     public string Pad_Steering_LockFeedback => Get("Pad_Steering_LockFeedback");
+    public string Pad_LockFeedback_FoldHint => Get("Pad_LockFeedback_FoldHint");
     public string Pad_Steering_LockFeedback_Subtitle => Get("Pad_Steering_LockFeedback_Subtitle");
     public string Pad_Steering_Lock_Rumble => Get("Pad_Steering_Lock_Rumble");
     public string Pad_Steering_Lock_TriggerVib => Get("Pad_Steering_Lock_TriggerVib");
@@ -2146,6 +2156,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_MinRangeYDown => Get("Pad_MinRangeYDown");
     public string Pad_MaxRangeYUp => Get("Pad_MaxRangeYUp");
     public string Pad_XAxis => Get("Pad_XAxis");
+    public string Pad_BothAxes => Get("Pad_BothAxes");
     public string Pad_YAxis => Get("Pad_YAxis");
     public string Pad_Range => Get("Pad_Range");
     public string Pad_AntiDeadZone => Get("Pad_AntiDeadZone");
@@ -2154,6 +2165,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Preset_Label => Get("Pad_Preset_Label");
     public string Pad_TriggerAxis => Get("Pad_TriggerAxis");
     public string Pad_ForceFeedbackRumble => Get("Pad_ForceFeedbackRumble");
+    public string Pad_More_ForceFeedback => Get("Pad_More_ForceFeedback");
     public string Pad_OverallGain => Get("Pad_OverallGain");
     public string Pad_LeftMotorLabel => Get("Pad_LeftMotorLabel");
     public string Pad_RightMotorLabel => Get("Pad_RightMotorLabel");
@@ -2163,6 +2175,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_TestRumble => Get("Pad_TestRumble");
     public string Pad_MotorActivity => Get("Pad_MotorActivity");
     public string Pad_ConstantForce_Header => Get("Pad_ConstantForce_Header");
+    public string Pad_ConstantForce_FoldHint => Get("Pad_ConstantForce_FoldHint");
     public string Pad_ConstantForce_Description => Get("Pad_ConstantForce_Description");
     public string Pad_ConstantForce_Toggle => Get("Pad_ConstantForce_Toggle");
     public string Pad_ConstantForce_Position => Get("Pad_ConstantForce_Position");
@@ -2181,6 +2194,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_ResetStickBoundary => Get("Pad_ResetStickBoundary");
     public string Pad_Sticks_Section_CenterPoint => Get("Pad_Sticks_Section_CenterPoint");
     public string Pad_Sticks_Section_DeadZone => Get("Pad_Sticks_Section_DeadZone");
+    public string Pad_More_Stick => Get("Pad_More_Stick");
     public string Pad_Sticks_Section_Range => Get("Pad_Sticks_Section_Range");
     public string Pad_Sticks_Section_Range_Hint => Get("Pad_Sticks_Section_Range_Hint");
     public string Pad_Sticks_Boundary_SecondLap => Get("Pad_Sticks_Boundary_SecondLap");
@@ -2614,6 +2628,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Touchpad_SelectedTouchpad => Get("Pad_Touchpad_SelectedTouchpad");
     public string Pad_Touchpad_SelectedTouchpad_Tooltip => Get("Pad_Touchpad_SelectedTouchpad_Tooltip");
     public string Pad_Touchpad_Detection_Header => Get("Pad_Touchpad_Detection_Header");
+    public string Pad_GestureDetection_FoldHint => Get("Pad_GestureDetection_FoldHint");
     public string Pad_Touchpad_GesturesEnabled => Get("Pad_Touchpad_GesturesEnabled");
     public string Pad_Touchpad_GesturesEnabled_Tooltip => Get("Pad_Touchpad_GesturesEnabled_Tooltip");
     public string Pad_Touchpad_Mode_Label => Get("Pad_Touchpad_Mode_Label");
@@ -2624,6 +2639,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Touchpad_CooldownMs_Label => Get("Pad_Touchpad_CooldownMs_Label");
     public string Pad_Touchpad_CooldownMs_Tooltip => Get("Pad_Touchpad_CooldownMs_Tooltip");
     public string Pad_Touchpad_InBox_Header => Get("Pad_Touchpad_InBox_Header");
+    public string Pad_InBoxGestures_FoldHint => Get("Pad_InBoxGestures_FoldHint");
     public string Pad_Touchpad_FourWaySwipes => Get("Pad_Touchpad_FourWaySwipes");
     public string Pad_Touchpad_EightWaySwipes => Get("Pad_Touchpad_EightWaySwipes");
     public string Pad_Touchpad_SwipeDistanceThreshold => Get("Pad_Touchpad_SwipeDistanceThreshold");
@@ -2649,6 +2665,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Touchpad_ShapeGestures => Get("Pad_Touchpad_ShapeGestures");
     public string Pad_Touchpad_MatchThreshold => Get("Pad_Touchpad_MatchThreshold");
     public string Pad_Touchpad_Custom_Header => Get("Pad_Touchpad_Custom_Header");
+    public string Pad_CustomGestures_FoldHint => Get("Pad_CustomGestures_FoldHint");
     public string Pad_Touchpad_RecordNew => Get("Pad_Touchpad_RecordNew");
     public string Pad_Touchpad_Custom_Empty => Get("Pad_Touchpad_Custom_Empty");
     public string Pad_Touchpad_CustomGesture_OneFinger => Get("Pad_Touchpad_CustomGesture_OneFinger");
@@ -2680,6 +2697,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_ResetTouchpadShapeGestures => Get("Pad_ResetTouchpadShapeGestures");
     public string Pad_ResetTouchpadMatchThreshold => Get("Pad_ResetTouchpadMatchThreshold");
     public string Pad_Touchpad_Stick_Header => Get("Pad_Touchpad_Stick_Header");
+    public string Pad_TouchpadStick_FoldHint => Get("Pad_TouchpadStick_FoldHint");
     public string Pad_Touchpad_Stick_Subtitle => Get("Pad_Touchpad_Stick_Subtitle");
     public string Pad_Touchpad_StickEnabled => Get("Pad_Touchpad_StickEnabled");
     public string Pad_Touchpad_StickEnabled_Tooltip => Get("Pad_Touchpad_StickEnabled_Tooltip");
@@ -2698,6 +2716,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_ResetTouchpadStickDPadMode => Get("Pad_ResetTouchpadStickDPadMode");
     public string Pad_ResetTouchpadStickDPadActivationThreshold => Get("Pad_ResetTouchpadStickDPadActivationThreshold");
     public string Pad_Touchpad_Mouse_Header => Get("Pad_Touchpad_Mouse_Header");
+    public string Pad_More_TouchpadMouse => Get("Pad_More_TouchpadMouse");
     public string Pad_Touchpad_Mouse_Subtitle => Get("Pad_Touchpad_Mouse_Subtitle");
     public string Pad_Touchpad_MouseSensitivityX => Get("Pad_Touchpad_MouseSensitivityX");
     public string Pad_Touchpad_MouseSensitivityX_Tooltip => Get("Pad_Touchpad_MouseSensitivityX_Tooltip");
@@ -2751,6 +2770,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Touchpad_RotateThreshold_Tooltip => Get("Pad_Touchpad_RotateThreshold_Tooltip");
     public string Pad_ResetTouchpadRotateThresholdDegrees => Get("Pad_ResetTouchpadRotateThresholdDegrees");
     public string Pad_Touchpad_Pointer_Header => Get("Pad_Touchpad_Pointer_Header");
+    public string Pad_AbsolutePointer_FoldHint => Get("Pad_AbsolutePointer_FoldHint");
     public string Pad_Touchpad_Pointer_Subtitle => Get("Pad_Touchpad_Pointer_Subtitle");
     public string Pad_Touchpad_PointerRegionSizeX => Get("Pad_Touchpad_PointerRegionSizeX");
     public string Pad_Touchpad_PointerRegionSizeX_Tooltip => Get("Pad_Touchpad_PointerRegionSizeX_Tooltip");
@@ -2766,12 +2786,14 @@ public class Strings : INotifyPropertyChanged
     public string Pad_ResetTouchpadPointerRegionCenterX => Get("Pad_ResetTouchpadPointerRegionCenterX");
     public string Pad_ResetTouchpadPointerRegionCenterY => Get("Pad_ResetTouchpadPointerRegionCenterY");
     public string Pad_Touchpad_SwipeHaptics_Header => Get("Pad_Touchpad_SwipeHaptics_Header");
+    public string Pad_SwipeHaptics_FoldHint => Get("Pad_SwipeHaptics_FoldHint");
     public string Pad_Touchpad_SwipeHaptics_Subtitle => Get("Pad_Touchpad_SwipeHaptics_Subtitle");
     public string Pad_Touchpad_SwipeHapticsEnabled => Get("Pad_Touchpad_SwipeHapticsEnabled");
     public string Pad_Touchpad_SwipeHapticsEnabled_Tooltip => Get("Pad_Touchpad_SwipeHapticsEnabled_Tooltip");
     public string Pad_Touchpad_SwipeHapticsIntensity => Get("Pad_Touchpad_SwipeHapticsIntensity");
     public string Pad_Touchpad_SwipeHapticsIntensity_Tooltip => Get("Pad_Touchpad_SwipeHapticsIntensity_Tooltip");
     public string Pad_Touchpad_SyntheticPressure_Header => Get("Pad_Touchpad_SyntheticPressure_Header");
+    public string Pad_SyntheticPressure_FoldHint => Get("Pad_SyntheticPressure_FoldHint");
     public string Pad_Touchpad_SyntheticPressure_Subtitle => Get("Pad_Touchpad_SyntheticPressure_Subtitle");
     public string Pad_Touchpad_SyntheticPressureEnabled => Get("Pad_Touchpad_SyntheticPressureEnabled");
     public string Pad_Touchpad_SyntheticPressureEnabled_Tooltip => Get("Pad_Touchpad_SyntheticPressureEnabled_Tooltip");
@@ -2902,6 +2924,7 @@ public class Strings : INotifyPropertyChanged
     public string MacroAction_SwitchLayer_Format => Get("MacroAction_SwitchLayer_Format");
     public string Macro_SwitchLayer_Hint => Get("Macro_SwitchLayer_Hint");
     public string Pad_Lighting_GuideLed => Get("Pad_Lighting_GuideLed");
+    public string Pad_GuideLed_FoldHint => Get("Pad_GuideLed_FoldHint");
     public string Pad_Lighting_GuideLed_Subtitle => Get("Pad_Lighting_GuideLed_Subtitle");
     public string Pad_Lighting_GuideLed_Mode_Tooltip => Get("Pad_Lighting_GuideLed_Mode_Tooltip");
     public string Pad_Lighting_GuideLed_DeviceDefault => Get("Pad_Lighting_GuideLed_DeviceDefault");
@@ -2925,6 +2948,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Audio_Header => Get("Pad_Audio_Header");
     public string Pad_Audio_Subtitle => Get("Pad_Audio_Subtitle");
     public string Pad_Audio_Output_Header => Get("Pad_Audio_Output_Header");
+    public string Pad_More_SoundOutput => Get("Pad_More_SoundOutput");
     public string Pad_Audio_Output_Desc => Get("Pad_Audio_Output_Desc");
     public string Pad_Audio_MirrorSource_Label => Get("Pad_Audio_MirrorSource_Label");
     public string Pad_Audio_MirrorSource_Tooltip => Get("Pad_Audio_MirrorSource_Tooltip");
@@ -2934,6 +2958,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Audio_Reset_MasterVolume => Get("Pad_Audio_Reset_MasterVolume");
     public string Pad_Audio_Test => Get("Pad_Audio_Test");
     public string Pad_Audio_Packages_Header => Get("Pad_Audio_Packages_Header");
+    public string Pad_SoundPackages_FoldHint => Get("Pad_SoundPackages_FoldHint");
     public string Pad_Audio_Packages_Desc => Get("Pad_Audio_Packages_Desc");
     public string Pad_Audio_Packages_Add => Get("Pad_Audio_Packages_Add");
     public string Pad_Audio_Packages_Add_Tooltip => Get("Pad_Audio_Packages_Add_Tooltip");
@@ -2959,6 +2984,7 @@ public class Strings : INotifyPropertyChanged
     public string Emoji_Category_Objects => Get("Emoji_Category_Objects");
     public string Emoji_Category_Symbols => Get("Emoji_Category_Symbols");
     public string Pad_Menus_IconPackages_Header => Get("Pad_Menus_IconPackages_Header");
+    public string Pad_IconPackages_FoldHint => Get("Pad_IconPackages_FoldHint");
     public string Pad_Menus_IconPackages_Desc => Get("Pad_Menus_IconPackages_Desc");
     public string Pad_Menus_IconPackages_Add => Get("Pad_Menus_IconPackages_Add");
     public string Pad_Menus_IconPackages_Add_Tooltip => Get("Pad_Menus_IconPackages_Add_Tooltip");
@@ -3069,7 +3095,9 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Gyro_Subtitle => Get("Pad_Gyro_Subtitle");
     public string Pad_Gyro_Calibration_Header => Get("Pad_Gyro_Calibration_Header");
     public string Pad_Gyro_Sensitivity_Header => Get("Pad_Gyro_Sensitivity_Header");
+    public string Pad_More_GyroSensitivity => Get("Pad_More_GyroSensitivity");
     public string Pad_Gyro_Response_Header => Get("Pad_Gyro_Response_Header");
+    public string Pad_GyroResponse_FoldHint => Get("Pad_GyroResponse_FoldHint");
     public string Settings_GyroSpace => Get("Settings_GyroSpace");
     public string Settings_GyroSpace_Tooltip => Get("Settings_GyroSpace_Tooltip");
     public string Settings_MotionGrip => Get("Settings_MotionGrip");
@@ -3077,11 +3105,13 @@ public class Strings : INotifyPropertyChanged
     public string Settings_GyroInvertPitch => Get("Settings_GyroInvertPitch");
     public string Settings_GyroInvertPitch_Tooltip => Get("Settings_GyroInvertPitch_Tooltip");
     public string Pad_Gyro_Compass_Header => Get("Pad_Gyro_Compass_Header");
+    public string Pad_Compass_FoldHint => Get("Pad_Compass_FoldHint");
     public string Pad_Gyro_Compass_Description => Get("Pad_Gyro_Compass_Description");
     public string Settings_GyroCompassYaw => Get("Settings_GyroCompassYaw");
     public string Settings_GyroCompassYaw_Tooltip => Get("Settings_GyroCompassYaw_Tooltip");
     public string Pad_ResetGyroCompassYaw => Get("Pad_ResetGyroCompassYaw");
     public string Pad_Gyro_Simulation_Header => Get("Pad_Gyro_Simulation_Header");
+    public string Pad_GyroSimulation_FoldHint => Get("Pad_GyroSimulation_FoldHint");
     public string Pad_Gyro_Simulation_Description => Get("Pad_Gyro_Simulation_Description");
     public string Settings_GyroSimulation => Get("Settings_GyroSimulation");
     public string Settings_GyroSimulation_Tooltip => Get("Settings_GyroSimulation_Tooltip");
@@ -3126,6 +3156,7 @@ public class Strings : INotifyPropertyChanged
     public string Settings_GyroEngageStickDirection_YNeg => Get("Settings_GyroEngageStickDirection_YNeg");
     public string Settings_GyroEngageStickDirection_YPos => Get("Settings_GyroEngageStickDirection_YPos");
     public string Pad_Gyro_Engage_Header => Get("Pad_Gyro_Engage_Header");
+    public string Pad_GyroEngage_FoldHint => Get("Pad_GyroEngage_FoldHint");
     public string Pad_Gyro_Engage_Subtitle => Get("Pad_Gyro_Engage_Subtitle");
     public string Pad_Gyro_Space_Local => Get("Pad_Gyro_Space_Local");
     public string Pad_Gyro_Space_Player => Get("Pad_Gyro_Space_Player");
@@ -3178,6 +3209,7 @@ public class Strings : INotifyPropertyChanged
     public string Mapping_GyroTiltX => Get("Mapping_GyroTiltX");
     public string Mapping_GyroTiltY => Get("Mapping_GyroTiltY");
     public string Pad_GyroTilt_Header => Get("Pad_GyroTilt_Header");
+    public string Pad_GyroTilt_FoldHint => Get("Pad_GyroTilt_FoldHint");
     public string Pad_GyroTilt_Subtitle => Get("Pad_GyroTilt_Subtitle");
     public string Pad_GyroTilt_Range => Get("Pad_GyroTilt_Range");
     public string Pad_GyroTilt_Range_Tooltip => Get("Pad_GyroTilt_Range_Tooltip");
@@ -3720,6 +3752,7 @@ public class Strings : INotifyPropertyChanged
 
     // Audio Bass Rumble
     public string Settings_AudioRumble => Get("Settings_AudioRumble");
+    public string Pad_AudioRumble_FoldHint => Get("Pad_AudioRumble_FoldHint");
     public string Settings_AudioRumbleDesc => Get("Settings_AudioRumbleDesc");
     public string Settings_AudioRumble_Enable => Get("Settings_AudioRumble_Enable");
     public string Settings_AudioRumble_Sensitivity => Get("Settings_AudioRumble_Sensitivity");
@@ -4110,6 +4143,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_RumbleAudio_Header => Get("Pad_RumbleAudio_Header");
     public string Pad_RumbleAudio_Subtitle => Get("Pad_RumbleAudio_Subtitle");
     public string Pad_RumbleAudio_Card_Header => Get("Pad_RumbleAudio_Card_Header");
+    public string Pad_More_BassShakers => Get("Pad_More_BassShakers");
     public string Pad_RumbleAudio_Card_Desc => Get("Pad_RumbleAudio_Card_Desc");
     public string Pad_RumbleAudio_ResetCard_Tooltip => Get("Pad_RumbleAudio_ResetCard_Tooltip");
     public string Pad_RumbleAudio_Enable => Get("Pad_RumbleAudio_Enable");
@@ -4163,6 +4197,7 @@ public class Strings : INotifyPropertyChanged
     public string Tablet_Inverted => Get("Tablet_Inverted");
     public string Tablet_InRange => Get("Tablet_InRange");
     public string Pad_SteeringAngleRumble_Header => Get("Pad_SteeringAngleRumble_Header");
+    public string Pad_SteeringAngleRumble_FoldHint => Get("Pad_SteeringAngleRumble_FoldHint");
     public string Pad_SteeringAngleRumble_Description => Get("Pad_SteeringAngleRumble_Description");
     public string Pad_SteeringAngleRumble_Enable => Get("Pad_SteeringAngleRumble_Enable");
     public string Pad_SteeringAngleRumble_Axis => Get("Pad_SteeringAngleRumble_Axis");
@@ -4517,6 +4552,7 @@ public class Strings : INotifyPropertyChanged
     public string Status_FalconDriverDeclined => Get("Status_FalconDriverDeclined");
     public string Status_FalconDriverNotBound => Get("Status_FalconDriverNotBound");
     public string Pad_Falcon_Header => Get("Pad_Falcon_Header");
+    public string Pad_More_Falcon => Get("Pad_More_Falcon");
     public string Pad_Falcon_Description => Get("Pad_Falcon_Description");
     public string Pad_Falcon_ResetAll => Get("Pad_Falcon_ResetAll");
     public string Pad_Falcon_Feel => Get("Pad_Falcon_Feel");

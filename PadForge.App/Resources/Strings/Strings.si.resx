@@ -860,6 +860,7 @@
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>ආවේග ට්‍රිගර</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>ආවේග ට්‍රිගර</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>එක් එක් ට්‍රිගරයේ ලාභය, මෝටර මාරු කිරීම, අනුවර්තී ට්‍රිගර කම්පන</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>අතථ්‍ය පාලකයෙන් පවරා ඇති භෞතික Xbox One, Elite, හෝ Series පාලකය වෙත එක් එක් ට්‍රිගරයේ මෝටර් විධාන (Xbox Impulse Triggers) යොමු කරයි. ක්‍රීඩාව මඟින් පාලනය වන ට්‍රිගර කම්පනය ස්වයංක්‍රීයව හරහා යයි. පහත පාලන එක් එක් ට්‍රිගරය සඳහා ප්‍රබලතාව පරිමාණය කරයි.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>වම් ට්‍රිගරය</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>දකුණු ට්‍රිගරය</value></data>
@@ -878,7 +879,9 @@
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>වම් ට්‍රිගරය යළි සකසන්න</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>දකුණු ට්‍රිගරය යළි සකසන්න</value></data>
   <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>නියත ට්‍රිගර බලය</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>එක් එක් ට්‍රිගර මෝටරයට ස්ථිර බලයක්</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>ට්‍රිගර යොමු කිරීම</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>ප්‍රධාන මෝටරවල කම්පනය ට්‍රිගරවලට යවයි</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>ප්‍රධාන කම්පන මෝටර ට්‍රිගර නාලිකාවට යොමු කරන්න, වරකට එක් ට්‍රිගරයක්. XInput කම්පනය සහ බල ප්‍රතිපෝෂණය සමඟ ක්‍රියා කරයි. ඔබ බොත්තමක් ඔබාගෙන සිටින විට පමණක් ට්‍රිගරය කම්පනය වන පරිදි සක්‍රියකාරකයකට එය පාලනය කළ හැක.</value></data>
   <data name="Pad_ResetTriggerRouting" xml:space="preserve"><value>ට්‍රිගර යොමු කිරීම යළි සකසන්න</value></data>
   <data name="Pad_TriggerRouting_LeftTrigger" xml:space="preserve"><value>වම් ට්‍රිගරය</value></data>
@@ -910,6 +913,7 @@
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>වම් ට්‍රිගරය යළි සකසන්න</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>දකුණු ට්‍රිගරය යළි සකසන්න</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>ශ්‍රව්‍ය බාස් ට්‍රිගර කම්පනය</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>පද්ධති ශ්‍රව්‍යයේ බාස් මගින් ට්‍රිගර කම්පනය</value></data>
   <data name="Pad_AudioTriggerRumble_Description" xml:space="preserve"><value>පද්ධති ශ්‍රව්‍යයේ බාස් මඟින් ට්‍රිගර මෝටර ධාවනය කරන්න. ක්‍රීඩාව මඟින් පාලනය වන ට්‍රිගර බලය සක්‍රියව ඇති අතරතුර එය මෙය අභිබවා යයි.</value></data>
   <data name="Pad_AudioTriggerRumble_Toggle" xml:space="preserve"><value>ශ්‍රව්‍යයෙන් ට්‍රිගර මෝටර ධාවනය කරන්න</value></data>
   <data name="Pad_AudioTriggerRumble_Sensitivity" xml:space="preserve"><value>සංවේදීතාව</value></data>
@@ -1007,6 +1011,7 @@
   <data name="Pad_Lighting_MicLed_FollowDevice" xml:space="preserve"><value>ශ්‍රව්‍ය උපාංගය අනුගමනය කරන්න</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice_Picker" xml:space="preserve"><value>ශ්‍රව්‍ය උපාංගය</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>දර්ශක LED</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>LED දීප්තිය, ක්‍රීඩක රටාව, නිහඬ LED ප්‍රකාරය</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>ක්‍රීඩක අංක පේළිය (ටච්පෑඩ් එකට පහළින් ඇති LED 5) සහ මයික් එකට ඉහළින් ඇති නිහඬ LED එක. දීප්ති පාලනය භෞතිකව බලපාන්නේ ක්‍රීඩක පේළියට පමණි. ස්ථිරාංග නිහඬ LED තත්ත්ව (අක්‍රිය / ස්ථිර / ස්පන්දනය) ලබා දෙන නමුත් වෙනම නිහඬ දීප්ති රෙජිස්ටරයක් නැත.</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>ලයිට්බාර් යළි සකසන්න</value></data>
   <data name="Pad_ResetIndicatorLeds" xml:space="preserve"><value>දර්ශක LED යළි සකසන්න</value></data>
@@ -1393,6 +1398,7 @@
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>මධ්‍යය ක්‍රමාංකනය කරන්න</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>මධ්‍ය ලක්ෂ්‍යය</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>ඩෙඩ්සෝන්</value></data>
+  <data name="Pad_More_Stick" xml:space="preserve"><value>මධ්‍ය ලක්ෂ්‍ය සීරුමාරු, ඩෙඩ්සෝන් හැඩය සහ අක්ෂ අගයන්, එක් එක් අක්ෂයට වක්‍රයක්, පරාසය, සුක්කානම් හැසිරවීම</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>පරාසය</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>ස්ටික් එකක් නිවැරදි කිරීමට නිර්දේශිත ක්‍රමය මායිම ක්‍රමාංකනය කිරීමයි. එය ස්ටික් එකට භෞතිකව ළඟා විය හැකි මායිම හරහා ගමන් කර, එම මැනූ මායිමට අනුව සෑම පිහිටීමක්ම සමානුපාතිකව නැවත පරිමාණය කරයි, එවිට සෑම කෝණයකම සහ සෑම අපගමනයකම සම්පූර්ණ ස්වාභාවික චලනය කිසිවක් කපා නොහැර පරිපූර්ණ වෘත්තයකට සිතියම්ගත වේ. පහත ස්ලයිඩර හතර ප්‍රධාන අක්ෂ පමණක් සීමා කරයි. පරාසය හිතාමතාම සීමා කිරීමට ඒවා භාවිත කරන්න, එය නිවැරදි කිරීමට නොවේ.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>නියැදි ගනිමින්...</value></data>
@@ -1726,6 +1732,7 @@
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>ටච්පෑඩ් අංකය</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>පහත සැකසීම් අදාළ වන්නේ මෙම පාලකයේ කුමන ටච්පෑඩයටද යන්න. සෑම ටච්පෑඩයක්ම තමන්ගේම අභින, මූසික හැඟීම සහ දර්ශක කලාපය තබා ගනී.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>අභින හඳුනාගැනීම</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>මෙම ටච්පෑඩයේ අභින සක්‍රිය කරයි</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>මෙම ටච්පෑඩයේ අභින සබල කරන්න</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>මෙම ටච්පෑඩය සඳහා ප්‍රධාන ටොගලය. අක්‍රිය විට, මෙම ටච්පෑඩය සඳහා කිසිදු අභින විස්තරකයක් ක්‍රියාත්මක නොවේ. පවතින ඇඟිලි / ක්ලික් / පිහිටුම් සිතියම්ගත කිරීම් තවමත් ක්‍රියා කරයි.</value></data>
   <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>හඳුනාගන්න</value></data>
@@ -1736,6 +1743,7 @@
   <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>විරාම කාලය</value></data>
   <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>අභිනයක් ක්‍රියාත්මක වූ පසු, මෙම ටච්පෑඩයේ නව අභින මෙපමණ මිලි තත්පර ගණනක් නොසලකා හරින්න. ඉක්මන් ඉදිරියට-පසුපසට චලනයෙන් ඇතිවන නැවත නැවත ක්‍රියාත්මක වීම වළක්වයි.</value></data>
   <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>ඇතුළත් අභින</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>ස්වයිප්, තට්ටු, පින්ච්, හැඩ</value></data>
   <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>4-දිශා ස්වයිප් (ඉහළ / පහළ / වම / දකුණ)</value></data>
   <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>8-දිශා ස්වයිප් (විකර්ණ එක් කරයි)</value></data>
   <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>ස්වයිප් දුර (0..1)</value></data>
@@ -1761,6 +1769,7 @@
   <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>හැඩ අභින (වෘත්තය, චතුරස්‍රය, ත්‍රිකෝණය, Z, හරි ලකුණ)</value></data>
   <data name="Pad_Touchpad_MatchThreshold" xml:space="preserve"><value>හැඩ ගැළපීමේ සීමා අගය</value></data>
   <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>අභිරුචි අභින</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>ඔබේම අභින පටිගත කරන්න</value></data>
   <data name="Pad_Touchpad_RecordNew" xml:space="preserve"><value>+ නව අභිනයක් පටිගත කරන්න</value></data>
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>මෙම පැතිකඩ සඳහා අභිරුචි අභින පටිගත කර නැත. එකක් ග්‍රහණය කිරීමට නව අභිනයක් පටිගත කරන්න ක්ලික් කරන්න.</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>ඇඟිලි 1</value></data>
@@ -1768,6 +1777,7 @@
 
   <!-- Stick / D-pad output card -->
   <data name="Pad_Touchpad_Stick_Header" xml:space="preserve"><value>ස්ටික් / D-pad ප්‍රතිදානය</value></data>
+  <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>ටච්පෑඩය ස්ටික් එකක් හෝ D-pad එකක් ලෙස භාවිත කරන්න</value></data>
   <data name="Pad_Touchpad_Stick_Subtitle" xml:space="preserve"><value>ටච්පෑඩය අතථ්‍ය ඇනලොග් ස්ටික් එකක් හෝ D-pad එකක් බවට පත් කරන්න. ප්‍රතිදානය ඔබේ ඇඟිල්ල මුලින්ම ස්පර්ශ වන ස්ථානයේ නැංගුරම් ලයි. එම නැංගුරමට සාපේක්ෂව වත්මන් පිහිටුම ස්ටික් අගය සහ (විකල්ප ලෙස) අගුළු දැමූ D-pad දිශා බූලියන් පාලනය කරයි.</value></data>
   <data name="Pad_Touchpad_StickEnabled" xml:space="preserve"><value>ස්ටික් / D-pad ප්‍රතිදානය සබල කරන්න</value></data>
   <data name="Pad_Touchpad_StickEnabled_Tooltip" xml:space="preserve"><value>සිතියම්ගත කිරීමේ තෝරනයේ ටච්පෑඩ් ස්ටික් X, ස්ටික් Y සහ D-pad විස්තරක පෙන්වයි. පවතින ටච්පෑඩ්-ඇඟිලි සහ ටච්පෑඩ්-අභින මූලාශ්‍ර වෙනුවට නොව, ඒවා සමඟම ක්‍රියා කරයි.</value></data>
@@ -1782,6 +1792,7 @@
 
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>මූසික ප්‍රතිදානය</value></data>
+  <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>ප්‍රතිලෝම කිරීම, ගම්‍යතාව, ප්‍රතිචාරය, ත්වරණය, විසි කිරීම</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>යතුරුපුවරු / මූසික අතථ්‍ය පාලකයක ටච්පෑඩ් ඇඟිල්ලක් මූසික X/Y වෙත සිතියම්ගත කළ විට කර්සර වේගය සුසර කරයි. 1.0 පෙරනිමියයි. වේගවත් කර්සරයක් සඳහා ඕනෑම අක්ෂයක් වැඩි කරන්න, මන්දගාමී කර්සරයක් සඳහා අඩු කරන්න. ප්‍රතිලෝම කිරීම ඕනෑම අක්ෂයක් පෙරළයි.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>මූසික සංවේදීතාව X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>තිරස් ටච්පෑඩ් → මූසික චලනය මත ගුණකය. 1.0 ට අඩු අගයක් කර්සරය මන්දගාමී කරයි. 1.0 ට වැඩි අගයක් එය වේගවත් කරයි.</value></data>
@@ -1809,6 +1820,7 @@
   <data name="Pad_Touchpad_RotateThreshold_Tooltip" xml:space="preserve"><value>භ්‍රමණයක් ක්‍රියාත්මක වීමට පෙර ඇඟිලි දෙක කොපමණ කැරකිය යුතුද යන්න.</value></data>
   <data name="Pad_ResetTouchpadRotateThresholdDegrees" xml:space="preserve"><value>භ්‍රමණ සීමා අගය යළි සකසන්න</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>නිරපේක්ෂ දර්ශකය</value></data>
+  <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>පෑඩයට ළඟා විය හැකි තිරයේ කොටස</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>ටච්පෑඩ් දර්ශකය X/Y මූලාශ්‍ර සුසර කරයි. ඒවා කර්සරය පෑඩය මත ඔබේ ඇඟිල්ලේ පිහිටුමට ක්ෂණිකව ගෙන යයි (ඒවා යතුරුපුවරු / මූසික අතථ්‍ය පාලකයක මූසික X/Y වෙත සිතියම්ගත කරන්න). ප්‍රමාණය 1.00 සහ මධ්‍යය 0.50 සමඟ පෑඩය මුළු තිරයටම සිතියම්ගත වේ. කර්සරය තිරයේ කොටසකට සීමා කිරීමට ප්‍රමාණය අඩු කරන්න, එය ස්ථානගත කිරීමට මධ්‍යය ගෙන යන්න.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>කලාප පළල</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>මෙම පෑඩය සිතියම්ගත වන තිර ප්‍රදේශයේ පළල, තිර පළලේ භාගයක් ලෙස. 1.00 සම්පූර්ණ පළල ආවරණය කරයි. 0.50 කර්සරය තිරයෙන් අඩකට සීමා කරයි.</value></data>
@@ -1821,12 +1833,14 @@
 
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>ස්වයිප් හැප්ටික්ස්</value></data>
+  <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>ඔබේ ඇඟිල්ල ගමන් කරන විට ටික්</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>ඔබේ ඇඟිල්ල මෙම ටච්පෑඩය හරහා ගමන් කරන විට, Steam Input හි ට්‍රැක්පෑඩ් ටික් මෙන්, පාලකයේ හැප්ටික්ස් ස්පන්දනය කරයි. Steam Controllers සහ Steam Deck පෑඩය යට ඇති ඇක්චුවේටරය ටික් කරයි. DualSense සහ DualShock 4 කම්පන මෝටර ස්පන්දනය කරයි.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>ස්වයිප් හැප්ටික්ස් සබල කරන්න</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>ඇඟිල්ල මෙම පෑඩය මත නියමිත දුරක් චලනය වන සෑම විටම කෙටි හැප්ටික් ටික් එකක් ක්‍රියාත්මක කරයි. ඇඟිල්ලක් තැබීම හෝ පෑඩය ක්ලික් කිරීම කිසි විටෙකත් ටික් නොකරයි. පෙරනිමියෙන් අක්‍රියයි.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>ස්පන්දන තීව්‍රතාව</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity_Tooltip" xml:space="preserve"><value>සෑම ටික් එකකම ශක්තිය. ක්‍රීඩාවේ කම්පනය වඩා ප්‍රබල විට සැමවිටම එයට ප්‍රමුඛතාව ලැබේ.</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Header" xml:space="preserve"><value>කෘත්‍රිම පීඩනය</value></data>
+  <data name="Pad_SyntheticPressure_FoldHint" xml:space="preserve"><value>ස්පර්ශයක් සම්පූර්ණ ලෙස වාර්තා කරන පෑඩ් සඳහා පීඩනය</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Subtitle" xml:space="preserve"><value>ස්පර්ශයක් සම්පූර්ණ පීඩනය ලෙස වාර්තා කරන පෑඩ් මත (DualShock 4, DualSense, Steam Controller 2015) DualShock 2 / DualShock 3 පීඩන බොත්තම් අනුකරණය කරයි. සබල කර ඇති විට, මෙම උපාංගයේ පීඩන සිතියම්ගත කිරීමේ මූලාශ්‍ර ස්පර්ශයක් නැති විට 0% ලෙසද, තබා ඇති ස්පර්ශයක් ස්පර්ශ පීඩන මට්ටම ලෙසද, පෑඩ් ක්ලික් කිරීමක් 100% ලෙසද කියවයි.</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled" xml:space="preserve"><value>කෘත්‍රිම පීඩනය සබල කරන්න</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled_Tooltip" xml:space="preserve"><value>මෙම උපාංගයේ පීඩන සිතියම්ගත කිරීමේ මූලාශ්‍ර පියවර තුනකට හැඩගස්වයි: ස්පර්ශයක් නැති විට 0%, තබා ඇති ස්පර්ශයක් ස්පර්ශ පීඩන මට්ටම, පෑඩය ක්ලික් කිරීම 100% ලෙස කියවේ. පෙරනිමියෙන් අක්‍රියයි, එවිට සැබෑ ඇනලොග් පීඩනය ඇති පෑඩ් මත අමු කියවීම් එලෙසම පවතී.</value></data>
@@ -2004,7 +2018,9 @@
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>මෙම පෑඩයේ චලන සංවේදකය මූසික සහ ස්ටික් ප්‍රතිදානය පාලනය කරන ආකාරය සුසර කරන්න. නිශ්චල ඇදීම ශුන්‍ය කිරීමට සමතල පෘෂ්ඨයක් මත ක්‍රමාංකනය කරන්න, ඉන්පසු සංවේදීතාව, සුමට කිරීම සහ සක්‍රිය කිරීමේ නීති ඔබේ රුචියට සකසන්න.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>ක්‍රමාංකනය</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>සංවේදීතාව</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>ඒකක, අවකාශය, අක්ෂ ප්‍රතිලෝම කිරීම, සැබෑ ලෝක ක්‍රමාංකනය</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>ප්‍රතිචාර හැඩගැස්වීම</value></data>
+  <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>ඩෙඩ්සෝන්, සුමට කිරීම, ත්වරණය, ප්‍රතිදාන වක්‍රය</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>අවකාශය</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>ගයිරෝ චලනය අර්ථකථනය කරන ආකාරය. ස්ථානීය අමු පාලක අක්ෂ භාවිත කරයි. ක්‍රීඩකයා තිරස් චලනය සැබෑ ලෝකයේ සිරස (ගුරුත්වය) මතට ප්‍රක්ෂේපණය කරයි, එබැවින් ඔබ පෑඩය අල්ලාගෙන සිටින ආකාරය කුමක් වුවද එකම මැණික්කටු කරකැවීම සැමවිටම කැමරාව හරවයි. ලෝකය අමතරව සිරස් චලනය ලෝක අක්ෂ මතට නැවත ප්‍රක්ෂේපණය කරයි.</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>අල්ලා ඇති ආකාරය</value></data>
@@ -2018,11 +2034,13 @@
   <data name="Pad_ResetGyroInvertYaw" xml:space="preserve"><value>යෝ ප්‍රතිලෝම කිරීම යළි සකසන්න</value></data>
   <data name="Pad_ResetGyroInvertRoll" xml:space="preserve"><value>රෝල් ප්‍රතිලෝම කිරීම යළි සකසන්න</value></data>
   <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>මාලිමාව</value></data>
+  <data name="Pad_Compass_FoldHint" xml:space="preserve"><value>යෝ චුම්බක උතුරට රඳවා තබයි</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>මෙම පාලකයේ චුම්බකමානයක් ඇත. යෝ චුම්බක උතුරට නැංගුරම් කිරීමෙන් ගයිරෝ ඉලක්ක කිරීමේ සෙමින් සිදුවන තිරස් ඇදීම ඉවත් වේ. පළමුව ක්‍රමාංකනය කරන්න: ක්‍රමාංකනය ඔබා, තත්පර කිහිපයක් 8 හැඩයට සියලු දිශානතීන් හරහා පාලකය කරකවා, නැවත ඔබන්න.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>යෝ මාලිමාවට නැංගුරම් කරන්න</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>තිරස් ඉලක්කය චුම්බක දිශාව දෙසට අදින කුඩා නිවැරදි කිරීමේ අනුපාතයක් එක් කරයි, එබැවින් ඇදීම එකතු විය නොහැක. ගබඩා කළ චුම්බකමාන ක්‍රමාංකනයක් අවශ්‍යයි. අසල ලෝහ හෝ චුම්බක මගින් බාධා වූ නියැදි ස්වයංක්‍රීයව ප්‍රතික්ෂේප වේ.</value></data>
   <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>පෙරනිමියට යළි සකසන්න (අක්‍රිය)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>පිච් සහ රෝල් අනුකරණය</value></data>
+  <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>ත්වරණමානයෙන් ගණනය කළ පිච් සහ රෝල්</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>මෙම පාලකයේ ගයිරෝව හඳුනාගන්නේ වමට සහ දකුණට හැරීම පමණි. අනුකරණය සක්‍රිය විට, PadForge ත්වරණමානයෙන් පිච් සහ රෝල් ගණනය කර, ගයිරෝවේ යෝ සමඟ ඒවා සිතියම්ගත කිරීමේ පේළිවලට සහ අතථ්‍ය පාලකයේ චලනයට යවයි. ත්වරණමානයකට තල්ලුවක් සහ ඇලවීමක් වෙන්කර හඳුනාගත නොහැකි බැවින්, පාලකය නොහරවා පැත්තට හෝ ඉදිරියට ගෙන යාම කෙටි භ්‍රමණයක් ලෙස කියවේ.</value></data>
   <data name="Settings_GyroSimulation" xml:space="preserve"><value>පිච් සහ රෝල් අනුකරණය කරන්න</value></data>
   <data name="Settings_GyroSimulation_Tooltip" xml:space="preserve"><value>ත්වරණමානයෙන් ගණනය කළ අනුපාත සමඟ පිච් සහ රෝල් පුරවයි. යෝ ගයිරෝවේම කියවීම ලෙස පවතී. පෙරනිමියෙන් අක්‍රියයි.</value></data>
@@ -2063,6 +2081,7 @@
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>පහළ (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>ඉහළ (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>සක්‍රිය කිරීම</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>ඉලක්ක සක්‍රිය කිරීමේ බොත්තම, සක්‍රිය කිරීමේ ප්‍රකාරය, පහසු ඉලක්ක සීමා අගය</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>ගයිරෝ සක්‍රිය වන කාලය සීමා කරන විකල්ප කොන්දේසි. දකුණු ස්ටික් අපගමනය සහ ඉලක්ක සක්‍රිය කිරීමේ බොත්තම එක එකක් වෙන වෙනම වින්‍යාස කළ හැක. වින්‍යාස කළ සෑම කොන්දේසියක්ම සක්‍රිය වන අතරතුර පමණක් ගයිරෝ ක්‍රියාත්මක වේ.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>ස්ථානීය</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>ක්‍රීඩකයා</value></data>
@@ -2113,6 +2132,7 @@
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>ගයිරෝ ඇලවීම X</value></data>
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>ගයිරෝ ඇලවීම Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>ගයිරෝ ඇලවීම</value></data>
+  <data name="Pad_GyroTilt_FoldHint" xml:space="preserve"><value>සම්පූර්ණ ඇලවීම් පරාසය, ඇලවීම් ඩෙඩ්සෝන්</value></data>
   <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>ගයිරෝ ඇලවීම X / ගයිරෝ ඇලවීම Y ආදාන සඳහා ආවරණය: ඇලවීමක් රඳවා තබන විට, Steam හි Joystick Deflection ප්‍රකාරය මෙන් ස්ටික් එක එහි අපගමනය රඳවා තබයි. ඔබ මෙහි සකසන පරාසයේදී සම්පූර්ණ අපගමනය ලැබේ. ගයිරෝ නැවත මධ්‍යගත කිරීම විවේක ග්‍රහණය නැවත ශුන්‍ය කරයි. යෝ (පාලකය සමතලව හැරවීම) ගුරුත්වයට නොපෙනෙන අතර මෙම ආදාන චලනය නොකරයි.</value></data>
   <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>සම්පූර්ණ ඇලවීම් පරාසය</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>සම්පූර්ණ ස්ටික් අපගමනය ලෙස ගණන් ගන්නා, විවේක ග්‍රහණයේ සිට ඇලවීමේ අංශක. කුඩා = වඩා සංවේදී. Steam වින්‍යාසවල වඩාත් පොදු අගය 25° වේ.</value></data>
@@ -2310,6 +2330,7 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>අවම පරාසය Y (පහළ)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>උපරිම පරාසය Y (ඉහළ)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X අක්ෂය</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>අක්ෂ දෙකම</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y අක්ෂය</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>පරාසය</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>ප්‍රති-ඩෙඩ්සෝන්</value></data>
@@ -2320,6 +2341,7 @@
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>බල ප්‍රතිපෝෂණය / කම්පනය / හැප්ටික්ස්</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>එක් එක් මෝටරයේ ලාභය, ට්‍රිගර කම්පනය, මෝටර මාරු කිරීම</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>සමස්ත ලාභය</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>වම් මෝටරය</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>දකුණු මෝටරය</value></data>
@@ -2331,6 +2353,7 @@
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>නියත බලය</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>ඔබ අක්‍රිය කරන තුරු ස්ථිර බලයක්</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>ඔබ ටොගල් කර අක්‍රිය කරන තුරු මෙම උපාංගයට අඛණ්ඩ බලයක් යොදන්න. ඕනෑම ප්‍රභවයකින් ක්‍රීඩාව එවන බලය සක්‍රියව ඇති අතරතුර එය මෙය අභිබවා යන අතර, ක්‍රීඩාව නැවැත්වූ විට මෙය නැවත ආරම්භ වේ.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>නියත බලය යොදන්න</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>දිශාව සහ ශක්තිය සැකසීමට ජාලකය තුළ අදින්න.</value></data>
@@ -2620,6 +2643,7 @@
 
   <!-- ═══ Audio Bass Rumble ═══ -->
   <data name="Settings_AudioRumble" xml:space="preserve"><value>ශ්‍රව්‍ය කම්පනය</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>පද්ධති ශ්‍රව්‍යයේ බාස් මගින් කම්පනය</value></data>
   <data name="Settings_AudioRumbleDesc" xml:space="preserve"><value>පද්ධති ශ්‍රව්‍යයේ බාස් සංඛ්‍යාත මගින් පාලක කම්පනය ධාවනය කරන්න.</value></data>
   <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>ශ්‍රව්‍ය කම්පනය සක්‍රිය කරන්න</value></data>
   <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>සංවේදීතාව</value></data>
@@ -2730,6 +2754,8 @@
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>ඇලවීමේ බාහිර ඩෙඩ්සෝන් යළි සකසන්න</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>පාලකයේ දිශානතිය යළි සකසන්න</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>චලන සුක්කානම් හැසිරවීම</value></data>
+  <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° සිට {1}° දක්වා</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>ඇලවීමේ ඩෙඩ්සෝන්, පාලකයේ දිශානතිය</value></data>
   <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>චලන ඇලවීම් ආදානය සඳහා සැකසීම්: පාලකය සුක්කානමක් මෙන් ඇල කරන්න. සිතියම්ගත කිරීම් තුළ ආදාන පතන ලැයිස්තුවෙන් "චලන ඇලවීම" ස්ටික් අක්ෂයකට සිතියම්ගත කරන්න.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>චලන සුක්කානම් හැසිරවීම යළි සකසන්න</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>ෆ්ලික් ස්ටික් (දකුණු ස්ටික්)</value></data>
@@ -2738,6 +2764,7 @@
   <data name="Mapping_LeftStickRing" xml:space="preserve"><value>වම් ස්ටික් වළල්ල</value></data>
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>දකුණු ස්ටික් වළල්ල</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>ෆ්ලික් ස්ටික්</value></data>
+  <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>ෆ්ලික් ස්ටික් ආදාන සඳහා සුසර කිරීම</value></data>
   <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>ෆ්ලික් ස්ටික් ආදාන සඳහා සැකසීම්: ස්ටික් එක යොමු කරන්න, කැමරාව ඊට ගැළපෙන සේ හැරේ. සියුම් හැරවීමට දාරය දිගේ ස්වීප් කරන්න. ඕනෑම ස්ථරයක, සිතියම්ගත කිරීම් තුළ ආදාන පතන ලැයිස්තුවෙන් "ෆ්ලික් ස්ටික් (දකුණු ස්ටික්)" මූසික X වෙත සිතියම්ගත කරන්න.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>ෆ්ලික් ස්ටික් යළි සකසන්න</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>360° සඳහා ලක්ෂ්‍ය</value></data>
@@ -2774,6 +2801,7 @@
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>ෆ්ලික් ස්ටික් ඇති ස්ථරය, ස්ටික් එක දැනටමත් අපගමනය වී තිබියදී සක්‍රිය වූ විට, ෆ්ලික් එක වහාම ක්‍රියාත්මක කරන්න. අක්‍රිය නම් කැමරාව නිශ්චලව තබා, වත්මන් ස්ටික් කෝණයේ සිට භ්‍රමණය අනුගමනය කරයි.</value></data>
   <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>සක්‍රිය වීමේදී ෆ්ලික් කිරීමට ඉඩ දීම යළි සකසන්න</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>සුක්කානම් අගුළු ප්‍රතිපෝෂණය</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>සුක්කානම් ප්‍රකාරයේ ස්ටික් එකක සම්පූර්ණ අගුලේදී සංඥාවක්</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>සුක්කානම් ප්‍රකාරයකට සැකසූ ස්ටික් එකක් සම්පූර්ණ අගුල දක්වාම හරවන විට, ඔබට සීමාව දැනෙන ලෙස සංඥාවක් (කම්පනය, ට්‍රිගරය හෝ ලයිට්බාර්) ලබා දෙන්න. පෙරනිමියෙන් සියල්ල අක්‍රියයි.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>අගුලේදී කම්පන ස්පන්දනය</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>අගුලේදී ට්‍රිගර කම්පනය</value></data>
@@ -2829,6 +2857,7 @@
   <data name="Pad_Audio_Header" xml:space="preserve"><value>ශ්‍රව්‍ය</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>මැක්‍රෝ ශබ්ද සහ පිළිබිඹු කළ පද්ධති ශ්‍රව්‍ය, USB හෝ Bluetooth හරහා, තෝරාගත් පාලකයේ ඇතුළත් ස්පීකරයෙන් වාදනය වේ. ඉහත පතන ලැයිස්තුවෙන් උපාංගය තෝරන්න. මෙහි ඇති සෑම සැකසීමක්ම එය අනුගමනය කරයි.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>ශබ්ද ප්‍රතිදානය</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>පිළිබිඹු ප්‍රභවය, හැප්ටික්ස්, හෙඩ්ෆෝන් හඬ පරිමාව, ක්‍රොස්ෆීඩ්, පරාමිතික EQ, සීමාකාරකය</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>ශබ්ද ස්වයංක්‍රීයව තෝරාගත් පාලකයට යොමු වේ. USB හරහා, පෑඩයේම ශ්‍රව්‍ය අන්ත ලක්ෂ්‍යය දෘඪාංග බහාලුම අනුව ගළපනු ලැබේ. Bluetooth හරහා, ශ්‍රව්‍ය Sony HID රාමු තුළ ප්‍රවාහය කෙරේ.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>පිළිබිඹු ප්‍රභවය</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>පාලක ස්පීකරයට පිළිබිඹු කළ යුතු වාදන උපාංගය. නිශ්චිත ශබ්ද වෙනම වාදන උපාංගයකට යවන ක්‍රීඩා සඳහා මෙය එම උපාංගයට යොමු කළ හැක.</value></data>
@@ -2902,6 +2931,7 @@
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>ගොනුව කියවිය හැකි PadForge පැතිකඩක් නොවේ.</value></data>
   <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>{0} වෙතින් ශබ්දයක් තෝරන්න</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>ශබ්ද පැකේජ</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>ශබ්ද මැක්‍රෝ සඳහා ශබ්ද zip ගොනු</value></data>
   <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>ශබ්ද පැකේජයක් යනු .pfsounds දිගුව සහිත, ශබ්ද අඩංගු එක් zip ගොනුවකි. මෙහි එකක් එක් කර, ඕනෑම ශබ්ද මැක්‍රෝවක එහි ශබ්ද තෝරන්න. PadForge ගොනුවෙන් කෙලින්ම කියවන අතර එය කිසි විටෙක දිගහරින්නේ නැත. අතේ ගෙන යා හැකිව තබා ගැනීමට පැකේජ PadForge.exe අසල තබන්න.</value></data>
   <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>පැකේජය එක් කරන්න…</value></data>
   <data name="Pad_Audio_Packages_Add_Tooltip" xml:space="preserve"><value>පවතින .pfsounds ගොනුවක් ලැයිස්තුවට එක් කරන්න.</value></data>
@@ -2927,6 +2957,7 @@
   <data name="Emoji_Category_Objects" xml:space="preserve"><value>වස්තු</value></data>
   <data name="Emoji_Category_Symbols" xml:space="preserve"><value>සංකේත</value></data>
   <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>අයිකන පැකේජ</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>මෙනු කොටු සඳහා රූප zip ගොනු</value></data>
   <data name="Pad_Menus_IconPackages_Desc" xml:space="preserve"><value>අයිකන පැකේජයක් යනු .pficons දිගුව සහිත, රූප අඩංගු එක් zip ගොනුවකි. මෙහි එකක් එක් කර, ඕනෑම මෙනු කොටුවක එහි අයිකන තෝරන්න. PadForge ගොනුවෙන් කෙලින්ම කියවන අතර එය කිසි විටෙක දිගහරින්නේ නැත. අතේ ගෙන යා හැකිව තබා ගැනීමට පැකේජ PadForge.exe අසල තබන්න.</value></data>
   <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>පැකේජය එක් කරන්න…</value></data>
   <data name="Pad_Menus_IconPackages_Add_Tooltip" xml:space="preserve"><value>පවතින .pficons ගොනුවක් ලැයිස්තුවට එක් කරන්න.</value></data>
@@ -3309,6 +3340,7 @@
   <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>ස්ථරය {0} වෙත මාරු වන්න</value></data>
   <data name="Macro_SwitchLayer_Hint" xml:space="preserve"><value>මෙම ස්ලොට් එක තෝරාගත් මාරු ස්ථරයට පනී. වෙනත් මාරුවක්, Latch හෝ Cycle සක්‍රියකාරකයක්, හෝ පැතිකඩ මාරුවක් තෙක් ස්ථරය සක්‍රියව පවතී. Base මූලික ස්ථරයට ආපසු යයි. එකම බොත්තම ස්ථරය අනුව වෙනස් ලෙස පැනීමට, මෙම මැක්‍රෝව ඉහත ස්ථරයකට සීමා කරන්න.</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>Guide බොත්තම් LED</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Guide හෝ Home බොත්තමේ දිලීම</value></data>
   <data name="Pad_Lighting_GuideLed_Subtitle" xml:space="preserve"><value>දිදුලන Guide හෝ Home බොත්තමේ දීප්තිය. Xbox One සහ පසු පාලක එය USB හරහා පිළිගනී. 2015 Steam Controller ඕනෑම සම්බන්ධතාවයක් මත එය පිළිගන්නා අතර, සියලුම Steam Controller එකම දීප්තියක් බෙදා ගනී. Switch Pro Controller සහ දකුණු Joy-Con (තනිව, යුගලව, හෝ ආරෝපණ ග්‍රිප් එකේ) ඕනෑම සම්බන්ධතාවයක් මත එය පිළිගනී.</value></data>
   <data name="Pad_Lighting_GuideLed_Mode_Tooltip" xml:space="preserve"><value>උපාංග පෙරනිමිය LED එක පාලක ස්ථිරාංග සැකසූ ආකාරයටම තබයි. ස්ථාවර දීප්තිය පහත මට්ටම රඳවා තබයි. බැටරි මට්ටම පිරුණු බැටරියක් වඩා දීප්තිමත් කරන අතර කිසිවිටෙක 10% ට පහළ නොයයි. Xbox පාලක Guide LED විධාන පිළිගන්නේ USB හරහා පමණි, එබැවින් Bluetooth සම්බන්ධතාවයක් මත මෙම සැකසුමට බලපෑමක් නැත. Switch පාලක Home LED විධාන ඕනෑම සම්බන්ධතාවයක් මත පිළිගනී.</value></data>
   <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>උපාංග පෙරනිමිය</value></data>
@@ -3673,6 +3705,7 @@
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>බාස් ෂේකර්</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>මෙම අතථ්‍ය පාලකයට ලැබෙන ක්‍රීඩා කම්පනය සහ බල ප්‍රතිපෝෂණය, බාස් ෂේකර් සහ සබ්වූෆර් සඳහා අඩු සංඛ්‍යාත නාද ලෙස ශ්‍රව්‍ය ප්‍රතිදානයකට යොමු කරයි.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>කම්පනය ශ්‍රව්‍යයට</value></data>
+  <data name="Pad_More_BassShakers" xml:space="preserve"><value>ප්‍රතිදාන උපාංගය, නාලිකා, ලාභය, එක් එක් මෝටරයට නාදයක්</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox, DualShock 3, DualShock 4 / DualSense, සහ Nintendo Switch Pro අතථ්‍ය පාලක සමඟත්, ධාවන සුක්කානම් වැනි බල ප්‍රතිපෝෂණය සහිත Extended අතථ්‍ය පාලක සහ Steam Deck Controller (Composite) සමඟත් ක්‍රියා කරයි. ක්‍රීඩා ප්‍රතිපෝෂණය සහ කම්පන පරීක්ෂණය ශ්‍රව්‍ය ප්‍රතිදානය හරහා වාදනය වේ. මැක්‍රෝ කම්පනය පාලකය මතම පවතී.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>කම්පනය ශ්‍රව්‍යයට යළි සකසන්න</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>කම්පනය ශ්‍රව්‍ය ප්‍රතිදානයකට යොමු කරන්න</value></data>
@@ -4107,6 +4140,7 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>FreeTrack හවුල් මතක දත්ත සඳහා රැඳී සිටිමින්.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>FreeTrack හවුල් මතකය ලබා ගත නොහැක.</value></data>
   <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>සුක්කානම් කෝණ කම්පනය</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>ස්ටික් අක්ෂය මධ්‍යයෙන් ඉවතට යන විට වැඩි වන කම්පනය</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>තෝරාගත් අතථ්‍ය ස්ටික් අක්ෂය මධ්‍යයෙන් ඉවතට යන විට අඛණ්ඩ කම්පනයක් එක් කරයි. පවරා ඇති සියලු මූලාශ්‍රවලින් සිතියම්ගත ප්‍රතිදානය භාවිත කරයි. "දිශාව අනුව බෙදීම" තෝරා ඇති විට, සෘණ චලනය වම් මෝටරය ධාවනය කරන අතර, ධන චලනය දකුණු මෝටරය ධාවනය කරයි. "වම් මෝටරය" හෝ "දකුණු මෝටරය" දිශා දෙකම එම එක් මෝටරයට යොමු කරයි. කම්පන උපාංග සහිත Xbox සහ PlayStation ප්‍රතිදානය සඳහා. සුක්කානම්, නියත බල ප්‍රතිපෝෂණය සහිත වෙනත් උපාංග සහ Fanatec පැඩල මෙය මඟ හරියි.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>සුක්කානම් කෝණ කම්පනය සක්‍රිය කරන්න</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>අතථ්‍ය අක්ෂය</value></data>
@@ -4425,6 +4459,7 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="Status_FalconDriverDeclined" xml:space="preserve"><value>Windows විසින් Force Dimension හි ධාවකය ස්ථාපනය කළේ නැත. Force Dimension විශ්වාස කළ යුතුද යැයි Windows විමසුවහොත්, “ස්ථාපනය කරන්න” තෝරන්න.</value></data>
   <data name="Status_FalconDriverNotBound" xml:space="preserve"><value>ධාවකය ස්ථාපනය කර ඇත, නමුත් Falcon තවම එයට මාරු වී නැත. Falcon ගලවා නැවත සම්බන්ධ කරන්න.</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>පහර, සෙලවීම, ස්ථාවර කිරීම, පූර්ව බලය, ගුරුත්වය</value></data>
   <data name="Pad_Falcon_Description" xml:space="preserve"><value>PadForge, Falcon හි හසුරුව මත ඇති සෑම බලයක්ම තත්පරයකට දළ වශයෙන් දහස් වතාවක්, හසුරුව ඇති ස්ථානය සහ ක්‍රීඩාව වාදනය කරන දේ අනුව ගණනය කරයි. මෙම සැකසීම් මෙම ස්ලොට් එකට අයත් වේ.</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>Novint Falcon යළි සකසන්න</value></data>
   <data name="Pad_Falcon_Feel" xml:space="preserve"><value>දැනීම</value></data>
@@ -4586,4 +4621,5 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>ඔබාගෙන සිටින අතරතුර {1} මත {0}</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>නවත්වන තුරු {1} මත {0}</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>{0} මත ට්‍රිගර ප්‍රයෝගය නවත්වන්න</value></data>
+  <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>මෙම උපාංගයේ ආලෝකකරණය පාලනය කරන්න, ආලෝකකරණ රඳවා ගැනීම</value></data>
 </root>

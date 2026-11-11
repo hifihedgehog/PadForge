@@ -341,6 +341,7 @@
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->
   <data name="Pad_XAxis" xml:space="preserve"><value>Axis X</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>Axis mmienu nyinaa</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Axis Y</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
@@ -679,6 +680,7 @@
   <data name="Falcon_PickLibrary" xml:space="preserve"><value>Paw dhd64.dll…</value></data>
   <data name="Settings_Falcon_Title" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>Bɔ, wosow, gyina, ahosiesie, asasetwe</value></data>
   <data name="Pad_Falcon_Feel_Joystick" xml:space="preserve"><value>Joystick</value></data>
   <data name="Pad_Falcon_NewtonsUnit" xml:space="preserve"><value>N</value></data>
   <data name="Dashboard_GameTelemetryGame" xml:space="preserve"><value>Agorɔ</value></data>
@@ -703,4 +705,21 @@
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>Berɛ</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>Nkekaho</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Kanea ne Nnyegyeɛ</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Nkaebɔ bere a steering stick du n'awieeɛ</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Rumble a ɛkɔ soro bere a stick axis fi mfinimfini</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Ahoɔden a ɛtena hɔ kosi sɛ wobɛdum</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Rumble a efi system nnyegyeɛ bass mu</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Ɛde motor akɛseɛ no rumble kɔ triggers no so</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Ahoɔden a ɛtena hɔ wɔ trigger motor biara so</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Trigger rumble a efi system nnyegyeɛ bass mu</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Kyeakyea deadzones, Controller gyinabeaɛ</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Ɛsɔ touchpad yi gestures so</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Twitwiw, bobɔ, kyim, nsɛsoɔ</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Kyerɛw wo ankasa deɛ</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>LED hann, Agodifoɔ nhyehyɛeɛ, Mute LED kwan</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Guide anaa Home button no hann</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Nnyegyeɛ zip files ma nnyegyeɛ macros</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Mfonini zip files ma menu cells</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Motor biara ahoɔden, trigger rumble, motor nsesaeɛ</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Trigger biara ahoɔden, motor nsesaeɛ, adaptive trigger wosowosow</value></data>
 </root>

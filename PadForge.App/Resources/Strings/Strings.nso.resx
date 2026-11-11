@@ -448,6 +448,7 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Calibration</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensitivity</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Diyuniti, Sekgoba, go fetoša di-axis, Tekanyetšo ya lefase la nnete</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Swara</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>Toggle</value></data>
   <data name="Settings_GyroEngageStickSide_Right" xml:space="preserve"><value>Stick ya lagoja</value></data>
@@ -687,6 +688,7 @@
 
   <!-- ═══ Audio Bass Rumble ═══ -->
   <data name="Settings_AudioRumble" xml:space="preserve"><value>Rumble ya modumo</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Rumble go tšwa go bass ya modumo wa sistimi</value></data>
   <data name="Settings_AudioRumble_LeftMotor" xml:space="preserve"><value>Motoro wa lanngele</value></data>
   <data name="Settings_AudioRumble_RightMotor" xml:space="preserve"><value>Motoro wa lagoja</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
@@ -1078,6 +1080,7 @@
   <data name="Status_InstallingFalconDriver" xml:space="preserve"><value>E tsenya draebara ya Falcon ya Force Dimension…</value></data>
   <data name="Status_FalconNotPluggedIn" xml:space="preserve"><value>Ga go na Falcon yeo e kgokagantšwego.</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>Go raga, go šikinya, go itiiša, go laiša pele, kgogedi</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>Bušetša Novint Falcon</value></data>
   <data name="Pad_Falcon_Feel_Joystick" xml:space="preserve"><value>Joystick</value></data>
   <data name="Pad_Falcon_Button1" xml:space="preserve"><value>Konope 1</value></data>
@@ -1135,4 +1138,18 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Motsamao le go Kgoma</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Seetša le Modumo</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Dimakro le Malokelelo</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Temošo ge stick ya go otlela e fihla mafelelong</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Rumble ye e golago ge axis ya stick e tloga bogareng</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Maatla a sa fetogego go fihlela o a tima</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>E romela rumble ya dimotoro tše dikgolo go di-trigger</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Di-deadzone tša go sekama, Tebelelo ya controller</value></data>
+  <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Deadzone, go boreledišwa, Koketšo ya lebelo, Kgopamo ya ditšweletšo</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Konopo ya go thoma go nepa, Mokgwa wa go thoma, Mollwane wa go nepa gabonolo</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>E bulela di-gesture tša touchpad ye</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Rekota tša gago</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Bohlakahlaka bja LED, Paterone ya moraloki, Mokgwa wa LED ya go homotša</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Seetša sa konopo ya Guide goba Home</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Difaele tša zip tša medumo bakeng sa di-macro tša modumo</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Difaele tša zip tša diswantšho bakeng sa disele tša menyu</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Maatla a motoro o mongwe le o mongwe, rumble ya trigger, go fapanya dimotoro</value></data>
 </root>

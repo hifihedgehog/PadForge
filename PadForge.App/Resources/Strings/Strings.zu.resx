@@ -694,6 +694,7 @@
   <data name="Curve_Custom" xml:space="preserve"><value>Okwezifiso</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Linganisa isikhungo</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Indawo efile</value></data>
+  <data name="Pad_More_Stick" xml:space="preserve"><value>Ukuchezuka kwesikhungo, ukuma kwendawo efile namanani e-eksisi ngayinye, ijika le-eksisi ngayinye, ibanga, ukushayela</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Ibanga</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Ukuchezuka kwesikhungo X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Ukuchezuka kwesikhungo Y</value></data>
@@ -918,6 +919,7 @@
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Iphedi yokuthinta</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Inombolo yephedi yokuthinta</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Ukutholwa kokunyakazisa</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Ivula ukunyakazisa kwale phedi yokuthinta</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Vula ukunyakazisa kule phedi yokuthinta</value></data>
   <data name="Pad_Touchpad_Mode_CustomOnly" xml:space="preserve"><value>Okwangokwezifiso kuphela</value></data>
   <data name="Pad_Touchpad_Mode_Both" xml:space="preserve"><value>Kokubili</value></data>
@@ -938,12 +940,14 @@
   <data name="Pad_Touchpad_FiveFinger" xml:space="preserve"><value>Ukuthepha ngeminwe emihlanu</value></data>
   <data name="Pad_Touchpad_MatchThreshold" xml:space="preserve"><value>Umkhawulo wokufana kwesimo</value></data>
   <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>Ukunyakazisa kwangokwezifiso</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Rekhoda okwakho</value></data>
   <data name="Pad_Touchpad_RecordNew" xml:space="preserve"><value>+ Rekhoda ukunyakazisa okusha</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>Umunwe owodwa</value></data>
   <data name="Pad_Touchpad_CustomGesture_NFingers_Format" xml:space="preserve"><value>Iminwe engu-{0}</value></data>
 
   <!-- Stick / D-pad output card -->
   <data name="Pad_Touchpad_Stick_Header" xml:space="preserve"><value>Okukhiphayo kwenduku / i-D-pad</value></data>
+  <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Sebenzisa iphedi yokuthinta njengenduku noma i-D-pad</value></data>
   <data name="Pad_Touchpad_StickEnabled" xml:space="preserve"><value>Vula okukhiphayo kwenduku / i-D-pad</value></data>
   <data name="Pad_Touchpad_StickInnerDeadzone" xml:space="preserve"><value>Indawo efile yangaphakathi</value></data>
   <data name="Pad_Touchpad_StickDPadMode_Label" xml:space="preserve"><value>Imodi ye-D-pad</value></data>
@@ -953,6 +957,7 @@
 
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Okukhiphayo kwegundane</value></data>
+  <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Phendula, Umfutho, Impendulo, Ukusheshisa, ukuphonsa</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Ukuzwela kwegundane X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityY" xml:space="preserve"><value>Ukuzwela kwegundane Y</value></data>
   <data name="Pad_Touchpad_MouseInvertX" xml:space="preserve"><value>Phendula igundane X</value></data>
@@ -983,8 +988,10 @@
 
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Ama-haptics okuswayipha</value></data>
+  <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>Ukudlidliza okuncane lapho umunwe wakho uhamba</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Vula ama-haptics okuswayipha</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Header" xml:space="preserve"><value>Ingcindezi yokwenziwa</value></data>
+  <data name="Pad_SyntheticPressure_FoldHint" xml:space="preserve"><value>Kumaphedi abika ukuthinta njengengcindezi egcwele</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled" xml:space="preserve"><value>Vula ingcindezi yokwenziwa</value></data>
   <data name="Pad_Touchpad_SyntheticTouchLevel" xml:space="preserve"><value>Izinga lengcindezi yokuthinta</value></data>
 
@@ -1115,14 +1122,17 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>I-gyro</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Ukulinganisa</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Ukuzwela</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Amayunithi, Isikhala, ukuphendula ama-eksisi, Ukulinganisa komhlaba wangempela</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Phendula i-pitch (Y)</value></data>
   <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Phendula i-yaw (X)</value></data>
   <data name="Settings_GyroInvertRoll" xml:space="preserve"><value>Phendula i-roll (X)</value></data>
   <data name="Pad_ResetGyroInvertYaw" xml:space="preserve"><value>Setha kabusha ukuphendula i-yaw</value></data>
   <data name="Pad_ResetGyroInvertRoll" xml:space="preserve"><value>Setha kabusha ukuphendula i-roll</value></data>
   <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>Ikhampasi</value></data>
+  <data name="Pad_Compass_FoldHint" xml:space="preserve"><value>Igcina i-yaw ibheke enyakatho kazibuthe</value></data>
   <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Setha kabusha kokuzenzakalelayo (kuvaliwe)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Ukulingisa i-pitch ne-roll</value></data>
+  <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>I-pitch ne-roll okubalwa nge-accelerometer</value></data>
   <data name="Settings_GyroSimulation" xml:space="preserve"><value>Lingisa i-pitch ne-roll</value></data>
   <data name="Pad_ResetGyroSimulation" xml:space="preserve"><value>Setha kabusha ukulingisa i-pitch ne-roll</value></data>
   <data name="Pad_Gyro_ResetSimulation_All_Tooltip" xml:space="preserve"><value>Setha kabusha ukulingisa i-pitch ne-roll</value></data>
@@ -1162,6 +1172,7 @@
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Ukutsheka kwe-gyro X</value></data>
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>Ukutsheka kwe-gyro Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>Ukutsheka kwe-gyro</value></data>
+  <data name="Pad_GyroTilt_FoldHint" xml:space="preserve"><value>Ibanga eligcwele lokutsheka, Indawo efile yokutsheka</value></data>
   <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>Ibanga eligcwele lokutsheka</value></data>
   <data name="Pad_GyroTilt_Deadzone" xml:space="preserve"><value>Indawo efile yokutsheka</value></data>
   <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>Setha kabusha ibanga eligcwele lokutsheka</value></data>
@@ -1306,6 +1317,7 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Ibanga elincane Y (Phansi)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Ibanga elikhulu Y (Phezulu)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>I-eksisi X</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>Ama-eksisi womabili</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>I-eksisi Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Ibanga</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Okuphikisa indawo efile</value></data>
@@ -1316,6 +1328,7 @@
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Impendulo yamandla / Ukudlidliza / Ama-haptics</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Amandla emoto ngayinye, ukudlidliza kwamathrigha, ukushintshanisa izimoto</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Imoto engakwesokunxele</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Imoto engakwesokudla</value></data>
   <data name="Pad_SwapMotors" xml:space="preserve"><value>Shintshanisa imoto engakwesokunxele nengakwesokudla</value></data>
@@ -1326,6 +1339,7 @@
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Amandla angaguquki</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Amandla aqhubekayo uze uwacime</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Sebenzisa amandla aqhubekayo kule divayisi uze uwacime. Amandla aqhutshwa umdlalo avela kunoma yimuphi umthombo ayeqa lawa ngesikhathi esebenza, futhi lawa ayaqhubeka lapho umdlalo uyeka.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Sebenzisa amandla angaguquki</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Hudula ngaphakathi kwegridi ukuze usethe isiqondiso namandla.</value></data>
@@ -1539,6 +1553,7 @@
 
   <!-- ═══ Audio Bass Rumble ═══ -->
   <data name="Settings_AudioRumble" xml:space="preserve"><value>Ukudlidliza komsindo</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Ukudlidliza okuvela kumaza aphansi omsindo wesistimu</value></data>
   <data name="Settings_AudioRumbleDesc" xml:space="preserve"><value>Qhuba ukudlidliza kwesilawuli ngamaza aphansi omsindo wesistimu.</value></data>
   <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>Nika amandla ukudlidliza komsindo</value></data>
   <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>Ukuzwela</value></data>
@@ -1591,6 +1606,7 @@
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>I-flick stick (induku yesobunxele)</value></data>
   <data name="Mapping_FlickStickTouchpad_Format" xml:space="preserve"><value>I-flick stick (iphedi yokuthinta {0})</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>I-flick stick</value></data>
+  <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Ukulungisa okokufaka kwe-flick stick</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Setha kabusha i-flick stick</value></data>
   <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Setha kabusha kube ngu-14400</value></data>
   <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Setha kabusha kube ngu-0.1 s</value></data>
@@ -1640,6 +1656,7 @@
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>Ifayela akuyona iphrofayela ye-PadForge efundekayo.</value></data>
   <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Khetha umsindo ku-{0}</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Amaphakheji omsindo</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Amafayela e-zip emisindo yama-macro omsindo</value></data>
   <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>Engeza iphakheji…</value></data>
   <data name="Pad_Audio_Packages_Create" xml:space="preserve"><value>Dala iphakheji…</value></data>
   <data name="Pad_Audio_Packages_Remove_Tooltip" xml:space="preserve"><value>Susa iphakheji ekhethiwe ohlwini. Ifayela alisuswa.</value></data>
@@ -1657,6 +1674,7 @@
   <data name="Emoji_Category_Objects" xml:space="preserve"><value>Izinto</value></data>
   <data name="Emoji_Category_Symbols" xml:space="preserve"><value>Izimpawu</value></data>
   <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>Amaphakheji ezithonjana</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Amafayela e-zip ezithombe zamaseli emenyu</value></data>
   <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>Engeza iphakheji…</value></data>
   <data name="Pad_Menus_IconPackages_Create" xml:space="preserve"><value>Dala iphakheji…</value></data>
   <data name="Pad_Menus_IconPackages_Remove_Tooltip" xml:space="preserve"><value>Susa iphakheji ekhethiwe ohlwini. Ifayela alisuswa.</value></data>
@@ -1856,6 +1874,7 @@
   <data name="Macro_Dreamcast_Repeat" xml:space="preserve"><value>Inani lokuphinda</value></data>
   <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>Shintshela kungqimba {0}</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>I-LED yenkinobho ye-Guide</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Ukukhanya kwenkinobho ye-Guide noma ye-Home</value></data>
   <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>Okuzenzakalelayo kwedivayisi</value></data>
   <data name="Pad_Lighting_GuideLed_Fixed" xml:space="preserve"><value>Ukukhanya okungashintshi</value></data>
   <data name="Pad_Lighting_GuideLed_Battery" xml:space="preserve"><value>Izinga lebhethri</value></data>
@@ -1952,6 +1971,7 @@
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Ukukhanyisa nomsindo</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Ama-macro namamenyu</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Ukudlidliza kuya emsindweni</value></data>
+  <data name="Pad_More_BassShakers" xml:space="preserve"><value>Idivayisi yokukhipha, iziteshi, amandla, ithoni yemoto ngayinye</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Setha kabusha ukudlidliza kuya emsindweni</value></data>
   <data name="Pad_RumbleAudio_OutputDevice" xml:space="preserve"><value>Idivayisi yokukhipha</value></data>
   <data name="Pad_RumbleAudio_ResetOutputDevice" xml:space="preserve"><value>Setha kabusha idivayisi yokukhipha</value></data>
@@ -2291,6 +2311,7 @@
   <data name="Status_FalconDriverDeclined" xml:space="preserve"><value>I-Windows ayiwufakanga umshayeli we-Force Dimension. Uma i-Windows ibuza ukuthi iyayethemba yini i-Force Dimension, khetha okuthi Faka.</value></data>
   <data name="Status_FalconDriverNotBound" xml:space="preserve"><value>Umshayeli ufakiwe, kodwa i-Falcon ayikawusebenzisi. Khipha i-Falcon bese uyixhuma futhi.</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>Ukukhahlela, ukuzamazama, ukuzinzisa, ukucindezela kuqala, ukudonsela phansi</value></data>
   <data name="Pad_Falcon_Description" xml:space="preserve"><value>I-PadForge ibala wonke amandla esibanjweni se-Falcon cishe izikhathi eziyinkulungwane ngomzuzwana, ngokusekelwe ekutheni isibambo sikuphi nokuthi igeyimu idlalani. Lezi zilungiselelo zingezalesi sikhala.</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>Setha kabusha i-Novint Falcon</value></data>
   <data name="Pad_Falcon_Feel" xml:space="preserve"><value>Ukuzwakala</value></data>
@@ -2422,4 +2443,16 @@
   <data name="Extras_More_HeadTracking" xml:space="preserve"><value>I-runtime ye-OpenXR, imbobo ye-UDP, ibanga le-eksisi ngayinye</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Imbobo, i-DSX.exe engumbambeli</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Izimbobo, isivinini esiphelele, amafomethi angokwezifiso</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Uphawu lapho induku yokushayela ifika emkhawulweni</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Ukudlidliza okukhula njengoba i-eksisi yenduku isuka esikhungweni</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Ithumela ukudlidliza kwezimoto ezinkulu kumathrigha</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Amandla aqhubekayo emotweni ngayinye yethrigha</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Ukudlidliza kwamathrigha okuvela kumaza aphansi omsindo wesistimu</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Izindawo ezifile zokuncika, Ukubhekiswa kwesilawuli</value></data>
+  <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Indawo efile, ukubushelelisa, Ukusheshisa, Ijika lokukhiphayo</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Inkinobho yokuvula ukuhlosa, Imodi yokuvula, Umkhawulo wokuhlosa okulula</value></data>
+  <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>Ingxenye yesikrini efinyelelwa yiphedi</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Ukuswayipha, ukuthepha, ukuncinza, izimo</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Ukukhanya kwe-LED, Iphethini yomdlali, Imodi ye-LED yokuthulisa</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Amandla ethrigha ngayinye, ukushintshanisa izimoto, ukudlidliza kwama-adaptive trigger</value></data>
 </root>

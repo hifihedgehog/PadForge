@@ -917,6 +917,7 @@
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Импулсни тригери</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Импулсни тригери</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>јачина по тригер, замена на моторите, вибрации на адаптивните тригери</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Ги проследува командите за моторите на секој тригер (Xbox Impulse Triggers) од виртуелниот контролер до доделениот физички контролер Xbox One, Elite или Series. Вибрациите на тригерите што ги управува играта поминуваат автоматски. Контролите подолу ја скалираат јачината за секој тригер.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Лев тригер</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Десен тригер</value></data>
@@ -935,7 +936,9 @@
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Ресетирај го левиот тригер</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Ресетирај го десниот тригер</value></data>
   <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Постојана сила на тригерите</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>Постојана сила на секој мотор на тригер</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Пренасочување кон тригерите</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Ги пренасочува вибрациите на главните мотори кон тригерите</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Пренасочете ги главните мотори за вибрации во каналот на тригерите, по еден тригер. Работи со вибрациите на XInput и со повратната сила. Активатор може да го условува, така што тригерот вибрира само додека држите копче.</value></data>
   <data name="Pad_ResetTriggerRouting" xml:space="preserve"><value>Ресетирај го пренасочувањето кон тригерите</value></data>
   <data name="Pad_TriggerRouting_LeftTrigger" xml:space="preserve"><value>Лев тригер</value></data>
@@ -967,6 +970,7 @@
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Ресетирај го левиот тригер</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Ресетирај го десниот тригер</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Вибрации на тригерите од басот на звукот</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Вибрации на тригерите од басот на системскиот звук</value></data>
   <data name="Pad_AudioTriggerRumble_Description" xml:space="preserve"><value>Ги управува моторите на тригерите со басот од системскиот звук. Силата на тригерите што ја управува играта има предност додека е активна.</value></data>
   <data name="Pad_AudioTriggerRumble_Toggle" xml:space="preserve"><value>Управувај ги моторите на тригерите со звукот</value></data>
   <data name="Pad_AudioTriggerRumble_Sensitivity" xml:space="preserve"><value>Осетливост</value></data>
@@ -1028,6 +1032,7 @@
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>Овој виртуелен контролер го осветлува уредот со истите режими што ги има светлосната лента на DualSense, поставени тука само за овој контролер. На виртуелен контролер PlayStation, играта што ја запишува светлосната лента го презема управувањето исто како на DualSense.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Управувај со осветлувањето на овој уред</value></data>
   <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>Управување со осветлувањето</value></data>
+  <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Управувај со осветлувањето на овој уред, Задржување на осветлувањето</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>Кога е исклучено, овој виртуелен контролер не го осветлува уредот. Ред на производителот, или друг уред од ист вид осветлен преку истиот софтвер, сѐ уште може да ја поставува неговата боја. Макрото „Постави Chroma боја“ на овој виртуелен контролер сѐ уште го бои уредот Razer.</value></data>
   <data name="Pad_Lighting_ClaimLevel" xml:space="preserve"><value>Задржување на осветлувањето</value></data>
   <data name="Pad_Lighting_ClaimLevel_Colors" xml:space="preserve"><value>Само бои</value></data>
@@ -1084,6 +1089,7 @@
   <data name="Pad_Lighting_MicLed_FollowDevice" xml:space="preserve"><value>Следи го аудиоуредот</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice_Picker" xml:space="preserve"><value>Аудиоуред</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>LED-индикатори</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Осветленост на LED-диодите, Шема за играч, Режим на LED-диодата за исклучен звук</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>Редот за бројот на играчот (5 LED-диоди под допирната табла) и LED-диодата за исклучен звук над микрофонот. Контролата за осветленост физички влијае само на редот за играчот. Фирмверот ги нуди состојбите на LED-диодата за исклучен звук (Исклучено / Постојано / Пулсирање), но нема посебен регистар за нејзината осветленост.</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>Ресетирај ја светлосната лента</value></data>
   <data name="Pad_ResetIndicatorLeds" xml:space="preserve"><value>Ресетирај ги LED-индикаторите</value></data>
@@ -1558,6 +1564,7 @@
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Калибрирај центар</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Централна точка</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Мртва зона</value></data>
+  <data name="Pad_More_Stick" xml:space="preserve"><value>централни поместувања, облик и вредности на мртвата зона по оска, крива за секоја оска, опсег, управување</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Опсег</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>„Калибрирај граница“ е препорачаниот начин за исправање на палка. Го поминува работ до кој палката физички може да стигне, а потоа пропорционално ја преразмерува секоја позиција според тој измерен раб, па целото природно движење, под секој агол и при секој отклон, се пресликува на идеален круг без ништо да се отсече. Четирите лизгачи подолу ги ограничуваат само главните оски. Користете ги за намерно ограничување на опсегот, а не за корекција.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Земање примероци...</value></data>
@@ -1891,6 +1898,7 @@
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Број на допирната табла</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>На која допирна табла на овој контролер важат поставките подолу. Секоја допирна табла ги чува своите гестови, однесување на глушецот и подрачје на покажувачот.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Препознавање гестови</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Ги вклучува гестовите на оваа допирна табла</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Овозможи гестови на оваа допирна табла</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Главен прекинувач за оваа допирна табла. Кога е исклучен, за оваа допирна табла не се активира ниту еден гест. Постојните мапирања на прсти / клик / позиција и понатаму работат.</value></data>
   <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>Препознавај</value></data>
@@ -1901,6 +1909,7 @@
   <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>Пауза по гест</value></data>
   <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>Откако ќе се активира гест, новите гестови на оваа допирна табла се игнорираат толку милисекунди. Спречува повторни активирања од брзо движење напред-назад.</value></data>
   <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>Вградени гестови</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Лизгања, допири, штипнувања, облици</value></data>
   <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>Лизгања во 4 насоки (горе / долу / лево / десно)</value></data>
   <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>Лизгања во 8 насоки (со дијагонали)</value></data>
   <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>Растојание на лизгање (0..1)</value></data>
@@ -1926,6 +1935,7 @@
   <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>Гестови со облици (круг, квадрат, триаголник, Z, штикла)</value></data>
   <data name="Pad_Touchpad_MatchThreshold" xml:space="preserve"><value>Праг на совпаѓање на обликот</value></data>
   <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>Сопствени гестови</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Снимете свои</value></data>
   <data name="Pad_Touchpad_RecordNew" xml:space="preserve"><value>+ Сними нов гест</value></data>
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>За овој профил нема снимени сопствени гестови. Кликнете „Сними нов гест“ за да снимите.</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 прст</value></data>
@@ -1933,6 +1943,7 @@
 
   <!-- Stick / D-pad output card -->
   <data name="Pad_Touchpad_Stick_Header" xml:space="preserve"><value>Излез како палка / D-pad</value></data>
+  <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Допирната табла како палка или D-pad</value></data>
   <data name="Pad_Touchpad_Stick_Subtitle" xml:space="preserve"><value>Претворете ја допирната табла во виртуелна аналогна палка или D-pad. Излезот се закотвува таму каде што прстот првпат допрел. Тековната позиција во однос на таа точка ја одредува вредноста на палката и (по избор) задржаните насоки на D-pad.</value></data>
   <data name="Pad_Touchpad_StickEnabled" xml:space="preserve"><value>Овозможи излез како палка / D-pad</value></data>
   <data name="Pad_Touchpad_StickEnabled_Tooltip" xml:space="preserve"><value>Ги прикажува изворите Палка X, Палка Y и D-pad на допирната табла во изборникот за мапирање. Работи заедно со постојните извори за прсти и гестови на допирната табла, а не наместо нив.</value></data>
@@ -1947,6 +1958,7 @@
 
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Излез како глушец</value></data>
+  <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>инвертирање, Инерција, Одзив, Забрзување, фрлање</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Ја подесува брзината на курсорот кога прст на допирната табла е мапиран на X/Y на глушецот на виртуелен контролер Тастатура / глушец. Стандардната вредност е 1.0. Зголемете ја која било оска за побрз курсор, намалете за побавен. „Инвертирај“ ја превртува која било оска.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Осетливост на глушецот X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Множител за хоризонталното поместување допирна табла → глушец. Под 1.0 курсорот се забавува. Над 1.0 се забрзува.</value></data>
@@ -1974,6 +1986,7 @@
   <data name="Pad_Touchpad_RotateThreshold_Tooltip" xml:space="preserve"><value>Колку мора да се завртат два прста пред да се активира вртење.</value></data>
   <data name="Pad_ResetTouchpadRotateThresholdDegrees" xml:space="preserve"><value>Ресетирај го прагот за вртење</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>Апсолутен покажувач</value></data>
+  <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>Делот од екранот до кој допира таблата</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Ги подесува изворите Покажувач X/Y на допирната табла, кои го префрлаат курсорот на позицијата на прстот на таблата (мапирајте ги на X/Y на глушецот на виртуелен контролер Тастатура / глушец). Големина 1.00 со центар 0.50 ја пресликува таблата на целиот екран. Намалете ја големината за да го ограничите курсорот на дел од екранот и поместете го центарот за да го поставите.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Ширина на подрачјето</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Ширина на делот од екранот на кој се пресликува таблата, како дел од ширината на екранот. 1.00 ја покрива целата ширина; 0.50 го ограничува курсорот на половина екран.</value></data>
@@ -1986,12 +1999,14 @@
 
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Хаптика при лизгање</value></data>
+  <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>Тикања додека прстот се движи</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Пушта хаптички импулси на контролерот додека прстот се движи по оваа допирна табла, како чукањата на тракпедот во Steam Input. Steam Controller и Steam Deck чукаат со актуаторот под таблата; DualSense и DualShock 4 пуштаат импулси на моторите за вибрации.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Овозможи хаптика при лизгање</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>Пушта кратко хаптичко чукање секојпат кога прстот ќе помине зададено растојание на оваа табла. Допирањето со прст или кликањето на таблата никогаш не чука. Стандардно е исклучено.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>Интензитет на импулсот</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity_Tooltip" xml:space="preserve"><value>Јачина на секое чукање. Вибрациите од играта секогаш имаат предност кога се посилни.</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Header" xml:space="preserve"><value>Синтетички притисок</value></data>
+  <data name="Pad_SyntheticPressure_FoldHint" xml:space="preserve"><value>Притисок за табли што секој допир го пријавуваат како целосен</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Subtitle" xml:space="preserve"><value>Ги симулира копчињата чувствителни на притисок од DualShock 2 / DualShock 3 на табли што допирот го пријавуваат како полн притисок (DualShock 4, DualSense, Steam Controller 2015). Додека е овозможено, изворите за мапирање „Притисок“ на овој уред читаат 0% без допир, „Ниво на притисок при допир“ при мирен допир и 100% при клик на таблата.</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled" xml:space="preserve"><value>Овозможи синтетички притисок</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled_Tooltip" xml:space="preserve"><value>Ги обликува изворите за мапирање „Притисок“ на овој уред во три чекори: без допир се чита 0%, мирен допир го чита „Ниво на притисок при допир“, а кликот на таблата чита 100%. Стандардно е исклучено, со што се задржуваат суровите читања на табли со вистински аналоген притисок.</value></data>
@@ -2169,7 +2184,9 @@
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Подесете како сензорот за движење на овој контролер управува со излезот на глушецот и палката. Калибрирајте на рамна површина за да го поништите лизгањето во мирување, а потоа подесете ги осетливоста, измазнувањето и правилата за вклучување по ваш вкус.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Калибрација</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Осетливост</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Единици, Простор, инвертирање на оските, Калибрација според реалниот свет</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Обликување на одзивот</value></data>
+  <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Мртва зона, измазнување, Забрзување, Излезна крива</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Простор</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Како се толкува движењето на жироскопот. „Локален“ ги користи суровите оски на контролерот. „Играч“ го проектира хоризонталното движење врз вистинската вертикала (гравитацијата), па истото извртување на зглобот секогаш ја врти камерата, без оглед на тоа како го држите контролерот. „Свет“ дополнително го проектира вертикалното движење врз оските на светот.</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>Држење</value></data>
@@ -2183,11 +2200,13 @@
   <data name="Pad_ResetGyroInvertYaw" xml:space="preserve"><value>Ресетирај „Инвертирај вртење“</value></data>
   <data name="Pad_ResetGyroInvertRoll" xml:space="preserve"><value>Ресетирај „Инвертирај навалување“</value></data>
   <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>Компас</value></data>
+  <data name="Pad_Compass_FoldHint" xml:space="preserve"><value>Го држи вртењето кон магнетниот север</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Овој контролер има магнетометар. Закотвувањето на вртењето кон магнетниот север го отстранува бавното хоризонтално лизгање при нишанење со жироскопот. Прво калибрирајте: притиснете „Калибрирај“, вртете го контролерот во сите ориентации во облик на осмица неколку секунди, а потоа притиснете повторно.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Закотви го вртењето за компасот</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Додава мала корективна брзина што го влече хоризонталното нишанење кон магнетниот курс, па лизгањето не може да се натрупа. Потребна е зачувана калибрација на магнетометарот. Примероците нарушени од блиски метали или магнети автоматски се отфрлаат.</value></data>
   <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Ресетирај на стандардно (исклучено)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Симулација на наклон и навалување</value></data>
+  <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Наклон и навалување пресметани од акцелерометарот</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>Жироскопот на овој контролер го чувствува само вртењето лево и десно. Со вклучена симулација, PadForge ги изведува наклонот и навалувањето од акцелерометарот и ги испраќа заедно со вртењето од жироскопот до редовите за мапирање и до движењето на виртуелниот контролер. Акцелерометарот не може да разликува туркање од навалување, па поместувањето на контролерот настрана или напред без вртење се чита како кратка ротација.</value></data>
   <data name="Settings_GyroSimulation" xml:space="preserve"><value>Симулирај наклон и навалување</value></data>
   <data name="Settings_GyroSimulation_Tooltip" xml:space="preserve"><value>Ги пополнува наклонот и навалувањето со брзини изведени од акцелерометарот. Вртењето останува сопственото читање на жироскопот. Стандардно е исклучено.</value></data>
@@ -2228,6 +2247,7 @@
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Долу (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Горе (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Вклучување</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Копче за вклучување на нишанењето, Режим на вклучување, Праг за лесно нишанење</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Опционални услови што ограничуваат кога жироскопот е активен. Може да се конфигурираат отклонот на десната палка и копчето за вклучување на нишанењето. Жироскопот работи само додека се исполнети сите конфигурирани услови.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Локален</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Играч</value></data>
@@ -2278,6 +2298,7 @@
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Жироскоп: накривување X</value></data>
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>Жироскоп: накривување Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>Накривување со жироскоп</value></data>
+  <data name="Pad_GyroTilt_FoldHint" xml:space="preserve"><value>Опсег на целосно накривување, Мртва зона на накривувањето</value></data>
   <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>Обвивка за влезовите „Жироскоп: накривување X“ / „Жироскоп: накривување Y“: задржете го накривувањето и палката го задржува отклонот, како режимот Joystick Deflection во Steam. Целосен отклон при опсегот што ќе го поставите тука; повторното центрирање на жироскопот го поставува мирното држење на нула. Вртењето (вртење на контролерот во хоризонтална рамнина) е невидливо за гравитацијата и не ги поместува овие влезови.</value></data>
   <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>Опсег на целосно накривување</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>Степени на накривување од мирното држење што се сметаат за целосен отклон на палката. Помало = поосетливо. 25° е најчестата вредност во конфигурациите на Steam.</value></data>
@@ -2479,6 +2500,7 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Мин. опсег Y (долу)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Макс. опсег Y (горе)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Оска X</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>Двете оски</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Оска Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Опсег</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Анти-мртва зона</value></data>
@@ -2489,6 +2511,7 @@
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Повратна сила / вибрации / хаптика</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>јачина по мотор, вибрации на тригерите, замена на моторите</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Вкупно засилување</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Лев мотор</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Десен мотор</value></data>
@@ -2500,6 +2523,7 @@
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Постојана сила</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>Постојана сила додека не ја исклучите</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Применува постојана сила на овој уред додека не ја исклучите. Силата што ја управува играта, од кој било извор, има предност додека е активна, а постојаната сила продолжува кога играта ќе престане.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Примени постојана сила</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Повлечете во мрежата за да ги поставите насоката и јачината.</value></data>
@@ -2826,6 +2850,7 @@
 
   <!-- ═══ Audio Bass Rumble ═══ -->
   <data name="Settings_AudioRumble" xml:space="preserve"><value>Вибрации од звук</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Вибрации од басот на системскиот звук</value></data>
   <data name="Settings_AudioRumbleDesc" xml:space="preserve"><value>Управувајте ги вибрациите на контролерот со басовите фреквенции од системскиот звук.</value></data>
   <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>Овозможи вибрации од звук</value></data>
   <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>Осетливост</value></data>
@@ -2936,6 +2961,8 @@
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Ресетирај ја надворешната мртва зона на наведнувањето</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Ресетирај ја ориентацијата на контролерот</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Управување со движење</value></data>
+  <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° до {1}°</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Внатрешна мртва зона на наведнувањето, Ориентација на контролерот</value></data>
   <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Поставки за влезот „Движење: наведнување“: навалувајте го контролерот како волан. Мапирајте „Движење: наведнување“ на оска на палка од паѓачкото мени за влез во Мапирања.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Ресетирај го управувањето со движење</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Флик-стик (десна палка)</value></data>
@@ -2944,6 +2971,7 @@
   <data name="Mapping_LeftStickRing" xml:space="preserve"><value>Прстен на левата палка</value></data>
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>Прстен на десната палка</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Флик-стик</value></data>
+  <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Поставки за влезовите „Флик-стик“</value></data>
   <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Поставки за влезовите „Флик-стик“: насочете ја палката и камерата се врти соодветно, поминете по работ за фино вртење. Мапирајте „Флик-стик (десна палка)“ на „Глушец X“ од паѓачкото мени за влез во Мапирања, во кој било слој.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Ресетирај го флик-стикот</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Точки на 360°</value></data>
@@ -2980,6 +3008,7 @@
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Кога слојот со флик-стикот ќе се вклучи додека палката е веќе отклонета, фликот се извршува веднаш. Кога е исклучено, камерата мирува и ротацијата се следи од тековниот агол на палката.</value></data>
   <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Ресетирај „Дозволи флик при вклучување“</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Повратна реакција при крајна положба</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Сигнал во крајна положба за палка во режим на управување</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Кога палка поставена во режим на управување ќе се сврти до крајната положба, се пушта сигнал (вибрации, тригер или светлосна лента) за да ја почувствувате границата. Стандардно сѐ е исклучено.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Импулс на вибрации во крајна положба</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Вибрација на тригерот во крајна положба</value></data>
@@ -3035,6 +3064,7 @@
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Аудио</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Звуците од макроа и пресликаниот системски звук се репродуцираат преку вградениот звучник на избраниот контролер, преку USB или Bluetooth. Изберете го уредот во паѓачкото мени погоре. Секоја поставка тука го следи.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Излез на звук</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Извор за пресликување, хаптика, Јачина на слушалките, Вкрстено мешање, Parametric EQ, Лимитер</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Звуците автоматски се насочуваат кон избраниот контролер. Преку USB, аудиокрајната точка на контролерот се пронаоѓа според хардверскиот контејнер. Преку Bluetooth, звукот се емитува во HID-рамки на Sony.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Извор за пресликување</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Кој уред за репродукција да се пресликува на звучникот на контролерот. Игрите што испраќаат одредени звуци на посебен уред за репродукција можат да го користат овој.</value></data>
@@ -3108,6 +3138,7 @@
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>Датотеката не е читлив профил на PadForge.</value></data>
   <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Изберете звук од {0}</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Звучни пакети</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Zip-датотеки со звуци за звучни макроа</value></data>
   <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>Звучен пакет е една zip-датотека со звуци со наставката .pfsounds. Додајте го тука, а потоа изберете ги неговите звуци во кое било звучно макро. PadForge чита директно од датотеката и никогаш не ја распакува. Чувајте ги пакетите до PadForge.exe за да останат преносливи.</value></data>
   <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>Додај пакет…</value></data>
   <data name="Pad_Audio_Packages_Add_Tooltip" xml:space="preserve"><value>Додај постоечка .pfsounds-датотека во списокот.</value></data>
@@ -3133,6 +3164,7 @@
   <data name="Emoji_Category_Objects" xml:space="preserve"><value>Предмети</value></data>
   <data name="Emoji_Category_Symbols" xml:space="preserve"><value>Симболи</value></data>
   <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>Пакети икони</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Zip-датотеки со слики за ќелиите на менијата</value></data>
   <data name="Pad_Menus_IconPackages_Desc" xml:space="preserve"><value>Пакет икони е една zip-датотека со слики со наставката .pficons. Додајте го тука, а потоа изберете ги неговите икони во која било ќелија од менито. PadForge чита директно од датотеката и никогаш не ја распакува. Чувајте ги пакетите до PadForge.exe за да останат преносливи.</value></data>
   <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>Додај пакет…</value></data>
   <data name="Pad_Menus_IconPackages_Add_Tooltip" xml:space="preserve"><value>Додај постоечка .pficons-датотека во списокот.</value></data>
@@ -3542,6 +3574,7 @@
   <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>Префрли на слојот {0}</value></data>
   <data name="Macro_SwitchLayer_Hint" xml:space="preserve"><value>Го префрла овој слот на избраниот слој. Слојот останува вклучен до следното префрлување, до активатор „Заклучување“ или „Циклус“, или до менување на профилот. „Основен“ го враќа во основниот слој. Ограничете го ова макро на слој погоре за истото копче да префрла различно во секој слој.</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>LED-диода на копчето Guide</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Сјајот на копчето Guide или Home</value></data>
   <data name="Pad_Lighting_GuideLed_Subtitle" xml:space="preserve"><value>Осветленост на светлечкото копче Guide или Home. Контролерите Xbox One и поновите ја прифаќаат преку USB. Steam Controller од 2015 ја прифаќа при секое поврзување, а сите Steam Controller делат една осветленост. Switch Pro Controller и десните Joy-Con (сами, спарени или во држачот за полнење) ја прифаќаат при секое поврзување.</value></data>
   <data name="Pad_Lighting_GuideLed_Mode_Tooltip" xml:space="preserve"><value>„Стандардно за уредот“ ја остава LED-диодата точно како што ја поставил фирмверот на контролерот. „Фиксна осветленост“ го задржува нивото подолу. „Ниво на батеријата“ ја прави LED-диодата посветла кога батеријата е пополна и никогаш не паѓа под 10%. Контролерите Xbox прифаќаат LED-команди за Guide само преку USB, па оваа поставка нема ефект при Bluetooth-врска. Контролерите Switch прифаќаат LED-команди за Home при секое поврзување.</value></data>
   <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>Стандардно за уредот</value></data>
@@ -3906,6 +3939,7 @@
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Бас-шејкери</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Ги пренасочува вибрациите и повратната сила од играта што ги прима овој виртуелен контролер кон аудиоизлез, како нискофреквентни тонови за бас-шејкери и субвуфери.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Вибрации во звук</value></data>
+  <data name="Pad_More_BassShakers" xml:space="preserve"><value>излезен уред, режим на канали, засилување, тон за секој мотор</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Работи со виртуелните контролери Xbox, DualShock 3, DualShock 4 / DualSense и Nintendo Switch Pro, како и со проширени виртуелни контролери со повратна сила, како тркачки волани, и со Steam Deck Controller (Composite). Повратната реакција од играта и „Тестирај вибрации“ се пуштаат преку аудиоизлезот. Вибрациите од макроа остануваат на контролерот.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Ресетирај „Вибрации во звук“</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Пренасочи ги вибрациите кон аудиоизлез</value></data>
@@ -4352,6 +4386,7 @@
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Се чекаат податоци од споделената меморија на FreeTrack.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>Споделената меморија на FreeTrack не е достапна.</value></data>
   <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Вибрации според аголот на управување</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Вибрации што растат кога оската се оддалечува од центарот</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Додава непрекинати вибрации додека избраната оска на виртуелната палка се оддалечува од центарот. Го користи мапираниот излез од сите доделени извори. Со „Поделено по насока“ негативното движење го управува левиот мотор, а позитивното десниот. Со „Лев мотор“ или „Десен мотор“ двете насоки одат на тој еден мотор. За излез Xbox и PlayStation со уреди со вибрации. Ги прескокнува воланите, другите уреди со постојана повратна сила и педалите Fanatec.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Овозможи вибрации според аголот на управување</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Виртуелна оска</value></data>
@@ -4706,6 +4741,7 @@
   <data name="Status_FalconDriverDeclined" xml:space="preserve"><value>Windows не го инсталираше двигателот на Force Dimension. Ако Windows праша дали му верувате на Force Dimension, изберете Инсталирај.</value></data>
   <data name="Status_FalconDriverNotBound" xml:space="preserve"><value>Двигателот е инсталиран, но Falcon не е префрлен на него. Исклучете го Falcon од USB и приклучете го повторно.</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>удар, тресење, стабилизација, предоптоварување, гравитација</value></data>
   <data name="Pad_Falcon_Description" xml:space="preserve"><value>PadForge ја пресметува секоја сила на рачката на Falcon околу илјада пати во секунда, според положбата на рачката и тоа што го игра играта. Овие поставки припаѓаат на овој слот.</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>Ресетирај Novint Falcon</value></data>
   <data name="Pad_Falcon_Feel" xml:space="preserve"><value>Чувство</value></data>

@@ -917,6 +917,7 @@
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>ماشه‌های ایمپالس</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>ماشه‌های ایمپالس</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>بهره هر ماشه، جابه‌جایی موتورها، لرزش‌های ماشه تطبیقی</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>فرمان‌های موتور هر ماشه (Xbox Impulse Triggers) را از کنترلر مجازی به کنترلر فیزیکی اختصاص‌یافته Xbox One، Elite یا Series می‌فرستد. لرزش ماشه‌ای که بازی ایجاد می‌کند به‌طور خودکار عبور می‌کند. کنترل‌های زیر شدت را برای هر ماشه مقیاس‌بندی می‌کنند.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>ماشه چپ</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>ماشه راست</value></data>
@@ -935,7 +936,9 @@
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>بازنشانی ماشه چپ</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>بازنشانی ماشه راست</value></data>
   <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>نیروی ثابت ماشه</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>نیرویی ثابت روی هر موتور ماشه</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>مسیردهی ماشه</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>لرزش موتورهای اصلی را به ماشه‌ها می‌فرستد</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>موتورهای اصلی لرزش را به کانال ماشه هدایت می‌کند، هر بار برای یک ماشه. با لرزش XInput و فورس فیدبک کار می‌کند. یک فعال‌ساز می‌تواند آن را مشروط کند تا ماشه فقط وقتی بلرزد که دکمه‌ای را نگه داشته‌اید.</value></data>
   <data name="Pad_ResetTriggerRouting" xml:space="preserve"><value>بازنشانی مسیردهی ماشه</value></data>
   <data name="Pad_TriggerRouting_LeftTrigger" xml:space="preserve"><value>ماشه چپ</value></data>
@@ -967,6 +970,7 @@
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>بازنشانی ماشه چپ</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>بازنشانی ماشه راست</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>لرزش ماشه با بیس صدا</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>لرزش ماشه از بیس صدای سیستم</value></data>
   <data name="Pad_AudioTriggerRumble_Description" xml:space="preserve"><value>موتورهای ماشه را با بیس صدای سیستم به کار می‌اندازد. نیروی ماشه‌ای که بازی می‌فرستد تا وقتی فعال است جای آن را می‌گیرد.</value></data>
   <data name="Pad_AudioTriggerRumble_Toggle" xml:space="preserve"><value>به کار انداختن موتورهای ماشه با صدا</value></data>
   <data name="Pad_AudioTriggerRumble_Sensitivity" xml:space="preserve"><value>حساسیت</value></data>
@@ -1028,6 +1032,7 @@
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>این کنترلر مجازی دستگاه را با همان حالت‌هایی روشن می‌کند که نوار نوری DualSense دارد و اینجا فقط برای همین کنترلر تنظیم می‌شود. در کنترلر مجازی PlayStation، بازی‌ای که نوار نوری را می‌نویسد، مانند DualSense کنترل را به دست می‌گیرد.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>کنترل نورپردازی این دستگاه</value></data>
   <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>کنترل نورپردازی</value></data>
+  <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>کنترل نورپردازی این دستگاه، در اختیار گرفتن نورپردازی</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>«خاموش» نمی‌گذارد این کنترلر مجازی دستگاه را روشن کند. یک ردیف سازنده، یا دستگاه دیگری از همین نوع که با همان نرم‌افزار روشن می‌شود، همچنان می‌تواند رنگ آن را تعیین کند. ماکروی «تنظیم رنگ Chroma» روی این کنترلر مجازی همچنان دستگاه Razer را رنگ می‌کند.</value></data>
   <data name="Pad_Lighting_ClaimLevel" xml:space="preserve"><value>در اختیار گرفتن نورپردازی</value></data>
   <data name="Pad_Lighting_ClaimLevel_Colors" xml:space="preserve"><value>فقط رنگ‌ها</value></data>
@@ -1084,6 +1089,7 @@
   <data name="Pad_Lighting_MicLed_FollowDevice" xml:space="preserve"><value>پیروی از دستگاه صوتی</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice_Picker" xml:space="preserve"><value>دستگاه صوتی</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>LEDهای نشان‌دهنده</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>روشنایی LED، الگوی بازیکن، حالت LED بی‌صدا</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>ردیف شماره بازیکن (5 عدد LED زیر تاچ‌پد) و LED بی‌صدا بالای میکروفون. کنترل روشنایی از نظر فیزیکی فقط بر ردیف بازیکن اثر دارد. فریم‌ور حالت‌های LED بی‌صدا (خاموش / ثابت / تپنده) را در اختیار می‌گذارد، اما رجیستر جداگانه‌ای برای روشنایی آن ندارد.</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>بازنشانی نوار نوری</value></data>
   <data name="Pad_ResetIndicatorLeds" xml:space="preserve"><value>بازنشانی LEDهای نشان‌دهنده</value></data>
@@ -1558,6 +1564,7 @@
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>کالیبره کردن مرکز</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>نقطه مرکز</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>ناحیه مرده</value></data>
+  <data name="Pad_More_Stick" xml:space="preserve"><value>جابه‌جایی مرکز، شکل ناحیه مرده و مقدار هر محور، منحنی هر محور، محدوده، هدایت</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>محدوده</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>«کالیبره کردن مرز» روش پیشنهادی برای تنظیم دقیق استیک است. لبه‌ای را که استیک از نظر فیزیکی به آن می‌رسد می‌پیماید و سپس هر موقعیت را متناسب با همان لبه اندازه‌گیری‌شده دوباره مقیاس‌بندی می‌کند، تا کل حرکت طبیعی استیک، در هر زاویه و هر میزان انحراف، بدون هیچ بریدگی روی یک دایره آرمانی نگاشت شود. چهار لغزنده زیر فقط محورهای اصلی را محدود می‌کنند. از آن‌ها برای محدود کردن عمدی محدوده استفاده کنید، نه برای اصلاح آن.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>در حال نمونه‌برداری...</value></data>
@@ -1891,6 +1898,7 @@
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>شماره تاچ‌پد</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>تنظیمات زیر روی کدام تاچ‌پد این کنترلر اعمال شود. هر تاچ‌پد ژست‌ها، حس ماوس و ناحیه نشانگر خودش را نگه می‌دارد.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>تشخیص ژست</value></data>
+  <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>ژست‌های این تاچ‌پد را روشن می‌کند</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>فعال کردن ژست‌ها در این تاچ‌پد</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>کلید اصلی این تاچ‌پد. وقتی خاموش است، هیچ توصیفگر ژستی برای این تاچ‌پد فعال نمی‌شود. نگاشت‌های موجود انگشت / کلیک / موقعیت همچنان کار می‌کنند.</value></data>
   <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>شناسایی</value></data>
@@ -1901,6 +1909,7 @@
   <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>وقفه</value></data>
   <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>پس از اجرای یک ژست، ژست‌های جدید این تاچ‌پد به این تعداد میلی‌ثانیه نادیده گرفته می‌شوند. از اجراهای ناخواسته بر اثر حرکت سریع رفت‌وبرگشتی جلوگیری می‌کند.</value></data>
   <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>ژست‌های پیش‌ساخته</value></data>
+  <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>کشیدن، ضربه، نیشگون، شکل</value></data>
   <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>کشیدن چهارجهته (بالا / پایین / چپ / راست)</value></data>
   <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>کشیدن هشت‌جهته (افزودن قطری‌ها)</value></data>
   <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>مسافت کشیدن (0..1)</value></data>
@@ -1926,6 +1935,7 @@
   <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>ژست‌های شکلی (دایره، مربع، مثلث، Z، تیک)</value></data>
   <data name="Pad_Touchpad_MatchThreshold" xml:space="preserve"><value>آستانه تطبیق شکل</value></data>
   <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>ژست‌های سفارشی</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>ژست خودتان را ضبط کنید</value></data>
   <data name="Pad_Touchpad_RecordNew" xml:space="preserve"><value>+ ضبط ژست جدید</value></data>
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>هیچ ژست سفارشی‌ای برای این پروفایل ضبط نشده است. برای ثبت یکی، روی «ضبط ژست جدید» کلیک کنید.</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 انگشت</value></data>
@@ -1933,6 +1943,7 @@
 
   <!-- Stick / D-pad output card -->
   <data name="Pad_Touchpad_Stick_Header" xml:space="preserve"><value>خروجی استیک / دکمه‌های جهتی</value></data>
+  <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>استفاده از تاچ‌پد به‌جای استیک یا دکمه‌های جهتی</value></data>
   <data name="Pad_Touchpad_Stick_Subtitle" xml:space="preserve"><value>تاچ‌پد را به یک استیک آنالوگ مجازی یا دکمه‌های جهتی تبدیل می‌کند. خروجی در جایی که انگشت شما نخستین بار فرود می‌آید لنگر می‌اندازد. موقعیت کنونی نسبت به آن لنگرگاه، مقدار استیک و (به‌دلخواه) مقدارهای بولی قفل‌شونده جهت‌های دکمه‌های جهتی را تعیین می‌کند.</value></data>
   <data name="Pad_Touchpad_StickEnabled" xml:space="preserve"><value>فعال کردن خروجی استیک / دکمه‌های جهتی</value></data>
   <data name="Pad_Touchpad_StickEnabled_Tooltip" xml:space="preserve"><value>توصیفگرهای «استیک X»، «استیک Y» و «دکمه جهتی» تاچ‌پد را در انتخابگر نگاشت نمایان می‌کند. در کنار منبع‌های موجود انگشت و ژست تاچ‌پد کار می‌کند، نه به‌جای آن‌ها.</value></data>
@@ -1947,6 +1958,7 @@
 
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>خروجی ماوس</value></data>
+  <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>معکوس کردن، اینرسی، پاسخ، شتاب، پرتاب</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>سرعت نشانگر را وقتی تنظیم می‌کند که انگشت تاچ‌پد به X/Y ماوس در یک کنترلر مجازی صفحه‌کلید / ماوس نگاشت شده باشد. پیش‌فرض 1.0 است. برای نشانگر سریع‌تر هر محور را بالا ببرید و برای کندتر پایین بیاورید. «معکوس کردن» هر یک از محورها را وارونه می‌کند.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>حساسیت ماوس X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>ضریب تبدیل حرکت افقی تاچ‌پد ← ماوس. کمتر از 1.0 نشانگر را کند و بیشتر از 1.0 آن را تند می‌کند.</value></data>
@@ -1974,6 +1986,7 @@
   <data name="Pad_Touchpad_RotateThreshold_Tooltip" xml:space="preserve"><value>دو انگشت باید چقدر بچرخند تا چرخش فعال شود.</value></data>
   <data name="Pad_ResetTouchpadRotateThresholdDegrees" xml:space="preserve"><value>بازنشانی آستانه چرخش</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>نشانگر مطلق</value></data>
+  <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>بخشی از صفحه که پد به آن می‌رسد</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>منبع‌های «نشانگر X/Y تاچ‌پد» را تنظیم می‌کند که نشانگر را به موقعیت انگشت شما روی تاچ‌پد می‌برند (آن‌ها را به X/Y ماوس در یک کنترلر مجازی صفحه‌کلید / ماوس نگاشت کنید). اندازه 1.00 با مرکز 0.50 تاچ‌پد را به کل صفحه نگاشت می‌کند. برای محدود کردن نشانگر به بخشی از صفحه، اندازه را کوچک کنید و برای تعیین جای آن، مرکز را جابه‌جا کنید.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>پهنای ناحیه</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>پهنای بخشی از صفحه که این تاچ‌پد روی آن نگاشت می‌شود، به‌صورت کسری از پهنای صفحه. 1.00 کل پهنا را می‌پوشاند؛ 0.50 نشانگر را به نیمی از صفحه محدود می‌کند.</value></data>
@@ -1986,12 +1999,14 @@
 
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>هپتیک کشیدن</value></data>
+  <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>ضربه‌هایی هنگام حرکت انگشت</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>هم‌زمان با حرکت انگشت شما روی این تاچ‌پد، هپتیک کنترلر را تپش می‌دهد، مانند تیک‌های ترک‌پد در Steam Input. در Steam Controller و Steam Deck عملگر زیر تاچ‌پد تیک می‌زند؛ در DualSense و DualShock 4 موتورهای لرزش تپش می‌کنند.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>فعال کردن هپتیک کشیدن</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>هر بار که انگشت مسافت مشخصی را روی این تاچ‌پد طی کند، یک تیک هپتیک کوتاه می‌زند. فرود آمدن انگشت یا کلیک کردن تاچ‌پد هرگز تیک نمی‌زند. به‌طور پیش‌فرض خاموش است.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>شدت تپش</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity_Tooltip" xml:space="preserve"><value>قدرت هر تیک. لرزش بازی هر وقت قوی‌تر باشد اولویت دارد.</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Header" xml:space="preserve"><value>فشار مصنوعی</value></data>
+  <data name="Pad_SyntheticPressure_FoldHint" xml:space="preserve"><value>فشار برای پدهایی که لمس را کامل گزارش می‌کنند</value></data>
   <data name="Pad_Touchpad_SyntheticPressure_Subtitle" xml:space="preserve"><value>دکمه‌های حساس به فشار DualShock 2 / DualShock 3 را روی تاچ‌پدهایی شبیه‌سازی می‌کند که لمس را فشار کامل گزارش می‌دهند (مانند DualShock 4، DualSense و Steam Controller 2015). تا وقتی فعال است، منبع‌های نگاشت «فشار» این دستگاه بدون لمس را 0%، لمس ساده را برابر «سطح فشار لمس» و کلیک تاچ‌پد را 100% می‌خوانند.</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled" xml:space="preserve"><value>فعال کردن فشار مصنوعی</value></data>
   <data name="Pad_Touchpad_SyntheticPressureEnabled_Tooltip" xml:space="preserve"><value>منبع‌های نگاشت «فشار» این دستگاه را سه‌پله‌ای می‌کند: بدون لمس 0%، لمس ساده برابر «سطح فشار لمس» و کلیک تاچ‌پد 100% خوانده می‌شود. به‌طور پیش‌فرض خاموش است تا در تاچ‌پدهای دارای فشار آنالوگ واقعی، مقدارهای خام حفظ شوند.</value></data>
@@ -2169,7 +2184,9 @@
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>تنظیم کنید حسگر حرکتی این گیم‌پد چگونه خروجی ماوس و استیک را هدایت کند. برای صفر کردن دریفت حالت سکون، روی سطحی صاف کالیبره کنید و سپس حساسیت، هموارسازی و قواعد فعال‌سازی را به دلخواه تنظیم کنید.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>کالیبراسیون</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>حساسیت</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>واحدها، فضا، معکوس کردن محورها، کالیبراسیون دنیای واقعی</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>شکل‌دهی پاسخ</value></data>
+  <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>ناحیه مرده، هموارسازی، شتاب، منحنی خروجی</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>فضا</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>حرکت ژیروسکوپ چگونه تفسیر شود. «محلی» محورهای خام کنترلر را به کار می‌برد. «بازیکن» حرکت افقی را بر راستای قائم دنیای واقعی (گرانش) تصویر می‌کند تا همان چرخش مچ، صرف‌نظر از شیوه گرفتن گیم‌پد، همیشه دوربین را بچرخاند. «جهان» افزون بر آن، حرکت عمودی را هم بر محورهای جهان تصویر می‌کند.</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>شیوه گرفتن</value></data>
@@ -2183,11 +2200,13 @@
   <data name="Pad_ResetGyroInvertYaw" xml:space="preserve"><value>بازنشانی معکوس کردن یاو</value></data>
   <data name="Pad_ResetGyroInvertRoll" xml:space="preserve"><value>بازنشانی معکوس کردن رول</value></data>
   <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>قطب‌نما</value></data>
+  <data name="Pad_Compass_FoldHint" xml:space="preserve"><value>یاو را روی شمال مغناطیسی نگه می‌دارد</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>این کنترلر مغناطیس‌سنج دارد. لنگر کردن یاو به شمال مغناطیسی، دریفت افقی آهسته را از نشانه‌گیری با ژیروسکوپ حذف می‌کند. ابتدا کالیبره کنید: «کالیبره کردن» را فشار دهید، کنترلر را چند ثانیه به شکل عدد 8 در همه جهت‌ها بچرخانید و سپس دوباره فشار دهید.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>لنگر کردن یاو به قطب‌نما</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>نرخ اصلاحی کوچکی اضافه می‌کند که نشانه‌گیری افقی را به سمت جهت مغناطیسی می‌کشد تا دریفت انباشته نشود. به کالیبراسیون ذخیره‌شده مغناطیس‌سنج نیاز دارد. نمونه‌هایی که فلز یا آهنربای نزدیک آن‌ها را مختل کرده باشد به‌طور خودکار رد می‌شوند.</value></data>
   <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>بازنشانی به پیش‌فرض (خاموش)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>شبیه‌سازی پیچ و رول</value></data>
+  <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>پیچ و رول محاسبه‌شده از شتاب‌سنج</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>ژیروسکوپ این کنترلر فقط چرخش به چپ و راست را حس می‌کند. با روشن بودن شبیه‌سازی، PadForge پیچ و رول را از شتاب‌سنج به دست می‌آورد و آن‌ها را همراه با یاو ژیروسکوپ به ردیف‌های نگاشت و حرکت کنترلر مجازی می‌فرستد. شتاب‌سنج نمی‌تواند هل دادن را از کج کردن تشخیص دهد، پس جابه‌جا کردن کنترلر به پهلو یا جلو بدون چرخاندن آن، چرخشی کوتاه خوانده می‌شود.</value></data>
   <data name="Settings_GyroSimulation" xml:space="preserve"><value>شبیه‌سازی پیچ و رول</value></data>
   <data name="Settings_GyroSimulation_Tooltip" xml:space="preserve"><value>پیچ و رول را با نرخ‌های به‌دست‌آمده از شتاب‌سنج پر می‌کند. یاو همان خوانش خود ژیروسکوپ می‌ماند. به‌طور پیش‌فرض خاموش است.</value></data>
@@ -2228,6 +2247,7 @@
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>پایین (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>بالا (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>فعال‌سازی</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>دکمه فعال‌سازی نشانه‌گیری، حالت فعال‌سازی، آستانه نشانه‌گیری آسان</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>شرط‌های اختیاری که زمان فعال بودن ژیروسکوپ را محدود می‌کنند. انحراف استیک راست و دکمه فعال‌سازی نشانه‌گیری را می‌توان جداگانه پیکربندی کرد. ژیروسکوپ فقط وقتی فعال است که همه شرط‌های پیکربندی‌شده برقرار باشند.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>محلی</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>بازیکن</value></data>
@@ -2278,6 +2298,7 @@
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>شیب ژیروسکوپ X</value></data>
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>شیب ژیروسکوپ Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>شیب ژیروسکوپ</value></data>
+  <data name="Pad_GyroTilt_FoldHint" xml:space="preserve"><value>محدوده شیب کامل، ناحیه مرده شیب</value></data>
   <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>تنظیمات دامنه برای ورودی‌های «شیب ژیروسکوپ X» / «شیب ژیروسکوپ Y»: شیبی را نگه دارید تا استیک انحراف خود را نگه دارد، مانند حالت Joystick Deflection در Steam. انحراف کامل در محدوده‌ای است که اینجا تنظیم می‌کنید؛ «بازگرداندن ژیروسکوپ به مرکز» حالت سکون دست را دوباره صفر می‌کند. یاو (چرخاندن کنترلر در حالت تخت) از دید گرانش پنهان است و این ورودی‌ها را حرکت نمی‌دهد.</value></data>
   <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>محدوده شیب کامل</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>درجه شیب نسبت به حالت سکون دست که انحراف کامل استیک به شمار می‌آید. کوچک‌تر = حساس‌تر. 25° رایج‌ترین مقدار در پیکربندی‌های Steam است.</value></data>
@@ -2479,6 +2500,7 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>کمینه محدوده Y (پایین)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>بیشینه محدوده Y (بالا)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>محور X</value></data>
+  <data name="Pad_BothAxes" xml:space="preserve"><value>هر دو محور</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>محور Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>محدوده</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>ضد ناحیه مرده</value></data>
@@ -2489,6 +2511,7 @@
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>فورس فیدبک / لرزش / هپتیک</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>بهره هر موتور، لرزش ماشه، جابه‌جایی موتورها</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>بهره کلی</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>موتور چپ</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>موتور راست</value></data>
@@ -2500,6 +2523,7 @@
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>نیروی ثابت</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>نیرویی ثابت تا زمان خاموش کردن</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>تا وقتی خاموشش نکنید، نیرویی پیوسته به این دستگاه اعمال می‌کند. نیرویی که بازی از هر منبعی می‌فرستد، تا وقتی فعال است جای آن را می‌گیرد و با توقف بازی، این نیرو از سر گرفته می‌شود.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>اعمال نیروی ثابت</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>برای تعیین جهت و شدت، درون شبکه بکشید.</value></data>
@@ -2826,6 +2850,7 @@
 
   <!-- ═══ Audio Bass Rumble ═══ -->
   <data name="Settings_AudioRumble" xml:space="preserve"><value>لرزش صوتی</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>لرزش از بیس صدای سیستم</value></data>
   <data name="Settings_AudioRumbleDesc" xml:space="preserve"><value>لرزش کنترلر را با فرکانس‌های بیس صدای سیستم به کار می‌اندازد.</value></data>
   <data name="Settings_AudioRumble_Enable" xml:space="preserve"><value>فعال کردن لرزش صوتی</value></data>
   <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>حساسیت</value></data>
@@ -2936,6 +2961,8 @@
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>بازنشانی ناحیه مرده بیرونی کج کردن</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>بازنشانی جهت‌گیری کنترلر</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>هدایت با حرکت</value></data>
+  <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° تا {1}°</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>ناحیه مرده کج کردن، جهت‌گیری کنترلر</value></data>
   <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>تنظیمات ورودی «کج کردن حرکتی»: کنترلر را مانند فرمان کج کنید. «کج کردن حرکتی» را از فهرست کشویی ورودی در «نگاشت‌ها» به یک محور استیک نگاشت کنید.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>بازنشانی هدایت با حرکت</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>فلیک استیک (استیک راست)</value></data>
@@ -2944,6 +2971,7 @@
   <data name="Mapping_LeftStickRing" xml:space="preserve"><value>حلقه استیک چپ</value></data>
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>حلقه استیک راست</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>فلیک استیک</value></data>
+  <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>تنظیم ورودی‌های فلیک استیک</value></data>
   <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>تنظیمات ورودی‌های فلیک استیک: استیک را به سمتی بگیرید تا دوربین به همان سمت بچرخد و برای چرخش دقیق، آن را روی لبه بچرخانید. «فلیک استیک (استیک راست)» را از فهرست کشویی ورودی در «نگاشت‌ها»، در هر لایه‌ای، به «ماوس X» نگاشت کنید.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>بازنشانی فلیک استیک</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>نقطه در هر 360°</value></data>
@@ -2980,6 +3008,7 @@
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>وقتی لایه میزبان فلیک استیک در حالی فعال شود که استیک از پیش منحرف است، فلیک بی‌درنگ اجرا می‌شود. «خاموش» دوربین را ثابت نگه می‌دارد و چرخش را از زاویه کنونی استیک دنبال می‌کند.</value></data>
   <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>بازنشانی اجازه فلیک هنگام فعال شدن</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>بازخورد قفل هدایت</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>نشانه‌ای در قفل کامل برای استیک در حالت هدایت</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>وقتی استیکی که روی یک حالت هدایت تنظیم شده تا انتها (قفل کامل) چرخانده شود، نشانه‌ای (لرزش، ماشه یا نوار نوری) پخش می‌شود تا این حد را حس کنید. به‌طور پیش‌فرض همه خاموش‌اند.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>تپش لرزش هنگام قفل</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>لرزش ماشه هنگام قفل</value></data>
@@ -3035,6 +3064,7 @@
   <data name="Pad_Audio_Header" xml:space="preserve"><value>صدا</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>صداهای ماکرو و صدای آینه‌شده سیستم از بلندگوی داخلی کنترلر انتخاب‌شده، از طریق USB یا بلوتوث، پخش می‌شوند. دستگاه را از فهرست کشویی بالا انتخاب کنید. همه تنظیمات اینجا از آن پیروی می‌کنند.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>خروجی صدا</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>منبع آینه‌سازی، هپتیک، میزان صدای هدفون، کراس‌فید، Parametric EQ، محدودکننده</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>صداها به‌طور خودکار به کنترلر انتخاب‌شده هدایت می‌شوند. در اتصال USB، نقطه پایانی صوتی خود گیم‌پد بر اساس کانتینر سخت‌افزاری تطبیق داده می‌شود. در اتصال بلوتوث، صدا در فریم‌های HID شرکت Sony جریان می‌یابد.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>منبع آینه‌سازی</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>کدام دستگاه پخش روی بلندگوی کنترلر آینه شود. بازی‌هایی که صداهای خاصی را به دستگاه پخش جداگانه‌ای می‌فرستند می‌توانند همین را هدف بگیرند.</value></data>
@@ -3108,6 +3138,7 @@
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>این فایل یک پروفایل خوانای PadForge نیست.</value></data>
   <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>انتخاب صدا از {0}</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>بسته‌های صدا</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>فایل‌های zip صدا برای ماکروهای صوتی</value></data>
   <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>بسته صدا یک فایل zip از صداها با پسوند .pfsounds است. یکی را اینجا اضافه کنید و سپس صداهایش را در هر ماکروی صدا انتخاب کنید. PadForge مستقیماً از فایل می‌خواند و هرگز آن را از حالت فشرده خارج نمی‌کند. برای قابل‌حمل ماندن، بسته‌ها را کنار PadForge.exe نگه دارید.</value></data>
   <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>افزودن بسته…</value></data>
   <data name="Pad_Audio_Packages_Add_Tooltip" xml:space="preserve"><value>یک فایل .pfsounds موجود را به فهرست اضافه می‌کند.</value></data>
@@ -3133,6 +3164,7 @@
   <data name="Emoji_Category_Objects" xml:space="preserve"><value>اشیا</value></data>
   <data name="Emoji_Category_Symbols" xml:space="preserve"><value>علامت‌ها</value></data>
   <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>بسته‌های نماد</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>فایل‌های zip تصویر برای خانه‌های منو</value></data>
   <data name="Pad_Menus_IconPackages_Desc" xml:space="preserve"><value>بسته نماد یک فایل zip از تصاویر با پسوند .pficons است. یکی را اینجا اضافه کنید و سپس نمادهایش را در هر خانه منو انتخاب کنید. PadForge مستقیماً از فایل می‌خواند و هرگز آن را از حالت فشرده خارج نمی‌کند. برای قابل‌حمل ماندن، بسته‌ها را کنار PadForge.exe نگه دارید.</value></data>
   <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>افزودن بسته…</value></data>
   <data name="Pad_Menus_IconPackages_Add_Tooltip" xml:space="preserve"><value>یک فایل .pficons موجود را به فهرست اضافه می‌کند.</value></data>
@@ -3542,6 +3574,7 @@
   <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>تعویض به لایه {0}</value></data>
   <data name="Macro_SwitchLayer_Hint" xml:space="preserve"><value>این اسلات را به لایه شیفت انتخاب‌شده می‌برد. لایه تا تعویض بعدی، یک فعال‌ساز «قفل» یا «چرخه»، یا تعویض پروفایل فعال می‌ماند. «پایه» به لایه پایه برمی‌گرداند. این ماکرو را در بالا به یک لایه محدود کنید تا همان دکمه در هر لایه به جای متفاوتی بپرد.</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>LED دکمه Guide</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>درخشش دکمه Guide یا Home</value></data>
   <data name="Pad_Lighting_GuideLed_Subtitle" xml:space="preserve"><value>روشنایی دکمه نورانی Guide یا Home. کنترلرهای Xbox One و جدیدتر آن را از طریق USB می‌پذیرند. Steam Controller مدل 2015 آن را در هر نوع اتصال می‌پذیرد و همه Steam Controllerها یک روشنایی مشترک دارند. Switch Pro Controller و Joy-Con راست (تنها، جفت‌شده یا در دسته شارژ) آن را در هر نوع اتصال می‌پذیرند.</value></data>
   <data name="Pad_Lighting_GuideLed_Mode_Tooltip" xml:space="preserve"><value>«پیش‌فرض دستگاه» LED را دقیقاً همان‌طور که فریم‌ور کنترلر تنظیم کرده باقی می‌گذارد. «روشنایی ثابت» سطح زیر را نگه می‌دارد. «سطح باتری» با پرتر بودن باتری روشن‌تر می‌شود و هرگز از 10% پایین‌تر نمی‌رود. کنترلرهای Xbox فرمان‌های LED دکمه Guide را فقط از طریق USB می‌پذیرند، پس این تنظیم در اتصال بلوتوث اثری ندارد. کنترلرهای Switch فرمان‌های LED دکمه Home را در هر نوع اتصال می‌پذیرند.</value></data>
   <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>پیش‌فرض دستگاه</value></data>
@@ -3906,6 +3939,7 @@
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>لرزاننده‌های بیس</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>لرزش و فورس فیدبکی را که این کنترلر مجازی از بازی دریافت می‌کند، به‌صورت تُن‌های فرکانس پایین برای لرزاننده‌های بیس و ساب‌ووفرها به یک خروجی صدا هدایت می‌کند.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>لرزش به صدا</value></data>
+  <data name="Pad_More_BassShakers" xml:space="preserve"><value>دستگاه خروجی، کانال‌ها، بهره، صدای هر موتور</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>با کنترلرهای مجازی Xbox، DualShock 3، DualShock 4 / DualSense و Nintendo Switch Pro کار می‌کند، و نیز با کنترلرهای مجازی گسترش‌یافته دارای فورس فیدبک مانند فرمان‌های مسابقه، و Steam Deck Controller (Composite). بازخورد بازی و «آزمایش لرزش» از خروجی صدا پخش می‌شوند. لرزش ماکرو روی کنترلر می‌ماند.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>بازنشانی لرزش به صدا</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>هدایت لرزش به یک خروجی صدا</value></data>
@@ -4352,6 +4386,7 @@
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>در انتظار داده‌های حافظه مشترک FreeTrack.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>حافظه مشترک FreeTrack در دسترس نیست.</value></data>
   <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>لرزش زاویه هدایت</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>لرزشی که با دور شدن محور استیک از مرکز قوی‌تر می‌شود</value></data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>با دور شدن محور استیک مجازی انتخاب‌شده از مرکز، لرزش پیوسته‌ای اضافه می‌کند. از خروجی نگاشت‌شده همه منبع‌های اختصاص‌یافته استفاده می‌کند. با «تقسیم بر اساس جهت»، حرکت منفی موتور چپ و حرکت مثبت موتور راست را به کار می‌اندازد. «موتور چپ» یا «موتور راست» هر دو جهت را روی همان یک موتور می‌گذارد. برای خروجی Xbox و PlayStation با دستگاه‌های دارای لرزش. فرمان‌ها، دستگاه‌های دیگر دارای فورس فیدبک ثابت و پدال‌های Fanatec را نادیده می‌گیرد.</value></data>
   <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>فعال کردن لرزش زاویه هدایت</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>محور مجازی</value></data>
@@ -4706,6 +4741,7 @@
   <data name="Status_FalconDriverDeclined" xml:space="preserve"><value>Windows درایور Force Dimension را نصب نکرد. اگر Windows پرسید که به Force Dimension اعتماد شود یا نه، «نصب» را انتخاب کنید.</value></data>
   <data name="Status_FalconDriverNotBound" xml:space="preserve"><value>درایور نصب شده است، اما Falcon هنوز به آن منتقل نشده. کابل Falcon را جدا و دوباره وصل کنید.</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>شدت پس‌زنی، شدت تکان، تثبیت، پیش‌بار، جبران گرانش</value></data>
   <data name="Pad_Falcon_Description" xml:space="preserve"><value>PadForge نیروی وارد بر دسته Falcon را حدود هزار بار در ثانیه محاسبه می‌کند، از روی موقعیت دسته و آنچه بازی پخش می‌کند. این تنظیمات مربوط به همین اسلات هستند.</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>بازنشانی Novint Falcon</value></data>
   <data name="Pad_Falcon_Feel" xml:space="preserve"><value>حس</value></data>

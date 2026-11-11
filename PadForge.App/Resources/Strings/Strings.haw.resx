@@ -903,6 +903,7 @@
   <data name="Status_InstallingFalconDriver" xml:space="preserve"><value>Ke hoʻokomo nei i ka driver Falcon o Force Dimension…</value></data>
   <data name="Status_FalconNotPluggedIn" xml:space="preserve"><value>ʻAʻohe Falcon i hoʻopili ʻia.</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
+  <data name="Pad_More_Falcon" xml:space="preserve"><value>Kīkē, hoʻoluliluli, kākoʻo, hoʻouka mua, umekaumaha</value></data>
   <data name="Pad_Falcon_Feel_Joystick" xml:space="preserve"><value>Joystick</value></data>
   <data name="Pad_Falcon_Button1" xml:space="preserve"><value>Pihi 1</value></data>
   <data name="Pad_Falcon_Button2" xml:space="preserve"><value>Pihi 2</value></data>
@@ -949,4 +950,21 @@
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>Haʻalulu a me force feedback</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Kukui a me ka leo</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Nā macro a me nā papa kuhikuhi</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>He hōʻailona ke piha ka wili ʻana o ka stick ma ke ʻano huila</value></data>
+  <data name="Pad_SteeringAngleRumble_FoldHint" xml:space="preserve"><value>Haʻalulu e piʻi ana ke haʻalele ke axis stick i ke kikowaena</value></data>
+  <data name="Pad_ConstantForce_FoldHint" xml:space="preserve"><value>He ikaika paʻa a hiki i kou hoʻopio ʻana</value></data>
+  <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Haʻalulu mai ka bass o ke kani ʻōnaehana</value></data>
+  <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Hoʻouna i ka haʻalulu o nā mīkini nui i nā trigger</value></data>
+  <data name="Pad_ConstantTriggerForce_FoldHint" xml:space="preserve"><value>He ikaika paʻa ma kēlā me kēia mīkini trigger</value></data>
+  <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Haʻalulu trigger mai ka bass o ke kani ʻōnaehana</value></data>
+  <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Deadzone hiō, Kūlana o ka mea hoʻokele</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Pihi hoʻāla kuhi, ʻAno hoʻāla, Paepae kuhi maʻalahi</value></data>
+  <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Hoʻohana i ka touchpad ma ke ʻano he stick a i ʻole D-pad</value></data>
+  <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Hoʻopaʻa i kāu iho</value></data>
+  <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Mālamalama LED, Lauana mea pāʻani, ʻAno LED hoʻomumule</value></data>
+  <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Ka ʻālohilohi o ke pihi Guide a i ʻole Home</value></data>
+  <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Nā faila Zip o nā kani no nā macro kani</value></data>
+  <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Nā faila Zip o nā kiʻi no nā keʻena papa kuhikuhi</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Ikaika o kēlā me kēia mīkini, haʻalulu trigger, hoʻololi mīkini</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Ikaika o kēlā me kēia trigger, hoʻololi mīkini, haʻalulu trigger adaptive</value></data>
 </root>
